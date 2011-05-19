@@ -1,0 +1,81 @@
+<project>
+  <property name="target" location="target" />
+  <property name="version-base" value="0.1" />
+  <property name="version-status" value="" />
+  <property name="version" value="${version-base}${version-status}" />
+  <property name="dist" value="truth${version}" />
+  <property name="src" value="src/main/java" />
+  <property name="binjar" value="truth-${version}.jar" />
+  <property name="testjar" value="truth-${version}-tests.jar" />
+  <property name="testsrc" location="src/test/java" />
+  <property name="testbin" location="${target}/test/java" />
+  <property name="bin" location="${target}/main" />
+
+  <macrodef name="truth_compilation">
+    <attribute name="srcdir"/>
+    <attribute name="destdir"/>
+    <attribute name="classpath"/>
+    <sequential>
+      <mkdir dir="@{destdir}"/>
+      <javac 
+          srcdir="@{srcdir}"
+          destdir="@{destdir}"
+          debug="on"
+          classpath="@{classpath}"
+          includeantruntime="false"
+          target="1.5"
+          >
+        <compilerarg value="-Xlint:unchecked" />
+        <classpath>
+          <pathelement location="../junit/junit4.9b2/junit-4.9b2.jar" />
+        </classpath>
+      </javac>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="run-tests">
+    <element name="extra-args" implicit="yes" />
+    <sequential>
+      <java classname="org.junit.runner.JUnitCore" fork="yes" failonerror="true">
+        <extra-args />  
+        <arg value="test.org.junit.contrib.truth.AllTests"/>
+        <classpath>
+          <pathelement location="${dist}" />
+          <pathelement location="${dist}/${binjar}" />
+          <pathelement location="${dist}/${testjar}" />
+          <!-- TODO: don't hard-code JUnit version -->
+          <pathelement location="../junit/junit4.9b2/junit-4.9b2.jar" />
+        </classpath>
+      </java>
+    </sequential>
+  </macrodef>
+
+  <target name="build">
+    <truth_compilation srcdir="${src}" destdir="${bin}" classpath=""/>
+    <truth_compilation srcdir="${testsrc}" destdir="${testbin}" classpath="${bin}"/>
+  </target>
+
+  <target name="jars" depends="build">
+    <mkdir dir="${dist}" />
+    <jar 
+        jarfile="${dist}/${binjar}"
+        basedir="${bin}"
+        />
+    <jar 
+        jarfile="${dist}/${testjar}" 
+        basedir="${testbin}" 
+        />
+  </target>
+
+  <target name="populate-dist" 
+          depends="build, jars"
+          >
+  </target>
+
+  <target name="dist" depends="populate-dist">
+    <run-tests>
+      <jvmarg value="-Dignore.this=ignored" />
+    </run-tests>
+  </target>
+</project>
+<!-- TODO: cheating -->
