@@ -21,6 +21,7 @@ import java.util.List;
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.TestVerb;
 import org.junit.contrib.truth.Truth;
+import org.junit.contrib.truth.subjects.ListSubject;
 
 
 public class ExtendedVerb extends TestVerb {

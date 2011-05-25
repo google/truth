@@ -14,22 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.junit.contrib.truth.extension;
-
-import java.util.List;
+package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
-import org.junit.contrib.truth.Subject;
 
-public class ListSubject<T> extends Subject<List<T>> {
-	public ListSubject(FailureStrategy failureStrategy, List<T> list) {
-		super(failureStrategy, list);
+public class StringSubject extends Subject<String> {
+	public StringSubject(FailureStrategy failureStrategy, String string) {
+		super(failureStrategy, string);
 	}
 
-	public ListSubject<T> contains(Object item) {
-		if (! getSubject().contains(item)) {
-			fail("contains", item);
+	public StringSubject contains(String string) {
+		if (!getSubject().contains(string)) {
+			fail("contains", string);
 		}
 		return this;
 	}
+
 }

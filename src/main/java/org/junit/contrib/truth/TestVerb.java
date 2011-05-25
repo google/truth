@@ -16,6 +16,9 @@
  */
 package org.junit.contrib.truth;
 
+import org.junit.contrib.truth.subjects.IntSubject;
+import org.junit.contrib.truth.subjects.StringSubject;
+
 public class TestVerb {
 	private final FailureStrategy failureStrategy;
 

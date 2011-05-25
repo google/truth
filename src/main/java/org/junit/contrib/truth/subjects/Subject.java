@@ -14,7 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.junit.contrib.truth;
+package org.junit.contrib.truth.subjects;
+
+import org.junit.contrib.truth.FailureStrategy;
 
 public class Subject<T> {
 	private final FailureStrategy failureStrategy;
