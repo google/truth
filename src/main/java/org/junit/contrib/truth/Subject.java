@@ -21,7 +21,7 @@ public class Subject<T> {
 	}
 	
 	protected void fail(String verb, Object... messageParts) {
-		String message = "Not true: ";
+		String message = "Not true that ";
 		message += "<" + getSubject() + "> " + verb;
 		for (Object part : messageParts) {
 			message += " <" + part + ">";
