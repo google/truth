@@ -19,7 +19,23 @@ package org.junit.contrib.truth.subjects;
 import org.junit.contrib.truth.FailureStrategy;
 
 public class IntSubject extends Subject<Integer> {
-	public IntSubject(FailureStrategy failureStrategy, int i) {
-		super(failureStrategy, i);
+
+ public IntSubject(FailureStrategy failureStrategy, int i) {
+	 super(failureStrategy, i);
 	}
+
+ public Subject<Integer> isInclusivelyInRange(int lower, int upper) {
+  if (!(lower <= getSubject() && getSubject() <= upper)) {
+   fail("is inclusively in range", lower, upper);
+  }
+  return this;    
+ }
+ 
+ public Subject<Integer> isBetween(int lower, int upper) {
+  if (!(lower < getSubject() && getSubject() < upper)) {
+   fail("is in between", lower, upper);
+  }
+  return this;    
+ }
+ 
 }
