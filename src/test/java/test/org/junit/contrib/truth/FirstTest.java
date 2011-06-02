@@ -31,7 +31,7 @@ public class FirstTest {
 		try {
 			ASSERT.that(2 + 2).is(5);
 		} catch (AssertionError expected) {
-			ASSERT.that(expected.getMessage()).contains("Not true: <4> is <5>");
+			ASSERT.that(expected.getMessage()).contains("Not true that <4> is <5>");
 			return;
 		}
 		fail("Should have thrown");
@@ -50,7 +50,7 @@ public class FirstTest {
 		try {
 			ASSERT.that("abc").contains("d");
 		} catch (AssertionError expected) {
-			ASSERT.that(expected.getMessage()).contains("Not true: <abc> contains <d>");
+			ASSERT.that(expected.getMessage()).contains("Not true that <abc> contains <d>");
 			return;
 		}
 		fail("Should have thrown");
