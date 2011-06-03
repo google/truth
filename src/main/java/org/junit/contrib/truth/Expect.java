@@ -19,11 +19,13 @@ package org.junit.contrib.truth;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.rules.TestRule;
+import org.junit.rules.MethodRule;
 import org.junit.runner.Description;
+import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-public class Expect extends TestVerb implements TestRule {
+@SuppressWarnings("deprecation")
+public class Expect extends TestVerb implements MethodRule {
 	private static class ExpectationGatherer implements FailureStrategy {
 		List<String> messages = new ArrayList<String>();
 		
@@ -45,7 +47,8 @@ public class Expect extends TestVerb implements TestRule {
 		this.gatherer = gatherer;
 	}
 
-	@Override
+	//TODO(cgruber): Make this override TestRule when 4.9 is released.
+	//@Override
 	public Statement apply(final Statement base, Description description) {
 		inRuleContext = true;
 		return new Statement() {
@@ -63,4 +66,23 @@ public class Expect extends TestVerb implements TestRule {
 			}
 		};
 	}
+
+  @Override
+  public Statement apply(final Statement base, FrameworkMethod method, Object target) {
+    inRuleContext = true;
+    return new Statement() {
+     
+     @Override
+     public void evaluate() throws Throwable {
+      base.evaluate();
+      if (! gatherer.messages.isEmpty()) {
+       String message = "All failed expectations:\n";
+       for (int i = 0; i < gatherer.messages.size(); i++) {
+        message += "  " + (i+1) + ". " + gatherer.messages.get(i) + "\n";
+       }
+       throw new AssertionError(message);
+      }
+     }
+    };
+  }
 }
