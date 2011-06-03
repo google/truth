@@ -21,7 +21,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({StringTest.class, ExtensionTest.class, ExpectTest.class})
+@SuiteClasses({IntegerTests.class, StringTest.class, ExtensionTest.class, ExpectTest.class})
 public class AllTests {
 
 }
