@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.contrib.truth.Expect;
 import org.junit.internal.AssumptionViolatedException;
 
-public class IntegerTests {
+public class IntegerTest {
   @Rule public Expect EXPECT = Expect.create();
 
   @Test public void addition() {
