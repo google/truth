@@ -24,8 +24,8 @@ public class IntSubject extends Subject<Integer> {
    "Range inclusion parameter lower (%d) should not be greater than upper (%d)";
   
  public IntSubject(FailureStrategy failureStrategy, int i) {
-	 super(failureStrategy, i);
-	}
+  super(failureStrategy, i);
+ }
 
  /**
   * Attests that a Subject<Integer> is inclusively within the 
