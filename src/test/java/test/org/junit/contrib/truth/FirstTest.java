@@ -21,7 +21,10 @@ import static org.junit.contrib.truth.Truth.ASSUME;
 
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
+@RunWith(JUnit4.class)
 public class FirstTest {
 	@Test public void addition() {
 		ASSERT.that(2 + 2).is(4);
