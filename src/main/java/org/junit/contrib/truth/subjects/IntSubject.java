@@ -20,45 +20,45 @@ import org.junit.contrib.truth.FailureStrategy;
 
 public class IntSubject extends Subject<Integer> {
 
- private static final String RANGE_BOUNDS_OUT_OF_ORDER_MSG =
-   "Range inclusion parameter lower (%d) should not be greater than upper (%d)";
-  
- public IntSubject(FailureStrategy failureStrategy, int i) {
-  super(failureStrategy, i);
- }
+  private static final String RANGE_BOUNDS_OUT_OF_ORDER_MSG = "Range inclusion parameter lower (%d) should not be greater than upper (%d)";
 
- /**
-  * Attests that a Subject<Integer> is inclusively within the 
-  * {@code lower} and {@code upper} bounds provided or fails.
-  * 
-  * @throws IllegalArgumentException if the lower bound is greater than the upper.
-  */
- public Subject<Integer> isInclusivelyInRange(int lower, int upper) {
-  if (lower > upper) {
-   throw new IllegalArgumentException(
-     String.format(RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
+  public IntSubject(FailureStrategy failureStrategy, int i) {
+    super(failureStrategy, i);
   }
-  if (!(lower <= getSubject() && getSubject() <= upper)) {
-   fail("is inclusively in range", lower, upper);
+
+  /**
+   * Attests that a Subject<Integer> is inclusively within the {@code lower} and
+   * {@code upper} bounds provided or fails.
+   * 
+   * @throws IllegalArgumentException
+   *           if the lower bound is greater than the upper.
+   */
+  public Subject<Integer> isInclusivelyInRange(int lower, int upper) {
+    if (lower > upper) {
+      throw new IllegalArgumentException(String.format(
+          RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
+    }
+    if (!(lower <= getSubject() && getSubject() <= upper)) {
+      fail("is inclusively in range", lower, upper);
+    }
+    return this;
   }
-  return this;    
- }
- 
- /**
-  * Attests that a Subject<Integer> is exclusively within the 
-  * {@code lower} and {@code upper} bounds provided or fails.
-  * 
-  * @throws IllegalArgumentException if the lower bound is greater than the upper.
-  */
- public Subject<Integer> isBetween(int lower, int upper) {
-  if (lower > upper) {
-   throw new IllegalArgumentException(
-     String.format(RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
+
+  /**
+   * Attests that a Subject<Integer> is exclusively within the {@code lower} and
+   * {@code upper} bounds provided or fails.
+   * 
+   * @throws IllegalArgumentException
+   *           if the lower bound is greater than the upper.
+   */
+  public Subject<Integer> isBetween(int lower, int upper) {
+    if (lower > upper) {
+      throw new IllegalArgumentException(String.format(
+          RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
+    }
+    if (!(lower < getSubject() && getSubject() < upper)) {
+      fail("is in between", lower, upper);
+    }
+    return this;
   }
-  if (!(lower < getSubject() && getSubject() < upper)) {
-   fail("is in between", lower, upper);
-  }
-  return this;    
- }
- 
 }

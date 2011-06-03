@@ -23,5 +23,5 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({StringTest.class, ExtensionTest.class, ExpectTest.class})
 public class AllTests {
-	
+
 }

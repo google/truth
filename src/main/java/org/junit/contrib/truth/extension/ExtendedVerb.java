@@ -23,15 +23,15 @@ import org.junit.contrib.truth.TestVerb;
 import org.junit.contrib.truth.Truth;
 import org.junit.contrib.truth.subjects.ListSubject;
 
-
 public class ExtendedVerb extends TestVerb {
-	public static ExtendedVerb ASSERT = new ExtendedVerb(Truth.THROW_ASSERTION_ERROR);
-	
-	public ExtendedVerb(FailureStrategy failureStrategy) {
-		super(failureStrategy);
-	}
-	
-	public <T> ListSubject<T> that(List<T> list) {
-		return new ListSubject<T>(getFailureStrategy(), list);
-	}
+  public static ExtendedVerb ASSERT = new ExtendedVerb(
+      Truth.THROW_ASSERTION_ERROR);
+
+  public ExtendedVerb(FailureStrategy failureStrategy) {
+    super(failureStrategy);
+  }
+
+  public <T> ListSubject<T> that(List<T> list) {
+    return new ListSubject<T>(getFailureStrategy(), list);
+  }
 }

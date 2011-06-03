@@ -19,31 +19,31 @@ package org.junit.contrib.truth.subjects;
 import org.junit.contrib.truth.FailureStrategy;
 
 public class Subject<T> {
-	private final FailureStrategy failureStrategy;
-	private final T subject;
-	
-	public Subject(FailureStrategy failureStrategy, T subject) {
-		this.failureStrategy = failureStrategy;
-		this.subject = subject;
-	}
+  private final FailureStrategy failureStrategy;
+  private final T subject;
 
-	public Subject<T> is(Object other) {
-		if (!getSubject().equals(other)) {
-			fail("is", other);
-		}
-		return this;
-	}
+  public Subject(FailureStrategy failureStrategy, T subject) {
+    this.failureStrategy = failureStrategy;
+    this.subject = subject;
+  }
 
-	protected T getSubject() {
-		return subject;
-	}
-	
-	protected void fail(String verb, Object... messageParts) {
-		String message = "Not true that ";
-		message += "<" + getSubject() + "> " + verb;
-		for (Object part : messageParts) {
-			message += " <" + part + ">";
-		}
-		failureStrategy.fail(message);
-	}
+  public Subject<T> is(Object other) {
+    if (!getSubject().equals(other)) {
+      fail("is", other);
+    }
+    return this;
+  }
+
+  protected T getSubject() {
+    return subject;
+  }
+
+  protected void fail(String verb, Object... messageParts) {
+    String message = "Not true that ";
+    message += "<" + getSubject() + "> " + verb;
+    for (Object part : messageParts) {
+      message += " <" + part + ">";
+    }
+    failureStrategy.fail(message);
+  }
 }

@@ -20,21 +20,21 @@ import org.junit.contrib.truth.subjects.IntSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
 
 public class TestVerb {
-	private final FailureStrategy failureStrategy;
+  private final FailureStrategy failureStrategy;
 
-	public TestVerb(FailureStrategy failureStrategy) {
-		this.failureStrategy = failureStrategy;
-	}
+  public TestVerb(FailureStrategy failureStrategy) {
+    this.failureStrategy = failureStrategy;
+  }
 
-	public IntSubject that(int i) {
-		return new IntSubject(getFailureStrategy(), i);
-	}
+  public IntSubject that(int i) {
+    return new IntSubject(getFailureStrategy(), i);
+  }
 
-	public StringSubject that(String string) {
-		return new StringSubject(getFailureStrategy(), string);
-	}
+  public StringSubject that(String string) {
+    return new StringSubject(getFailureStrategy(), string);
+  }
 
-	protected FailureStrategy getFailureStrategy() {
-		return failureStrategy;
-	}
+  protected FailureStrategy getFailureStrategy() {
+    return failureStrategy;
+  }
 }

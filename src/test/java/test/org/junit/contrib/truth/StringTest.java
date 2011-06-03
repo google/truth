@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package test.org.junit.contrib.truth;
+
 import static org.junit.Assert.fail;
 import static org.junit.contrib.truth.Truth.ASSERT;
 
@@ -25,21 +26,22 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class StringTest {
 
-	@Test public void stringContainsFail() {
-		try {
-			ASSERT.that("abc").contains("d");
-		} catch (AssertionError expected) {
-			ASSERT.that(expected.getMessage()).contains("Not true that <abc> contains <d>");
-			return;
-		}
-		fail("Should have thrown");
-	}
-	
-	@Test public void chain() {
-		ASSERT.that("abc").contains("a").contains("b");
-	}
-	
-	@Test public void stringIs() {
-		ASSERT.that("abc").is("abc");
-	}
+  @Test public void stringContainsFail() {
+    try {
+      ASSERT.that("abc").contains("d");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage()).contains(
+          "Not true that <abc> contains <d>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
+  @Test public void chain() {
+    ASSERT.that("abc").contains("a").contains("b");
+  }
+
+  @Test public void stringIs() {
+    ASSERT.that("abc").is("abc");
+  }
 }
