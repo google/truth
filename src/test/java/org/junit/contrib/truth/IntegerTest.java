@@ -40,7 +40,11 @@ public class IntegerTest {
 
   @Test public void inclusiveRangeContainmentFailure() {
     try {
-      ASSERT.that(Integer.MAX_VALUE).isInclusivelyInRange(2, 4);
+      ASSERT.that(1).isInclusivelyInRange(2, 4);
+      fail("Should have thrown");
+    } catch (AssertionError e) {}
+    try {
+      ASSERT.that(5).isInclusivelyInRange(2, 4);
       fail("Should have thrown");
     } catch (AssertionError e) {}
   }
