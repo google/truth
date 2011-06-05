@@ -20,8 +20,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-@RunWith(Suite.class)
-@SuiteClasses({IntegerTest.class, StringTest.class, CollectionTest.class, ExpectTest.class})
-public class AllTests {
+@RunWith(Suite.class) @SuiteClasses({ IntegerTest.class, StringTest.class,
+    CollectionTest.class, ExpectTest.class }) public class AllTests {
 
 }

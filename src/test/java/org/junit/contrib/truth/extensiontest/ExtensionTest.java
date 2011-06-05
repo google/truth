@@ -20,9 +20,8 @@ import static org.junit.contrib.truth.extensiontest.ExtendedVerb.ASSERT;
 import org.junit.Test;
 
 /**
- * A test that's more or less intended to show how one 
- * uses an extended verb.
- *
+ * A test that's more or less intended to show how one uses an extended verb.
+ * 
  */
 public class ExtensionTest {
   @Test public void customTypeCompares() {

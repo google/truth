@@ -16,18 +16,17 @@
  */
 package org.junit.contrib.truth.extensiontest;
 
-
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.TestVerb;
 import org.junit.contrib.truth.Truth;
 
 /**
- * An extended verb to demonstrate (and test) the subclassing
- * mechanism for extension.  Note this is not the preferred 
- * approach to extension, which is {@link TestVerb#for() }
- *
+ * An extended verb to demonstrate (and test) the subclassing mechanism for
+ * extension. Note this is not the preferred approach to extension, which is
+ * {@link TestVerb#for() }
+ * 
  * @author Christian Gruber (christianedwardgruber@gmail.com)
- *
+ * 
  */
 public class ExtendedVerb extends TestVerb {
   public static ExtendedVerb ASSERT = new ExtendedVerb(
@@ -36,7 +35,7 @@ public class ExtendedVerb extends TestVerb {
   public ExtendedVerb(FailureStrategy failureStrategy) {
     super(failureStrategy);
   }
-  
+
   public MySubject that(MyType subject) {
     return new MySubject(getFailureStrategy(), subject);
   }

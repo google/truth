@@ -24,65 +24,62 @@ import org.junit.runner.Description;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-@SuppressWarnings("deprecation")
-public class Expect extends TestVerb implements MethodRule {
-	private static class ExpectationGatherer implements FailureStrategy {
-		List<String> messages = new ArrayList<String>();
-		
-		@Override
-		public void fail(String message) {
-			messages.add(message);
-		}
-	}
-	
-	private final ExpectationGatherer gatherer;
-	private boolean inRuleContext = false;
-	
-	public static Expect create() {
-		return new Expect(new ExpectationGatherer());
-	}
-	
-	private Expect(ExpectationGatherer gatherer) {
-		super(gatherer);
-		this.gatherer = gatherer;
-	}
+@SuppressWarnings("deprecation") public class Expect extends TestVerb implements
+    MethodRule {
+  private static class ExpectationGatherer implements FailureStrategy {
+    List<String> messages = new ArrayList<String>();
 
-	//TODO(cgruber): Make this override TestRule when 4.9 is released.
-	//@Override
-	public Statement apply(final Statement base, Description description) {
-		inRuleContext = true;
-		return new Statement() {
-			
-			@Override
-			public void evaluate() throws Throwable {
-				base.evaluate();
-				if (! gatherer.messages.isEmpty()) {
-					String message = "All failed expectations:\n";
-					for (int i = 0; i < gatherer.messages.size(); i++) {
-						message += "  " + (i+1) + ". " + gatherer.messages.get(i) + "\n";
-					}
-					throw new AssertionError(message);
-				}
-			}
-		};
-	}
+    @Override public void fail(String message) {
+      messages.add(message);
+    }
+  }
 
-  @Override
-  public Statement apply(final Statement base, FrameworkMethod method, Object target) {
+  private final ExpectationGatherer gatherer;
+  private boolean inRuleContext = false;
+
+  public static Expect create() {
+    return new Expect(new ExpectationGatherer());
+  }
+
+  private Expect(ExpectationGatherer gatherer) {
+    super(gatherer);
+    this.gatherer = gatherer;
+  }
+
+  // TODO(cgruber): Make this override TestRule when 4.9 is released.
+  // @Override
+  public Statement apply(final Statement base, Description description) {
     inRuleContext = true;
     return new Statement() {
-     
-     @Override
-     public void evaluate() throws Throwable {
-      base.evaluate();
-      if (! gatherer.messages.isEmpty()) {
-       String message = "All failed expectations:\n";
-       for (int i = 0; i < gatherer.messages.size(); i++) {
-        message += "  " + (i+1) + ". " + gatherer.messages.get(i) + "\n";
-       }
-       throw new AssertionError(message);
+
+      @Override public void evaluate() throws Throwable {
+        base.evaluate();
+        if (!gatherer.messages.isEmpty()) {
+          String message = "All failed expectations:\n";
+          for (int i = 0; i < gatherer.messages.size(); i++) {
+            message += "  " + (i + 1) + ". " + gatherer.messages.get(i) + "\n";
+          }
+          throw new AssertionError(message);
+        }
       }
-     }
+    };
+  }
+
+  @Override public Statement apply(final Statement base,
+      FrameworkMethod method, Object target) {
+    inRuleContext = true;
+    return new Statement() {
+
+      @Override public void evaluate() throws Throwable {
+        base.evaluate();
+        if (!gatherer.messages.isEmpty()) {
+          String message = "All failed expectations:\n";
+          for (int i = 0; i < gatherer.messages.size(); i++) {
+            message += "  " + (i + 1) + ". " + gatherer.messages.get(i) + "\n";
+          }
+          throw new AssertionError(message);
+        }
+      }
     };
   }
 }

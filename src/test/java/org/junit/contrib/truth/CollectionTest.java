@@ -24,9 +24,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class CollectionTest {	
-	@Test public void listContains() {
-		ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
-		ASSERT.that(4).is(4);
-	}
+public class CollectionTest {
+  @Test public void listContains() {
+    ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
+    ASSERT.that(4).is(4);
+  }
 }
