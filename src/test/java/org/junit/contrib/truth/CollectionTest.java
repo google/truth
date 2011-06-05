@@ -16,7 +16,7 @@
  */
 package org.junit.contrib.truth;
 
-import static org.junit.contrib.truth.extension.ExtendedVerb.ASSERT;
+import static org.junit.contrib.truth.Truth.ASSERT;
 
 import java.util.Arrays;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class ExtensionTest {	
+public class CollectionTest {	
 	@Test public void listContains() {
 		ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
 		ASSERT.that(4).is(4);

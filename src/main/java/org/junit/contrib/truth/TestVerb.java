@@ -16,6 +16,9 @@
  */
 package org.junit.contrib.truth;
 
+import java.util.Collection;
+
+import org.junit.contrib.truth.subjects.CollectionSubject;
 import org.junit.contrib.truth.subjects.IntSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
 
@@ -36,5 +39,9 @@ public class TestVerb {
 
   protected FailureStrategy getFailureStrategy() {
     return failureStrategy;
+  }
+
+  public <T> CollectionSubject<T> that(Collection<T> list) {
+    return new CollectionSubject<T>(getFailureStrategy(), list);
   }
 }

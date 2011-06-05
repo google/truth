@@ -16,16 +16,16 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.junit.contrib.truth.FailureStrategy;
 
-public class ListSubject<T> extends Subject<List<T>> {
-  public ListSubject(FailureStrategy failureStrategy, List<T> list) {
+public class CollectionSubject<T> extends Subject<Collection<T>> {
+  public CollectionSubject(FailureStrategy failureStrategy, Collection<T> list) {
     super(failureStrategy, list);
   }
 
-  public ListSubject<T> contains(Object item) {
+  public CollectionSubject<T> contains(T item) {
     if (!getSubject().contains(item)) {
       fail("contains", item);
     }
