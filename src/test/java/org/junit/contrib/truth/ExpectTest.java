@@ -19,7 +19,6 @@ package org.junit.contrib.truth;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.truth.Expect;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 

@@ -24,8 +24,8 @@ import org.junit.runner.Description;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-@SuppressWarnings("deprecation") public class Expect extends TestVerb implements
-    MethodRule {
+@SuppressWarnings("deprecation") 
+public class Expect extends TestVerb implements MethodRule {
   private static class ExpectationGatherer implements FailureStrategy {
     List<String> messages = new ArrayList<String>();
 
