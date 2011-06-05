@@ -16,9 +16,11 @@
  */
 package org.junit.contrib.truth;
 
+import static org.junit.Assert.fail;
 import static org.junit.contrib.truth.Truth.ASSERT;
 
 import java.util.Arrays;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -27,6 +29,12 @@ import org.junit.runners.JUnit4;
 public class CollectionTest {
   @Test public void listContains() {
     ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
-    ASSERT.that(4).is(4);
   }
+  @Test public void listContainsFailure() {
+    try {
+      ASSERT.that(Arrays.asList(1, 2, 3)).contains(5);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {}
+  }
+
 }
