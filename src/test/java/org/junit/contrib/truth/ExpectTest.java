@@ -14,14 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test.org.junit.contrib.truth;
+package org.junit.contrib.truth;
 
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.contrib.truth.Expect;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.runners.JUnit4;
 
-@RunWith(Suite.class)
-@SuiteClasses({IntegerTest.class, StringTest.class, ExtensionTest.class, ExpectTest.class})
-public class AllTests {
-
+@RunWith(JUnit4.class)
+public class ExpectTest {
+	@Rule public Expect EXPECT = Expect.create();
+	
+	@Test public void expectTrue() {
+		EXPECT.that(4).is(4);
+	}
+	
+	@Ignore @Test public void expectFail() {
+		EXPECT.that("abc").contains("x").contains("y").contains("z");
+	}
 }

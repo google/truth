@@ -14,24 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test.org.junit.contrib.truth;
+package org.junit.contrib.truth;
 
-import org.junit.Ignore;
-import org.junit.Rule;
+import static org.junit.contrib.truth.extension.ExtendedVerb.ASSERT;
+
+import java.util.Arrays;
 import org.junit.Test;
-import org.junit.contrib.truth.Expect;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class ExpectTest {
-	@Rule public Expect EXPECT = Expect.create();
-	
-	@Test public void expectTrue() {
-		EXPECT.that(4).is(4);
-	}
-	
-	@Ignore @Test public void expectFail() {
-		EXPECT.that("abc").contains("x").contains("y").contains("z");
+public class ExtensionTest {	
+	@Test public void listContains() {
+		ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
+		ASSERT.that(4).is(4);
 	}
 }

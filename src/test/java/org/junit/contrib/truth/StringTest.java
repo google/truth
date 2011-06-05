@@ -14,19 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test.org.junit.contrib.truth;
+package org.junit.contrib.truth;
 
-import static org.junit.contrib.truth.extension.ExtendedVerb.ASSERT;
+import static org.junit.Assert.fail;
+import static org.junit.contrib.truth.Truth.ASSERT;
 
-import java.util.Arrays;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class ExtensionTest {	
-	@Test public void listContains() {
-		ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
-		ASSERT.that(4).is(4);
-	}
+public class StringTest {
+
+  @Test public void stringContainsFail() {
+    try {
+      ASSERT.that("abc").contains("d");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage()).contains(
+          "Not true that <abc> contains <d>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
+  @Test public void chain() {
+    ASSERT.that("abc").contains("a").contains("b");
+  }
+
+  @Test public void stringIs() {
+    ASSERT.that("abc").is("abc");
+  }
 }
