@@ -14,15 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.junit.contrib.truth.extension;
+package org.junit.contrib.truth.extensiontest;
 
-import java.util.List;
 
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.TestVerb;
 import org.junit.contrib.truth.Truth;
-import org.junit.contrib.truth.subjects.ListSubject;
 
+/**
+ * An extended verb to demonstrate (and test) the subclassing
+ * mechanism for extension.  Note this is not the preferred 
+ * approach to extension, which is {@link TestVerb#for() }
+ *
+ * @author Christian Gruber (christianedwardgruber@gmail.com)
+ *
+ */
 public class ExtendedVerb extends TestVerb {
   public static ExtendedVerb ASSERT = new ExtendedVerb(
       Truth.THROW_ASSERTION_ERROR);
@@ -30,8 +36,8 @@ public class ExtendedVerb extends TestVerb {
   public ExtendedVerb(FailureStrategy failureStrategy) {
     super(failureStrategy);
   }
-
-  public <T> ListSubject<T> that(List<T> list) {
-    return new ListSubject<T>(getFailureStrategy(), list);
+  
+  public MySubject that(MyType subject) {
+    return new MySubject(getFailureStrategy(), subject);
   }
 }
