@@ -44,7 +44,7 @@ public class SubjectTest {
       ASSERT.that(o).is("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <null> is <a>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is <a>");
     }
   }
 
@@ -61,7 +61,7 @@ public class SubjectTest {
       ASSERT.that(a).is(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <Object 1> is <Object 2>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is <Object 2>");
     }
   }
   
@@ -73,7 +73,7 @@ public class SubjectTest {
       ASSERT.that((Object)a).is(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <null> is <a>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is <a>");
     }
   }
 
@@ -87,7 +87,7 @@ public class SubjectTest {
       ASSERT.that(o).isNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that the subject is null");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is null");
     }
   }
   
@@ -101,7 +101,7 @@ public class SubjectTest {
       ASSERT.that(o).isNotNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that the subject is not null");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is not null");
     }
   }
   
@@ -114,7 +114,7 @@ public class SubjectTest {
       ASSERT.that(o).isEqualTo("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <null> is equal to <a>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
     }
   }
 
@@ -131,7 +131,7 @@ public class SubjectTest {
       ASSERT.that(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <Object 1> is equal to <Object 2>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
     }
   }
   
@@ -148,7 +148,7 @@ public class SubjectTest {
       ASSERT.that(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <ab> is equal to <aa>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <ab> is equal to <aa>");
     }
   }
 
@@ -161,7 +161,7 @@ public class SubjectTest {
       ASSERT.that(o).isNotEqualTo(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <null> is not equal to <null>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is not equal to <null>");
     }
   }
 
@@ -178,7 +178,7 @@ public class SubjectTest {
       ASSERT.that(a).isNotEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <Object 1> is not equal to <Object 1>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is not equal to <Object 1>");
     }
   }
   
@@ -195,7 +195,7 @@ public class SubjectTest {
       ASSERT.that(a).isNotEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <ab> is not equal to <ab>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <ab> is not equal to <ab>");
     }
   }
 }

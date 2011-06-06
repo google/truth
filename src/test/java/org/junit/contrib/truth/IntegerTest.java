@@ -34,22 +34,22 @@ import org.junit.internal.AssumptionViolatedException;
 public class IntegerTest {
   @Rule public Expect EXPECT = Expect.create();
 
-  @Test public void addition() {
-    ASSERT.that(2 + 2).is(4);
+  @Test public void simpleEquality() {
+    ASSERT.that(2 + 2).isEqualTo(4);
   }
 
   @Test public void additionFail() {
     try {
-      ASSERT.that(2 + 2).is(5);
+      ASSERT.that(2 + 2).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).contains("Not true that <4> is <5>");
+      ASSERT.that(expected.getMessage()).contains("Not true that <4> is equal to <5>");
     }
   }
 
   @Test public void additionAssumptionFail() {
     try {
-      ASSUME.that(2 + 2).is(5);
+      ASSUME.that(2 + 2).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssumptionViolatedException expected) {}
   }

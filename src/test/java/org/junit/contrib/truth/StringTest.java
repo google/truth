@@ -48,6 +48,6 @@ public class StringTest {
   }
 
   @Test public void stringIs() {
-    ASSERT.that("abc").is("abc");
+    ASSERT.that("abc").isEqualTo("abc");
   }
 }
