@@ -20,7 +20,10 @@ import static org.junit.contrib.truth.extension.ExtendedVerb.ASSERT;
 
 import java.util.Arrays;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
+@RunWith(JUnit4.class)
 public class ExtensionTest {	
 	@Test public void listContains() {
 		ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
