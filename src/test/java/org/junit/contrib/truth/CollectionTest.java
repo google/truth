@@ -40,7 +40,9 @@ public class CollectionTest {
     try {
       ASSERT.that(Arrays.asList(1, 2, 3)).contains(5);
       fail("Should have thrown.");
-    } catch (AssertionError e) {}
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");      
+    }
   }
 
   @Test public void listContainsAnyOf() {
@@ -51,7 +53,9 @@ public class CollectionTest {
     try {
       ASSERT.that(Arrays.asList(1, 2, 3)).containsAnyOf(5, 6, 0);
       fail("Should have thrown.");
-    } catch (AssertionError e) {}
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");      
+    }
   }
   
   @Test public void listContainsAllOf() {
@@ -62,7 +66,9 @@ public class CollectionTest {
     try {
       ASSERT.that(Arrays.asList(1, 2, 3)).containsAllOf(1, 2, 4);
       fail("Should have thrown.");
-    } catch (AssertionError e) {}
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");      
+    }
   }
   
 }
