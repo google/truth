@@ -55,6 +55,32 @@ public class Subject<T> {
     return this;
   }
 
+  public Subject<T> isEqualTo(Object other) {
+    if (getSubject() == null) { 
+      if(other != null) {
+        fail("is equal to", other);
+      }
+    } else {
+      if (!getSubject().equals(other)) {
+        fail("is equal to", other);
+      }
+    }
+    return this;
+  }
+
+  public Subject<T> isNotEqualTo(Object other) {
+    if (getSubject() == null) { 
+      if(other == null) {
+        fail("is not equal to", other);
+      }
+    } else {
+      if (getSubject().equals(other)) {
+        fail("is not equal to", other);
+      }
+    }
+    return this;
+  }
+
   protected T getSubject() {
     return subject;
   }

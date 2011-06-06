@@ -104,4 +104,98 @@ public class SubjectTest {
       ASSERT.that(e.getMessage()).is("Not true that the subject is not null");
     }
   }
+  
+  @Test public void equalityOfNulls() {
+    ASSERT.that(o).isEqualTo(null);
+  }
+
+  @Test public void equalityOfNullsFailure() {
+    try {
+      ASSERT.that(o).isEqualTo("a");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).is("Not true that <null> is equal to <a>");
+    }
+  }
+
+  @Test public void equalityOfObjectBasedOnIdentity() {
+    Object a = new Object();
+    Object b = a;
+    ASSERT.that(a).isEqualTo(b);
+  }
+
+  @Test public void equalityOfObjectFailure() {
+    Object a = new Object() { @Override public String toString() { return "Object 1"; } };
+    Object b = new Object() { @Override public String toString() { return "Object 2"; } };
+    try {
+      ASSERT.that(a).isEqualTo(b);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).is("Not true that <Object 1> is equal to <Object 2>");
+    }
+  }
+  
+  @Test public void equalityOfComparableObjects() {
+    Object a = "ab";
+    Object b = new StringBuilder().append("a").append('b').toString();
+    ASSERT.that(a).isEqualTo(b); 
+  }
+
+  @Test public void equalityOfComparableObjectsFailure() {
+    Object a = "ab";
+    Object b = new StringBuilder().append("a").append('a').toString();
+    try {
+      ASSERT.that(a).isEqualTo(b);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).is("Not true that <ab> is equal to <aa>");
+    }
+  }
+
+  @Test public void inequalityOfNulls() {
+    ASSERT.that(o).isNotEqualTo("a");
+  }
+
+  @Test public void inequalityOfNullsFailure() {
+    try {
+      ASSERT.that(o).isNotEqualTo(null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).is("Not true that <null> is not equal to <null>");
+    }
+  }
+
+  @Test public void inequalityOfObjectBasedOnIdentity() {
+    Object a = new Object();
+    Object b = new Object();
+    ASSERT.that(a).isNotEqualTo(b);
+  }
+
+  @Test public void inequalityOfObjectFailure() {
+    Object a = new Object() { @Override public String toString() { return "Object 1"; } };
+    Object b = a;
+    try {
+      ASSERT.that(a).isNotEqualTo(b);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).is("Not true that <Object 1> is not equal to <Object 1>");
+    }
+  }
+  
+  @Test public void inequalityOfComparableObjects() {
+    Object a = "ab";
+    Object b = new StringBuilder().append("a").append('a').toString();
+    ASSERT.that(a).isNotEqualTo(b); 
+  }
+
+  @Test public void inequalityOfComparableObjectsFailure() {
+    Object a = "ab";
+    Object b = new StringBuilder().append("a").append('b').toString();
+    try {
+      ASSERT.that(a).isNotEqualTo(b);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).is("Not true that <ab> is not equal to <ab>");
+    }
+  }
 }
