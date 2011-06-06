@@ -18,7 +18,7 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 
-public class IntSubject extends Subject<Integer> {
+public class IntSubject extends Subject<IntSubject, Integer> {
 
   private static final String RANGE_BOUNDS_OUT_OF_ORDER_MSG = "Range inclusion parameter lower (%d) should not be greater than upper (%d)";
 
@@ -33,7 +33,7 @@ public class IntSubject extends Subject<Integer> {
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
-  public Subject<Integer> isInclusivelyInRange(int lower, int upper) {
+  public And<IntSubject> isInclusivelyInRange(int lower, int upper) {
     if (lower > upper) {
       throw new IllegalArgumentException(String.format(
           RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
@@ -41,7 +41,7 @@ public class IntSubject extends Subject<Integer> {
     if (!(lower <= getSubject() && getSubject() <= upper)) {
       fail("is inclusively in range", lower, upper);
     }
-    return this;
+    return new And<IntSubject>(this);
   }
 
   /**
@@ -51,7 +51,7 @@ public class IntSubject extends Subject<Integer> {
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
-  public Subject<Integer> isBetween(int lower, int upper) {
+  public And<IntSubject> isBetween(int lower, int upper) {
     if (lower > upper) {
       throw new IllegalArgumentException(String.format(
           RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
@@ -59,6 +59,6 @@ public class IntSubject extends Subject<Integer> {
     if (!(lower < getSubject() && getSubject() < upper)) {
       fail("is in between", lower, upper);
     }
-    return this;
+    return new And<IntSubject>(this);
   }
 }

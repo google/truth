@@ -18,22 +18,29 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 
-public class Subject<T> {
+public class Subject<S extends Subject<S,T>,T> {
+  
   private final FailureStrategy failureStrategy;
+  
   private final T subject;
 
+  @SuppressWarnings("unchecked")
+  protected final S self() {
+    return (S)this;
+  }
+  
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
   }
 
-  public Subject<T> is(Object other) {
-    if (!getSubject().equals(other)) {
+  public And<S> is(T other) {
+    if (!(getSubject() == other)) {
       fail("is", other);
     }
-    return this;
+    return new And<S>(self());
   }
-
+  
   protected T getSubject() {
     return subject;
   }
@@ -46,4 +53,5 @@ public class Subject<T> {
     }
     failureStrategy.fail(message);
   }
+
 }

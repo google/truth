@@ -38,6 +38,8 @@ public class ExpectTest {
   }
 
   @Ignore @Test public void expectFail() {
-    EXPECT.that("abc").contains("x").contains("y").contains("z");
+    EXPECT.that("abc").contains("x")
+          .and().contains("y")
+          .and().contains("z");
   }
 }

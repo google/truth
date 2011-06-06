@@ -16,19 +16,25 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import java.util.Collection;
-
-import org.junit.contrib.truth.FailureStrategy;
-
-public class CollectionSubject<T> extends Subject<CollectionSubject<T>, Collection<T>> {
-  public CollectionSubject(FailureStrategy failureStrategy, Collection<T> list) {
-    super(failureStrategy, list);
+/**
+ * A convenience class to allow for chaining in the fluent API
+ * style, such that subjects can make propositions in series.  
+ * i.e. ASSERT.that(blah).isNotNull().and().contains(b).and().isNotEmpty();
+ * 
+ * @author Christian Gruber (cgruber@israfil.net)
+ *
+ * @param <S>
+ */
+public class And<S> {
+  
+  private final S subject;
+  
+  public And(S subject) {
+    this.subject = subject;
+  }
+  
+  public S and() {
+    return subject;
   }
 
-  public And<CollectionSubject<T>> contains(T item) {
-    if (!getSubject().contains(item)) {
-      fail("contains", item);
-    }
-    return new And<CollectionSubject<T>>(this);
-  }
 }

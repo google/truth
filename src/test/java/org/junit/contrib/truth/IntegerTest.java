@@ -35,7 +35,7 @@ public class IntegerTest {
   @Rule public Expect EXPECT = Expect.create();
 
   @Test public void addition() {
-    ASSERT.that(2 + 2).is(4);
+    ASSERT.that(2 + 2).is(4).and().isBetween(3, 5);
   }
 
   @Test public void additionFail() {

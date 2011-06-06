@@ -20,6 +20,7 @@ import static org.junit.Assert.fail;
 import static org.junit.contrib.truth.Truth.ASSERT;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,13 @@ public class CollectionTest {
   @Test public void listContainsWithChaining() {
     ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).and().contains(2);
   }
+
+  @Test public void listContainsWith2KindsOfChaining() {
+    List<Integer> foo = Arrays.asList(1, 2, 3);
+    List<Integer> bar = foo;
+    ASSERT.that(foo).is(bar).and().contains(1).and().contains(2);
+  }
+
   
   @Test public void listContainsFailureWithChaining() {
     try {

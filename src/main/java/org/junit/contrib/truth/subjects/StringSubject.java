@@ -18,16 +18,16 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 
-public class StringSubject extends Subject<String> {
+public class StringSubject extends Subject<StringSubject, String> {
   public StringSubject(FailureStrategy failureStrategy, String string) {
     super(failureStrategy, string);
   }
 
-  public StringSubject contains(String string) {
+  public And<StringSubject> contains(String string) {
     if (!getSubject().contains(string)) {
       fail("contains", string);
     }
-    return this;
+    return new And<StringSubject>(this);
   }
 
 }
