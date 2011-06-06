@@ -43,4 +43,26 @@ public class CollectionTest {
     } catch (AssertionError e) {}
   }
 
+  @Test public void listContainsAnyOf() {
+    ASSERT.that(Arrays.asList(1, 2, 3)).containsAnyOf(1, 5);
+  }
+  
+  @Test public void listContainsAnyOfFailure() {
+    try {
+      ASSERT.that(Arrays.asList(1, 2, 3)).containsAnyOf(5, 6, 0);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {}
+  }
+  
+  @Test public void listContainsAllOf() {
+    ASSERT.that(Arrays.asList(1, 2, 3)).containsAllOf(1, 2);
+  }
+  
+  @Test public void listContainsAllOfFailure() {
+    try {
+      ASSERT.that(Arrays.asList(1, 2, 3)).containsAllOf(1, 2, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {}
+  }
+  
 }

@@ -31,4 +31,25 @@ public class CollectionSubject<T> extends Subject<Collection<T>> {
     }
     return this;
   }
+  
+  public CollectionSubject<T> containsAnyOf(T ... items) {
+    Collection<T> collection = getSubject();
+    for (T item : items) {
+      if (collection.contains(item)) {
+        return this;
+      }
+    }
+    fail("contains", (Object[])items);
+    return this;
+  }
+  
+  public CollectionSubject<T> containsAllOf(T ... items) {
+    Collection<T> collection = getSubject();
+    for (T item : items) {
+      if (!collection.contains(item)) {
+        fail("contains", item);
+      }
+    }
+    return this;
+  }
 }
