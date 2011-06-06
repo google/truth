@@ -21,12 +21,17 @@ import java.util.Collection;
 import org.junit.contrib.truth.subjects.CollectionSubject;
 import org.junit.contrib.truth.subjects.IntSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
+import org.junit.contrib.truth.subjects.Subject;
 
 public class TestVerb {
   private final FailureStrategy failureStrategy;
 
   public TestVerb(FailureStrategy failureStrategy) {
     this.failureStrategy = failureStrategy;
+  }
+  
+  public Subject<Object> that(Object o) {
+    return new Subject<Object>(getFailureStrategy(), o);
   }
 
   public IntSubject that(int i) {

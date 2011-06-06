@@ -28,8 +28,29 @@ public class Subject<T> {
   }
 
   public Subject<T> is(Object other) {
-    if (!getSubject().equals(other)) {
-      fail("is", other);
+
+    if (getSubject() == null) { 
+      if(other != null) {
+        fail("is", other);
+      }
+    } else {
+      if (!getSubject().equals(other)) {
+        fail("is", other);
+      }
+    }
+    return this;
+  }
+
+  public Subject<T> isNull() {
+    if (getSubject() != null) {
+      failWithoutSubject("is null");
+    }
+    return this;
+  }
+  
+  public Subject<T> isNotNull() {
+    if (getSubject() == null) {
+      failWithoutSubject("is not null");
     }
     return this;
   }
@@ -41,6 +62,15 @@ public class Subject<T> {
   protected void fail(String verb, Object... messageParts) {
     String message = "Not true that ";
     message += "<" + getSubject() + "> " + verb;
+    for (Object part : messageParts) {
+      message += " <" + part + ">";
+    }
+    failureStrategy.fail(message);
+  }
+  
+  protected void failWithoutSubject(String verb, Object... messageParts) {
+    String message = "Not true that ";
+    message += "the subject " + verb;
     for (Object part : messageParts) {
       message += " <" + part + ">";
     }
