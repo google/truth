@@ -25,6 +25,9 @@ public class CollectionSubject<T> extends Subject<Collection<T>> {
     super(failureStrategy, list);
   }
 
+  /**
+   * Attests that a Collection contains the provided object or fails.
+   */
   public CollectionSubject<T> contains(T item) {
     if (!getSubject().contains(item)) {
       fail("contains", item);
@@ -32,6 +35,10 @@ public class CollectionSubject<T> extends Subject<Collection<T>> {
     return this;
   }
   
+  /**
+   * Attests that a Collection contains at least one of the provided 
+   * objects or fails.
+   */
   public CollectionSubject<T> containsAnyOf(T ... items) {
     Collection<T> collection = getSubject();
     for (T item : items) {
@@ -43,6 +50,9 @@ public class CollectionSubject<T> extends Subject<Collection<T>> {
     return this;
   }
   
+  /**
+   * Attests that a Collection contains every provided object or fails.
+   */
   public CollectionSubject<T> containsAllOf(T ... items) {
     Collection<T> collection = getSubject();
     for (T item : items) {
