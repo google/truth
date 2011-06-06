@@ -41,7 +41,7 @@ public class IntSubject extends Subject<IntSubject, Integer> {
     if (!(lower <= getSubject() && getSubject() <= upper)) {
       fail("is inclusively in range", lower, upper);
     }
-    return new And<IntSubject>(this);
+    return nextChain();
   }
 
   /**
@@ -59,6 +59,6 @@ public class IntSubject extends Subject<IntSubject, Integer> {
     if (!(lower < getSubject() && getSubject() < upper)) {
       fail("is in between", lower, upper);
     }
-    return new And<IntSubject>(this);
+    return nextChain();
   }
 }

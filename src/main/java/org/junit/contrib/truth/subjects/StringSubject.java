@@ -27,7 +27,7 @@ public class StringSubject extends Subject<StringSubject, String> {
     if (!getSubject().contains(string)) {
       fail("contains", string);
     }
-    return new And<StringSubject>(this);
+    return nextChain();
   }
 
 }

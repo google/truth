@@ -29,6 +29,6 @@ public class CollectionSubject<T> extends Subject<CollectionSubject<T>, Collecti
     if (!getSubject().contains(item)) {
       fail("contains", item);
     }
-    return new And<CollectionSubject<T>>(this);
+    return nextChain();
   }
 }

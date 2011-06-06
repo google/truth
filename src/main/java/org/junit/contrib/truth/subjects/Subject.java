@@ -24,21 +24,25 @@ public class Subject<S extends Subject<S,T>,T> {
   
   private final T subject;
 
-  @SuppressWarnings("unchecked")
-  protected final S self() {
-    return (S)this;
-  }
-  
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
   }
 
+  /**
+   * A method which wraps the current Subject concrete
+   * subtype in a chaining "And" object.
+   */
+  @SuppressWarnings("unchecked")
+  protected final And<S> nextChain() {
+    return new And<S>((S)this);
+  }
+  
   public And<S> is(T other) {
     if (!(getSubject() == other)) {
       fail("is", other);
     }
-    return new And<S>(self());
+    return nextChain();
   }
   
   protected T getSubject() {
