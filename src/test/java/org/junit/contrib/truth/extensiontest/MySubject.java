@@ -19,7 +19,6 @@ package org.junit.contrib.truth.extensiontest;
 
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.subjects.Subject;
-import org.junit.contrib.truth.subjects.And;
 
 /**
  * A simple example Subject to demonstrate extension.
@@ -36,7 +35,7 @@ public class MySubject extends Subject<MySubject, MyType> {
     if (getSubject().value != object.value) {
       fail("matches", getSubject(), object);
     }
-    return new And<MySubject>(this);
+    return nextChain();
   }
 
 }
