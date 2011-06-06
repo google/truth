@@ -89,9 +89,11 @@ public class IntegerTest {
 
   @Test public void exclusiveRangeContainmentFailure() {
     try {
-      ASSERT.that(Integer.MAX_VALUE).isBetween(2, 5);
+      ASSERT.that(5).isBetween(2, 5);
       fail("Should have thrown");
-    } catch (AssertionError e) {}
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <5> is in between <2> <5>");
+    }
   }
 
   @Test public void exclusiveRangeContainmentInversionError() {
