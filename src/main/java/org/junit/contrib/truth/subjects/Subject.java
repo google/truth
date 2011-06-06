@@ -21,21 +21,27 @@ import org.junit.contrib.truth.FailureStrategy;
 public class Subject<S extends Subject<S,T>,T> {
   
   private final FailureStrategy failureStrategy;
-  
   private final T subject;
+  private final And<S> chain;
 
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
+    
+    this.chain = new And<S>(){
+      @SuppressWarnings("unchecked") 
+      @Override public S and() {
+        return (S)Subject.this;
+      }
+    };
   }
 
   /**
    * A method which wraps the current Subject concrete
    * subtype in a chaining "And" object.
    */
-  @SuppressWarnings("unchecked")
   protected final And<S> nextChain() {
-    return new And<S>((S)this);
+    return chain;
   }
   
   public And<S> is(T other) {
@@ -58,4 +64,15 @@ public class Subject<S extends Subject<S,T>,T> {
     failureStrategy.fail(message);
   }
 
+  /**
+   * A convenience class to allow for chaining in the fluent API
+   * style, such that subjects can make propositions in series.  
+   * i.e. ASSERT.that(blah).isNotNull().and().contains(b).and().isNotEmpty();
+   */
+  public static interface And<C> {
+    /**
+     * Returns the next object in the chain of anded objects.
+     */
+    C and();
+  }
 }
