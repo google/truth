@@ -22,6 +22,8 @@ import org.junit.Test;
 /**
  * A test that's more or less intended to show how one uses an extended verb.
  * 
+ * @author David Saff
+ * @author Christian Gruber (cgruber@israfil.net)
  */
 public class ExtensionTest {
   @Test public void customTypeCompares() {

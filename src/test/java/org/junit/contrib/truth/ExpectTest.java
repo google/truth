@@ -22,6 +22,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+/**
+ * Tests (and effectively sample code) for the Expect 
+ * verb (implemented as a rule)
+ * 
+ * @author David Saff
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 @RunWith(JUnit4.class)
 public class ExpectTest {
   @Rule public Expect EXPECT = Expect.create();

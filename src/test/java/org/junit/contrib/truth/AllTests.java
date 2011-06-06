@@ -20,6 +20,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+/**
+ * Test suite
+ * 
+ * TODO(cgruber): See if we even need this - Maven doesn't, and it
+ * ends up being redundant in eclipse.
+ * 
+ * @author David Saff
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 @RunWith(Suite.class) @SuiteClasses({ IntegerTest.class, StringTest.class,
     CollectionTest.class, ExpectTest.class }) public class AllTests {
 

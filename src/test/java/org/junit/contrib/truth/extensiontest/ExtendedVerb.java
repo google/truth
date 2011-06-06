@@ -25,6 +25,7 @@ import org.junit.contrib.truth.Truth;
  * extension. Note this is not the preferred approach to extension, which is
  * {@link TestVerb#for() }
  * 
+ * @author David Saff
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  * 
  */

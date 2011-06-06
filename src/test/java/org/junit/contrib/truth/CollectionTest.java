@@ -25,6 +25,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+/**
+ * Tests for Collection Subjects.
+ * 
+ * @author David Saff
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 @RunWith(JUnit4.class)
 public class CollectionTest {
   @Test public void listContains() {
