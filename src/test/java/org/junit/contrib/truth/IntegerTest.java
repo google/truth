@@ -64,11 +64,15 @@ public class IntegerTest {
     try {
       ASSERT.that(1).isInclusivelyInRange(2, 4);
       fail("Should have thrown");
-    } catch (AssertionError e) {}
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <1> is inclusively in range <2> <4>");
+    }
     try {
       ASSERT.that(5).isInclusivelyInRange(2, 4);
       fail("Should have thrown");
-    } catch (AssertionError e) {}
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <5> is inclusively in range <2> <4>");
+    }
   }
 
   @Test public void inclusiveRangeContainmentInversionError() {
