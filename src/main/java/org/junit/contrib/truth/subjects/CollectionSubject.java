@@ -18,6 +18,7 @@ package org.junit.contrib.truth.subjects;
 
 import java.util.Collection;
 
+import org.junit.contrib.truth.Chainer;
 import org.junit.contrib.truth.FailureStrategy;
 
 public class CollectionSubject<T> extends Subject<Collection<T>> {
@@ -25,10 +26,10 @@ public class CollectionSubject<T> extends Subject<Collection<T>> {
     super(failureStrategy, list);
   }
 
-  public CollectionSubject<T> contains(T item) {
+  public Chainer<CollectionSubject<T>> contains(T item) {
     if (!getSubject().contains(item)) {
       fail("contains", item);
     }
-    return this;
+    return new Chainer<CollectionSubject<T>>(this);
   }
 }

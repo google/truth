@@ -33,9 +33,22 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class CollectionTest {
+  
   @Test public void listContains() {
     ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
   }
+  
+  @Test public void listContainsWithChaining() {
+    ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).and().contains(2);
+  }
+  
+  @Test public void listContainsFailureWithChaining() {
+    try {
+      ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).and().contains(5);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {}
+  }
+  
   @Test public void listContainsFailure() {
     try {
       ASSERT.that(Arrays.asList(1, 2, 3)).contains(5);
