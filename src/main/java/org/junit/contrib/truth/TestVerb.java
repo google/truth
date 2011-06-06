@@ -23,11 +23,10 @@ import org.junit.contrib.truth.subjects.DefaultSubject;
 import org.junit.contrib.truth.subjects.IntegerSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
 
-public class TestVerb {
-  private final FailureStrategy failureStrategy;
-
+public class TestVerb extends AbstractVerb {
+  
   public TestVerb(FailureStrategy failureStrategy) {
-    this.failureStrategy = failureStrategy;
+    super(failureStrategy);
   }
   
   public DefaultSubject that(Object o) {
@@ -44,10 +43,6 @@ public class TestVerb {
 
   public StringSubject that(String string) {
     return new StringSubject(getFailureStrategy(), string);
-  }
-
-  protected FailureStrategy getFailureStrategy() {
-    return failureStrategy;
   }
 
   public <T> CollectionSubject<T> that(Collection<T> list) {
