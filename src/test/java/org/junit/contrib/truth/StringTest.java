@@ -32,12 +32,16 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class StringTest {
 
+  @Test public void stringContains() {
+    ASSERT.that("abc").contains("c");
+  }
+  
   @Test public void stringContainsFail() {
     try {
       ASSERT.that("abc").contains("d");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).contains(
-          "Not true that <abc> contains <d>");
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <abc> contains <d>");
       return;
     }
     fail("Should have thrown");
@@ -47,7 +51,97 @@ public class StringTest {
     ASSERT.that("abc").contains("a").contains("b");
   }
 
-  @Test public void stringIs() {
+  @Test public void stringEquality() {
     ASSERT.that("abc").isEqualTo("abc");
   }
+
+  @Test public void stringEqualityFail() {
+    try {
+      ASSERT.that("abc").isEqualTo("abd");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <abc> is equal to <abd>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
+  @Test public void stringStartsWith() {
+    ASSERT.that("abc").startsWith("ab");
+  }
+
+  @Test public void stringStartsWithFail() {
+    try {
+      ASSERT.that("abc").startsWith("bc");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <abc> starts with <bc>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+  
+  @Test public void stringEndsWith() {
+    ASSERT.that("abc").endsWith("bc");
+  }
+
+  @Test public void stringEndsWithFail() {
+    try {
+      ASSERT.that("abc").endsWith("ab");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <abc> ends with <ab>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
+  @Test public void emptyStringTests() {
+    ASSERT.that("").contains("");
+    ASSERT.that("").startsWith("");
+    ASSERT.that("").endsWith("");
+    ASSERT.that("a").contains("");
+    ASSERT.that("a").startsWith("");
+    ASSERT.that("a").endsWith("");
+  }
+
+  @Test public void stringNullNullTests() {
+    ASSERT.that((String)null).contains(null);
+    ASSERT.that((String)null).startsWith(null);
+    ASSERT.that((String)null).endsWith(null);
+  }
+  
+  @Test public void stringNullContains() {
+    try {
+      ASSERT.that((String)null).contains("a");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <null> contains <a>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
+  @Test public void stringNullStartsWith() {
+    try {
+      ASSERT.that((String)null).startsWith("a");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <null> starts with <a>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
+  @Test public void stringNullEndsWith() {
+    try {
+      ASSERT.that((String)null).endsWith("a");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <null> ends with <a>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
 }

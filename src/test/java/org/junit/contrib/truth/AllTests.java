@@ -29,7 +29,13 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@RunWith(Suite.class) @SuiteClasses({ IntegerTest.class, StringTest.class,
-    CollectionTest.class, ExpectTest.class, SubjectTest.class }) public class AllTests {
+@RunWith(Suite.class) 
+@SuiteClasses({ 
+    CollectionTest.class, 
+    ExpectTest.class, 
+    IntegerTest.class, 
+    StringTest.class,
+    SubjectTest.class 
+    }) public class AllTests {
 
 }
