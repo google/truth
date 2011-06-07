@@ -19,6 +19,7 @@ package org.junit.contrib.truth;
 import java.util.Collection;
 
 import org.junit.contrib.truth.subjects.CollectionSubject;
+import org.junit.contrib.truth.subjects.DefaultSubject;
 import org.junit.contrib.truth.subjects.IntSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
 
@@ -27,6 +28,10 @@ public class TestVerb {
 
   public TestVerb(FailureStrategy failureStrategy) {
     this.failureStrategy = failureStrategy;
+  }
+  
+  public DefaultSubject that(Object o) {
+    return new DefaultSubject(getFailureStrategy(), o);
   }
 
   public IntSubject that(int i) {

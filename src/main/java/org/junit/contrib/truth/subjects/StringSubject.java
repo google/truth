@@ -24,10 +24,36 @@ public class StringSubject extends Subject<StringSubject, String> {
   }
 
   public And<StringSubject> contains(String string) {
-    if (!getSubject().contains(string)) {
+    if (getSubject() == null) {
+      if (string != null) {
+        fail("contains", string);
+      }
+    } else if (!getSubject().contains(string)) {
       fail("contains", string);
     }
     return nextChain();
   }
 
+  public And<StringSubject> startsWith(String string) {
+    if (getSubject() == null) {
+      if (string != null) {
+        fail("starts with", string);
+      }
+    } else if (!getSubject().startsWith(string)) {
+      fail("starts with", string);
+    }
+    return nextChain();
+  }
+  
+  public And<StringSubject> endsWith(String string) {
+    if (getSubject() == null) {
+      if (string != null) {
+        fail("ends with", string);
+      }
+    } else if (!getSubject().endsWith(string)) {
+      fail("ends with", string);
+    }
+    return nextChain();
+  }
+  
 }

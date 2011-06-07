@@ -45,8 +45,55 @@ public class Subject<S extends Subject<S,T>,T> {
   }
   
   public And<S> is(T other) {
-    if (!(getSubject() == other)) {
-      fail("is", other);
+
+    if (getSubject() == null) { 
+      if(other != null) {
+        fail("is", other);
+      }
+    } else {
+      if (!getSubject().equals(other)) {
+        fail("is", other);
+      }
+    }
+    return nextChain();
+  }
+
+  public And<S> isNull() {
+    if (getSubject() != null) {
+      failWithoutSubject("is null");
+    }
+    return nextChain();
+  }
+  
+  public And<S> isNotNull() {
+    if (getSubject() == null) {
+      failWithoutSubject("is not null");
+    }
+    return nextChain();
+  }
+
+  public And<S> isEqualTo(Object other) {
+    if (getSubject() == null) { 
+      if(other != null) {
+        fail("is equal to", other);
+      }
+    } else {
+      if (!getSubject().equals(other)) {
+        fail("is equal to", other);
+      }
+    }
+    return nextChain();
+  }
+
+  public And<S> isNotEqualTo(Object other) {
+    if (getSubject() == null) { 
+      if(other == null) {
+        fail("is not equal to", other);
+      }
+    } else {
+      if (getSubject().equals(other)) {
+        fail("is not equal to", other);
+      }
     }
     return nextChain();
   }
@@ -64,6 +111,12 @@ public class Subject<S extends Subject<S,T>,T> {
     failureStrategy.fail(message);
   }
 
+  protected void failWithoutSubject(String verb) {
+    String message = "Not true that ";
+    message += "the subject " + verb;
+    failureStrategy.fail(message);
+  }
+
   /**
    * A convenience class to allow for chaining in the fluent API
    * style, such that subjects can make propositions in series.  
@@ -74,5 +127,5 @@ public class Subject<S extends Subject<S,T>,T> {
      * Returns the next object in the chain of anded objects.
      */
     C and();
-  }
+  }  
 }

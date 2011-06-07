@@ -25,7 +25,7 @@ import org.junit.runners.model.Statement;
 
 @SuppressWarnings("deprecation") 
 public class Expect extends TestVerb implements MethodRule {
-  private static class ExpectationGatherer implements FailureStrategy {
+  protected static class ExpectationGatherer implements FailureStrategy {
     List<String> messages = new ArrayList<String>();
 
     @Override public void fail(String message) {
@@ -40,7 +40,7 @@ public class Expect extends TestVerb implements MethodRule {
     return new Expect(new ExpectationGatherer());
   }
 
-  private Expect(ExpectationGatherer gatherer) {
+  Expect(ExpectationGatherer gatherer) {
     super(gatherer);
     this.gatherer = gatherer;
   }

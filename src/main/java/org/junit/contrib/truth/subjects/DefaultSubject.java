@@ -14,28 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.junit.contrib.truth;
+package org.junit.contrib.truth.subjects;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.contrib.truth.FailureStrategy;
 
-/**
- * Test suite
- * 
- * TODO(cgruber): See if we even need this - Maven doesn't, and it
- * ends up being redundant in eclipse.
- * 
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
- */
-@RunWith(Suite.class) 
-@SuiteClasses({ 
-    CollectionTest.class, 
-    ExpectTest.class, 
-    IntegerTest.class, 
-    StringTest.class,
-    SubjectTest.class 
-    }) public class AllTests {
-
+public class DefaultSubject extends Subject<DefaultSubject, Object> {
+  public DefaultSubject(FailureStrategy failureStrategy, Object o) {
+    super(failureStrategy, o);
+  }  
 }

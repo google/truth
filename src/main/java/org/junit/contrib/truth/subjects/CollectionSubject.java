@@ -25,10 +25,41 @@ public class CollectionSubject<T> extends Subject<CollectionSubject<T>, Collecti
     super(failureStrategy, list);
   }
 
+  /**
+   * Attests that a Collection contains the provided object or fails.
+   */
   public And<CollectionSubject<T>> contains(T item) {
     if (!getSubject().contains(item)) {
       fail("contains", item);
     }
     return nextChain();
+  }
+  
+  /**
+   * Attests that a Collection contains at least one of the provided 
+   * objects or fails.
+   */
+  public CollectionSubject<T> containsAnyOf(T ... items) {
+    Collection<T> collection = getSubject();
+    for (T item : items) {
+      if (collection.contains(item)) {
+        return this;
+      }
+    }
+    fail("contains", (Object[])items);
+    return this; 
+  }
+  
+  /**
+   * Attests that a Collection contains every provided object or fails.
+   */
+  public CollectionSubject<T> containsAllOf(T ... items) {
+    Collection<T> collection = getSubject();
+    for (T item : items) {
+      if (!collection.contains(item)) {
+        fail("contains", item);
+      }
+    }
+    return this;
   }
 }

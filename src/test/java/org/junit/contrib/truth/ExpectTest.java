@@ -16,11 +16,15 @@
  */
 package org.junit.contrib.truth;
 
+import java.util.Arrays;
+
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.Statement;
 
 /**
  * Tests (and effectively sample code) for the Expect 
@@ -34,12 +38,14 @@ public class ExpectTest {
   @Rule public Expect EXPECT = Expect.create();
 
   @Test public void expectTrue() {
-    EXPECT.that(4).is(4);
+    EXPECT.that(4).isEqualTo(4);
   }
 
   @Ignore @Test public void expectFail() {
     EXPECT.that("abc").contains("x")
           .and().contains("y")
           .and().contains("z");
+    EXPECT.that(Arrays.asList(new String[]{"a", "b", "c"})).containsAnyOf("a", "c");
   }
+  
 }

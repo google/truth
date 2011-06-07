@@ -34,22 +34,22 @@ import org.junit.internal.AssumptionViolatedException;
 public class IntegerTest {
   @Rule public Expect EXPECT = Expect.create();
 
-  @Test public void addition() {
-    ASSERT.that(2 + 2).is(4).and().isBetween(3, 5);
+  @Test public void simpleEquality() {
+    ASSERT.that(2 + 2).isEqualTo(4).and().isBetween(3, 5);
   }
 
   @Test public void additionFail() {
     try {
-      ASSERT.that(2 + 2).is(5);
+      ASSERT.that(2 + 2).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).contains("Not true that <4> is <5>");
+      ASSERT.that(expected.getMessage()).contains("Not true that <4> is equal to <5>");
     }
   }
 
   @Test public void additionAssumptionFail() {
     try {
-      ASSUME.that(2 + 2).is(5);
+      ASSUME.that(2 + 2).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssumptionViolatedException expected) {}
   }
@@ -64,11 +64,15 @@ public class IntegerTest {
     try {
       ASSERT.that(1).isInclusivelyInRange(2, 4);
       fail("Should have thrown");
-    } catch (AssertionError e) {}
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <1> is inclusively in range <2> <4>");
+    }
     try {
       ASSERT.that(5).isInclusivelyInRange(2, 4);
       fail("Should have thrown");
-    } catch (AssertionError e) {}
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <5> is inclusively in range <2> <4>");
+    }
   }
 
   @Test public void inclusiveRangeContainmentInversionError() {
@@ -85,9 +89,11 @@ public class IntegerTest {
 
   @Test public void exclusiveRangeContainmentFailure() {
     try {
-      ASSERT.that(Integer.MAX_VALUE).isBetween(2, 5);
+      ASSERT.that(5).isBetween(2, 5);
       fail("Should have thrown");
-    } catch (AssertionError e) {}
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <5> is in between <2> <5>");
+    }
   }
 
   @Test public void exclusiveRangeContainmentInversionError() {
