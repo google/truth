@@ -37,13 +37,26 @@ public class IntegerTest {
   @Test public void simpleEquality() {
     ASSERT.that(2 + 2).isEqualTo(4);
   }
+  
+  @Test public void simpleInequality() {
+    ASSERT.that(2 + 2).isNotEqualTo(5);
+  }
 
-  @Test public void additionFail() {
+  @Test public void equalityFail() {
     try {
       ASSERT.that(2 + 2).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage()).contains("Not true that <4> is equal to <5>");
+    }
+  }
+  
+  @Test public void inequalityFail() {
+    try {
+      ASSERT.that(2 + 2).isNotEqualTo(4);
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage()).contains("Not true that <4> is not equal to <4>");
     }
   }
 
@@ -103,4 +116,37 @@ public class IntegerTest {
     } catch (IllegalArgumentException e) {}
   }
 
+  @Test public void equalityOfNulls() {
+    ASSERT.that((Integer)null).isEqualTo((Long)null);
+  }
+  
+  @Test public void equalityOfNullsFail() {
+    try {
+      ASSERT.that((Long)null).isEqualTo(5);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is equal to <5>");
+    }
+    try {
+      ASSERT.that(5).isEqualTo((Integer)null);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <5> is equal to <null>");
+    }
+  }
+
+  @Test public void inequalityOfNulls() {
+    ASSERT.that((Long)null).isNotEqualTo(4);
+    ASSERT.that(4).isNotEqualTo((Long)null);
+  }
+
+  @Test public void inequalityOfNullsFail() {
+    try {
+      ASSERT.that((Long)null).isNotEqualTo((Integer)null);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is not equal to <null>");
+    }
+  }
+  
 }

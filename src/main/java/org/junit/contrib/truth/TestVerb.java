@@ -19,7 +19,7 @@ package org.junit.contrib.truth;
 import java.util.Collection;
 
 import org.junit.contrib.truth.subjects.CollectionSubject;
-import org.junit.contrib.truth.subjects.IntSubject;
+import org.junit.contrib.truth.subjects.IntegerSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
 import org.junit.contrib.truth.subjects.Subject;
 
@@ -34,8 +34,12 @@ public class TestVerb {
     return new Subject<Object>(getFailureStrategy(), o);
   }
 
-  public IntSubject that(int i) {
-    return new IntSubject(getFailureStrategy(), i);
+  public IntegerSubject that(Long i) {
+    return new IntegerSubject(getFailureStrategy(), i);
+  }
+
+  public IntegerSubject that(Integer i) {
+    return new IntegerSubject(getFailureStrategy(), i);
   }
 
   public StringSubject that(String string) {

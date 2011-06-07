@@ -18,12 +18,16 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 
-public class IntSubject extends Subject<Integer> {
+public class IntegerSubject extends Subject<Long> {
 
   private static final String RANGE_BOUNDS_OUT_OF_ORDER_MSG = "Range inclusion parameter lower (%d) should not be greater than upper (%d)";
 
-  public IntSubject(FailureStrategy failureStrategy, int i) {
+  public IntegerSubject(FailureStrategy failureStrategy, Long i) {
     super(failureStrategy, i);
+  }
+  
+  public IntegerSubject(FailureStrategy failureStrategy, Integer i) {
+    super(failureStrategy, i == null ? null : new Long(i.longValue()));
   }
 
   /**
@@ -33,7 +37,7 @@ public class IntSubject extends Subject<Integer> {
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
-  public Subject<Integer> isInclusivelyInRange(int lower, int upper) {
+  public Subject<Long> isInclusivelyInRange(long lower, long upper) {
     if (lower > upper) {
       throw new IllegalArgumentException(String.format(
           RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
@@ -51,7 +55,7 @@ public class IntSubject extends Subject<Integer> {
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
-  public Subject<Integer> isBetween(int lower, int upper) {
+  public Subject<Long> isBetween(long lower, long upper) {
     if (lower > upper) {
       throw new IllegalArgumentException(String.format(
           RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
@@ -61,4 +65,42 @@ public class IntSubject extends Subject<Integer> {
     }
     return this;
   }
+
+  public Subject<Long> isEqualTo(Integer other) {
+    return isEqualTo((other == null) ? null : new Long(other.longValue()));
+  }
+  
+  public Subject<Long> isEqualTo(Long other) {
+    if (getSubject() == null) { 
+      if(other != null) {
+        fail("is equal to", other);
+      }
+    } else {
+      // Coerce to a long.
+      if (!new Long(getSubject().longValue()).equals(other)) {
+        fail("is equal to", other);
+      }
+    }
+    return this;
+  }
+
+  public Subject<Long> isNotEqualTo(Integer other) {
+    return isNotEqualTo((other == null) ? null : new Long(other.longValue()));
+  }
+
+  public Subject<Long> isNotEqualTo(Long other) {
+    if (getSubject() == null) { 
+      if(other == null) {
+        fail("is not equal to", other);
+      }
+    } else {
+      // Coerce to a long.
+      if (new Long(getSubject().longValue()).equals(other)) {
+        fail("is not equal to", other);
+      }
+    }
+    return this;
+  }
+  
+  
 }
