@@ -94,12 +94,9 @@ public class Subject<T> {
     failureStrategy.fail(message);
   }
   
-  protected void failWithoutSubject(String verb, Object... messageParts) {
+  protected void failWithoutSubject(String verb) {
     String message = "Not true that ";
     message += "the subject " + verb;
-    for (Object part : messageParts) {
-      message += " <" + part + ">";
-    }
     failureStrategy.fail(message);
   }
 }

@@ -47,7 +47,7 @@ public class CollectionSubject<T> extends Subject<Collection<T>> {
       }
     }
     fail("contains", (Object[])items);
-    return this;
+    return this; 
   }
   
   /**
