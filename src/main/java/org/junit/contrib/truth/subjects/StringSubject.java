@@ -18,6 +18,12 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 
+/**
+ * Propositions for String subjects
+ * 
+ * @author David Saff
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 public class StringSubject extends Subject<String> {
   public StringSubject(FailureStrategy failureStrategy, String string) {
     super(failureStrategy, string);

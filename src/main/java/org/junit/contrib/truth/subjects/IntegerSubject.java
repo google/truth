@@ -18,6 +18,12 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 
+/**
+ * Propositions for Integral numeric subjects
+ * 
+ * @author David Saff
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 public class IntegerSubject extends Subject<Long> {
 
   private static final String RANGE_BOUNDS_OUT_OF_ORDER_MSG = "Range inclusion parameter lower (%d) should not be greater than upper (%d)";
