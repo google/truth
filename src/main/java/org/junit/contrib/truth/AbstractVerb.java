@@ -24,17 +24,8 @@ public class AbstractVerb {
       Constructor<SF> c = factoryClass.getConstructor(FailureStrategy.class);
       DelegatedSubjectFactory<S, T> factory = c.newInstance(getFailureStrategy());
       return factory;
-    } catch (InstantiationException e) {
+    } catch (Exception e) {
       throw new RuntimeException("Could not instantiate "
-          + factoryClass.getSimpleName(), e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException("Could not obtain an accessible constructor "
-          + factoryClass.getSimpleName(), e);
-    } catch (InvocationTargetException e) {
-      throw new RuntimeException("Could not instantiate"
-          + factoryClass.getSimpleName(), e);
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException("Could not obtain a constructor for "
           + factoryClass.getSimpleName(), e);
     }
   }
