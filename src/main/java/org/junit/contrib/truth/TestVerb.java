@@ -16,22 +16,46 @@
  */
 package org.junit.contrib.truth;
 
+import java.util.Collection;
+
+import org.junit.contrib.truth.subjects.BooleanSubject;
+import org.junit.contrib.truth.subjects.CollectionSubject;
+import org.junit.contrib.truth.subjects.DefaultSubject;
+import org.junit.contrib.truth.subjects.IntegerSubject;
+import org.junit.contrib.truth.subjects.StringSubject;
+
 public class TestVerb {
-	private final FailureStrategy failureStrategy;
+  private final FailureStrategy failureStrategy;
 
-	public TestVerb(FailureStrategy failureStrategy) {
-		this.failureStrategy = failureStrategy;
-	}
+  public TestVerb(FailureStrategy failureStrategy) {
+    this.failureStrategy = failureStrategy;
+  }
+  
+  public DefaultSubject that(Object o) {
+    return new DefaultSubject(getFailureStrategy(), o);
+  }
 
-	public IntSubject that(int i) {
-		return new IntSubject(getFailureStrategy(), i);
-	}
+  public IntegerSubject that(Long i) {
+    return new IntegerSubject(getFailureStrategy(), i);
+  }
 
-	public StringSubject that(String string) {
-		return new StringSubject(getFailureStrategy(), string);
-	}
+  public IntegerSubject that(Integer i) {
+    return new IntegerSubject(getFailureStrategy(), i);
+  }
 
-	protected FailureStrategy getFailureStrategy() {
-		return failureStrategy;
-	}
+  public BooleanSubject that(Boolean i) {
+    return new BooleanSubject(getFailureStrategy(), i);
+  }
+
+  public StringSubject that(String string) {
+    return new StringSubject(getFailureStrategy(), string);
+  }
+
+  protected FailureStrategy getFailureStrategy() {
+    return failureStrategy;
+  }
+
+  public <T> CollectionSubject<T> that(Collection<T> list) {
+    return new CollectionSubject<T>(getFailureStrategy(), list);
+  }
 }

@@ -14,24 +14,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test.org.junit.contrib.truth;
+package org.junit.contrib.truth;
+
+import java.util.Arrays;
 
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.truth.Expect;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.Statement;
 
+/**
+ * Tests (and effectively sample code) for the Expect 
+ * verb (implemented as a rule)
+ * 
+ * @author David Saff
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 @RunWith(JUnit4.class)
 public class ExpectTest {
-	@Rule public Expect EXPECT = Expect.create();
-	
-	@Test public void expectTrue() {
-		EXPECT.that(4).is(4);
-	}
-	
-	@Ignore @Test public void expectFail() {
-		EXPECT.that("abc").contains("x").contains("y").contains("z");
-	}
+  @Rule public Expect EXPECT = Expect.create();
+
+  @Test public void expectTrue() {
+    EXPECT.that(4).isEqualTo(4);
+  }
+
+  @Ignore @Test public void expectFail() {
+    EXPECT.that("abc").contains("x")
+          .and().contains("y")
+          .and().contains("z");
+    EXPECT.that(Arrays.asList(new String[]{"a", "b", "c"})).containsAnyOf("a", "c");
+  }
+  
 }

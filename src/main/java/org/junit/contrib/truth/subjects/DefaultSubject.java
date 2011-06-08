@@ -14,14 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test.org.junit.contrib.truth;
+package org.junit.contrib.truth.subjects;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.contrib.truth.FailureStrategy;
 
-@RunWith(Suite.class)
-@SuiteClasses({FirstTest.class, ExtensionTest.class, ExpectTest.class})
-public class AllTests {
-	
+public class DefaultSubject extends Subject<DefaultSubject, Object> {
+  public DefaultSubject(FailureStrategy failureStrategy, Object o) {
+    super(failureStrategy, o);
+  }  
 }

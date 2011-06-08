@@ -14,22 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.junit.contrib.truth.extension;
+package org.junit.contrib.truth.extensiontest;
 
-import java.util.List;
+/**
+ * Sample custom type to test extension verbs.
+ * 
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
+public class MyType {
 
-import org.junit.contrib.truth.FailureStrategy;
-import org.junit.contrib.truth.Subject;
+  final int value;
 
-public class ListSubject<T> extends Subject<List<T>> {
-	public ListSubject(FailureStrategy failureStrategy, List<T> list) {
-		super(failureStrategy, list);
-	}
+  public MyType(int value) {
+    this.value = value;
+  }
 
-	public ListSubject<T> contains(Object item) {
-		if (! getSubject().contains(item)) {
-			fail("contains", item);
-		}
-		return this;
-	}
 }

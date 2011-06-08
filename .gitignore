@@ -1,6 +1,5 @@
 bin
 target
-truth*
 .project
 .classpath
 .settings

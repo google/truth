@@ -14,10 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.junit.contrib.truth;
+package org.junit.contrib.truth.extensiontest;
 
-public class IntSubject extends Subject<Integer> {
-	public IntSubject(FailureStrategy failureStrategy, int i) {
-		super(failureStrategy, i);
-	}
+import static org.junit.contrib.truth.extensiontest.ExtendedVerb.ASSERT;
+import org.junit.Test;
+
+/**
+ * A test that's more or less intended to show how one uses an extended verb.
+ * 
+ * @author David Saff
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
+public class ExtensionTest {
+  @Test public void customTypeCompares() {
+    ASSERT.that(new MyType(5)).matches(new MyType(2 + 3));
+  }
 }

@@ -14,8 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.junit.contrib.truth;
+package org.junit.contrib.truth.extensiontest;
 
-public interface FailureStrategy {
-  void fail(String message);
+
+import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.subjects.Subject;
+
+/**
+ * A simple example Subject to demonstrate extension.
+ * 
+ * @author Christian Gruber (christianedwardgruber@gmail.com)
+ */
+public class MySubject extends Subject<MySubject, MyType> {
+
+  public MySubject(FailureStrategy failureStrategy, MyType subject) {
+    super(failureStrategy, subject);
+  }
+
+  public And<MySubject> matches(MyType object) {
+    if (getSubject().value != object.value) {
+      fail("matches", getSubject(), object);
+    }
+    return nextChain();
+  }
+
 }

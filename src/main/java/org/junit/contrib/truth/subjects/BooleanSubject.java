@@ -14,19 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test.org.junit.contrib.truth;
+package org.junit.contrib.truth.subjects;
 
-import static org.junit.contrib.truth.extension.ExtendedVerb.ASSERT;
+import org.junit.contrib.truth.FailureStrategy;
 
-import java.util.Arrays;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+/**
+ * Propositions for boolean subjects
+ * 
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
+public class BooleanSubject extends Subject<BooleanSubject, Boolean> {
 
-@RunWith(JUnit4.class)
-public class ExtensionTest {	
-	@Test public void listContains() {
-		ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
-		ASSERT.that(4).is(4);
-	}
+  public BooleanSubject(FailureStrategy failureStrategy, Boolean subject) {
+    super(failureStrategy, subject);
+  }
+
+  public void isTrue() {
+    if (getSubject() == null || !getSubject()) {
+      fail("is true");
+    }
+  }
+
+  public void isFalse() {
+    if (getSubject() == null || getSubject()) {
+      fail("is false");
+    }
+  }
 }
