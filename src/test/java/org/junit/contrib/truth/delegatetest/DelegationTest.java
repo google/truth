@@ -39,9 +39,7 @@ public class DelegationTest {
     try {
       ASSERT._for(InaccessibleSubjectFactory.class).that(new Foo(5)).matches(new Foo(2 + 3));
     } catch (RuntimeException e) {
-      //ASSERT.that(e.getCause()).isInstanceOf(IllegalAccessException.class);
-      //ASSERT.that(e.getCause() instanceof IllegalAccessException).isTrue());
-      Assert.assertEquals(e.getCause().getClass(), NoSuchMethodException.class);
+      ASSERT.that(e.getCause()).isA(NoSuchMethodException.class);
     }
   }
 
