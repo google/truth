@@ -16,6 +16,7 @@
  */
 package org.junit.contrib.truth;
 
+import org.junit.contrib.truth.extensiontest.ExtensionTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -35,7 +36,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ExpectTest.class, 
     IntegerTest.class, 
     StringTest.class,
-    SubjectTest.class 
+    SubjectTest.class,
+    ExtensionTest.class
     }) public class AllTests {
 
 }
