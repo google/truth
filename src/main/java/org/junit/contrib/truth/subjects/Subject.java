@@ -18,8 +18,14 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 
+/**
+ * Propositions for arbitrarily typed subjects and for properties
+ * of Object
+ * 
+ * @author David Saff
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 public class Subject<S extends Subject<S,T>,T> {
-  
   private final FailureStrategy failureStrategy;
   private final T subject;
   private final And<S> chain;

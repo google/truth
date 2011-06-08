@@ -18,6 +18,7 @@ package org.junit.contrib.truth;
 
 import java.util.Collection;
 
+import org.junit.contrib.truth.subjects.BooleanSubject;
 import org.junit.contrib.truth.subjects.CollectionSubject;
 import org.junit.contrib.truth.subjects.DefaultSubject;
 import org.junit.contrib.truth.subjects.IntegerSubject;
@@ -40,6 +41,10 @@ public class TestVerb {
 
   public IntegerSubject that(Integer i) {
     return new IntegerSubject(getFailureStrategy(), i);
+  }
+
+  public BooleanSubject that(Boolean i) {
+    return new BooleanSubject(getFailureStrategy(), i);
   }
 
   public StringSubject that(String string) {
