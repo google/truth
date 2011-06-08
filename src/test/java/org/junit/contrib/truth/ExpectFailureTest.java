@@ -48,11 +48,11 @@ public class ExpectFailureTest {
   }
   
   @Test public void expectFailContainsAllOf() {
-    EXPECT.that(Arrays.asList(new String[]{"a", "b", "c"})).containsAllOf("a", "c", "d");
+    EXPECT.that(Arrays.asList("a", "b", "c")).containsAllOf("a", "c", "d");
   }
   
   @Test public void expectFailContainsAnyOf() {
-    EXPECT.that(Arrays.asList(new String[]{"a", "b", "c"})).containsAnyOf("z", "q");
+    EXPECT.that(Arrays.asList("a", "b", "c")).containsAnyOf("z", "q");
   }
   
   public static class FailingExpect extends Expect {

@@ -33,13 +33,13 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class SubjectTest {
   
-  private Object o = null;
-
   @Test public void identityOfNulls() {
+    Object o = null;
     ASSERT.that(o).is(null);
   }
 
   @Test public void identityOfNullsFailure() {
+    Object o = null;
     try {
       ASSERT.that(o).is("a");
       fail("Should have thrown.");
@@ -78,11 +78,12 @@ public class SubjectTest {
   }
 
   @Test public void isNull() {
+    Object o = null;
     ASSERT.that(o).isNull();
   }
 
   @Test public void isNullFail() {
-    o = new Object();
+    Object o = new Object();
     try {
       ASSERT.that(o).isNull();
       fail("Should have thrown.");
@@ -92,11 +93,12 @@ public class SubjectTest {
   }
   
   @Test public void isNotNull() {
-    o = new Object();
+    Object o = new Object();
     ASSERT.that(o).isNotNull();
   }
 
   @Test public void isNotNullFail() {
+    Object o = null;
     try {
       ASSERT.that(o).isNotNull();
       fail("Should have thrown.");
@@ -106,10 +108,12 @@ public class SubjectTest {
   }
   
   @Test public void equalityOfNulls() {
+    Object o = null;
     ASSERT.that(o).isEqualTo(null);
   }
 
   @Test public void equalityOfNullsFailure() {
+    Object o = null;
     try {
       ASSERT.that(o).isEqualTo("a");
       fail("Should have thrown.");
@@ -153,10 +157,12 @@ public class SubjectTest {
   }
 
   @Test public void inequalityOfNulls() {
+    Object o = null;
     ASSERT.that(o).isNotEqualTo("a");
   }
 
   @Test public void inequalityOfNullsFailure() {
+    Object o = null;
     try {
       ASSERT.that(o).isNotEqualTo(null);
       fail("Should have thrown.");
