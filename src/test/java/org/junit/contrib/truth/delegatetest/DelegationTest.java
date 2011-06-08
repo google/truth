@@ -17,16 +17,41 @@
 package org.junit.contrib.truth.delegatetest;
 
 import static org.junit.contrib.truth.Truth.ASSERT;
-import static org.junit.contrib.truth.delegatetest.FooSubject.FOO;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.contrib.truth.AbstractVerb.DelegatedSubjectFactory;
+import org.junit.contrib.truth.FailureStrategy;
 
 /**
  * A test that's more or less intended to show how one uses an extended verb.
  * 
  */
 public class DelegationTest {
+
+  private static final Class<FooSubjectFactory> FOO = FooSubjectFactory.class;
+
   @Test public void customTypeCompares() {
     ASSERT._for(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
+  }
+
+  @Test public void inaccessibleFactoryType() {
+    try {
+      ASSERT._for(InaccessibleSubjectFactory.class).that(new Foo(5)).matches(new Foo(2 + 3));
+    } catch (RuntimeException e) {
+      //ASSERT.that(e.getCause()).isInstanceOf(IllegalAccessException.class);
+      //ASSERT.that(e.getCause() instanceof IllegalAccessException).isTrue());
+      Assert.assertEquals(e.getCause().getClass(), NoSuchMethodException.class);
+    }
+  }
+
+  private class InaccessibleSubjectFactory extends DelegatedSubjectFactory<FooSubject, Foo> {
+
+    private InaccessibleSubjectFactory(FailureStrategy failureStrategy) {
+      super(failureStrategy);
+    }
+
+    @Override public FooSubject that(Foo that) { return null; }
+    
   }
 }

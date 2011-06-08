@@ -16,6 +16,8 @@
  */
 package org.junit.contrib.truth;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.junit.contrib.truth.subjects.CollectionSubject;
@@ -28,7 +30,7 @@ public class TestVerb extends AbstractVerb {
   public TestVerb(FailureStrategy failureStrategy) {
     super(failureStrategy);
   }
-  
+
   public DefaultSubject that(Object o) {
     return new DefaultSubject(getFailureStrategy(), o);
   }
@@ -48,4 +50,6 @@ public class TestVerb extends AbstractVerb {
   public <T> CollectionSubject<T> that(Collection<T> list) {
     return new CollectionSubject<T>(getFailureStrategy(), list);
   }
+  
+
 }
