@@ -24,6 +24,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.truth.Expect;
 import org.junit.internal.AssumptionViolatedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 /**
  * Tests for Integer Subjects.
@@ -31,6 +33,7 @@ import org.junit.internal.AssumptionViolatedException;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@RunWith(JUnit4.class)
 public class IntegerTest {
   @Rule public Expect EXPECT = Expect.create();
 
