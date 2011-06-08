@@ -204,4 +204,31 @@ public class SubjectTest {
       ASSERT.that(e.getMessage()).isEqualTo("Not true that <ab> is not equal to <ab>");
     }
   }
+
+  @Test public void isA() {
+    ASSERT.that("a").isA(String.class);
+  }
+
+  @Test public void isAFail() {
+    try {
+      ASSERT.that("a").isA(Long.class);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <a> is a <java.lang.Long>");
+    }
+  }
+
+  @Test public void isNotA() {
+    ASSERT.that("a").isNotA(Long.class);
+  }
+
+  @Test public void isNotAFail() {
+    try {
+      ASSERT.that("a").isNotA(String.class);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <a> is not a <java.lang.String>");
+    }
+  }
+
 }

@@ -103,7 +103,21 @@ public class Subject<S extends Subject<S,T>,T> {
     }
     return nextChain();
   }
-  
+
+  public And<S> isA(Class<?> clazz) {
+    if (!clazz.isInstance(getSubject())) {
+      fail("is a", clazz.getName());
+    }
+    return nextChain();
+  }
+
+  public And<S> isNotA(Class<?> clazz) {
+    if (clazz.isInstance(getSubject())) {
+      fail("is not a", clazz.getName());
+    }
+    return nextChain();
+  }
+
   protected T getSubject() {
     return subject;
   }
