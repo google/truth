@@ -38,10 +38,7 @@ public class IntegerSubject extends Subject<Long> {
    *           if the lower bound is greater than the upper.
    */
   public Subject<Long> isInclusivelyInRange(long lower, long upper) {
-    if (lower > upper) {
-      throw new IllegalArgumentException(String.format(
-          RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
-    }
+    ensureOrderedBoundaries(lower, upper);
     if (!(lower <= getSubject() && getSubject() <= upper)) {
       fail("is inclusively in range", lower, upper);
     }
@@ -56,14 +53,22 @@ public class IntegerSubject extends Subject<Long> {
    *           if the lower bound is greater than the upper.
    */
   public Subject<Long> isBetween(long lower, long upper) {
-    if (lower > upper) {
-      throw new IllegalArgumentException(String.format(
-          RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
-    }
+    ensureOrderedBoundaries(lower, upper);
     if (!(lower < getSubject() && getSubject() < upper)) {
       fail("is in between", lower, upper);
     }
     return this;
+  }
+
+  /**
+   * Guards against inverted lower/upper boundaries, and throws if 
+   * they are so inverted.
+   */
+  private void ensureOrderedBoundaries(long lower, long upper) {
+    if (lower > upper) {
+      throw new IllegalArgumentException(String.format(
+          RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
+    }
   }
 
   public Subject<Long> isEqualTo(Integer other) {
