@@ -25,19 +25,19 @@ public class AbstractVerb {
    * @returns A custom verb for the type returned by the SubjectFactory
    */
   public <S extends Subject<S,T>, T, SF extends SubjectFactory<S, T>> 
-      DelegatedSubjectFactory<S, T> _for(SF factory) {
-      return new DelegatedSubjectFactory<S, T>(getFailureStrategy(), factory);
+      DelegatedVerb<S, T> _for(SF factory) {
+      return new DelegatedVerb<S, T>(getFailureStrategy(), factory);
   }
   
   /**
    * A special Verb implementation which wraps a SubjectFactory
    */
-  public static class DelegatedSubjectFactory<S extends Subject<S,T>, T>
+  public static class DelegatedVerb<S extends Subject<S,T>, T>
       extends AbstractVerb {
     
     private final SubjectFactory<S, T> factory;
 
-    public DelegatedSubjectFactory(FailureStrategy fs, SubjectFactory<S, T> factory) {
+    public DelegatedVerb(FailureStrategy fs, SubjectFactory<S, T> factory) {
       super(fs);
       this.factory = factory;
     }
