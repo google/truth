@@ -36,7 +36,7 @@ public class DelegationTest {
       };
 
   @Test public void customTypeCompares() {
-    ASSERT._for(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
+    ASSERT.about(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 
 }

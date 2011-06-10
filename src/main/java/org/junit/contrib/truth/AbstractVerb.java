@@ -25,7 +25,7 @@ public class AbstractVerb {
    * @returns A custom verb for the type returned by the SubjectFactory
    */
   public <S extends Subject<S,T>, T, SF extends SubjectFactory<S, T>> 
-      DelegatedVerb<S, T> _for(SF factory) {
+      DelegatedVerb<S, T> about(SF factory) {
       return new DelegatedVerb<S, T>(getFailureStrategy(), factory);
   }
   
