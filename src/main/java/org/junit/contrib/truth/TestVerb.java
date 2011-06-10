@@ -16,8 +16,6 @@
  */
 package org.junit.contrib.truth;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.junit.contrib.truth.subjects.BooleanSubject;
