@@ -18,7 +18,6 @@ package org.junit.contrib.truth.delegatetest;
 
 import static org.junit.contrib.truth.Truth.ASSERT;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.contrib.truth.AbstractVerb.DelegatedSubjectFactory;
 import org.junit.contrib.truth.FailureStrategy;
