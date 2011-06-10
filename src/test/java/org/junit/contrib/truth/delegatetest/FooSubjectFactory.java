@@ -27,7 +27,7 @@ import org.junit.contrib.truth.subjects.SubjectFactory;
  */
 public class FooSubjectFactory implements SubjectFactory<FooSubject, Foo> {
 
-  @Override public FooSubject that(FailureStrategy fs, Foo that) {
+  @Override public FooSubject getSubject(FailureStrategy fs, Foo that) {
     return new FooSubject(fs, that);
   }
 

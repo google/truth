@@ -43,7 +43,7 @@ public class AbstractVerb {
     }
 
     public S that(T that) {
-      return factory.that(getFailureStrategy(), that);
+      return factory.getSubject(getFailureStrategy(), that);
     }
   }
 }

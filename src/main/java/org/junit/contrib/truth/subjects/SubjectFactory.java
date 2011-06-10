@@ -26,6 +26,6 @@ import org.junit.contrib.truth.FailureStrategy;
  */
 public interface SubjectFactory<S extends Subject<S,T>, T> {
   
-  S that(FailureStrategy fs, T that);
+  S getSubject(FailureStrategy fs, T that);
 }
 
