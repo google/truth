@@ -14,27 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.junit.contrib.truth.delegatetest;
+package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
-import org.junit.contrib.truth.subjects.Subject;
 
 /**
- * A simple example Subject to demonstrate extension.
+ * A custom subject factory which will return a FooSubject (which
+ * is a Subject<Foo>).
  * 
- * @author Christian Gruber (christianedwardgruber@gmail.com)
+ * @author Christian Gruber (cgruber@israfil.net)
  */
-public class FooSubject extends Subject<FooSubject, Foo> {
-
-  public FooSubject(FailureStrategy failureStrategy, Foo subject) {
-    super(failureStrategy, subject);
-  }
-
-  public And<FooSubject> matches(Foo object) {
-    if (getSubject().value != object.value) {
-      fail("matches", getSubject(), object);
-    }
-    return nextChain();
-  }
-
+public interface SubjectFactory<S extends Subject<S,T>, T> {
+  
+  S that(FailureStrategy fs, T that);
 }
+

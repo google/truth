@@ -1,9 +1,7 @@
 package org.junit.contrib.truth;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.contrib.truth.subjects.Subject;
+import org.junit.contrib.truth.subjects.SubjectFactory;
 
 
 public class AbstractVerb {
@@ -18,25 +16,34 @@ public class AbstractVerb {
     return failureStrategy;
   }
 
-  public <S extends Subject<S,T>, T, SF extends DelegatedSubjectFactory<S, T>> 
-      DelegatedSubjectFactory<S, T> _for(Class<SF> factoryClass) {
-    try {
-      Constructor<SF> c = factoryClass.getConstructor(FailureStrategy.class);
-      DelegatedSubjectFactory<S, T> factory = c.newInstance(getFailureStrategy());
-      return factory;
-    } catch (Exception e) {
-      throw new RuntimeException("Could not instantiate "
-          + factoryClass.getSimpleName(), e);
-    }
+  /**
+   * The recommended method of extension of Truth to new types, which is 
+   * documented in {@link DelegationTest }.  
+   * 
+   * @see DelegationTest
+   * @param factory a SubjectFactory<S, T> implementation
+   * @returns A custom verb for the type returned by the SubjectFactory
+   */
+  public <S extends Subject<S,T>, T, SF extends SubjectFactory<S, T>> 
+      DelegatedSubjectFactory<S, T> _for(SF factory) {
+      return new DelegatedSubjectFactory<S, T>(getFailureStrategy(), factory);
   }
   
-  public static abstract class DelegatedSubjectFactory<S extends Subject<S,T>, T>
+  /**
+   * A special Verb implementation which wraps a SubjectFactory
+   */
+  public static class DelegatedSubjectFactory<S extends Subject<S,T>, T>
       extends AbstractVerb {
+    
+    private final SubjectFactory<S, T> factory;
 
-    public DelegatedSubjectFactory(FailureStrategy failureStrategy) {
-      super(failureStrategy);
+    public DelegatedSubjectFactory(FailureStrategy fs, SubjectFactory<S, T> factory) {
+      super(fs);
+      this.factory = factory;
     }
 
-    public abstract S that(T that);
+    public S that(T that) {
+      return factory.that(getFailureStrategy(), that);
+    }
   }
 }
