@@ -19,6 +19,8 @@ package org.junit.contrib.truth.delegatetest;
 import static org.junit.contrib.truth.Truth.ASSERT;
 
 import org.junit.Test;
+import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.subjects.SubjectFactory;
 
 /**
  * A test that's more or less intended to show how one uses an extended verb.
@@ -26,7 +28,12 @@ import org.junit.Test;
  */
 public class DelegationTest {
 
-  private static final FooSubjectFactory FOO = new FooSubjectFactory();
+  private static final SubjectFactory<FooSubject, Foo> FOO = 
+      new SubjectFactory<FooSubject, Foo>() {
+        @Override public FooSubject getSubject(FailureStrategy fs, Foo that) {
+          return new FooSubject(fs, that);
+        }
+      };
 
   @Test public void customTypeCompares() {
     ASSERT._for(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
