@@ -30,8 +30,8 @@ public class DelegationTest {
 
   private static final SubjectFactory<FooSubject, Foo> FOO = 
       new SubjectFactory<FooSubject, Foo>() {
-        @Override public FooSubject getSubject(FailureStrategy fs, Foo that) {
-          return new FooSubject(fs, that);
+        @Override public FooSubject getSubject(FailureStrategy fs, Foo target) {
+          return new FooSubject(fs, target);
         }
       };
 

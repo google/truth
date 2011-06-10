@@ -32,28 +32,28 @@ public class TestVerb extends AbstractVerb {
     super(failureStrategy);
   }
 
-  public DefaultSubject that(Object o) {
-    return new DefaultSubject(getFailureStrategy(), o);
+  public DefaultSubject that(Object target) {
+    return new DefaultSubject(getFailureStrategy(), target);
   }
 
-  public IntegerSubject that(Long i) {
-    return new IntegerSubject(getFailureStrategy(), i);
+  public IntegerSubject that(Long target) {
+    return new IntegerSubject(getFailureStrategy(), target);
   }
 
-  public IntegerSubject that(Integer i) {
-    return new IntegerSubject(getFailureStrategy(), i);
+  public IntegerSubject that(Integer target) {
+    return new IntegerSubject(getFailureStrategy(), target);
   }
 
-  public BooleanSubject that(Boolean i) {
-    return new BooleanSubject(getFailureStrategy(), i);
+  public BooleanSubject that(Boolean target) {
+    return new BooleanSubject(getFailureStrategy(), target);
   }
 
-  public StringSubject that(String string) {
-    return new StringSubject(getFailureStrategy(), string);
+  public StringSubject that(String target) {
+    return new StringSubject(getFailureStrategy(), target);
   }
 
-  public <T> CollectionSubject<T> that(Collection<T> list) {
-    return new CollectionSubject<T>(getFailureStrategy(), list);
+  public <T> CollectionSubject<T> that(Collection<T> target) {
+    return new CollectionSubject<T>(getFailureStrategy(), target);
   }
   
 
