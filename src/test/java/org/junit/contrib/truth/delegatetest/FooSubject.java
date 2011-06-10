@@ -18,6 +18,7 @@ package org.junit.contrib.truth.delegatetest;
 
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.subjects.Subject;
+import org.junit.contrib.truth.subjects.SubjectFactory;
 
 /**
  * A simple example Subject to demonstrate extension.
@@ -25,6 +26,13 @@ import org.junit.contrib.truth.subjects.Subject;
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
 public class FooSubject extends Subject<FooSubject, Foo> {
+
+  public static final SubjectFactory<FooSubject, Foo> FOO = 
+  new SubjectFactory<FooSubject, Foo>() {
+    @Override public FooSubject getSubject(FailureStrategy fs, Foo target) {
+      return new FooSubject(fs, target);
+    }
+  };
 
   public FooSubject(FailureStrategy failureStrategy, Foo subject) {
     super(failureStrategy, subject);
