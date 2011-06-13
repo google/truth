@@ -40,8 +40,9 @@ import org.junit.runners.Suite.SuiteClasses;
     IntegerTest.class, 
     StringTest.class,
     SubjectTest.class,
-    ExtensionTest.class,
-    DelegationTest.class
+    // Extensions-tests.
+    DelegationTest.class,
+    ExtensionTest.class
     }) public class AllTests {
 
 }
