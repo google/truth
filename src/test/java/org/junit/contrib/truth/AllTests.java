@@ -16,6 +16,7 @@
  */
 package org.junit.contrib.truth;
 
+import org.junit.contrib.truth.delegatetest.DelegationTest;
 import org.junit.contrib.truth.extensiontest.ExtensionTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -32,11 +33,15 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class) 
 @SuiteClasses({ 
+    BooleanTest.class, 
     CollectionTest.class, 
+    ExpectFailureTest.class, 
     ExpectTest.class, 
     IntegerTest.class, 
     StringTest.class,
     SubjectTest.class,
+    // Extensions-tests.
+    DelegationTest.class,
     ExtensionTest.class
     }) public class AllTests {
 

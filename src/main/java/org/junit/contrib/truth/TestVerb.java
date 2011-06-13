@@ -24,38 +24,35 @@ import org.junit.contrib.truth.subjects.DefaultSubject;
 import org.junit.contrib.truth.subjects.IntegerSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
 
-public class TestVerb {
-  private final FailureStrategy failureStrategy;
-
+public class TestVerb extends AbstractVerb {
+  
   public TestVerb(FailureStrategy failureStrategy) {
-    this.failureStrategy = failureStrategy;
+    super(failureStrategy);
+  }
+
+  public DefaultSubject that(Object target) {
+    return new DefaultSubject(getFailureStrategy(), target);
+  }
+
+  public IntegerSubject that(Long target) {
+    return new IntegerSubject(getFailureStrategy(), target);
+  }
+
+  public IntegerSubject that(Integer target) {
+    return new IntegerSubject(getFailureStrategy(), target);
+  }
+
+  public BooleanSubject that(Boolean target) {
+    return new BooleanSubject(getFailureStrategy(), target);
+  }
+
+  public StringSubject that(String target) {
+    return new StringSubject(getFailureStrategy(), target);
+  }
+
+  public <T> CollectionSubject<T> that(Collection<T> target) {
+    return new CollectionSubject<T>(getFailureStrategy(), target);
   }
   
-  public DefaultSubject that(Object o) {
-    return new DefaultSubject(getFailureStrategy(), o);
-  }
 
-  public IntegerSubject that(Long i) {
-    return new IntegerSubject(getFailureStrategy(), i);
-  }
-
-  public IntegerSubject that(Integer i) {
-    return new IntegerSubject(getFailureStrategy(), i);
-  }
-
-  public BooleanSubject that(Boolean i) {
-    return new BooleanSubject(getFailureStrategy(), i);
-  }
-
-  public StringSubject that(String string) {
-    return new StringSubject(getFailureStrategy(), string);
-  }
-
-  protected FailureStrategy getFailureStrategy() {
-    return failureStrategy;
-  }
-
-  public <T> CollectionSubject<T> that(Collection<T> list) {
-    return new CollectionSubject<T>(getFailureStrategy(), list);
-  }
 }
