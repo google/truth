@@ -43,6 +43,10 @@ public class CollectionTest {
     ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).and().contains(2);
   }
 
+  @Test public void listContainsWithNull() {
+    ASSERT.that(Arrays.asList(1, null, 3)).contains(null);
+  }
+
   @Test public void listContainsWith2KindsOfChaining() {
     List<Integer> foo = Arrays.asList(1, 2, 3);
     List<Integer> bar = foo;
@@ -70,6 +74,10 @@ public class CollectionTest {
     ASSERT.that(Arrays.asList(1, 2, 3)).containsAnyOf(1, 5);
   }
 
+  @Test public void listContainsAnyOfWithNull() {
+    ASSERT.that(Arrays.asList(1, null, 3)).containsAnyOf(null, 5);
+  }
+
   @Test public void listContainsAnyOfFailure() {
     try {
       ASSERT.that(Arrays.asList(1, 2, 3)).containsAnyOf(5, 6, 0);
@@ -85,6 +93,10 @@ public class CollectionTest {
 
   @Test public void listContainsAllOfWithDuplicates() {
     ASSERT.that(Arrays.asList(1, 2, 2, 2, 3)).containsAllOf(2, 2);
+  }
+
+  @Test public void listContainsAllOfWithNull() {
+    ASSERT.that(Arrays.asList(1, null, 3)).containsAllOf(3, null);
   }
 
   @Test public void listContainsAllOfFailure() {
@@ -104,6 +116,16 @@ public class CollectionTest {
       ASSERT.that(e.getMessage()).contains("Not true that")
           .and().contains("<3 copies of 2>")
           .and().contains("<4>");
+    }
+  }
+
+  @Test public void listContainsAllOfWithNullFailure() {
+    try {
+      ASSERT.that(Arrays.asList(1, null, 3)).containsAllOf(1, null, null, 3);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that")
+          .and().contains("<2 copies of null>");
     }
   }
 }
