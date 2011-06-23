@@ -21,7 +21,9 @@ import org.junit.contrib.truth.FailureStrategy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CollectionSubject<T> extends Subject<CollectionSubject<T>, Collection<T>> {
   public CollectionSubject(FailureStrategy failureStrategy, Collection<T> list) {
@@ -66,12 +68,12 @@ public class CollectionSubject<T> extends Subject<CollectionSubject<T>, Collecti
     }
     if (!required.isEmpty()) {
       // Try and make a useful message when dealing with duplicates.
-      Object[] params = required.toArray();
-      for (int n = 0; n < required.size(); n++) {
-        int count = countOf(required.get(n), items);
-        if (count > 1) {
-          params[n] = count + " copies of " + params[n];
-        }
+      Set<T> missing = new HashSet<T>(required);
+      Object[] params = new Object[missing.size()];
+      int n = 0;
+      for (T item : missing) {
+        int count = countOf(item, items);
+        params[n++] = (count > 1) ? count + " copies of " + item : item;
       }
       fail("contains", params);
     }

@@ -119,6 +119,18 @@ public class CollectionTest {
     }
   }
 
+  // Slightly subtle test to ensure that if multiple equal elements are found
+  // to be missing we only emit a single clause in the output message.
+  @Test public void listContainsAllOfWithDuplicateMissingElements() {
+    try {
+      ASSERT.that(Arrays.asList(1, 2)).containsAllOf(4, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that")
+          .and().endsWith("contains <2 copies of 4>");
+    }
+  }
+
   @Test public void listContainsAllOfWithNullFailure() {
     try {
       ASSERT.that(Arrays.asList(1, null, 3)).containsAllOf(1, null, null, 3);
