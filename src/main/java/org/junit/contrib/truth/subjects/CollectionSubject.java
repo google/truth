@@ -25,15 +25,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CollectionSubject<T> extends Subject<CollectionSubject<T>, Collection<T>> {
-  public CollectionSubject(FailureStrategy failureStrategy, Collection<T> list) {
+public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends Subject<S, C> {
+
+  @SuppressWarnings("unchecked")
+  public static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> create(
+      FailureStrategy failureStrategy, Collection<T> list) {
+    return new CollectionSubject(failureStrategy, list);
+  }
+
+  // TODO: Arguably this should even be package private
+  protected CollectionSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }
 
   /**
    * Attests that a Collection contains the provided object or fails.
    */
-  public And<CollectionSubject<T>> contains(T item) {
+  public And<S> contains(T item) {
     if (!getSubject().contains(item)) {
       fail("contains", item);
     }
@@ -44,22 +52,22 @@ public class CollectionSubject<T> extends Subject<CollectionSubject<T>, Collecti
    * Attests that a Collection contains at least one of the provided
    * objects or fails.
    */
-  public CollectionSubject<T> containsAnyOf(T ... items) {
+  public And<S> containsAnyOf(T ... items) {
     Collection<T> collection = getSubject();
     for (T item : items) {
       if (collection.contains(item)) {
-        return this;
+        return nextChain();
       }
     }
     fail("contains", (Object[])items);
-    return this;
+    return nextChain();
   }
 
   /**
    * Attests that a Collection contains all of the provided objects or fails.
    * This copes with duplicates in both the Collection and the parameters.
    */
-  public CollectionSubject<T> containsAllOf(T ... items) {
+  public And<S> containsAllOf(T ... items) {
     Collection<T> collection = getSubject();
     // Arrays.asList() does not support remove() so we need a mutable copy.
     List<T> required = new ArrayList<T>(Arrays.asList(items));
@@ -77,7 +85,7 @@ public class CollectionSubject<T> extends Subject<CollectionSubject<T>, Collecti
       }
       fail("contains", params);
     }
-    return this;
+    return nextChain();
   }
 
   private static <T> int countOf(T t, T... items) {
