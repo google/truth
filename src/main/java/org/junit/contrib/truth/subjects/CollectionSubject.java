@@ -33,7 +33,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     return new CollectionSubject(failureStrategy, list);
   }
 
-  // TODO(dbeaumont): Arguably this should even be package private
+  // TODO: Arguably this should even be package private
   protected CollectionSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }

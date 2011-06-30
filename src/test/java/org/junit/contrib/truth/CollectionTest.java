@@ -19,12 +19,12 @@ package org.junit.contrib.truth;
 import static org.junit.Assert.fail;
 import static org.junit.contrib.truth.Truth.ASSERT;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Tests for Collection Subjects.
@@ -36,33 +36,33 @@ import org.junit.runners.JUnit4;
 public class CollectionTest {
 
   @Test public void listContains() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
+    ASSERT.that(collection(1, 2, 3)).contains(1);
   }
 
   @Test public void listContainsWithChaining() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).and().contains(2);
+    ASSERT.that(collection(1, 2, 3)).contains(1).and().contains(2);
   }
 
   @Test public void listContainsWithNull() {
-    ASSERT.that(Arrays.asList(1, null, 3)).contains(null);
+    ASSERT.that(collection(1, null, 3)).contains(null);
   }
 
   @Test public void listContainsWith2KindsOfChaining() {
-    List<Integer> foo = Arrays.asList(1, 2, 3);
-    List<Integer> bar = foo;
+    Collection<Integer> foo = collection(1, 2, 3);
+    Collection<Integer> bar = foo;
     ASSERT.that(foo).is(bar).and().contains(1).and().contains(2);
   }
 
   @Test public void listContainsFailureWithChaining() {
     try {
-      ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).and().contains(5);
+      ASSERT.that(collection(1, 2, 3)).contains(1).and().contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {}
   }
 
   @Test public void listContainsFailure() {
     try {
-      ASSERT.that(Arrays.asList(1, 2, 3)).contains(5);
+      ASSERT.that(collection(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
@@ -70,16 +70,16 @@ public class CollectionTest {
   }
 
   @Test public void listContainsAnyOf() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).containsAnyOf(1, 5);
+    ASSERT.that(collection(1, 2, 3)).containsAnyOf(1, 5);
   }
 
   @Test public void listContainsAnyOfWithNull() {
-    ASSERT.that(Arrays.asList(1, null, 3)).containsAnyOf(null, 5);
+    ASSERT.that(collection(1, null, 3)).containsAnyOf(null, 5);
   }
 
   @Test public void listContainsAnyOfFailure() {
     try {
-      ASSERT.that(Arrays.asList(1, 2, 3)).containsAnyOf(5, 6, 0);
+      ASSERT.that(collection(1, 2, 3)).containsAnyOf(5, 6, 0);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
@@ -87,20 +87,20 @@ public class CollectionTest {
   }
 
   @Test public void listContainsAllOf() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).containsAllOf(1, 2);
+    ASSERT.that(collection(1, 2, 3)).containsAllOf(1, 2);
   }
 
   @Test public void listContainsAllOfWithDuplicates() {
-    ASSERT.that(Arrays.asList(1, 2, 2, 2, 3)).containsAllOf(2, 2);
+    ASSERT.that(collection(1, 2, 2, 2, 3)).containsAllOf(2, 2);
   }
 
   @Test public void listContainsAllOfWithNull() {
-    ASSERT.that(Arrays.asList(1, null, 3)).containsAllOf(3, null);
+    ASSERT.that(collection(1, null, 3)).containsAllOf(3, null);
   }
 
   @Test public void listContainsAllOfFailure() {
     try {
-      ASSERT.that(Arrays.asList(1, 2, 3)).containsAllOf(1, 2, 4);
+      ASSERT.that(collection(1, 2, 3)).containsAllOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that").and().contains("<4>");
@@ -109,7 +109,7 @@ public class CollectionTest {
 
   @Test public void listContainsAllOfWithDuplicatesFailure() {
     try {
-      ASSERT.that(Arrays.asList(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
+      ASSERT.that(collection(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that")
@@ -124,7 +124,7 @@ public class CollectionTest {
    */
   @Test public void listContainsAllOfWithDuplicateMissingElements() {
     try {
-      ASSERT.that(Arrays.asList(1, 2)).containsAllOf(4, 4, 4);
+      ASSERT.that(collection(1, 2)).containsAllOf(4, 4, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that")
@@ -134,11 +134,19 @@ public class CollectionTest {
 
   @Test public void listContainsAllOfWithNullFailure() {
     try {
-      ASSERT.that(Arrays.asList(1, null, 3)).containsAllOf(1, null, null, 3);
+      ASSERT.that(collection(1, null, 3)).containsAllOf(1, null, null, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that")
           .and().contains("<2 copies of null>");
     }
+  }
+
+  /**
+   * Helper that returns a general Collection rather than a List.
+   * This ensures that we test CollectionSubject (rather than ListSubject).
+   */
+  private static <T> Collection<T> collection(T... items) {
+    return Arrays.asList(items);
   }
 }
