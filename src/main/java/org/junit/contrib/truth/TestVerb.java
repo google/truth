@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,7 @@ import org.junit.contrib.truth.subjects.IntegerSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
 
 public class TestVerb extends AbstractVerb {
-  
+
   public TestVerb(FailureStrategy failureStrategy) {
     super(failureStrategy);
   }
@@ -50,9 +50,7 @@ public class TestVerb extends AbstractVerb {
     return new StringSubject(getFailureStrategy(), target);
   }
 
-  public <T> CollectionSubject<T> that(Collection<T> target) {
-    return new CollectionSubject<T>(getFailureStrategy(), target);
+  public <T> CollectionSubject<? extends CollectionSubject<?, T>, T> that(Collection<T> target) {
+    return CollectionSubject.create(getFailureStrategy(), target);
   }
-  
-
 }

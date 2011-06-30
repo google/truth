@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,13 +26,13 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for generic Subject behaviour.
- * 
+ *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
 public class SubjectTest {
-  
+
   @Test public void identityOfNulls() {
     Object o = null;
     ASSERT.that(o).is(null);
@@ -64,13 +64,13 @@ public class SubjectTest {
       ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is <Object 2>");
     }
   }
-  
+
   // Ignore this until we fix identity
   @Ignore @Test public void identityOfObjectFailureWithComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('b').toString();
     try {
-      ASSERT.that((Object)a).is(b);
+      ASSERT.that(a).is(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is <a>");
@@ -91,7 +91,7 @@ public class SubjectTest {
       ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is null");
     }
   }
-  
+
   @Test public void isNotNull() {
     Object o = new Object();
     ASSERT.that(o).isNotNull();
@@ -106,7 +106,7 @@ public class SubjectTest {
       ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is not null");
     }
   }
-  
+
   @Test public void equalityOfNulls() {
     Object o = null;
     ASSERT.that(o).isEqualTo(null);
@@ -138,11 +138,11 @@ public class SubjectTest {
       ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
     }
   }
-  
+
   @Test public void equalityOfComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('b').toString();
-    ASSERT.that(a).isEqualTo(b); 
+    ASSERT.that(a).isEqualTo(b);
   }
 
   @Test public void equalityOfComparableObjectsFailure() {
@@ -187,11 +187,11 @@ public class SubjectTest {
       ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is not equal to <Object 1>");
     }
   }
-  
+
   @Test public void inequalityOfComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('a').toString();
-    ASSERT.that(a).isNotEqualTo(b); 
+    ASSERT.that(a).isNotEqualTo(b);
   }
 
   @Test public void inequalityOfComparableObjectsFailure() {
