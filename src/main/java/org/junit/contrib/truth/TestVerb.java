@@ -16,13 +16,15 @@
  */
 package org.junit.contrib.truth;
 
-import java.util.Collection;
-
 import org.junit.contrib.truth.subjects.BooleanSubject;
 import org.junit.contrib.truth.subjects.CollectionSubject;
 import org.junit.contrib.truth.subjects.DefaultSubject;
 import org.junit.contrib.truth.subjects.IntegerSubject;
+import org.junit.contrib.truth.subjects.ListSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
+
+import java.util.Collection;
+import java.util.List;
 
 public class TestVerb extends AbstractVerb {
 
@@ -50,7 +52,11 @@ public class TestVerb extends AbstractVerb {
     return new StringSubject(getFailureStrategy(), target);
   }
 
-  public <T> CollectionSubject<? extends CollectionSubject<?, T>, T> that(Collection<T> target) {
+  public <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> that(Collection<T> target) {
     return CollectionSubject.create(getFailureStrategy(), target);
+  }
+
+  public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> that(List<T> target) {
+    return ListSubject.create(getFailureStrategy(), target);
   }
 }

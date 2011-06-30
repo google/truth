@@ -25,15 +25,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CollectionSubject<S extends CollectionSubject<S, T>, T> extends Subject<S, Collection<T>> {
+public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends Subject<S, C> {
 
   @SuppressWarnings("unchecked")
-  public static <T> CollectionSubject<? extends CollectionSubject<?, T>, T> create(
+  public static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> create(
       FailureStrategy failureStrategy, Collection<T> list) {
     return new CollectionSubject(failureStrategy, list);
   }
 
-  protected CollectionSubject(FailureStrategy failureStrategy, Collection<T> list) {
+  // TODO(dbeaumont): Arguably this should even be package private
+  protected CollectionSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }
 

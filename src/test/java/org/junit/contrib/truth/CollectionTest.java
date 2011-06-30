@@ -53,7 +53,6 @@ public class CollectionTest {
     ASSERT.that(foo).is(bar).and().contains(1).and().contains(2);
   }
 
-
   @Test public void listContainsFailureWithChaining() {
     try {
       ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).and().contains(5);
