@@ -29,7 +29,6 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
     return new ListSubject(failureStrategy, list);
   }
 
-  // TODO: Arguably this should even be package private
   protected ListSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }
@@ -56,59 +55,81 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
       }
       list = list.subList(first + 1, list.size());
     }
-    fail("containsSequence", sequence);
+    fail("contains sequence", sequence);
     return nextChain();
   }
 
   /**
+   * Attests that a List is strictly ordered according to the natural ordering of its elements.
+   * Null elements are not permitted.
+   * 
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
+   * @throws NullPointerException if any element is null.
    */
   public And<S> isOrdered() {
     return pairwiseCheck(new PairwiseChecker<T>() {
       @SuppressWarnings("unchecked")
       @Override public void check(T prev, T next) {
         if (((Comparable<T>) prev).compareTo(next) >= 0) {
-          fail("isOrdered", prev, next);
+          fail("is strictly ordered", prev, next);
         }
       }
     });
   }
 
   /**
+   * Attests that a List is partially ordered according to the natural ordering of its elements.
+   * Null elements are not permitted.
+   * 
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
+   * @throws NullPointerException if any element is null.
    */
   public And<S> isPartiallyOrdered() {
     return pairwiseCheck(new PairwiseChecker<T>() {
       @SuppressWarnings("unchecked")
       @Override public void check(T prev, T next) {
         if (((Comparable<T>) prev).compareTo(next) > 0) {
-          fail("isPartiallyOrdered", prev, next);
+          fail("is partially ordered", prev, next);
         }
       }
     });
   }
 
+  /**
+   * Attests that a List is strictly ordered according to the given comparator.
+   * Null elements are not permitted.
+   * 
+   * @throws ClassCastException if any pair of elements is not mutually Comparable.
+   * @throws NullPointerException if any element is null.
+   */
   public And<S> isOrdered(final Comparator<T> comparator) {
     return pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) >= 0) {
-          fail("isOrdered", prev, next);
+          fail("is strictly ordered", prev, next);
         }
       }
     });
   }
 
+  /**
+   * Attests that a List is partially ordered according to the given comparator.
+   * Null elements are not permitted.
+   * 
+   * @throws ClassCastException if any pair of elements is not mutually Comparable.
+   * @throws NullPointerException if any element is null.
+   */
   public And<S> isPartiallyOrdered(final Comparator<T> comparator) {
     return pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) > 0) {
-          fail("isPartiallyOrdered", prev, next);
+          fail("is partially ordered", prev, next);
         }
       }
     });
   }
 
-  public And<S> pairwiseCheck(PairwiseChecker<T> checker) {
+  private And<S> pairwiseCheck(PairwiseChecker<T> checker) {
     List<T> list = getSubject();
     if (list.size() > 1) {
       T prev = list.get(0);
