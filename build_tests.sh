@@ -1,0 +1,3 @@
+# To run all tests, just...
+
+mvn test
