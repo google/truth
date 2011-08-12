@@ -1,24 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.junit.contrib</groupId>
-  <artifactId>truth</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <dependencies>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.8.2</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
-  </dependencies>
-  <repositories>
-    <repository>
-      <id>cgruber-junit-snapshot-repo</id>
-      <name>JUnit Snapshot Repo</name>
-      <url>https://github.com/cgruber/junit/raw/maven-snapshot/repo/</url>
-    </repository>
-  </repositories>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.junit.contrib</groupId>
+	<artifactId>truth</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+		</dependency>
+	</dependencies>
+	<developers>
+		<developer>
+			<id>cgruber</id>
+      <name>Christian Gruber</name>
+      <email>christianedwardgruber@gmail.com</email>
+      <url>http://www.geekinasuit.com/</url>
+      <roles>
+        <role>creator</role>
+        <role>developer</role>
+      </roles>
+      <timezone>-5</timezone>
+    </developer>
+    <developer>
+      <id>dsaff</id>
+      <name>David Saff</name>
+      <roles>
+        <role>creator</role>
+        <role>developer</role>
+      </roles>
+      <timezone>-5</timezone>
+    </developer>
+    <developer>
+      <id>hagbard</id>
+      <name>David B</name>
+      <roles>
+        <role>creator</role>
+        <role>developer</role>
+      </roles>
+      <timezone>-0</timezone>
+    </developer>
+	</developers>
+	<url>https://github.com/truth0/truth/wiki</url>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<distributionManagement>
+		<repository>
+			<id>sonatype-releases</id>
+			<name>Sonatype Maven Repository</name>
+			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-snapshots</id>
+			<name>Sonatype Maven Snapshot Repository</name>
+			<url>http://oss.sonatype.org/content/repositories/junit-contrib-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<scm>
+  <connection>scm:git:git@github.com:truth0/truth.git</connection>
+  <url>scm:git:git@github.com:truth0/truth.git</url>
+  <!-- 
+  <developerConnection>scm:git:git@github.com:truth0/truth.git</developerConnection>
+  -->
+	</scm>
 </project>
