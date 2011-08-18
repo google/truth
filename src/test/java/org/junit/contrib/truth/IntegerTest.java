@@ -151,5 +151,4 @@ public class IntegerTest {
       ASSERT.that(e.getMessage()).contains("Not true that <null> is not equal to <null>");
     }
   }
-  
 }
