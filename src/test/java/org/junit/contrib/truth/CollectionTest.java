@@ -40,7 +40,7 @@ public class CollectionTest {
   }
 
   @Test public void listContainsWithChaining() {
-    ASSERT.that(collection(1, 2, 3)).contains(1).and().contains(2);
+    ASSERT.that(collection(1, 2, 3)).contains(1).contains(2);
   }
 
   @Test public void listContainsWithNull() {
@@ -50,12 +50,14 @@ public class CollectionTest {
   @Test public void listContainsWith2KindsOfChaining() {
     Collection<Integer> foo = collection(1, 2, 3);
     Collection<Integer> bar = foo;
-    ASSERT.that(foo).is(bar).and().contains(1).and().contains(2);
+    // This no longer compiles: ASSERT.that(foo).is(bar).contains(1).contains(2);
+    ASSERT.that(foo).is(bar);
+    ASSERT.that(foo).contains(1).contains(2);
   }
 
   @Test public void listContainsFailureWithChaining() {
     try {
-      ASSERT.that(collection(1, 2, 3)).contains(1).and().contains(5);
+      ASSERT.that(collection(1, 2, 3)).contains(1).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {}
   }
@@ -103,7 +105,7 @@ public class CollectionTest {
       ASSERT.that(collection(1, 2, 3)).containsAllOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that").and().contains("<4>");
+      ASSERT.that(e.getMessage()).contains("Not true that").contains("<4>");
     }
   }
 
@@ -113,8 +115,8 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("<3 copies of 2>")
-          .and().contains("<4>");
+          .contains("<3 copies of 2>")
+          .contains("<4>");
     }
   }
 
@@ -128,7 +130,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().endsWith("contains <3 copies of 4>");
+          .endsWith("contains <3 copies of 4>");
     }
   }
 
@@ -138,7 +140,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("<2 copies of null>");
+          .contains("<2 copies of null>");
     }
   }
 

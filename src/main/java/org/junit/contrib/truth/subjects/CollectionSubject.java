@@ -25,12 +25,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends Subject<S, C> {
+public class CollectionSubject<T, C extends Collection<T>> extends Subject<C> {
 
-  @SuppressWarnings("unchecked")
-  public static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> create(
-      FailureStrategy failureStrategy, Collection<T> list) {
-    return new CollectionSubject(failureStrategy, list);
+  public static <T, C extends Collection<T>> CollectionSubject<T, C> create(
+      FailureStrategy failureStrategy, C list) {
+    return new CollectionSubject<T, C>(failureStrategy, list);
   }
 
   CollectionSubject(FailureStrategy failureStrategy, C list) {
@@ -40,33 +39,33 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   /**
    * Attests that a Collection contains the provided object or fails.
    */
-  public And<S> contains(T item) {
+  public CollectionSubject<T,C> contains(T item) {
     if (!getSubject().contains(item)) {
       fail("contains", item);
     }
-    return nextChain();
+    return this;
   }
 
   /**
    * Attests that a Collection contains at least one of the provided
    * objects or fails.
    */
-  public And<S> containsAnyOf(T ... items) {
+  public CollectionSubject<T,C> containsAnyOf(T ... items) {
     Collection<T> collection = getSubject();
     for (T item : items) {
       if (collection.contains(item)) {
-        return nextChain();
+        return this;
       }
     }
     fail("contains", (Object[])items);
-    return nextChain();
+    return this;
   }
 
   /**
    * Attests that a Collection contains all of the provided objects or fails.
    * This copes with duplicates in both the Collection and the parameters.
    */
-  public And<S> containsAllOf(T ... items) {
+  public CollectionSubject<T,C> containsAllOf(T ... items) {
     Collection<T> collection = getSubject();
     // Arrays.asList() does not support remove() so we need a mutable copy.
     List<T> required = new ArrayList<T>(Arrays.asList(items));
@@ -84,7 +83,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
       }
       fail("contains", params);
     }
-    return nextChain();
+    return this;
   }
 
   private static <T> int countOf(T t, T... items) {

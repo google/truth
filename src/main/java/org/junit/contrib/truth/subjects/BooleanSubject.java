@@ -23,7 +23,7 @@ import org.junit.contrib.truth.FailureStrategy;
  * 
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class BooleanSubject extends Subject<BooleanSubject, Boolean> {
+public class BooleanSubject extends Subject<Boolean> {
 
   public BooleanSubject(FailureStrategy failureStrategy, Boolean subject) {
     super(failureStrategy, subject);

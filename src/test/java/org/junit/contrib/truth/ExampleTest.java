@@ -44,7 +44,7 @@ public class ExampleTest {
   }
 
   @Test public void listContainsWithChaining() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).and().contains(2);
+    ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).contains(2);
   }
 
   @Test public void equalityFail() {

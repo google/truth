@@ -52,11 +52,11 @@ public class TestVerb extends AbstractVerb {
     return new StringSubject(getFailureStrategy(), target);
   }
 
-  public <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> that(Collection<T> target) {
+  public <T, C extends Collection<T>> CollectionSubject<T, C> that(C target) {
     return CollectionSubject.create(getFailureStrategy(), target);
   }
 
-  public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> that(List<T> target) {
+  public <T> ListSubject<T, List<T>> that(List<T> target) {
     return ListSubject.create(getFailureStrategy(), target);
   }
 }

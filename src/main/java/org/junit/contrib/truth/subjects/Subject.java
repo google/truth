@@ -25,32 +25,15 @@ import org.junit.contrib.truth.FailureStrategy;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class Subject<S extends Subject<S,T>,T> {
+public class Subject<T> {
   private final FailureStrategy failureStrategy;
   private final T subject;
-  private final And<S> chain;
-
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
-    
-    this.chain = new And<S>(){
-      @SuppressWarnings("unchecked") 
-      @Override public S and() {
-        return (S)Subject.this;
-      }
-    };
-  }
-
-  /**
-   * A method which wraps the current Subject concrete
-   * subtype in a chaining "And" object.
-   */
-  protected final And<S> nextChain() {
-    return chain;
   }
   
-  public And<S> is(T other) {
+  public Subject<T> is(T other) {
 
     if (getSubject() == null) { 
       if(other != null) {
@@ -61,24 +44,28 @@ public class Subject<S extends Subject<S,T>,T> {
         fail("is", other);
       }
     }
-    return nextChain();
+    return this;
   }
 
-  public And<S> isNull() {
+  public Subject<T> isNull() {
     if (getSubject() != null) {
       failWithoutSubject("is null");
     }
-    return nextChain();
+    return this;
   }
   
-  public And<S> isNotNull() {
+  public Subject<T> isNotNull() {
     if (getSubject() == null) {
       failWithoutSubject("is not null");
     }
     return nextChain();
   }
 
-  public And<S> isEqualTo(Object other) {
+  private Subject<T> nextChain() {
+	return this;
+  }
+
+  public Subject<T> isEqualTo(Object other) {
     if (getSubject() == null) { 
       if(other != null) {
         fail("is equal to", other);
@@ -91,7 +78,7 @@ public class Subject<S extends Subject<S,T>,T> {
     return nextChain();
   }
 
-  public And<S> isNotEqualTo(Object other) {
+  public Subject<T> isNotEqualTo(Object other) {
     if (getSubject() == null) { 
       if(other == null) {
         fail("is not equal to", other);
@@ -104,14 +91,14 @@ public class Subject<S extends Subject<S,T>,T> {
     return nextChain();
   }
 
-  public And<S> isA(Class<?> clazz) {
+  public Subject<T> isA(Class<?> clazz) {
     if (!clazz.isInstance(getSubject())) {
       fail("is a", clazz.getName());
     }
     return nextChain();
   }
 
-  public And<S> isNotA(Class<?> clazz) {
+  public Subject<T> isNotA(Class<?> clazz) {
     if (clazz.isInstance(getSubject())) {
       fail("is not a", clazz.getName());
     }

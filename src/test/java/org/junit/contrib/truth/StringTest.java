@@ -48,7 +48,7 @@ public class StringTest {
   }
 
   @Test public void chain() {
-    ASSERT.that("abc").contains("a").and().contains("b");
+    ASSERT.that("abc").contains("a").contains("b");
   }
 
   @Test public void stringEquality() {

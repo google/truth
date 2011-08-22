@@ -24,7 +24,7 @@ import org.junit.contrib.truth.FailureStrategy;
  * 
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public interface SubjectFactory<S extends Subject<S,T>, T> {
+public interface SubjectFactory<S extends Subject<T>, T> {
   
   S getSubject(FailureStrategy fs, T that);
 }
