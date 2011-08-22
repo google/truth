@@ -123,16 +123,4 @@ public class Subject<T> {
     message += "the subject " + verb;
     failureStrategy.fail(message);
   }
-
-  /**
-   * A convenience class to allow for chaining in the fluent API
-   * style, such that subjects can make propositions in series.  
-   * i.e. ASSERT.that(blah).isNotNull().and().contains(b).and().isNotEmpty();
-   */
-  public static interface And<C> {
-    /**
-     * Returns the next object in the chain of anded objects.
-     */
-    C and();
-  }  
 }

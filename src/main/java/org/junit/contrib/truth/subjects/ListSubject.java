@@ -25,8 +25,6 @@ public class ListSubject<T, C extends List<T>>
 
   public static <T> ListSubject<T, List<T>> create(
       FailureStrategy failureStrategy, List<T> list) {
-	  // TODO: SAFF: is this right typing?
-	  // TODO: SAFF: also Collection?
     return new ListSubject<T, List<T>>(failureStrategy, list);
   }
 
