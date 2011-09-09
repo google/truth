@@ -25,7 +25,7 @@ import org.junit.contrib.truth.subjects.SubjectFactory;
  * 
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
-public class FooSubject extends Subject<FooSubject, Foo> {
+public class FooSubject extends Subject<Foo> {
 
   public static final SubjectFactory<FooSubject, Foo> FOO = 
   new SubjectFactory<FooSubject, Foo>() {
@@ -38,11 +38,11 @@ public class FooSubject extends Subject<FooSubject, Foo> {
     super(failureStrategy, subject);
   }
 
-  public And<FooSubject> matches(Foo object) {
+  public FooSubject matches(Foo object) {
     if (getSubject().value != object.value) {
       fail("matches", getSubject(), object);
     }
-    return nextChain();
+    return this;
   }
 
 }

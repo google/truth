@@ -24,7 +24,7 @@ public class AbstractVerb {
    * @param factory a SubjectFactory<S, T> implementation
    * @returns A custom verb for the type returned by the SubjectFactory
    */
-  public <S extends Subject<S,T>, T, SF extends SubjectFactory<S, T>> 
+  public <S extends Subject<T>, T, SF extends SubjectFactory<S, T>> 
       DelegatedVerb<S, T> about(SF factory) {
       return new DelegatedVerb<S, T>(getFailureStrategy(), factory);
   }
@@ -32,7 +32,7 @@ public class AbstractVerb {
   /**
    * A special Verb implementation which wraps a SubjectFactory
    */
-  public static class DelegatedVerb<S extends Subject<S,T>, T>
+  public static class DelegatedVerb<S extends Subject<T>, T>
       extends AbstractVerb {
     
     private final SubjectFactory<S, T> factory;

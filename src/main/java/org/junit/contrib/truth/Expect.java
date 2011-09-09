@@ -23,7 +23,7 @@ import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-@SuppressWarnings("deprecation") 
+@SuppressWarnings("deprecation")
 public class Expect extends TestVerb implements MethodRule {
   protected static class ExpectationGatherer implements FailureStrategy {
     List<String> messages = new ArrayList<String>();
@@ -45,14 +45,23 @@ public class Expect extends TestVerb implements MethodRule {
     this.gatherer = gatherer;
   }
 
+  @Override
+  protected FailureStrategy getFailureStrategy() {
+  	if (!inRuleContext) {
+  		String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
+			throw new IllegalStateException(message);
+  	}
+  	return super.getFailureStrategy();
+  }
+  
   // TODO(cgruber): Make this override TestRule when 4.9 is released.
   @Override public Statement apply(final Statement base,
       FrameworkMethod method, Object target) {
-    inRuleContext = true;
     return new Statement() {
-
       @Override public void evaluate() throws Throwable {
+        inRuleContext = true;
         base.evaluate();
+        inRuleContext = false;
         if (!gatherer.messages.isEmpty()) {
           String message = "All failed expectations:\n";
           for (int i = 0; i < gatherer.messages.size(); i++) {

@@ -43,7 +43,7 @@ public class ExpectFailureTest {
   }
 
   @Test public void expectFailStringContains() {
-    EXPECT.that("abc").contains("x").and().contains("y").and().contains("z");
+    EXPECT.that("abc").contains("x").contains("y").contains("z");
   }
   
   @Test public void expectFailContainsAllOf() {

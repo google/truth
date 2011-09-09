@@ -25,17 +25,15 @@ import org.junit.contrib.truth.subjects.Subject;
  * 
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
-public class MySubject extends Subject<MySubject, MyType> {
-
+public class MySubject extends Subject<MyType> {
   public MySubject(FailureStrategy failureStrategy, MyType subject) {
     super(failureStrategy, subject);
   }
 
-  public And<MySubject> matches(MyType object) {
+  public MySubject matches(MyType object) {
     if (getSubject().value != object.value) {
       fail("matches", getSubject(), object);
     }
-    return nextChain();
+    return this;
   }
-
 }

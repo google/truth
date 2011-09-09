@@ -16,34 +16,55 @@
  */
 package org.junit.contrib.truth;
 
-import java.util.Arrays;
-
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.Statement;
 
 /**
- * Tests (and effectively sample code) for the Expect 
- * verb (implemented as a rule)
+ * Tests (and effectively sample code) for the Expect verb (implemented as a
+ * rule)
  * 
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
 public class ExpectTest {
-  @Rule public Expect EXPECT = Expect.create();
+	private Expect oopsNotARule = Expect.create();
 
-  @Test public void expectTrue() {
-    EXPECT.that(4).isEqualTo(4);
-  }
+	private Expect EXPECT = Expect.create();
+	private ExpectedException thrown = ExpectedException.none();
 
-  @Ignore @Test public void expectFail() {
-    EXPECT.that("abc").contains("x")
-          .and().contains("y")
-          .and().contains("z");
-    EXPECT.that(Arrays.asList(new String[]{"a", "b", "c"})).containsAnyOf("a", "c");
-  }
-  
+	@Rule public MethodRule wrapper = new MethodRule() {
+		@Override
+		public Statement apply(Statement base, FrameworkMethod method, Object target) {
+			Statement expected = EXPECT.apply(base, method, target);
+			return thrown.apply(expected, method, target);
+		}
+	};
+
+	@Test
+	public void expectTrue() {
+		EXPECT.that(4).isEqualTo(4);
+	}
+
+	@Test
+	public void expectFail() {
+		thrown.expectMessage("All failed expectations:");
+		thrown.expectMessage("1. Not true that <abc> contains <x>");
+		thrown.expectMessage("2. Not true that <abc> contains <y>");
+		thrown.expectMessage("3. Not true that <abc> contains <z>");
+		EXPECT.that("abc").contains("x").contains("y").contains("z");
+	}
+
+	@Test
+	public void warnWhenExpectIsNotRule() {
+		String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
+		thrown.expectMessage(message);
+		oopsNotARule.that(true).is(true);
+	}
 }

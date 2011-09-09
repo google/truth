@@ -24,7 +24,7 @@ import org.junit.contrib.truth.FailureStrategy;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class IntegerSubject extends Subject<IntegerSubject, Long> {
+public class IntegerSubject extends Subject<Long> {
 
   private static final String RANGE_BOUNDS_OUT_OF_ORDER_MSG = "Range inclusion parameter lower (%d) should not be greater than upper (%d)";
 
@@ -43,12 +43,12 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
-  public And<IntegerSubject> isInclusivelyInRange(long lower, long upper) {
+  public IntegerSubject isInclusivelyInRange(long lower, long upper) {
     ensureOrderedBoundaries(lower, upper);
     if (!(lower <= getSubject() && getSubject() <= upper)) {
       fail("is inclusively in range", lower, upper);
     }
-    return nextChain();
+    return this;
   }
 
   /**
@@ -58,12 +58,12 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
-  public And<IntegerSubject> isBetween(long lower, long upper) {
+  public IntegerSubject isBetween(long lower, long upper) {
     ensureOrderedBoundaries(lower, upper);
     if (!(lower < getSubject() && getSubject() < upper)) {
       fail("is in between", lower, upper);
     }
-    return nextChain();
+    return this;
   }
 
   /**
@@ -77,11 +77,11 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
     }
   }
 
-  public And<IntegerSubject> isEqualTo(Integer other) {
+  public IntegerSubject isEqualTo(Integer other) {
     return isEqualTo((other == null) ? null : new Long(other.longValue()));
   }
   
-  public And<IntegerSubject> isEqualTo(Long other) {
+  public IntegerSubject isEqualTo(Long other) {
     if (getSubject() == null) { 
       if(other != null) {
         fail("is equal to", other);
@@ -92,14 +92,14 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
         fail("is equal to", other);
       }
     }
-    return nextChain();
+    return this;
   }
 
-  public And<IntegerSubject> isNotEqualTo(Integer other) {
+  public IntegerSubject isNotEqualTo(Integer other) {
     return isNotEqualTo((other == null) ? null : new Long(other.longValue()));
   }
 
-  public And<IntegerSubject> isNotEqualTo(Long other) {
+  public IntegerSubject isNotEqualTo(Long other) {
     if (getSubject() == null) { 
       if(other == null) {
         fail("is not equal to", other);
@@ -110,7 +110,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
         fail("is not equal to", other);
       }
     }
-    return nextChain();
+    return this;
   }
   
   

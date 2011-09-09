@@ -18,7 +18,7 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 
-public class DefaultSubject extends Subject<DefaultSubject, Object> {
+public class DefaultSubject extends Subject<Object> {
   public DefaultSubject(FailureStrategy failureStrategy, Object o) {
     super(failureStrategy, o);
   }  

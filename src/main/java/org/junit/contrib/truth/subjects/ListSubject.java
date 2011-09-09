@@ -20,13 +20,12 @@ import org.junit.contrib.truth.FailureStrategy;
 import java.util.Comparator;
 import java.util.List;
 
-public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
-    extends CollectionSubject<S, T, C> {
+public class ListSubject<T, C extends List<T>>
+    extends CollectionSubject<T, C> {
 
-  @SuppressWarnings("unchecked")
-  public static <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> create(
+  public static <T> ListSubject<T, List<T>> create(
       FailureStrategy failureStrategy, List<T> list) {
-    return new ListSubject(failureStrategy, list);
+    return new ListSubject<T, List<T>>(failureStrategy, list);
   }
 
   protected ListSubject(FailureStrategy failureStrategy, C list) {
@@ -36,9 +35,9 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   /**
    * Attests that a List contains the specified sequence.
    */
-  public And<S> containsSequence(List<T> sequence) {
+  public ListSubject<T,C> containsSequence(List<T> sequence) {
     if (sequence.isEmpty()) {
-      return nextChain();
+      return this;
     }
     List<T> list = getSubject();
     while (true) {
@@ -51,12 +50,12 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
         break;    // Not enough room left
       }
       if (sequence.equals(list.subList(first, last))) {
-        return nextChain();
+        return this;
       }
       list = list.subList(first + 1, list.size());
     }
     fail("contains sequence", sequence);
-    return nextChain();
+    return this;
   }
 
   /**
@@ -66,7 +65,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public And<S> isOrdered() {
+  public ListSubject<T,C> isOrdered() {
     return pairwiseCheck(new PairwiseChecker<T>() {
       @SuppressWarnings("unchecked")
       @Override public void check(T prev, T next) {
@@ -84,7 +83,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public And<S> isPartiallyOrdered() {
+  public ListSubject<T,C> isPartiallyOrdered() {
     return pairwiseCheck(new PairwiseChecker<T>() {
       @SuppressWarnings("unchecked")
       @Override public void check(T prev, T next) {
@@ -102,7 +101,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public And<S> isOrdered(final Comparator<T> comparator) {
+  public ListSubject<T,C> isOrdered(final Comparator<T> comparator) {
     return pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) >= 0) {
@@ -119,7 +118,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public And<S> isPartiallyOrdered(final Comparator<T> comparator) {
+  public ListSubject<T,C> isPartiallyOrdered(final Comparator<T> comparator) {
     return pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) > 0) {
@@ -129,7 +128,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
     });
   }
 
-  private And<S> pairwiseCheck(PairwiseChecker<T> checker) {
+  private ListSubject<T,C> pairwiseCheck(PairwiseChecker<T> checker) {
     List<T> list = getSubject();
     if (list.size() > 1) {
       T prev = list.get(0);
@@ -139,7 +138,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
         prev = next;
       }
     }
-    return nextChain();
+    return this;
   }
 
   private interface PairwiseChecker<T> {

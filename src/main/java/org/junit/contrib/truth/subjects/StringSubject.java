@@ -24,12 +24,12 @@ import org.junit.contrib.truth.FailureStrategy;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class StringSubject extends Subject<StringSubject, String> {
+public class StringSubject extends Subject<String> {
   public StringSubject(FailureStrategy failureStrategy, String string) {
     super(failureStrategy, string);
   }
 
-  public And<StringSubject> contains(String string) {
+  public StringSubject contains(String string) {
     if (getSubject() == null) {
       if (string != null) {
         fail("contains", string);
@@ -37,10 +37,10 @@ public class StringSubject extends Subject<StringSubject, String> {
     } else if (!getSubject().contains(string)) {
       fail("contains", string);
     }
-    return nextChain();
+    return this;
   }
 
-  public And<StringSubject> startsWith(String string) {
+  public StringSubject startsWith(String string) {
     if (getSubject() == null) {
       if (string != null) {
         fail("starts with", string);
@@ -48,10 +48,10 @@ public class StringSubject extends Subject<StringSubject, String> {
     } else if (!getSubject().startsWith(string)) {
       fail("starts with", string);
     }
-    return nextChain();
+    return this;
   }
   
-  public And<StringSubject> endsWith(String string) {
+  public StringSubject endsWith(String string) {
     if (getSubject() == null) {
       if (string != null) {
         fail("ends with", string);
@@ -59,7 +59,7 @@ public class StringSubject extends Subject<StringSubject, String> {
     } else if (!getSubject().endsWith(string)) {
       fail("ends with", string);
     }
-    return nextChain();
+    return this;
   }
   
 }
