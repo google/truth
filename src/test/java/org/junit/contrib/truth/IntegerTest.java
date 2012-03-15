@@ -40,6 +40,10 @@ public class IntegerTest {
   @Test public void simpleEquality() {
     ASSERT.that(2 + 2).isEqualTo(4).and().isBetween(3, 5);
   }
+
+  @Test public void intIsInt() {
+    ASSERT.that(4).is(4);
+  }
   
   @Test public void simpleInequality() {
     ASSERT.that(2 + 2).isNotEqualTo(5);
