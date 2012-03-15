@@ -77,6 +77,10 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
     }
   }
 
+  public And<IntegerSubject> is(Integer other) {
+    return isEqualTo(other);
+  }
+
   public And<IntegerSubject> isEqualTo(Integer other) {
     return isEqualTo((other == null) ? null : new Long(other.longValue()));
   }

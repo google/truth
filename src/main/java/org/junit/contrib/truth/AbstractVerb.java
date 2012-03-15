@@ -15,6 +15,20 @@ public class AbstractVerb {
   protected FailureStrategy getFailureStrategy() {
     return failureStrategy;
   }
+  
+	/**
+	 * Triggers the failure strategy with an empty failure message
+	 */
+	public void fail() {
+		failureStrategy.fail("");
+	}
+
+	/**
+	 * Triggers the failure strategy with the given failure message
+	 */
+	public void fail(String message) {
+		failureStrategy.fail(message);
+	}
 
   /**
    * The recommended method of extension of Truth to new types, which is 
