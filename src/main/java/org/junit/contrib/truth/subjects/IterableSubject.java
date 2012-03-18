@@ -40,8 +40,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     super(failureStrategy, list);
   }
 
-  public And<S> contains(T item) {
-    for (T t : getSubject()) {
+  public And<S> contains(Object item) {
+    for (Object t : getSubject()) {
       if (item.equals(t)) {
         return nextChain();
       }
@@ -60,25 +60,25 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     return nextChain();
   }
 
-  public And<S> hasContentsInOrder(T... expected) {
+  public And<S> hasContentsInOrder(Object... expected) {
     // TODO(kevinb): prettier error message
-    List<T> target = new ArrayList<T>();
-    for (T t : getSubject()) {
+    List<Object> target = new ArrayList<Object>();
+    for (Object t : getSubject()) {
       target.add(t);
     }
     check().that(target).isEqualTo(Arrays.asList(expected));
     return nextChain();
   }
 
-  public And<S> hasContentsAnyOrder(T... expected) {
+  public And<S> hasContentsAnyOrder(Object... expected) {
     check().that(createFakeMultiset(getSubject()))
         .isEqualTo(createFakeMultiset(Arrays.asList(expected)));
     return nextChain();
   }
 
-  private static <T> Map<T, Integer> createFakeMultiset(Iterable<T> iterable) {
-    Map<T, Integer> map = new HashMap<T, Integer>();
-    for (T t : iterable) {
+  private static Map<Object, Integer> createFakeMultiset(Iterable<?> iterable) {
+    Map<Object, Integer> map = new HashMap<Object, Integer>();
+    for (Object t : iterable) {
       Integer count = map.get(t);
       map.put(t, (count == null) ? 1 : count + 1);
     }

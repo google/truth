@@ -41,7 +41,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   /**
    * Attests that a Collection contains the provided object or fails.
    */
-  @Override public And<S> contains(T item) {
+  @Override public And<S> contains(Object item) {
     if (!getSubject().contains(item)) {
       fail("contains", item);
     }
@@ -59,9 +59,9 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
    * Attests that a Collection contains at least one of the provided
    * objects or fails.
    */
-  public And<S> containsAnyOf(T ... items) {
-    Collection<T> collection = getSubject();
-    for (T item : items) {
+  public And<S> containsAnyOf(Object ... items) {
+    Collection<?> collection = getSubject();
+    for (Object item : items) {
       if (collection.contains(item)) {
         return nextChain();
       }
@@ -74,19 +74,19 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
    * Attests that a Collection contains all of the provided objects or fails.
    * This copes with duplicates in both the Collection and the parameters.
    */
-  public And<S> containsAllOf(T ... items) {
-    Collection<T> collection = getSubject();
+  public And<S> containsAllOf(Object ... items) {
+    Collection<?> collection = getSubject();
     // Arrays.asList() does not support remove() so we need a mutable copy.
-    List<T> required = new ArrayList<T>(Arrays.asList(items));
-    for (T item : collection) {
+    List<Object> required = new ArrayList<Object>(Arrays.asList(items));
+    for (Object item : collection) {
       required.remove(item);
     }
     if (!required.isEmpty()) {
       // Try and make a useful message when dealing with duplicates.
-      Set<T> missing = new HashSet<T>(required);
+      Set<Object> missing = new HashSet<Object>(required);
       Object[] params = new Object[missing.size()];
       int n = 0;
-      for (T item : missing) {
+      for (Object item : missing) {
         int count = countOf(item, items);
         params[n++] = (count > 1) ? count + " copies of " + item : item;
       }
@@ -95,9 +95,9 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     return nextChain();
   }
 
-  private static <T> int countOf(T t, T... items) {
+  private static int countOf(Object t, Object... items) {
     int count = 0;
-    for (T item : items) {
+    for (Object item : items) {
       if (t == null ? (item == null) : t.equals(item)) {
         count++;
       }
