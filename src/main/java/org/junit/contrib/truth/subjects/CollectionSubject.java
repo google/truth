@@ -16,8 +16,6 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import org.junit.contrib.truth.FailureStrategy;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,7 +23,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends Subject<S, C> {
+import org.junit.contrib.truth.FailureStrategy;
+
+public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends IterableSubject<S, T, C> {
 
   @SuppressWarnings("unchecked")
   public static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> create(
@@ -33,16 +33,24 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     return new CollectionSubject(failureStrategy, list);
   }
 
-  CollectionSubject(FailureStrategy failureStrategy, C list) {
+  // TODO: Arguably this should even be package private
+  protected CollectionSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }
 
   /**
    * Attests that a Collection contains the provided object or fails.
    */
-  public And<S> contains(T item) {
+  @Override public And<S> contains(T item) {
     if (!getSubject().contains(item)) {
       fail("contains", item);
+    }
+    return nextChain();
+  }
+
+  @Override public And<S> isEmpty() {
+    if (!getSubject().isEmpty()) {
+      fail("isEmpty");
     }
     return nextChain();
   }
