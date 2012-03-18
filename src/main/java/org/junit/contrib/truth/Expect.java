@@ -16,6 +16,8 @@
  */
 package org.junit.contrib.truth;
 
+import com.google.common.annotations.GwtIncompatible;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,8 @@ import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-@SuppressWarnings("deprecation")
+@GwtIncompatible("JUnit4")
+@SuppressWarnings("deprecation") 
 public class Expect extends TestVerb implements MethodRule {
   protected static class ExpectationGatherer implements FailureStrategy {
     List<String> messages = new ArrayList<String>();

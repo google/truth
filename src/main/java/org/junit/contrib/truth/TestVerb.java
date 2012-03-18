@@ -16,6 +16,8 @@
  */
 package org.junit.contrib.truth;
 
+import com.google.common.annotations.GwtCompatible;
+
 import org.junit.contrib.truth.subjects.BooleanSubject;
 import org.junit.contrib.truth.subjects.CollectionSubject;
 import org.junit.contrib.truth.subjects.DefaultSubject;
@@ -26,6 +28,7 @@ import org.junit.contrib.truth.subjects.StringSubject;
 import java.util.Collection;
 import java.util.List;
 
+@GwtCompatible
 public class TestVerb extends AbstractVerb {
 
   public TestVerb(FailureStrategy failureStrategy) {

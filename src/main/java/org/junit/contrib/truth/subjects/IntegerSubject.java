@@ -16,6 +16,8 @@
  */
 package org.junit.contrib.truth.subjects;
 
+import com.google.common.annotations.GwtCompatible;
+
 import org.junit.contrib.truth.FailureStrategy;
 
 /**
@@ -24,9 +26,8 @@ import org.junit.contrib.truth.FailureStrategy;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@GwtCompatible
 public class IntegerSubject extends Subject<IntegerSubject, Long> {
-
-  private static final String RANGE_BOUNDS_OUT_OF_ORDER_MSG = "Range inclusion parameter lower (%d) should not be greater than upper (%d)";
 
   public IntegerSubject(FailureStrategy failureStrategy, Long i) {
     super(failureStrategy, i);
@@ -72,13 +73,10 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
    */
   private void ensureOrderedBoundaries(long lower, long upper) {
     if (lower > upper) {
-      throw new IllegalArgumentException(String.format(
-          RANGE_BOUNDS_OUT_OF_ORDER_MSG, lower, upper));
+      throw new IllegalArgumentException(
+          "Range inclusion parameter lower (" + lower + ") "
+              + " should not be greater than upper (" + upper + ")");
     }
-  }
-
-  public And<IntegerSubject> is(Integer other) {
-    return isEqualTo(other);
   }
 
   public And<IntegerSubject> isEqualTo(Integer other) {

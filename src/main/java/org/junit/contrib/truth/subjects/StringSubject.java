@@ -16,6 +16,8 @@
  */
 package org.junit.contrib.truth.subjects;
 
+import com.google.common.annotations.GwtCompatible;
+
 import org.junit.contrib.truth.FailureStrategy;
 
 /**
@@ -24,6 +26,7 @@ import org.junit.contrib.truth.FailureStrategy;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@GwtCompatible
 public class StringSubject extends Subject<StringSubject, String> {
   public StringSubject(FailureStrategy failureStrategy, String string) {
     super(failureStrategy, string);

@@ -16,6 +16,8 @@
  */
 package org.junit.contrib.truth.subjects;
 
+import com.google.common.annotations.GwtCompatible;
+
 import org.junit.contrib.truth.FailureStrategy;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@GwtCompatible
 public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends Subject<S, C> {
 
   @SuppressWarnings("unchecked")
@@ -33,7 +36,8 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     return new CollectionSubject(failureStrategy, list);
   }
 
-  CollectionSubject(FailureStrategy failureStrategy, C list) {
+  // TODO: Arguably this should even be package private
+  protected CollectionSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }
 

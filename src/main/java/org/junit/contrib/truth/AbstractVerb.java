@@ -1,9 +1,11 @@
 package org.junit.contrib.truth;
 
+import com.google.common.annotations.GwtCompatible;
+
 import org.junit.contrib.truth.subjects.Subject;
 import org.junit.contrib.truth.subjects.SubjectFactory;
 
-
+@GwtCompatible
 public class AbstractVerb {
 
   private final FailureStrategy failureStrategy;

@@ -16,8 +16,11 @@
  */
 package org.junit.contrib.truth.subjects;
 
+import com.google.common.annotations.GwtCompatible;
+
 import org.junit.contrib.truth.FailureStrategy;
 
+@GwtCompatible
 public class DefaultSubject extends Subject<DefaultSubject, Object> {
   public DefaultSubject(FailureStrategy failureStrategy, Object o) {
     super(failureStrategy, o);
