@@ -39,11 +39,11 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   /**
    * Attests that a List contains the specified sequence.
    */
-  public And<S> containsSequence(List<T> sequence) {
+  public And<S> containsSequence(List<?> sequence) {
     if (sequence.isEmpty()) {
       return nextChain();
     }
-    List<T> list = getSubject();
+    List<?> list = getSubject();
     while (true) {
       int first = list.indexOf(sequence.get(0));
       if (first < 0) {

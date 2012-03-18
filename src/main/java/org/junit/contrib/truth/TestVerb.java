@@ -17,20 +17,20 @@
 package org.junit.contrib.truth;
 
 import com.google.common.annotations.GwtCompatible;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import org.junit.contrib.truth.subjects.BooleanSubject;
 import org.junit.contrib.truth.subjects.CollectionSubject;
 import org.junit.contrib.truth.subjects.DefaultSubject;
 import org.junit.contrib.truth.subjects.IntegerSubject;
+import org.junit.contrib.truth.subjects.IterableSubject;
 import org.junit.contrib.truth.subjects.ListSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
 
-import java.util.Collection;
-import java.util.List;
-
 @GwtCompatible
 public class TestVerb extends AbstractVerb {
-
   public TestVerb(FailureStrategy failureStrategy) {
     super(failureStrategy);
   }
@@ -55,11 +55,19 @@ public class TestVerb extends AbstractVerb {
     return new StringSubject(getFailureStrategy(), target);
   }
 
+  public <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> that(Iterable<T> target) {
+    return IterableSubject.create(getFailureStrategy(), target);
+  }
+
   public <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> that(Collection<T> target) {
     return CollectionSubject.create(getFailureStrategy(), target);
   }
 
   public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> that(List<T> target) {
     return ListSubject.create(getFailureStrategy(), target);
+  }
+
+  public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> that(T[] target) {
+    return that(Arrays.asList(target));
   }
 }

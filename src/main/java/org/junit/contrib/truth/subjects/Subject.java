@@ -20,6 +20,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 
 import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.TestVerb;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties
@@ -126,6 +127,10 @@ public class Subject<S extends Subject<S,T>,T> {
 
   protected T getSubject() {
     return subject;
+  }
+
+  protected TestVerb check() {
+    return new TestVerb(failureStrategy);
   }
 
   protected void fail(String verb, Object... messageParts) {
