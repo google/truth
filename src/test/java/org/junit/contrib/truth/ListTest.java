@@ -72,7 +72,7 @@ public class ListTest {
   }
 
   @Test public void listIsOrdered() {
-    ASSERT.that(Arrays.asList()).isOrdered();
+    ASSERT.that(Arrays.<Integer>asList()).isOrdered();
     ASSERT.that(Arrays.asList(1)).isOrdered();
     ASSERT.that(Arrays.asList(1, 2, 3, 4)).isOrdered();
   }
@@ -94,7 +94,7 @@ public class ListTest {
   }
 
   @Test public void listIsPartiallyOrdered() {
-    ASSERT.that(Arrays.asList()).isPartiallyOrdered();
+    ASSERT.that(Arrays.<Integer>asList()).isPartiallyOrdered();
     ASSERT.that(Arrays.asList(1)).isPartiallyOrdered();
     ASSERT.that(Arrays.asList(1, 1, 2, 3, 3, 3, 4)).isPartiallyOrdered();
   }
