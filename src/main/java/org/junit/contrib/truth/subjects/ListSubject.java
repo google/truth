@@ -15,12 +15,11 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import com.google.common.annotations.GwtCompatible;
-
-import org.junit.contrib.truth.FailureStrategy;
-
 import java.util.Comparator;
 import java.util.List;
+
+import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.util.GwtCompatible;
 
 @GwtCompatible
 public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>

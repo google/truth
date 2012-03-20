@@ -16,16 +16,15 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import com.google.common.annotations.GwtCompatible;
-
-import org.junit.contrib.truth.FailureStrategy;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.util.GwtCompatible;
 
 @GwtCompatible
 public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends IterableSubject<S, T, C> {

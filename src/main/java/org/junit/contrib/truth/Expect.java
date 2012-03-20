@@ -16,11 +16,10 @@
  */
 package org.junit.contrib.truth;
 
-import com.google.common.annotations.GwtIncompatible;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.contrib.truth.util.GwtIncompatible;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;

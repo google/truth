@@ -16,9 +16,8 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import com.google.common.annotations.GwtCompatible;
-
 import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.util.GwtCompatible;
 
 /**
  * A custom subject factory which will return a FooSubject (which

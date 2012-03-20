@@ -16,9 +16,8 @@
  */
 package org.junit.contrib.truth;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
-
+import org.junit.contrib.truth.util.GwtCompatible;
+import org.junit.contrib.truth.util.GwtIncompatible;
 import org.junit.internal.AssumptionViolatedException;
 
 /**

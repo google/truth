@@ -16,7 +16,7 @@
  */
 package org.junit.contrib.truth;
 
-import com.google.common.annotations.GwtCompatible;
+import org.junit.contrib.truth.util.GwtCompatible;
 
 @GwtCompatible
 public interface FailureStrategy {

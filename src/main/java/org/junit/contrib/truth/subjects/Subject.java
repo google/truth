@@ -16,11 +16,11 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
 
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.TestVerb;
+import org.junit.contrib.truth.util.GwtCompatible;
+import org.junit.contrib.truth.util.GwtIncompatible;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties

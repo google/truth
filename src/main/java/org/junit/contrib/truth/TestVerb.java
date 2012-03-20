@@ -16,7 +16,6 @@
  */
 package org.junit.contrib.truth;
 
-import com.google.common.annotations.GwtCompatible;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +27,7 @@ import org.junit.contrib.truth.subjects.IntegerSubject;
 import org.junit.contrib.truth.subjects.IterableSubject;
 import org.junit.contrib.truth.subjects.ListSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
+import org.junit.contrib.truth.util.GwtCompatible;
 
 @GwtCompatible
 public class TestVerb extends AbstractVerb {
