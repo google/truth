@@ -81,7 +81,6 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
    * This copes with duplicates in both the Collection and the parameters.
    */
   public Ordered<S> contains(Object first, Object second, Object ... rest) {
-    final And<S> next = nextChain();
     Collection<?> collection = getSubject();
     // Arrays.asList() does not support remove() so we need a mutable copy.
     List<Object> required = accumulate(first, second, rest);
