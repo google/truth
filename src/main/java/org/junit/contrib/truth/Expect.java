@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,6 @@ import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-@SuppressWarnings("deprecation")
 public class Expect extends TestVerb implements MethodRule {
   protected static class ExpectationGatherer implements FailureStrategy {
     List<String> messages = new ArrayList<String>();
@@ -53,7 +52,7 @@ public class Expect extends TestVerb implements MethodRule {
   	}
   	return super.getFailureStrategy();
   }
-  
+
   // TODO(cgruber): Make this override TestRule when 4.9 is released.
   @Override public Statement apply(final Statement base,
       FrameworkMethod method, Object target) {
