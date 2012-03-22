@@ -23,7 +23,7 @@ import org.junit.contrib.truth.FailureStrategy;
 public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
     extends CollectionSubject<S, T, C> {
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> create(
       FailureStrategy failureStrategy, List<T> list) {
     return new ListSubject(failureStrategy, list);
@@ -62,7 +62,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   /**
    * Attests that a List is strictly ordered according to the natural ordering of its elements.
    * Null elements are not permitted.
-   * 
+   *
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
@@ -80,7 +80,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   /**
    * Attests that a List is partially ordered according to the natural ordering of its elements.
    * Null elements are not permitted.
-   * 
+   *
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
@@ -98,7 +98,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   /**
    * Attests that a List is strictly ordered according to the given comparator.
    * Null elements are not permitted.
-   * 
+   *
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
@@ -115,7 +115,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   /**
    * Attests that a List is partially ordered according to the given comparator.
    * Null elements are not permitted.
-   * 
+   *
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */

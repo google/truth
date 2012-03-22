@@ -26,7 +26,7 @@ import org.junit.contrib.truth.FailureStrategy;
  */
 public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>> extends Subject<S, C> {
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> create(
       FailureStrategy failureStrategy, Iterable<T> list) {
     return new IterableSubject(failureStrategy, list);
