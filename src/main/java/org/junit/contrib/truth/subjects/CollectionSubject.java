@@ -16,10 +16,12 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import static org.junit.contrib.truth.subjects.SubjectUtils.accumulate;
+import static org.junit.contrib.truth.subjects.SubjectUtils.countOf;
+
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +29,7 @@ import org.junit.contrib.truth.FailureStrategy;
 
 public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends IterableSubject<S, T, C> {
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> create(
       FailureStrategy failureStrategy, Collection<T> list) {
     return new CollectionSubject(failureStrategy, list);
@@ -48,6 +50,9 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     return nextChain();
   }
 
+  /**
+   * Attests that a Collection is empty or fails.
+   */
   @Override public And<S> isEmpty() {
     if (!getSubject().isEmpty()) {
       fail("isEmpty");
@@ -59,25 +64,27 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
    * Attests that a Collection contains at least one of the provided
    * objects or fails.
    */
-  public And<S> containsAnyOf(Object ... items) {
+  public And<S> containsAnyOf(Object first, Object second, Object ... rest) {
     Collection<?> collection = getSubject();
-    for (Object item : items) {
+    for (Object item : accumulate(first, second, rest)) {
       if (collection.contains(item)) {
         return nextChain();
       }
     }
-    fail("contains", (Object[])items);
+    fail("contains", accumulate(first, second, rest));
     return nextChain();
   }
+
 
   /**
    * Attests that a Collection contains all of the provided objects or fails.
    * This copes with duplicates in both the Collection and the parameters.
    */
-  public And<S> containsAllOf(Object ... items) {
+  public Ordered<S> contains(Object first, Object second, Object ... rest) {
+    final And<S> next = nextChain();
     Collection<?> collection = getSubject();
     // Arrays.asList() does not support remove() so we need a mutable copy.
-    List<Object> required = new ArrayList<Object>(Arrays.asList(items));
+    List<Object> required = accumulate(first, second, rest);
     for (Object item : collection) {
       required.remove(item);
     }
@@ -87,21 +94,37 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
       Object[] params = new Object[missing.size()];
       int n = 0;
       for (Object item : missing) {
-        int count = countOf(item, items);
+        int count = countOf(item, accumulate(first, second, rest));
         params[n++] = (count > 1) ? count + " copies of " + item : item;
       }
       fail("contains", params);
     }
-    return nextChain();
+
+    final List<?> expectedItems = accumulate(first, second, rest);
+    return new Ordered<S>() {
+      @Override public And<S> inOrder() {
+        Iterator<T> actualItems = getSubject().iterator();
+        for (Object expected : expectedItems) {
+          if (!actualItems.hasNext()) {
+            fail("iterates through", expectedItems);
+          } else {
+            Object actual = actualItems.next();
+            if (actual == expected || actual != null && actual.equals(expected)) {
+              continue;
+            } else {
+              fail("iterates through", expectedItems);
+            }
+          }
+        }
+        if (actualItems.hasNext()) {
+          fail("iterates through", expectedItems);
+        }
+        return nextChain();
+      }
+      @Override public S and() {
+        return nextChain().and();
+      }
+    };
   }
 
-  private static int countOf(Object t, Object... items) {
-    int count = 0;
-    for (Object item : items) {
-      if (t == null ? (item == null) : t.equals(item)) {
-        count++;
-      }
-    }
-    return count;
-  }
 }
