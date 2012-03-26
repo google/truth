@@ -42,7 +42,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
 
   public And<S> contains(Object item) {
     for (Object t : getSubject()) {
-      if (item.equals(t)) {
+      if (item == t || item != null && item.equals(t)) {
         return nextChain();
       }
     }
