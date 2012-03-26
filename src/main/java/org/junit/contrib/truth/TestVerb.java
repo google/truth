@@ -27,7 +27,9 @@ import org.junit.contrib.truth.subjects.IntegerSubject;
 import org.junit.contrib.truth.subjects.IterableSubject;
 import org.junit.contrib.truth.subjects.ListSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
+import org.junit.contrib.truth.util.GwtCompatible;
 
+@GwtCompatible
 public class TestVerb extends AbstractVerb {
   public TestVerb(FailureStrategy failureStrategy) {
     super(failureStrategy);
