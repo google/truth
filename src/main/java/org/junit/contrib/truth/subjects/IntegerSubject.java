@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@ import org.junit.contrib.truth.util.GwtCompatible;
 
 /**
  * Propositions for Integral numeric subjects
- * 
+ *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -32,7 +32,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   public IntegerSubject(FailureStrategy failureStrategy, Long i) {
     super(failureStrategy, i);
   }
-  
+
   public IntegerSubject(FailureStrategy failureStrategy, Integer i) {
     super(failureStrategy, i == null ? null : new Long(i.longValue()));
   }
@@ -40,7 +40,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   /**
    * Attests that a Subject<Integer> is inclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
-   * 
+   *
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
@@ -55,7 +55,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   /**
    * Attests that a Subject<Integer> is exclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
-   * 
+   *
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
@@ -68,7 +68,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   }
 
   /**
-   * Guards against inverted lower/upper boundaries, and throws if 
+   * Guards against inverted lower/upper boundaries, and throws if
    * they are so inverted.
    */
   private void ensureOrderedBoundaries(long lower, long upper) {
@@ -82,9 +82,9 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   public And<IntegerSubject> isEqualTo(Integer other) {
     return isEqualTo((other == null) ? null : new Long(other.longValue()));
   }
-  
+
   public And<IntegerSubject> isEqualTo(Long other) {
-    if (getSubject() == null) { 
+    if (getSubject() == null) {
       if(other != null) {
         fail("is equal to", other);
       }
@@ -102,7 +102,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   }
 
   public And<IntegerSubject> isNotEqualTo(Long other) {
-    if (getSubject() == null) { 
+    if (getSubject() == null) {
       if(other == null) {
         fail("is not equal to", other);
       }
@@ -114,6 +114,17 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
     }
     return nextChain();
   }
-  
-  
+
+  public And<IntegerSubject> is(int other) {
+    return super.is((long)other);
+  }
+
+  public And<IntegerSubject> is(short other) {
+    return super.is((long)other);
+  }
+
+  public And<IntegerSubject> is(byte other) {
+    return super.is((long)other);
+  }
+
 }
