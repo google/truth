@@ -19,7 +19,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.util.GwtCompatible;
 
+@GwtCompatible
 public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
     extends CollectionSubject<S, T, C> {
 
