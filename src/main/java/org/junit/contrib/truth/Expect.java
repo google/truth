@@ -19,11 +19,13 @@ package org.junit.contrib.truth;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.contrib.truth.util.GwtIncompatible;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-@SuppressWarnings("deprecation")
+@GwtIncompatible("JUnit4")
+@SuppressWarnings("deprecation") 
 public class Expect extends TestVerb implements MethodRule {
   protected static class ExpectationGatherer implements FailureStrategy {
     List<String> messages = new ArrayList<String>();

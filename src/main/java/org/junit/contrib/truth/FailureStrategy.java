@@ -16,6 +16,9 @@
  */
 package org.junit.contrib.truth;
 
+import org.junit.contrib.truth.util.GwtCompatible;
+
+@GwtCompatible
 public interface FailureStrategy {
   void fail(String message);
 }
