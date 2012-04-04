@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.junit.contrib.truth.subjects;
 
 import java.util.ArrayList;
@@ -23,10 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.util.GwtCompatible;
 
 /**
  * @author Kevin Bourrillion
  */
+@GwtCompatible
 public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>> extends Subject<S, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

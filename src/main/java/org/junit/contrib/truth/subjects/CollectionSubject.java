@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.util.GwtCompatible;
 
+@GwtCompatible
 public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends IterableSubject<S, T, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -17,6 +17,7 @@
 package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
+import org.junit.contrib.truth.util.GwtCompatible;
 
 /**
  * A custom subject factory which will return a FooSubject (which
@@ -24,6 +25,7 @@ import org.junit.contrib.truth.FailureStrategy;
  * 
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@GwtCompatible
 public interface SubjectFactory<S extends Subject<S,T>, T> {
   
   S getSubject(FailureStrategy fs, T that);
