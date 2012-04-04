@@ -16,8 +16,11 @@
  */
 package org.junit.contrib.truth.subjects;
 
+
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.TestVerb;
+import org.junit.contrib.truth.util.GwtCompatible;
+import org.junit.contrib.truth.util.GwtIncompatible;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties
@@ -26,6 +29,7 @@ import org.junit.contrib.truth.TestVerb;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@GwtCompatible(emulated = true)
 public class Subject<S extends Subject<S,T>,T> {
   private final FailureStrategy failureStrategy;
   private final T subject;
@@ -105,6 +109,7 @@ public class Subject<S extends Subject<S,T>,T> {
     return nextChain();
   }
 
+  @GwtIncompatible("Class.isInstance")
   public And<S> isA(Class<?> clazz) {
     if (!clazz.isInstance(getSubject())) {
       fail("is a", clazz.getName());
@@ -112,6 +117,7 @@ public class Subject<S extends Subject<S,T>,T> {
     return nextChain();
   }
 
+  @GwtIncompatible("Class.isInstance")
   public And<S> isNotA(Class<?> clazz) {
     if (clazz.isInstance(getSubject())) {
       fail("is not a", clazz.getName());

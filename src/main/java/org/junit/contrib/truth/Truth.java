@@ -16,6 +16,8 @@
  */
 package org.junit.contrib.truth;
 
+import org.junit.contrib.truth.util.GwtCompatible;
+import org.junit.contrib.truth.util.GwtIncompatible;
 import org.junit.internal.AssumptionViolatedException;
 
 /**
@@ -46,6 +48,7 @@ import org.junit.internal.AssumptionViolatedException;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@GwtCompatible(emulated = true)
 public class Truth {
   public static final FailureStrategy THROW_ASSERTION_ERROR = 
       new FailureStrategy() {
@@ -54,6 +57,7 @@ public class Truth {
         }
       };
 
+  @GwtIncompatible("JUnit4")
   public static final FailureStrategy THROW_ASSUMPTION_ERROR = 
       new FailureStrategy() {
         @Override public void fail(String message) {
@@ -63,5 +67,6 @@ public class Truth {
 
   public static final TestVerb ASSERT = new TestVerb(THROW_ASSERTION_ERROR);
 
+  @GwtIncompatible("JUnit4")
   public static final TestVerb ASSUME = new TestVerb(THROW_ASSUMPTION_ERROR);
 }
