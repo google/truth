@@ -17,4 +17,4 @@ if [ "${keystatus}" != "pub" ]; then
   exit 1
 fi
 
-mvn ${params} clean package source:jar site:jar javadoc:jar -Dgpg.keyname=${key} deploy
+mvn ${params} clean site:jar -Dgpg.keyname=${key} deploy

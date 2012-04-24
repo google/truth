@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.junit.contrib</groupId>
-	<artifactId>truth</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
-		</dependency>
-	</dependencies>
-	<developers>
-		<developer>
-			<id>cgruber</id>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.junit.contrib</groupId>
+  <artifactId>truth</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-docs</id>
+            <phase>post-integration-test</phase>
+            <goals><goal>jar</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>post-integration-test</phase>
+            <goals><goal>jar</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <developers>
+    <developer>
+      <id>cgruber</id>
       <name>Christian Gruber</name>
       <email>christianedwardgruber@gmail.com</email>
       <url>http://www.geekinasuit.com/</url>
@@ -42,32 +66,30 @@
       </roles>
       <timezone>-0</timezone>
     </developer>
-	</developers>
-	<url>https://github.com/truth0/truth/wiki</url>
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<distributionManagement>
-		<repository>
-			<id>sonatype-releases</id>
-			<name>Sonatype Maven Repository</name>
-			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-		<snapshotRepository>
-			<id>sonatype-snapshots</id>
-			<name>Sonatype Maven Snapshot Repository</name>
-			<url>http://oss.sonatype.org/content/repositories/junit-contrib-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-	<scm>
-  <connection>scm:git:git@github.com:truth0/truth.git</connection>
-  <url>scm:git:git@github.com:truth0/truth.git</url>
-  <!-- 
-  <developerConnection>scm:git:git@github.com:truth0/truth.git</developerConnection>
-  -->
-	</scm>
+  </developers>
+  <url>https://github.com/truth0/truth/wiki</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <distributionManagement>
+    <repository>
+      <id>sonatype-releases</id>
+      <name>Sonatype Maven Repository</name>
+      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>sonatype-snapshots</id>
+      <name>Sonatype Maven Snapshot Repository</name>
+      <url>http://oss.sonatype.org/content/repositories/junit-contrib-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+  <scm>
+    <connection>scm:git:git@github.com:truth0/truth.git</connection>
+    <url>scm:git:git@github.com:truth0/truth.git</url>
+    <!-- <developerConnection>scm:git:git@github.com:truth0/truth.git</developerConnection> -->
+  </scm>
 </project>
