@@ -29,7 +29,7 @@ import org.junit.contrib.truth.util.GwtCompatible;
 @GwtCompatible
 public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends IterableSubject<S, T, C> {
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> create(
       FailureStrategy failureStrategy, Collection<T> list) {
     return new CollectionSubject(failureStrategy, list);
