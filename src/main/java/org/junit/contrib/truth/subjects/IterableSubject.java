@@ -30,7 +30,7 @@ import org.junit.contrib.truth.util.GwtCompatible;
 @GwtCompatible
 public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>> extends Subject<S, C> {
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> create(
       FailureStrategy failureStrategy, Iterable<T> list) {
     return new IterableSubject(failureStrategy, list);
@@ -52,10 +52,20 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Attests that a Collection contains the provided object or fails.
+   * Attests that the subject no more objects, or fails.
    */
   public And<S> isEmpty() {
     if (getSubject().iterator().hasNext()) {
+      fail("isEmpty");
+    }
+    return nextChain();
+  }
+
+  /**
+   * Attests that the subject contains one or more objects, or fails
+   */
+  public And<S> isNotEmpty() {
+    if (!getSubject().iterator().hasNext()) {
       fail("isEmpty");
     }
     return nextChain();

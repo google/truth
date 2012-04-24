@@ -20,7 +20,6 @@ import static org.junit.Assert.fail;
 import static org.junit.contrib.truth.Truth.ASSERT;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,7 +65,7 @@ public class IterableTest {
   @Test public void iterablehasContentsAnyOrder() {
     ASSERT.that(iterable(1, 2, 3)).hasContentsAnyOrder(2, 3, 1);
   }
-  
+
   @Test public void iterablehasContentsAnyOrder_Fail() {
     try {
       ASSERT.that(iterable(1, 2, 3)).hasContentsAnyOrder(2, 3, 4);
@@ -83,6 +82,32 @@ public class IterableTest {
   @Test public void iterablehasContentsInOrder_Fail() {
     try {
       ASSERT.that(iterable(1, 2, 3)).hasContentsInOrder(2, 3, 1);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+    }
+  }
+
+  @Test public void iterableIsEmpty_Success() {
+    ASSERT.that(iterable()).isEmpty();
+  }
+
+  @Test public void iterableIsEmpty_Fail() {
+    try {
+      ASSERT.that(iterable("foo")).isEmpty();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+    }
+  }
+
+  @Test public void iterableIsNotEmpty_Success() {
+    ASSERT.that(iterable("foo")).isNotEmpty();
+  }
+
+  @Test public void iterableIsNotEmpty_Fail() {
+    try {
+      ASSERT.that(iterable()).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
