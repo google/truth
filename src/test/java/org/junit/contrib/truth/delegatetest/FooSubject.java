@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,17 +22,17 @@ import org.junit.contrib.truth.subjects.SubjectFactory;
 
 /**
  * A simple example Subject to demonstrate extension.
- * 
+ *
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
 public class FooSubject extends Subject<FooSubject, Foo> {
 
-  public static final SubjectFactory<FooSubject, Foo> FOO = 
-  new SubjectFactory<FooSubject, Foo>() {
-    @Override public FooSubject getSubject(FailureStrategy fs, Foo target) {
-      return new FooSubject(fs, target);
-    }
-  };
+  public static final SubjectFactory<FooSubject, Foo> FOO =
+      new SubjectFactory<FooSubject, Foo>() {
+        @Override public FooSubject getSubject(FailureStrategy fs, Foo target) {
+          return new FooSubject(fs, target);
+        }
+      };
 
   public FooSubject(FailureStrategy failureStrategy, Foo subject) {
     super(failureStrategy, subject);

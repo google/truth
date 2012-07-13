@@ -127,4 +127,11 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
     return super.is((long)other);
   }
 
+
+  public static final SubjectFactory<IntegerSubject, Long> INTEGER =
+      new SubjectFactory<IntegerSubject, Long>() {
+        @Override public IntegerSubject getSubject(FailureStrategy fs, Long target) {
+          return new IntegerSubject(fs, target);
+        }
+      };
 }

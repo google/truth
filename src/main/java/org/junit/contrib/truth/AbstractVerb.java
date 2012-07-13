@@ -1,5 +1,6 @@
 package org.junit.contrib.truth;
 
+import org.junit.contrib.truth.delegatetest.DelegationTest;
 import org.junit.contrib.truth.subjects.Subject;
 import org.junit.contrib.truth.subjects.SubjectFactory;
 import org.junit.contrib.truth.util.GwtCompatible;
@@ -61,4 +62,29 @@ public class AbstractVerb {
       return factory.getSubject(getFailureStrategy(), target);
     }
   }
+
+  public <T> IterativeVerb<T> in(Iterable<T> data) {
+    return new IterativeVerb<T>(data, getFailureStrategy());
+  }
+
+  /**
+   * A verb that iterates over data and applies the predicate iteratively
+   */
+  public static class IterativeVerb<T>
+      extends AbstractVerb {
+
+    private final Iterable<T> data;
+
+    public IterativeVerb(Iterable<T> data, FailureStrategy fs) {
+      super(fs);
+      this.data = data;
+    }
+
+    public <S extends Subject<S,T>, SF extends SubjectFactory<S, T>> S thatEach(SF factory) {
+      // return wrapper around SubjectFactory that takes the call, but applies
+      // it in turn to each item in the iterable.
+      return factory.getSubject(getFailureStrategy(), data.iterator().next());
+    }
+  }
+
 }
