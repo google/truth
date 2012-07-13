@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.contrib.truth.subjects.BooleanSubject;
+import org.junit.contrib.truth.subjects.ClassSubject;
 import org.junit.contrib.truth.subjects.CollectionSubject;
 import org.junit.contrib.truth.subjects.DefaultSubject;
 import org.junit.contrib.truth.subjects.IntegerSubject;
@@ -38,6 +39,10 @@ public class TestVerb extends AbstractVerb {
 
   public Subject<DefaultSubject, Object> that(Object target) {
     return new DefaultSubject(getFailureStrategy(), target);
+  }
+
+  public ClassSubject that(Class<?> target) {
+    return new ClassSubject(getFailureStrategy(), target);
   }
 
   public IntegerSubject that(Long target) {

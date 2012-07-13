@@ -33,7 +33,7 @@ import org.junit.contrib.truth.util.GwtIncompatible;
  */
 @GwtCompatible(emulated = true)
 public class Subject<S extends Subject<S,T>,T> {
-  private final FailureStrategy failureStrategy;
+  protected final FailureStrategy failureStrategy;
   private final T subject;
   private final And<S> chain;
 
@@ -154,6 +154,7 @@ public class Subject<S extends Subject<S,T>,T> {
     hasField(fieldName);
     if (getSubject() == null) {
       failWithoutSubject("Not true that <null> contains expected value <" + expected + ">");
+      return; // not all failures throw exceptions.
     }
     Class<?> clazz = getSubject().getClass();
     try {
@@ -180,17 +181,10 @@ public class Subject<S extends Subject<S,T>,T> {
 
   public void hasField(String fieldName) {
     if (getSubject() == null) {
-      failWithoutSubject("<null> has a field named <" + fieldName + ">");
+      failureStrategy.fail("Cannot determine a field name from a null object.");
+      return; // not all failures throw exceptions.
     }
-    Class<?> clazz = getSubject().getClass();
-    try {
-      clazz.getField(fieldName);
-    } catch (NoSuchFieldException e) {
-      StringBuilder message = new StringBuilder("Not true that ");
-      message.append("<").append(getSubject().getClass().getSimpleName()).append(">");
-      message.append(" has a field named <").append(fieldName).append(">");
-      failureStrategy.fail(message.toString());
-    }
+    check().that(getSubject().getClass()).hasField(fieldName);
   }
 
 

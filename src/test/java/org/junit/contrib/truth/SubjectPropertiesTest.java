@@ -51,7 +51,7 @@ public class SubjectPropertiesTest {
       ASSERT.fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-          .is("Not true that the subject <null> has a field named <publicField>");
+          .is("Cannot determine a field name from a null object.");
     }
   }
 
