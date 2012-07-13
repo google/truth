@@ -15,6 +15,13 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <!-- Get rid of pesky annotation compiler errors -->
+          <source>1.6</source>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <executions>
           <execution>
@@ -64,7 +71,7 @@
         <role>creator</role>
         <role>developer</role>
       </roles>
-      <timezone>-0</timezone>
+      <timezone>+2</timezone>
     </developer>
   </developers>
   <url>https://github.com/truth0/truth/wiki</url>
