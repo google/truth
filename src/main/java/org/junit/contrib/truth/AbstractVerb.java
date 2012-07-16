@@ -63,28 +63,9 @@ public class AbstractVerb {
     }
   }
 
-  public <T> IterativeVerb<T> in(Iterable<T> data) {
-    return new IterativeVerb<T>(data, getFailureStrategy());
-  }
-
-  /**
-   * A verb that iterates over data and applies the predicate iteratively
-   */
-  public static class IterativeVerb<T>
-      extends AbstractVerb {
-
-    private final Iterable<T> data;
-
-    public IterativeVerb(Iterable<T> data, FailureStrategy fs) {
-      super(fs);
-      this.data = data;
-    }
-
-    public <S extends Subject<S,T>, SF extends SubjectFactory<S, T>> S thatEach(SF factory) {
-      // return wrapper around SubjectFactory that takes the call, but applies
-      // it in turn to each item in the iterable.
-      return factory.getSubject(getFailureStrategy(), data.iterator().next());
-    }
+  public <T> IteratingVerb<T> in(Iterable<T> data) {
+    return new IteratingVerb<T>(data, getFailureStrategy());
   }
 
 }
+
