@@ -39,8 +39,7 @@ public class SubjectFactoryReflectionTest {
             return new StringSubject(fs, target);
           }
         };
-    Class<?> t = factory.getSubjectClass();
-    ASSERT.that(t).is(StringSubject.class);
+    ASSERT.that(factory.getSubjectClass()).is(StringSubject.class);
   }
 
 }

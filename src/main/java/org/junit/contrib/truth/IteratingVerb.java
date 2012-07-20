@@ -11,6 +11,7 @@ import org.junit.contrib.truth.subjects.Subject;
 import org.junit.contrib.truth.subjects.SubjectFactory;
 import org.junit.contrib.truth.util.CompilingClassLoader;
 import org.junit.contrib.truth.util.CompilingClassLoader.CompilerException;
+import org.junit.contrib.truth.util.ReflectionUtil;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -71,11 +72,15 @@ public  class IteratingVerb<T> extends AbstractVerb {
   private static Class<?> compileWrapperClass(Class<?> subjectClass) {
     List<Method> methods = Arrays.asList(subjectClass.getDeclaredMethods());
     String subjectName = subjectClass.getSimpleName();
+    Class<?> targetType = ReflectionUtil.capture(subjectClass, 1);
     StringBuffer code = new StringBuffer();
-    code.append("package ").append(subjectClass.getPackage().getName()).append("\n\n");
-    code.append("public class ").append(subjectName).append("IteratingWrapper ")
+    code.append("package ").append(subjectClass.getPackage().getName()).append(";\n\n");
+    code.append("class ").append(subjectName).append("IteratingWrapper ")
         .append("extends ").append(subjectName).append(" {\n");
-
+    code.append("  public ").append(subjectName).append("IteratingWrapper ").append("(\n")
+        .append("    ").append(FailureStrategy.class.getName()).append(" fs,\n")
+        .append("    ").append(targetType.getName()).append(" s\n")
+        .append("  ) { super(fs, s); }\n");
     code.append("}\n");
 
     String out = code.toString();
@@ -88,7 +93,7 @@ public  class IteratingVerb<T> extends AbstractVerb {
       throw new Error("Could not compile class " + subjectName + " with source:\n" + out , e);
     }
     try {
-      return classLoader.loadClass(subjectName);
+      return classLoader.loadClass(subjectClass.getName());
     } catch (ClassNotFoundException e) {
       throw new Error("Could not load class " + subjectName, e);
     }

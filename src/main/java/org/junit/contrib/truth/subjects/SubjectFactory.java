@@ -16,11 +16,10 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.util.GwtCompatible;
+import org.junit.contrib.truth.util.ReflectionUtil;
 
 /**
  * A custom subject factory which will return a FooSubject (which
@@ -31,7 +30,8 @@ import org.junit.contrib.truth.util.GwtCompatible;
 @GwtCompatible
 public abstract class SubjectFactory<S extends Subject<S,T>, T> {
 
-  private final Class<S> type = capture();
+  @SuppressWarnings("unchecked")
+  private final Class<S> type = (Class<S>)ReflectionUtil.capture(getClass(), 0);
 
   public SubjectFactory() {}
 
@@ -41,20 +41,5 @@ public abstract class SubjectFactory<S extends Subject<S,T>, T> {
     return type;
   }
 
-  /** Returns the captured type. */
-  @SuppressWarnings("unchecked")
-  private Class<S> capture() {
-    Type superclass = getClass().getGenericSuperclass();
-    if (!(superclass instanceof ParameterizedType)) {
-      throw new IllegalArgumentException ("" + superclass + " isn't parameterized");
-    }
-    // we want the type of the Subject, so the 0th element of the type arguments.
-    Type t = ((ParameterizedType) superclass).getActualTypeArguments()[0];
-    try {
-      return (Class<S>) Class.forName(t.toString());
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException("Could not load class " + t.toString(), e);
-    }
-  }
 }
 
