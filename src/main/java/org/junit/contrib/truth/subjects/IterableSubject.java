@@ -15,11 +15,8 @@
  */
 package org.junit.contrib.truth.subjects;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Iterator;
 
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.util.GwtCompatible;
@@ -61,28 +58,28 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     return nextChain();
   }
 
-  public And<S> hasContentsInOrder(Object... expected) {
-    // TODO(kevinb): prettier error message
-    List<Object> target = new ArrayList<Object>();
-    for (Object t : getSubject()) {
-      target.add(t);
+  /**
+   * Asserts that the items are supplied in the order given by the iterable. For
+   * Collections and other things which contain items but may not have guaranteed
+   * iteration order, this method should be overridden.
+   */
+  public And<S> iteratesOverSequence(Object... expectedItems) {
+    Iterator<T> actualItems = getSubject().iterator();
+    for (Object expected : expectedItems) {
+      if (!actualItems.hasNext()) {
+        fail("iterates through", Arrays.asList(expectedItems));
+      } else {
+        Object actual = actualItems.next();
+        if (actual == expected || actual != null && actual.equals(expected)) {
+          continue;
+        } else {
+          fail("iterates through", Arrays.asList(expectedItems));
+        }
+      }
     }
-    check().that(target).isEqualTo(Arrays.asList(expected));
-    return nextChain();
-  }
-
-  public And<S> hasContentsAnyOrder(Object... expected) {
-    check().that(createFakeMultiset(getSubject()))
-        .isEqualTo(createFakeMultiset(Arrays.asList(expected)));
-    return nextChain();
-  }
-
-  private static Map<Object, Integer> createFakeMultiset(Iterable<?> iterable) {
-    Map<Object, Integer> map = new HashMap<Object, Integer>();
-    for (Object t : iterable) {
-      Integer count = map.get(t);
-      map.put(t, (count == null) ? 1 : count + 1);
+    if (actualItems.hasNext()) {
+      fail("iterates through", Arrays.asList(expectedItems));
     }
-    return map;
+    return nextChain();
   }
 }
