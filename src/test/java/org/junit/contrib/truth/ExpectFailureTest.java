@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,9 +27,9 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
 /**
- * Tests (and effectively sample code) for the Expect 
+ * Tests (and effectively sample code) for the Expect
  * verb (implemented as a rule)
- * 
+ *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -45,15 +45,15 @@ public class ExpectFailureTest {
   @Test public void expectFailStringContains() {
     EXPECT.that("abc").contains("x").and().contains("y").and().contains("z");
   }
-  
+
   @Test public void expectFailContainsAllOf() {
-    EXPECT.that(Arrays.asList("a", "b", "c")).containsAllOf("a", "c", "d");
+    EXPECT.that(Arrays.asList("a", "b", "c")).contains("a", "c", "d");
   }
-  
+
   @Test public void expectFailContainsAnyOf() {
     EXPECT.that(Arrays.asList("a", "b", "c")).containsAnyOf("z", "q");
   }
-  
+
   public static class FailingExpect extends Expect {
     protected FailingExpect(ExpectationGatherer gatherer) {
       super(gatherer);
@@ -70,7 +70,7 @@ public class ExpectFailureTest {
             return; //ignore - we're happy that it threw.
           }
           throw new AssertionError("Should have thrown error with caught assertion failures..");
-        }        
+        }
       };
     }
   }

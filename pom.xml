@@ -12,8 +12,18 @@
       <version>4.8.2</version>
     </dependency>
   </dependencies>
+  <prerequisites>
+    <maven>3.0.3</maven>
+  </prerequisites>
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <executions>

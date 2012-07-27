@@ -135,6 +135,11 @@ public class Subject<S extends Subject<S,T>,T> {
     return new TestVerb(failureStrategy);
   }
 
+  /**
+   * Assembles a failure message and passes such to the FailureStrategy
+   * @param verb the act being asserted
+   * @param messageParts the expectations against which the subject is compared
+   */
   protected void fail(String verb, Object... messageParts) {
     String message = "Not true that ";
     message += "<" + getSubject() + "> " + verb;
