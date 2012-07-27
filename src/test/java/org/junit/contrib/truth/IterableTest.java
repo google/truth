@@ -62,26 +62,13 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterablehasContentsAnyOrder() {
-    ASSERT.that(iterable(1, 2, 3)).hasContentsAnyOrder(2, 3, 1);
+  @Test public void iteratesOverSequence() {
+    ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3);
   }
 
-  @Test public void iterablehasContentsAnyOrder_Fail() {
+  @Test public void iteratesOverSequence_Fail() {
     try {
-      ASSERT.that(iterable(1, 2, 3)).hasContentsAnyOrder(2, 3, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-    }
-  }
-
-  @Test public void iterablehasContentsInOrder() {
-    ASSERT.that(iterable(1, 2, 3)).hasContentsInOrder(1, 2, 3);
-  }
-
-  @Test public void iterablehasContentsInOrder_Fail() {
-    try {
-      ASSERT.that(iterable(1, 2, 3)).hasContentsInOrder(2, 3, 1);
+      ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(2, 3, 1);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
