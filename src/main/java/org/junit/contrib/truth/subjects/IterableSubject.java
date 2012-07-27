@@ -49,7 +49,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Attests that the subject no more objects, or fails.
+   * Attests that the subject holds no more objects, or fails.
    */
   public And<S> isEmpty() {
     if (getSubject().iterator().hasNext()) {
@@ -59,7 +59,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Attests that the subject contains one or more objects, or fails
+   * Attests that the subject holds one or more objects, or fails
    */
   public And<S> isNotEmpty() {
     if (!getSubject().iterator().hasNext()) {
