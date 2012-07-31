@@ -67,6 +67,8 @@ public class CompilingClassLoader extends ClassLoader {
    */
   public static class CompilerException extends Exception {
 
+    private static final long serialVersionUID = -2936958840023603270L;
+
     public CompilerException(String message) {
       super(message);
     }
@@ -92,7 +94,7 @@ public class CompilingClassLoader extends ClassLoader {
    * @param sourceCode Java source for class. e.g. "package com.foo; class MyClass { ... }".
    * @param diagnosticListener Notified of compiler errors (may be null).
    */
-  public CompilingClassLoader(ClassLoader parent, String className, CharSequence sourceCode,
+  public CompilingClassLoader(ClassLoader parent, String className, String sourceCode,
       DiagnosticListener<JavaFileObject> diagnosticListener) throws CompilerException {
     super(parent);
     if (!compileSourceCodeToByteCode(className, sourceCode, diagnosticListener)) {
@@ -116,7 +118,7 @@ public class CompilingClassLoader extends ClassLoader {
   /**
    * @return Whether compilation was successful.
    */
-  private boolean compileSourceCodeToByteCode(String className, CharSequence sourceCode,
+  private boolean compileSourceCodeToByteCode(String className, String sourceCode,
       DiagnosticListener<JavaFileObject> diagnosticListener) {
     JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 
@@ -177,9 +179,9 @@ public class CompilingClassLoader extends ClassLoader {
 
   private static class InMemoryJavaFile extends SimpleJavaFileObject {
 
-    private final CharSequence sourceCode;
+    private final String sourceCode;
 
-    public InMemoryJavaFile(String className, CharSequence sourceCode) {
+    public InMemoryJavaFile(String className, String sourceCode) {
       super(makeUri(className), Kind.SOURCE);
       this.sourceCode = sourceCode;
     }
