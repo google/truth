@@ -1,6 +1,5 @@
 package org.junit.contrib.truth;
 
-import org.junit.contrib.truth.delegatetest.DelegationTest;
 import org.junit.contrib.truth.subjects.Subject;
 import org.junit.contrib.truth.subjects.SubjectFactory;
 import org.junit.contrib.truth.util.GwtCompatible;

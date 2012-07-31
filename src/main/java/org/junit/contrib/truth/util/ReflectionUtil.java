@@ -19,8 +19,6 @@ package org.junit.contrib.truth.util;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import org.junit.contrib.truth.subjects.Subject;
-
 /**
  * Reflection utility methods.
  *
@@ -29,18 +27,12 @@ import org.junit.contrib.truth.subjects.Subject;
 public class ReflectionUtil {
 
   /** Returns the captured type. */
-  @SuppressWarnings("unchecked")
-  public static <S extends Subject<S,T>, T> Class<S> capture(Class<?> clazz, int paramIndex) {
+  public static Class<?> capture(Class<?> clazz, int paramIndex) {
     Type superclass = clazz.getGenericSuperclass();
     if (!(superclass instanceof ParameterizedType)) {
       throw new IllegalArgumentException ("" + superclass + " isn't parameterized");
     }
-    // we want the type of the Subject, so the 0th element of the type arguments.
     Type[] typeParams = ((ParameterizedType) superclass).getActualTypeArguments();
-    return (Class<S>)typeParams[paramIndex];
+    return (Class<?>)typeParams[paramIndex];
   }
-
-
-
 }
-
