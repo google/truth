@@ -21,6 +21,7 @@ Truth
 		- [Strings](#strings)
 		- [Iterables, Collections, Sets, and the like.](#iterables-collections-sets-and-the-like)
 - [Planned improvements and changes](#planned-improvements-and-changes)
+- [References](#references)
 
 Introduction
 ------------
@@ -183,8 +184,7 @@ quick and dirty and can get the job done.  That's simply to extend AbstractVerb
 or TestVerb and declare their own custom ASSERT field containing this custom
 verb.  That verb can implement more "that(Sometype t)" overrides to support
 custom types, or even to provide a different Subject wrapper for the already
-supported types.
-(see https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/extensiontest)
+supported types. (see [Extensibility through Subclassing][subclasssing])
 
 A more literate approach, and one which doesn't require creating a new
 TestVerb (allowing reuse of ASSERT, ASSUME, and EXPECT) is to use this syntax:
@@ -194,7 +194,7 @@ TestVerb (allowing reuse of ASSERT, ASSUME, and EXPECT) is to use this syntax:
 SOME_TYPE here is actually a SubjectFactory - an interface which can be
 implemented to provide a custom Subject wrapper.  Creating a SubjectFactory
 for use in this approach is pretty easy, and you can follow the example
-given here https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/delegatetest
+given it the [Extension through delegation] [delegation] example.
 
 For convenience, you can create a static final SOME_TYPE field so you 
 can use it less-verbosely in ASSERT.about();  Existing Subject subclasses
@@ -203,7 +203,7 @@ SubjectFactory fields named INTEGER, STRING, etc. You can also follow
 their example. 
 
 ### Categorically testing the contents of collections
-*as of 0.8*
+*coming in version 0.8*
 
 Sometimes a test needs to look at the contents of a collection 
 and ensure that characteristics of all a collection's contents
@@ -321,4 +321,8 @@ Planned improvements and changes
     * Support for propositions about arbitrary field values in any object
       + Supporting Lombok and Tapestry style properties by providing field access
 
+References
+----------
+  [subclassing] https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/extensiontest
+  [delegation] https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/delegatetest
 
