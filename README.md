@@ -194,7 +194,7 @@ TestVerb (allowing reuse of ASSERT, ASSUME, and EXPECT) is to use this syntax:
 SOME_TYPE here is actually a SubjectFactory - an interface which can be
 implemented to provide a custom Subject wrapper.  Creating a SubjectFactory
 for use in this approach is pretty easy, and you can follow the example
-given it the [Extension through delegation] [delegation] example.
+given it the [Extension through delegation][delegation] example.
 
 For convenience, you can create a static final SOME_TYPE field so you 
 can use it less-verbosely in ASSERT.about();  Existing Subject subclasses
@@ -323,6 +323,6 @@ Planned improvements and changes
 
 References
 ----------
-  [subclassing] https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/extensiontest
-  [delegation] https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/delegatetest
+  [subclassing]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/extensiontest
+  [delegation]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/delegatetest
 
