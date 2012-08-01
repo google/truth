@@ -202,6 +202,9 @@ can use it less-verbosely in ASSERT.about();  Existing Subject subclasses
 SubjectFactory fields named INTEGER, STRING, etc. You can also follow
 their example. 
 
+  [Extensibility through Subclassing]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/extensiontest
+  [Extension through delegation]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/delegatetest
+
 ### Categorically testing the contents of collections
 *coming in version 0.8*
 
@@ -322,9 +325,4 @@ Planned improvements and changes
     * Support for propositions about arbitrary field values in any object
       + Supporting Lombok and Tapestry style properties by providing field access
 
-References
-----------
-
-  [Extensibility through Subclassing]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/extensiontest
-  [Extension through delegation]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/delegatetest
 
