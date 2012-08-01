@@ -27,9 +27,13 @@ Installation
 To prepare to use Truth, declare this dependency:
 
 > &lt;dependency>
+>
 >   &lt;groupId>truth&lt;/groupId>
+>
 >   &lt;artifactId>truth&lt;/artifactId>
+>
 >   &lt;version>0.7&lt;/version>
+>
 > &lt;/dependency>
 
 and add this repository section to your pom or to a parent 
