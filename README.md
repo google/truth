@@ -2,8 +2,26 @@ Truth
 =====
 <em><strong>We've made failure a strategy</strong></em>
 
-* Auto-generated toc:
-{:toc}
+**Table of Contents**  <!--- Generated TOC by http://doctoc.herokuapp.com/ -->
+---------------------
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Using Truth](#using-truth)
+	- [Super basics](#super-basics)
+	- [Failure Strategy](#failure-strategy)
+	- [How does Truth work?](#how-does-truth-work)
+	- [Extensibility](#extensibility)
+	- [Categorically testing the contents of collections](#categorically-testing-the-contents-of-collections)
+	- [Some code examples](#some-code-examples)
+		- [Basic objects](#basic-objects)
+		- [Booleans](#booleans)
+		- [Numerics](#numerics)
+		- [Strings](#strings)
+		- [Iterables, Collections, Sets, and the like.](#iterables-collections-sets-and-the-like)
+			- [Iterables](#iterables)
+			- [Collections](#collections)
+			- [Lists](#lists)
+	- [Planned improvements and changes](#planned-improvements-and-changes)
 
 Introduction
 ------------
