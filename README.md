@@ -2,8 +2,10 @@ Truth
 =====
 <em><strong>We've made failure a strategy</strong></em>
 
-**Table of Contents**  <!--- Generated TOC by http://doctoc.herokuapp.com/ -->
----------------------
+<!--- Generated TOC by http://doctoc.herokuapp.com/ -->
+
+###***Table of Contents***
+
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Using Truth](#using-truth)
@@ -18,10 +20,7 @@ Truth
 		- [Numerics](#numerics)
 		- [Strings](#strings)
 		- [Iterables, Collections, Sets, and the like.](#iterables-collections-sets-and-the-like)
-			- [Iterables](#iterables)
-			- [Collections](#collections)
-			- [Lists](#lists)
-	- [Planned improvements and changes](#planned-improvements-and-changes)
+- [Planned improvements and changes](#planned-improvements-and-changes)
 
 Introduction
 ------------
@@ -310,8 +309,8 @@ And custom comparators can be provided
     ASSERT.that(myList).isOrdered(aComparator); 
     ASSERT.that(myList).isPartiallyOrdered(aComparator);
 
-### Planned improvements and changes
-
+Planned improvements and changes
+--------------------------------
   * Support for a for-each style means to test the contents of iterables (0.8)
   * Subject wrappers for new types:
     * New subjects for Map<K,V>, Class<T>, Float/Double and other currently missing types.
