@@ -112,19 +112,21 @@ are:
     <td>Truth.ASSERT</td>
     <td>Aborts and fails test, reports failure</td>
     <td>JUnit, TestNG, others (untested)</td>
+    <td />
   </tr>
   <tr>
     <td>Assumption</td>
     <td>Truth.ASSUME</td>
     <td>Aborts and ignores/skips test</td>
     <td>JUnit</td>
+    <td />
   </tr>
   <tr>
     <td>Expectation</td>
     <td>Expect.create()</td>
     <td>Continues test, reports errors and failure upon test completion</td>
     <td>JUnit</td>
-    <th>You must declare an @Rule per the ExpectTest</th>
+    <td>You must declare an @Rule per the ExpectTest</td>
   </tr>
 </table>
 
