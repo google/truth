@@ -184,7 +184,7 @@ quick and dirty and can get the job done.  That's simply to extend AbstractVerb
 or TestVerb and declare their own custom ASSERT field containing this custom
 verb.  That verb can implement more "that(Sometype t)" overrides to support
 custom types, or even to provide a different Subject wrapper for the already
-supported types. (see [Extensibility through Subclassing][subclasssing])
+supported types. (see [Extensibility through Subclassing][])
 
 A more literate approach, and one which doesn't require creating a new
 TestVerb (allowing reuse of ASSERT, ASSUME, and EXPECT) is to use this syntax:
@@ -194,7 +194,7 @@ TestVerb (allowing reuse of ASSERT, ASSUME, and EXPECT) is to use this syntax:
 SOME_TYPE here is actually a SubjectFactory - an interface which can be
 implemented to provide a custom Subject wrapper.  Creating a SubjectFactory
 for use in this approach is pretty easy, and you can follow the example
-given it the [Extension through delegation][delegation] example.
+given it the [Extension through delegation][] example.
 
 For convenience, you can create a static final SOME_TYPE field so you 
 can use it less-verbosely in ASSERT.about();  Existing Subject subclasses
@@ -311,6 +311,7 @@ And custom comparators can be provided
 
 Planned improvements and changes
 --------------------------------
+
   * Support for a for-each style means to test the contents of iterables (0.8)
   * Subject wrappers for new types:
     * New subjects for Map<K,V>, Class<T>, Float/Double and other currently missing types.
@@ -323,6 +324,7 @@ Planned improvements and changes
 
 References
 ----------
-  [subclassing]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/extensiontest
-  [delegation]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/delegatetest
+
+  [Extensibility through Subclassing]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/extensiontest
+  [Extension through delegation]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/delegatetest
 
