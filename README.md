@@ -26,25 +26,21 @@ Installation
 
 To prepare to use Truth, declare this dependency:
 
-> &lt;dependency>
->
->   &lt;groupId>truth&lt;/groupId>
->
->   &lt;artifactId>truth&lt;/artifactId>
->
->   &lt;version>0.7&lt;/version>
->
-> &lt;/dependency>
+    &lt;dependency>
+      &lt;groupId>truth&lt;/groupId>
+      &lt;artifactId>truth&lt;/artifactId>
+      &lt;version>0.7&lt;/version>
+    &lt;/dependency>
 
 and add this repository section to your pom or to a parent 
 pom.xml file. (for now - this requirement will later be removed.
 
-> &lt;repositories>
->   &lt;repository>
->     &lt;id>truthi-repo&lt;/id>
->     &lt;url>https://raw.github.com/truth0/repo/master&lt;/url>
->   &lt;/repository>
-> &lt;/repositories>
+> &lt;repositories><br />
+>   &lt;repository><br />
+>     &lt;id>truthi-repo&lt;/id><br />
+>     &lt;url>https://raw.github.com/truth0/repo/master&lt;/url><br />
+>   &lt;/repository><br />
+> &lt;/repositories><br />
 
 or download the jar directly from the link below and add it to
 your tests classpath
