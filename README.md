@@ -1,6 +1,8 @@
 Truth
 =====
-<em><strong>We've made failure a strategy</strong></em>
+***We've made failure a strategy***
+
+###**Latest Release:** 0.7<br/>**Artifact:** org.junit.contrib:truth:jar:0.7
 
 <!--- Generated TOC by http://doctoc.herokuapp.com/ -->
 
@@ -25,21 +27,19 @@ Truth
 Introduction
 ------------
 
-Truth is a proposition framework suitable for testing assertions 
-and assumptions.  Truth adopts a fluent style for your test 
-propositions, is extensible in several ways, supports IDE 
-completion/discovery of available propositions, and supports 
-different responses to un-true propositions.  Truth can be used 
-to declare assumptions (skip the test if they fail), assertions 
-(fail the test), and expectations (continue but report errors 
+Truth is a testing framework suitable for making assertions and assumptions
+about code.  Truth adopts a fluent style for your test propositions, is 
+extensible in several ways, supports IDE completion/discovery of available
+propositions, and supports different responses to un-true propositions.
+Truth can be used to declare assumptions (skip the test if they fail),
+assertions (fail the test), and expectations (continue but report errors 
 and fail at the end).
 
-While intended to work with JUnit, Truth can be used with other
-testing framework with minimal effort.  Truth is released as
-a maven artifact through a custom repository (it will be released
-to repo1.maven.org soon), and is licensed with the Apache 2.0
-open-source license.  As such, you are free to use it or modify
-it subject only to the terms in that license.
+While intended to work with JUnit, Truth can be used with other testing
+framework with minimal effort.  Truth is released as a maven artifact 
+through a custom repository (it will be released to repo1.maven.org soon),
+and is licensed with the Apache 2.0 open-source license.  As such, you are
+free to use it or modify it subject only to the terms in that license.
 
 Installation
 ------------
