@@ -21,7 +21,6 @@ Truth
 		- [Strings](#strings)
 		- [Iterables, Collections, Sets, and the like.](#iterables-collections-sets-and-the-like)
 - [Planned improvements and changes](#planned-improvements-and-changes)
-- [References](#references)
 
 Introduction
 ------------
