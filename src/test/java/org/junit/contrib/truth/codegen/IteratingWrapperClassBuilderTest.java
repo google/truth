@@ -33,75 +33,76 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class IteratingWrapperClassBuilderTest {
 
-  private static final String BAR_EXPECTED =
+  private static final String TOP_BOILERPLATE =
       "package org.junit.contrib.truth.codegen;\n" +
       "\n" +
       "import org.junit.contrib.truth.FailureStrategy;\n" +
       "import org.junit.contrib.truth.subjects.SubjectFactory;\n" +
-      "\n" +
-      "public class BarSubjectIteratingWrapper extends BarSubject {\n" +
-      "\n" +
-      "    private final SubjectFactory subjectFactory;\n" +
-      "    private final Iterable<String> data;\n" +
-      "\n" +
-      "  public BarSubjectIteratingWrapper(\n" +
+      "\n";
+
+  private static final String SUBJECT_FACTORY_FIELD =
+      "private final SubjectFactory subjectFactory;";
+  private static final String ITERABLE_FIELD =
+      "private final Iterable<%s> data;";
+
+  private static final String CONSTRUCTOR =
+      "  public %1$sSubjectIteratingWrapper(\n" +
       "      FailureStrategy failureStrategy,\n" +
       "      SubjectFactory<?, ?> subjectFactory,\n" +
-      "      Iterable<String> data\n" +
+      "      Iterable<%2$s> data\n" +
       "  ) {\n" +
-      "    super(failureStrategy, null);\n" +
+      "    super(failureStrategy, (%2$s)null);\n" +
       "    this.subjectFactory = subjectFactory;\n" +
       "    this.data = data;\n" +
-      "  }\n" +
-      "\n" +
-      "  public org.junit.contrib.truth.subjects.Subject.And startsWith(java.lang.String) {\n" +
+      "  }";
+
+  private static final String CLASS_DECLARATION =
+      "public class %1$sSubjectIteratingWrapper extends %1$sSubject {";
+
+  private static final String FOO_WRAPPED_METHOD =
+      "  public org.junit.contrib.truth.subjects.Subject.And endsWith(java.lang.String arg0) {\n" +
       "    for (java.lang.String item : data) {\n" +
-      "      org.junit.contrib.truth.codegen.BarSubject subject = (org.junit.contrib.truth.codegen.BarSubject)subjectFactory.getSubject(failureStrategy);\n" +
+      "      org.junit.contrib.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject subject = (org.junit.contrib.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
+      "      subject.endsWith(arg0);\n" +
       "    }\n" +
-      "  }\n" +
-      "}\n";
+      "    return nextChain();\n" +
+      "  }";
+
+  private static final String BAR_WRAPPED_METHOD =
+      "  public org.junit.contrib.truth.subjects.Subject.And startsWith(java.lang.String arg0) {\n" +
+      "    for (java.lang.String item : data) {\n" +
+      "      org.junit.contrib.truth.codegen.BarSubject subject = (org.junit.contrib.truth.codegen.BarSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
+      "      subject.startsWith(arg0);\n" +
+      "    }\n" +
+      "    return nextChain();\n" +
+      "  }";
+
 
   @Test public void testSubjectWrapperGeneration_PlainClass() {
     IteratingWrapperClassBuilder builder = new IteratingWrapperClassBuilder(BarSubject.BAR);
     String code = builder.build().toString();
     System.out.println("Code:\n" + code);
-    ASSERT.that(code).is(BAR_EXPECTED);
+    ASSERT.that(code).contains(TOP_BOILERPLATE);
+    ASSERT.that(code).contains(SUBJECT_FACTORY_FIELD);
+    ASSERT.that(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
+    ASSERT.that(code)
+          .contains(String.format(CONSTRUCTOR, "Bar", "java.lang.String"));
+    ASSERT.that(code).contains(String.format(CLASS_DECLARATION, "Bar"));
+    ASSERT.that(code).contains(BAR_WRAPPED_METHOD);
   }
-
-  private static final String FOO_EXPECTED =
-      "package org.junit.contrib.truth.codegen;\n" +
-      "\n" +
-      "import org.junit.contrib.truth.FailureStrategy;\n" +
-      "import org.junit.contrib.truth.subjects.SubjectFactory;\n" +
-      "\n" +
-      "public class FooSubjectIteratingWrapper extends FooSubject {\n" +
-      "\n" +
-      "    private final SubjectFactory subjectFactory;\n" +
-      "    private final Iterable<String> data;\n" +
-      "\n" +
-      "  public FooSubjectIteratingWrapper(\n" +
-      "      FailureStrategy failureStrategy,\n" +
-      "      SubjectFactory<?, ?> subjectFactory,\n" +
-      "      Iterable<String> data\n" +
-      "  ) {\n" +
-      "    super(failureStrategy, null);\n" +
-      "    this.subjectFactory = subjectFactory;\n" +
-      "    this.data = data;\n" +
-      "  }\n" +
-      "\n" +
-      "  public org.junit.contrib.truth.subjects.Subject.And endsWith(java.lang.String) {\n" +
-      "    for (java.lang.String item : data) {\n" +
-      "      org.junit.contrib.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject subject = (org.junit.contrib.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject)subjectFactory.getSubject(failureStrategy);\n" +
-      "    }\n" +
-      "  }\n" +
-      "}\n";
 
   @Test public void testSubjectWrapperGeneration_InnerClass() {
     IteratingWrapperClassBuilder builder = new IteratingWrapperClassBuilder(FooSubject.FOO);
     String code = builder.build().toString();
     System.out.println("Code:\n" + code);
-    ASSERT.that(code).is(FOO_EXPECTED);
-      }
+    ASSERT.that(code).contains(TOP_BOILERPLATE);
+    ASSERT.that(code).contains(SUBJECT_FACTORY_FIELD);
+    ASSERT.that(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
+    ASSERT.that(code)
+          .contains(String.format(CONSTRUCTOR, "Foo", "java.lang.String"));
+    ASSERT.that(code).contains(String.format(CLASS_DECLARATION, "Foo"));
+    ASSERT.that(code).contains(FOO_WRAPPED_METHOD);
+  }
 
   public static class FooSubject extends Subject<FooSubject, String> {
 

@@ -49,9 +49,9 @@ public class IteratingWrapperClassBuilder {
       "  private final Iterable<%3$s> data;\n" +
       "\n" +
       "  public %2$sIteratingWrapper(\n" +
-      "      org.junit.contrib.truth.FailureStrategy failureStrategy,\n" +
-      "      org.junit.contrib.truth.subjects.SubjectFactory<?, ?> subjectFactory,\n" +
-      "      java.lang.Iterable<%3$s> data\n" +
+      "      FailureStrategy failureStrategy,\n" +
+      "      SubjectFactory<?, ?> subjectFactory,\n" +
+      "      Iterable<%3$s> data\n" +
       "  ) {\n" +
       "    super(failureStrategy, (%3$s)null);\n" +
       "    this.subjectFactory = subjectFactory;\n" +
