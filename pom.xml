@@ -84,6 +84,38 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/truth0/truth/issues</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>https://truth.ci.cloudbees.com/</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>false</sendOnSuccess>
+        <sendOnWarning>false</sendOnWarning>
+        <configuration><address>truth-dev+build@googlecode.com</address></configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>
+  <mailingLists>
+    <mailingList>
+      <name>Announcements List</name>
+      <post>truth-announce@googlecode.com</post>
+    </mailingList>
+    <mailingList>
+      <name>User List</name>
+      <post>truth-users@googlecode.com</post>
+    </mailingList>
+    <mailingList>
+      <name>Developer List</name>
+      <post>truth-dev@googlecode.com</post>
+    </mailingList>
+  </mailingLists>
   <distributionManagement>
     <repository>
       <id>sonatype-releases</id>
