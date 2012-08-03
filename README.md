@@ -2,7 +2,9 @@ Truth
 =====
 ***We've made failure a strategy***
 
-**Latest Release:** *0.7*<br/>**Latest Artifact:** *org.junit.contrib:truth:jar:0.7*
+**Continuous Integration:** [![Build Status](https://truth.ci.cloudbees.com/job/Master-HEAD/badge/icon)](https://truth.ci.cloudbees.com/job/Master-HEAD/)<br />
+**Latest Release:** *0.7*<br />
+**Latest Artifact:** *org.junit.contrib:truth:jar:0.7*<br />
 
 <!--- Generated TOC by http://doctoc.herokuapp.com/ -->
 
