@@ -27,7 +27,7 @@ import java.lang.reflect.Type;
 public class ReflectionUtil {
 
   /** Returns the captured type. */
-  public static Class<?> capture(Class<?> clazz, int paramIndex) {
+  public static Class<?> typeParameter(Class<?> clazz, int paramIndex) {
     Type superclass = clazz.getGenericSuperclass();
     if (!(superclass instanceof ParameterizedType)) {
       throw new IllegalArgumentException ("" + superclass + " isn't parameterized");

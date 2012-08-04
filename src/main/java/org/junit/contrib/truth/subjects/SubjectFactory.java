@@ -30,8 +30,10 @@ import org.junit.contrib.truth.util.ReflectionUtil;
 @GwtCompatible
 public abstract class SubjectFactory<S extends Subject<S,T>, T> {
 
-  @SuppressWarnings("unchecked")
-  private final Class<S> type = (Class<S>)ReflectionUtil.capture(getClass(), 0);
+  private static final int SUBJECT_TYPE_PARAMETER = 0;
+
+  @SuppressWarnings("unchecked") // cast failure is a critical error
+  private final Class<S> type = (Class<S>)ReflectionUtil.typeParameter(getClass(), SUBJECT_TYPE_PARAMETER);
 
   public SubjectFactory() {}
 

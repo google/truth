@@ -87,7 +87,7 @@ public class IteratingWrapperClassBuilder {
       "  }\n";
 
 
-  private static final int TARGET_TYPE_INDEX = 1;
+  private static final int TARGET_TYPE_PARAMETER = 1;
 
   private static final String ITERATING_WRAPPER = "IteratingWrapper";
 
@@ -103,7 +103,7 @@ public class IteratingWrapperClassBuilder {
   public String build() {
     Class<?> subjectClass = subjectFactory.getSubjectClass();
     List<Method> methods = Arrays.asList(subjectClass.getMethods());
-    Class<?> targetType = ReflectionUtil.capture(subjectClass, TARGET_TYPE_INDEX);
+    Class<?> targetType = ReflectionUtil.typeParameter(subjectClass, TARGET_TYPE_PARAMETER);
 
     StringBuilder methodWrappers = new StringBuilder();
     for (Method m : methods)  {
