@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,14 +24,13 @@ import org.junit.contrib.truth.Truth;
  * An extended verb to demonstrate (and test) the subclassing mechanism for
  * extension. Note this is not the preferred approach to extension, which is
  * {@link TestVerb#for() }
- * 
+ *
  * @author David Saff
  * @author Christian Gruber (christianedwardgruber@gmail.com)
- * 
+ *
  */
 public class ExtendedVerb extends TestVerb {
-  public static ExtendedVerb ASSERT = new ExtendedVerb(
-      Truth.THROW_ASSERTION_ERROR);
+  public static final ExtendedVerb ASSERT = new ExtendedVerb(Truth.THROW_ASSERTION_ERROR);
 
   public ExtendedVerb(FailureStrategy failureStrategy) {
     super(failureStrategy);

@@ -66,9 +66,31 @@ public class IterableTest {
     ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3);
   }
 
-  @Test public void iteratesOverSequenceWithFailure() {
+  @Test public void iteratesOverEmptySequence() {
+    ASSERT.that(iterable()).iteratesOverSequence();
+  }
+
+  @Test public void iteratesOverSequenceWithOrderingFailure() {
     try {
       ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(2, 3, 1);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+    }
+  }
+
+  @Test public void iteratesOverSequenceWithTooManyItemsFailure() {
+    try {
+      ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+    }
+  }
+
+  @Test public void iteratesOverSequenceWithTooFewItemsFailure() {
+    try {
+      ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
@@ -81,11 +103,11 @@ public class IterableTest {
 
   @Test public void iterableIsEmptyWithFailure() {
     try {
-      ASSERT.that(iterable("foo")).isEmpty();
+      ASSERT.that(iterable(1, null, 3)).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("isEmpty");
+      ASSERT.that(e.getMessage()).contains("Not true that")
+          .and().contains("is empty");
     }
   }
 
@@ -99,7 +121,7 @@ public class IterableTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("isNotEmpty");
+      ASSERT.that(e.getMessage()).contains("is not empty");
     }
   }
 

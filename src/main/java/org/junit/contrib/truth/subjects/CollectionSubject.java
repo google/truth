@@ -57,7 +57,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
    */
   @Override public And<S> isEmpty() {
     if (!getSubject().isEmpty()) {
-      fail("isEmpty");
+      fail("is empty");
     }
     return nextChain();
   }

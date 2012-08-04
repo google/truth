@@ -34,7 +34,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   }
 
   public IntegerSubject(FailureStrategy failureStrategy, Integer i) {
-    super(failureStrategy, i == null ? null : new Long(i.longValue()));
+    super(failureStrategy, i == null ? null : Long.valueOf(i.longValue()));
   }
 
   /**
@@ -80,7 +80,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   }
 
   public And<IntegerSubject> isEqualTo(Integer other) {
-    return isEqualTo((other == null) ? null : new Long(other.longValue()));
+    return isEqualTo((other == null) ? null : Long.valueOf(other.longValue()));
   }
 
   public And<IntegerSubject> isEqualTo(Long other) {
@@ -90,7 +90,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
       }
     } else {
       // Coerce to a long.
-      if (!new Long(getSubject().longValue()).equals(other)) {
+      if (!Long.valueOf(getSubject().longValue()).equals(other)) {
         fail("is equal to", other);
       }
     }
@@ -98,7 +98,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   }
 
   public And<IntegerSubject> isNotEqualTo(Integer other) {
-    return isNotEqualTo((other == null) ? null : new Long(other.longValue()));
+    return isNotEqualTo((other == null) ? null : Long.valueOf(other.longValue()));
   }
 
   public And<IntegerSubject> isNotEqualTo(Long other) {
@@ -108,7 +108,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
       }
     } else {
       // Coerce to a long.
-      if (new Long(getSubject().longValue()).equals(other)) {
+      if (Long.valueOf(getSubject().longValue()).equals(other)) {
         fail("is not equal to", other);
       }
     }
