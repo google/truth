@@ -26,9 +26,7 @@ import java.util.List;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-class SubjectUtils {
-
-  private SubjectUtils() {}
+final class SubjectUtils {
 
   static <T> List<T> accumulate(T first, T second, T ... rest) {
     List<T> items = new LinkedList<T>();
