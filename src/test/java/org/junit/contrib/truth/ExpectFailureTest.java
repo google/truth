@@ -35,7 +35,7 @@ import org.junit.runners.model.Statement;
  */
 @RunWith(JUnit4.class)
 public class ExpectFailureTest {
-  @Rule public Expect EXPECT = new FailingExpect(new ExpectationGatherer());
+  @Rule public final Expect EXPECT = new FailingExpect(new ExpectationGatherer());
 
 
   @Test public void expectFailNotEquals() {

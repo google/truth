@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,20 +22,19 @@ import static org.junit.contrib.truth.Truth.ASSUME;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.truth.Expect;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
  * Tests for Integer Subjects.
- * 
+ *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
 public class IntegerTest {
-  @Rule public Expect EXPECT = Expect.create();
+  @Rule public final Expect EXPECT = Expect.create();
 
   @Test public void simpleEquality() {
     ASSERT.that(2 + 2).isEqualTo(4).and().isBetween(3, 5);
@@ -44,7 +43,7 @@ public class IntegerTest {
   @Test public void intIsInt() {
     ASSERT.that(4).is(4);
   }
-  
+
   @Test public void simpleInequality() {
     ASSERT.that(2 + 2).isNotEqualTo(5);
   }
@@ -57,7 +56,7 @@ public class IntegerTest {
       ASSERT.that(expected.getMessage()).contains("Not true that <4> is equal to <5>");
     }
   }
-  
+
   @Test public void inequalityFail() {
     try {
       ASSERT.that(2 + 2).isNotEqualTo(4);
@@ -126,7 +125,7 @@ public class IntegerTest {
   @Test public void equalityOfNulls() {
     ASSERT.that((Integer)null).isEqualTo((Long)null);
   }
-  
+
   @Test public void equalityOfNullsFail() {
     try {
       ASSERT.that((Long)null).isEqualTo(5);

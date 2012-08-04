@@ -38,6 +38,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     super(failureStrategy, list);
   }
 
+  /**
+   * @deprecated - please pass your iterable into a collection first.
+   */
+  @Deprecated
   public And<S> contains(Object item) {
     for (Object t : getSubject()) {
       if (item == t || item != null && item.equals(t)) {
@@ -45,15 +49,25 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
       }
     }
     fail("contains", item);
-    throw new AssertionError();
+    throw new AssertionError(); // needed for "EXPECT" behaviour.
   }
 
   /**
-   * Attests that a Collection contains the provided object or fails.
+   * Attests that the subject holds no more objects, or fails.
    */
   public And<S> isEmpty() {
     if (getSubject().iterator().hasNext()) {
-      fail("isEmpty");
+      fail("is empty");
+    }
+    return nextChain();
+  }
+
+  /**
+   * Attests that the subject holds one or more objects, or fails
+   */
+  public And<S> isNotEmpty() {
+    if (!getSubject().iterator().hasNext()) {
+      fail("is not empty");
     }
     return nextChain();
   }

@@ -62,17 +62,66 @@ public class IterableTest {
     }
   }
 
-
   @Test public void iteratesOverSequence() {
     ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3);
   }
 
-  @Test public void iteratesOverSequence_Fail() {
+  @Test public void iteratesOverEmptySequence() {
+    ASSERT.that(iterable()).iteratesOverSequence();
+  }
+
+  @Test public void iteratesOverSequenceWithOrderingFailure() {
     try {
       ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(2, 3, 1);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
+    }
+  }
+
+  @Test public void iteratesOverSequenceWithTooManyItemsFailure() {
+    try {
+      ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+    }
+  }
+
+  @Test public void iteratesOverSequenceWithTooFewItemsFailure() {
+    try {
+      ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+    }
+  }
+
+  @Test public void iterableIsEmpty() {
+    ASSERT.that(iterable()).isEmpty();
+  }
+
+  @Test public void iterableIsEmptyWithFailure() {
+    try {
+      ASSERT.that(iterable(1, null, 3)).isEmpty();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that")
+          .and().contains("is empty");
+    }
+  }
+
+  @Test public void iterableIsNotEmpty() {
+    ASSERT.that(iterable("foo")).isNotEmpty();
+  }
+
+  @Test public void iterableIsNotEmptyWithFailure() {
+    try {
+      ASSERT.that(iterable()).isNotEmpty();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("is not empty");
     }
   }
 
