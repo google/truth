@@ -16,7 +16,6 @@
  */
 package org.junit.contrib.truth.extensiontest;
 
-import static org.junit.Assert.fail;
 import static org.junit.contrib.truth.extensiontest.ExtendedVerb.ASSERT;
 
 import org.junit.Test;
@@ -31,14 +30,14 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class ExtensionTest {
-  @Test public void customTypeCompares() {
+  @Test public void customTypeProposition() {
     ASSERT.that(new MyType(5)).matches(new MyType(2 + 3));
   }
 
-  @Test public void emptyCollectionWithFailure() {
+  @Test public void customTypePropositionWithFailure() {
     try {
       ASSERT.that(new MyType(5)).matches(new MyType(4));
-      fail("Should have thrown.");
+      ASSERT.fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that")
           .and().contains("matches");
