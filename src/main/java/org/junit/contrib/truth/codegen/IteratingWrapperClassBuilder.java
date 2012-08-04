@@ -166,6 +166,7 @@ public class IteratingWrapperClassBuilder {
       for (int j = 0, jLen = annotations[i].length; j < jLen; j++) {
         if (j > 0) builder.append(" ");
         builder.append("@").append(annotations[i][j].annotationType().getCanonicalName());
+        builder.append(" ");
       }
       builder.append(parameters[i].getCanonicalName());
       builder.append(" arg").append(i);

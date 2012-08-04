@@ -16,6 +16,8 @@
  */
 package org.junit.contrib.truth.codegen;
 
+import javax.annotation.Nullable;
+
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.subjects.Subject;
 import org.junit.contrib.truth.subjects.SubjectFactory;
@@ -36,7 +38,7 @@ public class BarSubject extends Subject<BarSubject, String> {
     super(failureStrategy, subject);
   }
 
-  public And<BarSubject> startsWith(String prefix) {
+  public And<BarSubject> startsWith(@Nullable String prefix) {
     if (getSubject().startsWith(prefix)) {
       fail("matches", getSubject(), prefix);
     }

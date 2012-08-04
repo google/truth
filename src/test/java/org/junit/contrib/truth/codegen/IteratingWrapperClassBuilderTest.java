@@ -69,7 +69,7 @@ public class IteratingWrapperClassBuilderTest {
       "  }";
 
   private static final String BAR_WRAPPED_METHOD =
-      "  public org.junit.contrib.truth.subjects.Subject.And startsWith(java.lang.String arg0) {\n" +
+      "  public org.junit.contrib.truth.subjects.Subject.And startsWith(@javax.annotation.Nullable java.lang.String arg0) {\n" +
       "    for (java.lang.String item : data) {\n" +
       "      org.junit.contrib.truth.codegen.BarSubject subject = (org.junit.contrib.truth.codegen.BarSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
       "      subject.startsWith(arg0);\n" +
