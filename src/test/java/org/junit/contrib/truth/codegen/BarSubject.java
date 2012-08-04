@@ -14,33 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.junit.contrib.truth.delegatetest;
+package org.junit.contrib.truth.codegen;
+
+import javax.annotation.Nullable;
 
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.subjects.Subject;
 import org.junit.contrib.truth.subjects.SubjectFactory;
 
 /**
- * A simple example Subject to demonstrate extension.
- *
- * @author Christian Gruber (christianedwardgruber@gmail.com)
+ * Subclass of Subject to be used for Testing.
  */
-public class FooSubject extends Subject<FooSubject, Foo> {
+public class BarSubject extends Subject<BarSubject, String> {
 
-  public static final SubjectFactory<FooSubject, Foo> FOO =
-      new SubjectFactory<FooSubject, Foo>() {
-        @Override public FooSubject getSubject(FailureStrategy fs, Foo target) {
-          return new FooSubject(fs, target);
+  public static final SubjectFactory<BarSubject, String> BAR =
+      new SubjectFactory<BarSubject, String>() {
+        @Override public BarSubject getSubject(FailureStrategy fs, String target) {
+          return new BarSubject(fs, target);
         }
       };
 
-  public FooSubject(FailureStrategy failureStrategy, Foo subject) {
+  public BarSubject(FailureStrategy failureStrategy, String subject) {
     super(failureStrategy, subject);
   }
 
-  public And<FooSubject> matches(Foo object) {
-    if (getSubject().value != object.value) {
-      fail("matches", getSubject(), object);
+  public And<BarSubject> startsWith(@Nullable String prefix) {
+    if (getSubject().startsWith(prefix)) {
+      fail("matches", getSubject(), prefix);
     }
     return nextChain();
   }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,18 +16,32 @@
  */
 package org.junit.contrib.truth.subjects;
 
+
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.util.GwtCompatible;
+import org.junit.contrib.truth.util.ReflectionUtil;
 
 /**
  * A custom subject factory which will return a FooSubject (which
  * is a Subject<Foo>).
- * 
+ *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtCompatible
-public interface SubjectFactory<S extends Subject<S,T>, T> {
-  
-  S getSubject(FailureStrategy fs, T that);
+public abstract class SubjectFactory<S extends Subject<S,T>, T> {
+
+  private static final int SUBJECT_TYPE_PARAMETER = 0;
+
+  @SuppressWarnings("unchecked") // cast failure is a critical error
+  private final Class<S> type = (Class<S>)ReflectionUtil.typeParameter(getClass(), SUBJECT_TYPE_PARAMETER);
+
+  public SubjectFactory() {}
+
+  public abstract S getSubject(FailureStrategy fs, T that);
+
+  public Class<S> getSubjectClass() {
+    return type;
+  }
+
 }
 
