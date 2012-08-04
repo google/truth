@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,18 +28,18 @@ import org.junit.runners.model.Statement;
 /**
  * Tests (and effectively sample code) for the Expect verb (implemented as a
  * rule)
- * 
+ *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
 public class ExpectTest {
-	private Expect oopsNotARule = Expect.create();
+	private final Expect oopsNotARule = Expect.create();
 
-	private Expect EXPECT = Expect.create();
-	private ExpectedException thrown = ExpectedException.none();
+	private final Expect EXPECT = Expect.create();
+	private final ExpectedException thrown = ExpectedException.none();
 
-	@Rule public MethodRule wrapper = new MethodRule() {
+	@Rule public final MethodRule wrapper = new MethodRule() {
 		@Override
 		public Statement apply(Statement base, FrameworkMethod method, Object target) {
 			Statement expected = EXPECT.apply(base, method, target);
