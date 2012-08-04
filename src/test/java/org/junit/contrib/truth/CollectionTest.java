@@ -169,7 +169,7 @@ public class CollectionTest {
   @Test public void collectionContainsInOrderHackedWithTooManyItemsFailure() {
     ArrayList<Integer> list = new ArrayList<Integer>();
     list.addAll(collection(1, null, 3));
-    Ordered<?> o = ASSERT.that(list).contains(1, null, 3);
+    Ordered<?> o = ASSERT.that((Collection<Integer>)list).contains(1, null, 3);
     list.add(6);
     validateHackedFailure(o);
   }
@@ -181,7 +181,7 @@ public class CollectionTest {
   @Test public void collectionContainsInOrderHackedWithTooFewItemsFailure() {
     ArrayList<Integer> list = new ArrayList<Integer>();
     list.addAll(collection(1, null, 3));
-    Ordered<?> o = ASSERT.that(list).contains(1, null, 3);
+    Ordered<?> o = ASSERT.that((Collection<Integer>)list).contains(1, null, 3);
     list.remove(1);
     validateHackedFailure(o);
   }
@@ -193,7 +193,7 @@ public class CollectionTest {
   @Test public void collectionContainsInOrderHackedWithNoItemsFailure() {
     ArrayList<Integer> list = new ArrayList<Integer>();
     list.addAll(collection(1, null, 3));
-    Ordered<?> o = ASSERT.that(list).contains(1, null, 3);
+    Ordered<?> o = ASSERT.that((Collection<Integer>)list).contains(1, null, 3);
     list.clear();
     validateHackedFailure(o);
   }
