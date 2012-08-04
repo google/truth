@@ -79,7 +79,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iteratesOverSequenceWithTwoManyItemsFailure() {
+  @Test public void iteratesOverSequenceWithTooManyItemsFailure() {
     try {
       ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3, 4);
       fail("Should have thrown.");
