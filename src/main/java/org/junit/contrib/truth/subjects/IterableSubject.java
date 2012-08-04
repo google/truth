@@ -49,11 +49,21 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Attests that a Collection contains the provided object or fails.
+   * Attests that the subject holds no more objects, or fails.
    */
   public And<S> isEmpty() {
     if (getSubject().iterator().hasNext()) {
       fail("isEmpty");
+    }
+    return nextChain();
+  }
+
+  /**
+   * Attests that the subject holds one or more objects, or fails
+   */
+  public And<S> isNotEmpty() {
+    if (!getSubject().iterator().hasNext()) {
+      fail("isNotEmpty");
     }
     return nextChain();
   }
