@@ -119,7 +119,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
     return super.is((long)other);
   }
 
-  public And<IntegerSubject> is(short other) { 
+  public And<IntegerSubject> is(short other) {
     return super.is((long)other);
   }
 
