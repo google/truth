@@ -166,29 +166,42 @@ public class CollectionTest {
    * This tests the rather unwieldly case where someone alters the
    * collection out from under the Subject before inOrder() is called.
    */
-  @Test public void collectionContainsInOrderWithHackedFailure() {
+  @Test public void collectionContainsInOrderHackedWithTooManyItemsFailure() {
     ArrayList<Integer> list = new ArrayList<Integer>();
     list.addAll(collection(1, null, 3));
     Ordered<?> o = ASSERT.that(list).contains(1, null, 3);
     list.add(6);
-    try {
-      o.inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("iterates through");
-    }
+    validateHackedFailure(o);
+  }
+
+  /**
+   * This tests the rather unwieldly case where someone alters the
+   * collection out from under the Subject before inOrder() is called.
+   */
+  @Test public void collectionContainsInOrderHackedWithTooFewItemsFailure() {
+    ArrayList<Integer> list = new ArrayList<Integer>();
+    list.addAll(collection(1, null, 3));
+    Ordered<?> o = ASSERT.that(list).contains(1, null, 3);
     list.remove(1);
-    try {
-      o.inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("iterates through");
-    }
+    validateHackedFailure(o);
+  }
+
+  /**
+   * This tests the rather unwieldly case where someone alters the
+   * collection out from under the Subject before inOrder() is called.
+   */
+  @Test public void collectionContainsInOrderHackedWithNoItemsFailure() {
+    ArrayList<Integer> list = new ArrayList<Integer>();
+    list.addAll(collection(1, null, 3));
+    Ordered<?> o = ASSERT.that(list).contains(1, null, 3);
     list.clear();
+    validateHackedFailure(o);
+  }
+
+  /** Factored out failure condition for "hacked" failures of inOrder() */
+  private void validateHackedFailure(Ordered<?> ordered) {
     try {
-      o.inOrder();
+      ordered.inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that")
@@ -196,11 +209,11 @@ public class CollectionTest {
     }
   }
 
-  @Test public void emptyCollection() {
+  @Test public void collectionIsEmpty() {
     ASSERT.that(collection()).isEmpty();
   }
 
-  @Test public void emptyCollectionWithFailure() {
+  @Test public void collectionIsEmptyWithFailure() {
     try {
       ASSERT.that(collection(1, null, 3)).isEmpty();
       fail("Should have thrown.");
