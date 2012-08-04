@@ -63,7 +63,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public And<S> isNotEmpty() {
     if (!getSubject().iterator().hasNext()) {
-      fail("isEmpty");
+      fail("isNotEmpty");
     }
     return nextChain();
   }

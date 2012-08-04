@@ -66,7 +66,7 @@ public class IterableTest {
     ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3);
   }
 
-  @Test public void iteratesOverSequence_Fail() {
+  @Test public void iteratesOverSequenceWithFailure() {
     try {
       ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(2, 3, 1);
       fail("Should have thrown.");
@@ -75,29 +75,31 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableIsEmpty_Success() {
+  @Test public void iterableIsEmpty() {
     ASSERT.that(iterable()).isEmpty();
   }
 
-  @Test public void iterableIsEmpty_Fail() {
+  @Test public void iterableIsEmptyWithFailure() {
     try {
       ASSERT.that(iterable("foo")).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("isEmpty");
     }
   }
 
-  @Test public void iterableIsNotEmpty_Success() {
+  @Test public void iterableIsNotEmpty() {
     ASSERT.that(iterable("foo")).isNotEmpty();
   }
 
-  @Test public void iterableIsNotEmpty_Fail() {
+  @Test public void iterableIsNotEmptyWithFailure() {
     try {
       ASSERT.that(iterable()).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("isNotEmpty");
     }
   }
 
