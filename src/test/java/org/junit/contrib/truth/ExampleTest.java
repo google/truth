@@ -16,22 +16,20 @@
  */
 package org.junit.contrib.truth;
 
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theory;
-import org.junit.experimental.theories.Theories;
-import org.junit.runner.RunWith;
 import static org.junit.Assert.fail;
-import org.junit.Rule;
-import org.junit.Test;
+import static org.junit.contrib.truth.Truth.ASSERT;
+import static org.junit.contrib.truth.Truth.ASSUME;
+import static org.junit.contrib.truth.delegatetest.FooSubject.FOO;
 
 import java.util.Arrays;
 
-import static org.junit.contrib.truth.Truth.ASSERT;
-import static org.junit.contrib.truth.Truth.ASSUME;
-import org.junit.contrib.truth.Expect;
-
-import static org.junit.contrib.truth.delegatetest.FooSubject.FOO;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.contrib.truth.delegatetest.Foo;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 @RunWith(Theories.class)
 public class ExampleTest {
@@ -64,7 +62,7 @@ public class ExampleTest {
     ASSERT.that(x / x).isEqualTo(1);
   }
 
-  @Rule public Expect EXPECT = Expect.create();
+  @Rule public final Expect EXPECT = Expect.create();
 
   @Test public void expectRange() {
     int x = 4;
