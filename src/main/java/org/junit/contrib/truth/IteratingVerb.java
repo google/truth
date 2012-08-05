@@ -5,11 +5,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.concurrent.ExecutionException;
 
+import org.junit.contrib.truth.codegen.CompilingClassLoader;
 import org.junit.contrib.truth.codegen.IteratingWrapperClassBuilder;
+import org.junit.contrib.truth.codegen.CompilingClassLoader.CompilerException;
 import org.junit.contrib.truth.subjects.Subject;
 import org.junit.contrib.truth.subjects.SubjectFactory;
-import org.junit.contrib.truth.util.CompilingClassLoader;
-import org.junit.contrib.truth.util.CompilingClassLoader.CompilerException;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
