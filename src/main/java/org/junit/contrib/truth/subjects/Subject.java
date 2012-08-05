@@ -99,7 +99,7 @@ public class Subject<S extends Subject<S,T>,T> {
   public And<S> isNotEqualTo(Object other) {
     if (getSubject() == null) {
       if(other == null) {
-        fail("is not equal to", other);
+        fail("is not equal to", (Object)null);
       }
     } else {
       if (getSubject().equals(other)) {
