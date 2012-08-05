@@ -71,7 +71,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
    * Guards against inverted lower/upper boundaries, and throws if
    * they are so inverted.
    */
-  private void ensureOrderedBoundaries(long lower, long upper) {
+  private static void ensureOrderedBoundaries(long lower, long upper) {
     if (lower > upper) {
       throw new IllegalArgumentException(
           "Range inclusion parameter lower (" + lower + ") "
