@@ -25,7 +25,7 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
 @GwtIncompatible("JUnit4")
-@SuppressWarnings("deprecation") 
+@SuppressWarnings("deprecation")
 public class Expect extends TestVerb implements MethodRule {
   protected static class ExpectationGatherer implements FailureStrategy {
     List<String> messages = new ArrayList<String>();
@@ -65,11 +65,12 @@ public class Expect extends TestVerb implements MethodRule {
         base.evaluate();
         inRuleContext = false;
         if (!gatherer.messages.isEmpty()) {
-          String message = "All failed expectations:\n";
+          StringBuilder message = new StringBuilder("All failed expectations:\n");
           for (int i = 0; i < gatherer.messages.size(); i++) {
-            message += "  " + (i + 1) + ". " + gatherer.messages.get(i) + "\n";
+            message.append("  ").append(i + 1).append(". ")
+                   .append(gatherer.messages.get(i)).append("\n");
           }
-          throw new AssertionError(message);
+          throw new AssertionError(message.toString());
         }
       }
     };
