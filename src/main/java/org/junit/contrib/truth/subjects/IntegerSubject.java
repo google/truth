@@ -103,7 +103,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   public And<IntegerSubject> isNotEqualTo(Long other) {
     if (getSubject() == null) {
       if(other == null) {
-        fail("is not equal to", other);
+        fail("is not equal to", (Object)null);
       }
     } else {
       if (getSubject().equals(other)) {
