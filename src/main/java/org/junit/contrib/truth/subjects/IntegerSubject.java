@@ -107,7 +107,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
       }
     } else {
       // Coerce to a long.
-      if (Long.valueOf(getSubject().longValue()).equals(other)) {
+      if (getSubject().equals(other)) {
         fail("is not equal to", other);
       }
     }
