@@ -23,6 +23,7 @@ import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.TestVerb;
 import org.junit.contrib.truth.util.GwtCompatible;
 import org.junit.contrib.truth.util.GwtIncompatible;
+import org.junit.contrib.truth.util.ReflectionUtil;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties
@@ -163,7 +164,8 @@ public class Subject<S extends Subject<S,T>,T> {
     }
     Class<?> clazz = getSubject().getClass();
     try {
-      Field f = clazz.getField(fieldName);
+      Field f = ReflectionUtil.getField(clazz, fieldName);
+      f.setAccessible(true);
       Object actual = f.get(getSubject());
       if (expected == actual || (expected != null && expected.equals(actual))) {
         return;
@@ -176,7 +178,8 @@ public class Subject<S extends Subject<S,T>,T> {
         failureStrategy.fail(message.toString());
       }
     } catch (NoSuchFieldException e) {
-      // Do nothing - we'll break or pass along this error as part of the hasField() call.
+      throw new RuntimeException("Could not find field " + fieldName + " on class "
+          + clazz.getSimpleName(), e);
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Could not access field " + fieldName + " on class "
           + clazz.getSimpleName(), e);

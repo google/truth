@@ -16,6 +16,7 @@
  */
 package org.junit.contrib.truth.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -34,5 +35,18 @@ public class ReflectionUtil {
     }
     Type[] typeParams = ((ParameterizedType) superclass).getActualTypeArguments();
     return (Class<?>)typeParams[paramIndex];
+  }
+
+  public static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
+    Class<?> currentClass = clazz;
+    while (currentClass != null) {
+      try {
+        return clazz.getDeclaredField(fieldName);
+      } catch (NoSuchFieldException e) {
+        currentClass = currentClass.getSuperclass();
+      }
+    }
+    throw new NoSuchFieldException("No such field " + fieldName + " declared on " +
+        clazz.getSimpleName() + " or its parent classes.");
   }
 }

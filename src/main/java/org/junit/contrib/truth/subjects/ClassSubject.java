@@ -19,6 +19,7 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.util.GwtCompatible;
+import org.junit.contrib.truth.util.ReflectionUtil;
 
 @GwtCompatible
 public class ClassSubject extends Subject<ClassSubject, Class<?>> {
@@ -33,7 +34,7 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
       return; // not all failures throw exceptions.
     }
     try {
-      getSubject().getField(fieldName);
+      ReflectionUtil.getField(getSubject(), fieldName);
     } catch (NoSuchFieldException e) {
       StringBuilder message = new StringBuilder("Not true that ");
       message.append("<").append(getSubject().getSimpleName()).append(">");
@@ -41,4 +42,5 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
       failureStrategy.fail(message.toString());
     }
   }
+
 }
