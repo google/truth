@@ -107,7 +107,7 @@ public class IteratingWrapperClassBuilder {
 
     StringBuilder methodWrappers = new StringBuilder();
     for (Method m : methods)  {
-      appendMethodWrapper(methodWrappers, "  ", subjectClass, targetType, m);
+      appendMethodWrapper(methodWrappers, subjectClass, targetType, m);
     }
     String code = String.format(
         CLASS_TEMPLATE,
@@ -121,7 +121,6 @@ public class IteratingWrapperClassBuilder {
 
   private void appendMethodWrapper(
       StringBuilder code,
-      String indent,
       Class<?> subjectType,
       Class<?> targetType,
       Method method) {
@@ -147,7 +146,7 @@ public class IteratingWrapperClassBuilder {
     }
   }
 
-  private StringBuilder methodParameterList(int length) {
+  private static StringBuilder methodParameterList(int length) {
     StringBuilder builder = new StringBuilder();
     for (int i = 0; i < length; i++) {
       if (i > 0) builder.append(", ");
@@ -157,9 +156,7 @@ public class IteratingWrapperClassBuilder {
   }
 
   /** Builds a string for the parameters within a method signature. */
-  private StringBuilder methodSignature(
-      Class<?>[] parameters,
-      Annotation[][] annotations) {
+  private static StringBuilder methodSignature(Class<?>[] parameters, Annotation[][] annotations) {
     StringBuilder builder = new StringBuilder();
     for (int i = 0, iLen = parameters.length; i < iLen; i++) {
       if (i > 0) builder.append(", ");
@@ -174,7 +171,7 @@ public class IteratingWrapperClassBuilder {
     return builder;
   }
 
-  private String stringVisibility(int modifiers) {
+  private static String stringVisibility(int modifiers) {
     if (Modifier.isProtected(modifiers)) {
       return "protected";
     } else if (Modifier.isPublic(modifiers)) {
