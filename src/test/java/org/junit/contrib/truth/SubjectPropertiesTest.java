@@ -30,7 +30,7 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class SubjectPropertiesTest {
 
-  @Test public void testHasField_NoSuchField() {
+  @Test public void testHasNoSuchField() {
     try {
       ASSERT.that(new A()).hasField("noField");
       ASSERT.fail("Should have thrown an assertion error.");
@@ -40,11 +40,11 @@ public class SubjectPropertiesTest {
     }
   }
 
-  @Test public void testHasField_Public() {
+  @Test public void testHasPublicField() {
     ASSERT.that(new A()).hasField("publicField");
   }
 
-  @Test public void testHasField_NullSubject() {
+  @Test public void testHasFieldWithNullSubject() {
     Object nullObject = null;
     try {
       ASSERT.that(nullObject).hasField("publicField");
@@ -55,13 +55,13 @@ public class SubjectPropertiesTest {
     }
   }
 
-  @Test public void testHasFieldValue_Public() {
-    ASSERT.that(new A("value", null)).hasFieldValue("publicField", "value");
+  @Test public void testHasPublicFieldWithValue() {
+    ASSERT.that(new A("value", null)).hasField("publicField").withValue("value");
   }
 
-  @Test public void testHasFieldValue_Public_WrongValue() {
+  @Test public void testHasPublicFieldWithWrongValue() {
     try {
-      ASSERT.that(new A("aValue", null)).hasFieldValue("publicField", "wrongValue");
+      ASSERT.that(new A("aValue", null)).hasField("publicField").withValue("wrongValue");
       ASSERT.fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
@@ -70,13 +70,13 @@ public class SubjectPropertiesTest {
     }
   }
 
-  @Test public void testHasFieldValue_Public_NullValue() {
-    ASSERT.that(new A(null, null)).hasFieldValue("publicField", null);
+  @Test public void testHasPublicFieldWithNullValue() {
+    ASSERT.that(new A(null, null)).hasField("publicField").withValue(null);
   }
 
-  @Test public void testHasFieldValue_Public_WrongNullValue() {
+  @Test public void testHasPublicFieldWithWrongNullValue() {
     try {
-      ASSERT.that(new A(null, null)).hasFieldValue("publicField", "wrongValue");
+      ASSERT.that(new A(null, null)).hasField("publicField").withValue("wrongValue");
       ASSERT.fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
@@ -85,9 +85,9 @@ public class SubjectPropertiesTest {
     }
   }
 
-  @Test public void testHasFieldValue_Public_BadField() {
+  @Test public void testHasPublicFieldWithValueInBadField() {
     try {
-      ASSERT.that(new A("value", null)).hasFieldValue("noField", "value");
+      ASSERT.that(new A("value", null)).hasField("noField").withValue("value");
       ASSERT.fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
@@ -95,12 +95,12 @@ public class SubjectPropertiesTest {
     }
   }
 
-  @Test public void testHasField_Private() {
+  @Test public void testHasPrivateField() {
     ASSERT.that(new A()).hasField("privateField");
   }
 
-  @Test public void testHasFieldValue_Private() {
-    ASSERT.that(new A(null, "value")).hasFieldValue("privateField", "value");
+  @Test public void testHasProvidedFieldWithValue() {
+    ASSERT.that(new A(null, "value")).hasField("privateField").withValue("value");
   }
 
   public static class A {

@@ -30,9 +30,9 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ClassTest {
 
-  @Test public void testHasField_NoSuchField() {
+  @Test public void testDeclaresField_NoSuchField() {
     try {
-      ASSERT.that(A.class).hasField("noField");
+      ASSERT.that(A.class).declaresField("noField");
       ASSERT.fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
@@ -40,14 +40,14 @@ public class ClassTest {
     }
   }
 
-  @Test public void testHasField_Public() {
-    ASSERT.that(A.class).hasField("publicField");
+  @Test public void testDeclaresField_Public() {
+    ASSERT.that(A.class).declaresField("publicField");
   }
 
-  @Test public void testHasField_NullSubject() {
+  @Test public void testDeclaresField_NullSubject() {
     Class<?> nullClass = null;
     try {
-      ASSERT.that(nullClass).hasField("publicField");
+      ASSERT.that(nullClass).declaresField("publicField");
       ASSERT.fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
@@ -55,8 +55,8 @@ public class ClassTest {
     }
   }
 
-  @Test public void testHasField_Private() {
-    ASSERT.that(A.class).hasField("privateField");
+  @Test public void testDeclaresField_Private() {
+    ASSERT.that(A.class).declaresField("privateField");
   }
 
   public static class A {

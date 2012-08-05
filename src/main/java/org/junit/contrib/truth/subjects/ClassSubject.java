@@ -27,8 +27,7 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
     super(failureStrategy, o);
   }
 
-  @Override
-  public void hasField(String fieldName) {
+  public void declaresField(String fieldName) {
     if (getSubject() == null) {
       failureStrategy.fail("Cannot determine a field name from a null class.");
       return; // not all failures throw exceptions.
