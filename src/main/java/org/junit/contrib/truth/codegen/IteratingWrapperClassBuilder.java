@@ -38,28 +38,28 @@ public class IteratingWrapperClassBuilder {
    * </p>
    */
   private static final String CLASS_TEMPLATE =
-      "package %1$s;\n" +
-      "\n" +
-      "import org.junit.contrib.truth.FailureStrategy;\n" +
-      "import org.junit.contrib.truth.subjects.SubjectFactory;\n" +
-      "\n" +
-      "public class %2$sIteratingWrapper extends %2$s {\n" +
-      "\n" +
-      "  private final SubjectFactory subjectFactory;\n" +
-      "  private final Iterable<%3$s> data;\n" +
-      "\n" +
-      "  public %2$sIteratingWrapper(\n" +
-      "      FailureStrategy failureStrategy,\n" +
-      "      SubjectFactory<?, ?> subjectFactory,\n" +
-      "      Iterable<%3$s> data\n" +
-      "  ) {\n" +
-      "    super(failureStrategy, (%3$s)null);\n" +
-      "    this.subjectFactory = subjectFactory;\n" +
-      "    this.data = data;\n" +
-      "  }\n" +
-      "\n" +
+      "package %1$s;%n" +
+      "%n" +
+      "import org.junit.contrib.truth.FailureStrategy;%n" +
+      "import org.junit.contrib.truth.subjects.SubjectFactory;%n" +
+      "%n" +
+      "public class %2$sIteratingWrapper extends %2$s {%n" +
+      "%n" +
+      "  private final SubjectFactory subjectFactory;%n" +
+      "  private final Iterable<%3$s> data;%n" +
+      "%n" +
+      "  public %2$sIteratingWrapper(%n" +
+      "      FailureStrategy failureStrategy,%n" +
+      "      SubjectFactory<?, ?> subjectFactory,%n" +
+      "      Iterable<%3$s> data%n" +
+      "  ) {%n" +
+      "    super(failureStrategy, (%3$s)null);%n" +
+      "    this.subjectFactory = subjectFactory;%n" +
+      "    this.data = data;%n" +
+      "  }%n" +
+      "%n" +
       "%4$s" +
-      "}\n";
+      "}%n";
 
   /**
    * <p>A string intended for use in String.format() representing the
@@ -78,13 +78,13 @@ public class IteratingWrapperClassBuilder {
    * </p>
    */
   private static final String WRAPPER_METHOD_TEMPLATE =
-      "  %1$s %2$s %3$s(%4$s) {\n" +
-      "    for (%5$s item : data) {\n" +
-      "      %6$s subject = (%6$s)subjectFactory.getSubject(failureStrategy, item);\n" +
-      "      subject.%3$s(%7$s);\n" +
-      "    }\n" +
-      "    return nextChain();\n" +
-      "  }\n";
+      "  %1$s %2$s %3$s(%4$s) {%n" +
+      "    for (%5$s item : data) {%n" +
+      "      %6$s subject = (%6$s)subjectFactory.getSubject(failureStrategy, item);%n" +
+      "      subject.%3$s(%7$s);%n" +
+      "    }%n" +
+      "    return nextChain();%n" +
+      "  }%n";
 
 
   private static final int TARGET_TYPE_PARAMETER = 1;
