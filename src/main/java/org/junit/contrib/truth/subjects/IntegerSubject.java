@@ -106,7 +106,6 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
         fail("is not equal to", other);
       }
     } else {
-      // Coerce to a long.
       if (getSubject().equals(other)) {
         fail("is not equal to", other);
       }
