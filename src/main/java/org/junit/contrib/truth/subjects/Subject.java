@@ -31,7 +31,7 @@ import org.junit.contrib.truth.util.GwtIncompatible;
  */
 @GwtCompatible(emulated = true)
 public class Subject<S extends Subject<S,T>,T> {
-  private final FailureStrategy failureStrategy;
+  protected final FailureStrategy failureStrategy;
   private final T subject;
   private final And<S> chain;
 

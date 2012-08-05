@@ -61,4 +61,10 @@ public class AbstractVerb {
       return factory.getSubject(getFailureStrategy(), target);
     }
   }
+
+  public <T> IteratingVerb<T> in(Iterable<T> data) {
+    return new IteratingVerb<T>(data, getFailureStrategy());
+  }
+
 }
+
