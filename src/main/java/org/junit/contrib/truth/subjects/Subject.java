@@ -139,18 +139,18 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param messageParts the expectations against which the subject is compared
    */
   protected void fail(String verb, Object... messageParts) {
-    String message = "Not true that ";
-    message += "<" + getSubject() + "> " + verb;
+    StringBuilder message = new StringBuilder("Not true that ");
+    message.append("<").append(getSubject()).append("> ").append(verb);
     for (Object part : messageParts) {
-      message += " <" + part + ">";
+      message.append(" <").append(part).append(">");
     }
-    failureStrategy.fail(message);
+    failureStrategy.fail(message.toString());
   }
 
   protected void failWithoutSubject(String verb) {
-    String message = "Not true that ";
-    message += "the subject " + verb;
-    failureStrategy.fail(message);
+    StringBuilder message = new StringBuilder("Not true that ");
+    message.append("the subject ").append(verb);
+    failureStrategy.fail(message.toString());
   }
 
   /**
