@@ -71,7 +71,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
    * Guards against inverted lower/upper boundaries, and throws if
    * they are so inverted.
    */
-  private void ensureOrderedBoundaries(long lower, long upper) {
+  private static void ensureOrderedBoundaries(long lower, long upper) {
     if (lower > upper) {
       throw new IllegalArgumentException(
           "Range inclusion parameter lower (" + lower + ") "
@@ -89,8 +89,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
         fail("is equal to", other);
       }
     } else {
-      // Coerce to a long.
-      if (!Long.valueOf(getSubject().longValue()).equals(other)) {
+      if (!getSubject().equals(other)) {
         fail("is equal to", other);
       }
     }
@@ -104,11 +103,10 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   public And<IntegerSubject> isNotEqualTo(Long other) {
     if (getSubject() == null) {
       if(other == null) {
-        fail("is not equal to", other);
+        fail("is not equal to", (Object)null);
       }
     } else {
-      // Coerce to a long.
-      if (Long.valueOf(getSubject().longValue()).equals(other)) {
+      if (getSubject().equals(other)) {
         fail("is not equal to", other);
       }
     }
@@ -127,4 +125,11 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
     return super.is((long)other);
   }
 
+
+  public static final SubjectFactory<IntegerSubject, Long> INTEGER =
+      new SubjectFactory<IntegerSubject, Long>() {
+        @Override public IntegerSubject getSubject(FailureStrategy fs, Long target) {
+          return new IntegerSubject(fs, target);
+        }
+      };
 }
