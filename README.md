@@ -258,6 +258,24 @@ Nullness is checked simply with:
     ASSERT.that(something).isNull();
     ASSERT.that(somethingElse).isNotNull();
 
+Fields' presence and their values can *(as of 0.8)* be checked with:
+
+    ASSERT.that(something).hasField("foo").withValue("bar");
+    
+This should work even with private fields, and can be useful in testing 
+generated properties created by some frameworks like Lombok and Tapestry.
+
+#### Class objects
+*coming in release 0.8*
+
+    ASSERT.that(aClass).declaresField("foo");
+    
+ + <em>Note, do not use <strong>hasField()</strong> on Class objects, as you will be 
+   testing whether Class.class itself has that field, not whether the 
+   type it represents declares that field.  A deprecation warning should
+   notify you of this usage, but be careful, and use <strong>declaresField("foo")</strong>
+   instead.<em>
+
 #### Booleans
 
     ASSERT.that(something).isTrue();
