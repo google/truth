@@ -1,4 +1,4 @@
-package org.junit.contrib.truth.util;
+package org.junit.contrib.truth.codegen;
 
 import static java.util.Collections.singleton;
 
@@ -33,7 +33,7 @@ import javax.tools.ToolProvider;
  *   "package com.foo;\n" +
  *   "public class MyClass implements Runnable {\n" +
  *   "  @Override public void run() {\n" +
- *   "    System.out.println(\"Hello world\");\n" +
+ *   "   log(\"Hello world\");\n" +
  *   "  }\n" +
  *   "}";
  *

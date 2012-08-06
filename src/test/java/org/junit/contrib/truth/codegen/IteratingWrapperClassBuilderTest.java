@@ -81,7 +81,6 @@ public class IteratingWrapperClassBuilderTest {
   @Test public void testSubjectWrapperGeneration_PlainClass() {
     IteratingWrapperClassBuilder builder = new IteratingWrapperClassBuilder(BarSubject.BAR);
     String code = builder.build().toString();
-    System.out.println("Code:\n" + code);
     ASSERT.that(code).contains(TOP_BOILERPLATE);
     ASSERT.that(code).contains(SUBJECT_FACTORY_FIELD);
     ASSERT.that(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
@@ -94,7 +93,6 @@ public class IteratingWrapperClassBuilderTest {
   @Test public void testSubjectWrapperGeneration_InnerClass() {
     IteratingWrapperClassBuilder builder = new IteratingWrapperClassBuilder(FooSubject.FOO);
     String code = builder.build().toString();
-    System.out.println("Code:\n" + code);
     ASSERT.that(code).contains(TOP_BOILERPLATE);
     ASSERT.that(code).contains(SUBJECT_FACTORY_FIELD);
     ASSERT.that(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
