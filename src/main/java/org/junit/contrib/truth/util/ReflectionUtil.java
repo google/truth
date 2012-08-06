@@ -35,4 +35,5 @@ public class ReflectionUtil {
     Type[] typeParams = ((ParameterizedType) superclass).getActualTypeArguments();
     return (Class<?>)typeParams[paramIndex];
   }
+
 }
