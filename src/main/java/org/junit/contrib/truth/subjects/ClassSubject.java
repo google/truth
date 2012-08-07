@@ -19,10 +19,27 @@ package org.junit.contrib.truth.subjects;
 
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.util.GwtCompatible;
+import org.junit.contrib.truth.util.ReflectionUtil;
 
 @GwtCompatible
-public class DefaultSubject extends Subject<DefaultSubject, Object> {
-  public DefaultSubject(FailureStrategy failureStrategy, Object o) {
+public class ClassSubject extends Subject<ClassSubject, Class<?>> {
+  public ClassSubject(FailureStrategy failureStrategy, Class<?> o) {
     super(failureStrategy, o);
   }
+
+  public void declaresField(String fieldName) {
+    if (getSubject() == null) {
+      failureStrategy.fail("Cannot determine a field name from a null class.");
+      return; // not all failures throw exceptions.
+    }
+    try {
+      ReflectionUtil.getField(getSubject(), fieldName);
+    } catch (NoSuchFieldException e) {
+      StringBuilder message = new StringBuilder("Not true that ");
+      message.append("<").append(getSubject().getSimpleName()).append(">");
+      message.append(" has a field named <").append(fieldName).append(">");
+      failureStrategy.fail(message.toString());
+    }
+  }
+
 }
