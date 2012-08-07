@@ -17,10 +17,13 @@
 package org.junit.contrib.truth.subjects;
 
 
+import java.lang.reflect.Field;
+
 import org.junit.contrib.truth.FailureStrategy;
 import org.junit.contrib.truth.TestVerb;
 import org.junit.contrib.truth.util.GwtCompatible;
 import org.junit.contrib.truth.util.GwtIncompatible;
+import org.junit.contrib.truth.util.ReflectionUtil;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties
@@ -151,6 +154,68 @@ public class Subject<S extends Subject<S,T>,T> {
     StringBuilder message = new StringBuilder("Not true that ");
     message.append("the subject ").append(verb);
     failureStrategy.fail(message.toString());
+  }
+
+  public HasField hasField(final String fieldName) {
+    final T subject = getSubject();
+    if (subject == null) {
+      failureStrategy.fail("Cannot determine a field name from a null object.");
+      // Needed for Expect and other non-terminal failure strategies
+      return new HasField() {
+        @Override public void withValue(Object value) {
+          Subject.this.fail("Cannot test the presence of a value in a null object.");
+        }
+      };
+    }
+    final Class<?> subjectClass = subject.getClass();
+    final Field field;
+    try {
+      field = ReflectionUtil.getField(subjectClass, fieldName);
+      field.setAccessible(true);
+    } catch (NoSuchFieldException e) {
+      StringBuilder message = new StringBuilder("Not true that ");
+      message.append("<").append(subjectClass.getSimpleName()).append(">");
+      message.append(" has a field named <").append(fieldName).append(">");
+      failureStrategy.fail(message.toString());
+
+      // Needed for Expect and other non-terminal failure strategies
+      return new HasField() {
+        @Override public void withValue(Object value) {
+          Subject.this.fail("Cannot test the presence of a value in a non-present field.");
+        }
+      };
+    }
+    return new HasField() {
+      @Override public void withValue(Object expected) {
+        try {
+          Object actual = field.get(subject);
+          if (expected == actual || (expected != null && expected.equals(actual))) {
+            return;
+          } else {
+            StringBuilder message = new StringBuilder("Not true that ");
+            message.append("<").append(subjectClass.getSimpleName()).append(">'s");
+            message.append(" field <").append(fieldName).append(">");
+            message.append(" contains expected value <").append(expected).append(">.");
+            message.append(" It contains value <").append(actual).append(">");
+            failureStrategy.fail(message.toString());
+          }
+        } catch (IllegalArgumentException e) {
+          throw new RuntimeException(
+              "Error checking field " + fieldName + " while testing for value " + expected);
+        } catch (IllegalAccessException e) {
+          throw new RuntimeException(
+              "Cannot access field " + fieldName + " to test for value " + expected);
+        }
+      }
+    };
+  }
+
+  public static interface HasField {
+    /**
+     * Supplementary assertion in which a present field can be tested
+     * to determine if it contains a given value.
+     */
+    void withValue(Object value);
   }
 
   /**

@@ -21,12 +21,14 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.contrib.truth.subjects.BooleanSubject;
+import org.junit.contrib.truth.subjects.ClassSubject;
 import org.junit.contrib.truth.subjects.CollectionSubject;
 import org.junit.contrib.truth.subjects.DefaultSubject;
 import org.junit.contrib.truth.subjects.IntegerSubject;
 import org.junit.contrib.truth.subjects.IterableSubject;
 import org.junit.contrib.truth.subjects.ListSubject;
 import org.junit.contrib.truth.subjects.StringSubject;
+import org.junit.contrib.truth.subjects.Subject;
 import org.junit.contrib.truth.util.GwtCompatible;
 
 @GwtCompatible
@@ -35,8 +37,12 @@ public class TestVerb extends AbstractVerb {
     super(failureStrategy);
   }
 
-  public DefaultSubject that(Object target) {
+  public Subject<DefaultSubject, Object> that(Object target) {
     return new DefaultSubject(getFailureStrategy(), target);
+  }
+
+  public ClassSubject that(Class<?> target) {
+    return new ClassSubject(getFailureStrategy(), target);
   }
 
   public IntegerSubject that(Long target) {
