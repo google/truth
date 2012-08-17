@@ -16,6 +16,21 @@
       <artifactId>junit</artifactId>
       <version>4.8.2</version>
     </dependency>
+    <!-- Required only to build the -gwt sub-artifact. -->
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>2.2.0</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>2.2.0</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <prerequisites>
     <maven>3.0.3</maven>
