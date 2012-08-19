@@ -9,7 +9,13 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>12.0</version>
+      <version>13.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>2.0.0</version>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -43,6 +49,31 @@
           <source>1.6</source>
           <target>1.6</target>
         </configuration>
+      </plugin>
+      <!-- Move gwt sources into a gwt-specific resource folder. -->
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals><goal>run</goal></goals>
+            <configuration>
+              <target name="copy-gwt-resources">
+                <echo message="Test"/>
+                <copy toDir="${project.build.directory}/guava-gwt-sources"
+                      verbose="true">
+                  <fileset dir="${project.build.directory}/guava-sources">
+                    <and>
+                      <contains text="@GwtCompatible"/>
+                      <not><contains text="emulated = true"/></not>
+                    </and>
+                  </fileset>
+                </copy>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
