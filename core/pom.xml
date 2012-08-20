@@ -8,6 +8,9 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>truth</artifactId>
+  <properties>
+    <gwt.version>2.5.0-rc1</gwt.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -28,15 +31,8 @@
     <!-- Required only to build the -gwt sub-artifact. -->
     <dependency>
       <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-dev</artifactId>
-      <version>2.2.0</version>
-      <type>jar</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <version>2.2.0</version>
+      <version>${gwt.version}</version>
       <type>jar</type>
       <scope>provided</scope>
     </dependency>
@@ -98,96 +94,36 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/*GwtTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>${gwt.version}</version>
+        <executions>
+          <execution>
+            <id>gwt-compile</id>
+            <goals><goal>compile</goal></goals>
+          </execution>
+          <execution>
+            <id>gwt-test</id>
+            <goals><goal>test</goal></goals>
+            <configuration>
+              <style>PRETTY</style>
+              <timeOut>120</timeOut>
+              <includes>**/*GwtTest.java</includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
-  <developers>
-    <developer>
-      <id>cgruber</id>
-      <name>Christian Gruber</name>
-      <email>christianedwardgruber@gmail.com</email>
-      <url>http://www.geekinasuit.com/</url>
-      <roles>
-        <role>creator</role>
-        <role>developer</role>
-      </roles>
-      <timezone>-5</timezone>
-    </developer>
-    <developer>
-      <id>dsaff</id>
-      <name>David Saff</name>
-      <roles>
-        <role>creator</role>
-        <role>developer</role>
-      </roles>
-      <timezone>-5</timezone>
-    </developer>
-    <developer>
-      <id>hagbard</id>
-      <name>David B</name>
-      <roles>
-        <role>creator</role>
-        <role>developer</role>
-      </roles>
-      <timezone>+2</timezone>
-    </developer>
-  </developers>
-  <url>https://github.com/truth0/truth/wiki</url>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <issueManagement>
-    <system>Github</system>
-    <url>https://github.com/truth0/truth/issues</url>
-  </issueManagement>
-  <ciManagement>
-    <system>Jenkins</system>
-    <url>https://truth.ci.cloudbees.com/</url>
-    <notifiers>
-      <notifier>
-        <type>mail</type>
-        <sendOnError>true</sendOnError>
-        <sendOnFailure>true</sendOnFailure>
-        <sendOnSuccess>false</sendOnSuccess>
-        <sendOnWarning>false</sendOnWarning>
-        <configuration><address>truth-dev+build@googlecode.com</address></configuration>
-      </notifier>
-    </notifiers>
-  </ciManagement>
-  <mailingLists>
-    <mailingList>
-      <name>Announcements List</name>
-      <post>truth-announce@googlecode.com</post>
-    </mailingList>
-    <mailingList>
-      <name>User List</name>
-      <post>truth-users@googlecode.com</post>
-    </mailingList>
-    <mailingList>
-      <name>Developer List</name>
-      <post>truth-dev@googlecode.com</post>
-    </mailingList>
-  </mailingLists>
-  <distributionManagement>
-    <repository>
-      <id>sonatype-releases</id>
-      <name>Sonatype Maven Repository</name>
-      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-    <snapshotRepository>
-      <id>sonatype-snapshots</id>
-      <name>Sonatype Maven Snapshot Repository</name>
-      <url>http://oss.sonatype.org/content/repositories/junit-contrib-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
-  <scm>
-    <connection>scm:git:git@github.com:truth0/truth.git</connection>
-    <url>scm:git:git@github.com:truth0/truth.git</url>
-    <!-- <developerConnection>scm:git:git@github.com:truth0/truth.git</developerConnection> -->
-  </scm>
   <reporting>
     <plugins>
       <plugin>

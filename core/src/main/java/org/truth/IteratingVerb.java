@@ -6,8 +6,8 @@ import java.lang.reflect.Type;
 import java.util.concurrent.ExecutionException;
 
 import org.truth.codegen.CompilingClassLoader;
-import org.truth.codegen.IteratingWrapperClassBuilder;
 import org.truth.codegen.CompilingClassLoader.CompilerException;
+import org.truth.codegen.IteratingWrapperClassBuilder;
 import org.truth.subjects.Subject;
 import org.truth.subjects.SubjectFactory;
 
@@ -17,7 +17,7 @@ import com.google.common.cache.LoadingCache;
 /**
  * A verb that iterates over data and applies the predicate iteratively
  */
-public  class IteratingVerb<T> extends AbstractVerb {
+public class IteratingVerb<T> extends AbstractVerb {
 
   private static final String CANNOT_WRAP_MSG = "Cannot build an iterating wrapper around ";
 

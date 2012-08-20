@@ -3,6 +3,7 @@ package org.truth;
 import org.truth.subjects.Subject;
 import org.truth.subjects.SubjectFactory;
 import org.truth.util.GwtCompatible;
+import org.truth.util.GwtIncompatible;
 
 @GwtCompatible
 public class AbstractVerb {
@@ -62,6 +63,7 @@ public class AbstractVerb {
     }
   }
 
+  @GwtIncompatible("org.truth.IteratingVerb")
   public <T> IteratingVerb<T> in(Iterable<T> data) {
     return new IteratingVerb<T>(data, getFailureStrategy());
   }
