@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.truth.FailureStrategy;
-import org.truth.codegen.IteratingWrapperClassBuilder;
 import org.truth.subjects.Subject;
 import org.truth.subjects.SubjectFactory;
 
@@ -35,10 +34,10 @@ import org.truth.subjects.SubjectFactory;
 public class IteratingWrapperClassBuilderTest {
 
   private static final String TOP_BOILERPLATE =
-      "package org.junit.contrib.truth.codegen;\n" +
+      "package org.truth.codegen;\n" +
       "\n" +
-      "import org.junit.contrib.truth.FailureStrategy;\n" +
-      "import org.junit.contrib.truth.subjects.SubjectFactory;\n" +
+      "import org.truth.FailureStrategy;\n" +
+      "import org.truth.subjects.SubjectFactory;\n" +
       "\n";
 
   private static final String SUBJECT_FACTORY_FIELD =
@@ -61,18 +60,18 @@ public class IteratingWrapperClassBuilderTest {
       "public class %1$sSubjectIteratingWrapper extends %1$sSubject {";
 
   private static final String FOO_WRAPPED_METHOD =
-      "  public org.junit.contrib.truth.subjects.Subject.And endsWith(java.lang.String arg0) {\n" +
+      "  public org.truth.subjects.Subject.And endsWith(java.lang.String arg0) {\n" +
       "    for (java.lang.String item : data) {\n" +
-      "      org.junit.contrib.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject subject = (org.junit.contrib.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
+      "      org.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject subject = (org.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
       "      subject.endsWith(arg0);\n" +
       "    }\n" +
       "    return nextChain();\n" +
       "  }";
 
   private static final String BAR_WRAPPED_METHOD =
-      "  public org.junit.contrib.truth.subjects.Subject.And startsWith(@javax.annotation.Nullable java.lang.String arg0) {\n" +
+      "  public org.truth.subjects.Subject.And startsWith(@javax.annotation.Nullable java.lang.String arg0) {\n" +
       "    for (java.lang.String item : data) {\n" +
-      "      org.junit.contrib.truth.codegen.BarSubject subject = (org.junit.contrib.truth.codegen.BarSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
+      "      org.truth.codegen.BarSubject subject = (org.truth.codegen.BarSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
       "      subject.startsWith(arg0);\n" +
       "    }\n" +
       "    return nextChain();\n" +

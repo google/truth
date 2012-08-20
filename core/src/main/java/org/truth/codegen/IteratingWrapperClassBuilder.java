@@ -40,8 +40,8 @@ public class IteratingWrapperClassBuilder {
   private static final String CLASS_TEMPLATE =
       "package %1$s;%n" +
       "%n" +
-      "import org.junit.contrib.truth.FailureStrategy;%n" +
-      "import org.junit.contrib.truth.subjects.SubjectFactory;%n" +
+      "import org.truth.FailureStrategy;%n" +
+      "import org.truth.subjects.SubjectFactory;%n" +
       "%n" +
       "public class %2$sIteratingWrapper extends %2$s {%n" +
       "%n" +
