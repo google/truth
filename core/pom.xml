@@ -37,42 +37,27 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-  <prerequisites>
-    <maven>3.0.3</maven>
-  </prerequisites>
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <excludes><exclude>**/util/*.java</exclude></excludes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource><directory>src/test/java</directory></testResource>
+    </testResources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
+          <excludes>
+            <exclude>**/gwtemul/**/*.java</exclude>
+            <exclude>**/*.gwt.xml</exclude>
+          </excludes>
         </configuration>
-      </plugin>
-      <!-- Move gwt sources into a gwt-specific resource folder. -->
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.6</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <goals><goal>run</goal></goals>
-            <configuration>
-              <target name="copy-gwt-resources">
-                <echo message="Test"/>
-                <copy toDir="${project.build.directory}/guava-gwt-sources"
-                      verbose="true">
-                  <fileset dir="src/main/java">
-                    <and>
-                      <contains text="@GwtCompatible"/>
-                      <not><contains text="emulated = true"/></not>
-                    </and>
-                  </fileset>
-                </copy>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -108,13 +93,11 @@
         <version>${gwt.version}</version>
         <executions>
           <execution>
-            <id>gwt-compile</id>
-            <goals><goal>compile</goal></goals>
-          </execution>
-          <execution>
             <id>gwt-test</id>
             <goals><goal>test</goal></goals>
             <configuration>
+              <htmlunit>FF3</htmlunit>
+              <productionMode>true</productionMode>
               <style>PRETTY</style>
               <timeOut>120</timeOut>
               <includes>**/*GwtTest.java</includes>

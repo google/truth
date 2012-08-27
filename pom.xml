@@ -8,6 +8,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>core</module>
+    
   </modules>
   <prerequisites>
     <maven>3.0.3</maven>

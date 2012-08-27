@@ -19,7 +19,6 @@ package org.truth.subjects;
 
 import org.truth.FailureStrategy;
 import org.truth.util.GwtCompatible;
-import org.truth.util.GwtIncompatible;
 import org.truth.util.ReflectionUtil;
 
 /**
@@ -31,21 +30,9 @@ import org.truth.util.ReflectionUtil;
 @GwtCompatible
 public abstract class SubjectFactory<S extends Subject<S,T>, T> {
 
-  @GwtIncompatible("reflection")
-  private static final int SUBJECT_TYPE_PARAMETER = 0;
-
-  @GwtIncompatible("reflection")
-  @SuppressWarnings("unchecked") // cast failure is a critical error
-  private final Class<S> type = (Class<S>)ReflectionUtil.typeParameter(getClass(), SUBJECT_TYPE_PARAMETER);
-
   public SubjectFactory() {}
 
   public abstract S getSubject(FailureStrategy fs, T that);
-
-  @GwtIncompatible("reflection")
-  public Class<S> getSubjectClass() {
-    return type;
-  }
 
 }
 
