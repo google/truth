@@ -35,6 +35,11 @@ public class TruthGwtTest extends GWTTestCase {
     return "org.truth.TruthTest";
   }
 
+  public void testBoolean() {
+    ASSERT.that(true).isTrue();
+    ASSERT.that(false).isFalse();
+  }
+
   public void testInteger() {
     ASSERT.that(457923).is(457923);
     try {
