@@ -73,9 +73,32 @@
         <artifactId>maven-source-plugin</artifactId>
         <executions>
           <execution>
-            <id>attach-sources</id>
-            <phase>post-integration-test</phase>
+            <phase>verify</phase>
             <goals><goal>jar</goal></goals>
+            <configuration>
+              <excludes>
+                <exclude>**/gwtemul/**</exclude>
+                <exclude>**/*.gwt.xml</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-gwt-sources</id>
+            <phase>verify</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <classifier>gwt</classifier>
+              <classesDirectory>src/main/java</classesDirectory>
+              <includes>
+                <include>**/*.java</include>
+                <include>**/*.gwt.xml</include>
+              </includes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
