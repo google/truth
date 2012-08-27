@@ -21,9 +21,10 @@ import java.lang.reflect.Field;
 
 import org.truth.FailureStrategy;
 import org.truth.TestVerb;
-import org.truth.util.GwtCompatible;
-import org.truth.util.GwtIncompatible;
 import org.truth.util.ReflectionUtil;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties

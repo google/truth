@@ -18,8 +18,10 @@ package org.truth.subjects;
 
 
 import org.truth.FailureStrategy;
-import org.truth.util.GwtCompatible;
 import org.truth.util.ReflectionUtil;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 @GwtCompatible
 public class ClassSubject extends Subject<ClassSubject, Class<?>> {
@@ -27,6 +29,8 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
     super(failureStrategy, o);
   }
 
+  // TODO(cgruber): Create an alternative implementation using JSNI.
+  @GwtIncompatible("Reflection. ")
   public void declaresField(String fieldName) {
     if (getSubject() == null) {
       failureStrategy.fail("Cannot determine a field name from a null class.");

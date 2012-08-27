@@ -19,7 +19,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import org.truth.FailureStrategy;
-import org.truth.util.GwtCompatible;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * @author Kevin Bourrillion

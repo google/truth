@@ -26,7 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.truth.FailureStrategy;
-import org.truth.util.GwtCompatible;
+
+import com.google.common.annotations.GwtCompatible;
 
 @GwtCompatible
 public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends IterableSubject<S, T, C> {

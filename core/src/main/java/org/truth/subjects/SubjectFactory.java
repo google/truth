@@ -18,9 +18,10 @@ package org.truth.subjects;
 
 
 import org.truth.FailureStrategy;
-import org.truth.util.GwtCompatible;
-import org.truth.util.GwtIncompatible;
 import org.truth.util.ReflectionUtil;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 /**
  * A custom subject factory which will return a FooSubject (which

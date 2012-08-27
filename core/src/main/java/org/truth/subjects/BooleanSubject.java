@@ -17,7 +17,8 @@
 package org.truth.subjects;
 
 import org.truth.FailureStrategy;
-import org.truth.util.GwtCompatible;
+
+import com.google.common.annotations.GwtCompatible;
 
 
 /**

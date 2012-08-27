@@ -29,7 +29,8 @@ import org.truth.subjects.IterableSubject;
 import org.truth.subjects.ListSubject;
 import org.truth.subjects.StringSubject;
 import org.truth.subjects.Subject;
-import org.truth.util.GwtCompatible;
+
+import com.google.common.annotations.GwtCompatible;
 
 @GwtCompatible
 public class TestVerb extends AbstractVerb {

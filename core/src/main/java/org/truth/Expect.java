@@ -22,7 +22,8 @@ import java.util.List;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
-import org.truth.util.GwtIncompatible;
+
+import com.google.common.annotations.GwtIncompatible;
 
 @GwtIncompatible("JUnit4")
 @SuppressWarnings("deprecation")

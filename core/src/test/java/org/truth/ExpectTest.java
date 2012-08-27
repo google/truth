@@ -24,7 +24,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
-import org.truth.Expect;
 
 /**
  * Tests (and effectively sample code) for the Expect verb (implemented as a

@@ -17,8 +17,9 @@
 package org.truth;
 
 import org.junit.internal.AssumptionViolatedException;
-import org.truth.util.GwtCompatible;
-import org.truth.util.GwtIncompatible;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 /**
  * Truth - a proposition framework for tests, supporting JUnit style 

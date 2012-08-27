@@ -1,9 +1,11 @@
 package org.truth;
 
+import org.truth.delegatetest.DelegationTest;
 import org.truth.subjects.Subject;
 import org.truth.subjects.SubjectFactory;
-import org.truth.util.GwtCompatible;
-import org.truth.util.GwtIncompatible;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 @GwtCompatible
 public class AbstractVerb {

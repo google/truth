@@ -18,7 +18,8 @@ package org.truth.subjects;
 
 
 import org.truth.FailureStrategy;
-import org.truth.util.GwtCompatible;
+
+import com.google.common.annotations.GwtCompatible;
 
 @GwtCompatible
 public class DefaultSubject extends Subject<DefaultSubject, Object> {

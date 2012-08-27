@@ -21,7 +21,6 @@ import static org.truth.Truth.ASSERT;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.truth.FailureStrategy;
 import org.truth.subjects.StringSubject;
 import org.truth.subjects.SubjectFactory;
 

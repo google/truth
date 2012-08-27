@@ -18,12 +18,12 @@ package org.truth;
 import static org.junit.Assert.fail;
 import static org.truth.Truth.ASSERT;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * Tests for List Subjects.

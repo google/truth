@@ -24,7 +24,8 @@ import java.util.Collection;
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**
- * Test of the GWT system.
+ * Test of Truth under GWT - should be enough tests here to force compilation
+ * of all Subject implementations.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -66,6 +67,10 @@ public class TruthGwtTest extends GWTTestCase {
 
   public void testList() {
     ASSERT.that(asList(1, 2, 3)).contains(1, 2, 3).inOrder();
+  }
+
+  public void testDefault() {
+    ASSERT.that(new Object()).isNotNull();
   }
 
 }
