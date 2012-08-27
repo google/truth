@@ -96,10 +96,9 @@
             <id>gwt-test</id>
             <goals><goal>test</goal></goals>
             <configuration>
-              <htmlunit>FF3</htmlunit>
+              <mode>htmlunit</mode>
               <productionMode>true</productionMode>
-              <style>PRETTY</style>
-              <timeOut>120</timeOut>
+              <userAgents>gecko1_8</userAgents>
               <includes>**/*GwtTest.java</includes>
             </configuration>
           </execution>
