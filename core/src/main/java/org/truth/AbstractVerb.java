@@ -1,6 +1,5 @@
 package org.truth;
 
-import org.truth.delegatetest.DelegationTest;
 import org.truth.subjects.Subject;
 import org.truth.subjects.SubjectFactory;
 
