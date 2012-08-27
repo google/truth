@@ -16,7 +16,10 @@
  */
 package org.truth;
 
+import static java.util.Arrays.asList;
 import static org.truth.Truth.ASSERT;
+
+import java.util.Collection;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -31,8 +34,38 @@ public class TruthGwtTest extends GWTTestCase {
     return "org.truth.TruthTest";
   }
 
-  public void testFoo() {
-    ASSERT.that(457923).is(1);
+  public void testInteger() {
+    ASSERT.that(457923).is(457923);
+    try {
+      ASSERT.that(457923).is(1);
+      ASSERT.fail("Should have thrown an exception");
+    } catch (Throwable t) {
+      // succeeds
+    }
+  }
+
+  public void testString() {
+    ASSERT.that("blah").contains("ah");
+    ASSERT.that("blah").startsWith("bl");
+    ASSERT.that("blah").endsWith("ah");
+    try {
+      ASSERT.that("blah").contains("foo");
+      ASSERT.fail("Should have thrown an exception");
+    } catch (Throwable t) {
+      // succeeds
+    }
+  }
+
+  public void testIterable() {
+    ASSERT.that((Iterable<Integer>)asList(1, 2, 3)).iteratesOverSequence(1, 2, 3);
+  }
+
+  public void testCollection() {
+    ASSERT.that((Collection<Integer>)asList(1, 2, 3)).contains(1, 2, 3).inOrder();
+  }
+
+  public void testList() {
+    ASSERT.that(asList(1, 2, 3)).contains(1, 2, 3).inOrder();
   }
 
 }
