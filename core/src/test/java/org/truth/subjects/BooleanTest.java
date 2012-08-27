@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,32 +14,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.truth;
+package org.truth.subjects;
 
+import static org.junit.Assert.fail;
 import static org.truth.Truth.ASSERT;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.truth.subjects.StringSubject;
-import org.truth.subjects.SubjectFactory;
 
 /**
- * Tests for SubjectFactory generic type erasure workaround.
- *
+ * Tests for Boolean Subjects.
+ * 
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class SubjectFactoryReflectionTest {
+public class BooleanTest {
 
-  @Test public void genericErasureWorkaround() {
-    SubjectFactory<StringSubject, String> factory =
-        new SubjectFactory<StringSubject, String>() {
-          @Override public StringSubject getSubject(FailureStrategy fs, String target) {
-            return new StringSubject(fs, target);
-          }
-        };
-    ASSERT.that(factory.getSubjectClass()).is(StringSubject.class);
+  @Test public void isTrue() {
+    ASSERT.that(true).isTrue();
   }
-
+  
+  @Test public void isTrueFailing() {
+    try {
+      ASSERT.that(false).isTrue();
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage()).contains("Not true that <false> is true");
+    }
+  }
+  
+  @Test public void isFalse() {
+    ASSERT.that(false).isFalse();
+  }
+  
+  @Test public void isFalseFailing() {
+    try {
+      ASSERT.that(true).isFalse();
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage()).contains("Not true that <true> is false");
+    }
+  }
 }

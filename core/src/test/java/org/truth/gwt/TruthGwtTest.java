@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.truth;
+package org.truth.gwt;
 
 import static java.util.Arrays.asList;
 import static org.truth.Truth.ASSERT;
@@ -32,7 +32,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 public class TruthGwtTest extends GWTTestCase {
 
   @Override public String getModuleName() {
-    return "org.truth.TruthTest";
+    return "org.truth.gwt.TruthTest";
   }
 
   public void testBoolean() {

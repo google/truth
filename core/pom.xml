@@ -74,7 +74,7 @@
         <executions>
           <execution>
             <phase>verify</phase>
-            <goals><goal>jar</goal></goals>
+            <goals><goal>jar-no-fork</goal></goals>
             <configuration>
               <excludes>
                 <exclude>**/gwtemul/**</exclude>
