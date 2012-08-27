@@ -18,8 +18,6 @@ package org.truth.subjects;
 
 
 import org.truth.FailureStrategy;
-import org.truth.util.GwtCompatible;
-import org.truth.util.ReflectionUtil;
 
 /**
  * A custom subject factory which will return a FooSubject (which
@@ -27,7 +25,6 @@ import org.truth.util.ReflectionUtil;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible
 public abstract class SubjectFactory<S extends Subject<S,T>, T> {
 
   public SubjectFactory() {}

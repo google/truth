@@ -18,7 +18,6 @@ package org.truth;
 
 import org.truth.FailureStrategy;
 import org.truth.TestVerb;
-import org.truth.util.GwtCompatible;
 
 /**
  * Truth - a proposition framework for tests, supporting JUnit style
@@ -48,7 +47,6 @@ import org.truth.util.GwtCompatible;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible(emulated = true)
 public class Truth {
   public static final FailureStrategy THROW_ASSERTION_ERROR =
       new FailureStrategy() {

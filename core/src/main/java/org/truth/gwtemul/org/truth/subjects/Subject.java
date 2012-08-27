@@ -18,7 +18,6 @@ package org.truth.subjects;
 
 import org.truth.FailureStrategy;
 import org.truth.TestVerb;
-import org.truth.util.GwtCompatible;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties
@@ -27,7 +26,6 @@ import org.truth.util.GwtCompatible;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible(emulated = true)
 public class Subject<S extends Subject<S,T>,T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
