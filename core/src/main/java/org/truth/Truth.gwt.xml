@@ -1,0 +1,7 @@
+<module>
+  <source path="">
+    <exclude name="**/util/**" />
+  </source>
+  <super-source path="gwtemul"/>
+  <inherits name="com.google.gwt.user.User"/>
+</module>
