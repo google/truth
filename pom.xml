@@ -18,9 +18,24 @@
   <modules>
     <module>core</module>
   </modules>
-  <prerequisites>
-    <maven>3.0.3</maven>
-  </prerequisites>
+  <prerequisites><maven>3.0.3</maven></prerequisites>
+  <properties>
+    <gpg.skip>true</gpg.skip>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals><goal>sign</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
   <developers>
     <developer>
       <id>cgruber</id>
