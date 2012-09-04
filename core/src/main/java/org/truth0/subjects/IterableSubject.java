@@ -43,10 +43,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @deprecated - please pass your iterable into a collection first.
    */
   @Deprecated
-  public And<S> contains(Object item) {
+  public void contains(Object item) {
     for (Object t : getSubject()) {
       if (item == t || item != null && item.equals(t)) {
-        return nextChain();
+        return;
       }
     }
     fail("contains", item);
@@ -56,21 +56,19 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   /**
    * Attests that the subject holds no more objects, or fails.
    */
-  public And<S> isEmpty() {
+  public void isEmpty() {
     if (getSubject().iterator().hasNext()) {
       fail("is empty");
     }
-    return nextChain();
   }
 
   /**
    * Attests that the subject holds one or more objects, or fails
    */
-  public And<S> isNotEmpty() {
+  public void isNotEmpty() {
     if (!getSubject().iterator().hasNext()) {
       fail("is not empty");
     }
-    return nextChain();
   }
 
   /**
@@ -78,7 +76,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Collections and other things which contain items but may not have guaranteed
    * iteration order, this method should be overridden.
    */
-  public And<S> iteratesOverSequence(Object... expectedItems) {
+  public void iteratesOverSequence(Object... expectedItems) {
     Iterator<T> actualItems = getSubject().iterator();
     for (Object expected : expectedItems) {
       if (!actualItems.hasNext()) {
@@ -95,6 +93,5 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     if (actualItems.hasNext()) {
       fail("iterates through", Arrays.asList(expectedItems));
     }
-    return nextChain();
   }
 }

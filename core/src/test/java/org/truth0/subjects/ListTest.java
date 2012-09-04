@@ -58,7 +58,8 @@ public class ListTest {
       ASSERT.that(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(1, 2, 3, 4));
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("contains sequence").and().contains("[1, 2, 3, 4]");
+      ASSERT.that(e.getMessage()).contains("contains sequence");
+      ASSERT.that(e.getMessage()).contains("[1, 2, 3, 4]");
     }
   }
 
@@ -67,7 +68,8 @@ public class ListTest {
       ASSERT.that(Arrays.asList(1, 2, 2, 3)).containsSequence(Arrays.asList(1, 2, 3));
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("contains sequence").and().contains("[1, 2, 3]");
+      ASSERT.that(e.getMessage()).contains("contains sequence");
+      ASSERT.that(e.getMessage()).contains("[1, 2, 3]");
     }
   }
 
@@ -82,7 +84,8 @@ public class ListTest {
       ASSERT.that(Arrays.asList(1, 2, 2, 4)).isOrdered();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("is strictly ordered").and().contains("<2> <2>");
+      ASSERT.that(e.getMessage()).contains("is strictly ordered");
+      ASSERT.that(e.getMessage()).contains("<2> <2>");
     }
   }
 
@@ -104,7 +107,8 @@ public class ListTest {
       ASSERT.that(Arrays.asList(1, 3, 2, 4)).isPartiallyOrdered();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("is partially ordered").and().contains("<3> <2>");
+      ASSERT.that(e.getMessage()).contains("is partially ordered");
+      ASSERT.that(e.getMessage()).contains("<3> <2>");
     }
   }
 
@@ -127,7 +131,8 @@ public class ListTest {
       ASSERT.that(Arrays.asList("1", "2", "2", "10")).isOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("is strictly ordered").and().contains("<2> <2>");
+      ASSERT.that(e.getMessage()).contains("is strictly ordered");
+      ASSERT.that(e.getMessage()).contains("<2> <2>");
     }
   }
 
@@ -143,7 +148,8 @@ public class ListTest {
       ASSERT.that(Arrays.asList("1", "10", "2", "20")).isPartiallyOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("is partially ordered").and().contains("<10> <2>");
+      ASSERT.that(e.getMessage()).contains("is partially ordered");
+      ASSERT.that(e.getMessage()).contains("<10> <2>");
     }
   }
 

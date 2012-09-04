@@ -40,19 +40,6 @@ public class IterableTest {
     ASSERT.that(iterable(1, null, 3)).contains(null);
   }
 
-  @Test public void iterableContainsWith2KindsOfChaining() {
-    Iterable<Integer> foo = iterable(1, 2, 3);
-    Iterable<Integer> bar = foo;
-    ASSERT.that(foo).is(bar).and().contains(1).and().contains(2);
-  }
-
-  @Test public void iterableContainsFailureWithChaining() {
-    try {
-      ASSERT.that(iterable(1, 2, 3)).contains(1).and().contains(5);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {}
-  }
-
   @Test public void iterableContainsFailure() {
     try {
       ASSERT.that(iterable(1, 2, 3)).contains(5);
@@ -106,8 +93,8 @@ public class IterableTest {
       ASSERT.that(iterable(1, null, 3)).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("is empty");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("is empty");
     }
   }
 

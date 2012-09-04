@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.truth0.FailureStrategy;
-import org.truth0.codegen.IteratingWrapperClassBuilder;
 import org.truth0.subjects.Subject;
 import org.truth0.subjects.SubjectFactory;
 
@@ -61,21 +60,19 @@ public class IteratingWrapperClassBuilderTest {
       "public class %1$sSubjectIteratingWrapper extends %1$sSubject {";
 
   private static final String FOO_WRAPPED_METHOD =
-      "  public org.truth0.subjects.Subject.And endsWith(java.lang.String arg0) {\n" +
+      "  public void endsWith(java.lang.String arg0) {\n" +
       "    for (java.lang.String item : data) {\n" +
       "      org.truth0.codegen.IteratingWrapperClassBuilderTest.FooSubject subject = (org.truth0.codegen.IteratingWrapperClassBuilderTest.FooSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
       "      subject.endsWith(arg0);\n" +
       "    }\n" +
-      "    return nextChain();\n" +
       "  }";
 
   private static final String BAR_WRAPPED_METHOD =
-      "  public org.truth0.subjects.Subject.And startsWith(@javax.annotation.Nullable java.lang.String arg0) {\n" +
+      "  public void startsWith(@javax.annotation.Nullable java.lang.String arg0) {\n" +
       "    for (java.lang.String item : data) {\n" +
       "      org.truth0.codegen.BarSubject subject = (org.truth0.codegen.BarSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
       "      subject.startsWith(arg0);\n" +
       "    }\n" +
-      "    return nextChain();\n" +
       "  }";
 
 
@@ -116,11 +113,10 @@ public class IteratingWrapperClassBuilderTest {
       super(failureStrategy, subject);
     }
 
-    public And<FooSubject> endsWith(String suffix) {
+    public void endsWith(String suffix) {
       if (getSubject().endsWith(suffix)) {
         fail("matches", getSubject(), suffix);
       }
-      return nextChain();
     }
 
   }

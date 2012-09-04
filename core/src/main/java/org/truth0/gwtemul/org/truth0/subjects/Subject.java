@@ -29,29 +29,13 @@ import org.truth0.TestVerb;
 public class Subject<S extends Subject<S,T>,T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
-  private final And<S> chain;
 
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
-
-    this.chain = new And<S>(){
-      @SuppressWarnings("unchecked")
-      @Override public S and() {
-        return (S)Subject.this;
-      }
-    };
   }
 
-  /**
-   * A method which wraps the current Subject concrete
-   * subtype in a chaining "And" object.
-   */
-  protected final And<S> nextChain() {
-    return chain;
-  }
-
-  public And<S> is(T other) {
+  public void is(T other) {
 
     if (getSubject() == null) {
       if(other != null) {
@@ -62,24 +46,21 @@ public class Subject<S extends Subject<S,T>,T> {
         fail("is", other);
       }
     }
-    return nextChain();
   }
 
-  public And<S> isNull() {
+  public void isNull() {
     if (getSubject() != null) {
       failWithoutSubject("is null");
     }
-    return nextChain();
   }
 
-  public And<S> isNotNull() {
+  public void isNotNull() {
     if (getSubject() == null) {
       failWithoutSubject("is not null");
     }
-    return nextChain();
   }
 
-  public And<S> isEqualTo(Object other) {
+  public void isEqualTo(Object other) {
     if (getSubject() == null) {
       if(other != null) {
         fail("is equal to", other);
@@ -89,10 +70,9 @@ public class Subject<S extends Subject<S,T>,T> {
         fail("is equal to", other);
       }
     }
-    return nextChain();
   }
 
-  public And<S> isNotEqualTo(Object other) {
+  public void isNotEqualTo(Object other) {
     if (getSubject() == null) {
       if(other == null) {
         fail("is not equal to", (Object)null);
@@ -102,7 +82,6 @@ public class Subject<S extends Subject<S,T>,T> {
         fail("is not equal to", other);
       }
     }
-    return nextChain();
   }
 
   protected T getSubject() {
@@ -133,15 +112,4 @@ public class Subject<S extends Subject<S,T>,T> {
     failureStrategy.fail(message.toString());
   }
 
-  /**
-   * A convenience class to allow for chaining in the fluent API
-   * style, such that subjects can make propositions in series.
-   * i.e. ASSERT.that(blah).isNotNull().and().contains(b).and().isNotEmpty();
-   */
-  public static interface And<C> {
-    /**
-     * Returns the next object in the chain of anded objects.
-     */
-    C and();
-  }
 }

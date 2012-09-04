@@ -41,10 +41,6 @@ public class ExampleTest {
     ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
   }
 
-  @Test public void listContainsWithChaining() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).contains(1).and().contains(2);
-  }
-
   @Test public void equalityFail() {
     int x = 2 + 2;
     try {

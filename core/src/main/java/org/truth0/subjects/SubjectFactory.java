@@ -36,8 +36,8 @@ public abstract class SubjectFactory<S extends Subject<S,T>, T> {
   private static final int SUBJECT_TYPE_PARAMETER = 0;
 
   @GwtIncompatible("reflection")
-  @SuppressWarnings("unchecked") // cast failure is a critical error
-  private final Class<S> type = (Class<S>)ReflectionUtil.typeParameter(getClass(), SUBJECT_TYPE_PARAMETER);
+  private final Class<S> type =
+      (Class<S>)ReflectionUtil.typeParameter(getClass(), SUBJECT_TYPE_PARAMETER);
 
   public SubjectFactory() {}
 
