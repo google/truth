@@ -26,7 +26,6 @@ import java.util.Collection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.truth0.subjects.Ordered;
 
 /**
  * Tests for Collection Subjects.
@@ -41,25 +40,8 @@ public class CollectionTest {
     ASSERT.that(collection(1, 2, 3)).contains(1);
   }
 
-  @Test public void collectionContainsWithChaining() {
-    ASSERT.that(collection(1, 2, 3)).contains(1).and().contains(2);
-  }
-
   @Test public void collectionContainsWithNull() {
     ASSERT.that(collection(1, null, 3)).contains(null);
-  }
-
-  @Test public void collectionContainsWith2KindsOfChaining() {
-    Collection<Integer> foo = collection(1, 2, 3);
-    Collection<Integer> bar = foo;
-    ASSERT.that(foo).is(bar).and().contains(1).and().contains(2);
-  }
-
-  @Test public void collectionContainsFailureWithChaining() {
-    try {
-      ASSERT.that(collection(1, 2, 3)).contains(1).and().contains(5);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {}
   }
 
   @Test public void collectionContainsFailure() {
@@ -105,7 +87,8 @@ public class CollectionTest {
       ASSERT.that(collection(1, 2, 3)).contains(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that").and().contains("<4>");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("<4>");
     }
   }
 
@@ -114,9 +97,9 @@ public class CollectionTest {
       ASSERT.that(collection(1, 2, 3)).contains(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("<3 copies of 2>")
-          .and().contains("<4>");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("<3 copies of 2>");
+       ASSERT.that(e.getMessage()).contains("<4>");
     }
   }
 
@@ -129,8 +112,8 @@ public class CollectionTest {
       ASSERT.that(collection(1, 2)).contains(4, 4, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().endsWith("contains <3 copies of 4>");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).endsWith("contains <3 copies of 4>");
     }
   }
 
@@ -139,8 +122,8 @@ public class CollectionTest {
       ASSERT.that(collection(1, null, 3)).contains(1, null, null, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("<2 copies of null>");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("<2 copies of null>");
     }
   }
 
@@ -157,8 +140,8 @@ public class CollectionTest {
       ASSERT.that(collection(1, null, 3)).contains(null, 1, 3).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("iterates through");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("iterates through");
     }
   }
 
@@ -201,8 +184,8 @@ public class CollectionTest {
       ordered.inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("iterates through");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("iterates through");
     }
   }
 
@@ -215,8 +198,8 @@ public class CollectionTest {
       ASSERT.that(collection(1, null, 3)).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("is empty");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("is empty");
     }
   }
 

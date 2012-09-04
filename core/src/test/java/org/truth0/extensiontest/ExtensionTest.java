@@ -16,6 +16,7 @@
  */
 package org.truth0.extensiontest;
 
+
 import static org.truth0.extensiontest.ExtendedVerb.ASSERT;
 
 import org.junit.Test;
@@ -39,8 +40,8 @@ public class ExtensionTest {
       ASSERT.that(new MyType(5)).matches(new MyType(4));
       ASSERT.fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("matches");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("matches");
     }
   }
 

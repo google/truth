@@ -83,7 +83,6 @@ public class IteratingWrapperClassBuilder {
       "      %6$s subject = (%6$s)subjectFactory.getSubject(failureStrategy, item);%n" +
       "      subject.%3$s(%7$s);%n" +
       "    }%n" +
-      "    return nextChain();%n" +
       "  }%n";
 
 

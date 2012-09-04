@@ -36,8 +36,8 @@ public class DelegationTest {
       ASSERT.about(FOO).that(new Foo(5)).matches(new Foo(4));
       ASSERT.fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that")
-          .and().contains("matches");
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("matches");
     }
   }
 }

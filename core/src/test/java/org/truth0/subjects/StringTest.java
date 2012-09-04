@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,7 @@ import org.junit.runners.JUnit4;
 
 /**
  * Tests for String Subjects.
- * 
+ *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -35,7 +35,7 @@ public class StringTest {
   @Test public void stringContains() {
     ASSERT.that("abc").contains("c");
   }
-  
+
   @Test public void stringContainsFail() {
     try {
       ASSERT.that("abc").contains("d");
@@ -45,10 +45,6 @@ public class StringTest {
       return;
     }
     fail("Should have thrown");
-  }
-
-  @Test public void chain() {
-    ASSERT.that("abc").contains("a").and().contains("b");
   }
 
   @Test public void stringEquality() {
@@ -80,7 +76,7 @@ public class StringTest {
     }
     fail("Should have thrown");
   }
-  
+
   @Test public void stringEndsWith() {
     ASSERT.that("abc").endsWith("bc");
   }
@@ -110,7 +106,7 @@ public class StringTest {
     ASSERT.that((String)null).startsWith(null);
     ASSERT.that((String)null).endsWith(null);
   }
-  
+
   @Test public void stringNullContains() {
     try {
       ASSERT.that((String)null).contains("a");

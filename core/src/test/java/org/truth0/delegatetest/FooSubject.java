@@ -38,11 +38,10 @@ public class FooSubject extends Subject<FooSubject, Foo> {
     super(failureStrategy, subject);
   }
 
-  public And<FooSubject> matches(Foo object) {
+  public void matches(Foo object) {
     if (getSubject().value != object.value) {
       fail("matches", getSubject(), object);
     }
-    return nextChain();
   }
 
 }
