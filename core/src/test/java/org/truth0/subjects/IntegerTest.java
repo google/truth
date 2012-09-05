@@ -38,7 +38,8 @@ public class IntegerTest {
   @Rule public final Expect EXPECT = Expect.create();
 
   @Test public void simpleEquality() {
-    ASSERT.that(2 + 2).isEqualTo(4).and().isBetween(3, 5);
+    ASSERT.that(2 + 2).is(4);
+    ASSERT.that(2 + 2).isEqualTo(4);
   }
 
   @Test public void intIsInt() {

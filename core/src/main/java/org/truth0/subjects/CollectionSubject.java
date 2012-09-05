@@ -46,36 +46,33 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   /**
    * Attests that a Collection contains the provided object or fails.
    */
-  @Override public And<S> contains(Object item) {
+  @Override public void contains(Object item) {
     if (!getSubject().contains(item)) {
       fail("contains", item);
     }
-    return nextChain();
   }
 
   /**
    * Attests that a Collection is empty or fails.
    */
-  @Override public And<S> isEmpty() {
+  @Override public void isEmpty() {
     if (!getSubject().isEmpty()) {
       fail("is empty");
     }
-    return nextChain();
   }
 
   /**
    * Attests that a Collection contains at least one of the provided
    * objects or fails.
    */
-  public And<S> containsAnyOf(Object first, Object second, Object ... rest) {
+  public void containsAnyOf(Object first, Object second, Object ... rest) {
     Collection<?> collection = getSubject();
     for (Object item : accumulate(first, second, rest)) {
       if (collection.contains(item)) {
-        return nextChain();
+        return;
       }
     }
     fail("contains", accumulate(first, second, rest));
-    return nextChain();
   }
 
 
@@ -104,7 +101,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
 
     final List<?> expectedItems = accumulate(first, second, rest);
     return new Ordered<S>() {
-      @Override public And<S> inOrder() {
+      @Override public void inOrder() {
         Iterator<T> actualItems = getSubject().iterator();
         for (Object expected : expectedItems) {
           if (!actualItems.hasNext()) {
@@ -121,10 +118,6 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         if (actualItems.hasNext()) {
           fail("iterates through", expectedItems);
         }
-        return nextChain();
-      }
-      @Override public S and() {
-        return nextChain().and();
       }
     };
   }

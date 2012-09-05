@@ -38,11 +38,10 @@ public class BarSubject extends Subject<BarSubject, String> {
     super(failureStrategy, subject);
   }
 
-  public And<BarSubject> startsWith(@Nullable String prefix) {
+  public void startsWith(@Nullable String prefix) {
     if (getSubject().startsWith(prefix)) {
       fail("matches", getSubject(), prefix);
     }
-    return nextChain();
   }
 
 }

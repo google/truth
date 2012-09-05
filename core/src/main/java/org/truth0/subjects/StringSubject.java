@@ -32,7 +32,7 @@ public class StringSubject extends Subject<StringSubject, String> {
     super(failureStrategy, string);
   }
 
-  public And<StringSubject> contains(String string) {
+  public void contains(String string) {
     if (getSubject() == null) {
       if (string != null) {
         fail("contains", string);
@@ -40,10 +40,9 @@ public class StringSubject extends Subject<StringSubject, String> {
     } else if (!getSubject().contains(string)) {
       fail("contains", string);
     }
-    return nextChain();
   }
 
-  public And<StringSubject> startsWith(String string) {
+  public void startsWith(String string) {
     if (getSubject() == null) {
       if (string != null) {
         fail("starts with", string);
@@ -51,10 +50,9 @@ public class StringSubject extends Subject<StringSubject, String> {
     } else if (!getSubject().startsWith(string)) {
       fail("starts with", string);
     }
-    return nextChain();
   }
 
-  public And<StringSubject> endsWith(String string) {
+  public void endsWith(String string) {
     if (getSubject() == null) {
       if (string != null) {
         fail("ends with", string);
@@ -62,7 +60,6 @@ public class StringSubject extends Subject<StringSubject, String> {
     } else if (!getSubject().endsWith(string)) {
       fail("ends with", string);
     }
-    return nextChain();
   }
 
   public static final SubjectFactory<StringSubject, String> STRING =

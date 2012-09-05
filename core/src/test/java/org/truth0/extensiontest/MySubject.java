@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@ import org.truth0.subjects.Subject;
 
 /**
  * A simple example Subject to demonstrate extension.
- * 
+ *
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
 public class MySubject extends Subject<MySubject, MyType> {
@@ -31,11 +31,10 @@ public class MySubject extends Subject<MySubject, MyType> {
     super(failureStrategy, subject);
   }
 
-  public And<MySubject> matches(MyType object) {
+  public void matches(MyType object) {
     if (getSubject().value != object.value) {
       fail("matches", getSubject(), object);
     }
-    return nextChain();
   }
 
 }

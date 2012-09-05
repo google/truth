@@ -39,9 +39,9 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   /**
    * Attests that a List contains the specified sequence.
    */
-  public And<S> containsSequence(List<?> sequence) {
+  public void containsSequence(List<?> sequence) {
     if (sequence.isEmpty()) {
-      return nextChain();
+      return;
     }
     List<?> list = getSubject();
     while (true) {
@@ -54,12 +54,11 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
         break;    // Not enough room left
       }
       if (sequence.equals(list.subList(first, last))) {
-        return nextChain();
+        return;
       }
       list = list.subList(first + 1, list.size());
     }
     fail("contains sequence", sequence);
-    return nextChain();
   }
 
   /**
@@ -69,8 +68,8 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public And<S> isOrdered() {
-    return pairwiseCheck(new PairwiseChecker<T>() {
+  public void isOrdered() {
+    pairwiseCheck(new PairwiseChecker<T>() {
       @SuppressWarnings("unchecked")
       @Override public void check(T prev, T next) {
         if (((Comparable<T>) prev).compareTo(next) >= 0) {
@@ -87,8 +86,8 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public And<S> isPartiallyOrdered() {
-    return pairwiseCheck(new PairwiseChecker<T>() {
+  public void isPartiallyOrdered() {
+    pairwiseCheck(new PairwiseChecker<T>() {
       @SuppressWarnings("unchecked")
       @Override public void check(T prev, T next) {
         if (((Comparable<T>) prev).compareTo(next) > 0) {
@@ -105,8 +104,8 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public And<S> isOrdered(final Comparator<T> comparator) {
-    return pairwiseCheck(new PairwiseChecker<T>() {
+  public void isOrdered(final Comparator<T> comparator) {
+    pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) >= 0) {
           fail("is strictly ordered", prev, next);
@@ -122,8 +121,8 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public And<S> isPartiallyOrdered(final Comparator<T> comparator) {
-    return pairwiseCheck(new PairwiseChecker<T>() {
+  public void isPartiallyOrdered(final Comparator<T> comparator) {
+    pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) > 0) {
           fail("is partially ordered", prev, next);
@@ -132,7 +131,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
     });
   }
 
-  private And<S> pairwiseCheck(PairwiseChecker<T> checker) {
+  private void pairwiseCheck(PairwiseChecker<T> checker) {
     List<T> list = getSubject();
     if (list.size() > 1) {
       T prev = list.get(0);
@@ -142,7 +141,6 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
         prev = next;
       }
     }
-    return nextChain();
   }
 
   private interface PairwiseChecker<T> {
