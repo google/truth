@@ -34,21 +34,6 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class IterableTest {
 
-
-
-  @Test public void iterableContainsWithNull() {
-    ASSERT.that(iterable(1, null, 3)).contains(null);
-  }
-
-  @Test public void iterableContainsFailure() {
-    try {
-      ASSERT.that(iterable(1, 2, 3)).contains(5);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-    }
-  }
-
   @Test public void iteratesOverSequence() {
     ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3);
   }

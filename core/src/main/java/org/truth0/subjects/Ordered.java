@@ -15,7 +15,7 @@
  */
 package org.truth0.subjects;
 
-public interface Ordered<Q> {
+public interface Ordered {
 
   /**
    * An additional assertion, implemented by some containment subjects
