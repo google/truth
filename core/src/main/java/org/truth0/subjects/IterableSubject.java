@@ -40,20 +40,6 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * @deprecated - please pass your iterable into a collection first.
-   */
-  @Deprecated
-  public void contains(Object item) {
-    for (Object t : getSubject()) {
-      if (item == t || item != null && item.equals(t)) {
-        return;
-      }
-    }
-    fail("contains", item);
-    throw new AssertionError(); // needed for "EXPECT" behaviour.
-  }
-
-  /**
    * Attests that the subject holds no more objects, or fails.
    */
   public void isEmpty() {

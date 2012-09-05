@@ -106,6 +106,20 @@ public class Subject<S extends Subject<S,T>,T> {
     failureStrategy.fail(message.toString());
   }
 
+  /**
+   * Assembles a failure message and passes such to the FailureStrategy
+   * @param verb the act being asserted
+   * @param messageParts the expectations against which the subject is compared
+   */
+  protected void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
+    StringBuilder message = new StringBuilder("Not true that ");
+    message.append("<").append(getSubject()).append("> ").append(verb);
+    message.append(" <").append(expected).append(">");
+    message.append(" it ").append(failVerb);
+    message.append(" <").append(actual).append(">");
+    failureStrategy.fail(message.toString());
+  }
+
   protected void failWithoutSubject(String verb) {
     StringBuilder message = new StringBuilder("Not true that ");
     message.append("the subject ").append(verb);

@@ -36,70 +36,72 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class CollectionTest {
 
-  @Test public void collectionContains() {
-    ASSERT.that(collection(1, 2, 3)).contains(1);
+  @Test public void collectionHasItem() {
+    ASSERT.that(collection(1, 2, 3)).has().item(1);
   }
 
-  @Test public void collectionContainsWithNull() {
-    ASSERT.that(collection(1, null, 3)).contains(null);
+  @Test public void collectionHasItemWithNull() {
+    ASSERT.that(collection(1, null, 3)).has().item(null);
   }
 
-  @Test public void collectionContainsFailure() {
+  @Test public void collectionHasItemFailure() {
     try {
-      ASSERT.that(collection(1, 2, 3)).contains(5);
+      ASSERT.that(collection(1, 2, 3)).has().item(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
     }
   }
 
-  @Test public void collectionContainsAnyOf() {
-    ASSERT.that(collection(1, 2, 3)).containsAnyOf(1, 5);
+  @Test public void collectionHasAnyOf() {
+    ASSERT.that(collection(1, 2, 3)).has().anyOf(1, 5);
   }
 
-  @Test public void collectionContainsAnyOfWithNull() {
-    ASSERT.that(collection(1, null, 3)).containsAnyOf(null, 5);
+  @Test public void collectionHasAnyOfWithNull() {
+    ASSERT.that(collection(1, null, 3)).has().anyOf(null, 5);
   }
 
-  @Test public void collectionContainsAnyOfFailure() {
+  @Test public void collectionHasAnyOfFailure() {
     try {
-      ASSERT.that(collection(1, 2, 3)).containsAnyOf(5, 6, 0);
+      ASSERT.that(collection(1, 2, 3)).has().anyOf(5, 6, 0);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
     }
   }
 
-  @Test public void collectionContainsWithMany() {
-    ASSERT.that(collection(1, 2, 3)).contains(1, 2);
+  @Test public void collectionHasAllOfWithMany() {
+    ASSERT.that(collection(1, 2, 3)).has().allOf(1, 2);
   }
 
-  @Test public void collectionContainsWithDuplicates() {
-    ASSERT.that(collection(1, 2, 2, 2, 3)).contains(2, 2);
+  @Test public void collectionHasAllOfWithDuplicates() {
+    ASSERT.that(collection(1, 2, 2, 2, 3)).has().allOf(2, 2);
   }
 
-  @Test public void collectionContainsWithManyWithNull() {
-    ASSERT.that(collection(1, null, 3)).contains(3, null);
+  @Test public void collectionHasAllOfWithNull() {
+    ASSERT.that(collection(1, null, 3)).has().allOf(3, null);
   }
 
-  @Test public void collectionContainsWithManyFailure() {
+  @Test public void collectionHasAllOfFailure() {
     try {
-      ASSERT.that(collection(1, 2, 3)).contains(1, 2, 4);
+      ASSERT.that(collection(1, 2, 3)).has().allOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("<4>");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("4");
     }
   }
 
-  @Test public void collectionContainsWithDuplicatesFailure() {
+  @Test public void collectionHasAllOfWithDuplicatesFailure() {
     try {
-      ASSERT.that(collection(1, 2, 3)).contains(1, 2, 2, 2, 3, 4);
+      ASSERT.that(collection(1, 2, 3)).has().allOf(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("<3 copies of 2>");
-       ASSERT.that(e.getMessage()).contains("<4>");
+      ASSERT.that(e.getMessage()).contains("has all of");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("2 copies of 2, 4");
     }
   }
 
@@ -107,41 +109,43 @@ public class CollectionTest {
    * Slightly subtle test to ensure that if multiple equal elements are found
    * to be missing we only reference it once in the output message.
    */
-  @Test public void collectionContainsAllOfWithDuplicateMissingElements() {
+  @Test public void collectionHasAllOfWithDuplicateMissingElements() {
     try {
-      ASSERT.that(collection(1, 2)).contains(4, 4, 4);
+      ASSERT.that(collection(1, 2)).has().allOf(4, 4, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).endsWith("contains <3 copies of 4>");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("3 copies of 4");
     }
   }
 
-  @Test public void collectionContainsWithNullFailure() {
+  @Test public void collectionHasAllOfWithNullFailure() {
     try {
-      ASSERT.that(collection(1, null, 3)).contains(1, null, null, 3);
+      ASSERT.that(collection(1, null, 3)).has().allOf(1, null, null, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("<2 copies of null>");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("null");
     }
   }
 
-  @Test public void collectionContainsInOrder() {
-    ASSERT.that(collection(3, 2, 5)).contains(3, 2, 5).inOrder();
+  @Test public void collectionHasAllOfInOrder() {
+    ASSERT.that(collection(3, 2, 5)).has().allOf(3, 2, 5).inOrder();
   }
 
-  @Test public void collectionContainsInOrderWithNull() {
-    ASSERT.that(collection(3, null, 5)).contains(3, null, 5).inOrder();
+  @Test public void collectionHasAllOfInOrderWithNull() {
+    ASSERT.that(collection(3, null, 5)).has().allOf(3, null, 5).inOrder();
   }
 
-  @Test public void collectionContainsInOrderWithFailure() {
+  @Test public void collectionHasAllOfInOrderWithFailure() {
     try {
-      ASSERT.that(collection(1, null, 3)).contains(null, 1, 3).inOrder();
+      ASSERT.that(collection(1, null, 3)).has().allOf(null, 1, 3).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("iterates through");
+      ASSERT.that(e.getMessage()).contains("has all in order");
     }
   }
 
@@ -149,9 +153,9 @@ public class CollectionTest {
    * This tests the rather unwieldly case where someone alters the
    * collection out from under the Subject before inOrder() is called.
    */
-  @Test public void collectionContainsInOrderHackedWithTooManyItemsFailure() {
+  @Test public void collectionHasAllOfInOrderHackedWithTooManyItemsFailure() {
     ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered<?> o = ASSERT.that((Collection<Integer>)list).contains(1, null, 3);
+    Ordered o = ASSERT.that((Collection<Integer>)list).has().allOf(1, null, 3);
     list.add(6);
     validateHackedFailure(o);
   }
@@ -160,9 +164,9 @@ public class CollectionTest {
    * This tests the rather unwieldly case where someone alters the
    * collection out from under the Subject before inOrder() is called.
    */
-  @Test public void collectionContainsInOrderHackedWithTooFewItemsFailure() {
+  @Test public void collectionHasAllOfInOrderHackedWithTooFewItemsFailure() {
     ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered<?> o = ASSERT.that((Collection<Integer>)list).contains(1, null, 3);
+    Ordered o = ASSERT.that((Collection<Integer>)list).has().allOf(1, null, 3);
     list.remove(1);
     validateHackedFailure(o);
   }
@@ -171,21 +175,21 @@ public class CollectionTest {
    * This tests the rather unwieldly case where someone alters the
    * collection out from under the Subject before inOrder() is called.
    */
-  @Test public void collectionContainsInOrderHackedWithNoItemsFailure() {
+  @Test public void collectionHasAllOfInOrderHackedWithNoItemsFailure() {
     ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered<?> o = ASSERT.that((Collection<Integer>)list).contains(1, null, 3);
+    Ordered o = ASSERT.that((Collection<Integer>)list).has().allOf(1, null, 3);
     list.clear();
     validateHackedFailure(o);
   }
 
   /** Factored out failure condition for "hacked" failures of inOrder() */
-  private void validateHackedFailure(Ordered<?> ordered) {
+  private void validateHackedFailure(Ordered ordered) {
     try {
       ordered.inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("iterates through");
+      ASSERT.that(e.getMessage()).contains("has all in order");
     }
   }
 

@@ -67,11 +67,11 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testCollection() {
-    ASSERT.that((Collection<Integer>)asList(1, 2, 3)).contains(1, 2, 3).inOrder();
+    ASSERT.that((Collection<Integer>)asList(1, 2, 3)).has().allOf(1, 2, 3).inOrder();
   }
 
   public void testList() {
-    ASSERT.that(asList(1, 2, 3)).contains(1, 2, 3).inOrder();
+    ASSERT.that(asList(1, 2, 3)).has().allOf(1, 2, 3).inOrder();
   }
 
   public void testDefault() {
