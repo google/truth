@@ -33,10 +33,17 @@ final class SubjectUtils {
     return new ArrayList<T>(Collections.singleton(only));
   }
   static <T> List<T> accumulate(T first, T second, T ... rest) {
-    List<T> items = new ArrayList<T>(rest.length + 2);
+    // rest should never be deliberately null, so assume that the caller passed null
+    // in the third position but intended it to be the third element in the array of values.
+    // Javac makes the opposite inference, so handle that here.
+    List<T> items = new ArrayList<T>(2 + ((rest == null) ? 1 : rest.length));
     items.add(first);
     items.add(second);
-    items.addAll(Arrays.asList(rest));
+    if (rest == null) {
+      items.add(null);
+    } else {
+      items.addAll(Arrays.asList(rest));
+    }
     return items;
   }
 

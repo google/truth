@@ -61,6 +61,10 @@ public class CollectionTest {
     ASSERT.that(collection(1, null, 3)).has().anyOf(null, 5);
   }
 
+  @Test public void collectionHasAnyOfWithNullInThirdAndFinalPosition() {
+    ASSERT.that(collection(1, null, 3)).has().anyOf(4, 5, null);
+  }
+
   @Test public void collectionHasAnyOfFailure() {
     try {
       ASSERT.that(collection(1, 2, 3)).has().anyOf(5, 6, 0);
@@ -80,6 +84,10 @@ public class CollectionTest {
 
   @Test public void collectionHasAllOfWithNull() {
     ASSERT.that(collection(1, null, 3)).has().allOf(3, null);
+  }
+
+  @Test public void collectionHasAllOfWithNullAtThirdAndFinalPosition() {
+    ASSERT.that(collection(1, null, 3)).has().allOf(1, 3, null);
   }
 
   @Test public void collectionHasAllOfFailure() {
