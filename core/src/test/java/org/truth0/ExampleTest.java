@@ -37,8 +37,15 @@ public class ExampleTest {
     ASSERT.that("abc").contains("c");
   }
 
-  @Test public void listContains() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).contains(1);
+  @Test public void listHasElements() {
+    // single item
+    ASSERT.that(Arrays.asList(1, 2, 3)).has().item(1);
+
+    // at least these items
+    ASSERT.that(Arrays.asList(1, 2, 3)).has().allOf(1, 2);
+
+    // at least one of these items
+    ASSERT.that(Arrays.asList(1, 2, 3)).has().anyOf(1, 5);
   }
 
   @Test public void equalityFail() {

@@ -16,8 +16,9 @@
  */
 package org.truth0.subjects;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -28,8 +29,11 @@ import java.util.List;
  */
 final class SubjectUtils {
 
+  static <T> List<T> accumulate(T only) {
+    return new ArrayList<T>(Collections.singleton(only));
+  }
   static <T> List<T> accumulate(T first, T second, T ... rest) {
-    List<T> items = new LinkedList<T>();
+    List<T> items = new ArrayList<T>(rest.length + 2);
     items.add(first);
     items.add(second);
     items.addAll(Arrays.asList(rest));
