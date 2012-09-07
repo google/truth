@@ -106,10 +106,37 @@ public class MapTest {
       .hasKey("a").withValue(String.class);
   }
 
+  @Test public void mapHasKeyWithNullValueNullExpected() {
+    ASSERT.that(map(String.class, Object.class, "a", null))
+    .hasKey("a").withValue(null);
+  }
+
   @Test public void failMapHasKeyWithValue() {
     try {
       ASSERT.that(map(String.class, Object.class, "a", String.class))
           .hasKey("a").withValue(Integer.class);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("has key/value pair");
+    }
+  }
+
+  @Test public void failMapHasKeyWithNullValuePresentExpected() {
+    try {
+      ASSERT.that(map(String.class, Object.class, "a", null))
+          .hasKey("a").withValue(Integer.class);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("has key/value pair");
+    }
+  }
+
+  @Test public void failMapHasKeyWithPresentValueNullExpected() {
+    try {
+      ASSERT.that(map(String.class, Object.class, "a", String.class))
+          .hasKey("a").withValue(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
