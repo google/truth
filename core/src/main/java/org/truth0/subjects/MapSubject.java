@@ -16,12 +16,12 @@
  */
 package org.truth0.subjects;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import org.truth0.FailureStrategy;
 
 import com.google.common.annotations.GwtCompatible;
-import com.google.common.collect.ImmutableList;
 
 /**
  * @author Christian Gruber (cgruber@israfil.net)
@@ -61,10 +61,10 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
     return new WithValue<V>() {
       @Override public void withValue(V expected) {
         V actual = getSubject().get(key);
-        if ((actual == null && key != null) ||
-            !actual.equals(expected)) {
-          fail("has key/value pair", ImmutableList.of(key, expected),
-              "actually has key/value pair", ImmutableList.of(key, actual));
+        if ((actual == null && expected != null) ||
+            !(actual == expected || actual.equals(expected))) {
+          fail("has key/value pair", Arrays.asList(key, expected),
+              "actually has key/value pair", Arrays.asList(key, actual));
         }
       }
     };
