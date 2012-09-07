@@ -19,6 +19,7 @@ package org.truth0;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.truth0.subjects.BooleanSubject;
 import org.truth0.subjects.ClassSubject;
@@ -27,6 +28,7 @@ import org.truth0.subjects.DefaultSubject;
 import org.truth0.subjects.IntegerSubject;
 import org.truth0.subjects.IterableSubject;
 import org.truth0.subjects.ListSubject;
+import org.truth0.subjects.MapSubject;
 import org.truth0.subjects.StringSubject;
 import org.truth0.subjects.Subject;
 
@@ -77,4 +79,9 @@ public class TestVerb extends AbstractVerb {
   public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> that(T[] target) {
     return that(Arrays.asList(target));
   }
+
+  public <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> that(Map<K, V> target) {
+    return MapSubject.create(getFailureStrategy(), target);
+  }
+
 }
