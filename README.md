@@ -3,8 +3,8 @@ Truth
 ***We've made failure a strategy***
 
 **Continuous Integration:** [![Build Status](https://truth.ci.cloudbees.com/job/Truth0-truth-master/badge/icon)](https://truth.ci.cloudbees.com/job/Truth0-truth-master/)<br />
-**Latest Release:** *0.8*<br />
-**Latest Artifact:** *org.junit.contrib:truth:jar:0.8*<br />
+**Latest Release:** *0.10*<br />
+**Latest Artifact:** *org.junit.contrib:truth:jar:0.10*<br />
 
 **Note:** Truth is subject to change and prior to 1.0, may introduce 
 breaking changes.  We're getting closer to "prime time" but please 
@@ -53,25 +53,17 @@ Installation
 To prepare to use Truth, declare this dependency:
 
     <dependency>
-      <groupId>truth</groupId>
+      <groupId>org.truth0</groupId>
       <artifactId>truth</artifactId>
-      <version>0.8</version>
+      <version>0.10</version>
     </dependency>
 
-and add this repository section to your pom or to a parent 
-pom.xml file. (for now - this requirement will later be removed.
-
-    <repositories>
-      <repository>
-        <id>truth-repo</id>
-        <url>https://raw.github.com/truth0/repo/master</url>
-      </repository>
-    </repositories>
+As of truth 0.9 Truth is available in the Maven Central Repository.
 
 or download the jar directly from the link below and add it to
 your tests classpath
 
-    https://raw.github.com/truth0/repo/master/org/junit/contrib/truth/0.8/truth-0.8.jar
+    http://search.maven.org/remotecontent?filepath=org/truth0/truth/0.10/truth-0.10.jar
 
 Using Truth
 -----------
@@ -218,7 +210,7 @@ and ensure that characteristics of all a collection's contents
 conform to certain constraints.  This can be done with a 
 for-each-like approach.
 
-    ASSERT.in(anIterable).thatEach(STRING).contains("foo");
+    ASSERT.in(anIterable).thatEach(STRING).has().item("foo");
 
 This lets you pass in an iterable type, and provide a SubjectFactory
 (it is advised to use the static final fields for this for readability).
@@ -241,7 +233,9 @@ is available to the developer over iterables of that type.
 
 ### Some code examples
 
-These are not exhaustive examples, but commonly used propositions.
+These are not exhaustive examples, but commonly used propositions.  Please check out 
+the Javadocs for the Subject subclasses, or use IDE syntax completion proposals to
+discover predicates for types you provide as subjects.
 
 #### Basic objects
 
@@ -270,7 +264,6 @@ This should work even with private fields, and can be useful in testing
 generated properties created by some frameworks like Lombok and Tapestry.
 
 #### Class objects
-*coming in release 0.8*
 
     ASSERT.that(aClass).declaresField("foo");
     
@@ -311,21 +304,29 @@ equivalence, given the guarantees of Collections' implementations of
 
     ASSERT.that(colectionA).is(collectionB);
 
+Testing properties like size should be done like so:
+
+    ASSERT.that(collection.size()).is(5); 
+
 Or you can be more explicit:
 
-    ASSERT.that(collectionA).contains(a, b, c);
+    ASSERT.that(collectionA).has().allOf(a, b, c);
 
 optionally you can further constrain this:
 
-    ASSERT.that(collectionA).contains(a, b, c).inOrder();
+    ASSERT.that(collectionA).has().allOf(a, b, c).inOrder();
 
 Or you can provide some limited "or" logic with:
 
-    ASSERT.that(collectionA).containsAnyOf(b, c);
+    ASSERT.that(collectionA).has().anyOf(b, c);
+
+You can also pass in collections as expectations, like so:
+
+    ASSERT.that(collectionA).has().anyFrom(Arrays.asList(a, b));
 
 ##### Lists
 
-Specific collection properties can be proposed on lists, such as:
+Specific properties can be proposed on lists, such as:
 
     ASSERT.that(myList).isOrdered(); // uses default ordering and is strict, no equal elements.
     ASSERT.that(myList).isPartiallyOrdered(); // like isOrdered, but equal elements may be present.
@@ -335,11 +336,30 @@ And custom comparators can be provided
     ASSERT.that(myList).isOrdered(aComparator); 
     ASSERT.that(myList).isPartiallyOrdered(aComparator);
 
+##### Maps
+
+Presence of keys, keys for values, or values can be asserted
+
+    ASSERT.that(map).hasKey("foo");
+    ASSERT.that(map).hasKey("foo").withValue("bar");
+    ASSERT.that(map).lacksKey("foo");
+    ASSERT.that(map).hasValue("bar");
+
+Naturally, also:
+
+    ASSERT.that(map).isEmpty();
+    ASSERT.that(map).isNotEmpty();
+    
+Testing properties like size should be done like so:
+
+    ASSERT.that(map.size()).is(5); 
+
+
 Planned improvements and changes
 --------------------------------
 
   * Subject wrappers for new types:
-    * New subjects for Map<K,V>, Float/Double and other currently missing types.
+    * New subjects for Float/Double and other currently missing types.
 	    * Support for Annotations and methods and field availability on classes.
     * Support for Protocol Buffers, JavaBeans (and other reflective types)
     * Support for Guava collections and types (Multimaps, Multisets, etc.)
