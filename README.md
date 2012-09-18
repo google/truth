@@ -29,6 +29,7 @@ use with caution before release 1.0.  Consider Truth in alpha.
 		- [Strings](#strings)
 		- [Iterables, Collections, Sets, and the like.](#iterables-collections-sets-and-the-like)
 - [Planned improvements and changes](#planned-improvements-and-changes)
+- [Acknowledgements](#acknowledgements)
 
 Introduction
 ------------
