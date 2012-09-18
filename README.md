@@ -365,3 +365,18 @@ Planned improvements and changes
     * Support for Guava collections and types (Multimaps, Multisets, etc.)
   * New propositions on existing Subject wrappers:
     * StringSubject, IntegerSubject, etc.
+
+Acknowledgements
+----------------
+
+Thanks to Github and Cloudbees for having a strong commitment to open-source, and 
+providing us with tools so we can provide others with code.  And thanks to Google 
+for [Guava](http://code.google.com/p/guava-libraries "Guava"), and for encouraging
+us to try to solve problems in better ways and  share that with the world.
+
+Also thanks to the authors of JUnit, TestNG, Hamcrest, FEST, and others for creating
+testing tools that let us write high-quality code, for inspiring this work and for 
+moving the ball forward in the field of automated software testing.  This project
+works with, works alongside, and sometimes works in competition with the above
+tools, but owes a debt that everyone owes to those gone before.  They paved the 
+way, and we hope this contribution is helpful to the field.
