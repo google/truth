@@ -99,6 +99,11 @@
                 <include>**/*.java</include>
                 <include>**/*.gwt.xml</include>
               </includes>
+              <excludes>
+                <exclude>org/truth0/codegen/**</exclude>
+                <exclude>org/truth0/IteratingVerb.java</exclude>
+                <exclude>org/truth0/Expect.java</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>
