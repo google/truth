@@ -67,6 +67,7 @@ use with caution before release 1.0.  Consider Truth in alpha.</p>
 </li>
 </ul>
 </li>
+<li><a href="#gwt">GWT</a></li>
 <li><a href="#planned-improvements-and-changes">Planned improvements and changes</a></li>
 <li><a href="#acknowledgements">Acknowledgements</a></li>
 </ul><h2>Introduction</h2>
@@ -247,8 +248,6 @@ their example. </p>
 
 <h3>Categorically testing the contents of collections</h3>
 
-<p><em>coming in version 0.8</em></p>
-
 <p>Sometimes a test needs to look at the contents of a collection 
 and ensure that characteristics of all a collection's contents
 conform to certain constraints.  This can be done with a 
@@ -420,6 +419,16 @@ ASSERT.that(map).isNotEmpty();
 
 <pre><code>ASSERT.that(map.size()).is(5); 
 </code></pre>
+
+<h2>GWT</h2>
+
+<p>A subset of Truth functionality is GWT compatible.  Most propositions and subjects 
+that do not inherently use reflection or complex classloading are available.  This
+mostly excludes categorical testing of collection contents since that uses code
+generation not supportable (as is) on GWT, as well as ClassSubjects, which largely
+concerns itself with the internals of Java classes and testing them.  Also, raw
+field access is not supported, though this might be in the future if there is enough
+of a use-case for it.</p>
 
 <h2>Planned improvements and changes</h2>
 
