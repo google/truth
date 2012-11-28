@@ -32,7 +32,7 @@
 
 <p><strong><em>We've made failure a strategy</em></strong></p>
 
-<p><strong>Continuous Integration:</strong> <a href="https://truth.ci.cloudbees.com/job/Truth0-truth-master/"><img src="https://truth.ci.cloudbees.com/job/Truth0-truth-master/badge/icon" alt="Build Status"></a><br><strong>Latest Release:</strong> <em>0.10</em><br><strong>Latest Artifact:</strong> <em>org.junit.contrib:truth:jar:0.10</em><br></p>
+<p><strong>Continuous Integration:</strong> <a href="https://travis-ci.org/truth0/truth"><img src="https://secure.travis-ci.org/truth0/truth.png?branch=master" alt="Build Status"></a><br><strong>Latest Release:</strong> <em>0.10</em><br><strong>Latest Artifact:</strong> <em>org.junit.contrib:truth:jar:0.10</em><br></p>
 
 <p><strong>Note:</strong> Truth is subject to change and prior to 1.0, may introduce 
 breaking changes.  We're getting closer to "prime time" but please 
@@ -68,6 +68,7 @@ use with caution before release 1.0.  Consider Truth in alpha.</p>
 </ul>
 </li>
 <li><a href="#planned-improvements-and-changes">Planned improvements and changes</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
 </ul><h2>Introduction</h2>
 
 <p>Truth is a testing framework suitable for making assertions and assumptions
@@ -186,7 +187,7 @@ are:</p>
     <td>Expect.create()</td>
     <td>Continues test, reports errors and failure upon test completion</td>
     <td>JUnit</td>
-    <td>You must declare an <a href="https://github.com/rule" class="user-mention">@rule</a> per the ExpectTest</td>
+    <td>You must declare an <a href="https://github.com/Rule" class="user-mention">@Rule</a> per the ExpectTest</td>
   </tr>
 </table><p><em>Note:</em> These different styles can let a developer build more supple tests,
 though the Truth team recommends mostly using ASSERT in unit tests,
@@ -199,7 +200,7 @@ tests, rather than lots of small, clear tests.   </p>
 <h3>How does Truth work?</h3>
 
 <p>Truth presents you with a test verb (ASSERT and ASSUME are built in, and
-EXPECT is supported with JUnit4 <a href="https://github.com/rules" class="user-mention">@rules</a>).  The verb is asserting on a subject,
+EXPECT is supported with JUnit4 <a href="https://github.com/Rules" class="user-mention">@Rules</a>).  The verb is asserting on a subject,
 the value to be considered.  </p>
 
 <pre><code>ASSERT.that(thisSubject)
@@ -442,7 +443,19 @@ ASSERT.that(map).isNotEmpty();
 <li>StringSubject, IntegerSubject, etc.</li>
 </ul>
 </li>
-</ul>
+</ul><h2>Acknowledgements</h2>
+
+<p>Thanks to Github and Cloudbees for having a strong commitment to open-source, and 
+providing us with tools so we can provide others with code.  And thanks to Google 
+for <a href="http://code.google.com/p/guava-libraries" title="Guava">Guava</a>, and for encouraging
+us to try to solve problems in better ways and  share that with the world.</p>
+
+<p>Also thanks to the authors of JUnit, TestNG, Hamcrest, FEST, and others for creating
+testing tools that let us write high-quality code, for inspiring this work and for 
+moving the ball forward in the field of automated software testing.  This project
+works with, works alongside, and sometimes works in competition with the above
+tools, but owes a debt that everyone owes to those gone before.  They paved the 
+way, and we hope this contribution is helpful to the field.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/truth0">truth0</a></p>
@@ -450,6 +463,16 @@ ASSERT.that(map).isNotEmpty();
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-8644702-6");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
