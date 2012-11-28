@@ -28,6 +28,7 @@ use with caution before release 1.0.  Consider Truth in alpha.
 		- [Numerics](#numerics)
 		- [Strings](#strings)
 		- [Iterables, Collections, Sets, and the like.](#iterables-collections-sets-and-the-like)
+- [GWT](#gwt)
 - [Planned improvements and changes](#planned-improvements-and-changes)
 - [Acknowledgements](#acknowledgements)
 
@@ -204,7 +205,6 @@ their example.
   [Extension through delegation]: https://github.com/cgruber/truth/tree/documentation/src/test/java/org/junit/contrib/truth/delegatetest
 
 ### Categorically testing the contents of collections
-*coming in version 0.8*
 
 Sometimes a test needs to look at the contents of a collection 
 and ensure that characteristics of all a collection's contents
@@ -355,6 +355,17 @@ Testing properties like size should be done like so:
 
     ASSERT.that(map.size()).is(5); 
 
+
+GWT
+---
+
+A subset of Truth functionality is GWT compatible.  Most propositions and subjects 
+that do not inherently use reflection or complex classloading are available.  This
+mostly excludes categorical testing of collection contents since that uses code
+generation not supportable (as is) on GWT, as well as ClassSubjects, which largely
+concerns itself with the internals of Java classes and testing them.  Also, raw
+field access is not supported, though this might be in the future if there is enough
+of a use-case for it.
 
 Planned improvements and changes
 --------------------------------
