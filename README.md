@@ -2,7 +2,7 @@ Truth
 =====
 ***We've made failure a strategy***
 
-**Continuous Integration:** [![Build Status](https://truth.ci.cloudbees.com/job/Truth0-truth-master/badge/icon)](https://truth.ci.cloudbees.com/job/Truth0-truth-master/)<br />
+**Continuous Integration:** [![Build Status](https://secure.travis-ci.org/truth0/truth.png?branch=master)](https://travis-ci.org/truth0/truth)<br />
 **Latest Release:** *0.10*<br />
 **Latest Artifact:** *org.junit.contrib:truth:jar:0.10*<br />
 
