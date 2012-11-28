@@ -1,22 +1,22 @@
 package org.truth0;
 
+import com.google.common.annotations.GwtIncompatible;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.concurrent.ExecutionException;
-
 import org.truth0.codegen.CompilingClassLoader;
 import org.truth0.codegen.CompilingClassLoader.CompilerException;
 import org.truth0.codegen.IteratingWrapperClassBuilder;
 import org.truth0.subjects.Subject;
 import org.truth0.subjects.SubjectFactory;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 /**
  * A verb that iterates over data and applies the predicate iteratively
  */
+@GwtIncompatible("Code generation and loading.")
 public class IteratingVerb<T> extends AbstractVerb {
 
   private static final String CANNOT_WRAP_MSG = "Cannot build an iterating wrapper around ";
