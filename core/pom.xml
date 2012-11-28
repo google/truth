@@ -41,7 +41,10 @@
     <resources>
       <resource>
         <directory>src/main/java</directory>
-        <excludes><exclude>**/util/*.java</exclude></excludes>
+        <excludes>
+          <exclude>**/*.java</exclude>
+          <exclude>**/*.gwt.xml</exclude>          
+        </excludes>
       </resource>
     </resources>
     <testResources>
@@ -55,7 +58,6 @@
           <target>1.6</target>
           <excludes>
             <exclude>**/gwtemul/**/*.java</exclude>
-            <exclude>**/*.gwt.xml</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -99,6 +101,13 @@
                 <include>**/*.java</include>
                 <include>**/*.gwt.xml</include>
               </includes>
+              <excludes>
+                <exclude>org/truth0/codegen/**</exclude>
+                <exclude>org/truth0/subjects/ClassSubject.java</exclude>
+                <exclude>org/truth0/util/ReflectionUtil.java</exclude>
+                <exclude>org/truth0/IteratingVerb.java</exclude>
+                <exclude>org/truth0/Expect.java</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>
