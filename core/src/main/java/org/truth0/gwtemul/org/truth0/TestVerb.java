@@ -33,7 +33,6 @@ import org.truth0.subjects.MapSubject;
 import org.truth0.subjects.StringSubject;
 import org.truth0.subjects.Subject;
 
-@GwtCompatible
 public class TestVerb extends AbstractVerb {
   public TestVerb(FailureStrategy failureStrategy) {
     super(failureStrategy);
@@ -41,11 +40,6 @@ public class TestVerb extends AbstractVerb {
 
   public Subject<DefaultSubject, Object> that(Object target) {
     return new DefaultSubject(getFailureStrategy(), target);
-  }
-
-  @GwtIncompatible("ClassSubject.java")
-  public ClassSubject that(Class<?> target) {
-    return new ClassSubject(getFailureStrategy(), target);
   }
 
   public IntegerSubject that(Long target) {
