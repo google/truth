@@ -3,8 +3,8 @@ Truth
 ***We've made failure a strategy***
 
 **Continuous Integration:** [![Build Status](https://secure.travis-ci.org/truth0/truth.png?branch=master)](https://travis-ci.org/truth0/truth)<br />
-**Latest Release:** *0.10*<br />
-**Latest Artifact:** *org.junit.contrib:truth:jar:0.10*<br />
+**Latest Release:** *0.10.1*<br />
+**Latest Artifact:** *org.junit.contrib:truth:jar:0.10.1*<br />
 
 **Note:** Truth is subject to change and prior to 1.0, may introduce 
 breaking changes.  We're getting closer to "prime time" but please 
@@ -52,20 +52,18 @@ free to use it or modify it subject only to the terms in that license.
 Installation
 ------------
 
-To prepare to use Truth, declare this dependency:
+To prepare to use Truth, declare this dependency in maven or an equivalent:
 
     <dependency>
       <groupId>org.truth0</groupId>
       <artifactId>truth</artifactId>
-      <version>0.10</version>
+      <version>0.10.1</version>
     </dependency>
-
-As of truth 0.9 Truth is available in the Maven Central Repository.
 
 or download the jar directly from the link below and add it to
 your tests classpath
 
-    http://search.maven.org/remotecontent?filepath=org/truth0/truth/0.10/truth-0.10.jar
+    http://search.maven.org/remotecontent?filepath=org/truth0/truth/0.10.1/truth-0.10.1.jar
 
 Using Truth
 -----------
