@@ -37,11 +37,11 @@ import java.util.Arrays;
 public class IterableTest {
 
   @Test public void iteratesOver() {
-    ASSERT.that(iterable(1, 2, 3)).iteratesOver(1, 2, 3);
+    ASSERT.that(iterable(1, 2, 3)).iteratesAs(1, 2, 3);
   }
 
   @Test public void iteratesOverAsList() {
-    ASSERT.that(iterable(1, 2, 3)).iteratesOver(asList(1, 2, 3));
+    ASSERT.that(iterable(1, 2, 3)).iteratesAs(asList(1, 2, 3));
   }
 
   @Test public void iteratesOverLegacy() {
@@ -55,12 +55,12 @@ public class IterableTest {
   }
 
   @Test public void iteratesOverEmpty() {
-    ASSERT.that(iterable()).iteratesOver();
+    ASSERT.that(iterable()).iteratesAs();
   }
 
   @Test public void iteratesOverWithOrderingFailure() {
     try {
-      ASSERT.that(iterable(1, 2, 3)).iteratesOver(2, 3, 1);
+      ASSERT.that(iterable(1, 2, 3)).iteratesAs(2, 3, 1);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
@@ -69,7 +69,7 @@ public class IterableTest {
 
   @Test public void iteratesOverWithTooManyItemsFailure() {
     try {
-      ASSERT.that(iterable(1, 2, 3)).iteratesOver(1, 2, 3, 4);
+      ASSERT.that(iterable(1, 2, 3)).iteratesAs(1, 2, 3, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
@@ -78,7 +78,7 @@ public class IterableTest {
 
   @Test public void iteratesOverWithTooFewItemsFailure() {
     try {
-      ASSERT.that(iterable(1, 2, 3)).iteratesOver(1, 2);
+      ASSERT.that(iterable(1, 2, 3)).iteratesAs(1, 2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
