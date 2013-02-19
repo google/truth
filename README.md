@@ -3,8 +3,8 @@ Truth
 ***We've made failure a strategy***
 
 **Continuous Integration:** [![Build Status](https://secure.travis-ci.org/truth0/truth.png?branch=master)](https://travis-ci.org/truth0/truth)<br />
-**Latest Release:** *0.10.1*<br />
-**Latest Artifact:** *org.junit.contrib:truth:jar:0.10.1*<br />
+**Latest Release:** *0.11*<br />
+**Latest Artifact:** *org.junit.contrib:truth:jar:0.11*<br />
 
 **Note:** Truth is subject to change and prior to 1.0, may introduce 
 breaking changes.  We're getting closer to "prime time" but please 
@@ -57,13 +57,13 @@ To prepare to use Truth, declare this dependency in maven or an equivalent:
     <dependency>
       <groupId>org.truth0</groupId>
       <artifactId>truth</artifactId>
-      <version>0.10.1</version>
+      <version>0.11</version>
     </dependency>
 
 or download the jar directly from the link below and add it to
 your tests classpath
 
-    http://search.maven.org/remotecontent?filepath=org/truth0/truth/0.10.1/truth-0.10.1.jar
+    http://search.maven.org/remotecontent?filepath=org/truth0/truth/0.11/truth-0.11.jar
 
 Using Truth
 -----------
