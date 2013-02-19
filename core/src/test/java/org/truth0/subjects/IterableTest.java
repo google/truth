@@ -44,16 +44,21 @@ public class IterableTest {
     ASSERT.that(iterable(1, 2, 3)).iteratesOver(asList(1, 2, 3));
   }
 
+  @Test public void iteratesOverLegacy() {
+    ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3);
+  }
+
+
   @Test @Ignore public void iteratesOver2() {
     // doesn't compile
     // ASSERT.that(iterable(1, 2, 3)).iteratesOver(4l);
   }
 
-  @Test public void iteratesOverEmptySequence() {
+  @Test public void iteratesOverEmpty() {
     ASSERT.that(iterable()).iteratesOver();
   }
 
-  @Test public void iteratesOverSequenceWithOrderingFailure() {
+  @Test public void iteratesOverWithOrderingFailure() {
     try {
       ASSERT.that(iterable(1, 2, 3)).iteratesOver(2, 3, 1);
       fail("Should have thrown.");
@@ -62,7 +67,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iteratesOverSequenceWithTooManyItemsFailure() {
+  @Test public void iteratesOverWithTooManyItemsFailure() {
     try {
       ASSERT.that(iterable(1, 2, 3)).iteratesOver(1, 2, 3, 4);
       fail("Should have thrown.");
@@ -71,7 +76,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iteratesOverSequenceWithTooFewItemsFailure() {
+  @Test public void iteratesOverWithTooFewItemsFailure() {
     try {
       ASSERT.that(iterable(1, 2, 3)).iteratesOver(1, 2);
       fail("Should have thrown.");
