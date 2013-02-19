@@ -15,12 +15,12 @@
  */
 package org.truth0.subjects;
 
-import java.util.Arrays;
-import java.util.Iterator;
+import com.google.common.annotations.GwtCompatible;
 
 import org.truth0.FailureStrategy;
 
-import com.google.common.annotations.GwtCompatible;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * @author Kevin Bourrillion
@@ -58,26 +58,46 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Asserts that the items are supplied in the order given by the iterable. For
-   * Collections and other things which contain items but may not have guaranteed
-   * iteration order, this method should be overridden.
+   * Asserts that the items are supplied in the order given by the iterable. If
+   * the iterable under test and/or the {@code expectedItems} do not provide
+   * iteration order guarantees (say, {@link Set<T>}s), this method may provide
+   * unexpected results.  Consider using {@link #is(T)} in such cases, or using
+   * collections and iterables that provide strong order guarantees.
    */
-  public void iteratesOverSequence(Object... expectedItems) {
+  public void iteratesOver(Iterable<T> expectedItems) {
     Iterator<T> actualItems = getSubject().iterator();
     for (Object expected : expectedItems) {
       if (!actualItems.hasNext()) {
-        fail("iterates through", Arrays.asList(expectedItems));
+        fail("iterates through", expectedItems);
       } else {
         Object actual = actualItems.next();
         if (actual == expected || actual != null && actual.equals(expected)) {
           continue;
         } else {
-          fail("iterates through", Arrays.asList(expectedItems));
+          fail("iterates through", expectedItems);
         }
       }
     }
     if (actualItems.hasNext()) {
-      fail("iterates through", Arrays.asList(expectedItems));
+      fail("iterates through", expectedItems);
     }
+  }
+
+  /**
+   * @deprecated use {@link #iteratesOver(T...)}
+   */
+  @Deprecated
+  public void iteratesOverSequence(T... expectedItems) {
+    iteratesOver(expectedItems);
+  }
+
+  /**
+   * Asserts that the items are supplied in the order given by the iterable. If
+   * the iterable under test does not provide iteration order guarantees (say,
+   * a {@link Set<T>}), this method is not suitable for asserting that order.
+   * Consider using {@link #is(T)}
+   */
+  public void iteratesOver(T... expectedItems) {
+    iteratesOver(Arrays.asList(expectedItems));
   }
 }
