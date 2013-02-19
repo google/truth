@@ -16,14 +16,16 @@
  */
 package org.truth0.subjects;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
 
-import java.util.Arrays;
-
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.util.Arrays;
 
 /**
  * Tests for Collection Subjects.
@@ -34,35 +36,49 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class IterableTest {
 
-  @Test public void iteratesOverSequence() {
+  @Test public void iteratesOver() {
+    ASSERT.that(iterable(1, 2, 3)).iteratesAs(1, 2, 3);
+  }
+
+  @Test public void iteratesOverAsList() {
+    ASSERT.that(iterable(1, 2, 3)).iteratesAs(asList(1, 2, 3));
+  }
+
+  @Test public void iteratesOverLegacy() {
     ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3);
   }
 
-  @Test public void iteratesOverEmptySequence() {
-    ASSERT.that(iterable()).iteratesOverSequence();
+
+  @Test @Ignore public void iteratesOver2() {
+    // doesn't compile
+    // ASSERT.that(iterable(1, 2, 3)).iteratesOver(4l);
   }
 
-  @Test public void iteratesOverSequenceWithOrderingFailure() {
+  @Test public void iteratesOverEmpty() {
+    ASSERT.that(iterable()).iteratesAs();
+  }
+
+  @Test public void iteratesOverWithOrderingFailure() {
     try {
-      ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(2, 3, 1);
+      ASSERT.that(iterable(1, 2, 3)).iteratesAs(2, 3, 1);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
     }
   }
 
-  @Test public void iteratesOverSequenceWithTooManyItemsFailure() {
+  @Test public void iteratesOverWithTooManyItemsFailure() {
     try {
-      ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3, 4);
+      ASSERT.that(iterable(1, 2, 3)).iteratesAs(1, 2, 3, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
     }
   }
 
-  @Test public void iteratesOverSequenceWithTooFewItemsFailure() {
+  @Test public void iteratesOverWithTooFewItemsFailure() {
     try {
-      ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2);
+      ASSERT.that(iterable(1, 2, 3)).iteratesAs(1, 2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
