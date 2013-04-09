@@ -18,7 +18,7 @@
 package org.truth0.subjects;
 
 import static org.truth0.subjects.SubjectUtils.accumulate;
-import static org.truth0.subjects.SubjectUtils.countOf;
+import static org.truth0.subjects.SubjectUtils.countDuplicates;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,49 +90,64 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
           toRemove.remove(item);
         }
         if (!toRemove.isEmpty()) {
-          // Try and make a useful message when dealing with duplicates.
-          Set<T> missing = new HashSet<T>(toRemove);
-          Object[] params = new Object[missing.size()];
-          int n = 0;
-          for (T item : missing) {
-            int count = countOf(item, toRemove);
-            params[n++] = (count > 1) ? count + " copies of " + item : item;
-          }
-          failWithBadResults("has all of", required, "is missing", Arrays.asList(params));
+          failWithBadResults("has all of", required, "is missing", countDuplicates(toRemove));
         }
 
-        return new Ordered() {
-          @Override public void inOrder() {
-            Iterator<T> actualItems = getSubject().iterator();
-            for (Object expected : required) {
-              if (!actualItems.hasNext()) {
-                fail("has all in order", required);
-              } else {
-                Object actual = actualItems.next();
-                if (actual == expected || actual != null && actual.equals(expected)) {
-                  continue;
-                } else {
-                  fail("has all in order", required);
-                }
-              }
-            }
-            if (actualItems.hasNext()) {
-              fail("has all in order", required);
-            }
-          }
-        };
+        return new InOrder("has all in order", required);
       }
 
-      /*@Override*/ public void exactly(T first) {
-        exactlyAs(accumulate(first));
+      @Override public Ordered exactly(T first) {
+        return exactlyAs(accumulate(first));
       }
-      /*@Override*/ public void exactly(T first, T second, T ... rest) {
-        exactlyAs(accumulate(first, second, rest));
+      @Override public Ordered exactly(T first, T second, T ... rest) {
+        return exactlyAs(accumulate(first, second, rest));
       }
-      /*@Override*/ public void exactlyAs(Collection<T> col) {
-        throw new UnsupportedOperationException("Not yet implemented.");
+      @Override public Ordered exactlyAs(Collection<T> required) {
+        Collection<T> toRemove = new ArrayList<T>(required);
+        Collection<Object> extra = new ArrayList<Object>();
+        // remove each item in the subject, as many times as it occurs in the subject.
+        for (Object item : getSubject()) {
+          if (!toRemove.remove(item)) {
+            extra.add(item);
+          }
+        }
+        if (!toRemove.isEmpty()) {
+          failWithBadResults("has exactly", required, "is missing", countDuplicates(toRemove));
+        }
+        if (!extra.isEmpty()) {
+          failWithBadResults("has exactly", required, "has unexpected items", countDuplicates(extra));
+        }
+
+        return new InOrder("has exactly in order", required);
       }
     };
+  }
+
+  private class InOrder implements Ordered {
+    private final String check;
+    private final Collection<T> required;
+    InOrder(String check, Collection<T> required) {
+      this.check = check;
+      this.required = required;
+    }
+    @Override public void inOrder() {
+      Iterator<T> actualItems = getSubject().iterator();
+      for (Object expected : required) {
+        if (!actualItems.hasNext()) {
+          fail(check, required);
+        } else {
+          Object actual = actualItems.next();
+          if (actual == expected || actual != null && actual.equals(expected)) {
+            continue;
+          } else {
+            fail(check, required);
+          }
+        }
+      }
+      if (actualItems.hasNext()) {
+        fail(check, required);
+      }
+    }
   }
 
   public interface Has<E, C extends Collection<E>> {
@@ -183,22 +198,25 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     /**
      * Attests that a Collection contains at all of the provided objects and
      * only these objects or fails. This copes with duplicates in both the
-     * Collection and the parameters.
+     * Collection and the parameters. It makes no attestation about order
+     * unless {@code inOrder()} is explicitly called.
      */
-    //void exactly(E first);
+    Ordered exactly(E first);
 
     /**
      * Attests that a Collection contains at all of the provided objects and
      * only these objects or fails. This copes with duplicates in both the
-     * Collection and the parameters.
+     * Collection and the parameters. It makes no attestation about order
+     * unless {@code inOrder()} is explicitly called.
      */
-    //void exactly(E first, E second, E... rest);
+    Ordered exactly(E first, E second, E... rest);
 
     /**
      * Attests that a Collection contains at all of the objects contained in the
      * provided collection and only these objects or fails. This copes with
-     * duplicates in both the Collection and the parameters.
+     * duplicates in both the Collection and the parameters. It makes no
+     * attestation about order unless {@code inOrder()} is explicitly called.
      */
-    //void exactlyAs(Collection<E> expected);
+    Ordered exactlyAs(Collection<E> expected);
   }
 }
