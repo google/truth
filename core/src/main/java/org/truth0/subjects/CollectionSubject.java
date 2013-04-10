@@ -92,7 +92,6 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         if (!toRemove.isEmpty()) {
           failWithBadResults("has all of", required, "is missing", countDuplicates(toRemove));
         }
-
         return new InOrder("has all in order", required);
       }
 
@@ -117,7 +116,6 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         if (!extra.isEmpty()) {
           failWithBadResults("has exactly", required, "has unexpected items", countDuplicates(extra));
         }
-
         return new InOrder("has exactly in order", required);
       }
     };
@@ -126,10 +124,12 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   private class InOrder implements Ordered {
     private final String check;
     private final Collection<T> required;
+
     InOrder(String check, Collection<T> required) {
       this.check = check;
       this.required = required;
     }
+
     @Override public void inOrder() {
       Iterator<T> actualItems = getSubject().iterator();
       for (Object expected : required) {

@@ -158,63 +158,27 @@ public class CollectionTest {
     }
   }
 
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasAllOfInOrderHackedWithTooManyItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = ASSERT.that((Collection<Integer>)list).has().allOf(1, null, 3);
-    list.add(6);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasAllOfInOrderHackedWithTooFewItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = ASSERT.that((Collection<Integer>)list).has().allOf(1, null, 3);
-    list.remove(1);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasAllOfInOrderHackedWithNoItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = ASSERT.that((Collection<Integer>)list).has().allOf(1, null, 3);
-    list.clear();
-    validateHackedFailure(o);
-  }
-
-  /** Factored out failure condition for "hacked" failures of inOrder() */
-  private void validateHackedFailure(Ordered ordered) {
-    try {
-      ordered.inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("in order");
-    }
-  }
-
   @Test public void collectionHasExactlyWithMany() {
     ASSERT.that(collection(1, 2, 3)).has().exactly(1, 2, 3);
+  }
+
+  @Test public void collectionHasExactlyOutOfOrder() {
+    ASSERT.that(collection(1, 2, 3, 4)).has().exactly(3, 1, 4, 2);
   }
 
   @Test public void collectionHasExactlyWithDuplicates() {
     ASSERT.that(collection(1, 2, 2, 2, 3)).has().exactly(1, 2, 2, 2, 3);
   }
 
+  @Test public void collectionHasExactlyWithDuplicatesOutOfOrder() {
+    ASSERT.that(collection(1, 2, 2, 2, 3)).has().exactly(2, 1, 2, 3, 2);
+  }
+
   @Test public void collectionHasExactlyWithNull() {
     ASSERT.that(collection(1, null, 3)).has().exactly(1, null, 3);
   }
 
-  @Test public void collectionHasExactlyWithNullAtThirdAndFinalPosition() {
+  @Test public void collectionHasExactlyWithNullOutOfOrder() {
     ASSERT.that(collection(1, null, 3)).has().exactly(1, 3, null);
   }
 
@@ -237,6 +201,18 @@ public class CollectionTest {
       ASSERT.that(e.getMessage()).contains("Not true that");
       ASSERT.that(e.getMessage()).contains("has unexpected items");
       ASSERT.that(e.getMessage()).contains("3");
+    }
+  }
+
+  @Test public void collectionHasExactlyWithDuplicatesNotEnoughItemsFailure() {
+    try {
+      ASSERT.that(collection(1, 2, 3)).has().exactly(1, 2, 2, 2, 3);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("has exactly");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("2 copies of 2");
     }
   }
 
@@ -308,6 +284,53 @@ public class CollectionTest {
     }
   }
 
+  @Test public void collectionIsEmpty() {
+    ASSERT.that(collection()).isEmpty();
+  }
+
+  @Test public void collectionIsEmptyWithFailure() {
+    try {
+      ASSERT.that(collection(1, null, 3)).isEmpty();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("is empty");
+    }
+  }
+
+  /**
+   * This tests the rather unwieldly case where someone alters the
+   * collection out from under the Subject before inOrder() is called.
+   */
+  @Test public void collectionHasAllOfInOrderHackedWithTooManyItemsFailure() {
+    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
+    Ordered o = ASSERT.that((Collection<Integer>)list).has().allOf(1, null, 3);
+    list.add(6);
+    validateHackedFailure(o);
+  }
+
+  /**
+   * This tests the rather unwieldly case where someone alters the
+   * collection out from under the Subject before inOrder() is called.
+   */
+  @Test public void collectionHasAllOfInOrderHackedWithTooFewItemsFailure() {
+    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
+    Ordered o = ASSERT.that((Collection<Integer>)list).has().allOf(1, null, 3);
+    list.remove(1);
+    validateHackedFailure(o);
+  }
+
+  /**
+   * This tests the rather unwieldly case where someone alters the
+   * collection out from under the Subject before inOrder() is called.
+   */
+  @Test public void collectionHasAllOfInOrderHackedWithNoItemsFailure() {
+    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
+    Ordered o = ASSERT.that((Collection<Integer>)list).has().allOf(1, null, 3);
+    list.clear();
+    validateHackedFailure(o);
+  }
+
   /**
    * This tests the rather unwieldly case where someone alters the
    * collection out from under the Subject before inOrder() is called.
@@ -341,17 +364,14 @@ public class CollectionTest {
     validateHackedFailure(o);
   }
 
-  @Test public void collectionIsEmpty() {
-    ASSERT.that(collection()).isEmpty();
-  }
-
-  @Test public void collectionIsEmptyWithFailure() {
+  /** Factored out failure condition for "hacked" failures of inOrder() */
+  private void validateHackedFailure(Ordered ordered) {
     try {
-      ASSERT.that(collection(1, null, 3)).isEmpty();
+      ordered.inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("is empty");
+      ASSERT.that(e.getMessage()).contains("in order");
     }
   }
 
