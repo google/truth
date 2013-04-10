@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
+ * Copyright (c) 2012 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +19,11 @@ package org.truth0.subjects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -55,6 +59,17 @@ final class SubjectUtils {
       }
     }
     return count;
+  }
+
+  static <T> List<Object> countDuplicates(Collection<T> items) {
+    Set<T> itemSet = new HashSet<T>(items);
+    Object[] params = new Object[itemSet.size()];
+    int n = 0;
+    for (T item : itemSet) {
+      int count = countOf(item, items);
+      params[n++] = (count > 1) ? count + " copies of " + item : item;
+    }
+    return Arrays.asList(params);
   }
 
 }

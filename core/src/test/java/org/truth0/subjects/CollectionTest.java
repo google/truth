@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
+ * Copyright (c) 2012 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -157,6 +158,146 @@ public class CollectionTest {
     }
   }
 
+  @Test public void collectionHasExactlyWithMany() {
+    ASSERT.that(collection(1, 2, 3)).has().exactly(1, 2, 3);
+  }
+
+  @Test public void collectionHasExactlyOutOfOrder() {
+    ASSERT.that(collection(1, 2, 3, 4)).has().exactly(3, 1, 4, 2);
+  }
+
+  @Test public void collectionHasExactlyWithDuplicates() {
+    ASSERT.that(collection(1, 2, 2, 2, 3)).has().exactly(1, 2, 2, 2, 3);
+  }
+
+  @Test public void collectionHasExactlyWithDuplicatesOutOfOrder() {
+    ASSERT.that(collection(1, 2, 2, 2, 3)).has().exactly(2, 1, 2, 3, 2);
+  }
+
+  @Test public void collectionHasExactlyWithNull() {
+    ASSERT.that(collection(1, null, 3)).has().exactly(1, null, 3);
+  }
+
+  @Test public void collectionHasExactlyWithNullOutOfOrder() {
+    ASSERT.that(collection(1, null, 3)).has().exactly(1, 3, null);
+  }
+
+  @Test public void collectionHasExactlyMissingItemFailure() {
+    try {
+      ASSERT.that(collection(1, 2)).has().exactly(1, 2, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("4");
+    }
+  }
+
+  @Test public void collectionHasExactlyUnexpectedItemFailure() {
+    try {
+      ASSERT.that(collection(1, 2, 3)).has().exactly(1, 2);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("has unexpected items");
+      ASSERT.that(e.getMessage()).contains("3");
+    }
+  }
+
+  @Test public void collectionHasExactlyWithDuplicatesNotEnoughItemsFailure() {
+    try {
+      ASSERT.that(collection(1, 2, 3)).has().exactly(1, 2, 2, 2, 3);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("has exactly");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("2 copies of 2");
+    }
+  }
+
+  @Test public void collectionHasExactlyWithDuplicatesMissingItemFailure() {
+    try {
+      ASSERT.that(collection(1, 2, 3)).has().exactly(1, 2, 2, 2, 3, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("has exactly");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("2 copies of 2, 4");
+    }
+  }
+
+  @Test public void collectionHasExactlyWithDuplicatesUnexpectedItemFailure() {
+    try {
+      ASSERT.that(collection(1, 2, 2, 2, 2, 3)).has().exactly(1, 2, 2, 3);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("has exactly");
+      ASSERT.that(e.getMessage()).contains("has unexpected items");
+      ASSERT.that(e.getMessage()).contains("2 copies of 2");
+    }
+  }
+
+  /*
+   * Slightly subtle test to ensure that if multiple equal elements are found
+   * to be missing we only reference it once in the output message.
+   */
+  @Test public void collectionHasExactlyWithDuplicateMissingElements() {
+    try {
+      ASSERT.that(collection()).has().exactly(4, 4, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("3 copies of 4");
+    }
+  }
+
+  @Test public void collectionHasExactlyWithNullFailure() {
+    try {
+      ASSERT.that(collection(1, null, 3)).has().exactly(1, null, null, 3);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("is missing");
+      ASSERT.that(e.getMessage()).contains("null");
+    }
+  }
+
+  @Test public void collectionHasExactlyInOrder() {
+    ASSERT.that(collection(3, 2, 5)).has().exactly(3, 2, 5).inOrder();
+  }
+
+  @Test public void collectionHasExactlyInOrderWithNull() {
+    ASSERT.that(collection(3, null, 5)).has().exactly(3, null, 5).inOrder();
+  }
+
+  @Test public void collectionHasExactlyInOrderWithFailure() {
+    try {
+      ASSERT.that(collection(1, null, 3)).has().exactly(null, 1, 3).inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("has exactly in order");
+    }
+  }
+
+  @Test public void collectionIsEmpty() {
+    ASSERT.that(collection()).isEmpty();
+  }
+
+  @Test public void collectionIsEmptyWithFailure() {
+    try {
+      ASSERT.that(collection(1, null, 3)).isEmpty();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+      ASSERT.that(e.getMessage()).contains("is empty");
+    }
+  }
+
   /**
    * This tests the rather unwieldly case where someone alters the
    * collection out from under the Subject before inOrder() is called.
@@ -190,6 +331,39 @@ public class CollectionTest {
     validateHackedFailure(o);
   }
 
+  /**
+   * This tests the rather unwieldly case where someone alters the
+   * collection out from under the Subject before inOrder() is called.
+   */
+  @Test public void collectionHasExactlyInOrderHackedWithTooManyItemsFailure() {
+    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
+    Ordered o = ASSERT.that((Collection<Integer>)list).has().exactly(1, null, 3);
+    list.add(6);
+    validateHackedFailure(o);
+  }
+
+  /**
+   * This tests the rather unwieldly case where someone alters the
+   * collection out from under the Subject before inOrder() is called.
+   */
+  @Test public void collectionHasExactlyInOrderHackedWithTooFewItemsFailure() {
+    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
+    Ordered o = ASSERT.that((Collection<Integer>)list).has().exactly(1, null, 3);
+    list.remove(1);
+    validateHackedFailure(o);
+  }
+
+  /**
+   * This tests the rather unwieldly case where someone alters the
+   * collection out from under the Subject before inOrder() is called.
+   */
+  @Test public void collectionHasExactlyInOrderHackedWithNoItemsFailure() {
+    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
+    Ordered o = ASSERT.that((Collection<Integer>)list).has().exactly(1, null, 3);
+    list.clear();
+    validateHackedFailure(o);
+  }
+
   /** Factored out failure condition for "hacked" failures of inOrder() */
   private void validateHackedFailure(Ordered ordered) {
     try {
@@ -197,21 +371,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has all in order");
-    }
-  }
-
-  @Test public void collectionIsEmpty() {
-    ASSERT.that(collection()).isEmpty();
-  }
-
-  @Test public void collectionIsEmptyWithFailure() {
-    try {
-      ASSERT.that(collection(1, null, 3)).isEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("is empty");
+      ASSERT.that(e.getMessage()).contains("in order");
     }
   }
 
