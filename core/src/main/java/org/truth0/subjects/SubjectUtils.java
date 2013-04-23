@@ -67,7 +67,7 @@ final class SubjectUtils {
     int n = 0;
     for (T item : itemSet) {
       int count = countOf(item, items);
-      params[n++] = (count > 1) ? count + " copies of " + item : item;
+      params[n++] = (count > 1) ? item + " [" + count + " copies]" : item;
     }
     return Arrays.asList(params);
   }

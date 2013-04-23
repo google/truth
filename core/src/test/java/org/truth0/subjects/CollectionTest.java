@@ -110,7 +110,7 @@ public class CollectionTest {
       ASSERT.that(e.getMessage()).contains("Not true that");
       ASSERT.that(e.getMessage()).contains("has all of");
       ASSERT.that(e.getMessage()).contains("is missing");
-      ASSERT.that(e.getMessage()).contains("2 copies of 2, 4");
+      ASSERT.that(e.getMessage()).contains("2 [2 copies], 4");
     }
   }
 
@@ -125,7 +125,7 @@ public class CollectionTest {
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
       ASSERT.that(e.getMessage()).contains("is missing");
-      ASSERT.that(e.getMessage()).contains("3 copies of 4");
+      ASSERT.that(e.getMessage()).contains("4 [3 copies]");
     }
   }
 
@@ -212,7 +212,7 @@ public class CollectionTest {
       ASSERT.that(e.getMessage()).contains("Not true that");
       ASSERT.that(e.getMessage()).contains("has exactly");
       ASSERT.that(e.getMessage()).contains("is missing");
-      ASSERT.that(e.getMessage()).contains("2 copies of 2");
+      ASSERT.that(e.getMessage()).contains("2 [2 copies]");
     }
   }
 
@@ -224,7 +224,7 @@ public class CollectionTest {
       ASSERT.that(e.getMessage()).contains("Not true that");
       ASSERT.that(e.getMessage()).contains("has exactly");
       ASSERT.that(e.getMessage()).contains("is missing");
-      ASSERT.that(e.getMessage()).contains("2 copies of 2, 4");
+      ASSERT.that(e.getMessage()).contains("2 [2 copies], 4");
     }
   }
 
@@ -236,7 +236,7 @@ public class CollectionTest {
       ASSERT.that(e.getMessage()).contains("Not true that");
       ASSERT.that(e.getMessage()).contains("has exactly");
       ASSERT.that(e.getMessage()).contains("has unexpected items");
-      ASSERT.that(e.getMessage()).contains("2 copies of 2");
+      ASSERT.that(e.getMessage()).contains("2 [2 copies]");
     }
   }
 
@@ -251,7 +251,7 @@ public class CollectionTest {
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
       ASSERT.that(e.getMessage()).contains("is missing");
-      ASSERT.that(e.getMessage()).contains("3 copies of 4");
+      ASSERT.that(e.getMessage()).contains("4 [3 copies]");
     }
   }
 
