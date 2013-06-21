@@ -62,7 +62,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
       @Override public void anyOf(T first) {
         anyFrom(accumulate(first));
       }
-      @SafeVarargs @Override public final void anyOf(T first, T second, T ... rest) {
+      @Override public final void anyOf(T first, T second, T ... rest) {
         anyFrom(accumulate(first, second, rest));
       }
       @Override public void anyFrom(Collection<T> col) {
@@ -77,7 +77,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
       @Override public Ordered allOf(T first) {
         return allFrom(accumulate(first));
       }
-      @SafeVarargs @Override public final Ordered allOf(T first, T second, T ... rest) {
+      @Override public final Ordered allOf(T first, T second, T ... rest) {
         return allFrom(accumulate(first, second, rest));
       }
       @Override public Ordered allFrom(final Collection<T> required) {
@@ -95,7 +95,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
       @Override public Ordered exactly(T first) {
         return exactlyAs(accumulate(first));
       }
-      @SafeVarargs @Override public final Ordered exactly(T first, T second, T ... rest) {
+      @Override public final Ordered exactly(T first, T second, T ... rest) {
         return exactlyAs(accumulate(first, second, rest));
       }
       @Override public Ordered exactlyAs(Collection<T> required) {
