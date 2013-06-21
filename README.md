@@ -307,21 +307,33 @@ Testing properties like size should be done like so:
 
     ASSERT.that(collection.size()).is(5); 
 
-Or you can be more explicit:
+Or you can test that a specific item is present present:
+
+    ASSERT.that(collectionA).has().item(q);
+
+Or you can test that all provided items are present:
 
     ASSERT.that(collectionA).has().allOf(a, b, c);
+
+Or you can be *even* more explicit and test that all ***and only*** the provided items are present:
+
+    ASSERT.that(collectionA).has().exactly(a, b, c, d);
 
 optionally you can further constrain this:
 
     ASSERT.that(collectionA).has().allOf(a, b, c).inOrder();
+    ASSERT.that(collectionA).has().exactly(a, b, c, d).inOrder();
 
-Or you can provide some limited "or" logic with:
+Or you can assert using a (very) limited "or" logic with:
 
     ASSERT.that(collectionA).has().anyOf(b, c);
 
-You can also pass in collections as expectations, like so:
+You can also pass in collections as containers of expected results, like so:
 
-    ASSERT.that(collectionA).has().anyFrom(Arrays.asList(a, b));
+    ASSERT.that(collectionA).has().allFrom(collectionB);
+    ASSERT.that(collectionA).has().anyFrom(collectionB);
+    ASSERT.that(collectionA).has().exactlyAs(collectionB).inOrder();
+
 
 ##### Lists
 
