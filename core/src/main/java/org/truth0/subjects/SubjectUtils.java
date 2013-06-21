@@ -36,7 +36,7 @@ final class SubjectUtils {
   static <T> List<T> accumulate(T only) {
     return new ArrayList<T>(Collections.singleton(only));
   }
-  @SafeVarargs static <T> List<T> accumulate(T first, T second, T ... rest) {
+  static <T> List<T> accumulate(T first, T second, T ... rest) {
     // rest should never be deliberately null, so assume that the caller passed null
     // in the third position but intended it to be the third element in the array of values.
     // Javac makes the opposite inference, so handle that here.
