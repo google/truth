@@ -19,6 +19,7 @@ package org.truth0.subjects;
 import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
 
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -48,15 +49,15 @@ public class StringTest {
   }
 
   @Test public void stringEquality() {
-    ASSERT.that("abc").isEqualTo("abc");
+    ASSERT.that("abc").is("abc");
   }
 
   @Test public void stringEqualityFail() {
     try {
-      ASSERT.that("abc").isEqualTo("abd");
-    } catch (AssertionError expected) {
+      ASSERT.that("abc").is("abd");
+    } catch (ComparisonFailure expected) {
       ASSERT.that(expected.getMessage())
-          .contains("Not true that <abc> is equal to <abd>");
+          .contains("expected:<ab[d]> but was:<ab[c]>");
       return;
     }
     fail("Should have thrown");

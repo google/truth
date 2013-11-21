@@ -17,14 +17,14 @@
 package org.truth0.subjects;
 
 
-import java.lang.reflect.Field;
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 import org.truth0.FailureStrategy;
 import org.truth0.TestVerb;
 import org.truth0.util.ReflectionUtil;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
+import java.lang.reflect.Field;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties
@@ -43,17 +43,8 @@ public class Subject<S extends Subject<S,T>,T> {
     this.subject = subject;
   }
 
-  public void is(T other) {
-
-    if (getSubject() == null) {
-      if(other != null) {
-        fail("is", other);
-      }
-    } else {
-      if (!getSubject().equals(other)) {
-        fail("is", other);
-      }
-    }
+  public void is(Object other) {
+    isEqualTo(other);
   }
 
   public void isNull() {

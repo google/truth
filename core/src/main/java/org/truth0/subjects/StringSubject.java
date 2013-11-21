@@ -16,9 +16,9 @@
  */
 package org.truth0.subjects;
 
-import org.truth0.FailureStrategy;
-
 import com.google.common.annotations.GwtCompatible;
+
+import org.truth0.FailureStrategy;
 
 /**
  * Propositions for String subjects
@@ -30,6 +30,26 @@ import com.google.common.annotations.GwtCompatible;
 public class StringSubject extends Subject<StringSubject, String> {
   public StringSubject(FailureStrategy failureStrategy, String string) {
     super(failureStrategy, string);
+  }
+
+  @Override
+  public void isEqualTo(Object other) {
+    if (!(other instanceof String)) {
+      fail("is", other);
+    }
+    if (getSubject() == null) {
+      if(other != null) {
+        fail("is", other);
+      }
+    } else {
+      if (!getSubject().equals(other)) {
+        if (other instanceof String) {
+          failureStrategy.failComparing("", (String) other, getSubject());
+        } else {
+          fail("is", other);
+        }
+      }
+    }
   }
 
   public void contains(String string) {

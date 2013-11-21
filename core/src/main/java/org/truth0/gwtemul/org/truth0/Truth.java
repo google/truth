@@ -16,6 +16,10 @@
  */
 package org.truth0;
 
+import static org.truth0.util.ComparisonUtil.messageFor;
+
+import org.junit.ComparisonFailure;
+
 import org.truth0.FailureStrategy;
 import org.truth0.TestVerb;
 
@@ -52,6 +56,10 @@ public class Truth {
       new FailureStrategy() {
         @Override public void fail(String message) {
           throw new AssertionError(message);
+        }
+        @Override public void failComparing(
+            String message, CharSequence expected, CharSequence actual) {
+          throw new AssertionError(messageFor(message, expected, actual));
         }
       };
 

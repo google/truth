@@ -60,7 +60,7 @@ public class IteratingWrapperClassBuilderTest {
       "public class %1$sSubjectIteratingWrapper extends %1$sSubject {";
 
   private static final String FOO_WRAPPED_METHOD =
-      "  public void endsWith(java.lang.String arg0) {\n" +
+      "  @Override public void endsWith(java.lang.String arg0) {\n" +
       "    for (java.lang.String item : data) {\n" +
       "      org.truth0.codegen.IteratingWrapperClassBuilderTest.FooSubject subject = (org.truth0.codegen.IteratingWrapperClassBuilderTest.FooSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
       "      subject.endsWith(arg0);\n" +
@@ -68,7 +68,7 @@ public class IteratingWrapperClassBuilderTest {
       "  }";
 
   private static final String BAR_WRAPPED_METHOD =
-      "  public void startsWith(@javax.annotation.Nullable java.lang.String arg0) {\n" +
+      "  @Override public void startsWith(@javax.annotation.Nullable java.lang.String arg0) {\n" +
       "    for (java.lang.String item : data) {\n" +
       "      org.truth0.codegen.BarSubject subject = (org.truth0.codegen.BarSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
       "      subject.startsWith(arg0);\n" +

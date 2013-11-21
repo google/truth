@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,30 +23,33 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import org.truth0.util.ComparisonUtil;
 
 /**
  * Tests for Boolean Subjects.
- * 
+ *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(Theories.class)
 public class AbstractVerbTest {
 	private String failureMessage = null;
-	
-	private AbstractVerb captureFailure = new AbstractVerb(new FailureStrategy() {		
-		@Override
-		public void fail(String message) {
+
+	private final AbstractVerb captureFailure = new AbstractVerb(new FailureStrategy() {
+		@Override public void fail(String message) {
 			failureMessage = message;
 		}
+    @Override public void failComparing(String message, CharSequence expected, CharSequence actual) {
+      failureMessage = ComparisonUtil.messageFor(message, expected, actual);
+    }
 	});
-	
+
 	@DataPoints public static String[] strings = new String[] {"a", "b"};
-	
+
 	@Test public void noArgFail() {
 		captureFailure.fail();
 		ASSERT.that(failureMessage).is("");
 	}
-	
+
 	@Theory public void argFail(String message) {
 		captureFailure.fail(message);
 		ASSERT.that(failureMessage).is(message);

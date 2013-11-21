@@ -78,7 +78,7 @@ public class IteratingWrapperClassBuilder {
    * </p>
    */
   private static final String WRAPPER_METHOD_TEMPLATE =
-      "  %1$s %2$s %3$s(%4$s) {%n" +
+      "  @Override %1$s %2$s %3$s(%4$s) {%n" +
       "    for (%5$s item : data) {%n" +
       "      %6$s subject = (%6$s)subjectFactory.getSubject(failureStrategy, item);%n" +
       "      subject.%3$s(%7$s);%n" +

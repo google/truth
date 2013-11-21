@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,26 +16,29 @@
  */
 package org.truth0;
 
-import org.junit.internal.AssumptionViolatedException;
+import static org.truth0.util.ComparisonUtil.messageFor;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 
+import org.junit.ComparisonFailure;
+import org.junit.internal.AssumptionViolatedException;
+
 /**
- * Truth - a proposition framework for tests, supporting JUnit style 
+ * Truth - a proposition framework for tests, supporting JUnit style
  * assertion and assumption semantics in a fluent style.
- * 
+ *
  * Truth is the simplest entry point class. A developer can statically
- * import the ASSERT and ASSUME constants to get easy access to the 
+ * import the ASSERT and ASSUME constants to get easy access to the
  * library's capabilities. Then, instead of writing:
- * <pre>{@code 
+ * <pre>{@code
  * Assert.assertEquals(a,b);
  * Assert.assertTrue(c);
  * Assert.assertTrue(d.contains(a) && d.contains(e));
  * Assert.assertTrue(d.contains(a) || d.contains(q) || d.contains(z));
  * }</pre>
  * one would write:
- * <pre>{@code 
+ * <pre>{@code
  * ASSERT.that(a).equals(b);
  * ASSERT.that(c).isTrue();
  * ASSERT.that(d).contains(a).and().contains(b);
@@ -43,26 +46,34 @@ import com.google.common.annotations.GwtIncompatible;
  * ASSERT.that(d).containsAllOf(a, b);
  * ASSERT.that(d).containsAnyOf(a, q, z);
  * }</pre>
- * 
+ *
  * Tests should be easier to read, and flow more clearly.
- * 
+ *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtCompatible(emulated = true)
 public class Truth {
-  public static final FailureStrategy THROW_ASSERTION_ERROR = 
+  public static final FailureStrategy THROW_ASSERTION_ERROR =
       new FailureStrategy() {
         @Override public void fail(String message) {
           throw new AssertionError(message);
         }
+        @Override public void failComparing(
+            String message, CharSequence expected, CharSequence actual) {
+          throw new ComparisonFailure(message, expected.toString(), actual.toString());
+        }
       };
 
   @GwtIncompatible("JUnit4")
-  public static final FailureStrategy THROW_ASSUMPTION_ERROR = 
+  public static final FailureStrategy THROW_ASSUMPTION_ERROR =
       new FailureStrategy() {
         @Override public void fail(String message) {
           throw new AssumptionViolatedException(message);
+        }
+        @Override public void failComparing(
+            String message, CharSequence expected, CharSequence actual) {
+          throw new AssumptionViolatedException(messageFor(message, expected, actual));
         }
       };
 

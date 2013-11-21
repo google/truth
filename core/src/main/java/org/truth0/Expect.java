@@ -16,23 +16,29 @@
  */
 package org.truth0;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.truth0.util.ComparisonUtil.messageFor;
+
+import com.google.common.annotations.GwtIncompatible;
 
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import com.google.common.annotations.GwtIncompatible;
+import java.util.ArrayList;
+import java.util.List;
 
 @GwtIncompatible("JUnit4")
-@SuppressWarnings("deprecation")
 public class Expect extends TestVerb implements MethodRule {
   protected static class ExpectationGatherer implements FailureStrategy {
     List<String> messages = new ArrayList<String>();
 
     @Override public void fail(String message) {
       messages.add(message);
+    }
+
+    @Override public void failComparing(
+        String message, CharSequence expected, CharSequence actual) {
+      messages.add(messageFor(message, expected, actual));
     }
   }
 
