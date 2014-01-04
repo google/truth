@@ -126,4 +126,12 @@ public class Subject<S extends Subject<S,T>,T> {
     failureStrategy.fail(message.toString());
   }
 
+  /**
+   * @deprecated This method is not a proposition, but the default Object equality method.
+   *     Testing code should use "is" or "isEqualTo" propositions for equality tests.
+   */
+  @Deprecated
+  @Override public boolean equals(Object o) {
+    return super.equals(o);
+  }
 }
