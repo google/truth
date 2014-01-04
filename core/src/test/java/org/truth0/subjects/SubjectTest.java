@@ -44,7 +44,7 @@ public class SubjectTest {
       ASSERT.that(o).is("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is <a>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
     }
   }
 
@@ -61,7 +61,7 @@ public class SubjectTest {
       ASSERT.that(a).is(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is <Object 2>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
     }
   }
 

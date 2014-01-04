@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2011 David Saff
- * Copyright (c) 2011 Christian Gruber
+ * Copyright (c) 2013 Google
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.truth0;
+package org.truth0.util;
 
-import com.google.common.annotations.GwtCompatible;
 
-@GwtCompatible
-public interface FailureStrategy {
-  void fail(String message);
-  void failComparing(String message, CharSequence expected, CharSequence actual);
+/**
+ * Utilities for string comparisons.
+ *
+ * @author Christian Gruber (cgruber@google.com)
+ */
+public final class ComparisonUtil {
+  private ComparisonUtil() {}
+
+  /**
+   * Returns a message appropriate for string comparisons.
+   *
+   * TODO(cgruber): Do something closer to what JUnit's {@code ComparisonFailure} does.
+   */
+  public static String messageFor(String message, CharSequence expected, CharSequence actual) {
+    return message + "\n\nExpected:\n" + expected + "\n\nActual\n" + actual;
+  }
 }
