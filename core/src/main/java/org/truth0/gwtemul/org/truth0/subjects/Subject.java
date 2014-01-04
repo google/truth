@@ -132,6 +132,20 @@ public class Subject<S extends Subject<S,T>,T> {
    */
   @Deprecated
   @Override public boolean equals(Object o) {
-    return super.equals(o);
+    isEqualTo(o);
+    return false;
+  }
+  
+  /**
+   * @deprecated Equals/Hashcode is not supported on Subjects. Their only use is as a holder of 
+   *     propositions. Use of equals() is deprecated and forwards to isEqualTo() and
+   *     hashCode() is disallowed.
+   */
+  @Deprecated
+  @Override public int hashCode() {
+    throw new UnsupportedOperationException(""
+        + "Equals/Hashcode is not supported on Subjects. Their only use is as a holder of "
+        + "propositions. Use of equals() is deprecated and forwards to isEqualTo() and "
+        + "hashCode() is disallowed.");
   }
 }

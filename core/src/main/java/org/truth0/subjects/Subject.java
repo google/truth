@@ -17,14 +17,14 @@
 package org.truth0.subjects;
 
 
-import java.lang.reflect.Field;
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 import org.truth0.FailureStrategy;
 import org.truth0.TestVerb;
 import org.truth0.util.ReflectionUtil;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
+import java.lang.reflect.Field;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties
@@ -218,6 +218,20 @@ public class Subject<S extends Subject<S,T>,T> {
    */
   @Deprecated
   @Override public boolean equals(Object o) {
-    return super.equals(o);
+    isEqualTo(o);
+    return false;
+  }
+
+  /**
+   * @deprecated Equals/Hashcode is not supported on Subjects. Their only use is as a holder of
+   *     propositions. Use of equals() is deprecated and forwards to isEqualTo() and
+   *     hashCode() is disallowed.
+   */
+  @Deprecated
+  @Override public int hashCode() {
+    throw new UnsupportedOperationException(""
+        + "Equals/Hashcode is not supported on Subjects. Their only use is as a holder of "
+        + "propositions. Use of equals() is deprecated and forwards to isEqualTo() and "
+        + "hashCode() is disallowed.");
   }
 }
