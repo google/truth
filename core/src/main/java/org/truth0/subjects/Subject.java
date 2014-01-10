@@ -203,4 +203,26 @@ public class Subject<S extends Subject<S,T>,T> {
     void withValue(Object value);
   }
 
+  /**
+   * @deprecated This method is not a proposition, but the default Object equality method.
+   *     Testing code should use "is" or "isEqualTo" propositions for equality tests.
+   */
+  @Deprecated
+  @Override public boolean equals(Object o) {
+    isEqualTo(o);
+    return false;
+  }
+
+  /**
+   * @deprecated Equals/Hashcode is not supported on Subjects. Their only use is as a holder of
+   *     propositions. Use of equals() is deprecated and forwards to isEqualTo() and
+   *     hashCode() is disallowed.
+   */
+  @Deprecated
+  @Override public int hashCode() {
+    throw new UnsupportedOperationException(""
+        + "Equals/Hashcode is not supported on Subjects. Their only use is as a holder of "
+        + "propositions. Use of equals() is deprecated and forwards to isEqualTo() and "
+        + "hashCode() is disallowed.");
+  }
 }
