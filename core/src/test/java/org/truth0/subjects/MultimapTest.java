@@ -102,18 +102,18 @@ public class MultimapTest {
 
   @Test public void mapHasKeyWithValue() {
     ASSERT.that(multimap(String.class, Object.class, "a", String.class))
-        .whoseValuesForKey("a").has().exactly(String.class);
+        .valuesForKey("a").has().exactly(String.class);
   }
 
   @Test public void mapHasKeyWithNullValueNullExpected() {
     ASSERT.that(multimap(String.class, Object.class, "a", null))
-        .whoseValuesForKey("a").has().exactly(null);
+        .valuesForKey("a").has().exactly(null);
   }
 
   @Test public void failMapHasKeyWithValue() {
     try {
       ASSERT.that(multimap(String.class, Object.class, "a", String.class))
-          .whoseValuesForKey("a").has().exactly(Integer.class);
+          .valuesForKey("a").has().exactly(Integer.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
@@ -124,7 +124,7 @@ public class MultimapTest {
   @Test public void failMapHasKeyWithNullValuePresentExpected() {
     try {
       ASSERT.that(multimap(String.class, Object.class, "a", null))
-          .whoseValuesForKey("a").has().exactly(Integer.class);
+          .valuesForKey("a").has().exactly(Integer.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
@@ -135,7 +135,7 @@ public class MultimapTest {
   @Test public void failMapHasKeyWithPresentValueNullExpected() {
     try {
       ASSERT.that(multimap(String.class, Object.class, "a", String.class))
-          .whoseValuesForKey("a").has().exactly(null);
+          .valuesForKey("a").has().exactly(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");

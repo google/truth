@@ -56,9 +56,10 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   }
 
   /**
-   * Attests that the subject contains the provided key or fails.
+   * A part of the fluent chain which returns a CollectionSubject wrapping the value
+   * collection for the provided key.
    */
-  public CollectionSubject<?, V, Collection<V>> whoseValuesForKey(final K key) {
+  public CollectionSubject<?, V, Collection<V>> valuesForKey(final K key) {
     return CollectionSubject.create(failureStrategy, getSubject().get(key));
   }
 
