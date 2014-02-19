@@ -54,11 +54,9 @@ import org.junit.internal.AssumptionViolatedException;
  */
 @GwtCompatible(emulated = true)
 public class Truth {
+
   public static final FailureStrategy THROW_ASSERTION_ERROR =
       new FailureStrategy() {
-        @Override public void fail(String message) {
-          throw new AssertionError(message);
-        }
         @Override public void failComparing(
             String message, CharSequence expected, CharSequence actual) {
           throw new ComparisonFailure(message, expected.toString(), actual.toString());
@@ -75,10 +73,21 @@ public class Truth {
             String message, CharSequence expected, CharSequence actual) {
           throw new AssumptionViolatedException(messageFor(message, expected, actual));
         }
+        @Override public void fail(String message, Throwable cause) {
+          throw new ThrowableAssumptionViolatedException(message, cause);
+        }
       };
 
   public static final TestVerb ASSERT = new TestVerb(THROW_ASSERTION_ERROR);
 
   @GwtIncompatible("JUnit4")
   public static final TestVerb ASSUME = new TestVerb(THROW_ASSUMPTION_ERROR);
+
+  @GwtIncompatible("JUnit4")
+  private static class ThrowableAssumptionViolatedException extends AssumptionViolatedException {
+    public ThrowableAssumptionViolatedException(String message, Throwable throwable) {
+      super(message);
+      if (throwable != null) initCause(throwable);
+    }
+  }
 }
