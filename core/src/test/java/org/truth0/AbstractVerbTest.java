@@ -23,7 +23,6 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.truth0.util.ComparisonUtil;
 
 /**
  * Tests for Boolean Subjects.
@@ -35,11 +34,8 @@ public class AbstractVerbTest {
 	private String failureMessage = null;
 
 	private final AbstractVerb captureFailure = new AbstractVerb(new FailureStrategy() {
-		@Override public void fail(String message) {
-			failureMessage = message;
-		}
-    @Override public void failComparing(String message, CharSequence expected, CharSequence actual) {
-      failureMessage = ComparisonUtil.messageFor(message, expected, actual);
+    @Override public void fail(String message, Throwable ignoreInThisTest) {
+      failureMessage = message;
     }
 	});
 

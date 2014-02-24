@@ -18,8 +18,30 @@ package org.truth0;
 
 import com.google.common.annotations.GwtCompatible;
 
+import org.truth0.util.ComparisonUtil;
+
+import javax.annotation.Nullable;
+
 @GwtCompatible
-public interface FailureStrategy {
-  void fail(String message);
-  void failComparing(String message, CharSequence expected, CharSequence actual);
+public abstract class FailureStrategy {
+
+  public void fail(String message) {
+    fail(message, null);
+  }
+
+  public void fail(String message, Throwable cause) {
+    throw new ThrowableAssertionError(message, cause);
+  }
+
+  public void failComparing(String message, CharSequence expected, CharSequence actual) {
+    fail(ComparisonUtil.messageFor(message, expected, actual));
+  }
+
+  public static class ThrowableAssertionError extends AssertionError {
+    public ThrowableAssertionError(String message, @Nullable Throwable throwable) {
+      super(message);
+      if (throwable != null) initCause(throwable);
+    }
+  }
+
 }
