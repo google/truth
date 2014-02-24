@@ -34,7 +34,7 @@ public class AbstractVerbTest {
 	private String failureMessage = null;
 
 	private final AbstractVerb captureFailure = new AbstractVerb(new FailureStrategy() {
-    @Override public void fail(String message, Throwable ignoreinthistest) {
+    @Override public void fail(String message, Throwable ignoreInThisTest) {
       failureMessage = message;
     }
 	});

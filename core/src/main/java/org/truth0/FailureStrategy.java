@@ -20,6 +20,8 @@ import com.google.common.annotations.GwtCompatible;
 
 import org.truth0.util.ComparisonUtil;
 
+import javax.annotation.Nullable;
+
 @GwtCompatible
 public abstract class FailureStrategy {
 
@@ -36,7 +38,7 @@ public abstract class FailureStrategy {
   }
 
   public static class ThrowableAssertionError extends AssertionError {
-    public ThrowableAssertionError(String message, Throwable throwable) {
+    public ThrowableAssertionError(String message, @Nullable Throwable throwable) {
       super(message);
       if (throwable != null) initCause(throwable);
     }
