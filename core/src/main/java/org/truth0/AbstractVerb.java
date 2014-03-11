@@ -1,10 +1,12 @@
 package org.truth0;
 
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
+
 import org.truth0.subjects.Subject;
 import org.truth0.subjects.SubjectFactory;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
+import javax.annotation.CheckReturnValue;
 
 @GwtCompatible
 public class AbstractVerb {
@@ -41,6 +43,7 @@ public class AbstractVerb {
    * @param factory a SubjectFactory<S, T> implementation
    * @returns A custom verb for the type returned by the SubjectFactory
    */
+	@CheckReturnValue
   public <S extends Subject<S,T>, T, SF extends SubjectFactory<S, T>>
       DelegatedVerb<S, T> about(SF factory) {
       return new DelegatedVerb<S, T>(getFailureStrategy(), factory);

@@ -35,6 +35,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.CheckReturnValue;
+
 @GwtCompatible
 public class TestVerb extends AbstractVerb {
   public TestVerb(FailureStrategy failureStrategy) {
@@ -45,44 +47,59 @@ public class TestVerb extends AbstractVerb {
     return new DefaultSubject(getFailureStrategy(), target);
   }
 
+  @CheckReturnValue
   @GwtIncompatible("ClassSubject.java")
   public ClassSubject that(Class<?> target) {
     return new ClassSubject(getFailureStrategy(), target);
   }
 
+  @CheckReturnValue
   public IntegerSubject that(Long target) {
     return new IntegerSubject(getFailureStrategy(), target);
   }
 
+  @CheckReturnValue
   public IntegerSubject that(Integer target) {
     return new IntegerSubject(getFailureStrategy(), target);
   }
 
+  @CheckReturnValue
   public BooleanSubject that(Boolean target) {
     return new BooleanSubject(getFailureStrategy(), target);
   }
 
+  @CheckReturnValue
   public StringSubject that(String target) {
     return new StringSubject(getFailureStrategy(), target);
   }
 
-  public <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> that(Iterable<T> target) {
+  @CheckReturnValue
+  public <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
+      that(Iterable<T> target) {
     return IterableSubject.create(getFailureStrategy(), target);
   }
 
-  public <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> that(Collection<T> target) {
+  @CheckReturnValue
+  public <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C>
+      that(Collection<T> target) {
     return CollectionSubject.create(getFailureStrategy(), target);
   }
 
-  public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> that(List<T> target) {
+  @CheckReturnValue
+  public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C>
+      that(List<T> target) {
     return ListSubject.create(getFailureStrategy(), target);
   }
 
-  public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> that(T[] target) {
+  @CheckReturnValue
+  public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C>
+      that(T[] target) {
     return that(Arrays.asList(target));
   }
 
-  public <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> that(Map<K, V> target) {
+  @CheckReturnValue
+  public <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
+      that(Map<K, V> target) {
     return MapSubject.create(getFailureStrategy(), target);
   }
 
