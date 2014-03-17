@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.annotation.CheckReturnValue;
+
 @GwtCompatible
 public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends IterableSubject<S, T, C> {
 
@@ -51,6 +53,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     }
   }
 
+  @CheckReturnValue
   public Has<T, C> has() {
     return new Has<T, C>() {
       @Override public void item(T item) {
