@@ -33,7 +33,7 @@ public class StringSubject extends Subject<StringSubject, String> {
   }
 
   @Override protected String getDisplaySubject() {
-    return wrap(getSubject());
+    return quote(getSubject());
   }
 
   @Override public void is(Object expected) {
@@ -42,17 +42,17 @@ public class StringSubject extends Subject<StringSubject, String> {
 
   @Override public void isEqualTo(Object expected) {
     if (getSubject() == null) {
-      if(expected != null) {
+      if (expected != null) {
         if (expected instanceof String) {
           failWithRawMessage("Not true that null reference is equal to <%s>",
-              wrap((String) expected));
+              quote((String) expected));
         } else {
           failWithRawMessage("Not true that null reference is equal to (%s)<%s>",
               expected.getClass().getName(), expected);
         }
       }
     } else {
-      if(expected == null) {
+      if (expected == null) {
         isNull();
       } else if (!(expected instanceof String)) {
         failWithRawMessage("Not true that <\"%s\"> is equal to (%s)<%s>",
@@ -69,7 +69,7 @@ public class StringSubject extends Subject<StringSubject, String> {
   }
 
   @Override public void isNull() {
-    if(getSubject() != null) {
+    if (getSubject() != null) {
       failWithRawMessage("Not true that <%s> is null", getDisplaySubject());
     }
   }
@@ -77,30 +77,30 @@ public class StringSubject extends Subject<StringSubject, String> {
   public void contains(String string) {
     if (getSubject() == null) {
       if (string != null) {
-        failWithRawMessage("Not true that null reference contains <%s>", wrap(string));
+        failWithRawMessage("Not true that null reference contains <%s>", quote(string));
       }
     } else if (!getSubject().contains(string)) {
-      fail("contains", wrap(string));
+      fail("contains", quote(string));
     }
   }
 
   public void startsWith(String string) {
     if (getSubject() == null) {
       if (string != null) {
-        failWithRawMessage("Not true that null reference starts with <%s>", wrap(string));
+        failWithRawMessage("Not true that null reference starts with <%s>", quote(string));
       }
     } else if (!getSubject().startsWith(string)) {
-      fail("starts with", wrap(string));
+      fail("starts with", quote(string));
     }
   }
 
   public void endsWith(String string) {
     if (getSubject() == null) {
       if (string != null) {
-        failWithRawMessage("Not true that null reference ends with <%s>", wrap(string));
+        failWithRawMessage("Not true that null reference ends with <%s>", quote(string));
       }
     } else if (!getSubject().endsWith(string)) {
-      fail("ends with", wrap(string));
+      fail("ends with", quote(string));
     }
   }
 
@@ -111,7 +111,7 @@ public class StringSubject extends Subject<StringSubject, String> {
         }
       };
 
-  private static String wrap(String toBeWrapped) {
+  private static String quote(String toBeWrapped) {
     return "\"" + toBeWrapped + "\"";
   }
 }

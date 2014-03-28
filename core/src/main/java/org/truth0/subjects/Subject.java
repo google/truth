@@ -131,12 +131,13 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param messageParts the expectations against which the subject is compared
    */
   protected void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
-    StringBuilder message = new StringBuilder("Not true that ");
-    message.append("<").append(getDisplaySubject()).append("> ").append(verb);
-    message.append(" <").append(expected).append(">");
-    message.append(" it ").append(failVerb);
-    message.append(" <").append(actual).append(">");
-    failureStrategy.fail(message.toString());
+    String message = String.format("Not true that <%s> %s <%s>. It %s <%s>",
+            getDisplaySubject(),
+            verb,
+            expected,
+            failVerb,
+            ((actual == null) ? "null reference" : actual));
+     failureStrategy.fail(message);
   }
 
   /**
@@ -148,9 +149,11 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param actual the custom representation of the subject to be reported in the failure.
    */
   protected void failWithCustomSubject(String verb, Object expected, Object actual) {
-    StringBuilder message = new StringBuilder("Not true that ");
-    message.append((actual == null) ? "null reference" : actual).append(" ").append(verb);
-    failureStrategy.fail(message.toString());
+    String message = String.format("Not true that <%s> %s <%s>",
+        ((actual == null) ? "null reference" : actual),
+        verb,
+        expected);
+    failureStrategy.fail(message);
   }
 
   /**
@@ -159,9 +162,7 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param verb the proposition being asserted
    */
   protected void failWithoutSubject(String verb) {
-    StringBuilder message = new StringBuilder("Not true that ");
-    message.append("the subject ").append(verb);
-    failureStrategy.fail(message.toString());
+    failureStrategy.fail("Not true that the subject " + verb);
   }
 
   /**
