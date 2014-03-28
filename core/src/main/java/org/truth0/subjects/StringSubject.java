@@ -32,53 +32,74 @@ public class StringSubject extends Subject<StringSubject, String> {
     super(failureStrategy, string);
   }
 
-  @Override
-  public void isEqualTo(Object other) {
-    if (!(other instanceof String)) {
-      fail("is", other);
-    }
+  @Override protected String getDisplaySubject() {
+    return "\"" + getSubject() + "\"";
+  }
+
+  @Override public void is(Object expected) {
+    isEqualTo(expected);
+  }
+
+  @Override public void isEqualTo(Object expected) {
     if (getSubject() == null) {
-      if(other != null) {
-        fail("is", other);
-      }
-    } else {
-      if (!getSubject().equals(other)) {
-        if (other instanceof String) {
-          failureStrategy.failComparing("", (String) other, getSubject());
+      if(expected != null) {
+        if (expected instanceof String) {
+          failWithRawMessage("Null reference is not equal to <\"%s\">", expected);
         } else {
-          fail("is", other);
+          failWithRawMessage("Null reference is not equal to (%s)<%s>",
+              expected.getClass().getName(), expected);
         }
       }
+    } else {
+      if(expected == null) {
+        isNull();
+      } else if (!(expected instanceof String)) {
+        failWithRawMessage("<\"%s\"> is not equal (%s)<%s>",
+            getSubject(), expected.getClass().getName(), expected);
+      } else if (!getSubject().equals(expected)) {
+        if (expected instanceof String) {
+          failureStrategy.failComparing("", (String) expected, getSubject());
+        } else {
+          failWithRawMessage("Not true that %s equal to (%s)<%s>",
+              getDisplaySubject(), expected.getClass().getName(), expected);
+        }
+      }
+    }
+  }
+
+  @Override public void isNull() {
+    if(getSubject() != null) {
+      fail("is", "null");
     }
   }
 
   public void contains(String string) {
     if (getSubject() == null) {
       if (string != null) {
-        fail("contains", string);
+        failWithRawMessage("Not true that null reference contains <%s>", wrap(string));
       }
     } else if (!getSubject().contains(string)) {
-      fail("contains", string);
+      fail("contains", wrap(string));
     }
   }
 
   public void startsWith(String string) {
     if (getSubject() == null) {
       if (string != null) {
-        fail("starts with", string);
+        failWithRawMessage("Not true that null reference starts with <%s>", wrap(string));
       }
     } else if (!getSubject().startsWith(string)) {
-      fail("starts with", string);
+      fail("starts with", wrap(string));
     }
   }
 
   public void endsWith(String string) {
     if (getSubject() == null) {
       if (string != null) {
-        fail("ends with", string);
+        failWithRawMessage("Not true that null reference ends with <%s>", wrap(string));
       }
     } else if (!getSubject().endsWith(string)) {
-      fail("ends with", string);
+      fail("ends with", wrap(string));
     }
   }
 
@@ -89,4 +110,7 @@ public class StringSubject extends Subject<StringSubject, String> {
         }
       };
 
+  private static String wrap(String toBeWrapped) {
+    return "\"" + toBeWrapped + "\"";
+  }
 }

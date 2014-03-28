@@ -101,18 +101,23 @@ public class Subject<S extends Subject<S,T>,T> {
     return subject;
   }
 
+  protected T getDisplaySubject() {
+    return getSubject();
+  }
+
   protected TestVerb check() {
     return new TestVerb(failureStrategy);
   }
 
   /**
    * Assembles a failure message and passes such to the FailureStrategy
-   * @param verb the act being asserted
+   *
+   * @param verb the proposition being asserted
    * @param messageParts the expectations against which the subject is compared
    */
   protected void fail(String verb, Object... messageParts) {
     StringBuilder message = new StringBuilder("Not true that ");
-    message.append("<").append(getSubject()).append("> ").append(verb);
+    message.append("<").append(getDisplaySubject()).append("> ").append(verb);
     for (Object part : messageParts) {
       message.append(" <").append(part).append(">");
     }
@@ -120,23 +125,53 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * Assembles a failure message and passes such to the FailureStrategy
-   * @param verb the act being asserted
+   * Assembles a failure message and passes it to the FailureStrategy
+   *
+   * @param verb the proposition being asserted
    * @param messageParts the expectations against which the subject is compared
    */
   protected void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
     StringBuilder message = new StringBuilder("Not true that ");
-    message.append("<").append(getSubject()).append("> ").append(verb);
+    message.append("<").append(getDisplaySubject()).append("> ").append(verb);
     message.append(" <").append(expected).append(">");
     message.append(" it ").append(failVerb);
     message.append(" <").append(actual).append(">");
     failureStrategy.fail(message.toString());
   }
 
+  /**
+   * Assembles a failure message with an alternative representation of the wrapped subject
+   * and passes it to the FailureStrategy
+   *
+   * @param verb the proposition being asserted
+   * @param expected the expected value of the proposition
+   * @param actual the custom representation of the subject to be reported in the failure.
+   */
+  protected void failWithCustomSubject(String verb, Object expected, Object actual) {
+    StringBuilder message = new StringBuilder("Not true that ");
+    message.append((actual == null) ? "null reference" : actual).append(" ").append(verb);
+    failureStrategy.fail(message.toString());
+  }
+
+  /**
+   * Assembles a failure message wihtout a given subject and passes it to the FailureStrategy
+   *
+   * @param verb the proposition being asserted
+   */
   protected void failWithoutSubject(String verb) {
     StringBuilder message = new StringBuilder("Not true that ");
     message.append("the subject ").append(verb);
     failureStrategy.fail(message.toString());
+  }
+
+  /**
+   * Passes through a failure message verbatim.  Used for {@link Subject} subclasses which
+   * need to provide alternate language for more fit-to-purpose error messages.
+   *
+   * @param message the full message to be passed to the failure.
+   */
+  protected void failWithRawMessage(String message, Object ... parameters) {
+    failureStrategy.fail(String.format(message.toString(), parameters));
   }
 
   @GwtIncompatible("java.lang.reflect.Field")
