@@ -57,7 +57,7 @@ public class StringTest {
       ASSERT.that("abc").is(null);
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-          .contains("Not true that <\"abc\"> is <null>");
+          .contains("Not true that <\"abc\"> is null");
       return;
     }
     fail("Should have thrown");

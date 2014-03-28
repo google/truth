@@ -33,7 +33,7 @@ public class StringSubject extends Subject<StringSubject, String> {
   }
 
   @Override protected String getDisplaySubject() {
-    return "\"" + getSubject() + "\"";
+    return wrap(getSubject());
   }
 
   @Override public void is(Object expected) {
@@ -44,9 +44,10 @@ public class StringSubject extends Subject<StringSubject, String> {
     if (getSubject() == null) {
       if(expected != null) {
         if (expected instanceof String) {
-          failWithRawMessage("Null reference is not equal to <\"%s\">", expected);
+          failWithRawMessage("Not true that null reference is equal to <%s>",
+              wrap((String) expected));
         } else {
-          failWithRawMessage("Null reference is not equal to (%s)<%s>",
+          failWithRawMessage("Not true that null reference is equal to (%s)<%s>",
               expected.getClass().getName(), expected);
         }
       }
@@ -54,7 +55,7 @@ public class StringSubject extends Subject<StringSubject, String> {
       if(expected == null) {
         isNull();
       } else if (!(expected instanceof String)) {
-        failWithRawMessage("<\"%s\"> is not equal (%s)<%s>",
+        failWithRawMessage("Not true that <\"%s\"> is equal to (%s)<%s>",
             getSubject(), expected.getClass().getName(), expected);
       } else if (!getSubject().equals(expected)) {
         if (expected instanceof String) {
@@ -69,7 +70,7 @@ public class StringSubject extends Subject<StringSubject, String> {
 
   @Override public void isNull() {
     if(getSubject() != null) {
-      fail("is", "null");
+      failWithRawMessage("Not true that <%s> is null", getDisplaySubject());
     }
   }
 
