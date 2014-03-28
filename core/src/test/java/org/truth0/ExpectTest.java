@@ -55,9 +55,9 @@ public class ExpectTest {
 	@Test
 	public void expectFail() {
 		thrown.expectMessage("All failed expectations:");
-		thrown.expectMessage("1. Not true that <abc> contains <x>");
-		thrown.expectMessage("2. Not true that <abc> contains <y>");
-		thrown.expectMessage("3. Not true that <abc> contains <z>");
+		thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
+		thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
+		thrown.expectMessage("3. Not true that <\"abc\"> contains <\"z\">");
 		EXPECT.that("abc").contains("x");
 		EXPECT.that("abc").contains("y");
 		EXPECT.that("abc").contains("z");

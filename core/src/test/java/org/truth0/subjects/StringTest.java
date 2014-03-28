@@ -42,7 +42,7 @@ public class StringTest {
       ASSERT.that("abc").contains("d");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-          .contains("Not true that <abc> contains <d>");
+          .contains("Not true that <\"abc\"> contains <\"d\">");
       return;
     }
     fail("Should have thrown");
@@ -50,6 +50,17 @@ public class StringTest {
 
   @Test public void stringEquality() {
     ASSERT.that("abc").is("abc");
+  }
+
+  @Test public void stringEqualityToNull() {
+    try {
+      ASSERT.that("abc").is(null);
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <\"abc\"> is null");
+      return;
+    }
+    fail("Should have thrown");
   }
 
   @Test public void stringEqualityFail() {
@@ -72,7 +83,7 @@ public class StringTest {
       ASSERT.that("abc").startsWith("bc");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-          .contains("Not true that <abc> starts with <bc>");
+          .contains("Not true that <\"abc\"> starts with <\"bc\">");
       return;
     }
     fail("Should have thrown");
@@ -87,7 +98,7 @@ public class StringTest {
       ASSERT.that("abc").endsWith("ab");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-          .contains("Not true that <abc> ends with <ab>");
+          .contains("Not true that <\"abc\"> ends with <\"ab\">");
       return;
     }
     fail("Should have thrown");
@@ -103,6 +114,7 @@ public class StringTest {
   }
 
   @Test public void stringNullNullTests() {
+    ASSERT.that((String)null).is(null);
     ASSERT.that((String)null).contains(null);
     ASSERT.that((String)null).startsWith(null);
     ASSERT.that((String)null).endsWith(null);
@@ -113,7 +125,7 @@ public class StringTest {
       ASSERT.that((String)null).contains("a");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-          .contains("Not true that <null> contains <a>");
+          .contains("Not true that null reference contains <\"a\">");
       return;
     }
     fail("Should have thrown");
@@ -124,7 +136,7 @@ public class StringTest {
       ASSERT.that((String)null).startsWith("a");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-          .contains("Not true that <null> starts with <a>");
+          .contains("Not true that null reference starts with <\"a\">");
       return;
     }
     fail("Should have thrown");
@@ -135,7 +147,7 @@ public class StringTest {
       ASSERT.that((String)null).endsWith("a");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-          .contains("Not true that <null> ends with <a>");
+          .contains("Not true that null reference ends with <\"a\">");
       return;
     }
     fail("Should have thrown");

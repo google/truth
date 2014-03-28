@@ -214,7 +214,7 @@ public class SubjectTest {
       ASSERT.that("a").isA(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <a> is a <java.lang.Long>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <\"a\"> is a <java.lang.Long>");
     }
   }
 
@@ -227,7 +227,7 @@ public class SubjectTest {
       ASSERT.that("a").isNotA(String.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <a> is not a <java.lang.String>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <\"a\"> is not a <java.lang.String>");
     }
   }
 
