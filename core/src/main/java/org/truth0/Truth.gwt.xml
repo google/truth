@@ -2,6 +2,6 @@
   <source path="">
     <exclude name="**/util/Reflection*" />
   </source>
-  <super-source path="gwtemul"/>
-  <inherits name="com.google.gwt.user.User"/>
+  <super-source path="gwtemul" />
+  <inherits name="com.google.gwt.user.User" />
 </module>
