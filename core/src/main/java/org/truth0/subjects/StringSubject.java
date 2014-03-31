@@ -55,8 +55,8 @@ public class StringSubject extends Subject<StringSubject, String> {
       if (expected == null) {
         isNull();
       } else if (!(expected instanceof String)) {
-        failWithRawMessage("Not true that <\"%s\"> is equal to (%s)<%s>",
-            getSubject(), expected.getClass().getName(), expected);
+        failWithRawMessage("Not true that <%s> is equal to (%s)<%s>",
+            getDisplaySubject(), expected.getClass().getName(), expected);
       } else if (!getSubject().equals(expected)) {
         if (expected instanceof String) {
           failureStrategy.failComparing("", (String) expected, getSubject());

@@ -169,7 +169,13 @@ public class Subject<S extends Subject<S,T>,T> {
    * Passes through a failure message verbatim.  Used for {@link Subject} subclasses which
    * need to provide alternate language for more fit-to-purpose error messages.
    *
-   * @param message the full message to be passed to the failure.
+   *
+   * @param message the message template to be passed to the failure.  Note, this method only
+   *     guarantees to process {@code %s} tokens.  It is not guaranteed to be compatible
+   *     with {@code String.format()}.  Any other formatting desired (such as floats or
+   *     scientific notation) should be performed before the method call and the formatted
+   *     value passed in as a string.
+   * @param paramters the object parameters which will be applied to the message template.
    */
   protected void failWithRawMessage(String message, Object ... parameters) {
     failureStrategy.fail(String.format(message.toString(), parameters));
