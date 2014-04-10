@@ -3,8 +3,8 @@ Truth
 ***We've made failure a strategy***
 
 **Continuous Integration:** [![Build Status](https://secure.travis-ci.org/truth0/truth.png?branch=master)](https://travis-ci.org/truth0/truth)<br />
-**Latest Release:** *0.13*<br />
-**Latest Artifact:** *org.junit.contrib:truth:jar:0.13*<br />
+**Latest Release:** *0.15*<br />
+**Latest Artifact:** *org.junit.contrib:truth:jar:0.15*<br />
 
 **Note:** Truth is subject to change and prior to 1.0, may introduce 
 breaking changes.  We're getting closer to "prime time" but please 
