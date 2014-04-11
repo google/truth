@@ -451,7 +451,7 @@ Acknowledgements
 Thanks to Github and Travis-CI for having a strong commitment to open-source, and 
 providing us with tools so we can provide others with code.  And thanks to Google 
 for [Guava][1], for the [compile-testing][2] extension to Truth, for generous 
-open-source contributions and for encouraging developersto try to solve problems
+open-source contributions and for encouraging developers to try to solve problems
 in better ways and share that with the world.
 
 Also thanks to the authors of JUnit, TestNG, Hamcrest, FEST, and others for creating
