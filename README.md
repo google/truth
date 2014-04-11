@@ -36,18 +36,75 @@ Introduction
 ------------
 
 Truth is a testing framework suitable for making assertions and assumptions
-about code.  Truth adopts a fluent style for your test propositions, is 
-extensible in several ways, supports IDE completion/discovery of available
-propositions, and supports different responses to un-true propositions.
-Truth can be used to declare assumptions (skip the test if they fail),
-assertions (fail the test), and expectations (continue but report errors 
-and fail at the end).
+about code.  Truth adopts a fluent style (inspired by FEST) for your test 
+propositions, is extensible in several ways, supports IDE 
+completion/discovery of available propositions, and supports different 
+responses to un-true propositions. Truth can be used to declare JUnit-style
+assumptions (which skip the test if they fail), assertions (fail the test), 
+and expectations (which continue the test, but collect errors and fail at 
+the end).
 
-While intended to work with JUnit, Truth can be used with other testing
-framework with minimal effort.  Truth is released as a maven artifact 
-through a custom repository (it will be released to repo1.maven.org soon),
-and is licensed with the Apache 2.0 open-source license.  As such, you are
-free to use it or modify it subject only to the terms in that license.
+Truth is open-source software licensed under Apache 2.0 license.  As such, 
+you are free to use it or modify it subject only to the terms in that license.
+
+#### What's the point?  Two Brief Examples
+
+```
+int num = 0;
+assertTrue(num >= 1 && num <= 3);
+```
+
+reports: 
+
+```
+java.lang.AssertionError
+	at org.junit.Assert.fail(Assert.java:92)
+	at org.junit.Assert.assertTrue(Assert.java:43)
+	at org.junit.Assert.assertTrue(Assert.java:54)
+	at CodeSnippet_1.run(CodeSnippet_1.java:3)
+```
+
+whereas:
+
+```
+int num = 0;
+ASSERT.that(0).isInclusivelyInRange(1, 3);
+```
+
+reports:
+
+```
+org.truth0.FailureStrategy$ThrowableAssertionError: Not true that <0> is inclusively in range <1> <3>
+	at org.truth0.FailureStrategy.fail(FailureStrategy.java:33)
+	at org.truth0.FailureStrategy.fail(FailureStrategy.java:29)
+	at org.truth0.subjects.Subject.fail(Subject.java:124)
+	at org.truth0.subjects.IntegerSubject.isInclusivelyInRange(IntegerSubject.java:51)
+```
+
+Aside from better error messages, and clearly stated propositions, Truth propositions can be extended to new types or new approaches to known types.  This permits testing of complex and hard-to-test scenarios such as failures reported in annotation processors. The [compile-testimg][2] exension to Truth is used by [Dagger][3] in this way:
+
+```
+  @Test public void multipleQualifiersOnField() {
+    JavaFileObject qualifierA = JavaFileObjects.forSourceLines("test.QualifierA",
+        "package test;",
+        "import javax.inject.Qualifier;",
+        "@Qualifier @interface QualifierA {}");
+    JavaFileObject qualifierB = JavaFileObjects.forSourceLines("test.QualifierB",
+        "package test;",
+        "import javax.inject.Qualifier;",
+        "@Qualifier @interface QualifierB {}");
+    JavaFileObject file = JavaFileObjects.forSourceLines("test.MultipleQualifierInjectField",
+        "package test;",
+        "import javax.inject.Inject;",
+        "class MultipleQualifierInjectField {",
+        "  @Inject @QualifierA @QualifierB String s;",
+        "}");
+    ASSERT.about(javaSources()).that(ImmutableList.of(file, qualifierA, qualifierB))
+        .processedWith(new InjectProcessor()).failsToCompile()
+        .withErrorContaining(ErrorMessages.MULTIPLE_QUALIFIERS).in(file).onLine(6).atColumn(11).and()
+        .withErrorContaining(ErrorMessages.MULTIPLE_QUALIFIERS).in(file).onLine(6).atColumn(23);
+  }
+```
 
 Installation
 ------------
@@ -57,13 +114,13 @@ To prepare to use Truth, declare this dependency in maven or an equivalent:
     <dependency>
       <groupId>org.truth0</groupId>
       <artifactId>truth</artifactId>
-      <version>0.13</version>
+      <version>0.15</version>
     </dependency>
 
 or download the jar directly from the link below and add it to
 your tests classpath
 
-    http://search.maven.org/remotecontent?filepath=org/truth0/truth/0.13/truth-0.13.jar
+    http://search.maven.org/remotecontent?filepath=org/truth0/truth/0.15/truth-0.15.jar
 
 Using Truth
 -----------
@@ -391,10 +448,11 @@ Planned improvements and changes
 Acknowledgements
 ----------------
 
-Thanks to Github and Cloudbees for having a strong commitment to open-source, and 
+Thanks to Github and Travis-CI for having a strong commitment to open-source, and 
 providing us with tools so we can provide others with code.  And thanks to Google 
-for [Guava](http://code.google.com/p/guava-libraries "Guava"), and for encouraging
-us to try to solve problems in better ways and  share that with the world.
+for [Guava][1], for the [compile-testing][2] extension to Truth, for generous 
+open-source contributions and for encouraging developersto try to solve problems
+in better ways and share that with the world.
 
 Also thanks to the authors of JUnit, TestNG, Hamcrest, FEST, and others for creating
 testing tools that let us write high-quality code, for inspiring this work and for 
@@ -402,3 +460,7 @@ moving the ball forward in the field of automated software testing.  This projec
 works with, works alongside, and sometimes works in competition with the above
 tools, but owes a debt that everyone owes to those gone before.  They paved the 
 way, and we hope this contribution is helpful to the field.
+
+[1]: http://code.google.com/p/guava-libraries
+[2]: http://github.com/google/compile-testing
+[3]: http://github.com/square/dagger
