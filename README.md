@@ -2,9 +2,10 @@ Truth
 =====
 ***We've made failure a strategy***
 
-**Continuous Integration:** [![Build Status](https://secure.travis-ci.org/truth0/truth.png?branch=master)](https://travis-ci.org/truth0/truth)<br />
-**Latest Release:** *0.15*<br />
-**Latest Artifact:** *org.junit.contrib:truth:jar:0.15*<br />
+**Main Website:** *[truth0.github.io](http://truth0.github.io/)* &nbsp;
+**Continuous Integration:** [![Build Status](https://secure.travis-ci.org/truth0/truth.png?branch=master)](https://travis-ci.org/truth0/truth) <br />
+**Latest Release:** *0.15* &nbsp; 
+**Latest Artifact:** *org.junit.contrib:truth:jar:0.15* <br />
 
 **Note:** Truth is subject to change and prior to 1.0, may introduce 
 breaking changes.  We're getting closer to "prime time" but please 
@@ -44,7 +45,7 @@ ASSERT.about(javaSources()).that(asList(source4, source5))
 Instructions, documentation, and other information
 ----------------
 
-The full documentation and website for Truth is available at [http://truth0.github.io].
+The full documentation and website for Truth is available at http://truth0.github.io.
 
 License
 ----------------
