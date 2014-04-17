@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +16,14 @@
  */
 package org.truth0.subjects;
 
-import org.truth0.FailureStrategy;
-
 import com.google.common.annotations.GwtCompatible;
+
+import org.truth0.FailureStrategy;
 
 
 /**
  * Propositions for boolean subjects
- * 
+ *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtCompatible
@@ -35,13 +35,17 @@ public class BooleanSubject extends Subject<BooleanSubject, Boolean> {
 
   public void isTrue() {
     if (getSubject() == null || !getSubject()) {
-      fail("is true");
+      failWithRawMessage("%s was expected to be true, but was false", booleanSubject());
     }
   }
 
   public void isFalse() {
     if (getSubject() == null || getSubject()) {
-      fail("is false");
+      failWithRawMessage("%s was expected to be false, but was true", booleanSubject());
     }
+  }
+
+  private String booleanSubject() {
+    return label() == null ? "The subject" : getDisplaySubject();
   }
 }

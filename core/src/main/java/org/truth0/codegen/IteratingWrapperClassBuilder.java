@@ -1,18 +1,19 @@
 package org.truth0.codegen;
 
+
 import static java.lang.reflect.Modifier.isFinal;
 import static java.lang.reflect.Modifier.isPrivate;
 import static java.lang.reflect.Modifier.isStatic;
+
+import org.truth0.subjects.Subject;
+import org.truth0.subjects.SubjectFactory;
+import org.truth0.util.ReflectionUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
-
-import org.truth0.subjects.Subject;
-import org.truth0.subjects.SubjectFactory;
-import org.truth0.util.ReflectionUtil;
 
 /**
  * A builder of classes to wrap a provided SubjectFactory's concrete Subject subclass.

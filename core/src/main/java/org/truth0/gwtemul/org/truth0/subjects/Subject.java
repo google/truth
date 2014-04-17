@@ -16,6 +16,8 @@
  */
 package org.truth0.subjects;
 
+import static org.truth0.util.StringUtil.format;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,10 +34,21 @@ import org.truth0.TestVerb;
 public class Subject<S extends Subject<S,T>,T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
+  private String label = null;
 
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
+  }
+
+  protected String label() {
+    return label;
+  }
+
+  @SuppressWarnings("unchecked")
+  public S labeled(String label) {
+    this.label = label;
+    return (S)this;
   }
 
   public void is(Object other) {
@@ -82,10 +95,16 @@ public class Subject<S extends Subject<S,T>,T> {
     return subject;
   }
 
-  protected T getDisplaySubject() {
-    return getSubject();
+  protected String getDisplaySubject() {
+    return (label == null)
+        ? "<" + getSubject() + ">"
+        : "\"" + this.label + "\"";
   }
 
+  /**
+   * A convenience for implementers of {@link Subject} subclasses to use other truth
+   * {@code Subject} wrappers within their own propositional logic.
+   */
   protected TestVerb check() {
     return new TestVerb(failureStrategy);
   }
@@ -98,7 +117,7 @@ public class Subject<S extends Subject<S,T>,T> {
    */
   protected void fail(String verb, Object... messageParts) {
     StringBuilder message = new StringBuilder("Not true that ");
-    message.append("<").append(getDisplaySubject()).append("> ").append(verb);
+    message.append(getDisplaySubject()).append(" ").append(verb);
     for (Object part : messageParts) {
       message.append(" <").append(part).append(">");
     }
@@ -112,10 +131,13 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param messageParts the expectations against which the subject is compared
    */
   protected void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
-    actual = ((actual == null) ? "null reference" : actual);
-    String message = "Not true that <" + getDisplaySubject() + "> " + verb + " <" + expected + ">."
-        + " It " + failVerb + " <" + actual + ">";
-    failureStrategy.fail(message);
+    String message = format("Not true that %s %s <%s>. It %s <%s>",
+            getDisplaySubject(),
+            verb,
+            expected,
+            failVerb,
+            ((actual == null) ? "null reference" : actual));
+     failureStrategy.fail(message);
   }
 
   /**
@@ -127,42 +149,37 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param actual the custom representation of the subject to be reported in the failure.
    */
   protected void failWithCustomSubject(String verb, Object expected, Object actual) {
-    actual = ((actual == null) ? "null reference" : actual);
-    String message = "Not true that <" + actual + "> " + verb + " <" + expected + ">";
+    String message = format("Not true that <%s> %s <%s>",
+        ((actual == null) ? "null reference" : actual),
+        verb,
+        expected);
     failureStrategy.fail(message);
   }
 
   /**
-   * Assembles a failure message wihtout a given subject and passes it to the FailureStrategy
+   * Assembles a failure message without a given subject and passes it to the FailureStrategy
    *
    * @param verb the proposition being asserted
    */
   protected void failWithoutSubject(String verb) {
-    failureStrategy.fail("Not true that the subject " + verb);
+    String subject = this.label == null ? "the subject" : "\"" + label + "\"";
+    failureStrategy.fail(format("Not true that %s %s", subject, verb));
   }
 
   /**
    * Passes through a failure message verbatim.  Used for {@link Subject} subclasses which
    * need to provide alternate language for more fit-to-purpose error messages.
    *
-   * @param message the full message to be passed to the failure.
+   *
+   * @param message the message template to be passed to the failure.  Note, this method only
+   *     guarantees to process {@code %s} tokens.  It is not guaranteed to be compatible
+   *     with {@code String.format()}.  Any other formatting desired (such as floats or
+   *     scientific notation) should be performed before the method call and the formatted
+   *     value passed in as a string.
+   * @param paramters the object parameters which will be applied to the message template.
    */
   protected void failWithRawMessage(String message, Object ... parameters) {
     failureStrategy.fail(format(message, parameters));
-  }
-
-  private static String format(final String format, final Object... parameters) {
-    // TODO(cgruber) Possibly trap %% items.
-    List<String> parts = Arrays.asList(format.split("[%][s]", -1));
-    if (parts.size() - 1 != parameters.length) {
-      throw new IllegalArgumentException("Format string \""
-          + format + "\" does not have " + parameters.length + " substitution variables.");
-    }
-    StringBuffer buffer = new StringBuffer(parts.get(0));
-    for (int i = 0; i < parameters.length ; i++) {
-      buffer.append(parameters[i]).append(parts.get(i+1));
-    }
-    return buffer.toString();
   }
   
   /**
