@@ -38,20 +38,20 @@ import java.lang.reflect.Field;
 public class Subject<S extends Subject<S,T>,T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
-  private String label = null;
+  private String customLabel = null;
 
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
   }
 
-  protected String label() {
-    return label;
+  protected String internalCustomLabel() {
+    return customLabel;
   }
 
   @SuppressWarnings("unchecked")
   public S labeled(String label) {
-    this.label = label;
+    this.customLabel = label;
     return (S)this;
   }
 
@@ -123,9 +123,9 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   protected String getDisplaySubject() {
-    return (label == null)
+    return (customLabel == null)
         ? "<" + getSubject() + ">"
-        : "\"" + this.label + "\"";
+        : "\"" + this.customLabel + "\"";
   }
 
   /**
@@ -189,7 +189,7 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param verb the proposition being asserted
    */
   protected void failWithoutSubject(String verb) {
-    String subject = this.label == null ? "the subject" : "\"" + label + "\"";
+    String subject = this.customLabel == null ? "the subject" : "\"" + customLabel + "\"";
     failureStrategy.fail(format("Not true that %s %s", subject, verb));
   }
 

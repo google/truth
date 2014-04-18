@@ -33,9 +33,9 @@ public class StringSubject extends Subject<StringSubject, String> {
   }
 
   @Override protected String getDisplaySubject() {
-    return (label() == null)
+    return (internalCustomLabel() == null)
             ? "<" + quote(getSubject()) + ">"
-            : "\"" + label() + "\"";
+            : "\"" + internalCustomLabel() + "\"";
   }
 
   @Override public void is(Object expected) {
