@@ -35,13 +35,13 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> create(
-      FailureStrategy failureStrategy, Collection<T> list) {
-    return new CollectionSubject(failureStrategy, list);
+      FailureStrategy failureStrategy, Collection<T> collection) {
+    return new CollectionSubject(failureStrategy, collection);
   }
 
   // TODO: Arguably this should even be package private
-  protected CollectionSubject(FailureStrategy failureStrategy, C list) {
-    super(failureStrategy, list);
+  protected CollectionSubject(FailureStrategy failureStrategy, C collection) {
+    super(failureStrategy, collection);
   }
 
   /**
