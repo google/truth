@@ -64,7 +64,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * unexpected results.  Consider using {@link #is(T)} in such cases, or using
    * collections and iterables that provide strong order guarantees.
    */
-  public void iteratesAs(Iterable<T> expectedItems) {
+  public void iteratesAs(Iterable<?> expectedItems) {
     Iterator<T> actualItems = getSubject().iterator();
     for (Object expected : expectedItems) {
       if (!actualItems.hasNext()) {
@@ -87,7 +87,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @deprecated use {@link #iteratesAs(T...)}
    */
   @Deprecated
-  public void iteratesOverSequence(T... expectedItems) {
+  public void iteratesOverSequence(Object... expectedItems) {
     iteratesAs(expectedItems);
   }
 
@@ -97,7 +97,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * a {@link Set<T>}), this method is not suitable for asserting that order.
    * Consider using {@link #is(T)}
    */
-  public void iteratesAs(T... expectedItems) {
+  public void iteratesAs(Object... expectedItems) {
     iteratesAs(Arrays.asList(expectedItems));
   }
 }

@@ -85,6 +85,25 @@ public class IterableTest {
     }
   }
 
+  @Test public void iteratesOverWithIncompatibleItems() {
+    try {
+      ASSERT.that(iterable(1, 2, 3)).iteratesAs(1, 2, "a");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  @Test public void iteratesOverAsListWithIncompatibleItems() {
+    try {
+      ASSERT.that(iterable(1, 2, 3)).iteratesAs(asList(1, 2, "a"));
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that");
+    }
+  }
+
   @Test public void iterableIsEmpty() {
     ASSERT.that(iterable()).isEmpty();
   }
