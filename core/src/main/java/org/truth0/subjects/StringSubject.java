@@ -33,7 +33,9 @@ public class StringSubject extends Subject<StringSubject, String> {
   }
 
   @Override protected String getDisplaySubject() {
-    return quote(getSubject());
+    return (internalCustomLabel() == null)
+            ? "<" + quote(getSubject()) + ">"
+            : "\"" + internalCustomLabel() + "\"";
   }
 
   @Override public void is(Object expected) {
@@ -55,7 +57,7 @@ public class StringSubject extends Subject<StringSubject, String> {
       if (expected == null) {
         isNull();
       } else if (!(expected instanceof String)) {
-        failWithRawMessage("Not true that <%s> is equal to (%s)<%s>",
+        failWithRawMessage("Not true that %s is equal to (%s)<%s>",
             getDisplaySubject(), expected.getClass().getName(), expected);
       } else if (!getSubject().equals(expected)) {
         if (expected instanceof String) {
@@ -70,7 +72,7 @@ public class StringSubject extends Subject<StringSubject, String> {
 
   @Override public void isNull() {
     if (getSubject() != null) {
-      failWithRawMessage("Not true that <%s> is null", getDisplaySubject());
+      failWithRawMessage("Not true that %s is null", getDisplaySubject());
     }
   }
 

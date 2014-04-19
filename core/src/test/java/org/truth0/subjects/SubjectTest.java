@@ -211,10 +211,11 @@ public class SubjectTest {
 
   @Test public void isAFail() {
     try {
-      ASSERT.that("a").isA(Long.class);
+      ASSERT.that(4.5).isA(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <\"a\"> is a <java.lang.Long>");
+      ASSERT.that(e.getMessage()).is("Not true that <4.5> is an instance of <java.lang.Long>."
+      		+ " It is an instance of <java.lang.Double>");
     }
   }
 
@@ -224,10 +225,11 @@ public class SubjectTest {
 
   @Test public void isNotAFail() {
     try {
-      ASSERT.that("a").isNotA(String.class);
+      ASSERT.that(5).isNotA(Number.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <\"a\"> is not a <java.lang.String>");
+      ASSERT.that(e.getMessage())
+          .is("<5> expected not to be an instance of java.lang.Number, but was.");
     }
   }
 

@@ -18,7 +18,7 @@ package org.truth0;
 
 import com.google.common.annotations.GwtCompatible;
 
-import org.truth0.util.ComparisonUtil;
+import org.truth0.util.StringUtil;
 
 import javax.annotation.Nullable;
 
@@ -34,7 +34,7 @@ public abstract class FailureStrategy {
   }
 
   public void failComparing(String message, CharSequence expected, CharSequence actual) {
-    fail(ComparisonUtil.messageFor(message, expected, actual));
+    fail(StringUtil.messageFor(message, expected, actual));
   }
 
   public static class ThrowableAssertionError extends AssertionError {

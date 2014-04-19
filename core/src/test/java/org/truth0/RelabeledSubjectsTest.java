@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.truth0.subjects;
+package org.truth0;
 
 import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
@@ -23,37 +23,48 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Arrays;
+
 /**
- * Tests for Boolean Subjects.
+ * Tests (and effectively sample code) for the Expect verb (implemented as a
+ * rule)
  *
+ * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class BooleanTest {
+public class RelabeledSubjectsTest {
 
-  @Test public void isTrue() {
-    ASSERT.that(true).isTrue();
-  }
-
-  @Test public void isTrueFailing() {
+  @Test public void relabeledBooleans() {
     try {
-      ASSERT.that(false).isTrue();
+      ASSERT.that(false).labeled("Foo").isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).is("The subject was expected to be true, but was false");
+      ASSERT.that(expected.getMessage()).is("\"Foo\" was expected to be true, but was false");
     }
   }
 
-  @Test public void isFalse() {
-    ASSERT.that(false).isFalse();
-  }
-
-  @Test public void isFalseFailing() {
+  @Test public void relabeledObject() {
     try {
-      ASSERT.that(true).isFalse();
+      ASSERT.that(new Object()).labeled("Foo").isA(Integer.class);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).is("The subject was expected to be false, but was true");
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that \"Foo\" is an instance of <java.lang.Integer>");
+      ASSERT.that(expected.getMessage())
+          .contains("It is an instance of <java.lang.Object>");
     }
   }
+
+  @Test public void relabelledCollections() {
+    try {
+      ASSERT.that(Arrays.asList("a", "b", "c")).labeled("crazy list").has().allOf("c", "d");
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .is("Not true that \"crazy list\" has all of <[c, d]>. It is missing <[d]>");
+    }
+  }
+
+
 }

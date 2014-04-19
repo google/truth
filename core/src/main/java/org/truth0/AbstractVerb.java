@@ -1,5 +1,7 @@
 package org.truth0;
 
+import static org.truth0.util.StringUtil.format;
+
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 
@@ -31,15 +33,15 @@ public class AbstractVerb {
 	/**
 	 * Triggers the failure strategy with the given failure message
 	 */
-	public void fail(String message) {
-		failureStrategy.fail(message);
+	public void fail(String format, Object ... args) {
+		failureStrategy.fail(format(format, args));
 	}
 
   /**
    * The recommended method of extension of Truth to new types, which is
-   * documented in {@link DelegationTest }.
+   * documented in {@link org.truth0.delegatetest.DelegationTest }.
    *
-   * @see DelegationTest
+   * @see org.truth0.delegatetest.DelegationTest
    * @param factory a SubjectFactory<S, T> implementation
    * @returns A custom verb for the type returned by the SubjectFactory
    */

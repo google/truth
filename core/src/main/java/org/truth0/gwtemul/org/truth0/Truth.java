@@ -16,7 +16,8 @@
  */
 package org.truth0;
 
-import static org.truth0.util.ComparisonUtil.messageFor;
+import static org.truth0.util.StringUtil.format;
+import static org.truth0.util.StringUtil.messageFor;
 
 import org.junit.ComparisonFailure;
 
@@ -52,6 +53,7 @@ import org.truth0.TestVerb;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class Truth {
+
   public static final FailureStrategy THROW_ASSERTION_ERROR =
       new FailureStrategy() {
         @Override public void fail(String message) {
@@ -59,7 +61,8 @@ public class Truth {
         }
         @Override public void failComparing(
             String message, CharSequence expected, CharSequence actual) {
-          throw new AssertionError(messageFor(message, expected, actual));
+          throw new AssertionError(
+              format("%s: expected: %s actual: %s", message, expected, actual));
         }
       };
 

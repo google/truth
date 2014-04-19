@@ -16,6 +16,7 @@
  */
 package org.truth0.subjects;
 
+import static org.truth0.util.StringUtil.format;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
@@ -37,10 +38,21 @@ import java.lang.reflect.Field;
 public class Subject<S extends Subject<S,T>,T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
+  private String customLabel = null;
 
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
+  }
+
+  protected String internalCustomLabel() {
+    return customLabel;
+  }
+
+  @SuppressWarnings("unchecked")
+  public S labeled(String label) {
+    this.customLabel = label;
+    return (S)this;
   }
 
   public void is(Object other) {
@@ -86,14 +98,23 @@ public class Subject<S extends Subject<S,T>,T> {
   @GwtIncompatible("Class.isInstance")
   public void isA(Class<?> clazz) {
     if (!clazz.isInstance(getSubject())) {
-      fail("is a", clazz.getName());
+      if (getSubject() != null) {
+        failWithBadResults("is an instance of", clazz.getName(),
+            "is an instance of", getSubject().getClass().getName());
+      } else {
+        fail("is an instance of", clazz.getName());
+      }
     }
   }
 
   @GwtIncompatible("Class.isInstance")
   public void isNotA(Class<?> clazz) {
+    if (getSubject() == null) {
+      return; // null is not an instance of clazz.
+    }
     if (clazz.isInstance(getSubject())) {
-      fail("is not a", clazz.getName());
+      failWithRawMessage("%s expected not to be an instance of %s, but was.",
+          getDisplaySubject(), clazz.getName());
     }
   }
 
@@ -101,10 +122,16 @@ public class Subject<S extends Subject<S,T>,T> {
     return subject;
   }
 
-  protected T getDisplaySubject() {
-    return getSubject();
+  protected String getDisplaySubject() {
+    return (customLabel == null)
+        ? "<" + getSubject() + ">"
+        : "\"" + this.customLabel + "\"";
   }
 
+  /**
+   * A convenience for implementers of {@link Subject} subclasses to use other truth
+   * {@code Subject} wrappers within their own propositional logic.
+   */
   protected TestVerb check() {
     return new TestVerb(failureStrategy);
   }
@@ -117,7 +144,7 @@ public class Subject<S extends Subject<S,T>,T> {
    */
   protected void fail(String verb, Object... messageParts) {
     StringBuilder message = new StringBuilder("Not true that ");
-    message.append("<").append(getDisplaySubject()).append("> ").append(verb);
+    message.append(getDisplaySubject()).append(" ").append(verb);
     for (Object part : messageParts) {
       message.append(" <").append(part).append(">");
     }
@@ -131,7 +158,7 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param messageParts the expectations against which the subject is compared
    */
   protected void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
-    String message = String.format("Not true that <%s> %s <%s>. It %s <%s>",
+    String message = format("Not true that %s %s <%s>. It %s <%s>",
             getDisplaySubject(),
             verb,
             expected,
@@ -149,7 +176,7 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param actual the custom representation of the subject to be reported in the failure.
    */
   protected void failWithCustomSubject(String verb, Object expected, Object actual) {
-    String message = String.format("Not true that <%s> %s <%s>",
+    String message = format("Not true that <%s> %s <%s>",
         ((actual == null) ? "null reference" : actual),
         verb,
         expected);
@@ -157,12 +184,13 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * Assembles a failure message wihtout a given subject and passes it to the FailureStrategy
+   * Assembles a failure message without a given subject and passes it to the FailureStrategy
    *
    * @param verb the proposition being asserted
    */
   protected void failWithoutSubject(String verb) {
-    failureStrategy.fail("Not true that the subject " + verb);
+    String subject = this.customLabel == null ? "the subject" : "\"" + customLabel + "\"";
+    failureStrategy.fail(format("Not true that %s %s", subject, verb));
   }
 
   /**
@@ -178,7 +206,7 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param paramters the object parameters which will be applied to the message template.
    */
   protected void failWithRawMessage(String message, Object ... parameters) {
-    failureStrategy.fail(String.format(message.toString(), parameters));
+    failureStrategy.fail(format(message, parameters));
   }
 
   @GwtIncompatible("java.lang.reflect.Field")

@@ -16,7 +16,7 @@
  */
 package org.truth0;
 
-import static org.truth0.util.ComparisonUtil.messageFor;
+import static org.truth0.util.StringUtil.messageFor;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
