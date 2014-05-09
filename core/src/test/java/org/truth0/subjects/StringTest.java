@@ -16,13 +16,14 @@
  */
 package org.truth0.subjects;
 
-import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
 
 import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.util.regex.Pattern;
 
 /**
  * Tests for String Subjects.
@@ -40,12 +41,11 @@ public class StringTest {
   @Test public void stringContainsFail() {
     try {
       ASSERT.that("abc").contains("d");
+      throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
           .contains("Not true that <\"abc\"> contains <\"d\">");
-      return;
     }
-    fail("Should have thrown");
   }
 
   @Test public void stringEquality() {
@@ -55,23 +55,21 @@ public class StringTest {
   @Test public void stringEqualityToNull() {
     try {
       ASSERT.that("abc").is(null);
+      throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
           .contains("Not true that <\"abc\"> is null");
-      return;
     }
-    fail("Should have thrown");
   }
 
   @Test public void stringEqualityFail() {
     try {
       ASSERT.that("abc").is("abd");
+      throw new Error("Expected to fail.");
     } catch (ComparisonFailure expected) {
       ASSERT.that(expected.getMessage())
           .contains("expected:<ab[d]> but was:<ab[c]>");
-      return;
     }
-    fail("Should have thrown");
   }
 
   @Test public void stringStartsWith() {
@@ -81,12 +79,11 @@ public class StringTest {
   @Test public void stringStartsWithFail() {
     try {
       ASSERT.that("abc").startsWith("bc");
+      throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
           .contains("Not true that <\"abc\"> starts with <\"bc\">");
-      return;
     }
-    fail("Should have thrown");
   }
 
   @Test public void stringEndsWith() {
@@ -96,12 +93,11 @@ public class StringTest {
   @Test public void stringEndsWithFail() {
     try {
       ASSERT.that("abc").endsWith("ab");
+      throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
           .contains("Not true that <\"abc\"> ends with <\"ab\">");
-      return;
     }
-    fail("Should have thrown");
   }
 
   @Test public void emptyStringTests() {
@@ -123,34 +119,58 @@ public class StringTest {
   @Test public void stringNullContains() {
     try {
       ASSERT.that((String)null).contains("a");
+      throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
           .contains("Not true that null reference contains <\"a\">");
-      return;
     }
-    fail("Should have thrown");
   }
 
   @Test public void stringNullStartsWith() {
     try {
       ASSERT.that((String)null).startsWith("a");
+      throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
           .contains("Not true that null reference starts with <\"a\">");
-      return;
     }
-    fail("Should have thrown");
   }
 
   @Test public void stringNullEndsWith() {
     try {
       ASSERT.that((String)null).endsWith("a");
+      throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
           .contains("Not true that null reference ends with <\"a\">");
-      return;
     }
-    fail("Should have thrown");
   }
 
+  @Test public void stringMatchesString() {
+    ASSERT.that("abcaaadev").matches(".*aaa.*");
+  }
+
+  @Test public void stringMatchesStringWithFail() {
+    try {
+      ASSERT.that("abcaqadev").matches(".*aaa.*");
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <\"abcaqadev\"> matches <.*aaa.*>");
+    }
+  }
+
+  @Test public void stringMatchesPattern() {
+    ASSERT.that("abcaqadev").doesNotMatch(Pattern.compile(".*aaa.*"));
+  }
+
+  @Test public void stringMatchesPatternWithFail() {
+    try {
+      ASSERT.that("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*"));
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("Not true that <\"abcaaadev\"> fails to match <.*aaa.*>");
+    }
+  }
 }
