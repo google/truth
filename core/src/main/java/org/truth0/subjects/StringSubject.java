@@ -77,30 +77,45 @@ public class StringSubject extends Subject<StringSubject, String> {
   }
 
   public void contains(String string) {
+    if (string == null) {
+      throw new IllegalArgumentException("Cannot test that a string contains a null reference.");
+    }
     if (getSubject() == null) {
-      if (string != null) {
-        failWithRawMessage("Not true that null reference contains <%s>", quote(string));
-      }
+      failWithRawMessage("Not true that null reference contains <%s>", quote(string));
     } else if (!getSubject().contains(string)) {
       fail("contains", quote(string));
     }
   }
 
-  public void startsWith(String string) {
+  public void doesNotContain(String string) {
+    if (string == null) {
+      throw new IllegalArgumentException(
+              "Cannot test that a string does not contain a null reference.");
+    }
     if (getSubject() == null) {
-      if (string != null) {
-        failWithRawMessage("Not true that null reference starts with <%s>", quote(string));
-      }
+      failWithRawMessage("Not true that null reference contains <%s>", quote(string));
+    } else if (getSubject().contains(string)) {
+      failWithRawMessage("%s unexpectedly contains <%s>", getDisplaySubject(), quote(string));
+    }
+  }
+
+  public void startsWith(String string) {
+    if (string == null) {
+      throw new IllegalArgumentException("Cannot test that a string starts with a null reference.");
+    }
+    if (getSubject() == null) {
+      failWithRawMessage("Not true that null reference starts with <%s>", quote(string));
     } else if (!getSubject().startsWith(string)) {
       fail("starts with", quote(string));
     }
   }
 
   public void endsWith(String string) {
+    if (string == null) {
+      throw new IllegalArgumentException("Cannot test that a string ends with a null reference.");
+    }
     if (getSubject() == null) {
-      if (string != null) {
-        failWithRawMessage("Not true that null reference ends with <%s>", quote(string));
-      }
+      failWithRawMessage("Not true that null reference ends with <%s>", quote(string));
     } else if (!getSubject().endsWith(string)) {
       fail("ends with", quote(string));
     }
