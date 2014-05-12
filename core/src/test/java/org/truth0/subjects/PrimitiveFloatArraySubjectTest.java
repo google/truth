@@ -57,7 +57,7 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage())
-          .contains("Incompatible types compared. expected: java.lang.Object, actual: float[]");
+          .contains("Incompatible types compared. expected: Object, actual: float[]");
     }
   }
 

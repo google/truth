@@ -22,17 +22,24 @@ import org.truth0.FailureStrategy;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @GwtCompatible
-public class ObjectArraySubject<T> extends Subject<ObjectArraySubject<T>, T[]> {
+public class ObjectArraySubject<T> extends AbstractArraySubject<T[]> {
 
   private final String typeName;
 
   public ObjectArraySubject(FailureStrategy failureStrategy, T[] o) {
     super(failureStrategy, o);
     typeName = typeNameFromInstance(o);
+  }
+
+  @Override protected String underlyingType() {
+    return typeName;
+  }
+
+  @Override
+  protected List<T> listRepresentation() {
+    return Arrays.asList(getSubject());
   }
 
   private String typeNameFromInstance(Object instance) {
@@ -50,61 +57,8 @@ public class ObjectArraySubject<T> extends Subject<ObjectArraySubject<T>, T[]> {
       // TODO(cgruber): Improve the compression of arrays with generic types like Set<Foo>[]
       //     That will need extracting of all of the type information, or a string representation
       //     that compressType can handle.
-      return compressType(type.toString()) + "[]";
+      return compressType(type.toString());
     }
-  }
-
-  private static final Pattern TYPE_PATTERN = Pattern.compile("(?:[\\w$]+\\.)*([\\w\\.*$]+)");
-
-  /**
-   * Inspired by JavaWriter.
-   */
-  static String compressType(String type) {
-    type = typeOnly(type);
-    StringBuilder sb = new StringBuilder();
-    Matcher m = TYPE_PATTERN.matcher(type);
-    int pos = 0;
-
-    while (true) {
-      boolean found = m.find(pos);
-      // Copy non-matching characters like "<".
-      int typeStart = found ? m.start() : type.length();
-      sb.append(type, pos, typeStart);
-      if (!found) {
-        break;
-      }
-      // Copy a single class name, shortening it if possible.
-      String name = m.group(0);
-      name = stripIfInPackage(name, "java.lang.");
-      name = stripIfInPackage(name, "java.util.");
-      sb.append(name);
-
-      pos = m.end();
-    }
-    return sb.toString();
-  }
-
-  private static String typeOnly(String type) {
-    type = stripIfPrefixed(type, "class ");
-    type = stripIfPrefixed(type, "interface ");
-    return type;
-  }
-
-  private static String stripIfPrefixed(String string, String prefix) {
-    return (string.startsWith(prefix)) ? string.substring(prefix.length()) : string;
-  }
-
-  private static String stripIfInPackage(String type, String packagePrefix) {
-    if (type.startsWith(packagePrefix)
-        && (type.indexOf('.', packagePrefix.length()) == -1)
-        && Character.isUpperCase(type.charAt(packagePrefix.length()))) {
-      return type.substring(packagePrefix.length());
-    }
-    return type;
-  }
-
-  @Override protected String getDisplaySubject() {
-    return "<(" + typeName + ") " + Arrays.asList(getSubject()).toString() + ">";
   }
 
   /**
@@ -123,11 +77,7 @@ public class ObjectArraySubject<T> extends Subject<ObjectArraySubject<T>, T[]> {
         fail("is equal to", Arrays.asList(expectedArray));
       }
     } catch (ClassCastException e) {
-      String expectedType = (expected.getClass().isArray())
-          ? compressType(expected.getClass().getComponentType().toString()) + "[]"
-          : compressType(expected.getClass().toString());
-      failWithRawMessage(
-          "Incompatible types compared. expected: %s, actual: %s", expectedType, typeName);
+      failWithBadType(expected);
     }
   }
 
@@ -143,6 +93,6 @@ public class ObjectArraySubject<T> extends Subject<ObjectArraySubject<T>, T[]> {
   }
 
   public ListSubject<?, T, List<T>> asList() {
-    return ListSubject.create(failureStrategy, Arrays.asList(getSubject()));
+    return ListSubject.create(failureStrategy, listRepresentation());
   }
 }

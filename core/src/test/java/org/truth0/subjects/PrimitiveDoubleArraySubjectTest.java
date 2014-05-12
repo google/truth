@@ -57,7 +57,7 @@ public class PrimitiveDoubleArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage())
-          .contains("Incompatible types compared. expected: java.lang.Object, actual: double[]");
+          .contains("Incompatible types compared. expected: Object, actual: double[]");
     }
   }
 

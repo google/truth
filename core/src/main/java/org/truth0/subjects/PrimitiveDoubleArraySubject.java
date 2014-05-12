@@ -26,13 +26,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @GwtCompatible
-public class PrimitiveDoubleArraySubject extends Subject<PrimitiveDoubleArraySubject, double[]> {
+public class PrimitiveDoubleArraySubject extends AbstractArraySubject<double[]> {
   public PrimitiveDoubleArraySubject(FailureStrategy failureStrategy, double[] o) {
     super(failureStrategy, o);
   }
 
-  @Override protected String getDisplaySubject() {
-    return "<(double[]) " + Doubles.asList(getSubject()).toString() + ">";
+  @Override protected String underlyingType() {
+    return "double";
+  }
+
+  @Override protected List<Double> listRepresentation() {
+    return Doubles.asList(getSubject());
   }
 
   /**
@@ -52,34 +56,30 @@ public class PrimitiveDoubleArraySubject extends Subject<PrimitiveDoubleArraySub
    * contains elements such that each element in {@code expected} is equal to each element
    * in the subject, and in the same position.
    */
-  public void isEqualTo(Object expectedArray, double tolerance) {
+  public void isEqualTo(Object expected, double tolerance) {
     double[] actual = getSubject();
-    if (actual == expectedArray) {
+    if (actual == expected) {
       return; // short-cut.
     }
     try {
-      double[] expected = (double[]) expectedArray;
-      if (expected.length != actual.length) {
+      double[] expectedArray = (double[]) expected;
+      if (expectedArray.length != actual.length) {
         failWithRawMessage("Arrays are of different lengths."
-        		+ "expected: %s, actual %s", Arrays.asList(expected), Arrays.asList(actual));
+        		+ "expected: %s, actual %s", Arrays.asList(expectedArray), Arrays.asList(actual));
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
-      for (int i = 0; i < expected.length; i++) {
-        boolean floatEquals = Math.abs(expected[i] - actual[i]) < Math.abs(tolerance);
+      for (int i = 0; i < expectedArray.length; i++) {
+        boolean floatEquals = Math.abs(expectedArray[i] - actual[i]) < Math.abs(tolerance);
         if (!floatEquals) {
           unequalIndices.add(i);
         }
       }
 
       if (!unequalIndices.isEmpty()) {
-        fail("is equal to", Doubles.asList(expected));
+        fail("is equal to", Doubles.asList(expectedArray));
       }
     } catch (ClassCastException e) {
-      String expectedType = (expectedArray.getClass().isArray())
-          ? expectedArray.getClass().getComponentType().getName() + "[]"
-          : expectedArray.getClass().getName();
-      failWithRawMessage(
-          "Incompatible types compared. expected: %s, actual: %s", expectedType, "double[]");
+      failWithBadType(expected);
     }
   }
 
@@ -130,7 +130,7 @@ public class PrimitiveDoubleArraySubject extends Subject<PrimitiveDoubleArraySub
   //     based on bare comparisons.
   @SuppressWarnings("unused")
   private ListSubject<?, Double, List<Double>> asList() {
-    return ListSubject.create(failureStrategy, Doubles.asList(getSubject()));
+    return ListSubject.create(failureStrategy, listRepresentation());
   }
 
 }

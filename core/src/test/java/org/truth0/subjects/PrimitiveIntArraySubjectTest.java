@@ -55,7 +55,7 @@ public class PrimitiveIntArraySubjectTest {
       ASSERT.that(array(2, 3, 4)).isEqualTo(new Object());
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage())
-          .contains("Incompatible types compared. expected: java.lang.Object, actual: int[]");
+          .contains("Incompatible types compared. expected: Object, actual: int[]");
     }
   }
 

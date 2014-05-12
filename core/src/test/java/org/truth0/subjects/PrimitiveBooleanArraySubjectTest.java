@@ -58,7 +58,7 @@ public class PrimitiveBooleanArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage())
-          .contains("Incompatible types compared. expected: java.lang.Object, actual: boolean[]");
+          .contains("Incompatible types compared. expected: Object, actual: boolean[]");
     }
   }
 

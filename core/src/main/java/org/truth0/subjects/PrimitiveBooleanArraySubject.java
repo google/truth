@@ -25,13 +25,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @GwtCompatible
-public class PrimitiveBooleanArraySubject extends Subject<PrimitiveBooleanArraySubject, boolean[]> {
+public class PrimitiveBooleanArraySubject extends AbstractArraySubject<boolean[]> {
   public PrimitiveBooleanArraySubject(FailureStrategy failureStrategy, boolean[] o) {
     super(failureStrategy, o);
   }
 
-  @Override protected String getDisplaySubject() {
-    return "<(boolean[]) " + Booleans.asList(getSubject()).toString() + ">";
+  @Override protected String underlyingType() {
+    return "boolean";
+  }
+
+  @Override protected List<Boolean> listRepresentation() {
+    return Booleans.asList(getSubject());
   }
 
   /**
@@ -50,11 +54,7 @@ public class PrimitiveBooleanArraySubject extends Subject<PrimitiveBooleanArrayS
         fail("is equal to", Booleans.asList(expectedArray));
       }
     } catch (ClassCastException e) {
-      String expectedType = (expected.getClass().isArray())
-          ? expected.getClass().getComponentType().getSimpleName() + "[]"
-          : expected.getClass().getName();
-      failWithRawMessage(
-          "Incompatible types compared. expected: %s, actual: %s", expectedType, "boolean[]");
+      failWithBadType(expected);
     }
   }
 
@@ -70,7 +70,7 @@ public class PrimitiveBooleanArraySubject extends Subject<PrimitiveBooleanArrayS
   }
 
   public ListSubject<?, Boolean, List<Boolean>> asList() {
-    return ListSubject.create(failureStrategy, Booleans.asList(getSubject()));
+    return ListSubject.create(failureStrategy, listRepresentation());
   }
 
 }

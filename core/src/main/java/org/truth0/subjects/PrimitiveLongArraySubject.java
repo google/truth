@@ -25,13 +25,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @GwtCompatible
-public class PrimitiveLongArraySubject extends Subject<PrimitiveLongArraySubject, long[]> {
+public class PrimitiveLongArraySubject extends AbstractArraySubject<long[]> {
   public PrimitiveLongArraySubject(FailureStrategy failureStrategy, long[] o) {
     super(failureStrategy, o);
   }
 
-  @Override protected String getDisplaySubject() {
-    return "<(long[]) " + Longs.asList(getSubject()).toString() + ">";
+  @Override protected String underlyingType() {
+    return "long";
+  }
+
+  @Override protected List<Long> listRepresentation() {
+    return Longs.asList(getSubject());
   }
 
   /**
@@ -50,11 +54,7 @@ public class PrimitiveLongArraySubject extends Subject<PrimitiveLongArraySubject
         fail("is equal to", Longs.asList(expectedArray));
       }
     } catch (ClassCastException e) {
-      String expectedType = (expected.getClass().isArray())
-          ? expected.getClass().getComponentType().getName() + "[]"
-          : expected.getClass().getName();
-      failWithRawMessage(
-          "Incompatible types compared. expected: %s, actual: %s", expectedType, "long[]");
+      failWithBadType(expected);
     }
   }
 
@@ -70,6 +70,6 @@ public class PrimitiveLongArraySubject extends Subject<PrimitiveLongArraySubject
   }
 
   public ListSubject<?, Long, List<Long>> asList() {
-    return ListSubject.create(failureStrategy, Longs.asList(getSubject()));
+    return ListSubject.create(failureStrategy, listRepresentation());
   }
 }

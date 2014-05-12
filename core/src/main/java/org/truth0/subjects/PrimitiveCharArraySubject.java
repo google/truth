@@ -25,13 +25,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @GwtCompatible
-public class PrimitiveCharArraySubject extends Subject<PrimitiveCharArraySubject, char[]> {
+public class PrimitiveCharArraySubject extends AbstractArraySubject<char[]> {
   public PrimitiveCharArraySubject(FailureStrategy failureStrategy, char[] o) {
     super(failureStrategy, o);
   }
 
-  @Override protected String getDisplaySubject() {
-    return "<(char[]) " + Chars.asList(getSubject()).toString() + ">";
+  @Override protected String underlyingType() {
+    return "char";
+  }
+
+  @Override protected List<Character> listRepresentation() {
+    return Chars.asList(getSubject());
   }
 
   /**
@@ -50,11 +54,7 @@ public class PrimitiveCharArraySubject extends Subject<PrimitiveCharArraySubject
         fail("is equal to", Chars.asList(expectedArray));
       }
     } catch (ClassCastException e) {
-      String expectedType = (expected.getClass().isArray())
-          ? expected.getClass().getComponentType().getName() + "[]"
-          : expected.getClass().getName();
-      failWithRawMessage(
-          "Incompatible types compared. expected: %s, actual: %s", expectedType, "char[]");
+      failWithBadType(expected);
     }
   }
 
@@ -70,7 +70,7 @@ public class PrimitiveCharArraySubject extends Subject<PrimitiveCharArraySubject
   }
 
   public ListSubject<?, Character, List<Character>> asList() {
-    return ListSubject.create(failureStrategy, Chars.asList(getSubject()));
+    return ListSubject.create(failureStrategy, listRepresentation());
   }
 
 }
