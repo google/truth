@@ -53,7 +53,7 @@ public class StringTest {
     ASSERT.that("abc").doesNotContain("d");
   }
 
-  @Test public void stringdoesNotContainFail() {
+  @Test public void stringDoesNotContainFail() {
     try {
       ASSERT.that("abc").doesNotContain("b");
     } catch (AssertionError expected) {
