@@ -120,31 +120,4 @@ public class StringSubject extends Subject<StringSubject, String> {
     return "\"" + toBeWrapped + "\"";
   }
 
-  @GwtIncompatible("java.util.regex.Pattern")
-  public void matches(String regex) {
-    if (!getSubject().matches(regex)) {
-      fail("matches", regex);
-    }
-  }
-
-  @GwtIncompatible("java.util.regex.Pattern")
-  public void matches(Pattern regex) {
-    if(!regex.matcher(getSubject()).matches()) {
-      fail("matches", regex);
-    }
-  }
-
-  @GwtIncompatible("java.util.regex.Pattern")
-  public void doesNotMatch(String regex) {
-    if (getSubject().matches(regex)) {
-      fail("fails to match", regex);
-    }
-  }
-
-  @GwtIncompatible("java.util.regex.Pattern")
-  public void doesNotMatch(Pattern regex) {
-    if(regex.matcher(getSubject()).matches()) {
-      fail("fails to match", regex);
-    }
-  }
 }
