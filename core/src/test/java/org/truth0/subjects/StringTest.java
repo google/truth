@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2011 David Saff
  * Copyright (c) 2011 Christian Gruber
+ * Copyright (c) 2014 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,8 +49,24 @@ public class StringTest {
     }
   }
 
+  @Test public void stringDoesNotContain() {
+    ASSERT.that("abc").doesNotContain("d");
+  }
+
+  @Test public void stringDoesNotContainFail() {
+    try {
+      ASSERT.that("abc").doesNotContain("b");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .contains("<\"abc\"> unexpectedly contains <\"b\">");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
   @Test public void stringEquality() {
     ASSERT.that("abc").is("abc");
+    ASSERT.that("abc").isEqualTo("abc");
   }
 
   @Test public void stringEqualityToNull() {
@@ -111,9 +128,23 @@ public class StringTest {
 
   @Test public void stringNullNullTests() {
     ASSERT.that((String)null).is(null);
-    ASSERT.that((String)null).contains(null);
-    ASSERT.that((String)null).startsWith(null);
-    ASSERT.that((String)null).endsWith(null);
+    ASSERT.that((String)null).isEqualTo(null);
+    try {
+      ASSERT.that((String)null).contains(null);
+      ASSERT.fail("Expected to throw");
+    } catch (IllegalArgumentException expected) {}
+    try {
+      ASSERT.that((String)null).doesNotContain(null);
+      ASSERT.fail("Expected to throw");
+    } catch (IllegalArgumentException expected) {}
+    try {
+      ASSERT.that((String)null).startsWith(null);
+      ASSERT.fail("Expected to throw");
+    } catch (IllegalArgumentException expected) {}
+    try {
+      ASSERT.that((String)null).endsWith(null);
+      ASSERT.fail("Expected to throw");
+    } catch (IllegalArgumentException expected) {}
   }
 
   @Test public void stringNullContains() {
