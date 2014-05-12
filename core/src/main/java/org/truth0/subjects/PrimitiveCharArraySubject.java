@@ -24,6 +24,11 @@ import org.truth0.FailureStrategy;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A Subject to handle testing propositions for {@code char[]}.
+ *
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 @GwtCompatible
 public class PrimitiveCharArraySubject extends AbstractArraySubject<char[]> {
   public PrimitiveCharArraySubject(FailureStrategy failureStrategy, char[] o) {

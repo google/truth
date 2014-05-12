@@ -23,6 +23,11 @@ import org.truth0.FailureStrategy;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A Subject to handle testing propositions for {@code Object[]} and more generically {@code T[]}.
+ *
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 @GwtCompatible
 public class ObjectArraySubject<T> extends AbstractArraySubject<T[]> {
 

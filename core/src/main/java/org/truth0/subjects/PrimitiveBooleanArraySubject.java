@@ -24,6 +24,11 @@ import org.truth0.FailureStrategy;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A Subject to handle testing propositions for {@code boolean[]}.
+ *
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 @GwtCompatible
 public class PrimitiveBooleanArraySubject extends AbstractArraySubject<boolean[]> {
   public PrimitiveBooleanArraySubject(FailureStrategy failureStrategy, boolean[] o) {

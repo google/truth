@@ -25,6 +25,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A Subject to handle testing propositions for {@code float[]}.
+ *
+ * Note: this class deprecates some common methods because the operation of equality and
+ * comparison on floating point numbers requires additional specification.  Alternatives
+ * equality tests are provided.
+ *
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 @GwtCompatible
 public class PrimitiveFloatArraySubject extends AbstractArraySubject<float[]> {
   public PrimitiveFloatArraySubject(FailureStrategy failureStrategy, float[] o) {
@@ -56,7 +65,7 @@ public class PrimitiveFloatArraySubject extends AbstractArraySubject<float[]> {
    * contains elements such that each element in {@code expected} is equal to each element
    * in the subject, and in the same position.
    */
-  public void isEqualTo(Object expected, double tolerance) {
+  public void isEqualTo(Object expected, float tolerance) {
     float[] actual = getSubject();
     if (actual == expected) {
       return; // short-cut.
@@ -95,7 +104,7 @@ public class PrimitiveFloatArraySubject extends AbstractArraySubject<float[]> {
         + "use isNotEqualTo(float[] array, float tolerance) instead.");
   }
 
-  public void isNotEqualTo(Object expectedArray, double tolerance) {
+  public void isNotEqualTo(Object expectedArray, float tolerance) {
     float[] actual = getSubject();
     try {
       float[] expected = (float[]) expectedArray;

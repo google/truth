@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class AbstractArraySubject<T>
-    extends Subject<AbstractArraySubject<T>, T> {
+/**
+ * A common supertype for Array subjects, abstracting some common display and error infrastructure.
+ * 
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
+abstract class AbstractArraySubject<T> extends Subject<AbstractArraySubject<T>, T> {
 
   private static final Pattern TYPE_PATTERN = Pattern.compile("(?:[\\w$]+\\.)*([\\w\\.*$]+)");
 

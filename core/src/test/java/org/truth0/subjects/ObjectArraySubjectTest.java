@@ -23,12 +23,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.net.CookieStore;
-import java.util.Random;
 import java.util.Set;
 
 /**
- * Tests for Boolean Subjects.
+ * Tests for {@link ObjectArraySubject}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -142,33 +140,4 @@ public class ObjectArraySubjectTest {
   private static Set[] objectArray(Set... ts) {
     return ts;
   }
-
-  @Test public void compressType_JavaLang() {
-    ASSERT.that(ObjectArraySubject.compressType(String.class.toString())).isEqualTo("String");
-  }
-
-  @Test public void compressType_JavaUtil() {
-    ASSERT.that(ObjectArraySubject.compressType(Random.class.toString())).isEqualTo("Random");
-  }
-
-  @Test public void compressType_Generic() {
-    ASSERT.that(ObjectArraySubject.compressType("java.util.Set<java.lang.Integer>"))
-        .isEqualTo("Set<Integer>");
-  }
-
-  @Test public void compressType_Uncompressed() {
-    ASSERT.that(ObjectArraySubject.compressType(CookieStore.class.toString()))
-        .isEqualTo("java.net.CookieStore");
-  }
-
-  @Test public void compressType_GenericWithPartialUncompress() {
-    ASSERT.that(ObjectArraySubject.compressType("java.util.Set<java.net.CookieStore>"))
-        .isEqualTo("Set<java.net.CookieStore>");
-  }
-
-  @Test public void compressType_Primitive() {
-    ASSERT.that(ObjectArraySubject.compressType(int.class.toString())).isEqualTo("int");
-  }
-
-
 }

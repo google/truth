@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for Boolean Subjects.
+ * Tests for {@link PrimitiveLongArraySubject}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

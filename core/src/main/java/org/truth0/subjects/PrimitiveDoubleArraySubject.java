@@ -25,6 +25,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A Subject to handle testing propositions for {@code double[]}.
+ *
+ * Note: this class deprecates some common methods because the operation of equality and
+ * comparison on floating point numbers requires additional specification.  Alternatives
+ * equality tests are provided.
+ *
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 @GwtCompatible
 public class PrimitiveDoubleArraySubject extends AbstractArraySubject<double[]> {
   public PrimitiveDoubleArraySubject(FailureStrategy failureStrategy, double[] o) {
