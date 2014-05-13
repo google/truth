@@ -27,10 +27,16 @@ import org.truth0.subjects.IntegerSubject;
 import org.truth0.subjects.IterableSubject;
 import org.truth0.subjects.ListSubject;
 import org.truth0.subjects.MapSubject;
+import org.truth0.subjects.ObjectArraySubject;
+import org.truth0.subjects.PrimitiveBooleanArraySubject;
+import org.truth0.subjects.PrimitiveCharArraySubject;
+import org.truth0.subjects.PrimitiveDoubleArraySubject;
+import org.truth0.subjects.PrimitiveFloatArraySubject;
+import org.truth0.subjects.PrimitiveIntArraySubject;
+import org.truth0.subjects.PrimitiveLongArraySubject;
 import org.truth0.subjects.StringSubject;
 import org.truth0.subjects.Subject;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -93,9 +99,38 @@ public class TestVerb extends AbstractVerb {
   }
 
   @CheckReturnValue
-  public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C>
-      that(T[] target) {
-    return that(Arrays.asList(target));
+  public <T> ObjectArraySubject<T> that(T[] target) {
+    return new ObjectArraySubject<T>(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public PrimitiveBooleanArraySubject that(boolean[] target) {
+    return new PrimitiveBooleanArraySubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public PrimitiveIntArraySubject that(int[] target) {
+    return new PrimitiveIntArraySubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public PrimitiveLongArraySubject that(long[] target) {
+    return new PrimitiveLongArraySubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public PrimitiveCharArraySubject that(char[] target) {
+    return new PrimitiveCharArraySubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public PrimitiveFloatArraySubject that(float[] target) {
+    return new PrimitiveFloatArraySubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public PrimitiveDoubleArraySubject that(double[] target) {
+    return new PrimitiveDoubleArraySubject(getFailureStrategy(), target);
   }
 
   @CheckReturnValue
