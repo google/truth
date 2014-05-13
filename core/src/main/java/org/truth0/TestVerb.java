@@ -43,6 +43,7 @@ public class TestVerb extends AbstractVerb {
     super(failureStrategy);
   }
 
+  @CheckReturnValue
   public Subject<DefaultSubject, Object> that(Object target) {
     return new DefaultSubject(getFailureStrategy(), target);
   }
