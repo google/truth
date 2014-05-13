@@ -45,10 +45,21 @@ public class Subject<S extends Subject<S,T>,T> {
     return customLabel;
   }
 
+  /**
+   * Renames the subject so that this name appears in the error messages in place of string
+   * representations of the subject.
+   */
   @SuppressWarnings("unchecked")
-  public S labeled(String label) {
+  public S named(String label) {
     this.customLabel = label;
     return (S)this;
+  }
+
+  /**
+   * Soft-deprecated in favor of {@link #named(String)}.
+   */
+  public S labeled(String label) {
+    return named(label);
   }
 
   public void is(Object other) {
