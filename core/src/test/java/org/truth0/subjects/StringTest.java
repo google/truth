@@ -56,12 +56,12 @@ public class StringTest {
   @Test public void stringDoesNotContainFail() {
     try {
       ASSERT.that("abc").doesNotContain("b");
+      throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
           .contains("<\"abc\"> unexpectedly contains <\"b\">");
       return;
     }
-    fail("Should have thrown");
   }
 
   @Test public void stringEquality() {
