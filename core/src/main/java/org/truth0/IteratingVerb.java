@@ -21,7 +21,7 @@ import javax.annotation.CheckReturnValue;
  * A verb that iterates over data and applies the predicate iteratively
  */
 @GwtIncompatible("Code generation and loading.")
-public class IteratingVerb<T> extends AbstractVerb {
+public class IteratingVerb<T> {
 
   private static final String CANNOT_WRAP_MSG = "Cannot build an iterating wrapper around ";
 
@@ -33,15 +33,16 @@ public class IteratingVerb<T> extends AbstractVerb {
       });
 
   private final Iterable<T> data;
+  private final FailureStrategy failureStrategy;
 
   public IteratingVerb(Iterable<T> data, FailureStrategy fs) {
-    super(fs);
+    this.failureStrategy = fs;
     this.data = data;
   }
 
   @CheckReturnValue
   public <S extends Subject<S,T>, SF extends SubjectFactory<S, T>> S thatEach(SF factory) {
-    return wrap(getFailureStrategy(), factory, data);
+    return wrap(failureStrategy, factory, data);
   }
 
   private <S extends Subject<S,T>, SF extends SubjectFactory<S, T>>

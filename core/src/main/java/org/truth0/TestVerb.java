@@ -44,9 +44,17 @@ import java.util.Map;
 import javax.annotation.CheckReturnValue;
 
 @GwtCompatible
-public class TestVerb extends AbstractVerb {
+public class TestVerb extends AbstractVerb<TestVerb> {
+  private final String failureMessage;
+
   public TestVerb(FailureStrategy failureStrategy) {
     super(failureStrategy);
+    this.failureMessage = null;
+  }
+
+  public TestVerb(FailureStrategy failureStrategy, String failureMessage) {
+    super(failureStrategy);
+    this.failureMessage = failureMessage;
   }
 
   @CheckReturnValue
@@ -139,4 +147,13 @@ public class TestVerb extends AbstractVerb {
     return MapSubject.create(getFailureStrategy(), target);
   }
 
+  @Override
+  @CheckReturnValue
+  public TestVerb withFailureMessage(String failureMessage) {
+    return new TestVerb(getFailureStrategy(), failureMessage); // Must be a new instance.
+  }
+
+  @Override public String getFailureMessage() {
+    return failureMessage;
+  }
 }
