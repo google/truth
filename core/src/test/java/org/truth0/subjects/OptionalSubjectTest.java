@@ -33,6 +33,14 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class OptionalSubjectTest {
 
+  @Test public void failOnNullSubject() {
+    try {
+      Optional<String> nullOptional = null;
+      ASSERT.that(nullOptional).isAbsent(); //
+      fail("Should have thrown");
+    } catch (IllegalArgumentException expected) {}
+  }
+
   @Test public void isPresent() {
     ASSERT.that(Optional.of("foo")).isPresent();
   }
@@ -69,7 +77,7 @@ public class OptionalSubjectTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-          .isEqualTo("<Optional.absent()> cannot have the value <foo>");
+          .isEqualTo("Not true that <Optional.absent()> has value <foo>");
     }
   }
 

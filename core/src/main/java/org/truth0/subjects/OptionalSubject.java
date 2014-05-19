@@ -37,25 +37,33 @@ public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>>
     }
   }
 
+  /**
+   * Attests that the {@link Optional<T>} subject has a present value.
+   */
   public void isPresent() {
     if (!getSubject().isPresent()) {
       failWithoutSubject("is present");
     }
   }
 
+  /**
+   * Attests that the {@link Optional<T>} subject is absent.
+   */
   public void isAbsent() {
     if (getSubject().isPresent()) {
       failWithoutSubject("is absent");
     }
   }
 
+  /**
+   * Attests that the {@link Optional<T>} subject is present and has the supplied value.
+   */
   public void hasValue(Object expected) {
     if (expected == null) {
       throw new NullPointerException("Optional cannot have a null value.");
     }
     if (!getSubject().isPresent()) {
-      failWithRawMessage("%s cannot have the value <%s>",
-          getDisplaySubject(), expected);
+      fail("has value", expected);
     } else {
       Object actual = getSubject().get();
       if (!getSubject().get().equals(expected)) {
