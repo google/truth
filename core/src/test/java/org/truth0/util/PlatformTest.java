@@ -42,6 +42,7 @@ public class PlatformTest {
   @Test public void testIsInstanceOfType_Java_Fail() {
     try {
       ASSERT.that(Platform.isInstanceOfTypeJava(new ArrayList<String>(), Set.class)).isTrue();
+      ASSERT.fail("Should have thrown.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage()).contains("expected to be true");
     }
@@ -65,6 +66,7 @@ public class PlatformTest {
   @Test public void testIsInstanceOfType_GWT_Fail() {
     try {
       ASSERT.that(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), Set.class)).isTrue();
+      ASSERT.fail("Should have thrown.");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage()).contains("expected to be true");
     }
