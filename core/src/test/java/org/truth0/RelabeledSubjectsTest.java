@@ -37,7 +37,7 @@ public class RelabeledSubjectsTest {
 
   @Test public void relabeledBooleans() {
     try {
-      ASSERT.that(false).labeled("Foo").isTrue();
+      ASSERT.that(false).named("Foo").isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage()).is("\"Foo\" was expected to be true, but was false");
@@ -46,7 +46,7 @@ public class RelabeledSubjectsTest {
 
   @Test public void relabeledObject() {
     try {
-      ASSERT.that(new Object()).labeled("Foo").isA(Integer.class);
+      ASSERT.that(new Object()).named("Foo").isA(Integer.class);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
@@ -58,7 +58,7 @@ public class RelabeledSubjectsTest {
 
   @Test public void relabelledCollections() {
     try {
-      ASSERT.that(Arrays.asList("a", "b", "c")).labeled("crazy list").has().allOf("c", "d");
+      ASSERT.that(Arrays.asList("a", "b", "c")).named("crazy list").has().allOf("c", "d");
       fail("Should have thrown");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
