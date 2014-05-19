@@ -35,9 +35,12 @@ public class OptionalSubjectTest {
   @Test public void failOnNullSubject() {
     try {
       Optional<String> nullOptional = null;
-      ASSERT.that(nullOptional).isAbsent(); //
+      ASSERT.that(nullOptional).isAbsent();
       fail("Should have thrown");
-    } catch (IllegalArgumentException expected) {}
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+      .isEqualTo("Not true that \"Optional<T>\" is a non-null reference");
+    }
   }
 
   @Test public void isPresent() {

@@ -74,13 +74,13 @@ public class Subject<S extends Subject<S,T>,T> {
 
   public void isNull() {
     if (getSubject() != null) {
-      failWithoutSubject("is null");
+      failWithoutSubject("is a null reference");
     }
   }
 
   public void isNotNull() {
     if (getSubject() == null) {
-      failWithoutSubject("is not null");
+      failWithoutSubject("is a non-null reference");
     }
   }
 

@@ -31,9 +31,7 @@ public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>>
 
   public OptionalSubject(FailureStrategy failureStrategy, Optional<T> subject) {
     super(failureStrategy, subject);
-    if (subject == null) {
-      throw new IllegalArgumentException("Cannot test a null optional");
-    }
+    check().that((Object) subject).named("Optional<T>").isNotNull();
   }
 
   /**
