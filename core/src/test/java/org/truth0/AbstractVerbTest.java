@@ -24,30 +24,44 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+import javax.annotation.CheckReturnValue;
+
 /**
- * Tests for Boolean Subjects.
+ * Tests for AbstractVerbs.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(Theories.class)
 public class AbstractVerbTest {
-	private String failureMessage = null;
+  private final AtomicReference<String> failureMessage = new AtomicReference<String>();
 
-	private final AbstractVerb captureFailure = new AbstractVerb(new FailureStrategy() {
+  private final AbstractVerb<?> captureFailure = new AbstractVerb(new FailureStrategy() {
     @Override public void fail(String message, Throwable ignoreInThisTest) {
-      failureMessage = message;
+      failureMessage.set(message);
     }
-	});
+  }) {
+    @Override
+    @CheckReturnValue
+    public AbstractVerb<?> withFailureMessage(String failureMessage) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override protected String getFailureMessage() {
+      return null;
+    }
+  };
 
 	@DataPoints public static String[] strings = new String[] {"a", "b"};
 
-	@Test public void noArgFail() {
-		captureFailure.fail();
-		ASSERT.that(failureMessage).is("");
-	}
+  @Test public void noArgFail() {
+    captureFailure.fail();
+    ASSERT.that(failureMessage.get()).isEqualTo("");
+  }
 
-	@Theory public void argFail(String message) {
-		captureFailure.fail(message);
-		ASSERT.that(failureMessage).is(message);
-	}
+  @Theory public void argFail(String message) {
+    captureFailure.fail(message);
+    ASSERT.that(failureMessage.get()).isEqualTo(message);
+  }
 }
