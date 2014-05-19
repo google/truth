@@ -19,8 +19,6 @@ package org.truth0;
 
 import com.google.common.base.Optional;
 
-import org.truth0.subjects.OptionalSubject;
-
 import org.truth0.subjects.BooleanSubject;
 import org.truth0.subjects.ClassSubject;
 import org.truth0.subjects.CollectionSubject;
@@ -30,6 +28,7 @@ import org.truth0.subjects.IterableSubject;
 import org.truth0.subjects.ListSubject;
 import org.truth0.subjects.MapSubject;
 import org.truth0.subjects.ObjectArraySubject;
+import org.truth0.subjects.OptionalSubject;
 import org.truth0.subjects.PrimitiveBooleanArraySubject;
 import org.truth0.subjects.PrimitiveCharArraySubject;
 import org.truth0.subjects.PrimitiveDoubleArraySubject;
