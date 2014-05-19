@@ -39,7 +39,7 @@ public class OptionalSubjectTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       ASSERT.that(expected.getMessage())
-      .isEqualTo("Not true that \"Optional<T>\" is a non-null reference");
+          .isEqualTo("Not true that \"Optional<T>\" is a non-null reference");
     }
   }
 
