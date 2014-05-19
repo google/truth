@@ -88,7 +88,7 @@ public class SubjectTest {
       ASSERT.that(o).isNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is null");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is a null reference");
     }
   }
 
@@ -103,7 +103,7 @@ public class SubjectTest {
       ASSERT.that(o).isNotNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is not null");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is a non-null reference");
     }
   }
 

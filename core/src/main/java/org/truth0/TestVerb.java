@@ -18,6 +18,7 @@ package org.truth0;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Optional;
 
 import org.truth0.subjects.BooleanSubject;
 import org.truth0.subjects.ClassSubject;
@@ -28,6 +29,7 @@ import org.truth0.subjects.IterableSubject;
 import org.truth0.subjects.ListSubject;
 import org.truth0.subjects.MapSubject;
 import org.truth0.subjects.ObjectArraySubject;
+import org.truth0.subjects.OptionalSubject;
 import org.truth0.subjects.PrimitiveBooleanArraySubject;
 import org.truth0.subjects.PrimitiveCharArraySubject;
 import org.truth0.subjects.PrimitiveDoubleArraySubject;
@@ -139,6 +141,11 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   @CheckReturnValue
   public PrimitiveDoubleArraySubject that(double[] target) {
     return new PrimitiveDoubleArraySubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <T> OptionalSubject<T> that(Optional<T> target) {
+    return new OptionalSubject<T>(getFailureStrategy(), target);
   }
 
   @CheckReturnValue
