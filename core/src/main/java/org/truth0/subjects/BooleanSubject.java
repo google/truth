@@ -46,6 +46,6 @@ public class BooleanSubject extends Subject<BooleanSubject, Boolean> {
   }
 
   private String booleanSubject() {
-    return internalCustomLabel() == null ? "The subject" : getDisplaySubject();
+    return internalCustomName() == null ? "The subject" : getDisplaySubject();
   }
 }

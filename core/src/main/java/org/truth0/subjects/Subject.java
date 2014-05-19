@@ -38,15 +38,15 @@ import java.lang.reflect.Field;
 public class Subject<S extends Subject<S,T>,T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
-  private String customLabel = null;
+  private String customName = null;
 
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
   }
 
-  protected String internalCustomLabel() {
-    return customLabel;
+  protected String internalCustomName() {
+    return customName;
   }
 
   /**
@@ -54,8 +54,12 @@ public class Subject<S extends Subject<S,T>,T> {
    * representations of the subject.
    */
   @SuppressWarnings("unchecked")
-  public S named(String label) {
-    this.customLabel = label;
+  public S named(String name) {
+    if (name == null) {
+      // TODO: use check().withFailureMessage... here?
+      throw new NullPointerException("Name passed to named() cannot be null.");
+    }
+    this.customName = name;
     return (S)this;
   }
 
@@ -134,9 +138,9 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   protected String getDisplaySubject() {
-    return (customLabel == null)
+    return (customName == null)
         ? "<" + getSubject() + ">"
-        : "\"" + this.customLabel + "\"";
+        : "\"" + this.customName + "\"";
   }
 
   /**
@@ -200,7 +204,7 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param verb the proposition being asserted
    */
   protected void failWithoutSubject(String verb) {
-    String subject = this.customLabel == null ? "the subject" : "\"" + customLabel + "\"";
+    String subject = this.customName == null ? "the subject" : "\"" + customName + "\"";
     failureStrategy.fail(format("Not true that %s %s", subject, verb));
   }
 

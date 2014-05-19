@@ -18,11 +18,13 @@ package org.truth0.subjects;
 
 import static org.truth0.util.StringUtil.format;
 
-import java.util.Arrays;
-import java.util.List;
+import com.google.common.base.Preconditions;
 
 import org.truth0.FailureStrategy;
 import org.truth0.TestVerb;
+import org.truth0.util.ReflectionUtil;
+
+import java.lang.reflect.Field;
 
 /**
  * Propositions for arbitrarily typed subjects and for properties
@@ -34,15 +36,15 @@ import org.truth0.TestVerb;
 public class Subject<S extends Subject<S,T>,T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
-  private String customLabel = null;
+  private String customName = null;
 
   public Subject(FailureStrategy failureStrategy, T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
   }
 
-  protected String internalCustomLabel() {
-    return customLabel;
+  protected String internalCustomName() {
+    return customName;
   }
 
   /**
@@ -50,8 +52,12 @@ public class Subject<S extends Subject<S,T>,T> {
    * representations of the subject.
    */
   @SuppressWarnings("unchecked")
-  public S named(String label) {
-    this.customLabel = label;
+  public S named(String name) {
+    if (name == null) {
+      // TODO: use check().withFailureMessage... here?
+      throw new NullPointerException("Name passed to named() cannot be null.");
+    }
+    this.customName = name;
     return (S)this;
   }
 
@@ -107,9 +113,9 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   protected String getDisplaySubject() {
-    return (customLabel == null)
+    return (customName == null)
         ? "<" + getSubject() + ">"
-        : "\"" + this.customLabel + "\"";
+        : "\"" + this.customName + "\"";
   }
 
   /**
@@ -173,7 +179,7 @@ public class Subject<S extends Subject<S,T>,T> {
    * @param verb the proposition being asserted
    */
   protected void failWithoutSubject(String verb) {
-    String subject = this.customLabel == null ? "the subject" : "\"" + customLabel + "\"";
+    String subject = this.customName == null ? "the subject" : "\"" + customName + "\"";
     failureStrategy.fail(format("Not true that %s %s", subject, verb));
   }
 
@@ -192,7 +198,7 @@ public class Subject<S extends Subject<S,T>,T> {
   protected void failWithRawMessage(String message, Object ... parameters) {
     failureStrategy.fail(format(message, parameters));
   }
-  
+
   /**
    * @deprecated This method is not a proposition, but the default Object equality method.
    *     Testing code should use "is" or "isEqualTo" propositions for equality tests.

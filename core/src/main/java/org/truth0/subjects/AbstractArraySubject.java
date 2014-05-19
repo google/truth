@@ -71,9 +71,9 @@ abstract class AbstractArraySubject<T> extends Subject<AbstractArraySubject<T>, 
   protected abstract List<?> listRepresentation();
 
   @Override protected String getDisplaySubject() {
-    return (internalCustomLabel() == null)
+    return (internalCustomName() == null)
         ? "<(" + underlyingType() + "[]) " + listRepresentation() + ">"
-        : "\"" + this.internalCustomLabel() + "\"";
+        : "\"" + this.internalCustomName() + "\"";
   }
 
   protected void failWithBadType(Object expected) {
