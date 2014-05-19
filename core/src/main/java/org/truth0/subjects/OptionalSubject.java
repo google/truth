@@ -38,7 +38,7 @@ public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>>
   }
 
   /**
-   * Attests that the {@link Optional<T>} subject has a present value.
+   * Attests that the {@link Optional}{@code <T>} subject has a present value.
    */
   public void isPresent() {
     if (!getSubject().isPresent()) {
@@ -47,7 +47,7 @@ public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>>
   }
 
   /**
-   * Attests that the {@link Optional<T>} subject is absent.
+   * Attests that the {@link Optional}{@code <T>} subject is absent.
    */
   public void isAbsent() {
     if (getSubject().isPresent()) {
@@ -56,7 +56,7 @@ public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>>
   }
 
   /**
-   * Attests that the {@link Optional<T>} subject is present and has the supplied value.
+   * Attests that the {@link Optional}{@code <T>} subject is present and has the supplied value.
    */
   public void hasValue(Object expected) {
     if (expected == null) {

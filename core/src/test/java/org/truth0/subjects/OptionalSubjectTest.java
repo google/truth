@@ -26,7 +26,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for {@link Optional<T>} Subjects.
+ * Tests for {@link Optional} Subjects.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
