@@ -144,8 +144,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   @CheckReturnValue
-  public OptionalSubject that(Optional<?> target) {
-    return new OptionalSubject(getFailureStrategy(), target);
+  public <T> OptionalSubject<T> that(Optional<T> target) {
+    return new OptionalSubject<T>(getFailureStrategy(), target);
   }
 
   @CheckReturnValue

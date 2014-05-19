@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2011 David Saff
- * Copyright (c) 2011 Christian Gruber
+ * Copyright (c) 2014 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +22,7 @@ import org.truth0.FailureStrategy;
 
 
 /**
- * Propositions for {@link Optional<T>} subjects
+ * Propositions for {@link Optional}{@code <T>} subjects
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

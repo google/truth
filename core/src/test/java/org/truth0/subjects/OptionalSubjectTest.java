@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2011 David Saff
- * Copyright (c) 2011 Christian Gruber
+ * Copyright (c) 2014 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,5 +106,4 @@ public class OptionalSubjectTest {
           .isEqualTo("Not true that <Optional.of(5)> has value <10>");
     }
   }
-
 }
