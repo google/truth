@@ -58,4 +58,46 @@ public class OptionalSubjectTest {
       ASSERT.that(expected.getMessage()).isEqualTo("Not true that the subject is absent");
     }
   }
+
+  @Test public void hasValue() {
+    ASSERT.that(Optional.of("foo")).hasValue("foo");
+  }
+
+  @Test public void hasValue_FailingWithAbsent() {
+    try {
+      ASSERT.that(Optional.absent()).hasValue("foo");
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .isEqualTo("<Optional.absent()> cannot have the value <foo>");
+    }
+  }
+
+  @Test public void hasValue_FailingWithNullParameter() {
+    try {
+      ASSERT.that(Optional.of("foo")).hasValue(null);
+      fail("Should have thrown");
+    } catch (NullPointerException expected) {}
+  }
+
+  @Test public void hasValue_FailingWithWrongValueForString() {
+    try {
+      ASSERT.that(Optional.of("foo")).hasValue("boo");
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .isEqualTo("Optional<String> has an incorrect value. expected:<[b]oo> but was:<[f]oo>");
+    }
+  }
+
+  @Test public void hasValue_FailingWithWrongValueForOther() {
+    try {
+      ASSERT.that(Optional.of(5)).hasValue(10);
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      ASSERT.that(expected.getMessage())
+          .isEqualTo("Not true that <Optional.of(5)> has value <10>");
+    }
+  }
+
 }

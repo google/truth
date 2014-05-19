@@ -28,9 +28,9 @@ import org.truth0.FailureStrategy;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtCompatible
-public class OptionalSubject extends Subject<OptionalSubject, Optional<?>> {
+public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>> {
 
-  public OptionalSubject(FailureStrategy failureStrategy, Optional<?> subject) {
+  public OptionalSubject(FailureStrategy failureStrategy, Optional<T> subject) {
     super(failureStrategy, subject);
     if (subject == null) {
       throw new IllegalArgumentException("Cannot test a null optional");
@@ -46,6 +46,26 @@ public class OptionalSubject extends Subject<OptionalSubject, Optional<?>> {
   public void isAbsent() {
     if (getSubject().isPresent()) {
       failWithoutSubject("is absent");
+    }
+  }
+
+  public void hasValue(Object expected) {
+    if (expected == null) {
+      throw new NullPointerException("Optional cannot have a null value.");
+    }
+    if (!getSubject().isPresent()) {
+      failWithRawMessage("%s cannot have the value <%s>",
+          getDisplaySubject(), expected);
+    } else {
+      Object actual = getSubject().get();
+      if (!getSubject().get().equals(expected)) {
+        if (getSubject().get() instanceof String) {
+          this.failureStrategy.failComparing("Optional<String> has an incorrect value.",
+              (String) expected, (String) actual);
+        } else {
+          fail("has value", expected);
+        }
+      }
     }
   }
 }
