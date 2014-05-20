@@ -136,7 +136,6 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
 
       @Override public void noneFrom(final Collection<T> excluded) {
         Collection<T> present = new ArrayList<T>();
-        // remove each item in the subject, as many times as it occurs in the subject.
         for (T item : new HashSet<T>(excluded)) {
           if (getSubject().contains(item)) {
             present.add(item);
