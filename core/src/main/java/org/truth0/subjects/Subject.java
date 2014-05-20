@@ -23,6 +23,7 @@ import com.google.common.annotations.GwtIncompatible;
 
 import org.truth0.FailureStrategy;
 import org.truth0.TestVerb;
+import org.truth0.util.Platform;
 import org.truth0.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
@@ -110,9 +111,11 @@ public class Subject<S extends Subject<S,T>,T> {
     }
   }
 
-  @GwtIncompatible("Class.isInstance")
   public void isA(Class<?> clazz) {
-    if (!clazz.isInstance(getSubject())) {
+    if (clazz == null) {
+      throw new NullPointerException("clazz");
+    }
+    if (!Platform.isInstanceOfType(getSubject(), clazz)) {
       if (getSubject() != null) {
         failWithBadResults("is an instance of", clazz.getName(),
             "is an instance of", getSubject().getClass().getName());
@@ -122,12 +125,14 @@ public class Subject<S extends Subject<S,T>,T> {
     }
   }
 
-  @GwtIncompatible("Class.isInstance")
   public void isNotA(Class<?> clazz) {
+    if (clazz == null) {
+      throw new NullPointerException("clazz");
+    }
     if (getSubject() == null) {
       return; // null is not an instance of clazz.
     }
-    if (clazz.isInstance(getSubject())) {
+    if (Platform.isInstanceOfType(getSubject(), clazz)) {
       failWithRawMessage("%s expected not to be an instance of %s, but was.",
           getDisplaySubject(), clazz.getName());
     }

@@ -20,6 +20,8 @@ import static org.truth0.util.StringUtil.format;
 
 import com.google.common.base.Preconditions;
 
+import org.truth0.util.Platform;
+
 import org.truth0.FailureStrategy;
 import org.truth0.TestVerb;
 import org.truth0.util.ReflectionUtil;
@@ -105,6 +107,33 @@ public class Subject<S extends Subject<S,T>,T> {
       if (getSubject().equals(other)) {
         fail("is not equal to", other);
       }
+    }
+  }
+
+  public void isA(Class<?> clazz) {
+    if (clazz == null) {
+      throw new NullPointerException("clazz");
+    }
+    if (!Platform.isInstanceOfType(getSubject(), clazz)) {
+      if (getSubject() != null) {
+        failWithBadResults("is an instance of", clazz.getName(),
+            "is an instance of", getSubject().getClass().getName());
+      } else {
+        fail("is an instance of", clazz.getName());
+      }
+    }
+  }
+
+  public void isNotA(Class<?> clazz) {
+    if (clazz == null) {
+      throw new NullPointerException("clazz");
+    }
+    if (getSubject() == null) {
+      return; // null is not an instance of clazz.
+    }
+    if (Platform.isInstanceOfType(getSubject(), clazz)) {
+      failWithRawMessage("%s expected not to be an instance of %s, but was.",
+          getDisplaySubject(), clazz.getName());
     }
   }
 
