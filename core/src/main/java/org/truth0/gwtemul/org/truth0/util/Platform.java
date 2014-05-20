@@ -66,4 +66,10 @@ public final class Platform {
     }
   }
 
+  /**
+   * This is a no-op in GWT as it relies on matching. 
+   */
+  public static String compressType(String type) {
+    return type;
+  }
 }

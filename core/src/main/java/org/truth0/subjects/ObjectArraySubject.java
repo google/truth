@@ -18,6 +18,8 @@ package org.truth0.subjects;
 
 import com.google.common.annotations.GwtCompatible;
 
+import org.truth0.util.Platform;
+
 import org.truth0.FailureStrategy;
 
 import java.util.Arrays;
@@ -62,7 +64,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<T[]> {
       // TODO(cgruber): Improve the compression of arrays with generic types like Set<Foo>[]
       //     That will need extracting of all of the type information, or a string representation
       //     that compressType can handle.
-      return compressType(type.toString());
+      return Platform.compressType(type.toString());
     }
   }
 

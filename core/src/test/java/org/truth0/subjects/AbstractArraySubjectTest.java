@@ -20,9 +20,10 @@ import static org.truth0.Truth.ASSERT;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.truth0.FailureStrategy;
 
-import java.net.CookieStore;
-import java.util.Random;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Tests for {@code AbstractArraySubject}.
@@ -31,30 +32,24 @@ import java.util.Random;
  */
 @RunWith(JUnit4.class)
 public class AbstractArraySubjectTest {
-  @Test public void compressType_JavaLang() {
-    ASSERT.that(ObjectArraySubject.compressType(String.class.toString())).isEqualTo("String");
+
+  @Test public void foo() {
+    CapturingFailureStrategy failureStrategy = new CapturingFailureStrategy();
+    String[] strings = { "Foo", "Bar" };
+    TestableStringArraySubject subject = new TestableStringArraySubject(failureStrategy, strings);
+    ASSERT.that(subject.getDisplaySubject()).isEqualTo("<(String[]) [Foo, Bar]>");
   }
 
-  @Test public void compressType_JavaUtil() {
-    ASSERT.that(ObjectArraySubject.compressType(Random.class.toString())).isEqualTo("Random");
+  class TestableStringArraySubject extends AbstractArraySubject<String[]> {
+    public TestableStringArraySubject(FailureStrategy failureStrategy, String[] subject) {
+      super(failureStrategy, subject);
+    }
+    @Override protected String underlyingType() { return "String"; }
+    @Override protected List<?> listRepresentation() { return Arrays.asList(getSubject()); }
+    @Override protected String getDisplaySubject() { return super.getDisplaySubject(); }
   }
 
-  @Test public void compressType_Generic() {
-    ASSERT.that(ObjectArraySubject.compressType("java.util.Set<java.lang.Integer>"))
-        .isEqualTo("Set<Integer>");
-  }
-
-  @Test public void compressType_Uncompressed() {
-    ASSERT.that(ObjectArraySubject.compressType(CookieStore.class.toString()))
-        .isEqualTo("java.net.CookieStore");
-  }
-
-  @Test public void compressType_GenericWithPartialUncompress() {
-    ASSERT.that(ObjectArraySubject.compressType("java.util.Set<java.net.CookieStore>"))
-        .isEqualTo("Set<java.net.CookieStore>");
-  }
-
-  @Test public void compressType_Primitive() {
-    ASSERT.that(ObjectArraySubject.compressType(int.class.toString())).isEqualTo("int");
+  class CapturingFailureStrategy extends FailureStrategy {
+    @Override public void fail(String message, Throwable cause) { /* noop */ }
   }
 }
