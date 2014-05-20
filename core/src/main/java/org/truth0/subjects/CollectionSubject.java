@@ -26,6 +26,7 @@ import org.truth0.FailureStrategy;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.annotation.CheckReturnValue;
@@ -65,9 +66,11 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
       @Override public void anyOf(T first) {
         anyFrom(accumulate(first));
       }
+
       @Override public final void anyOf(T first, T second, T ... rest) {
         anyFrom(accumulate(first, second, rest));
       }
+
       @Override public void anyFrom(Collection<T> col) {
         for (Object item : col) {
           if (getSubject().contains(item)) {
@@ -80,9 +83,11 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
       @Override public Ordered allOf(T first) {
         return allFrom(accumulate(first));
       }
+
       @Override public final Ordered allOf(T first, T second, T ... rest) {
         return allFrom(accumulate(first, second, rest));
       }
+
       @Override public Ordered allFrom(final Collection<T> required) {
         Collection<T> toRemove = new ArrayList<T>(required);
         // remove each item in the subject, as many times as it occurs in the subject.
@@ -98,9 +103,11 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
       @Override public Ordered exactly(T first) {
         return exactlyAs(accumulate(first));
       }
+
       @Override public final Ordered exactly(T first, T second, T ... rest) {
         return exactlyAs(accumulate(first, second, rest));
       }
+
       @Override public Ordered exactlyAs(Collection<T> required) {
         Collection<T> toRemove = new ArrayList<T>(required);
         Collection<Object> extra = new ArrayList<Object>();
@@ -117,6 +124,26 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
           failWithBadResults("has exactly", required, "has unexpected items", countDuplicates(extra));
         }
         return new InOrder("has exactly in order", required);
+      }
+
+      @Override public void noneOf(T first) {
+        noneFrom(accumulate(first));
+      }
+
+      @Override public final void noneOf(T first, T second, T ... rest) {
+        noneFrom(accumulate(first, second, rest));
+      }
+
+      @Override public void noneFrom(final Collection<T> excluded) {
+        Collection<T> present = new ArrayList<T>();
+        for (T item : new HashSet<T>(excluded)) {
+          if (getSubject().contains(item)) {
+            present.add(item);
+          }
+        }
+        if (!present.isEmpty()) {
+          failWithBadResults("has none of", excluded, "contains", present);
+        }
       }
     };
   }
@@ -218,5 +245,26 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * attestation about order unless {@code inOrder()} is explicitly called.
      */
     Ordered exactlyAs(Collection<E> expected);
+
+    /**
+     * Attests that a Collection contains none of the provided objects
+     * or fails, coping with duplicates in both the Collection and the
+     * parameters.
+     */
+    void noneOf(E first);
+
+    /**
+     * Attests that a Collection contains none of the provided objects
+     * or fails, coping with duplicates in both the Collection and the
+     * parameters.
+     */
+    void noneOf(E first, E second, E... rest);
+
+    /**
+     * Attests that a Collection contains at none of the objects contained
+     * in the provided collection or fails, coping with duplicates in both
+     * the Collection and the parameters.
+     */
+    void noneFrom(Collection<E> expected);
   }
 }

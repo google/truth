@@ -20,13 +20,13 @@ package org.truth0.subjects;
 import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Tests for Collection Subjects.
@@ -155,6 +155,40 @@ public class CollectionTest {
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
       ASSERT.that(e.getMessage()).contains("has all in order");
+    }
+  }
+
+  @Test public void collectionHasNoneOf() {
+    ASSERT.that(collection(1, 2, 3)).has().noneOf(4, 5, 6);
+  }
+
+  @Test public void collectionHasNoneOfFailure() {
+    try {
+      ASSERT.that(collection(1, 2, 3)).has().noneOf(1, 2, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage())
+          .isEqualTo("Not true that <[1, 2, 3]> has none of <[1, 2, 4]>. It contains <[1, 2]>");
+    }
+  }
+
+  @Test public void collectionHasNoneOfFailureWithDuplicateInSubject() {
+    try {
+      ASSERT.that(collection(1, 2, 2, 3)).has().noneOf(1, 2, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage())
+          .isEqualTo("Not true that <[1, 2, 2, 3]> has none of <[1, 2, 4]>. It contains <[1, 2]>");
+    }
+  }
+
+  @Test public void collectionHasNoneOfFailureWithDuplicateInExpected() {
+    try {
+      ASSERT.that(collection(1, 2, 3)).has().noneOf(1, 2, 2, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage())
+          .isEqualTo("Not true that <[1, 2, 3]> has none of <[1, 2, 2, 4]>. It contains <[1, 2]>");
     }
   }
 
