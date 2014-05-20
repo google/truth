@@ -21,9 +21,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.net.CookieStore;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -33,6 +35,8 @@ import java.util.Set;
  */
 @RunWith(JUnit4.class)
 public class PlatformTest {
+
+  // isInstance checking
 
   @Test public void testIsInstanceOfType_Java() {
     ASSERT.that(Platform.isInstanceOfTypeJava(new Object(), Object.class)).isTrue();
@@ -82,5 +86,33 @@ public class PlatformTest {
     ASSERT.that(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), List.class)).isTrue();
   }
 
+  // Type shortening.
+
+  @Test public void compressType_JavaLang() {
+    ASSERT.that(Platform.compressType(String.class.toString())).isEqualTo("String");
+  }
+
+  @Test public void compressType_JavaUtil() {
+    ASSERT.that(Platform.compressType(Random.class.toString())).isEqualTo("Random");
+  }
+
+  @Test public void compressType_Generic() {
+    ASSERT.that(Platform.compressType("java.util.Set<java.lang.Integer>"))
+        .isEqualTo("Set<Integer>");
+  }
+
+  @Test public void compressType_Uncompressed() {
+    ASSERT.that(Platform.compressType(CookieStore.class.toString()))
+        .isEqualTo("java.net.CookieStore");
+  }
+
+  @Test public void compressType_GenericWithPartialUncompress() {
+    ASSERT.that(Platform.compressType("java.util.Set<java.net.CookieStore>"))
+        .isEqualTo("Set<java.net.CookieStore>");
+  }
+
+  @Test public void compressType_Primitive() {
+    ASSERT.that(Platform.compressType(int.class.toString())).isEqualTo("int");
+  }
 
 }

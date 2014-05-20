@@ -26,6 +26,8 @@ import org.truth0.util.Platform;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Test of Truth under GWT - should be enough tests here to force compilation
@@ -37,6 +39,10 @@ public class TruthGwtTest extends GWTTestCase {
 
   @Override public String getModuleName() {
     return "org.truth0.gwt.TruthTest";
+  }
+
+  public void testBuildClasses() {
+    new Inventory().toString(); // force invocation.
   }
 
   public void testBoolean() {
@@ -76,6 +82,12 @@ public class TruthGwtTest extends GWTTestCase {
 
   public void testList() {
     ASSERT.that(asList(1, 2, 3)).has().allOf(1, 2, 3).inOrder();
+  }
+
+  public void testObjectArray() {
+    Set[] setOfString = { new HashSet<String>(asList("foo", "bar", "bash")) };
+    ASSERT.that(setOfString).asList()
+        .has().item(new HashSet<String>(asList("foo", "bar", "bash")));
   }
 
   public void testDefault() {
