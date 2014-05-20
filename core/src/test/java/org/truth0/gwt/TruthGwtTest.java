@@ -41,6 +41,10 @@ public class TruthGwtTest extends GWTTestCase {
     return "org.truth0.gwt.TruthTest";
   }
 
+  public void testBuildClasses() {
+    new Inventory().toString(); // force invocation.
+  }
+
   public void testBoolean() {
     ASSERT.that(true).isTrue();
     ASSERT.that(false).isFalse();
