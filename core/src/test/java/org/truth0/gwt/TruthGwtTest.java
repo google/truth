@@ -19,9 +19,13 @@ package org.truth0.gwt;
 import static java.util.Arrays.asList;
 import static org.truth0.Truth.ASSERT;
 
-import java.util.Collection;
-
 import com.google.gwt.junit.client.GWTTestCase;
+
+import org.truth0.util.Platform;
+
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Test of Truth under GWT - should be enough tests here to force compilation
@@ -63,7 +67,7 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testIterable() {
-    ASSERT.that((Iterable<Integer>)asList(1, 2, 3)).iteratesOverSequence(1, 2, 3);
+    ASSERT.that((Iterable<Integer>)asList(1, 2, 3)).iteratesAs(1, 2, 3);
   }
 
   public void testCollection() {
@@ -76,6 +80,10 @@ public class TruthGwtTest extends GWTTestCase {
 
   public void testDefault() {
     ASSERT.that(new Object()).isNotNull();
+    ASSERT.that(new ArrayList<String>()).isA(AbstractList.class);
   }
 
+  public void testInvokePlatformMethods() {
+    Platform.isInstanceOfType(new Object(), Object.class);
+  }
 }

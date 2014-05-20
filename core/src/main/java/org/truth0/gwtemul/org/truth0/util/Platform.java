@@ -35,12 +35,13 @@ public final class Platform {
   }
 
   /**
-   * Returns true if the instance is assignable to the type Clazz.
+   * Returns true if the instance is assignable to the type Clazz (though in GWT
+   * clazz can only be a concrete class that is an ancestor class of the instance
+   * or the direct type of the instance.
    */
   static boolean isInstanceOfTypeGWT(Object instance, Class<?> clazz) {
     String className = clazz.getName();
     Set<String> types = new LinkedHashSet<String>();
-    types.add(instance.getClass().getCanonicalName());
     addTypeNames(instance.getClass(), types);
     for (String type : types) {
       if (type.equals(className)) {
@@ -50,17 +51,18 @@ public final class Platform {
     return false;
   }
 
-  private static void addInterfaceNames(Class<?>[] interfaces, Set<String> types) {
-    for (Class<?> interfaze : interfaces) {
-      types.add(interfaze.getName());
-      addInterfaceNames(interfaze.getInterfaces(), types);
-    }
-  }
+//  TODO(cgruber): See if there's a JSNI or other alternative to Class.getInterfaces();
+//  private static void addInterfaceNames(Class<?>[] interfaces, Set<String> types) {
+//    for (Class<?> interfaze : interfaces) {
+//      types.add(interfaze.getName());
+//      addInterfaceNames(interfaze.getInterfaces(), types);
+//    }
+//  }
 
   private static void addTypeNames(Class<?> clazz, Set<String> types) {
     for (Class<?> current = clazz ; current != null ; current = current.getSuperclass()) {
       types.add(current.getName());
-      addInterfaceNames(current.getInterfaces(), types);
+      // addInterfaceNames(current.getInterfaces(), types);
     }
   }
 
