@@ -35,7 +35,9 @@ public final class Platform {
   }
 
   /**
-   * Returns true if the instance is assignable to the type Clazz.
+   * Returns true if the instance is assignable to the type Clazz (though in GWT
+   * clazz can only be a concrete class that is an ancestor class of the instance
+   * or the direct type of the instance.
    */
   static boolean isInstanceOfTypeGWT(Object instance, Class<?> clazz) {
     String className = clazz.getName();
