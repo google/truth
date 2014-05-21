@@ -82,7 +82,7 @@ public class StringSubject extends Subject<StringSubject, String> {
 
   public void contains(String string) {
     if (string == null) {
-      throw new IllegalArgumentException("Cannot test that a string contains a null reference.");
+      throw new IllegalArgumentException("Cannot test that a string contains a null reference");
     }
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference contains <%s>", quote(string));
@@ -94,7 +94,7 @@ public class StringSubject extends Subject<StringSubject, String> {
   public void doesNotContain(String string) {
     if (string == null) {
       throw new IllegalArgumentException(
-              "Cannot test that a string does not contain a null reference.");
+              "Cannot test that a string does not contain a null reference");
     }
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference contains <%s>", quote(string));
@@ -105,7 +105,7 @@ public class StringSubject extends Subject<StringSubject, String> {
 
   public void startsWith(String string) {
     if (string == null) {
-      throw new IllegalArgumentException("Cannot test that a string starts with a null reference.");
+      throw new IllegalArgumentException("Cannot test that a string starts with a null reference");
     }
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference starts with <%s>", quote(string));
@@ -116,7 +116,7 @@ public class StringSubject extends Subject<StringSubject, String> {
 
   public void endsWith(String string) {
     if (string == null) {
-      throw new IllegalArgumentException("Cannot test that a string ends with a null reference.");
+      throw new IllegalArgumentException("Cannot test that a string ends with a null reference");
     }
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference ends with <%s>", quote(string));

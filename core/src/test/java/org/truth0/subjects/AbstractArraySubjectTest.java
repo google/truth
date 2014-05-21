@@ -40,7 +40,8 @@ public class AbstractArraySubjectTest {
     ASSERT.that(subject.getDisplaySubject()).isEqualTo("<(String[]) [Foo, Bar]>");
   }
 
-  class TestableStringArraySubject extends AbstractArraySubject<String[]> {
+  class TestableStringArraySubject
+      extends AbstractArraySubject<TestableStringArraySubject, String[]> {
     public TestableStringArraySubject(FailureStrategy failureStrategy, String[] subject) {
       super(failureStrategy, subject);
     }

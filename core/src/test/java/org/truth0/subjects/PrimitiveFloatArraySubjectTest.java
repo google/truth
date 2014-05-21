@@ -47,7 +47,8 @@ public class PrimitiveFloatArraySubjectTest {
       ASSERT.that(array(2.2f, 3.3f)).isEqualTo(array(3.3f, 2.2f), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <(float[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
+      ASSERT.that(e.getMessage())
+          .isEqualTo("Not true that <(float[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
     }
   }
 
@@ -87,7 +88,7 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage())
-          .is("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
+          .is("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3]");
     }
   }
 
@@ -98,7 +99,7 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage())
-          .is("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
+          .is("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3]");
     }
   }
 

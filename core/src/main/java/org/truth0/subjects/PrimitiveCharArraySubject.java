@@ -30,7 +30,8 @@ import java.util.List;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtCompatible
-public class PrimitiveCharArraySubject extends AbstractArraySubject<char[]> {
+public class PrimitiveCharArraySubject
+    extends AbstractArraySubject<PrimitiveCharArraySubject, char[]> {
   public PrimitiveCharArraySubject(FailureStrategy failureStrategy, char[] o) {
     super(failureStrategy, o);
   }
