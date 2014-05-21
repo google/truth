@@ -30,7 +30,8 @@ import java.util.List;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtCompatible
-public class PrimitiveBooleanArraySubject extends AbstractArraySubject<boolean[]> {
+public class PrimitiveBooleanArraySubject
+    extends AbstractArraySubject<PrimitiveBooleanArraySubject, boolean[]> {
   public PrimitiveBooleanArraySubject(FailureStrategy failureStrategy, boolean[] o) {
     super(failureStrategy, o);
   }

@@ -66,5 +66,14 @@ public class RelabeledSubjectsTest {
     }
   }
 
-
+  @Test public void relabelledPrimitiveFloatArrays() {
+    float[] expected = { 1.3f, 1.0f };
+    float[] actual = { 1.3f, 1.0f };
+    try {
+      ASSERT.that(actual).named("crazy list").isNotEqualTo(expected, 0.0000001f);
+      fail("Should have thrown");
+    } catch (AssertionError error) {
+      ASSERT.that(error.getMessage()).is("\"crazy list\" unexpectedly equal to [1.3, 1.0]");
+    }
+  }
 }

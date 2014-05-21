@@ -37,7 +37,7 @@ public class Inventory {
   Truth ae;
 
   // Subject
-  AbstractArraySubject<?> a;
+  AbstractArraySubject<?, ?> a;
   BooleanSubject b;
   ClassSubject c;
   DefaultSubject e;

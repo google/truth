@@ -35,7 +35,8 @@ import java.util.List;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtCompatible
-public class PrimitiveFloatArraySubject extends AbstractArraySubject<float[]> {
+public class PrimitiveFloatArraySubject
+    extends AbstractArraySubject<PrimitiveFloatArraySubject, float[]> {
   public PrimitiveFloatArraySubject(FailureStrategy failureStrategy, float[] o) {
     super(failureStrategy, o);
   }
@@ -109,7 +110,7 @@ public class PrimitiveFloatArraySubject extends AbstractArraySubject<float[]> {
     try {
       float[] expected = (float[]) expectedArray;
       if (actual == expected) {
-        failWithRawMessage("%s unexpectedly equal to %s.",
+        failWithRawMessage("%s unexpectedly equal to %s",
             getDisplaySubject(),  Floats.asList(expected));
       }
       if (expected.length != actual.length) {
@@ -123,7 +124,7 @@ public class PrimitiveFloatArraySubject extends AbstractArraySubject<float[]> {
         }
       }
       if (unequalIndices.isEmpty()) {
-        failWithRawMessage("%s unexpectedly equal to %s.",
+        failWithRawMessage("%s unexpectedly equal to %s",
             getDisplaySubject(),  Floats.asList(expected));
       }
     } catch (ClassCastException ignored) {} // Unequal since they are of different types.
@@ -137,5 +138,4 @@ public class PrimitiveFloatArraySubject extends AbstractArraySubject<float[]> {
   private ListSubject<?, Float, List<Float>> asList() {
     return ListSubject.create(failureStrategy, listRepresentation());
   }
-
 }

@@ -35,7 +35,8 @@ import java.util.List;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtCompatible
-public class PrimitiveDoubleArraySubject extends AbstractArraySubject<double[]> {
+public class PrimitiveDoubleArraySubject
+    extends AbstractArraySubject<PrimitiveDoubleArraySubject, double[]> {
   public PrimitiveDoubleArraySubject(FailureStrategy failureStrategy, double[] o) {
     super(failureStrategy, o);
   }
