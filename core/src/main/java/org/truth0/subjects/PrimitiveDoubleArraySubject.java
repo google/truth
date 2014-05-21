@@ -20,6 +20,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.primitives.Doubles;
 
 import org.truth0.FailureStrategy;
+import org.truth0.util.MathUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,8 +80,7 @@ public class PrimitiveDoubleArraySubject
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expectedArray.length; i++) {
-        boolean floatEquals = Math.abs(expectedArray[i] - actual[i]) < Math.abs(tolerance);
-        if (!floatEquals) {
+        if (!MathUtil.equals(actual[i], expectedArray[i], tolerance)) {
           unequalIndices.add(i);
         }
       }
@@ -122,8 +122,7 @@ public class PrimitiveDoubleArraySubject
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expected.length; i++) {
-        boolean floatEquals = Math.abs(expected[i] - actual[i]) < Math.abs(tolerance);
-        if (!floatEquals) {
+        if (!MathUtil.equals(actual[i], expected[i], tolerance)) {
           unequalIndices.add(i);
         }
       }
