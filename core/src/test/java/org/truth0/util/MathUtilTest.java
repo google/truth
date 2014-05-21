@@ -43,6 +43,9 @@ public class MathUtilTest {
 
   @Test public void doubleEqualityDifferentTypes() {
     ASSERT.that(MathUtil.equals(1.3d, 1.3f, 0.00000000000001d)).isFalse();
+    ASSERT.that(MathUtil.equals(1.3f, 1.3d, 0.00000000000001f)).isFalse();
   }
+
+  // TODO(cgruber): More complicated ways to break float/double casting to make sure.
 
 }
