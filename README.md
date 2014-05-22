@@ -19,33 +19,9 @@ driven by some extensibility needs, written nearly entirely by Google employees 
 time or contributing in their capacity as Java core librarians.
 
 Truth can be used in place of JUnit's assertions, FEST, or Hamcrest's matchers, or it can be
-used alongside where other approaches seem more suitable.  The basic form is similar to that
-of FEST
+used alongside where other approaches seem more suitable.
 
-```java
-ASSERT.that(foo).isEqualTo(bar);
-```
-
-but it's power really shines where you have custom types that need complex propositions
-
-```java
-ASSUME.about(processors()).that(myAnnotationProcessor).handlesAnnotation(Foo.class);
-ASSERT.about(javaSources()).that(asList(source1, source2, source3))
-    .processedWith(myAnnotationProcessor)
-    .compilesWithoutError().and()
-    .generatesSources(expected1, expected2);
-    
-ASSERT.about(javaSources()).that(asList(source4, source5))
-    .processedWith(myAnnotationProcessor)
-    .failsToCompile()
-        .withErrorContaining("expected error!").in(source4).onLine(18).atColumn(1).and()
-        .withErrorContaining("expected error!").in(source5).onLine(12); // less specific
-```
-
-Instructions, documentation, and other information
-----------------
-
-The full documentation and website for Truth is available at http://truth0.github.io.
+#### The full documentation and website for Truth is available at http://truth0.github.io.
 
 License
 ----------------
