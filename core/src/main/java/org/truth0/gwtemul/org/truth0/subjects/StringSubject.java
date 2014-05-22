@@ -19,8 +19,6 @@ package org.truth0.subjects;
 
 import org.truth0.FailureStrategy;
 
-import java.util.regex.Pattern;
-
 /**
  * Propositions for String subjects
  *

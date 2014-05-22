@@ -10,6 +10,7 @@
   <artifactId>truth</artifactId>
   <properties>
     <gwt.version>2.5.1</gwt.version>
+    <javadoc.param></javadoc.param>
   </properties>
   <dependencies>
     <dependency>
@@ -80,6 +81,9 @@
             <id>attach-docs</id>
             <phase>post-integration-test</phase>
             <goals><goal>jar</goal></goals>
+            <configuration>
+                <additionalparam>${javadoc.param}</additionalparam>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -190,5 +194,16 @@
         </configuration>        
       </plugin>
     </plugins>
-  </reporting>  
+  </reporting>
+  <profiles>
+  <profile>
+    <id>java8</id>
+    <activation>
+      <jdk>[1.8,1.8)</jdk>
+    </activation>
+    <properties>
+      <javadoc.param>-Xdoclint:none</javadoc.param>
+    </properties>
+  </profile>
+</profiles>
 </project>
