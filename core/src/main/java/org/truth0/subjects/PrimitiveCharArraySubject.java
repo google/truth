@@ -16,7 +16,6 @@
 package org.truth0.subjects;
 
 
-import com.google.common.annotations.GwtCompatible;
 import com.google.common.primitives.Chars;
 
 import org.truth0.FailureStrategy;
@@ -29,7 +28,6 @@ import java.util.List;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible
 public class PrimitiveCharArraySubject
     extends AbstractArraySubject<PrimitiveCharArraySubject, char[]> {
   public PrimitiveCharArraySubject(FailureStrategy failureStrategy, char[] o) {

@@ -16,21 +16,18 @@
  */
 package org.truth0.subjects;
 
+import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.truth0.FailureStrategy;
 import org.truth0.util.ReflectionUtil;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
-
-@GwtCompatible
 public class ClassSubject extends Subject<ClassSubject, Class<?>> {
   public ClassSubject(FailureStrategy failureStrategy, Class<?> o) {
     super(failureStrategy, o);
   }
 
   // TODO(cgruber): Create an alternative implementation using JSNI.
-  @GwtIncompatible("Reflection. ")
+  @GwtIncompatible("Reflection")
   public void declaresField(String fieldName) {
     if (getSubject() == null) {
       failureStrategy.fail("Cannot determine a field name from a null class.");

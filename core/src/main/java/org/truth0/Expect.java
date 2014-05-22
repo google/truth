@@ -19,7 +19,7 @@ package org.truth0;
 import static org.truth0.util.StringUtil.messageFor;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.annotations.GwtIncompatible;
+import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;

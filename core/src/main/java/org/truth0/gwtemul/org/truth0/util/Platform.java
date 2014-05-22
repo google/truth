@@ -15,6 +15,8 @@
  */
 package org.truth0.util;
 
+import static org.truth0.util.StringUtil.format;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -72,4 +74,8 @@ public final class Platform {
   public static String compressType(String type) {
     return type;
   }
+  
+  public static AssertionError comparisonFailure(String message, String expected, String actual) {
+    return new AssertionError(format("%s: expected: %s actual: %s", message, expected, actual));
+  }  
 }

@@ -17,12 +17,9 @@
  */
 package org.truth0.subjects;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
+import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.truth0.FailureStrategy;
-
-import java.util.regex.Pattern;
 
 /**
  * Propositions for String subjects
@@ -30,7 +27,6 @@ import java.util.regex.Pattern;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible
 public class StringSubject extends Subject<StringSubject, String> {
   public StringSubject(FailureStrategy failureStrategy, String string) {
     super(failureStrategy, string);
@@ -144,7 +140,7 @@ public class StringSubject extends Subject<StringSubject, String> {
   }
 
   @GwtIncompatible("java.util.regex.Pattern")
-  public void matches(Pattern regex) {
+  public void matches(java.util.regex.Pattern regex) {
     if(!regex.matcher(getSubject()).matches()) {
       fail("matches", regex);
     }
@@ -158,7 +154,7 @@ public class StringSubject extends Subject<StringSubject, String> {
   }
 
   @GwtIncompatible("java.util.regex.Pattern")
-  public void doesNotMatch(Pattern regex) {
+  public void doesNotMatch(java.util.regex.Pattern regex) {
     if(regex.matcher(getSubject()).matches()) {
       fail("fails to match", regex);
     }

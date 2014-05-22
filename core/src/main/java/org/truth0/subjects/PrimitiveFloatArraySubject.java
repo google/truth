@@ -16,7 +16,6 @@
 package org.truth0.subjects;
 
 
-import com.google.common.annotations.GwtCompatible;
 import com.google.common.primitives.Floats;
 
 import org.truth0.FailureStrategy;
@@ -35,7 +34,6 @@ import java.util.List;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible
 public class PrimitiveFloatArraySubject
     extends AbstractArraySubject<PrimitiveFloatArraySubject, float[]> {
   public PrimitiveFloatArraySubject(FailureStrategy failureStrategy, float[] o) {

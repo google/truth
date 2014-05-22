@@ -2,15 +2,13 @@ package org.truth0;
 
 import static org.truth0.util.StringUtil.format;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
+import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.truth0.subjects.Subject;
 import org.truth0.subjects.SubjectFactory;
 
 import javax.annotation.CheckReturnValue;
 
-@GwtCompatible
 public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   private final FailureStrategy failureStrategy;
 

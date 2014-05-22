@@ -17,11 +17,10 @@
 package org.truth0.subjects;
 
 
+import com.google.gwt.core.shared.GwtIncompatible;
+
 import org.truth0.FailureStrategy;
 import org.truth0.util.ReflectionUtil;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
 
 /**
  * A custom subject factory which will return a FooSubject (which
@@ -29,7 +28,6 @@ import com.google.common.annotations.GwtIncompatible;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible
 public abstract class SubjectFactory<S extends Subject<S,T>, T> {
 
   @GwtIncompatible("reflection")

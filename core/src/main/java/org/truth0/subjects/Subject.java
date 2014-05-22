@@ -18,8 +18,7 @@ package org.truth0.subjects;
 
 import static org.truth0.util.StringUtil.format;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
+import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.truth0.FailureStrategy;
 import org.truth0.TestVerb;
@@ -35,7 +34,6 @@ import java.lang.reflect.Field;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible(emulated = true)
 public class Subject<S extends Subject<S,T>,T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;

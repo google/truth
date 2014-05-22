@@ -15,8 +15,9 @@
  */
 package org.truth0.util;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
+import com.google.gwt.core.shared.GwtIncompatible;
+
+import org.junit.ComparisonFailure;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -29,7 +30,6 @@ import java.util.regex.Pattern;
  *
  * @author Christian Gruber (cgruber@google.com)
  */
-@GwtCompatible(emulated = true)
 public final class Platform {
   private Platform() {}
 
@@ -129,4 +129,7 @@ public final class Platform {
     return type;
   }
 
+  public static AssertionError comparisonFailure(String message, String expected, String actual) {
+    return new ComparisonFailure(message, expected, actual);
+  }
 }

@@ -20,8 +20,6 @@ package org.truth0.subjects;
 import static org.truth0.subjects.SubjectUtils.accumulate;
 import static org.truth0.subjects.SubjectUtils.countDuplicates;
 
-import com.google.common.annotations.GwtCompatible;
-
 import org.truth0.FailureStrategy;
 
 import java.util.ArrayList;
@@ -31,8 +29,8 @@ import java.util.Iterator;
 
 import javax.annotation.CheckReturnValue;
 
-@GwtCompatible
-public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>> extends IterableSubject<S, T, C> {
+public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>>
+    extends IterableSubject<S, T, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> create(

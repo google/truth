@@ -16,9 +16,8 @@
  */
 package org.truth0;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
+import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.truth0.subjects.BooleanSubject;
 import org.truth0.subjects.ClassSubject;
@@ -45,7 +44,6 @@ import java.util.Map;
 
 import javax.annotation.CheckReturnValue;
 
-@GwtCompatible
 public class TestVerb extends AbstractVerb<TestVerb> {
   private final String failureMessage;
 

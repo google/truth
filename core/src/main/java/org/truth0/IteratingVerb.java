@@ -1,9 +1,9 @@
 package org.truth0;
 
-import com.google.common.annotations.GwtIncompatible;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.truth0.codegen.CompilingClassLoader;
 import org.truth0.codegen.CompilingClassLoader.CompilerException;

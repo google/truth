@@ -18,11 +18,10 @@ package org.truth0;
 
 import static org.truth0.util.StringUtil.messageFor;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
+import com.google.gwt.core.shared.GwtIncompatible;
 
-import org.junit.ComparisonFailure;
 import org.junit.internal.AssumptionViolatedException;
+import org.truth0.util.Platform;
 
 /**
  * Truth - a proposition framework for tests, supporting JUnit style
@@ -52,14 +51,13 @@ import org.junit.internal.AssumptionViolatedException;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible(emulated = true)
 public class Truth {
 
   public static final FailureStrategy THROW_ASSERTION_ERROR =
       new FailureStrategy() {
         @Override public void failComparing(
             String message, CharSequence expected, CharSequence actual) {
-          throw new ComparisonFailure(message, expected.toString(), actual.toString());
+          throw Platform.comparisonFailure(message, expected.toString(), actual.toString());
         }
       };
 

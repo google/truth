@@ -16,8 +16,6 @@
  */
 package org.truth0.subjects;
 
-import com.google.common.annotations.GwtCompatible;
-
 import org.truth0.FailureStrategy;
 
 
@@ -26,7 +24,6 @@ import org.truth0.FailureStrategy;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible
 public class BooleanSubject extends Subject<BooleanSubject, Boolean> {
 
   public BooleanSubject(FailureStrategy failureStrategy, Boolean subject) {
