@@ -17,8 +17,9 @@
 package org.truth0.subjects;
 
 
+import com.google.gwt.core.shared.GwtIncompatible;
+
 import org.truth0.FailureStrategy;
-import org.truth0.util.GwtIncompatible;
 import org.truth0.util.ReflectionUtil;
 
 /**

@@ -18,8 +18,9 @@ package org.truth0;
 
 import static org.truth0.util.StringUtil.messageFor;
 
+import com.google.gwt.core.shared.GwtIncompatible;
+
 import org.junit.internal.AssumptionViolatedException;
-import org.truth0.util.GwtIncompatible;
 import org.truth0.util.Platform;
 
 /**

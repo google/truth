@@ -17,6 +17,7 @@
 package org.truth0;
 
 import com.google.common.base.Optional;
+import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.truth0.subjects.BooleanSubject;
 import org.truth0.subjects.ClassSubject;
@@ -36,7 +37,6 @@ import org.truth0.subjects.PrimitiveIntArraySubject;
 import org.truth0.subjects.PrimitiveLongArraySubject;
 import org.truth0.subjects.StringSubject;
 import org.truth0.subjects.Subject;
-import org.truth0.util.GwtIncompatible;
 
 import java.util.Collection;
 import java.util.List;

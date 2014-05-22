@@ -15,6 +15,8 @@
  */
 package org.truth0.util;
 
+import com.google.gwt.core.shared.GwtIncompatible;
+
 import org.junit.ComparisonFailure;
 
 import java.util.LinkedHashSet;

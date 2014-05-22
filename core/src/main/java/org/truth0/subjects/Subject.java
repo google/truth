@@ -18,9 +18,10 @@ package org.truth0.subjects;
 
 import static org.truth0.util.StringUtil.format;
 
+import com.google.gwt.core.shared.GwtIncompatible;
+
 import org.truth0.FailureStrategy;
 import org.truth0.TestVerb;
-import org.truth0.util.GwtIncompatible;
 import org.truth0.util.Platform;
 import org.truth0.util.ReflectionUtil;
 
