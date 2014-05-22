@@ -15,8 +15,6 @@
  */
 package org.truth0.subjects;
 
-import com.google.common.annotations.GwtCompatible;
-
 import org.truth0.FailureStrategy;
 
 import java.util.Arrays;
@@ -25,7 +23,6 @@ import java.util.Iterator;
 /**
  * @author Kevin Bourrillion
  */
-@GwtCompatible
 public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>> extends Subject<S, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

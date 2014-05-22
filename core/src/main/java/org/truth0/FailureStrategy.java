@@ -16,13 +16,10 @@
  */
 package org.truth0;
 
-import com.google.common.annotations.GwtCompatible;
-
 import org.truth0.util.StringUtil;
 
 import javax.annotation.Nullable;
 
-@GwtCompatible
 public abstract class FailureStrategy {
 
   public void fail(String message) {

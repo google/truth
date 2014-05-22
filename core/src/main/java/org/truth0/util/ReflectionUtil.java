@@ -16,7 +16,6 @@
  */
 package org.truth0.util;
 
-import com.google.common.annotations.GwtIncompatible;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

@@ -16,18 +16,16 @@
  */
 package org.truth0.subjects;
 
-import java.util.Arrays;
-import java.util.Map;
-
 import org.truth0.FailureStrategy;
 
-import com.google.common.annotations.GwtCompatible;
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible
-public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K, V>> extends Subject<S, M> {
+public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K, V>>
+    extends Subject<S, M> {
 
   public MapSubject(FailureStrategy failureStrategy, M map) {
     super(failureStrategy, map);

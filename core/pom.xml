@@ -9,8 +9,8 @@
   </parent>
   <artifactId>truth</artifactId>
   <properties>
-    <gwt.version>2.5.1</gwt.version>
     <javadoc.param></javadoc.param>
+    <gwt.version>2.6.1</gwt.version>
   </properties>
   <dependencies>
     <dependency>

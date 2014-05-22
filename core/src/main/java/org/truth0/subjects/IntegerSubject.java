@@ -19,15 +19,12 @@ package org.truth0.subjects;
 
 import org.truth0.FailureStrategy;
 
-import com.google.common.annotations.GwtCompatible;
-
 /**
  * Propositions for Integral numeric subjects
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@GwtCompatible
 public class IntegerSubject extends Subject<IntegerSubject, Long> {
 
   public IntegerSubject(FailureStrategy failureStrategy, Long i) {

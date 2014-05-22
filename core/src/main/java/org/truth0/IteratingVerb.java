@@ -1,6 +1,5 @@
 package org.truth0;
 
-import com.google.common.annotations.GwtIncompatible;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -10,6 +9,7 @@ import org.truth0.codegen.CompilingClassLoader.CompilerException;
 import org.truth0.codegen.IteratingWrapperClassBuilder;
 import org.truth0.subjects.Subject;
 import org.truth0.subjects.SubjectFactory;
+import org.truth0.util.GwtIncompatible;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
