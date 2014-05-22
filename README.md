@@ -4,8 +4,8 @@ Truth
 
 **Main Website:** *[truth0.github.io](http://truth0.github.io/)* &nbsp;
 **Continuous Integration:** [![Build Status](https://secure.travis-ci.org/truth0/truth.png?branch=master)](https://travis-ci.org/truth0/truth) <br />
-**Latest Release:** *0.16* &nbsp; 
-**Latest Artifact:** *org.junit.contrib:truth:jar:0.16* <br />
+**Latest Release:** *0.20* &nbsp; 
+**Latest Artifact:** *org.junit.contrib:truth:jar:0.20* <br />
 
 **Note:** Truth is subject to change and prior to 1.0, may introduce 
 breaking changes.  We're getting closer to "prime time" but please 
