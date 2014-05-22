@@ -7,10 +7,6 @@ Truth
 **Latest Release:** *0.20* &nbsp; 
 **Latest Artifact:** *org.junit.contrib:truth:jar:0.20* <br />
 
-**Note:** Truth is subject to change and prior to 1.0, may introduce 
-breaking changes.  We're getting closer to "prime time" but please 
-use with caution before release 1.0.  Consider Truth in alpha.
-
 What is Truth?
 --------------
 
