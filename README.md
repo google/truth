@@ -23,7 +23,7 @@ License
 ----------------
 
 Truth is licensed under the open-source Apache 2.0 license.  Any contributions must
-be provided with such a license.  
+be provided with such a license.  Contributers must sign the [Contributer License Agreement][cla]
 
 Acknowledgements
 ----------------
@@ -39,3 +39,5 @@ moving the ball forward in the field of automated software testing.  This projec
 works with, works alongside, and sometimes works in competition with the above
 tools, but owes a debt that everyone owes to those gone before.  They paved the 
 way, and we hope this contribution is helpful to the field.
+
+[cla]: https://docs.google.com/forms/d/1PvN1b8rnegLfN4X6riHlFnEbeQMElf0zzr-LqKMfPUM/viewform
