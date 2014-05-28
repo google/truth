@@ -55,6 +55,12 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   @CheckReturnValue
   public Has<T, C> has() {
     return new Has<T, C>() {
+      @Override public void size(int size) {
+        if (getSubject().size() != size) {
+          fail("has size", size);
+        }
+      }
+
       @Override public void item(T item) {
         if (!getSubject().contains(item)) {
           fail("has item", item);
@@ -176,6 +182,11 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   }
 
   public interface Has<E, C extends Collection<E>> {
+    /**
+     * Attests that a Collection has the provided size
+     */
+    void size(int size);
+
     /**
      * Attests that a Collection contains at least the item
      */

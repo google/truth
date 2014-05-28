@@ -36,6 +36,18 @@ import java.util.Collection;
  */
 @RunWith(JUnit4.class)
 public class CollectionTest {
+  @Test public void collectionHasSize() {
+    ASSERT.that(collection(1, 2, 3)).has().size(3);
+  }
+
+  @Test public void collectionHasSizeFailure() {
+    try {
+      ASSERT.that(collection(1, 2, 3)).has().size(2);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("has size <2>");
+    }
+  }
 
   @Test public void collectionHasItem() {
     ASSERT.that(collection(1, 2, 3)).has().item(1);
