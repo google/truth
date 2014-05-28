@@ -119,6 +119,29 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
     super.is((long)other);
   }
 
+  public void isGreaterThan(long other) {
+    if (!(getSubject() > other)) {
+      fail("is greater than", other);
+    }
+  }
+
+  public void isGreaterThanOrEqual(long other) {
+    if (!(getSubject() >= other)) {
+      fail("is greater than or equal to", other);
+    }
+  }
+
+  public void isLessThan(long other) {
+    if (!(getSubject() < other)) {
+      fail("is less than", other);
+    }
+  }
+
+  public void isLessThanOrEqual(long other) {
+    if (!(getSubject() <= other)) {
+      fail("is less than or equal to", other);
+    }
+  }
 
   public static final SubjectFactory<IntegerSubject, Long> INTEGER =
       new SubjectFactory<IntegerSubject, Long>() {
