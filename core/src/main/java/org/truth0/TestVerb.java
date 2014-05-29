@@ -20,12 +20,14 @@ import com.google.common.base.Optional;
 import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.truth0.subjects.BooleanSubject;
+import org.truth0.subjects.ByteSubject;
 import org.truth0.subjects.ClassSubject;
 import org.truth0.subjects.CollectionSubject;
 import org.truth0.subjects.DefaultSubject;
 import org.truth0.subjects.IntegerSubject;
 import org.truth0.subjects.IterableSubject;
 import org.truth0.subjects.ListSubject;
+import org.truth0.subjects.LongSubject;
 import org.truth0.subjects.MapSubject;
 import org.truth0.subjects.ObjectArraySubject;
 import org.truth0.subjects.OptionalSubject;
@@ -35,6 +37,7 @@ import org.truth0.subjects.PrimitiveDoubleArraySubject;
 import org.truth0.subjects.PrimitiveFloatArraySubject;
 import org.truth0.subjects.PrimitiveIntArraySubject;
 import org.truth0.subjects.PrimitiveLongArraySubject;
+import org.truth0.subjects.ShortSubject;
 import org.truth0.subjects.StringSubject;
 import org.truth0.subjects.Subject;
 
@@ -69,13 +72,23 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   @CheckReturnValue
-  public IntegerSubject that(Long target) {
-    return new IntegerSubject(getFailureStrategy(), target);
+  public LongSubject that(Long target) {
+    return new LongSubject(getFailureStrategy(), target);
   }
 
   @CheckReturnValue
   public IntegerSubject that(Integer target) {
     return new IntegerSubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public ShortSubject that(Short target) {
+    return new ShortSubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public ByteSubject that(Byte target) {
+    return new ByteSubject(getFailureStrategy(), target);
   }
 
   @CheckReturnValue

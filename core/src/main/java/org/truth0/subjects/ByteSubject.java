@@ -20,25 +20,25 @@ package org.truth0.subjects;
 import org.truth0.FailureStrategy;
 
 /**
- * Propositions for Integer numeric subjects
+ * Propositions for Byte numeric subjects
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class IntegerSubject extends AnIntegerSubject<IntegerSubject, Integer> {
-  public IntegerSubject(FailureStrategy failureStrategy, Integer i) {
-    super(failureStrategy, i);
+public class ByteSubject extends AnIntegerSubject<ByteSubject, Byte> {
+  public ByteSubject(FailureStrategy failureStrategy, Byte b) {
+    super(failureStrategy, b);
   }
 
   @Override
   protected Long getSubjectAsLong() {
     return getSubject() == null ? null : getSubject().longValue();
   }
-
-  public static final SubjectFactory<IntegerSubject, Integer> INTEGER =
-      new SubjectFactory<IntegerSubject, Integer>() {
-        @Override public IntegerSubject getSubject(FailureStrategy fs, Integer target) {
-          return new IntegerSubject(fs, target);
+  
+  public static final SubjectFactory<ByteSubject, Byte> BYTE =
+      new SubjectFactory<ByteSubject, Byte>() {
+        @Override public ByteSubject getSubject(FailureStrategy fs, Byte target) {
+          return new ByteSubject(fs, target);
         }
       };
 }
