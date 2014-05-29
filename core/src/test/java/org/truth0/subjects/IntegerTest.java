@@ -85,6 +85,15 @@ public class IntegerTest {
     ASSERT.that(2).isGreaterThan(1);
   }
 
+  @Test public void nullGreaterThanNFails() {
+    try {
+      ASSERT.that((Integer)null).isGreaterThan(3);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is greater than <3>");
+    }
+  }
+
   @Test public void greaterThanFailure() {
     try {
       ASSERT.that(2).isGreaterThan(2);
@@ -99,6 +108,15 @@ public class IntegerTest {
     ASSERT.that(2).isGreaterThanOrEqual(2);
   }
 
+  @Test public void nullGreaterThanOrEqualNFails() {
+    try {
+      ASSERT.that((Integer)null).isGreaterThanOrEqual(3);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is greater than or equal to <3>");
+    }
+  }
+
   @Test public void greaterThanOrEqualFailure() {
     try {
       ASSERT.that(2).isGreaterThanOrEqual(3);
@@ -110,6 +128,15 @@ public class IntegerTest {
 
   @Test public void lessThan() {
     ASSERT.that(1).isLessThan(2);
+  }
+
+  @Test public void nullLessThanNFails() {
+    try {
+      ASSERT.that((Integer)null).isLessThan(3);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is less than <3>");
+    }
   }
 
   @Test public void lessThanFailure() {
@@ -126,6 +153,15 @@ public class IntegerTest {
     ASSERT.that(2).isLessThanOrEqual(2);
   }
 
+  @Test public void nullLessThanOrEqualNFails() {
+    try {
+      ASSERT.that((Integer)null).isLessThanOrEqual(3);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is less than or equal to <3>");
+    }
+  }
+
   @Test public void lessThanOrEqualFailure() {
     try {
       ASSERT.that(3).isLessThanOrEqual(2);
@@ -139,6 +175,15 @@ public class IntegerTest {
     EXPECT.that(2).isInclusivelyInRange(2, 4);
     EXPECT.that(3).isInclusivelyInRange(2, 4);
     EXPECT.that(4).isInclusivelyInRange(2, 4);
+  }
+
+  @Test public void nullInclusiveRangeContainmentFailure() {
+    try {
+      ASSERT.that((Integer)null).isInclusivelyInRange(2, 4);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is inclusively in range <2> <4>");
+    }
   }
 
   @Test public void inclusiveRangeContainmentFailure() {
@@ -166,6 +211,15 @@ public class IntegerTest {
   @Test public void exclusiveRangeContainment() {
     EXPECT.that(3).isBetween(2, 5);
     EXPECT.that(4).isBetween(2, 5);
+  }
+
+  @Test public void nullExclusiveRangeContainmentFailure() {
+    try {
+      ASSERT.that((Integer)null).isBetween(2, 4);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is in between <2> <4>");
+    }
   }
 
   @Test public void exclusiveRangeContainmentFailure() {

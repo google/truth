@@ -41,7 +41,7 @@ abstract public class AnIntegerSubject<S extends Subject<S,T>,T> extends Subject
    */
   public void isInclusivelyInRange(long lower, long upper) {
     ensureOrderedBoundaries(lower, upper);
-    if (!(lower <= getSubjectAsLong() && getSubjectAsLong() <= upper)) {
+    if (isSubjectNull() || !(lower <= getSubjectAsLong() && getSubjectAsLong() <= upper)) {
       fail("is inclusively in range", lower, upper);
     }
   }
@@ -55,7 +55,7 @@ abstract public class AnIntegerSubject<S extends Subject<S,T>,T> extends Subject
    */
   public void isBetween(long lower, long upper) {
     ensureOrderedBoundaries(lower, upper);
-    if (!(lower < getSubjectAsLong() && getSubjectAsLong() < upper)) {
+    if (isSubjectNull() || !(lower < getSubjectAsLong() && getSubjectAsLong() < upper)) {
       fail("is in between", lower, upper);
     }
   }
@@ -90,7 +90,7 @@ abstract public class AnIntegerSubject<S extends Subject<S,T>,T> extends Subject
         fail("is equal to", (Object)null);
       }
     } else {
-      if (getSubject() == null || !other.equals(getSubjectAsLong())) {
+      if (isSubjectNull() || !other.equals(getSubjectAsLong())) {
         fail("is equal to", other);
       }
     }
@@ -110,11 +110,11 @@ abstract public class AnIntegerSubject<S extends Subject<S,T>,T> extends Subject
 
   public void isNotEqualTo(Long other) {
     if (other == null) {
-      if(getSubject() == null) {
+      if(isSubjectNull()) {
         fail("is not equal to", (Object)null);
       }
     } else {
-      if (getSubject() != null && other.equals(getSubjectAsLong())) {
+      if (!isSubjectNull() && other.equals(getSubjectAsLong())) {
         fail("is not equal to", other);
       }
     }
@@ -125,26 +125,30 @@ abstract public class AnIntegerSubject<S extends Subject<S,T>,T> extends Subject
   }
 
   public void isGreaterThan(long other) {
-    if (!(getSubjectAsLong() > other)) {
+    if (isSubjectNull() || !(getSubjectAsLong() > other)) {
       fail("is greater than", other);
     }
   }
 
   public void isGreaterThanOrEqual(long other) {
-    if (!(getSubjectAsLong() >= other)) {
+    if (isSubjectNull() || !(getSubjectAsLong() >= other)) {
       fail("is greater than or equal to", other);
     }
   }
 
   public void isLessThan(long other) {
-    if (!(getSubjectAsLong() < other)) {
+    if (isSubjectNull() || !(getSubjectAsLong() < other)) {
       fail("is less than", other);
     }
   }
 
   public void isLessThanOrEqual(long other) {
-    if (!(getSubjectAsLong() <= other)) {
+    if (isSubjectNull() || !(getSubjectAsLong() <= other)) {
       fail("is less than or equal to", other);
     }
+  }
+
+  private boolean isSubjectNull() {
+    return getSubject() == null;
   }
 }

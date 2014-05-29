@@ -94,9 +94,27 @@ public class ByteTest {
     }
   }
 
+  @Test public void nullGreaterThanNFails() {
+    try {
+      ASSERT.that((Byte)null).isGreaterThan(3);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is greater than <3>");
+    }
+  }
+
   @Test public void greaterThanOrEqual() {
     ASSERT.that((byte)2).isGreaterThanOrEqual(1);
     ASSERT.that((byte)2).isGreaterThanOrEqual(2);
+  }
+
+  @Test public void nullGreaterThanOrEqualNFails() {
+    try {
+      ASSERT.that((Byte)null).isGreaterThanOrEqual(3);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is greater than or equal to <3>");
+    }
   }
 
   @Test public void greaterThanOrEqualFailure() {
@@ -110,6 +128,15 @@ public class ByteTest {
 
   @Test public void lessThan() {
     ASSERT.that((byte)1).isLessThan(2);
+  }
+
+  @Test public void nullLessThanNFails() {
+    try {
+      ASSERT.that((Byte)null).isLessThan(3);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is less than <3>");
+    }
   }
 
   @Test public void lessThanFailure() {
@@ -126,6 +153,15 @@ public class ByteTest {
     ASSERT.that((byte)2).isLessThanOrEqual(2);
   }
 
+  @Test public void nullLessThanOrEqualNFails() {
+    try {
+      ASSERT.that((Byte)null).isLessThanOrEqual(3);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is less than or equal to <3>");
+    }
+  }
+
   @Test public void lessThanOrEqualFailure() {
     try {
       ASSERT.that((byte)3).isLessThanOrEqual(2);
@@ -139,6 +175,15 @@ public class ByteTest {
     EXPECT.that((byte)2).isInclusivelyInRange(2, 4);
     EXPECT.that((byte)3).isInclusivelyInRange(2, 4);
     EXPECT.that((byte)4).isInclusivelyInRange(2, 4);
+  }
+
+  @Test public void nullInclusiveRangeContainmentFailure() {
+    try {
+      ASSERT.that((Byte)null).isInclusivelyInRange(2, 4);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is inclusively in range <2> <4>");
+    }
   }
 
   @Test public void inclusiveRangeContainmentFailure() {
@@ -166,6 +211,15 @@ public class ByteTest {
   @Test public void exclusiveRangeContainment() {
     EXPECT.that((byte)3).isBetween(2, 5);
     EXPECT.that((byte)4).isBetween(2, 5);
+  }
+
+  @Test public void nullExclusiveRangeContainmentFailure() {
+    try {
+      ASSERT.that((Byte)null).isBetween(2, 4);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <null> is in between <2> <4>");
+    }
   }
 
   @Test public void exclusiveRangeContainmentFailure() {
