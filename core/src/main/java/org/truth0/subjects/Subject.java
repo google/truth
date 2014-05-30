@@ -69,8 +69,24 @@ public class Subject<S extends Subject<S,T>,T> {
     return named(label);
   }
 
+  /**
+   * @deprecated Use either {@link #isEqualTo(Object)} or {@link #isSameInstanceAs(Object)}.
+   */
+  @Deprecated
   public void is(Object other) {
     isEqualTo(other);
+  }
+
+  public void isSameInstanceAs(Object other) {
+    if (getSubject() != other) {
+      fail("is the same instance as", other);
+    }
+  }
+
+  public void isNotSameInstanceAs(Object other) {
+    if (getSubject() == other) {
+      fail("is not the same instance as", other);
+    }
   }
 
   public void isNull() {
