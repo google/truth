@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2011 David Saff
- * Copyright (c) 2011 Christian Gruber
+ * Copyright (c) 2011 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +20,6 @@ import static org.truth0.Truth.ASSERT;
 import static org.truth0.Truth.ASSUME;
 import static org.truth0.delegatetest.FooSubject.FOO;
 
-import java.util.Arrays;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
@@ -30,6 +27,8 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.truth0.delegatetest.Foo;
+
+import java.util.Arrays;
 
 @RunWith(Theories.class)
 public class ExampleTest {
