@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2011 David Saff
- * Copyright (c) 2011 Christian Gruber
+ * Copyright (c) 2011 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +19,11 @@ import static org.truth0.Truth.ASSERT;
 import static org.truth0.subjects.IntegerSubject.INTEGER;
 import static org.truth0.subjects.StringSubject.STRING;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.util.Arrays;
 
 /**
  * Tests for Collection Subjects.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 David Beaumont
+ * Copyright (c) 2011 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ package org.truth0.subjects;
 import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Tests for List Subjects.

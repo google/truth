@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2011 David Saff
- * Copyright (c) 2011 Christian Gruber
+ * Copyright (c) 2011 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +15,11 @@
  */
 package org.truth0.codegen;
 
-import javax.annotation.Nullable;
-
 import org.truth0.FailureStrategy;
 import org.truth0.subjects.Subject;
 import org.truth0.subjects.SubjectFactory;
+
+import javax.annotation.Nullable;
 
 /**
  * Subclass of Subject to be used for Testing.

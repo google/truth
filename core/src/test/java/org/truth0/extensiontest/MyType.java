@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 2011 David Saff
- * Copyright (c) 2011 Christian Gruber
- * 
+ * Copyright (c) 2011 Google, Inc.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +17,7 @@ package org.truth0.extensiontest;
 
 /**
  * Sample custom type to test extension verbs.
- * 
+ *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class MyType {
