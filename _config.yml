@@ -6,7 +6,7 @@ pygments: true
 
 # Site settings
 version: "0.20"
-url: http://truth0.github.io
+url: http://google.github.io/truth
 title: Truth
 tagline: We've made failure a strategy
 description: "A proposition/assertion framework for testing in Java"
@@ -14,12 +14,12 @@ description: "A proposition/assertion framework for testing in Java"
 # Navigation
 navigation:
 - text: Change
-  url: /changelog/
+  url: /truth/changelog/
 - text: Javadoc
-  url: /api/
+  url: /truth/api/
 - text: FAQ
-  url: /faq/
+  url: /truth/faq/
 - text: Usage
-  url: /usage/
+  url: /truth/usage/
 - text: Home
-  url: /
+  url: /truth

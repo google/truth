@@ -1,7 +1,7 @@
 ---
 layout: default
 subtitle: We've made failure a strategy
-url: /
+url: /truth
 ---
 
 * auto-gen TOC:
