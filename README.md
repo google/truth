@@ -17,7 +17,7 @@ time or contributing in their capacity as Java core librarians.
 Truth can be used in place of JUnit's assertions, FEST, or Hamcrest's matchers, or it can be
 used alongside where other approaches seem more suitable.
 
-#### The full documentation and website for Truth is available at http://truth0.github.io.
+#### The full documentation and website for Truth is available at http://google.github.io/truth
 
 License
 ----------------
