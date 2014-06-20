@@ -1,0 +1,35 @@
+{% include header.html %}
+{% assign timestamp = page.created | date: "%S" %}
+<body>
+  <header class="header">
+    <nav role="main" class="main-nav">
+      <ul>
+        {% for link in site.navigation %}
+          {% assign active = false %}
+          {% if page.url == link.url %}
+            {% assign active = true %}
+          {% endif %}
+          <li{% if active %} class="active"{% endif %}><a href="{{ link.url }}" target="_top">{{ link.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </header>
+  <h1>{{ site.title }} - <em>{{ page.subtitle }}</em></h1>
+  <p ng-controller="DateController"><a href="https://travis-ci.org/google/truth">
+      Latest Release: <strong><em>{{ site.version }}</em></strong>
+      Latest Artifact: <strong><em>org.junit.contrib:truth:jar:{{ site.version }}</em></strong>
+      &nbsp;
+      <img src="https://secure.travis-ci.org/google/truth.png?branch=master" 
+          align="top"
+          alt="Build Status"></a>
+	      <a href="http://github.com/google/truth">
+		      <img  src="/images/GitHub-Mark-32px.png" alt="GitHub" height="20" align="top" />
+		      <img  src="/images/GitHub_Logo.png" height="20" align="top" />
+	      </a>
+      </p>
+  <hr />     
+  <div class="container"><div class="main">
+    {{ content }}
+  </div></div>
+</body>
+{% include footer.html %}

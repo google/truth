@@ -1,0 +1,329 @@
+---
+subtitle: Basic Usage
+layout: default
+url: /usage/
+---
+
+* auto-gen TOC:
+{:toc}
+
+# Super basics
+
+Truth is used in a literate, or fluent programming style.
+
+Most simply, replacing a JUnit assert like this:
+
+    assertTrue(blah.isSomeBooleanValue());
+
+can be done with the following:
+
+    ASSERT.that(blah.isSomeBooleanValue()).isTrue();
+
+**But wait!!!**
+
+This may not seem like a saving, but for two things.  One, it reads, in 
+english, precisely what it means.  And secondly, many assertTrue() calls 
+are hiding more meaningful assertions.
+
+    assertTrue(blah > 5);
+
+In Truth, you would tend to extract all of these:
+
+    ASSERT.that(blah).isMoreThan(5);
+
+And where one might write:
+
+    assertTrue(blah.isEmpty());
+
+Truth would have you write:
+
+    ASSERT.that(blah).isEmpty();
+    
+  * [More examples are here](/detail)
+
+# More Comprehensive Examples
+
+More comprehensive examples [can be found in the Example section](/detail)
+
+# The Guts
+
+
+## How does Truth work?
+
+Truth presents you with a test verb (ASSERT and ASSUME are built in, and
+EXPECT is supported with JUnit4 @Rules).  The verb is asserting on a subject,
+the value or object under test.  
+
+    ASSERT.that(thisSubject)...
+
+Once Truth has a subject, it has a known type, and can therefore reason
+at compile time about what propositions are known about that subject. For
+instance, integers, longs, booleans, strings, and various flavours of 
+collections all have different kinds of things you want to know about them.
+Because Truth knows about these types at compile time, it returns a "Subject"
+wrapper around your value, which declares proposition methods such as "contains"
+or "isMoreThan" or "isEmpty" etc.  These allow your IDE to suggest available
+completions. 
+
+## Failure Strategy
+
+Truth treats failure as data - a proposition was not true... so now what?
+Well, that depends on the failure strategy.  Truth supports a few different
+strategies for handling failure, and has different strategies baked in to
+pre-built TestVerbs exposed as static final fields.  The standard strategies 
+are:
+
+<table>
+  <tr>
+    <th>Strategy</th>
+    <th>Constant</th>
+    <th>Behaviour</th>
+    <th>Framework supported</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td>Assertion</td>
+    <td>Truth.ASSERT</td>
+    <td>Aborts and fails test, reports failure</td>
+    <td>JUnit, TestNG, others (untested)</td>
+    <td />
+  </tr>
+  <tr>
+    <td>Assumption</td>
+    <td>Truth.ASSUME</td>
+    <td>Aborts and ignores/skips test</td>
+    <td>JUnit</td>
+    <td />
+  </tr>
+  <tr>
+    <td>Expectation</td>
+    <td>Expect.create()</td>
+    <td>Continues test, reports errors and failure upon test completion</td>
+    <td>JUnit</td>
+    <td>You must declare an @Rule per the ExpectTest</td>
+  </tr>
+</table>
+
+*Note:* These different styles can let a developer build more supple tests,
+though the Truth team recommends mostly using ASSERT in unit tests,
+and very careful consideration of ASSUME and EXPECT.  These can make 
+one's tests quite expressive and clear, but ASSUME can cause tests 
+to not be run (unexpectedly), and EXPECT can encourage the developer
+to test propositions about way too many things, causing big heavy 
+tests, rather than lots of small, clear tests.   
+
+## Extensibility
+
+See [Extending Truth](/extension)
+
+## Categorically testing the contents of collections
+
+Sometimes a test needs to look at the contents of a collection 
+and ensure that characteristics of all a collection's contents
+conform to certain constraints.  This can be done with a 
+for-each-like approach.
+
+    ASSERT.in(anIterable).thatEach(STRING).startsWith("foo");
+
+This lets you pass in an iterable type, and provide a SubjectFactory
+(it is advised to use the static final fields for this for readability).
+When this is invoked, then <code>contains("foo")</code> will be invoked
+on each element in the iterable in turn, reporting failure as if a 
+separate ASSERT.that(anElement).contains("foo") had been invoked for
+each element.  Naturally, ASSERT will fail on the first failing element,
+ASSUME will skip the test on any failing element, and EXPECT will 
+gather all failures and report them at the end of the test.
+
+This approach can be used for custom types too, so long as they have
+a SubjectFactory
+
+    public static final SubjectFactory<MyCustomSubject, MyType> MY_TYPE = ...;
+    ... 
+    ASSERT.in(someIterable).thatEach(MY_TYPE).doesSomething();
+
+The same extensibility provided in <code>ASSERT.about(MY_TYPE).that()...</code>
+is available to the developer over iterables of that type.
+
+## Re-labeling a Subject
+
+There are times when a subject under test has a toString() representation that results in 
+awkward error messages.  For instance: 
+
+	boolean calculationResult = ...; // Assume the result of the calculation is false.
+    ASSERT.that(calculationResult).isTrue();
+
+This would result in an error message of:
+
+    <false> was expected be true, but was false
+
+Truth lets you re-label a subject, so the error message is more meaningful.
+Taking the example above:
+
+	boolean calculationResult = ...; // Assume the result of the calculation is false.
+    ASSERT.that(calculationResult).labeled("result").isTrue();
+
+This would result in an error message of:
+
+    "result" was expected to be true, but was false
+
+A developer can then far more effectively describe the subject of the test to permit 
+readable error messages with proper context.
+
+## Replacing the failure message
+
+Sometimes the raw error message is inappropriate in context, and simply relabelling the subject
+is insufficient.  In those cases, the entire failure message can be replaced with:
+
+	Set<Stuff> calculationResult = ...; // Assume the result of the calculation is false.
+    ASSERT.withFailureMessage("Calculations should always have at least one entry, but had none.")
+        .that(calculationResult).isNotEmpty();
+
+# Built-in Propositions
+
+## Basic objects
+
+Equality is simply "is" in Truth.  
+
+    ASSERT.that(this).isEqualTo(that);
+
+Type information is as usual:
+
+    ASSERT.that(this).isA(MyObject.class);
+
+Often propositions have negative forms:
+
+    ASSERT.that(this).isNotA(String.class);
+
+Nullness is checked simply with:
+
+    ASSERT.that(something).isNull();
+    ASSERT.that(somethingElse).isNotNull();
+
+Fields' presence and their values can be checked with:
+
+    ASSERT.that(something).hasField("foo");
+    ASSERT.that(something).hasField("bar").withValue("blah");
+    
+This should work even with private fields, and can be useful in testing 
+generated properties created by some frameworks like Lombok and Tapestry.
+
+## Basic operations on any object
+
+### Labeling
+
+     Foo foo = null;
+     ASSERT.that(something).labeled("foo").isNotNull();
+     
+results in a more descriptive message:
+
+     Not true that null reference "foo" is not null.
+
+### Applying propositions to  objects in a collection
+
+     Set<String> strings = asList("Aaron", "Abigail", "Christian", "Jason");
+     ASSERT.in(strings).thatEach(STRING).contains("a"); // this will fail
+
+## Class objects
+
+    ASSERT.that(aClass).declaresField("foo");
+    
+ + <em>Note, do not use <strong>hasField()</strong> on Class objects, as you will be 
+   testing whether Class.class itself has that field, not whether the 
+   type it represents declares that field.  A deprecation warning should
+   notify you of this usage, but be careful, and use <strong>declaresField("foo")</strong>
+   instead.<em>
+
+## Booleans
+
+    ASSERT.that(something).isTrue();
+    ASSERT.that(something).isFalse();
+
+## Numerics
+
+    ASSERT.that(5).isBetween(4, 5);
+    ASSERT.that(5).isExclusivelyInRange(4, 6);
+
+## Strings
+
+    ASSERT.that(aString).contains("blah");
+    ASSERT.that(aString).startsWith("foo");
+    ASSERT.that(aString).endsWith("bar");
+
+## Iterables, Collections, Sets, and the like.
+
+### Iterables
+
+    ASSERT.that(anIterable).isEmpty();
+    ASSERT.that(anIterable).iteratesAs(a, b, c);
+    ASSERT.that(anIterable).iteratesAs(otherIterable);
+
+### Collections
+
+One can simply use object equality if you want to test collection 
+equivalence, given the guarantees of Collections' implementations of 
+.equals():
+
+    ASSERT.that(colectionA).isEqualTo(collectionB);
+
+Testing properties like size should be done like so:
+
+    ASSERT.that(collection.size()).isEqualTo(5); 
+
+Or you can test that a specific item is present present:
+
+    ASSERT.that(collectionA).has().item(q);
+
+Or you can test that all provided items are present:
+
+    ASSERT.that(collectionA).has().allOf(a, b, c);
+
+Or you can be *even* more explicit and test that all ***and only*** the provided items are present:
+
+    ASSERT.that(collectionA).has().exactly(a, b, c, d);
+
+optionally you can further constrain this:
+
+    ASSERT.that(collectionA).has().allOf(a, b, c).inOrder();
+    ASSERT.that(collectionA).has().exactly(a, b, c, d).inOrder();
+
+Or you can assert using a (very) limited "or" logic with:
+
+    ASSERT.that(collectionA).has().anyOf(b, c);
+
+You can also pass in collections as containers of expected results, like so:
+
+    ASSERT.that(collectionA).has().allFrom(collectionB);
+    ASSERT.that(collectionA).has().anyFrom(collectionB);
+    ASSERT.that(collectionA).has().exactlyAs(collectionB).inOrder();
+
+
+### Lists
+
+Specific properties can be proposed on lists, such as:
+
+    ASSERT.that(myList).isOrdered(); // uses default ordering and is strict, no equal elements.
+    ASSERT.that(myList).isPartiallyOrdered(); // like isOrdered, but equal elements may be present.
+
+And custom comparators can be provided
+
+    ASSERT.that(myList).isOrdered(aComparator); 
+    ASSERT.that(myList).isPartiallyOrdered(aComparator);
+
+### Maps
+
+Presence of keys, keys for values, or values can be asserted
+
+    ASSERT.that(map).hasKey("foo");
+    ASSERT.that(map).hasKey("foo").withValue("bar");
+    ASSERT.that(map).lacksKey("foo");
+    ASSERT.that(map).hasValue("bar");
+
+Naturally, also:
+
+    ASSERT.that(map).isEmpty();
+    ASSERT.that(map).isNotEmpty();
+    
+Testing properties like size should be done like so:
+
+    ASSERT.that(map.size()).isEqualTo(5); 
+

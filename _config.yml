@@ -1,0 +1,25 @@
+# Jekyll Settings
+markdown: kramdown
+kramdown:
+  use_coderay: true
+pygments: true
+
+# Site settings
+version: "0.20"
+url: http://truth0.github.io
+title: Truth
+tagline: We've made failure a strategy
+description: "A proposition/assertion framework for testing in Java"
+
+# Navigation
+navigation:
+- text: Change
+  url: /changelog/
+- text: Javadoc
+  url: /api/
+- text: FAQ
+  url: /faq/
+- text: Usage
+  url: /usage/
+- text: Home
+  url: /
