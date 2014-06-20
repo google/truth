@@ -22,16 +22,16 @@ used alongside where other approaches seem more suitable.
 License
 ----------------
 
-Truth is licensed under the open-source Apache 2.0 license.  Any contributions must
-be provided with such a license.  Contributers must sign the [Contributer License Agreement][cla]
+Truth is licensed under the open-source Apache 2.0 license.  
 
 Acknowledgements
 ----------------
 
 Thanks to Github and Travis-CI for having a strong commitment to open-source, and 
 providing us with tools so we can provide others with code.  And thanks to Google 
-for [Guava](http://code.google.com/p/guava-libraries "Guava"), and for encouraging
-us to try to solve problems in better ways and  share that with the world.
+for [Guava](http://code.google.com/p/guava-libraries "Guava"), for taking on the Truth
+project and making it part of their core-libraries effort, and for encouraging
+us to try to solve problems in better ways and share that with the world.
 
 Also thanks to the authors of JUnit, TestNG, Hamcrest, FEST, and others for creating
 testing tools that let us write high-quality code, for inspiring this work and for 
@@ -39,5 +39,3 @@ moving the ball forward in the field of automated software testing.  This projec
 works with, works alongside, and sometimes works in competition with the above
 tools, but owes a debt that everyone owes to those gone before.  They paved the 
 way, and we hope this contribution is helpful to the field.
-
-[cla]: https://docs.google.com/forms/d/1PvN1b8rnegLfN4X6riHlFnEbeQMElf0zzr-LqKMfPUM/viewform
