@@ -3,7 +3,7 @@ Truth
 ***We've made failure a strategy***
 
 **Main Website:** *[truth0.github.io](http://truth0.github.io/)* &nbsp;
-**Continuous Integration:** [![Build Status](https://secure.travis-ci.org/truth0/truth.png?branch=master)](https://travis-ci.org/truth0/truth) <br />
+**Continuous Integration:** [![Build Status](https://secure.travis-ci.org/google/truth.png?branch=master)](https://travis-ci.org/google/truth) <br />
 **Latest Release:** *0.20* &nbsp; 
 **Latest Artifact:** *org.junit.contrib:truth:jar:0.20* <br />
 
