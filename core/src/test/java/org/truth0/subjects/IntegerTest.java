@@ -74,6 +74,60 @@ public class IntegerTest {
     } catch (AssumptionViolatedException expected) {}
   }
 
+  @Test public void greaterThan() {
+    ASSERT.that(2).isGreaterThan(1);
+  }
+
+  @Test public void greaterThanFailure() {
+    try {
+      ASSERT.that(2).isGreaterThan(2);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <2> is greater than <2>");
+    }
+  }
+
+  @Test public void greaterThanOrEqual() {
+    ASSERT.that(2).isGreaterThanOrEqual(1);
+    ASSERT.that(2).isGreaterThanOrEqual(2);
+  }
+
+  @Test public void greaterThanOrEqualFailure() {
+    try {
+      ASSERT.that(2).isGreaterThanOrEqual(3);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <2> is greater than or equal to <3>");
+    }
+  }
+
+  @Test public void lessThan() {
+    ASSERT.that(1).isLessThan(2);
+  }
+
+  @Test public void lessThanFailure() {
+    try {
+      ASSERT.that(2).isLessThan(2);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <2> is less than <2>");
+    }
+  }
+
+  @Test public void lessThanOrEqual() {
+    ASSERT.that(1).isLessThanOrEqual(2);
+    ASSERT.that(2).isLessThanOrEqual(2);
+  }
+
+  @Test public void lessThanOrEqualFailure() {
+    try {
+      ASSERT.that(3).isLessThanOrEqual(2);
+      fail("Should have thrown");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("Not true that <3> is less than or equal to <2>");
+    }
+  }
+
   @Test public void inclusiveRangeContainment() {
     EXPECT.that(2).isInclusivelyInRange(2, 4);
     EXPECT.that(3).isInclusivelyInRange(2, 4);
