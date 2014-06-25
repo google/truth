@@ -18,7 +18,6 @@ package org.truth0.subjects;
 import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -32,48 +31,85 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class SubjectTest {
 
-  @Test public void identityOfNulls() {
+  @Test public void isSameInstanceAsWithNulls() {
     Object o = null;
-    ASSERT.that(o).is(null);
+    ASSERT.that(o).isSameInstanceAs(null);
   }
 
-  @Test public void identityOfNullsFailure() {
+  @Test public void isSameInstanceAsFailureWithNulls() {
     Object o = null;
     try {
-      ASSERT.that(o).is("a");
+      ASSERT.that(o).isSameInstanceAs("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is the same instance as <a>");
     }
   }
 
-  @Test public void identityOfObject() {
+  @Test public void isSameInstanceAs() {
     Object a = new Object();
     Object b = a;
     ASSERT.that(a).is(b);
   }
 
-  @Test public void identityOfObjectFailure() {
+  @Test public void isSameInstanceAsFailure() {
     Object a = new Object() { @Override public String toString() { return "Object 1"; } };
     Object b = new Object() { @Override public String toString() { return "Object 2"; } };
     try {
-      ASSERT.that(a).is(b);
+      ASSERT.that(a).isSameInstanceAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is the same instance as <Object 2>");
     }
   }
 
-  // Ignore this until we fix identity
-  @Ignore @Test public void identityOfObjectFailureWithComparableObjects() {
+  @Test public void isSameInstanceAsFailureWithComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('b').toString();
     try {
-      ASSERT.that(a).is(b);
+      ASSERT.that(a).isSameInstanceAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is <a>");
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <ab> is the same instance as <ab>");
     }
+  }
+
+  @Test public void isNotSameInstanceAsWithNulls() {
+    Object o = null;
+    ASSERT.that(o).isNotSameInstanceAs("a");
+  }
+
+  @Test public void isNotSameInstanceAsFailureWithNulls() {
+    Object o = null;
+    try {
+      ASSERT.that(o).isNotSameInstanceAs(null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is not the same instance as <null>");
+    }
+  }
+
+  @Test public void isNotSameInstanceAs() {
+    Object a = new Object();
+    Object b = new Object();
+    ASSERT.that(a).isNotSameInstanceAs(b);
+  }
+
+  @Test public void isNotSameInstanceAsFailure() {
+    Object a = new Object() { @Override public String toString() { return "Object 1"; } };
+    Object b = a;
+    try {
+      ASSERT.that(a).isNotSameInstanceAs(b);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is not the same instance as <Object 1>");
+    }
+  }
+
+  @Test public void isNotSameInstanceAsWithComparableObjects() {
+    Object a = "ab";
+    Object b = new StringBuilder().append("a").append('b').toString();
+    ASSERT.that(a).isNotSameInstanceAs(b);
   }
 
   @Test public void isNull() {
