@@ -30,6 +30,12 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
     super(failureStrategy, map);
   }
 
+  public void hasSize(int size) {
+    if (getSubject().size() != size) {
+      fail("has size", size);
+    }
+  }
+
   /**
    * Attests that the subject holds no objects, or fails.
    */

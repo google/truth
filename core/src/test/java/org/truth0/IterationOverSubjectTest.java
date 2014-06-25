@@ -16,7 +16,7 @@
 package org.truth0;
 
 import static org.truth0.Truth.ASSERT;
-import static org.truth0.subjects.IntegerSubject.INTEGER;
+import static org.truth0.subjects.LongSubject.LONG;
 import static org.truth0.subjects.StringSubject.STRING;
 
 import org.junit.Test;
@@ -36,9 +36,9 @@ public class IterationOverSubjectTest {
 
   @Test public void collectionItemsAreGreaterThan() {
     Iterable<Long> data = iterable(2l, 5l, 9l);
-    ASSERT.in(data).thatEach(INTEGER).isNotEqualTo(4);
+    ASSERT.in(data).thatEach(LONG).isNotEqualTo(4);
     try {
-      ASSERT.in(data).thatEach(INTEGER).isNotEqualTo(9);
+      ASSERT.in(data).thatEach(LONG).isNotEqualTo(9);
       ASSERT.fail("Expected assertion to fail on element 3.");
     } catch (AssertionError e) {
       if (e.getMessage().startsWith("Expected assertion to fail")) {

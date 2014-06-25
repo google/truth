@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2011 Google, Inc.
+ * Copyright (c) 2011 David Saff
+ * Copyright (c) 2011 Christian Gruber
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,33 +16,29 @@
  */
 package org.truth0.subjects;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
-import static org.truth0.Truth.ASSERT;
+import org.truth0.FailureStrategy;
 
 /**
- * Tests for Integer Subjects.
+ * Propositions for Short numeric subjects
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@RunWith(JUnit4.class)
-public class IntegerTest extends AnIntegerTest {
-  protected AnIntegerSubject assertThat(long target) {
-    return ASSERT.that((int) target);
-  }
-
-  protected IntegerSubject assertThat(Long target) {
-    if (target == null) {
-      return ASSERT.that((Integer) null);
-    } else {
-      return ASSERT.that(target.intValue());
-    }
+public class ShortSubject extends AnIntegerSubject<ShortSubject, Short> {
+  public ShortSubject(FailureStrategy failureStrategy, Short s) {
+    super(failureStrategy, s);
   }
 
   @Override
-  protected SubjectFactory getSubjectFactory() {
-    return IntegerSubject.INTEGER;
+  protected Long getSubjectAsLong() {
+    return getSubject() == null ? null : getSubject().longValue();
   }
+  
+  public static final SubjectFactory<ShortSubject, Short> SHORT =
+      new SubjectFactory<ShortSubject, Short>() {
+        @Override public ShortSubject getSubject(FailureStrategy fs, Short target) {
+          return new ShortSubject(fs, target);
+        }
+      };
 }

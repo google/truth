@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2011 Google, Inc.
+ * Copyright (c) 2011 David Saff
+ * Copyright (c) 2011 Christian Gruber
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,27 +22,23 @@ import org.junit.runners.JUnit4;
 import static org.truth0.Truth.ASSERT;
 
 /**
- * Tests for Integer Subjects.
+ * Tests for Long Subjects.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class IntegerTest extends AnIntegerTest {
+public class LongTest extends AnIntegerTest {
   protected AnIntegerSubject assertThat(long target) {
-    return ASSERT.that((int) target);
+    return ASSERT.that(target);
   }
 
-  protected IntegerSubject assertThat(Long target) {
-    if (target == null) {
-      return ASSERT.that((Integer) null);
-    } else {
-      return ASSERT.that(target.intValue());
-    }
+  protected LongSubject assertThat(Long target) {
+    return ASSERT.that(target);
   }
 
   @Override
   protected SubjectFactory getSubjectFactory() {
-    return IntegerSubject.INTEGER;
+    return LongSubject.LONG;
   }
 }

@@ -33,6 +33,18 @@ import java.util.Map;
  */
 @RunWith(JUnit4.class)
 public class MapTest {
+  @Test public void collectionHasSize() {
+    ASSERT.that(map(String.class, String.class, "A", "a")).hasSize(1);
+  }
+
+  @Test public void collectionHasSizeFailure() {
+    try {
+      ASSERT.that(map(String.class, String.class, "A", "a")).hasSize(2);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      ASSERT.that(e.getMessage()).contains("has size <2>");
+    }
+  }
 
   @Test public void mapIsEmpty() {
     ASSERT.that(map(String.class, String.class)).isEmpty();
