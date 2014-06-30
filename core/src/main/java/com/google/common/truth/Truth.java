@@ -54,7 +54,7 @@ public class Truth {
         }
       };
 
-  private static TestVerb ASSERT = new TestVerb(THROW_ASSERTION_ERROR);
+  private static final TestVerb ASSERT = new TestVerb(THROW_ASSERTION_ERROR);
 
   /* @deprecated prefer {@link com.google.common.truth.Truth#assert_()}. */
   public static TestVerb assert_() { return ASSERT; }
