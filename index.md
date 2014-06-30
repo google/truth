@@ -107,7 +107,7 @@ To prepare to use Truth, declare this dependency in maven or an equivalent:
 
 {% highlight xml %}
 <dependency>
-  <groupId>org.truth0</groupId>
+  <groupId>com.google.truth</groupId>
   <artifactId>truth</artifactId>
   <version>{{site.version}}</version>
 </dependency>
