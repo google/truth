@@ -59,7 +59,7 @@ public class StringSubject extends Subject<StringSubject, String> {
             getDisplaySubject(), expected.getClass().getName(), expected);
       } else if (!getSubject().equals(expected)) {
         if (expected instanceof String) {
-          failureStrategy.failComparing("", (String) expected, getSubject());
+          failureStrategy.failComparing(getDisplaySubject(), (String) expected, getSubject());
         } else {
           failWithRawMessage("Not true that %s equal to (%s)<%s>",
               getDisplaySubject(), expected.getClass().getName(), expected);
