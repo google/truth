@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.truth0;
+package com.google.common.truth.delegation;
 
 /**
- * @deprecated use {@link com.google.common.truth.TestVerb}.
+ * A custom object for demonstration of the delegation aproach to
+ * extending truth.
+ *
+ * @author Christian Gruber (cgruber@israfil.net)
  */
-@Deprecated
-public class TestVerb extends com.google.common.truth.TestVerb {
+public class Foo {
 
-  public TestVerb(FailureStrategy failureStrategy) {
-    super(failureStrategy);
+  final int value;
+
+  public Foo(int value) {
+    this.value = value;
   }
 
-  public TestVerb(FailureStrategy failureStrategy, String failureMessage) {
-    super(failureStrategy, failureMessage);
-  }
 }

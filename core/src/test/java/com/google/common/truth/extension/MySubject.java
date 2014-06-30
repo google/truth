@@ -13,19 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.truth0;
+package com.google.common.truth.extension;
+
+
+import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.Subject;
 
 /**
- * @deprecated use {@link com.google.common.truth.TestVerb}.
+ * A simple example Subject to demonstrate extension.
+ *
+ * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
-@Deprecated
-public class TestVerb extends com.google.common.truth.TestVerb {
+public class MySubject extends Subject<MySubject, MyType> {
 
-  public TestVerb(FailureStrategy failureStrategy) {
-    super(failureStrategy);
+  public MySubject(FailureStrategy failureStrategy, MyType subject) {
+    super(failureStrategy, subject);
   }
 
-  public TestVerb(FailureStrategy failureStrategy, String failureMessage) {
-    super(failureStrategy, failureMessage);
+  public void matches(MyType object) {
+    if (getSubject().value != object.value) {
+      fail("matches", getSubject(), object);
+    }
   }
+
 }

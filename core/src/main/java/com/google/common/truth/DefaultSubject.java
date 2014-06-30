@@ -13,19 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.truth0;
+package com.google.common.truth;
 
-/**
- * @deprecated use {@link com.google.common.truth.TestVerb}.
- */
-@Deprecated
-public class TestVerb extends com.google.common.truth.TestVerb {
 
-  public TestVerb(FailureStrategy failureStrategy) {
-    super(failureStrategy);
-  }
-
-  public TestVerb(FailureStrategy failureStrategy, String failureMessage) {
-    super(failureStrategy, failureMessage);
+public class DefaultSubject extends Subject<DefaultSubject, Object> {
+  public DefaultSubject(FailureStrategy failureStrategy, Object o) {
+    super(failureStrategy, o);
   }
 }

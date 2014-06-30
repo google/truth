@@ -15,29 +15,8 @@
  */
 package org.truth0;
 
-import org.truth0.util.StringUtil;
-
-import javax.annotation.Nullable;
-
-public abstract class FailureStrategy {
-
-  public void fail(String message) {
-    fail(message, null);
-  }
-
-  public void fail(String message, Throwable cause) {
-    throw new ThrowableAssertionError(message, cause);
-  }
-
-  public void failComparing(String message, CharSequence expected, CharSequence actual) {
-    fail(StringUtil.messageFor(message, expected, actual));
-  }
-
-  public static class ThrowableAssertionError extends AssertionError {
-    public ThrowableAssertionError(String message, @Nullable Throwable throwable) {
-      super(message);
-      if (throwable != null) initCause(throwable);
-    }
-  }
-
-}
+/**
+ * @deprecated use {@link com.google.common.truth.FailureStrategy}.
+ */
+@Deprecated
+public abstract class FailureStrategy extends com.google.common.truth.FailureStrategy {}

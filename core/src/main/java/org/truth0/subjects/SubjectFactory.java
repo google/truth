@@ -15,35 +15,28 @@
  */
 package org.truth0.subjects;
 
-
-import com.google.gwt.core.shared.GwtIncompatible;
-
-import org.truth0.FailureStrategy;
-import org.truth0.util.ReflectionUtil;
-
 /**
- * A custom subject factory which will return a FooSubject (which
- * is a Subject<Foo>).
- *
- * @author Christian Gruber (cgruber@israfil.net)
+ * @deprecated use {@link com.google.common.truth.SubjectFactory}.
  */
-public abstract class SubjectFactory<S extends Subject<S,T>, T> {
+@Deprecated
+public abstract class SubjectFactory<S extends com.google.common.truth.Subject<S,T>, T>
+    extends com.google.common.truth.SubjectFactory<S, T> {
 
-  @GwtIncompatible("reflection")
-  private static final int SUBJECT_TYPE_PARAMETER = 0;
+  public abstract S getSubject(org.truth0.FailureStrategy fs, T that);
 
-  @GwtIncompatible("reflection")
-  private final Class<S> type =
-      (Class<S>)ReflectionUtil.typeParameter(getClass(), SUBJECT_TYPE_PARAMETER);
-
-  public SubjectFactory() {}
-
-  public abstract S getSubject(FailureStrategy fs, T that);
-
-  @GwtIncompatible("reflection")
-  public Class<S> getSubjectClass() {
-    return type;
+  @Override public S getSubject(final com.google.common.truth.FailureStrategy fs, T that) {
+    org.truth0.FailureStrategy strategy = new org.truth0.FailureStrategy() {
+      @Override public void fail(String message) {
+        fs.fail(message);
+      }
+      @Override public void fail(String message, Throwable cause) {
+        fs.fail(message, cause);
+      }
+      @Override public void failComparing(
+          String message, CharSequence expected, CharSequence actual) {
+        fs.failComparing(message, expected, actual);
+      }
+    };
+    return this.getSubject(strategy, that);
   }
-
 }
-

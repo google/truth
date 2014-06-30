@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.truth0;
+package com.google.common.truth;
 
-/**
- * @deprecated use {@link com.google.common.truth.TestVerb}.
- */
-@Deprecated
-public class TestVerb extends com.google.common.truth.TestVerb {
+public interface Ordered {
 
-  public TestVerb(FailureStrategy failureStrategy) {
-    super(failureStrategy);
-  }
+  /**
+   * An additional assertion, implemented by some containment subjects
+   * which allows for a further constraint of orderedness.
+   */
+  void inOrder();
 
-  public TestVerb(FailureStrategy failureStrategy, String failureMessage) {
-    super(failureStrategy, failureMessage);
-  }
 }

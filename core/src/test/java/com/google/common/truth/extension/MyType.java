@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.truth0;
+package com.google.common.truth.extension;
 
 /**
- * @deprecated use {@link com.google.common.truth.TestVerb}.
+ * Sample custom type to test extension verbs.
+ *
+ * @author Christian Gruber (cgruber@israfil.net)
  */
-@Deprecated
-public class TestVerb extends com.google.common.truth.TestVerb {
+public class MyType {
 
-  public TestVerb(FailureStrategy failureStrategy) {
-    super(failureStrategy);
+  final int value;
+
+  public MyType(int value) {
+    this.value = value;
   }
 
-  public TestVerb(FailureStrategy failureStrategy, String failureMessage) {
-    super(failureStrategy, failureMessage);
-  }
 }
