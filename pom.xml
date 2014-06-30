@@ -7,7 +7,7 @@
     <artifactId>oss-parent</artifactId>
     <version>7</version>
   </parent>
-  <groupId>org.truth0</groupId>
+  <groupId>com.google.truth</groupId>
   <artifactId>truth-parent</artifactId>
   <version>0.21</version>
   <packaging>pom</packaging>
