@@ -21,8 +21,9 @@ package com.google.common.truth;
  * assertion and assumption semantics in a fluent style.
  *
  * Truth is the simplest entry point class. A developer can statically
- * import the ASSERT and ASSUME constants to get easy access to the
- * library's capabilities. Then, instead of writing:
+ * import the assert_() method to get easy access to the library's
+ * capabilities. Then, instead of writing:
+ *
  * <pre>{@code
  * Assert.assertEquals(a,b);
  * Assert.assertTrue(c);
@@ -31,12 +32,11 @@ package com.google.common.truth;
  * }</pre>
  * one would write:
  * <pre>{@code
- * ASSERT.that(a).equals(b);
- * ASSERT.that(c).isTrue();
- * ASSERT.that(d).contains(a).and().contains(b);
- * // or
- * ASSERT.that(d).containsAllOf(a, b);
- * ASSERT.that(d).containsAnyOf(a, q, z);
+ * assert_().that(aString).equals(bString);
+ * assert_().that(aBoolean).isTrue();
+ * assert_().that(collection).has().item(aString);
+ * assert_().that(collection).containsAllOf(aString, bString);
+ * assert_().that(collection).containsAnyOf(aString, qString, zString);
  * }</pre>
  *
  * Tests should be easier to read, and flow more clearly.
