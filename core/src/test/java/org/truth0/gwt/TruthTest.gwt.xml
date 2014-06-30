@@ -1,5 +1,0 @@
-<module>
-  <inherits name="com.google.common.base.Base"/>
-  <inherits name="com.google.gwt.junit.JUnit"/>
-  <inherits name="org.truth0.Truth"/>
-</module>

@@ -1,0 +1,5 @@
+<module>
+  <inherits name="com.google.common.base.Base"/>
+  <inherits name="com.google.common.truth.Truth"/>
+  <inherits name="com.google.gwt.junit.JUnit"/>
+</module>
