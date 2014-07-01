@@ -23,6 +23,7 @@ import static java.lang.reflect.Modifier.isStatic;
 import com.google.common.truth.ReflectionUtil;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
+import com.google.gwt.core.shared.GwtIncompatible;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -38,6 +39,7 @@ import java.util.List;
  * with an element in the provided collection.  This allows for a type-safe, IDE-discoverable
  * Subject in a for-each style.
  */
+@GwtIncompatible("java.lang.reflect.*")
 public class IteratingWrapperClassBuilder {
 
   /**

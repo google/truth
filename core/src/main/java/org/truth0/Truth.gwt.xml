@@ -1,5 +1,5 @@
 <module>
   <source path="" />
-  <super-source path="gwtemul" />
+  <inherits name="com.google.common.truth.Truth" />
   <inherits name="com.google.gwt.user.User" />
 </module>
