@@ -17,6 +17,8 @@ package com.google.common.truth.codegen;
 
 import static java.util.Collections.singleton;
 
+import com.google.gwt.core.shared.GwtIncompatible;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -75,6 +77,7 @@ import javax.tools.ToolProvider;
  * @see java.lang.ClassLoader
  * @see javax.tools.JavaCompiler
  */
+@GwtIncompatible("java.lang.reflect.*")
 public class CompilingClassLoader extends ClassLoader {
 
   /**
