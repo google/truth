@@ -50,7 +50,6 @@ import org.junit.internal.AssumptionViolatedException;
  */
 @GwtIncompatible("JUnit4")
 public class TruthJUnit {
-
   @GwtIncompatible("JUnit4")
   public static final FailureStrategy THROW_ASSUMPTION_ERROR =
       new FailureStrategy() {
@@ -79,4 +78,6 @@ public class TruthJUnit {
       if (throwable != null) initCause(throwable);
     }
   }
+  
+  private TruthJUnit() {}
 }
