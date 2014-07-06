@@ -18,6 +18,7 @@ package com.google.common.truth;
 import com.google.common.base.Optional;
 import com.google.gwt.core.shared.GwtIncompatible;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,11 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   @CheckReturnValue
   public IntegerSubject that(Integer target) {
     return new IntegerSubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public BigDecimalSubject that(BigDecimal target) {
+    return new BigDecimalSubject(getFailureStrategy(), target);
   }
 
   @CheckReturnValue
