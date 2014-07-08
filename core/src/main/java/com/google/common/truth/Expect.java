@@ -21,8 +21,8 @@ import com.google.auto.value.AutoValue;
 import com.google.common.truth.FailureStrategy.ThrowableAssertionError;
 import com.google.gwt.core.shared.GwtIncompatible;
 
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 @GwtIncompatible("JUnit4")
-public class Expect extends TestVerb implements MethodRule {
+public class Expect extends TestVerb implements TestRule {
   protected static class ExpectationGatherer extends
   FailureStrategy {
     List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
@@ -85,8 +85,7 @@ public class Expect extends TestVerb implements MethodRule {
   }
 
   // TODO(cgruber): Make this override TestRule when 4.9 is released.
-  @Override public Statement apply(final Statement base,
-      FrameworkMethod method, Object target) {
+  @Override public Statement apply(final Statement base, Description description) {
     return new Statement() {
       @Override public void evaluate() throws Throwable {
         inRuleContext = true;

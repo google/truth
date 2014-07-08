@@ -15,15 +15,13 @@
  */
 package com.google.common.truth;
 
-import com.google.common.truth.Expect;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.rules.MethodRule;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
 /**
@@ -40,13 +38,13 @@ public class ExpectTest {
 	private final Expect EXPECT = Expect.create();
 	private final ExpectedException thrown = ExpectedException.none();
 
-	@Rule public final MethodRule wrapper = new MethodRule() {
-		@Override
-		public Statement apply(Statement base, FrameworkMethod method, Object target) {
-			Statement expected = EXPECT.apply(base, method, target);
-			return thrown.apply(expected, method, target);
-		}
-	};
+	@Rule public final TestRule wrapper = new TestRule() {
+    @Override
+    public Statement apply(Statement base, Description description) {
+      Statement expected = EXPECT.apply(base, description);
+      return thrown.apply(expected, description);
+    }
+  };
 
 	@Test
 	public void expectTrue() {

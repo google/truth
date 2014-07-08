@@ -15,14 +15,13 @@
  */
 package com.google.common.truth;
 
-import com.google.common.truth.Expect;
 import com.google.common.truth.Expect.ExpectationGatherer;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
 import java.util.Arrays;
@@ -60,10 +59,9 @@ public class ExpectFailureTest {
       super(gatherer);
     }
 
-    @Override public Statement apply(Statement base, FrameworkMethod method, Object target) {
-      final Statement s = super.apply(base, method, target);
+    @Override public Statement apply(Statement base, Description description) {
+      final Statement s = super.apply(base, description);
       return new Statement() {
-
         @Override public void evaluate() throws Throwable {
           try {
             s.evaluate();
