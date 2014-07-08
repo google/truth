@@ -16,14 +16,17 @@
 package com.google.common.truth.delegation;
 
 import static com.google.common.truth.delegation.FooSubject.FOO;
-
 import static org.truth0.Truth.ASSERT;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 /**
  * A test that's more or less intended to show how one uses an extended verb.
  *
  */
+@RunWith(JUnit4.class)
 public class DelegationTest {
 
   @Test public void customTypeProposition() {
