@@ -35,7 +35,7 @@ import java.util.Arrays;
 public class IterationOverSubjectTest {
 
   @Test public void collectionItemsAreGreaterThan() {
-    Iterable<Long> data = iterable(2l, 5l, 9l);
+    Iterable<Long> data = iterable(2L, 5L, 9L);
     ASSERT.in(data).thatEach(INTEGER).isNotEqualTo(4);
     try {
       ASSERT.in(data).thatEach(INTEGER).isNotEqualTo(9);

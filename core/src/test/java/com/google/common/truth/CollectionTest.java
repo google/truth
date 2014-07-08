@@ -15,10 +15,9 @@
  */
 package com.google.common.truth;
 
-import com.google.common.truth.Ordered;
-
 import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -62,7 +61,7 @@ public class CollectionTest {
   }
 
   @Test public void collectionHasAnyOfWithNullInThirdAndFinalPosition() {
-    ASSERT.that(collection(1, null, 3)).has().anyOf(4, 5, null);
+    ASSERT.that(collection(1, null, 3)).has().anyOf(4, 5, (Integer) null);
   }
 
   @Test public void collectionHasAnyOfFailure() {
@@ -87,7 +86,7 @@ public class CollectionTest {
   }
 
   @Test public void collectionHasAllOfWithNullAtThirdAndFinalPosition() {
-    ASSERT.that(collection(1, null, 3)).has().allOf(1, 3, null);
+    ASSERT.that(collection(1, null, 3)).has().allOf(1, 3, (Integer) null);
   }
 
   @Test public void collectionHasAllOfFailure() {
@@ -212,7 +211,7 @@ public class CollectionTest {
   }
 
   @Test public void collectionHasExactlyWithNullOutOfOrder() {
-    ASSERT.that(collection(1, null, 3)).has().exactly(1, 3, null);
+    ASSERT.that(collection(1, null, 3)).has().exactly(1, 3, (Integer) null);
   }
 
   @Test public void collectionHasExactlyMissingItemFailure() {
