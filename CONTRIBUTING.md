@@ -45,7 +45,7 @@ again.
      
   1. All contributions must be licensed Apache 2.0 and all files must have
      a copy of the boilerplate licence comment (can be copied from an existing
-     file.  Files should be formatted according to Google's [java style guide][].
+     file).  Files should be formatted according to Google's [java style guide][].
 
   1. Do your best to have [well-formed commit messages][] for each change.
      This provides consistency throughout the project, and ensures that commit
