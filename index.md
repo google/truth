@@ -42,7 +42,7 @@ whereas:
 
 {% highlight java %}
 Set<Foo> foo = ...;
-ASSERT.that(foo).isEmpty()
+assert_().that(foo).isEmpty()
 {% endhighlight %}
 
 reports:
@@ -56,38 +56,48 @@ org.truth0.FailureStrategy$ThrowableAssertionError: Not true that <[a]> is empty
 Truth's propositions are intended to read (more or less) like English, and thereby be more
 obvious in their intent, as well as report meaningful errors about the information.  
 
+## Alternate forms
+
+These three are all equivalent - your project or organization can choose the style it prefers.
+
+{% highlight java %}
+ASSERT.that(someInt).isEqualTo(5);     // The original.
+assert_().that(someInt).isEqualTo(5);  // When all-caps is too 'shouty'
+assertThat(someInt).isEqualTo(5);      // For folks that like hamcrest or fest
+{% endhighlight %}
+
 ## Common and handy propositions
 
 ### Basics
 
 {% highlight java %}
-ASSERT.that(someInt).isEqualTo(5);
-ASSERT.that(aString).isEqualTo("Blah Foo");
-ASSERT.that(aString).contains("lah");
-ASSERT.that(foo).isNotNull();
+assert_().that(someInt).isEqualTo(5);
+assert_().that(aString).isEqualTo("Blah Foo");
+assert_().that(aString).contains("lah");
+assert_().that(foo).isNotNull();
 {% endhighlight %}
 
 ### Collections and Maps
 
 {% highlight java %}
-ASSERT.that(someCollection).has().allOf("a", "b", "c").inOrder(); // contents in order
-ASSERT.that(someCollection).has().exactly("a", "b", "c", "d") // all and only these items
-ASSERT.that(someCollection).has().noneOf("q", "r", "s") // none of these items
-ASSERT.that(aMap).hasField("foo").withValue("bar"); // given field, with the given value. 
-ASSERT.that(anIterable).iteratesAs("a", "b", "c"); // Uses the iterator.
+assert_().that(someCollection).has().allOf("a", "b", "c").inOrder(); // contents in order
+assert_().that(someCollection).has().exactly("a", "b", "c", "d") // all and only these items
+assert_().that(someCollection).has().noneOf("q", "r", "s") // none of these items
+assert_().that(aMap).hasField("foo").withValue("bar"); // given field, with the given value. 
+assert_().that(anIterable).iteratesAs("a", "b", "c"); // Uses the iterator.
 {% endhighlight %}
 
 ### Custom Error Messages
 
 {% highlight java %}
 // Reports: The subject is unexpectedly false
-ASSERT.that(myBooleanResult).isTrue;
+assert_().that(myBooleanResult).isTrue;
 
 // Reports: "hasError()" is unexpectedly false
-ASSERT.that(myBooleanResult).named("hasError()").isTrue;
+assert_().that(myBooleanResult).named("hasError()").isTrue;
 
 // Reports: My custom Message
-ASSERT.withFailureMessage("My custom message").that(myBooleanResult).named("hasError()").isTrue;
+assert_().withFailureMessage("My custom message").that(myBooleanResult).named("hasError()").isTrue;
 {% endhighlight %}
 
 ## New types, new propositions
@@ -97,8 +107,8 @@ for these types, whose usage might look like this:
 
 {% highlight java %}
 // customType() return an adapter, or SubjectFactory
-ASSERT.about(customType()).that(theObject).hasSomeComplexProperty(); // specialized assertion
-ASSERT.about(customType()).that(theObject).isEqualTo(anotherObject); // overridden equality
+assert_().about(customType()).that(theObject).hasSomeComplexProperty(); // specialized assertion
+assert_().about(customType()).that(theObject).isEqualTo(anotherObject); // overridden equality
 {% endhighlight %}
 
 # Setup
