@@ -66,11 +66,12 @@ public class TruthJUnit {
       };
 
   @GwtIncompatible("JUnit4")
-  private static final TestVerb ASSUME = new TestVerb(THROW_ASSUMPTION_ERROR);
+  public static final TestVerb ASSUME = new TestVerb(THROW_ASSUMPTION_ERROR);
 
   @GwtIncompatible("JUnit4")
   public static final TestVerb assume() { return ASSUME; }
 
+  @SuppressWarnings("serial") // Super serial.
   @GwtIncompatible("JUnit4")
   private static class ThrowableAssumptionViolatedException extends AssumptionViolatedException {
     public ThrowableAssumptionViolatedException(String message, Throwable throwable) {
@@ -78,6 +79,6 @@ public class TruthJUnit {
       if (throwable != null) initCause(throwable);
     }
   }
-  
+
   private TruthJUnit() {}
 }
