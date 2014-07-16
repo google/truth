@@ -34,7 +34,6 @@
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
       <version>${gwt.version}</version>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.google.auto.value</groupId>
