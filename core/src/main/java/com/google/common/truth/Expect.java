@@ -18,8 +18,8 @@ package com.google.common.truth;
 import static com.google.common.truth.StringUtil.messageFor;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.FailureStrategy.ThrowableAssertionError;
-import com.google.gwt.core.shared.GwtIncompatible;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;

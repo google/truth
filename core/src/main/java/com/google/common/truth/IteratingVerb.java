@@ -15,13 +15,13 @@
  */
 package com.google.common.truth;
 
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.truth.codegen.CompilingClassLoader;
 import com.google.common.truth.codegen.CompilingClassLoader.CompilerException;
 import com.google.common.truth.codegen.IteratingWrapperClassBuilder;
-import com.google.gwt.core.shared.GwtIncompatible;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

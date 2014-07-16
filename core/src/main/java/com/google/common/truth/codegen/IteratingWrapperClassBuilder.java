@@ -20,10 +20,10 @@ import static java.lang.reflect.Modifier.isFinal;
 import static java.lang.reflect.Modifier.isPrivate;
 import static java.lang.reflect.Modifier.isStatic;
 
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.ReflectionUtil;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
-import com.google.gwt.core.shared.GwtIncompatible;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
