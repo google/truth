@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 
-import com.google.gwt.core.shared.GwtIncompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 /**
  * A custom subject factory which will return a FooSubject (which

@@ -15,10 +15,10 @@
  */
 package org.truth0;
 
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.TestVerb;
 import com.google.common.truth.TruthJUnit;
-import com.google.gwt.core.shared.GwtIncompatible;
 
 /**
  * deprecated please use {@link com.google.common.truth.Truth#assert_()} and

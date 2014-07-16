@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.StringUtil.format;
 
-import com.google.gwt.core.shared.GwtIncompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 import java.lang.reflect.Field;
 

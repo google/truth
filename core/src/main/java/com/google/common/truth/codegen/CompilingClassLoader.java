@@ -17,7 +17,7 @@ package com.google.common.truth.codegen;
 
 import static java.util.Collections.singleton;
 
-import com.google.gwt.core.shared.GwtIncompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

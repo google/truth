@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.StringUtil.messageFor;
 
-import com.google.gwt.core.shared.GwtIncompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 import org.junit.internal.AssumptionViolatedException;
 

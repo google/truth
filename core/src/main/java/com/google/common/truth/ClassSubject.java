@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 
-import com.google.gwt.core.shared.GwtIncompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 public class ClassSubject extends Subject<ClassSubject, Class<?>> {
   public ClassSubject(FailureStrategy failureStrategy, Class<?> o) {

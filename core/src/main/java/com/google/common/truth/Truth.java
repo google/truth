@@ -15,8 +15,8 @@
  */
 package com.google.common.truth;
 
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
-import com.google.gwt.core.shared.GwtIncompatible;
 
 import java.util.Collection;
 import java.util.List;
