@@ -152,8 +152,8 @@ http://search.maven.org/remotecontent?filepath=org/truth0/truth/{{site.version}}
 
 # More Detailed Usage Information
 
-For more information, check out the section [about how truth works](/usage#how-does-truth-work), 
-and more [detailed inventory of built-in propositions](/usage#built-in-propositions).
+For more information, check out the section [about how truth works](/truth/usage#how-does-truth-work), 
+and more [detailed inventory of built-in propositions](/truth/usage#built-in-propositions).
 
 # Acknowledgements
 
