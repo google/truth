@@ -22,8 +22,11 @@ Planned improvements and changes
 pre-1.0
 -------
 
-  - Basic form of `assert_().that(object).somePredicate();`
-  - Alternate forms of `ASSERT.that(...)...` and `assertThat(...)...`
+  - Basic form of:
+    - `assert_().that(object).somePredicate();`
+    - `assume().that(object).somePredicate();`
+    - `expect().that(object).somePredicate();`
+  - Shorthand for `assert_().that(...)...` as `assertThat(...)...`
   - Support for Assertions, Assumptions, and Expectations
   - Iterative form, such as `ASSERT.in(collection).thatEach(type).somePredicate();`
   - Strongly typed proposition classes (Subjects) including support for
