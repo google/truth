@@ -58,22 +58,22 @@ obvious in their intent, as well as report meaningful errors about the informati
 
 ## Alternate ways to call in to Truth
 
-There are two ways to access Truth.  Truth orients around verb (assert, assume, expect) 
+There are two ways to access Truth.  Truth orients around a verb (assert, assume, expect) 
 which implies a different behavior for failure.  Because assert is the most common, and it
 is a java keyword, a single method short-hand similar to hamcrest and FEST is there for
 normal assertion usage:
 
 {% highlight java %}
-assertThat(someInt).isEqualTo(5);     // Convene
+assertThat(someInt).isEqualTo(5);     // Convenence method to access assert_().that()
 {% endhighlight %}
 
 However, for non-assert cases, or where functionality requires access to the "TestVerb",
 a form that returns the raw verb object is available:
 
 {% highlight java %}
-assert_().that(someInt).isEqualTo(5); // (assert is a keyword in java, so no assert().that()
-assert_().about(...).that(...)...
-assume().that(someValue).isNotNull(); // 
+assert_().that(someInt).isEqualTo(5); // Assert is a keyword in java, so no assert().that()
+assert_().about(...).that(...)...     // Extensibility (see later in this page)
+assume().that(someValue).isNotNull(); // JUnit-style Assume behavior.
 
 {% endhighlight %}
 
