@@ -110,7 +110,7 @@ assertThat(anIterable).iteratesAs("a", "b", "c");             // has items using
 
 {% highlight java %}
 // Reports: The subject is unexpectedly false
-assertThat(myBooleanResult).isTrue;
+assertThat(myBooleanResult).isTrue();
 
 // Reports: "hasError()" is unexpectedly false
 assertThat(myBooleanResult).named("hasError()").isTrue();
