@@ -78,8 +78,7 @@ assume().that(someValue).isNotNull(); // JUnit-style Assume behavior.
 {% endhighlight %}
 
 Truth's documentation will use `assertThat(...)` for all examples of assertion, unless 
-otherwise required by functionality, though `assert_().that(...)` would work if an 
-organization or team preferred it.
+otherwise required by functionality, though `assert_().that(...)` would also work.
 
 Any operation that can be done with `assert_()` can be done with `assume()` or any other
 way to get the TestVerb.
@@ -98,11 +97,13 @@ assertThat(foo).isNotNull();
 ### Collections and Maps
 
 {% highlight java %}
-assertThat(someCollection).has().allOf("a", "b", "c").inOrder(); // contents in order
-assertThat(someCollection).has().exactly("a", "b", "c", "d") // all and only these items
-assertThat(someCollection).has().noneOf("q", "r", "s") // none of these items
-assertThat(aMap).hasField("foo").withValue("bar"); // given field, with the given value. 
-assertThat(anIterable).iteratesAs("a", "b", "c"); // Uses the iterator.
+assertThat(someCollection).has().item("a");                   // contains this item
+assertThat(someCollection).has().allOf("a", "b").inOrder();   // has items in the given order
+assertThat(someCollection).has().exactly("a", "b", "c", "d"); // all and only these items
+assertThat(someCollection).has().noneOf("q", "r", "s");       // none of these items
+assertThat(aMap).hasKey("foo").withValue("bar");              // given key, with given value
+assertThat(amInstance).hasField("foo").withValue("bar");      // given field, with given value
+assertThat(anIterable).iteratesAs("a", "b", "c");             // has items using the iterator
 {% endhighlight %}
 
 ### Custom Error Messages
@@ -112,19 +113,20 @@ assertThat(anIterable).iteratesAs("a", "b", "c"); // Uses the iterator.
 assertThat(myBooleanResult).isTrue;
 
 // Reports: "hasError()" is unexpectedly false
-assertThat(myBooleanResult).named("hasError()").isTrue;
+assertThat(myBooleanResult).named("hasError()").isTrue();
 
 // Reports: My custom Message
-assert_().withFailureMessage("My custom message").that(myBooleanResult).named("hasError()").isTrue;
+assert_().withFailureMessage("My arbitrary custom message")
+    .that(myBooleanResult).named("hasError()").isTrue();
 {% endhighlight %}
 
 ## New types, new propositions
 
-Truth is also designed to be exensible to new types, and developers can create custom "Subjects"
-for these types, whose usage might look like this:
+Truth is also designed to be exensible to new types, and developers can create
+custom "Subjects" for these types, whose usage might look like this:
 
 {% highlight java %}
-// customType() return an adapter, or SubjectFactory
+// customType() returns an adapter (SubjectFactory).
 assert_().about(customType()).that(theObject).hasSomeComplexProperty(); // specialized assertion
 assert_().about(customType()).that(theObject).isEqualTo(anotherObject); // overridden equality
 {% endhighlight %}
