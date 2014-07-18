@@ -3,11 +3,37 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.google.truth</groupId>
+    <groupId>org.truth0</groupId>
     <artifactId>truth-parent</artifactId>
     <version>0.23</version>
   </parent>
   <artifactId>truth</artifactId>
+  <description>
+    Relocates org.truth0:truth to com.google.truth:truth.
+    See http://maven.apache.org/guides/mini/guide-relocation.html
+  </description>
+  <distributionManagement>
+    <relocation>
+      <groupId>com.google.truth</groupId>
+      <!-- 2 space indentation below to not bork maven's presentation of the message. -->
+      <message>
+  #################################################################################################
+  #
+  #  The Truth project has moved to the com.google.truth groupId.
+  #
+  #  Your project has a dependency on
+  #        ${project.groupId}:${project.artifactId}:${project.version}
+  #  and this relocation is redirecting it to
+  #        com.google.truth:${project.artifactId}:${project.version}
+  #
+  #  Please update your dependencies and use the newer artifacts.
+  #
+  #  Use mvn dependency:tree to find out how dependencies are resolved.
+  #
+  #################################################################################################
+      </message>
+    </relocation>
+  </distributionManagement>
   <properties>
     <javadoc.param></javadoc.param>
     <gwt.version>2.6.1</gwt.version>
@@ -34,7 +60,8 @@
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
       <version>${gwt.version}</version>
-      <optional>true</optional>
+      <type>jar</type>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.auto.value</groupId>
