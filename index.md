@@ -102,7 +102,7 @@ assertThat(someCollection).has().allOf("a", "b").inOrder();   // has items in th
 assertThat(someCollection).has().exactly("a", "b", "c", "d"); // all and only these items
 assertThat(someCollection).has().noneOf("q", "r", "s");       // none of these items
 assertThat(aMap).hasKey("foo").withValue("bar");              // given key, with given value
-assertThat(amInstance).hasField("foo").withValue("bar");      // given field, with given value
+assertThat(anInstance).hasField("foo").withValue("bar");      // given field, with given value
 assertThat(anIterable).iteratesAs("a", "b", "c");             // has items using the iterator
 {% endhighlight %}
 
