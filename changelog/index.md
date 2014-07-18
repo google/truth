@@ -19,11 +19,16 @@ Planned improvements and changes
     - StringSubject, IntegerSubject, etc.
 
 
-pre-1.0
+1.0-SNAPSHOT
 -------
 
-  - Basic form of `ASSERT.that(object).somePredicate();`
-  - Support for Assertions, Assumptions, and Expectations
+  - Basic form of:
+    - `verb().that(subject).somePredicate();`
+  - Shorthand for `assert_().that(...)...` as `assertThat(...)...`
+  - Support for different "failure strategies":
+    - Assertions: Immediate short-circuited failure
+    - Assumptions: Skipping the test as invalid (useful in parameterized tests)
+    - Expectations: Error at end of test, gathering failures for later reporting.
   - Iterative form, such as `ASSERT.in(collection).thatEach(type).somePredicate();`
   - Strongly typed proposition classes (Subjects) including support for
     - Arbitrary objects
