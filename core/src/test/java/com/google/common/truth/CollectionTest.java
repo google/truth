@@ -106,7 +106,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has all of");
+      ASSERT.that(e.getMessage()).contains("contains all elements in");
       ASSERT.that(e.getMessage()).contains("is missing");
       ASSERT.that(e.getMessage()).contains("2 [2 copies], 4");
     }
@@ -152,7 +152,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has all in order");
+      ASSERT.that(e.getMessage()).contains("contains all elements in order");
     }
   }
 
@@ -165,8 +165,8 @@ public class CollectionTest {
       ASSERT.that(collection(1, 2, 3)).has().noneOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
-          .isEqualTo("Not true that <[1, 2, 3]> has none of <[1, 2, 4]>. It contains <[1, 2]>");
+      ASSERT.that(e.getMessage()).isEqualTo(
+          "Not true that <[1, 2, 3]> contains no elements in <[1, 2, 4]>. It contains <[1, 2]>");
     }
   }
 
@@ -175,8 +175,8 @@ public class CollectionTest {
       ASSERT.that(collection(1, 2, 2, 3)).has().noneOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
-          .isEqualTo("Not true that <[1, 2, 2, 3]> has none of <[1, 2, 4]>. It contains <[1, 2]>");
+      ASSERT.that(e.getMessage()).isEqualTo(
+          "Not true that <[1, 2, 2, 3]> contains no elements in <[1, 2, 4]>. It contains <[1, 2]>");
     }
   }
 
@@ -185,8 +185,8 @@ public class CollectionTest {
       ASSERT.that(collection(1, 2, 3)).has().noneOf(1, 2, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
-          .isEqualTo("Not true that <[1, 2, 3]> has none of <[1, 2, 2, 4]>. It contains <[1, 2]>");
+      ASSERT.that(e.getMessage()).isEqualTo(
+          "Not true that <[1, 2, 3]> contains no elements in <[1, 2, 2, 4]>. It contains <[1, 2]>");
     }
   }
 

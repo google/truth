@@ -15,13 +15,23 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.SubjectUtils.accumulate;
+import static com.google.common.truth.SubjectUtils.countDuplicates;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
  * @author Kevin Bourrillion
  */
-public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>> extends Subject<S, C> {
+public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>>
+    extends Subject<S, C> implements Contains {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> create(
@@ -94,5 +104,139 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public void iteratesAs(Object... expectedItems) {
     iteratesAs(Arrays.asList(expectedItems));
+  }
+
+  @Override
+  public void contains(Object element) {
+    if (!Iterables.contains(getSubject(), element)) {
+      fail("contains", element);
+    }
+  }
+
+  @Override
+  public void doesNotContain(Object element) {
+    if (Iterables.contains(getSubject(), element)) {
+      fail("does not contain", element);
+    }
+  }
+
+  @Override
+  public void containsAnyOf(Object first, Object... rest) {
+    contains("contains any of", accumulate(first, rest));
+  }
+
+  @Override
+  public void containsAnyIn(Iterable<?> expected) {
+    contains("contains any element in", expected);
+  }
+
+  private void contains(String failVerb, Iterable<?> expected) {
+    for (Object item : expected) {
+      if (Iterables.contains(getSubject(), item)) {
+        return;
+      }
+    }
+    fail(failVerb, expected);
+  }
+
+  @Override
+  public Ordered containsAllOf(Object first, Object... rest) {
+    return containsAll("contains all of", accumulate(first, rest));
+  }
+
+  @Override
+  public Ordered containsAllIn(Iterable<?> expected) {
+    return containsAll("contains all elements in", expected);
+  }
+
+  private Ordered containsAll(String failVerb, Iterable<?> expected) {
+    Collection<?> toRemove = Lists.newArrayList(expected);
+    // remove each item in the subject, as many times as it occurs in the subject.
+    for (Object item : getSubject()) {
+      toRemove.remove(item);
+    }
+    if (!toRemove.isEmpty()) {
+      failWithBadResults(failVerb, expected, "is missing", countDuplicates(toRemove));
+    }
+    return new InOrder("contains all elements in order", expected);
+  }
+
+  @Override
+  public Ordered containsOnlyElements(Object first, Object... rest) {
+    return containsExactly("contains only", accumulate(first, rest));
+  }
+
+  @Override
+  public Ordered containsOnlyElementsIn(Iterable<?> expected) {
+    return containsExactly("contains only the elements in", expected);
+  }
+
+  private Ordered containsExactly(String failVerb, Iterable<?> required) {
+    Collection<?> toRemove = Lists.newArrayList(required);
+    Collection<Object> extra = new ArrayList<Object>();
+    // remove each item in the subject, as many times as it occurs in the subject.
+    for (Object item : getSubject()) {
+      if (!toRemove.remove(item)) {
+        extra.add(item);
+      }
+    }
+    if (!toRemove.isEmpty()) {
+      failWithBadResults(failVerb, required, "is missing", countDuplicates(toRemove));
+    }
+    if (!extra.isEmpty()) {
+      failWithBadResults(failVerb, required, "has unexpected items", countDuplicates(extra));
+    }
+    return new InOrder("contains only these elements in order", required);
+  }
+
+  @Override
+  public void containsNoneOf(Object first, Object... rest) {
+    containsNone("contains none of", accumulate(first, rest));
+  }
+
+  @Override
+  public void containsNoneIn(Iterable<?> excluded) {
+    containsNone("contains no elements in", excluded);
+  }
+
+  private void containsNone(String failVerb, Iterable<?> excluded) {
+    Collection<Object> present = new ArrayList<Object>();
+    for (Object item : Sets.newHashSet(excluded)) {
+      if (Iterables.contains(getSubject(), item)) {
+        present.add(item);
+      }
+    }
+    if (!present.isEmpty()) {
+      failWithBadResults(failVerb, excluded, "contains", present);
+    }
+  }
+
+  private class InOrder implements Ordered {
+    private final String check;
+    private final Iterable<?> required;
+
+    InOrder(String check, Iterable<?> required) {
+      this.check = check;
+      this.required = required;
+    }
+
+    @Override public void inOrder() {
+      Iterator<T> actualItems = getSubject().iterator();
+      for (Object expected : required) {
+        if (!actualItems.hasNext()) {
+          fail(check, required);
+        } else {
+          Object actual = actualItems.next();
+          if (actual == expected || actual != null && actual.equals(expected)) {
+            continue;
+          } else {
+            fail(check, required);
+          }
+        }
+      }
+      if (actualItems.hasNext()) {
+        fail(check, required);
+      }
+    }
   }
 }

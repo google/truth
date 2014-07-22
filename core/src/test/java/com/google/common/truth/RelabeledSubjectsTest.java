@@ -60,8 +60,8 @@ public class RelabeledSubjectsTest {
       ASSERT.that(Arrays.asList("a", "b", "c")).named("crazy list").has().allOf("c", "d");
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
-          .is("Not true that \"crazy list\" has all of <[c, d]>. It is missing <[d]>");
+      ASSERT.that(expected.getMessage()).isEqualTo(
+          "Not true that \"crazy list\" contains all elements in <[c, d]>. It is missing <[d]>");
     }
   }
 
