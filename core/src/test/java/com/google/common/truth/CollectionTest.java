@@ -242,7 +242,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has exactly");
+      ASSERT.that(e.getMessage()).contains("contains only");
       ASSERT.that(e.getMessage()).contains("is missing");
       ASSERT.that(e.getMessage()).contains("2 [2 copies]");
     }
@@ -254,7 +254,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has exactly");
+      ASSERT.that(e.getMessage()).contains("contains only");
       ASSERT.that(e.getMessage()).contains("is missing");
       ASSERT.that(e.getMessage()).contains("2 [2 copies], 4");
     }
@@ -266,7 +266,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has exactly");
+      ASSERT.that(e.getMessage()).contains("contains only");
       ASSERT.that(e.getMessage()).contains("has unexpected items");
       ASSERT.that(e.getMessage()).contains("2 [2 copies]");
     }
@@ -312,7 +312,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has exactly in order");
+      ASSERT.that(e.getMessage()).contains("contains only these elements in order");
     }
   }
 
