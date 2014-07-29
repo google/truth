@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
 
@@ -46,17 +45,6 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   @Override public void isEmpty() {
     if (!getSubject().isEmpty()) {
       fail("is empty");
-    }
-  }
-
-  /**
-   * Asserts that a Collection has a specific size.
-   */
-  public void hasSize(int expectedSize) {
-    checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    int actualSize = getSubject().size();
-    if (actualSize != expectedSize) {
-      failWithBadResults("has a size of", expectedSize, "is", actualSize);
     }
   }
 

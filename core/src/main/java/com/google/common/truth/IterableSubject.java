@@ -15,6 +15,10 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
+import com.google.common.collect.Iterables;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -49,6 +53,17 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   public void isNotEmpty() {
     if (!getSubject().iterator().hasNext()) {
       fail("is not empty");
+    }
+  }
+
+  /**
+   * Asserts that an Iterable has a specific size.
+   */
+  public final void hasSize(int expectedSize) {
+    checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
+    int actualSize = Iterables.size(getSubject());
+    if (actualSize != expectedSize) {
+      failWithBadResults("has a size of", expectedSize, "is", actualSize);
     }
   }
 

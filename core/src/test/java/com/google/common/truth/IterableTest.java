@@ -19,6 +19,8 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
 
+import com.google.common.collect.ImmutableList;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +36,22 @@ import java.util.Arrays;
  */
 @RunWith(JUnit4.class)
 public class IterableTest {
+
+  @Test public void hasSize() {
+    ASSERT.that(ImmutableList.of(1, 2, 3)).hasSize(3);
+  }
+
+  @Test public void hasSizeZero() {
+    ASSERT.that(ImmutableList.of()).hasSize(0);
+  }
+
+  @Test public void hasSizeNegative() {
+    try {
+      ASSERT.that(ImmutableList.of(1, 2, 3)).hasSize(-1);
+      fail();
+    } catch (IllegalArgumentException expected) {
+    }
+  }
 
   @Test public void iteratesOver() {
     ASSERT.that(iterable(1, 2, 3)).iteratesAs(1, 2, 3);

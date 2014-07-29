@@ -18,8 +18,6 @@ package com.google.common.truth;
 import static org.junit.Assert.fail;
 import static org.truth0.Truth.ASSERT;
 
-import com.google.common.collect.ImmutableList;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -36,22 +34,6 @@ import java.util.Collection;
  */
 @RunWith(JUnit4.class)
 public class CollectionTest {
-
-  @Test public void collectionSize() {
-    ASSERT.that(collection(1, 2, 3)).hasSize(3);
-  }
-
-  @Test public void emptyCollectionSize() {
-    ASSERT.that(ImmutableList.of()).hasSize(0);
-  }
-
-  @Test public void collectionNegativeSize() {
-    try {
-      ASSERT.that(collection(1, 2, 3)).hasSize(-1);
-      fail();
-    } catch (IllegalArgumentException expected) {
-    }
-  }
 
   @Test public void collectionHasItem() {
     ASSERT.that(collection(1, 2, 3)).has().item(1);
