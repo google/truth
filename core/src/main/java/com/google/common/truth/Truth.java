@@ -30,22 +30,23 @@ import javax.annotation.CheckReturnValue;
  * assertion and assumption semantics in a fluent style.
  *
  * Truth is the simplest entry point class. A developer can statically
- * import the assert_() method to get easy access to the library's
+ * import the assertThat() method to get easy access to the library's
  * capabilities. Then, instead of writing:
  *
  * <pre>{@code
- * Assert.assertEquals(a,b);
+ * Assert.assertEquals(a, b);
  * Assert.assertTrue(c);
- * Assert.assertTrue(d.contains(a) && d.contains(e));
- * Assert.assertTrue(d.contains(a) || d.contains(q) || d.contains(z));
+ * Assert.assertTrue(d.contains(a));
+ * Assert.assertTrue(d.contains(a) && d.contains(b));
+ * Assert.assertTrue(d.contains(a) || d.contains(b) || d.contains(c));
  * }</pre>
  * one would write:
  * <pre>{@code
- * assert_().that(aString).equals(bString);
- * assert_().that(aBoolean).isTrue();
- * assert_().that(collection).has().item(aString);
- * assert_().that(collection).containsAllOf(aString, bString);
- * assert_().that(collection).containsAnyOf(aString, qString, zString);
+ * assertThat(a).isEqualTo(b);
+ * assertThat(c).isTrue();
+ * assertThat(d).has().item(a);
+ * assertThat(d).has().allOf(a, b);
+ * assertThat(d).has().anyOf(a, b, c);
  * }</pre>
  *
  * Tests should be easier to read, and flow more clearly.
