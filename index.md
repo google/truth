@@ -64,7 +64,7 @@ is a java keyword, a single method short-hand similar to hamcrest and FEST is th
 normal assertion usage:
 
 {% highlight java %}
-assertThat(someInt).isEqualTo(5);     // Convenence method to access assert_().that()
+assertThat(someInt).isEqualTo(5);     // Convenience method to access assert_().that()
 {% endhighlight %}
 
 However, for non-assert cases, or where functionality requires access to the "TestVerb",
