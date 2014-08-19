@@ -39,12 +39,6 @@ Truth would have you write:
 
     ASSERT.that(blah).isEmpty();
     
-  * [More examples are here](/detail)
-
-# More Comprehensive Examples
-
-More comprehensive examples [can be found in the Example section](/detail)
-
 # The Guts
 
 
@@ -114,7 +108,17 @@ tests, rather than lots of small, clear tests.
 
 ## Extensibility
 
-See [Extending Truth](/extension)
+Truth is extensible in a couple of ways - new assertions, and alternative behaviors on failure.  
+
+### Supporting new types or alternative proposition for known types.
+
+One can add additional (or alternative) sets of propositions via subtypes of Subject and SubjectFactory and the about() method. An example of this can be found in [this test of about() delegation](https://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/delegation/DelegationTest.java).
+
+One could add a new Subject for one's custom type, or treat a type as if it were another, say, to treat strings as if they were URIs, etc.  SubjectFactory provides a means by which one can link a type to a given Subject which contains propositions about that type.
+
+### Interpretations of proposition failure
+
+Additional or alternative strategies for failure can be created by implementing a FailureStrategy and providing a hook for it.  Examples of different failure strategies are Assertion, (junit-style) Assumption, or c-style expectation (fail-at-end error gathering).  Another example of alternative uses include providing a custom exception type to permit more easy expected exception trapping where AssertionError is expected from the code under test, which is done by the [compile-testing](http://github.com/google/compile-testing) library. 
 
 ## Categorically testing the contents of collections
 
@@ -160,7 +164,7 @@ Truth lets you re-label a subject, so the error message is more meaningful.
 Taking the example above:
 
 	boolean calculationResult = ...; // Assume the result of the calculation is false.
-    ASSERT.that(calculationResult).labeled("result").isTrue();
+    ASSERT.that(calculationResult).named("result").isTrue();
 
 This would result in an error message of:
 
@@ -209,16 +213,16 @@ generated properties created by some frameworks like Lombok and Tapestry.
 
 ## Basic operations on any object
 
-### Labeling
+### Labeling the subject
 
      Foo foo = null;
-     ASSERT.that(something).labeled("foo").isNotNull();
+     ASSERT.that(something).named("foo").isNotNull();
      
 results in a more descriptive message:
 
      Not true that null reference "foo" is not null.
 
-### Applying propositions to  objects in a collection
+### Applying propositions to objects in a collection
 
      Set<String> strings = asList("Aaron", "Abigail", "Christian", "Jason");
      ASSERT.in(strings).thatEach(STRING).contains("a"); // this will fail
