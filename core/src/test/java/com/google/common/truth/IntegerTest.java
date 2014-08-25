@@ -21,6 +21,7 @@ import static org.junit.Assert.fail;
 
 import com.google.common.truth.Expect;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
@@ -155,5 +156,61 @@ public class IntegerTest {
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that <null> is not equal to <null>");
     }
+  }
+
+  @Test public void primitives() {
+    Assert.assertEquals(4, 4L);
+    Assert.assertEquals(4L, 4);
+    assertThat(4 == 4L).isTrue();
+    assertThat(4L == 4).isTrue();
+    assertThat(4).isEqualTo(4L);
+    assertThat(4L).isEqualTo(4);
+    assertThat(4).is(4L);
+    assertThat(4L).is(4);
+  }
+
+  @Test public void boxedPrimitives() {
+    // Java says boxed primitives are not .equals().
+    // Check the boolean expression with JUnit and Truth:
+    Assert.assertFalse(new Integer(4).equals(new Long(4L)));
+    Assert.assertFalse(new Long(4L).equals(new Integer(4)));
+    assertThat(new Integer(4).equals(new Long(4L))).isFalse();
+    assertThat(new Long(4L).equals(new Integer(4))).isFalse();
+
+    // JUnit says boxed primitives are not .equals()
+    try {
+      Assert.assertEquals(new Integer(4), new Long(4L)); // this throws!
+      fail();
+    } catch (AssertionError expected) {
+    }
+    try {
+      Assert.assertEquals(new Long(4L), new Integer(4)); // this throws!
+      fail();
+    } catch (AssertionError expected) {
+    }
+
+    // Truth says boxed primitives *are* .equals()...whoops?
+    assertThat(new Integer(4)).isEqualTo(new Long(4L));
+    assertThat(new Long(4L)).isEqualTo(new Integer(4));
+  }
+
+  @Test public void mixedBoxedAndUnboxedPrimitives() {
+    // Java says boxed primitives are not .equals() to primitives.
+    Assert.assertFalse(new Integer(4).equals(4L));
+    Assert.assertFalse(new Long(4L).equals(4));
+    assertThat(new Integer(4).equals(4L)).isFalse();
+    assertThat(new Long(4L).equals(4)).isFalse();
+
+    // JUnit won't even let you do this comparison (compile error!)
+    // "reference to assertEquals is ambiguous"
+    // Assert.assertEquals(new Integer(4), 4L);
+    // Assert.assertEquals(4L, new Integer(4));
+
+    // Truth says that a boxed primitive *is* .equals() to an unboxed primitive...whoops?
+    assertThat(new Integer(4)).isEqualTo(4L);
+    assertThat(new Long(4L)).isEqualTo(4);
+    // And vice-versa...whoops?
+    assertThat(4L).isEqualTo(new Integer(4));
+    assertThat(4).isEqualTo(new Long(4L));
   }
 }
