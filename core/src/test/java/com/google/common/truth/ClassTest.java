@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static org.truth0.Truth.ASSERT;
+import static com.google.common.truth.Truth.ASSERT;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

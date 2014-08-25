@@ -15,10 +15,11 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.ASSERT;
+
 import com.google.common.truth.AbstractVerb;
 import com.google.common.truth.FailureStrategy;
 
-import static org.truth0.Truth.ASSERT;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;

@@ -15,7 +15,7 @@
  */
 package com.google.common.truth.codegen;
 
-import static org.truth0.Truth.ASSERT;
+import static com.google.common.truth.Truth.ASSERT;
 
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;

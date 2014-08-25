@@ -15,9 +15,9 @@
  */
 package com.google.common.truth.gwt;
 
+import static com.google.common.truth.Truth.ASSERT;
 import static com.google.common.truth.Truth.assert_;
 import static java.util.Arrays.asList;
-import static org.truth0.Truth.ASSERT;
 
 import com.google.common.truth.Platform;
 import com.google.gwt.junit.client.GWTTestCase;

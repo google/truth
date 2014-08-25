@@ -16,9 +16,9 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.StringSubject.STRING;
-
+import static com.google.common.truth.Truth.ASSERT;
 import static org.junit.Assert.fail;
-import static org.truth0.Truth.ASSERT;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

@@ -15,11 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.TruthJUnit.ASSUME;
+import static org.junit.Assert.fail;
+
 import com.google.common.truth.Expect;
 
-import static org.junit.Assert.fail;
-import static org.truth0.Truth.ASSERT;
-import static org.truth0.Truth.ASSUME;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;

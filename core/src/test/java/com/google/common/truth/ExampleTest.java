@@ -15,14 +15,14 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.TruthJUnit.ASSUME;
 import static com.google.common.truth.delegation.FooSubject.FOO;
+import static org.junit.Assert.fail;
 
 import com.google.common.truth.Expect;
 import com.google.common.truth.delegation.Foo;
 
-import static org.junit.Assert.fail;
-import static org.truth0.Truth.ASSERT;
-import static org.truth0.Truth.ASSUME;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;

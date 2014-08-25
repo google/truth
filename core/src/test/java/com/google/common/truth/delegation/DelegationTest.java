@@ -15,8 +15,8 @@
  */
 package com.google.common.truth.delegation;
 
+import static com.google.common.truth.Truth.ASSERT;
 import static com.google.common.truth.delegation.FooSubject.FOO;
-import static org.truth0.Truth.ASSERT;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -15,11 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.ASSERT;
+
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.SubjectFactory;
 
-import static org.truth0.Truth.ASSERT;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
