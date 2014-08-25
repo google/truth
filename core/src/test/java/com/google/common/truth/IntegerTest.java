@@ -114,7 +114,7 @@ public class IntegerTest {
       assertThat(5).isBetween(2, 5);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <5> is in <(2\u20255)>");
+      assertThat(e.getMessage()).contains("Not true that <5> is in <(2‥5)>");
     }
   }
 
