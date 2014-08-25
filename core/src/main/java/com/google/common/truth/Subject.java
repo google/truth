@@ -127,9 +127,8 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   protected String getDisplaySubject() {
-    return (customName == null)
-        ? "<" + getSubject() + ">"
-        : "\"" + this.customName + "\"";
+    String name = (customName == null) ? "" : "\"" + this.customName + "\" ";
+    return name + "<" + getSubject() + ">";
   }
 
   /**

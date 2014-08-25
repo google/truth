@@ -29,9 +29,8 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   }
 
   @Override protected String getDisplaySubject() {
-    return (internalCustomName() == null)
-            ? "<" + quote(getSubject()) + ">"
-            : "\"" + internalCustomName() + "\"";
+    String name = (internalCustomName() == null) ? "" : "\"" + internalCustomName() + "\" ";
+    return name + "<" + quote(getSubject()) + ">";
   }
 
   @Override public void is(Object expected) {

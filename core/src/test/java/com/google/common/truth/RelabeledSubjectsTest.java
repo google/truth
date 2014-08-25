@@ -34,24 +34,46 @@ import java.util.Arrays;
 @RunWith(JUnit4.class)
 public class RelabeledSubjectsTest {
 
+  @Test public void namedIncludesActualStringValue() {
+    try {
+      assertThat("kurt kluever").named("rad dude").startsWith("frazzle");
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage()).contains("\"kurt kluever\"");
+      assertThat(expected.getMessage()).contains("\"rad dude\"");
+      assertThat(expected.getMessage()).contains("frazzle");
+    }
+  }
+
+  @Test public void namedIncludesActualIntegerValue() {
+    try {
+      assertThat(13).named("Septober").isLessThan(12);
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage()).contains("13");
+      assertThat(expected.getMessage()).contains("12");
+      assertThat(expected.getMessage()).contains("Septober");
+    }
+  }
+
   @Test public void relabeledBooleans() {
     try {
       assertThat(false).named("Foo").isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).is("\"Foo\" was expected to be true, but was false");
+      assertThat(expected.getMessage()).is("\"Foo\" <false> was expected to be true, but was false");
     }
   }
 
   @Test public void relabeledObject() {
     try {
-      assertThat(new Object()).named("Foo").isA(Integer.class);
+      assertThat("a string").named("Foo").isA(Integer.class);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .contains("Not true that \"Foo\" is an instance of <java.lang.Integer>");
+          .contains("Not true that \"Foo\" <\"a string\"> is an instance of <java.lang.Integer>");
       assertThat(expected.getMessage())
-          .contains("It is an instance of <java.lang.Object>");
+          .contains("It is an instance of <java.lang.String>");
     }
   }
 
@@ -61,7 +83,7 @@ public class RelabeledSubjectsTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .is("Not true that \"crazy list\" contains all elements in <[c, d]>. "
+          .is("Not true that \"crazy list\" <[a, b, c]> contains all elements in <[c, d]>. "
               + "It is missing <[d]>");
     }
   }

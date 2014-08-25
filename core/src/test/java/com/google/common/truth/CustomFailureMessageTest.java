@@ -53,7 +53,7 @@ public class CustomFailureMessageTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .isEqualTo("Invalid month: Not true that \"Septober\" is in <[1‥12]>");
+          .isEqualTo("Invalid month: Not true that \"Septober\" <13> is in <[1‥12]>");
     }
   }
 
