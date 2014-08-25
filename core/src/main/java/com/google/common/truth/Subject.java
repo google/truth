@@ -95,7 +95,28 @@ public class Subject<S extends Subject<S,T>,T> {
     }
   }
 
+  /**
+   * Asserts that this object is an instance of the given class.
+   */
+  // TODO(user): @deprecated Use {@link #isInstanceOf(Class)} instead.
   public void isA(Class<?> clazz) {
+    isInstanceOf(clazz);
+  }
+
+  /**
+   * Asserts that this object is not an instance of the given class.
+   *
+   * @deprecated Use {@link #isNotInstanceOf(Class)} instead.
+   */
+  @Deprecated
+  public void isNotA(Class<?> clazz) {
+    isNotInstanceOf(clazz);
+  }
+
+  /**
+   * Asserts that this object is an instance of the given class.
+   */
+  public void isInstanceOf(Class<?> clazz) {
     if (clazz == null) {
       throw new NullPointerException("clazz");
     }
@@ -109,7 +130,10 @@ public class Subject<S extends Subject<S,T>,T> {
     }
   }
 
-  public void isNotA(Class<?> clazz) {
+  /**
+   * Asserts that this object is not an instance of the given class.
+   */
+  public void isNotInstanceOf(Class<?> clazz) {
     if (clazz == null) {
       throw new NullPointerException("clazz");
     }
