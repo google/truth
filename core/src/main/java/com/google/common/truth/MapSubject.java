@@ -114,26 +114,6 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
     }
   }
 
-  /**
-   * @deprecated Use {@code assertThat(map.values()).contains(value)} instead.
-   */
-  @Deprecated
-  public void hasValue(V key) {
-    if (!getSubject().containsValue(key)) {
-      fail("has value", key);
-    }
-  }
-
-  /**
-   * @deprecated Use {@code assertThat(map.values()).doesNotContain(value)} instead.
-   */
-  @Deprecated
-  public void lacksValue(V value) {
-    if (getSubject().containsValue(value)) {
-      fail("lacks value", value);
-    }
-  }
-
   public interface WithValue<V> {
     void withValue(V value);
   }

@@ -263,38 +263,6 @@ public class MapTest {
     }
   }
 
-  @Test public void mapHasValue() {
-    assertThat(map(String.class, Object.class, "a", "A")).hasValue("A");
-  }
-
-  @Test public void mapHasValueWithNull() {
-    assertThat(map(String.class, Object.class, "a", null)).hasValue(null);
-  }
-
-  @Test public void failMapHasValue() {
-    try {
-      assertThat(map(String.class, Object.class, "a", "A")).hasValue("B");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("has value");
-    }
-  }
-
-  @Test public void mapLacksValue() {
-    assertThat(map(String.class, Object.class, "a", "A")).lacksValue("B");
-  }
-
-  @Test public void failMapLacksValue() {
-    try {
-      assertThat(map(String.class, Object.class, "a", "A")).lacksValue("A");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("lacks value");
-    }
-  }
-
   @SuppressWarnings("unchecked") // Want this to blow up if wrong.
   public static <K, V> Map<K, V> map(Class<K> keyClass, Class<V> valueClass, Object ... keyval) {
     Map<K, V> map = Maps.newHashMap();
