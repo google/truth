@@ -57,6 +57,10 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         anyFrom(accumulate(first, second, rest));
       }
 
+      /**
+       * @deprecated Use {@link IterableSubject#containsAnyIn(Iterable<?>)} instead.
+       */
+      @Deprecated
       @Override public void anyFrom(Iterable<T> col) {
         CollectionSubject.this.containsAnyIn(col);
       }
@@ -69,6 +73,10 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         return allFrom(accumulate(first, second, rest));
       }
 
+      /**
+       * @deprecated Use {@link IterableSubject#containsAllIn(Iterable<?>)} instead.
+       */
+      @Deprecated
       @Override public Ordered allFrom(Iterable<T> required) {
         return CollectionSubject.this.containsAllIn(required);
       }
@@ -93,6 +101,10 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         noneFrom(accumulate(first, second, rest));
       }
 
+      /**
+       * @deprecated Use {@link IterableSubject#containsNoneIn(Iterable<?>)} instead.
+       */
+      @Deprecated
       @Override public void noneFrom(Iterable<T> excluded) {
         CollectionSubject.this.containsNoneIn(excluded);
       }
