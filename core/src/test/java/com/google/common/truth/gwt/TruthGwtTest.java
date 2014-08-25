@@ -16,6 +16,7 @@
 package com.google.common.truth.gwt;
 
 import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 import static java.util.Arrays.asList;
 
@@ -45,14 +46,14 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testBoolean() {
-    assert_().that(true).isTrue();
-    assert_().that(false).isFalse();
+    assertThat(true).isTrue();
+    assertThat(false).isFalse();
   }
 
   public void testInteger() {
-    assert_().that(457923).is(457923);
+    assertThat(457923).is(457923);
     try {
-      assert_().that(457923).is(1);
+      assertThat(457923).is(1);
       assert_().fail("Should have thrown an exception");
     } catch (Throwable t) {
       // succeeds
@@ -60,11 +61,11 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testString() {
-    assert_().that("blah").contains("ah");
-    assert_().that("blah").startsWith("bl");
-    assert_().that("blah").endsWith("ah");
+    assertThat("blah").contains("ah");
+    assertThat("blah").startsWith("bl");
+    assertThat("blah").endsWith("ah");
     try {
-      assert_().that("blah").contains("foo");
+      assertThat("blah").contains("foo");
       assert_().fail("Should have thrown an exception");
     } catch (Throwable t) {
       // succeeds
@@ -72,31 +73,36 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testIterable() {
-    assert_().that((Iterable<Integer>)asList(1, 2, 3)).iteratesAs(1, 2, 3);
+    assertThat((Iterable<Integer>)asList(1, 2, 3)).iteratesAs(1, 2, 3);
   }
 
   public void testCollection() {
-    assert_().that((Collection<Integer>)asList(1, 2, 3)).has().allOf(1, 2, 3).inOrder();
+    assertThat((Collection<Integer>)asList(1, 2, 3)).has().allOf(1, 2, 3).inOrder();
   }
 
   public void testList() {
-    assert_().that(asList(1, 2, 3)).has().allOf(1, 2, 3).inOrder();
+    assertThat(asList(1, 2, 3)).has().allOf(1, 2, 3).inOrder();
   }
 
   public void testObjectArray() {
     Set[] setOfString = { new HashSet<String>(asList("foo", "bar", "bash")) };
-    assert_().that(setOfString).asList()
+    assertThat(setOfString).asList()
         .has().item(new HashSet<String>(asList("foo", "bar", "bash")));
   }
 
   public void testDefault() {
-    assert_().that(new Object()).isNotNull();
-    assert_().that(new ArrayList<String>()).isA(AbstractList.class);
+    assertThat(new Object()).isNotNull();
+    assertThat(new ArrayList<String>()).isA(AbstractList.class);
   }
 
-  public void testLegacy() {
+  public void testLegacyASSERT() {
     ASSERT.that(new Object()).isNotNull();
     ASSERT.that(new ArrayList<String>()).isA(AbstractList.class);
+  }
+  
+  public void testLegacyAssert_() {
+    assert_().that(new Object()).isNotNull();
+    assert_().that(new ArrayList<String>()).isA(AbstractList.class);
   }
 
   public void testInvokePlatformMethods() {

@@ -15,7 +15,8 @@
  */
 package com.google.common.truth.delegation;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.delegation.FooSubject.FOO;
 
 import org.junit.Test;
@@ -30,16 +31,16 @@ import org.junit.runners.JUnit4;
 public class DelegationTest {
 
   @Test public void customTypeProposition() {
-    ASSERT.about(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
+    assert_().about(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 
   @Test public void customTypePropositionWithFailure() {
     try {
-      ASSERT.about(FOO).that(new Foo(5)).matches(new Foo(4));
-      ASSERT.fail("Should have thrown.");
+      assert_().about(FOO).that(new Foo(5)).matches(new Foo(4));
+      assert_().fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("matches");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("matches");
     }
   }
 }

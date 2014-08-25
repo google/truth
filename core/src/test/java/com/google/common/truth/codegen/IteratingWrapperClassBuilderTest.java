@@ -15,7 +15,7 @@
  */
 package com.google.common.truth.codegen;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
@@ -78,25 +78,25 @@ public class IteratingWrapperClassBuilderTest {
   @Test public void testSubjectWrapperGeneration_PlainClass() {
     IteratingWrapperClassBuilder builder = new IteratingWrapperClassBuilder(BarSubject.BAR);
     String code = builder.build().toString();
-    ASSERT.that(code).contains(TOP_BOILERPLATE);
-    ASSERT.that(code).contains(SUBJECT_FACTORY_FIELD);
-    ASSERT.that(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
-    ASSERT.that(code)
+    assertThat(code).contains(TOP_BOILERPLATE);
+    assertThat(code).contains(SUBJECT_FACTORY_FIELD);
+    assertThat(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
+    assertThat(code)
           .contains(String.format(CONSTRUCTOR, "Bar", "java.lang.String"));
-    ASSERT.that(code).contains(String.format(CLASS_DECLARATION, "Bar"));
-    ASSERT.that(code).contains(BAR_WRAPPED_METHOD);
+    assertThat(code).contains(String.format(CLASS_DECLARATION, "Bar"));
+    assertThat(code).contains(BAR_WRAPPED_METHOD);
   }
 
   @Test public void testSubjectWrapperGeneration_InnerClass() {
     IteratingWrapperClassBuilder builder = new IteratingWrapperClassBuilder(FooSubject.FOO);
     String code = builder.build().toString();
-    ASSERT.that(code).contains(TOP_BOILERPLATE);
-    ASSERT.that(code).contains(SUBJECT_FACTORY_FIELD);
-    ASSERT.that(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
-    ASSERT.that(code)
+    assertThat(code).contains(TOP_BOILERPLATE);
+    assertThat(code).contains(SUBJECT_FACTORY_FIELD);
+    assertThat(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
+    assertThat(code)
           .contains(String.format(CONSTRUCTOR, "Foo", "java.lang.String"));
-    ASSERT.that(code).contains(String.format(CLASS_DECLARATION, "Foo"));
-    ASSERT.that(code).contains(FOO_WRAPPED_METHOD);
+    assertThat(code).contains(String.format(CLASS_DECLARATION, "Foo"));
+    assertThat(code).contains(FOO_WRAPPED_METHOD);
   }
 
   public static class FooSubject extends Subject<FooSubject, String> {
