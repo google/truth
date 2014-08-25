@@ -87,13 +87,13 @@ public class LongTest {
       assertThat(1L).isInclusivelyInRange(2L, 4L);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <1> is inclusively in range <2> <4>");
+      assertThat(e.getMessage()).contains("Not true that <1> is in <[2‥4]>");
     }
     try {
       assertThat(5L).isInclusivelyInRange(2L, 4L);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <5> is inclusively in range <2> <4>");
+      assertThat(e.getMessage()).contains("Not true that <5> is in <[2‥4]>");
     }
   }
 
@@ -114,7 +114,7 @@ public class LongTest {
       assertThat(5L).isBetween(2L, 5L);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <5> is in between <2> <5>");
+      assertThat(e.getMessage()).contains("Not true that <5> is in <(2\u20255)>");
     }
   }
 

@@ -15,11 +15,14 @@
  */
 package com.google.common.truth;
 
+import com.google.common.collect.Range;
+
 /**
  * Propositions for Long subjects
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
+ * @author Kurt Alfred Kluever
  */
 // Can't be final because we use codegen to generate a subclass
 public class LongSubject extends ComparableSubject<LongSubject, Long> {
@@ -31,41 +34,19 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
   /**
    * Attests that a Subject<Long> is inclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
-   *
-   * @throws IllegalArgumentException
-   *           if the lower bound is greater than the upper.
    */
+  // TODO(user): @deprecated Use {@code isIn(Range.closed(lower, upper))} instead.
   public void isInclusivelyInRange(long lower, long upper) {
-    ensureOrderedBoundaries(lower, upper);
-    if (!(lower <= getSubject() && getSubject() <= upper)) {
-      fail("is inclusively in range", lower, upper);
-    }
+    isIn(Range.closed(lower, upper));
   }
 
   /**
    * Attests that a Subject<Long> is exclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
-   *
-   * @throws IllegalArgumentException
-   *           if the lower bound is greater than the upper.
    */
+  // TODO(user): @deprecated Use {@code isIn(Range.open(lower, upper))} instead.
   public void isBetween(long lower, long upper) {
-    ensureOrderedBoundaries(lower, upper);
-    if (!(lower < getSubject() && getSubject() < upper)) {
-      fail("is in between", lower, upper);
-    }
-  }
-
-  /**
-   * Guards against inverted lower/upper boundaries, and throws if
-   * they are so inverted.
-   */
-  private static void ensureOrderedBoundaries(long lower, long upper) {
-    if (lower > upper) {
-      throw new IllegalArgumentException(
-          "Range inclusion parameter lower (" + lower + ") "
-              + " should not be greater than upper (" + upper + ")");
-    }
+    isIn(Range.open(lower, upper));
   }
 
   public void isEqualTo(Object other) {
