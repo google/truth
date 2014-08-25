@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
-import static com.google.common.truth.TruthJUnit.ASSUME;
+import static com.google.common.truth.TruthJUnit.assume;
 import static com.google.common.truth.delegation.FooSubject.FOO;
 import static org.junit.Assert.fail;
 
@@ -63,7 +63,7 @@ public class ExampleTest {
   @DataPoints public static int[] ints = { -1, 0, 1, 2 };
 
   @Theory public void divideBySelf(int x) {
-    ASSUME.that(x).isNotEqualTo(0);
+    assume().that(x).isNotEqualTo(0);
     assertThat(x / x).isEqualTo(1);
   }
 

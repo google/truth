@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.TruthJUnit.ASSUME;
+import static com.google.common.truth.TruthJUnit.assume;
 import static org.junit.Assert.fail;
 
 import com.google.common.truth.Expect;
@@ -70,7 +70,7 @@ public class IntegerTest {
 
   @Test public void additionAssumptionFail() {
     try {
-      ASSUME.that(2 + 2).isEqualTo(5);
+      assume().that(2 + 2).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssumptionViolatedException expected) {}
   }
