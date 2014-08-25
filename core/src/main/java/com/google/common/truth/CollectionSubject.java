@@ -51,7 +51,10 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   public class Has<T, C extends Collection<T>> {
     /**
      * Attests that a Collection contains at least the item
+     *
+     * @deprecated Use {@link IterableSubject#contains(Object} instead.
      */
+    @Deprecated
     public void item(T item) {
       CollectionSubject.this.contains(item);
     }
