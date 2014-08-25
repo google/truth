@@ -41,7 +41,7 @@ public class PrimitiveCharArraySubjectTest {
   }
 
   @Test public void asList() {
-    assertThat(array('a', 'q', 'z')).asList().has().allOf('a', 'z');
+    assertThat(array('a', 'q', 'z')).asList().containsAllOf('a', 'z');
   }
 
   @Test public void isEqualTo_Fail_UnequalOrdering() {

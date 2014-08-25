@@ -117,6 +117,11 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   @CheckReturnValue
+  public PrimitiveByteArraySubject that(byte[] target) {
+    return new PrimitiveByteArraySubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
   public PrimitiveFloatArraySubject that(float[] target) {
     return new PrimitiveFloatArraySubject(getFailureStrategy(), target);
   }

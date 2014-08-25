@@ -41,7 +41,7 @@ public class PrimitiveIntArraySubjectTest {
   }
 
   @Test public void asList() {
-    assertThat(array(5, 2, 9)).asList().has().allOf(2, 9);
+    assertThat(array(5, 2, 9)).asList().containsAllOf(2, 9);
   }
 
   @Test public void isEqualTo_Fail_UnequalOrdering() {

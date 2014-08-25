@@ -41,7 +41,7 @@ public class PrimitiveBooleanArraySubjectTest {
   }
 
   @Test public void asList() {
-    assertThat(array(true, true, false)).asList().has().allOf(true, false);
+    assertThat(array(true, true, false)).asList().containsAllOf(true, false);
   }
 
   @Test public void isEqualTo_Fail_UnequalOrdering() {

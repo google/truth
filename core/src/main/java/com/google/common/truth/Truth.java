@@ -143,6 +143,11 @@ public final class Truth {
   }
 
   @CheckReturnValue
+  public static PrimitiveByteArraySubject assertThat(byte[] target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
   public static PrimitiveCharArraySubject assertThat(char[] target) {
     return assert_().that(target);
   }

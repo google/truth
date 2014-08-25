@@ -17,82 +17,90 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.PrimitiveLongArraySubject;
+import com.google.common.truth.PrimitiveByteArraySubject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for {@link PrimitiveLongArraySubject}.
+ * Tests for {@link PrimitiveByteArraySubject}.
  *
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class PrimitiveLongArraySubjectTest {
+public class PrimitiveByteArraySubjectTest {
+
+  private static final byte BYTE_0 = (byte) 0;
+  private static final byte BYTE_1 = (byte) 1;
+  private static final byte BYTE_2 = (byte) 2;
 
   @Test public void isEqualTo() {
-    assertThat(array(2L, 5)).isEqualTo(array(2L, 5));
+    assertThat(array(BYTE_0, BYTE_1)).isEqualTo(array(BYTE_0, BYTE_1));
   }
 
   @Test public void isEqualTo_Same() {
-    long[] same = array(2L, 5);
+    byte[] same = array(BYTE_0, BYTE_1);
     assertThat(same).isEqualTo(same);
   }
 
   @Test public void asList() {
-    assertThat(array(5, 2, 9)).asList().containsAllOf(2L, 9L);
+    assertThat(array(BYTE_0, BYTE_1, BYTE_2)).asList().containsAllOf(BYTE_0, BYTE_2);
   }
 
   @Test public void isEqualTo_Fail_UnequalOrdering() {
     try {
-      assertThat(array(2, 3)).isEqualTo(array(3, 2));
+      assertThat(array(BYTE_0, BYTE_1)).isEqualTo(array(BYTE_1, BYTE_0));
+      throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <(long[]) [2, 3]> is equal to <[3, 2]>");
+      assertThat(e.getMessage()).is("Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>");
     }
   }
 
   @Test public void isEqualTo_Fail_NotAnArray() {
     try {
-      assertThat(array(2, 3, 4)).isEqualTo(new int[] {});
+      assertThat(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {});
+      throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .contains("Incompatible types compared. expected: int[], actual: long[]");
+          .contains("Incompatible types compared. expected: int[], actual: byte[]");
     }
   }
 
   @Test public void isNotEqualTo_SameLengths() {
-    assertThat(array(2, 3)).isNotEqualTo(array(3, 2));
+    assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_1, BYTE_0));
   }
 
   @Test public void isNotEqualTo_DifferentLengths() {
-    assertThat(array(2, 3)).isNotEqualTo(array(2, 3, 1));
+    assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_1, BYTE_0, BYTE_2));
   }
 
   @Test public void isNotEqualTo_DifferentTypes() {
-    assertThat(array(2, 3)).isNotEqualTo(new Object());
+    assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(new Object());
   }
 
   @Test public void isNotEqualTo_FailEquals() {
     try {
-      assertThat(array(2, 3)).isNotEqualTo(array(2, 3));
+      assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
+      throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+          .is("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
     }
   }
 
   @Test public void isNotEqualTo_FailSame() {
     try {
-      long[] same = array(2, 3);
+      byte[] same = array(BYTE_0, BYTE_1);
       assertThat(same).isNotEqualTo(same);
+      throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+          .is("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
     }
   }
 
-  private static long[] array(long... ts) {
+  private static byte[] array(byte... ts) {
     return ts;
   }
 }
