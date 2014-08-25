@@ -87,7 +87,16 @@ public class SubjectTest {
       assertThat(o).isNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that the subject is a null reference");
+      assertThat(e.getMessage()).isEqualTo("Not true that <" + o.toString() + "> is null");
+    }
+  }
+
+  @Test public void stringIsNullFail() {
+    try {
+      assertThat("foo").isNull();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo("Not true that <\"foo\"> is null");
     }
   }
 
