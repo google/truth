@@ -119,15 +119,20 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     void item(E item);
 
     /**
-     * Attests that a Collection contains at least one of the provided objects
-     * or fails.
+     * Attests that a Collection contains the provided object or fails.
+     *
+     * @deprecated Use {@link IterableSubject#contains(Object} instead.
      */
+    @Deprecated
     void anyOf(E first);
 
     /**
      * Attests that a Collection contains at least one of the provided objects
      * or fails.
+     *
+     * @deprecated Use {@link IterableSubject#containsAnyOf(Object, Object, Object...)} instead.
      */
+    @Deprecated
     void anyOf(E first, E second, E... rest);
 
     /**
