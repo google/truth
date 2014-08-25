@@ -30,7 +30,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
 
   protected FailureStrategy getFailureStrategy() {
     return (getFailureMessage() != null)
-        ? new MessageOverridingFailureStrategy(failureStrategy, getFailureMessage())
+        ? new MessagePrependingFailureStrategy(failureStrategy, getFailureMessage())
         : failureStrategy;
   }
 
@@ -97,28 +97,29 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
     return new IteratingVerb<T>(data, getFailureStrategy());
   }
 
-  protected static class MessageOverridingFailureStrategy extends FailureStrategy {
+  protected static class MessagePrependingFailureStrategy extends FailureStrategy {
     private final FailureStrategy delegate;
-    private final String failureMessageOverride;
+    private final String failureMessagePrepend;
 
-    protected MessageOverridingFailureStrategy(FailureStrategy delegate, String failureMessage) {
+    protected MessagePrependingFailureStrategy(FailureStrategy delegate, String failureMessage) {
       this.delegate = delegate;
-      this.failureMessageOverride = failureMessage;
+      this.failureMessagePrepend = failureMessage;
     }
 
     @Override
-    public void fail(String ignored) {
-      delegate.fail(failureMessageOverride);
+    public void fail(String message) {
+      delegate.fail(failureMessagePrepend + ": " + message);
     }
 
     @Override
     public void fail(String message, Throwable cause) {
-      delegate.fail(failureMessageOverride, cause);
+      delegate.fail(failureMessagePrepend + ": " + message, cause);
     }
 
     @Override
-    public void failComparing(String message, CharSequence ignore, CharSequence ignore2) {
-      delegate.fail(failureMessageOverride);
+    public void failComparing(String message, CharSequence expected, CharSequence actual) {
+      delegate.fail(failureMessagePrepend + ": "
+          + StringUtil.messageFor(message, expected, actual));
     }
   }
 }
