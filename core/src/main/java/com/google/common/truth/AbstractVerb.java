@@ -92,7 +92,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
     }
   }
 
-  @GwtIncompatible("org.truth0.IteratingVerb")
+  @GwtIncompatible("com.google.common.truth.IteratingVerb")
   public <T> IteratingVerb<T> in(Iterable<T> data) {
     return new IteratingVerb<T>(data, getFailureStrategy());
   }

@@ -19,7 +19,8 @@ package org.truth0.subjects;
  * @deprecated use {@link com.google.common.truth.SubjectFactory}.
  */
 @Deprecated
-public abstract class SubjectFactory<S extends com.google.common.truth.Subject<S,T>, T>
+public abstract
+    class SubjectFactory<S extends com.google.common.truth.Subject<S,T>, T>
     extends com.google.common.truth.SubjectFactory<S, T> {
 
   public abstract S getSubject(org.truth0.FailureStrategy fs, T that);

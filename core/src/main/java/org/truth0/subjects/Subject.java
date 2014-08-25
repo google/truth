@@ -21,7 +21,8 @@ import com.google.common.truth.FailureStrategy;
  * @deprecated use {@link com.google.common.truth.Subject}.
  */
 @Deprecated
-public class Subject<S extends Subject<S,T>,T> extends com.google.common.truth.Subject<S, T>{
+public class Subject<S extends Subject<S,T>,T>
+    extends com.google.common.truth.Subject<S, T>{
 
   public Subject(FailureStrategy failureStrategy, T subject) {
     super(failureStrategy, subject);
