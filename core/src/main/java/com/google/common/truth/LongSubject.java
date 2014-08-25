@@ -15,29 +15,27 @@
  */
 package com.google.common.truth;
 
-import com.google.common.primitives.Ints;
-
 /**
- * Propositions for Integer subjects
+ * Propositions for Long subjects
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
 // Can't be final because we use codegen to generate a subclass
-public class IntegerSubject extends Subject<IntegerSubject, Integer> {
+public class LongSubject extends Subject<LongSubject, Long> {
 
-  public IntegerSubject(FailureStrategy failureStrategy, Integer integer) {
-    super(failureStrategy, integer);
+  public LongSubject(FailureStrategy failureStrategy, Long subject) {
+    super(failureStrategy, subject);
   }
 
   /**
-   * Attests that a Subject<Integer> is inclusively within the {@code lower} and
+   * Attests that a Subject<Long> is inclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
    *
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
-  public void isInclusivelyInRange(int lower, int upper) {
+  public void isInclusivelyInRange(long lower, long upper) {
     ensureOrderedBoundaries(lower, upper);
     if (!(lower <= getSubject() && getSubject() <= upper)) {
       fail("is inclusively in range", lower, upper);
@@ -45,13 +43,13 @@ public class IntegerSubject extends Subject<IntegerSubject, Integer> {
   }
 
   /**
-   * Attests that a Subject<Integer> is exclusively within the {@code lower} and
+   * Attests that a Subject<Long> is exclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
    *
    * @throws IllegalArgumentException
    *           if the lower bound is greater than the upper.
    */
-  public void isBetween(int lower, int upper) {
+  public void isBetween(long lower, long upper) {
     ensureOrderedBoundaries(lower, upper);
     if (!(lower < getSubject() && getSubject() < upper)) {
       fail("is in between", lower, upper);
@@ -62,7 +60,7 @@ public class IntegerSubject extends Subject<IntegerSubject, Integer> {
    * Guards against inverted lower/upper boundaries, and throws if
    * they are so inverted.
    */
-  private static void ensureOrderedBoundaries(int lower, int upper) {
+  private static void ensureOrderedBoundaries(long lower, long upper) {
     if (lower > upper) {
       throw new IllegalArgumentException(
           "Range inclusion parameter lower (" + lower + ") "
@@ -78,26 +76,26 @@ public class IntegerSubject extends Subject<IntegerSubject, Integer> {
     super.isNotEqualTo(other);
   }
 
-  public void isEqualTo(long other) {
-    super.isEqualTo(Ints.saturatedCast(other));
+  public void isEqualTo(int other) {
+    isEqualTo((long) other);
   }
 
-  public void is(long other) {
-    isEqualTo(other);
+  public void is(int other) {
+    isEqualTo((long) other);
   }
 
   public void is(short other) {
-    isEqualTo(other);
+    isEqualTo((long) other);
   }
 
   public void is(byte other) {
-    isEqualTo(other);
+    isEqualTo((long) other);
   }
 
-  public static final SubjectFactory<IntegerSubject, Integer> INTEGER =
-      new SubjectFactory<IntegerSubject, Integer>() {
-        @Override public IntegerSubject getSubject(FailureStrategy fs, Integer target) {
-          return new IntegerSubject(fs, target);
+  public static final SubjectFactory<LongSubject, Long> LONG =
+      new SubjectFactory<LongSubject, Long>() {
+        @Override public LongSubject getSubject(FailureStrategy fs, Long target) {
+          return new LongSubject(fs, target);
         }
       };
 }

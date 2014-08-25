@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.IntegerSubject.INTEGER;
+import static com.google.common.truth.LongSubject.LONG;
 import static com.google.common.truth.StringSubject.STRING;
 import static com.google.common.truth.Truth.assert_;
 
@@ -34,11 +35,24 @@ import java.util.Arrays;
 @RunWith(JUnit4.class)
 public class IterationOverSubjectTest {
 
-  @Test public void collectionItemsAreGreaterThan() {
-    Iterable<Long> data = iterable(2L, 5L, 9L);
+  @Test public void thatEachInteger() {
+    Iterable<Integer> data = iterable(2, 5, 9);
     assert_().in(data).thatEach(INTEGER).isNotEqualTo(4);
     try {
       assert_().in(data).thatEach(INTEGER).isNotEqualTo(9);
+      assert_().fail("Expected assertion to fail on element 3.");
+    } catch (AssertionError e) {
+      if (e.getMessage().startsWith("Expected assertion to fail")) {
+        throw e;
+      }
+    }
+  }
+
+  @Test public void thatEachLong() {
+    Iterable<Long> data = iterable(2L, 5L, 9L);
+    assert_().in(data).thatEach(LONG).isNotEqualTo(4L);
+    try {
+      assert_().in(data).thatEach(LONG).isNotEqualTo(9L);
       assert_().fail("Expected assertion to fail on element 3.");
     } catch (AssertionError e) {
       if (e.getMessage().startsWith("Expected assertion to fail")) {

@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.StringUtil.format;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Objects;
 
 import java.lang.reflect.Field;
 
@@ -83,26 +84,14 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   public void isEqualTo(Object other) {
-    if (getSubject() == null) {
-      if(other != null) {
-        fail("is equal to", other);
-      }
-    } else {
-      if (!getSubject().equals(other)) {
-        fail("is equal to", other);
-      }
+    if (!Objects.equal(getSubject(), other)) {
+      fail("is equal to", other);
     }
   }
 
   public void isNotEqualTo(Object other) {
-    if (getSubject() == null) {
-      if(other == null) {
-        fail("is not equal to", (Object)null);
-      }
-    } else {
-      if (getSubject().equals(other)) {
-        fail("is not equal to", other);
-      }
+    if (Objects.equal(getSubject(), other)) {
+      fail("is not equal to", other);
     }
   }
 

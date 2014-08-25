@@ -83,8 +83,8 @@ public class Truth {
   }
 
   @CheckReturnValue
-  public static IntegerSubject assertThat(Long target) {
-    return new IntegerSubject(getFailureStrategy(), target);
+  public static LongSubject assertThat(Long target) {
+    return new LongSubject(getFailureStrategy(), target);
   }
 
   @CheckReturnValue

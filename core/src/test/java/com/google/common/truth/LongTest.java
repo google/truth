@@ -29,31 +29,31 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for Integer Subjects.
+ * Tests for Long Subjects.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class IntegerTest {
+public class LongTest {
   @Rule public final Expect EXPECT = Expect.create();
 
   @Test public void simpleEquality() {
-    assertThat(2 + 2).is(4);
-    assertThat(2 + 2).isEqualTo(4);
+    assertThat(2L + 2).is(4L);
+    assertThat(2L + 2).isEqualTo(4L);
   }
 
-  @Test public void intIsInt() {
-    assertThat(4).is(4);
+  @Test public void longIsLong() {
+    assertThat(4L).is(4L);
   }
 
   @Test public void simpleInequality() {
-    assertThat(2 + 2).isNotEqualTo(5);
+    assertThat(2L + 2).isNotEqualTo(5L);
   }
 
   @Test public void equalityFail() {
     try {
-      assertThat(2 + 2).isEqualTo(5);
+      assertThat(2L + 2).isEqualTo(5L);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage()).contains("Not true that <4> is equal to <5>");
@@ -62,7 +62,7 @@ public class IntegerTest {
 
   @Test public void inequalityFail() {
     try {
-      assertThat(2 + 2).isNotEqualTo(4);
+      assertThat(2L + 2).isNotEqualTo(4L);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage()).contains("Not true that <4> is not equal to <4>");
@@ -71,26 +71,26 @@ public class IntegerTest {
 
   @Test public void additionAssumptionFail() {
     try {
-      assume().that(2 + 2).isEqualTo(5);
+      assume().that(2L + 2).isEqualTo(5L);
       fail("Should have thrown");
     } catch (AssumptionViolatedException expected) {}
   }
 
   @Test public void inclusiveRangeContainment() {
-    EXPECT.that(2).isInclusivelyInRange(2, 4);
-    EXPECT.that(3).isInclusivelyInRange(2, 4);
-    EXPECT.that(4).isInclusivelyInRange(2, 4);
+    EXPECT.that(2L).isInclusivelyInRange(2L, 4L);
+    EXPECT.that(3L).isInclusivelyInRange(2L, 4L);
+    EXPECT.that(4L).isInclusivelyInRange(2L, 4L);
   }
 
   @Test public void inclusiveRangeContainmentFailure() {
     try {
-      assertThat(1).isInclusivelyInRange(2, 4);
+      assertThat(1L).isInclusivelyInRange(2L, 4L);
       fail("Should have thrown");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that <1> is inclusively in range <2> <4>");
     }
     try {
-      assertThat(5).isInclusivelyInRange(2, 4);
+      assertThat(5L).isInclusivelyInRange(2L, 4L);
       fail("Should have thrown");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that <5> is inclusively in range <2> <4>");
@@ -99,19 +99,19 @@ public class IntegerTest {
 
   @Test public void inclusiveRangeContainmentInversionError() {
     try {
-      assertThat(Integer.MAX_VALUE).isInclusivelyInRange(4, 2);
+      assertThat(Long.MAX_VALUE).isInclusivelyInRange(4L, 2L);
       fail("Should have thrown");
     } catch (IllegalArgumentException e) {}
   }
 
   @Test public void exclusiveRangeContainment() {
-    EXPECT.that(3).isBetween(2, 5);
-    EXPECT.that(4).isBetween(2, 5);
+    EXPECT.that(3L).isBetween(2L, 5L);
+    EXPECT.that(4L).isBetween(2L, 5L);
   }
 
   @Test public void exclusiveRangeContainmentFailure() {
     try {
-      assertThat(5).isBetween(2, 5);
+      assertThat(5L).isBetween(2L, 5L);
       fail("Should have thrown");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that <5> is in between <2> <5>");
@@ -120,24 +120,24 @@ public class IntegerTest {
 
   @Test public void exclusiveRangeContainmentInversionError() {
     try {
-      assertThat(Integer.MAX_VALUE).isBetween(5, 2);
+      assertThat(Long.MAX_VALUE).isBetween(5L, 2L);
       fail("Should have thrown");
     } catch (IllegalArgumentException e) {}
   }
 
   @Test public void equalityOfNulls() {
-    assertThat((Integer)null).isEqualTo((Long)null);
+    assertThat((Long)null).isEqualTo((Long)null);
   }
 
   @Test public void equalityOfNullsFail() {
     try {
-      assertThat((Long)null).isEqualTo(5);
+      assertThat((Long)null).isEqualTo(5L);
       fail("Should have thrown");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that <null> is equal to <5>");
     }
     try {
-      assertThat(5).isEqualTo((Integer)null);
+      assertThat(5L).isEqualTo((Long)null);
       fail("Should have thrown");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that <5> is equal to <null>");
@@ -145,72 +145,16 @@ public class IntegerTest {
   }
 
   @Test public void inequalityOfNulls() {
-    assertThat((Long)null).isNotEqualTo(4);
-    assertThat(4).isNotEqualTo((Long)null);
+    assertThat((Long)null).isNotEqualTo(4L);
+    assertThat(4L).isNotEqualTo((Long)null);
   }
 
   @Test public void inequalityOfNullsFail() {
     try {
-      assertThat((Long)null).isNotEqualTo((Integer)null);
+      assertThat((Long)null).isNotEqualTo((Long)null);
       fail("Should have thrown");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that <null> is not equal to <null>");
     }
-  }
-
-  @Test public void primitives() {
-    Assert.assertEquals(4, 4L);
-    Assert.assertEquals(4L, 4);
-    assertThat(4 == 4L).isTrue();
-    assertThat(4L == 4).isTrue();
-    assertThat(4).isEqualTo(4L);
-    assertThat(4L).isEqualTo(4);
-    assertThat(4).is(4L);
-    assertThat(4L).is(4);
-  }
-
-  @Test public void boxedPrimitives() {
-    // Java says boxed primitives are not .equals().
-    // Check the boolean expression with JUnit and Truth:
-    Assert.assertFalse(new Integer(4).equals(new Long(4L)));
-    Assert.assertFalse(new Long(4L).equals(new Integer(4)));
-    assertThat(new Integer(4).equals(new Long(4L))).isFalse();
-    assertThat(new Long(4L).equals(new Integer(4))).isFalse();
-
-    // JUnit says boxed primitives are not .equals()
-    try {
-      Assert.assertEquals(new Integer(4), new Long(4L)); // this throws!
-      fail();
-    } catch (AssertionError expected) {
-    }
-    try {
-      Assert.assertEquals(new Long(4L), new Integer(4)); // this throws!
-      fail();
-    } catch (AssertionError expected) {
-    }
-
-    // Truth says boxed primitives are not .equals()
-    assertThat(new Integer(4)).isNotEqualTo(new Long(4L));
-    assertThat(new Long(4L)).isNotEqualTo(new Integer(4));
-  }
-
-  @Test public void mixedBoxedAndUnboxedPrimitives() {
-    // Java says boxed primitives are not .equals() to primitives.
-    Assert.assertFalse(new Integer(4).equals(4L));
-    Assert.assertFalse(new Long(4L).equals(4));
-    assertThat(new Integer(4).equals(4L)).isFalse();
-    assertThat(new Long(4L).equals(4)).isFalse();
-
-    // JUnit won't even let you do this comparison (compile error!)
-    // "reference to assertEquals is ambiguous"
-    // Assert.assertEquals(new Integer(4), 4L);
-    // Assert.assertEquals(4L, new Integer(4));
-
-    // Truth says boxed primitives are not .equals() to an unboxed primitive
-    assertThat(new Integer(4)).isNotEqualTo(4L);
-    assertThat(new Long(4L)).isNotEqualTo(4);
-    // And vice-versa
-    assertThat(4L).isNotEqualTo(new Integer(4));
-    assertThat(4).isNotEqualTo(new Long(4L));
   }
 }
