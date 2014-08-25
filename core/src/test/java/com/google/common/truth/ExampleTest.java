@@ -21,6 +21,7 @@ import static com.google.common.truth.TruthJUnit.assume;
 import static com.google.common.truth.delegation.FooSubject.FOO;
 import static org.junit.Assert.fail;
 
+import com.google.common.collect.Range;
 import com.google.common.truth.Expect;
 import com.google.common.truth.delegation.Foo;
 
@@ -72,7 +73,7 @@ public class ExampleTest {
   @Test public void expectRange() {
     int x = 4;
     EXPECT.that(x).isNotNull();
-    EXPECT.that(x).isBetween(3, 5);
+    EXPECT.that(x).isIn(Range.open(3, 5));
     EXPECT.that(x).isEqualTo(4);
   }
 
