@@ -43,9 +43,9 @@ import javax.annotation.CheckReturnValue;
  * <pre>{@code
  * assertThat(a).isEqualTo(b);
  * assertThat(c).isTrue();
- * assertThat(d).has().item(a);
- * assertThat(d).has().allOf(a, b);
- * assertThat(d).has().anyOf(a, b, c);
+ * assertThat(d).contains(a);
+ * assertThat(d).containsAllOf(a, b);
+ * assertThat(d).containsAnyOf(a, b, c);
  * }</pre>
  *
  * Tests should be easier to read, and flow more clearly.
@@ -53,7 +53,7 @@ import javax.annotation.CheckReturnValue;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class Truth {
+public final class Truth {
 
   public static final FailureStrategy THROW_ASSERTION_ERROR =
       new FailureStrategy() {
@@ -67,104 +67,99 @@ public class Truth {
 
   public static TestVerb assert_() { return ASSERT; }
 
-  private static FailureStrategy getFailureStrategy() {
-    return THROW_ASSERTION_ERROR;
-  }
-
   @CheckReturnValue
   public static Subject<DefaultSubject, Object> assertThat(Object target) {
-    return new DefaultSubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   @GwtIncompatible("ClassSubject.java")
   public static ClassSubject assertThat(Class<?> target) {
-    return new ClassSubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static LongSubject assertThat(Long target) {
-    return new LongSubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static IntegerSubject assertThat(Integer target) {
-    return new IntegerSubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static BooleanSubject assertThat(Boolean target) {
-    return new BooleanSubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static StringSubject assertThat(String target) {
-    return new StringSubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
       assertThat(Iterable<T> target) {
-    return IterableSubject.create(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static <T, C extends Collection<T>>
       CollectionSubject<? extends CollectionSubject<?, T, C>, T, C>
       assertThat(Collection<T> target) {
-    return CollectionSubject.create(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C>
       assertThat(List<T> target) {
-    return ListSubject.create(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static <T> ObjectArraySubject<T> assertThat(T[] target) {
-    return new ObjectArraySubject<T>(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static PrimitiveBooleanArraySubject assertThat(boolean[] target) {
-    return new PrimitiveBooleanArraySubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static PrimitiveIntArraySubject assertThat(int[] target) {
-    return new PrimitiveIntArraySubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static PrimitiveLongArraySubject assertThat(long[] target) {
-    return new PrimitiveLongArraySubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static PrimitiveCharArraySubject assertThat(char[] target) {
-    return new PrimitiveCharArraySubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static PrimitiveFloatArraySubject assertThat(float[] target) {
-    return new PrimitiveFloatArraySubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static PrimitiveDoubleArraySubject assertThat(double[] target) {
-    return new PrimitiveDoubleArraySubject(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static <T> OptionalSubject<T> assertThat(Optional<T> target) {
-    return new OptionalSubject<T>(getFailureStrategy(), target);
+    return assert_().that(target);
   }
 
   @CheckReturnValue
   public static <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
       assertThat(Map<K, V> target) {
-    return MapSubject.create(getFailureStrategy(), target);
+    return assert_().that(target);
   }
-
 }
