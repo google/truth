@@ -34,8 +34,10 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
   /**
    * Attests that a Subject<Long> is inclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
+   *
+   * @deprecated Use {@code isIn(Range.closed(lower, upper))} instead.
    */
-  // TODO(user): @deprecated Use {@code isIn(Range.closed(lower, upper))} instead.
+  @Deprecated
   public void isInclusivelyInRange(long lower, long upper) {
     isIn(Range.closed(lower, upper));
   }
@@ -43,8 +45,10 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
   /**
    * Attests that a Subject<Long> is exclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
+   *
+   * @deprecated Use {@code isIn(Range.open(lower, upper))} instead.
    */
-  // TODO(user): @deprecated Use {@code isIn(Range.open(lower, upper))} instead.
+  @Deprecated
   public void isBetween(long lower, long upper) {
     isIn(Range.open(lower, upper));
   }

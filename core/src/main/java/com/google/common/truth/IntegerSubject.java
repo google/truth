@@ -35,8 +35,10 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
   /**
    * Attests that the int is inclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
+   *
+   * @deprecated Use {@code isIn(Range.closed(lower, upper))} instead.
    */
-  // TODO(user): @deprecated Use {@code isIn(Range.closed(lower, upper))} instead.
+  @Deprecated
   public void isInclusivelyInRange(int lower, int upper) {
     isIn(Range.closed(lower, upper));
   }
@@ -44,8 +46,10 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
   /**
    * Attests that the int is exclusively within the {@code lower} and
    * {@code upper} bounds provided or fails.
+   *
+   * @deprecated Use {@code isIn(Range.open(lower, upper))} instead.
    */
-  // TODO(user): @deprecated Use {@code isIn(Range.open(lower, upper))} instead.
+  @Deprecated
   public void isBetween(int lower, int upper) {
     isIn(Range.open(lower, upper));
   }
