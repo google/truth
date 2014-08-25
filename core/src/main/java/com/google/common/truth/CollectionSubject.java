@@ -16,12 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.SubjectUtils.accumulate;
-import static com.google.common.truth.SubjectUtils.countDuplicates;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.annotation.CheckReturnValue;
 
@@ -40,21 +36,17 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   }
 
   /**
-   * Attests that a Collection is empty or fails.
+   * @tobedeprecated {@code assertThat(foo).has().somePredicate()} has
+   *     been replaced with direct methods such as
+   *     {@link IterableSubject#containsAllOf(Object, Object, Object...)},
+   *     {@link IterableSubject#contains(Object)}, etc.
    */
-  @Override public void isEmpty() {
-    if (!getSubject().isEmpty()) {
-      fail("is empty");
-    }
-  }
-
   @CheckReturnValue
+  // TODO(user): @Deprecated
   public Has<T, C> has() {
     return new Has<T, C>() {
       @Override public void item(T item) {
-        if (!getSubject().contains(item)) {
-          fail("has item", item);
-        }
+        CollectionSubject.this.contains(item);
       }
 
       @Override public void anyOf(T first) {
@@ -65,13 +57,8 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         anyFrom(accumulate(first, second, rest));
       }
 
-      @Override public void anyFrom(Collection<T> col) {
-        for (Object item : col) {
-          if (getSubject().contains(item)) {
-            return;
-          }
-        }
-        fail("contains", col);
+      @Override public void anyFrom(Iterable<T> col) {
+        CollectionSubject.this.containsAnyIn(col);
       }
 
       @Override public Ordered allOf(T first) {
@@ -82,16 +69,8 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         return allFrom(accumulate(first, second, rest));
       }
 
-      @Override public Ordered allFrom(final Collection<T> required) {
-        Collection<T> toRemove = new ArrayList<T>(required);
-        // remove each item in the subject, as many times as it occurs in the subject.
-        for (Object item : getSubject()) {
-          toRemove.remove(item);
-        }
-        if (!toRemove.isEmpty()) {
-          failWithBadResults("has all of", required, "is missing", countDuplicates(toRemove));
-        }
-        return new InOrder("has all in order", required);
+      @Override public Ordered allFrom(Iterable<T> required) {
+        return CollectionSubject.this.containsAllIn(required);
       }
 
       @Override public Ordered exactly(T first) {
@@ -102,22 +81,8 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         return exactlyAs(accumulate(first, second, rest));
       }
 
-      @Override public Ordered exactlyAs(Collection<T> required) {
-        Collection<T> toRemove = new ArrayList<T>(required);
-        Collection<Object> extra = new ArrayList<Object>();
-        // remove each item in the subject, as many times as it occurs in the subject.
-        for (Object item : getSubject()) {
-          if (!toRemove.remove(item)) {
-            extra.add(item);
-          }
-        }
-        if (!toRemove.isEmpty()) {
-          failWithBadResults("has exactly", required, "is missing", countDuplicates(toRemove));
-        }
-        if (!extra.isEmpty()) {
-          failWithBadResults("has exactly", required, "has unexpected items", countDuplicates(extra));
-        }
-        return new InOrder("has exactly in order", required);
+      @Override public Ordered exactlyAs(Iterable<T> required) {
+        return CollectionSubject.this.containsOnlyElementsIn(required);
       }
 
       @Override public void noneOf(T first) {
@@ -128,49 +93,13 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
         noneFrom(accumulate(first, second, rest));
       }
 
-      @Override public void noneFrom(final Collection<T> excluded) {
-        Collection<T> present = new ArrayList<T>();
-        for (T item : new HashSet<T>(excluded)) {
-          if (getSubject().contains(item)) {
-            present.add(item);
-          }
-        }
-        if (!present.isEmpty()) {
-          failWithBadResults("has none of", excluded, "contains", present);
-        }
+      @Override public void noneFrom(Iterable<T> excluded) {
+        CollectionSubject.this.containsNoneIn(excluded);
       }
     };
   }
 
-  private class InOrder implements Ordered {
-    private final String check;
-    private final Collection<T> required;
-
-    InOrder(String check, Collection<T> required) {
-      this.check = check;
-      this.required = required;
-    }
-
-    @Override public void inOrder() {
-      Iterator<T> actualItems = getSubject().iterator();
-      for (Object expected : required) {
-        if (!actualItems.hasNext()) {
-          fail(check, required);
-        } else {
-          Object actual = actualItems.next();
-          if (actual == expected || actual != null && actual.equals(expected)) {
-            continue;
-          } else {
-            fail(check, required);
-          }
-        }
-      }
-      if (actualItems.hasNext()) {
-        fail(check, required);
-      }
-    }
-  }
-
+  // TODO(user): @Deprecated
   public interface Has<E, C extends Collection<E>> {
     /**
      * Attests that a Collection contains at least the item
@@ -193,7 +122,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * Attests that a Collection contains at least one of the objects contained
      * in the provided collection or fails.
      */
-    void anyFrom(Collection<E> expected);
+    void anyFrom(Iterable<E> expected);
 
     /**
      * Attests that a Collection contains at least all of the provided objects
@@ -214,7 +143,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * in the provided collection or fails, coping with duplicates in both
      * the Collection and the parameters.
      */
-    Ordered allFrom(Collection<E> expected);
+    Ordered allFrom(Iterable<E> expected);
 
     /**
      * Attests that a Collection contains at all of the provided objects and
@@ -238,7 +167,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * duplicates in both the Collection and the parameters. It makes no
      * attestation about order unless {@code inOrder()} is explicitly called.
      */
-    Ordered exactlyAs(Collection<E> expected);
+    Ordered exactlyAs(Iterable<E> expected);
 
     /**
      * Attests that a Collection contains none of the provided objects
@@ -259,6 +188,6 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * in the provided collection or fails, coping with duplicates in both
      * the Collection and the parameters.
      */
-    void noneFrom(Collection<E> expected);
+    void noneFrom(Iterable<E> expected);
   }
 }
