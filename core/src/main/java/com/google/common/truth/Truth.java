@@ -68,6 +68,11 @@ public final class Truth {
   public static TestVerb assert_() { return ASSERT; }
 
   @CheckReturnValue
+  public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(T target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
   public static Subject<DefaultSubject, Object> assertThat(Object target) {
     return assert_().that(target);
   }

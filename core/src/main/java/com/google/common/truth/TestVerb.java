@@ -38,6 +38,11 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   @CheckReturnValue
+  public <T extends Comparable<?>> ComparableSubject<?, T> that(T target) {
+    return new ComparableSubject(getFailureStrategy(), target) {};
+  }
+
+  @CheckReturnValue
   public Subject<DefaultSubject, Object> that(Object target) {
     return new DefaultSubject(getFailureStrategy(), target);
   }
