@@ -25,8 +25,8 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     extends IterableSubject<S, T, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> create(
-      FailureStrategy failureStrategy, Collection<T> collection) {
+  static <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C>
+      create(FailureStrategy failureStrategy, Collection<T> collection) {
     return new CollectionSubject(failureStrategy, collection);
   }
 
