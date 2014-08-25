@@ -36,16 +36,16 @@ import java.util.Collection;
 public class CollectionTest {
 
   @Test public void collectionHasItem() {
-    assertThat(collection(1, 2, 3)).has().item(1);
+    assertThat(collection(1, 2, 3)).contains(1);
   }
 
   @Test public void collectionHasItemWithNull() {
-    assertThat(collection(1, null, 3)).has().item(null);
+    assertThat(collection(1, null, 3)).contains(null);
   }
 
   @Test public void collectionHasItemFailure() {
     try {
-      assertThat(collection(1, 2, 3)).has().item(5);
+      assertThat(collection(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");

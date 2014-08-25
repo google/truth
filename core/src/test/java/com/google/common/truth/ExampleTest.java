@@ -41,7 +41,7 @@ public class ExampleTest {
 
   @Test public void listHasElements() {
     // single item
-    assertThat(Arrays.asList(1, 2, 3)).has().item(1);
+    assertThat(Arrays.asList(1, 2, 3)).contains(1);
 
     // at least these items
     assertThat(Arrays.asList(1, 2, 3)).has().allOf(1, 2);
