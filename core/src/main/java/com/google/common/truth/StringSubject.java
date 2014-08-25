@@ -23,7 +23,7 @@ import com.google.common.annotations.GwtIncompatible;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class StringSubject extends Subject<StringSubject, String> {
+public class StringSubject extends ComparableSubject<StringSubject, String> {
   public StringSubject(FailureStrategy failureStrategy, String string) {
     super(failureStrategy, string);
   }

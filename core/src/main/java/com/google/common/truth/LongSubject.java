@@ -22,7 +22,7 @@ package com.google.common.truth;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 // Can't be final because we use codegen to generate a subclass
-public class LongSubject extends Subject<LongSubject, Long> {
+public class LongSubject extends ComparableSubject<LongSubject, Long> {
 
   public LongSubject(FailureStrategy failureStrategy, Long subject) {
     super(failureStrategy, subject);

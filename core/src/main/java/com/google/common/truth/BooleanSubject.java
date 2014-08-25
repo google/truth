@@ -20,7 +20,7 @@ package com.google.common.truth;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class BooleanSubject extends Subject<BooleanSubject, Boolean> {
+public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
 
   public BooleanSubject(FailureStrategy failureStrategy, Boolean subject) {
     super(failureStrategy, subject);

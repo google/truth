@@ -24,7 +24,7 @@ import com.google.common.primitives.Ints;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 // Can't be final because we use codegen to generate a subclass
-public class IntegerSubject extends Subject<IntegerSubject, Integer> {
+public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
 
   public IntegerSubject(FailureStrategy failureStrategy, Integer integer) {
     super(failureStrategy, integer);
