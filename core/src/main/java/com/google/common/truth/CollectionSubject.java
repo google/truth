@@ -133,12 +133,12 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * only these objects or fails. This copes with duplicates in both the
      * Collection and the parameters. It makes no attestation about order
      * unless {@code inOrder()} is explicitly called.
-     *
-     * @deprecated Use {@link IterableSubject#contains(Object)} instead.
      */
-    @Deprecated
+    // TODO(user): Deprecate this once the replacement method is added!
+    // @deprecated Use {@link IterableSubject#containsExactly(Object)} instead.
+    // @Deprecated
     public Ordered exactly(T first) {
-      // We can't inline contains(first) because of the (bogus) return type!
+      // We can't inline containsExactly(first) because of the (bogus) return type!
       return exactlyAs(accumulate(first));
     }
 
