@@ -72,6 +72,11 @@ public class Truth {
   }
 
   @CheckReturnValue
+  public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(T target) {
+    return new ComparableSubject(getFailureStrategy(), target) {};
+  }
+
+  @CheckReturnValue
   public static Subject<DefaultSubject, Object> assertThat(Object target) {
     return new DefaultSubject(getFailureStrategy(), target);
   }
