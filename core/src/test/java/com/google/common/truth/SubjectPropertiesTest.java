@@ -15,7 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,54 +32,54 @@ public class SubjectPropertiesTest {
 
   @Test public void testHasNoSuchField() {
     try {
-      ASSERT.that(new A()).hasField("noField");
-      ASSERT.fail("Should have thrown an assertion error.");
+      assertThat(new A()).hasField("noField");
+      assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .is("Not true that <A> has a field named <noField>");
     }
   }
 
   @Test public void testHasPublicField() {
-    ASSERT.that(new A()).hasField("publicField");
+    assertThat(new A()).hasField("publicField");
   }
 
   @Test public void testHasFieldWithNullSubject() {
     Object nullObject = null;
     try {
-      ASSERT.that(nullObject).hasField("publicField");
-      ASSERT.fail("Should have thrown an assertion error.");
+      assertThat(nullObject).hasField("publicField");
+      assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .is("Cannot determine a field name from a null object.");
     }
   }
 
   @Test public void testHasPublicFieldWithValue() {
-    ASSERT.that(new A("value", null)).hasField("publicField").withValue("value");
+    assertThat(new A("value", null)).hasField("publicField").withValue("value");
   }
 
   @Test public void testHasPublicFieldWithWrongValue() {
     try {
-      ASSERT.that(new A("aValue", null)).hasField("publicField").withValue("wrongValue");
-      ASSERT.fail("Should have thrown an assertion error.");
+      assertThat(new A("aValue", null)).hasField("publicField").withValue("wrongValue");
+      assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .is("Not true that <A>'s field <publicField> contains expected value " +
                 "<wrongValue>. It contains value <aValue>");
     }
   }
 
   @Test public void testHasPublicFieldWithNullValue() {
-    ASSERT.that(new A(null, null)).hasField("publicField").withValue(null);
+    assertThat(new A(null, null)).hasField("publicField").withValue(null);
   }
 
   @Test public void testHasPublicFieldWithWrongNullValue() {
     try {
-      ASSERT.that(new A(null, null)).hasField("publicField").withValue("wrongValue");
-      ASSERT.fail("Should have thrown an assertion error.");
+      assertThat(new A(null, null)).hasField("publicField").withValue("wrongValue");
+      assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .is("Not true that <A>'s field <publicField> contains expected value " +
                 "<wrongValue>. It contains value <null>");
     }
@@ -86,20 +87,20 @@ public class SubjectPropertiesTest {
 
   @Test public void testHasPublicFieldWithValueInBadField() {
     try {
-      ASSERT.that(new A("value", null)).hasField("noField").withValue("value");
-      ASSERT.fail("Should have thrown an assertion error.");
+      assertThat(new A("value", null)).hasField("noField").withValue("value");
+      assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .is("Not true that <A> has a field named <noField>");
     }
   }
 
   @Test public void testHasPrivateField() {
-    ASSERT.that(new A()).hasField("privateField");
+    assertThat(new A()).hasField("privateField");
   }
 
   @Test public void testHasProvidedFieldWithValue() {
-    ASSERT.that(new A(null, "value")).hasField("privateField").withValue("value");
+    assertThat(new A(null, "value")).hasField("privateField").withValue("value");
   }
 
   public static class A {

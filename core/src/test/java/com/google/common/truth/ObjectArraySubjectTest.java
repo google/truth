@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.truth.ObjectArraySubject;
@@ -35,67 +35,67 @@ import java.util.Set;
 public class ObjectArraySubjectTest {
 
   @Test public void isEqualTo() {
-    ASSERT.that(objectArray("A", 5L)).isEqualTo(objectArray("A", 5L));
+    assertThat(objectArray("A", 5L)).isEqualTo(objectArray("A", 5L));
   }
 
   @Test public void isEqualTo_Same() {
     Object[] same = objectArray("A", 5L);
-    ASSERT.that(same).isEqualTo(same);
+    assertThat(same).isEqualTo(same);
   }
 
   @Test public void asList() {
-    ASSERT.that(objectArray("A", 5L)).asList().has().anyOf("A");
+    assertThat(objectArray("A", 5L)).asList().has().anyOf("A");
   }
 
   @Test public void isEqualTo_Fail_UnequalOrdering() {
     try {
-      ASSERT.that(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
+      assertThat(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .is("Not true that <(Object[]) [A, 5]> is equal to <[5, A]>");
     }
   }
 
   @Test public void isEqualTo_Fail_NotAnArray() {
     try {
-      ASSERT.that(objectArray("A", 5L)).isEqualTo(new Object());
+      assertThat(objectArray("A", 5L)).isEqualTo(new Object());
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Incompatible types compared.");
-      ASSERT.that(e.getMessage()).contains("expected: Object");
-      ASSERT.that(e.getMessage()).contains("actual: Object[]");
+      assertThat(e.getMessage()).contains("Incompatible types compared.");
+      assertThat(e.getMessage()).contains("expected: Object");
+      assertThat(e.getMessage()).contains("actual: Object[]");
     }
   }
 
   @Test public void isNotEqualTo_SameLengths() {
-    ASSERT.that(objectArray("A", 5L)).isNotEqualTo(objectArray("C", 5L));
+    assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("C", 5L));
   }
 
   @Test public void isNotEqualTo_DifferentLengths() {
-    ASSERT.that(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L, "c"));
+    assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L, "c"));
   }
 
   @Test public void isNotEqualTo_DifferentTypes() {
-    ASSERT.that(objectArray("A", 5L)).isNotEqualTo(new Object());
+    assertThat(objectArray("A", 5L)).isNotEqualTo(new Object());
   }
 
   @Test public void isNotEqualTo_FailEquals() {
     try {
-      ASSERT.that(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
+      assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
+      assertThat(e.getMessage()).is("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
     }
   }
 
   @Test public void isNotEqualTo_FailSame() {
     try {
       Object[] same = objectArray("A", 5L);
-      ASSERT.that(same).isNotEqualTo(same);
+      assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
+      assertThat(e.getMessage()).is("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
     }
   }
 
@@ -104,19 +104,19 @@ public class ObjectArraySubjectTest {
   }
 
   @Test public void stringArrayIsEqualTo() {
-    ASSERT.that(objectArray("A", "B")).isEqualTo(objectArray("A", "B"));
+    assertThat(objectArray("A", "B")).isEqualTo(objectArray("A", "B"));
   }
 
   @Test public void stringArrayAsList() {
-    ASSERT.that(objectArray("A", "B")).asList().has().anyOf("A");
+    assertThat(objectArray("A", "B")).asList().has().anyOf("A");
   }
 
   @Test public void stringArrayIsEqualTo_Fail_UnequalOrdering() {
     try {
-      ASSERT.that(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
+      assertThat(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .is("Not true that <(String[]) [A, B]> is equal to <[B, A]>");
     }
   }
@@ -127,11 +127,11 @@ public class ObjectArraySubjectTest {
 
   @Test public void SetArrayIsEqualTo_Fail_UnequalOrdering() {
     try {
-      ASSERT.that(objectArray(ImmutableSet.of("A"), ImmutableSet.of("B")))
+      assertThat(objectArray(ImmutableSet.of("A"), ImmutableSet.of("B")))
           .isEqualTo(objectArray(ImmutableSet.of("B"), ImmutableSet.of("A")));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .is("Not true that <(Set[]) [[A], [B]]> is equal to <[[B], [A]]>");
           // Maybe one day:
           // .is("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");

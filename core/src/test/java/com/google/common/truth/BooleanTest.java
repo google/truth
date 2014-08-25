@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -31,28 +31,28 @@ import org.junit.runners.JUnit4;
 public class BooleanTest {
 
   @Test public void isTrue() {
-    ASSERT.that(true).isTrue();
+    assertThat(true).isTrue();
   }
 
   @Test public void isTrueFailing() {
     try {
-      ASSERT.that(false).isTrue();
+      assertThat(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).is("The subject was expected to be true, but was false");
+      assertThat(expected.getMessage()).is("The subject was expected to be true, but was false");
     }
   }
 
   @Test public void isFalse() {
-    ASSERT.that(false).isFalse();
+    assertThat(false).isFalse();
   }
 
   @Test public void isFalseFailing() {
     try {
-      ASSERT.that(true).isFalse();
+      assertThat(true).isFalse();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).is("The subject was expected to be false, but was true");
+      assertThat(expected.getMessage()).is("The subject was expected to be false, but was true");
     }
   }
 }

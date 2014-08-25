@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.StringSubject;
@@ -40,7 +40,7 @@ public class SubjectFactoryReflectionTest {
             return new StringSubject(fs, target);
           }
         };
-    ASSERT.that(factory.getSubjectClass()).is(StringSubject.class);
+    assertThat(factory.getSubjectClass()).is(StringSubject.class);
   }
 
 }

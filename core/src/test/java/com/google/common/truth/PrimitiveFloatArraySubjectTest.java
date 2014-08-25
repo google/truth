@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.PrimitiveFloatArraySubject;
 
@@ -35,31 +35,31 @@ public class PrimitiveFloatArraySubjectTest {
   @SuppressWarnings("deprecation")
   @Test public void isEqualTo_Default_Fail() {
     try {
-      ASSERT.that(array(2.2f, 5.4f)).isEqualTo(array(2.2f, 5.4f));
+      assertThat(array(2.2f, 5.4f)).isEqualTo(array(2.2f, 5.4f));
       throw new Error("Expected to throw.");
     } catch (UnsupportedOperationException expected) {}
   }
 
   @Test public void isEqualTo() {
-    ASSERT.that(array(2.2f, 5.4f)).isEqualTo(array(2.2f, 5.4f), DEFAULT_TOLERANCE);
+    assertThat(array(2.2f, 5.4f)).isEqualTo(array(2.2f, 5.4f), DEFAULT_TOLERANCE);
   }
 
   @Test public void isEqualTo_Fail_UnequalOrdering() {
     try {
-      ASSERT.that(array(2.2f, 3.3f)).isEqualTo(array(3.3f, 2.2f), DEFAULT_TOLERANCE);
+      assertThat(array(2.2f, 3.3f)).isEqualTo(array(3.3f, 2.2f), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .isEqualTo("Not true that <(float[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
     }
   }
 
   @Test public void isEqualTo_Fail_NotAnArray() {
     try {
-      ASSERT.that(array(2.2f, 3.3f, 4.4f)).isEqualTo(new Object(), DEFAULT_TOLERANCE);
+      assertThat(array(2.2f, 3.3f, 4.4f)).isEqualTo(new Object(), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .contains("Incompatible types compared. expected: Object, actual: float[]");
     }
   }
@@ -67,29 +67,29 @@ public class PrimitiveFloatArraySubjectTest {
   @SuppressWarnings("deprecation")
   @Test public void isNotEqualTo_Default_Fail() {
     try {
-      ASSERT.that(array(2.2f, 5.4f)).isNotEqualTo(array(5.4f, 2.2f));
+      assertThat(array(2.2f, 5.4f)).isNotEqualTo(array(5.4f, 2.2f));
       throw new Error("Expected to throw.");
     } catch (UnsupportedOperationException expected) {}
   }
 
   @Test public void isNotEqualTo_SameLengths() {
-    ASSERT.that(array(2.2f, 3.3f)).isNotEqualTo(array(3.3f, 2.2f), DEFAULT_TOLERANCE);
+    assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(3.3f, 2.2f), DEFAULT_TOLERANCE);
   }
 
   @Test public void isNotEqualTo_DifferentLengths() {
-    ASSERT.that(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, 3.3f, 1.1f), DEFAULT_TOLERANCE);
+    assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, 3.3f, 1.1f), DEFAULT_TOLERANCE);
   }
 
   @Test public void isNotEqualTo_DifferentTypes() {
-    ASSERT.that(array(2.2f, 3.3f)).isNotEqualTo(new Object(), DEFAULT_TOLERANCE);
+    assertThat(array(2.2f, 3.3f)).isNotEqualTo(new Object(), DEFAULT_TOLERANCE);
   }
 
   @Test public void isNotEqualTo_FailEquals() {
     try {
-      ASSERT.that(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, 3.3f), DEFAULT_TOLERANCE);
+      assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, 3.3f), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .is("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3]");
     }
   }
@@ -97,10 +97,10 @@ public class PrimitiveFloatArraySubjectTest {
   @Test public void isNotEqualTo_FailSame() {
     try {
       float[] same = array(2.2f, 3.3f);
-      ASSERT.that(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
+      assertThat(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .is("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3]");
     }
   }

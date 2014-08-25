@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.Maps;
@@ -35,143 +35,143 @@ import java.util.Map;
 public class MapTest {
 
   @Test public void mapIsEmpty() {
-    ASSERT.that(map(String.class, String.class)).isEmpty();
+    assertThat(map(String.class, String.class)).isEmpty();
   }
 
   @Test public void mapIsEmptyWithFailure() {
     try {
-      ASSERT.that(map(Integer.class, Integer.class, 1, 5)).isEmpty();
+      assertThat(map(Integer.class, Integer.class, 1, 5)).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("is empty");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("is empty");
     }
   }
 
   @Test public void mapIsNotEmpty() {
-    ASSERT.that(map(Integer.class, Integer.class, 1, 5)).isNotEmpty();
+    assertThat(map(Integer.class, Integer.class, 1, 5)).isNotEmpty();
   }
 
   @Test public void mapIsNotEmptyWithFailure() {
     try {
-      ASSERT.that(map(String.class, String.class)).isNotEmpty();
+      assertThat(map(String.class, String.class)).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("is not empty");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("is not empty");
     }
   }
 
   @Test public void mapHasKey() {
-    ASSERT.that(map(String.class, Object.class, "a", "A")).hasKey("a");
+    assertThat(map(String.class, Object.class, "a", "A")).hasKey("a");
   }
 
   @Test public void failMapHasKey() {
     try {
-      ASSERT.that(map(String.class, Object.class, "a", "A")).hasKey("b");
+      assertThat(map(String.class, Object.class, "a", "A")).hasKey("b");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has key");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("has key");
     }
   }
 
   @Test public void failMapHasKeyWithNull() {
     try {
-      ASSERT.that(map(String.class, Object.class, "a", "A")).hasKey(null);
+      assertThat(map(String.class, Object.class, "a", "A")).hasKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has key <null>");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("has key <null>");
     }
   }
 
   @Test public void mapLacksKey() {
-    ASSERT.that(map(String.class, Object.class, "a", "A")).lacksKey("b");
+    assertThat(map(String.class, Object.class, "a", "A")).lacksKey("b");
   }
 
   @Test public void failMapLacksKey() {
     try {
-      ASSERT.that(map(String.class, Object.class, "a", "A")).lacksKey("a");
+      assertThat(map(String.class, Object.class, "a", "A")).lacksKey("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("lacks key");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("lacks key");
     }
   }
 
   @Test public void mapHasKeyWithValue() {
-    ASSERT.that(map(String.class, Object.class, "a", String.class))
+    assertThat(map(String.class, Object.class, "a", String.class))
       .hasKey("a").withValue(String.class);
   }
 
   @Test public void mapHasKeyWithNullValueNullExpected() {
-    ASSERT.that(map(String.class, Object.class, "a", null))
+    assertThat(map(String.class, Object.class, "a", null))
     .hasKey("a").withValue(null);
   }
 
   @Test public void failMapHasKeyWithValue() {
     try {
-      ASSERT.that(map(String.class, Object.class, "a", String.class))
+      assertThat(map(String.class, Object.class, "a", String.class))
           .hasKey("a").withValue(Integer.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has key/value pair");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("has key/value pair");
     }
   }
 
   @Test public void failMapHasKeyWithNullValuePresentExpected() {
     try {
-      ASSERT.that(map(String.class, Object.class, "a", null))
+      assertThat(map(String.class, Object.class, "a", null))
           .hasKey("a").withValue(Integer.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has key/value pair");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("has key/value pair");
     }
   }
 
   @Test public void failMapHasKeyWithPresentValueNullExpected() {
     try {
-      ASSERT.that(map(String.class, Object.class, "a", String.class))
+      assertThat(map(String.class, Object.class, "a", String.class))
           .hasKey("a").withValue(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has key/value pair");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("has key/value pair");
     }
   }
 
   @Test public void mapHasValue() {
-    ASSERT.that(map(String.class, Object.class, "a", "A")).hasValue("A");
+    assertThat(map(String.class, Object.class, "a", "A")).hasValue("A");
   }
 
   @Test public void mapHasValueWithNull() {
-    ASSERT.that(map(String.class, Object.class, "a", null)).hasValue(null);
+    assertThat(map(String.class, Object.class, "a", null)).hasValue(null);
   }
 
   @Test public void failMapHasValue() {
     try {
-      ASSERT.that(map(String.class, Object.class, "a", "A")).hasValue("B");
+      assertThat(map(String.class, Object.class, "a", "A")).hasValue("B");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("has value");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("has value");
     }
   }
 
   @Test public void mapLacksValue() {
-    ASSERT.that(map(String.class, Object.class, "a", "A")).lacksValue("B");
+    assertThat(map(String.class, Object.class, "a", "A")).lacksValue("B");
   }
 
   @Test public void failMapLacksValue() {
     try {
-      ASSERT.that(map(String.class, Object.class, "a", "A")).lacksValue("A");
+      assertThat(map(String.class, Object.class, "a", "A")).lacksValue("A");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that");
-      ASSERT.that(e.getMessage()).contains("lacks value");
+      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).contains("lacks value");
     }
   }
 

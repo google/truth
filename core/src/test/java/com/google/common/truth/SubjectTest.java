@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import org.junit.Ignore;
@@ -34,33 +34,33 @@ public class SubjectTest {
 
   @Test public void identityOfNulls() {
     Object o = null;
-    ASSERT.that(o).is(null);
+    assertThat(o).is(null);
   }
 
   @Test public void identityOfNullsFailure() {
     Object o = null;
     try {
-      ASSERT.that(o).is("a");
+      assertThat(o).is("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
     }
   }
 
   @Test public void identityOfObject() {
     Object a = new Object();
     Object b = a;
-    ASSERT.that(a).is(b);
+    assertThat(a).is(b);
   }
 
   @Test public void identityOfObjectFailure() {
     Object a = new Object() { @Override public String toString() { return "Object 1"; } };
     Object b = new Object() { @Override public String toString() { return "Object 2"; } };
     try {
-      ASSERT.that(a).is(b);
+      assertThat(a).is(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
     }
   }
 
@@ -69,165 +69,165 @@ public class SubjectTest {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('b').toString();
     try {
-      ASSERT.that(a).is(b);
+      assertThat(a).is(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is <a>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <null> is <a>");
     }
   }
 
   @Test public void isNull() {
     Object o = null;
-    ASSERT.that(o).isNull();
+    assertThat(o).isNull();
   }
 
   @Test public void isNullFail() {
     Object o = new Object();
     try {
-      ASSERT.that(o).isNull();
+      assertThat(o).isNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is a null reference");
+      assertThat(e.getMessage()).isEqualTo("Not true that the subject is a null reference");
     }
   }
 
   @Test public void isNotNull() {
     Object o = new Object();
-    ASSERT.that(o).isNotNull();
+    assertThat(o).isNotNull();
   }
 
   @Test public void isNotNullFail() {
     Object o = null;
     try {
-      ASSERT.that(o).isNotNull();
+      assertThat(o).isNotNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that the subject is a non-null reference");
+      assertThat(e.getMessage()).isEqualTo("Not true that the subject is a non-null reference");
     }
   }
 
   @Test public void equalityOfNulls() {
     Object o = null;
-    ASSERT.that(o).isEqualTo(null);
+    assertThat(o).isEqualTo(null);
   }
 
   @Test public void equalityOfNullsFailure() {
     Object o = null;
     try {
-      ASSERT.that(o).isEqualTo("a");
+      assertThat(o).isEqualTo("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
     }
   }
 
   @Test public void equalityOfObjectBasedOnIdentity() {
     Object a = new Object();
     Object b = a;
-    ASSERT.that(a).isEqualTo(b);
+    assertThat(a).isEqualTo(b);
   }
 
   @Test public void equalityOfObjectFailure() {
     Object a = new Object() { @Override public String toString() { return "Object 1"; } };
     Object b = new Object() { @Override public String toString() { return "Object 2"; } };
     try {
-      ASSERT.that(a).isEqualTo(b);
+      assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
     }
   }
 
   @Test public void equalityOfComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('b').toString();
-    ASSERT.that(a).isEqualTo(b);
+    assertThat(a).isEqualTo(b);
   }
 
   @Test public void equalityOfComparableObjectsFailure() {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('a').toString();
     try {
-      ASSERT.that(a).isEqualTo(b);
+      assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <ab> is equal to <aa>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <ab> is equal to <aa>");
     }
   }
 
   @Test public void inequalityOfNulls() {
     Object o = null;
-    ASSERT.that(o).isNotEqualTo("a");
+    assertThat(o).isNotEqualTo("a");
   }
 
   @Test public void inequalityOfNullsFailure() {
     Object o = null;
     try {
-      ASSERT.that(o).isNotEqualTo(null);
+      assertThat(o).isNotEqualTo(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <null> is not equal to <null>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <null> is not equal to <null>");
     }
   }
 
   @Test public void inequalityOfObjectBasedOnIdentity() {
     Object a = new Object();
     Object b = new Object();
-    ASSERT.that(a).isNotEqualTo(b);
+    assertThat(a).isNotEqualTo(b);
   }
 
   @Test public void inequalityOfObjectFailure() {
     Object a = new Object() { @Override public String toString() { return "Object 1"; } };
     Object b = a;
     try {
-      ASSERT.that(a).isNotEqualTo(b);
+      assertThat(a).isNotEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <Object 1> is not equal to <Object 1>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <Object 1> is not equal to <Object 1>");
     }
   }
 
   @Test public void inequalityOfComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('a').toString();
-    ASSERT.that(a).isNotEqualTo(b);
+    assertThat(a).isNotEqualTo(b);
   }
 
   @Test public void inequalityOfComparableObjectsFailure() {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('b').toString();
     try {
-      ASSERT.that(a).isNotEqualTo(b);
+      assertThat(a).isNotEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).isEqualTo("Not true that <ab> is not equal to <ab>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <ab> is not equal to <ab>");
     }
   }
 
   @Test public void isA() {
-    ASSERT.that("a").isA(String.class);
+    assertThat("a").isA(String.class);
   }
 
   @Test public void isAFail() {
     try {
-      ASSERT.that(4.5).isA(Long.class);
+      assertThat(4.5).isA(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <4.5> is an instance of <java.lang.Long>."
+      assertThat(e.getMessage()).is("Not true that <4.5> is an instance of <java.lang.Long>."
       		+ " It is an instance of <java.lang.Double>");
     }
   }
 
   @Test public void isNotA() {
-    ASSERT.that("a").isNotA(Long.class);
+    assertThat("a").isNotA(Long.class);
   }
 
   @Test public void isNotAFail() {
     try {
-      ASSERT.that(5).isNotA(Number.class);
+      assertThat(5).isNotA(Number.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .is("<5> expected not to be an instance of java.lang.Number, but was.");
     }
   }

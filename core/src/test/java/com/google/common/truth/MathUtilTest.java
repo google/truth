@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.MathUtil;
 
@@ -32,20 +32,20 @@ import org.junit.runners.JUnit4;
 public class MathUtilTest {
 
   @Test public void floatEquality() {
-    ASSERT.that(MathUtil.equals(1.3f, 1.3f, 0.00000000000001f)).isTrue();
-    ASSERT.that(MathUtil.equals(1.3f, 1.3f, 0.0f)).isTrue();
-    ASSERT.that(MathUtil.equals(0.0f, 1.0f+2.0-3.0, 0.00000000000000000000000000000001f)).isTrue();
+    assertThat(MathUtil.equals(1.3f, 1.3f, 0.00000000000001f)).isTrue();
+    assertThat(MathUtil.equals(1.3f, 1.3f, 0.0f)).isTrue();
+    assertThat(MathUtil.equals(0.0f, 1.0f+2.0-3.0, 0.00000000000000000000000000000001f)).isTrue();
   }
 
   @Test public void doubleEquality() {
-    ASSERT.that(MathUtil.equals(1.3d, 1.3d, 0.00000000000001f)).isTrue();
-    ASSERT.that(MathUtil.equals(1.3d, 1.3d, 0.0f)).isTrue();
-    ASSERT.that(MathUtil.equals(0.0d, 1.0d+2.0-3.0, 0.00000000000000000000000000000001d)).isTrue();
+    assertThat(MathUtil.equals(1.3d, 1.3d, 0.00000000000001f)).isTrue();
+    assertThat(MathUtil.equals(1.3d, 1.3d, 0.0f)).isTrue();
+    assertThat(MathUtil.equals(0.0d, 1.0d+2.0-3.0, 0.00000000000000000000000000000001d)).isTrue();
   }
 
   @Test public void doubleEqualityDifferentTypes() {
-    ASSERT.that(MathUtil.equals(1.3d, 1.3f, 0.00000000000001d)).isFalse();
-    ASSERT.that(MathUtil.equals(1.3f, 1.3d, 0.00000000000001f)).isFalse();
+    assertThat(MathUtil.equals(1.3d, 1.3f, 0.00000000000001d)).isFalse();
+    assertThat(MathUtil.equals(1.3f, 1.3d, 0.00000000000001f)).isFalse();
   }
 
   // TODO(user): More complicated ways to break float/double casting to make sure.

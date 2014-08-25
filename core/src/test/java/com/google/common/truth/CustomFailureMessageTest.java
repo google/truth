@@ -16,7 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.StringSubject.STRING;
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -34,30 +35,30 @@ import java.util.Arrays;
 public class CustomFailureMessageTest {
   @Test public void customMessage() {
     try {
-      ASSERT.withFailureMessage("This is a custom message.").that(false).isTrue();
+      assert_().withFailureMessage("This is a custom message.").that(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).is("This is a custom message.");
+      assertThat(expected.getMessage()).is("This is a custom message.");
     }
   }
 
   @Test public void customMessageOnDelegate() {
     try {
-      ASSERT.withFailureMessage("This is a custom message.")
+      assert_().withFailureMessage("This is a custom message.")
           .about(STRING).that("foo").isEqualTo("bar");
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).is("This is a custom message.");
+      assertThat(expected.getMessage()).is("This is a custom message.");
     }
   }
 
   @Test public void customMessageOnForEach() {
     try {
-      ASSERT.withFailureMessage("This is a custom message.")
+      assert_().withFailureMessage("This is a custom message.")
           .in(Arrays.asList("a1", "b1", "c1")).thatEach(STRING).contains("b");
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).is("This is a custom message.");
+      assertThat(expected.getMessage()).is("This is a custom message.");
     }
   }
 }

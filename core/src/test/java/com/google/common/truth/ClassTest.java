@@ -15,7 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,31 +32,31 @@ public class ClassTest {
 
   @Test public void testDeclaresField_NoSuchField() {
     try {
-      ASSERT.that(A.class).declaresField("noField");
-      ASSERT.fail("Should have thrown an assertion error.");
+      assertThat(A.class).declaresField("noField");
+      assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .is("Not true that <A> has a field named <noField>");
     }
   }
 
   @Test public void testDeclaresField_Public() {
-    ASSERT.that(A.class).declaresField("publicField");
+    assertThat(A.class).declaresField("publicField");
   }
 
   @Test public void testDeclaresField_NullSubject() {
     Class<?> nullClass = null;
     try {
-      ASSERT.that(nullClass).declaresField("publicField");
-      ASSERT.fail("Should have thrown an assertion error.");
+      assertThat(nullClass).declaresField("publicField");
+      assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .is("Cannot determine a field name from a null class.");
     }
   }
 
   @Test public void testDeclaresField_Private() {
-    ASSERT.that(A.class).declaresField("privateField");
+    assertThat(A.class).declaresField("privateField");
   }
 
   public static class A {

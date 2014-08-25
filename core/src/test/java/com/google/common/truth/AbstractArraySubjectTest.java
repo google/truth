@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.AbstractArraySubject;
 import com.google.common.truth.FailureStrategy;
@@ -39,7 +39,7 @@ public class AbstractArraySubjectTest {
     CapturingFailureStrategy failureStrategy = new CapturingFailureStrategy();
     String[] strings = { "Foo", "Bar" };
     TestableStringArraySubject subject = new TestableStringArraySubject(failureStrategy, strings);
-    ASSERT.that(subject.getDisplaySubject()).isEqualTo("<(String[]) [Foo, Bar]>");
+    assertThat(subject.getDisplaySubject()).isEqualTo("<(String[]) [Foo, Bar]>");
   }
 
   class TestableStringArraySubject

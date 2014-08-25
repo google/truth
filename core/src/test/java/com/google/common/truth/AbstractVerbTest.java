@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.AbstractVerb;
 import com.google.common.truth.FailureStrategy;
@@ -59,11 +59,11 @@ public class AbstractVerbTest {
 
   @Test public void noArgFail() {
     captureFailure.fail();
-    ASSERT.that(failureMessage.get()).isEqualTo("");
+    assertThat(failureMessage.get()).isEqualTo("");
   }
 
   @Theory public void argFail(String message) {
     captureFailure.fail(message);
-    ASSERT.that(failureMessage.get()).isEqualTo(message);
+    assertThat(failureMessage.get()).isEqualTo(message);
   }
 }

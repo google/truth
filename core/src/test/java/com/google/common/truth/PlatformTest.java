@@ -15,7 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 
 import com.google.common.truth.Platform;
 
@@ -41,80 +42,80 @@ public class PlatformTest {
   // isInstance checking
 
   @Test public void testIsInstanceOfType_Java() {
-    ASSERT.that(Platform.isInstanceOfTypeJava(new Object(), Object.class)).isTrue();
-    ASSERT.that(Platform.isInstanceOfTypeJava("string", String.class)).isTrue();
+    assertThat(Platform.isInstanceOfTypeJava(new Object(), Object.class)).isTrue();
+    assertThat(Platform.isInstanceOfTypeJava("string", String.class)).isTrue();
   }
 
   @Test public void testIsInstanceOfType_Java_Fail() {
     try {
-      ASSERT.that(Platform.isInstanceOfTypeJava(new ArrayList<String>(), Set.class)).isTrue();
-      ASSERT.fail("Should have thrown.");
+      assertThat(Platform.isInstanceOfTypeJava(new ArrayList<String>(), Set.class)).isTrue();
+      assert_().fail("Should have thrown.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).contains("expected to be true");
+      assertThat(expected.getMessage()).contains("expected to be true");
     }
   }
 
   @Test public void testIsInstanceOfType_Java_Superclass() {
-    ASSERT.that(Platform.isInstanceOfTypeJava(new ArrayList<String>(), AbstractCollection.class))
+    assertThat(Platform.isInstanceOfTypeJava(new ArrayList<String>(), AbstractCollection.class))
         .isTrue();
   }
 
   @Test public void testIsInstanceOfType_Java_Interface() {
-    ASSERT.that(Platform.isInstanceOfTypeJava(new ArrayList<String>(), Iterable.class)).isTrue();
-    ASSERT.that(Platform.isInstanceOfTypeJava(new ArrayList<String>(), List.class)).isTrue();
+    assertThat(Platform.isInstanceOfTypeJava(new ArrayList<String>(), Iterable.class)).isTrue();
+    assertThat(Platform.isInstanceOfTypeJava(new ArrayList<String>(), List.class)).isTrue();
   }
 
   @Test public void testIsInstanceOfType_GWT() {
-    ASSERT.that(Platform.isInstanceOfTypeGWT(new Object(), Object.class)).isTrue();
-    ASSERT.that(Platform.isInstanceOfTypeGWT("string", String.class)).isTrue();
+    assertThat(Platform.isInstanceOfTypeGWT(new Object(), Object.class)).isTrue();
+    assertThat(Platform.isInstanceOfTypeGWT("string", String.class)).isTrue();
   }
 
   @Test public void testIsInstanceOfType_GWT_Fail() {
     try {
-      ASSERT.that(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), Set.class)).isTrue();
-      ASSERT.fail("Should have thrown.");
+      assertThat(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), Set.class)).isTrue();
+      assert_().fail("Should have thrown.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).contains("expected to be true");
+      assertThat(expected.getMessage()).contains("expected to be true");
     }
   }
 
   @Test public void testIsInstanceOfType_GWT_Superclass() {
-    ASSERT.that(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), AbstractCollection.class))
+    assertThat(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), AbstractCollection.class))
         .isTrue();
   }
 
   @Test public void testIsInstanceOfType_GWT_Interface() {
-    ASSERT.that(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), Iterable.class)).isTrue();
-    ASSERT.that(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), List.class)).isTrue();
+    assertThat(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), Iterable.class)).isTrue();
+    assertThat(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), List.class)).isTrue();
   }
 
   // Type shortening.
 
   @Test public void compressType_JavaLang() {
-    ASSERT.that(Platform.compressType(String.class.toString())).isEqualTo("String");
+    assertThat(Platform.compressType(String.class.toString())).isEqualTo("String");
   }
 
   @Test public void compressType_JavaUtil() {
-    ASSERT.that(Platform.compressType(Random.class.toString())).isEqualTo("Random");
+    assertThat(Platform.compressType(Random.class.toString())).isEqualTo("Random");
   }
 
   @Test public void compressType_Generic() {
-    ASSERT.that(Platform.compressType("java.util.Set<java.lang.Integer>"))
+    assertThat(Platform.compressType("java.util.Set<java.lang.Integer>"))
         .isEqualTo("Set<Integer>");
   }
 
   @Test public void compressType_Uncompressed() {
-    ASSERT.that(Platform.compressType(CookieStore.class.toString()))
+    assertThat(Platform.compressType(CookieStore.class.toString()))
         .isEqualTo("java.net.CookieStore");
   }
 
   @Test public void compressType_GenericWithPartialUncompress() {
-    ASSERT.that(Platform.compressType("java.util.Set<java.net.CookieStore>"))
+    assertThat(Platform.compressType("java.util.Set<java.net.CookieStore>"))
         .isEqualTo("Set<java.net.CookieStore>");
   }
 
   @Test public void compressType_Primitive() {
-    ASSERT.that(Platform.compressType(int.class.toString())).isEqualTo("int");
+    assertThat(Platform.compressType(int.class.toString())).isEqualTo("int");
   }
 
 }

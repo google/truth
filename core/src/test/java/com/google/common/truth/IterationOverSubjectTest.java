@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.IntegerSubject.INTEGER;
 import static com.google.common.truth.StringSubject.STRING;
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assert_;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,10 +36,10 @@ public class IterationOverSubjectTest {
 
   @Test public void collectionItemsAreGreaterThan() {
     Iterable<Long> data = iterable(2L, 5L, 9L);
-    ASSERT.in(data).thatEach(INTEGER).isNotEqualTo(4);
+    assert_().in(data).thatEach(INTEGER).isNotEqualTo(4);
     try {
-      ASSERT.in(data).thatEach(INTEGER).isNotEqualTo(9);
-      ASSERT.fail("Expected assertion to fail on element 3.");
+      assert_().in(data).thatEach(INTEGER).isNotEqualTo(9);
+      assert_().fail("Expected assertion to fail on element 3.");
     } catch (AssertionError e) {
       if (e.getMessage().startsWith("Expected assertion to fail")) {
         throw e;
@@ -49,10 +49,10 @@ public class IterationOverSubjectTest {
 
   @Test public void collectionItemsContainText() {
     Iterable<String> data = iterable("AfooB", "BfooA");
-    ASSERT.in(data).thatEach(STRING).contains("foo");
+    assert_().in(data).thatEach(STRING).contains("foo");
     try {
-      ASSERT.in(data).thatEach(STRING).isEqualTo("AfooB");
-      ASSERT.fail("Expected assertion to fail on element 2.");
+      assert_().in(data).thatEach(STRING).isEqualTo("AfooB");
+      assert_().fail("Expected assertion to fail on element 2.");
     } catch (AssertionError e) {
       if (e.getMessage().startsWith("Expected assertion to fail")) {
         throw e;

@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.PrimitiveCharArraySubject;
 
@@ -32,55 +32,55 @@ import org.junit.runners.JUnit4;
 public class PrimitiveCharArraySubjectTest {
 
   @Test public void isEqualTo() {
-    ASSERT.that(array('a', 'q')).isEqualTo(array('a', 'q'));
+    assertThat(array('a', 'q')).isEqualTo(array('a', 'q'));
   }
 
   @Test public void isEqualTo_Same() {
     char[] same = array('a', 'q');
-    ASSERT.that(same).isEqualTo(same);
+    assertThat(same).isEqualTo(same);
   }
 
   @Test public void asList() {
-    ASSERT.that(array('a', 'q', 'z')).asList().has().allOf('a', 'z');
+    assertThat(array('a', 'q', 'z')).asList().has().allOf('a', 'z');
   }
 
   @Test public void isEqualTo_Fail_UnequalOrdering() {
     try {
-      ASSERT.that(array('a', 'q')).isEqualTo(array('q', 'a'));
+      assertThat(array('a', 'q')).isEqualTo(array('q', 'a'));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).is("Not true that <(char[]) [a, q]> is equal to <[q, a]>");
+      assertThat(e.getMessage()).is("Not true that <(char[]) [a, q]> is equal to <[q, a]>");
     }
   }
 
   @Test public void isEqualTo_Fail_NotAnArray() {
     try {
-      ASSERT.that(array('a', 'q')).isEqualTo(new int[] {});
+      assertThat(array('a', 'q')).isEqualTo(new int[] {});
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .contains("Incompatible types compared. expected: int[], actual: char[]");
     }
   }
 
   @Test public void isNotEqualTo_SameLengths() {
-    ASSERT.that(array('a', 'q')).isNotEqualTo(array('q', 'a'));
+    assertThat(array('a', 'q')).isNotEqualTo(array('q', 'a'));
   }
 
   @Test public void isNotEqualTo_DifferentLengths() {
-    ASSERT.that(array('a', 'q')).isNotEqualTo(array('q', 'a', 'b'));
+    assertThat(array('a', 'q')).isNotEqualTo(array('q', 'a', 'b'));
   }
 
   @Test public void isNotEqualTo_DifferentTypes() {
-    ASSERT.that(array('a', 'q')).isNotEqualTo(new Object());
+    assertThat(array('a', 'q')).isNotEqualTo(new Object());
   }
 
   @Test public void isNotEqualTo_FailEquals() {
     try {
-      ASSERT.that(array('a', 'q')).isNotEqualTo(array('a', 'q'));
+      assertThat(array('a', 'q')).isNotEqualTo(array('a', 'q'));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .is("<(char[]) [a, q]> unexpectedly equal to [a, q].");
     }
   }
@@ -88,10 +88,10 @@ public class PrimitiveCharArraySubjectTest {
   @Test public void isNotEqualTo_FailSame() {
     try {
       char[] same = array('a', 'q');
-      ASSERT.that(same).isNotEqualTo(same);
+      assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage())
+      assertThat(e.getMessage())
           .is("<(char[]) [a, q]> unexpectedly equal to [a, q].");
     }
   }

@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -34,122 +34,122 @@ import java.util.Comparator;
 public class ListTest {
 
   @Test public void listContainsSequenceWithEmptyList() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).containsSequence(Arrays.<Integer>asList());
+    assertThat(Arrays.asList(1, 2, 3)).containsSequence(Arrays.<Integer>asList());
   }
 
   @Test public void listContainsSequenceWithSingleton() {
-    ASSERT.that(Arrays.asList(1)).containsSequence(Arrays.asList(1));
+    assertThat(Arrays.asList(1)).containsSequence(Arrays.asList(1));
   }
 
   @Test public void listContainsSequenceAtEnd() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(2, 3));
+    assertThat(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(2, 3));
   }
 
   @Test public void listContainsSequenceAtStart() {
-    ASSERT.that(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(1, 2));
+    assertThat(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(1, 2));
   }
 
   @Test public void listContainsSequenceWithManyFalseStarts() {
-    ASSERT.that(Arrays.asList(1, 1, 2, 1, 1, 2, 3, 4)).containsSequence(Arrays.asList(1, 2, 3));
+    assertThat(Arrays.asList(1, 1, 2, 1, 1, 2, 3, 4)).containsSequence(Arrays.asList(1, 2, 3));
   }
 
   @Test public void listContainsSequenceTooShortFailure() {
     try {
-      ASSERT.that(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(1, 2, 3, 4));
+      assertThat(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(1, 2, 3, 4));
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("contains sequence");
-      ASSERT.that(e.getMessage()).contains("[1, 2, 3, 4]");
+      assertThat(e.getMessage()).contains("contains sequence");
+      assertThat(e.getMessage()).contains("[1, 2, 3, 4]");
     }
   }
 
   @Test public void listContainsSequenceNotContiguousFailure() {
     try {
-      ASSERT.that(Arrays.asList(1, 2, 2, 3)).containsSequence(Arrays.asList(1, 2, 3));
+      assertThat(Arrays.asList(1, 2, 2, 3)).containsSequence(Arrays.asList(1, 2, 3));
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("contains sequence");
-      ASSERT.that(e.getMessage()).contains("[1, 2, 3]");
+      assertThat(e.getMessage()).contains("contains sequence");
+      assertThat(e.getMessage()).contains("[1, 2, 3]");
     }
   }
 
   @Test public void listIsOrdered() {
-    ASSERT.that(Arrays.<Integer>asList()).isOrdered();
-    ASSERT.that(Arrays.asList(1)).isOrdered();
-    ASSERT.that(Arrays.asList(1, 2, 3, 4)).isOrdered();
+    assertThat(Arrays.<Integer>asList()).isOrdered();
+    assertThat(Arrays.asList(1)).isOrdered();
+    assertThat(Arrays.asList(1, 2, 3, 4)).isOrdered();
   }
 
   @Test public void isOrderedFailure() {
     try {
-      ASSERT.that(Arrays.asList(1, 2, 2, 4)).isOrdered();
+      assertThat(Arrays.asList(1, 2, 2, 4)).isOrdered();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("is strictly ordered");
-      ASSERT.that(e.getMessage()).contains("<2> <2>");
+      assertThat(e.getMessage()).contains("is strictly ordered");
+      assertThat(e.getMessage()).contains("<2> <2>");
     }
   }
 
   @Test public void isOrderedWithNonComparableElementsFailure() {
     try {
-      ASSERT.that(Arrays.<Object>asList(1, "2", 3, "4")).isOrdered();
+      assertThat(Arrays.<Object>asList(1, "2", 3, "4")).isOrdered();
       fail("Should have thrown.");
     } catch (ClassCastException e) {}
   }
 
   @Test public void listIsPartiallyOrdered() {
-    ASSERT.that(Arrays.<Integer>asList()).isPartiallyOrdered();
-    ASSERT.that(Arrays.asList(1)).isPartiallyOrdered();
-    ASSERT.that(Arrays.asList(1, 1, 2, 3, 3, 3, 4)).isPartiallyOrdered();
+    assertThat(Arrays.<Integer>asList()).isPartiallyOrdered();
+    assertThat(Arrays.asList(1)).isPartiallyOrdered();
+    assertThat(Arrays.asList(1, 1, 2, 3, 3, 3, 4)).isPartiallyOrdered();
   }
 
   @Test public void isPartiallyOrderedFailure() {
     try {
-      ASSERT.that(Arrays.asList(1, 3, 2, 4)).isPartiallyOrdered();
+      assertThat(Arrays.asList(1, 3, 2, 4)).isPartiallyOrdered();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("is partially ordered");
-      ASSERT.that(e.getMessage()).contains("<3> <2>");
+      assertThat(e.getMessage()).contains("is partially ordered");
+      assertThat(e.getMessage()).contains("<3> <2>");
     }
   }
 
   @Test public void isPartiallyOrderedWithNonComparableElementsFailure() {
     try {
-      ASSERT.that(Arrays.<Object>asList(1, "2", 2, "3")).isPartiallyOrdered();
+      assertThat(Arrays.<Object>asList(1, "2", 2, "3")).isPartiallyOrdered();
       fail("Should have thrown.");
     } catch (ClassCastException e) {}
   }
 
   @Test public void listIsOrderedWithComparator() {
-    ASSERT.that(Arrays.<String>asList()).isOrdered(COMPARE_AS_DECIMAL);
-    ASSERT.that(Arrays.asList("1")).isOrdered(COMPARE_AS_DECIMAL);
+    assertThat(Arrays.<String>asList()).isOrdered(COMPARE_AS_DECIMAL);
+    assertThat(Arrays.asList("1")).isOrdered(COMPARE_AS_DECIMAL);
     // Note: Use "10" and "20" to distinguish numerical and lexicographical ordering.
-    ASSERT.that(Arrays.asList("1", "2", "10", "20")).isOrdered(COMPARE_AS_DECIMAL);
+    assertThat(Arrays.asList("1", "2", "10", "20")).isOrdered(COMPARE_AS_DECIMAL);
   }
 
   @Test public void listIsOrderedWithComparatorFailure() {
     try {
-      ASSERT.that(Arrays.asList("1", "2", "2", "10")).isOrdered(COMPARE_AS_DECIMAL);
+      assertThat(Arrays.asList("1", "2", "2", "10")).isOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("is strictly ordered");
-      ASSERT.that(e.getMessage()).contains("<2> <2>");
+      assertThat(e.getMessage()).contains("is strictly ordered");
+      assertThat(e.getMessage()).contains("<2> <2>");
     }
   }
 
   @Test public void listIsPartiallyOrderedWithComparator() {
-    ASSERT.that(Arrays.<String>asList()).isPartiallyOrdered(COMPARE_AS_DECIMAL);
-    ASSERT.that(Arrays.asList("1")).isPartiallyOrdered(COMPARE_AS_DECIMAL);
-    ASSERT.that(Arrays.asList("1", "1", "2", "10", "10", "10", "20"))
+    assertThat(Arrays.<String>asList()).isPartiallyOrdered(COMPARE_AS_DECIMAL);
+    assertThat(Arrays.asList("1")).isPartiallyOrdered(COMPARE_AS_DECIMAL);
+    assertThat(Arrays.asList("1", "1", "2", "10", "10", "10", "20"))
         .isPartiallyOrdered(COMPARE_AS_DECIMAL);
   }
 
   @Test public void listIsPartiallyOrderedWithComparatorFailure() {
     try {
-      ASSERT.that(Arrays.asList("1", "10", "2", "20")).isPartiallyOrdered(COMPARE_AS_DECIMAL);
+      assertThat(Arrays.asList("1", "10", "2", "20")).isPartiallyOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("is partially ordered");
-      ASSERT.that(e.getMessage()).contains("<10> <2>");
+      assertThat(e.getMessage()).contains("is partially ordered");
+      assertThat(e.getMessage()).contains("<10> <2>");
     }
   }
 

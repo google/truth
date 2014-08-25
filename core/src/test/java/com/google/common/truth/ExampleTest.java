@@ -15,7 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.TruthJUnit.ASSUME;
 import static com.google.common.truth.delegation.FooSubject.FOO;
 import static org.junit.Assert.fail;
@@ -35,27 +36,27 @@ import java.util.Arrays;
 @RunWith(Theories.class)
 public class ExampleTest {
   @Test public void stringContains() {
-    ASSERT.that("abc").contains("c");
+    assertThat("abc").contains("c");
   }
 
   @Test public void listHasElements() {
     // single item
-    ASSERT.that(Arrays.asList(1, 2, 3)).has().item(1);
+    assertThat(Arrays.asList(1, 2, 3)).has().item(1);
 
     // at least these items
-    ASSERT.that(Arrays.asList(1, 2, 3)).has().allOf(1, 2);
+    assertThat(Arrays.asList(1, 2, 3)).has().allOf(1, 2);
 
     // at least one of these items
-    ASSERT.that(Arrays.asList(1, 2, 3)).has().anyOf(1, 5);
+    assertThat(Arrays.asList(1, 2, 3)).has().anyOf(1, 5);
   }
 
   @Test public void equalityFail() {
     int x = 2 + 2;
     try {
-      ASSERT.that(x).isEqualTo(5);
+      assertThat(x).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).contains("Not true that <4> is equal to <5>");
+      assertThat(expected.getMessage()).contains("Not true that <4> is equal to <5>");
     }
   }
 
@@ -63,7 +64,7 @@ public class ExampleTest {
 
   @Theory public void divideBySelf(int x) {
     ASSUME.that(x).isNotEqualTo(0);
-    ASSERT.that(x / x).isEqualTo(1);
+    assertThat(x / x).isEqualTo(1);
   }
 
   @Rule public final Expect EXPECT = Expect.create();
@@ -76,6 +77,6 @@ public class ExampleTest {
   }
 
   @Test public void customTypeCompares() {
-    ASSERT.about(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
+    assert_().about(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 }

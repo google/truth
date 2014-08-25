@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.base.Optional;
@@ -35,77 +35,77 @@ public class OptionalSubjectTest {
   @Test public void failOnNullSubject() {
     try {
       Optional<String> nullOptional = null;
-      ASSERT.that(nullOptional).isAbsent();
+      assertThat(nullOptional).isAbsent();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .isEqualTo("Not true that \"Optional<T>\" is a non-null reference");
     }
   }
 
   @Test public void isPresent() {
-    ASSERT.that(Optional.of("foo")).isPresent();
+    assertThat(Optional.of("foo")).isPresent();
   }
 
   @Test public void isPresentFailing() {
     try {
-      ASSERT.that(Optional.absent()).isPresent();
+      assertThat(Optional.absent()).isPresent();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).isEqualTo("Not true that the subject is present");
+      assertThat(expected.getMessage()).isEqualTo("Not true that the subject is present");
     }
   }
 
   @Test public void isAbsent() {
-    ASSERT.that(Optional.absent()).isAbsent();
+    assertThat(Optional.absent()).isAbsent();
   }
 
   @Test public void isAbsentFailing() {
     try {
-      ASSERT.that(Optional.of("foo")).isAbsent();
+      assertThat(Optional.of("foo")).isAbsent();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).isEqualTo("Not true that the subject is absent");
+      assertThat(expected.getMessage()).isEqualTo("Not true that the subject is absent");
     }
   }
 
   @Test public void hasValue() {
-    ASSERT.that(Optional.of("foo")).hasValue("foo");
+    assertThat(Optional.of("foo")).hasValue("foo");
   }
 
   @Test public void hasValue_FailingWithAbsent() {
     try {
-      ASSERT.that(Optional.absent()).hasValue("foo");
+      assertThat(Optional.absent()).hasValue("foo");
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .isEqualTo("Not true that <Optional.absent()> has value <foo>");
     }
   }
 
   @Test public void hasValue_FailingWithNullParameter() {
     try {
-      ASSERT.that(Optional.of("foo")).hasValue(null);
+      assertThat(Optional.of("foo")).hasValue(null);
       fail("Should have thrown");
     } catch (NullPointerException expected) {}
   }
 
   @Test public void hasValue_FailingWithWrongValueForString() {
     try {
-      ASSERT.that(Optional.of("foo")).hasValue("boo");
+      assertThat(Optional.of("foo")).hasValue("boo");
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .isEqualTo("Optional<String> has an incorrect value. expected:<[b]oo> but was:<[f]oo>");
     }
   }
 
   @Test public void hasValue_FailingWithWrongValueForOther() {
     try {
-      ASSERT.that(Optional.of(5)).hasValue(10);
+      assertThat(Optional.of(5)).hasValue(10);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .isEqualTo("Not true that <Optional.of(5)> has value <10>");
     }
   }

@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.TruthJUnit.ASSUME;
 import static org.junit.Assert.fail;
 
@@ -38,33 +38,33 @@ public class IntegerTest {
   @Rule public final Expect EXPECT = Expect.create();
 
   @Test public void simpleEquality() {
-    ASSERT.that(2 + 2).is(4);
-    ASSERT.that(2 + 2).isEqualTo(4);
+    assertThat(2 + 2).is(4);
+    assertThat(2 + 2).isEqualTo(4);
   }
 
   @Test public void intIsInt() {
-    ASSERT.that(4).is(4);
+    assertThat(4).is(4);
   }
 
   @Test public void simpleInequality() {
-    ASSERT.that(2 + 2).isNotEqualTo(5);
+    assertThat(2 + 2).isNotEqualTo(5);
   }
 
   @Test public void equalityFail() {
     try {
-      ASSERT.that(2 + 2).isEqualTo(5);
+      assertThat(2 + 2).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).contains("Not true that <4> is equal to <5>");
+      assertThat(expected.getMessage()).contains("Not true that <4> is equal to <5>");
     }
   }
 
   @Test public void inequalityFail() {
     try {
-      ASSERT.that(2 + 2).isNotEqualTo(4);
+      assertThat(2 + 2).isNotEqualTo(4);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage()).contains("Not true that <4> is not equal to <4>");
+      assertThat(expected.getMessage()).contains("Not true that <4> is not equal to <4>");
     }
   }
 
@@ -83,22 +83,22 @@ public class IntegerTest {
 
   @Test public void inclusiveRangeContainmentFailure() {
     try {
-      ASSERT.that(1).isInclusivelyInRange(2, 4);
+      assertThat(1).isInclusivelyInRange(2, 4);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that <1> is inclusively in range <2> <4>");
+      assertThat(e.getMessage()).contains("Not true that <1> is inclusively in range <2> <4>");
     }
     try {
-      ASSERT.that(5).isInclusivelyInRange(2, 4);
+      assertThat(5).isInclusivelyInRange(2, 4);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that <5> is inclusively in range <2> <4>");
+      assertThat(e.getMessage()).contains("Not true that <5> is inclusively in range <2> <4>");
     }
   }
 
   @Test public void inclusiveRangeContainmentInversionError() {
     try {
-      ASSERT.that(Integer.MAX_VALUE).isInclusivelyInRange(4, 2);
+      assertThat(Integer.MAX_VALUE).isInclusivelyInRange(4, 2);
       fail("Should have thrown");
     } catch (IllegalArgumentException e) {}
   }
@@ -110,50 +110,50 @@ public class IntegerTest {
 
   @Test public void exclusiveRangeContainmentFailure() {
     try {
-      ASSERT.that(5).isBetween(2, 5);
+      assertThat(5).isBetween(2, 5);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that <5> is in between <2> <5>");
+      assertThat(e.getMessage()).contains("Not true that <5> is in between <2> <5>");
     }
   }
 
   @Test public void exclusiveRangeContainmentInversionError() {
     try {
-      ASSERT.that(Integer.MAX_VALUE).isBetween(5, 2);
+      assertThat(Integer.MAX_VALUE).isBetween(5, 2);
       fail("Should have thrown");
     } catch (IllegalArgumentException e) {}
   }
 
   @Test public void equalityOfNulls() {
-    ASSERT.that((Integer)null).isEqualTo((Long)null);
+    assertThat((Integer)null).isEqualTo((Long)null);
   }
 
   @Test public void equalityOfNullsFail() {
     try {
-      ASSERT.that((Long)null).isEqualTo(5);
+      assertThat((Long)null).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that <null> is equal to <5>");
+      assertThat(e.getMessage()).contains("Not true that <null> is equal to <5>");
     }
     try {
-      ASSERT.that(5).isEqualTo((Integer)null);
+      assertThat(5).isEqualTo((Integer)null);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that <5> is equal to <null>");
+      assertThat(e.getMessage()).contains("Not true that <5> is equal to <null>");
     }
   }
 
   @Test public void inequalityOfNulls() {
-    ASSERT.that((Long)null).isNotEqualTo(4);
-    ASSERT.that(4).isNotEqualTo((Long)null);
+    assertThat((Long)null).isNotEqualTo(4);
+    assertThat(4).isNotEqualTo((Long)null);
   }
 
   @Test public void inequalityOfNullsFail() {
     try {
-      ASSERT.that((Long)null).isNotEqualTo((Integer)null);
+      assertThat((Long)null).isNotEqualTo((Integer)null);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      ASSERT.that(e.getMessage()).contains("Not true that <null> is not equal to <null>");
+      assertThat(e.getMessage()).contains("Not true that <null> is not equal to <null>");
     }
   }
 }

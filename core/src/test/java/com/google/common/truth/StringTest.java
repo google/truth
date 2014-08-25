@@ -15,7 +15,8 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 
 import org.junit.ComparisonFailure;
 import org.junit.Test;
@@ -34,171 +35,171 @@ import java.util.regex.Pattern;
 public class StringTest {
 
   @Test public void stringContains() {
-    ASSERT.that("abc").contains("c");
+    assertThat("abc").contains("c");
   }
 
   @Test public void stringContainsFail() {
     try {
-      ASSERT.that("abc").contains("d");
+      assertThat("abc").contains("d");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("Not true that <\"abc\"> contains <\"d\">");
     }
   }
 
   @Test public void stringDoesNotContain() {
-    ASSERT.that("abc").doesNotContain("d");
+    assertThat("abc").doesNotContain("d");
   }
 
   @Test public void stringDoesNotContainFail() {
     try {
-      ASSERT.that("abc").doesNotContain("b");
+      assertThat("abc").doesNotContain("b");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("<\"abc\"> unexpectedly contains <\"b\">");
       return;
     }
   }
 
   @Test public void stringEquality() {
-    ASSERT.that("abc").is("abc");
-    ASSERT.that("abc").isEqualTo("abc");
+    assertThat("abc").is("abc");
+    assertThat("abc").isEqualTo("abc");
   }
 
   @Test public void stringEqualityToNull() {
     try {
-      ASSERT.that("abc").is(null);
+      assertThat("abc").is(null);
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("Not true that <\"abc\"> is null");
     }
   }
 
   @Test public void stringEqualityFail() {
     try {
-      ASSERT.that("abc").is("abd");
+      assertThat("abc").is("abd");
       throw new Error("Expected to fail.");
     } catch (ComparisonFailure expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("expected:<ab[d]> but was:<ab[c]>");
     }
   }
 
   @Test public void stringStartsWith() {
-    ASSERT.that("abc").startsWith("ab");
+    assertThat("abc").startsWith("ab");
   }
 
   @Test public void stringStartsWithFail() {
     try {
-      ASSERT.that("abc").startsWith("bc");
+      assertThat("abc").startsWith("bc");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("Not true that <\"abc\"> starts with <\"bc\">");
     }
   }
 
   @Test public void stringEndsWith() {
-    ASSERT.that("abc").endsWith("bc");
+    assertThat("abc").endsWith("bc");
   }
 
   @Test public void stringEndsWithFail() {
     try {
-      ASSERT.that("abc").endsWith("ab");
+      assertThat("abc").endsWith("ab");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("Not true that <\"abc\"> ends with <\"ab\">");
     }
   }
 
   @Test public void emptyStringTests() {
-    ASSERT.that("").contains("");
-    ASSERT.that("").startsWith("");
-    ASSERT.that("").endsWith("");
-    ASSERT.that("a").contains("");
-    ASSERT.that("a").startsWith("");
-    ASSERT.that("a").endsWith("");
+    assertThat("").contains("");
+    assertThat("").startsWith("");
+    assertThat("").endsWith("");
+    assertThat("a").contains("");
+    assertThat("a").startsWith("");
+    assertThat("a").endsWith("");
   }
 
   @Test public void stringNullNullTests() {
-    ASSERT.that((String)null).is(null);
-    ASSERT.that((String)null).isEqualTo(null);
+    assertThat((String)null).is(null);
+    assertThat((String)null).isEqualTo(null);
     try {
-      ASSERT.that((String)null).contains(null);
-      ASSERT.fail("Expected to throw");
+      assertThat((String)null).contains(null);
+      assert_().fail("Expected to throw");
     } catch (IllegalArgumentException expected) {}
     try {
-      ASSERT.that((String)null).doesNotContain(null);
-      ASSERT.fail("Expected to throw");
+      assertThat((String)null).doesNotContain(null);
+      assert_().fail("Expected to throw");
     } catch (IllegalArgumentException expected) {}
     try {
-      ASSERT.that((String)null).startsWith(null);
-      ASSERT.fail("Expected to throw");
+      assertThat((String)null).startsWith(null);
+      assert_().fail("Expected to throw");
     } catch (IllegalArgumentException expected) {}
     try {
-      ASSERT.that((String)null).endsWith(null);
-      ASSERT.fail("Expected to throw");
+      assertThat((String)null).endsWith(null);
+      assert_().fail("Expected to throw");
     } catch (IllegalArgumentException expected) {}
   }
 
   @Test public void stringNullContains() {
     try {
-      ASSERT.that((String)null).contains("a");
+      assertThat((String)null).contains("a");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("Not true that null reference contains <\"a\">");
     }
   }
 
   @Test public void stringNullStartsWith() {
     try {
-      ASSERT.that((String)null).startsWith("a");
+      assertThat((String)null).startsWith("a");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("Not true that null reference starts with <\"a\">");
     }
   }
 
   @Test public void stringNullEndsWith() {
     try {
-      ASSERT.that((String)null).endsWith("a");
+      assertThat((String)null).endsWith("a");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("Not true that null reference ends with <\"a\">");
     }
   }
 
   @Test public void stringMatchesString() {
-    ASSERT.that("abcaaadev").matches(".*aaa.*");
+    assertThat("abcaaadev").matches(".*aaa.*");
   }
 
   @Test public void stringMatchesStringWithFail() {
     try {
-      ASSERT.that("abcaqadev").matches(".*aaa.*");
+      assertThat("abcaqadev").matches(".*aaa.*");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("Not true that <\"abcaqadev\"> matches <.*aaa.*>");
     }
   }
 
   @Test public void stringMatchesPattern() {
-    ASSERT.that("abcaqadev").doesNotMatch(Pattern.compile(".*aaa.*"));
+    assertThat("abcaqadev").doesNotMatch(Pattern.compile(".*aaa.*"));
   }
 
   @Test public void stringMatchesPatternWithFail() {
     try {
-      ASSERT.that("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*"));
+      assertThat("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*"));
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      ASSERT.that(expected.getMessage())
+      assertThat(expected.getMessage())
           .contains("Not true that <\"abcaaadev\"> fails to match <.*aaa.*>");
     }
   }
