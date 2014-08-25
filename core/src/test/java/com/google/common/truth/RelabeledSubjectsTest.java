@@ -83,7 +83,7 @@ public class RelabeledSubjectsTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .is("Not true that \"crazy list\" <[a, b, c]> contains all elements in <[c, d]>. "
+          .is("Not true that \"crazy list\" <[a, b, c]> contains all of <[c, d]>. "
               + "It is missing <[d]>");
     }
   }

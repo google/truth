@@ -52,7 +52,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     /**
      * Attests that a Collection contains at least the item
      *
-     * @deprecated Use {@link IterableSubject#contains(Object} instead.
+     * @deprecated Use {@link IterableSubject#contains(Object)} instead.
      */
     @Deprecated
     public void item(T item) {
@@ -62,11 +62,11 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     /**
      * Attests that a Collection contains the provided object or fails.
      *
-     * @deprecated Use {@link IterableSubject#contains(Object} instead.
+     * @deprecated Use {@link IterableSubject#contains(Object)} instead.
      */
     @Deprecated
     public void anyOf(T first) {
-      anyFrom(accumulate(first));
+      CollectionSubject.this.contains(first);
     }
 
     /**
@@ -77,7 +77,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      */
     @Deprecated
     public void anyOf(T first, T second, T ... rest) {
-      anyFrom(accumulate(first, second, rest));
+      CollectionSubject.this.containsAnyOf(first, second, rest);
     }
 
     /**
@@ -95,8 +95,12 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * Attests that a Collection contains at least all of the provided objects
      * or fails, coping with duplicates in both the Collection and the
      * parameters.
+     *
+     * @deprecated Use {@link IterableSubject#contains(Object)} instead.
      */
+    @Deprecated
     public Ordered allOf(T first) {
+      // We can't inline contains(first) because of the (bogus) return type!
       return allFrom(accumulate(first));
     }
 
@@ -104,9 +108,12 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * Attests that a Collection contains at least all of the provided objects
      * or fails, coping with duplicates in both the Collection and the
      * parameters.
+     *
+     * @deprecated Use {@link IterableSubject#containsAllOf(Object, Object, Object...)} instead.
      */
+    @Deprecated
     public Ordered allOf(T first, T second, T ... rest) {
-      return allFrom(accumulate(first, second, rest));
+      return CollectionSubject.this.containsAllOf(first, second, rest);
     }
 
     /**
@@ -126,8 +133,12 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * only these objects or fails. This copes with duplicates in both the
      * Collection and the parameters. It makes no attestation about order
      * unless {@code inOrder()} is explicitly called.
+     *
+     * @deprecated Use {@link IterableSubject#contains(Object)} instead.
      */
+    @Deprecated
     public Ordered exactly(T first) {
+      // We can't inline contains(first) because of the (bogus) return type!
       return exactlyAs(accumulate(first));
     }
 
@@ -137,8 +148,11 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * Collection and the parameters. It makes no attestation about order
      * unless {@code inOrder()} is explicitly called.
      */
+    // TODO(user): Deprecate this once the replacement method is added!
+    // @deprecated Use {@link IterableSubject#containsExactly(Object, Object, Object...)} instead.
+    // @Deprecated
     public Ordered exactly(T first, T second, T ... rest) {
-      return exactlyAs(accumulate(first, second, rest));
+      return CollectionSubject.this.containsOnlyElements(first, second, rest);
     }
 
     /**
@@ -147,6 +161,9 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * duplicates in both the Collection and the parameters. It makes no
      * attestation about order unless {@code inOrder()} is explicitly called.
      */
+    // TODO(user): Deprecate this once the replacement method is added!
+    // @deprecated Use {@link IterableSubject#containsExactlyIn(Iterable<?>)} instead.
+    // @Deprecated
     public Ordered exactlyAs(Iterable<T> required) {
       return CollectionSubject.this.containsOnlyElementsIn(required);
     }
@@ -155,18 +172,24 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
      * Attests that a Collection contains none of the provided objects
      * or fails, coping with duplicates in both the Collection and the
      * parameters.
+     *
+     * @deprecated Use {@link IterableSubject#doesNotContain(Object)} instead.
      */
+    @Deprecated
     public void noneOf(T first) {
-      noneFrom(accumulate(first));
+      CollectionSubject.this.doesNotContain(first);
     }
 
     /**
      * Attests that a Collection contains none of the provided objects
      * or fails, coping with duplicates in both the Collection and the
      * parameters.
+     *
+     * @deprecated Use {@link IterableSubject#containsNoneOf(Object, Object, Object...)} instead.
      */
+    @Deprecated
     public void noneOf(T first, T second, T ... rest) {
-      noneFrom(accumulate(first, second, rest));
+      CollectionSubject.this.containsNoneOf(first, second, rest);
     }
 
     /**

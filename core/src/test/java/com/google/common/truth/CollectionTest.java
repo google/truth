@@ -106,7 +106,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("contains all elements in");
+      assertThat(e.getMessage()).contains("contains all of");
       assertThat(e.getMessage()).contains("is missing");
       assertThat(e.getMessage()).contains("2 [2 copies], 4");
     }
@@ -166,7 +166,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .isEqualTo("Not true that <[1, 2, 3]> contains no elements in <[1, 2, 4]>. "
+          .isEqualTo("Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. "
               + "It contains <[1, 2]>");
     }
   }
@@ -177,7 +177,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .isEqualTo("Not true that <[1, 2, 2, 3]> contains no elements in <[1, 2, 4]>. "
+          .isEqualTo("Not true that <[1, 2, 2, 3]> contains none of <[1, 2, 4]>. "
               + "It contains <[1, 2]>");
     }
   }
@@ -188,7 +188,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .isEqualTo("Not true that <[1, 2, 3]> contains no elements in <[1, 2, 2, 4]>. "
+          .isEqualTo("Not true that <[1, 2, 3]> contains none of <[1, 2, 2, 4]>. "
               + "It contains <[1, 2]>");
     }
   }
@@ -245,7 +245,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("contains only the elements in");
+      assertThat(e.getMessage()).contains("contains only");
       assertThat(e.getMessage()).contains("is missing");
       assertThat(e.getMessage()).contains("2 [2 copies]");
     }
@@ -257,7 +257,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("contains only the elements in");
+      assertThat(e.getMessage()).contains("contains only");
       assertThat(e.getMessage()).contains("is missing");
       assertThat(e.getMessage()).contains("2 [2 copies], 4");
     }
@@ -269,7 +269,7 @@ public class CollectionTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("contains only the elements in");
+      assertThat(e.getMessage()).contains("contains only");
       assertThat(e.getMessage()).contains("has unexpected items");
       assertThat(e.getMessage()).contains("2 [2 copies]");
     }
