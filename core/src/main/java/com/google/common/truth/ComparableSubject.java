@@ -52,4 +52,16 @@ public abstract class ComparableSubject<S extends Subject<S, T>, T extends Compa
       fail("is less than", other);
     }
   }
+
+  public final void isAtMost(T other) {
+    if (getSubject().compareTo(other) > 0) {
+      fail("is at most", other);
+    }
+  }
+
+  public final void isAtLeast(T other) {
+    if (getSubject().compareTo(other) < 0) {
+      fail("is at least", other);
+    }
+  }
 }
