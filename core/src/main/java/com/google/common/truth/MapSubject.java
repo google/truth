@@ -15,11 +15,16 @@
  */
 package com.google.common.truth;
 
+import com.google.common.collect.Maps;
+
 import java.util.Arrays;
 import java.util.Map;
 
 /**
+ * Propositions for {@link Map} subjects.
+ *
  * @author Christian Gruber (cgruber@israfil.net)
+ * @author Kurt Alfred Kluever
  */
 public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K, V>>
     extends Subject<S, M> {
@@ -29,7 +34,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   /**
-   * Attests that the subject holds no objects, or fails.
+   * Attests that the map contains no entries, or fails.
    */
   public void isEmpty() {
     if (!getSubject().isEmpty()) {
@@ -38,7 +43,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   /**
-   * Attests that the subject holds one or more objects, or fails
+   * Attests that the map contains one or more entries, or fails.
    */
   public void isNotEmpty() {
     if (getSubject().isEmpty()) {
@@ -47,7 +52,45 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   /**
-   * Attests that the subject contains the provided key or fails.
+   * Attests that the map contains the given key.
+   */
+  public void containsKey(Object key) {
+    if (!getSubject().containsKey(key)) {
+      fail("contains key", key);
+    }
+  }
+
+  /**
+   * Attests that the map does not contain the given key.
+   */
+  public void doesNotContainKey(Object key) {
+    if (getSubject().containsKey(key)) {
+      fail("does not contain key", key);
+    }
+  }
+
+  /**
+   * Attests that the map contains the given entry.
+   */
+  public void containsEntry(Object key, Object value) {
+    if (!getSubject().entrySet().contains(Maps.immutableEntry(key, value))) {
+      fail("contains entry", key, value);
+    }
+  }
+
+  /**
+   * Attests that the map does not contain the given entry.
+   */
+  public void doesNotContainEntry(Object key, Object value) {
+    if (getSubject().entrySet().contains(Maps.immutableEntry(key, value))) {
+      fail("does not contain entry", key, value);
+    }
+  }
+
+  // TODO(user): Get rid of everything below this line.
+
+  /**
+   * Attests that the map contains the given key or fails.
    */
   public WithValue<V> hasKey(final K key) {
     if (!getSubject().containsKey(key)) {
@@ -71,15 +114,23 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
     }
   }
 
+  /**
+   * @deprecated Use {@code assertThat(map.values()).contains(value)} instead.
+   */
+  @Deprecated
   public void hasValue(V key) {
     if (!getSubject().containsValue(key)) {
       fail("has value", key);
     }
   }
 
-  public void lacksValue(V key) {
-    if (getSubject().containsValue(key)) {
-      fail("lacks value", key);
+  /**
+   * @deprecated Use {@code assertThat(map.values()).doesNotContain(value)} instead.
+   */
+  @Deprecated
+  public void lacksValue(V value) {
+    if (getSubject().containsValue(value)) {
+      fail("lacks value", value);
     }
   }
 

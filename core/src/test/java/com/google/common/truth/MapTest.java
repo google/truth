@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import org.junit.Test;
@@ -30,6 +31,7 @@ import java.util.Map;
  * Tests for Map Subjects.
  *
  * @author Christian Gruber (cgruber@israfil.net)
+ * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
 public class MapTest {
@@ -59,6 +61,124 @@ public class MapTest {
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
       assertThat(e.getMessage()).contains("is not empty");
+    }
+  }
+
+  @Test public void containsKey() {
+    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    assertThat(map).containsKey("kurt");
+
+    try {
+      assertThat(map).containsKey("greg");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("contains key <greg>");
+    }
+
+    try {
+      assertThat(map).containsKey(null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("contains key <null>");
+    }
+  }
+
+  @Test public void containsNullKey() {
+    Map<String, String> map = Maps.newHashMap();
+    map.put(null, "null");
+    assertThat(map).containsKey(null);
+  }
+
+  @Test public void doesNotContainKey() {
+    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    assertThat(map).doesNotContainKey("greg");
+    assertThat(map).doesNotContainKey(null);
+
+    try {
+      assertThat(map).doesNotContainKey("kurt");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("does not contain key <kurt>");
+    }
+  }
+
+  @Test public void doesNotContainNullKey() {
+    Map<String, String> map = Maps.newHashMap();
+    map.put(null, "null");
+
+    try {
+      assertThat(map).doesNotContainKey(null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("does not contain key <null>");
+    }
+  }
+
+  @Test public void containsEntry() {
+    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    assertThat(map).containsEntry("kurt", "kluever");
+
+    try {
+      assertThat(map).containsEntry("greg", "kick");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("contains entry <greg> <kick>");
+    }
+
+    try {
+      assertThat(map).containsEntry(null, null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("contains entry <null> <null>");
+    }
+  }
+
+  @Test public void containsNullEntry() {
+    Map<String, String> map = Maps.newHashMap();
+    map.put(null, null);
+    assertThat(map).containsEntry(null, null);
+
+    try {
+      assertThat(map).containsEntry("kurt", null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("contains entry <kurt> <null>");
+    }
+
+    try {
+      assertThat(map).containsEntry(null, "kluever");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("contains entry <null> <kluever>");
+    }
+  }
+
+  @Test public void doesNotContainEntry() {
+    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    assertThat(map).doesNotContainEntry("greg", "kick");
+    assertThat(map).doesNotContainEntry(null, null);
+    assertThat(map).doesNotContainEntry("kurt", null);
+    assertThat(map).doesNotContainEntry(null, "kluever");
+
+    try {
+      assertThat(map).doesNotContainEntry("kurt", "kluever");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("does not contain entry <kurt> <kluever>");
+    }
+  }
+
+  @Test public void doesNotContainNullEntry() {
+    Map<String, String> map = Maps.newHashMap();
+    map.put(null, null);
+    assertThat(map).doesNotContainEntry("kurt", null);
+    assertThat(map).doesNotContainEntry(null, "kluever");
+
+    try {
+      assertThat(map).doesNotContainEntry(null, null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("does not contain entry <null> <null>");
     }
   }
 
