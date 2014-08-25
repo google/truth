@@ -75,7 +75,7 @@
           <source>1.6</source>
           <target>1.6</target>
           <excludes>
-            <exclude>**/gwtemul/**/*.java</exclude>
+            <exclude>**/super/**/*.java</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -100,7 +100,7 @@
             <goals><goal>jar-no-fork</goal></goals>
             <configuration>
               <excludes>
-                <exclude>**/gwtemul/**</exclude>
+                <exclude>**/super/**</exclude>
                 <exclude>**/*.gwt.xml</exclude>
               </excludes>
             </configuration>
