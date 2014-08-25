@@ -26,7 +26,7 @@ public final class StringUtil {
   /**
    * Returns a message appropriate for string comparisons.
    *
-   * TODO(cgruber): Do something closer to what JUnit's {@code ComparisonFailure} does.
+   * TODO(user): Do something closer to what JUnit's {@code ComparisonFailure} does.
    */
   public static String messageFor(String message, CharSequence expected, CharSequence actual) {
     return message + "\n\nExpected:\n" + expected + "\n\nActual\n" + actual;

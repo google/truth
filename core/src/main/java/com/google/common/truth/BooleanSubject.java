@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-
-
 /**
  * Propositions for boolean subjects
  *

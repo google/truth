@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-
 public class DefaultSubject extends Subject<DefaultSubject, Object> {
   public DefaultSubject(FailureStrategy failureStrategy, Object o) {
     super(failureStrategy, o);

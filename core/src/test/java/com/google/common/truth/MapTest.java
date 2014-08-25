@@ -175,7 +175,6 @@ public class MapTest {
     }
   }
 
-
   @SuppressWarnings("unchecked") // Want this to blow up if wrong.
   public static <K, V> Map<K, V> map(Class<K> keyClass, Class<V> valueClass, Object ... keyval) {
     Map<K, V> map = Maps.newHashMap();

@@ -15,7 +15,6 @@
  */
 package com.google.common.truth.extension;
 
-
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 

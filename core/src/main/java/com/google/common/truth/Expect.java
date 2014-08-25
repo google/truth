@@ -84,7 +84,7 @@ public class Expect extends TestVerb implements TestRule {
   	return super.getFailureStrategy();
   }
 
-  // TODO(cgruber): Make this override TestRule when 4.9 is released.
+  // TODO(user): Make this override TestRule when 4.9 is released.
   @Override public Statement apply(final Statement base, Description description) {
     return new Statement() {
       @Override public void evaluate() throws Throwable {

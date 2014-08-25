@@ -24,7 +24,6 @@ import java.util.Map;
 
 import javax.annotation.CheckReturnValue;
 
-
 /**
  * Truth - a proposition framework for tests, supporting JUnit style
  * assertion and assumption semantics in a fluent style.

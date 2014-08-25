@@ -15,7 +15,6 @@
  */
 package com.google.common.truth.codegen;
 
-
 import static java.lang.reflect.Modifier.isFinal;
 import static java.lang.reflect.Modifier.isPrivate;
 import static java.lang.reflect.Modifier.isStatic;
@@ -102,7 +101,6 @@ public class IteratingWrapperClassBuilder {
       "      subject.%3$s(%7$s);%n" +
       "    }%n" +
       "  }%n";
-
 
   private static final int TARGET_TYPE_PARAMETER = 1;
 

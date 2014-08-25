@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import com.google.common.base.Optional;
 
-
 /**
  * Propositions for {@link Optional}{@code <T>} subjects
  *

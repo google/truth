@@ -37,11 +37,11 @@ public class Truth {
   public static final FailureStrategy THROW_ASSUMPTION_ERROR =
           com.google.common.truth.TruthJUnit.THROW_ASSUMPTION_ERROR;
 
-  // TODO(cgruber): deprecated prefer {@link com.google.common.truth.Truth#assert_()}. */
+  // TODO(user): deprecated prefer {@link com.google.common.truth.Truth#assert_()}. */
   //Deprecated
   public static final TestVerb ASSERT = com.google.common.truth.Truth.assert_();
 
-  // TODO(cgruber): deprecated prefer {@link com.google.common.truth.TruthJUnit#assume()}. */
+  // TODO(user): deprecated prefer {@link com.google.common.truth.TruthJUnit#assume()}. */
   //Deprecated
   @GwtIncompatible("JUnit4")
   public static final TestVerb ASSUME = com.google.common.truth.TruthJUnit.assume();

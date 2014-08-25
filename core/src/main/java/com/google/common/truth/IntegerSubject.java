@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-
-
 /**
  * Propositions for Integral numeric subjects
  *
@@ -116,7 +114,6 @@ public class IntegerSubject extends Subject<IntegerSubject, Long> {
   public void is(byte other) {
     super.is((long)other);
   }
-
 
   public static final SubjectFactory<IntegerSubject, Long> INTEGER =
       new SubjectFactory<IntegerSubject, Long>() {

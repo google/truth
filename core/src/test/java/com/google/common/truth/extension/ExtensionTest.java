@@ -15,7 +15,6 @@
  */
 package com.google.common.truth.extension;
 
-
 import static com.google.common.truth.extension.ExtendedVerb.ASSERT;
 
 import org.junit.Test;

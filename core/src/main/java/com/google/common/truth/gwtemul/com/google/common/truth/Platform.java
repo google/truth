@@ -53,7 +53,7 @@ public final class Platform {
     return false;
   }
 
-//  TODO(cgruber): See if there's a JSNI or other alternative to Class.getInterfaces();
+//  TODO(user): See if there's a JSNI or other alternative to Class.getInterfaces();
 //  private static void addInterfaceNames(Class<?>[] interfaces, Set<String> types) {
 //    for (Class<?> interfaze : interfaces) {
 //      types.add(interfaze.getName());
@@ -69,13 +69,13 @@ public final class Platform {
   }
 
   /**
-   * This is a no-op in GWT as it relies on matching. 
+   * This is a no-op in GWT as it relies on matching.
    */
   public static String compressType(String type) {
     return type;
   }
-  
+
   public static AssertionError comparisonFailure(String message, String expected, String actual) {
     return new AssertionError(format("%s: expected: %s actual: %s", message, expected, actual));
-  }  
+  }
 }

@@ -75,7 +75,6 @@ public class IteratingWrapperClassBuilderTest {
       "    }\n" +
       "  }";
 
-
   @Test public void testSubjectWrapperGeneration_PlainClass() {
     IteratingWrapperClassBuilder builder = new IteratingWrapperClassBuilder(BarSubject.BAR);
     String code = builder.build().toString();

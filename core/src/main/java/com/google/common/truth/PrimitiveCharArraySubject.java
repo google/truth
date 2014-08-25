@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-
 import com.google.common.primitives.Chars;
 
 import java.util.Arrays;

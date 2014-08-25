@@ -65,7 +65,6 @@ public class IterableTest {
     ASSERT.that(iterable(1, 2, 3)).iteratesOverSequence(1, 2, 3);
   }
 
-
   @Test @Ignore public void iteratesOver2() {
     // doesn't compile
     // ASSERT.that(iterable(1, 2, 3)).iteratesOver(4l);

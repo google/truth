@@ -63,6 +63,9 @@ public class Subject<S extends Subject<S,T>,T> {
     return named(label);
   }
 
+  /**
+   * Soft-deprecated in favor of {@link #isEqualTo(Object)}.
+   */
   public void is(Object other) {
     isEqualTo(other);
   }

@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-
 import com.google.common.annotations.GwtIncompatible;
 
 public class ClassSubject extends Subject<ClassSubject, Class<?>> {
@@ -23,7 +22,7 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
     super(failureStrategy, o);
   }
 
-  // TODO(cgruber): Create an alternative implementation using JSNI.
+  // TODO(user): Create an alternative implementation using JSNI.
   @GwtIncompatible("Reflection")
   public void declaresField(String fieldName) {
     if (getSubject() == null) {

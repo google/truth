@@ -37,7 +37,6 @@ import java.util.Arrays;
 public class ExpectFailureTest {
   @Rule public final Expect EXPECT = new FailingExpect(new ExpectationGatherer());
 
-
   @Test public void expectFailNotEquals() {
     EXPECT.that(4).isNotEqualTo(4);
   }

@@ -65,7 +65,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     }
   }
 
-  // TODO(kak): Why can't we use Iterables.size() here?
+  // TODO(user): Why can't we use Iterables.size() here?
   // It breaks //javatests/com/google/common/util:tests_validator for some reason
   private static int iterablesSize(Iterable<?> iterable) {
     int count = 0;

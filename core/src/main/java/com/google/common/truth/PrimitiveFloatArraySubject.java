@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-
 import com.google.common.primitives.Floats;
 
 import java.util.ArrayList;
@@ -124,7 +123,7 @@ public class PrimitiveFloatArraySubject
     } catch (ClassCastException ignored) {} // Unequal since they are of different types.
   }
 
-  // TODO(cgruber): Extend to a List<Float> type that handles specialized float equality
+  // TODO(user): Extend to a List<Float> type that handles specialized float equality
   //     including tolerances. But diable this for now, since it will nearly always be
   //     incorrect to simply treat a list of floats and do normal set operations that are
   //     based on bare comparisons.
