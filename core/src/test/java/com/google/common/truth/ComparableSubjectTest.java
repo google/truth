@@ -118,49 +118,4 @@ public class ComparableSubjectTest {
     assertThat(true).isIn(range);
     assertThat(false).isNotIn(range);
   }
-
-  @Test public void comparableType() {
-    assertThat(new ComparableType(4)).isGreaterThan(new ComparableType(3));
-    assertThat(new ComparableType(3)).isLessThan(new ComparableType(4));
-    // Doesn't compile:
-    // assertThat(new ComparableType(3)).isLessThan("kak");
-  }
-
-  @Test public void rawComparableType() {
-    assertThat(new RawComparableType(3)).isLessThan(new RawComparableType(4));
-    // Doesn't compile:
-    // assertThat(new RawComparableType(3)).isLessThan("kak");
-  }
-
-  private static final class ComparableType implements Comparable<ComparableType> {
-    private final int wrapped;
-
-    private ComparableType(int toWrap) {
-      this.wrapped = toWrap;
-    }
-
-    @Override public int compareTo(ComparableType other) {
-      return wrapped - other.wrapped;
-    }
-
-    @Override public String toString() {
-      return Integer.toString(wrapped);
-    }
-  }
-
-  private static final class RawComparableType implements Comparable {
-    private final int wrapped;
-
-    private RawComparableType(int toWrap) {
-      this.wrapped = toWrap;
-    }
-
-    @Override public int compareTo(Object other) {
-      return wrapped - ((RawComparableType) other).wrapped;
-    }
-
-    @Override public String toString() {
-      return Integer.toString(wrapped);
-    }
-  }
 }
