@@ -38,6 +38,11 @@ public class StringTest {
     assertThat("abc").contains("c");
   }
 
+  @Test public void stringContainsCharSeq() {
+    CharSequence charSeq = new StringBuilder("c");
+    assertThat("abc").contains(charSeq);
+  }
+
   @Test public void stringContainsFail() {
     try {
       assertThat("abc").contains("d");
@@ -50,6 +55,11 @@ public class StringTest {
 
   @Test public void stringDoesNotContain() {
     assertThat("abc").doesNotContain("d");
+  }
+
+  @Test public void stringDoesNotContainCharSequence() {
+    CharSequence charSeq = new StringBuilder("d");
+    assertThat("abc").doesNotContain(charSeq);
   }
 
   @Test public void stringDoesNotContainFail() {
