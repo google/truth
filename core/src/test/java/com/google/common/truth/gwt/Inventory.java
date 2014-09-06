@@ -36,7 +36,6 @@ import com.google.common.truth.PrimitiveFloatArraySubject;
 import com.google.common.truth.PrimitiveIntArraySubject;
 import com.google.common.truth.PrimitiveLongArraySubject;
 import com.google.common.truth.StringSubject;
-import com.google.common.truth.StringUtil;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
 import com.google.common.truth.TestVerb;
@@ -68,7 +67,6 @@ public class Inventory {
   PrimitiveIntArraySubject q;
   PrimitiveLongArraySubject r;
   StringSubject s;
-  StringUtil su;
   Subject<?, ?> t;
   SubjectFactory<?, ?> sf;
   TestVerb tv;
