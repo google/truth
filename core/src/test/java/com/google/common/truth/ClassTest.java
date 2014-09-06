@@ -36,7 +36,7 @@ public class ClassTest {
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .is("Not true that <A> has a field named <noField>");
+          .isEqualTo("Not true that <A> has a field named <noField>");
     }
   }
 
@@ -51,12 +51,49 @@ public class ClassTest {
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .is("Cannot determine a field name from a null class.");
+          .isEqualTo("Cannot determine a field name from a null class.");
     }
   }
 
   @Test public void testDeclaresField_Private() {
     assertThat(A.class).declaresField("privateField");
+  }
+
+  @Test public void testIsAssignableFromSame() {
+    assertThat(String.class.isAssignableFrom(String.class)).isTrue();
+    assertThat(String.class).isAssignableFrom(String.class);
+
+    assertThat(Object.class.isAssignableFrom(String.class)).isTrue();
+    assertThat(Object.class).isAssignableFrom(String.class);
+  }
+
+  @Test public void testIsAssignableFromParent() {
+    assertThat(Exception.class.isAssignableFrom(NullPointerException.class)).isTrue();
+    assertThat(Exception.class).isAssignableFrom(NullPointerException.class);
+  }
+
+  @Test public void testIsAssignableFrom_reversed() {
+    assertThat(String.class.isAssignableFrom(Object.class)).isFalse();
+    try {
+      assertThat(String.class).isAssignableFrom(Object.class);
+      assert_().fail("Should have thrown an assertion error.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <class java.lang.String> "
+              + "is assignable from <class java.lang.Object>");
+    }
+  }
+
+  @Test public void testIsAssignableFrom_reversedDifferentTypes() {
+    assertThat(String.class.isAssignableFrom(Exception.class)).isFalse();
+    try {
+      assertThat(String.class).isAssignableFrom(Exception.class);
+      assert_().fail("Should have thrown an assertion error.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <class java.lang.String> "
+              + "is assignable from <class java.lang.Exception>");
+    }
   }
 
   public static class A {

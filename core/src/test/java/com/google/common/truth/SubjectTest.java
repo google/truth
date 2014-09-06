@@ -34,13 +34,13 @@ public class SubjectTest {
 
   @Test public void identityOfNulls() {
     Object o = null;
-    assertThat(o).is(null);
+    assertThat(o).isEqualTo(null);
   }
 
   @Test public void identityOfNullsFailure() {
     Object o = null;
     try {
-      assertThat(o).is("a");
+      assertThat(o).isEqualTo("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
@@ -50,14 +50,14 @@ public class SubjectTest {
   @Test public void identityOfObject() {
     Object a = new Object();
     Object b = a;
-    assertThat(a).is(b);
+    assertThat(a).isEqualTo(b);
   }
 
   @Test public void identityOfObjectFailure() {
     Object a = new Object() { @Override public String toString() { return "Object 1"; } };
     Object b = new Object() { @Override public String toString() { return "Object 2"; } };
     try {
-      assertThat(a).is(b);
+      assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
@@ -69,7 +69,7 @@ public class SubjectTest {
     Object a = "ab";
     Object b = new StringBuilder().append("a").append('b').toString();
     try {
-      assertThat(a).is(b);
+      assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).isEqualTo("Not true that <null> is <a>");
@@ -216,6 +216,8 @@ public class SubjectTest {
   @Test public void isInstanceOf() {
     assertThat("a").isA(String.class);
     assertThat("a").isInstanceOf(String.class);
+    // Reverse
+    assertThat(String.class).isAssignableFrom("a".getClass());
   }
 
   @Test public void isAFail() {
@@ -223,8 +225,8 @@ public class SubjectTest {
       assertThat(4.5).isA(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <4.5> is an instance of <java.lang.Long>."
-      		+ " It is an instance of <java.lang.Double>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <4.5> is an instance of <java.lang.Long>."
+          + " It is an instance of <java.lang.Double>");
     }
   }
 
@@ -233,8 +235,8 @@ public class SubjectTest {
       assertThat(4.5).isInstanceOf(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <4.5> is an instance of <java.lang.Long>."
-      		+ " It is an instance of <java.lang.Double>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <4.5> is an instance of <java.lang.Long>."
+          + " It is an instance of <java.lang.Double>");
     }
   }
 
@@ -249,7 +251,7 @@ public class SubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("<5> expected not to be an instance of java.lang.Number, but was.");
+          .isEqualTo("<5> expected not to be an instance of java.lang.Number, but was.");
     }
   }
 
@@ -259,7 +261,7 @@ public class SubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("<5> expected not to be an instance of java.lang.Number, but was.");
+          .isEqualTo("<5> expected not to be an instance of java.lang.Number, but was.");
     }
   }
 }

@@ -22,6 +22,16 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
     super(failureStrategy, o);
   }
 
+  /**
+   * Attests that this class or interface is either the same as, or is a superclass or
+   * superinterface of, the given class or interface.
+   */
+  public void isAssignableFrom(Class<?> clazz) {
+    if (!getSubject().isAssignableFrom(clazz)) {
+      fail("is assignable from", clazz);
+    }
+  }
+
   // TODO(user): Create an alternative implementation using JSNI.
   @GwtIncompatible("Reflection")
   public void declaresField(String fieldName) {
