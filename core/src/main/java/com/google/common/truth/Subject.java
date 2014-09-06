@@ -188,11 +188,11 @@ public class Subject<S extends Subject<S,T>,T> {
         && getSubject().toString().equals(part.toString())
         && !getSubject().getClass().equals(part.getClass());
     if (needsDisambiguation) {
-      message.append("(").append(getSubject().getClass().getCanonicalName()).append(") ");
+      message.append("(").append(getSubject().getClass().getName()).append(") ");
     }
     message.append(verb).append(" <").append(part).append(">");
     if (needsDisambiguation) {
-      message.append(" (").append(part.getClass().getCanonicalName()).append(")");
+      message.append(" (").append(part.getClass().getName()).append(")");
     }
     failureStrategy.fail(message.toString());
   }

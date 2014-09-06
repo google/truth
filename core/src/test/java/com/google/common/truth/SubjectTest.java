@@ -41,7 +41,7 @@ public class SubjectTest {
     } catch (AssertionError expected) {
       assertThat(expected.getMessage()).isEqualTo(
           "Not true that <5> (java.lang.Integer) "
-          + "is equal to <5> (com.google.common.truth.SubjectTest.IntWrapper)");
+          + "is equal to <5> (com.google.common.truth.SubjectTest$IntWrapper)");
     }
   }
 
