@@ -23,13 +23,24 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
   }
 
   /**
-   * Attests that this class or interface is either the same as, or is a superclass or
+   * Asserts that this class or interface is either the same as, or is a superclass or
    * superinterface of, the given class or interface.
    */
   @GwtIncompatible("isAssignableFrom")
   public void isAssignableFrom(Class<?> clazz) {
     if (!getSubject().isAssignableFrom(clazz)) {
       fail("is assignable from", clazz);
+    }
+  }
+
+  /**
+   * Asserts that this class or interface is either the same as, or is a subclass or subinterface
+   * of, the given class or interface.
+   */
+  @GwtIncompatible("isAssignableFrom")
+  public void isAssignableTo(Class<?> clazz) {
+    if (!clazz.isAssignableFrom(getSubject())) {
+      fail("is assignable to", clazz);
     }
   }
 
