@@ -65,7 +65,7 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * Soft-deprecated in favor of {@link #isEqualTo(Object)}.
+   * Soft-deprecated in favor of {@link #isEqualTo(Object)} or {@link #isSameAs(Object)}.
    */
   public void is(Object other) {
     isEqualTo(other);
@@ -92,6 +92,24 @@ public class Subject<S extends Subject<S,T>,T> {
   public void isNotEqualTo(Object other) {
     if (Objects.equal(getSubject(), other)) {
       fail("is not equal to", other);
+    }
+  }
+
+  /**
+   * Asserts that the two objects are the exact same instance.
+   */
+  public void isSameAs(Object other) {
+    if (getSubject() != other) {
+      fail("is the same instance as", other);
+    }
+  }
+
+  /**
+   * Asserts that the two objects are not the exact same instance.
+   */
+  public void isNotSameAs(Object other) {
+    if (getSubject() == other) {
+      fail("is not the same instance as", other);
     }
   }
 
