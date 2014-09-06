@@ -20,7 +20,7 @@ package com.google.common.truth;
  *
  * @author Christian Gruber (cgruber@google.com)
  */
-public final class StringUtil {
+final class StringUtil {
   private StringUtil() {}
 
   /**
@@ -28,7 +28,7 @@ public final class StringUtil {
    *
    * TODO(user): Do something closer to what JUnit's {@code ComparisonFailure} does.
    */
-  public static String messageFor(String message, CharSequence expected, CharSequence actual) {
+  static String messageFor(String message, CharSequence expected, CharSequence actual) {
     return message + "\n\nExpected:\n" + expected + "\n\nActual\n" + actual;
   }
 
@@ -48,7 +48,7 @@ public final class StringUtil {
    *     {@link String#valueOf(Object)}. Arguments can be null.
    * @see com.google.common.base.Preconditions
    */
-  public static String format(String template, Object... args) {
+  static String format(String template, Object... args) {
     template = String.valueOf(template); // null -> "null"
 
     // start substituting the arguments into the '%s' placeholders
