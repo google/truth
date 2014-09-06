@@ -91,7 +91,10 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
 
   /**
    * Attests that the map contains the given key or fails.
+   *
+   * @deprecated Use {@link #containsKey(Object)} instead.
    */
+  @Deprecated
   public WithValue<V> hasKey(final K key) {
     if (!getSubject().containsKey(key)) {
       fail("has key", key);
@@ -108,13 +111,31 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
     };
   }
 
+  /**
+   * Attests that the map does not contain the given key or fails.
+   *
+   * @deprecated Use {@link #doesNotContainKey(Object)} instead.
+   */
+  @Deprecated
   public void lacksKey(K key) {
     if (getSubject().containsKey(key)) {
       fail("lacks key", key);
     }
   }
 
+  /**
+   * Interface for fluent chaining of value-checking.
+   *
+   * @deprecated Use {@link MapSubject#containsEntry(Object, Object)} instead.
+   */
+  @Deprecated
   public interface WithValue<V> {
+    /**
+     * Attests that the map contains the given value for the given key.
+     *
+     * @deprecated Use {@link MapSubject#containsEntry(Object, Object)} instead.
+     */
+    @Deprecated
     void withValue(V value);
   }
 
