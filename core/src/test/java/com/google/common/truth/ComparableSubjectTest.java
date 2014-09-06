@@ -226,9 +226,7 @@ public class ComparableSubjectTest {
 
     assert_().about(javaSource()).that(file)
         .failsToCompile()
-        .withErrorContaining(
-            "reason: actual argument java.lang.String cannot be converted to "
-            + "test.MyTest.ComparableType by method invocation conversion")
+        .withErrorContaining("java.lang.String cannot be converted to test.MyTest.ComparableType")
         .in(file)
         .onLine(5);
   }
@@ -255,8 +253,7 @@ public class ComparableSubjectTest {
     assert_().about(javaSource()).that(file)
         .failsToCompile()
         .withErrorContaining(
-            "reason: actual argument java.lang.String cannot be converted to "
-            + "test.MyTest.RawComparableType by method invocation conversion")
+            "java.lang.String cannot be converted to test.MyTest.RawComparableType")
         .in(file)
         .onLine(5);
   }
