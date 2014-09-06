@@ -32,6 +32,27 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class SubjectTest {
 
+  @Test public void toStringsAreIdentical() {
+    IntWrapper wrapper = new IntWrapper();
+    wrapper.wrapped = 5;
+    try {
+      assertThat(5).isEqualTo(wrapper);
+      fail("Should have thrown.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage()).isEqualTo(
+          "Not true that <5> (java.lang.Integer) "
+          + "is equal to <5> (com.google.common.truth.SubjectTest.IntWrapper)");
+    }
+  }
+
+  private static class IntWrapper {
+    int wrapped;
+    @Override
+    public String toString() {
+      return Integer.toString(wrapped);
+    }
+  }
+
   @Test public void identityOfNulls() {
     Object o = null;
     assertThat(o).isEqualTo(null);

@@ -167,15 +167,56 @@ public class Subject<S extends Subject<S,T>,T> {
    * Assembles a failure message and passes such to the FailureStrategy
    *
    * @param verb the proposition being asserted
+   */
+  protected void fail(String verb) {
+    failureStrategy.fail("Not true that " + getDisplaySubject() + " " + verb);
+  }
+
+  /**
+   * Assembles a failure message and passes such to the FailureStrategy. Also performs
+   * disambiguation if the subject and {@code part} have the same toString()'s.
+   *
+   * @param verb the proposition being asserted
+   * @param part the value against which the subject is compared
+   */
+  protected void fail(String verb, Object part) {
+    StringBuilder message = new StringBuilder("Not true that ")
+        .append(getDisplaySubject()).append(" ");
+    // If the subject and parts aren't null, and they have equal toString()'s but different
+    // classes, we need to disambiguate them.
+    boolean needsDisambiguation = (part != null) && (getSubject() != null)
+        && getSubject().toString().equals(part.toString())
+        && !getSubject().getClass().equals(part.getClass());
+    if (needsDisambiguation) {
+      message.append("(").append(getSubject().getClass().getCanonicalName()).append(") ");
+    }
+    message.append(verb).append(" <").append(part).append(">");
+    if (needsDisambiguation) {
+      message.append(" (").append(part.getClass().getCanonicalName()).append(")");
+    }
+    failureStrategy.fail(message.toString());
+  }
+
+  /**
+   * Assembles a failure message and passes such to the FailureStrategy
+   *
+   * @param verb the proposition being asserted
    * @param messageParts the expectations against which the subject is compared
    */
   protected void fail(String verb, Object... messageParts) {
-    StringBuilder message = new StringBuilder("Not true that ");
-    message.append(getDisplaySubject()).append(" ").append(verb);
-    for (Object part : messageParts) {
-      message.append(" <").append(part).append(">");
+    // For backwards binary compatibility
+    if (messageParts.length == 0) {
+      fail(verb);
+    } else if (messageParts.length == 1) {
+      fail(verb, messageParts[0]);
+    } else {
+      StringBuilder message = new StringBuilder("Not true that ");
+      message.append(getDisplaySubject()).append(" ").append(verb);
+      for (Object part : messageParts) {
+        message.append(" <").append(part).append(">");
+      }
+      failureStrategy.fail(message.toString());
     }
-    failureStrategy.fail(message.toString());
   }
 
   /**
