@@ -71,7 +71,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  public void contains(String string) {
+  public void contains(CharSequence string) {
     if (string == null) {
       throw new IllegalArgumentException("Cannot test that a string contains a null reference");
     }
@@ -82,7 +82,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  public void doesNotContain(String string) {
+  public void doesNotContain(CharSequence string) {
     if (string == null) {
       throw new IllegalArgumentException(
               "Cannot test that a string does not contain a null reference");
@@ -123,7 +123,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
         }
       };
 
-  private static String quote(String toBeWrapped) {
+  private static String quote(CharSequence toBeWrapped) {
     return "\"" + toBeWrapped + "\"";
   }
 

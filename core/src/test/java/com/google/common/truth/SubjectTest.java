@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -31,49 +30,140 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class SubjectTest {
+  private static final Object OBJECT_1 = new Object() {
+    @Override
+    public String toString() {
+      return "Object 1";
+    }
+  };
+  private static final Object OBJECT_2 = new Object() {
+    @Override
+    public String toString() {
+      return "Object 2";
+    }
+  };
 
-  @Test public void identityOfNulls() {
-    Object o = null;
-    assertThat(o).is(null);
-  }
-
-  @Test public void identityOfNullsFailure() {
-    Object o = null;
+  @Test public void toStringsAreIdentical() {
+    IntWrapper wrapper = new IntWrapper();
+    wrapper.wrapped = 5;
     try {
-      assertThat(o).is("a");
+      assertThat(5).isEqualTo(wrapper);
       fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage()).isEqualTo(
+          "Not true that <5> (java.lang.Integer) "
+          + "is equal to <5> (com.google.common.truth.SubjectTest$IntWrapper)");
     }
   }
 
-  @Test public void identityOfObject() {
+  private static class IntWrapper {
+    int wrapped;
+    @Override
+    public String toString() {
+      return Integer.toString(wrapped);
+    }
+  }
+
+  @Test public void isSameAsWithNulls() {
+    Object o = null;
+    assertThat(o).isSameAs(null);
+  }
+
+  @Test public void isSameAsFailureWithNulls() {
+    Object o = null;
+    try {
+      assertThat(o).isSameAs("a");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo("Not true that <null> is the same instance as <a>");
+    }
+  }
+
+  @Test public void isSameAsWithSameObject() {
     Object a = new Object();
     Object b = a;
-    assertThat(a).is(b);
+    assertThat(a).isSameAs(b);
   }
 
-  @Test public void identityOfObjectFailure() {
-    Object a = new Object() { @Override public String toString() { return "Object 1"; } };
-    Object b = new Object() { @Override public String toString() { return "Object 2"; } };
+  @Test public void isSameAsFailureWithObjects() {
+    Object a = OBJECT_1;
+    Object b = OBJECT_2;
     try {
-      assertThat(a).is(b);
+      assertThat(a).isSameAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <Object 1> is the same instance as <Object 2>");
     }
   }
 
-  // Ignore this until we fix identity
-  @Ignore @Test public void identityOfObjectFailureWithComparableObjects() {
+  @Test public void isSameAsFailureWithComparableObjects() {
     Object a = "ab";
-    Object b = new StringBuilder().append("a").append('b').toString();
+    Object b = new StringBuilder().append("a").append("b").toString();
     try {
-      assertThat(a).is(b);
+      assertThat(a).isSameAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <null> is <a>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <ab> is the same instance as <ab>");
     }
+  }
+
+  @Test public void isSameAsFailureWithDifferentTypesAndSameToString() {
+    Object a = "true";
+    Object b = true;
+    try {
+      assertThat(a).isSameAs(b);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo("Not true that <true> (java.lang.String) is the same"
+          + " instance as <true> (java.lang.Boolean)");
+    }
+  }
+
+  @Test public void isNotSameAsWithNulls() {
+    Object o = null;
+    assertThat(o).isNotSameAs("a");
+  }
+
+  @Test public void isNotSameAsFailureWithNulls() {
+    Object o = null;
+    try {
+      assertThat(o).isNotSameAs(null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <null> is not the same instance as <null>");
+    }
+  }
+
+  @Test public void isNotSameAsWithObjects() {
+    Object a = new Object();
+    Object b = new Object();
+    assertThat(a).isNotSameAs(b);
+  }
+
+  @Test public void isNotSameAsFailureWithSameObject() {
+    Object a = OBJECT_1;
+    Object b = a;
+    try {
+      assertThat(a).isNotSameAs(b);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <Object 1> is not the same instance as <Object 1>");
+    }
+  }
+
+  @Test public void isNotSameAsWithComparableObjects() {
+    Object a = "ab";
+    Object b = new StringBuilder().append("a").append("b").toString();
+    assertThat(a).isNotSameAs(b);
+  }
+
+  @Test public void isNotSameAsWithDifferentTypesAndSameToString() {
+    Object a = "true";
+    Object b = true;
+    assertThat(a).isNotSameAs(b);
   }
 
   @Test public void isNull() {
@@ -115,12 +205,12 @@ public class SubjectTest {
     }
   }
 
-  @Test public void equalityOfNulls() {
+  @Test public void isEqualToWithNulls() {
     Object o = null;
     assertThat(o).isEqualTo(null);
   }
 
-  @Test public void equalityOfNullsFailure() {
+  @Test public void isEqualToFailureWithNulls() {
     Object o = null;
     try {
       assertThat(o).isEqualTo("a");
@@ -130,15 +220,15 @@ public class SubjectTest {
     }
   }
 
-  @Test public void equalityOfObjectBasedOnIdentity() {
+  @Test public void isEqualToWithSameObject() {
     Object a = new Object();
     Object b = a;
     assertThat(a).isEqualTo(b);
   }
 
-  @Test public void equalityOfObjectFailure() {
-    Object a = new Object() { @Override public String toString() { return "Object 1"; } };
-    Object b = new Object() { @Override public String toString() { return "Object 2"; } };
+  @Test public void isEqualToFailureWithObjects() {
+    Object a = OBJECT_1;
+    Object b = OBJECT_2;
     try {
       assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
@@ -147,15 +237,15 @@ public class SubjectTest {
     }
   }
 
-  @Test public void equalityOfComparableObjects() {
+  @Test public void isEqualToWithComparableObjects() {
     Object a = "ab";
-    Object b = new StringBuilder().append("a").append('b').toString();
+    Object b = new StringBuilder().append("a").append("b").toString();
     assertThat(a).isEqualTo(b);
   }
 
-  @Test public void equalityOfComparableObjectsFailure() {
+  @Test public void isEqualToFailureWithComparableObjects() {
     Object a = "ab";
-    Object b = new StringBuilder().append("a").append('a').toString();
+    Object b = new StringBuilder().append("a").append("a").toString();
     try {
       assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
@@ -164,12 +254,24 @@ public class SubjectTest {
     }
   }
 
-  @Test public void inequalityOfNulls() {
+  @Test public void isEqualToFailureWithDifferentTypesAndSameToString() {
+    Object a = "true";
+    Object b = true;
+    try {
+      assertThat(a).isEqualTo(b);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo("Not true that <true> (java.lang.String) is equal to"
+          + " <true> (java.lang.Boolean)");
+    }
+  }
+
+  @Test public void isNotEqualToWithNulls() {
     Object o = null;
     assertThat(o).isNotEqualTo("a");
   }
 
-  @Test public void inequalityOfNullsFailure() {
+  @Test public void isNotEqualToFailureWithNulls() {
     Object o = null;
     try {
       assertThat(o).isNotEqualTo(null);
@@ -179,14 +281,24 @@ public class SubjectTest {
     }
   }
 
-  @Test public void inequalityOfObjectBasedOnIdentity() {
+  @Test public void isNotEqualToWithObjects() {
     Object a = new Object();
     Object b = new Object();
     assertThat(a).isNotEqualTo(b);
   }
 
-  @Test public void inequalityOfObjectFailure() {
-    Object a = new Object() { @Override public String toString() { return "Object 1"; } };
+  @Test public void isNotEqualToFailureWithObjects() {
+    Object o = null;
+    try {
+      assertThat(o).isNotEqualTo(null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo("Not true that <null> is not equal to <null>");
+    }
+  }
+
+  @Test public void isNotEqualToFailureWithSameObject() {
+    Object a = OBJECT_1;
     Object b = a;
     try {
       assertThat(a).isNotEqualTo(b);
@@ -196,15 +308,15 @@ public class SubjectTest {
     }
   }
 
-  @Test public void inequalityOfComparableObjects() {
+  @Test public void isNotEqualToWithComparableObjects() {
     Object a = "ab";
-    Object b = new StringBuilder().append("a").append('a').toString();
+    Object b = new StringBuilder().append("a").append("a").toString();
     assertThat(a).isNotEqualTo(b);
   }
 
-  @Test public void inequalityOfComparableObjectsFailure() {
+  @Test public void isNotEqualToFailureWithComparableObjects() {
     Object a = "ab";
-    Object b = new StringBuilder().append("a").append('b').toString();
+    Object b = new StringBuilder().append("a").append("b").toString();
     try {
       assertThat(a).isNotEqualTo(b);
       fail("Should have thrown.");
@@ -213,9 +325,17 @@ public class SubjectTest {
     }
   }
 
+  @Test public void isNotEqualToWithDifferentTypesAndSameToString() {
+    Object a = "true";
+    Object b = true;
+    assertThat(a).isNotEqualTo(b);
+  }
+
   @Test public void isInstanceOf() {
     assertThat("a").isA(String.class);
     assertThat("a").isInstanceOf(String.class);
+    // Reverse
+    assertThat(String.class).isAssignableFrom("a".getClass());
   }
 
   @Test public void isAFail() {
@@ -223,8 +343,8 @@ public class SubjectTest {
       assertThat(4.5).isA(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <4.5> is an instance of <java.lang.Long>."
-      		+ " It is an instance of <java.lang.Double>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <4.5> is an instance of <java.lang.Long>."
+          + " It is an instance of <java.lang.Double>");
     }
   }
 
@@ -233,8 +353,8 @@ public class SubjectTest {
       assertThat(4.5).isInstanceOf(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <4.5> is an instance of <java.lang.Long>."
-      		+ " It is an instance of <java.lang.Double>");
+      assertThat(e.getMessage()).isEqualTo("Not true that <4.5> is an instance of <java.lang.Long>."
+          + " It is an instance of <java.lang.Double>");
     }
   }
 
@@ -249,7 +369,7 @@ public class SubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("<5> expected not to be an instance of java.lang.Number, but was.");
+          .isEqualTo("<5> expected not to be an instance of java.lang.Number, but was.");
     }
   }
 
@@ -259,7 +379,7 @@ public class SubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("<5> expected not to be an instance of java.lang.Number, but was.");
+          .isEqualTo("<5> expected not to be an instance of java.lang.Number, but was.");
     }
   }
 }

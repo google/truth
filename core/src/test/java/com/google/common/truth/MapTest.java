@@ -45,8 +45,7 @@ public class MapTest {
       assertThat(map(Integer.class, Integer.class, 1, 5)).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("is empty");
+      assertThat(e.getMessage()).isEqualTo("Not true that <{1=5}> is empty");
     }
   }
 
@@ -59,8 +58,7 @@ public class MapTest {
       assertThat(map(String.class, String.class)).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("is not empty");
+      assertThat(e.getMessage()).isEqualTo("Not true that <{}> is not empty");
     }
   }
 
@@ -264,10 +262,11 @@ public class MapTest {
   }
 
   @SuppressWarnings("unchecked") // Want this to blow up if wrong.
-  public static <K, V> Map<K, V> map(Class<K> keyClass, Class<V> valueClass, Object ... keyval) {
+  private static <K, V> Map<K, V> map(Class<K> keyClass, Class<V> valueClass, Object ... keyval) {
     Map<K, V> map = Maps.newHashMap();
-    if (keyval.length % 2 != 0)
+    if (keyval.length % 2 != 0) {
       throw new IllegalArgumentException("Wrong number of key/value pairs.");
+    }
     for (int i = 0; i < keyval.length ; i = i + 2) {
       map.put(keyClass.cast(keyval[i]), valueClass.cast(keyval[i + 1]));
     }

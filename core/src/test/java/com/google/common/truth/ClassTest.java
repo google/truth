@@ -30,33 +30,100 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ClassTest {
 
-  @Test public void testDeclaresField_NoSuchField() {
+  @Test public void testDeclaresField_noSuchField() {
     try {
       assertThat(A.class).declaresField("noField");
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .is("Not true that <A> has a field named <noField>");
+          .isEqualTo("Not true that <A> has a field named <noField>");
     }
   }
 
-  @Test public void testDeclaresField_Public() {
+  @Test public void testDeclaresField_public() {
     assertThat(A.class).declaresField("publicField");
   }
 
-  @Test public void testDeclaresField_NullSubject() {
+  @Test public void testDeclaresField_nullSubject() {
     Class<?> nullClass = null;
     try {
       assertThat(nullClass).declaresField("publicField");
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .is("Cannot determine a field name from a null class.");
+          .isEqualTo("Cannot determine a field name from a null class.");
     }
   }
 
-  @Test public void testDeclaresField_Private() {
+  @Test public void testDeclaresField_private() {
     assertThat(A.class).declaresField("privateField");
+  }
+
+  @Test public void testIsAssignableFrom_same() {
+    assertThat(String.class.isAssignableFrom(String.class)).isTrue();
+    assertThat(String.class).isAssignableFrom(String.class);
+  }
+
+  @Test public void testIsAssignableFrom_parent() {
+    assertThat(Object.class.isAssignableFrom(String.class)).isTrue();
+    assertThat(Object.class).isAssignableFrom(String.class);
+    assertThat(Exception.class.isAssignableFrom(NullPointerException.class)).isTrue();
+    assertThat(Exception.class).isAssignableFrom(NullPointerException.class);
+  }
+
+  @Test public void testIsAssignableFrom_reversed() {
+    assertThat(String.class.isAssignableFrom(Object.class)).isFalse();
+    try {
+      assertThat(String.class).isAssignableFrom(Object.class);
+      assert_().fail("Should have thrown an assertion error.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <class java.lang.String> "
+              + "is assignable from <class java.lang.Object>");
+    }
+  }
+
+  @Test public void testIsAssignableFrom_reversedDifferentTypes() {
+    assertThat(String.class.isAssignableFrom(Exception.class)).isFalse();
+    try {
+      assertThat(String.class).isAssignableFrom(Exception.class);
+      assert_().fail("Should have thrown an assertion error.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <class java.lang.String> "
+              + "is assignable from <class java.lang.Exception>");
+    }
+  }
+
+  @Test public void testIsAssignableTo_same() {
+    assertThat(String.class).isAssignableTo(String.class);
+  }
+
+  @Test public void testIsAssignableTo_parent() {
+    assertThat(String.class).isAssignableTo(Object.class);
+    assertThat(NullPointerException.class).isAssignableTo(Exception.class);
+  }
+
+  @Test public void testIsAssignableTo_reversed() {
+    try {
+      assertThat(Object.class).isAssignableTo(String.class);
+      assert_().fail("Should have thrown an assertion error.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <class java.lang.Object> "
+              + "is assignable to <class java.lang.String>");
+    }
+  }
+
+  @Test public void testIsAssignableTo_reversedDifferentTypes() {
+    try {
+      assertThat(String.class).isAssignableTo(Exception.class);
+      assert_().fail("Should have thrown an assertion error.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <class java.lang.String> "
+              + "is assignable to <class java.lang.Exception>");
+    }
   }
 
   public static class A {
