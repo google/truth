@@ -128,7 +128,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> unexpectedly does not contain <5>");
     }
   }
 
@@ -145,7 +145,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).doesNotContain(2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
+      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> unexpectedly contains <2>");
     }
   }
 

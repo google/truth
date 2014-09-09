@@ -38,8 +38,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     extends Subject<S, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> create(
-      FailureStrategy failureStrategy, Iterable<T> list) {
+  public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
+      create(FailureStrategy failureStrategy, Iterable<T> list) {
     return new IterableSubject(failureStrategy, list);
   }
 
@@ -127,7 +127,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public void contains(@Nullable Object element) {
     if (!Iterables.contains(getSubject(), element)) {
-      fail("contains", element);
+      failWithRawMessage("<%s> unexpectedly does not contain <%s>", getSubject(), element);
     }
   }
 
@@ -137,7 +137,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public void doesNotContain(@Nullable Object element) {
     if (Iterables.contains(getSubject(), element)) {
-      fail("does not contain", element);
+      failWithRawMessage("<%s> unexpectedly contains <%s>", getSubject(), element);
     }
   }
 
