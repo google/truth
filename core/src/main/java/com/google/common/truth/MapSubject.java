@@ -19,6 +19,7 @@ import com.google.common.collect.Maps;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Propositions for {@link Map} subjects.
@@ -73,8 +74,9 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
    * Attests that the map contains the given entry.
    */
   public void containsEntry(Object key, Object value) {
-    if (!getSubject().entrySet().contains(Maps.immutableEntry(key, value))) {
-      fail("contains entry", key, value);
+    Entry<Object, Object> entry = Maps.immutableEntry(key, value);
+    if (!getSubject().entrySet().contains(entry)) {
+      fail("contains entry", entry);
     }
   }
 
@@ -82,8 +84,9 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
    * Attests that the map does not contain the given entry.
    */
   public void doesNotContainEntry(Object key, Object value) {
-    if (getSubject().entrySet().contains(Maps.immutableEntry(key, value))) {
-      fail("does not contain entry", key, value);
+    Entry<Object, Object> entry = Maps.immutableEntry(key, value);
+    if (getSubject().entrySet().contains(entry)) {
+      fail("does not contain entry", entry);
     }
   }
 
@@ -140,8 +143,9 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public static <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> create(
-      FailureStrategy failureStrategy, Map<K, V> map) {
+  public static <K, V, M extends Map<K, V>>
+      MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> create(
+          FailureStrategy failureStrategy, Map<K, V> map) {
     return new MapSubject(failureStrategy, map);
   }
 
