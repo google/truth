@@ -127,7 +127,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public void contains(@Nullable Object element) {
     if (!Iterables.contains(getSubject(), element)) {
-      failWithRawMessage("<%s> unexpectedly does not contain <%s>", getSubject(), element);
+      failWithRawMessage("%s should have contained <%s>", getDisplaySubject(), element);
     }
   }
 
@@ -137,7 +137,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public void doesNotContain(@Nullable Object element) {
     if (Iterables.contains(getSubject(), element)) {
-      failWithRawMessage("<%s> unexpectedly contains <%s>", getSubject(), element);
+      failWithRawMessage("%s should not have contained <%s>", getDisplaySubject(), element);
     }
   }
 

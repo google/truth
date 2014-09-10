@@ -48,7 +48,7 @@ public class CollectionTest {
       assertThat(collection(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> unexpectedly does not contain <5>");
+      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> should have contained <5>");
     }
   }
 

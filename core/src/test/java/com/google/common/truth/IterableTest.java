@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
@@ -128,7 +129,25 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> unexpectedly does not contain <5>");
+      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> should have contained <5>");
+    }
+  }
+
+  @Test public void namedIterableHasItemFailure() {
+    try {
+      assertThat(iterable(1, 2, 3)).named("numbers").contains(5);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo("\"numbers\" <[1, 2, 3]> should have contained <5>");
+    }
+  }
+
+  @Test public void failureMessageIterableHasItemFailure() {
+    try {
+      assert_().withFailureMessage("custom msg").that(iterable(1, 2, 3)).contains(5);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo("custom msg: <[1, 2, 3]> should have contained <5>");
     }
   }
 
@@ -145,7 +164,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).doesNotContain(2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> unexpectedly contains <2>");
+      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> should not have contained <2>");
     }
   }
 
