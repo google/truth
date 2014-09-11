@@ -18,7 +18,7 @@ package com.google.common.truth;
 import com.google.common.collect.Range;
 
 /**
- * Propositions for Long subjects
+ * Propositions for {@code long} subjects.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)

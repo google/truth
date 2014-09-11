@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class PrimitiveByteArraySubject
     extends AbstractArraySubject<PrimitiveByteArraySubject, byte[]> {
-  public PrimitiveByteArraySubject(FailureStrategy failureStrategy, byte[] o) {
+  PrimitiveByteArraySubject(FailureStrategy failureStrategy, byte[] o) {
     super(failureStrategy, o);
   }
 
@@ -73,5 +73,4 @@ public class PrimitiveByteArraySubject
   public ListSubject<?, Byte, List<Byte>> asList() {
     return ListSubject.create(failureStrategy, listRepresentation());
   }
-
 }

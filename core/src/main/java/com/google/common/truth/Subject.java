@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.format;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -49,46 +50,58 @@ public class Subject<S extends Subject<S,T>,T> {
    */
   @SuppressWarnings("unchecked")
   public S named(String name) {
-    if (name == null) {
-      // TODO: use check().withFailureMessage... here?
-      throw new NullPointerException("Name passed to named() cannot be null.");
-    }
-    this.customName = name;
-    return (S)this;
+    // TODO: use check().withFailureMessage... here?
+    this.customName = checkNotNull(name, "Name passed to named() cannot be null.");
+    return (S) this;
   }
 
   /**
-   * Soft-deprecated in favor of {@link #named(String)}.
+   * @deprecated Use {@link #named(String)} instead.
    */
+  @Deprecated
   public S labeled(String label) {
     return named(label);
   }
 
   /**
-   * Soft-deprecated in favor of {@link #isEqualTo(Object)} or {@link #isSameAs(Object)}.
+   * @deprecated Use {@link #isEqualTo(Object)} to check object equality or
+   *     {@link #isSameAs(Object)} to check reference equality.
    */
+  @Deprecated
   public void is(Object other) {
     isEqualTo(other);
   }
 
+  /**
+   * Fails if the subject is not null.
+   */
   public void isNull() {
     if (getSubject() != null) {
       fail("is null");
     }
   }
 
+  /**
+   * Fails if the subject is null.
+   */
   public void isNotNull() {
     if (getSubject() == null) {
       failWithoutSubject("is a non-null reference");
     }
   }
 
+  /**
+   * Fails if the subject is not equal to the given object.
+   */
   public void isEqualTo(Object other) {
     if (!Objects.equal(getSubject(), other)) {
       fail("is equal to", other);
     }
   }
 
+  /**
+   * Fails if the subject is equal to the given object.
+   */
   public void isNotEqualTo(Object other) {
     if (Objects.equal(getSubject(), other)) {
       fail("is not equal to", other);
@@ -96,7 +109,7 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * Asserts that the two objects are the exact same instance.
+   * Fails if the subject is not the same instance as the given object.
    */
   public void isSameAs(Object other) {
     if (getSubject() != other) {
@@ -105,7 +118,7 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * Asserts that the two objects are not the exact same instance.
+   * Fails if the subject is the same instance as the given object.
    */
   public void isNotSameAs(Object other) {
     if (getSubject() == other) {
@@ -114,15 +127,17 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * Asserts that this object is an instance of the given class.
+   * Fails if the subject is not an instance of the given class.
+   *
+   * @deprecated Use {@link #isInstanceOf} instead.
    */
-  // TODO(user): @deprecated Use {@link #isInstanceOf(Class)} instead.
+  @Deprecated
   public void isA(Class<?> clazz) {
     isInstanceOf(clazz);
   }
 
   /**
-   * Asserts that this object is not an instance of the given class.
+   * Fails if the subject is an instance of the given class.
    *
    * @deprecated Use {@link #isNotInstanceOf(Class)} instead.
    */
@@ -132,7 +147,7 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * Asserts that this object is an instance of the given class.
+   * Fails if the subject is not an instance of the given class.
    */
   public void isInstanceOf(Class<?> clazz) {
     if (clazz == null) {
@@ -149,7 +164,7 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * Asserts that this object is not an instance of the given class.
+   * Fails if the subject is an instance of the given class.
    */
   public void isNotInstanceOf(Class<?> clazz) {
     if (clazz == null) {
@@ -364,7 +379,8 @@ public class Subject<S extends Subject<S,T>,T> {
    *     Testing code should use "is" or "isEqualTo" propositions for equality tests.
    */
   @Deprecated
-  @Override public boolean equals(Object o) {
+  @Override
+  public boolean equals(Object o) {
     isEqualTo(o);
     return false;
   }
@@ -375,7 +391,8 @@ public class Subject<S extends Subject<S,T>,T> {
    *     hashCode() is disallowed.
    */
   @Deprecated
-  @Override public int hashCode() {
+  @Override
+  public int hashCode() {
     throw new UnsupportedOperationException(""
         + "Equals/Hashcode is not supported on Subjects. Their only use is as a holder of "
         + "propositions. Use of equals() is deprecated and forwards to isEqualTo() and "

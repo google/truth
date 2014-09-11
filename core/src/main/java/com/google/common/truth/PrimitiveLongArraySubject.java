@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class PrimitiveLongArraySubject
     extends AbstractArraySubject<PrimitiveLongArraySubject, long[]> {
-  public PrimitiveLongArraySubject(FailureStrategy failureStrategy, long[] o) {
+  PrimitiveLongArraySubject(FailureStrategy failureStrategy, long[] o) {
     super(failureStrategy, o);
   }
 

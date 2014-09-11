@@ -32,24 +32,25 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 /**
- * @author Kevin Bourrillion
+ * Propositions for {@link Iterable} subjects.
+ *
+ * @author Kurt Alfred Kluever
  */
 public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>>
     extends Subject<S, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
+  static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
       create(FailureStrategy failureStrategy, Iterable<T> list) {
     return new IterableSubject(failureStrategy, list);
   }
 
-  // TODO: Arguably this should even be package private
-  protected IterableSubject(FailureStrategy failureStrategy, C list) {
+  IterableSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }
 
   /**
-   * Attests that the subject holds no more objects, or fails.
+   * Fails if the subject is not empty.
    */
   public void isEmpty() {
     if (!Iterables.isEmpty(getSubject())) {
@@ -58,7 +59,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Attests that the subject holds one or more objects, or fails
+   * Fails if the subject is empty.
    */
   public void isNotEmpty() {
     if (Iterables.isEmpty(getSubject())) {
@@ -67,7 +68,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Asserts that an Iterable has a specific size.
+   * Fails if the subject does not have the given size.
    */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);

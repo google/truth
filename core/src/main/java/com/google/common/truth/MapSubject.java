@@ -35,7 +35,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public static <K, V, M extends Map<K, V>>
+  static <K, V, M extends Map<K, V>>
       MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> create(
           FailureStrategy failureStrategy, Map<K, V> map) {
     return new MapSubject(failureStrategy, map);

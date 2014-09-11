@@ -25,15 +25,17 @@ import java.util.List;
 public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T>
     extends Subject<AbstractArraySubject<S, T>, T> {
 
-  public AbstractArraySubject(FailureStrategy failureStrategy, T subject) {
+  AbstractArraySubject(FailureStrategy failureStrategy, T subject) {
     super(failureStrategy, subject);
   }
 
-  @Override public S named(String name) { return (S)super.named(name); }
+  @Override public S named(String name) {
+    return (S) super.named(name);
+  }
 
-  protected abstract String underlyingType();
+  abstract String underlyingType();
 
-  protected abstract List<?> listRepresentation();
+  abstract List<?> listRepresentation();
 
   @Override protected String getDisplaySubject() {
     return (internalCustomName() == null)
@@ -41,12 +43,11 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
         : "\"" + this.internalCustomName() + "\"";
   }
 
-  protected void failWithBadType(Object expected) {
+  void failWithBadType(Object expected) {
     String expectedType = (expected.getClass().isArray())
         ? expected.getClass().getComponentType().getName() + "[]"
         : expected.getClass().getName();
     failWithRawMessage("Incompatible types compared. expected: %s, actual: %s[]",
         Platform.compressType(expectedType), underlyingType());
   }
-
 }

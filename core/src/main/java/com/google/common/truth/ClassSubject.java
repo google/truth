@@ -17,14 +17,19 @@ package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
 
+/**
+ * Propositions for {@link Class} subjects.
+ *
+ * @author Kurt Alfred Kluever
+ */
 public class ClassSubject extends Subject<ClassSubject, Class<?>> {
-  public ClassSubject(FailureStrategy failureStrategy, Class<?> o) {
+  ClassSubject(FailureStrategy failureStrategy, Class<?> o) {
     super(failureStrategy, o);
   }
 
   /**
-   * Asserts that this class or interface is either the same as, or is a superclass or
-   * superinterface of, the given class or interface.
+   * Fails if this class or interface is not the same as or a superclass or superinterface of
+   * the given class or interface.
    */
   @GwtIncompatible("isAssignableFrom")
   public void isAssignableFrom(Class<?> clazz) {
@@ -34,8 +39,8 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
   }
 
   /**
-   * Asserts that this class or interface is either the same as, or is a subclass or subinterface
-   * of, the given class or interface.
+   * Fails if this class or interface is not the same as or a subclass or subinterface of,
+   * the given class or interface.
    */
   @GwtIncompatible("isAssignableFrom")
   public void isAssignableTo(Class<?> clazz) {

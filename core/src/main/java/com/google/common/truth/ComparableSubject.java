@@ -25,40 +25,58 @@ import com.google.common.collect.Range;
 public abstract class ComparableSubject<S extends Subject<S, T>, T extends Comparable>
     extends Subject<S, T> {
 
-  protected ComparableSubject(FailureStrategy failureStrategy, T subject) {
+  ComparableSubject(FailureStrategy failureStrategy, T subject) {
     super(failureStrategy, subject);
   }
 
+  /**
+   * Fails if the subject is not in the given range.
+   */
   public final void isIn(Range<T> range) {
     if (!range.contains(getSubject())) {
       fail("is in", range);
     }
   }
 
+  /**
+   * Fails if the subject is in the given range.
+   */
   public final void isNotIn(Range<T> range) {
     if (range.contains(getSubject())) {
       fail("is not in", range);
     }
   }
 
+  /**
+   * Fails if the subject is not greater than the given value.
+   */
   public final void isGreaterThan(T other) {
     if (getSubject().compareTo(other) <= 0) {
       fail("is greater than", other);
     }
   }
 
+  /**
+   * Fails if the subject is not less than the given value.
+   */
   public final void isLessThan(T other) {
     if (getSubject().compareTo(other) >= 0) {
       fail("is less than", other);
     }
   }
 
+  /**
+   * Fails if the subject is greater than the given value.
+   */
   public final void isAtMost(T other) {
     if (getSubject().compareTo(other) > 0) {
       fail("is at most", other);
     }
   }
 
+  /**
+   * Fails if the subject is less than the given value.
+   */
   public final void isAtLeast(T other) {
     if (getSubject().compareTo(other) < 0) {
       fail("is at least", other);

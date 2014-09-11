@@ -18,19 +18,19 @@ package com.google.common.truth;
 import com.google.common.base.Optional;
 
 /**
- * Propositions for {@link Optional}{@code <T>} subjects
+ * Propositions for {@link Optional}{@code <T>} subjects.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>> {
 
-  public OptionalSubject(FailureStrategy failureStrategy, Optional<T> subject) {
+  OptionalSubject(FailureStrategy failureStrategy, Optional<T> subject) {
     super(failureStrategy, subject);
     check().that((Object) subject).named("Optional<T>").isNotNull();
   }
 
   /**
-   * Attests that the {@link Optional}{@code <T>} subject has a present value.
+   * Fails if the {@link Optional}{@code <T>} is absent.
    */
   public void isPresent() {
     if (!getSubject().isPresent()) {
@@ -39,7 +39,7 @@ public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>>
   }
 
   /**
-   * Attests that the {@link Optional}{@code <T>} subject is absent.
+   * Fails if the {@link Optional}{@code <T>} is present.
    */
   public void isAbsent() {
     if (getSubject().isPresent()) {
@@ -48,7 +48,7 @@ public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>>
   }
 
   /**
-   * Attests that the {@link Optional}{@code <T>} subject is present and has the supplied value.
+   * Fails if the {@link Optional}{@code <T>} does not have the given value.
    */
   public void hasValue(Object expected) {
     if (expected == null) {
