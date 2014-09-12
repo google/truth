@@ -172,6 +172,10 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
+  /**
+   * @deprecated Use a {@code for each} style loop over your {@code Iterable<Integer>} instead.
+   */
+  @Deprecated
   public static final SubjectFactory<StringSubject, String> STRING =
       new SubjectFactory<StringSubject, String>() {
         @Override public StringSubject getSubject(FailureStrategy fs, String target) {

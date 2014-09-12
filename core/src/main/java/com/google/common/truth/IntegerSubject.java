@@ -78,6 +78,10 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
     isEqualTo(other);
   }
 
+  /**
+   * @deprecated Use a {@code for each} style loop over your {@code Iterable<Integer>} instead.
+   */
+  @Deprecated
   public static final SubjectFactory<IntegerSubject, Integer> INTEGER =
       new SubjectFactory<IntegerSubject, Integer>() {
         @Override public IntegerSubject getSubject(FailureStrategy fs, Integer target) {
