@@ -21,6 +21,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,7 @@ import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Tests for Collection Subjects.
@@ -165,6 +167,29 @@ public class IterableTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> should not have contained <2>");
+    }
+  }
+
+  @Test public void doesNotContainDuplicates() {
+    assertThat(iterable(1, 2, 3)).containsNoDuplicates();
+  }
+
+  @Test public void doesNotContainDuplicatesMixedTypes() {
+    List<Object> values = Lists.newArrayList();
+    values.add(1);
+    values.add(2);
+    values.add(2L);
+    values.add(3);
+    assertThat(values).containsNoDuplicates();
+  }
+
+  @Test public void doesNotContainDuplicatesFailure() {
+    try {
+      assertThat(iterable(1, 2, 2, 3)).containsNoDuplicates();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage())
+          .isEqualTo("<[1, 2, 2, 3]> has the following duplicates: <[2 x 2]>");
     }
   }
 

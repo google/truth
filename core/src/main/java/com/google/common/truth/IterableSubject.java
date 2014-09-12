@@ -20,13 +20,17 @@ import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -139,6 +143,21 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   public void doesNotContain(@Nullable Object element) {
     if (Iterables.contains(getSubject(), element)) {
       failWithRawMessage("%s should not have contained <%s>", getDisplaySubject(), element);
+    }
+  }
+
+  /**
+   * Attests that the subject does not contain duplicate elements.
+   */
+  public void containsNoDuplicates() {
+    List<Entry<T>> duplicates = Lists.newArrayList();
+    for (Multiset.Entry<T> entry : LinkedHashMultiset.create(getSubject()).entrySet()) {
+      if (entry.getCount() > 1) {
+        duplicates.add(entry);
+      }
+    }
+    if (!duplicates.isEmpty()) {
+      failWithRawMessage("%s has the following duplicates: <%s>", getDisplaySubject(), duplicates);
     }
   }
 
