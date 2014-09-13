@@ -94,9 +94,8 @@ public class CollectionTest {
       assertThat(collection(1, 2, 3)).has().allOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("is missing");
-      assertThat(e.getMessage()).contains("4");
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
     }
   }
 
@@ -244,10 +243,9 @@ public class CollectionTest {
       assertThat(collection(1, 2, 3)).has().exactly(1, 2, 2, 2, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("contains only");
-      assertThat(e.getMessage()).contains("is missing");
-      assertThat(e.getMessage()).contains("2 [2 copies]");
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3]>. "
+          + "It is missing <[2 [2 copies]]>");
     }
   }
 
@@ -256,10 +254,9 @@ public class CollectionTest {
       assertThat(collection(1, 2, 3)).has().exactly(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("contains only");
-      assertThat(e.getMessage()).contains("is missing");
-      assertThat(e.getMessage()).contains("2 [2 copies], 4");
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3, 4]>. "
+          + "It is missing <[2 [2 copies], 4]>");
     }
   }
 
@@ -268,10 +265,9 @@ public class CollectionTest {
       assertThat(collection(1, 2, 2, 2, 2, 3)).has().exactly(1, 2, 2, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("contains only");
-      assertThat(e.getMessage()).contains("has unexpected items");
-      assertThat(e.getMessage()).contains("2 [2 copies]");
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <[1, 2, 2, 2, 2, 3]> contains exactly <[1, 2, 2, 3]>. "
+          + "It has unexpected items <[2 [2 copies]]>");
     }
   }
 
