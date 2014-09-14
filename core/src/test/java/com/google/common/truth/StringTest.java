@@ -196,7 +196,7 @@ public class StringTest {
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .contains("Not true that <\"abcaqadev\"> matches <.*aaa.*>");
+          .isEqualTo("Not true that <\"abcaqadev\"> matches <.*aaa.*>");
     }
   }
 
@@ -210,7 +210,70 @@ public class StringTest {
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .contains("Not true that <\"abcaaadev\"> fails to match <.*aaa.*>");
+          .isEqualTo("Not true that <\"abcaaadev\"> fails to match <.*aaa.*>");
+    }
+  }
+
+  @Test public void stringContainsMatchStringUsesFind() {
+    assertThat("aba").containsMatch("[b]");
+    assertThat("aba").containsMatch(Pattern.compile("[b]"));
+  }
+
+  @Test public void stringContainsMatchString() {
+    assertThat("aba").containsMatch(".*b.*");
+
+    try {
+      assertThat("aaa").containsMatch(".*b.*");
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("<\"aaa\"> should have contained a match for <.*b.*>");
+    }
+  }
+
+  @Test public void stringContainsMatchPattern() {
+    assertThat("aba").containsMatch(Pattern.compile(".*b.*"));
+
+    try {
+      assertThat("aaa").containsMatch(Pattern.compile(".*b.*"));
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("<\"aaa\"> should have contained a match for <.*b.*>");
+    }
+  }
+
+  @Test public void stringDoesNotContainMatchString() {
+    assertThat("aaa").doesNotContainMatch(".*b.*");
+
+    try {
+      assertThat("aba").doesNotContainMatch(".*b.*");
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("<\"aba\"> should not have contained a match for <.*b.*>");
+    }
+  }
+
+  @Test public void stringDoesNotContainMatchStringUsesFind() {
+    try {
+      assertThat("aba").doesNotContainMatch("[b]");
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("<\"aba\"> should not have contained a match for <[b]>");
+    }
+  }
+
+  @Test public void stringDoesNotContainMatchPattern() {
+    assertThat("aaa").doesNotContainMatch(Pattern.compile(".*b.*"));
+
+    try {
+      assertThat("aba").doesNotContainMatch(Pattern.compile(".*b.*"));
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("<\"aba\"> should not have contained a match for <.*b.*>");
     }
   }
 }

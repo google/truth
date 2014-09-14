@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
 
+import java.util.regex.Pattern;
+
 /**
  * Propositions for string subjects.
  *
@@ -137,17 +139,15 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    */
   @GwtIncompatible("java.util.regex.Pattern")
   public void matches(String regex) {
-    if (!getSubject().matches(regex)) {
-      fail("matches", regex);
-    }
+    matches(Pattern.compile(regex));
   }
 
   /**
    * Fails if the string does not match the given regex.
    */
   @GwtIncompatible("java.util.regex.Pattern")
-  public void matches(java.util.regex.Pattern regex) {
-    if(!regex.matcher(getSubject()).matches()) {
+  public void matches(Pattern regex) {
+    if (!regex.matcher(getSubject()).matches()) {
       fail("matches", regex);
     }
   }
@@ -157,19 +157,54 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotMatch(String regex) {
-    if (getSubject().matches(regex)) {
-      fail("fails to match", regex);
-    }
+    doesNotMatch(Pattern.compile(regex));
   }
 
   /**
    * Fails if the string matches the given regex.
    */
   @GwtIncompatible("java.util.regex.Pattern")
-  public void doesNotMatch(java.util.regex.Pattern regex) {
-    if(regex.matcher(getSubject()).matches()) {
+  public void doesNotMatch(Pattern regex) {
+    if (regex.matcher(getSubject()).matches()) {
       fail("fails to match", regex);
     }
+  }
+
+  /**
+   * Fails if the string does not contain a match on the given regex.
+   */
+  @GwtIncompatible("java.util.regex.Pattern")
+  public void containsMatch(Pattern pattern) {
+    if (!pattern.matcher(getSubject()).find()) {
+      failWithRawMessage("%s should have contained a match for <%s>", getDisplaySubject(), pattern);
+    }
+  }
+
+  /**
+   * Fails if the string does not contain a match on the given regex.
+   */
+  @GwtIncompatible("java.util.regex.Pattern")
+  public void containsMatch(String regex) {
+    containsMatch(Pattern.compile(regex));
+  }
+
+  /**
+   * Fails if the string contains a match on the given regex.
+   */
+  @GwtIncompatible("java.util.regex.Pattern")
+  public void doesNotContainMatch(Pattern pattern) {
+    if (pattern.matcher(getSubject()).find()) {
+      failWithRawMessage("%s should not have contained a match for <%s>",
+          getDisplaySubject(), pattern);
+    }
+  }
+
+  /**
+   * Fails if the string contains a match on the given regex.
+   */
+  @GwtIncompatible("java.util.regex.Pattern")
+  public void doesNotContainMatch(String regex) {
+    doesNotContainMatch(Pattern.compile(regex));
   }
 
   /**
