@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
+import static java.util.Arrays.asList;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultiset;
@@ -266,8 +267,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
-  public Ordered containsExactly(@Nullable Object first, Object... rest) {
-    return containsExactly("contains exactly", accumulate(first, rest));
+  public Ordered containsExactly(@Nullable Object... varargs) {
+    return containsExactly("contains exactly", asList(varargs));
   }
 
   /**

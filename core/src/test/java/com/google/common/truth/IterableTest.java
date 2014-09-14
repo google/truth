@@ -332,6 +332,12 @@ public class IterableTest {
     }
   }
 
+  @Test public void arrayContainsExactly() {
+    ImmutableList<String> iterable = ImmutableList.of("a", "b");
+    String[] array = { "a", "b" };
+    assertThat(iterable).containsExactly(array);
+  }
+
   @Test public void iterableHasExactlyWithMany() {
     assertThat(iterable(1, 2, 3)).containsExactly(1, 2, 3);
   }
