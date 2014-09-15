@@ -29,6 +29,7 @@ import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -284,8 +285,15 @@ public class IterableTest {
     assertThat(iterable(3, 2, 5)).containsAllOf(3, 2, 5).inOrder();
   }
 
+  @Test public void iterableHasAllOfInOrderWithGaps() {
+    assertThat(iterable(3, 2, 5)).containsAllOf(3, 5).inOrder();
+    assertThat(iterable(3, 2, 2, 4, 5)).containsAllOf(3, 2, 2, 5).inOrder();
+    assertThat(iterable(3, 1, 4, 1, 5)).containsAllOf(3, 1, 5).inOrder();
+  }
+
   @Test public void iterableHasAllOfInOrderWithNull() {
     assertThat(iterable(3, null, 5)).containsAllOf(3, null, 5).inOrder();
+    assertThat(iterable(3, null, 7, 5)).containsAllOf(3, null, 5).inOrder();
   }
 
   @Test public void iterableHasAllOfInOrderWithFailure() {
@@ -491,7 +499,7 @@ public class IterableTest {
   @Test public void iterableHasAllOfInOrderHackedWithTooManyItemsFailure() {
     ArrayList<Integer> list = new ArrayList<Integer>(asList(1, null, 3));
     Ordered o = assertThat((Iterable<Integer>) list).containsAllOf(1, null, 3);
-    list.add(6);
+    Collections.swap(list, 1, 2);
     validateHackedFailure(o);
   }
 

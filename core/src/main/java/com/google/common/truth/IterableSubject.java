@@ -226,7 +226,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     if (!toRemove.isEmpty()) {
       failWithBadResults(failVerb, expected, "is missing", countDuplicates(toRemove));
     }
-    return new InOrder("contains all elements in order", expected);
+    return new AllOfInOrder("contains all elements in order", expected);
   }
 
   /**
@@ -302,7 +302,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
 
     // TODO(user): Possible enhancement: Include "[1 copy]" if the element does appear in
     // the subject but not enough times. Similarly for unexpected extra items.
-    return new InOrder("contains only these elements in order", required);
+    return new ExactlyInOrder("contains only these elements in order", required);
   }
 
   /**
@@ -333,11 +333,41 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     }
   }
 
-  private class InOrder implements Ordered {
+  // Checks to ensure that each element in required appears one after the other in
+  // the subject. The subject can have extra unnecessary items between expected items, as well
+  // as after the expected items
+  private class AllOfInOrder implements Ordered {
     private final String check;
     private final Iterable<?> required;
 
-    InOrder(String check, Iterable<?> required) {
+    AllOfInOrder(String check, Iterable<?> required) {
+      this.check = check;
+      this.required = required;
+    }
+
+    @Override public void inOrder() {
+      Iterator<T> actualItems = getSubject().iterator();
+
+      searching:
+      for (Object expected : required) {
+        while (actualItems.hasNext()) {
+          Object actual = actualItems.next();
+          if (actual == expected || actual != null && actual.equals(expected)) {
+            // We found our item inside actual, continue to look for the next
+            continue searching;
+          }
+        }
+        // Here, we've reached the end of actualItems without finding expected
+        fail(check, required);
+      }
+    }
+  }
+
+  private class ExactlyInOrder implements Ordered {
+    private final String check;
+    private final Iterable<?> required;
+
+    ExactlyInOrder(String check, Iterable<?> required) {
       this.check = check;
       this.required = required;
     }

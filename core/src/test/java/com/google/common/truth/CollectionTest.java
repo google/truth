@@ -25,6 +25,7 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Tests for Collection Subjects.
@@ -336,7 +337,7 @@ public class CollectionTest {
   @Test public void collectionHasAllOfInOrderHackedWithTooManyItemsFailure() {
     ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
     Ordered o = assertThat((Collection<Integer>)list).has().allOf(1, null, 3);
-    list.add(6);
+    Collections.swap(list, 1, 2);
     validateHackedFailure(o);
   }
 
