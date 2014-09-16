@@ -66,6 +66,22 @@ public class MapTest {
     }
   }
 
+  @Test public void hasSize() {
+    assertThat(ImmutableMap.of(1, 2, 3, 4)).hasSize(2);
+  }
+
+  @Test public void hasSizeZero() {
+    assertThat(ImmutableMap.of()).hasSize(0);
+  }
+
+  @Test public void hasSizeNegative() {
+    try {
+      assertThat(ImmutableMap.of(1, 2)).hasSize(-1);
+      fail();
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
   @Test public void containsKey() {
     ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
     assertThat(map).containsKey("kurt");

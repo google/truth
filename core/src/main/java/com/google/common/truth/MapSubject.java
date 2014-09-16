@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.collect.Maps;
 
 import java.util.Arrays;
@@ -56,6 +58,17 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   public void isNotEmpty() {
     if (getSubject().isEmpty()) {
       fail("is not empty");
+    }
+  }
+
+  /**
+   * Fails if the map does not have the given size.
+   */
+  public final void hasSize(int expectedSize) {
+    checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
+    int actualSize = getSubject().size();
+    if (actualSize != expectedSize) {
+      failWithBadResults("has a size of", expectedSize, "is", actualSize);
     }
   }
 
