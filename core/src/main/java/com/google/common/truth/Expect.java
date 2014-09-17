@@ -19,7 +19,6 @@ import static com.google.common.truth.StringUtil.messageFor;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.truth.FailureStrategy.ThrowableAssertionError;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -77,11 +76,11 @@ public class Expect extends TestVerb implements TestRule {
 
   @Override
   protected FailureStrategy getFailureStrategy() {
-  	if (!inRuleContext) {
-  		String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
-			throw new IllegalStateException(message);
-  	}
-  	return super.getFailureStrategy();
+    if (!inRuleContext) {
+      String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
+      throw new IllegalStateException(message);
+    }
+    return super.getFailureStrategy();
   }
 
   // TODO(user): Make this override TestRule when 4.9 is released.
@@ -102,7 +101,9 @@ public class Expect extends TestVerb implements TestRule {
             message.append("  ").append((count++) + 1).append(". ")
                    .append(failure.message()).append("\n");
           }
-          throw new ThrowableAssertionError(message.toString(), earliestCause);
+          AssertionError error = new AssertionError(message.toString());
+          error.initCause(earliestCause);
+          throw error;
         }
       }
     };

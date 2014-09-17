@@ -18,7 +18,7 @@ package com.google.common.truth;
 import com.google.common.collect.Range;
 
 /**
- * Propositions for Long subjects
+ * Propositions for {@code long} subjects.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
@@ -77,6 +77,10 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
     isEqualTo((long) other);
   }
 
+  /**
+   * @deprecated Use a {@code for each} style loop over your {@code Iterable<Integer>} instead.
+   */
+  @Deprecated
   public static final SubjectFactory<LongSubject, Long> LONG =
       new SubjectFactory<LongSubject, Long>() {
         @Override public LongSubject getSubject(FailureStrategy fs, Long target) {

@@ -15,10 +15,13 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.collect.Maps;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Propositions for {@link Map} subjects.
@@ -29,12 +32,19 @@ import java.util.Map;
 public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K, V>>
     extends Subject<S, M> {
 
-  public MapSubject(FailureStrategy failureStrategy, M map) {
+  private MapSubject(FailureStrategy failureStrategy, M map) {
     super(failureStrategy, map);
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  static <K, V, M extends Map<K, V>>
+      MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> create(
+          FailureStrategy failureStrategy, Map<K, V> map) {
+    return new MapSubject(failureStrategy, map);
+  }
+
   /**
-   * Attests that the map contains no entries, or fails.
+   * Fails if the map is not empty.
    */
   public void isEmpty() {
     if (!getSubject().isEmpty()) {
@@ -43,7 +53,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   /**
-   * Attests that the map contains one or more entries, or fails.
+   * Fails if the map is empty.
    */
   public void isNotEmpty() {
     if (getSubject().isEmpty()) {
@@ -52,7 +62,18 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   /**
-   * Attests that the map contains the given key.
+   * Fails if the map does not have the given size.
+   */
+  public final void hasSize(int expectedSize) {
+    checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
+    int actualSize = getSubject().size();
+    if (actualSize != expectedSize) {
+      failWithBadResults("has a size of", expectedSize, "is", actualSize);
+    }
+  }
+
+  /**
+   * Fails if the map does not contain the given key.
    */
   public void containsKey(Object key) {
     if (!getSubject().containsKey(key)) {
@@ -61,7 +82,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   /**
-   * Attests that the map does not contain the given key.
+   * Fails if the map contains the given key.
    */
   public void doesNotContainKey(Object key) {
     if (getSubject().containsKey(key)) {
@@ -70,27 +91,29 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   /**
-   * Attests that the map contains the given entry.
+   * Fails if the map does not contain the given entry.
    */
   public void containsEntry(Object key, Object value) {
-    if (!getSubject().entrySet().contains(Maps.immutableEntry(key, value))) {
-      fail("contains entry", key, value);
+    Entry<Object, Object> entry = Maps.immutableEntry(key, value);
+    if (!getSubject().entrySet().contains(entry)) {
+      fail("contains entry", entry);
     }
   }
 
   /**
-   * Attests that the map does not contain the given entry.
+   * Fails if the map contains the given entry.
    */
   public void doesNotContainEntry(Object key, Object value) {
-    if (getSubject().entrySet().contains(Maps.immutableEntry(key, value))) {
-      fail("does not contain entry", key, value);
+    Entry<Object, Object> entry = Maps.immutableEntry(key, value);
+    if (getSubject().entrySet().contains(entry)) {
+      fail("does not contain entry", entry);
     }
   }
 
   // TODO(user): Get rid of everything below this line.
 
   /**
-   * Attests that the map contains the given key or fails.
+   * Fails if the map does not contain the given key.
    *
    * @deprecated Use {@link #containsKey(Object)} instead.
    */
@@ -112,7 +135,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   }
 
   /**
-   * Attests that the map does not contain the given key or fails.
+   * Fails if the map contains the given key.
    *
    * @deprecated Use {@link #doesNotContainKey(Object)} instead.
    */
@@ -131,18 +154,11 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   @Deprecated
   public interface WithValue<V> {
     /**
-     * Attests that the map contains the given value for the given key.
+     * Fails if the map does not contain the given value.
      *
      * @deprecated Use {@link MapSubject#containsEntry(Object, Object)} instead.
      */
     @Deprecated
     void withValue(V value);
   }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  public static <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> create(
-      FailureStrategy failureStrategy, Map<K, V> map) {
-    return new MapSubject(failureStrategy, map);
-  }
-
 }

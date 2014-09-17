@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class PrimitiveBooleanArraySubject
     extends AbstractArraySubject<PrimitiveBooleanArraySubject, boolean[]> {
-  public PrimitiveBooleanArraySubject(FailureStrategy failureStrategy, boolean[] o) {
+  PrimitiveBooleanArraySubject(FailureStrategy failureStrategy, boolean[] o) {
     super(failureStrategy, o);
   }
 
@@ -73,5 +73,4 @@ public class PrimitiveBooleanArraySubject
   public ListSubject<?, Boolean, List<Boolean>> asList() {
     return ListSubject.create(failureStrategy, listRepresentation());
   }
-
 }

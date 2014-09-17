@@ -16,22 +16,28 @@
 package com.google.common.truth;
 
 /**
- * Propositions for boolean subjects
+ * Propositions for boolean subjects.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
 
-  public BooleanSubject(FailureStrategy failureStrategy, Boolean subject) {
+  BooleanSubject(FailureStrategy failureStrategy, Boolean subject) {
     super(failureStrategy, subject);
   }
 
+  /**
+   * Fails if the subject is false.
+   */
   public void isTrue() {
     if (getSubject() == null || !getSubject()) {
       failWithRawMessage("%s was expected to be true, but was false", booleanSubject());
     }
   }
 
+  /**
+   * Fails if the subject is true.
+   */
   public void isFalse() {
     if (getSubject() == null || getSubject()) {
       failWithRawMessage("%s was expected to be false, but was true", booleanSubject());

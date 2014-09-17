@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class PrimitiveCharArraySubject
     extends AbstractArraySubject<PrimitiveCharArraySubject, char[]> {
-  public PrimitiveCharArraySubject(FailureStrategy failureStrategy, char[] o) {
+  PrimitiveCharArraySubject(FailureStrategy failureStrategy, char[] o) {
     super(failureStrategy, o);
   }
 
@@ -73,5 +73,4 @@ public class PrimitiveCharArraySubject
   public ListSubject<?, Character, List<Character>> asList() {
     return ListSubject.create(failureStrategy, listRepresentation());
   }
-
 }

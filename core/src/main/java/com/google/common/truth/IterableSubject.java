@@ -18,38 +18,44 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
+import static java.util.Arrays.asList;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
 /**
- * @author Kevin Bourrillion
+ * Propositions for {@link Iterable} subjects.
+ *
+ * @author Kurt Alfred Kluever
  */
 public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>>
     extends Subject<S, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> create(
-      FailureStrategy failureStrategy, Iterable<T> list) {
+  static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
+      create(FailureStrategy failureStrategy, Iterable<T> list) {
     return new IterableSubject(failureStrategy, list);
   }
 
-  // TODO: Arguably this should even be package private
-  protected IterableSubject(FailureStrategy failureStrategy, C list) {
+  IterableSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }
 
   /**
-   * Attests that the subject holds no more objects, or fails.
+   * Fails if the subject is not empty.
    */
   public void isEmpty() {
     if (!Iterables.isEmpty(getSubject())) {
@@ -58,16 +64,20 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Attests that the subject holds one or more objects, or fails
+   * Fails if the subject is empty.
    */
   public void isNotEmpty() {
     if (Iterables.isEmpty(getSubject())) {
+      // TODO(user): "Not true that <[]> is not empty" doesn't really need the <[]>,
+      // since it's empty. But would the bulkier "the subject" really be better?
+      // At best, we could *replace* <[]> with a given label (rather than supplementing it).
+      // Perhaps the right failure message is just "<[]> should not have been empty"
       fail("is not empty");
     }
   }
 
   /**
-   * Asserts that an Iterable has a specific size.
+   * Fails if the subject does not have the given size.
    */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
@@ -84,6 +94,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * unexpected results.  Consider using {@link #isEqualTo(Object)} in such cases, or using
    * collections and iterables that provide strong order guarantees.
    */
+  // TODO(user): @deprecated Use {@code containsExactlyElementsIn(Iterable).inOrder()} instead.
   public void iteratesAs(Iterable<?> expectedItems) {
     Iterator<T> actualItems = getSubject().iterator();
     for (Object expected : expectedItems) {
@@ -104,7 +115,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * @deprecated use {@link #iteratesAs(Object...)}
+   * @deprecated Use {@code containsExactly(Object, Object...).inOrder()} instead.
    */
   @Deprecated
   public void iteratesOverSequence(Object... expectedItems) {
@@ -117,6 +128,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * a {@link Set}{@code <?>}), this method is not suitable for asserting that order.
    * Consider using {@link #isEqualTo(Object)}
    */
+  // TODO(user): @deprecated Use {@code containsExactly(Object, Object...).inOrder()} instead.
   public void iteratesAs(Object... expectedItems) {
     iteratesAs(Arrays.asList(expectedItems));
   }
@@ -127,7 +139,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public void contains(@Nullable Object element) {
     if (!Iterables.contains(getSubject(), element)) {
-      fail("contains", element);
+      failWithRawMessage("%s should have contained <%s>", getDisplaySubject(), element);
     }
   }
 
@@ -137,7 +149,22 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public void doesNotContain(@Nullable Object element) {
     if (Iterables.contains(getSubject(), element)) {
-      fail("does not contain", element);
+      failWithRawMessage("%s should not have contained <%s>", getDisplaySubject(), element);
+    }
+  }
+
+  /**
+   * Attests that the subject does not contain duplicate elements.
+   */
+  public void containsNoDuplicates() {
+    List<Entry<T>> duplicates = Lists.newArrayList();
+    for (Multiset.Entry<T> entry : LinkedHashMultiset.create(getSubject()).entrySet()) {
+      if (entry.getCount() > 1) {
+        duplicates.add(entry);
+      }
+    }
+    if (!duplicates.isEmpty()) {
+      failWithRawMessage("%s has the following duplicates: <%s>", getDisplaySubject(), duplicates);
     }
   }
 
@@ -199,7 +226,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     if (!toRemove.isEmpty()) {
       failWithBadResults(failVerb, expected, "is missing", countDuplicates(toRemove));
     }
-    return new InOrder("contains all elements in order", expected);
+    return new AllOfInOrder("contains all elements in order", expected);
   }
 
   /**
@@ -211,9 +238,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
+  // TODO(user): @deprecated Use {@link #containsExactly(Object, Object...} instead.
   public Ordered containsOnlyElements(
       @Nullable Object first, @Nullable Object second, Object... rest) {
-    return containsExactly("contains only", accumulate(first, second, rest));
+    return containsExactlyElementsIn(accumulate(first, second, rest));
   }
 
   /**
@@ -225,8 +253,35 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
+  // TODO(user): @deprecated Use {@link #containsExactlyElementsIn(Iterable)} instead.
   public Ordered containsOnlyElementsIn(Iterable<?> expected) {
-    return containsExactly("contains only the elements in", expected);
+    return containsExactlyElementsIn(expected);
+  }
+
+  /**
+   * Attests that a subject contains all of the provided objects and
+   * only these objects or fails, potentially permitting duplicates
+   * in both the subject and the parameters (if the subject even can
+   * have duplicates).
+   *
+   * <p>Callers may optionally chain an {@code inOrder()} call if its expected
+   * contents must be contained in the given order.
+   */
+  public Ordered containsExactly(@Nullable Object... varargs) {
+    return containsExactly("contains exactly", asList(varargs));
+  }
+
+  /**
+   * Attests that a subject contains all of the provided objects and
+   * only these objects or fails, potentially permitting duplicates
+   * in both the subject and the parameters (if the subject even can
+   * have duplicates).
+   *
+   * <p>Callers may optionally chain an {@code inOrder()} call if its expected
+   * contents must be contained in the given order.
+   */
+  public Ordered containsExactlyElementsIn(Iterable<?> expected) {
+    return containsExactly("contains exactly", expected);
   }
 
   private Ordered containsExactly(String failVerb, Iterable<?> required) {
@@ -244,7 +299,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     if (!extra.isEmpty()) {
       failWithBadResults(failVerb, required, "has unexpected items", countDuplicates(extra));
     }
-    return new InOrder("contains only these elements in order", required);
+
+    // TODO(user): Possible enhancement: Include "[1 copy]" if the element does appear in
+    // the subject but not enough times. Similarly for unexpected extra items.
+    return new ExactlyInOrder("contains only these elements in order", required);
   }
 
   /**
@@ -275,11 +333,41 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     }
   }
 
-  private class InOrder implements Ordered {
+  // Checks to ensure that each element in required appears one after the other in
+  // the subject. The subject can have extra unnecessary items between expected items, as well
+  // as after the expected items
+  private class AllOfInOrder implements Ordered {
     private final String check;
     private final Iterable<?> required;
 
-    InOrder(String check, Iterable<?> required) {
+    AllOfInOrder(String check, Iterable<?> required) {
+      this.check = check;
+      this.required = required;
+    }
+
+    @Override public void inOrder() {
+      Iterator<T> actualItems = getSubject().iterator();
+
+      searching:
+      for (Object expected : required) {
+        while (actualItems.hasNext()) {
+          Object actual = actualItems.next();
+          if (actual == expected || actual != null && actual.equals(expected)) {
+            // We found our item inside actual, continue to look for the next
+            continue searching;
+          }
+        }
+        // Here, we've reached the end of actualItems without finding expected
+        fail(check, required);
+      }
+    }
+  }
+
+  private class ExactlyInOrder implements Ordered {
+    private final String check;
+    private final Iterable<?> required;
+
+    ExactlyInOrder(String check, Iterable<?> required) {
       this.check = check;
       this.required = required;
     }

@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class PrimitiveFloatArraySubject
     extends AbstractArraySubject<PrimitiveFloatArraySubject, float[]> {
-  public PrimitiveFloatArraySubject(FailureStrategy failureStrategy, float[] o) {
+  PrimitiveFloatArraySubject(FailureStrategy failureStrategy, float[] o) {
     super(failureStrategy, o);
   }
 
@@ -69,8 +69,8 @@ public class PrimitiveFloatArraySubject
     try {
       float[] expectedArray = (float[]) expected;
       if (expectedArray.length != actual.length) {
-        failWithRawMessage("Arrays are of different lengths."
-        		+ "expected: %s, actual %s", Arrays.asList(expectedArray), Arrays.asList(actual));
+        failWithRawMessage("Arrays are of different lengths. expected: %s, actual %s",
+            Arrays.asList(expectedArray), Arrays.asList(actual));
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expectedArray.length; i++) {

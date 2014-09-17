@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class PrimitiveDoubleArraySubject
     extends AbstractArraySubject<PrimitiveDoubleArraySubject, double[]> {
-  public PrimitiveDoubleArraySubject(FailureStrategy failureStrategy, double[] o) {
+  PrimitiveDoubleArraySubject(FailureStrategy failureStrategy, double[] o) {
     super(failureStrategy, o);
   }
 
@@ -53,7 +53,7 @@ public class PrimitiveDoubleArraySubject
   @Deprecated
   @Override public void isEqualTo(Object expected) {
     throw new UnsupportedOperationException("Comparing raw equality of doubles is unsafe, "
-    		+ "use isEqualTo(double[] array, double tolerance) instead.");
+        + "use isEqualTo(double[] array, double tolerance) instead.");
   }
 
   /**
@@ -69,8 +69,8 @@ public class PrimitiveDoubleArraySubject
     try {
       double[] expectedArray = (double[]) expected;
       if (expectedArray.length != actual.length) {
-        failWithRawMessage("Arrays are of different lengths."
-        		+ "expected: %s, actual %s", Arrays.asList(expectedArray), Arrays.asList(actual));
+        failWithRawMessage("Arrays are of different lengths. expected: %s, actual %s",
+            Arrays.asList(expectedArray), Arrays.asList(actual));
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expectedArray.length; i++) {
@@ -135,5 +135,4 @@ public class PrimitiveDoubleArraySubject
   private ListSubject<?, Double, List<Double>> asList() {
     return ListSubject.create(failureStrategy, listRepresentation());
   }
-
 }

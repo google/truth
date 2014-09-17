@@ -21,6 +21,11 @@ import java.util.Collection;
 
 import javax.annotation.CheckReturnValue;
 
+/**
+ * Propositions for {@link Collection} subjects.
+ *
+ * @author Christian Gruber
+ */
 public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>>
     extends IterableSubject<S, T, C> {
 
@@ -30,8 +35,7 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
     return new CollectionSubject(failureStrategy, collection);
   }
 
-  // TODO: Arguably this should even be package private
-  protected CollectionSubject(FailureStrategy failureStrategy, C collection) {
+  CollectionSubject(FailureStrategy failureStrategy, C collection) {
     super(failureStrategy, collection);
   }
 

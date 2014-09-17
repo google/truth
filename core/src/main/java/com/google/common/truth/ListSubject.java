@@ -18,21 +18,26 @@ package com.google.common.truth;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Propositions for {@link List} subjects.
+ *
+ * @author Christian Gruber
+ */
 public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
     extends CollectionSubject<S, T, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  public static <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> create(
+  static <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> create(
       FailureStrategy failureStrategy, List<T> list) {
     return new ListSubject(failureStrategy, list);
   }
 
-  protected ListSubject(FailureStrategy failureStrategy, C list) {
+  ListSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }
 
   /**
-   * Attests that a List contains the specified sequence.
+   * Fails if the list does not contain the specified sequence.
    */
   public void containsSequence(List<?> sequence) {
     if (sequence.isEmpty()) {
@@ -57,7 +62,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   }
 
   /**
-   * Attests that a List is strictly ordered according to the natural ordering of its elements.
+   * Fails if the list is not strictly ordered according to the natural ordering of its elements.
    * Null elements are not permitted.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
@@ -75,7 +80,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   }
 
   /**
-   * Attests that a List is partially ordered according to the natural ordering of its elements.
+   * Fails if the list is not partially ordered according to the natural ordering of its elements.
    * Null elements are not permitted.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
@@ -93,7 +98,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   }
 
   /**
-   * Attests that a List is strictly ordered according to the given comparator.
+   * Fails if the list is not strictly ordered according to the given comparator.
    * Null elements are not permitted.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
@@ -110,7 +115,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   }
 
   /**
-   * Attests that a List is partially ordered according to the given comparator.
+   * Fails if the list is not partially ordered according to the given comparator.
    * Null elements are not permitted.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable.

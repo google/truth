@@ -28,7 +28,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
 
   private final String typeName;
 
-  public ObjectArraySubject(FailureStrategy failureStrategy, T[] o) {
+  ObjectArraySubject(FailureStrategy failureStrategy, T[] o) {
     super(failureStrategy, o);
     typeName = typeNameFromInstance(o);
   }
