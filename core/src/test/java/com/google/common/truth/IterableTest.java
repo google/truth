@@ -30,6 +30,7 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -466,6 +467,38 @@ public class IterableTest {
     }
   }
 
+  @Test public void iterableHasExactlyInOrderWithOneShotIterable() {
+    final Iterator<Object> iterator = iterable(1, null, 3).iterator();
+    Iterable<Object> iterable = new Iterable<Object>() {
+      @Override public Iterator<Object> iterator() {
+        return iterator;
+      }
+    };
+
+    assertThat(iterable).containsExactly(1, null, 3).inOrder();
+  }
+
+  @Test public void iterableHasExactlyInOrderWithOneShotIterableWrongOrder() {
+    final Iterator<Object> iterator = iterable(1, null, 3).iterator();
+    Iterable<Object> iterable = new Iterable<Object>() {
+      @Override public Iterator<Object> iterator() {
+        return iterator;
+      }
+
+      @Override public String toString() {
+        return "BadIterable";
+      }
+    };
+
+    try {
+      assertThat(iterable).containsExactly(1, 3, null).inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <BadIterable> contains only these elements in order <[1, 3, null]>");
+    }
+  }
+
   @Test public void iterableIsEmpty() {
     assertThat(iterable()).isEmpty();
   }
@@ -525,39 +558,6 @@ public class IterableTest {
     validateHackedFailure(o);
   }
 
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void iterableHasExactlyInOrderHackedWithTooManyItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(asList(1, null, 3));
-    Ordered o = assertThat((Iterable<Integer>) list).containsExactly(1, null, 3);
-    list.add(6);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void iterableHasExactlyInOrderHackedWithTooFewItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(asList(1, null, 3));
-    Ordered o = assertThat((Iterable<Integer>) list).containsExactly(1, null, 3);
-    list.remove(1);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void iterableHasExactlyInOrderHackedWithNoItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(asList(1, null, 3));
-    Ordered o = assertThat((Iterable<Integer>) list).containsExactly(1, null, 3);
-    list.clear();
-    validateHackedFailure(o);
-  }
-
   /** Factored out failure condition for "hacked" failures of inOrder() */
   private void validateHackedFailure(Ordered ordered) {
     try {
@@ -573,7 +573,7 @@ public class IterableTest {
    * Helper that returns a general Iterable rather than a List.
    * This ensures that we test IterableSubject (rather than ListSubject).
    */
-  private static Iterable<?> iterable(Object... items) {
+  private static Iterable<Object> iterable(Object... items) {
     return Arrays.asList(items);
   }
 

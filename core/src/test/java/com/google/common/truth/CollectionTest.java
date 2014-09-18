@@ -363,39 +363,6 @@ public class CollectionTest {
     validateHackedFailure(o);
   }
 
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasExactlyInOrderHackedWithTooManyItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = assertThat((Collection<Integer>)list).has().exactly(1, null, 3);
-    list.add(6);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasExactlyInOrderHackedWithTooFewItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = assertThat((Collection<Integer>)list).has().exactly(1, null, 3);
-    list.remove(1);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasExactlyInOrderHackedWithNoItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = assertThat((Collection<Integer>)list).has().exactly(1, null, 3);
-    list.clear();
-    validateHackedFailure(o);
-  }
-
   /** Factored out failure condition for "hacked" failures of inOrder() */
   private void validateHackedFailure(Ordered ordered) {
     try {
