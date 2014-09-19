@@ -50,6 +50,16 @@ public class IterableTest {
     assertThat(ImmutableList.of()).hasSize(0);
   }
 
+  @Test public void hasSizeFails() {
+    try {
+      assertThat(ImmutableList.of(1, 2, 3)).hasSize(4);
+      fail();
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <[1, 2, 3]> has a size of <4>. It is <3>");
+    }
+  }
+
   @Test public void hasSizeNegative() {
     try {
       assertThat(ImmutableList.of(1, 2, 3)).hasSize(-1);
