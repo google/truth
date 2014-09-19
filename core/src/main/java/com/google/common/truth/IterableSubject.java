@@ -239,8 +239,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    *
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
+   *
+   * @deprecated Use {@link #containsExactly(Object...)} instead.
    */
-  // TODO(user): @deprecated Use {@link #containsExactly(Object, Object...} instead.
+  @Deprecated
   public Ordered containsOnlyElements(
       @Nullable Object first, @Nullable Object second, Object... rest) {
     return containsExactlyElementsIn(accumulate(first, second, rest));
@@ -254,8 +256,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    *
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
+   *
+   * @deprecated Use {@link #containsExactlyElementsIn(Iterable)} instead.
    */
-  // TODO(user): @deprecated Use {@link #containsExactlyElementsIn(Iterable)} instead.
+  @Deprecated
   public Ordered containsOnlyElementsIn(Iterable<?> expected) {
     return containsExactlyElementsIn(expected);
   }
