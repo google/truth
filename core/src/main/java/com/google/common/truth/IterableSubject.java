@@ -220,15 +220,28 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   private Ordered containsAll(String failVerb, Iterable<?> expected) {
-    Collection<?> toRemove = Lists.newArrayList(expected);
+    // would really like to use ArrayDeque here, but it doesn't allow nulls
+    List<?> toRemove = Lists.newArrayList(expected);
+
+    boolean inOrder = true;
+
     // remove each item in the subject, as many times as it occurs in the subject.
     for (Object item : getSubject()) {
-      toRemove.remove(item);
+      int index = toRemove.indexOf(item);
+      if (index != -1) {
+        toRemove.remove(index);
+
+        // in order as long as the next expected item in the subject is the first item remaining
+        // in toRemove
+        inOrder &= (index == 0);
+      }
     }
+
     if (!toRemove.isEmpty()) {
       failWithBadResults(failVerb, expected, "is missing", countDuplicates(toRemove));
     }
-    return new AllOfInOrder("contains all elements in order", expected);
+
+    return inOrder ? IN_ORDER : new NotInOrder("contains all elements in order", expected);
   }
 
   /**
@@ -381,36 +394,6 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     }
     if (!present.isEmpty()) {
       failWithBadResults(failVerb, excluded, "contains", present);
-    }
-  }
-
-  // Checks to ensure that each element in required appears one after the other in
-  // the subject. The subject can have extra unnecessary items between expected items, as well
-  // as after the expected items
-  private class AllOfInOrder implements Ordered {
-    private final String check;
-    private final Iterable<?> required;
-
-    AllOfInOrder(String check, Iterable<?> required) {
-      this.check = check;
-      this.required = required;
-    }
-
-    @Override public void inOrder() {
-      Iterator<T> actualItems = getSubject().iterator();
-
-      searching:
-      for (Object expected : required) {
-        while (actualItems.hasNext()) {
-          Object actual = actualItems.next();
-          if (actual == expected || actual != null && actual.equals(expected)) {
-            // We found our item inside actual, continue to look for the next
-            continue searching;
-          }
-        }
-        // Here, we've reached the end of actualItems without finding expected
-        fail(check, required);
-      }
     }
   }
 

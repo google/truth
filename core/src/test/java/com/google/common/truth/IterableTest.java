@@ -27,9 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -317,6 +315,38 @@ public class IterableTest {
     }
   }
 
+  @Test public void iterableHasAllOfInOrderWithOneShotIterable() {
+    final Iterator<Object> iterator = iterable(2, 1, null, 4, "a", 3, "b").iterator();
+    Iterable<Object> iterable = new Iterable<Object>() {
+      @Override public Iterator<Object> iterator() {
+        return iterator;
+      }
+    };
+
+    assertThat(iterable).containsAllOf(1, null, 3).inOrder();
+  }
+
+  @Test public void iterableHasAllOfInOrderWithOneShotIterableWrongOrder() {
+    final Iterator<Object> iterator = iterable(2, 1, null, 4, "a", 3, "b").iterator();
+    Iterable<Object> iterable = new Iterable<Object>() {
+      @Override public Iterator<Object> iterator() {
+        return iterator;
+      }
+
+      @Override public String toString() {
+        return "BadIterable";
+      }
+    };
+
+    try {
+      assertThat(iterable).containsAllOf(1, 3, null).inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <BadIterable> contains all elements in order <[1, 3, null]>");
+    }
+  }
+
   @Test public void iterableHasNoneOf() {
     assertThat(iterable(1, 2, 3)).containsNoneOf(4, 5, 6);
   }
@@ -532,50 +562,6 @@ public class IterableTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).isEqualTo("Not true that <[]> is not empty");
-    }
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void iterableHasAllOfInOrderHackedWithTooManyItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(asList(1, null, 3));
-    Ordered o = assertThat((Iterable<Integer>) list).containsAllOf(1, null, 3);
-    Collections.swap(list, 1, 2);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void iterableHasAllOfInOrderHackedWithTooFewItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(asList(1, null, 3));
-    Ordered o = assertThat((Iterable<Integer>) list).containsAllOf(1, null, 3);
-    list.remove(1);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void iterableHasAllOfInOrderHackedWithNoItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(asList(1, null, 3));
-    Ordered o = assertThat((Iterable<Integer>) list).containsAllOf(1, null, 3);
-    list.clear();
-    validateHackedFailure(o);
-  }
-
-  /** Factored out failure condition for "hacked" failures of inOrder() */
-  private void validateHackedFailure(Ordered ordered) {
-    try {
-      ordered.inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("in order");
     }
   }
 
