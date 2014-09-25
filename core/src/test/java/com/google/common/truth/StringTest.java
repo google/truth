@@ -61,6 +61,34 @@ public class StringTest {
     }
   }
 
+  @Test public void stringIsEmpty() {
+    assertThat("").isEmpty();
+  }
+
+  @Test public void stringIsEmptyFail() {
+    try {
+      assertThat("abc").isEmpty();
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <\"abc\"> is empty");
+    }
+  }
+
+  @Test public void stringIsNotEmpty() {
+    assertThat("abc").isNotEmpty();
+  }
+
+  @Test public void stringIsNotEmptyFail() {
+    try {
+      assertThat("").isNotEmpty();
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <\"\"> is not empty");
+    }
+  }
+
   @Test public void stringContains() {
     assertThat("abc").contains("c");
   }

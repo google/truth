@@ -92,6 +92,28 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   }
 
   /**
+   * Fails if the string is not equal to the zero-length "empty string."
+   */
+  public void isEmpty() {
+    if (getSubject() == null) {
+      failWithRawMessage("Not true that null reference is empty");
+    } else if (!getSubject().isEmpty()) {
+      fail("is empty");
+    }
+  }
+
+  /**
+   * Fails if the string is equal to the zero-length "empty string."
+   */
+  public void isNotEmpty() {
+    if (getSubject() == null) {
+      failWithRawMessage("Not true that null reference is not empty");
+    } else if (getSubject().isEmpty()) {
+      fail("is not empty");
+    }
+  }
+
+  /**
    * Fails if the string does not contain the given sequence.
    */
   public void contains(CharSequence string) {
