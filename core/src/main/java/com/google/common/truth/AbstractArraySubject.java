@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.util.List;
 
 /**
@@ -27,6 +29,25 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
 
   AbstractArraySubject(FailureStrategy failureStrategy, T subject) {
     super(failureStrategy, subject);
+  }
+
+  public void isEmpty() {
+    if (!listRepresentation().isEmpty()) {
+      fail("is empty");
+    }
+  }
+
+  public void isNotEmpty() {
+    if (listRepresentation().isEmpty()) {
+      fail("is not empty");
+    }
+  }
+
+  public void hasLength(int length) {
+    checkArgument(length >= 0, "length (%s) must be >= 0");
+    if (listRepresentation().size() != length) {
+      fail("has length", length);
+    }
   }
 
   @Override public S named(String name) {

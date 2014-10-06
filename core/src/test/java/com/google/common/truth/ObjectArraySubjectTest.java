@@ -34,6 +34,8 @@ import java.util.Set;
 @RunWith(JUnit4.class)
 public class ObjectArraySubjectTest {
 
+  private static final Object[] EMPTY = new Object[0];
+
   @Test public void isEqualTo() {
     assertThat(objectArray("A", 5L)).isEqualTo(objectArray("A", 5L));
   }
@@ -45,6 +47,57 @@ public class ObjectArraySubjectTest {
 
   @Test public void asList() {
     assertThat(objectArray("A", 5L)).asList().has().anyOf("A");
+  }
+
+  @Test public void hasLength() {
+    assertThat(EMPTY).hasLength(0);
+    assertThat(objectArray("A", 5L)).hasLength(2);
+  }
+
+  @Test public void hasLengthFail() {
+    try {
+      assertThat(objectArray("A", 5L)).hasLength(1);
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage())
+          .is("Not true that <(Object[]) [A, 5]> has length <1>");
+    }
+  }
+
+  @Test public void hasLengthNegative() {
+    try {
+      assertThat(objectArray(2, 5)).hasLength(-1);
+      throw new Error("Expected to throw.");
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
+  @Test public void isEmpty() {
+    assertThat(EMPTY).isEmpty();
+  }
+
+  @Test public void isEmptyFail() {
+    try {
+      assertThat(objectArray("A", 5L)).isEmpty();
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage())
+          .is("Not true that <(Object[]) [A, 5]> is empty");
+    }
+  }
+
+  @Test public void isNotEmpty() {
+    assertThat(objectArray("A", 5L)).isNotEmpty();
+  }
+
+  @Test public void isNotEmptyFail() {
+    try {
+      assertThat(EMPTY).isNotEmpty();
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage())
+          .is("Not true that <(Object[]) []> is not empty");
+    }
   }
 
   @Test public void isEqualTo_Fail_UnequalOrdering() {
