@@ -15,7 +15,7 @@ if [ "$TRAVIS_REPO_SLUG" == "google/truth" ] && \
   cd gh-pages
   git rm -rf api/latest 
   mkdir -p api/latest
-  jar -C api/latest -xf ${HOME}/target/*-javadoc.jar
+  unzip ${HOME}/core/target/*-SNAPSHOT-javadoc.jar -d api/latest
   git add -f api/latest
   git commit -m "Lastest javadoc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
   git push -fq origin gh-pages > /dev/null
