@@ -1,9 +1,9 @@
 # see https://coderwall.com/p/9b_lfq
 
-if [ "$TRAVIS_REPO_SLUG" == "google/truth" ] && \
-   [ "$TRAVIS_JDK_VERSION" == "oraclejdk7" ] && \
-   [ "$TRAVIS_PULL_REQUEST" == "false" ] && \
-   [ "$TRAVIS_BRANCH" == "master" ]; then
+if [ "$TRAVIS_REPO_SLUG" == "google/truth" -a \
+   "$TRAVIS_JDK_VERSION" == "oraclejdk7" -a \
+   "$TRAVIS_PULL_REQUEST" == "false" -a \
+   "$TRAVIS_BRANCH" == "master" ]; then
   echo -e "Publishing maven snapshot...\n"
 
   cd ${HOME}
