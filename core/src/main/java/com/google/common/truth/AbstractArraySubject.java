@@ -31,18 +31,29 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
     super(failureStrategy, subject);
   }
 
+  /**
+   * Fails if the array is not empty (i.e. {@code array.length != 0}).
+   */
   public void isEmpty() {
     if (!listRepresentation().isEmpty()) {
       fail("is empty");
     }
   }
 
+  /**
+   * Fails if the array is empty (i.e. {@code array.length == 0}).
+   */
   public void isNotEmpty() {
     if (listRepresentation().isEmpty()) {
       fail("is not empty");
     }
   }
 
+  /**
+   * Fails if the array does not have the given length.
+   *
+   * @throws {@link IllegalArgumentException} if {@code length < 0}
+   */
   public void hasLength(int length) {
     checkArgument(length >= 0, "length (%s) must be >= 0");
     if (listRepresentation().size() != length) {
