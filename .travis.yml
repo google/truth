@@ -6,6 +6,12 @@ jdk:
   - openjdk7
 #  - openjdk6
 
+install:
+  - mvn -U -P!standard-with-extra-repos dependency:go-offline test clean --quiet --fail-never -DskipTests=true
+
+script:
+  - mvn -U -P!standard-with-extra-repos verify --fail-at-end -Dsource.skip=true -Dmaven.javadoc.skip=true
+
 env:
   global:
   - secure: Q8O565LFFwytrjS+vRHlzw0sYGjFA4npvaMbyG5w3uoodnHKTh0tMOwiToGzGS0CHRf83LffTlbodVVIWkiyzxcbNwMslkOxLpFtI0Hif2apb/mSQ6vdO/SXTb1MVwQBqBGCF47KBw5XDjvRbXmIh8+4z9yIBO8oWqEbHvBYQl0=
