@@ -61,6 +61,17 @@ public class ComparableSubjectTest {
     }
   }
 
+  @Test public void comparesEqualTo() {
+    assertThat(5).comparesEqualTo(5);
+
+    try {
+      assertThat(4).comparesEqualTo(5);
+      fail("should have thrown");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo("<4> should have been equivalent to <5>");
+    }
+  }
+
   @Test public void isGreaterThan() {
     assertThat(5).isGreaterThan(4);
 

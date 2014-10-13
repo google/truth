@@ -20,7 +20,9 @@ import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
 import static java.util.Arrays.asList;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
@@ -218,15 +220,28 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   private Ordered containsAll(String failVerb, Iterable<?> expected) {
-    Collection<?> toRemove = Lists.newArrayList(expected);
+    // would really like to use ArrayDeque here, but it doesn't allow nulls
+    List<?> toRemove = Lists.newArrayList(expected);
+
+    boolean inOrder = true;
+
     // remove each item in the subject, as many times as it occurs in the subject.
     for (Object item : getSubject()) {
-      toRemove.remove(item);
+      int index = toRemove.indexOf(item);
+      if (index != -1) {
+        toRemove.remove(index);
+
+        // in order as long as the next expected item in the subject is the first item remaining
+        // in toRemove
+        inOrder &= (index == 0);
+      }
     }
+
     if (!toRemove.isEmpty()) {
       failWithBadResults(failVerb, expected, "is missing", countDuplicates(toRemove));
     }
-    return new AllOfInOrder("contains all elements in order", expected);
+
+    return inOrder ? IN_ORDER : new NotInOrder("contains all elements in order", expected);
   }
 
   /**
@@ -237,8 +252,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    *
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
+   *
+   * @deprecated Use {@link #containsExactly(Object...)} instead.
    */
-  // TODO(user): @deprecated Use {@link #containsExactly(Object, Object...} instead.
+  @Deprecated
   public Ordered containsOnlyElements(
       @Nullable Object first, @Nullable Object second, Object... rest) {
     return containsExactlyElementsIn(accumulate(first, second, rest));
@@ -252,8 +269,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    *
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
+   *
+   * @deprecated Use {@link #containsExactlyElementsIn(Iterable)} instead.
    */
-  // TODO(user): @deprecated Use {@link #containsExactlyElementsIn(Iterable)} instead.
+  @Deprecated
   public Ordered containsOnlyElementsIn(Iterable<?> expected) {
     return containsExactlyElementsIn(expected);
   }
@@ -285,24 +304,69 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   private Ordered containsExactly(String failVerb, Iterable<?> required) {
-    Collection<?> toRemove = Lists.newArrayList(required);
-    Collection<Object> extra = new ArrayList<Object>();
-    // remove each item in the subject, as many times as it occurs in the subject.
-    for (Object item : getSubject()) {
-      if (!toRemove.remove(item)) {
-        extra.add(item);
+    Iterator<?> actualIter = getSubject().iterator();
+    Iterator<?> requiredIter = required.iterator();
+
+    // Step through both iterators comparing elements pairwise.
+    while (actualIter.hasNext() && requiredIter.hasNext()) {
+      Object actualElement = actualIter.next();
+      Object requiredElement = requiredIter.next();
+
+      // As soon as we encounter a pair of elements that differ, we know that inOrder()
+      // cannot succeed, so we can check the rest of the elements more normally.
+      // Since any previous pairs of elements we iterated over were equal, they have no
+      // effect on the result now.
+      if (!Objects.equal(actualElement, requiredElement)) {
+        // Missing elements; elements that are not missing will be removed as we iterate.
+        Collection<Object> missing = Lists.newArrayList();
+        missing.add(requiredElement);
+        Iterators.addAll(missing, requiredIter);
+
+        // Extra elements that the subject had but shouldn't have.
+        Collection<Object> extra = Lists.newArrayList();
+
+        // Remove all actual elements from missing, and add any that weren't in missing
+        // to extra.
+        if (!missing.remove(actualElement)) {
+          extra.add(actualElement);
+        }
+        while (actualIter.hasNext()) {
+          Object item = actualIter.next();
+          if (!missing.remove(item)) {
+            extra.add(item);
+          }
+        }
+
+        // Fail if there are either missing or extra elements.
+
+        // TODO(user): Possible enhancement: Include "[1 copy]" if the element does appear in
+        // the subject but not enough times. Similarly for unexpected extra items.
+        if (!missing.isEmpty()) {
+          failWithBadResults(failVerb, required, "is missing", countDuplicates(missing));
+        }
+        if (!extra.isEmpty()) {
+          failWithBadResults(failVerb, required, "has unexpected items", countDuplicates(extra));
+        }
+
+        // Since we know the iterables were not in the same order, inOrder() can just fail.
+        return new NotInOrder("contains only these elements in order", required);
       }
     }
-    if (!toRemove.isEmpty()) {
-      failWithBadResults(failVerb, required, "is missing", countDuplicates(toRemove));
-    }
-    if (!extra.isEmpty()) {
-      failWithBadResults(failVerb, required, "has unexpected items", countDuplicates(extra));
+
+    // Here,  we must have reached the end of one of the iterators without finding any
+    // pairs of elements that differ. If the actual iterator still has elements, they're
+    // extras. If the required iterator has elements, they're missing elements.
+    if (actualIter.hasNext()) {
+      failWithBadResults(failVerb, required, "has unexpected items",
+          countDuplicates(Lists.newArrayList(actualIter)));
+    } else if (requiredIter.hasNext()) {
+      failWithBadResults(failVerb, required, "is missing",
+          countDuplicates(Lists.newArrayList(requiredIter)));
     }
 
-    // TODO(user): Possible enhancement: Include "[1 copy]" if the element does appear in
-    // the subject but not enough times. Similarly for unexpected extra items.
-    return new ExactlyInOrder("contains only these elements in order", required);
+    // If neither iterator has elements, we reached the end and the elements were in
+    // order, so inOrder() can just succeed.
+    return IN_ORDER;
   }
 
   /**
@@ -333,62 +397,27 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     }
   }
 
-  // Checks to ensure that each element in required appears one after the other in
-  // the subject. The subject can have extra unnecessary items between expected items, as well
-  // as after the expected items
-  private class AllOfInOrder implements Ordered {
+  /**
+   * Ordered implementation that always fails.
+   */
+  private class NotInOrder implements Ordered {
     private final String check;
     private final Iterable<?> required;
 
-    AllOfInOrder(String check, Iterable<?> required) {
+    NotInOrder(String check, Iterable<?> required) {
       this.check = check;
       this.required = required;
     }
 
     @Override public void inOrder() {
-      Iterator<T> actualItems = getSubject().iterator();
-
-      searching:
-      for (Object expected : required) {
-        while (actualItems.hasNext()) {
-          Object actual = actualItems.next();
-          if (actual == expected || actual != null && actual.equals(expected)) {
-            // We found our item inside actual, continue to look for the next
-            continue searching;
-          }
-        }
-        // Here, we've reached the end of actualItems without finding expected
-        fail(check, required);
-      }
+      fail(check, required);
     }
   }
 
-  private class ExactlyInOrder implements Ordered {
-    private final String check;
-    private final Iterable<?> required;
-
-    ExactlyInOrder(String check, Iterable<?> required) {
-      this.check = check;
-      this.required = required;
-    }
-
-    @Override public void inOrder() {
-      Iterator<T> actualItems = getSubject().iterator();
-      for (Object expected : required) {
-        if (!actualItems.hasNext()) {
-          fail(check, required);
-        } else {
-          Object actual = actualItems.next();
-          if (actual == expected || actual != null && actual.equals(expected)) {
-            continue;
-          } else {
-            fail(check, required);
-          }
-        }
-      }
-      if (actualItems.hasNext()) {
-        fail(check, required);
-      }
-    }
-  }
+  /**
+   * Ordered implementation that does nothing because it's already known to be true.
+   */
+  private static final Ordered IN_ORDER = new Ordered() {
+    @Override public void inOrder() {}
+  };
 }

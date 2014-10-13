@@ -48,6 +48,16 @@ public abstract class ComparableSubject<S extends Subject<S, T>, T extends Compa
   }
 
   /**
+   * Fails if the subject is not equivalent to the given value according to
+   * {@link Comparable#compareTo}.
+   */
+  public final void comparesEqualTo(T other) {
+    if (getSubject().compareTo(other) != 0) {
+      failWithRawMessage("%s should have been equivalent to <%s>", getDisplaySubject(), other);
+    }
+  }
+
+  /**
    * Fails if the subject is not greater than the given value.
    */
   public final void isGreaterThan(T other) {

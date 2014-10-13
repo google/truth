@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.annotations.GwtIncompatible;
 
 import java.util.regex.Pattern;
@@ -74,6 +76,40 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   @Override public void isNull() {
     if (getSubject() != null) {
       failWithRawMessage("Not true that %s is null", getDisplaySubject());
+    }
+  }
+
+  /**
+   * Fails if the string does not have the given length.
+   */
+  public void hasLength(int expectedLength) {
+    checkArgument(expectedLength >= 0, "expectedLength(%s) must be >= 0", expectedLength);
+    int actualLength = getSubject().length();
+    if (actualLength != expectedLength) {
+      failWithRawMessage("Not true that %s has a length of %s. It is %s.",
+          getDisplaySubject(), expectedLength, actualLength);
+    }
+  }
+
+  /**
+   * Fails if the string is not equal to the zero-length "empty string."
+   */
+  public void isEmpty() {
+    if (getSubject() == null) {
+      failWithRawMessage("Not true that null reference is empty");
+    } else if (!getSubject().isEmpty()) {
+      fail("is empty");
+    }
+  }
+
+  /**
+   * Fails if the string is equal to the zero-length "empty string."
+   */
+  public void isNotEmpty() {
+    if (getSubject() == null) {
+      failWithRawMessage("Not true that null reference is not empty");
+    } else if (getSubject().isEmpty()) {
+      fail("is not empty");
     }
   }
 

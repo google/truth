@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
+import static org.junit.Assert.fail;
 
 import org.junit.ComparisonFailure;
 import org.junit.Test;
@@ -33,6 +34,60 @@ import java.util.regex.Pattern;
  */
 @RunWith(JUnit4.class)
 public class StringTest {
+
+  @Test public void hasLength() {
+    assertThat("kurt").hasLength(4);
+  }
+
+  @Test public void hasLengthZero() {
+    assertThat("").hasLength(0);
+  }
+
+  @Test public void hasLengthFails() {
+    try {
+      assertThat("kurt").hasLength(5);
+      fail();
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <\"kurt\"> has a length of 5. It is 4.");
+    }
+  }
+
+  @Test public void hasLengthNegative() {
+    try {
+      assertThat("kurt").hasLength(-1);
+      fail();
+    } catch (IllegalArgumentException expected) {
+    }
+  }
+
+  @Test public void stringIsEmpty() {
+    assertThat("").isEmpty();
+  }
+
+  @Test public void stringIsEmptyFail() {
+    try {
+      assertThat("abc").isEmpty();
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <\"abc\"> is empty");
+    }
+  }
+
+  @Test public void stringIsNotEmpty() {
+    assertThat("abc").isNotEmpty();
+  }
+
+  @Test public void stringIsNotEmptyFail() {
+    try {
+      assertThat("").isNotEmpty();
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <\"\"> is not empty");
+    }
+  }
 
   @Test public void stringContains() {
     assertThat("abc").contains("c");

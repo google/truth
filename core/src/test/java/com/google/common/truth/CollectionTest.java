@@ -22,10 +22,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Tests for Collection Subjects.
@@ -327,83 +325,6 @@ public class CollectionTest {
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
       assertThat(e.getMessage()).contains("is empty");
-    }
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasAllOfInOrderHackedWithTooManyItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = assertThat((Collection<Integer>)list).has().allOf(1, null, 3);
-    Collections.swap(list, 1, 2);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasAllOfInOrderHackedWithTooFewItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = assertThat((Collection<Integer>)list).has().allOf(1, null, 3);
-    list.remove(1);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasAllOfInOrderHackedWithNoItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = assertThat((Collection<Integer>)list).has().allOf(1, null, 3);
-    list.clear();
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasExactlyInOrderHackedWithTooManyItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = assertThat((Collection<Integer>)list).has().exactly(1, null, 3);
-    list.add(6);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasExactlyInOrderHackedWithTooFewItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = assertThat((Collection<Integer>)list).has().exactly(1, null, 3);
-    list.remove(1);
-    validateHackedFailure(o);
-  }
-
-  /**
-   * This tests the rather unwieldly case where someone alters the
-   * collection out from under the Subject before inOrder() is called.
-   */
-  @Test public void collectionHasExactlyInOrderHackedWithNoItemsFailure() {
-    ArrayList<Integer> list = new ArrayList<Integer>(collection(1, null, 3));
-    Ordered o = assertThat((Collection<Integer>)list).has().exactly(1, null, 3);
-    list.clear();
-    validateHackedFailure(o);
-  }
-
-  /** Factored out failure condition for "hacked" failures of inOrder() */
-  private void validateHackedFailure(Ordered ordered) {
-    try {
-      ordered.inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("in order");
     }
   }
 
