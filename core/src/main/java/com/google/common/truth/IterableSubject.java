@@ -175,7 +175,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * or fails.
    */
   public void containsAnyOf(@Nullable Object first, @Nullable Object second, Object... rest) {
-    contains("contains any of", accumulate(first, second, rest));
+    containsAny("contains any of", accumulate(first, second, rest));
   }
 
   /**
@@ -183,12 +183,24 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * in the provided collection or fails.
    */
   public void containsAnyIn(Iterable<?> expected) {
-    contains("contains any element in", expected);
+    containsAny("contains any element in", expected);
   }
 
-  private void contains(String failVerb, Iterable<?> expected) {
+  private void containsAny(String failVerb, Iterable<?> expected) {
+    Collection<T> subject;
+    if (getSubject() instanceof Collection) {
+      // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
+      // iterable, right? I sure hope so.
+      subject = (Collection<T>) getSubject();
+    } else {
+      // Would really like to use a HashSet here, but that would mean this would fail for elements
+      // that don't implement hashCode correctly (or even throw an exception from it), where using
+      // Iterables.contains would not fail.
+      subject = Lists.newArrayList(getSubject());
+    }
+
     for (Object item : expected) {
-      if (Iterables.contains(getSubject(), item)) {
+      if (subject.contains(item)) {
         return;
       }
     }

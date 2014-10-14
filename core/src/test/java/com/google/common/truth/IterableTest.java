@@ -132,15 +132,15 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasItem() {
+  @Test public void iterableContainsItem() {
     assertThat(iterable(1, 2, 3)).contains(1);
   }
 
-  @Test public void iterableHasItemWithNull() {
+  @Test public void iterableContainsItemWithNull() {
     assertThat(iterable(1, null, 3)).contains(null);
   }
 
-  @Test public void iterableHasItemFailure() {
+  @Test public void iterableContainsItemFailure() {
     try {
       assertThat(iterable(1, 2, 3)).contains(5);
       fail("Should have thrown.");
@@ -149,7 +149,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void namedIterableHasItemFailure() {
+  @Test public void namedIterableContainsItemFailure() {
     try {
       assertThat(iterable(1, 2, 3)).named("numbers").contains(5);
       fail("Should have thrown.");
@@ -158,7 +158,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void failureMessageIterableHasItemFailure() {
+  @Test public void failureMessageIterableContainsItemFailure() {
     try {
       assert_().withFailureMessage("custom msg").that(iterable(1, 2, 3)).contains(5);
       fail("Should have thrown.");
@@ -207,19 +207,19 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasAnyOf() {
+  @Test public void iterableContainsAnyOf() {
     assertThat(iterable(1, 2, 3)).containsAnyOf(1, 5);
   }
 
-  @Test public void iterableHasAnyOfWithNull() {
+  @Test public void iterableContainsAnyOfWithNull() {
     assertThat(iterable(1, null, 3)).containsAnyOf(null, 5);
   }
 
-  @Test public void iterableHasAnyOfWithNullInThirdAndFinalPosition() {
+  @Test public void iterableContainsAnyOfWithNullInThirdAndFinalPosition() {
     assertThat(iterable(1, null, 3)).containsAnyOf(4, 5, (Integer) null);
   }
 
-  @Test public void iterableHasAnyOfFailure() {
+  @Test public void iterableContainsAnyOfFailure() {
     try {
       assertThat(iterable(1, 2, 3)).containsAnyOf(5, 6, 0);
       fail("Should have thrown.");
@@ -228,23 +228,34 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasAllOfWithMany() {
+  @Test public void iterableContainsAnyOfWithOneShotIterable() {
+    final Iterator<Object> iterator = iterable(2, 1, "b").iterator();
+    Iterable<Object> iterable = new Iterable<Object>() {
+      @Override public Iterator<Object> iterator() {
+        return iterator;
+      }
+    };
+
+    assertThat(iterable).containsAnyOf(3, "a", 7, "b", 0);
+  }
+
+  @Test public void iterableContainsAllOfWithMany() {
     assertThat(iterable(1, 2, 3)).containsAllOf(1, 2);
   }
 
-  @Test public void iterableHasAllOfWithDuplicates() {
+  @Test public void iterableContainsAllOfWithDuplicates() {
     assertThat(iterable(1, 2, 2, 2, 3)).containsAllOf(2, 2);
   }
 
-  @Test public void iterableHasAllOfWithNull() {
+  @Test public void iterableContainsAllOfWithNull() {
     assertThat(iterable(1, null, 3)).containsAllOf(3, (Integer) null);
   }
 
-  @Test public void iterableHasAllOfWithNullAtThirdAndFinalPosition() {
+  @Test public void iterableContainsAllOfWithNullAtThirdAndFinalPosition() {
     assertThat(iterable(1, null, 3)).containsAllOf(1, 3, null);
   }
 
-  @Test public void iterableHasAllOfFailure() {
+  @Test public void iterableContainsAllOfFailure() {
     try {
       assertThat(iterable(1, 2, 3)).containsAllOf(1, 2, 4);
       fail("Should have thrown.");
@@ -254,7 +265,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasAllOfWithDuplicatesFailure() {
+  @Test public void iterableContainsAllOfWithDuplicatesFailure() {
     try {
       assertThat(iterable(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
@@ -269,7 +280,7 @@ public class IterableTest {
    * Slightly subtle test to ensure that if multiple equal elements are found
    * to be missing we only reference it once in the output message.
    */
-  @Test public void iterableHasAllOfWithDuplicateMissingElements() {
+  @Test public void iterableContainsAllOfWithDuplicateMissingElements() {
     try {
       assertThat(iterable(1, 2)).containsAllOf(4, 4, 4);
       fail("Should have thrown.");
@@ -279,7 +290,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasAllOfWithNullFailure() {
+  @Test public void iterableContainsAllOfWithNullFailure() {
     try {
       assertThat(iterable(1, null, 3)).containsAllOf(1, null, null, 3);
       fail("Should have thrown.");
@@ -290,22 +301,22 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasAllOfInOrder() {
+  @Test public void iterableContainsAllOfInOrder() {
     assertThat(iterable(3, 2, 5)).containsAllOf(3, 2, 5).inOrder();
   }
 
-  @Test public void iterableHasAllOfInOrderWithGaps() {
+  @Test public void iterableContainsAllOfInOrderWithGaps() {
     assertThat(iterable(3, 2, 5)).containsAllOf(3, 5).inOrder();
     assertThat(iterable(3, 2, 2, 4, 5)).containsAllOf(3, 2, 2, 5).inOrder();
     assertThat(iterable(3, 1, 4, 1, 5)).containsAllOf(3, 1, 5).inOrder();
   }
 
-  @Test public void iterableHasAllOfInOrderWithNull() {
+  @Test public void iterableContainsAllOfInOrderWithNull() {
     assertThat(iterable(3, null, 5)).containsAllOf(3, null, 5).inOrder();
     assertThat(iterable(3, null, 7, 5)).containsAllOf(3, null, 5).inOrder();
   }
 
-  @Test public void iterableHasAllOfInOrderWithFailure() {
+  @Test public void iterableContainsAllOfInOrderWithFailure() {
     try {
       assertThat(iterable(1, null, 3)).containsAllOf(null, 1, 3).inOrder();
       fail("Should have thrown.");
@@ -315,7 +326,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasAllOfInOrderWithOneShotIterable() {
+  @Test public void iterableContainsAllOfInOrderWithOneShotIterable() {
     final Iterator<Object> iterator = iterable(2, 1, null, 4, "a", 3, "b").iterator();
     Iterable<Object> iterable = new Iterable<Object>() {
       @Override public Iterator<Object> iterator() {
@@ -326,7 +337,7 @@ public class IterableTest {
     assertThat(iterable).containsAllOf(1, null, 3).inOrder();
   }
 
-  @Test public void iterableHasAllOfInOrderWithOneShotIterableWrongOrder() {
+  @Test public void iterableContainsAllOfInOrderWithOneShotIterableWrongOrder() {
     final Iterator<Object> iterator = iterable(2, 1, null, 4, "a", 3, "b").iterator();
     Iterable<Object> iterable = new Iterable<Object>() {
       @Override public Iterator<Object> iterator() {
@@ -347,11 +358,11 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasNoneOf() {
+  @Test public void iterableContainsNoneOf() {
     assertThat(iterable(1, 2, 3)).containsNoneOf(4, 5, 6);
   }
 
-  @Test public void iterableHasNoneOfFailure() {
+  @Test public void iterableContainsNoneOfFailure() {
     try {
       assertThat(iterable(1, 2, 3)).containsNoneOf(1, 2, 4);
       fail("Should have thrown.");
@@ -361,7 +372,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasNoneOfFailureWithDuplicateInSubject() {
+  @Test public void iterableContainsNoneOfFailureWithDuplicateInSubject() {
     try {
       assertThat(iterable(1, 2, 2, 3)).containsNoneOf(1, 2, 4);
       fail("Should have thrown.");
@@ -371,7 +382,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasNoneOfFailureWithDuplicateInExpected() {
+  @Test public void iterableContainsNoneOfFailureWithDuplicateInExpected() {
     try {
       assertThat(iterable(1, 2, 3)).containsNoneOf(1, 2, 2, 4);
       fail("Should have thrown.");
@@ -387,31 +398,31 @@ public class IterableTest {
     assertThat(iterable).containsExactly(array);
   }
 
-  @Test public void iterableHasExactlyWithMany() {
+  @Test public void iterableContainsExactlyWithMany() {
     assertThat(iterable(1, 2, 3)).containsExactly(1, 2, 3);
   }
 
-  @Test public void iterableHasExactlyOutOfOrder() {
+  @Test public void iterableContainsExactlyOutOfOrder() {
     assertThat(iterable(1, 2, 3, 4)).containsExactly(3, 1, 4, 2);
   }
 
-  @Test public void iterableHasExactlyWithDuplicates() {
+  @Test public void iterableContainsExactlyWithDuplicates() {
     assertThat(iterable(1, 2, 2, 2, 3)).containsExactly(1, 2, 2, 2, 3);
   }
 
-  @Test public void iterableHasExactlyWithDuplicatesOutOfOrder() {
+  @Test public void iterableContainsExactlyWithDuplicatesOutOfOrder() {
     assertThat(iterable(1, 2, 2, 2, 3)).containsExactly(2, 1, 2, 3, 2);
   }
 
-  @Test public void iterableHasExactlyWithNull() {
+  @Test public void iterableContainsExactlyWithNull() {
     assertThat(iterable(1, null, 3)).containsExactly(1, null, 3);
   }
 
-  @Test public void iterableHasExactlyWithNullOutOfOrder() {
+  @Test public void iterableContainsExactlyWithNullOutOfOrder() {
     assertThat(iterable(1, null, 3)).containsExactly(1, 3, (Integer) null);
   }
 
-  @Test public void iterableHasExactlyMissingItemFailure() {
+  @Test public void iterableContainsExactlyMissingItemFailure() {
     try {
       assertThat(iterable(1, 2)).containsExactly(1, 2, 4);
       fail("Should have thrown.");
@@ -421,7 +432,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasExactlyUnexpectedItemFailure() {
+  @Test public void iterableContainsExactlyUnexpectedItemFailure() {
     try {
       assertThat(iterable(1, 2, 3)).containsExactly(1, 2);
       fail("Should have thrown.");
@@ -431,7 +442,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasExactlyWithDuplicatesNotEnoughItemsFailure() {
+  @Test public void iterableContainsExactlyWithDuplicatesNotEnoughItemsFailure() {
     try {
       assertThat(iterable(1, 2, 3)).containsExactly(1, 2, 2, 2, 3);
       fail("Should have thrown.");
@@ -442,7 +453,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasExactlyWithDuplicatesMissingItemFailure() {
+  @Test public void iterableContainsExactlyWithDuplicatesMissingItemFailure() {
     try {
       assertThat(iterable(1, 2, 3)).containsExactly(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
@@ -453,7 +464,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasExactlyWithDuplicatesUnexpectedItemFailure() {
+  @Test public void iterableContainsExactlyWithDuplicatesUnexpectedItemFailure() {
     try {
       assertThat(iterable(1, 2, 2, 2, 2, 3)).containsExactly(1, 2, 2, 3);
       fail("Should have thrown.");
@@ -468,7 +479,7 @@ public class IterableTest {
    * Slightly subtle test to ensure that if multiple equal elements are found
    * to be missing we only reference it once in the output message.
    */
-  @Test public void iterableHasExactlyWithDuplicateMissingElements() {
+  @Test public void iterableContainsExactlyWithDuplicateMissingElements() {
     try {
       assertThat(iterable()).containsExactly(4, 4, 4);
       fail("Should have thrown.");
@@ -478,7 +489,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasExactlyWithNullFailure() {
+  @Test public void iterableContainsExactlyWithNullFailure() {
     try {
       assertThat(iterable(1, null, 3)).containsExactly(1, null, null, 3);
       fail("Should have thrown.");
@@ -489,15 +500,15 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasExactlyInOrder() {
+  @Test public void iterableContainsExactlyInOrder() {
     assertThat(iterable(3, 2, 5)).containsExactly(3, 2, 5).inOrder();
   }
 
-  @Test public void iterableHasExactlyInOrderWithNull() {
+  @Test public void iterableContainsExactlyInOrderWithNull() {
     assertThat(iterable(3, null, 5)).containsExactly(3, null, 5).inOrder();
   }
 
-  @Test public void iterableHasExactlyInOrderWithFailure() {
+  @Test public void iterableContainsExactlyInOrderWithFailure() {
     try {
       assertThat(iterable(1, null, 3)).containsExactly(null, 1, 3).inOrder();
       fail("Should have thrown.");
@@ -507,7 +518,7 @@ public class IterableTest {
     }
   }
 
-  @Test public void iterableHasExactlyInOrderWithOneShotIterable() {
+  @Test public void iterableContainsExactlyInOrderWithOneShotIterable() {
     final Iterator<Object> iterator = iterable(1, null, 3).iterator();
     Iterable<Object> iterable = new Iterable<Object>() {
       @Override public Iterator<Object> iterator() {
@@ -518,7 +529,7 @@ public class IterableTest {
     assertThat(iterable).containsExactly(1, null, 3).inOrder();
   }
 
-  @Test public void iterableHasExactlyInOrderWithOneShotIterableWrongOrder() {
+  @Test public void iterableContainsExactlyInOrderWithOneShotIterableWrongOrder() {
     final Iterator<Object> iterator = iterable(1, null, 3).iterator();
     Iterable<Object> iterable = new Iterable<Object>() {
       @Override public Iterator<Object> iterator() {
