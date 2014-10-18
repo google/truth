@@ -84,6 +84,11 @@ public final class Truth {
   }
 
   @CheckReturnValue
+  public static ThrowableSubject assertThat(Throwable target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
   public static LongSubject assertThat(Long target) {
     return assert_().that(target);
   }
