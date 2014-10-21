@@ -18,7 +18,11 @@ package com.google.common.truth;
 import static com.google.common.truth.IntegerSubject.INTEGER;
 import static com.google.common.truth.LongSubject.LONG;
 import static com.google.common.truth.StringSubject.STRING;
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
+
+import com.google.common.truth.delegation.Foo;
+import com.google.common.truth.delegation.FooSubject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,6 +75,17 @@ public class IterationOverSubjectTest {
       if (e.getMessage().startsWith("Expected assertion to fail")) {
         throw e;
       }
+    }
+  }
+
+  @Test public void collectionPropositionWithMultipleArguments() {
+    Iterable<Foo> data = iterable(new Foo(2 + 3), new Foo(2 + 4));
+    assert_().in(data).thatEach(FooSubject.FOO).matchesEither(new Foo(5), new Foo(6));
+    try {
+      assert_().in(data).thatEach(FooSubject.FOO).matchesEither(new Foo(6), new Foo(7));
+      assert_().fail("Expected assertion to fail on element 1.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).contains("Not true that <Foo(5)> matches one of <Foo(6)> <Foo(7)>");
     }
   }
 

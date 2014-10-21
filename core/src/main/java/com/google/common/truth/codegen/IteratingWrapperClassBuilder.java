@@ -165,7 +165,7 @@ public class IteratingWrapperClassBuilder {
     StringBuilder builder = new StringBuilder();
     for (int i = 0; i < length; i++) {
       if (i > 0) builder.append(", ");
-      builder.append("arg").append(0);
+      builder.append("arg").append(i);
     }
     return builder;
   }
