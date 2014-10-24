@@ -30,8 +30,12 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
   /**
    * Fails if this class or interface is not the same as or a superclass or superinterface of
    * the given class or interface.
+   *
+   * @deprecated Use either {@code assertThat(instance).isInstanceOf(clazz)} or {code
+   *     assertThat(clazzA).isAssignableTo(clazzB)} instead.
    */
   @GwtIncompatible("isAssignableFrom")
+  @Deprecated
   public void isAssignableFrom(Class<?> clazz) {
     if (!getSubject().isAssignableFrom(clazz)) {
       fail("is assignable from", clazz);
