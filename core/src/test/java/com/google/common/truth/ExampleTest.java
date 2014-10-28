@@ -45,7 +45,7 @@ public class ExampleTest {
     assertThat(Arrays.asList(1, 2, 3)).contains(1);
 
     // at least these items
-    assertThat(Arrays.asList(1, 2, 3)).has().allOf(1, 2);
+    assertThat(Arrays.asList(1, 2, 3)).containsAllOf(1, 2);
 
     // at least one of these items
     assertThat(Arrays.asList(1, 2, 3)).has().anyOf(1, 5);

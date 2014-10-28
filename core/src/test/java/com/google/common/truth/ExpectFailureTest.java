@@ -46,7 +46,7 @@ public class ExpectFailureTest {
   }
 
   @Test public void expectFailContainsAllOf() {
-    EXPECT.that(Arrays.asList("a", "b", "c")).has().allOf("a", "c", "d");
+    EXPECT.that(Arrays.asList("a", "b", "c")).containsAllOf("a", "c", "d");
   }
 
   @Test public void expectFailContainsAnyOf() {

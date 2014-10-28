@@ -79,7 +79,7 @@ public class RelabeledSubjectsTest {
 
   @Test public void relabelledCollections() {
     try {
-      assertThat(Arrays.asList("a", "b", "c")).named("crazy list").has().allOf("c", "d");
+      assertThat(Arrays.asList("a", "b", "c")).named("crazy list").containsAllOf("c", "d");
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
