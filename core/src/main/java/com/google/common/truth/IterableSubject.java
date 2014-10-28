@@ -354,7 +354,15 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
         // TODO(user): Possible enhancement: Include "[1 copy]" if the element does appear in
         // the subject but not enough times. Similarly for unexpected extra items.
         if (!missing.isEmpty()) {
-          failWithBadResults(failVerb, required, "is missing", countDuplicates(missing));
+          if (!extra.isEmpty()) {
+            // Subject is both missing required elements and contains extra elements
+            failWithRawMessage(
+                "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>",
+                getDisplaySubject(), failVerb, required,
+                countDuplicates(missing), countDuplicates(extra));
+          } else {
+            failWithBadResults(failVerb, required, "is missing", countDuplicates(missing));
+          }
         }
         if (!extra.isEmpty()) {
           failWithBadResults(failVerb, required, "has unexpected items", countDuplicates(extra));

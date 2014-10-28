@@ -500,6 +500,28 @@ public class IterableTest {
     }
   }
 
+  @Test public void iterableContainsExactlyWithMissingAndExtraElements() {
+    try {
+      assertThat(iterable(1, 2, 3)).containsExactly(1, 2, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <[1, 2, 3]> contains exactly <[1, 2, 4]>. "
+          + "It is missing <[4]> and has unexpected items <[3]>");
+    }
+  }
+
+  @Test public void iterableContainsExactlyWithDuplicateMissingAndExtraElements() {
+    try {
+      assertThat(iterable(1, 2, 3, 3)).containsExactly(1, 2, 4, 4);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <[1, 2, 3, 3]> contains exactly <[1, 2, 4, 4]>. "
+          + "It is missing <[4 [2 copies]]> and has unexpected items <[3 [2 copies]]>");
+    }
+  }
+
   @Test public void iterableContainsExactlyInOrder() {
     assertThat(iterable(3, 2, 5)).containsExactly(3, 2, 5).inOrder();
   }
