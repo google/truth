@@ -97,13 +97,13 @@ assertThat(foo).isNotNull();
 ### Collections and Maps
 
 {% highlight java %}
-assertThat(someCollection).has().item("a");                   // contains this item
-assertThat(someCollection).has().allOf("a", "b").inOrder();   // has items in the given order
-assertThat(someCollection).has().exactly("a", "b", "c", "d"); // all and only these items
-assertThat(someCollection).has().noneOf("q", "r", "s");       // none of these items
-assertThat(aMap).hasKey("foo").withValue("bar");              // given key, with given value
-assertThat(anInstance).hasField("foo").withValue("bar");      // given field, with given value
-assertThat(anIterable).iteratesAs("a", "b", "c");             // has items using the iterator
+assertThat(someCollection).contains("a");                       // contains this item
+assertThat(someCollection).containsAllOf("a", "b").inOrder();   // contains items in the given order
+assertThat(someCollection).containsExactly("a", "b", "c", "d"); // contains all and only these items
+assertThat(someCollection).containsNoneOf("q", "r", "s");       // contains none of these items
+assertThat(aMap).containsKey("foo");                            // has a key
+assertThat(aMap).containsEntry("foo", "bar");                   // has a key, with given value
+assertThat(aMap).doesNotContainEntry("foo", "Bar");             // does not have the given entry
 {% endhighlight %}
 
 ### Custom Error Messages
