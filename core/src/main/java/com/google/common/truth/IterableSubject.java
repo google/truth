@@ -95,8 +95,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * iteration order guarantees (say, {@link Set}{@code <?>}s), this method may provide
    * unexpected results.  Consider using {@link #isEqualTo(Object)} in such cases, or using
    * collections and iterables that provide strong order guarantees.
+   *
+   * @deprecated Use {@code containsExactlyElementsIn(Iterable).inOrder()} instead.
    */
-  // TODO(user): @deprecated Use {@code containsExactlyElementsIn(Iterable).inOrder()} instead.
+  @Deprecated
   public void iteratesAs(Iterable<?> expectedItems) {
     Iterator<T> actualItems = getSubject().iterator();
     for (Object expected : expectedItems) {
@@ -129,8 +131,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * the iterable under test does not provide iteration order guarantees (say,
    * a {@link Set}{@code <?>}), this method is not suitable for asserting that order.
    * Consider using {@link #isEqualTo(Object)}
+   *
+   * @deprecated Use {@code containsExactly(Object...).inOrder()} instead.
    */
-  // TODO(user): @deprecated Use {@code containsExactly(Object, Object...).inOrder()} instead.
+  @Deprecated
   public void iteratesAs(Object... expectedItems) {
     iteratesAs(Arrays.asList(expectedItems));
   }
