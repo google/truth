@@ -278,10 +278,6 @@ More complicated comparisons can be achieved using Range
 
 ### Iterables and Collections
 
-    ASSERT.that(anIterable).isEmpty();
-    ASSERT.that(anIterable).iteratesAs(a, b, c);
-    ASSERT.that(anIterable).iteratesAs(otherIterable);
-
 One can simply use object equality if you want to test collection 
 equivalence, given the guarantees of Collections' implementations of 
 .equals():
@@ -290,7 +286,8 @@ equivalence, given the guarantees of Collections' implementations of
 
 Testing properties like size should be done like so:
 
-    ASSERT.that(collection).hasSize(5); 
+    ASSERT.that(collection).hasSize(5);
+    ASSERT.that(anIterable).isEmpty();
 
 Or you can test that a specific item is present present:
 
@@ -319,7 +316,6 @@ You can also pass in collections as containers of expected results, like so:
     ASSERT.that(collectionA).containsAllIn(collectionB);
     ASSERT.that(collectionA).containsAnyIn(collectionB);
     ASSERT.that(collectionA).containsExactlyElementsIn(collectionB).inOrder();
-
 
 ### Lists
 

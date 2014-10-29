@@ -102,9 +102,8 @@ assertThat(someCollection).containsAllOf("a", "b").inOrder();   // contains item
 assertThat(someCollection).containsExactly("a", "b", "c", "d"); // contains all and only these items
 assertThat(someCollection).containsNoneOf("q", "r", "s");       // contains none of these items
 assertThat(aMap).containsKey("foo");                            // has a key
-assertThat(aMap).containsEntry("foo","bar");                    // has a key, with given value
+assertThat(aMap).containsEntry("foo", "bar");                   // has a key, with given value
 assertThat(aMap).doesNotContainEntry("foo", "Bar");             // does not have the given entry
-assertThat(anIterable).iteratesAs("a", "b", "c");               // has items using the iterator
 {% endhighlight %}
 
 ### Custom Error Messages
