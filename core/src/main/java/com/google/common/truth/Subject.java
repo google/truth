@@ -376,7 +376,8 @@ public class Subject<S extends Subject<S,T>,T> {
 
   /**
    * @deprecated This method is not a proposition, but the default Object equality method.
-   *     Testing code should use "is" or "isEqualTo" propositions for equality tests.
+   *     Testing code should use {@link #isEqualTo(Object)} to check for object equalty
+   *     or {@link #isSameAs(Object)} to check reference equality.
    */
   @Deprecated
   @Override
