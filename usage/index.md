@@ -242,10 +242,31 @@ results in a more descriptive message:
     ASSERT.that(something).isTrue();
     ASSERT.that(something).isFalse();
 
-## Numerics
+## Numerics and Comparables
 
-    ASSERT.that(5).isBetween(4, 5);
-    ASSERT.that(5).isExclusivelyInRange(4, 6);
+Numerics like Integer can be compared for equality like other types
+
+    ASSERT.that(foo).isEqualTo(5);
+    ASSERT.that(bar).isNotEqualTo(5);
+
+Comparables (including numerics) can be compared
+
+    int foo = 5;
+    ASSERT.that(foo).isGreaterThan(4);
+    ASSERT.that(foo).isAtLeast(4);
+    ASSERT.that(foo).isAtLeast(5);
+    ASSERT.that(5).isLessThan(6);
+    ASSERT.that(5).isAtMost(6);
+    ASSERT.that(5).isAtMost(5);
+
+This works with any comparable, including strings
+
+    ASSERT.that("foo").isGreaterThan("aoo");
+
+More complicated comparisons can be achieved using Range   
+
+    ASSERT.that(foo).isIn(Range.open(4, 6));
+    ASSERT.that("foo").isIn(Range.open("eoo", "goo"));
 
 ## Strings
 
@@ -255,13 +276,11 @@ results in a more descriptive message:
 
 ## Iterables, Collections, Sets, and the like.
 
-### Iterables
+### Iterables and Collections
 
     ASSERT.that(anIterable).isEmpty();
     ASSERT.that(anIterable).iteratesAs(a, b, c);
     ASSERT.that(anIterable).iteratesAs(otherIterable);
-
-### Collections
 
 One can simply use object equality if you want to test collection 
 equivalence, given the guarantees of Collections' implementations of 
@@ -271,34 +290,35 @@ equivalence, given the guarantees of Collections' implementations of
 
 Testing properties like size should be done like so:
 
-    ASSERT.that(collection.size()).isEqualTo(5); 
+    ASSERT.that(collection).hasSize(5); 
 
 Or you can test that a specific item is present present:
 
-    ASSERT.that(collectionA).has().item(q);
+    ASSERT.that(collectionA).contains(q);
 
 Or you can test that all provided items are present:
 
-    ASSERT.that(collectionA).has().allOf(a, b, c);
+    ASSERT.that(collectionA).containsAllOf(a, b, c);
 
-Or you can be *even* more explicit and test that all ***and only*** the provided items are present:
+Or you can be *even* more explicit and test that all ***and only*** the provided items are present
+(but may have them in any order):
 
-    ASSERT.that(collectionA).has().exactly(a, b, c, d);
+    ASSERT.that(collectionA).containsExactly(a, b, c, d);
 
-optionally you can further constrain this:
+optionally you can further constrain these to be ordered expectations:
 
-    ASSERT.that(collectionA).has().allOf(a, b, c).inOrder();
-    ASSERT.that(collectionA).has().exactly(a, b, c, d).inOrder();
+    ASSERT.that(collectionA).containsAllOf(a, b, c).inOrder();
+    ASSERT.that(collectionA).containsExactly(a, b, c, d).inOrder();
 
 Or you can assert using a (very) limited "or" logic with:
 
-    ASSERT.that(collectionA).has().anyOf(b, c);
+    ASSERT.that(collectionA).containsAnyOf(b, c);
 
 You can also pass in collections as containers of expected results, like so:
 
-    ASSERT.that(collectionA).has().allFrom(collectionB);
-    ASSERT.that(collectionA).has().anyFrom(collectionB);
-    ASSERT.that(collectionA).has().exactlyAs(collectionB).inOrder();
+    ASSERT.that(collectionA).containsAllIn(collectionB);
+    ASSERT.that(collectionA).containsAnyIn(collectionB);
+    ASSERT.that(collectionA).containsExactlyElementsIn(collectionB).inOrder();
 
 
 ### Lists
@@ -317,17 +337,13 @@ And custom comparators can be provided
 
 Presence of keys, keys for values, or values can be asserted
 
-    ASSERT.that(map).hasKey("foo");
-    ASSERT.that(map).hasKey("foo").withValue("bar");
-    ASSERT.that(map).lacksKey("foo");
-    ASSERT.that(map).hasValue("bar");
+    ASSERT.that(map).containsKey("foo");
+    ASSERT.that(map).containsEntry("foo", "bar");
+    ASSERT.that(map).doesNotContainKey("foo");
 
 Naturally, also:
 
     ASSERT.that(map).isEmpty();
     ASSERT.that(map).isNotEmpty();
-    
-Testing properties like size should be done like so:
-
-    ASSERT.that(map.size()).isEqualTo(5); 
+    ASSERT.that(map).hasSize(5); 
 
