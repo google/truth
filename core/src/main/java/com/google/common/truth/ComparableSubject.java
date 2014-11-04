@@ -49,7 +49,10 @@ public abstract class ComparableSubject<S extends Subject<S, T>, T extends Compa
 
   /**
    * Fails if the subject is not equivalent to the given value according to
-   * {@link Comparable#compareTo}.
+   * {@link Comparable#compareTo}, (i.e., fails if {@code a.comparesTo(b) != 0}).
+   *
+   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use
+   * {@link #isEqualTo(Object)}.
    */
   public final void comparesEqualTo(T other) {
     if (getSubject().compareTo(other) != 0) {
