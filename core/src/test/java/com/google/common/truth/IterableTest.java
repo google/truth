@@ -547,7 +547,6 @@ public class IterableTest {
         return iterator;
       }
     };
-
     assertThat(iterable).containsExactly(1, null, 3).inOrder();
   }
 
@@ -605,5 +604,4 @@ public class IterableTest {
   private static Iterable<Object> iterable(Object... items) {
     return Arrays.asList(items);
   }
-
 }
