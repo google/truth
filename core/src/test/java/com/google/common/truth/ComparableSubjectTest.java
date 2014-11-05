@@ -27,6 +27,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.math.BigDecimal;
+
 import javax.tools.JavaFileObject;
 
 /**
@@ -62,13 +64,13 @@ public class ComparableSubjectTest {
   }
 
   @Test public void comparesEqualTo() {
-    assertThat(5).comparesEqualTo(5);
+    assertThat(new BigDecimal("2.0")).comparesEqualTo(new BigDecimal("2.00"));
 
     try {
-      assertThat(4).comparesEqualTo(5);
+      assertThat(new BigDecimal("2.0")).comparesEqualTo(new BigDecimal("2.1"));
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("<4> should have been equivalent to <5>");
+      assertThat(e.getMessage()).isEqualTo("<2.0> should have been equivalent to <2.1>");
     }
   }
 
