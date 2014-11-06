@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
@@ -160,7 +160,7 @@ public class IterableTest {
 
   @Test public void failureMessageIterableContainsItemFailure() {
     try {
-      assert_().withFailureMessage("custom msg").that(iterable(1, 2, 3)).contains(5);
+      assertWithMessage("custom msg").that(iterable(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).isEqualTo("custom msg: <[1, 2, 3]> should have contained <5>");

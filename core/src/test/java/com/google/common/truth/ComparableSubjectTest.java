@@ -15,8 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 import static org.junit.Assert.fail;
 
@@ -237,7 +237,7 @@ public class ComparableSubjectTest {
         "  }",
         "}");
 
-    assert_().about(javaSource()).that(file)
+    assertAbout(javaSource()).that(file)
         .failsToCompile()
         .withErrorContaining("java.lang.String cannot be converted to test.MyTest.ComparableType")
         .in(file)
@@ -263,7 +263,7 @@ public class ComparableSubjectTest {
         "    }",
         "  }",
         "}");
-    assert_().about(javaSource()).that(file)
+    assertAbout(javaSource()).that(file)
         .failsToCompile()
         .withErrorContaining(
             "java.lang.String cannot be converted to test.MyTest.RawComparableType")
