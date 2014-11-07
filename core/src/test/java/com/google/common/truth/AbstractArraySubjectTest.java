@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.truth.AbstractArraySubject;
@@ -40,6 +41,19 @@ public class AbstractArraySubjectTest {
     String[] strings = { "Foo", "Bar" };
     TestableStringArraySubject subject = new TestableStringArraySubject(failureStrategy, strings);
     assertThat(subject.getDisplaySubject()).isEqualTo("<(String[]) [Foo, Bar]>");
+  }
+
+  @Test public void canBeUsedInSubjectFactories() {
+    // This will fail to compile if the super-type of AbstractArraySubject
+    // is incompatible with the generic bounds of SubjectFactory.
+    class TestSubjectFactory extends SubjectFactory<TestableStringArraySubject, String[]> {
+      @Override public TestableStringArraySubject getSubject(FailureStrategy fs, String[] that) {
+        return new TestableStringArraySubject(fs, that);
+      }
+    }
+
+    String[] strings = { "foo", "bar" };
+    assertAbout(new TestSubjectFactory()).that(strings).hasLength(2);
   }
 
   class TestableStringArraySubject
