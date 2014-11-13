@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -71,7 +71,7 @@ final class SubjectUtils {
   }
 
   static <T> List<Object> countDuplicates(Collection<T> items) {
-    Set<T> itemSet = new HashSet<T>(items);
+    Set<T> itemSet = new LinkedHashSet<T>(items);
     Object[] params = new Object[itemSet.size()];
     int n = 0;
     for (T item : itemSet) {

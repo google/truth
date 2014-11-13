@@ -411,7 +411,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
 
   private void containsNone(String failVerb, Iterable<?> excluded) {
     Collection<Object> present = new ArrayList<Object>();
-    for (Object item : Sets.newHashSet(excluded)) {
+    for (Object item : Sets.newLinkedHashSet(excluded)) {
       if (Iterables.contains(getSubject(), item)) {
         present.add(item);
       }

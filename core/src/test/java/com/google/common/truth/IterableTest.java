@@ -422,6 +422,18 @@ public class IterableTest {
     assertThat(iterable(1, null, 3)).containsExactly(1, 3, (Integer) null);
   }
 
+  @Test public void iterableContainsExactlyErrorMessageIsOrdered() {
+    try {
+      assertThat(asList("foo OR bar")).containsExactlyElementsIn(asList("foo", "bar"));
+    } catch (AssertionError e) {
+      assertThat(e.getMessage()).isEqualTo(
+          "Not true that <[foo OR bar]> contains exactly <[foo, bar]>. "
+          + "It is missing <[foo, bar]> and has unexpected items <[foo OR bar]>");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
   @Test public void iterableContainsExactlyMissingItemFailure() {
     try {
       assertThat(iterable(1, 2)).containsExactly(1, 2, 4);
