@@ -256,7 +256,9 @@ public class Subject<S extends Subject<S,T>,T> {
    * Assembles a failure message and passes it to the FailureStrategy
    *
    * @param verb the proposition being asserted
-   * @param messageParts the expectations against which the subject is compared
+   * @param expected the expectations against which the subject is compared
+   * @param failVerb the failure of the proposition being asserted
+   * @param actual the actual value the subject was compared against
    */
   protected void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
     String message = format("Not true that %s %s <%s>. It %s <%s>",
@@ -304,7 +306,7 @@ public class Subject<S extends Subject<S,T>,T> {
    *     with {@code String.format()}.  Any other formatting desired (such as floats or
    *     scientific notation) should be performed before the method call and the formatted
    *     value passed in as a string.
-   * @param paramters the object parameters which will be applied to the message template.
+   * @param parameters the object parameters which will be applied to the message template.
    */
   protected void failWithRawMessage(String message, Object ... parameters) {
     failureStrategy.fail(format(message, parameters));
