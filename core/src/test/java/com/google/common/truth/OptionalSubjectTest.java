@@ -32,15 +32,28 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class OptionalSubjectTest {
 
+  @Test public void namedOptional() {
+    Optional<String> optional = Optional.of("actual");
+    try {
+      assertThat(optional).named("name").hasValue("expected");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage("Not true that \"name\" <Optional.of(actual)> has value <expected>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
   @Test public void failOnNullSubject() {
     try {
       Optional<String> nullOptional = null;
       assertThat(nullOptional).isAbsent();
-      fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that \"Optional<T>\" is a non-null reference");
+      assertThat(expected)
+          .hasMessage("Not true that \"Optional<T>\" is a non-null reference");
+      return;
     }
+    fail("Should have thrown");
   }
 
   @Test public void isPresent() {
@@ -50,10 +63,21 @@ public class OptionalSubjectTest {
   @Test public void isPresentFailing() {
     try {
       assertThat(Optional.absent()).isPresent();
-      fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).isEqualTo("Not true that the subject is present");
+      assertThat(expected).hasMessage("Not true that the subject is present");
+      return;
     }
+    fail("Should have thrown");
+  }
+
+  @Test public void isPresentFailingWithNamed() {
+    try {
+      assertThat(Optional.absent()).named("name").isPresent();
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage("Not true that \"name\" is present");
+      return;
+    }
+    fail("Should have thrown");
   }
 
   @Test public void isAbsent() {
@@ -63,10 +87,11 @@ public class OptionalSubjectTest {
   @Test public void isAbsentFailing() {
     try {
       assertThat(Optional.of("foo")).isAbsent();
-      fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).isEqualTo("Not true that the subject is absent");
+      assertThat(expected).hasMessage("Not true that <Optional.of(foo)> is absent");
+      return;
     }
+    fail("Should have thrown");
   }
 
   @Test public void hasValue() {
@@ -76,37 +101,41 @@ public class OptionalSubjectTest {
   @Test public void hasValue_FailingWithAbsent() {
     try {
       assertThat(Optional.absent()).hasValue("foo");
-      fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <Optional.absent()> has value <foo>");
+      assertThat(expected)
+          .hasMessage("Not true that <Optional.absent()> has value <foo>");
+      return;
     }
+    fail("Should have thrown");
   }
 
   @Test public void hasValue_FailingWithNullParameter() {
     try {
       assertThat(Optional.of("foo")).hasValue(null);
-      fail("Should have thrown");
-    } catch (NullPointerException expected) {}
+    } catch (NullPointerException expected) {
+      return;
+    }
+    fail("Should have thrown");
   }
 
   @Test public void hasValue_FailingWithWrongValueForString() {
     try {
       assertThat(Optional.of("foo")).hasValue("boo");
-      fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Optional<String> has an incorrect value. expected:<[b]oo> but was:<[f]oo>");
+      assertThat(expected).hasMessage("Not true that <Optional.of(foo)> has value <boo>");
+      return;
     }
+    fail("Should have thrown");
   }
 
   @Test public void hasValue_FailingWithWrongValueForOther() {
     try {
       assertThat(Optional.of(5)).hasValue(10);
-      fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <Optional.of(5)> has value <10>");
+      assertThat(expected)
+          .hasMessage("Not true that <Optional.of(5)> has value <10>");
+      return;
     }
+    fail("Should have thrown");
   }
 }

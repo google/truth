@@ -43,7 +43,7 @@ public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>>
    */
   public void isAbsent() {
     if (getSubject().isPresent()) {
-      failWithoutSubject("is absent");
+      fail("is absent");
     }
   }
 
@@ -58,13 +58,8 @@ public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>>
       fail("has value", expected);
     } else {
       Object actual = getSubject().get();
-      if (!getSubject().get().equals(expected)) {
-        if (getSubject().get() instanceof String) {
-          this.failureStrategy.failComparing("Optional<String> has an incorrect value.",
-              (String) expected, (String) actual);
-        } else {
-          fail("has value", expected);
-        }
+      if (!actual.equals(expected)) {
+        fail("has value", expected);
       }
     }
   }

@@ -29,7 +29,7 @@ final class StringUtil {
    * TODO(user): Do something closer to what JUnit's {@code ComparisonFailure} does.
    */
   static String messageFor(String message, CharSequence expected, CharSequence actual) {
-    return message + "\n\nExpected:\n" + expected + "\n\nActual\n" + actual;
+    return message + "\n\nExpected:\n" + expected + "\n\nActual:\n" + actual;
   }
 
   /**
