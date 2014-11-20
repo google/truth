@@ -15,8 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.TruthJUnit.assume;
 import static com.google.common.truth.delegation.FooSubject.FOO;
 import static org.junit.Assert.fail;
@@ -45,7 +45,7 @@ public class ExampleTest {
     assertThat(Arrays.asList(1, 2, 3)).contains(1);
 
     // at least these items
-    assertThat(Arrays.asList(1, 2, 3)).has().allOf(1, 2);
+    assertThat(Arrays.asList(1, 2, 3)).containsAllOf(1, 2);
 
     // at least one of these items
     assertThat(Arrays.asList(1, 2, 3)).has().anyOf(1, 5);
@@ -78,6 +78,6 @@ public class ExampleTest {
   }
 
   @Test public void customTypeCompares() {
-    assert_().about(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
+    assertAbout(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 }

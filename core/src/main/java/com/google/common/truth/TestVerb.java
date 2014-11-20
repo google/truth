@@ -54,6 +54,11 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   @CheckReturnValue
+  public ThrowableSubject that(Throwable target) {
+    return new ThrowableSubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
   public LongSubject that(Long target) {
     return new LongSubject(getFailureStrategy(), target);
   }

@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
+import com.google.common.truth.AbstractVerb.DelegatedVerb;
 
 import java.util.Collection;
 import java.util.List;
@@ -67,6 +68,26 @@ public final class Truth {
 
   public static TestVerb assert_() { return ASSERT; }
 
+  /**
+   * Returns a {@link TestVerb} that will prepend the given message to the failure message in
+   * the event of a test failure.
+   */
+  public static TestVerb assertWithMessage(String messageToPrepend) {
+    return assert_().withFailureMessage(messageToPrepend);
+  }
+
+  /**
+   * The recommended method of extension of Truth to new types, which is
+   * documented in {@link com.google.common.truth.delegation.DelegationTest}.
+   *
+   * @param factory a SubjectFactory<S, T> implementation
+   * @returns A custom verb for the type returned by the SubjectFactory
+   */
+  public static <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>> DelegatedVerb<S, T>
+      assertAbout(SF factory) {
+    return assert_().about(factory);
+  }
+
   @CheckReturnValue
   public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(T target) {
     return assert_().that(target);
@@ -80,6 +101,11 @@ public final class Truth {
   @CheckReturnValue
   @GwtIncompatible("ClassSubject.java")
   public static ClassSubject assertThat(Class<?> target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
+  public static ThrowableSubject assertThat(Throwable target) {
     return assert_().that(target);
   }
 

@@ -25,7 +25,15 @@ public abstract class FailureStrategy {
 
   public void fail(String message, Throwable cause) {
     AssertionError up = new AssertionError(message);
-    up.initCause(cause);
+    if (cause != null) {
+      try {
+        up.initCause(cause);
+      } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
+        // https://code.google.com/p/android/issues/detail?id=29378
+        // No message, but it's the best we can do without awful hacks.
+        throw new AssertionError(cause);
+      }
+    }
     throw up;
   }
 

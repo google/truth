@@ -77,17 +77,17 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testCollection() {
-    assertThat((Collection<Integer>)asList(1, 2, 3)).has().allOf(1, 2, 3).inOrder();
+    assertThat((Collection<Integer>)asList(1, 2, 3)).containsAllOf(1, 2, 3).inOrder();
   }
 
   public void testList() {
-    assertThat(asList(1, 2, 3)).has().allOf(1, 2, 3).inOrder();
+    assertThat(asList(1, 2, 3)).containsAllOf(1, 2, 3).inOrder();
   }
 
   public void testObjectArray() {
     Set[] setOfString = { new HashSet<String>(asList("foo", "bar", "bash")) };
     assertThat(setOfString).asList()
-        .has().item(new HashSet<String>(asList("foo", "bar", "bash")));
+        .contains(new HashSet<String>(asList("foo", "bar", "bash")));
   }
 
   public void testDefault() {

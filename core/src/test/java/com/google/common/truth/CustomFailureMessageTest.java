@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.StringSubject.STRING;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assert_;
 import static org.junit.Assert.fail;
 
@@ -36,13 +37,56 @@ import java.util.Arrays;
 @RunWith(JUnit4.class)
 public class CustomFailureMessageTest {
 
+  @Test public void assertWithMessageIsPrepended() {
+    try {
+      assertWithMessage("Invalid month").that(13).isIn(Range.closed(1, 12));
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
+    }
+  }
+
+  @Test public void assertWithMessageIsPrependedWithNamed() {
+    try {
+      assertWithMessage("Invalid month")
+          .that(13).named("Septober").isIn(Range.closed(1, 12));
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage("Invalid month: Not true that \"Septober\" <13> is in <[1‥12]>");
+    }
+  }
+
+  @Test public void assertWithMessageThat() {
+    try {
+      assertWithMessage("This is a custom message").that(false).isTrue();
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "This is a custom message: The subject was expected to be true, but was false");
+    }
+  }
+
+  @Test public void assertWithMessageOnDelegate() {
+    try {
+      assertWithMessage("This is a custom message")
+          .about(STRING).that("foo").isEqualTo("bar");
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage()).contains("This is a custom message");
+      assertThat(expected.getMessage()).contains("foo");
+      assertThat(expected.getMessage()).contains("bar");
+    }
+  }
+
   @Test public void customMessageIsPrepended() {
     try {
       assert_().withFailureMessage("Invalid month").that(13).isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Invalid month: Not true that <13> is in <[1‥12]>");
+      assertThat(expected)
+          .hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
     }
   }
 
@@ -52,8 +96,8 @@ public class CustomFailureMessageTest {
           .that(13).named("Septober").isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Invalid month: Not true that \"Septober\" <13> is in <[1‥12]>");
+      assertThat(expected)
+          .hasMessage("Invalid month: Not true that \"Septober\" <13> is in <[1‥12]>");
     }
   }
 
@@ -62,7 +106,7 @@ public class CustomFailureMessageTest {
       assert_().withFailureMessage("This is a custom message").that(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).isEqualTo(
+      assertThat(expected).hasMessage(
           "This is a custom message: The subject was expected to be true, but was false");
     }
   }
@@ -85,8 +129,8 @@ public class CustomFailureMessageTest {
           .in(Arrays.asList("a1", "b1", "c1")).thatEach(STRING).contains("b");
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("This is a custom message: Not true that <\"a1\"> contains <\"b\">");
+      assertThat(expected)
+          .hasMessage("This is a custom message: Not true that <\"a1\"> contains <\"b\">");
     }
   }
 }

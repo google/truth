@@ -95,8 +95,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * iteration order guarantees (say, {@link Set}{@code <?>}s), this method may provide
    * unexpected results.  Consider using {@link #isEqualTo(Object)} in such cases, or using
    * collections and iterables that provide strong order guarantees.
+   *
+   * @deprecated Use {@code containsExactlyElementsIn(Iterable).inOrder()} instead.
    */
-  // TODO(user): @deprecated Use {@code containsExactlyElementsIn(Iterable).inOrder()} instead.
+  @Deprecated
   public void iteratesAs(Iterable<?> expectedItems) {
     Iterator<T> actualItems = getSubject().iterator();
     for (Object expected : expectedItems) {
@@ -129,8 +131,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * the iterable under test does not provide iteration order guarantees (say,
    * a {@link Set}{@code <?>}), this method is not suitable for asserting that order.
    * Consider using {@link #isEqualTo(Object)}
+   *
+   * @deprecated Use {@code containsExactly(Object...).inOrder()} instead.
    */
-  // TODO(user): @deprecated Use {@code containsExactly(Object, Object...).inOrder()} instead.
+  @Deprecated
   public void iteratesAs(Object... expectedItems) {
     iteratesAs(Arrays.asList(expectedItems));
   }
@@ -175,7 +179,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * or fails.
    */
   public void containsAnyOf(@Nullable Object first, @Nullable Object second, Object... rest) {
-    contains("contains any of", accumulate(first, second, rest));
+    containsAny("contains any of", accumulate(first, second, rest));
   }
 
   /**
@@ -183,12 +187,24 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * in the provided collection or fails.
    */
   public void containsAnyIn(Iterable<?> expected) {
-    contains("contains any element in", expected);
+    containsAny("contains any element in", expected);
   }
 
-  private void contains(String failVerb, Iterable<?> expected) {
+  private void containsAny(String failVerb, Iterable<?> expected) {
+    Collection<T> subject;
+    if (getSubject() instanceof Collection) {
+      // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
+      // iterable, right? I sure hope so.
+      subject = (Collection<T>) getSubject();
+    } else {
+      // Would really like to use a HashSet here, but that would mean this would fail for elements
+      // that don't implement hashCode correctly (or even throw an exception from it), where using
+      // Iterables.contains would not fail.
+      subject = Lists.newArrayList(getSubject());
+    }
+
     for (Object item : expected) {
-      if (Iterables.contains(getSubject(), item)) {
+      if (subject.contains(item)) {
         return;
       }
     }
@@ -342,7 +358,15 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
         // TODO(user): Possible enhancement: Include "[1 copy]" if the element does appear in
         // the subject but not enough times. Similarly for unexpected extra items.
         if (!missing.isEmpty()) {
-          failWithBadResults(failVerb, required, "is missing", countDuplicates(missing));
+          if (!extra.isEmpty()) {
+            // Subject is both missing required elements and contains extra elements
+            failWithRawMessage(
+                "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>",
+                getDisplaySubject(), failVerb, required,
+                countDuplicates(missing), countDuplicates(extra));
+          } else {
+            failWithBadResults(failVerb, required, "is missing", countDuplicates(missing));
+          }
         }
         if (!extra.isEmpty()) {
           failWithBadResults(failVerb, required, "has unexpected items", countDuplicates(extra));
@@ -387,7 +411,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
 
   private void containsNone(String failVerb, Iterable<?> excluded) {
     Collection<Object> present = new ArrayList<Object>();
-    for (Object item : Sets.newHashSet(excluded)) {
+    for (Object item : Sets.newLinkedHashSet(excluded)) {
       if (Iterables.contains(getSubject(), item)) {
         present.add(item);
       }

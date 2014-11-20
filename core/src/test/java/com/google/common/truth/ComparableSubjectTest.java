@@ -15,8 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 import static org.junit.Assert.fail;
 
@@ -26,6 +26,8 @@ import com.google.testing.compile.JavaFileObjects;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.math.BigDecimal;
 
 import javax.tools.JavaFileObject;
 
@@ -62,13 +64,13 @@ public class ComparableSubjectTest {
   }
 
   @Test public void comparesEqualTo() {
-    assertThat(5).comparesEqualTo(5);
+    assertThat(new BigDecimal("2.0")).comparesEqualTo(new BigDecimal("2.00"));
 
     try {
-      assertThat(4).comparesEqualTo(5);
+      assertThat(new BigDecimal("2.0")).comparesEqualTo(new BigDecimal("2.1"));
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("<4> should have been equivalent to <5>");
+      assertThat(e.getMessage()).isEqualTo("<2.0> should have been equivalent to <2.1>");
     }
   }
 
@@ -235,7 +237,7 @@ public class ComparableSubjectTest {
         "  }",
         "}");
 
-    assert_().about(javaSource()).that(file)
+    assertAbout(javaSource()).that(file)
         .failsToCompile()
         .withErrorContaining("java.lang.String cannot be converted to test.MyTest.ComparableType")
         .in(file)
@@ -261,7 +263,7 @@ public class ComparableSubjectTest {
         "    }",
         "  }",
         "}");
-    assert_().about(javaSource()).that(file)
+    assertAbout(javaSource()).that(file)
         .failsToCompile()
         .withErrorContaining(
             "java.lang.String cannot be converted to test.MyTest.RawComparableType")

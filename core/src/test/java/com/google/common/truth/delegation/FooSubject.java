@@ -39,8 +39,13 @@ public class FooSubject extends Subject<FooSubject, Foo> {
 
   public void matches(Foo object) {
     if (getSubject().value != object.value) {
-      fail("matches", getSubject(), object);
+      fail("matches", object);
     }
   }
 
+  public void matchesEither(Foo object1, Foo object2) {
+    if (getSubject().value != object1.value && getSubject().value != object2.value) {
+      fail("matches either of", object1, object2);
+    }
+  }
 }

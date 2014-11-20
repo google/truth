@@ -60,12 +60,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
         failWithRawMessage("Not true that %s is equal to (%s)<%s>",
             getDisplaySubject(), expected.getClass().getName(), expected);
       } else if (!getSubject().equals(expected)) {
-        if (expected instanceof String) {
-          failureStrategy.failComparing("", (String) expected, getSubject());
-        } else {
-          failWithRawMessage("Not true that %s equal to (%s)<%s>",
-              getDisplaySubject(), expected.getClass().getName(), expected);
-        }
+        failureStrategy.failComparing("", (String) expected, getSubject());
       }
     }
   }

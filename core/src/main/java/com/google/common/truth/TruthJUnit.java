@@ -36,7 +36,7 @@ import org.junit.internal.AssumptionViolatedException;
  * eg:
  * <pre>{@code
  * import com.google.common.truth.Truth.assert_;
- * import com.google.common.truth.Truth.assume;
+ * import com.google.common.truth.TruthJUnit.assume;
  *
  * public void @Test testFoosAgainstBars {
  *   assume().that(foo).isNotNull();

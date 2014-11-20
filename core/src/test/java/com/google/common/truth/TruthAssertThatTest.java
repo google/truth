@@ -65,7 +65,7 @@ public class TruthAssertThatTest {
 
     assert_().that(verbTypes).isNotEmpty();
     assert_().that(truthTypes).isNotEmpty();
-    assert_().that(truthTypes).has().exactlyAs(verbTypes);
+    assert_().that(truthTypes).containsExactlyElementsIn(verbTypes);
   }
 
   @Test public void festAlike() {
