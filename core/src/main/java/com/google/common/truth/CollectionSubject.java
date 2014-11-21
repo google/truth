@@ -26,7 +26,8 @@ import javax.annotation.CheckReturnValue;
  *
  * @author Christian Gruber
  */
-public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>>
+public
+class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extends Collection<T>>
     extends IterableSubject<S, T, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -40,18 +41,24 @@ public class CollectionSubject<S extends CollectionSubject<S, T, C>, T, C extend
   }
 
   /**
-   * @tobedeprecated {@code assertThat(foo).has().somePredicate()} has
+   * @deprecated {@code assertThat(foo).has().somePredicate()} has
    *     been replaced with direct methods such as
    *     {@link IterableSubject#containsAllOf(Object, Object, Object...)},
    *     {@link IterableSubject#contains(Object)}, etc.
    */
   @CheckReturnValue
-  // TODO(user): @Deprecated
+  @Deprecated
   public Has<T, C> has() {
     return new Has<T, C>();
   }
 
-  // TODO(user): @Deprecated
+  /**
+   * @deprecated {@code assertThat(foo).has().somePredicate()} has
+   *     been replaced with direct methods such as
+   *     {@link IterableSubject#containsAllOf(Object, Object, Object...)},
+   *     {@link IterableSubject#contains(Object)}, etc.
+   */
+  @Deprecated
   public class Has<T, C extends Collection<T>> {
     /**
      * Attests that a Collection contains at least the item

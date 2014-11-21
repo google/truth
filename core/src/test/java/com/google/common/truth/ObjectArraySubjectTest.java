@@ -46,7 +46,7 @@ public class ObjectArraySubjectTest {
   }
 
   @Test public void asList() {
-    assertThat(objectArray("A", 5L)).asList().has().anyOf("A");
+    assertThat(objectArray("A", 5L)).asList().contains("A");
   }
 
   @Test public void hasLength() {
@@ -161,7 +161,7 @@ public class ObjectArraySubjectTest {
   }
 
   @Test public void stringArrayAsList() {
-    assertThat(objectArray("A", "B")).asList().has().anyOf("A");
+    assertThat(objectArray("A", "B")).asList().contains("A");
   }
 
   @Test public void stringArrayIsEqualTo_Fail_UnequalOrdering() {

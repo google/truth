@@ -24,7 +24,7 @@ import java.util.List;
  * @author Christian Gruber
  */
 public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
-    extends CollectionSubject<S, T, C> {
+    extends IterableSubject<S, T, C> {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   static <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C> create(

@@ -50,7 +50,7 @@ public class ExpectFailureTest {
   }
 
   @Test public void expectFailContainsAnyOf() {
-    EXPECT.that(Arrays.asList("a", "b", "c")).has().anyOf("z", "q");
+    EXPECT.that(Arrays.asList("a", "b", "c")).containsAnyOf("z", "q");
   }
 
   public static class FailingExpect extends Expect {
