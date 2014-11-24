@@ -91,6 +91,19 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
 
   /**
    * Asserts that the items are supplied in the order given by the iterable. If
+   * the iterable under test does not provide iteration order guarantees (say,
+   * a {@link Set}{@code <?>}), this method is not suitable for asserting that order.
+   * Consider using {@link #isEqualTo(Object)}
+   *
+   * @deprecated Use {@code containsExactly(Object...).inOrder()} instead.
+   */
+  @Deprecated
+  public void iteratesAs(Object... expectedItems) {
+    iteratesAs(Arrays.asList(expectedItems));
+  }
+
+  /**
+   * Asserts that the items are supplied in the order given by the iterable. If
    * the iterable under test and/or the {@code expectedItems} do not provide
    * iteration order guarantees (say, {@link Set}{@code <?>}s), this method may provide
    * unexpected results.  Consider using {@link #isEqualTo(Object)} in such cases, or using
@@ -124,19 +137,6 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   @Deprecated
   public void iteratesOverSequence(Object... expectedItems) {
     iteratesAs(expectedItems);
-  }
-
-  /**
-   * Asserts that the items are supplied in the order given by the iterable. If
-   * the iterable under test does not provide iteration order guarantees (say,
-   * a {@link Set}{@code <?>}), this method is not suitable for asserting that order.
-   * Consider using {@link #isEqualTo(Object)}
-   *
-   * @deprecated Use {@code containsExactly(Object...).inOrder()} instead.
-   */
-  @Deprecated
-  public void iteratesAs(Object... expectedItems) {
-    iteratesAs(Arrays.asList(expectedItems));
   }
 
   /**
