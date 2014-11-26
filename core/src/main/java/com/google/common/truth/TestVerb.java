@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Table;
 
 import java.util.Collection;
 import java.util.List;
@@ -149,6 +151,18 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   public <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
       that(Map<K, V> target) {
     return MapSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <E, M extends Multiset<E>>
+      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(Multiset<E> target) {
+    return MultisetSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <R, C, V, M extends Table<R, C, V>>
+      TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> that(Table<R, C, V> target) {
+    return TableSubject.create(getFailureStrategy(), target);
   }
 
   @Override

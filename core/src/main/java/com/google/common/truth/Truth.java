@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Table;
 import com.google.common.truth.AbstractVerb.DelegatedVerb;
 
 import java.util.Collection;
@@ -200,6 +202,19 @@ public final class Truth {
   @CheckReturnValue
   public static <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
       assertThat(Map<K, V> target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
+  public static <E, M extends Multiset<E>>
+      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> assertThat(Multiset<E> target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
+  public static <R, C, V, M extends Table<R, C, V>>
+      TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> assertThat(
+          Table<R, C, V> target) {
     return assert_().that(target);
   }
 }
