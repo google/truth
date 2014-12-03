@@ -17,7 +17,10 @@ package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 
 import java.util.Collection;
@@ -151,6 +154,26 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   public <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
       that(Map<K, V> target) {
     return MapSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <K, V, M extends Multimap<K, V>>
+      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> that(Multimap<K, V> target) {
+    return MultimapSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <K, V, M extends ListMultimap<K, V>>
+      ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> that(
+      ListMultimap<K, V> target) {
+    return ListMultimapSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <K, V, M extends SetMultimap<K, V>>
+      SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> that(
+      SetMultimap<K, V> target) {
+    return SetMultimapSubject.create(getFailureStrategy(), target);
   }
 
   @CheckReturnValue

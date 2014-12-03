@@ -17,8 +17,12 @@ package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
+
 import com.google.common.truth.AbstractVerb.DelegatedVerb;
 
 import java.util.Collection;
@@ -202,6 +206,27 @@ public final class Truth {
   @CheckReturnValue
   public static <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
       assertThat(Map<K, V> target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
+  public static <K, V, M extends Multimap<K, V>>
+  MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> assertThat(
+      Multimap<K, V> target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
+  public static <K, V, M extends ListMultimap<K, V>>
+  ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> assertThat(
+      ListMultimap<K, V> target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
+  public static <K, V, M extends SetMultimap<K, V>>
+  SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> assertThat(
+      SetMultimap<K, V> target) {
     return assert_().that(target);
   }
 
