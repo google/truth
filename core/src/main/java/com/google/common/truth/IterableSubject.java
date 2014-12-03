@@ -294,10 +294,11 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Attests that a subject contains all of the provided objects and
-   * only these objects or fails, potentially permitting duplicates
-   * in both the subject and the parameters (if the subject even can
-   * have duplicates).
+   * Attests that a subject contains exactly the provided objects or fails.
+   *
+   * <p>Multiplicity is respected. For example, an object duplicated exactly 3
+   * times in the parameters asserts that the object must likewise be duplicated
+   * exactly 3 times in the subject.
    *
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
@@ -307,10 +308,11 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Attests that a subject contains all of the provided objects and
-   * only these objects or fails, potentially permitting duplicates
-   * in both the subject and the parameters (if the subject even can
-   * have duplicates).
+   * Attests that a subject contains exactly the provided objects or fails.
+   *
+   * <p>Multiplicity is respected. For example, an object duplicated exactly 3
+   * times in the {@code Iterable} parameter asserts that the object must
+   * likewise be duplicated exactly 3 times in the subject.
    *
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
