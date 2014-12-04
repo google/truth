@@ -15,7 +15,10 @@
  */
 package com.google.common.truth;
 
+import com.google.common.collect.Ordering;
+
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -69,14 +72,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws NullPointerException if any element is null.
    */
   public void isOrdered() {
-    pairwiseCheck(new PairwiseChecker<T>() {
-      @SuppressWarnings("unchecked")
-      @Override public void check(T prev, T next) {
-        if (((Comparable<T>) prev).compareTo(next) >= 0) {
-          fail("is strictly ordered", prev, next);
-        }
-      }
-    });
+    isOrdered((Ordering) Ordering.natural());
   }
 
   /**
@@ -87,14 +83,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws NullPointerException if any element is null.
    */
   public void isPartiallyOrdered() {
-    pairwiseCheck(new PairwiseChecker<T>() {
-      @SuppressWarnings("unchecked")
-      @Override public void check(T prev, T next) {
-        if (((Comparable<T>) prev).compareTo(next) > 0) {
-          fail("is partially ordered", prev, next);
-        }
-      }
-    });
+    isPartiallyOrdered((Ordering) Ordering.natural());
   }
 
   /**
@@ -132,11 +121,11 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
   }
 
   private void pairwiseCheck(PairwiseChecker<T> checker) {
-    List<T> list = getSubject();
-    if (list.size() > 1) {
-      T prev = list.get(0);
-      for (int n = 1; n < list.size(); n++) {
-        T next = list.get(n);
+    Iterator<T> iterator = getSubject().iterator();
+    if (iterator.hasNext()) {
+      T prev = iterator.next();
+      while (iterator.hasNext()) {
+        T next = iterator.next();
         checker.check(prev, next);
         prev = next;
       }
