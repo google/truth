@@ -92,17 +92,17 @@ public class TruthGwtTest extends GWTTestCase {
 
   public void testDefault() {
     assertThat(new Object()).isNotNull();
-    assertThat(new ArrayList<String>()).isA(AbstractList.class);
+    assertThat(new ArrayList<String>()).isInstanceOf(AbstractList.class);
   }
 
   public void testLegacyASSERT() {
     ASSERT.that(new Object()).isNotNull();
-    ASSERT.that(new ArrayList<String>()).isA(AbstractList.class);
+    ASSERT.that(new ArrayList<String>()).isInstanceOf(AbstractList.class);
   }
-  
+
   public void testLegacyAssert_() {
     assert_().that(new Object()).isNotNull();
-    assert_().that(new ArrayList<String>()).isA(AbstractList.class);
+    assert_().that(new ArrayList<String>()).isInstanceOf(AbstractList.class);
   }
 
   public void testInvokePlatformMethods() {
