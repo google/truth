@@ -6,6 +6,10 @@ jdk:
   - openjdk7
 #  - openjdk6
 
+os:
+  - linux
+  - osx
+
 install:
   - mvn -U -P!standard-with-extra-repos dependency:go-offline test clean --quiet --fail-never -DskipTests=true
 
