@@ -17,6 +17,11 @@ package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Table;
 
 import java.util.Collection;
 import java.util.List;
@@ -84,9 +89,13 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return IterableSubject.create(getFailureStrategy(), target);
   }
 
+  /**
+   * @deprecated Use the {@link Iterable} overload instead.
+   */
+  @Deprecated
   @CheckReturnValue
-  public <T, C extends Collection<T>> CollectionSubject<? extends CollectionSubject<?, T, C>, T, C>
-      that(Collection<T> target) {
+  public <T, C extends Collection<T>>
+      CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> that(Collection<T> target) {
     return CollectionSubject.create(getFailureStrategy(), target);
   }
 
@@ -145,6 +154,38 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   public <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
       that(Map<K, V> target) {
     return MapSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <K, V, M extends Multimap<K, V>>
+      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> that(Multimap<K, V> target) {
+    return MultimapSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <K, V, M extends ListMultimap<K, V>>
+      ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> that(
+      ListMultimap<K, V> target) {
+    return ListMultimapSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <K, V, M extends SetMultimap<K, V>>
+      SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> that(
+      SetMultimap<K, V> target) {
+    return SetMultimapSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <E, M extends Multiset<E>>
+      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(Multiset<E> target) {
+    return MultisetSubject.create(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public <R, C, V, M extends Table<R, C, V>>
+      TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> that(Table<R, C, V> target) {
+    return TableSubject.create(getFailureStrategy(), target);
   }
 
   @Override

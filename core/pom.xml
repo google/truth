@@ -10,7 +10,7 @@
   <artifactId>truth</artifactId>
   <properties>
     <javadoc.param></javadoc.param>
-    <gwt.version>2.6.1</gwt.version>
+    <gwt.version>2.7.0</gwt.version>
   </properties>
   <dependencies>
     <dependency>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.google.auto.value</groupId>
       <artifactId>auto-value</artifactId>
-      <version>1.0-rc1</version>
+      <version>1.0-SNAPSHOT</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -94,6 +94,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
+        <version>2.4</version>
         <executions>
           <execution>
             <phase>post-integration-test</phase>

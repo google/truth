@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,12 +40,14 @@ public class ThrowableTest {
   }
 
   @Test public void hasMessage_failure() {
+    NullPointerException subject = new NullPointerException("message");
     try {
-      assertThat(new NullPointerException("message")).hasMessage("foobar");
+      assertThat(subject).hasMessage("foobar");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage()).isEqualTo(
           "Not true that <java.lang.NullPointerException: message> has message <foobar>");
+      assertThat(expected.getCause()).isEqualTo(subject);
     }
   }
 
@@ -67,6 +68,21 @@ public class ThrowableTest {
     } catch (AssertionError expected) {
       assertThat(expected.getMessage()).isEqualTo(
           "Not true that <java.lang.NullPointerException> has message <message>");
+    }
+  }
+
+  @Test public void inheritedMethodChainsSubject() {
+    NullPointerException expected = new NullPointerException("expected");
+    NullPointerException actual = new NullPointerException("actual");
+    try {
+      assertThat(actual).isEqualTo(expected);
+      throw new Error("Expected to fail.");
+    } catch (AssertionError thrown) {
+      assertThat(thrown.getCause()).isEqualTo(actual);
+      /*
+       * TODO(cpovirk): consider a special case for isEqualTo and isSameAs that adds |expected| as a
+       * suppressed exception
+       */
     }
   }
 }

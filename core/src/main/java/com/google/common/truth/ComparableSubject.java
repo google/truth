@@ -25,7 +25,7 @@ import com.google.common.collect.Range;
 public abstract class ComparableSubject<S extends Subject<S, T>, T extends Comparable>
     extends Subject<S, T> {
 
-  ComparableSubject(FailureStrategy failureStrategy, T subject) {
+  protected ComparableSubject(FailureStrategy failureStrategy, T subject) {
     super(failureStrategy, subject);
   }
 

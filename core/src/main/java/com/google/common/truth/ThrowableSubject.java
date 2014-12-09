@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
 
   public ThrowableSubject(FailureStrategy failureStrategy, Throwable throwable) {
-    super(failureStrategy, throwable);
+    super(causeInsertingStrategy(failureStrategy, throwable), throwable);
   }
 
   // TODO(user): Should this be @Nullable or should we have .doesNotHaveMessage()?
@@ -38,5 +38,26 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
     if (!Objects.equal(message, getSubject().getMessage())) {
       fail("has message", message);
     }
+  }
+
+  private static FailureStrategy causeInsertingStrategy(
+      final FailureStrategy delegate, final Throwable defaultCause) {
+    return new FailureStrategy() {
+      @Override
+      public void fail(String message) {
+        delegate.fail(message, defaultCause);
+      }
+
+      @Override
+      public void fail(String message, Throwable cause) {
+        delegate.fail(message, cause);
+        // TODO(cpovirk): add defaultCause as a suppressed exception?
+      }
+
+      @Override
+      public void failComparing(String message, CharSequence expected, CharSequence actual) {
+        delegate.fail(StringUtil.messageFor(message, expected, actual), defaultCause);
+      }
+    };
   }
 }

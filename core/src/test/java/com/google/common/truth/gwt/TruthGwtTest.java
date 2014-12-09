@@ -73,15 +73,15 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testIterable() {
-    assertThat((Iterable<Integer>)asList(1, 2, 3)).iteratesAs(1, 2, 3);
+    assertThat((Iterable<Integer>)asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
   }
 
   public void testCollection() {
-    assertThat((Collection<Integer>)asList(1, 2, 3)).containsAllOf(1, 2, 3).inOrder();
+    assertThat((Collection<Integer>)asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
   }
 
   public void testList() {
-    assertThat(asList(1, 2, 3)).containsAllOf(1, 2, 3).inOrder();
+    assertThat(asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
   }
 
   public void testObjectArray() {
@@ -92,17 +92,17 @@ public class TruthGwtTest extends GWTTestCase {
 
   public void testDefault() {
     assertThat(new Object()).isNotNull();
-    assertThat(new ArrayList<String>()).isA(AbstractList.class);
+    assertThat(new ArrayList<String>()).isInstanceOf(AbstractList.class);
   }
 
   public void testLegacyASSERT() {
     ASSERT.that(new Object()).isNotNull();
-    ASSERT.that(new ArrayList<String>()).isA(AbstractList.class);
+    ASSERT.that(new ArrayList<String>()).isInstanceOf(AbstractList.class);
   }
-  
+
   public void testLegacyAssert_() {
     assert_().that(new Object()).isNotNull();
-    assert_().that(new ArrayList<String>()).isA(AbstractList.class);
+    assert_().that(new ArrayList<String>()).isInstanceOf(AbstractList.class);
   }
 
   public void testInvokePlatformMethods() {
