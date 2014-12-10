@@ -15,8 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 import static org.junit.Assert.fail;
+
+import com.google.testing.compile.JavaFileObjects;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +28,9 @@ import org.junit.runners.JUnit4;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
+
+import javax.tools.JavaFileObject;
 
 /**
  * Tests for List Subjects.
@@ -158,4 +165,106 @@ public class ListTest {
       return Integer.valueOf(a).compareTo(Integer.valueOf(b));
     }
   };
+
+  private static class Foo {
+    private final int x;
+
+    private Foo(int x) {
+      this.x = x;
+    }
+  }
+
+  private static class Bar extends Foo {
+    private Bar(int x) {
+      super(x);
+    }
+  }
+
+  private static final Comparator<Foo> FOO_COMPARATOR = new Comparator<Foo>() {
+    @Override public int compare(Foo a, Foo b) {
+      return Integer.compare(a.x, b.x);
+    }
+  };
+
+  @Test public void listOrderedByBaseClassComparator() {
+    List<Bar> targetList = Arrays.asList(new Bar(1), new Bar(2), new Bar(3));
+    assertThat(targetList).isPartiallyOrdered(FOO_COMPARATOR);
+    assertThat(targetList).isOrdered(FOO_COMPARATOR);
+  }
+
+  @Test public void listOrderedBySubClassDontCompile() {
+    JavaFileObject file = JavaFileObjects.forSourceLines(
+        "test.MyTest",
+        "package test;",
+        "import static com.google.common.truth.Truth.assertThat;",
+        "import java.util.Arrays;",
+        "import java.util.Comparator;",
+        "import java.util.List;",
+        "class MyTest {",
+        "  private static class Foo {",
+        "    protected final int x;",
+        "    private Foo(int x) {",
+        "      this.x = x;",
+        "    }",
+        "  }",
+        "  private static class Bar extends Foo {",
+        "    private Bar(int x) {",
+        "      super(x);",
+        "    }",
+        "  }",
+        "  private static final Comparator<Bar> BAR_COMPARATOR = new Comparator<Bar>() {",
+        "    @Override public int compare(Bar a, Bar b) {",
+        "      return Integer.compare(a.x, b.x);",
+        "    }",
+        "  };",
+        "  public void testFoo() {",
+        "    List<Foo> targetList = Arrays.asList(new Foo(1), new Foo(2), new Foo(3));",
+        "    assertThat(targetList).isOrdered(BAR_COMPARATOR);",
+        "  }",
+        "}");
+
+    assertAbout(javaSource()).that(file)
+        .failsToCompile()
+        .withErrorContaining("no suitable method found for isOrdered")
+        .in(file)
+        .onLine(25);
+  }
+
+  @Test public void listPartiallyOrderedBySubClassDontCompile() {
+    JavaFileObject file = JavaFileObjects.forSourceLines(
+        "test.MyTest",
+        "package test;",
+        "import static com.google.common.truth.Truth.assertThat;",
+        "import java.util.Arrays;",
+        "import java.util.Comparator;",
+        "import java.util.List;",
+        "class MyTest {",
+        "  private static class Foo {",
+        "    protected final int x;",
+        "    private Foo(int x) {",
+        "      this.x = x;",
+        "    }",
+        "  }",
+        "  private static class Bar extends Foo {",
+        "    private Bar(int x) {",
+        "      super(x);",
+        "    }",
+        "  }",
+        "  private static final Comparator<Bar> BAR_COMPARATOR = new Comparator<Bar>() {",
+        "    @Override public int compare(Bar a, Bar b) {",
+        "      return Integer.compare(a.x, b.x);",
+        "    }",
+        "  };",
+        "  public void testFoo() {",
+        "    List<Foo> targetList = Arrays.asList(new Foo(1), new Foo(2), new Foo(3));",
+        "    assertThat(targetList).isPartiallyOrdered(BAR_COMPARATOR);",
+        "  }",
+        "}");
+
+    assertAbout(javaSource()).that(file)
+        .failsToCompile()
+        .withErrorContaining("no suitable method found for isPartiallyOrdered")
+        .in(file)
+        .onLine(25);
+  }
 }

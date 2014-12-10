@@ -93,7 +93,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public void isOrdered(final Comparator<T> comparator) {
+  public void isOrdered(final Comparator<? super T> comparator) {
     pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) >= 0) {
@@ -110,7 +110,7 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
    * @throws ClassCastException if any pair of elements is not mutually Comparable.
    * @throws NullPointerException if any element is null.
    */
-  public void isPartiallyOrdered(final Comparator<T> comparator) {
+  public void isPartiallyOrdered(final Comparator<? super T> comparator) {
     pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) > 0) {
