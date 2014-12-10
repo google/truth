@@ -19,6 +19,6 @@ env:
   - secure: XpixMe6WG/U2lUgbkZohDDiDJnrXdra+K+AUvg8ze35Wd6ffPdHh9oLMR6DbMq82VV21G9WcJyRQM7g/mCBHOXDt6/0fj/IPUaev15QsJITF1TAJRISxL4DClsJX6U7i2y+KaZ1pOSnsEFvDHE7QM9+DYqG4cPX++bt7Lr33v+4=
 
 after_success:
-  - sh util/generate-latest-docs.sh
-  - sh util/publish-snapshot-on-commit.sh
+  - bash util/generate-latest-docs.sh
+  - bash util/publish-snapshot-on-commit.sh
 
