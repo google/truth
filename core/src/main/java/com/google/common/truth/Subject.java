@@ -312,6 +312,12 @@ public class Subject<S extends Subject<S,T>,T> {
     failureStrategy.fail(format(message, parameters));
   }
 
+  /**
+   * @deprecated Instead of using reflection, it is much better coding practices to test your
+   *     objects directly through their APIs instead. This may require you to expose your fields
+   *     via a package-private getter. In this case, please use {@code @VisibleForTesting}.
+   */
+  @Deprecated
   @GwtIncompatible("java.lang.reflect.Field")
   public HasField hasField(final String fieldName) {
     final T subject = getSubject();
