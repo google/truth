@@ -27,11 +27,13 @@ import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
+import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -446,4 +448,102 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   private static final Ordered IN_ORDER = new Ordered() {
     @Override public void inOrder() {}
   };
+
+  /**
+   * Fails if the list is not strictly ordered according to the natural ordering of its elements.
+   * Null elements are not permitted.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   */
+  public void isStrictlyOrdered() {
+    isStrictlyOrdered((Ordering) Ordering.natural());
+  }
+
+  /**
+   * Fails if the list is not strictly ordered according to the given comparator.
+   * Null elements are not permitted.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   */
+  public void isStrictlyOrdered(final Comparator<? super T> comparator) {
+    pairwiseCheck(new PairwiseChecker<T>() {
+      @Override public void check(T prev, T next) {
+        if (comparator.compare(prev, next) >= 0) {
+          fail("is strictly ordered", prev, next);
+        }
+      }
+    });
+  }
+
+  /**
+   * Fails if the list is not strictly ordered according to the natural ordering of its elements.
+   * Null elements are not permitted.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   */
+  // TODO(user): @deprecated use {@link #isStrictlyOrdered(Comparator)} instead
+  public void isOrdered() {
+    isStrictlyOrdered();
+  }
+
+  /**
+   * Fails if the list is not strictly ordered according to the given comparator.
+   * Null elements are not permitted.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   */
+  // TODO(user): @deprecated use {@link #isStrictlyOrdered(Comparator)} instead
+  public void isOrdered(Comparator<? super T> comparator) {
+    isStrictlyOrdered(comparator);
+  }
+
+  /**
+   * Fails if the list is not ordered according to the natural ordering of its elements.
+   * Null elements are not permitted.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   */
+  // TODO(user): Rename to isOrdered() once we've nuked it
+  public void isPartiallyOrdered() {
+    isPartiallyOrdered((Ordering) Ordering.natural());
+  }
+
+  /**
+   * Fails if the list is not ordered according to the given comparator.
+   * Null elements are not permitted.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   */
+  // TODO(user): Rename to isOrdered(Comparator) once we've nuked it
+  public void isPartiallyOrdered(final Comparator<? super T> comparator) {
+    pairwiseCheck(new PairwiseChecker<T>() {
+      @Override public void check(T prev, T next) {
+        if (comparator.compare(prev, next) > 0) {
+          fail("is partially ordered", prev, next);
+        }
+      }
+    });
+  }
+
+  private interface PairwiseChecker<T> {
+    void check(T prev, T next);
+  }
+
+  private void pairwiseCheck(PairwiseChecker<T> checker) {
+    Iterator<T> iterator = getSubject().iterator();
+    if (iterator.hasNext()) {
+      T prev = iterator.next();
+      while (iterator.hasNext()) {
+        T next = iterator.next();
+        checker.check(prev, next);
+        prev = next;
+      }
+    }
+  }
 }

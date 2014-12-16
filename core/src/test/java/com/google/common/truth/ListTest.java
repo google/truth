@@ -74,15 +74,15 @@ public class ListTest {
     }
   }
 
-  @Test public void listIsOrdered() {
-    assertThat(Arrays.<Integer>asList()).isOrdered();
-    assertThat(Arrays.asList(1)).isOrdered();
-    assertThat(Arrays.asList(1, 2, 3, 4)).isOrdered();
+  @Test public void listIsStrictlyOrdered() {
+    assertThat(Arrays.<Integer>asList()).isStrictlyOrdered();
+    assertThat(Arrays.asList(1)).isStrictlyOrdered();
+    assertThat(Arrays.asList(1, 2, 3, 4)).isStrictlyOrdered();
   }
 
-  @Test public void isOrderedFailure() {
+  @Test public void isStrictlyOrderedFailure() {
     try {
-      assertThat(Arrays.asList(1, 2, 2, 4)).isOrdered();
+      assertThat(Arrays.asList(1, 2, 2, 4)).isStrictlyOrdered();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("is strictly ordered");
@@ -90,9 +90,9 @@ public class ListTest {
     }
   }
 
-  @Test public void isOrderedWithNonComparableElementsFailure() {
+  @Test public void isStrictlyOrderedWithNonComparableElementsFailure() {
     try {
-      assertThat(Arrays.<Object>asList(1, "2", 3, "4")).isOrdered();
+      assertThat(Arrays.<Object>asList(1, "2", 3, "4")).isStrictlyOrdered();
       fail("Should have thrown.");
     } catch (ClassCastException e) {}
   }
@@ -120,16 +120,16 @@ public class ListTest {
     } catch (ClassCastException e) {}
   }
 
-  @Test public void listIsOrderedWithComparator() {
-    assertThat(Arrays.<String>asList()).isOrdered(COMPARE_AS_DECIMAL);
-    assertThat(Arrays.asList("1")).isOrdered(COMPARE_AS_DECIMAL);
+  @Test public void listIsStrictlyOrderedWithComparator() {
+    assertThat(Arrays.<String>asList()).isStrictlyOrdered(COMPARE_AS_DECIMAL);
+    assertThat(Arrays.asList("1")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
     // Note: Use "10" and "20" to distinguish numerical and lexicographical ordering.
-    assertThat(Arrays.asList("1", "2", "10", "20")).isOrdered(COMPARE_AS_DECIMAL);
+    assertThat(Arrays.asList("1", "2", "10", "20")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
   }
 
-  @Test public void listIsOrderedWithComparatorFailure() {
+  @Test public void listIsStrictlyOrderedWithComparatorFailure() {
     try {
-      assertThat(Arrays.asList("1", "2", "2", "10")).isOrdered(COMPARE_AS_DECIMAL);
+      assertThat(Arrays.asList("1", "2", "2", "10")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("is strictly ordered");
@@ -183,6 +183,6 @@ public class ListTest {
   @Test public void listOrderedByBaseClassComparator() {
     List<Bar> targetList = Arrays.asList(new Bar(1), new Bar(2), new Bar(3));
     assertThat(targetList).isPartiallyOrdered(FOO_COMPARATOR);
-    assertThat(targetList).isOrdered(FOO_COMPARATOR);
+    assertThat(targetList).isStrictlyOrdered(FOO_COMPARATOR);
   }
 }

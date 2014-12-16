@@ -15,10 +15,6 @@
  */
 package com.google.common.truth;
 
-import com.google.common.collect.Ordering;
-
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,6 +22,7 @@ import java.util.List;
  *
  * @author Christian Gruber
  */
+// TODO(user): Remove this class entirely.
 public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
     extends IterableSubject<S, T, C> {
 
@@ -62,77 +59,5 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
       list = list.subList(first + 1, list.size());
     }
     fail("contains sequence", sequence);
-  }
-
-  /**
-   * Fails if the list is not strictly ordered according to the natural ordering of its elements.
-   * Null elements are not permitted.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable.
-   * @throws NullPointerException if any element is null.
-   */
-  public void isOrdered() {
-    isOrdered((Ordering) Ordering.natural());
-  }
-
-  /**
-   * Fails if the list is not partially ordered according to the natural ordering of its elements.
-   * Null elements are not permitted.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable.
-   * @throws NullPointerException if any element is null.
-   */
-  public void isPartiallyOrdered() {
-    isPartiallyOrdered((Ordering) Ordering.natural());
-  }
-
-  /**
-   * Fails if the list is not strictly ordered according to the given comparator.
-   * Null elements are not permitted.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable.
-   * @throws NullPointerException if any element is null.
-   */
-  public void isOrdered(final Comparator<? super T> comparator) {
-    pairwiseCheck(new PairwiseChecker<T>() {
-      @Override public void check(T prev, T next) {
-        if (comparator.compare(prev, next) >= 0) {
-          fail("is strictly ordered", prev, next);
-        }
-      }
-    });
-  }
-
-  /**
-   * Fails if the list is not partially ordered according to the given comparator.
-   * Null elements are not permitted.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable.
-   * @throws NullPointerException if any element is null.
-   */
-  public void isPartiallyOrdered(final Comparator<? super T> comparator) {
-    pairwiseCheck(new PairwiseChecker<T>() {
-      @Override public void check(T prev, T next) {
-        if (comparator.compare(prev, next) > 0) {
-          fail("is partially ordered", prev, next);
-        }
-      }
-    });
-  }
-
-  private void pairwiseCheck(PairwiseChecker<T> checker) {
-    Iterator<T> iterator = getSubject().iterator();
-    if (iterator.hasNext()) {
-      T prev = iterator.next();
-      while (iterator.hasNext()) {
-        T next = iterator.next();
-        checker.check(prev, next);
-        prev = next;
-      }
-    }
-  }
-
-  private interface PairwiseChecker<T> {
-    void check(T prev, T next);
   }
 }
