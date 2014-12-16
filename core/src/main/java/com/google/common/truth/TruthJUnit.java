@@ -35,13 +35,13 @@ import org.junit.internal.AssumptionViolatedException;
  *
  * eg:
  * <pre>{@code
- * import com.google.common.truth.Truth.assert_;
- * import com.google.common.truth.TruthJUnit.assume;
+ * import static com.google.common.truth.Truth.assertThat;
+ * import static com.google.common.truth.TruthJUnit.assume;
  *
  * public void @Test testFoosAgainstBars {
  *   assume().that(foo).isNotNull();
  *   assume().that(bar).isNotNull();
- *   assert_().that(foo.times(bar)).isEqualTo(blah);
+ *   assertThat(foo.times(bar)).isEqualTo(blah);
  * }
  * }</pre>
  *
