@@ -190,7 +190,7 @@ public class MultimapTest {
     ImmutableListMultimap<Integer, String> multimap = ImmutableListMultimap.of(
         3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
 
-    assertThat(multimap).valuesForKey(4).isOrdered();
+    assertThat(multimap).valuesForKey(4).isStrictlyOrdered();
   }
 
   @Test public void containsExactly() {

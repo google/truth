@@ -478,25 +478,17 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Fails if the list is not strictly ordered according to the natural ordering of its elements.
-   * Null elements are not permitted.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @throws NullPointerException if any element is null
+   * @deprecated use {@link #isStrictlyOrdered(Comparator)} instead
    */
-  // TODO(user): @deprecated use {@link #isStrictlyOrdered(Comparator)} instead
+  @Deprecated
   public void isOrdered() {
     isStrictlyOrdered();
   }
 
   /**
-   * Fails if the list is not strictly ordered according to the given comparator.
-   * Null elements are not permitted.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @throws NullPointerException if any element is null
+   * @deprecated use {@link #isStrictlyOrdered(Comparator)} instead
    */
-  // TODO(user): @deprecated use {@link #isStrictlyOrdered(Comparator)} instead
+  @Deprecated
   public void isOrdered(Comparator<? super T> comparator) {
     isStrictlyOrdered(comparator);
   }
