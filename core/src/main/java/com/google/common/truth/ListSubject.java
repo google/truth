@@ -22,7 +22,6 @@ import java.util.List;
  *
  * @author Christian Gruber
  */
-// TODO(user): Remove this class entirely.
 public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
     extends IterableSubject<S, T, C> {
 

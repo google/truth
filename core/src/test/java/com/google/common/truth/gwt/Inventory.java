@@ -23,7 +23,6 @@ import com.google.common.truth.Expect;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.IterableSubject;
-import com.google.common.truth.ListSubject;
 import com.google.common.truth.MapSubject;
 import com.google.common.truth.ObjectArraySubject;
 import com.google.common.truth.OptionalSubject;
@@ -54,7 +53,6 @@ public class Inventory {
   FailureStrategy ac;
   IntegerSubject f;
   IterableSubject<?, ?, ?> g;
-  ListSubject<?, ?, ?> h;
   MapSubject<?, ?, ?, ?> i;
   ObjectArraySubject<?> j;
   OptionalSubject<?> k;

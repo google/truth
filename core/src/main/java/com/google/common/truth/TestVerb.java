@@ -99,6 +99,10 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return CollectionSubject.create(getFailureStrategy(), target);
   }
 
+  /**
+   * @deprecated Use the {@link Iterable} overload instead.
+   */
+  @Deprecated
   @CheckReturnValue
   public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C>
       that(List<T> target) {

@@ -152,8 +152,13 @@ public final class Truth {
     return assert_().that(target);
   }
 
+  /**
+   * @deprecated Use the {@link Iterable} overload instead.
+   */
+  @Deprecated
   @CheckReturnValue
-  public static <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C>
+  public static <T, C extends List<T>>
+      ListSubject<? extends ListSubject<?, T, C>, T, C>
       assertThat(List<T> target) {
     return assert_().that(target);
   }
