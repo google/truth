@@ -70,7 +70,7 @@ public class PrimitiveCharArraySubject
     } catch (ClassCastException ignored) {}
   }
 
-  public ListSubject<?, Character, List<Character>> asList() {
-    return ListSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject<?, Character, List<Character>> asList() {
+    return IterableSubject.create(failureStrategy, listRepresentation());
   }
 }

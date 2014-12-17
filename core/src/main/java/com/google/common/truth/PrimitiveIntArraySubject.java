@@ -71,7 +71,7 @@ public class PrimitiveIntArraySubject
     } catch (ClassCastException ignored) {}
   }
 
-  public ListSubject<?, Integer, List<Integer>> asList() {
-    return ListSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject<?, Integer, List<Integer>> asList() {
+    return IterableSubject.create(failureStrategy, listRepresentation());
   }
 }

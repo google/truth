@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 import org.junit.Test;
@@ -191,7 +190,6 @@ public class MultimapTest {
     ImmutableListMultimap<Integer, String> multimap = ImmutableListMultimap.of(
         3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
 
-    assertThat(multimap).valuesForKey(3).containsSequence(Lists.newArrayList("one", "six"));
     assertThat(multimap).valuesForKey(4).isOrdered();
   }
 

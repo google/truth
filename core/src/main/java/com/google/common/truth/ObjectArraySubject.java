@@ -92,7 +92,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
     } catch (ClassCastException ignored) {}
   }
 
-  public ListSubject<?, T, List<T>> asList() {
-    return ListSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject<?, T, List<T>> asList() {
+    return IterableSubject.create(failureStrategy, listRepresentation());
   }
 }

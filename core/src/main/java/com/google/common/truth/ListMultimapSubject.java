@@ -20,9 +20,6 @@ import com.google.common.collect.SetMultimap;
 
 import java.util.List;
 
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nullable;
-
 /**
  * Type-specific extensions of {@link com.google.common.collect.Multimap} subjects for
  * {@link com.google.common.collect.ListMultimap} subjects.
@@ -45,18 +42,6 @@ public class ListMultimapSubject<
   }
 
   /**
-   * {@inheritDoc}
-   *
-   * <p>This method returns a ListSubject instead of an IterableSubject to allow for more
-   * type-specific assertions.
-   */
-  @CheckReturnValue
-  public ListSubject<? extends ListSubject<?, V, ? extends List<V>>, V,
-      ? extends List<V>> valuesForKey(@Nullable K key) {
-    return new ListValuesForKey(failureStrategy, key, getSubject().get(key));
-  }
-
-  /**
    * @deprecated {@code #isEqualTo} A SetMultimap can never compare equal with a ListMultimap if
    *      either Multimap is non-empty, because {@link java.util.Set} and {@link List} can never
    *      compare equal.  Prefer
@@ -67,22 +52,4 @@ public class ListMultimapSubject<
   public void isEqualTo(SetMultimap<?, ?> other) {
     super.isEqualTo(other);
   }
-
-  private class ListValuesForKey extends ListSubject<ListValuesForKey, V, List<V>> {
-
-    private final K key;
-
-    ListValuesForKey(
-        FailureStrategy failureStrategy, K key, List<V> valuesForKey) {
-      super(failureStrategy, valuesForKey);
-      this.key = key;
-    }
-
-    @Override
-    protected String getDisplaySubject() {
-      return valuesForKeyDisplaySubject(key, this);
-    }
-
-  }
-
 }

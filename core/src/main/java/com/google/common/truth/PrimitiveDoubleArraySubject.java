@@ -132,7 +132,7 @@ public class PrimitiveDoubleArraySubject
   //     incorrect to simply treat a list of floats and do normal set operations that are
   //     based on bare comparisons.
   @SuppressWarnings("unused")
-  private ListSubject<?, Double, List<Double>> asList() {
-    return ListSubject.create(failureStrategy, listRepresentation());
+  private IterableSubject<?, Double, List<Double>> asList() {
+    return IterableSubject.create(failureStrategy, listRepresentation());
   }
 }

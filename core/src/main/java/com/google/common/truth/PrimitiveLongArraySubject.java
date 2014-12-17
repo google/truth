@@ -70,7 +70,7 @@ public class PrimitiveLongArraySubject
     } catch (ClassCastException ignored) {}
   }
 
-  public ListSubject<?, Long, List<Long>> asList() {
-    return ListSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject<?, Long, List<Long>> asList() {
+    return IterableSubject.create(failureStrategy, listRepresentation());
   }
 }

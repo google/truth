@@ -70,7 +70,7 @@ public class PrimitiveByteArraySubject
     } catch (ClassCastException ignored) {}
   }
 
-  public ListSubject<?, Byte, List<Byte>> asList() {
-    return ListSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject<?, Byte, List<Byte>> asList() {
+    return IterableSubject.create(failureStrategy, listRepresentation());
   }
 }

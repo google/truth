@@ -70,7 +70,7 @@ public class PrimitiveBooleanArraySubject
     } catch (ClassCastException ignored) {}
   }
 
-  public ListSubject<?, Boolean, List<Boolean>> asList() {
-    return ListSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject<?, Boolean, List<Boolean>> asList() {
+    return IterableSubject.create(failureStrategy, listRepresentation());
   }
 }
