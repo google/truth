@@ -38,7 +38,11 @@ public class ListSubject<S extends ListSubject<S, T, C>, T, C extends List<T>>
 
   /**
    * Fails if the list does not contain the specified sequence.
+   *
+   * @deprecated This method doesn't check for a sequence, but rather a sublist. If you want to
+   *     check for a sublist, use {@code Collections.indexOfSubList(list, sublist)} instead.
    */
+  @Deprecated
   public void containsSequence(List<?> sequence) {
     if (sequence.isEmpty()) {
       return;
