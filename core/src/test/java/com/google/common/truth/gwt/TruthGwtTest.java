@@ -15,7 +15,6 @@
  */
 package com.google.common.truth.gwt;
 
-import static com.google.common.truth.Truth.ASSERT;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 import static java.util.Arrays.asList;
@@ -54,10 +53,10 @@ public class TruthGwtTest extends GWTTestCase {
     assertThat(457923).is(457923);
     try {
       assertThat(457923).is(1);
-      assert_().fail("Should have thrown an exception");
-    } catch (Throwable t) {
-      // succeeds
+    } catch (Throwable expected) {
+      return;
     }
+    assert_().fail("Should have thrown an exception");
   }
 
   public void testString() {
@@ -66,10 +65,10 @@ public class TruthGwtTest extends GWTTestCase {
     assertThat("blah").endsWith("ah");
     try {
       assertThat("blah").contains("foo");
-      assert_().fail("Should have thrown an exception");
-    } catch (Throwable t) {
-      // succeeds
+    } catch (Throwable expected) {
+      return;
     }
+    assert_().fail("Should have thrown an exception");
   }
 
   public void testIterable() {
@@ -93,11 +92,6 @@ public class TruthGwtTest extends GWTTestCase {
   public void testDefault() {
     assertThat(new Object()).isNotNull();
     assertThat(new ArrayList<String>()).isInstanceOf(AbstractList.class);
-  }
-
-  public void testLegacyASSERT() {
-    ASSERT.that(new Object()).isNotNull();
-    ASSERT.that(new ArrayList<String>()).isInstanceOf(AbstractList.class);
   }
 
   public void testLegacyAssert_() {
