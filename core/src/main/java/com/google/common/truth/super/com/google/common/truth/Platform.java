@@ -17,6 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.truth.StringUtil.format;
 
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -77,5 +80,20 @@ public final class Platform {
 
   public static AssertionError comparisonFailure(String message, String expected, String actual) {
     return new AssertionError(format("%s: expected: %s actual: %s", message, expected, actual));
+  }
+
+  /**
+   * Determines if the entirety of the given subject matches the given regex.
+   */
+  static boolean matches(String subject, String regex) {
+     MatchResult match = RegExp.compile(regex).exec(subject);
+     return match != null && match.getGroup(0).equals(subject);
+  }
+
+  /**
+   * Determines if the given subject contains a match for the given regex.
+   */
+  static boolean containsMatch(String subject, String regex) {
+    return RegExp.compile(regex).exec(subject) != null;
   }
 }

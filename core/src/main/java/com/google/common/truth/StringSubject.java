@@ -168,9 +168,10 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /**
    * Fails if the string does not match the given regex.
    */
-  @GwtIncompatible("java.util.regex.Pattern")
   public void matches(String regex) {
-    matches(Pattern.compile(regex));
+    if (!Platform.matches(getSubject(), regex)) {
+      fail("matches", regex);
+    }
   }
 
   /**
@@ -186,9 +187,10 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /**
    * Fails if the string matches the given regex.
    */
-  @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotMatch(String regex) {
-    doesNotMatch(Pattern.compile(regex));
+    if (Platform.matches(getSubject(), regex)) {
+      fail("fails to match", regex);
+    }
   }
 
   /**
@@ -214,9 +216,10 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /**
    * Fails if the string does not contain a match on the given regex.
    */
-  @GwtIncompatible("java.util.regex.Pattern")
   public void containsMatch(String regex) {
-    containsMatch(Pattern.compile(regex));
+    if (!Platform.containsMatch(getSubject(), regex)) {
+      failWithRawMessage("%s should have contained a match for <%s>", getDisplaySubject(), regex);
+    }
   }
 
   /**
@@ -233,9 +236,11 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /**
    * Fails if the string contains a match on the given regex.
    */
-  @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotContainMatch(String regex) {
-    doesNotContainMatch(Pattern.compile(regex));
+    if (Platform.containsMatch(getSubject(), regex)) {
+      failWithRawMessage("%s should not have contained a match for <%s>",
+          getDisplaySubject(), regex);
+    }
   }
 
   /**

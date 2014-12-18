@@ -19,7 +19,6 @@ import com.google.common.truth.AbstractArraySubject;
 import com.google.common.truth.BooleanSubject;
 import com.google.common.truth.ClassSubject;
 import com.google.common.truth.DefaultSubject;
-import com.google.common.truth.Expect;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.IterableSubject;
@@ -49,7 +48,6 @@ public class Inventory {
   BooleanSubject b;
   ClassSubject c;
   DefaultSubject e;
-  Expect ab;
   FailureStrategy ac;
   IntegerSubject f;
   IterableSubject<?, ?, ?> g;

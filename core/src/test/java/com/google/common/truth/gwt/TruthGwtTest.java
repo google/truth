@@ -29,13 +29,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Test of Truth under GWT - should be enough tests here to force compilation
- * of all Subject implementations.
- *
- * @author Christian Gruber (cgruber@israfil.net)
- */
-public class TruthGwtTest extends GWTTestCase {
+* Test of Truth under GWT - should be enough tests here to force compilation
+* of all Subject implementations.
+*
+* @author Christian Gruber (cgruber@israfil.net)
+*/
 
+public class TruthGwtTest extends GWTTestCase {
   @Override public String getModuleName() {
     return "com.google.common.truth.gwt.TruthTest";
   }
@@ -47,28 +47,80 @@ public class TruthGwtTest extends GWTTestCase {
   public void testBoolean() {
     assertThat(true).isTrue();
     assertThat(false).isFalse();
+
+    try {
+      assertThat(true).isFalse();
+    } catch (AssertionError expected) {
+      return;
+    }
   }
 
   public void testInteger() {
     assertThat(457923).is(457923);
     try {
       assertThat(457923).is(1);
-    } catch (Throwable expected) {
+    } catch (AssertionError expected) {
       return;
     }
-    assert_().fail("Should have thrown an exception");
+    assert_().fail("Should have thrown an assertion error");
   }
 
   public void testString() {
     assertThat("blah").contains("ah");
     assertThat("blah").startsWith("bl");
     assertThat("blah").endsWith("ah");
+
     try {
       assertThat("blah").contains("foo");
-    } catch (Throwable expected) {
+    } catch (AssertionError expected) {
       return;
     }
-    assert_().fail("Should have thrown an exception");
+    assert_().fail("Should have thrown an assertion error");
+  }
+
+  public void testString_match() {
+    assertThat("blah").matches("b[la]+h");
+    assertThat("blah").matches("^b.+h$");
+    assertThat("blah").containsMatch("ah");
+    assertThat("blah").containsMatch("b[la]{2}h");
+    assertThat("blah").doesNotMatch("ah");
+    assertThat("blah").doesNotContainMatch("oh");
+  }
+
+  public void testString_matchesFail() {
+    try {
+      assertThat("blah").matches("b[lu]+h");
+    } catch (AssertionError expected) {
+      return;
+    }
+    assert_().fail("Should have thrown an assertion error");
+  }
+
+  public void testString_containsMatchFail() {
+    try {
+      assertThat("blah").containsMatch("o");
+    } catch (AssertionError expected) {
+      return;
+    }
+    assert_().fail("Should have thrown an assertion error");
+  }
+
+  public void testString_doesNotMatchFail() {
+    try {
+      assertThat("blah").doesNotMatch("blah");
+    } catch (AssertionError expected) {
+      return;
+    }
+    assert_().fail("Should have thrown an assertion error");
+  }
+
+  public void testString_doesNotContainMatchFail() {
+    try {
+      assertThat("blah").doesNotContainMatch("a");
+    } catch (AssertionError expected) {
+      return;
+    }
+    assert_().fail("Should have thrown an assertion error");
   }
 
   public void testIterable() {
