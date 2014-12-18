@@ -50,7 +50,7 @@ public class SubjectTest {
       assertThat(5).isEqualTo(wrapper);
       fail("Should have thrown.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).isEqualTo(
+      assertThat(expected).hasMessage(
           "Not true that <5> (java.lang.Integer) "
           + "is equal to <5> (com.google.common.truth.SubjectTest$IntWrapper)");
     }
@@ -75,7 +75,7 @@ public class SubjectTest {
       assertThat(o).isSameAs("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <null> is the same instance as <a>");
+      assertThat(e).hasMessage("Not true that <null> is the same instance as <a>");
     }
   }
 
@@ -92,7 +92,7 @@ public class SubjectTest {
       assertThat(a).isSameAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <Object 1> is the same instance as <Object 2>");
     }
   }
@@ -104,7 +104,7 @@ public class SubjectTest {
       assertThat(a).isSameAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <ab> is the same instance as <ab>");
+      assertThat(e).hasMessage("Not true that <ab> is the same instance as <ab>");
     }
   }
 
@@ -115,7 +115,7 @@ public class SubjectTest {
       assertThat(a).isSameAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <true> (java.lang.String) is the same"
+      assertThat(e).hasMessage("Not true that <true> (java.lang.String) is the same"
           + " instance as <true> (java.lang.Boolean)");
     }
   }
@@ -131,7 +131,7 @@ public class SubjectTest {
       assertThat(o).isNotSameAs(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <null> is not the same instance as <null>");
     }
   }
@@ -149,7 +149,7 @@ public class SubjectTest {
       assertThat(a).isNotSameAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <Object 1> is not the same instance as <Object 1>");
     }
   }
@@ -177,7 +177,7 @@ public class SubjectTest {
       assertThat(o).isNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <" + o.toString() + "> is null");
+      assertThat(e).hasMessage("Not true that <" + o.toString() + "> is null");
     }
   }
 
@@ -186,7 +186,7 @@ public class SubjectTest {
       assertThat("foo").isNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <\"foo\"> is null");
+      assertThat(e).hasMessage("Not true that <\"foo\"> is null");
     }
   }
 
@@ -201,7 +201,7 @@ public class SubjectTest {
       assertThat(o).isNotNull();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that the subject is a non-null reference");
+      assertThat(e).hasMessage("Not true that the subject is a non-null reference");
     }
   }
 
@@ -216,7 +216,7 @@ public class SubjectTest {
       assertThat(o).isEqualTo("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <null> is equal to <a>");
+      assertThat(e).hasMessage("Not true that <null> is equal to <a>");
     }
   }
 
@@ -233,7 +233,7 @@ public class SubjectTest {
       assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <Object 1> is equal to <Object 2>");
+      assertThat(e).hasMessage("Not true that <Object 1> is equal to <Object 2>");
     }
   }
 
@@ -250,7 +250,7 @@ public class SubjectTest {
       assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <ab> is equal to <aa>");
+      assertThat(e).hasMessage("Not true that <ab> is equal to <aa>");
     }
   }
 
@@ -261,7 +261,7 @@ public class SubjectTest {
       assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <true> (java.lang.String) is equal to"
+      assertThat(e).hasMessage("Not true that <true> (java.lang.String) is equal to"
           + " <true> (java.lang.Boolean)");
     }
   }
@@ -277,7 +277,7 @@ public class SubjectTest {
       assertThat(o).isNotEqualTo(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <null> is not equal to <null>");
+      assertThat(e).hasMessage("Not true that <null> is not equal to <null>");
     }
   }
 
@@ -293,7 +293,7 @@ public class SubjectTest {
       assertThat(o).isNotEqualTo(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <null> is not equal to <null>");
+      assertThat(e).hasMessage("Not true that <null> is not equal to <null>");
     }
   }
 
@@ -304,7 +304,7 @@ public class SubjectTest {
       assertThat(a).isNotEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <Object 1> is not equal to <Object 1>");
+      assertThat(e).hasMessage("Not true that <Object 1> is not equal to <Object 1>");
     }
   }
 
@@ -321,7 +321,7 @@ public class SubjectTest {
       assertThat(a).isNotEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <ab> is not equal to <ab>");
+      assertThat(e).hasMessage("Not true that <ab> is not equal to <ab>");
     }
   }
 
@@ -343,7 +343,7 @@ public class SubjectTest {
       assertThat(4.5).isA(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <4.5> is an instance of <java.lang.Long>."
+      assertThat(e).hasMessage("Not true that <4.5> is an instance of <java.lang.Long>."
           + " It is an instance of <java.lang.Double>");
     }
   }
@@ -353,7 +353,7 @@ public class SubjectTest {
       assertThat(4.5).isInstanceOf(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <4.5> is an instance of <java.lang.Long>."
+      assertThat(e).hasMessage("Not true that <4.5> is an instance of <java.lang.Long>."
           + " It is an instance of <java.lang.Double>");
     }
   }
@@ -368,8 +368,8 @@ public class SubjectTest {
       assertThat(5).isNotA(Number.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .isEqualTo("<5> expected not to be an instance of java.lang.Number, but was.");
+      assertThat(e).hasMessage(
+          "<5> expected not to be an instance of java.lang.Number, but was.");
     }
   }
 
@@ -378,8 +378,8 @@ public class SubjectTest {
       assertThat(5).isNotInstanceOf(Number.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .isEqualTo("<5> expected not to be an instance of java.lang.Number, but was.");
+      assertThat(e).hasMessage(
+          "<5> expected not to be an instance of java.lang.Number, but was.");
     }
   }
 
@@ -389,8 +389,29 @@ public class SubjectTest {
     try {
       Truth.THROW_ASSERTION_ERROR.fail(msg, cause);
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).isEqualTo(msg);
+      assertThat(expected).hasMessage(msg);
       assertThat(expected.getCause()).isSameAs(cause);
     }
+  }
+
+  @Test public void equalsThrowsUSOE() {
+    try {
+      assertThat(5).equals(5);
+    } catch (UnsupportedOperationException expected) {
+      assertThat(expected).hasMessage(
+          "If you meant to test object equality, use .isEqualTo(other) instead.");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test public void hashCodeThrowsUSOE() {
+    try {
+      assertThat(5).hashCode();
+    } catch (UnsupportedOperationException expected) {
+      assertThat(expected).hasMessage("Subject.hashCode() is not supported.");
+      return;
+    }
+    fail("Should have thrown.");
   }
 }

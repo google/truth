@@ -23,6 +23,8 @@ import com.google.common.base.Objects;
 
 import java.lang.reflect.Field;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for arbitrarily typed subjects and for properties
  * of Object
@@ -383,28 +385,24 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * @deprecated This method is not a proposition, but the default Object equality method.
-   *     Testing code should use {@link #isEqualTo(Object)} to check for object equalty
-   *     or {@link #isSameAs(Object)} to check reference equality.
+   * @throws UnsupportedOperationException always
+   * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects.
+   *     If you meant to test object equality, use {@link #isEqualTo(Object)} instead.
    */
   @Deprecated
   @Override
-  public boolean equals(Object o) {
-    isEqualTo(o);
-    return false;
+  public boolean equals(@Nullable Object o) {
+    throw new UnsupportedOperationException(
+        "If you meant to test object equality, use .isEqualTo(other) instead.");
   }
 
   /**
-   * @deprecated Equals/Hashcode is not supported on Subjects. Their only use is as a holder of
-   *     propositions. Use of equals() is deprecated and forwards to isEqualTo() and
-   *     hashCode() is disallowed.
+   * @throws UnsupportedOperationException always
+   * @deprecated {@link Object#hashCode()} is not supported on Truth subjects.
    */
   @Deprecated
   @Override
   public int hashCode() {
-    throw new UnsupportedOperationException(""
-        + "Equals/Hashcode is not supported on Subjects. Their only use is as a holder of "
-        + "propositions. Use of equals() is deprecated and forwards to isEqualTo() and "
-        + "hashCode() is disallowed.");
+    throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
   }
 }
