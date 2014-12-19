@@ -142,9 +142,8 @@ public final class Truth {
   }
 
   /**
-   * @deprecated Use the {@link Iterable} overload instead.
+   * TODO(user): @deprecated Use the {@link Iterable} overload instead.
    */
-  @Deprecated
   @CheckReturnValue
   public static <T, C extends Collection<T>>
       CollectionSubject<? extends CollectionSubject<?, T, C>, T, C>
@@ -153,9 +152,8 @@ public final class Truth {
   }
 
   /**
-   * @deprecated Use the {@link Iterable} overload instead.
+   * TODO(user): @deprecated Use the {@link Iterable} overload instead.
    */
-  @Deprecated
   @CheckReturnValue
   public static <T, C extends List<T>>
       ListSubject<? extends ListSubject<?, T, C>, T, C>

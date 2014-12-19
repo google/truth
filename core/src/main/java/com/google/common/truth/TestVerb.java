@@ -90,9 +90,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   /**
-   * @deprecated Use the {@link Iterable} overload instead.
+   * TODO(user): @deprecated Use the {@link Iterable} overload instead.
    */
-  @Deprecated
   @CheckReturnValue
   public <T, C extends Collection<T>>
       CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> that(Collection<T> target) {
@@ -100,9 +99,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   /**
-   * @deprecated Use the {@link Iterable} overload instead.
+   * TODO(user): @deprecated Use the {@link Iterable} overload instead.
    */
-  @Deprecated
   @CheckReturnValue
   public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C>
       that(List<T> target) {
