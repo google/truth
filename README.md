@@ -4,8 +4,8 @@ Truth
 
 **Main Website:** *[truth0.github.io](http://truth0.github.io/)* &nbsp;
 **Continuous Integration:** [![Build Status](https://secure.travis-ci.org/google/truth.png?branch=master)](https://travis-ci.org/google/truth) <br />
-**Latest Release:** *0.23* &nbsp; 
-**Latest Artifact:** *org.junit.contrib:truth:jar:0.23* <br />
+**Latest Release:** *0.25* &nbsp; 
+**Latest Artifact:** *org.junit.contrib:truth:jar:0.25* <br />
 
 What is Truth?
 --------------
