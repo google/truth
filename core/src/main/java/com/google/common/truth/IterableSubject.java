@@ -478,29 +478,13 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * @deprecated use {@link #isStrictlyOrdered(Comparator)} instead
-   */
-  @Deprecated
-  public void isOrdered() {
-    isStrictlyOrdered();
-  }
-
-  /**
-   * @deprecated use {@link #isStrictlyOrdered(Comparator)} instead
-   */
-  @Deprecated
-  public void isOrdered(Comparator<? super T> comparator) {
-    isStrictlyOrdered(comparator);
-  }
-
-  /**
    * Fails if the list is not ordered according to the natural ordering of its elements.
    * Null elements are not permitted.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  // TODO(user): Rename to isOrdered() once we've nuked it
+  // TODO(user): Rename to isOrdered after we release 0.26 without the old isOrdered()
   public void isPartiallyOrdered() {
     isPartiallyOrdered((Ordering) Ordering.natural());
   }
@@ -512,7 +496,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  // TODO(user): Rename to isOrdered(Comparator) once we've nuked it
+  // TODO(user): Rename to isOrdered after we release 0.26 without the old isOrdered()
   public void isPartiallyOrdered(final Comparator<? super T> comparator) {
     pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
