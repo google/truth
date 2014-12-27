@@ -22,7 +22,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
-
 import com.google.common.truth.AbstractVerb.DelegatedVerb;
 
 import java.util.Collection;
@@ -117,6 +116,11 @@ public final class Truth {
 
   @CheckReturnValue
   public static LongSubject assertThat(Long target) {
+    return assert_().that(target);
+  }
+
+  @CheckReturnValue
+  public static DoubleSubject assertThat(Double target) {
     return assert_().that(target);
   }
 

@@ -26,7 +26,14 @@ public final class MathUtil {
   }
 
   public static boolean equals(float left, float right, float tolerance) {
-    return equals((double)left, (double)right, (double)tolerance);
+    return equals((double) left, (double) right, (double) tolerance);
   }
 
+  public static boolean notEquals(double left, double right, double tolerance) {
+    return Math.abs(left - right) > Math.abs(tolerance);
+  }
+
+  public static boolean notEquals(float left, float right, float tolerance) {
+    return equals((double) left, (double) right, (double) tolerance);
+  }
 }
