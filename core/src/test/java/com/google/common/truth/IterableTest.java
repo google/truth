@@ -87,7 +87,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).iteratesAs(2, 3, 1);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> iterates through <[2, 3, 1]>");
     }
   }
@@ -107,7 +107,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).iteratesAs(1, 2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <[1, 2, 3]> iterates through <[1, 2]>");
+      assertThat(e).hasMessage("Not true that <[1, 2, 3]> iterates through <[1, 2]>");
     }
   }
 
@@ -116,7 +116,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).iteratesAs(1, 2, "a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> iterates through <[1, 2, a]>");
     }
   }
@@ -127,7 +127,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).iteratesAs(asList(1, 2, "a"));
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> iterates through <[1, 2, a]>");
     }
   }
@@ -145,7 +145,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> should have contained <5>");
+      assertThat(e).hasMessage("<[1, 2, 3]> should have contained <5>");
     }
   }
 
@@ -154,7 +154,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).named("numbers").contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("\"numbers\" <[1, 2, 3]> should have contained <5>");
+      assertThat(e).hasMessage("\"numbers\" <[1, 2, 3]> should have contained <5>");
     }
   }
 
@@ -163,7 +163,7 @@ public class IterableTest {
       assertWithMessage("custom msg").that(iterable(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("custom msg: <[1, 2, 3]> should have contained <5>");
+      assertThat(e).hasMessage("custom msg: <[1, 2, 3]> should have contained <5>");
     }
   }
 
@@ -180,7 +180,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).doesNotContain(2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("<[1, 2, 3]> should not have contained <2>");
+      assertThat(e).hasMessage("<[1, 2, 3]> should not have contained <2>");
     }
   }
 
@@ -224,7 +224,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).containsAnyOf(5, 6, 0);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
+      assertThat(e).hasMessage("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
     }
   }
 
@@ -260,7 +260,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).containsAllOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
     }
   }
@@ -270,7 +270,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> contains all of <[1, 2, 2, 2, 3, 4]>. "
           + "It is missing <[2 [2 copies], 4]>");
     }
@@ -285,7 +285,7 @@ public class IterableTest {
       assertThat(iterable(1, 2)).containsAllOf(4, 4, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2]> contains all of <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
     }
   }
@@ -295,7 +295,7 @@ public class IterableTest {
       assertThat(iterable(1, null, 3)).containsAllOf(1, null, null, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, null, 3]> contains all of <[1, null, null, 3]>. "
           + "It is missing <[null]>");
     }
@@ -353,7 +353,7 @@ public class IterableTest {
       assertThat(iterable).containsAllOf(1, 3, null).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <BadIterable> contains all elements in order <[1, 3, null]>");
     }
   }
@@ -367,7 +367,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).containsNoneOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
     }
   }
@@ -377,7 +377,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 2, 3)).containsNoneOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
     }
   }
@@ -387,7 +387,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).containsNoneOf(1, 2, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> contains none of <[1, 2, 2, 4]>. It contains <[1, 2]>");
     }
   }
@@ -422,11 +422,11 @@ public class IterableTest {
     assertThat(iterable(1, null, 3)).containsExactly(1, 3, (Integer) null);
   }
 
-  @Test public void iterableContainsExactlyErrorMessageIsOrdered() {
+  @Test public void iterableContainsExactlyElementsInErrorMessageIsOrdered() {
     try {
       assertThat(asList("foo OR bar")).containsExactlyElementsIn(asList("foo", "bar"));
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[foo OR bar]> contains exactly <[foo, bar]>. "
           + "It is missing <[foo, bar]> and has unexpected items <[foo OR bar]>");
       return;
@@ -439,7 +439,7 @@ public class IterableTest {
       assertThat(iterable(1, 2)).containsExactly(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
     }
   }
@@ -449,7 +449,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).containsExactly(1, 2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> contains exactly <[1, 2]>. It has unexpected items <[3]>");
     }
   }
@@ -459,7 +459,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).containsExactly(1, 2, 2, 2, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3]>. "
           + "It is missing <[2 [2 copies]]>");
     }
@@ -470,7 +470,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).containsExactly(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3, 4]>. "
           + "It is missing <[2 [2 copies], 4]>");
     }
@@ -481,7 +481,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 2, 2, 2, 3)).containsExactly(1, 2, 2, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 2, 2, 2, 3]> contains exactly <[1, 2, 2, 3]>. "
           + "It has unexpected items <[2 [2 copies]]>");
     }
@@ -496,7 +496,7 @@ public class IterableTest {
       assertThat(iterable()).containsExactly(4, 4, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[]> contains exactly <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
     }
   }
@@ -506,7 +506,7 @@ public class IterableTest {
       assertThat(iterable(1, null, 3)).containsExactly(1, null, null, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, null, 3]> contains exactly <[1, null, null, 3]>. "
           + "It is missing <[null]>");
     }
@@ -517,7 +517,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).containsExactly(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3]> contains exactly <[1, 2, 4]>. "
           + "It is missing <[4]> and has unexpected items <[3]>");
     }
@@ -528,9 +528,56 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3, 3)).containsExactly(1, 2, 4, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, 2, 3, 3]> contains exactly <[1, 2, 4, 4]>. "
           + "It is missing <[4 [2 copies]]> and has unexpected items <[3 [2 copies]]>");
+    }
+  }
+
+  @Test public void iterableContainsExactlyWithOneIterableGivesWarning() {
+     try {
+      assertThat(iterable(1, 2, 3, 4)).containsExactly(iterable(1, 2, 3, 4));
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage(
+          "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2, 3, 4]]>. "
+          + "It is missing <[[1, 2, 3, 4]]> and has unexpected items <[1, 2, 3, 4]>. "
+          + "Passing an iterable to the varargs method containsExactly(Object...) is "
+          + "often not the correct thing to do. Did you mean to call " 
+          + "containsExactlyElementsIn(Iterable) instead?");
+    }
+  }
+
+  @Test public void iterableContainsExactlyElementsInWithOneIterableDoesNotGiveWarning() {
+     try {
+      assertThat(iterable(1, 2, 3, 4)).containsExactlyElementsIn(iterable(1, 2, 3));
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage(
+          "Not true that <[1, 2, 3, 4]> contains exactly <[1, 2, 3]>. "
+          + "It has unexpected items <[4]>");
+    }
+  }
+
+  @Test public void iterableContainsExactlyWithTwoIterableDoesNotGivesWarning() {
+     try {
+      assertThat(iterable(1, 2, 3, 4)).containsExactly(iterable(1, 2), iterable(3, 4));
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage(
+          "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2], [3, 4]]>. "
+          + "It is missing <[[1, 2], [3, 4]]> and has unexpected items <[1, 2, 3, 4]>");
+    }
+  }
+
+  @Test public void iterableContainsExactlyWithOneNonIterableDoesNotGiveWarning() {
+     try {
+      assertThat(iterable(1, 2, 3, 4)).containsExactly(1);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage(
+          "Not true that <[1, 2, 3, 4]> contains exactly <[1]>. "
+          + "It has unexpected items <[2, 3, 4]>");
     }
   }
 
@@ -547,7 +594,7 @@ public class IterableTest {
       assertThat(iterable(1, null, 3)).containsExactly(null, 1, 3).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <[1, null, 3]> contains only these elements in order <[null, 1, 3]>");
     }
   }
@@ -578,7 +625,7 @@ public class IterableTest {
       assertThat(iterable).containsExactly(1, 3, null).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo(
+      assertThat(e).hasMessage(
           "Not true that <BadIterable> contains only these elements in order <[1, 3, null]>");
     }
   }
@@ -592,7 +639,7 @@ public class IterableTest {
       assertThat(iterable(1, null, 3)).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <[1, null, 3]> is empty");
+      assertThat(e).hasMessage("Not true that <[1, null, 3]> is empty");
     }
   }
 
@@ -605,7 +652,7 @@ public class IterableTest {
       assertThat(iterable()).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("Not true that <[]> is not empty");
+      assertThat(e).hasMessage("Not true that <[]> is not empty");
     }
   }
 

@@ -306,7 +306,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * contents must be contained in the given order.
    */
   public Ordered containsExactly(@Nullable Object... varargs) {
-    return containsExactly("contains exactly", asList(varargs));
+    return containsExactly("contains exactly", asList(varargs),
+        varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
   }
 
   /**
@@ -320,10 +321,15 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * contents must be contained in the given order.
    */
   public Ordered containsExactlyElementsIn(Iterable<?> expected) {
-    return containsExactly("contains exactly", expected);
+    return containsExactly("contains exactly", expected, false);
   }
 
-  private Ordered containsExactly(String failVerb, Iterable<?> required) {
+  private Ordered containsExactly(String failVerb, Iterable<?> required,
+        boolean addElementsInWarning) {
+    String failSuffix = !addElementsInWarning ? "" :
+        ". Passing an iterable to the varargs method containsExactly(Object...) is "
+        + "often not the correct thing to do. Did you mean to call "
+        + "containsExactlyElementsIn(Iterable) instead?";
     Iterator<?> actualIter = getSubject().iterator();
     Iterator<?> requiredIter = required.iterator();
 
@@ -365,15 +371,18 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
           if (!extra.isEmpty()) {
             // Subject is both missing required elements and contains extra elements
             failWithRawMessage(
-                "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>",
+                "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>%s",
                 getDisplaySubject(), failVerb, required,
-                countDuplicates(missing), countDuplicates(extra));
+                countDuplicates(missing), countDuplicates(extra),
+                failSuffix);
           } else {
-            failWithBadResults(failVerb, required, "is missing", countDuplicates(missing));
+            failWithBadResultsAndSuffix(failVerb, required, "is missing", countDuplicates(missing),
+                failSuffix);
           }
         }
         if (!extra.isEmpty()) {
-          failWithBadResults(failVerb, required, "has unexpected items", countDuplicates(extra));
+          failWithBadResultsAndSuffix(failVerb, required, "has unexpected items",
+              countDuplicates(extra), failSuffix);
         }
 
         // Since we know the iterables were not in the same order, inOrder() can just fail.
@@ -385,16 +394,37 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     // pairs of elements that differ. If the actual iterator still has elements, they're
     // extras. If the required iterator has elements, they're missing elements.
     if (actualIter.hasNext()) {
-      failWithBadResults(failVerb, required, "has unexpected items",
-          countDuplicates(Lists.newArrayList(actualIter)));
+      failWithBadResultsAndSuffix(failVerb, required, "has unexpected items",
+          countDuplicates(Lists.newArrayList(actualIter)), failSuffix);
     } else if (requiredIter.hasNext()) {
-      failWithBadResults(failVerb, required, "is missing",
-          countDuplicates(Lists.newArrayList(requiredIter)));
+      failWithBadResultsAndSuffix(failVerb, required, "is missing",
+          countDuplicates(Lists.newArrayList(requiredIter)), failSuffix);
     }
 
     // If neither iterator has elements, we reached the end and the elements were in
     // order, so inOrder() can just succeed.
     return IN_ORDER;
+  }
+
+  /**
+   * Fails with the bad results and a suffix.
+   *
+   * @param verb the proposition being asserted
+   * @param expected the expectations against which the subject is compared
+   * @param failVerb the failure of the proposition being asserted
+   * @param actual the actual value the subject was compared against
+   * @param suffix a suffix to append to the failure message
+   */
+  protected void failWithBadResultsAndSuffix(String verb, Object expected, String failVerb,
+      Object actual, String suffix) {
+    failWithRawMessage(
+        "Not true that %s %s <%s>. It %s <%s>%s",
+        getDisplaySubject(),
+        verb,
+        expected,
+        failVerb,
+        ((actual == null) ? "null reference" : actual),
+        suffix);
   }
 
   /**
