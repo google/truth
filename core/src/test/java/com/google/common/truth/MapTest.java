@@ -36,6 +36,104 @@ import java.util.Map;
 @RunWith(JUnit4.class)
 public class MapTest {
 
+  @Test public void mapIsEqualToPass() {
+    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "mar", 3);
+
+    assertThat(actualMap).isEqualTo(actualMap);
+  }
+
+  @Test public void mapIsEqualToFailureExtraMissingAndDiffering() {
+    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "april", 4, "march", 5);
+
+    try {
+      assertThat(actualMap).isEqualTo(expectedMap);
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, april=4, march=5}>. "
+          + "The subject is missing the following entries: {april=4} and "
+          + "has the following extra entries: {feb=2} and "
+          + "has the following different entries: {march=(5, 3)}");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test public void mapIsEqualToFailureDiffering() {
+    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 4);
+
+    try {
+      assertThat(actualMap).isEqualTo(expectedMap);
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=4}>. "
+          + "The subject has the following different entries: {march=(4, 3)}");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test public void mapIsEqualToFailureExtra() {
+    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2);
+
+    try {
+      assertThat(actualMap).isEqualTo(expectedMap);
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2}>. "
+          + "The subject has the following extra entries: {march=3}");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test public void mapIsEqualToFailureMissing() {
+    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    try {
+      assertThat(actualMap).isEqualTo(expectedMap);
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that <{jan=1, feb=2}> is equal to <{jan=1, feb=2, march=3}>. "
+          + "The subject is missing the following entries: {march=3}");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test public void mapIsEqualToFailureExtraAndMissing() {
+    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "mar", 3);
+
+    try {
+      assertThat(actualMap).isEqualTo(expectedMap);
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, mar=3}>. "
+          + "The subject is missing the following entries: {mar=3} "
+          + "and has the following extra entries: {march=3}");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test public void mapIsNotEqualTo() {
+    ImmutableMap<String, Integer> map = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    try {
+      assertThat(map).isNotEqualTo(map);
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that <{jan=1, feb=2, march=3}> is not equal to <{jan=1, feb=2, march=3}>");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
   @Test public void mapIsEmpty() {
     ImmutableMap<String, String> map = ImmutableMap.of();
     assertThat(map).isEmpty();

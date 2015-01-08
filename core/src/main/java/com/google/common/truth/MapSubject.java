@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import com.google.common.base.Objects;
+import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 
 import java.util.Arrays;
@@ -41,6 +43,36 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
       MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> create(
           FailureStrategy failureStrategy, Map<K, V> map) {
     return new MapSubject(failureStrategy, map);
+  }
+
+  /**
+   * Fails if the subject is not equal to the given object.
+   */
+  public void isEqualTo(Object other) {
+    if (!Objects.equal(getSubject(), other)) {
+      if (other instanceof Map) {
+        MapDifference<?, ?> diff = Maps.difference((Map<?, ?>) other, (Map<?, ?>) getSubject());
+        String errorMsg = "The subject";
+        if (!diff.entriesOnlyOnLeft().isEmpty()) {
+          errorMsg += " is missing the following entries: " + diff.entriesOnlyOnLeft();
+          if (!diff.entriesOnlyOnRight().isEmpty() || !diff.entriesDiffering().isEmpty()) {
+            errorMsg += " and";
+          }
+        }
+        if (!diff.entriesOnlyOnRight().isEmpty()) {
+          errorMsg += " has the following extra entries: " + diff.entriesOnlyOnRight();
+          if (!diff.entriesDiffering().isEmpty()) {
+            errorMsg += " and";
+          }
+        }
+        if (!diff.entriesDiffering().isEmpty()) {
+          errorMsg += " has the following different entries: " + diff.entriesDiffering();
+        }
+        failWithRawMessage("Not true that <%s> is equal to <%s>. " + errorMsg, getSubject(), other);
+      } else {
+        fail("is equal to", other);
+      }
+    }
   }
 
   /**
