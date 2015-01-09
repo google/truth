@@ -4,4 +4,8 @@ target
 .classpath
 .settings
 .clover
+.iml
 .*
+.idea/
+*.iml
+*.iws

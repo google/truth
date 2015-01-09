@@ -23,6 +23,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,11 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   @CheckReturnValue
   public IntegerSubject that(Integer target) {
     return new IntegerSubject(getFailureStrategy(), target);
+  }
+
+  @CheckReturnValue
+  public BigDecimalSubject that(BigDecimal target) {
+    return new BigDecimalSubject(getFailureStrategy(), target);
   }
 
   @CheckReturnValue
