@@ -152,6 +152,7 @@
             <configuration>
               <mode>htmlunit</mode>
               <productionMode>true</productionMode>
+              <sourceLevel>1.7</sourceLevel>
               <userAgents>gecko1_8</userAgents>
               <includes>**/*GwtTest.java</includes>
             </configuration>
