@@ -123,11 +123,11 @@
                 <include>**/*.gwt.xml</include>
               </includes>
               <excludes>
-                <exclude>org/truth0/codegen/**</exclude>
-                <exclude>org/truth0/subjects/ClassSubject.java</exclude>
-                <exclude>org/truth0/util/ReflectionUtil.java</exclude>
-                <exclude>org/truth0/IteratingVerb.java</exclude>
-                <exclude>org/truth0/Expect.java</exclude>
+                <exclude>com/google/common/truth/ClassSubject.java</exclude>
+                <exclude>com/google/common/truth/Expect.java</exclude>
+                <exclude>com/google/common/truth/IteratingVerb.java</exclude>
+                <exclude>com/google/common/truth/ReflectionUtil.java</exclude>
+                <exclude>com/google/common/truth/codegen/**</exclude>
               </excludes>
             </configuration>
           </execution>
