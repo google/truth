@@ -131,9 +131,9 @@ for-each-like approach.
 
 This lets you pass in an iterable type, and provide a SubjectFactory
 (it is advised to use the static final fields for this for readability).
-When this is invoked, then <code>contains("foo")</code> will be invoked
+When this is invoked, then <code>startsWith("foo")</code> will be invoked
 on each element in the iterable in turn, reporting failure as if a 
-separate ASSERT.that(anElement).contains("foo") had been invoked for
+separate ASSERT.that(anElement).startsWith("foo") had been invoked for
 each element.  Naturally, ASSERT will fail on the first failing element,
 ASSUME will skip the test on any failing element, and EXPECT will 
 gather all failures and report them at the end of the test.
