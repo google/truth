@@ -145,11 +145,21 @@ public class StringTest {
 
   @Test public void stringEqualityFail() {
     try {
-      assertThat("abc").is("abd");
+      assertThat("abc").isEqualTo("abd");
       throw new Error("Expected to fail.");
     } catch (ComparisonFailure expected) {
-      assertThat(expected.getMessage())
-          .contains("expected:<ab[d]> but was:<ab[c]>");
+      assertThat(expected)
+          .hasMessage("expected:<ab[d]> but was:<ab[c]>");
+    }
+  }
+
+  @Test public void stringNamedEqualityFail() {
+    try {
+      assertThat("abc").named("foo").isEqualTo("abd");
+      throw new Error("Expected to fail.");
+    } catch (ComparisonFailure expected) {
+      assertThat(expected)
+          .hasMessage("\"foo\": expected:<ab[d]> but was:<ab[c]>");
     }
   }
 
