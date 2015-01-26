@@ -186,8 +186,11 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   protected String getDisplaySubject() {
-    String name = (customName == null) ? "" : "\"" + this.customName + "\" ";
-    return name + "<" + getSubject() + ">";
+    if (customName != null) {
+      return customName + " (<" + getSubject() + ">)";
+    } else {
+      return "<" + getSubject() + ">";
+    }
   }
 
   /**

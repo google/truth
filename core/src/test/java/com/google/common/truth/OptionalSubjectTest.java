@@ -38,7 +38,7 @@ public class OptionalSubjectTest {
       assertThat(optional).named("name").hasValue("expected");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Not true that \"name\" <Optional.of(actual)> has value <expected>");
+          .hasMessage("Not true that name (<Optional.of(actual)>) has value <expected>");
       return;
     }
     fail("Should have thrown");

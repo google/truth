@@ -154,7 +154,7 @@ public class IterableTest {
       assertThat(iterable(1, 2, 3)).named("numbers").contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("\"numbers\" <[1, 2, 3]> should have contained <5>");
+      assertThat(e).hasMessage("numbers (<[1, 2, 3]>) should have contained <5>");
     }
   }
 

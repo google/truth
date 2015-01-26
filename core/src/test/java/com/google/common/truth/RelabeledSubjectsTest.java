@@ -40,7 +40,7 @@ public class RelabeledSubjectsTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage()).contains("\"kurt kluever\"");
-      assertThat(expected.getMessage()).contains("\"rad dude\"");
+      assertThat(expected.getMessage()).contains("rad dude");
       assertThat(expected.getMessage()).contains("frazzle");
     }
   }
@@ -61,7 +61,8 @@ public class RelabeledSubjectsTest {
       assertThat(false).named("Foo").isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).is("\"Foo\" <false> was expected to be true, but was false");
+      // TODO(user): This could probably be simplified + shortened a bit...
+      assertThat(expected).hasMessage("Foo (<false>) was expected to be true, but was false");
     }
   }
 
@@ -71,7 +72,7 @@ public class RelabeledSubjectsTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
-          .contains("Not true that \"Foo\" <\"a string\"> is an instance of <java.lang.Integer>");
+          .contains("Not true that Foo (<\"a string\">) is an instance of <java.lang.Integer>");
       assertThat(expected.getMessage())
           .contains("It is an instance of <java.lang.String>");
     }
@@ -82,9 +83,8 @@ public class RelabeledSubjectsTest {
       assertThat(Arrays.asList("a", "b", "c")).named("crazy list").containsAllOf("c", "d");
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .is("Not true that \"crazy list\" <[a, b, c]> contains all of <[c, d]>. "
-              + "It is missing <[d]>");
+      assertThat(expected).hasMessage(
+          "Not true that crazy list (<[a, b, c]>) contains all of <[c, d]>. It is missing <[d]>");
     }
   }
 
@@ -95,7 +95,7 @@ public class RelabeledSubjectsTest {
       assertThat(actual).named("crazy list").isNotEqualTo(expected, 0.0000001f);
       fail("Should have thrown");
     } catch (AssertionError error) {
-      assertThat(error.getMessage()).is("\"crazy list\" unexpectedly equal to [1.3, 1.0]");
+      assertThat(error).hasMessage("crazy list unexpectedly equal to [1.3, 1.0]");
     }
   }
 }

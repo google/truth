@@ -54,7 +54,7 @@ public class CustomFailureMessageTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Invalid month: Not true that \"Septober\" <13> is in <[1‥12]>");
+          .hasMessage("Invalid month: Not true that Septober (<13>) is in <[1‥12]>");
     }
   }
 
@@ -97,7 +97,7 @@ public class CustomFailureMessageTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Invalid month: Not true that \"Septober\" <13> is in <[1‥12]>");
+          .hasMessage("Invalid month: Not true that Septober (<13>) is in <[1‥12]>");
     }
   }
 

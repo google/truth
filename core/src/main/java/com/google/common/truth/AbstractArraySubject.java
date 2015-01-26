@@ -72,7 +72,7 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
   @Override protected String getDisplaySubject() {
     return (internalCustomName() == null)
         ? "<(" + underlyingType() + "[]) " + listRepresentation() + ">"
-        : "\"" + this.internalCustomName() + "\"";
+        : this.internalCustomName();
   }
 
   void failWithBadType(Object expected) {

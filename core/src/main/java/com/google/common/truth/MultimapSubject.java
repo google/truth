@@ -299,8 +299,12 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   protected static String valuesForKeyDisplaySubject(
       @Nullable Object key, Subject<?, ?> valuesForKeySubject) {
     String customName = valuesForKeySubject.internalCustomName();
-    String name = (customName == null) ? "" : "\"" + customName + "\"";
-    return name + "<Values for key [" + key + "] = " + valuesForKeySubject.getSubject() + ">";
+    if (customName != null) {
+      return customName + " (<Values for key [" + key + "] = "
+          + valuesForKeySubject.getSubject() + ">)";
+    } else {
+      return "<Values for key [" + key + "] = " + valuesForKeySubject.getSubject() + ">";
+    }
   }
 
 }
