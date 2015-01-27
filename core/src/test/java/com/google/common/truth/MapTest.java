@@ -335,91 +335,85 @@ public class MapTest {
     }
   }
 
-  @Test public void mapHasKey() {
+  @Test public void mapContainsKey() {
     ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
-    assertThat(map).hasKey("a");
+    assertThat(map).containsKey("a");
   }
 
-  @Test public void failMapHasKey() {
+  @Test public void failMapContainsKey() {
     ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).hasKey("b");
+      assertThat(map).containsKey("b");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("has key");
+      assertThat(e).hasMessage("Not true that <{a=A}> contains key <b>");
     }
   }
 
-  @Test public void failMapHasKeyWithNull() {
+  @Test public void failMapContainsKeyWithNull() {
     ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).hasKey(null);
+      assertThat(map).containsKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("has key <null>");
+      assertThat(e).hasMessage("Not true that <{a=A}> contains key <null>");
     }
   }
 
   @Test public void mapLacksKey() {
     ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
-    assertThat(map).lacksKey("b");
+    assertThat(map).doesNotContainKey("b");
   }
 
   @Test public void failMapLacksKey() {
     ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).lacksKey("a");
+      assertThat(map).doesNotContainKey("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("lacks key");
+      assertThat(e).hasMessage("Not true that <{a=A}> does not contain key <a>");
     }
   }
 
-  @Test public void mapHasKeyWithValue() {
+  @Test public void mapContainsKeyWithValue() {
     ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
-    assertThat(map).hasKey("a").withValue("A");
+    assertThat(map).containsEntry("a", "A");
   }
 
-  @Test public void mapHasKeyWithNullValueNullExpected() {
+  @Test public void mapContainsKeyWithNullValueNullExpected() {
     Map<String, String> map = Maps.newHashMap();
     map.put("a", null);
-    assertThat(map).hasKey("a").withValue(null);
+    assertThat(map).containsEntry("a", null);
   }
 
-  @Test public void failMapHasKeyWithValue() {
+  @Test public void failMapContainsKeyWithValue() {
     ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).hasKey("a").withValue("a");
+      assertThat(map).containsEntry("a", "a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("has key/value pair");
+      assertThat(e).hasMessage("Not true that <{a=A}> contains entry <a=a>");
     }
   }
 
-  @Test public void failMapHasKeyWithNullValuePresentExpected() {
+  @Test public void failMapContainsKeyWithNullValuePresentExpected() {
     Map<String, String> map = Maps.newHashMap();
     map.put("a", null);
     try {
-      assertThat(map).hasKey("a").withValue("A");
+      assertThat(map).containsEntry("a", "A");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("has key/value pair");
+      assertThat(e).hasMessage("Not true that <{a=null}> contains entry <a=A>");
     }
   }
 
-  @Test public void failMapHasKeyWithPresentValueNullExpected() {
+  @Test public void failMapContainsKeyWithPresentValueNullExpected() {
     ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).hasKey("a").withValue(null);
+      assertThat(map).containsEntry("a", null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("has key/value pair");
+      assertThat(e).hasMessage("Not true that <{a=A}> contains entry <a=null>");
     }
   }
 }

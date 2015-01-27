@@ -21,7 +21,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -140,57 +139,5 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
     if (getSubject().entrySet().contains(entry)) {
       fail("does not contain entry", entry);
     }
-  }
-
-  // TODO(user): Get rid of everything below this line.
-
-  /**
-   * Fails if the map does not contain the given key.
-   *
-   * @deprecated Use {@link #containsKey(Object)} instead.
-   */
-  @Deprecated
-  public WithValue<V> hasKey(final K key) {
-    if (!getSubject().containsKey(key)) {
-      fail("has key", key);
-    }
-    return new WithValue<V>() {
-      @Override public void withValue(V expected) {
-        V actual = getSubject().get(key);
-        if ((actual == null && expected != null) ||
-            !(actual == expected || actual.equals(expected))) {
-          fail("has key/value pair", Arrays.asList(key, expected),
-              "actually has key/value pair", Arrays.asList(key, actual));
-        }
-      }
-    };
-  }
-
-  /**
-   * Fails if the map contains the given key.
-   *
-   * @deprecated Use {@link #doesNotContainKey(Object)} instead.
-   */
-  @Deprecated
-  public void lacksKey(K key) {
-    if (getSubject().containsKey(key)) {
-      fail("lacks key", key);
-    }
-  }
-
-  /**
-   * Interface for fluent chaining of value-checking.
-   *
-   * @deprecated Use {@link MapSubject#containsEntry(Object, Object)} instead.
-   */
-  @Deprecated
-  public interface WithValue<V> {
-    /**
-     * Fails if the map does not contain the given value.
-     *
-     * @deprecated Use {@link MapSubject#containsEntry(Object, Object)} instead.
-     */
-    @Deprecated
-    void withValue(V value);
   }
 }
