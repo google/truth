@@ -69,7 +69,7 @@ public final class Truth {
         }
       };
 
-  public static final TestVerb ASSERT = new TestVerb(THROW_ASSERTION_ERROR);
+  private static final TestVerb ASSERT = new TestVerb(THROW_ASSERTION_ERROR);
 
   public static TestVerb assert_() { return ASSERT; }
 

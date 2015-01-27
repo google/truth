@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import javax.annotation.Nullable;
-
 public abstract class FailureStrategy {
 
   public void fail(String message) {
@@ -40,16 +38,4 @@ public abstract class FailureStrategy {
   public void failComparing(String message, CharSequence expected, CharSequence actual) {
     fail(StringUtil.messageFor(message, expected, actual));
   }
-
-  /**
-   * @deprecated Use {@link AssertionError} instead.
-   */
-  @Deprecated
-  public static class ThrowableAssertionError extends AssertionError {
-    public ThrowableAssertionError(String message, @Nullable Throwable throwable) {
-      super(message);
-      if (throwable != null) initCause(throwable);
-    }
-  }
-
 }

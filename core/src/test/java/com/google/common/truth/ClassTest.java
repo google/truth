@@ -59,42 +59,6 @@ public class ClassTest {
     assertThat(A.class).declaresField("privateField");
   }
 
-  @Test public void testIsAssignableFrom_same() {
-    assertThat(String.class.isAssignableFrom(String.class)).isTrue();
-    assertThat(String.class).isAssignableFrom(String.class);
-  }
-
-  @Test public void testIsAssignableFrom_parent() {
-    assertThat(Object.class.isAssignableFrom(String.class)).isTrue();
-    assertThat(Object.class).isAssignableFrom(String.class);
-    assertThat(Exception.class.isAssignableFrom(NullPointerException.class)).isTrue();
-    assertThat(Exception.class).isAssignableFrom(NullPointerException.class);
-  }
-
-  @Test public void testIsAssignableFrom_reversed() {
-    assertThat(String.class.isAssignableFrom(Object.class)).isFalse();
-    try {
-      assertThat(String.class).isAssignableFrom(Object.class);
-      assert_().fail("Should have thrown an assertion error.");
-    } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <class java.lang.String> "
-              + "is assignable from <class java.lang.Object>");
-    }
-  }
-
-  @Test public void testIsAssignableFrom_reversedDifferentTypes() {
-    assertThat(String.class.isAssignableFrom(Exception.class)).isFalse();
-    try {
-      assertThat(String.class).isAssignableFrom(Exception.class);
-      assert_().fail("Should have thrown an assertion error.");
-    } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <class java.lang.String> "
-              + "is assignable from <class java.lang.Exception>");
-    }
-  }
-
   @Test public void testIsAssignableTo_same() {
     assertThat(String.class).isAssignableTo(String.class);
   }

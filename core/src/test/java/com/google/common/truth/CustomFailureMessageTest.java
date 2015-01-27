@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.StringSubject.STRING;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assert_;
@@ -26,8 +25,6 @@ import com.google.common.collect.Range;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import java.util.Arrays;
 
 /**
  * Tests (and effectively sample code) for custom error message for propositions.
@@ -68,18 +65,6 @@ public class CustomFailureMessageTest {
     }
   }
 
-  @Test public void assertWithMessageOnDelegate() {
-    try {
-      assertWithMessage("This is a custom message")
-          .about(STRING).that("foo").isEqualTo("bar");
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).contains("This is a custom message");
-      assertThat(expected.getMessage()).contains("foo");
-      assertThat(expected.getMessage()).contains("bar");
-    }
-  }
-
   @Test public void customMessageIsPrepended() {
     try {
       assert_().withFailureMessage("Invalid month").that(13).isIn(Range.closed(1, 12));
@@ -108,29 +93,6 @@ public class CustomFailureMessageTest {
     } catch (AssertionError expected) {
       assertThat(expected).hasMessage(
           "This is a custom message: The subject was expected to be true, but was false");
-    }
-  }
-
-  @Test public void customMessageOnDelegate() {
-    try {
-      assert_().withFailureMessage("This is a custom message")
-          .about(STRING).that("foo").isEqualTo("bar");
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).contains("This is a custom message");
-      assertThat(expected.getMessage()).contains("foo");
-      assertThat(expected.getMessage()).contains("bar");
-    }
-  }
-
-  @Test public void customMessageOnForEach() {
-    try {
-      assert_().withFailureMessage("This is a custom message")
-          .in(Arrays.asList("a1", "b1", "c1")).thatEach(STRING).contains("b");
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessage("This is a custom message: Not true that <\"a1\"> contains <\"b\">");
     }
   }
 }

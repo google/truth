@@ -334,8 +334,6 @@ public class SubjectTest {
   @Test public void isInstanceOf() {
     assertThat("a").isA(String.class);
     assertThat("a").isInstanceOf(String.class);
-    // Reverse
-    assertThat(String.class).isAssignableFrom("a".getClass());
   }
 
   @Test public void isAFail() {

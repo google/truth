@@ -66,7 +66,7 @@ public class TruthJUnit {
       };
 
   @GwtIncompatible("JUnit4")
-  public static final TestVerb ASSUME = new TestVerb(THROW_ASSUMPTION_ERROR);
+  private static final TestVerb ASSUME = new TestVerb(THROW_ASSUMPTION_ERROR);
 
   @GwtIncompatible("JUnit4")
   public static final TestVerb assume() { return ASSUME; }
