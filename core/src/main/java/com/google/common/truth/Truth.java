@@ -24,8 +24,6 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.truth.AbstractVerb.DelegatedVerb;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.CheckReturnValue;
@@ -142,26 +140,6 @@ public final class Truth {
   @CheckReturnValue
   public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
       assertThat(Iterable<T> target) {
-    return assert_().that(target);
-  }
-
-  /**
-   * TODO(user): @deprecated Use the {@link Iterable} overload instead.
-   */
-  @CheckReturnValue
-  public static <T, C extends Collection<T>>
-      CollectionSubject<? extends CollectionSubject<?, T, C>, T, C>
-      assertThat(Collection<T> target) {
-    return assert_().that(target);
-  }
-
-  /**
-   * TODO(user): @deprecated Use the {@link Iterable} overload instead.
-   */
-  @CheckReturnValue
-  public static <T, C extends List<T>>
-      ListSubject<? extends ListSubject<?, T, C>, T, C>
-      assertThat(List<T> target) {
     return assert_().that(target);
   }
 

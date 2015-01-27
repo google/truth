@@ -31,48 +31,9 @@ import java.util.List;
  *
  * @author David Beaumont
  */
+// TODO(user): Move these all to IterableTest
 @RunWith(JUnit4.class)
 public class ListTest {
-
-  @Test public void listContainsSequenceWithEmptyList() {
-    assertThat(Arrays.asList(1, 2, 3)).containsSequence(Arrays.<Integer>asList());
-  }
-
-  @Test public void listContainsSequenceWithSingleton() {
-    assertThat(Arrays.asList(1)).containsSequence(Arrays.asList(1));
-  }
-
-  @Test public void listContainsSequenceAtEnd() {
-    assertThat(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(2, 3));
-  }
-
-  @Test public void listContainsSequenceAtStart() {
-    assertThat(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(1, 2));
-  }
-
-  @Test public void listContainsSequenceWithManyFalseStarts() {
-    assertThat(Arrays.asList(1, 1, 2, 1, 1, 2, 3, 4)).containsSequence(Arrays.asList(1, 2, 3));
-  }
-
-  @Test public void listContainsSequenceTooShortFailure() {
-    try {
-      assertThat(Arrays.asList(1, 2, 3)).containsSequence(Arrays.asList(1, 2, 3, 4));
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("contains sequence");
-      assertThat(e.getMessage()).contains("[1, 2, 3, 4]");
-    }
-  }
-
-  @Test public void listContainsSequenceNotContiguousFailure() {
-    try {
-      assertThat(Arrays.asList(1, 2, 2, 3)).containsSequence(Arrays.asList(1, 2, 3));
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("contains sequence");
-      assertThat(e.getMessage()).contains("[1, 2, 3]");
-    }
-  }
 
   @Test public void listIsStrictlyOrdered() {
     assertThat(Arrays.<Integer>asList()).isStrictlyOrdered();

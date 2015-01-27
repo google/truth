@@ -23,8 +23,6 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.CheckReturnValue;
@@ -92,24 +90,6 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   public <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
       that(Iterable<T> target) {
     return IterableSubject.create(getFailureStrategy(), target);
-  }
-
-  /**
-   * TODO(user): @deprecated Use the {@link Iterable} overload instead.
-   */
-  @CheckReturnValue
-  public <T, C extends Collection<T>>
-      CollectionSubject<? extends CollectionSubject<?, T, C>, T, C> that(Collection<T> target) {
-    return CollectionSubject.create(getFailureStrategy(), target);
-  }
-
-  /**
-   * TODO(user): @deprecated Use the {@link Iterable} overload instead.
-   */
-  @CheckReturnValue
-  public <T, C extends List<T>> ListSubject<? extends ListSubject<?, T, C>, T, C>
-      that(List<T> target) {
-    return ListSubject.create(getFailureStrategy(), target);
   }
 
   @CheckReturnValue

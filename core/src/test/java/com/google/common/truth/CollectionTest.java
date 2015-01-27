@@ -31,18 +31,19 @@ import java.util.Collection;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+// TODO(user): Move these all to IterableTest
 @RunWith(JUnit4.class)
 public class CollectionTest {
 
-  @Test public void collectionHasItem() {
+  @Test public void collectionContains() {
     assertThat(collection(1, 2, 3)).contains(1);
   }
 
-  @Test public void collectionHasItemWithNull() {
+  @Test public void collectionContainsWithNull() {
     assertThat(collection(1, null, 3)).contains(null);
   }
 
-  @Test public void collectionHasItemFailure() {
+  @Test public void collectionContainsFailure() {
     try {
       assertThat(collection(1, 2, 3)).contains(5);
       fail("Should have thrown.");
@@ -51,44 +52,44 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasAnyOf() {
-    assertThat(collection(1, 2, 3)).has().anyOf(1, 5);
+  @Test public void collectionContainsAnyOf() {
+    assertThat(collection(1, 2, 3)).containsAnyOf(1, 5);
   }
 
-  @Test public void collectionHasAnyOfWithNull() {
-    assertThat(collection(1, null, 3)).has().anyOf(null, 5);
+  @Test public void collectionContainsAnyOfWithNull() {
+    assertThat(collection(1, null, 3)).containsAnyOf(null, 5);
   }
 
-  @Test public void collectionHasAnyOfWithNullInThirdAndFinalPosition() {
-    assertThat(collection(1, null, 3)).has().anyOf(4, 5, (Integer) null);
+  @Test public void collectionContainsAnyOfWithNullInThirdAndFinalPosition() {
+    assertThat(collection(1, null, 3)).containsAnyOf(4, 5, (Integer) null);
   }
 
-  @Test public void collectionHasAnyOfFailure() {
+  @Test public void collectionContainsAnyOfFailure() {
     try {
-      assertThat(collection(1, 2, 3)).has().anyOf(5, 6, 0);
+      assertThat(collection(1, 2, 3)).containsAnyOf(5, 6, 0);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
     }
   }
 
-  @Test public void collectionHasAllOfWithMany() {
+  @Test public void collectionContainsAllOfWithMany() {
     assertThat(collection(1, 2, 3)).containsAllOf(1, 2);
   }
 
-  @Test public void collectionHasAllOfWithDuplicates() {
+  @Test public void collectionContainsAllOfWithDuplicates() {
     assertThat(collection(1, 2, 2, 2, 3)).containsAllOf(2, 2);
   }
 
-  @Test public void collectionHasAllOfWithNull() {
+  @Test public void collectionContainsAllOfWithNull() {
     assertThat(collection(1, null, 3)).containsAllOf(3, null);
   }
 
-  @Test public void collectionHasAllOfWithNullAtThirdAndFinalPosition() {
+  @Test public void collectionContainsAllOfWithNullAtThirdAndFinalPosition() {
     assertThat(collection(1, null, 3)).containsAllOf(1, 3, (Integer) null);
   }
 
-  @Test public void collectionHasAllOfFailure() {
+  @Test public void collectionContainsAllOfFailure() {
     try {
       assertThat(collection(1, 2, 3)).containsAllOf(1, 2, 4);
       fail("Should have thrown.");
@@ -98,7 +99,7 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasAllOfWithDuplicatesFailure() {
+  @Test public void collectionContainsAllOfWithDuplicatesFailure() {
     try {
       assertThat(collection(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
@@ -114,7 +115,7 @@ public class CollectionTest {
    * Slightly subtle test to ensure that if multiple equal elements are found
    * to be missing we only reference it once in the output message.
    */
-  @Test public void collectionHasAllOfWithDuplicateMissingElements() {
+  @Test public void collectionContainsAllOfWithDuplicateMissingElements() {
     try {
       assertThat(collection(1, 2)).containsAllOf(4, 4, 4);
       fail("Should have thrown.");
@@ -125,7 +126,7 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasAllOfWithNullFailure() {
+  @Test public void collectionContainsAllOfWithNullFailure() {
     try {
       assertThat(collection(1, null, 3)).containsAllOf(1, null, null, 3);
       fail("Should have thrown.");
@@ -136,15 +137,15 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasAllOfInOrder() {
+  @Test public void collectionContainsAllOfInOrder() {
     assertThat(collection(3, 2, 5)).containsAllOf(3, 2, 5).inOrder();
   }
 
-  @Test public void collectionHasAllOfInOrderWithNull() {
+  @Test public void collectionContainsAllOfInOrderWithNull() {
     assertThat(collection(3, null, 5)).containsAllOf(3, null, 5).inOrder();
   }
 
-  @Test public void collectionHasAllOfInOrderWithFailure() {
+  @Test public void collectionContainsAllOfInOrderWithFailure() {
     try {
       assertThat(collection(1, null, 3)).containsAllOf(null, 1, 3).inOrder();
       fail("Should have thrown.");
@@ -154,13 +155,13 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasNoneOf() {
-    assertThat(collection(1, 2, 3)).has().noneOf(4, 5, 6);
+  @Test public void collectionContainsNoneOf() {
+    assertThat(collection(1, 2, 3)).containsNoneOf(4, 5, 6);
   }
 
-  @Test public void collectionHasNoneOfFailure() {
+  @Test public void collectionContainsNoneOfFailure() {
     try {
-      assertThat(collection(1, 2, 3)).has().noneOf(1, 2, 4);
+      assertThat(collection(1, 2, 3)).containsNoneOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
@@ -169,9 +170,9 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasNoneOfFailureWithDuplicateInSubject() {
+  @Test public void collectionContainsNoneOfFailureWithDuplicateInSubject() {
     try {
-      assertThat(collection(1, 2, 2, 3)).has().noneOf(1, 2, 4);
+      assertThat(collection(1, 2, 2, 3)).containsNoneOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
@@ -180,9 +181,9 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasNoneOfFailureWithDuplicateInExpected() {
+  @Test public void collectionContainsNoneOfFailureWithDuplicateInExpected() {
     try {
-      assertThat(collection(1, 2, 3)).has().noneOf(1, 2, 2, 4);
+      assertThat(collection(1, 2, 3)).containsNoneOf(1, 2, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
@@ -191,31 +192,31 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasExactlyWithMany() {
+  @Test public void collectionContainsExactlyWithMany() {
     assertThat(collection(1, 2, 3)).containsExactly(1, 2, 3);
   }
 
-  @Test public void collectionHasExactlyOutOfOrder() {
+  @Test public void collectionContainsExactlyOutOfOrder() {
     assertThat(collection(1, 2, 3, 4)).containsExactly(3, 1, 4, 2);
   }
 
-  @Test public void collectionHasExactlyWithDuplicates() {
+  @Test public void collectionContainsExactlyWithDuplicates() {
     assertThat(collection(1, 2, 2, 2, 3)).containsExactly(1, 2, 2, 2, 3);
   }
 
-  @Test public void collectionHasExactlyWithDuplicatesOutOfOrder() {
+  @Test public void collectionContainsExactlyWithDuplicatesOutOfOrder() {
     assertThat(collection(1, 2, 2, 2, 3)).containsExactly(2, 1, 2, 3, 2);
   }
 
-  @Test public void collectionHasExactlyWithNull() {
+  @Test public void collectionContainsExactlyWithNull() {
     assertThat(collection(1, null, 3)).containsExactly(1, null, 3);
   }
 
-  @Test public void collectionHasExactlyWithNullOutOfOrder() {
+  @Test public void collectionContainsExactlyWithNullOutOfOrder() {
     assertThat(collection(1, null, 3)).containsExactly(1, 3, (Integer) null);
   }
 
-  @Test public void collectionHasExactlyMissingItemFailure() {
+  @Test public void collectionContainsExactlyMissingItemFailure() {
     try {
       assertThat(collection(1, 2)).containsExactly(1, 2, 4);
       fail("Should have thrown.");
@@ -226,7 +227,7 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasExactlyUnexpectedItemFailure() {
+  @Test public void collectionContainsExactlyUnexpectedItemFailure() {
     try {
       assertThat(collection(1, 2, 3)).containsExactly(1, 2);
       fail("Should have thrown.");
@@ -237,7 +238,7 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasExactlyWithDuplicatesNotEnoughItemsFailure() {
+  @Test public void collectionContainsExactlyWithDuplicatesNotEnoughItemsFailure() {
     try {
       assertThat(collection(1, 2, 3)).containsExactly(1, 2, 2, 2, 3);
       fail("Should have thrown.");
@@ -248,7 +249,7 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasExactlyWithDuplicatesMissingItemFailure() {
+  @Test public void collectionContainsExactlyWithDuplicatesMissingItemFailure() {
     try {
       assertThat(collection(1, 2, 3)).containsExactly(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
@@ -259,7 +260,7 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasExactlyWithDuplicatesUnexpectedItemFailure() {
+  @Test public void collectionContainsExactlyWithDuplicatesUnexpectedItemFailure() {
     try {
       assertThat(collection(1, 2, 2, 2, 2, 3)).containsExactly(1, 2, 2, 3);
       fail("Should have thrown.");
@@ -274,7 +275,7 @@ public class CollectionTest {
    * Slightly subtle test to ensure that if multiple equal elements are found
    * to be missing we only reference it once in the output message.
    */
-  @Test public void collectionHasExactlyWithDuplicateMissingElements() {
+  @Test public void collectionContainsExactlyWithDuplicateMissingElements() {
     try {
       assertThat(collection()).containsExactly(4, 4, 4);
       fail("Should have thrown.");
@@ -285,7 +286,7 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasExactlyWithNullFailure() {
+  @Test public void collectionContainsExactlyWithNullFailure() {
     try {
       assertThat(collection(1, null, 3)).containsExactly(1, null, null, 3);
       fail("Should have thrown.");
@@ -296,15 +297,15 @@ public class CollectionTest {
     }
   }
 
-  @Test public void collectionHasExactlyInOrder() {
+  @Test public void collectionContainsExactlyInOrder() {
     assertThat(collection(3, 2, 5)).containsExactly(3, 2, 5).inOrder();
   }
 
-  @Test public void collectionHasExactlyInOrderWithNull() {
+  @Test public void collectionContainsExactlyInOrderWithNull() {
     assertThat(collection(3, null, 5)).containsExactly(3, null, 5).inOrder();
   }
 
-  @Test public void collectionHasExactlyInOrderWithFailure() {
+  @Test public void collectionContainsExactlyInOrderWithFailure() {
     try {
       assertThat(collection(1, null, 3)).containsExactly(null, 1, 3).inOrder();
       fail("Should have thrown.");
