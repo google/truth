@@ -57,6 +57,7 @@ import javax.annotation.CheckReturnValue;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+@CheckReturnValue
 public final class Truth {
 
   public static final FailureStrategy THROW_ASSERTION_ERROR =
@@ -91,137 +92,112 @@ public final class Truth {
     return assert_().about(factory);
   }
 
-  @CheckReturnValue
   public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(T target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static Subject<DefaultSubject, Object> assertThat(Object target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   @GwtIncompatible("ClassSubject.java")
   public static ClassSubject assertThat(Class<?> target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static ThrowableSubject assertThat(Throwable target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static LongSubject assertThat(Long target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static DoubleSubject assertThat(Double target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static IntegerSubject assertThat(Integer target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static BooleanSubject assertThat(Boolean target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static StringSubject assertThat(String target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
       assertThat(Iterable<T> target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static <T> ObjectArraySubject<T> assertThat(T[] target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static PrimitiveBooleanArraySubject assertThat(boolean[] target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static PrimitiveIntArraySubject assertThat(int[] target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static PrimitiveLongArraySubject assertThat(long[] target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static PrimitiveByteArraySubject assertThat(byte[] target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static PrimitiveCharArraySubject assertThat(char[] target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static PrimitiveFloatArraySubject assertThat(float[] target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static PrimitiveDoubleArraySubject assertThat(double[] target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static <T> OptionalSubject<T> assertThat(Optional<T> target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
       assertThat(Map<K, V> target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static <K, V, M extends Multimap<K, V>>
   MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> assertThat(
       Multimap<K, V> target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static <K, V, M extends ListMultimap<K, V>>
   ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> assertThat(
       ListMultimap<K, V> target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static <K, V, M extends SetMultimap<K, V>>
   SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> assertThat(
       SetMultimap<K, V> target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static <E, M extends Multiset<E>>
       MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> assertThat(Multiset<E> target) {
     return assert_().that(target);
   }
 
-  @CheckReturnValue
   public static <R, C, V, M extends Table<R, C, V>>
       TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> assertThat(
           Table<R, C, V> target) {
