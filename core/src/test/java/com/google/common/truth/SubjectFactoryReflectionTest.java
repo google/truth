@@ -40,7 +40,7 @@ public class SubjectFactoryReflectionTest {
             return new StringSubject(fs, target);
           }
         };
-    assertThat(factory.getSubjectClass()).is(StringSubject.class);
+    assertThat(factory.getSubjectClass()).isEqualTo(StringSubject.class);
   }
 
 }

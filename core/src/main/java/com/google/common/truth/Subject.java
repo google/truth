@@ -58,14 +58,6 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * @deprecated Use {@link #named(String)} instead.
-   */
-  @Deprecated
-  public S labeled(String label) {
-    return named(label);
-  }
-
-  /**
    * @deprecated Use {@link #isEqualTo(Object)} to check object equality or
    *     {@link #isSameAs(Object)} to check reference equality.
    */
@@ -126,26 +118,6 @@ public class Subject<S extends Subject<S,T>,T> {
     if (getSubject() == other) {
       fail("is not the same instance as", other);
     }
-  }
-
-  /**
-   * Fails if the subject is not an instance of the given class.
-   *
-   * @deprecated Use {@link #isInstanceOf} instead.
-   */
-  @Deprecated
-  public void isA(Class<?> clazz) {
-    isInstanceOf(clazz);
-  }
-
-  /**
-   * Fails if the subject is an instance of the given class.
-   *
-   * @deprecated Use {@link #isNotInstanceOf(Class)} instead.
-   */
-  @Deprecated
-  public void isNotA(Class<?> clazz) {
-    isNotInstanceOf(clazz);
   }
 
   /**

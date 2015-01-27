@@ -39,7 +39,7 @@ public class BooleanTest {
       assertThat(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).is("The subject was expected to be true, but was false");
+      assertThat(expected).hasMessage("The subject was expected to be true, but was false");
     }
   }
 
@@ -52,7 +52,7 @@ public class BooleanTest {
       assertThat(true).isFalse();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).is("The subject was expected to be false, but was true");
+      assertThat(expected).hasMessage("The subject was expected to be false, but was true");
     }
   }
 }

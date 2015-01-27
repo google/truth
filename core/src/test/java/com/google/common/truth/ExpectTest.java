@@ -66,6 +66,6 @@ public class ExpectTest {
 	public void warnWhenExpectIsNotRule() {
 		String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
 		thrown.expectMessage(message);
-		oopsNotARule.that(true).is(true);
+		oopsNotARule.that(true).isEqualTo(true);
 	}
 }

@@ -48,7 +48,7 @@ public class PrimitiveLongArraySubjectTest {
     try {
       assertThat(array(2, 3)).isEqualTo(array(3, 2));
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <(long[]) [2, 3]> is equal to <[3, 2]>");
+      assertThat(e).hasMessage("Not true that <(long[]) [2, 3]> is equal to <[3, 2]>");
     }
   }
 
@@ -77,8 +77,8 @@ public class PrimitiveLongArraySubjectTest {
     try {
       assertThat(array(2, 3)).isNotEqualTo(array(2, 3));
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e)
+          .hasMessage("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 
@@ -87,8 +87,8 @@ public class PrimitiveLongArraySubjectTest {
       long[] same = array(2, 3);
       assertThat(same).isNotEqualTo(same);
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e)
+          .hasMessage("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 

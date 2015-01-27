@@ -53,7 +53,7 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(array(BYTE_0, BYTE_1)).isEqualTo(array(BYTE_1, BYTE_0));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>");
+      assertThat(e).hasMessage("Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>");
     }
   }
 
@@ -84,8 +84,8 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
+      assertThat(e)
+          .hasMessage("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
     }
   }
 
@@ -95,8 +95,8 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
+      assertThat(e)
+          .hasMessage("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
     }
   }
 

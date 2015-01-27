@@ -129,13 +129,13 @@ public class StringTest {
   }
 
   @Test public void stringEquality() {
-    assertThat("abc").is("abc");
+    assertThat("abc").isEqualTo("abc");
     assertThat("abc").isEqualTo("abc");
   }
 
   @Test public void stringEqualityToNull() {
     try {
-      assertThat("abc").is(null);
+      assertThat("abc").isEqualTo(null);
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
@@ -201,7 +201,6 @@ public class StringTest {
   }
 
   @Test public void stringNullNullTests() {
-    assertThat((String)null).is(null);
     assertThat((String)null).isEqualTo(null);
     try {
       assertThat((String)null).contains(null);

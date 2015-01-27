@@ -56,8 +56,8 @@ public class PrimitiveIntArraySubjectTest {
       assertThat(array(2, 5)).hasLength(1);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("Not true that <(int[]) [2, 5]> has length <1>");
+      assertThat(e)
+          .hasMessage("Not true that <(int[]) [2, 5]> has length <1>");
     }
   }
 
@@ -78,8 +78,8 @@ public class PrimitiveIntArraySubjectTest {
       assertThat(array(2, 5)).isEmpty();
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("Not true that <(int[]) [2, 5]> is empty");
+      assertThat(e)
+          .hasMessage("Not true that <(int[]) [2, 5]> is empty");
     }
   }
 
@@ -92,8 +92,8 @@ public class PrimitiveIntArraySubjectTest {
       assertThat(EMPTY).isNotEmpty();
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("Not true that <(int[]) []> is not empty");
+      assertThat(e)
+          .hasMessage("Not true that <(int[]) []> is not empty");
     }
   }
 
@@ -101,7 +101,7 @@ public class PrimitiveIntArraySubjectTest {
     try {
       assertThat(array(2, 3)).isEqualTo(array(3, 2));
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <(int[]) [2, 3]> is equal to <[3, 2]>");
+      assertThat(e).hasMessage("Not true that <(int[]) [2, 3]> is equal to <[3, 2]>");
     }
   }
 
@@ -130,8 +130,8 @@ public class PrimitiveIntArraySubjectTest {
     try {
       assertThat(array(2, 3)).isNotEqualTo(array(2, 3));
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e)
+          .hasMessage("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 
@@ -140,8 +140,8 @@ public class PrimitiveIntArraySubjectTest {
       int[] same = array(2, 3);
       assertThat(same).isNotEqualTo(same);
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e)
+          .hasMessage("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 

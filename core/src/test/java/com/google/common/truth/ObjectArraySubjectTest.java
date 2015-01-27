@@ -60,7 +60,7 @@ public class ObjectArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("Not true that <(Object[]) [A, 5]> has length <1>");
+          .isEqualTo("Not true that <(Object[]) [A, 5]> has length <1>");
     }
   }
 
@@ -82,7 +82,7 @@ public class ObjectArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("Not true that <(Object[]) [A, 5]> is empty");
+          .isEqualTo("Not true that <(Object[]) [A, 5]> is empty");
     }
   }
 
@@ -96,7 +96,7 @@ public class ObjectArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("Not true that <(Object[]) []> is not empty");
+          .isEqualTo("Not true that <(Object[]) []> is not empty");
     }
   }
 
@@ -106,7 +106,7 @@ public class ObjectArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("Not true that <(Object[]) [A, 5]> is equal to <[5, A]>");
+          .isEqualTo("Not true that <(Object[]) [A, 5]> is equal to <[5, A]>");
     }
   }
 
@@ -138,7 +138,7 @@ public class ObjectArraySubjectTest {
       assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
+      assertThat(e.getMessage()).isEqualTo("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
     }
   }
 
@@ -148,7 +148,7 @@ public class ObjectArraySubjectTest {
       assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
+      assertThat(e).hasMessage("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
     }
   }
 
@@ -170,7 +170,7 @@ public class ObjectArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("Not true that <(String[]) [A, B]> is equal to <[B, A]>");
+          .isEqualTo("Not true that <(String[]) [A, B]> is equal to <[B, A]>");
     }
   }
 
@@ -185,9 +185,9 @@ public class ObjectArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
-          .is("Not true that <(Set[]) [[A], [B]]> is equal to <[[B], [A]]>");
+          .isEqualTo("Not true that <(Set[]) [[A], [B]]> is equal to <[[B], [A]]>");
           // Maybe one day:
-          // .is("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
+          // .isEqualTo("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
     }
   }
 

@@ -49,7 +49,7 @@ public class PrimitiveCharArraySubjectTest {
       assertThat(array('a', 'q')).isEqualTo(array('q', 'a'));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <(char[]) [a, q]> is equal to <[q, a]>");
+      assertThat(e).hasMessage("Not true that <(char[]) [a, q]> is equal to <[q, a]>");
     }
   }
 
@@ -80,8 +80,8 @@ public class PrimitiveCharArraySubjectTest {
       assertThat(array('a', 'q')).isNotEqualTo(array('a', 'q'));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(char[]) [a, q]> unexpectedly equal to [a, q].");
+      assertThat(e)
+          .hasMessage("<(char[]) [a, q]> unexpectedly equal to [a, q].");
     }
   }
 
@@ -91,8 +91,8 @@ public class PrimitiveCharArraySubjectTest {
       assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(char[]) [a, q]> unexpectedly equal to [a, q].");
+      assertThat(e)
+          .hasMessage("<(char[]) [a, q]> unexpectedly equal to [a, q].");
     }
   }
 

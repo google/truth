@@ -21,7 +21,6 @@ import static org.junit.Assert.fail;
 
 import com.google.common.truth.Expect;
 
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
@@ -39,12 +38,11 @@ public class LongTest {
   @Rule public final Expect EXPECT = Expect.create();
 
   @Test public void simpleEquality() {
-    assertThat(2L + 2).is(4L);
     assertThat(2L + 2).isEqualTo(4L);
   }
 
   @Test public void longIsLong() {
-    assertThat(4L).is(4L);
+    assertThat(4L).isEqualTo(4L);
   }
 
   @Test public void simpleInequality() {

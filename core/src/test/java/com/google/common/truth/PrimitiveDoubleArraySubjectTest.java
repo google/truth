@@ -49,7 +49,7 @@ public class PrimitiveDoubleArraySubjectTest {
       assertThat(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is("Not true that <(double[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
+      assertThat(e).hasMessage("Not true that <(double[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
     }
   }
 
@@ -88,8 +88,8 @@ public class PrimitiveDoubleArraySubjectTest {
       assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, 3.3d), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(double[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
+      assertThat(e)
+          .hasMessage("<(double[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
     }
   }
 
@@ -99,8 +99,8 @@ public class PrimitiveDoubleArraySubjectTest {
       assertThat(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(double[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
+      assertThat(e)
+          .hasMessage("<(double[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
     }
   }
 

@@ -68,7 +68,7 @@ public class RelabeledSubjectsTest {
 
   @Test public void relabeledObject() {
     try {
-      assertThat("a string").named("Foo").isA(Integer.class);
+      assertThat("a string").named("Foo").isInstanceOf(Integer.class);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())

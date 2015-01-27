@@ -35,8 +35,8 @@ public class SubjectPropertiesTest {
       assertThat(new A()).hasField("noField");
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .is("Not true that <A> has a field named <noField>");
+      assertThat(expected)
+          .hasMessage("Not true that <A> has a field named <noField>");
     }
   }
 
@@ -50,8 +50,8 @@ public class SubjectPropertiesTest {
       assertThat(nullObject).hasField("publicField");
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .is("Cannot determine a field name from a null object.");
+      assertThat(expected)
+          .hasMessage("Cannot determine a field name from a null object.");
     }
   }
 
@@ -64,8 +64,8 @@ public class SubjectPropertiesTest {
       assertThat(new A("aValue", null)).hasField("publicField").withValue("wrongValue");
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .is("Not true that <A>'s field <publicField> contains expected value " +
+      assertThat(expected)
+          .hasMessage("Not true that <A>'s field <publicField> contains expected value " +
                 "<wrongValue>. It contains value <aValue>");
     }
   }
@@ -79,8 +79,8 @@ public class SubjectPropertiesTest {
       assertThat(new A(null, null)).hasField("publicField").withValue("wrongValue");
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .is("Not true that <A>'s field <publicField> contains expected value " +
+      assertThat(expected)
+          .hasMessage("Not true that <A>'s field <publicField> contains expected value " +
                 "<wrongValue>. It contains value <null>");
     }
   }
@@ -90,8 +90,8 @@ public class SubjectPropertiesTest {
       assertThat(new A("value", null)).hasField("noField").withValue("value");
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .is("Not true that <A> has a field named <noField>");
+      assertThat(expected)
+          .hasMessage("Not true that <A> has a field named <noField>");
     }
   }
 

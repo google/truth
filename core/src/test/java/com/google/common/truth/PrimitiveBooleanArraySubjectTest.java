@@ -49,7 +49,7 @@ public class PrimitiveBooleanArraySubjectTest {
       assertThat(array(true, false, true)).isEqualTo(array(false, true, true));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).is(
+      assertThat(e).hasMessage(
           "Not true that <(boolean[]) [true, false, true]> is equal to <[false, true, true]>");
     }
   }
@@ -81,8 +81,8 @@ public class PrimitiveBooleanArraySubjectTest {
       assertThat(array(true, false)).isNotEqualTo(array(true, false));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
+      assertThat(e)
+          .hasMessage("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
     }
   }
 
@@ -92,8 +92,8 @@ public class PrimitiveBooleanArraySubjectTest {
       assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
-          .is("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
+      assertThat(e)
+          .hasMessage("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
     }
   }
 

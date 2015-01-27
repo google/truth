@@ -332,18 +332,7 @@ public class SubjectTest {
   }
 
   @Test public void isInstanceOf() {
-    assertThat("a").isA(String.class);
     assertThat("a").isInstanceOf(String.class);
-  }
-
-  @Test public void isAFail() {
-    try {
-      assertThat(4.5).isA(Long.class);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <4.5> is an instance of <java.lang.Long>."
-          + " It is an instance of <java.lang.Double>");
-    }
   }
 
   @Test public void isInstanceOfFail() {
@@ -357,18 +346,7 @@ public class SubjectTest {
   }
 
   @Test public void isNotInstanceOf() {
-    assertThat("a").isNotA(Long.class);
     assertThat("a").isNotInstanceOf(Long.class);
-  }
-
-  @Test public void isNotAFail() {
-    try {
-      assertThat(5).isNotA(Number.class);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "<5> expected not to be an instance of java.lang.Number, but was.");
-    }
   }
 
   @Test public void isNotInstanceOfFail() {

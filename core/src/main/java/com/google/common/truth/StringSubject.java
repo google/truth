@@ -41,10 +41,6 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  @Override public void is(Object expected) {
-    isEqualTo(expected);
-  }
-
   @Override public void isEqualTo(Object expected) {
     if (getSubject() == null) {
       if (expected != null) {
