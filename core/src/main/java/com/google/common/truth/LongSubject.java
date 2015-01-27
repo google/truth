@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import com.google.common.collect.Range;
-
 /**
  * Propositions for {@code long} subjects.
  *
@@ -29,28 +27,6 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
 
   public LongSubject(FailureStrategy failureStrategy, Long subject) {
     super(failureStrategy, subject);
-  }
-
-  /**
-   * Attests that a Subject<Long> is inclusively within the {@code lower} and
-   * {@code upper} bounds provided or fails.
-   *
-   * @deprecated Use {@code isIn(Range.closed(lower, upper))} instead.
-   */
-  @Deprecated
-  public void isInclusivelyInRange(long lower, long upper) {
-    isIn(Range.closed(lower, upper));
-  }
-
-  /**
-   * Attests that a Subject<Long> is exclusively within the {@code lower} and
-   * {@code upper} bounds provided or fails.
-   *
-   * @deprecated Use {@code isIn(Range.open(lower, upper))} instead.
-   */
-  @Deprecated
-  public void isBetween(long lower, long upper) {
-    isIn(Range.open(lower, upper));
   }
 
   public void isEqualTo(Object other) {
@@ -76,15 +52,4 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
   public void is(byte other) {
     isEqualTo((long) other);
   }
-
-  /**
-   * @deprecated Use a {@code for each} style loop over your {@code Iterable<Integer>} instead.
-   */
-  @Deprecated
-  public static final SubjectFactory<LongSubject, Long> LONG =
-      new SubjectFactory<LongSubject, Long>() {
-        @Override public LongSubject getSubject(FailureStrategy fs, Long target) {
-          return new LongSubject(fs, target);
-        }
-      };
 }

@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import com.google.common.collect.Range;
 import com.google.common.primitives.Ints;
 
 /**
@@ -30,28 +29,6 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
 
   public IntegerSubject(FailureStrategy failureStrategy, Integer integer) {
     super(failureStrategy, integer);
-  }
-
-  /**
-   * Attests that the int is inclusively within the {@code lower} and
-   * {@code upper} bounds provided or fails.
-   *
-   * @deprecated Use {@code isIn(Range.closed(lower, upper))} instead.
-   */
-  @Deprecated
-  public void isInclusivelyInRange(int lower, int upper) {
-    isIn(Range.closed(lower, upper));
-  }
-
-  /**
-   * Attests that the int is exclusively within the {@code lower} and
-   * {@code upper} bounds provided or fails.
-   *
-   * @deprecated Use {@code isIn(Range.open(lower, upper))} instead.
-   */
-  @Deprecated
-  public void isBetween(int lower, int upper) {
-    isIn(Range.open(lower, upper));
   }
 
   public void isEqualTo(Object other) {
@@ -77,15 +54,4 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
   public void is(byte other) {
     isEqualTo(other);
   }
-
-  /**
-   * @deprecated Use a {@code for each} style loop over your {@code Iterable<Integer>} instead.
-   */
-  @Deprecated
-  public static final SubjectFactory<IntegerSubject, Integer> INTEGER =
-      new SubjectFactory<IntegerSubject, Integer>() {
-        @Override public IntegerSubject getSubject(FailureStrategy fs, Integer target) {
-          return new IntegerSubject(fs, target);
-        }
-      };
 }
