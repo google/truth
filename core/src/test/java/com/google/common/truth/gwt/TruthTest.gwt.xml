@@ -4,5 +4,4 @@
   <inherits name="com.google.common.primitives.Primitives"/>
   <inherits name="com.google.common.truth.Truth"/>
   <inherits name="com.google.gwt.junit.JUnit"/>
-  <inherits name="org.truth0.Truth"/>
 </module>

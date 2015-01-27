@@ -67,7 +67,7 @@
       <timezone>+2</timezone>
     </developer>
   </developers>
-  <url>http://truth0.github.com/truth</url>
+  <url>http://github.com/google/truth</url>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -77,7 +77,7 @@
   </licenses>
   <issueManagement>
     <system>Github</system>
-    <url>https://github.com/truth0/truth/issues</url>
+    <url>https://github.com/google/truth/issues</url>
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
@@ -108,8 +108,8 @@
     </mailingList>
   </mailingLists>
   <scm>
-    <connection>scm:git:git@github.com:truth0/truth.git</connection>
-    <url>scm:git:git@github.com:truth0/truth.git</url>
+    <connection>scm:git:git@github.com:google/truth.git</connection>
+    <url>scm:git:git@github.com:google/truth.git</url>
     <!-- <developerConnection>scm:git:git@github.com:truth0/truth.git</developerConnection> -->
   </scm>
 </project>
