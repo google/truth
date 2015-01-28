@@ -31,12 +31,10 @@ import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -89,56 +87,6 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     if (actualSize != expectedSize) {
       failWithBadResults("has a size of", expectedSize, "is", actualSize);
     }
-  }
-
-  /**
-   * Asserts that the items are supplied in the order given by the iterable. If
-   * the iterable under test does not provide iteration order guarantees (say,
-   * a {@link Set}{@code <?>}), this method is not suitable for asserting that order.
-   * Consider using {@link #isEqualTo(Object)}
-   *
-   * @deprecated Use {@code containsExactly(Object...).inOrder()} instead.
-   */
-  @Deprecated
-  public void iteratesAs(Object... expectedItems) {
-    iteratesAs(Arrays.asList(expectedItems));
-  }
-
-  /**
-   * Asserts that the items are supplied in the order given by the iterable. If
-   * the iterable under test and/or the {@code expectedItems} do not provide
-   * iteration order guarantees (say, {@link Set}{@code <?>}s), this method may provide
-   * unexpected results.  Consider using {@link #isEqualTo(Object)} in such cases, or using
-   * collections and iterables that provide strong order guarantees.
-   *
-   * @deprecated Use {@code containsExactlyElementsIn(Iterable).inOrder()} instead.
-   */
-  @Deprecated
-  public void iteratesAs(Iterable<?> expectedItems) {
-    Iterator<T> actualItems = getSubject().iterator();
-    for (Object expected : expectedItems) {
-      if (!actualItems.hasNext()) {
-        fail("iterates through", expectedItems);
-      } else {
-        Object actual = actualItems.next();
-        if (actual == expected || actual != null && actual.equals(expected)) {
-          continue;
-        } else {
-          fail("iterates through", expectedItems);
-        }
-      }
-    }
-    if (actualItems.hasNext()) {
-      fail("iterates through", expectedItems);
-    }
-  }
-
-  /**
-   * @deprecated Use {@code containsExactly(Object, Object...).inOrder()} instead.
-   */
-  @Deprecated
-  public void iteratesOverSequence(Object... expectedItems) {
-    iteratesAs(expectedItems);
   }
 
   /**
@@ -260,39 +208,6 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     }
 
     return inOrder ? IN_ORDER : new NotInOrder("contains all elements in order", expected);
-  }
-
-  /**
-   * Attests that a subject contains all of the provided objects and
-   * only these objects or fails, potentially permitting duplicates
-   * in both the subject and the parameters (if the subject even can
-   * have duplicates).
-   *
-   * <p>Callers may optionally chain an {@code inOrder()} call if its expected
-   * contents must be contained in the given order.
-   *
-   * @deprecated Use {@link #containsExactly(Object...)} instead.
-   */
-  @Deprecated
-  public Ordered containsOnlyElements(
-      @Nullable Object first, @Nullable Object second, Object... rest) {
-    return containsExactlyElementsIn(accumulate(first, second, rest));
-  }
-
-  /**
-   * Attests that a subject contains all of the provided objects and
-   * only these objects or fails, potentially permitting duplicates
-   * in both the subject and the parameters (if the subject even can
-   * have duplicates).
-   *
-   * <p>Callers may optionally chain an {@code inOrder()} call if its expected
-   * contents must be contained in the given order.
-   *
-   * @deprecated Use {@link #containsExactlyElementsIn(Iterable)} instead.
-   */
-  @Deprecated
-  public Ordered containsOnlyElementsIn(Iterable<?> expected) {
-    return containsExactlyElementsIn(expected);
   }
 
   /**
