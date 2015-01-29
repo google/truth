@@ -37,20 +37,4 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
       fail("is assignable to", clazz);
     }
   }
-
-  // TODO(user): Create an alternative implementation using JSNI.
-  public void declaresField(String fieldName) {
-    if (getSubject() == null) {
-      failureStrategy.fail("Cannot determine a field name from a null class.");
-      return; // not all failures throw exceptions.
-    }
-    try {
-      ReflectionUtil.getField(getSubject(), fieldName);
-    } catch (NoSuchFieldException e) {
-      StringBuilder message = new StringBuilder("Not true that ");
-      message.append("<").append(getSubject().getSimpleName()).append(">");
-      message.append(" has a field named <").append(fieldName).append(">");
-      failureStrategy.fail(message.toString());
-    }
-  }
 }

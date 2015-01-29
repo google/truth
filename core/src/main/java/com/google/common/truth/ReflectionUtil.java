@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -34,22 +33,9 @@ public final class ReflectionUtil {
   public static Class<?> typeParameter(Class<?> clazz, int paramIndex) {
     Type superclass = clazz.getGenericSuperclass();
     if (!(superclass instanceof ParameterizedType)) {
-      throw new IllegalArgumentException ("" + superclass + " isn't parameterized");
+      throw new IllegalArgumentException("" + superclass + " isn't parameterized");
     }
     Type[] typeParams = ((ParameterizedType) superclass).getActualTypeArguments();
-    return (Class<?>)typeParams[paramIndex];
-  }
-
-  public static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
-    Class<?> currentClass = clazz;
-    while (currentClass != null) {
-      try {
-        return clazz.getDeclaredField(fieldName);
-      } catch (NoSuchFieldException e) {
-        currentClass = currentClass.getSuperclass();
-      }
-    }
-    throw new NoSuchFieldException("No such field " + fieldName + " declared on " +
-        clazz.getSimpleName() + " or its parent classes.");
+    return (Class<?>) typeParams[paramIndex];
   }
 }

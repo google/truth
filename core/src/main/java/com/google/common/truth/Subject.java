@@ -18,10 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.format;
 
-import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Objects;
-
-import java.lang.reflect.Field;
 
 import javax.annotation.Nullable;
 
@@ -287,76 +284,6 @@ public class Subject<S extends Subject<S,T>,T> {
    */
   protected void failWithRawMessage(String message, Object ... parameters) {
     failureStrategy.fail(format(message, parameters));
-  }
-
-  /**
-   * @deprecated Instead of using reflection, it is much better coding practices to test your
-   *     objects directly through their APIs instead. This may require you to expose your fields
-   *     via a package-private getter. In this case, please use {@code @VisibleForTesting}.
-   */
-  @Deprecated
-  @GwtIncompatible("java.lang.reflect.Field")
-  public HasField hasField(final String fieldName) {
-    final T subject = getSubject();
-    if (subject == null) {
-      failureStrategy.fail("Cannot determine a field name from a null object.");
-      // Needed for Expect and other non-terminal failure strategies
-      return new HasField() {
-        @Override public void withValue(Object value) {
-          Subject.this.fail("Cannot test the presence of a value in a null object.");
-        }
-      };
-    }
-    final Class<?> subjectClass = subject.getClass();
-    final Field field;
-    try {
-      field = ReflectionUtil.getField(subjectClass, fieldName);
-      field.setAccessible(true);
-    } catch (NoSuchFieldException e) {
-      StringBuilder message = new StringBuilder("Not true that ");
-      message.append("<").append(subjectClass.getSimpleName()).append(">");
-      message.append(" has a field named <").append(fieldName).append(">");
-      failureStrategy.fail(message.toString());
-
-      // Needed for Expect and other non-terminal failure strategies
-      return new HasField() {
-        @Override public void withValue(Object value) {
-          Subject.this.fail("Cannot test the presence of a value in a non-present field.");
-        }
-      };
-    }
-    return new HasField() {
-      @Override public void withValue(Object expected) {
-        try {
-          Object actual = field.get(subject);
-          if (expected == actual || (expected != null && expected.equals(actual))) {
-            return;
-          } else {
-            StringBuilder message = new StringBuilder("Not true that ");
-            message.append("<").append(subjectClass.getSimpleName()).append(">'s");
-            message.append(" field <").append(fieldName).append(">");
-            message.append(" contains expected value <").append(expected).append(">.");
-            message.append(" It contains value <").append(actual).append(">");
-            failureStrategy.fail(message.toString());
-          }
-        } catch (IllegalArgumentException e) {
-          throw new RuntimeException(
-              "Error checking field " + fieldName + " while testing for value " + expected);
-        } catch (IllegalAccessException e) {
-          throw new RuntimeException(
-              "Cannot access field " + fieldName + " to test for value " + expected);
-        }
-      }
-    };
-  }
-
-  @GwtIncompatible("java.lang.reflect.Field")
-  public static interface HasField {
-    /**
-     * Supplementary assertion in which a present field can be tested
-     * to determine if it contains a given value.
-     */
-    void withValue(Object value);
   }
 
   /**

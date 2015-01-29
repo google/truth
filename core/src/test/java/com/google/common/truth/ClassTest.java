@@ -30,35 +30,6 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ClassTest {
 
-  @Test public void testDeclaresField_noSuchField() {
-    try {
-      assertThat(A.class).declaresField("noField");
-      assert_().fail("Should have thrown an assertion error.");
-    } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <A> has a field named <noField>");
-    }
-  }
-
-  @Test public void testDeclaresField_public() {
-    assertThat(A.class).declaresField("publicField");
-  }
-
-  @Test public void testDeclaresField_nullSubject() {
-    Class<?> nullClass = null;
-    try {
-      assertThat(nullClass).declaresField("publicField");
-      assert_().fail("Should have thrown an assertion error.");
-    } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Cannot determine a field name from a null class.");
-    }
-  }
-
-  @Test public void testDeclaresField_private() {
-    assertThat(A.class).declaresField("privateField");
-  }
-
   @Test public void testIsAssignableTo_same() {
     assertThat(String.class).isAssignableTo(String.class);
   }
@@ -73,8 +44,8 @@ public class ClassTest {
       assertThat(Object.class).isAssignableTo(String.class);
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <class java.lang.Object> "
+      assertThat(expected)
+          .hasMessage("Not true that <class java.lang.Object> "
               + "is assignable to <class java.lang.String>");
     }
   }
@@ -84,21 +55,9 @@ public class ClassTest {
       assertThat(String.class).isAssignableTo(Exception.class);
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <class java.lang.String> "
+      assertThat(expected)
+          .hasMessage("Not true that <class java.lang.String> "
               + "is assignable to <class java.lang.Exception>");
     }
   }
-
-  public static class A {
-    public String publicField = null;
-    @SuppressWarnings("unused")
-    private String privateField = null;
-    public A() {}
-    public A(String publicField, String privateField) {
-      this.publicField = publicField;
-      this.privateField = privateField;
-    }
-  }
-
 }
