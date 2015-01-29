@@ -133,7 +133,7 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   @CheckReturnValue
   public IterableSubject<? extends IterableSubject<?, V, ? extends Collection<V>>, V,
       ? extends Collection<V>> valuesForKey(@Nullable K key) {
-    return new IterableValuesForKey(failureStrategy, key, getSubject().get(key));
+    return new IterableValuesForKey(failureStrategy, this, key);
   }
 
   @Override
@@ -194,18 +194,29 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   private class IterableValuesForKey
       extends IterableSubject<IterableValuesForKey, V, Collection<V>> {
 
-    @Nullable
-    private final K key;
+    @Nullable private final K key;
+    @Nullable private final String multimapDisplaySubject;
 
     IterableValuesForKey(
-        FailureStrategy failureStrategy, @Nullable K key, Collection<V> valuesForKey) {
-      super(failureStrategy, valuesForKey);
+        FailureStrategy failureStrategy,
+        MultimapSubject<?, K, V, ?> multimapSubject,
+        @Nullable K key) {
+      super(failureStrategy, multimapSubject.getSubject().get(key));
       this.key = key;
+      this.multimapDisplaySubject = multimapSubject.getDisplaySubject();
     }
 
     @Override
     protected String getDisplaySubject() {
-      return valuesForKeyDisplaySubject(key, this);
+      String innerDisplaySubject = ""
+          + "<Values for key <" + key + "> (<" + getSubject() + ">) "
+          + "in " + multimapDisplaySubject + ">";
+
+      if (internalCustomName() != null) {
+        return internalCustomName() + " (" + innerDisplaySubject + ")";
+      } else {
+        return innerDisplaySubject;
+      }
     }
 
   }
@@ -294,17 +305,6 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
     Joiner.on(", ").appendTo(sb, entries);
     sb.append("}");
     return sb.toString();
-  }
-
-  protected static String valuesForKeyDisplaySubject(
-      @Nullable Object key, Subject<?, ?> valuesForKeySubject) {
-    String customName = valuesForKeySubject.internalCustomName();
-    if (customName != null) {
-      return customName + " (<Values for key [" + key + "] = "
-          + valuesForKeySubject.getSubject() + ">)";
-    } else {
-      return "<Values for key [" + key + "] = " + valuesForKeySubject.getSubject() + ">";
-    }
   }
 
 }

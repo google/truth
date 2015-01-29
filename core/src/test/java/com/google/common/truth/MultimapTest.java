@@ -68,31 +68,30 @@ public class MultimapTest {
     }
   }
 
-  @Test public void namedValuesForKey() {
+  @Test public void multimapNamedValuesForKey() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     try {
       assertThat(multimap).named("multymap").valuesForKey(1).containsExactly(4);
+      fail("Should have thrown.");
     } catch (AssertionError expected) {
-      // TODO(b/19147663): The "named" value is missing from the error message!
       assertThat(expected)
-          .hasMessage("Not true that <Values for key [1] = [5]> contains exactly <[4]>. "
+          .hasMessage("Not true that "
+              + "<Values for key <1> (<[5]>) in multymap (<{1=[5]}>)> contains exactly <[4]>. "
               + "It is missing <[4]> and has unexpected items <[5]>");
-      return;
     }
-    fail("Should have thrown.");
   }
 
   @Test public void valuesForKeyNamed() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     try {
       assertThat(multimap).valuesForKey(1).named("valuez").containsExactly(4);
+      fail("Should have thrown.");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Not true that valuez (<Values for key [1] = [5]>) contains exactly <[4]>. "
+          .hasMessage("Not true that "
+              + "valuez (<Values for key <1> (<[5]>) in <{1=[5]}>>) contains exactly <[4]>. "
               + "It is missing <[4]> and has unexpected items <[5]>");
-      return;
     }
-    fail("Should have thrown.");
   }
 
   @Test public void hasSize() {
