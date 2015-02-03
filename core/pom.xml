@@ -10,7 +10,7 @@
   <artifactId>truth</artifactId>
   <properties>
     <javadoc.param></javadoc.param>
-    <gwt.version>2.7.0</gwt.version>
+    <gwt.version>2.6.1</gwt.version>
   </properties>
   <dependencies>
     <dependency>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.google.auto.value</groupId>
       <artifactId>auto-value</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0-rc1</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -94,7 +94,6 @@
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.4</version>
         <executions>
           <execution>
             <phase>post-integration-test</phase>
@@ -124,11 +123,11 @@
                 <include>**/*.gwt.xml</include>
               </includes>
               <excludes>
-                <exclude>org/truth0/codegen/**</exclude>
-                <exclude>org/truth0/subjects/ClassSubject.java</exclude>
-                <exclude>org/truth0/util/ReflectionUtil.java</exclude>
-                <exclude>org/truth0/IteratingVerb.java</exclude>
-                <exclude>org/truth0/Expect.java</exclude>
+                <exclude>com/google/common/truth/ClassSubject.java</exclude>
+                <exclude>com/google/common/truth/Expect.java</exclude>
+                <exclude>com/google/common/truth/IteratingVerb.java</exclude>
+                <exclude>com/google/common/truth/ReflectionUtil.java</exclude>
+                <exclude>com/google/common/truth/codegen/**</exclude>
               </excludes>
             </configuration>
           </execution>
@@ -153,6 +152,7 @@
             <configuration>
               <mode>htmlunit</mode>
               <productionMode>true</productionMode>
+              <sourceLevel>1.7</sourceLevel>
               <userAgents>gecko1_8</userAgents>
               <includes>**/*GwtTest.java</includes>
             </configuration>

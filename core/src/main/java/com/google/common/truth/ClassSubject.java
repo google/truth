@@ -22,6 +22,7 @@ import com.google.common.annotations.GwtIncompatible;
  *
  * @author Kurt Alfred Kluever
  */
+@GwtIncompatible("reflection")
 public class ClassSubject extends Subject<ClassSubject, Class<?>> {
   ClassSubject(FailureStrategy failureStrategy, Class<?> o) {
     super(failureStrategy, o);
@@ -34,7 +35,6 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
    * @deprecated Use either {@code assertThat(instance).isInstanceOf(clazz)} or {code
    *     assertThat(clazzA).isAssignableTo(clazzB)} instead.
    */
-  @GwtIncompatible("isAssignableFrom")
   @Deprecated
   public void isAssignableFrom(Class<?> clazz) {
     if (!getSubject().isAssignableFrom(clazz)) {
@@ -46,7 +46,6 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
    * Fails if this class or interface is not the same as or a subclass or subinterface of,
    * the given class or interface.
    */
-  @GwtIncompatible("isAssignableFrom")
   public void isAssignableTo(Class<?> clazz) {
     if (!clazz.isAssignableFrom(getSubject())) {
       fail("is assignable to", clazz);
@@ -54,7 +53,6 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
   }
 
   // TODO(user): Create an alternative implementation using JSNI.
-  @GwtIncompatible("Reflection")
   public void declaresField(String fieldName) {
     if (getSubject() == null) {
       failureStrategy.fail("Cannot determine a field name from a null class.");
