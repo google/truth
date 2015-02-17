@@ -70,7 +70,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public void isNotEmpty() {
     if (Iterables.isEmpty(getSubject())) {
-      // TODO(user): "Not true that <[]> is not empty" doesn't really need the <[]>,
+      // TODO(kak): "Not true that <[]> is not empty" doesn't really need the <[]>,
       // since it's empty. But would the bulkier "the subject" really be better?
       // At best, we could *replace* <[]> with a given label (rather than supplementing it).
       // Perhaps the right failure message is just "<[]> should not have been empty"
@@ -243,7 +243,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
         boolean addElementsInWarning) {
     String failSuffix = !addElementsInWarning ? "" :
         ". Passing an iterable to the varargs method containsExactly(Object...) is "
-        + "often not the correct thing to do. Did you mean to call "
+        + "often not the correct thing to do. Did you mean to call " 
         + "containsExactlyElementsIn(Iterable) instead?";
     Iterator<?> actualIter = getSubject().iterator();
     Iterator<?> requiredIter = required.iterator();
@@ -280,7 +280,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
 
         // Fail if there are either missing or extra elements.
 
-        // TODO(user): Possible enhancement: Include "[1 copy]" if the element does appear in
+        // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
         // the subject but not enough times. Similarly for unexpected extra items.
         if (!missing.isEmpty()) {
           if (!extra.isEmpty()) {
@@ -429,7 +429,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  // TODO(user): Rename to isOrdered after we release 0.26 without the old isOrdered()
+  // TODO(kak): Rename to isOrdered after we release 0.26 without the old isOrdered()
   public void isPartiallyOrdered() {
     isPartiallyOrdered((Ordering) Ordering.natural());
   }
@@ -441,7 +441,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  // TODO(user): Rename to isOrdered after we release 0.26 without the old isOrdered()
+  // TODO(kak): Rename to isOrdered after we release 0.26 without the old isOrdered()
   public void isPartiallyOrdered(final Comparator<? super T> comparator) {
     pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {

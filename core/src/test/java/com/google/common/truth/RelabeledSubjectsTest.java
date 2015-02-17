@@ -61,7 +61,7 @@ public class RelabeledSubjectsTest {
       assertThat(false).named("Foo").isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      // TODO(user): This could probably be simplified + shortened a bit...
+      // TODO(kak): This could probably be simplified + shortened a bit...
       assertThat(expected).hasMessage("Foo (<false>) was expected to be true, but was false");
     }
   }

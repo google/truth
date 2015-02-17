@@ -48,6 +48,6 @@ public class MathUtilTest {
     assertThat(MathUtil.equals(1.3f, 1.3d, 0.00000000000001f)).isFalse();
   }
 
-  // TODO(user): More complicated ways to break float/double casting to make sure.
+  // TODO(cgruber): More complicated ways to break float/double casting to make sure.
 
 }

@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author David Beaumont
  */
-// TODO(user): Move these all to IterableTest
+// TODO(kak): Move these all to IterableTest
 @RunWith(JUnit4.class)
 public class ListTest {
 

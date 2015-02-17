@@ -30,7 +30,7 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
     super(causeInsertingStrategy(failureStrategy, throwable), throwable);
   }
 
-  // TODO(user): Should this be @Nullable or should we have .doesNotHaveMessage()?
+  // TODO(kak): Should this be @Nullable or should we have .doesNotHaveMessage()?
   /**
    * Fails if the subject does not have the given message.
    */

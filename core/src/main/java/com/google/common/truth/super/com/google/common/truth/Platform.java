@@ -56,7 +56,7 @@ public final class Platform {
     return false;
   }
 
-//  TODO(user): See if there's a JSNI or other alternative to Class.getInterfaces();
+//  TODO(cgruber): See if there's a JSNI or other alternative to Class.getInterfaces();
 //  private static void addInterfaceNames(Class<?>[] interfaces, Set<String> types) {
 //    for (Class<?> interfaze : interfaces) {
 //      types.add(interfaze.getName());
@@ -72,7 +72,7 @@ public final class Platform {
   }
 
   /**
-   * This is a no-op in GWT as it relies on matching.
+   * This is a no-op in GWT as it relies on matching. 
    */
   public static String compressType(String type) {
     return type;

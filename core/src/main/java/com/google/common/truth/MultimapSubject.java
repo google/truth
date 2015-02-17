@@ -169,7 +169,7 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
     Multimap<?, ?> missing = difference(expectedMultimap, getSubject());
     Multimap<?, ?> extra = difference(getSubject(), expectedMultimap);
 
-    // TODO(user): Possible enhancement: Include "[1 copy]" if the element does appear in
+    // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
     // the subject but not enough times. Similarly for unexpected extra items.
     if (!missing.isEmpty()) {
       if (!extra.isEmpty()) {

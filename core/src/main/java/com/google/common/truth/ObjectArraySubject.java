@@ -18,6 +18,7 @@ package com.google.common.truth;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A Subject to handle testing propositions for {@code Object[]} and more generically {@code T[]}.
@@ -54,7 +55,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
       if (type.isPrimitive()) {
         throw new IllegalArgumentException("Primitive array passed into T[] subject.");
       }
-      // TODO(user): Improve the compression of arrays with generic types like Set<Foo>[]
+      // TODO(cgruber): Improve the compression of arrays with generic types like Set<Foo>[]
       //     That will need extracting of all of the type information, or a string representation
       //     that compressType can handle.
       return Platform.compressType(type.toString());
@@ -73,8 +74,15 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
     }
     try {
       Object[] expectedArray = (Object[]) expected;
-      if (!Arrays.equals(actual, expectedArray)) {
-        fail("is equal to", Arrays.asList(expectedArray));
+      if (actual.length != expectedArray.length) {
+        failWithRawMessage("%s has length %s. Expected length is %s",
+            getDisplaySubject(), actual.length, expectedArray.length);
+      } else {
+        for (int i = 0; i < actual.length; i++) {
+          if (!Objects.equals(actual[i], expectedArray[i])) {
+            failWithBadResults("is equal to", Arrays.asList(expectedArray), "differs at index", i);
+          }
+        }
       }
     } catch (ClassCastException e) {
       failWithBadType(expected);

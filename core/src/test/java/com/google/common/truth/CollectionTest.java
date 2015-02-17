@@ -31,7 +31,7 @@ import java.util.Collection;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-// TODO(user): Move these all to IterableTest
+// TODO(kak): Move these all to IterableTest
 @RunWith(JUnit4.class)
 public class CollectionTest {
 
