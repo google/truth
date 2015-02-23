@@ -56,9 +56,9 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testInteger() {
-    assertThat(457923).is(457923);
+    assertThat(457923).isEqualTo(457923);
     try {
-      assertThat(457923).is(1);
+      assertThat(457923).isEqualTo(1);
     } catch (AssertionError expected) {
       return;
     }

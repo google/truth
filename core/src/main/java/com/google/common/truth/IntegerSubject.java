@@ -42,16 +42,4 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
   public void isEqualTo(long other) {
     super.isEqualTo(Ints.saturatedCast(other));
   }
-
-  public void is(long other) {
-    isEqualTo(other);
-  }
-
-  public void is(short other) {
-    isEqualTo(other);
-  }
-
-  public void is(byte other) {
-    isEqualTo(other);
-  }
 }

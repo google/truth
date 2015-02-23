@@ -39,12 +39,11 @@ public class IntegerTest {
   @Rule public final Expect EXPECT = Expect.create();
 
   @Test public void simpleEquality() {
-    assertThat(2 + 2).is(4);
     assertThat(2 + 2).isEqualTo(4);
   }
 
   @Test public void intIsInt() {
-    assertThat(4).is(4);
+    assertThat(4).isEqualTo(4);
   }
 
   @Test public void simpleInequality() {
@@ -116,8 +115,6 @@ public class IntegerTest {
     assertThat(4L == 4).isTrue();
     assertThat(4).isEqualTo(4L);
     assertThat(4L).isEqualTo(4);
-    assertThat(4).is(4L);
-    assertThat(4L).is(4);
   }
 
   @Test public void boxedPrimitives() {

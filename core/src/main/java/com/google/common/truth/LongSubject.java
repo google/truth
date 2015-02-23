@@ -40,16 +40,4 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
   public void isEqualTo(int other) {
     isEqualTo((long) other);
   }
-
-  public void is(int other) {
-    isEqualTo((long) other);
-  }
-
-  public void is(short other) {
-    isEqualTo((long) other);
-  }
-
-  public void is(byte other) {
-    isEqualTo((long) other);
-  }
 }

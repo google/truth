@@ -55,15 +55,6 @@ public class Subject<S extends Subject<S,T>,T> {
   }
 
   /**
-   * @deprecated Use {@link #isEqualTo(Object)} to check object equality or
-   *     {@link #isSameAs(Object)} to check reference equality.
-   */
-  @Deprecated
-  public void is(Object other) {
-    isEqualTo(other);
-  }
-
-  /**
    * Fails if the subject is not null.
    */
   public void isNull() {
