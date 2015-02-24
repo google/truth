@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * A Subject to handle testing propositions for {@code int[]}.
+ * A Subject to handle testing propositions for {@code long[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
