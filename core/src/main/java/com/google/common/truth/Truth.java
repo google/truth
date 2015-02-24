@@ -27,6 +27,7 @@ import com.google.common.truth.AbstractVerb.DelegatedVerb;
 import java.util.Map;
 
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 /**
  * Truth - a proposition framework for tests, supporting JUnit style
@@ -92,115 +93,116 @@ public final class Truth {
     return assert_().about(factory);
   }
 
-  public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(T target) {
+  public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(@Nullable T target) {
     return assert_().that(target);
   }
 
-  public static Subject<DefaultSubject, Object> assertThat(Object target) {
+  public static Subject<DefaultSubject, Object> assertThat(@Nullable Object target) {
     return assert_().that(target);
   }
 
   @GwtIncompatible("ClassSubject.java")
-  public static ClassSubject assertThat(Class<?> target) {
+  public static ClassSubject assertThat(@Nullable Class<?> target) {
     return assert_().that(target);
   }
 
-  public static ThrowableSubject assertThat(Throwable target) {
+  public static ThrowableSubject assertThat(@Nullable Throwable target) {
     return assert_().that(target);
   }
 
-  public static LongSubject assertThat(Long target) {
+  public static LongSubject assertThat(@Nullable Long target) {
     return assert_().that(target);
   }
 
-  public static DoubleSubject assertThat(Double target) {
+  public static DoubleSubject assertThat(@Nullable Double target) {
     return assert_().that(target);
   }
 
-  public static IntegerSubject assertThat(Integer target) {
+  public static IntegerSubject assertThat(@Nullable Integer target) {
     return assert_().that(target);
   }
 
-  public static BooleanSubject assertThat(Boolean target) {
+  public static BooleanSubject assertThat(@Nullable Boolean target) {
     return assert_().that(target);
   }
 
-  public static StringSubject assertThat(String target) {
+  public static StringSubject assertThat(@Nullable String target) {
     return assert_().that(target);
   }
 
   public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
-      assertThat(Iterable<T> target) {
+      assertThat(@Nullable Iterable<T> target) {
     return assert_().that(target);
   }
 
-  public static <T> ObjectArraySubject<T> assertThat(T[] target) {
+  public static <T> ObjectArraySubject<T> assertThat(@Nullable T[] target) {
     return assert_().that(target);
   }
 
-  public static PrimitiveBooleanArraySubject assertThat(boolean[] target) {
+  public static PrimitiveBooleanArraySubject assertThat(@Nullable boolean[] target) {
     return assert_().that(target);
   }
 
-  public static PrimitiveIntArraySubject assertThat(int[] target) {
+  public static PrimitiveIntArraySubject assertThat(@Nullable int[] target) {
     return assert_().that(target);
   }
 
-  public static PrimitiveLongArraySubject assertThat(long[] target) {
+  public static PrimitiveLongArraySubject assertThat(@Nullable long[] target) {
     return assert_().that(target);
   }
 
-  public static PrimitiveByteArraySubject assertThat(byte[] target) {
+  public static PrimitiveByteArraySubject assertThat(@Nullable byte[] target) {
     return assert_().that(target);
   }
 
-  public static PrimitiveCharArraySubject assertThat(char[] target) {
+  public static PrimitiveCharArraySubject assertThat(@Nullable char[] target) {
     return assert_().that(target);
   }
 
-  public static PrimitiveFloatArraySubject assertThat(float[] target) {
+  public static PrimitiveFloatArraySubject assertThat(@Nullable float[] target) {
     return assert_().that(target);
   }
 
-  public static PrimitiveDoubleArraySubject assertThat(double[] target) {
+  public static PrimitiveDoubleArraySubject assertThat(@Nullable double[] target) {
     return assert_().that(target);
   }
 
-  public static <T> OptionalSubject<T> assertThat(Optional<T> target) {
+  public static <T> OptionalSubject<T> assertThat(@Nullable Optional<T> target) {
     return assert_().that(target);
   }
 
   public static <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
-      assertThat(Map<K, V> target) {
+      assertThat(@Nullable Map<K, V> target) {
     return assert_().that(target);
   }
 
   public static <K, V, M extends Multimap<K, V>>
   MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> assertThat(
-      Multimap<K, V> target) {
+      @Nullable Multimap<K, V> target) {
     return assert_().that(target);
   }
 
   public static <K, V, M extends ListMultimap<K, V>>
   ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> assertThat(
-      ListMultimap<K, V> target) {
+      @Nullable ListMultimap<K, V> target) {
     return assert_().that(target);
   }
 
   public static <K, V, M extends SetMultimap<K, V>>
   SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> assertThat(
-      SetMultimap<K, V> target) {
+      @Nullable SetMultimap<K, V> target) {
     return assert_().that(target);
   }
 
   public static <E, M extends Multiset<E>>
-      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> assertThat(Multiset<E> target) {
+      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> assertThat(
+          @Nullable Multiset<E> target) {
     return assert_().that(target);
   }
 
   public static <R, C, V, M extends Table<R, C, V>>
       TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> assertThat(
-          Table<R, C, V> target) {
+          @Nullable Table<R, C, V> target) {
     return assert_().that(target);
   }
 }
