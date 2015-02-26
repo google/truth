@@ -326,6 +326,13 @@ public class IterableTest {
     }
   }
 
+  @Test public void listContainsExactlyArray() {
+    String[] stringArray = { "a", "b" };
+    ImmutableList<String[]> iterable = ImmutableList.of(stringArray);
+    // This test fails w/o the explicit cast
+    assertThat(iterable).containsExactly((Object) stringArray);
+  }
+
   @Test public void arrayContainsExactly() {
     ImmutableList<String> iterable = ImmutableList.of("a", "b");
     String[] array = { "a", "b" };
