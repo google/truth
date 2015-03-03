@@ -355,6 +355,24 @@ public class IterableTest {
     assertThat(iterable(1, 2, 2, 2, 3)).containsExactly(2, 1, 2, 3, 2);
   }
 
+  @Test public void iterableContainsExactlyWithOnlyNull() {
+    Iterable<Object> actual = iterable((Object) null);
+    try {
+      assertThat(actual).containsExactly(null);
+      fail();
+    } catch (NullPointerException expected) {
+      // TODO(cpovirk): Is this the behavior we want?
+    }
+  }
+
+  @Test public void iterableContainsExactlyWithNullSecond() {
+    assertThat(iterable(1, null)).containsExactly(1, null);
+  }
+
+  @Test public void iterableContainsExactlyWithNullThird() {
+    assertThat(iterable(1, 2, null)).containsExactly(1, 2, null);
+  }
+
   @Test public void iterableContainsExactlyWithNull() {
     assertThat(iterable(1, null, 3)).containsExactly(1, null, 3);
   }
