@@ -357,12 +357,7 @@ public class IterableTest {
 
   @Test public void iterableContainsExactlyWithOnlyNull() {
     Iterable<Object> actual = iterable((Object) null);
-    try {
-      assertThat(actual).containsExactly(null);
-      fail();
-    } catch (NullPointerException expected) {
-      // TODO(cpovirk): Is this the behavior we want?
-    }
+    assertThat(actual).containsExactly(null);
   }
 
   @Test public void iterableContainsExactlyWithNullSecond() {

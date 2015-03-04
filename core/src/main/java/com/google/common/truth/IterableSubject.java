@@ -221,7 +221,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * contents must be contained in the given order.
    */
   public Ordered containsExactly(@Nullable Object... varargs) {
-    return containsExactly("contains exactly", asList(varargs),
+    List<Object> expected = (varargs == null) ? Lists.newArrayList((Object) null) : asList(varargs);
+    return containsExactly("contains exactly", expected,
         varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
   }
 
