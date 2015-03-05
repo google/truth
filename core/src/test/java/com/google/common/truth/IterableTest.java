@@ -243,6 +243,32 @@ public class IterableTest {
     assertThat(iterable(3, 2, 5)).containsAllOf(3, 5).inOrder();
     assertThat(iterable(3, 2, 2, 4, 5)).containsAllOf(3, 2, 2, 5).inOrder();
     assertThat(iterable(3, 1, 4, 1, 5)).containsAllOf(3, 1, 5).inOrder();
+    assertThat(iterable("x", "y", "y", "z")).containsAllOf("x", "y", "z").inOrder();
+    assertThat(iterable("x", "x", "y", "z")).containsAllOf("x", "y", "z").inOrder();
+  }
+
+  @Test public void iterableContainsAllOfInOrderWithGaps_badFailure1() {
+    try {
+      // This test probably should pass.
+      assertThat(iterable("z", "x", "y", "z")).containsAllOf("x", "y", "z").inOrder();
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage(
+          "Not true that <[z, x, y, z]> contains all elements in order <[x, y, z]>");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test public void iterableContainsAllOfInOrderWithGaps_badFailure2() {
+    try {
+      // This test probably should pass.
+      assertThat(iterable("x", "x", "y", "z", "x")).containsAllOf("x", "y", "z", "x").inOrder();
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage(
+          "Not true that <[x, x, y, z, x]> contains all elements in order <[x, y, z, x]>");
+      return;
+    }
+    fail("Should have thrown.");
   }
 
   @Test public void iterableContainsAllOfInOrderWithNull() {
