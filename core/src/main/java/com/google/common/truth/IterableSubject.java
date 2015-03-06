@@ -185,29 +185,45 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     return containsAll("contains all elements in", expected);
   }
 
-  private Ordered containsAll(String failVerb, Iterable<?> expected) {
-    // would really like to use ArrayDeque here, but it doesn't allow nulls
-    List<?> toRemove = Lists.newArrayList(expected);
+  private Ordered containsAll(String failVerb, Iterable<?> expectedIterable) {
+    List<?> actual = Lists.newLinkedList(getSubject());
+    List<?> expected = Lists.newArrayList(expectedIterable);
 
-    boolean inOrder = true;
+    List<Object> missing = Lists.newArrayList();
+    List<Object> actualNotInOrder = Lists.newArrayList();
 
-    // remove each item in the subject, as many times as it occurs in the subject.
-    for (Object item : getSubject()) {
-      int index = toRemove.indexOf(item);
-      if (index != -1) {
-        toRemove.remove(index);
-
-        // in order as long as the next expected item in the subject is the first item remaining
-        // in toRemove
-        inOrder &= (index == 0);
+    boolean ordered = true;
+    // step through the expected elements...
+    for (Object e : expected) {
+      int index = actual.indexOf(e);
+      if (index != -1) {  // if we find the element in the actual list...
+        // drain all the elements that come before that element into actualNotInOrder
+        moveElements(actual, actualNotInOrder, index);
+        // and remove the element from the actual list
+        actual.remove(0);
+      } else {  // otherwise try removing it from actualNotInOrder...
+        if (actualNotInOrder.remove(e)) { // if it was in actualNotInOrder, we're not in order
+          ordered = false;
+        } else { // if it's not in actualNotInOrder, we're missing an expected element
+          missing.add(e);
+        }
       }
     }
-
-    if (!toRemove.isEmpty()) {
-      failWithBadResults(failVerb, expected, "is missing", countDuplicates(toRemove));
+    // if we have any missing expected elements, fail
+    if (!missing.isEmpty()) {
+      failWithBadResults(failVerb, expected, "is missing", countDuplicates(missing));
     }
+    return ordered ? IN_ORDER : new NotInOrder("contains all elements in order", expected);
+  }
 
-    return inOrder ? IN_ORDER : new NotInOrder("contains all elements in order", expected);
+  /**
+   * Removes at most the given number of available elements from the input list
+   * and adds them to the given output collection.
+   */
+  private static void moveElements(List<?> input, Collection<Object> output, int maxElements) {
+    for (int i = 0; i < maxElements; i++) {
+      output.add(input.remove(0));
+    }
   }
 
   /**

@@ -21,6 +21,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import org.junit.Test;
@@ -199,6 +200,28 @@ public class IterableTest {
     }
   }
 
+  @Test public void iterableContainsAllOfWithExtras() {
+    try {
+      assertThat(iterable("y", "x")).containsAllOf("x", "y", "z");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that <[y, x]> contains all of <[x, y, z]>. It is missing <[z]>");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test public void iterableContainsAllOfWithExtraCopiesOfOutOfOrder() {
+    try {
+      assertThat(iterable("y", "x")).containsAllOf("x", "y", "y");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that <[y, x]> contains all of <[x, y, y]>. It is missing <[y]>");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
   @Test public void iterableContainsAllOfWithDuplicatesFailure() {
     try {
       assertThat(iterable(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
@@ -245,30 +268,8 @@ public class IterableTest {
     assertThat(iterable(3, 1, 4, 1, 5)).containsAllOf(3, 1, 5).inOrder();
     assertThat(iterable("x", "y", "y", "z")).containsAllOf("x", "y", "z").inOrder();
     assertThat(iterable("x", "x", "y", "z")).containsAllOf("x", "y", "z").inOrder();
-  }
-
-  @Test public void iterableContainsAllOfInOrderWithGaps_badFailure1() {
-    try {
-      // This test probably should pass.
-      assertThat(iterable("z", "x", "y", "z")).containsAllOf("x", "y", "z").inOrder();
-    } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[z, x, y, z]> contains all elements in order <[x, y, z]>");
-      return;
-    }
-    fail("Should have thrown.");
-  }
-
-  @Test public void iterableContainsAllOfInOrderWithGaps_badFailure2() {
-    try {
-      // This test probably should pass.
-      assertThat(iterable("x", "x", "y", "z", "x")).containsAllOf("x", "y", "z", "x").inOrder();
-    } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[x, x, y, z, x]> contains all elements in order <[x, y, z, x]>");
-      return;
-    }
-    fail("Should have thrown.");
+    assertThat(iterable("z", "x", "y", "z")).containsAllOf("x", "y", "z").inOrder();
+    assertThat(iterable("x", "x", "y", "z", "x")).containsAllOf("x", "y", "z", "x").inOrder();
   }
 
   @Test public void iterableContainsAllOfInOrderWithNull() {
@@ -287,14 +288,18 @@ public class IterableTest {
   }
 
   @Test public void iterableContainsAllOfInOrderWithOneShotIterable() {
-    final Iterator<Object> iterator = iterable(2, 1, null, 4, "a", 3, "b").iterator();
-    Iterable<Object> iterable = new Iterable<Object>() {
+    final Iterable<Object> iterable = iterable(2, 1, null, 4, "a", 3, "b");
+    final Iterator<Object> iterator = iterable.iterator();
+    Iterable<Object> oneShot = new Iterable<Object>() {
       @Override public Iterator<Object> iterator() {
         return iterator;
       }
+      @Override public String toString() {
+        return Iterables.toString(iterable);
+      }
     };
 
-    assertThat(iterable).containsAllOf(1, null, 3).inOrder();
+    assertThat(oneShot).containsAllOf(1, null, 3).inOrder();
   }
 
   @Test public void iterableContainsAllOfInOrderWithOneShotIterableWrongOrder() {
