@@ -17,8 +17,12 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.format;
+import static com.google.common.truth.SubjectUtils.accumulate;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Iterables;
+
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -138,6 +142,48 @@ public class Subject<S extends Subject<S,T>,T> {
     if (Platform.isInstanceOfType(getSubject(), clazz)) {
       failWithRawMessage("%s expected not to be an instance of %s, but was.",
           getDisplaySubject(), clazz.getName());
+    }
+  }
+
+  /**
+   * Fails unless the subject is equal to any element in the given iterable.
+   */
+  public void isIn(Iterable<?> iterable) {
+    if (!Iterables.contains(iterable, getSubject())) {
+      fail("is equal to any element in", iterable);
+    }
+  }
+
+  /**
+   * Fails unless the subject is equal to any of the given elements.
+   */
+  public void isAnyOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
+    List<Object> list = accumulate(first, second, rest);
+    if (!list.contains(getSubject())) {
+      fail("is equal to any of", list);
+    }
+  }
+
+  /**
+   * Fails if the subject is equal to any element in the given iterable.
+   */
+  public void isNotIn(Iterable<?> iterable) {
+    if (Iterables.contains(iterable, getSubject())) {
+      // TODO(kak): We might want to beef up the error message to include the index at which the
+      // unexpected element actually occurred.
+      fail("is not equal to any element in", iterable);
+    }
+  }
+
+  /**
+   * Fails if the subject is equal to any of the given elements.
+   */
+  public void isNoneOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
+    List<Object> list = accumulate(first, second, rest);
+    if (list.contains(getSubject())) {
+      // TODO(kak): We might want to beef up the error message to include the index at which the
+      // unexpected element actually occurred.
+      fail("is not equal to any of", list);
     }
   }
 
