@@ -128,7 +128,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Attests that the subject contains at least one of the provided objects
    * or fails.
    */
-  public void containsAnyOf(@Nullable Object first, @Nullable Object second, Object... rest) {
+  public void containsAnyOf(
+      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsAny("contains any of", accumulate(first, second, rest));
   }
 
@@ -169,7 +170,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
-  public Ordered containsAllOf(@Nullable Object first, @Nullable Object second, Object... rest) {
+  public Ordered containsAllOf(
+      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     return containsAll("contains all of", accumulate(first, second, rest));
   }
 
@@ -363,7 +365,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Attests that a subject contains none of the provided objects
    * or fails, eliding duplicates.
    */
-  public void containsNoneOf(@Nullable Object first, @Nullable Object second, Object... rest) {
+  public void containsNoneOf(
+      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsNone("contains none of", accumulate(first, second, rest));
   }
 
