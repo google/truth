@@ -78,6 +78,11 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * Prepares for a check that the subject is a finite number within the given tolerance of an
    * expected value that will be provided in the next call in the fluent chain.
    *
+   * <p>You can use a tolerance of {@code 0.0f} to assert the exact equality of finite floats. This
+   * is appropriate when the contract of the code under test guarantees this, e.g. by specifying
+   * that a return value is copied unchanged from the input, by specifying an exact constant value
+   * to be returned, or by specifying an exact sequence of arithmetic operations to be followed.
+   *
    * <p>The check will fail if either the subject or the object is
    * {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}. To
    * check for those values, use {@link #isPositiveInfinity}, {@link isNegativeInfinity}, or
@@ -110,6 +115,8 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   /**
    * Prepares for a check that the subject is a finite number not within the given tolerance of an
    * expected value that will be provided in the next call in the fluent chain.
+   *
+   * <p>You can use a tolerance of {@code 0.0f} to assert the exact inequality of finite floats.
    *
    * <p>The check will fail if either the subject or the object is
    * {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.

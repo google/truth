@@ -203,6 +203,54 @@ public class FloatTest {
   }
 
   @Test
+  public void isWithinZeroTolerance() {
+    float max = Float.MAX_VALUE;
+    float nearlyMax = Math.nextAfter(Float.MAX_VALUE, 0.0f);
+    assertThat(max).isWithin(0.0f).of(max);
+    assertThat(nearlyMax).isWithin(0.0f).of(nearlyMax);
+    assertThatIsWithinFails(max, 0.0f, nearlyMax);
+    assertThatIsWithinFails(nearlyMax, 0.0f, max);
+
+    float negativeMax = -1.0f * Float.MAX_VALUE;
+    float negativeNearlyMax = Math.nextAfter(-1.0f * Float.MAX_VALUE, 0.0f);
+    assertThat(negativeMax).isWithin(0.0f).of(negativeMax);
+    assertThat(negativeNearlyMax).isWithin(0.0f).of(negativeNearlyMax);
+    assertThatIsWithinFails(negativeMax, 0.0f, negativeNearlyMax);
+    assertThatIsWithinFails(negativeNearlyMax, 0.0f, negativeMax);
+
+    float min = Float.MIN_VALUE;
+    float justOverMin = Math.nextAfter(Float.MIN_VALUE, 1.0f);
+    assertThat(min).isWithin(0.0f).of(min);
+    assertThat(justOverMin).isWithin(0.0f).of(justOverMin);
+    assertThatIsWithinFails(min, 0.0f, justOverMin);
+    assertThatIsWithinFails(justOverMin, 0.0f, min);
+
+    float negativeMin = -1.0f * Float.MIN_VALUE;
+    float justUnderNegativeMin = Math.nextAfter(-1.0f * Float.MIN_VALUE, -1.0f);
+    assertThat(negativeMin).isWithin(0.0f).of(negativeMin);
+    assertThat(justUnderNegativeMin).isWithin(0.0f).of(justUnderNegativeMin);
+    assertThatIsWithinFails(negativeMin, 0.0f, justUnderNegativeMin);
+    assertThatIsWithinFails(justUnderNegativeMin, 0.0f, negativeMin);
+  }
+
+  @Test
+  public void isNotWithinZeroTolerance() {
+    float max = Float.MAX_VALUE;
+    float nearlyMax = Math.nextAfter(Float.MAX_VALUE, 0.0f);
+    assertThatIsNotWithinFails(max, 0.0f, max);
+    assertThatIsNotWithinFails(nearlyMax, 0.0f, nearlyMax);
+    assertThat(max).isNotWithin(0.0f).of(nearlyMax);
+    assertThat(nearlyMax).isNotWithin(0.0f).of(max);
+
+    float min = Float.MIN_VALUE;
+    float justOverMin = Math.nextAfter(Float.MIN_VALUE, 1.0f);
+    assertThatIsNotWithinFails(min, 0.0f, min);
+    assertThatIsNotWithinFails(justOverMin, 0.0f, justOverMin);
+    assertThat(min).isNotWithin(0.0f).of(justOverMin);
+    assertThat(justOverMin).isNotWithin(0.0f).of(min);
+  }
+
+  @Test
   public void isWithinNonFinite() {
     assertThatIsWithinFails(Float.NaN, 0.00001f, Float.NaN);
     assertThatIsWithinFails(Float.NaN, 0.00001f, Float.POSITIVE_INFINITY);

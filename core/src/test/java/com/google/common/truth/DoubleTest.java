@@ -203,6 +203,54 @@ public class DoubleTest {
   }
 
   @Test
+  public void isWithinZeroTolerance() {
+    double max = Double.MAX_VALUE;
+    double nearlyMax = Math.nextAfter(Double.MAX_VALUE, 0.0);
+    assertThat(max).isWithin(0.0).of(max);
+    assertThat(nearlyMax).isWithin(0.0).of(nearlyMax);
+    assertThatIsWithinFails(max, 0.0, nearlyMax);
+    assertThatIsWithinFails(nearlyMax, 0.0, max);
+
+    double negativeMax = -1.0 * Double.MAX_VALUE;
+    double negativeNearlyMax = Math.nextAfter(-1.0 * Double.MAX_VALUE, 0.0);
+    assertThat(negativeMax).isWithin(0.0).of(negativeMax);
+    assertThat(negativeNearlyMax).isWithin(0.0).of(negativeNearlyMax);
+    assertThatIsWithinFails(negativeMax, 0.0, negativeNearlyMax);
+    assertThatIsWithinFails(negativeNearlyMax, 0.0, negativeMax);
+
+    double min = Double.MIN_VALUE;
+    double justOverMin = Math.nextAfter(Double.MIN_VALUE, 1.0);
+    assertThat(min).isWithin(0.0).of(min);
+    assertThat(justOverMin).isWithin(0.0).of(justOverMin);
+    assertThatIsWithinFails(min, 0.0, justOverMin);
+    assertThatIsWithinFails(justOverMin, 0.0, min);
+
+    double negativeMin = -1.0 * Double.MIN_VALUE;
+    double justUnderNegativeMin = Math.nextAfter(-1.0 * Double.MIN_VALUE, -1.0);
+    assertThat(negativeMin).isWithin(0.0).of(negativeMin);
+    assertThat(justUnderNegativeMin).isWithin(0.0).of(justUnderNegativeMin);
+    assertThatIsWithinFails(negativeMin, 0.0, justUnderNegativeMin);
+    assertThatIsWithinFails(justUnderNegativeMin, 0.0, negativeMin);
+  }
+
+  @Test
+  public void isNotWithinZeroTolerance() {
+    double max = Double.MAX_VALUE;
+    double nearlyMax = Math.nextAfter(Double.MAX_VALUE, 0.0);
+    assertThatIsNotWithinFails(max, 0.0, max);
+    assertThatIsNotWithinFails(nearlyMax, 0.0, nearlyMax);
+    assertThat(max).isNotWithin(0.0).of(nearlyMax);
+    assertThat(nearlyMax).isNotWithin(0.0).of(max);
+
+    double min = Double.MIN_VALUE;
+    double justOverMin = Math.nextAfter(Double.MIN_VALUE, 1.0);
+    assertThatIsNotWithinFails(min, 0.0, min);
+    assertThatIsNotWithinFails(justOverMin, 0.0, justOverMin);
+    assertThat(min).isNotWithin(0.0).of(justOverMin);
+    assertThat(justOverMin).isNotWithin(0.0).of(min);
+  }
+
+  @Test
   public void isWithinNonFinite() {
     assertThatIsWithinFails(Double.NaN, 0.00001, Double.NaN);
     assertThatIsWithinFails(Double.NaN, 0.00001, Double.POSITIVE_INFINITY);

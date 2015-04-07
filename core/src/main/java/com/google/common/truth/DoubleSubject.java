@@ -77,6 +77,11 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * Prepares for a check that the subject is a finite number within the given tolerance of an
    * expected value that will be provided in the next call in the fluent chain.
    *
+   * <p>You can use a tolerance of {@code 0.0} to assert the exact equality of finite doubles. This
+   * is appropriate when the contract of the code under test guarantees this, e.g. by specifying
+   * that a return value is copied unchanged from the input, by specifying an exact constant value
+   * to be returned, or by specifying an exact sequence of arithmetic operations to be followed.
+   *
    * <p>The check will fail if either the subject or the object is
    * {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}. To
    * check for those values, use {@link #isPositiveInfinity}, {@link isNegativeInfinity}, or
@@ -110,6 +115,8 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
   /**
    * Prepares for a check that the subject is a finite number not within the given tolerance of an
    * expected value that will be provided in the next call in the fluent chain.
+   *
+   * <p>You can use a tolerance of {@code 0.0} to assert the exact inequality of finite doubles.
    *
    * <p>The check will fail if either the subject or the object is
    * {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}.
