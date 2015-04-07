@@ -52,14 +52,14 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     return new IterableSubject(failureStrategy, list);
   }
 
-  IterableSubject(FailureStrategy failureStrategy, C list) {
+  protected IterableSubject(FailureStrategy failureStrategy, C list) {
     super(failureStrategy, list);
   }
 
   /**
    * Fails if the subject is not empty.
    */
-  public void isEmpty() {
+  public final void isEmpty() {
     if (!Iterables.isEmpty(getSubject())) {
       fail("is empty");
     }
@@ -68,7 +68,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   /**
    * Fails if the subject is empty.
    */
-  public void isNotEmpty() {
+  public final void isNotEmpty() {
     if (Iterables.isEmpty(getSubject())) {
       // TODO(kak): "Not true that <[]> is not empty" doesn't really need the <[]>,
       // since it's empty. But would the bulkier "the subject" really be better?
@@ -93,7 +93,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Attests (with a side-effect failure) that the subject contains the
    * supplied item.
    */
-  public void contains(@Nullable Object element) {
+  public final void contains(@Nullable Object element) {
     if (!Iterables.contains(getSubject(), element)) {
       failWithRawMessage("%s should have contained <%s>", getDisplaySubject(), element);
     }
@@ -103,7 +103,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Attests (with a side-effect failure) that the subject does not contain
    * the supplied item.
    */
-  public void doesNotContain(@Nullable Object element) {
+  public final void doesNotContain(@Nullable Object element) {
     if (Iterables.contains(getSubject(), element)) {
       failWithRawMessage("%s should not have contained <%s>", getDisplaySubject(), element);
     }
@@ -112,7 +112,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   /**
    * Attests that the subject does not contain duplicate elements.
    */
-  public void containsNoDuplicates() {
+  public final void containsNoDuplicates() {
     List<Entry<T>> duplicates = Lists.newArrayList();
     for (Multiset.Entry<T> entry : LinkedHashMultiset.create(getSubject()).entrySet()) {
       if (entry.getCount() > 1) {
@@ -128,7 +128,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Attests that the subject contains at least one of the provided objects
    * or fails.
    */
-  public void containsAnyOf(
+  public final void containsAnyOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsAny("contains any of", accumulate(first, second, rest));
   }
@@ -137,7 +137,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Attests that a Collection contains at least one of the objects contained
    * in the provided collection or fails.
    */
-  public void containsAnyIn(Iterable<?> expected) {
+  public final void containsAnyIn(Iterable<?> expected) {
     containsAny("contains any element in", expected);
   }
 
@@ -170,7 +170,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
-  public Ordered containsAllOf(
+  public final Ordered containsAllOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     return containsAll("contains all of", accumulate(first, second, rest));
   }
@@ -183,7 +183,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
-  public Ordered containsAllIn(Iterable<?> expected) {
+  public final Ordered containsAllIn(Iterable<?> expected) {
     return containsAll("contains all elements in", expected);
   }
 
@@ -238,7 +238,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
-  public Ordered containsExactly(@Nullable Object... varargs) {
+  public final Ordered containsExactly(@Nullable Object... varargs) {
     List<Object> expected = (varargs == null) ? Lists.newArrayList((Object) null) : asList(varargs);
     return containsExactly("contains exactly", expected,
         varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
@@ -254,7 +254,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
-  public Ordered containsExactlyElementsIn(Iterable<?> expected) {
+  public final Ordered containsExactlyElementsIn(Iterable<?> expected) {
     return containsExactly("contains exactly", expected, false);
   }
 
@@ -349,7 +349,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @param actual the actual value the subject was compared against
    * @param suffix a suffix to append to the failure message
    */
-  protected void failWithBadResultsAndSuffix(String verb, Object expected, String failVerb,
+  protected final void failWithBadResultsAndSuffix(String verb, Object expected, String failVerb,
       Object actual, String suffix) {
     failWithRawMessage(
         "Not true that %s %s <%s>. It %s <%s>%s",
@@ -365,7 +365,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Attests that a subject contains none of the provided objects
    * or fails, eliding duplicates.
    */
-  public void containsNoneOf(
+  public final void containsNoneOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsNone("contains none of", accumulate(first, second, rest));
   }
@@ -374,7 +374,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Attests that a Collection contains none of the objects contained
    * in the provided collection or fails, eliding duplicates.
    */
-  public void containsNoneIn(Iterable<?> excluded) {
+  public final void containsNoneIn(Iterable<?> excluded) {
     containsNone("contains no elements in", excluded);
   }
 
@@ -421,7 +421,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  public void isStrictlyOrdered() {
+  public final void isStrictlyOrdered() {
     isStrictlyOrdered((Ordering) Ordering.natural());
   }
 
@@ -432,7 +432,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  public void isStrictlyOrdered(final Comparator<? super T> comparator) {
+  public final void isStrictlyOrdered(final Comparator<? super T> comparator) {
     pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) >= 0) {
@@ -450,7 +450,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws NullPointerException if any element is null
    */
   // TODO(kak): Rename to isOrdered after we release 0.26 without the old isOrdered()
-  public void isPartiallyOrdered() {
+  public final void isPartiallyOrdered() {
     isPartiallyOrdered((Ordering) Ordering.natural());
   }
 
@@ -462,7 +462,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws NullPointerException if any element is null
    */
   // TODO(kak): Rename to isOrdered after we release 0.26 without the old isOrdered()
-  public void isPartiallyOrdered(final Comparator<? super T> comparator) {
+  public final void isPartiallyOrdered(final Comparator<? super T> comparator) {
     pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) > 0) {
