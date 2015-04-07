@@ -48,11 +48,11 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
-      create(FailureStrategy failureStrategy, Iterable<T> list) {
+      create(FailureStrategy failureStrategy, @Nullable Iterable<T> list) {
     return new IterableSubject(failureStrategy, list);
   }
 
-  protected IterableSubject(FailureStrategy failureStrategy, C list) {
+  protected IterableSubject(FailureStrategy failureStrategy, @Nullable C list) {
     super(failureStrategy, list);
   }
 

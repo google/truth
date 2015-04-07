@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * A Subject to handle testing propositions for {@code double[]}.
  *
@@ -32,7 +34,7 @@ import java.util.List;
  */
 public class PrimitiveDoubleArraySubject
     extends AbstractArraySubject<PrimitiveDoubleArraySubject, double[]> {
-  PrimitiveDoubleArraySubject(FailureStrategy failureStrategy, double[] o) {
+  PrimitiveDoubleArraySubject(FailureStrategy failureStrategy, @Nullable double[] o) {
     super(failureStrategy, o);
   }
 

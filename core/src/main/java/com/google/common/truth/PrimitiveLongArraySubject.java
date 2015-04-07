@@ -20,6 +20,8 @@ import com.google.common.primitives.Longs;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * A Subject to handle testing propositions for {@code long[]}.
  *
@@ -27,7 +29,7 @@ import java.util.List;
  */
 public class PrimitiveLongArraySubject
     extends AbstractArraySubject<PrimitiveLongArraySubject, long[]> {
-  PrimitiveLongArraySubject(FailureStrategy failureStrategy, long[] o) {
+  PrimitiveLongArraySubject(FailureStrategy failureStrategy, @Nullable long[] o) {
     super(failureStrategy, o);
   }
 

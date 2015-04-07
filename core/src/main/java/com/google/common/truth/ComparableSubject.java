@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import com.google.common.collect.Range;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for {@link Comparable} typed subjects.
  *
@@ -25,7 +27,7 @@ import com.google.common.collect.Range;
 public abstract class ComparableSubject<S extends Subject<S, T>, T extends Comparable>
     extends Subject<S, T> {
 
-  protected ComparableSubject(FailureStrategy failureStrategy, T subject) {
+  protected ComparableSubject(FailureStrategy failureStrategy, @Nullable T subject) {
     super(failureStrategy, subject);
   }
 

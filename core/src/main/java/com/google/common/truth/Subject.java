@@ -38,7 +38,7 @@ public class Subject<S extends Subject<S,T>,T> {
   private final T subject;
   private String customName = null;
 
-  public Subject(FailureStrategy failureStrategy, T subject) {
+  public Subject(FailureStrategy failureStrategy, @Nullable T subject) {
     this.failureStrategy = failureStrategy;
     this.subject = subject;
   }
@@ -79,7 +79,7 @@ public class Subject<S extends Subject<S,T>,T> {
   /**
    * Fails if the subject is not equal to the given object.
    */
-  public void isEqualTo(Object other) {
+  public void isEqualTo(@Nullable Object other) {
     if (!Objects.equal(getSubject(), other)) {
       fail("is equal to", other);
     }
@@ -88,7 +88,7 @@ public class Subject<S extends Subject<S,T>,T> {
   /**
    * Fails if the subject is equal to the given object.
    */
-  public void isNotEqualTo(Object other) {
+  public void isNotEqualTo(@Nullable Object other) {
     if (Objects.equal(getSubject(), other)) {
       fail("is not equal to", other);
     }
@@ -97,7 +97,7 @@ public class Subject<S extends Subject<S,T>,T> {
   /**
    * Fails if the subject is not the same instance as the given object.
    */
-  public void isSameAs(Object other) {
+  public void isSameAs(@Nullable Object other) {
     if (getSubject() != other) {
       fail("is the same instance as", other);
     }
@@ -106,7 +106,7 @@ public class Subject<S extends Subject<S,T>,T> {
   /**
    * Fails if the subject is the same instance as the given object.
    */
-  public void isNotSameAs(Object other) {
+  public void isNotSameAs(@Nullable Object other) {
     if (getSubject() == other) {
       fail("is not the same instance as", other);
     }

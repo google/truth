@@ -26,6 +26,7 @@ import com.google.common.collect.Table;
 import java.util.Map;
 
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 @CheckReturnValue
 public class TestVerb extends AbstractVerb<TestVerb> {
@@ -41,113 +42,116 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     this.failureMessage = failureMessage;
   }
 
-  public <T extends Comparable<?>> ComparableSubject<?, T> that(T target) {
+  public <T extends Comparable<?>> ComparableSubject<?, T> that(@Nullable T target) {
     return new ComparableSubject(getFailureStrategy(), target) {};
   }
 
-  public Subject<DefaultSubject, Object> that(Object target) {
+  public Subject<DefaultSubject, Object> that(@Nullable Object target) {
     return new DefaultSubject(getFailureStrategy(), target);
   }
 
   @GwtIncompatible("ClassSubject.java")
-  public ClassSubject that(Class<?> target) {
+  public ClassSubject that(@Nullable Class<?> target) {
     return new ClassSubject(getFailureStrategy(), target);
   }
 
-  public ThrowableSubject that(Throwable target) {
+  public ThrowableSubject that(@Nullable Throwable target) {
     return new ThrowableSubject(getFailureStrategy(), target);
   }
 
-  public LongSubject that(Long target) {
+  public LongSubject that(@Nullable Long target) {
     return new LongSubject(getFailureStrategy(), target);
   }
 
-  public DoubleSubject that(Double target) {
+  public DoubleSubject that(@Nullable Double target) {
     return new DoubleSubject(getFailureStrategy(), target);
   }
 
-  public IntegerSubject that(Integer target) {
+  public IntegerSubject that(@Nullable Integer target) {
     return new IntegerSubject(getFailureStrategy(), target);
   }
 
-  public BooleanSubject that(Boolean target) {
+  public BooleanSubject that(@Nullable Boolean target) {
     return new BooleanSubject(getFailureStrategy(), target);
   }
 
-  public StringSubject that(String target) {
+  public StringSubject that(@Nullable String target) {
     return new StringSubject(getFailureStrategy(), target);
   }
 
   public <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
-      that(Iterable<T> target) {
+      that(@Nullable Iterable<T> target) {
     return IterableSubject.create(getFailureStrategy(), target);
   }
 
-  public <T> ObjectArraySubject<T> that(T[] target) {
+  public <T> ObjectArraySubject<T> that(@Nullable T[] target) {
     return new ObjectArraySubject<T>(getFailureStrategy(), target);
   }
 
-  public PrimitiveBooleanArraySubject that(boolean[] target) {
+  public PrimitiveBooleanArraySubject that(@Nullable boolean[] target) {
     return new PrimitiveBooleanArraySubject(getFailureStrategy(), target);
   }
 
-  public PrimitiveIntArraySubject that(int[] target) {
+  public PrimitiveIntArraySubject that(@Nullable int[] target) {
     return new PrimitiveIntArraySubject(getFailureStrategy(), target);
   }
 
-  public PrimitiveLongArraySubject that(long[] target) {
+  public PrimitiveLongArraySubject that(@Nullable long[] target) {
     return new PrimitiveLongArraySubject(getFailureStrategy(), target);
   }
 
-  public PrimitiveCharArraySubject that(char[] target) {
+  public PrimitiveCharArraySubject that(@Nullable char[] target) {
     return new PrimitiveCharArraySubject(getFailureStrategy(), target);
   }
 
-  public PrimitiveByteArraySubject that(byte[] target) {
+  public PrimitiveByteArraySubject that(@Nullable byte[] target) {
     return new PrimitiveByteArraySubject(getFailureStrategy(), target);
   }
 
-  public PrimitiveFloatArraySubject that(float[] target) {
+  public PrimitiveFloatArraySubject that(@Nullable float[] target) {
     return new PrimitiveFloatArraySubject(getFailureStrategy(), target);
   }
 
-  public PrimitiveDoubleArraySubject that(double[] target) {
+  public PrimitiveDoubleArraySubject that(@Nullable double[] target) {
     return new PrimitiveDoubleArraySubject(getFailureStrategy(), target);
   }
 
-  public <T> OptionalSubject<T> that(Optional<T> target) {
+  public <T> OptionalSubject<T> that(@Nullable Optional<T> target) {
     return new OptionalSubject<T>(getFailureStrategy(), target);
   }
 
   public <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
-      that(Map<K, V> target) {
+      that(@Nullable Map<K, V> target) {
     return MapSubject.create(getFailureStrategy(), target);
   }
 
   public <K, V, M extends Multimap<K, V>>
-      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> that(Multimap<K, V> target) {
+      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> that(
+          @Nullable Multimap<K, V> target) {
     return MultimapSubject.create(getFailureStrategy(), target);
   }
 
   public <K, V, M extends ListMultimap<K, V>>
       ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> that(
-      ListMultimap<K, V> target) {
+          @Nullable ListMultimap<K, V> target) {
     return ListMultimapSubject.create(getFailureStrategy(), target);
   }
 
   public <K, V, M extends SetMultimap<K, V>>
       SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> that(
-      SetMultimap<K, V> target) {
+          @Nullable SetMultimap<K, V> target) {
     return SetMultimapSubject.create(getFailureStrategy(), target);
   }
 
   public <E, M extends Multiset<E>>
-      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(Multiset<E> target) {
+      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(
+          @Nullable Multiset<E> target) {
     return MultisetSubject.create(getFailureStrategy(), target);
   }
 
   public <R, C, V, M extends Table<R, C, V>>
-      TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> that(Table<R, C, V> target) {
+      TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> that(
+          @Nullable Table<R, C, V> target) {
     return TableSubject.create(getFailureStrategy(), target);
   }
 

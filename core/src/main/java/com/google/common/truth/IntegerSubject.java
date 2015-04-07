@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import com.google.common.primitives.Ints;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for {@link Integer} subjects.
  *
@@ -27,7 +29,7 @@ import com.google.common.primitives.Ints;
 // Can't be final because we use codegen to generate a subclass
 public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
 
-  public IntegerSubject(FailureStrategy failureStrategy, Integer integer) {
+  public IntegerSubject(FailureStrategy failureStrategy, @Nullable Integer integer) {
     super(failureStrategy, integer);
   }
 

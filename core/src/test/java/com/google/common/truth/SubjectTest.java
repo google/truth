@@ -25,6 +25,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -36,6 +38,48 @@ import java.util.Iterator;
  */
 @RunWith(JUnit4.class)
 public class SubjectTest {
+
+  @Test public void allAssertThatOverloadsAcceptNull() throws Exception {
+    for (Method method : Truth.class.getDeclaredMethods()) {
+      if (Modifier.isPublic(method.getModifiers())
+          && method.getName().equals("assertThat")
+          && method.getParameterTypes().length == 1) {
+        Object actual = null;
+        Subject<?, ?> subject = (Subject<?, ?>) method.invoke(Truth.class, actual);
+
+        subject.isNull();
+        try {
+          subject.isNotNull(); // should throw
+          fail("assertThat(null).isNotNull() should throw an exception!");
+        } catch (AssertionError expected) {
+          assertThat(expected).hasMessage("Not true that the subject is a non-null reference");
+        }
+
+        subject.isSameAs(null);
+        subject.isNotSameAs(new Object());
+
+        subject.isNotIn(ImmutableList.<Object>of());
+        subject.isNoneOf(new Object(), new Object());
+
+        // This is a hack...but we have to skip DoubleSubject (requires a tolerance)
+        // and array-based subjects (they require a primitive array for the actual value).
+        if (subject instanceof DoubleSubject || subject instanceof AbstractArraySubject) {
+          continue;
+        }
+
+        subject.isNotEqualTo(new Object());
+        subject.isEqualTo(null);
+        try {
+          subject.isEqualTo(new Object()); // should throw
+          fail("assertThat(null).isEqualTo(<non-null>) should throw an exception!");
+        } catch (AssertionError expected) {
+          assertThat(expected.getMessage()).contains("Not true that ");
+          assertThat(expected.getMessage()).contains(" is equal to ");
+        }
+      }
+    }
+  }
+
   private static final Object OBJECT_1 = new Object() {
     @Override
     public String toString() {

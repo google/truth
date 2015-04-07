@@ -21,6 +21,8 @@ import com.google.common.annotations.GwtIncompatible;
 
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for string subjects.
  *
@@ -29,7 +31,7 @@ import java.util.regex.Pattern;
  */
 public class StringSubject extends ComparableSubject<StringSubject, String> {
 
-  public StringSubject(FailureStrategy failureStrategy, String string) {
+  public StringSubject(FailureStrategy failureStrategy, @Nullable String string) {
     super(failureStrategy, string);
   }
 

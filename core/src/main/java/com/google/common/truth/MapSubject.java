@@ -24,6 +24,8 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for {@link Map} subjects.
  *
@@ -33,14 +35,14 @@ import java.util.Map.Entry;
 public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K, V>>
     extends Subject<S, M> {
 
-  private MapSubject(FailureStrategy failureStrategy, M map) {
+  private MapSubject(FailureStrategy failureStrategy, @Nullable M map) {
     super(failureStrategy, map);
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   static <K, V, M extends Map<K, V>>
       MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> create(
-          FailureStrategy failureStrategy, Map<K, V> map) {
+          FailureStrategy failureStrategy, @Nullable Map<K, V> map) {
     return new MapSubject(failureStrategy, map);
   }
 

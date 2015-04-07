@@ -31,7 +31,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
 
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 
-  DoubleSubject(FailureStrategy failureStrategy, Double subject) {
+  DoubleSubject(FailureStrategy failureStrategy, @Nullable Double subject) {
     super(failureStrategy, subject);
   }
 

@@ -20,6 +20,8 @@ import com.google.common.primitives.Bytes;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * A Subject to handle testing propositions for {@code byte[]}.
  *
@@ -27,7 +29,7 @@ import java.util.List;
  */
 public class PrimitiveByteArraySubject
     extends AbstractArraySubject<PrimitiveByteArraySubject, byte[]> {
-  PrimitiveByteArraySubject(FailureStrategy failureStrategy, byte[] o) {
+  PrimitiveByteArraySubject(FailureStrategy failureStrategy, @Nullable byte[] o) {
     super(failureStrategy, o);
   }
 

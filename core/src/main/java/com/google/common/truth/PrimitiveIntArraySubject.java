@@ -20,6 +20,8 @@ import com.google.common.primitives.Ints;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * A Subject to handle testing propositions for {@code int[]}.
  *
@@ -28,7 +30,7 @@ import java.util.List;
 public class PrimitiveIntArraySubject
     extends AbstractArraySubject<PrimitiveIntArraySubject, int[]> {
 
-  PrimitiveIntArraySubject(FailureStrategy failureStrategy, int[] o) {
+  PrimitiveIntArraySubject(FailureStrategy failureStrategy, @Nullable int[] o) {
     super(failureStrategy, o);
   }
 

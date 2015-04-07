@@ -21,6 +21,8 @@ import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
 import com.google.common.collect.Tables;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for {@link Table} subjects.
  *
@@ -30,14 +32,14 @@ public final class
     TableSubject<S extends TableSubject<S, R, C, V, T>, R, C, V, T extends Table<R, C, V>>
     extends Subject<S, T> {
 
-  private TableSubject(FailureStrategy failureStrategy, T table) {
+  private TableSubject(FailureStrategy failureStrategy, @Nullable T table) {
     super(failureStrategy, table);
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   static <R, C, V, T extends Table<R, C, V>>
       TableSubject<? extends TableSubject<?, R, C, V, T>, R, C, V, T> create(
-          FailureStrategy failureStrategy, Table<R, C, V> table) {
+          FailureStrategy failureStrategy, @Nullable Table<R, C, V> table) {
     return new TableSubject(failureStrategy, table);
   }
 

@@ -20,6 +20,8 @@ import com.google.common.collect.SetMultimap;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * Type-specific extensions of {@link com.google.common.collect.Multimap} subjects for
  * {@link com.google.common.collect.ListMultimap} subjects.
@@ -30,14 +32,14 @@ public class ListMultimapSubject<
     S extends ListMultimapSubject<S, K, V, M>, K, V, M extends ListMultimap<K, V>>
     extends MultimapSubject<S, K, V, M> {
 
-  ListMultimapSubject(FailureStrategy failureStrategy, M multimap) {
+  ListMultimapSubject(FailureStrategy failureStrategy, @Nullable M multimap) {
     super(failureStrategy, multimap);
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   static <K, V, M extends ListMultimap<K, V>>
   ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> create(
-      FailureStrategy failureStrategy, ListMultimap<K, V> multimap) {
+      FailureStrategy failureStrategy, @Nullable ListMultimap<K, V> multimap) {
     return new ListMultimapSubject(failureStrategy, multimap);
   }
 
