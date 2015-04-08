@@ -56,7 +56,7 @@ public abstract class ComparableSubject<S extends Subject<S, T>, T extends Compa
    * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use
    * {@link #isEqualTo(Object)}.
    */
-  public final void comparesEqualTo(T other) {
+  public void comparesEqualTo(T other) {
     if (getSubject().compareTo(other) != 0) {
       failWithRawMessage("%s should have been equivalent to <%s>", getDisplaySubject(), other);
     }

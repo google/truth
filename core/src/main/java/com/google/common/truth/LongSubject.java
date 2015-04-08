@@ -31,6 +31,14 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
     super(failureStrategy, subject);
   }
 
+  /**
+   * @deprecated Use {@link #isEqualTo} instead. Long comparison is consistent with equality.
+   */
+  @Deprecated
+  public final void comparesEqualTo(Long other) {
+    super.comparesEqualTo(other);
+  }
+
   public void isEqualTo(Object other) {
     super.isEqualTo(other);
   }

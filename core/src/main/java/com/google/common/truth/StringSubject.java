@@ -72,6 +72,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   }
 
   /**
+   * @deprecated Use {@link #isEqualTo} instead. String comparison is consistent with equality.
+   */
+  @Deprecated
+  public final void comparesEqualTo(String other) {
+    super.comparesEqualTo(other);
+  }
+
+  /**
    * Fails if the string is not null.
    */
   @Override public void isNull() {

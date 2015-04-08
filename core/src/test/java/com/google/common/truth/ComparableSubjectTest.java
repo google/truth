@@ -39,6 +39,34 @@ import javax.tools.JavaFileObject;
 @RunWith(JUnit4.class)
 public class ComparableSubjectTest {
 
+  @Test public void testNulls() {
+    try {
+      assertThat(6).comparesEqualTo(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+    try {
+      assertThat(6).isGreaterThan(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+    try {
+      assertThat(6).isLessThan(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+    try {
+      assertThat(6).isAtMost(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+    try {
+      assertThat(6).isAtLeast(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+  }
+
   @Test public void isInRange() {
     Range<Integer> oneToFive = Range.closed(1, 5);
     assertThat(4).isIn(oneToFive);

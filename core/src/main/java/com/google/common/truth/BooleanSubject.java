@@ -29,6 +29,14 @@ public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
   }
 
   /**
+   * @deprecated Use {@link #isEqualTo} instead. Boolean comparison is consistent with equality.
+   */
+  @Deprecated
+  public final void comparesEqualTo(Boolean other) {
+    super.comparesEqualTo(other);
+  }
+
+  /**
    * Fails if the subject is false.
    */
   public void isTrue() {
