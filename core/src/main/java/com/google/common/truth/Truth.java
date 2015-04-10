@@ -179,8 +179,7 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
-      assertThat(@Nullable Map<K, V> target) {
+  public static MapSubject assertThat(@Nullable Map<?, ?> target) {
     return assert_().that(target);
   }
 

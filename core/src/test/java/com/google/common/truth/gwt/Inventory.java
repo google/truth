@@ -51,7 +51,7 @@ public class Inventory {
   FailureStrategy ac;
   IntegerSubject f;
   IterableSubject<?, ?, ?> g;
-  MapSubject<?, ?, ?, ?> i;
+  MapSubject i;
   ObjectArraySubject<?> j;
   OptionalSubject<?> k;
   Ordered l;

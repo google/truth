@@ -120,9 +120,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new OptionalSubject<T>(getFailureStrategy(), target);
   }
 
-  public <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
-      that(@Nullable Map<K, V> target) {
-    return MapSubject.create(getFailureStrategy(), target);
+  public MapSubject that(@Nullable Map<?, ?> target) {
+    return new MapSubject(getFailureStrategy(), target);
   }
 
   public <K, V, M extends Multimap<K, V>>
