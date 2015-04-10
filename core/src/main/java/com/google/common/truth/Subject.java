@@ -20,6 +20,8 @@ import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import java.util.List;
@@ -168,10 +170,10 @@ public class Subject<S extends Subject<S,T>,T> {
    * Fails if the subject is equal to any element in the given iterable.
    */
   public void isNotIn(Iterable<?> iterable) {
-    if (Iterables.contains(iterable, getSubject())) {
-      // TODO(kak): We might want to beef up the error message to include the index at which the
-      // unexpected element actually occurred.
-      fail("is not equal to any element in", iterable);
+    int index = Iterables.indexOf(iterable, Predicates.<Object>equalTo(getSubject()));
+    if (index != -1 ) {
+      failWithRawMessage("Not true that %s is not in %s. It was found at index %s",
+          getDisplaySubject(), iterable, index);
     }
   }
 
@@ -179,12 +181,7 @@ public class Subject<S extends Subject<S,T>,T> {
    * Fails if the subject is equal to any of the given elements.
    */
   public void isNoneOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
-    List<Object> list = accumulate(first, second, rest);
-    if (list.contains(getSubject())) {
-      // TODO(kak): We might want to beef up the error message to include the index at which the
-      // unexpected element actually occurred.
-      fail("is not equal to any of", list);
-    }
+    isNotIn(accumulate(first, second, rest));
   }
 
   protected T getSubject() {

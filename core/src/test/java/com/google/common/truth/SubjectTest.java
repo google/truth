@@ -495,7 +495,8 @@ public class SubjectTest {
       assertThat("b").isNotIn(oneShotIterable("a", "b", "c"));
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <\"b\"> is not equal to any element in <[a, b, c]>");
+      assertThat(e)
+          .hasMessage("Not true that <\"b\"> is not in [a, b, c]. It was found at index 1");
     }
   }
 
@@ -509,7 +510,7 @@ public class SubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <\"null\"> is not equal to any element in <[a, b, null]>");
+          .hasMessage("Not true that <\"null\"> is not in [a, b, null]. It was found at index 2");
     }
   }
 
@@ -526,7 +527,8 @@ public class SubjectTest {
       assertThat("b").isNoneOf("a", "b", "c");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <\"b\"> is not equal to any of <[a, b, c]>");
+      assertThat(e)
+          .hasMessage("Not true that <\"b\"> is not in [a, b, c]. It was found at index 1");
     }
   }
 
@@ -539,7 +541,8 @@ public class SubjectTest {
       assertThat((String) null).isNoneOf("a", "b", (String) null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <\"null\"> is not equal to any of <[a, b, null]>");
+      assertThat(e)
+          .hasMessage("Not true that <\"null\"> is not in [a, b, null]. It was found at index 2");
     }
   }
 
