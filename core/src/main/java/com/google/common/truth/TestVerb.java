@@ -149,10 +149,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return MultisetSubject.create(getFailureStrategy(), target);
   }
 
-  public <R, C, V, M extends Table<R, C, V>>
-      TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> that(
-          @Nullable Table<R, C, V> target) {
-    return TableSubject.create(getFailureStrategy(), target);
+  public TableSubject that(@Nullable Table<?, ?, ?> target) {
+    return new TableSubject(getFailureStrategy(), target);
   }
 
   @Override

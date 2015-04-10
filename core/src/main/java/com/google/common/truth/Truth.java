@@ -185,20 +185,20 @@ public final class Truth {
   }
 
   public static <K, V, M extends Multimap<K, V>>
-  MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> assertThat(
-      @Nullable Multimap<K, V> target) {
+      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> assertThat(
+          @Nullable Multimap<K, V> target) {
     return assert_().that(target);
   }
 
   public static <K, V, M extends ListMultimap<K, V>>
-  ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> assertThat(
-      @Nullable ListMultimap<K, V> target) {
+      ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> assertThat(
+          @Nullable ListMultimap<K, V> target) {
     return assert_().that(target);
   }
 
   public static <K, V, M extends SetMultimap<K, V>>
-  SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> assertThat(
-      @Nullable SetMultimap<K, V> target) {
+      SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> assertThat(
+          @Nullable SetMultimap<K, V> target) {
     return assert_().that(target);
   }
 
@@ -208,9 +208,7 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static <R, C, V, M extends Table<R, C, V>>
-      TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> assertThat(
-          @Nullable Table<R, C, V> target) {
+  public static TableSubject assertThat(@Nullable Table<?, ?, ?> target) {
     return assert_().that(target);
   }
 }
