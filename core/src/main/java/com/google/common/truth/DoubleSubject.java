@@ -138,8 +138,16 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * @deprecated Use {@link #isWithin} instead. Double comparison should always have a tolerance.
    */
   @Deprecated
+  public final void isEquivalentAccordingToCompareTo(Double other) {
+    super.isEquivalentAccordingToCompareTo(other);
+  }
+
+  /**
+   * @deprecated Use {@link #isWithin} instead. Double comparison should always have a tolerance.
+   */
+  @Deprecated
   public final void comparesEqualTo(Double other) {
-    super.comparesEqualTo(other);
+    super.isEquivalentAccordingToCompareTo(other);
   }
 
   /**

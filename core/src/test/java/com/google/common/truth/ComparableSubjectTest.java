@@ -98,7 +98,8 @@ public class ComparableSubjectTest {
       assertThat(new BigDecimal("2.0")).comparesEqualTo(new BigDecimal("2.1"));
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("<2.0> should have been equivalent to <2.1>");
+      assertThat(e)
+          .hasMessage("<2.0> should have been equivalent to <2.1> according to compareTo()");
     }
   }
 

@@ -32,8 +32,16 @@ public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
    * @deprecated Use {@link #isEqualTo} instead. Boolean comparison is consistent with equality.
    */
   @Deprecated
+  public final void isEquivalentAccordingToCompareTo(Boolean other) {
+    super.isEquivalentAccordingToCompareTo(other);
+  }
+
+  /**
+   * @deprecated Use {@link #isEqualTo} instead. Boolean comparison is consistent with equality.
+   */
+  @Deprecated
   public final void comparesEqualTo(Boolean other) {
-    super.comparesEqualTo(other);
+    super.isEquivalentAccordingToCompareTo(other);
   }
 
   /**

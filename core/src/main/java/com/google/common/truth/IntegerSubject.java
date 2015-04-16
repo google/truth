@@ -37,8 +37,16 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
    * @deprecated Use {@link #isEqualTo} instead. Integer comparison is consistent with equality.
    */
   @Deprecated
+  public final void isEquivalentAccordingToCompareTo(Integer other) {
+    super.isEquivalentAccordingToCompareTo(other);
+  }
+
+  /**
+   * @deprecated Use {@link #isEqualTo} instead. Integer comparison is consistent with equality.
+   */
+  @Deprecated
   public final void comparesEqualTo(Integer other) {
-    super.comparesEqualTo(other);
+    super.isEquivalentAccordingToCompareTo(other);
   }
 
   public void isEqualTo(Object other) {
