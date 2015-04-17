@@ -61,7 +61,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         if (!diff.entriesDiffering().isEmpty()) {
           errorMsg += " has the following different entries: " + diff.entriesDiffering();
         }
-        failWithRawMessage("Not true that <%s> is equal to <%s>. " + errorMsg, getSubject(), other);
+        failWithRawMessage("Not true that %s is equal to <%s>. " + errorMsg,
+            getDisplaySubject(), other);
       } else {
         fail("is equal to", other);
       }
