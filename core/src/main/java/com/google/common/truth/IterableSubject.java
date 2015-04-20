@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
 import static java.util.Arrays.asList;
@@ -433,6 +434,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws NullPointerException if any element is null
    */
   public final void isStrictlyOrdered(final Comparator<? super T> comparator) {
+    checkNotNull(comparator);
     pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) >= 0) {
@@ -463,6 +465,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   // TODO(kak): Rename to isOrdered after we release 0.26 without the old isOrdered()
   public final void isPartiallyOrdered(final Comparator<? super T> comparator) {
+    checkNotNull(comparator);
     pairwiseCheck(new PairwiseChecker<T>() {
       @Override public void check(T prev, T next) {
         if (comparator.compare(prev, next) > 0) {

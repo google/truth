@@ -137,7 +137,7 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   }
 
   @Override
-  public void isEqualTo(Object other) {
+  public void isEqualTo(@Nullable Object other) {
     if (!Objects.equal(getSubject(), other)) {
       if ((getSubject() instanceof ListMultimap && other instanceof SetMultimap)
           || (getSubject() instanceof SetMultimap && other instanceof ListMultimap)) {

@@ -49,11 +49,11 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
     super.isEquivalentAccordingToCompareTo(other);
   }
 
-  public void isEqualTo(Object other) {
+  public void isEqualTo(@Nullable Object other) {
     super.isEqualTo(other);
   }
 
-  public void isNotEqualTo(Object other) {
+  public void isNotEqualTo(@Nullable Object other) {
     super.isNotEqualTo(other);
   }
 

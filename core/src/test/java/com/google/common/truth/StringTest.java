@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
 import static org.junit.Assert.fail;
 
 import org.junit.ComparisonFailure;
@@ -198,56 +197,6 @@ public class StringTest {
     assertThat("a").contains("");
     assertThat("a").startsWith("");
     assertThat("a").endsWith("");
-  }
-
-  @Test public void stringNullNullTests() {
-    assertThat((String)null).isEqualTo(null);
-    try {
-      assertThat((String)null).contains(null);
-      assert_().fail("Expected to throw");
-    } catch (IllegalArgumentException expected) {}
-    try {
-      assertThat((String)null).doesNotContain(null);
-      assert_().fail("Expected to throw");
-    } catch (IllegalArgumentException expected) {}
-    try {
-      assertThat((String)null).startsWith(null);
-      assert_().fail("Expected to throw");
-    } catch (IllegalArgumentException expected) {}
-    try {
-      assertThat((String)null).endsWith(null);
-      assert_().fail("Expected to throw");
-    } catch (IllegalArgumentException expected) {}
-  }
-
-  @Test public void stringNullContains() {
-    try {
-      assertThat((String)null).contains("a");
-      throw new Error("Expected to fail.");
-    } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .contains("Not true that null reference contains <\"a\">");
-    }
-  }
-
-  @Test public void stringNullStartsWith() {
-    try {
-      assertThat((String)null).startsWith("a");
-      throw new Error("Expected to fail.");
-    } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .contains("Not true that null reference starts with <\"a\">");
-    }
-  }
-
-  @Test public void stringNullEndsWith() {
-    try {
-      assertThat((String)null).endsWith("a");
-      throw new Error("Expected to fail.");
-    } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .contains("Not true that null reference ends with <\"a\">");
-    }
   }
 
   @Test public void stringMatchesString() {

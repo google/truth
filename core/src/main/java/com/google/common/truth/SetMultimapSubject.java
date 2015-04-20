@@ -51,7 +51,7 @@ public class SetMultimapSubject<
    *      Consult {@link com.google.common.collect.Multimap#equals} for more information.
    */
   @Deprecated
-  public void isEqualTo(ListMultimap<?, ?> other) {
+  public void isEqualTo(@Nullable ListMultimap<?, ?> other) {
     super.isEqualTo(other);
   }
 

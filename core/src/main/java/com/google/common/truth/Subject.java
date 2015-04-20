@@ -20,7 +20,6 @@ import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
@@ -33,15 +32,15 @@ import javax.annotation.Nullable;
  * of Object
  *
  * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  */
-public class Subject<S extends Subject<S,T>,T> {
+public class Subject<S extends Subject<S, T>, T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
   private String customName = null;
 
   public Subject(FailureStrategy failureStrategy, @Nullable T subject) {
-    this.failureStrategy = failureStrategy;
+    this.failureStrategy = checkNotNull(failureStrategy);
     this.subject = subject;
   }
 

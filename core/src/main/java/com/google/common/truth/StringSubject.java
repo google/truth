@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
 
@@ -43,7 +44,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  @Override public void isEqualTo(Object expected) {
+  @Override public void isEqualTo(@Nullable Object expected) {
     if (getSubject() == null) {
       if (expected != null) {
         if (expected instanceof String) {
@@ -134,9 +135,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    * Fails if the string does not contain the given sequence.
    */
   public void contains(CharSequence string) {
-    if (string == null) {
-      throw new IllegalArgumentException("Cannot test that a string contains a null reference");
-    }
+    checkNotNull(string);
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference contains <%s>", quote(string));
     } else if (!getSubject().contains(string)) {
@@ -148,10 +147,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    * Fails if the string contains the given sequence.
    */
   public void doesNotContain(CharSequence string) {
-    if (string == null) {
-      throw new IllegalArgumentException(
-              "Cannot test that a string does not contain a null reference");
-    }
+    checkNotNull(string);
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference contains <%s>", quote(string));
     } else if (getSubject().contains(string)) {
@@ -163,9 +159,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    * Fails if the string does not start with the given string.
    */
   public void startsWith(String string) {
-    if (string == null) {
-      throw new IllegalArgumentException("Cannot test that a string starts with a null reference");
-    }
+    checkNotNull(string);
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference starts with <%s>", quote(string));
     } else if (!getSubject().startsWith(string)) {
@@ -177,9 +171,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    * Fails if the string does not end with the given string.
    */
   public void endsWith(String string) {
-    if (string == null) {
-      throw new IllegalArgumentException("Cannot test that a string ends with a null reference");
-    }
+    checkNotNull(string);
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference ends with <%s>", quote(string));
     } else if (!getSubject().endsWith(string)) {

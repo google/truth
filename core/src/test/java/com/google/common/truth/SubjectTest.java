@@ -18,8 +18,16 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.ImmutableSetMultimap;
+import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterators;
+import com.google.common.testing.NullPointerTester;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,12 +42,36 @@ import java.util.Iterator;
  * Tests for generic Subject behaviour.
  *
  * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  */
 @RunWith(JUnit4.class)
 public class SubjectTest {
 
+  @Test public void nullPointerTester() {
+    NullPointerTester npTester = new NullPointerTester();
+
+    // TODO(kak): Automatically generate this list with reflection,
+    // or maybe use AbstractPackageSanityTests?
+    npTester.testAllPublicInstanceMethods(assertThat(false));
+    npTester.testAllPublicInstanceMethods(assertThat(String.class));
+    npTester.testAllPublicInstanceMethods(assertThat((Comparable) "hello"));
+    npTester.testAllPublicInstanceMethods(assertThat(2d));
+    npTester.testAllPublicInstanceMethods(assertThat(1));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableList.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableListMultimap.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(1L));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableMap.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableMultimap.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableMultiset.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(Optional.absent()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableSetMultimap.of()));
+    npTester.testAllPublicInstanceMethods(assertThat("hello"));
+    npTester.testAllPublicInstanceMethods(assertThat(new Object()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableTable.of()));
+  }
+
   @Test public void allAssertThatOverloadsAcceptNull() throws Exception {
+    NullPointerTester npTester = new NullPointerTester();
     for (Method method : Truth.class.getDeclaredMethods()) {
       if (Modifier.isPublic(method.getModifiers())
           && method.getName().equals("assertThat")
@@ -66,6 +98,9 @@ public class SubjectTest {
         if (subject instanceof DoubleSubject || subject instanceof AbstractArraySubject) {
           continue;
         }
+
+        // check all public assertion methods for correct null handling
+        npTester.testAllPublicInstanceMethods(subject);
 
         subject.isNotEqualTo(new Object());
         subject.isEqualTo(null);
