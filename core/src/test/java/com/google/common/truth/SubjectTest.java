@@ -35,6 +35,7 @@ import org.junit.runners.JUnit4;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -68,6 +69,7 @@ public class SubjectTest {
     npTester.testAllPublicInstanceMethods(assertThat("hello"));
     npTester.testAllPublicInstanceMethods(assertThat(new Object()));
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableTable.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(BigDecimal.TEN));
   }
 
   @Test public void allAssertThatOverloadsAcceptNull() throws Exception {

@@ -24,6 +24,7 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.truth.AbstractVerb.DelegatedVerb;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import javax.annotation.CheckReturnValue;
@@ -102,6 +103,10 @@ public final class Truth {
   }
 
   public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(@Nullable T target) {
+    return assert_().that(target);
+  }
+
+  public static BigDecimalSubject assertThat(@Nullable BigDecimal target) {
     return assert_().that(target);
   }
 
