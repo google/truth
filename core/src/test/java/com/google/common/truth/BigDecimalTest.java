@@ -33,6 +33,16 @@ import java.math.BigDecimal;
 @RunWith(JUnit4.class)
 public class BigDecimalTest {
 
+  @Test public void isEqualTo() {
+    // make sure this still works
+    assertThat(TEN).isEqualTo(TEN);
+  }
+
+  @Test public void isEquivalentAccordingToCompareTo() {
+    // make sure this still works
+    assertThat(TEN).isEquivalentAccordingToCompareTo(TEN);
+  }
+
   @Test public void isEqualToIgnoringScale_bigDecimal() {
     assertThat(TEN).isEqualToIgnoringScale(TEN);
     assertThat(TEN).isEqualToIgnoringScale(new BigDecimal(10));
