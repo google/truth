@@ -143,14 +143,6 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
   }
 
   /**
-   * @deprecated Use {@link #isWithin} instead. Double comparison should always have a tolerance.
-   */
-  @Deprecated
-  public final void comparesEqualTo(Double other) {
-    super.isEquivalentAccordingToCompareTo(other);
-  }
-
-  /**
    * Ensures that the given tolerance is not {@code Double.NaN} or negative, including {@code -0.0}.
    */
   private static void checkTolerance(double tolerance) {

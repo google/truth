@@ -41,7 +41,7 @@ public class ComparableSubjectTest {
 
   @Test public void testNulls() {
     try {
-      assertThat(6).comparesEqualTo(null);
+      assertThat(6).isEquivalentAccordingToCompareTo(null);
       fail();
     } catch (NullPointerException expected) {
     }
@@ -91,11 +91,11 @@ public class ComparableSubjectTest {
     }
   }
 
-  @Test public void comparesEqualTo() {
-    assertThat(new BigDecimal("2.0")).comparesEqualTo(new BigDecimal("2.00"));
+  @Test public void isEquivalentAccordingToCompareTo() {
+    assertThat(new BigDecimal("2.0")).isEquivalentAccordingToCompareTo(new BigDecimal("2.00"));
 
     try {
-      assertThat(new BigDecimal("2.0")).comparesEqualTo(new BigDecimal("2.1"));
+      assertThat(new BigDecimal("2.0")).isEquivalentAccordingToCompareTo(new BigDecimal("2.1"));
       fail("should have thrown");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("<2.0> should have had the same value as <2.1> (scale is ignored)");

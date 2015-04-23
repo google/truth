@@ -69,8 +69,10 @@ public abstract class ComparableSubject<S extends Subject<S, T>, T extends Compa
    *
    * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use
    * {@link #isEqualTo(Object)}.
+   *
+   * @deprecated Use {@link #isEquivalentAccordingToCompareTo} instead.
    */
-  // TODO(kak): @deprecated Use {@link #isEquivalentAccordingToCompareTo} instead.
+  @Deprecated
   public void comparesEqualTo(T other) {
     isEquivalentAccordingToCompareTo(other);
   }
