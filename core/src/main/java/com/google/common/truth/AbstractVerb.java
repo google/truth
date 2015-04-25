@@ -20,6 +20,7 @@ import static com.google.common.truth.StringUtil.format;
 import com.google.common.annotations.GwtIncompatible;
 
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   private final FailureStrategy failureStrategy;
@@ -44,7 +45,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   /**
    * Triggers the failure strategy with the given failure message
    */
-  public void fail(String format, Object... args) {
+  public void fail(@Nullable String format, Object... args) {
     getFailureStrategy().fail(format(format, args));
   }
 

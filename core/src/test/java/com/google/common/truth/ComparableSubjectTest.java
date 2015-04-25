@@ -39,6 +39,34 @@ import javax.tools.JavaFileObject;
 @RunWith(JUnit4.class)
 public class ComparableSubjectTest {
 
+  @Test public void testNulls() {
+    try {
+      assertThat(6).isEquivalentAccordingToCompareTo(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+    try {
+      assertThat(6).isGreaterThan(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+    try {
+      assertThat(6).isLessThan(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+    try {
+      assertThat(6).isAtMost(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+    try {
+      assertThat(6).isAtLeast(null);
+      fail();
+    } catch (NullPointerException expected) {
+    }
+  }
+
   @Test public void isInRange() {
     Range<Integer> oneToFive = Range.closed(1, 5);
     assertThat(4).isIn(oneToFive);
@@ -63,14 +91,14 @@ public class ComparableSubjectTest {
     }
   }
 
-  @Test public void comparesEqualTo() {
-    assertThat(new BigDecimal("2.0")).comparesEqualTo(new BigDecimal("2.00"));
+  @Test public void isEquivalentAccordingToCompareTo() {
+    assertThat(new BigDecimal("2.0")).isEquivalentAccordingToCompareTo(new BigDecimal("2.00"));
 
     try {
-      assertThat(new BigDecimal("2.0")).comparesEqualTo(new BigDecimal("2.1"));
+      assertThat(new BigDecimal("2.0")).isEquivalentAccordingToCompareTo(new BigDecimal("2.1"));
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).isEqualTo("<2.0> should have been equivalent to <2.1>");
+      assertThat(e).hasMessage("<2.0> should have had the same value as <2.1> (scale is ignored)");
     }
   }
 

@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for boolean subjects.
  *
@@ -22,8 +24,16 @@ package com.google.common.truth;
  */
 public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
 
-  BooleanSubject(FailureStrategy failureStrategy, Boolean subject) {
+  BooleanSubject(FailureStrategy failureStrategy, @Nullable Boolean subject) {
     super(failureStrategy, subject);
+  }
+
+  /**
+   * @deprecated Use {@link #isEqualTo} instead. Boolean comparison is consistent with equality.
+   */
+  @Deprecated
+  public final void isEquivalentAccordingToCompareTo(Boolean other) {
+    super.isEquivalentAccordingToCompareTo(other);
   }
 
   /**

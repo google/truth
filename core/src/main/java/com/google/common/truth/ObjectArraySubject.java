@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 /**
  * A Subject to handle testing propositions for {@code Object[]} and more generically {@code T[]}.
  *
@@ -29,7 +31,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
 
   private final String typeName;
 
-  ObjectArraySubject(FailureStrategy failureStrategy, T[] o) {
+  ObjectArraySubject(FailureStrategy failureStrategy, @Nullable T[] o) {
     super(failureStrategy, o);
     typeName = typeNameFromInstance(o);
   }

@@ -31,7 +31,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
 
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 
-  DoubleSubject(FailureStrategy failureStrategy, Double subject) {
+  DoubleSubject(FailureStrategy failureStrategy, @Nullable Double subject) {
     super(failureStrategy, subject);
   }
 
@@ -116,6 +116,30 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
         }
       }
     };
+  }
+
+  /**
+   * @deprecated Use {@link #isWithin} instead. Double comparison should always have a tolerance.
+   */
+  @Deprecated
+  public final void isEqualTo(@Nullable Double other) {
+    super.isEqualTo(other);
+  }
+
+  /**
+   * @deprecated Use {@link #isNotWithin} instead. Double comparison should always have a tolerance.
+   */
+  @Deprecated
+  public final void isNotEqualTo(@Nullable Double other) {
+    super.isNotEqualTo(other);
+  }
+
+  /**
+   * @deprecated Use {@link #isWithin} instead. Double comparison should always have a tolerance.
+   */
+  @Deprecated
+  public final void isEquivalentAccordingToCompareTo(Double other) {
+    super.isEquivalentAccordingToCompareTo(other);
   }
 
   /**

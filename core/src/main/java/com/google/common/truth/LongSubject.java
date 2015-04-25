@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for {@code long} subjects.
  *
@@ -25,15 +27,23 @@ package com.google.common.truth;
 // Can't be final because we use codegen to generate a subclass
 public class LongSubject extends ComparableSubject<LongSubject, Long> {
 
-  public LongSubject(FailureStrategy failureStrategy, Long subject) {
+  public LongSubject(FailureStrategy failureStrategy, @Nullable Long subject) {
     super(failureStrategy, subject);
   }
 
-  public void isEqualTo(Object other) {
+  /**
+   * @deprecated Use {@link #isEqualTo} instead. Long comparison is consistent with equality.
+   */
+  @Deprecated
+  public final void isEquivalentAccordingToCompareTo(Long other) {
+    super.isEquivalentAccordingToCompareTo(other);
+  }
+
+  public void isEqualTo(@Nullable Object other) {
     super.isEqualTo(other);
   }
 
-  public void isNotEqualTo(Object other) {
+  public void isNotEqualTo(@Nullable Object other) {
     super.isNotEqualTo(other);
   }
 

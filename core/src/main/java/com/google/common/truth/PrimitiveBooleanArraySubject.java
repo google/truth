@@ -20,6 +20,8 @@ import com.google.common.primitives.Booleans;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * A Subject to handle testing propositions for {@code boolean[]}.
  *
@@ -27,7 +29,7 @@ import java.util.List;
  */
 public class PrimitiveBooleanArraySubject
     extends AbstractArraySubject<PrimitiveBooleanArraySubject, boolean[]> {
-  PrimitiveBooleanArraySubject(FailureStrategy failureStrategy, boolean[] o) {
+  PrimitiveBooleanArraySubject(FailureStrategy failureStrategy, @Nullable boolean[] o) {
     super(failureStrategy, o);
   }
 

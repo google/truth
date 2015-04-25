@@ -18,18 +18,105 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.ImmutableSetMultimap;
+import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.Iterators;
+import com.google.common.testing.NullPointerTester;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Tests for generic Subject behaviour.
  *
  * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  */
 @RunWith(JUnit4.class)
 public class SubjectTest {
+
+  @Test public void nullPointerTester() {
+    NullPointerTester npTester = new NullPointerTester();
+
+    // TODO(kak): Automatically generate this list with reflection,
+    // or maybe use AbstractPackageSanityTests?
+    npTester.testAllPublicInstanceMethods(assertThat(false));
+    npTester.testAllPublicInstanceMethods(assertThat(String.class));
+    npTester.testAllPublicInstanceMethods(assertThat((Comparable) "hello"));
+    npTester.testAllPublicInstanceMethods(assertThat(2d));
+    npTester.testAllPublicInstanceMethods(assertThat(1));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableList.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableListMultimap.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(1L));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableMap.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableMultimap.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableMultiset.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(Optional.absent()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableSetMultimap.of()));
+    npTester.testAllPublicInstanceMethods(assertThat("hello"));
+    npTester.testAllPublicInstanceMethods(assertThat(new Object()));
+    npTester.testAllPublicInstanceMethods(assertThat(ImmutableTable.of()));
+    npTester.testAllPublicInstanceMethods(assertThat(BigDecimal.TEN));
+  }
+
+  @Test public void allAssertThatOverloadsAcceptNull() throws Exception {
+    NullPointerTester npTester = new NullPointerTester();
+    for (Method method : Truth.class.getDeclaredMethods()) {
+      if (Modifier.isPublic(method.getModifiers())
+          && method.getName().equals("assertThat")
+          && method.getParameterTypes().length == 1) {
+        Object actual = null;
+        Subject<?, ?> subject = (Subject<?, ?>) method.invoke(Truth.class, actual);
+
+        subject.isNull();
+        try {
+          subject.isNotNull(); // should throw
+          fail("assertThat(null).isNotNull() should throw an exception!");
+        } catch (AssertionError expected) {
+          assertThat(expected).hasMessage("Not true that the subject is a non-null reference");
+        }
+
+        subject.isSameAs(null);
+        subject.isNotSameAs(new Object());
+
+        subject.isNotIn(ImmutableList.<Object>of());
+        subject.isNoneOf(new Object(), new Object());
+
+        // This is a hack...but we have to skip DoubleSubject (requires a tolerance)
+        // and array-based subjects (they require a primitive array for the actual value).
+        if (subject instanceof DoubleSubject || subject instanceof AbstractArraySubject) {
+          continue;
+        }
+
+        // check all public assertion methods for correct null handling
+        npTester.testAllPublicInstanceMethods(subject);
+
+        subject.isNotEqualTo(new Object());
+        subject.isEqualTo(null);
+        try {
+          subject.isEqualTo(new Object()); // should throw
+          fail("assertThat(null).isEqualTo(<non-null>) should throw an exception!");
+        } catch (AssertionError expected) {
+          assertThat(expected.getMessage()).contains("Not true that ");
+          assertThat(expected.getMessage()).contains(" is equal to ");
+        }
+      }
+    }
+  }
+
   private static final Object OBJECT_1 = new Object() {
     @Override
     public String toString() {
@@ -359,6 +446,143 @@ public class SubjectTest {
     }
   }
 
+  @Test public void isIn() {
+    assertThat("b").isIn(oneShotIterable("a", "b", "c"));
+  }
+
+  @Test public void isInJustTwo() {
+    assertThat("b").isIn(oneShotIterable("a", "b"));
+  }
+
+  @Test public void isInFailure() {
+    try {
+      assertThat("x").isIn(oneShotIterable("a", "b", "c"));
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <\"x\"> is equal to any element in <[a, b, c]>");
+    }
+  }
+
+  @Test public void isInNullInListWithNull() {
+    assertThat((String) null).isIn(oneShotIterable("a", "b", (String) null));
+  }
+
+  @Test public void isInNonnullInListWithNull() {
+    assertThat("b").isIn(oneShotIterable("a", "b", (String) null));
+  }
+
+  @Test public void isInNullFailure() {
+    try {
+      assertThat((String) null).isIn(oneShotIterable("a", "b", "c"));
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <\"null\"> is equal to any element in <[a, b, c]>");
+    }
+  }
+
+  @Test public void isInEmptyFailure() {
+    try {
+      assertThat("b").isIn(ImmutableList.<String>of());
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <\"b\"> is equal to any element in <[]>");
+    }
+  }
+
+  @Test public void isAnyOf() {
+    assertThat("b").isAnyOf("a", "b", "c");
+  }
+
+  @Test public void isAnyOfJustTwo() {
+    assertThat("b").isAnyOf("a", "b");
+  }
+
+  @Test public void isAnyOfFailure() {
+    try {
+      assertThat("x").isAnyOf("a", "b", "c");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <\"x\"> is equal to any of <[a, b, c]>");
+    }
+  }
+
+  @Test public void isAnyOfNullInListWithNull() {
+    assertThat((String) null).isAnyOf("a", "b", (String) null);
+  }
+
+  @Test public void isAnyOfNonnullInListWithNull() {
+    assertThat("b").isAnyOf("a", "b", (String) null);
+  }
+
+  @Test public void isAnyOfNullFailure() {
+    try {
+      assertThat((String) null).isAnyOf("a", "b", "c");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <\"null\"> is equal to any of <[a, b, c]>");
+    }
+  }
+
+  @Test public void isNotIn() {
+    assertThat("x").isNotIn(oneShotIterable("a", "b", "c"));
+  }
+
+  @Test public void isNotInFailure() {
+    try {
+      assertThat("b").isNotIn(oneShotIterable("a", "b", "c"));
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage("Not true that <\"b\"> is not in [a, b, c]. It was found at index 1");
+    }
+  }
+
+  @Test public void isNotInNull() {
+    assertThat((String) null).isNotIn(oneShotIterable("a", "b", "c"));
+  }
+
+  @Test public void isNotInNullFailure() {
+    try {
+      assertThat((String) null).isNotIn(oneShotIterable("a", "b", (String) null));
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage("Not true that <\"null\"> is not in [a, b, null]. It was found at index 2");
+    }
+  }
+
+  @Test public void isNotInEmpty() {
+    assertThat("b").isNotIn(ImmutableList.<String>of());
+  }
+
+  @Test public void isNoneOf() {
+    assertThat("x").isNoneOf("a", "b", "c");
+  }
+
+  @Test public void isNoneOfFailure() {
+    try {
+      assertThat("b").isNoneOf("a", "b", "c");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage("Not true that <\"b\"> is not in [a, b, c]. It was found at index 1");
+    }
+  }
+
+  @Test public void isNoneOfNull() {
+    assertThat((String) null).isNoneOf("a", "b", "c");
+  }
+
+  @Test public void isNoneOfNullFailure() {
+    try {
+      assertThat((String) null).isNoneOf("a", "b", (String) null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage("Not true that <\"null\"> is not in [a, b, null]. It was found at index 2");
+    }
+  }
+
   @Test public void throwableHasInitedCause() {
     NullPointerException cause = new NullPointerException();
     String msg = "foo";
@@ -389,5 +613,17 @@ public class SubjectTest {
       return;
     }
     fail("Should have thrown.");
+  }
+
+  private static <T> Iterable<T> oneShotIterable(final T... values) {
+    final Iterator<T> iterator = Iterators.forArray(values);
+    return new Iterable<T>() {
+      @Override public Iterator<T> iterator() {
+        return iterator;
+      }
+      @Override public String toString() {
+        return Arrays.toString(values);
+      }
+    };
   }
 }

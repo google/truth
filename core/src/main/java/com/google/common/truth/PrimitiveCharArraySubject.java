@@ -20,6 +20,8 @@ import com.google.common.primitives.Chars;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * A Subject to handle testing propositions for {@code char[]}.
  *
@@ -27,7 +29,7 @@ import java.util.List;
  */
 public class PrimitiveCharArraySubject
     extends AbstractArraySubject<PrimitiveCharArraySubject, char[]> {
-  PrimitiveCharArraySubject(FailureStrategy failureStrategy, char[] o) {
+  PrimitiveCharArraySubject(FailureStrategy failureStrategy, @Nullable char[] o) {
     super(failureStrategy, o);
   }
 

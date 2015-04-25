@@ -24,6 +24,7 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.truth.AbstractVerb.DelegatedVerb;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import javax.annotation.CheckReturnValue;
@@ -33,27 +34,35 @@ import javax.annotation.Nullable;
  * Truth - a proposition framework for tests, supporting JUnit style
  * assertion and assumption semantics in a fluent style.
  *
- * Truth is the simplest entry point class. A developer can statically
+ * <p>Truth is the simplest entry point class. A developer can statically
  * import the assertThat() method to get easy access to the library's
  * capabilities. Then, instead of writing:
  *
- * <pre>{@code
- * Assert.assertEquals(a, b);
- * Assert.assertTrue(c);
- * Assert.assertTrue(d.contains(a));
- * Assert.assertTrue(d.contains(a) && d.contains(b));
- * Assert.assertTrue(d.contains(a) || d.contains(b) || d.contains(c));
- * }</pre>
+ * <pre>   {@code
+ *   Assert.assertEquals(a, b);
+ *   Assert.assertTrue(c);
+ *   Assert.assertTrue(d.contains(a));
+ *   Assert.assertTrue(d.contains(a) && d.contains(b));
+ *   Assert.assertTrue(d.contains(a) || d.contains(b) || d.contains(c));}</pre>
  * one would write:
- * <pre>{@code
- * assertThat(a).isEqualTo(b);
- * assertThat(c).isTrue();
- * assertThat(d).contains(a);
- * assertThat(d).containsAllOf(a, b);
- * assertThat(d).containsAnyOf(a, b, c);
- * }</pre>
+ * <pre>   {@code
+ *   assertThat(a).isEqualTo(b);
+ *   assertThat(c).isTrue();
+ *   assertThat(d).contains(a);
+ *   assertThat(d).containsAllOf(a, b);
+ *   assertThat(d).containsAnyOf(a, b, c);}</pre>
  *
- * Tests should be easier to read, and flow more clearly.
+ * <p>Tests should be easier to read, and flow more clearly.
+ *
+ * <p>Often, tests assert a relationship between a value produced by the test
+ * (the "actual" value) and some reference value (the "expected" value). It is
+ * strongly recommended that the actual value is made the subject of the
+ * assertion. For example:
+ * <pre>   {@code
+ *   assertThat(actual).isEqualTo(expected);  // recommended
+ *   assertThat(expected).isEqualTo(actual);  // not recommended
+ *   assertThat(actual).isIn(expectedPossibilities);  // recommended
+ *   assertThat(expectedPossibilities).contains(actual);  // not recommended}</pre>
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
@@ -86,7 +95,7 @@ public final class Truth {
    * documented in {@link com.google.common.truth.delegation.DelegationTest}.
    *
    * @param factory a SubjectFactory<S, T> implementation
-   * @returns A custom verb for the type returned by the SubjectFactory
+   * @return A custom verb for the type returned by the SubjectFactory
    */
   public static <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>> DelegatedVerb<S, T>
       assertAbout(SF factory) {
@@ -94,6 +103,10 @@ public final class Truth {
   }
 
   public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(@Nullable T target) {
+    return assert_().that(target);
+  }
+
+  public static BigDecimalSubject assertThat(@Nullable BigDecimal target) {
     return assert_().that(target);
   }
 
@@ -171,26 +184,25 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static <K, V, M extends Map<K, V>> MapSubject<? extends MapSubject<?, K, V, M>, K, V, M>
-      assertThat(@Nullable Map<K, V> target) {
+  public static MapSubject assertThat(@Nullable Map<?, ?> target) {
     return assert_().that(target);
   }
 
   public static <K, V, M extends Multimap<K, V>>
-  MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> assertThat(
-      @Nullable Multimap<K, V> target) {
+      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> assertThat(
+          @Nullable Multimap<K, V> target) {
     return assert_().that(target);
   }
 
   public static <K, V, M extends ListMultimap<K, V>>
-  ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> assertThat(
-      @Nullable ListMultimap<K, V> target) {
+      ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> assertThat(
+          @Nullable ListMultimap<K, V> target) {
     return assert_().that(target);
   }
 
   public static <K, V, M extends SetMultimap<K, V>>
-  SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> assertThat(
-      @Nullable SetMultimap<K, V> target) {
+      SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> assertThat(
+          @Nullable SetMultimap<K, V> target) {
     return assert_().that(target);
   }
 
@@ -200,9 +212,7 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static <R, C, V, M extends Table<R, C, V>>
-      TableSubject<? extends TableSubject<?, R, C, V, M>, R, C, V, M> assertThat(
-          @Nullable Table<R, C, V> target) {
+  public static TableSubject assertThat(@Nullable Table<?, ?, ?> target) {
     return assert_().that(target);
   }
 }

@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Utility methods used in Subject<T> implementors.
@@ -71,7 +69,14 @@ final class SubjectUtils {
   }
 
   static <T> List<Object> countDuplicates(Collection<T> items) {
-    Set<T> itemSet = new LinkedHashSet<T>(items);
+    // We use a List to de-dupe instead of a Set in case the elements don't have a proper
+    // .hashCode() method (e.g., MessageSet from old versions of protobuf).
+    List<T> itemSet = new ArrayList<T>();
+    for (T item : items) {
+      if (!itemSet.contains(item)) {
+        itemSet.add(item);
+      }
+    }
     Object[] params = new Object[itemSet.size()];
     int n = 0;
     for (T item : itemSet) {

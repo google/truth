@@ -24,30 +24,24 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for {@link Map} subjects.
  *
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  * @author Kurt Alfred Kluever
  */
-public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K, V>>
-    extends Subject<S, M> {
+public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
-  private MapSubject(FailureStrategy failureStrategy, M map) {
+  MapSubject(FailureStrategy failureStrategy, @Nullable Map<?, ?> map) {
     super(failureStrategy, map);
-  }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  static <K, V, M extends Map<K, V>>
-      MapSubject<? extends MapSubject<?, K, V, M>, K, V, M> create(
-          FailureStrategy failureStrategy, Map<K, V> map) {
-    return new MapSubject(failureStrategy, map);
   }
 
   /**
    * Fails if the subject is not equal to the given object.
    */
-  public void isEqualTo(Object other) {
+  public void isEqualTo(@Nullable Object other) {
     if (!Objects.equal(getSubject(), other)) {
       if (other instanceof Map) {
         MapDifference<?, ?> diff = Maps.difference((Map<?, ?>) other, (Map<?, ?>) getSubject());
@@ -67,7 +61,8 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
         if (!diff.entriesDiffering().isEmpty()) {
           errorMsg += " has the following different entries: " + diff.entriesDiffering();
         }
-        failWithRawMessage("Not true that <%s> is equal to <%s>. " + errorMsg, getSubject(), other);
+        failWithRawMessage("Not true that %s is equal to <%s>. " + errorMsg,
+            getDisplaySubject(), other);
       } else {
         fail("is equal to", other);
       }
@@ -106,7 +101,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   /**
    * Fails if the map does not contain the given key.
    */
-  public void containsKey(Object key) {
+  public void containsKey(@Nullable Object key) {
     if (!getSubject().containsKey(key)) {
       fail("contains key", key);
     }
@@ -115,7 +110,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   /**
    * Fails if the map contains the given key.
    */
-  public void doesNotContainKey(Object key) {
+  public void doesNotContainKey(@Nullable Object key) {
     if (getSubject().containsKey(key)) {
       fail("does not contain key", key);
     }
@@ -124,7 +119,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   /**
    * Fails if the map does not contain the given entry.
    */
-  public void containsEntry(Object key, Object value) {
+  public void containsEntry(@Nullable Object key, @Nullable Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (!getSubject().entrySet().contains(entry)) {
       fail("contains entry", entry);
@@ -134,7 +129,7 @@ public class MapSubject<S extends MapSubject<S, K, V, M>, K, V, M extends Map<K,
   /**
    * Fails if the map contains the given entry.
    */
-  public void doesNotContainEntry(Object key, Object value) {
+  public void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (getSubject().entrySet().contains(entry)) {
       fail("does not contain entry", entry);

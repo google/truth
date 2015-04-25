@@ -75,6 +75,21 @@ public class MapTest {
     fail("Should have thrown.");
   }
 
+  @Test public void namedMapIsEqualToFailureDiffering() {
+    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 4);
+
+    try {
+      assertThat(actualMap).named("foo").isEqualTo(expectedMap);
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to <{jan=1, feb=2, march=4}>. "
+          + "The subject has the following different entries: {march=(4, 3)}");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
   @Test public void mapIsEqualToFailureExtra() {
     ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2);

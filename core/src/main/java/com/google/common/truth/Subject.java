@@ -17,8 +17,13 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.format;
+import static com.google.common.truth.SubjectUtils.accumulate;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -27,15 +32,15 @@ import javax.annotation.Nullable;
  * of Object
  *
  * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  */
-public class Subject<S extends Subject<S,T>,T> {
+public class Subject<S extends Subject<S, T>, T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
   private String customName = null;
 
-  public Subject(FailureStrategy failureStrategy, T subject) {
-    this.failureStrategy = failureStrategy;
+  public Subject(FailureStrategy failureStrategy, @Nullable T subject) {
+    this.failureStrategy = checkNotNull(failureStrategy);
     this.subject = subject;
   }
 
@@ -75,7 +80,7 @@ public class Subject<S extends Subject<S,T>,T> {
   /**
    * Fails if the subject is not equal to the given object.
    */
-  public void isEqualTo(Object other) {
+  public void isEqualTo(@Nullable Object other) {
     if (!Objects.equal(getSubject(), other)) {
       fail("is equal to", other);
     }
@@ -84,7 +89,7 @@ public class Subject<S extends Subject<S,T>,T> {
   /**
    * Fails if the subject is equal to the given object.
    */
-  public void isNotEqualTo(Object other) {
+  public void isNotEqualTo(@Nullable Object other) {
     if (Objects.equal(getSubject(), other)) {
       fail("is not equal to", other);
     }
@@ -93,7 +98,7 @@ public class Subject<S extends Subject<S,T>,T> {
   /**
    * Fails if the subject is not the same instance as the given object.
    */
-  public void isSameAs(Object other) {
+  public void isSameAs(@Nullable Object other) {
     if (getSubject() != other) {
       fail("is the same instance as", other);
     }
@@ -102,7 +107,7 @@ public class Subject<S extends Subject<S,T>,T> {
   /**
    * Fails if the subject is the same instance as the given object.
    */
-  public void isNotSameAs(Object other) {
+  public void isNotSameAs(@Nullable Object other) {
     if (getSubject() == other) {
       fail("is not the same instance as", other);
     }
@@ -139,6 +144,43 @@ public class Subject<S extends Subject<S,T>,T> {
       failWithRawMessage("%s expected not to be an instance of %s, but was.",
           getDisplaySubject(), clazz.getName());
     }
+  }
+
+  /**
+   * Fails unless the subject is equal to any element in the given iterable.
+   */
+  public void isIn(Iterable<?> iterable) {
+    if (!Iterables.contains(iterable, getSubject())) {
+      fail("is equal to any element in", iterable);
+    }
+  }
+
+  /**
+   * Fails unless the subject is equal to any of the given elements.
+   */
+  public void isAnyOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
+    List<Object> list = accumulate(first, second, rest);
+    if (!list.contains(getSubject())) {
+      fail("is equal to any of", list);
+    }
+  }
+
+  /**
+   * Fails if the subject is equal to any element in the given iterable.
+   */
+  public void isNotIn(Iterable<?> iterable) {
+    int index = Iterables.indexOf(iterable, Predicates.<Object>equalTo(getSubject()));
+    if (index != -1 ) {
+      failWithRawMessage("Not true that %s is not in %s. It was found at index %s",
+          getDisplaySubject(), iterable, index);
+    }
+  }
+
+  /**
+   * Fails if the subject is equal to any of the given elements.
+   */
+  public void isNoneOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
+    isNotIn(accumulate(first, second, rest));
   }
 
   protected T getSubject() {

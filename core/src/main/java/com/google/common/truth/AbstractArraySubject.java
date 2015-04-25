@@ -19,6 +19,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * A common supertype for Array subjects, abstracting some common display and error infrastructure.
  *
@@ -27,7 +29,7 @@ import java.util.List;
 public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T>
     extends Subject<S, T> {
 
-  AbstractArraySubject(FailureStrategy failureStrategy, T subject) {
+  AbstractArraySubject(FailureStrategy failureStrategy, @Nullable T subject) {
     super(failureStrategy, subject);
   }
 

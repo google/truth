@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  */
 public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
 
-  public ThrowableSubject(FailureStrategy failureStrategy, Throwable throwable) {
+  public ThrowableSubject(FailureStrategy failureStrategy, @Nullable Throwable throwable) {
     super(causeInsertingStrategy(failureStrategy, throwable), throwable);
   }
 

@@ -19,6 +19,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.common.collect.Multiset;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for {@link Multiset} subjects.
  *
@@ -27,21 +29,21 @@ import com.google.common.collect.Multiset;
 public final class MultisetSubject<S extends MultisetSubject<S, E, M>, E, M extends Multiset<E>>
     extends IterableSubject<S, E, M> {
 
-  private MultisetSubject(FailureStrategy failureStrategy, M multiset) {
+  private MultisetSubject(FailureStrategy failureStrategy, @Nullable M multiset) {
     super(failureStrategy, multiset);
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   static <E, M extends Multiset<E>>
       MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> create(
-          FailureStrategy failureStrategy, Multiset<E> multiset) {
+          FailureStrategy failureStrategy, @Nullable Multiset<E> multiset) {
     return new MultisetSubject(failureStrategy, multiset);
   }
 
   /**
    * Fails if the element does not have the given count.
    */
-  public final void hasCount(Object element, int expectedCount) {
+  public final void hasCount(@Nullable Object element, int expectedCount) {
     checkArgument(expectedCount >= 0, "expectedCount(%s) must be >= 0", expectedCount);
     int actualCount = getSubject().count(element);
     if (actualCount != expectedCount) {

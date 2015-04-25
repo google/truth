@@ -47,14 +47,14 @@ import javax.annotation.Nullable;
 public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M extends Multimap<K, V>>
     extends Subject<S, M> {
 
-  MultimapSubject(FailureStrategy failureStrategy, M multimap) {
+  MultimapSubject(FailureStrategy failureStrategy, @Nullable M multimap) {
     super(failureStrategy, multimap);
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   static <K, V, M extends Multimap<K, V>>
   MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> create(
-      FailureStrategy failureStrategy, Multimap<K, V> multimap) {
+      FailureStrategy failureStrategy, @Nullable Multimap<K, V> multimap) {
     return new MultimapSubject(failureStrategy, multimap);
   }
 
@@ -137,7 +137,7 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   }
 
   @Override
-  public void isEqualTo(Object other) {
+  public void isEqualTo(@Nullable Object other) {
     if (!Objects.equal(getSubject(), other)) {
       if ((getSubject() instanceof ListMultimap && other instanceof SetMultimap)
           || (getSubject() instanceof SetMultimap && other instanceof ListMultimap)) {

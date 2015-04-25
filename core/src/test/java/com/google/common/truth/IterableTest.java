@@ -407,6 +407,38 @@ public class IterableTest {
     assertThat(iterable(1, null, 3)).containsExactly(1, 3, (Integer) null);
   }
 
+  @Test public void iterableContainsExactlyWithElementsThatThrowWhenYouCallHashCode() {
+    HashCodeThrower one = new HashCodeThrower();
+    HashCodeThrower two = new HashCodeThrower();
+
+    assertThat(iterable(one, two)).containsExactly(two, one);
+    assertThat(iterable(one, two)).containsExactly(one, two).inOrder();
+    assertThat(iterable(one, two)).containsExactlyElementsIn(iterable(two, one));
+    assertThat(iterable(one, two)).containsExactlyElementsIn(iterable(one, two)).inOrder();
+
+    try {
+      assertThat(iterable(one, two)).containsExactly(one);
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage(
+          "Not true that <[HCT, HCT]> contains exactly <[HCT]>. "
+          + "It has unexpected items <[HCT]>");
+      return;
+    }
+    fail();
+  }
+
+  private static class HashCodeThrower {
+    @Override public boolean equals(Object other) {
+      return this == other;
+    }
+    @Override public int hashCode() {
+      throw new UnsupportedOperationException();
+    }
+    @Override public String toString() {
+      return "HCT";
+    }
+  }
+
   @Test public void iterableContainsExactlyElementsInErrorMessageIsOrdered() {
     try {
       assertThat(asList("foo OR bar")).containsExactlyElementsIn(asList("foo", "bar"));

@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import com.google.common.collect.Range;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for {@link Comparable} typed subjects.
  *
@@ -25,7 +27,7 @@ import com.google.common.collect.Range;
 public abstract class ComparableSubject<S extends Subject<S, T>, T extends Comparable>
     extends Subject<S, T> {
 
-  protected ComparableSubject(FailureStrategy failureStrategy, T subject) {
+  protected ComparableSubject(FailureStrategy failureStrategy, @Nullable T subject) {
     super(failureStrategy, subject);
   }
 
@@ -54,10 +56,25 @@ public abstract class ComparableSubject<S extends Subject<S, T>, T extends Compa
    * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use
    * {@link #isEqualTo(Object)}.
    */
-  public final void comparesEqualTo(T other) {
+  public void isEquivalentAccordingToCompareTo(T other) {
     if (getSubject().compareTo(other) != 0) {
-      failWithRawMessage("%s should have been equivalent to <%s>", getDisplaySubject(), other);
+      failWithRawMessage("%s should have been equivalent to <%s> according to compareTo()",
+          getDisplaySubject(), other);
     }
+  }
+
+  /**
+   * Fails if the subject is not equivalent to the given value according to
+   * {@link Comparable#compareTo}, (i.e., fails if {@code a.comparesTo(b) != 0}).
+   *
+   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use
+   * {@link #isEqualTo(Object)}.
+   *
+   * @deprecated Use {@link #isEquivalentAccordingToCompareTo} instead.
+   */
+  @Deprecated
+  public void comparesEqualTo(T other) {
+    isEquivalentAccordingToCompareTo(other);
   }
 
   /**

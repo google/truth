@@ -50,7 +50,7 @@ public class OptionalSubjectTest {
       assertThat(nullOptional).isAbsent();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Not true that \"Optional<T>\" is a non-null reference");
+          .hasMessage("Not true that <null> is absent");
       return;
     }
     fail("Should have thrown");

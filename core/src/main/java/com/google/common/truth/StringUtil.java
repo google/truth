@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import javax.annotation.Nullable;
+
 /**
  * Utilities for string comparisons.
  *
@@ -41,19 +43,17 @@ final class StringUtil {
    * Cribbed from Guava's {@link com.google.common.base.Preconditions} to allow for a
    * GWT-compatible alternative to {@link String#format(String, Object...)}
    *
-   * @param template a non-null string containing 0 or more {@code %s}
-   *     placeholders.
+   * @param template a string containing 0 or more {@code %s} placeholders
    * @param args the arguments to be substituted into the message
    *     template. Arguments are converted to strings using
    *     {@link String#valueOf(Object)}. Arguments can be null.
-   * @see com.google.common.base.Preconditions
    */
-  static String format(String template, Object... args) {
+  static String format(@Nullable String template, Object... args) {
     template = String.valueOf(template); // null -> "null"
 
     // start substituting the arguments into the '%s' placeholders
-    StringBuilder builder = new StringBuilder(
-        template.length() + 16 * args.length);
+    StringBuilder builder =
+        new StringBuilder(template.length() + 16 * args.length);
     int templateStart = 0;
     int i = 0;
     while (i < args.length) {

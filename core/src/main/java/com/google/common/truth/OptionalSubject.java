@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import com.google.common.base.Optional;
 
+import javax.annotation.Nullable;
+
 /**
  * Propositions for {@link Optional}{@code <T>} subjects.
  *
@@ -24,37 +26,36 @@ import com.google.common.base.Optional;
  */
 public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>> {
 
-  OptionalSubject(FailureStrategy failureStrategy, Optional<T> subject) {
+  OptionalSubject(FailureStrategy failureStrategy, @Nullable Optional<T> subject) {
     super(failureStrategy, subject);
-    check().that((Object) subject).named("Optional<T>").isNotNull();
   }
 
   /**
-   * Fails if the {@link Optional}{@code <T>} is absent.
+   * Fails if the {@link Optional}{@code <T>} is absent or the subject is null.
    */
   public void isPresent() {
-    if (!getSubject().isPresent()) {
+    if (getSubject() == null || !getSubject().isPresent()) {
       failWithoutSubject("is present");
     }
   }
 
   /**
-   * Fails if the {@link Optional}{@code <T>} is present.
+   * Fails if the {@link Optional}{@code <T>} is present or the subject is null..
    */
   public void isAbsent() {
-    if (getSubject().isPresent()) {
+    if (getSubject() == null || getSubject().isPresent()) {
       fail("is absent");
     }
   }
 
   /**
-   * Fails if the {@link Optional}{@code <T>} does not have the given value.
+   * Fails if the {@link Optional}{@code <T>} does not have the given value or the subject is null.
    */
   public void hasValue(Object expected) {
     if (expected == null) {
       throw new NullPointerException("Optional cannot have a null value.");
     }
-    if (!getSubject().isPresent()) {
+    if (getSubject() == null || !getSubject().isPresent()) {
       fail("has value", expected);
     } else {
       Object actual = getSubject().get();

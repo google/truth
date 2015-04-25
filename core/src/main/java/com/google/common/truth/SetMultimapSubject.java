@@ -18,6 +18,8 @@ package com.google.common.truth;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.SetMultimap;
 
+import javax.annotation.Nullable;
+
 /**
  * Type-specific extensions of {@link com.google.common.collect.Multimap} subjects for
  * {@link com.google.common.collect.SetMultimap} subjects.
@@ -28,14 +30,14 @@ public class SetMultimapSubject<
     S extends SetMultimapSubject<S, K, V, M>, K, V, M extends SetMultimap<K, V>>
     extends MultimapSubject<S, K, V, M> {
 
-  SetMultimapSubject(FailureStrategy failureStrategy, M multimap) {
+  SetMultimapSubject(FailureStrategy failureStrategy, @Nullable M multimap) {
     super(failureStrategy, multimap);
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   static <K, V, M extends SetMultimap<K, V>>
   SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> create(
-      FailureStrategy failureStrategy, SetMultimap<K, V> multimap) {
+      FailureStrategy failureStrategy, @Nullable SetMultimap<K, V> multimap) {
     return new SetMultimapSubject(failureStrategy, multimap);
   }
 
@@ -49,7 +51,7 @@ public class SetMultimapSubject<
    *      Consult {@link com.google.common.collect.Multimap#equals} for more information.
    */
   @Deprecated
-  public void isEqualTo(ListMultimap<?, ?> other) {
+  public void isEqualTo(@Nullable ListMultimap<?, ?> other) {
     super.isEqualTo(other);
   }
 
