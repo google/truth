@@ -5,7 +5,7 @@ kramdown:
 pygments: true
 
 # Site settings
-version: "0.25"
+version: "0.26"
 url: http://google.github.io/truth
 title: Truth
 tagline: We've made failure a strategy
