@@ -74,6 +74,10 @@ public class Expect extends TestVerb implements TestRule {
     this.gatherer = gatherer;
   }
 
+  public boolean hasFailures() {
+    return !gatherer.messages.isEmpty();
+  }
+
   @Override
   protected FailureStrategy getFailureStrategy() {
     if (!inRuleContext) {
