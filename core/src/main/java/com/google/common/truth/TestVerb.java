@@ -31,14 +31,13 @@ import javax.annotation.Nullable;
 
 @CheckReturnValue
 public class TestVerb extends AbstractVerb<TestVerb> {
-  private final String failureMessage;
+  @Nullable private final String failureMessage;
 
   public TestVerb(FailureStrategy failureStrategy) {
-    super(failureStrategy);
-    this.failureMessage = null;
+    this(failureStrategy, null);
   }
 
-  public TestVerb(FailureStrategy failureStrategy, String failureMessage) {
+  public TestVerb(FailureStrategy failureStrategy, @Nullable String failureMessage) {
     super(failureStrategy);
     this.failureMessage = failureMessage;
   }
@@ -158,11 +157,11 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   @Override
-  public TestVerb withFailureMessage(String failureMessage) {
+  public TestVerb withFailureMessage(@Nullable String failureMessage) {
     return new TestVerb(getFailureStrategy(), failureMessage); // Must be a new instance.
   }
 
-  @Override public String getFailureMessage() {
+  @Override @Nullable public String getFailureMessage() {
     return failureMessage;
   }
 }
