@@ -24,6 +24,8 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +38,13 @@ public class Expect extends TestVerb implements TestRule {
     List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
 
     @Override public void fail(String message) {
-      messages.add(ExpectationFailure.create(message));
+      fail(message, new Throwable(message));
     }
 
     @Override public void failComparing(
         String message, CharSequence expected, CharSequence actual) {
-      messages.add(ExpectationFailure.create(messageFor(message, expected, actual)));
+      String errorMessage = messageFor(message, expected, actual);
+      fail(errorMessage, new Throwable(errorMessage));
     }
 
     @Override public void fail(String message, Throwable cause) {
@@ -104,6 +107,12 @@ public class Expect extends TestVerb implements TestRule {
             }
             message.append("  ").append((count++) + 1).append(". ")
                    .append(failure.message()).append("\n");
+            if (failure.cause() != null) {
+              // Append stack trace to the failure message
+              StringWriter stackTraceWriter = new StringWriter();
+              failure.cause().printStackTrace(new PrintWriter(stackTraceWriter));
+              message.append(stackTraceWriter + "\n");
+            }
           }
           AssertionError error = new AssertionError(message.toString());
           error.initCause(earliestCause);
