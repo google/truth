@@ -341,6 +341,19 @@ public class SubjectTest {
     }
   }
 
+  @Test public void isEqualToIgnoreCase() {
+    assertThat("aB").isEqualToIgnoreCase("Ab");
+  }
+
+  @Test public void isEqualToIgnoreCaseFailure() {
+    try {
+      assertThat("a").isEqualToIgnoreCase("b");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <\"a\"> is equal to ignoring case <\"b\">");
+    }
+  }
+
   @Test public void isEqualToFailureWithDifferentTypesAndSameToString() {
     Object a = "true";
     Object b = true;

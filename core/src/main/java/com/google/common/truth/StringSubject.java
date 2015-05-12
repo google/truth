@@ -72,6 +72,15 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
+  public void isEqualToIgnoreCase(CharSequence expected) {
+    checkNotNull(expected);
+    if (getSubject() == null) {
+      failWithRawMessage("Not true that null reference is case insensitive equal to <%s>", quote(expected));
+    } else if (!getSubject().equalsIgnoreCase(expected.toString())) {
+      fail("is equal to ignoring case", quote(expected));
+    }
+  }
+
   /**
    * @deprecated Use {@link #isEqualTo} instead. String comparison is consistent with equality.
    */
