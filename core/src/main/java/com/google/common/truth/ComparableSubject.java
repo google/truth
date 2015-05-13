@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-public abstract class ComparableSubject<S extends Subject<S, T>, T extends Comparable>
+public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T extends Comparable>
     extends Subject<S, T> {
 
   protected ComparableSubject(FailureStrategy failureStrategy, @Nullable T subject) {

@@ -213,6 +213,12 @@ public class ComparableSubjectTest {
     assertThat(new ComparableType(3)).isLessThan(new ComparableType(4));
   }
 
+  @Test public void namedComparableType() {
+    assertThat(new ComparableType(2))
+        .named("comparable")
+        .isLessThan(new ComparableType(3));
+  }
+
   private static final class ComparableType implements Comparable<ComparableType> {
     private final int wrapped;
 
