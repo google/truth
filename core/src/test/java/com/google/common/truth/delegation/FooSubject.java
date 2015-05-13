@@ -19,33 +19,46 @@ import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
 
+import java.util.Arrays;
+
 /**
  * A simple example Subject to demonstrate extension.
+ *
+ * <p>Callers would call {@code assertAbout(foo()).that(foo).matches(bar);}
+ * or {@code assertAbout(foo()).that(foo).matchesEither(bar, baz);}
  *
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
 public class FooSubject extends Subject<FooSubject, Foo> {
 
-  public static final SubjectFactory<FooSubject, Foo> FOO =
+  private static final SubjectFactory<FooSubject, Foo> FOO =
       new SubjectFactory<FooSubject, Foo>() {
         @Override public FooSubject getSubject(FailureStrategy fs, Foo target) {
           return new FooSubject(fs, target);
         }
       };
 
+  public static SubjectFactory<FooSubject, Foo> foo() {
+    return FOO;
+  }
+
+  // Must be public and non-final for generated subclasses (wrappers)
   public FooSubject(FailureStrategy failureStrategy, Foo subject) {
     super(failureStrategy, subject);
   }
 
-  public void matches(Foo object) {
-    if (getSubject().value != object.value) {
-      fail("matches", object);
+  public void matches(Foo expected) {
+    if (getSubject().value != expected.value) {
+      fail("matches", expected);
     }
   }
 
-  public void matchesEither(Foo object1, Foo object2) {
-    if (getSubject().value != object1.value && getSubject().value != object2.value) {
-      fail("matches either of", object1, object2);
+  public void matchesAny(Foo... expecteds) {
+    for (Foo expected : expecteds) {
+      if (getSubject().value == expected.value) {
+        return;
+      }
     }
+    fail("matches", Arrays.asList(expecteds));
   }
 }

@@ -18,7 +18,7 @@ package com.google.common.truth.delegation;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
-import static com.google.common.truth.delegation.FooSubject.FOO;
+import static com.google.common.truth.delegation.FooSubject.foo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,12 +32,12 @@ import org.junit.runners.JUnit4;
 public class DelegationTest {
 
   @Test public void assertAboutThat() {
-    assertAbout(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
+    assertAbout(foo()).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 
   @Test public void assertAboutThatFailure() {
     try {
-      assertAbout(FOO).that(new Foo(5)).matches(new Foo(4));
+      assertAbout(foo()).that(new Foo(5)).matches(new Foo(4));
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
       assertThat(e.getMessage()).contains("matches");
@@ -47,13 +47,12 @@ public class DelegationTest {
   }
 
   @Test public void customTypeProposition() {
-    assert_().about(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
+    assert_().about(foo()).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 
   @Test public void customTypePropositionWithFailure() {
     try {
-      assert_().about(FOO).that(new Foo(5)).matches(new Foo(4));
-      assert_().fail("Should have thrown.");
+      assert_().about(foo()).that(new Foo(5)).matches(new Foo(4));
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
       assertThat(e.getMessage()).contains("matches");

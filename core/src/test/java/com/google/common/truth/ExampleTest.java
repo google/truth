@@ -18,7 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.TruthJUnit.assume;
-import static com.google.common.truth.delegation.FooSubject.FOO;
+import static com.google.common.truth.delegation.FooSubject.foo;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.Range;
@@ -78,6 +78,6 @@ public class ExampleTest {
   }
 
   @Test public void customTypeCompares() {
-    assertAbout(FOO).that(new Foo(5)).matches(new Foo(2 + 3));
+    assertAbout(foo()).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 }
