@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import javax.annotation.Nullable;
+
 /**
  * Tests for Double Subjects.
  *
@@ -155,6 +157,63 @@ public class DoubleTest {
       assertThat(Double.NaN).isNotWithin(tolerance).of(expected);
     } catch (AssertionError assertionError) {
       assertThat(assertionError.getMessage()).contains("NaN");
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
+  }
+
+  @Test public void isPositiveInfinity() {
+    assertThat(Double.POSITIVE_INFINITY).isPositiveInfinity();
+    assertThatIsPositiveInfinityFails(1.23);
+    assertThatIsPositiveInfinityFails(Double.NEGATIVE_INFINITY);
+    assertThatIsPositiveInfinityFails(Double.NaN);
+    assertThatIsPositiveInfinityFails(null);
+  }
+
+  private static void assertThatIsPositiveInfinityFails(@Nullable Double value) {
+    try {
+      assertThat(value).isPositiveInfinity();
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError).hasMessage(
+          "Not true that <" + value + "> is equal to <" + Double.POSITIVE_INFINITY + ">");
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
+  }
+
+  @Test public void isNegativeInfinity() {
+    assertThat(Double.NEGATIVE_INFINITY).isNegativeInfinity();
+    assertThatIsNegativeInfinityFails(1.23);
+    assertThatIsNegativeInfinityFails(Double.POSITIVE_INFINITY);
+    assertThatIsNegativeInfinityFails(Double.NaN);
+    assertThatIsNegativeInfinityFails(null);
+  }
+
+  private static void assertThatIsNegativeInfinityFails(@Nullable Double value) {
+    try {
+      assertThat(value).isNegativeInfinity();
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError).hasMessage(
+          "Not true that <" + value + "> is equal to <" + Double.NEGATIVE_INFINITY + ">");
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
+  }
+
+  @Test public void isNaN() {
+    assertThat(Double.NaN).isNaN();
+    assertThatIsNaNFails(1.23);
+    assertThatIsNaNFails(Double.POSITIVE_INFINITY);
+    assertThatIsNaNFails(Double.NEGATIVE_INFINITY);
+    assertThatIsNaNFails(null);
+  }
+
+  private static void assertThatIsNaNFails(@Nullable Double value) {
+    try {
+      assertThat(value).isNaN();
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError).hasMessage(
+          "Not true that <" + value + "> is equal to <" + Double.NaN + ">");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");

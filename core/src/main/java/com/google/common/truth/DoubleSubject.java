@@ -151,4 +151,25 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
     checkArgument(doubleToLongBits(tolerance) != NEG_ZERO_BITS,
         "tolerance (%s) cannot be negative", tolerance);
   }
+
+  /**
+   * Asserts that the subject is {@link Double#POSITIVE_INFINITY}.
+   */
+  public final void isPositiveInfinity() {
+    super.isEqualTo(Double.POSITIVE_INFINITY);
+  }
+
+  /**
+   * Asserts that the subject is {@link Double#NEGATIVE_INFINITY}.
+   */
+  public final void isNegativeInfinity() {
+    super.isEqualTo(Double.NEGATIVE_INFINITY);
+  }
+
+  /**
+   * Asserts that the subject is {@link Double#NaN}.
+   */
+  public final void isNaN() {
+    super.isEqualTo(Double.NaN);
+  }
 }
