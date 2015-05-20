@@ -143,13 +143,15 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
   }
 
   /**
-   * Ensures that the given tolerance is not {@code Double.NaN} or negative, including {@code -0.0}.
+   * Ensures that the given tolerance is a non-negative finite value, i.e. not {@code Double.NaN},
+   * {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}.
    */
   private static void checkTolerance(double tolerance) {
-    checkArgument(!Double.isNaN(tolerance), "tolerance (%s) cannot be NaN", tolerance);
+    checkArgument(!Double.isNaN(tolerance), "tolerance cannot be NaN");
     checkArgument(tolerance >= 0.0, "tolerance (%s) cannot be negative", tolerance);
     checkArgument(doubleToLongBits(tolerance) != NEG_ZERO_BITS,
         "tolerance (%s) cannot be negative", tolerance);
+    checkArgument(tolerance != Double.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
 
   /**

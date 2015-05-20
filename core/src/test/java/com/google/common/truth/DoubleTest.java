@@ -97,6 +97,36 @@ public class DoubleTest {
     }
   }
 
+  @Test public void nanTolerances() {
+    try {
+      assertThat(1.0).isWithin(Double.NaN).of(1.0);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException iae) {
+      assertThat(iae).hasMessage("tolerance cannot be NaN");
+    }
+    try {
+      assertThat(1.0).isNotWithin(Double.NaN).of(2.0);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException iae) {
+      assertThat(iae).hasMessage("tolerance cannot be NaN");
+    }
+  }
+
+  @Test public void infiniteTolerances() {
+    try {
+      assertThat(1.0).isWithin(Double.POSITIVE_INFINITY).of(1.0);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException iae) {
+      assertThat(iae).hasMessage("tolerance cannot be POSITIVE_INFINITY");
+    }
+    try {
+      assertThat(1.0).isNotWithin(Double.POSITIVE_INFINITY).of(2.0);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException iae) {
+      assertThat(iae).hasMessage("tolerance cannot be POSITIVE_INFINITY");
+    }
+  }
+
   @Test public void isWithinOfZero() {
     assertThat(+0.0).isWithin(0.00001).of(+0.0);
     assertThat(+0.0).isWithin(0.00001).of(-0.0);
