@@ -35,12 +35,18 @@ import java.util.Arrays;
  */
 @RunWith(JUnit4.class)
 public class IterationOverSubjectTest {
-
-  @Test public void collectionPropositionWithMultipleArguments() {
+  @Test
+  public void collectionPropositionWithMultipleArguments() {
     Iterable<Foo> data = Arrays.asList(new Foo(2 + 3), new Foo(2 + 4));
-    assert_().in(data).thatEach(foo()).matchesAny(new Foo(5), new Foo(6));
+    assert_()
+        .in(data)
+        .thatEach(foo())
+        .matchesAny(new Foo(5), new Foo(6));
     try {
-      assert_().in(data).thatEach(foo()).matchesAny(new Foo(6), new Foo(7));
+      assert_()
+          .in(data)
+          .thatEach(foo())
+          .matchesAny(new Foo(6), new Foo(7));
       assert_().fail("Expected assertion to fail on element 1.");
     } catch (AssertionError expected) {
       assertThat(expected).hasMessage("Not true that <Foo(5)> matches <[Foo(6), Foo(7)]>");

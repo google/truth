@@ -43,32 +43,45 @@ import java.lang.reflect.Modifier;
 public class TruthAssertThatTest {
   private final static Function<Method, TypeToken<?>> METHOD_TO_RETURN_TYPE_TOKEN =
       new Function<Method, TypeToken<?>>() {
-        @Override public TypeToken<?> apply(Method input) {
+        @Override
+        public TypeToken<?> apply(Method input) {
           return TypeToken.of(Iterables.getOnlyElement(asList(input.getParameterTypes())));
         }
       };
 
-  @Test public void staticAssertThatMethodsMatchTestVerbInstanceMethods() {
+  @Test
+  public void staticAssertThatMethodsMatchTestVerbInstanceMethods() {
     ImmutableSortedSet<TypeToken<?>> verbTypes =
-        FluentIterable.from(asList(TestVerb.class.getMethods())).filter(new Predicate<Method>() {
-          @Override public boolean apply(Method input) {
-            return input.getName().equals("that");
-          }
-        }).transform(METHOD_TO_RETURN_TYPE_TOKEN).toSortedSet(Ordering.usingToString());
+        FluentIterable.from(asList(TestVerb.class.getMethods()))
+            .filter(
+                new Predicate<Method>() {
+                  @Override
+                  public boolean apply(Method input) {
+                    return input.getName().equals("that");
+                  }
+                })
+            .transform(METHOD_TO_RETURN_TYPE_TOKEN)
+            .toSortedSet(Ordering.usingToString());
     ImmutableSortedSet<TypeToken<?>> truthTypes =
-        FluentIterable.from(asList(Truth.class.getMethods())).filter(new Predicate<Method>() {
-          @Override public boolean apply(Method input) {
-            return input.getName().equals("assertThat")
-                && Modifier.isStatic(input.getModifiers());
-          }
-        }).transform(METHOD_TO_RETURN_TYPE_TOKEN).toSortedSet(Ordering.usingToString());
+        FluentIterable.from(asList(Truth.class.getMethods()))
+            .filter(
+                new Predicate<Method>() {
+                  @Override
+                  public boolean apply(Method input) {
+                    return input.getName().equals("assertThat")
+                        && Modifier.isStatic(input.getModifiers());
+                  }
+                })
+            .transform(METHOD_TO_RETURN_TYPE_TOKEN)
+            .toSortedSet(Ordering.usingToString());
 
     assert_().that(verbTypes).isNotEmpty();
     assert_().that(truthTypes).isNotEmpty();
     assert_().that(truthTypes).containsExactlyElementsIn(verbTypes);
   }
 
-  @Test public void festAlike() {
+  @Test
+  public void festAlike() {
     assertThat("foo").contains("fo");
     assertThat(false).isFalse();
   }

@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubject<T>, T[]> {
-
   private final String typeName;
 
   ObjectArraySubject(FailureStrategy failureStrategy, @Nullable T[] o) {
@@ -36,7 +35,8 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
     typeName = typeNameFromInstance(o);
   }
 
-  @Override protected String underlyingType() {
+  @Override
+  protected String underlyingType() {
     return typeName;
   }
 
@@ -50,8 +50,8 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
       return "null reference of unknown array type";
     } else {
       if (!instance.getClass().isArray()) {
-        throw new IllegalArgumentException(instance.getClass().getName()
-            + " instance passed into T[] subject.");
+        throw new IllegalArgumentException(
+            instance.getClass().getName() + " instance passed into T[] subject.");
       }
       Class<?> type = instance.getClass().getComponentType();
       if (type.isPrimitive()) {
@@ -69,7 +69,8 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
    * contains elements such that each element in {@code expected} is equal to each element
    * in the subject, and in the same position.
    */
-  @Override public void isEqualTo(Object expected) {
+  @Override
+  public void isEqualTo(Object expected) {
     Object[] actual = getSubject();
     if (actual == expected) {
       return; // short-cut.
@@ -77,8 +78,11 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
     try {
       Object[] expectedArray = (Object[]) expected;
       if (actual.length != expectedArray.length) {
-        failWithRawMessage("%s has length %s. Expected length is %s",
-            getDisplaySubject(), actual.length, expectedArray.length);
+        failWithRawMessage(
+            "%s has length %s. Expected length is %s",
+            getDisplaySubject(),
+            actual.length,
+            expectedArray.length);
       } else {
         for (int i = 0; i < actual.length; i++) {
           if (!Objects.equals(actual[i], expectedArray[i])) {
@@ -91,15 +95,17 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
     }
   }
 
-  @Override public void isNotEqualTo(Object expected) {
+  @Override
+  public void isNotEqualTo(Object expected) {
     Object[] actual = getSubject();
     try {
       Object[] expectedArray = (Object[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
-        failWithRawMessage("%s unexpectedly equal to %s.",
-            getDisplaySubject(), Arrays.asList(expectedArray));
+        failWithRawMessage(
+            "%s unexpectedly equal to %s.", getDisplaySubject(), Arrays.asList(expectedArray));
       }
-    } catch (ClassCastException ignored) {}
+    } catch (ClassCastException ignored) {
+    }
   }
 
   public IterableSubject<?, T, List<T>> asList() {

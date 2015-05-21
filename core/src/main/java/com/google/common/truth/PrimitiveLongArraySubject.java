@@ -33,11 +33,13 @@ public class PrimitiveLongArraySubject
     super(failureStrategy, o);
   }
 
-  @Override protected String underlyingType() {
+  @Override
+  protected String underlyingType() {
     return "long";
   }
 
-  @Override protected List<Long> listRepresentation() {
+  @Override
+  protected List<Long> listRepresentation() {
     return Longs.asList(getSubject());
   }
 
@@ -46,7 +48,8 @@ public class PrimitiveLongArraySubject
    * contains elements such that each element in {@code expected} is equal to each element
    * in the subject, and in the same position.
    */
-  @Override public void isEqualTo(Object expected) {
+  @Override
+  public void isEqualTo(Object expected) {
     long[] actual = getSubject();
     if (actual == expected) {
       return; // short-cut.
@@ -61,15 +64,17 @@ public class PrimitiveLongArraySubject
     }
   }
 
-  @Override public void isNotEqualTo(Object expected) {
+  @Override
+  public void isNotEqualTo(Object expected) {
     long[] actual = getSubject();
     try {
       long[] expectedArray = (long[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
-        failWithRawMessage("%s unexpectedly equal to %s.",
-            getDisplaySubject(), Longs.asList(expectedArray));
+        failWithRawMessage(
+            "%s unexpectedly equal to %s.", getDisplaySubject(), Longs.asList(expectedArray));
       }
-    } catch (ClassCastException ignored) {}
+    } catch (ClassCastException ignored) {
+    }
   }
 
   public IterableSubject<?, Long, List<Long>> asList() {

@@ -30,25 +30,28 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class PrimitiveByteArraySubjectTest {
-
   private static final byte BYTE_0 = (byte) 0;
   private static final byte BYTE_1 = (byte) 1;
   private static final byte BYTE_2 = (byte) 2;
 
-  @Test public void isEqualTo() {
+  @Test
+  public void isEqualTo() {
     assertThat(array(BYTE_0, BYTE_1)).isEqualTo(array(BYTE_0, BYTE_1));
   }
 
-  @Test public void isEqualTo_Same() {
+  @Test
+  public void isEqualTo_Same() {
     byte[] same = array(BYTE_0, BYTE_1);
     assertThat(same).isEqualTo(same);
   }
 
-  @Test public void asList() {
+  @Test
+  public void asList() {
     assertThat(array(BYTE_0, BYTE_1, BYTE_2)).asList().containsAllOf(BYTE_0, BYTE_2);
   }
 
-  @Test public void isEqualTo_Fail_UnequalOrdering() {
+  @Test
+  public void isEqualTo_Fail_UnequalOrdering() {
     try {
       assertThat(array(BYTE_0, BYTE_1)).isEqualTo(array(BYTE_1, BYTE_0));
       throw new Error("Expected to throw.");
@@ -57,7 +60,8 @@ public class PrimitiveByteArraySubjectTest {
     }
   }
 
-  @Test public void isEqualTo_Fail_NotAnArray() {
+  @Test
+  public void isEqualTo_Fail_NotAnArray() {
     try {
       assertThat(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {});
       throw new Error("Expected to throw.");
@@ -67,36 +71,39 @@ public class PrimitiveByteArraySubjectTest {
     }
   }
 
-  @Test public void isNotEqualTo_SameLengths() {
+  @Test
+  public void isNotEqualTo_SameLengths() {
     assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_1, BYTE_0));
   }
 
-  @Test public void isNotEqualTo_DifferentLengths() {
+  @Test
+  public void isNotEqualTo_DifferentLengths() {
     assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_1, BYTE_0, BYTE_2));
   }
 
-  @Test public void isNotEqualTo_DifferentTypes() {
+  @Test
+  public void isNotEqualTo_DifferentTypes() {
     assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(new Object());
   }
 
-  @Test public void isNotEqualTo_FailEquals() {
+  @Test
+  public void isNotEqualTo_FailEquals() {
     try {
       assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessage("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
+      assertThat(e).hasMessage("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
     }
   }
 
-  @Test public void isNotEqualTo_FailSame() {
+  @Test
+  public void isNotEqualTo_FailSame() {
     try {
       byte[] same = array(BYTE_0, BYTE_1);
       assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessage("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
+      assertThat(e).hasMessage("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
     }
   }
 

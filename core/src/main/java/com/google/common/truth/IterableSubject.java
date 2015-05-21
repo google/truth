@@ -46,10 +46,10 @@ import javax.annotation.Nullable;
  */
 public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>>
     extends Subject<S, C> {
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
-      create(FailureStrategy failureStrategy, @Nullable Iterable<T> list) {
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  static <T, C extends Iterable<T>>
+      IterableSubject<? extends IterableSubject<?, T, C>, T, C> create(
+          FailureStrategy failureStrategy, @Nullable Iterable<T> list) {
     return new IterableSubject(failureStrategy, list);
   }
 
@@ -199,12 +199,12 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     // step through the expected elements...
     for (Object e : expected) {
       int index = actual.indexOf(e);
-      if (index != -1) {  // if we find the element in the actual list...
+      if (index != -1) { // if we find the element in the actual list...
         // drain all the elements that come before that element into actualNotInOrder
         moveElements(actual, actualNotInOrder, index);
         // and remove the element from the actual list
         actual.remove(0);
-      } else {  // otherwise try removing it from actualNotInOrder...
+      } else { // otherwise try removing it from actualNotInOrder...
         if (actualNotInOrder.remove(e)) { // if it was in actualNotInOrder, we're not in order
           ordered = false;
         } else { // if it's not in actualNotInOrder, we're missing an expected element
@@ -241,7 +241,9 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public final Ordered containsExactly(@Nullable Object... varargs) {
     List<Object> expected = (varargs == null) ? Lists.newArrayList((Object) null) : asList(varargs);
-    return containsExactly("contains exactly", expected,
+    return containsExactly(
+        "contains exactly",
+        expected,
         varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
   }
 
@@ -259,12 +261,13 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     return containsExactly("contains exactly", expected, false);
   }
 
-  private Ordered containsExactly(String failVerb, Iterable<?> required,
-        boolean addElementsInWarning) {
-    String failSuffix = !addElementsInWarning ? "" :
-        ". Passing an iterable to the varargs method containsExactly(Object...) is "
-        + "often not the correct thing to do. Did you mean to call " 
-        + "containsExactlyElementsIn(Iterable) instead?";
+  private Ordered containsExactly(
+      String failVerb, Iterable<?> required, boolean addElementsInWarning) {
+    String failSuffix = addElementsInWarning
+        ? ". Passing an iterable to the varargs method containsExactly(Object...) is "
+            + "often not the correct thing to do. Did you mean to call "
+            + "containsExactlyElementsIn(Iterable) instead?"
+        : "";
     Iterator<?> actualIter = getSubject().iterator();
     Iterator<?> requiredIter = required.iterator();
 
@@ -307,17 +310,20 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
             // Subject is both missing required elements and contains extra elements
             failWithRawMessage(
                 "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>%s",
-                getDisplaySubject(), failVerb, required,
-                countDuplicates(missing), countDuplicates(extra),
+                getDisplaySubject(),
+                failVerb,
+                required,
+                countDuplicates(missing),
+                countDuplicates(extra),
                 failSuffix);
           } else {
-            failWithBadResultsAndSuffix(failVerb, required, "is missing", countDuplicates(missing),
-                failSuffix);
+            failWithBadResultsAndSuffix(
+                failVerb, required, "is missing", countDuplicates(missing), failSuffix);
           }
         }
         if (!extra.isEmpty()) {
-          failWithBadResultsAndSuffix(failVerb, required, "has unexpected items",
-              countDuplicates(extra), failSuffix);
+          failWithBadResultsAndSuffix(
+              failVerb, required, "has unexpected items", countDuplicates(extra), failSuffix);
         }
 
         // Since we know the iterables were not in the same order, inOrder() can just fail.
@@ -329,11 +335,19 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
     // pairs of elements that differ. If the actual iterator still has elements, they're
     // extras. If the required iterator has elements, they're missing elements.
     if (actualIter.hasNext()) {
-      failWithBadResultsAndSuffix(failVerb, required, "has unexpected items",
-          countDuplicates(Lists.newArrayList(actualIter)), failSuffix);
+      failWithBadResultsAndSuffix(
+          failVerb,
+          required,
+          "has unexpected items",
+          countDuplicates(Lists.newArrayList(actualIter)),
+          failSuffix);
     } else if (requiredIter.hasNext()) {
-      failWithBadResultsAndSuffix(failVerb, required, "is missing",
-          countDuplicates(Lists.newArrayList(requiredIter)), failSuffix);
+      failWithBadResultsAndSuffix(
+          failVerb,
+          required,
+          "is missing",
+          countDuplicates(Lists.newArrayList(requiredIter)),
+          failSuffix);
     }
 
     // If neither iterator has elements, we reached the end and the elements were in
@@ -350,8 +364,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @param actual the actual value the subject was compared against
    * @param suffix a suffix to append to the failure message
    */
-  protected final void failWithBadResultsAndSuffix(String verb, Object expected, String failVerb,
-      Object actual, String suffix) {
+  protected final void failWithBadResultsAndSuffix(
+      String verb, Object expected, String failVerb, Object actual, String suffix) {
     failWithRawMessage(
         "Not true that %s %s <%s>. It %s <%s>%s",
         getDisplaySubject(),
@@ -403,7 +417,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
       this.required = required;
     }
 
-    @Override public void inOrder() {
+    @Override
+    public void inOrder() {
       fail(check, required);
     }
   }
@@ -411,9 +426,11 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   /**
    * Ordered implementation that does nothing because it's already known to be true.
    */
-  private static final Ordered IN_ORDER = new Ordered() {
-    @Override public void inOrder() {}
-  };
+  private static final Ordered IN_ORDER =
+      new Ordered() {
+        @Override
+        public void inOrder() {}
+      };
 
   /**
    * Fails if the list is not strictly ordered according to the natural ordering of its elements.
@@ -435,13 +452,15 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    */
   public final void isStrictlyOrdered(final Comparator<? super T> comparator) {
     checkNotNull(comparator);
-    pairwiseCheck(new PairwiseChecker<T>() {
-      @Override public void check(T prev, T next) {
-        if (comparator.compare(prev, next) >= 0) {
-          fail("is strictly ordered", prev, next);
-        }
-      }
-    });
+    pairwiseCheck(
+        new PairwiseChecker<T>() {
+          @Override
+          public void check(T prev, T next) {
+            if (comparator.compare(prev, next) >= 0) {
+              fail("is strictly ordered", prev, next);
+            }
+          }
+        });
   }
 
   /**
@@ -466,13 +485,15 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   // TODO(kak): Rename to isOrdered after we release 0.26 without the old isOrdered()
   public final void isPartiallyOrdered(final Comparator<? super T> comparator) {
     checkNotNull(comparator);
-    pairwiseCheck(new PairwiseChecker<T>() {
-      @Override public void check(T prev, T next) {
-        if (comparator.compare(prev, next) > 0) {
-          fail("is partially ordered", prev, next);
-        }
-      }
-    });
+    pairwiseCheck(
+        new PairwiseChecker<T>() {
+          @Override
+          public void check(T prev, T next) {
+            if (comparator.compare(prev, next) > 0) {
+              fail("is partially ordered", prev, next);
+            }
+          }
+        });
   }
 
   private interface PairwiseChecker<T> {

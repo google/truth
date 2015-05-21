@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 public abstract class FailureStrategy {
-
   public void fail(String message) {
     fail(message, null);
   }

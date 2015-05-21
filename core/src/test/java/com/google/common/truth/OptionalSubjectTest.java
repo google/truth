@@ -31,8 +31,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class OptionalSubjectTest {
-
-  @Test public void namedOptional() {
+  @Test
+  public void namedOptional() {
     Optional<String> optional = Optional.of("actual");
     try {
       assertThat(optional).named("name").hasValue("expected");
@@ -44,23 +44,25 @@ public class OptionalSubjectTest {
     fail("Should have thrown");
   }
 
-  @Test public void failOnNullSubject() {
+  @Test
+  public void failOnNullSubject() {
     try {
       Optional<String> nullOptional = null;
       assertThat(nullOptional).isAbsent();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessage("Not true that <null> is absent");
+      assertThat(expected).hasMessage("Not true that <null> is absent");
       return;
     }
     fail("Should have thrown");
   }
 
-  @Test public void isPresent() {
+  @Test
+  public void isPresent() {
     assertThat(Optional.of("foo")).isPresent();
   }
 
-  @Test public void isPresentFailing() {
+  @Test
+  public void isPresentFailing() {
     try {
       assertThat(Optional.absent()).isPresent();
     } catch (AssertionError expected) {
@@ -70,7 +72,8 @@ public class OptionalSubjectTest {
     fail("Should have thrown");
   }
 
-  @Test public void isPresentFailingWithNamed() {
+  @Test
+  public void isPresentFailingWithNamed() {
     try {
       assertThat(Optional.absent()).named("name").isPresent();
     } catch (AssertionError expected) {
@@ -80,11 +83,13 @@ public class OptionalSubjectTest {
     fail("Should have thrown");
   }
 
-  @Test public void isAbsent() {
+  @Test
+  public void isAbsent() {
     assertThat(Optional.absent()).isAbsent();
   }
 
-  @Test public void isAbsentFailing() {
+  @Test
+  public void isAbsentFailing() {
     try {
       assertThat(Optional.of("foo")).isAbsent();
     } catch (AssertionError expected) {
@@ -94,22 +99,24 @@ public class OptionalSubjectTest {
     fail("Should have thrown");
   }
 
-  @Test public void hasValue() {
+  @Test
+  public void hasValue() {
     assertThat(Optional.of("foo")).hasValue("foo");
   }
 
-  @Test public void hasValue_FailingWithAbsent() {
+  @Test
+  public void hasValue_FailingWithAbsent() {
     try {
       assertThat(Optional.absent()).hasValue("foo");
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessage("Not true that <Optional.absent()> has value <foo>");
+      assertThat(expected).hasMessage("Not true that <Optional.absent()> has value <foo>");
       return;
     }
     fail("Should have thrown");
   }
 
-  @Test public void hasValue_FailingWithNullParameter() {
+  @Test
+  public void hasValue_FailingWithNullParameter() {
     try {
       assertThat(Optional.of("foo")).hasValue(null);
     } catch (NullPointerException expected) {
@@ -118,7 +125,8 @@ public class OptionalSubjectTest {
     fail("Should have thrown");
   }
 
-  @Test public void hasValue_FailingWithWrongValueForString() {
+  @Test
+  public void hasValue_FailingWithWrongValueForString() {
     try {
       assertThat(Optional.of("foo")).hasValue("boo");
     } catch (AssertionError expected) {
@@ -128,12 +136,12 @@ public class OptionalSubjectTest {
     fail("Should have thrown");
   }
 
-  @Test public void hasValue_FailingWithWrongValueForOther() {
+  @Test
+  public void hasValue_FailingWithWrongValueForOther() {
     try {
       assertThat(Optional.of(5)).hasValue(10);
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessage("Not true that <Optional.of(5)> has value <10>");
+      assertThat(expected).hasMessage("Not true that <Optional.of(5)> has value <10>");
       return;
     }
     fail("Should have thrown");

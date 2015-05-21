@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject, BigDecimal> {
-
   BigDecimalSubject(FailureStrategy failureStrategy, @Nullable BigDecimal subject) {
     super(failureStrategy, subject);
   }
@@ -64,12 +63,12 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
     compareValues(new BigDecimal(expected));
   }
 
- /**
-  * Fails if the subject's value and scale is not equal to the given {@link BigDecimal}.
-  *
-  * <p><b>Note:</b> If you only want to compare the values of the BigDecimals and not their scales,
-  * use {@link #isEqualToIgnoringScale(BigDecimal)} instead.
-  */
+  /**
+   * Fails if the subject's value and scale is not equal to the given {@link BigDecimal}.
+   *
+   * <p><b>Note:</b> If you only want to compare the values of the BigDecimals and not their scales,
+   * use {@link #isEqualToIgnoringScale(BigDecimal)} instead.
+   */
   public void isEqualTo(@Nullable Object expected) {
     super.isEqualTo(expected);
   }
@@ -88,8 +87,10 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
 
   private void compareValues(BigDecimal expected) {
     if (getSubject().compareTo(expected) != 0) {
-      failWithRawMessage("%s should have had the same value as <%s> (scale is ignored)",
-          getDisplaySubject(), expected);
+      failWithRawMessage(
+          "%s should have had the same value as <%s> (scale is ignored)",
+          getDisplaySubject(),
+          expected);
     }
   }
 }

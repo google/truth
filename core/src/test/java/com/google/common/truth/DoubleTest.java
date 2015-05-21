@@ -31,18 +31,20 @@ import javax.annotation.Nullable;
  */
 @RunWith(JUnit4.class)
 public class DoubleTest {
-
-  @Test public void isWithinOf() {
+  @Test
+  public void isWithinOf() {
     assertThat(2.0).isWithin(0.00001).of(2.0);
     assertThat(2.0).isWithin(1000.0).of(2.0);
     assertThat(2.0).isWithin(1.00001).of(3.0);
   }
 
-  @Test public void isNotWithinOf() {
+  @Test
+  public void isNotWithinOf() {
     assertThat(2.0).isNotWithin(0.1).of(2.5);
   }
 
-  @Test public void negativeTolerances() {
+  @Test
+  public void negativeTolerances() {
     isWithinNegativeToleranceThrowsIAE(5.0, -0.5, 4.9);
     isWithinNegativeToleranceThrowsIAE(5.0, -0.5, 4.0);
 
@@ -97,7 +99,8 @@ public class DoubleTest {
     }
   }
 
-  @Test public void nanTolerances() {
+  @Test
+  public void nanTolerances() {
     try {
       assertThat(1.0).isWithin(Double.NaN).of(1.0);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
@@ -112,7 +115,8 @@ public class DoubleTest {
     }
   }
 
-  @Test public void infiniteTolerances() {
+  @Test
+  public void infiniteTolerances() {
     try {
       assertThat(1.0).isWithin(Double.POSITIVE_INFINITY).of(1.0);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
@@ -127,7 +131,8 @@ public class DoubleTest {
     }
   }
 
-  @Test public void isWithinOfZero() {
+  @Test
+  public void isWithinOfZero() {
     assertThat(+0.0).isWithin(0.00001).of(+0.0);
     assertThat(+0.0).isWithin(0.00001).of(-0.0);
     assertThat(-0.0).isWithin(0.00001).of(+0.0);
@@ -139,14 +144,16 @@ public class DoubleTest {
     assertThat(-0.0).isWithin(0.0).of(-0.0);
   }
 
-  @Test public void isWithinOfNaN() {
+  @Test
+  public void isWithinOfNaN() {
     assertThatNaNFailsWithin(0.00001, Double.NaN);
     assertThatNaNFailsWithin(0.00001, 0.0);
     assertThatNaNFailsWithin(0.00001, +0.0);
     assertThatNaNFailsWithin(0.00001, -0.0);
   }
 
-  @Test public void isNotWithinOfNaN() {
+  @Test
+  public void isNotWithinOfNaN() {
     assertThatNaNFailsNotWithin(0.00001, Double.NaN);
     assertThatNaNFailsNotWithin(0.00001, 0.0);
     assertThatNaNFailsNotWithin(0.00001, +0.0);
@@ -155,7 +162,8 @@ public class DoubleTest {
     assertThatNaNFailsNotWithin(0.00001, +1.0);
   }
 
-  @Test public void isNotWithinOfZero() {
+  @Test
+  public void isNotWithinOfZero() {
     assertThat(+0.0).isNotWithin(0.00001).of(+1.0);
     assertThat(+0.0).isNotWithin(0.00001).of(-1.0);
     assertThat(-0.0).isNotWithin(0.00001).of(+1.0);
@@ -192,7 +200,8 @@ public class DoubleTest {
     fail("Expected AssertionError to be thrown but wasn't");
   }
 
-  @Test public void isPositiveInfinity() {
+  @Test
+  public void isPositiveInfinity() {
     assertThat(Double.POSITIVE_INFINITY).isPositiveInfinity();
     assertThatIsPositiveInfinityFails(1.23);
     assertThatIsPositiveInfinityFails(Double.NEGATIVE_INFINITY);
@@ -211,7 +220,8 @@ public class DoubleTest {
     fail("Expected AssertionError to be thrown but wasn't");
   }
 
-  @Test public void isNegativeInfinity() {
+  @Test
+  public void isNegativeInfinity() {
     assertThat(Double.NEGATIVE_INFINITY).isNegativeInfinity();
     assertThatIsNegativeInfinityFails(1.23);
     assertThatIsNegativeInfinityFails(Double.POSITIVE_INFINITY);
@@ -230,7 +240,8 @@ public class DoubleTest {
     fail("Expected AssertionError to be thrown but wasn't");
   }
 
-  @Test public void isNaN() {
+  @Test
+  public void isNaN() {
     assertThat(Double.NaN).isNaN();
     assertThatIsNaNFails(1.23);
     assertThatIsNaNFails(Double.POSITIVE_INFINITY);
@@ -242,8 +253,8 @@ public class DoubleTest {
     try {
       assertThat(value).isNaN();
     } catch (AssertionError assertionError) {
-      assertThat(assertionError).hasMessage(
-          "Not true that <" + value + "> is equal to <" + Double.NaN + ">");
+      assertThat(assertionError)
+          .hasMessage("Not true that <" + value + "> is equal to <" + Double.NaN + ">");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");

@@ -33,26 +33,28 @@ import java.util.regex.Pattern;
  */
 @RunWith(JUnit4.class)
 public class StringTest {
-
-  @Test public void hasLength() {
+  @Test
+  public void hasLength() {
     assertThat("kurt").hasLength(4);
   }
 
-  @Test public void hasLengthZero() {
+  @Test
+  public void hasLengthZero() {
     assertThat("").hasLength(0);
   }
 
-  @Test public void hasLengthFails() {
+  @Test
+  public void hasLengthFails() {
     try {
       assertThat("kurt").hasLength(5);
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <\"kurt\"> has a length of 5. It is 4.");
+      assertThat(expected).hasMessage("Not true that <\"kurt\"> has a length of 5. It is 4.");
     }
   }
 
-  @Test public void hasLengthNegative() {
+  @Test
+  public void hasLengthNegative() {
     try {
       assertThat("kurt").hasLength(-1);
       fail();
@@ -60,137 +62,147 @@ public class StringTest {
     }
   }
 
-  @Test public void stringIsEmpty() {
+  @Test
+  public void stringIsEmpty() {
     assertThat("").isEmpty();
   }
 
-  @Test public void stringIsEmptyFail() {
+  @Test
+  public void stringIsEmptyFail() {
     try {
       assertThat("abc").isEmpty();
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <\"abc\"> is empty");
+      assertThat(expected).hasMessage("Not true that <\"abc\"> is empty");
     }
   }
 
-  @Test public void stringIsNotEmpty() {
+  @Test
+  public void stringIsNotEmpty() {
     assertThat("abc").isNotEmpty();
   }
 
-  @Test public void stringIsNotEmptyFail() {
+  @Test
+  public void stringIsNotEmptyFail() {
     try {
       assertThat("").isNotEmpty();
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <\"\"> is not empty");
+      assertThat(expected).hasMessage("Not true that <\"\"> is not empty");
     }
   }
 
-  @Test public void stringContains() {
+  @Test
+  public void stringContains() {
     assertThat("abc").contains("c");
   }
 
-  @Test public void stringContainsCharSeq() {
+  @Test
+  public void stringContainsCharSeq() {
     CharSequence charSeq = new StringBuilder("c");
     assertThat("abc").contains(charSeq);
   }
 
-  @Test public void stringContainsFail() {
+  @Test
+  public void stringContainsFail() {
     try {
       assertThat("abc").contains("d");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .contains("Not true that <\"abc\"> contains <\"d\">");
+      assertThat(expected.getMessage()).contains("Not true that <\"abc\"> contains <\"d\">");
     }
   }
 
-  @Test public void stringDoesNotContain() {
+  @Test
+  public void stringDoesNotContain() {
     assertThat("abc").doesNotContain("d");
   }
 
-  @Test public void stringDoesNotContainCharSequence() {
+  @Test
+  public void stringDoesNotContainCharSequence() {
     CharSequence charSeq = new StringBuilder("d");
     assertThat("abc").doesNotContain(charSeq);
   }
 
-  @Test public void stringDoesNotContainFail() {
+  @Test
+  public void stringDoesNotContainFail() {
     try {
       assertThat("abc").doesNotContain("b");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .contains("<\"abc\"> unexpectedly contains <\"b\">");
+      assertThat(expected.getMessage()).contains("<\"abc\"> unexpectedly contains <\"b\">");
       return;
     }
   }
 
-  @Test public void stringEquality() {
+  @Test
+  public void stringEquality() {
     assertThat("abc").isEqualTo("abc");
     assertThat("abc").isEqualTo("abc");
   }
 
-  @Test public void stringEqualityToNull() {
+  @Test
+  public void stringEqualityToNull() {
     try {
       assertThat("abc").isEqualTo(null);
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .contains("Not true that <\"abc\"> is null");
+      assertThat(expected.getMessage()).contains("Not true that <\"abc\"> is null");
     }
   }
 
-  @Test public void stringEqualityFail() {
+  @Test
+  public void stringEqualityFail() {
     try {
       assertThat("abc").isEqualTo("abd");
       throw new Error("Expected to fail.");
     } catch (ComparisonFailure expected) {
-      assertThat(expected)
-          .hasMessage("expected:<ab[d]> but was:<ab[c]>");
+      assertThat(expected).hasMessage("expected:<ab[d]> but was:<ab[c]>");
     }
   }
 
-  @Test public void stringNamedEqualityFail() {
+  @Test
+  public void stringNamedEqualityFail() {
     try {
       assertThat("abc").named("foo").isEqualTo("abd");
       throw new Error("Expected to fail.");
     } catch (ComparisonFailure expected) {
-      assertThat(expected)
-          .hasMessage("\"foo\": expected:<ab[d]> but was:<ab[c]>");
+      assertThat(expected).hasMessage("\"foo\": expected:<ab[d]> but was:<ab[c]>");
     }
   }
 
-  @Test public void stringStartsWith() {
+  @Test
+  public void stringStartsWith() {
     assertThat("abc").startsWith("ab");
   }
 
-  @Test public void stringStartsWithFail() {
+  @Test
+  public void stringStartsWithFail() {
     try {
       assertThat("abc").startsWith("bc");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .contains("Not true that <\"abc\"> starts with <\"bc\">");
+      assertThat(expected.getMessage()).contains("Not true that <\"abc\"> starts with <\"bc\">");
     }
   }
 
-  @Test public void stringEndsWith() {
+  @Test
+  public void stringEndsWith() {
     assertThat("abc").endsWith("bc");
   }
 
-  @Test public void stringEndsWithFail() {
+  @Test
+  public void stringEndsWithFail() {
     try {
       assertThat("abc").endsWith("ab");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .contains("Not true that <\"abc\"> ends with <\"ab\">");
+      assertThat(expected.getMessage()).contains("Not true that <\"abc\"> ends with <\"ab\">");
     }
   }
 
-  @Test public void emptyStringTests() {
+  @Test
+  public void emptyStringTests() {
     assertThat("").contains("");
     assertThat("").startsWith("");
     assertThat("").endsWith("");
@@ -199,94 +211,97 @@ public class StringTest {
     assertThat("a").endsWith("");
   }
 
-  @Test public void stringMatchesString() {
+  @Test
+  public void stringMatchesString() {
     assertThat("abcaaadev").matches(".*aaa.*");
   }
 
-  @Test public void stringMatchesStringWithFail() {
+  @Test
+  public void stringMatchesStringWithFail() {
     try {
       assertThat("abcaqadev").matches(".*aaa.*");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <\"abcaqadev\"> matches <.*aaa.*>");
+      assertThat(expected).hasMessage("Not true that <\"abcaqadev\"> matches <.*aaa.*>");
     }
   }
 
-  @Test public void stringMatchesPattern() {
+  @Test
+  public void stringMatchesPattern() {
     assertThat("abcaqadev").doesNotMatch(Pattern.compile(".*aaa.*"));
   }
 
-  @Test public void stringMatchesPatternWithFail() {
+  @Test
+  public void stringMatchesPatternWithFail() {
     try {
       assertThat("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*"));
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("Not true that <\"abcaaadev\"> fails to match <.*aaa.*>");
+      assertThat(expected).hasMessage("Not true that <\"abcaaadev\"> fails to match <.*aaa.*>");
     }
   }
 
-  @Test public void stringContainsMatchStringUsesFind() {
+  @Test
+  public void stringContainsMatchStringUsesFind() {
     assertThat("aba").containsMatch("[b]");
     assertThat("aba").containsMatch(Pattern.compile("[b]"));
   }
 
-  @Test public void stringContainsMatchString() {
+  @Test
+  public void stringContainsMatchString() {
     assertThat("aba").containsMatch(".*b.*");
 
     try {
       assertThat("aaa").containsMatch(".*b.*");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("<\"aaa\"> should have contained a match for <.*b.*>");
+      assertThat(expected).hasMessage("<\"aaa\"> should have contained a match for <.*b.*>");
     }
   }
 
-  @Test public void stringContainsMatchPattern() {
+  @Test
+  public void stringContainsMatchPattern() {
     assertThat("aba").containsMatch(Pattern.compile(".*b.*"));
 
     try {
       assertThat("aaa").containsMatch(Pattern.compile(".*b.*"));
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("<\"aaa\"> should have contained a match for <.*b.*>");
+      assertThat(expected).hasMessage("<\"aaa\"> should have contained a match for <.*b.*>");
     }
   }
 
-  @Test public void stringDoesNotContainMatchString() {
+  @Test
+  public void stringDoesNotContainMatchString() {
     assertThat("aaa").doesNotContainMatch(".*b.*");
 
     try {
       assertThat("aba").doesNotContainMatch(".*b.*");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("<\"aba\"> should not have contained a match for <.*b.*>");
+      assertThat(expected).hasMessage("<\"aba\"> should not have contained a match for <.*b.*>");
     }
   }
 
-  @Test public void stringDoesNotContainMatchStringUsesFind() {
+  @Test
+  public void stringDoesNotContainMatchStringUsesFind() {
     try {
       assertThat("aba").doesNotContainMatch("[b]");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("<\"aba\"> should not have contained a match for <[b]>");
+      assertThat(expected).hasMessage("<\"aba\"> should not have contained a match for <[b]>");
     }
   }
 
-  @Test public void stringDoesNotContainMatchPattern() {
+  @Test
+  public void stringDoesNotContainMatchPattern() {
     assertThat("aaa").doesNotContainMatch(Pattern.compile(".*b.*"));
 
     try {
       assertThat("aba").doesNotContainMatch(Pattern.compile(".*b.*"));
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
-          .isEqualTo("<\"aba\"> should not have contained a match for <.*b.*>");
+      assertThat(expected).hasMessage("<\"aba\"> should not have contained a match for <.*b.*>");
     }
   }
 }

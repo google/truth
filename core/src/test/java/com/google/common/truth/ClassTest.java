@@ -29,17 +29,19 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class ClassTest {
-
-  @Test public void testIsAssignableTo_same() {
+  @Test
+  public void testIsAssignableTo_same() {
     assertThat(String.class).isAssignableTo(String.class);
   }
 
-  @Test public void testIsAssignableTo_parent() {
+  @Test
+  public void testIsAssignableTo_parent() {
     assertThat(String.class).isAssignableTo(Object.class);
     assertThat(NullPointerException.class).isAssignableTo(Exception.class);
   }
 
-  @Test public void testIsAssignableTo_reversed() {
+  @Test
+  public void testIsAssignableTo_reversed() {
     try {
       assertThat(Object.class).isAssignableTo(String.class);
       assert_().fail("Should have thrown an assertion error.");
@@ -50,7 +52,8 @@ public class ClassTest {
     }
   }
 
-  @Test public void testIsAssignableTo_reversedDifferentTypes() {
+  @Test
+  public void testIsAssignableTo_reversedDifferentTypes() {
     try {
       assertThat(String.class).isAssignableTo(Exception.class);
       assert_().fail("Should have thrown an assertion error.");

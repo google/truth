@@ -30,10 +30,10 @@ import java.util.Arrays;
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
 public class FooSubject extends Subject<FooSubject, Foo> {
-
   private static final SubjectFactory<FooSubject, Foo> FOO =
       new SubjectFactory<FooSubject, Foo>() {
-        @Override public FooSubject getSubject(FailureStrategy fs, Foo target) {
+        @Override
+        public FooSubject getSubject(FailureStrategy fs, Foo target) {
           return new FooSubject(fs, target);
         }
       };

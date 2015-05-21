@@ -84,7 +84,6 @@ public class CompilingClassLoader extends ClassLoader {
    * Thrown when code cannot be compiled.
    */
   public static class CompilerException extends Exception {
-
     private static final long serialVersionUID = -2936958840023603270L;
 
     public CompilerException(String message) {
@@ -112,8 +111,12 @@ public class CompilingClassLoader extends ClassLoader {
    * @param sourceCode Java source for class. e.g. "package com.foo; class MyClass { ... }".
    * @param diagnosticListener Notified of compiler errors (may be null).
    */
-  public CompilingClassLoader(ClassLoader parent, String className, String sourceCode,
-      DiagnosticListener<JavaFileObject> diagnosticListener) throws CompilerException {
+  public CompilingClassLoader(
+      ClassLoader parent,
+      String className,
+      String sourceCode,
+      DiagnosticListener<JavaFileObject> diagnosticListener)
+      throws CompilerException {
     super(parent);
     if (!compileSourceCodeToByteCode(className, sourceCode, diagnosticListener)) {
       throw new CompilerException("Could not compile " + className);
@@ -136,8 +139,8 @@ public class CompilingClassLoader extends ClassLoader {
   /**
    * @return Whether compilation was successful.
    */
-  private boolean compileSourceCodeToByteCode(String className, String sourceCode,
-      DiagnosticListener<JavaFileObject> diagnosticListener) {
+  private boolean compileSourceCodeToByteCode(
+      String className, String sourceCode, DiagnosticListener<JavaFileObject> diagnosticListener) {
     JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 
     // Set up the in-memory filesystem.
@@ -154,10 +157,14 @@ public class CompilingClassLoader extends ClassLoader {
     options.add("-XDuseJavaUtilZip");
 
     // Now compile!
-    JavaCompiler.CompilationTask compilationTask = javaCompiler.getTask(null, // Null: log any
-                                                                              // unhandled errors to
-                                                                              // stderr.
-        fileManager, diagnosticListener, options, null, singleton(javaFile));
+    JavaCompiler.CompilationTask compilationTask =
+        javaCompiler.getTask(
+            null, // Null: log any unhandled errors to stderr.
+            fileManager,
+            diagnosticListener,
+            options,
+            null,
+            singleton(javaFile));
     return compilationTask.call();
   }
 
@@ -171,14 +178,14 @@ public class CompilingClassLoader extends ClassLoader {
    * @see javax.tools.JavaFileManager
    */
   private class InMemoryFileManager extends ForwardingJavaFileManager<JavaFileManager> {
-
     public InMemoryFileManager(JavaFileManager fileManager) {
       super(fileManager);
     }
 
     @Override
-    public JavaFileObject getJavaFileForOutput(Location location, final String className,
-        JavaFileObject.Kind kind, FileObject sibling) throws IOException {
+    public JavaFileObject getJavaFileForOutput(
+        Location location, final String className, JavaFileObject.Kind kind, FileObject sibling)
+        throws IOException {
       return new SimpleJavaFileObject(EMPTY_URI, kind) {
         @Override
         public OutputStream openOutputStream() throws IOException {
@@ -196,7 +203,6 @@ public class CompilingClassLoader extends ClassLoader {
   }
 
   private static class InMemoryJavaFile extends SimpleJavaFileObject {
-
     private final String sourceCode;
 
     public InMemoryJavaFile(String className, String sourceCode) {

@@ -28,18 +28,20 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class ThrowableTest {
-
-  @Test public void hasMessage() {
+  @Test
+  public void hasMessage() {
     NullPointerException npe = new NullPointerException("message");
     assertThat(npe).hasMessage("message");
   }
 
-  @Test public void hasMessage_null() {
+  @Test
+  public void hasMessage_null() {
     assertThat(new NullPointerException()).hasMessage(null);
     assertThat(new NullPointerException(null)).hasMessage(null);
   }
 
-  @Test public void hasMessage_failure() {
+  @Test
+  public void hasMessage_failure() {
     NullPointerException subject = new NullPointerException("message");
     try {
       assertThat(subject).hasMessage("foobar");
@@ -51,27 +53,30 @@ public class ThrowableTest {
     }
   }
 
-  @Test public void hasMessage_MessageHasNullMessage_failure() {
+  @Test
+  public void hasMessage_MessageHasNullMessage_failure() {
     try {
       assertThat(new NullPointerException("message")).hasMessage(null);
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).isEqualTo(
-          "Not true that <java.lang.NullPointerException: message> has message <null>");
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <java.lang.NullPointerException: message> has message <null>");
     }
   }
 
-  @Test public void hasMessage_NullMessageHasMessage_failure() {
+  @Test
+  public void hasMessage_NullMessageHasMessage_failure() {
     try {
       assertThat(new NullPointerException(null)).hasMessage("message");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).isEqualTo(
-          "Not true that <java.lang.NullPointerException> has message <message>");
+      assertThat(expected.getMessage())
+          .isEqualTo("Not true that <java.lang.NullPointerException> has message <message>");
     }
   }
 
-  @Test public void inheritedMethodChainsSubject() {
+  @Test
+  public void inheritedMethodChainsSubject() {
     NullPointerException expected = new NullPointerException("expected");
     NullPointerException actual = new NullPointerException("actual");
     try {

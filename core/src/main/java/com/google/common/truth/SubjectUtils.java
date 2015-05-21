@@ -27,12 +27,11 @@ import java.util.List;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 final class SubjectUtils {
-
   static <T> List<T> accumulate(T only) {
     return new ArrayList<T>(Collections.singleton(only));
   }
 
-  static <T> List<T> accumulate(T first, T ... rest) {
+  static <T> List<T> accumulate(T first, T... rest) {
     List<T> items = new ArrayList<T>(1 + ((rest == null) ? 1 : rest.length));
     items.add(first);
     if (rest == null) {
@@ -43,7 +42,7 @@ final class SubjectUtils {
     return items;
   }
 
-  static <T> List<T> accumulate(T first, T second, T ... rest) {
+  static <T> List<T> accumulate(T first, T second, T... rest) {
     // rest should never be deliberately null, so assume that the caller passed null
     // in the third position but intended it to be the third element in the array of values.
     // Javac makes the opposite inference, so handle that here.
@@ -85,5 +84,4 @@ final class SubjectUtils {
     }
     return Arrays.asList(params);
   }
-
 }

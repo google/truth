@@ -30,12 +30,13 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class DelegationTest {
-
-  @Test public void assertAboutThat() {
+  @Test
+  public void assertAboutThat() {
     assertAbout(foo()).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 
-  @Test public void assertAboutThatFailure() {
+  @Test
+  public void assertAboutThatFailure() {
     try {
       assertAbout(foo()).that(new Foo(5)).matches(new Foo(4));
     } catch (AssertionError e) {
@@ -46,13 +47,21 @@ public class DelegationTest {
     assert_().fail("Should have thrown.");
   }
 
-  @Test public void customTypeProposition() {
-    assert_().about(foo()).that(new Foo(5)).matches(new Foo(2 + 3));
+  @Test
+  public void customTypeProposition() {
+    assert_()
+        .about(foo())
+        .that(new Foo(5))
+        .matches(new Foo(2 + 3));
   }
 
-  @Test public void customTypePropositionWithFailure() {
+  @Test
+  public void customTypePropositionWithFailure() {
     try {
-      assert_().about(foo()).that(new Foo(5)).matches(new Foo(4));
+      assert_()
+          .about(foo())
+          .that(new Foo(5))
+          .matches(new Foo(4));
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("Not true that");
       assertThat(e.getMessage()).contains("matches");

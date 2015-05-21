@@ -68,4 +68,3 @@ public class Inventory {
   TestVerb tv;
   Truth tr;
 }
-

@@ -38,11 +38,13 @@ public class PrimitiveFloatArraySubject
     super(failureStrategy, o);
   }
 
-  @Override protected String underlyingType() {
+  @Override
+  protected String underlyingType() {
     return "float";
   }
 
-  @Override protected List<Float> listRepresentation() {
+  @Override
+  protected List<Float> listRepresentation() {
     return Floats.asList(getSubject());
   }
 
@@ -53,9 +55,11 @@ public class PrimitiveFloatArraySubject
    * @deprecated use {@link #isEqualTo(Object, double)}
    */
   @Deprecated
-  @Override public void isEqualTo(Object expected) {
-    throw new UnsupportedOperationException("Comparing raw equality of floats is unsafe, "
-        + "use isEqualTo(float[] array, float tolerance) instead.");
+  @Override
+  public void isEqualTo(Object expected) {
+    throw new UnsupportedOperationException(
+        "Comparing raw equality of floats is unsafe, "
+            + "use isEqualTo(float[] array, float tolerance) instead.");
   }
 
   /**
@@ -71,8 +75,10 @@ public class PrimitiveFloatArraySubject
     try {
       float[] expectedArray = (float[]) expected;
       if (expectedArray.length != actual.length) {
-        failWithRawMessage("Arrays are of different lengths. expected: %s, actual %s",
-            Arrays.asList(expectedArray), Arrays.asList(actual));
+        failWithRawMessage(
+            "Arrays are of different lengths. expected: %s, actual %s",
+            Arrays.asList(expectedArray),
+            Arrays.asList(actual));
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expectedArray.length; i++) {
@@ -96,9 +102,11 @@ public class PrimitiveFloatArraySubject
    * @deprecated use {@link #isNotEqualTo(Object, double)}
    */
   @Deprecated
-  @Override public void isNotEqualTo(Object expected) {
-    throw new UnsupportedOperationException("Comparing raw equality of floats is unsafe, "
-        + "use isNotEqualTo(float[] array, float tolerance) instead.");
+  @Override
+  public void isNotEqualTo(Object expected) {
+    throw new UnsupportedOperationException(
+        "Comparing raw equality of floats is unsafe, "
+            + "use isNotEqualTo(float[] array, float tolerance) instead.");
   }
 
   public void isNotEqualTo(Object expectedArray, float tolerance) {
@@ -106,8 +114,8 @@ public class PrimitiveFloatArraySubject
     try {
       float[] expected = (float[]) expectedArray;
       if (actual == expected) {
-        failWithRawMessage("%s unexpectedly equal to %s",
-            getDisplaySubject(),  Floats.asList(expected));
+        failWithRawMessage(
+            "%s unexpectedly equal to %s", getDisplaySubject(), Floats.asList(expected));
       }
       if (expected.length != actual.length) {
         return; // Unequal-lengthed arrays are not equal.
@@ -119,10 +127,12 @@ public class PrimitiveFloatArraySubject
         }
       }
       if (unequalIndices.isEmpty()) {
-        failWithRawMessage("%s unexpectedly equal to %s",
-            getDisplaySubject(),  Floats.asList(expected));
+        failWithRawMessage(
+            "%s unexpectedly equal to %s", getDisplaySubject(), Floats.asList(expected));
       }
-    } catch (ClassCastException ignored) {} // Unequal since they are of different types.
+    } catch (ClassCastException ignored) {
+      // Unequal since they are of different types.
+    }
   }
 
   // TODO(cgruber): Extend to a List<Float> type that handles specialized float equality

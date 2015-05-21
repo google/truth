@@ -32,13 +32,14 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class TableTest {
-
-  @Test public void tableIsEmpty() {
+  @Test
+  public void tableIsEmpty() {
     ImmutableTable<String, String, String> table = ImmutableTable.of();
     assertThat(table).isEmpty();
   }
 
-  @Test public void tableIsEmptyWithFailure() {
+  @Test
+  public void tableIsEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of(1, 5, 7);
     try {
       assertThat(table).isEmpty();
@@ -47,12 +48,15 @@ public class TableTest {
       assertThat(e).hasMessage("Not true that <{1={5=7}}> is empty");
     }
   }
-  @Test public void tableIsNotEmpty() {
+
+  @Test
+  public void tableIsNotEmpty() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of(1, 5, 7);
     assertThat(table).isNotEmpty();
   }
 
-  @Test public void tableIsNotEmptyWithFailure() {
+  @Test
+  public void tableIsNotEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of();
     try {
       assertThat(table).isNotEmpty();
@@ -62,15 +66,18 @@ public class TableTest {
     }
   }
 
-  @Test public void hasSize() {
+  @Test
+  public void hasSize() {
     assertThat(ImmutableTable.of(1, 2, 3)).hasSize(1);
   }
 
-  @Test public void hasSizeZero() {
+  @Test
+  public void hasSizeZero() {
     assertThat(ImmutableTable.of()).hasSize(0);
   }
 
-  @Test public void hasSizeNegative() {
+  @Test
+  public void hasSizeNegative() {
     try {
       assertThat(ImmutableTable.of(1, 2, 3)).hasSize(-1);
       fail();
@@ -78,12 +85,14 @@ public class TableTest {
     }
   }
 
-  @Test public void contains() {
+  @Test
+  public void contains() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     assertThat(table).contains("row", "col");
   }
 
-  @Test public void containsFailure() {
+  @Test
+  public void containsFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     try {
       assertThat(table).contains("row", "row");
@@ -94,7 +103,8 @@ public class TableTest {
     }
   }
 
-  @Test public void doesNotContain() {
+  @Test
+  public void doesNotContain() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     assertThat(table).doesNotContain("row", "row");
     assertThat(table).doesNotContain("col", "row");
@@ -102,7 +112,8 @@ public class TableTest {
     assertThat(table).doesNotContain(null, null);
   }
 
-  @Test public void doesNotContainFailure() {
+  @Test
+  public void doesNotContainFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     try {
       assertThat(table).doesNotContain("row", "col");
@@ -113,23 +124,25 @@ public class TableTest {
     }
   }
 
-  @Test public void containsCell() {
+  @Test
+  public void containsCell() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     assertThat(table).containsCell("row", "col", "val");
   }
 
-  @Test public void containsCellFailure() {
+  @Test
+  public void containsCellFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     try {
       assertThat(table).containsCell("row", "row", "val");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <{row={col=val}}> contains cell <(row,row)=val>");
+      assertThat(e).hasMessage("Not true that <{row={col=val}}> contains cell <(row,row)=val>");
     }
   }
 
-  @Test public void doesNotContainCell() {
+  @Test
+  public void doesNotContainCell() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     assertThat(table).doesNotContainCell("row", "row", "val");
     assertThat(table).doesNotContainCell("col", "row", "val");
@@ -137,14 +150,15 @@ public class TableTest {
     assertThat(table).doesNotContainCell(null, null, null);
   }
 
-  @Test public void doesNotContainCellFailure() {
+  @Test
+  public void doesNotContainCellFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     try {
       assertThat(table).doesNotContainCell("row", "col", "val");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <{row={col=val}}> does not contain cell <(row,col)=val>");
+      assertThat(e)
+          .hasMessage("Not true that <{row={col=val}}> does not contain cell <(row,col)=val>");
     }
   }
 }

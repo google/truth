@@ -37,19 +37,23 @@ import org.junit.runners.JUnit4;
 public class LongTest {
   @Rule public final Expect EXPECT = Expect.create();
 
-  @Test public void simpleEquality() {
+  @Test
+  public void simpleEquality() {
     assertThat(2L + 2).isEqualTo(4L);
   }
 
-  @Test public void longIsLong() {
+  @Test
+  public void longIsLong() {
     assertThat(4L).isEqualTo(4L);
   }
 
-  @Test public void simpleInequality() {
+  @Test
+  public void simpleInequality() {
     assertThat(2L + 2).isNotEqualTo(5L);
   }
 
-  @Test public void equalityFail() {
+  @Test
+  public void equalityFail() {
     try {
       assertThat(2L + 2).isEqualTo(5L);
       fail("Should have thrown");
@@ -58,7 +62,8 @@ public class LongTest {
     }
   }
 
-  @Test public void inequalityFail() {
+  @Test
+  public void inequalityFail() {
     try {
       assertThat(2L + 2).isNotEqualTo(4L);
       fail("Should have thrown");
@@ -67,18 +72,22 @@ public class LongTest {
     }
   }
 
-  @Test public void additionAssumptionFail() {
+  @Test
+  public void additionAssumptionFail() {
     try {
       assume().that(2L + 2).isEqualTo(5L);
       fail("Should have thrown");
-    } catch (AssumptionViolatedException expected) {}
+    } catch (AssumptionViolatedException expected) {
+    }
   }
 
-  @Test public void equalityOfNulls() {
+  @Test
+  public void equalityOfNulls() {
     assertThat((Long) null).isEqualTo((Long) null);
   }
 
-  @Test public void equalityOfNullsFail() {
+  @Test
+  public void equalityOfNullsFail() {
     try {
       assertThat((Long) null).isEqualTo(5L);
       fail("Should have thrown");
@@ -93,12 +102,14 @@ public class LongTest {
     }
   }
 
-  @Test public void inequalityOfNulls() {
+  @Test
+  public void inequalityOfNulls() {
     assertThat((Long) null).isNotEqualTo(4L);
     assertThat(4L).isNotEqualTo((Long) null);
   }
 
-  @Test public void inequalityOfNullsFail() {
+  @Test
+  public void inequalityOfNullsFail() {
     try {
       assertThat((Long) null).isNotEqualTo((Long) null);
       fail("Should have thrown");

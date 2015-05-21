@@ -29,7 +29,6 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
-
   TableSubject(FailureStrategy failureStrategy, @Nullable Table<?, ?, ?> table) {
     super(failureStrategy, table);
   }

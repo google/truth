@@ -31,13 +31,12 @@ import org.junit.runners.model.Statement;
  */
 @RunWith(JUnit4.class)
 public class ExpectFailureWithStackTraceTest {
-
-  private static final String METHOD_NAME =
-      "ExpectFailureWithStackTraceTest.expectTwoFailures";
+  private static final String METHOD_NAME = "ExpectFailureWithStackTraceTest.expectTwoFailures";
 
   @Rule public final Expect failToExpect = new FailingExpect(new ExpectationGatherer());
 
-  @Test public void expectTwoFailures() {
+  @Test
+  public void expectTwoFailures() {
     failToExpect.that(4).isNotEqualTo(4);
     failToExpect.that("abc").contains("x");
   }
@@ -48,10 +47,12 @@ public class ExpectFailureWithStackTraceTest {
       super(gatherer, true /* showStackTrace */);
     }
 
-    @Override public Statement apply(Statement base, Description description) {
+    @Override
+    public Statement apply(Statement base, Description description) {
       final Statement s = super.apply(base, description);
       return new Statement() {
-        @Override public void evaluate() throws Throwable {
+        @Override
+        public void evaluate() throws Throwable {
           String failureMessage = "";
           try {
             s.evaluate();

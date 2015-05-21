@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
  */
 // Can't be final because we use codegen to generate a subclass
 public class LongSubject extends ComparableSubject<LongSubject, Long> {
-
   public LongSubject(FailureStrategy failureStrategy, @Nullable Long subject) {
     super(failureStrategy, subject);
   }

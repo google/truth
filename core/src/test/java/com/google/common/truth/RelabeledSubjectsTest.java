@@ -33,8 +33,8 @@ import java.util.Arrays;
  */
 @RunWith(JUnit4.class)
 public class RelabeledSubjectsTest {
-
-  @Test public void namedIncludesActualStringValue() {
+  @Test
+  public void namedIncludesActualStringValue() {
     try {
       assertThat("kurt kluever").named("rad dude").startsWith("frazzle");
       fail("Should have thrown");
@@ -45,7 +45,8 @@ public class RelabeledSubjectsTest {
     }
   }
 
-  @Test public void namedIncludesActualIntegerValue() {
+  @Test
+  public void namedIncludesActualIntegerValue() {
     try {
       assertThat(13).named("Septober").isLessThan(12);
       fail("Should have thrown");
@@ -56,7 +57,8 @@ public class RelabeledSubjectsTest {
     }
   }
 
-  @Test public void relabeledBooleans() {
+  @Test
+  public void relabeledBooleans() {
     try {
       assertThat(false).named("Foo").isTrue();
       fail("Should have thrown");
@@ -66,19 +68,20 @@ public class RelabeledSubjectsTest {
     }
   }
 
-  @Test public void relabeledObject() {
+  @Test
+  public void relabeledObject() {
     try {
       assertThat("a string").named("Foo").isInstanceOf(Integer.class);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
           .contains("Not true that Foo (<\"a string\">) is an instance of <java.lang.Integer>");
-      assertThat(expected.getMessage())
-          .contains("It is an instance of <java.lang.String>");
+      assertThat(expected.getMessage()).contains("It is an instance of <java.lang.String>");
     }
   }
 
-  @Test public void relabelledCollections() {
+  @Test
+  public void relabelledCollections() {
     try {
       assertThat(Arrays.asList("a", "b", "c")).named("crazy list").containsAllOf("c", "d");
       fail("Should have thrown");
@@ -88,9 +91,10 @@ public class RelabeledSubjectsTest {
     }
   }
 
-  @Test public void relabelledPrimitiveFloatArrays() {
-    float[] expected = { 1.3f, 1.0f };
-    float[] actual = { 1.3f, 1.0f };
+  @Test
+  public void relabelledPrimitiveFloatArrays() {
+    float[] expected = {1.3f, 1.0f};
+    float[] actual = {1.3f, 1.0f};
     try {
       assertThat(actual).named("crazy list").isNotEqualTo(expected, 0.0000001f);
       fail("Should have thrown");

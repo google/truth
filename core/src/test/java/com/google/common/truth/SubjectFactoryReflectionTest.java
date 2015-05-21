@@ -32,15 +32,15 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class SubjectFactoryReflectionTest {
-
-  @Test public void genericErasureWorkaround() {
+  @Test
+  public void genericErasureWorkaround() {
     SubjectFactory<StringSubject, String> factory =
         new SubjectFactory<StringSubject, String>() {
-          @Override public StringSubject getSubject(FailureStrategy fs, String target) {
+          @Override
+          public StringSubject getSubject(FailureStrategy fs, String target) {
             return new StringSubject(fs, target);
           }
         };
     assertThat(factory.getSubjectClass()).isEqualTo(StringSubject.class);
   }
-
 }

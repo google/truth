@@ -25,10 +25,10 @@ import javax.annotation.Nullable;
  * Subclass of Subject to be used for Testing.
  */
 public class BarSubject extends Subject<BarSubject, String> {
-
   public static final SubjectFactory<BarSubject, String> BAR =
       new SubjectFactory<BarSubject, String>() {
-        @Override public BarSubject getSubject(FailureStrategy fs, String target) {
+        @Override
+        public BarSubject getSubject(FailureStrategy fs, String target) {
           return new BarSubject(fs, target);
         }
       };
@@ -42,5 +42,4 @@ public class BarSubject extends Subject<BarSubject, String> {
       fail("matches", getSubject(), prefix);
     }
   }
-
 }

@@ -56,23 +56,15 @@ public final class Platform {
     return false;
   }
 
-//  TODO(cgruber): See if there's a JSNI or other alternative to Class.getInterfaces();
-//  private static void addInterfaceNames(Class<?>[] interfaces, Set<String> types) {
-//    for (Class<?> interfaze : interfaces) {
-//      types.add(interfaze.getName());
-//      addInterfaceNames(interfaze.getInterfaces(), types);
-//    }
-//  }
-
   private static void addTypeNames(Class<?> clazz, Set<String> types) {
-    for (Class<?> current = clazz ; current != null ; current = current.getSuperclass()) {
+    for (Class<?> current = clazz; current != null; current = current.getSuperclass()) {
       types.add(current.getName());
       // addInterfaceNames(current.getInterfaces(), types);
     }
   }
 
   /**
-   * This is a no-op in GWT as it relies on matching. 
+   * This is a no-op in GWT as it relies on matching.
    */
   public static String compressType(String type) {
     return type;
@@ -86,8 +78,8 @@ public final class Platform {
    * Determines if the entirety of the given subject matches the given regex.
    */
   static boolean matches(String subject, String regex) {
-     MatchResult match = RegExp.compile(regex).exec(subject);
-     return match != null && match.getGroup(0).equals(subject);
+    MatchResult match = RegExp.compile(regex).exec(subject);
+    return match != null && match.getGroup(0).equals(subject);
   }
 
   /**

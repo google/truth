@@ -38,8 +38,8 @@ import javax.tools.JavaFileObject;
  */
 @RunWith(JUnit4.class)
 public class ComparableSubjectTest {
-
-  @Test public void testNulls() {
+  @Test
+  public void testNulls() {
     try {
       assertThat(6).isEquivalentAccordingToCompareTo(null);
       fail();
@@ -67,7 +67,8 @@ public class ComparableSubjectTest {
     }
   }
 
-  @Test public void isInRange() {
+  @Test
+  public void isInRange() {
     Range<Integer> oneToFive = Range.closed(1, 5);
     assertThat(4).isIn(oneToFive);
 
@@ -79,7 +80,8 @@ public class ComparableSubjectTest {
     }
   }
 
-  @Test public void isNotInRange() {
+  @Test
+  public void isNotInRange() {
     Range<Integer> oneToFive = Range.closed(1, 5);
     assertThat(6).isNotIn(oneToFive);
 
@@ -91,7 +93,8 @@ public class ComparableSubjectTest {
     }
   }
 
-  @Test public void isEquivalentAccordingToCompareTo() {
+  @Test
+  public void isEquivalentAccordingToCompareTo() {
     assertThat(new BigDecimal("2.0")).isEquivalentAccordingToCompareTo(new BigDecimal("2.00"));
 
     try {
@@ -102,7 +105,8 @@ public class ComparableSubjectTest {
     }
   }
 
-  @Test public void isGreaterThan() {
+  @Test
+  public void isGreaterThan() {
     assertThat(5).isGreaterThan(4);
 
     try {
@@ -119,7 +123,8 @@ public class ComparableSubjectTest {
     }
   }
 
-  @Test public void isLessThan() {
+  @Test
+  public void isLessThan() {
     assertThat(4).isLessThan(5);
 
     try {
@@ -136,7 +141,8 @@ public class ComparableSubjectTest {
     }
   }
 
-  @Test public void isAtMost() {
+  @Test
+  public void isAtMost() {
     assertThat(5).isAtMost(5);
     assertThat(5).isAtMost(6);
 
@@ -148,7 +154,8 @@ public class ComparableSubjectTest {
     }
   }
 
-  @Test public void isAtLeast() {
+  @Test
+  public void isAtLeast() {
     assertThat(4).isAtLeast(3);
     assertThat(4).isAtLeast(4);
 
@@ -162,7 +169,8 @@ public class ComparableSubjectTest {
 
   // Brief tests with other comparable types (no negative test cases)
 
-  @Test public void longs() {
+  @Test
+  public void longs() {
     assertThat(5L).isGreaterThan(4L);
     assertThat(4L).isLessThan(5L);
 
@@ -176,7 +184,8 @@ public class ComparableSubjectTest {
     assertThat(5L).isNotIn(range);
   }
 
-  @Test public void strings() {
+  @Test
+  public void strings() {
     assertThat("kak").isGreaterThan("gak");
     assertThat("gak").isLessThan("kak");
 
@@ -191,7 +200,8 @@ public class ComparableSubjectTest {
   }
 
   // Weirdest tests ever...
-  @Test public void booleans() {
+  @Test
+  public void booleans() {
     assertThat(true).isGreaterThan(false);
     assertThat(false).isLessThan(true);
 
@@ -208,15 +218,15 @@ public class ComparableSubjectTest {
     assertThat(false).isNotIn(range);
   }
 
-  @Test public void comparableType() {
+  @Test
+  public void comparableType() {
     assertThat(new ComparableType(4)).isGreaterThan(new ComparableType(3));
     assertThat(new ComparableType(3)).isLessThan(new ComparableType(4));
   }
 
-  @Test public void namedComparableType() {
-    assertThat(new ComparableType(2))
-        .named("comparable")
-        .isLessThan(new ComparableType(3));
+  @Test
+  public void namedComparableType() {
+    assertThat(new ComparableType(2)).named("comparable").isLessThan(new ComparableType(3));
   }
 
   private static final class ComparableType implements Comparable<ComparableType> {
@@ -226,12 +236,14 @@ public class ComparableSubjectTest {
       this.wrapped = toWrap;
     }
 
-    @Override public int compareTo(ComparableType other) {
+    @Override
+    public int compareTo(ComparableType other) {
       return wrapped - other.wrapped;
     }
   }
 
-  @Test public void rawComparableType() {
+  @Test
+  public void rawComparableType() {
     assertThat(new RawComparableType(3)).isLessThan(new RawComparableType(4));
   }
 
@@ -242,62 +254,70 @@ public class ComparableSubjectTest {
       this.wrapped = toWrap;
     }
 
-    @Override public int compareTo(Object other) {
+    @Override
+    public int compareTo(Object other) {
       return wrapped - ((RawComparableType) other).wrapped;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
       return Integer.toString(wrapped);
     }
   }
 
-  @Test public void comparableMixedTypesDontCompile() {
-    JavaFileObject file = JavaFileObjects.forSourceLines(
-        "test.MyTest",
-        "package test;",
-        "import static com.google.common.truth.Truth.assertThat;",
-        "class MyTest {",
-        "  public void testFoo() {",
-        "    assertThat(new ComparableType(3)).isLessThan(\"kak\");",
-        "  }",
-        "  private static final class ComparableType implements Comparable<ComparableType> {",
-        "    private final int wrapped;",
-        "    private ComparableType(int toWrap) {",
-        "      this.wrapped = toWrap;",
-        "    }",
-        "    @Override public int compareTo(ComparableType other) {",
-        "      return wrapped - ((ComparableType) other).wrapped;",
-        "    }",
-        "  }",
-        "}");
+  @Test
+  public void comparableMixedTypesDontCompile() {
+    JavaFileObject file =
+        JavaFileObjects.forSourceLines(
+            "test.MyTest",
+            "package test;",
+            "import static com.google.common.truth.Truth.assertThat;",
+            "class MyTest {",
+            "  public void testFoo() {",
+            "    assertThat(new ComparableType(3)).isLessThan(\"kak\");",
+            "  }",
+            "  private static final class ComparableType implements Comparable<ComparableType> {",
+            "    private final int wrapped;",
+            "    private ComparableType(int toWrap) {",
+            "      this.wrapped = toWrap;",
+            "    }",
+            "    @Override public int compareTo(ComparableType other) {",
+            "      return wrapped - ((ComparableType) other).wrapped;",
+            "    }",
+            "  }",
+            "}");
 
-    assertAbout(javaSource()).that(file)
+    assertAbout(javaSource())
+        .that(file)
         .failsToCompile()
         .withErrorContaining("java.lang.String cannot be converted to test.MyTest.ComparableType")
         .in(file)
         .onLine(5);
   }
 
-  @Test public void rawComparableTypeMixedTypes() {
-    JavaFileObject file = JavaFileObjects.forSourceLines(
-        "test.MyTest",
-        "package test;",
-        "import static com.google.common.truth.Truth.assertThat;",
-        "class MyTest {",
-        "  public void testFoo() {",
-        "    assertThat(new RawComparableType(3)).isLessThan(\"kak\");",
-        "  }",
-        "  private static final class RawComparableType implements Comparable {",
-        "    private final int wrapped;",
-        "    private RawComparableType(int toWrap) {",
-        "      this.wrapped = toWrap;",
-        "    }",
-        "    @Override public int compareTo(Object other) {",
-        "      return wrapped - ((RawComparableType) other).wrapped;",
-        "    }",
-        "  }",
-        "}");
-    assertAbout(javaSource()).that(file)
+  @Test
+  public void rawComparableTypeMixedTypes() {
+    JavaFileObject file =
+        JavaFileObjects.forSourceLines(
+            "test.MyTest",
+            "package test;",
+            "import static com.google.common.truth.Truth.assertThat;",
+            "class MyTest {",
+            "  public void testFoo() {",
+            "    assertThat(new RawComparableType(3)).isLessThan(\"kak\");",
+            "  }",
+            "  private static final class RawComparableType implements Comparable {",
+            "    private final int wrapped;",
+            "    private RawComparableType(int toWrap) {",
+            "      this.wrapped = toWrap;",
+            "    }",
+            "    @Override public int compareTo(Object other) {",
+            "      return wrapped - ((RawComparableType) other).wrapped;",
+            "    }",
+            "  }",
+            "}");
+    assertAbout(javaSource())
+        .that(file)
         .failsToCompile()
         .withErrorContaining(
             "java.lang.String cannot be converted to test.MyTest.RawComparableType")

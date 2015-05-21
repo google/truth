@@ -69,18 +69,19 @@ import javax.annotation.Nullable;
  */
 @CheckReturnValue
 public final class Truth {
-
   public static final FailureStrategy THROW_ASSERTION_ERROR =
       new FailureStrategy() {
-        @Override public void failComparing(
-            String message, CharSequence expected, CharSequence actual) {
+        @Override
+        public void failComparing(String message, CharSequence expected, CharSequence actual) {
           throw Platform.comparisonFailure(message, expected.toString(), actual.toString());
         }
       };
 
   private static final TestVerb ASSERT = new TestVerb(THROW_ASSERTION_ERROR);
 
-  public static TestVerb assert_() { return ASSERT; }
+  public static TestVerb assert_() {
+    return ASSERT;
+  }
 
   /**
    * Returns a {@link TestVerb} that will prepend the given message to the failure message in
@@ -97,8 +98,8 @@ public final class Truth {
    * @param factory a SubjectFactory<S, T> implementation
    * @return A custom verb for the type returned by the SubjectFactory
    */
-  public static <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>> DelegatedVerb<S, T>
-      assertAbout(SF factory) {
+  public static <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>>
+      DelegatedVerb<S, T> assertAbout(SF factory) {
     return assert_().about(factory);
   }
 
@@ -143,8 +144,9 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
-      assertThat(@Nullable Iterable<T> target) {
+  public static <T, C extends Iterable<T>>
+      IterableSubject<? extends IterableSubject<?, T, C>, T, C> assertThat(
+          @Nullable Iterable<T> target) {
     return assert_().that(target);
   }
 

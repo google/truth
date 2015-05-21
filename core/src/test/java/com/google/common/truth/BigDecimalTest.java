@@ -32,18 +32,20 @@ import java.math.BigDecimal;
  */
 @RunWith(JUnit4.class)
 public class BigDecimalTest {
-
-  @Test public void isEqualTo() {
+  @Test
+  public void isEqualTo() {
     // make sure this still works
     assertThat(TEN).isEqualTo(TEN);
   }
 
-  @Test public void isEquivalentAccordingToCompareTo() {
+  @Test
+  public void isEquivalentAccordingToCompareTo() {
     // make sure this still works
     assertThat(TEN).isEquivalentAccordingToCompareTo(TEN);
   }
 
-  @Test public void isEqualToIgnoringScale_bigDecimal() {
+  @Test
+  public void isEqualToIgnoringScale_bigDecimal() {
     assertThat(TEN).isEqualToIgnoringScale(TEN);
     assertThat(TEN).isEqualToIgnoringScale(new BigDecimal(10));
     try {
@@ -54,7 +56,8 @@ public class BigDecimalTest {
     }
   }
 
-  @Test public void isEqualToIgnoringScale_int() {
+  @Test
+  public void isEqualToIgnoringScale_int() {
     assertThat(TEN).isEqualToIgnoringScale(10);
     try {
       assertThat(TEN).isEqualToIgnoringScale(3);
@@ -64,7 +67,8 @@ public class BigDecimalTest {
     }
   }
 
-  @Test public void isEqualToIgnoringScale_long() {
+  @Test
+  public void isEqualToIgnoringScale_long() {
     assertThat(TEN).isEqualToIgnoringScale(10L);
     try {
       assertThat(TEN).isEqualToIgnoringScale(3L);
@@ -74,7 +78,8 @@ public class BigDecimalTest {
     }
   }
 
-  @Test public void isEqualToIgnoringScale_string() {
+  @Test
+  public void isEqualToIgnoringScale_string() {
     assertThat(TEN).isEqualToIgnoringScale("10");
     assertThat(TEN).isEqualToIgnoringScale("10.");
     assertThat(TEN).isEqualToIgnoringScale("10.0");

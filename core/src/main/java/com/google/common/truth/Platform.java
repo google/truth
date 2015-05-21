@@ -74,7 +74,7 @@ public final class Platform {
   }
 
   private static void addTypeNames(Class<?> clazz, Set<String> types) {
-    for (Class<?> current = clazz ; current != null ; current = current.getSuperclass()) {
+    for (Class<?> current = clazz; current != null; current = current.getSuperclass()) {
       types.add(current.getName());
       addInterfaceNames(current.getInterfaces(), types);
     }

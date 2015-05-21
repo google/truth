@@ -33,21 +33,22 @@ import javax.annotation.Nullable;
 
 @GwtIncompatible("JUnit4")
 public class Expect extends TestVerb implements TestRule {
-  protected static class ExpectationGatherer extends
-  FailureStrategy {
+  protected static class ExpectationGatherer extends FailureStrategy {
     List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
 
-    @Override public void fail(String message) {
+    @Override
+    public void fail(String message) {
       fail(message, new Throwable(message));
     }
 
-    @Override public void failComparing(
-        String message, CharSequence expected, CharSequence actual) {
+    @Override
+    public void failComparing(String message, CharSequence expected, CharSequence actual) {
       String errorMessage = messageFor(message, expected, actual);
       fail(errorMessage, new Throwable(errorMessage));
     }
 
-    @Override public void fail(String message, Throwable cause) {
+    @Override
+    public void fail(String message, Throwable cause) {
       messages.add(ExpectationFailure.create(message, cause));
     }
   }
@@ -57,11 +58,15 @@ public class Expect extends TestVerb implements TestRule {
     static ExpectationFailure create(String message, Throwable cause) {
       return new AutoValue_Expect_ExpectationFailure(message, cause);
     }
+
     static ExpectationFailure create(String message) {
       return new AutoValue_Expect_ExpectationFailure(message, null);
     }
+
     ExpectationFailure() {}
+
     abstract String message();
+
     abstract @Nullable Throwable cause();
   }
 
@@ -101,9 +106,11 @@ public class Expect extends TestVerb implements TestRule {
   }
 
   // TODO(cgruber): Make this override TestRule when 4.9 is released.
-  @Override public Statement apply(final Statement base, Description description) {
+  @Override
+  public Statement apply(final Statement base, Description description) {
     return new Statement() {
-      @Override public void evaluate() throws Throwable {
+      @Override
+      public void evaluate() throws Throwable {
         inRuleContext = true;
         base.evaluate();
         inRuleContext = false;
@@ -115,8 +122,12 @@ public class Expect extends TestVerb implements TestRule {
             if (earliestCause == null && failure.cause() != null) {
               earliestCause = failure.cause();
             }
-            message.append("  ").append((count++) + 1).append(". ")
-                   .append(failure.message()).append("\n");
+            message
+                .append("  ")
+                .append((count++) + 1)
+                .append(". ")
+                .append(failure.message())
+                .append("\n");
             if (showStackTrace && failure.cause() != null) {
               // Append stack trace to the failure message
               StringWriter stackTraceWriter = new StringWriter();

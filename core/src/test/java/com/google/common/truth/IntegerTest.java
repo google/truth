@@ -38,19 +38,23 @@ import org.junit.runners.JUnit4;
 public class IntegerTest {
   @Rule public final Expect EXPECT = Expect.create();
 
-  @Test public void simpleEquality() {
+  @Test
+  public void simpleEquality() {
     assertThat(2 + 2).isEqualTo(4);
   }
 
-  @Test public void intIsInt() {
+  @Test
+  public void intIsInt() {
     assertThat(4).isEqualTo(4);
   }
 
-  @Test public void simpleInequality() {
+  @Test
+  public void simpleInequality() {
     assertThat(2 + 2).isNotEqualTo(5);
   }
 
-  @Test public void equalityFail() {
+  @Test
+  public void equalityFail() {
     try {
       assertThat(2 + 2).isEqualTo(5);
       fail("Should have thrown");
@@ -59,7 +63,8 @@ public class IntegerTest {
     }
   }
 
-  @Test public void inequalityFail() {
+  @Test
+  public void inequalityFail() {
     try {
       assertThat(2 + 2).isNotEqualTo(4);
       fail("Should have thrown");
@@ -68,18 +73,22 @@ public class IntegerTest {
     }
   }
 
-  @Test public void additionAssumptionFail() {
+  @Test
+  public void additionAssumptionFail() {
     try {
       assume().that(2 + 2).isEqualTo(5);
       fail("Should have thrown");
-    } catch (AssumptionViolatedException expected) {}
+    } catch (AssumptionViolatedException expected) {
+    }
   }
 
-  @Test public void equalityOfNulls() {
+  @Test
+  public void equalityOfNulls() {
     assertThat((Integer) null).isEqualTo((Long) null);
   }
 
-  @Test public void equalityOfNullsFail() {
+  @Test
+  public void equalityOfNullsFail() {
     try {
       assertThat((Long) null).isEqualTo(5);
       fail("Should have thrown");
@@ -94,12 +103,14 @@ public class IntegerTest {
     }
   }
 
-  @Test public void inequalityOfNulls() {
+  @Test
+  public void inequalityOfNulls() {
     assertThat((Long) null).isNotEqualTo(4);
     assertThat(4).isNotEqualTo((Long) null);
   }
 
-  @Test public void inequalityOfNullsFail() {
+  @Test
+  public void inequalityOfNullsFail() {
     try {
       assertThat((Long) null).isNotEqualTo((Integer) null);
       fail("Should have thrown");
@@ -108,7 +119,8 @@ public class IntegerTest {
     }
   }
 
-  @Test public void primitives() {
+  @Test
+  public void primitives() {
     Assert.assertEquals(4, 4L);
     Assert.assertEquals(4L, 4);
     assertThat(4 == 4L).isTrue();
@@ -117,7 +129,8 @@ public class IntegerTest {
     assertThat(4L).isEqualTo(4);
   }
 
-  @Test public void boxedPrimitives() {
+  @Test
+  public void boxedPrimitives() {
     // Java says boxed primitives are not .equals().
     // Check the boolean expression with JUnit and Truth:
     Assert.assertFalse(new Integer(4).equals(new Long(4L)));
@@ -142,7 +155,8 @@ public class IntegerTest {
     assertThat(new Long(4L)).isNotEqualTo(new Integer(4));
   }
 
-  @Test public void mixedBoxedAndUnboxedPrimitives() {
+  @Test
+  public void mixedBoxedAndUnboxedPrimitives() {
     // Java says boxed primitives are not .equals() to primitives.
     Assert.assertFalse(new Integer(4).equals(4L));
     Assert.assertFalse(new Long(4L).equals(4));

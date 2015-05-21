@@ -124,11 +124,11 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testIterable() {
-    assertThat((Iterable<Integer>)asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
+    assertThat((Iterable<Integer>) asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
   }
 
   public void testCollection() {
-    assertThat((Collection<Integer>)asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
+    assertThat((Collection<Integer>) asList(1, 2, 3)).containsExactly(1, 2, 3).inOrder();
   }
 
   public void testList() {
@@ -136,9 +136,8 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testObjectArray() {
-    Set[] setOfString = { new HashSet<String>(asList("foo", "bar", "bash")) };
-    assertThat(setOfString).asList()
-        .contains(new HashSet<String>(asList("foo", "bar", "bash")));
+    Set[] setOfString = {new HashSet<String>(asList("foo", "bar", "bash"))};
+    assertThat(setOfString).asList().contains(new HashSet<String>(asList("foo", "bar", "bash")));
   }
 
   public void testDefault() {

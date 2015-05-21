@@ -34,16 +34,17 @@ import javax.annotation.CheckReturnValue;
  */
 @GwtIncompatible("Code generation and loading.")
 public class IteratingVerb<T> {
-
   private static final String CANNOT_WRAP_MSG = "Cannot build an iterating wrapper around ";
 
-  private static LoadingCache<SubjectFactory<?,?>, Class<?>> WRAPPER_CACHE =
-      CacheBuilder.newBuilder().build(
-          new CacheLoader<SubjectFactory<?,?>, Class<?>>() {
-            @Override public Class<?> load(SubjectFactory<?,?> subjectFactory) throws Exception {
-              return compileWrapperClass(subjectFactory);
-            }
-          });
+  private static LoadingCache<SubjectFactory<?, ?>, Class<?>> WRAPPER_CACHE =
+      CacheBuilder.newBuilder()
+          .build(
+              new CacheLoader<SubjectFactory<?, ?>, Class<?>>() {
+                @Override
+                public Class<?> load(SubjectFactory<?, ?> subjectFactory) throws Exception {
+                  return compileWrapperClass(subjectFactory);
+                }
+              });
 
   private final Iterable<T> data;
   private final FailureStrategy failureStrategy;
@@ -54,11 +55,11 @@ public class IteratingVerb<T> {
   }
 
   @CheckReturnValue
-  public <S extends Subject<S,T>, SF extends SubjectFactory<S, T>> S thatEach(SF factory) {
+  public <S extends Subject<S, T>, SF extends SubjectFactory<S, T>> S thatEach(SF factory) {
     return wrap(failureStrategy, factory, data);
   }
 
-  private <S extends Subject<S,T>, SF extends SubjectFactory<S, T>>
+  private <S extends Subject<S, T>, SF extends SubjectFactory<S, T>>
       S wrap(FailureStrategy fs, SF factory, Iterable<T> data) {
     Type t = factory.getSubjectClass();
     Class<?> wrapperClass;
@@ -71,10 +72,10 @@ public class IteratingVerb<T> {
   }
 
   @SuppressWarnings("unchecked")
-  private <SF, S> S instantiate(Class<?> wrapperType, Type t, FailureStrategy fs,
-      SF factory, Iterable<T> data) {
+  private <SF, S> S instantiate(
+      Class<?> wrapperType, Type t, FailureStrategy fs, SF factory, Iterable<T> data) {
     try {
-      Constructor<S> c = (Constructor<S>)wrapperType.getConstructors()[0];
+      Constructor<S> c = (Constructor<S>) wrapperType.getConstructors()[0];
       return c.newInstance(fs, factory, data);
     } catch (SecurityException e) {
       throw new RuntimeException(CANNOT_WRAP_MSG + t, e);
@@ -95,14 +96,14 @@ public class IteratingVerb<T> {
       classLoader = new CompilingClassLoader(
           subjectFactory.getSubjectClass().getClassLoader(), builder.className, out, null);
     } catch (CompilerException e) {
-      throw new Error("Could not compile class " + builder.className + " with source:\n" + out , e);
+      throw new Error("Could not compile class " + builder.className + " with source:\n" + out, e);
     }
     try {
       Class<?> wrapper = classLoader.loadClass(builder.className);
       return wrapper;
     } catch (ClassNotFoundException e) {
-      throw new Error("Could not load class " + subjectFactory.getSubjectClass().getSimpleName(), e);
+      throw new Error(
+          "Could not load class " + subjectFactory.getSubjectClass().getSimpleName(), e);
     }
   }
-
 }

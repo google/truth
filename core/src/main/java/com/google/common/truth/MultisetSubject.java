@@ -28,12 +28,11 @@ import javax.annotation.Nullable;
  */
 public final class MultisetSubject<S extends MultisetSubject<S, E, M>, E, M extends Multiset<E>>
     extends IterableSubject<S, E, M> {
-
   private MultisetSubject(FailureStrategy failureStrategy, @Nullable M multiset) {
     super(failureStrategy, multiset);
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings({"unchecked", "rawtypes"})
   static <E, M extends Multiset<E>>
       MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> create(
           FailureStrategy failureStrategy, @Nullable Multiset<E> multiset) {

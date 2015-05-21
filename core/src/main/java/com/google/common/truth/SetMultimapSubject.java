@@ -27,17 +27,16 @@ import javax.annotation.Nullable;
  * @author Daniel Ploch
  */
 public class SetMultimapSubject<
-    S extends SetMultimapSubject<S, K, V, M>, K, V, M extends SetMultimap<K, V>>
+        S extends SetMultimapSubject<S, K, V, M>, K, V, M extends SetMultimap<K, V>>
     extends MultimapSubject<S, K, V, M> {
-
   SetMultimapSubject(FailureStrategy failureStrategy, @Nullable M multimap) {
     super(failureStrategy, multimap);
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   static <K, V, M extends SetMultimap<K, V>>
-  SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> create(
-      FailureStrategy failureStrategy, @Nullable SetMultimap<K, V> multimap) {
+      SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> create(
+          FailureStrategy failureStrategy, @Nullable SetMultimap<K, V> multimap) {
     return new SetMultimapSubject(failureStrategy, multimap);
   }
 
@@ -54,5 +53,4 @@ public class SetMultimapSubject<
   public void isEqualTo(@Nullable ListMultimap<?, ?> other) {
     super.isEqualTo(other);
   }
-
 }

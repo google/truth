@@ -122,8 +122,11 @@ public class Subject<S extends Subject<S, T>, T> {
     }
     if (!Platform.isInstanceOfType(getSubject(), clazz)) {
       if (getSubject() != null) {
-        failWithBadResults("is an instance of", clazz.getName(),
-            "is an instance of", getSubject().getClass().getName());
+        failWithBadResults(
+            "is an instance of",
+            clazz.getName(),
+            "is an instance of",
+            getSubject().getClass().getName());
       } else {
         fail("is an instance of", clazz.getName());
       }
@@ -141,8 +144,10 @@ public class Subject<S extends Subject<S, T>, T> {
       return; // null is not an instance of clazz.
     }
     if (Platform.isInstanceOfType(getSubject(), clazz)) {
-      failWithRawMessage("%s expected not to be an instance of %s, but was.",
-          getDisplaySubject(), clazz.getName());
+      failWithRawMessage(
+          "%s expected not to be an instance of %s, but was.",
+          getDisplaySubject(),
+          clazz.getName());
     }
   }
 
@@ -170,9 +175,12 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   public void isNotIn(Iterable<?> iterable) {
     int index = Iterables.indexOf(iterable, Predicates.<Object>equalTo(getSubject()));
-    if (index != -1 ) {
-      failWithRawMessage("Not true that %s is not in %s. It was found at index %s",
-          getDisplaySubject(), iterable, index);
+    if (index != -1) {
+      failWithRawMessage(
+          "Not true that %s is not in %s. It was found at index %s",
+          getDisplaySubject(),
+          iterable,
+          index);
     }
   }
 
@@ -220,19 +228,29 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param part the value against which the subject is compared
    */
   protected void fail(String verb, Object part) {
-    StringBuilder message = new StringBuilder("Not true that ")
-        .append(getDisplaySubject()).append(" ");
+    StringBuilder message =
+        new StringBuilder("Not true that ").append(getDisplaySubject()).append(" ");
     // If the subject and parts aren't null, and they have equal toString()'s but different
     // classes, we need to disambiguate them.
     boolean needsDisambiguation = (part != null) && (getSubject() != null)
         && getSubject().toString().equals(part.toString())
         && !getSubject().getClass().equals(part.getClass());
     if (needsDisambiguation) {
-      message.append("(").append(getSubject().getClass().getName()).append(") ");
+      message
+          .append("(")
+          .append(getSubject().getClass().getName())
+          .append(") ");
     }
-    message.append(verb).append(" <").append(part).append(">");
+    message
+        .append(verb)
+        .append(" <")
+        .append(part)
+        .append(">");
     if (needsDisambiguation) {
-      message.append(" (").append(part.getClass().getName()).append(")");
+      message
+          .append(" (")
+          .append(part.getClass().getName())
+          .append(")");
     }
     failureStrategy.fail(message.toString());
   }
@@ -251,9 +269,15 @@ public class Subject<S extends Subject<S, T>, T> {
       fail(verb, messageParts[0]);
     } else {
       StringBuilder message = new StringBuilder("Not true that ");
-      message.append(getDisplaySubject()).append(" ").append(verb);
+      message
+          .append(getDisplaySubject())
+          .append(" ")
+          .append(verb);
       for (Object part : messageParts) {
-        message.append(" <").append(part).append(">");
+        message
+            .append(" <")
+            .append(part)
+            .append(">");
       }
       failureStrategy.fail(message.toString());
     }
@@ -268,13 +292,15 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param actual the actual value the subject was compared against
    */
   protected void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
-    String message = format("Not true that %s %s <%s>. It %s <%s>",
+    String message =
+        format(
+            "Not true that %s %s <%s>. It %s <%s>",
             getDisplaySubject(),
             verb,
             expected,
             failVerb,
             ((actual == null) ? "null reference" : actual));
-     failureStrategy.fail(message);
+    failureStrategy.fail(message);
   }
 
   /**
@@ -286,10 +312,12 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param actual the custom representation of the subject to be reported in the failure.
    */
   protected void failWithCustomSubject(String verb, Object expected, Object actual) {
-    String message = format("Not true that <%s> %s <%s>",
-        ((actual == null) ? "null reference" : actual),
-        verb,
-        expected);
+    String message =
+        format(
+            "Not true that <%s> %s <%s>",
+            ((actual == null) ? "null reference" : actual),
+            verb,
+            expected);
     failureStrategy.fail(message);
   }
 
@@ -315,7 +343,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     value passed in as a string.
    * @param parameters the object parameters which will be applied to the message template.
    */
-  protected void failWithRawMessage(String message, Object ... parameters) {
+  protected void failWithRawMessage(String message, Object... parameters) {
     failureStrategy.fail(format(message, parameters));
   }
 

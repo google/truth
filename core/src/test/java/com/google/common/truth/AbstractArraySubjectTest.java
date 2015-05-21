@@ -35,24 +35,26 @@ import java.util.List;
  */
 @RunWith(JUnit4.class)
 public class AbstractArraySubjectTest {
-
-  @Test public void foo() {
+  @Test
+  public void foo() {
     CapturingFailureStrategy failureStrategy = new CapturingFailureStrategy();
-    String[] strings = { "Foo", "Bar" };
+    String[] strings = {"Foo", "Bar"};
     TestableStringArraySubject subject = new TestableStringArraySubject(failureStrategy, strings);
     assertThat(subject.getDisplaySubject()).isEqualTo("<(String[]) [Foo, Bar]>");
   }
 
-  @Test public void canBeUsedInSubjectFactories() {
+  @Test
+  public void canBeUsedInSubjectFactories() {
     // This will fail to compile if the super-type of AbstractArraySubject
     // is incompatible with the generic bounds of SubjectFactory.
     class TestSubjectFactory extends SubjectFactory<TestableStringArraySubject, String[]> {
-      @Override public TestableStringArraySubject getSubject(FailureStrategy fs, String[] that) {
+      @Override
+      public TestableStringArraySubject getSubject(FailureStrategy fs, String[] that) {
         return new TestableStringArraySubject(fs, that);
       }
     }
 
-    String[] strings = { "foo", "bar" };
+    String[] strings = {"foo", "bar"};
     assertAbout(new TestSubjectFactory()).that(strings).hasLength(2);
   }
 
@@ -61,12 +63,27 @@ public class AbstractArraySubjectTest {
     public TestableStringArraySubject(FailureStrategy failureStrategy, String[] subject) {
       super(failureStrategy, subject);
     }
-    @Override protected String underlyingType() { return "String"; }
-    @Override protected List<?> listRepresentation() { return Arrays.asList(getSubject()); }
-    @Override protected String getDisplaySubject() { return super.getDisplaySubject(); }
+
+    @Override
+    protected String underlyingType() {
+      return "String";
+    }
+
+    @Override
+    protected List<?> listRepresentation() {
+      return Arrays.asList(getSubject());
+    }
+
+    @Override
+    protected String getDisplaySubject() {
+      return super.getDisplaySubject();
+    }
   }
 
   class CapturingFailureStrategy extends FailureStrategy {
-    @Override public void fail(String message, Throwable cause) { /* noop */ }
+    @Override
+    public void fail(String message, Throwable cause) {
+      /* noop */
+    }
   }
 }

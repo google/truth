@@ -29,16 +29,17 @@ import javax.annotation.Nullable;
  */
 public class PrimitiveIntArraySubject
     extends AbstractArraySubject<PrimitiveIntArraySubject, int[]> {
-
   PrimitiveIntArraySubject(FailureStrategy failureStrategy, @Nullable int[] o) {
     super(failureStrategy, o);
   }
 
-  @Override protected String underlyingType() {
+  @Override
+  protected String underlyingType() {
     return "int";
   }
 
-  @Override protected List<Integer> listRepresentation() {
+  @Override
+  protected List<Integer> listRepresentation() {
     return Ints.asList(getSubject());
   }
 
@@ -47,7 +48,8 @@ public class PrimitiveIntArraySubject
    * contains elements such that each element in {@code expected} is equal to each element
    * in the subject, and in the same position.
    */
-  @Override public void isEqualTo(Object expected) {
+  @Override
+  public void isEqualTo(Object expected) {
     int[] actual = getSubject();
     if (actual == expected) {
       return; // short-cut.
@@ -62,15 +64,17 @@ public class PrimitiveIntArraySubject
     }
   }
 
-  @Override public void isNotEqualTo(Object expected) {
+  @Override
+  public void isNotEqualTo(Object expected) {
     int[] actual = getSubject();
     try {
       int[] expectedArray = (int[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
-        failWithRawMessage("%s unexpectedly equal to %s.",
-            getDisplaySubject(), Ints.asList(expectedArray));
+        failWithRawMessage(
+            "%s unexpectedly equal to %s.", getDisplaySubject(), Ints.asList(expectedArray));
       }
-    } catch (ClassCastException ignored) {}
+    } catch (ClassCastException ignored) {
+    }
   }
 
   public IterableSubject<?, Integer, List<Integer>> asList() {

@@ -33,11 +33,13 @@ public class PrimitiveByteArraySubject
     super(failureStrategy, o);
   }
 
-  @Override protected String underlyingType() {
+  @Override
+  protected String underlyingType() {
     return "byte";
   }
 
-  @Override protected List<Byte> listRepresentation() {
+  @Override
+  protected List<Byte> listRepresentation() {
     return Bytes.asList(getSubject());
   }
 
@@ -46,7 +48,8 @@ public class PrimitiveByteArraySubject
    * contains elements such that each element in {@code expected} is equal to each element
    * in the subject, and in the same position.
    */
-  @Override public void isEqualTo(Object expected) {
+  @Override
+  public void isEqualTo(Object expected) {
     byte[] actual = getSubject();
     if (actual == expected) {
       return; // short-cut.
@@ -61,15 +64,17 @@ public class PrimitiveByteArraySubject
     }
   }
 
-  @Override public void isNotEqualTo(Object expected) {
+  @Override
+  public void isNotEqualTo(Object expected) {
     byte[] actual = getSubject();
     try {
       byte[] expectedArray = (byte[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
-        failWithRawMessage("%s unexpectedly equal to %s.",
-            getDisplaySubject(), Arrays.toString(expectedArray));
+        failWithRawMessage(
+            "%s unexpectedly equal to %s.", getDisplaySubject(), Arrays.toString(expectedArray));
       }
-    } catch (ClassCastException ignored) {}
+    } catch (ClassCastException ignored) {
+    }
   }
 
   public IterableSubject<?, Byte, List<Byte>> asList() {

@@ -53,14 +53,18 @@ public class TruthJUnit {
   @GwtIncompatible("JUnit4")
   public static final FailureStrategy THROW_ASSUMPTION_ERROR =
       new FailureStrategy() {
-        @Override public void fail(String message) {
+        @Override
+        public void fail(String message) {
           throw new AssumptionViolatedException(message);
         }
-        @Override public void failComparing(
-            String message, CharSequence expected, CharSequence actual) {
+
+        @Override
+        public void failComparing(String message, CharSequence expected, CharSequence actual) {
           throw new AssumptionViolatedException(messageFor(message, expected, actual));
         }
-        @Override public void fail(String message, Throwable cause) {
+
+        @Override
+        public void fail(String message, Throwable cause) {
           throw new ThrowableAssumptionViolatedException(message, cause);
         }
       };
@@ -69,7 +73,9 @@ public class TruthJUnit {
   private static final TestVerb ASSUME = new TestVerb(THROW_ASSUMPTION_ERROR);
 
   @GwtIncompatible("JUnit4")
-  public static final TestVerb assume() { return ASSUME; }
+  public static final TestVerb assume() {
+    return ASSUME;
+  }
 
   @SuppressWarnings("serial") // Super serial.
   @GwtIncompatible("JUnit4")

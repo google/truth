@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
  */
 public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T extends Comparable>
     extends Subject<S, T> {
-
   protected ComparableSubject(FailureStrategy failureStrategy, @Nullable T subject) {
     super(failureStrategy, subject);
   }
@@ -58,8 +57,10 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    */
   public void isEquivalentAccordingToCompareTo(T other) {
     if (getSubject().compareTo(other) != 0) {
-      failWithRawMessage("%s should have been equivalent to <%s> according to compareTo()",
-          getDisplaySubject(), other);
+      failWithRawMessage(
+          "%s should have been equivalent to <%s> according to compareTo()",
+          getDisplaySubject(),
+          other);
     }
   }
 

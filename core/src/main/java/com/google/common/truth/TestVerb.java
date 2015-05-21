@@ -83,8 +83,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new StringSubject(getFailureStrategy(), target);
   }
 
-  public <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C>
-      that(@Nullable Iterable<T> target) {
+  public <T, C extends Iterable<T>>
+      IterableSubject<? extends IterableSubject<?, T, C>, T, C> that(@Nullable Iterable<T> target) {
     return IterableSubject.create(getFailureStrategy(), target);
   }
 
@@ -147,8 +147,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   public <E, M extends Multiset<E>>
-      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(
-          @Nullable Multiset<E> target) {
+      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(@Nullable Multiset<E> target) {
     return MultisetSubject.create(getFailureStrategy(), target);
   }
 
@@ -161,7 +160,9 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new TestVerb(getFailureStrategy(), failureMessage); // Must be a new instance.
   }
 
-  @Override @Nullable public String getFailureMessage() {
+  @Override
+  @Nullable
+  public String getFailureMessage() {
     return failureMessage;
   }
 }

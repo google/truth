@@ -34,14 +34,15 @@ import java.util.List;
 // TODO(kak): Move these all to IterableTest
 @RunWith(JUnit4.class)
 public class ListTest {
-
-  @Test public void listIsStrictlyOrdered() {
+  @Test
+  public void listIsStrictlyOrdered() {
     assertThat(Arrays.<Integer>asList()).isStrictlyOrdered();
     assertThat(Arrays.asList(1)).isStrictlyOrdered();
     assertThat(Arrays.asList(1, 2, 3, 4)).isStrictlyOrdered();
   }
 
-  @Test public void isStrictlyOrderedFailure() {
+  @Test
+  public void isStrictlyOrderedFailure() {
     try {
       assertThat(Arrays.asList(1, 2, 2, 4)).isStrictlyOrdered();
       fail("Should have thrown.");
@@ -51,20 +52,24 @@ public class ListTest {
     }
   }
 
-  @Test public void isStrictlyOrderedWithNonComparableElementsFailure() {
+  @Test
+  public void isStrictlyOrderedWithNonComparableElementsFailure() {
     try {
       assertThat(Arrays.<Object>asList(1, "2", 3, "4")).isStrictlyOrdered();
       fail("Should have thrown.");
-    } catch (ClassCastException e) {}
+    } catch (ClassCastException e) {
+    }
   }
 
-  @Test public void listIsPartiallyOrdered() {
+  @Test
+  public void listIsPartiallyOrdered() {
     assertThat(Arrays.<Integer>asList()).isPartiallyOrdered();
     assertThat(Arrays.asList(1)).isPartiallyOrdered();
     assertThat(Arrays.asList(1, 1, 2, 3, 3, 3, 4)).isPartiallyOrdered();
   }
 
-  @Test public void isPartiallyOrderedFailure() {
+  @Test
+  public void isPartiallyOrderedFailure() {
     try {
       assertThat(Arrays.asList(1, 3, 2, 4)).isPartiallyOrdered();
       fail("Should have thrown.");
@@ -74,21 +79,25 @@ public class ListTest {
     }
   }
 
-  @Test public void isPartiallyOrderedWithNonComparableElementsFailure() {
+  @Test
+  public void isPartiallyOrderedWithNonComparableElementsFailure() {
     try {
       assertThat(Arrays.<Object>asList(1, "2", 2, "3")).isPartiallyOrdered();
       fail("Should have thrown.");
-    } catch (ClassCastException e) {}
+    } catch (ClassCastException e) {
+    }
   }
 
-  @Test public void listIsStrictlyOrderedWithComparator() {
+  @Test
+  public void listIsStrictlyOrderedWithComparator() {
     assertThat(Arrays.<String>asList()).isStrictlyOrdered(COMPARE_AS_DECIMAL);
     assertThat(Arrays.asList("1")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
     // Note: Use "10" and "20" to distinguish numerical and lexicographical ordering.
     assertThat(Arrays.asList("1", "2", "10", "20")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
   }
 
-  @Test public void listIsStrictlyOrderedWithComparatorFailure() {
+  @Test
+  public void listIsStrictlyOrderedWithComparatorFailure() {
     try {
       assertThat(Arrays.asList("1", "2", "2", "10")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
@@ -98,14 +107,16 @@ public class ListTest {
     }
   }
 
-  @Test public void listIsPartiallyOrderedWithComparator() {
+  @Test
+  public void listIsPartiallyOrderedWithComparator() {
     assertThat(Arrays.<String>asList()).isPartiallyOrdered(COMPARE_AS_DECIMAL);
     assertThat(Arrays.asList("1")).isPartiallyOrdered(COMPARE_AS_DECIMAL);
     assertThat(Arrays.asList("1", "1", "2", "10", "10", "10", "20"))
         .isPartiallyOrdered(COMPARE_AS_DECIMAL);
   }
 
-  @Test public void listIsPartiallyOrderedWithComparatorFailure() {
+  @Test
+  public void listIsPartiallyOrderedWithComparatorFailure() {
     try {
       assertThat(Arrays.asList("1", "10", "2", "20")).isPartiallyOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
@@ -115,11 +126,13 @@ public class ListTest {
     }
   }
 
-  private static final Comparator<String> COMPARE_AS_DECIMAL = new Comparator<String>() {
-    @Override public int compare(String a, String b) {
-      return Integer.valueOf(a).compareTo(Integer.valueOf(b));
-    }
-  };
+  private static final Comparator<String> COMPARE_AS_DECIMAL =
+      new Comparator<String>() {
+        @Override
+        public int compare(String a, String b) {
+          return Integer.valueOf(a).compareTo(Integer.valueOf(b));
+        }
+      };
 
   private static class Foo {
     private final int x;
@@ -135,13 +148,16 @@ public class ListTest {
     }
   }
 
-  private static final Comparator<Foo> FOO_COMPARATOR = new Comparator<Foo>() {
-    @Override public int compare(Foo a, Foo b) {
-      return Integer.compare(a.x, b.x);
-    }
-  };
+  private static final Comparator<Foo> FOO_COMPARATOR =
+      new Comparator<Foo>() {
+        @Override
+        public int compare(Foo a, Foo b) {
+          return Integer.compare(a.x, b.x);
+        }
+      };
 
-  @Test public void listOrderedByBaseClassComparator() {
+  @Test
+  public void listOrderedByBaseClassComparator() {
     List<Bar> targetList = Arrays.asList(new Bar(1), new Bar(2), new Bar(3));
     assertThat(targetList).isPartiallyOrdered(FOO_COMPARATOR);
     assertThat(targetList).isStrictlyOrdered(FOO_COMPARATOR);

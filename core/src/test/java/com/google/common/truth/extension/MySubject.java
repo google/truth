@@ -24,7 +24,6 @@ import com.google.common.truth.Subject;
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
 public class MySubject extends Subject<MySubject, MyType> {
-
   public MySubject(FailureStrategy failureStrategy, MyType subject) {
     super(failureStrategy, subject);
   }
@@ -34,5 +33,4 @@ public class MySubject extends Subject<MySubject, MyType> {
       fail("matches", getSubject(), object);
     }
   }
-
 }

@@ -33,11 +33,13 @@ public class PrimitiveBooleanArraySubject
     super(failureStrategy, o);
   }
 
-  @Override protected String underlyingType() {
+  @Override
+  protected String underlyingType() {
     return "boolean";
   }
 
-  @Override protected List<Boolean> listRepresentation() {
+  @Override
+  protected List<Boolean> listRepresentation() {
     return Booleans.asList(getSubject());
   }
 
@@ -46,7 +48,8 @@ public class PrimitiveBooleanArraySubject
    * contains elements such that each element in {@code expected} is equal to each element
    * in the subject, and in the same position.
    */
-  @Override public void isEqualTo(Object expected) {
+  @Override
+  public void isEqualTo(Object expected) {
     boolean[] actual = getSubject();
     if (actual == expected) {
       return; // short-cut.
@@ -61,15 +64,17 @@ public class PrimitiveBooleanArraySubject
     }
   }
 
-  @Override public void isNotEqualTo(Object expected) {
+  @Override
+  public void isNotEqualTo(Object expected) {
     boolean[] actual = getSubject();
     try {
       boolean[] expectedArray = (boolean[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
-        failWithRawMessage("%s unexpectedly equal to %s.",
-            getDisplaySubject(), Booleans.asList(expectedArray));
+        failWithRawMessage(
+            "%s unexpectedly equal to %s.", getDisplaySubject(), Booleans.asList(expectedArray));
       }
-    } catch (ClassCastException ignored) {}
+    } catch (ClassCastException ignored) {
+    }
   }
 
   public IterableSubject<?, Boolean, List<Boolean>> asList() {

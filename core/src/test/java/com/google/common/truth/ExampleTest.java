@@ -36,11 +36,13 @@ import java.util.Arrays;
 
 @RunWith(Theories.class)
 public class ExampleTest {
-  @Test public void stringContains() {
+  @Test
+  public void stringContains() {
     assertThat("abc").contains("c");
   }
 
-  @Test public void listHasElements() {
+  @Test
+  public void listHasElements() {
     // single item
     assertThat(Arrays.asList(1, 2, 3)).contains(1);
 
@@ -51,7 +53,8 @@ public class ExampleTest {
     assertThat(Arrays.asList(1, 2, 3)).containsAnyOf(1, 5);
   }
 
-  @Test public void equalityFail() {
+  @Test
+  public void equalityFail() {
     int x = 2 + 2;
     try {
       assertThat(x).isEqualTo(5);
@@ -61,23 +64,26 @@ public class ExampleTest {
     }
   }
 
-  @DataPoints public static int[] ints = { -1, 0, 1, 2 };
+  @DataPoints public static int[] ints = {-1, 0, 1, 2};
 
-  @Theory public void divideBySelf(int x) {
+  @Theory
+  public void divideBySelf(int x) {
     assume().that(x).isNotEqualTo(0);
     assertThat(x / x).isEqualTo(1);
   }
 
   @Rule public final Expect EXPECT = Expect.create();
 
-  @Test public void expectRange() {
+  @Test
+  public void expectRange() {
     int x = 4;
     EXPECT.that(x).isNotNull();
     EXPECT.that(x).isIn(Range.open(3, 5));
     EXPECT.that(x).isEqualTo(4);
   }
 
-  @Test public void customTypeCompares() {
+  @Test
+  public void customTypeCompares() {
     assertAbout(foo()).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 }

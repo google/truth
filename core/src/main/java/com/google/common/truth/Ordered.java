@@ -22,5 +22,4 @@ public interface Ordered {
    * which allows for a further constraint of orderedness.
    */
   void inOrder();
-
 }

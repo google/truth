@@ -22,7 +22,6 @@ package com.google.common.truth.delegation;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class Foo {
-
   final int value;
 
   public Foo(int value) {

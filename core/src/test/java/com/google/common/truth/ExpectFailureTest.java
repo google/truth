@@ -37,19 +37,23 @@ import java.util.Arrays;
 public class ExpectFailureTest {
   @Rule public final Expect EXPECT = new FailingExpect(new ExpectationGatherer());
 
-  @Test public void expectFailNotEquals() {
+  @Test
+  public void expectFailNotEquals() {
     EXPECT.that(4).isNotEqualTo(4);
   }
 
-  @Test public void expectFailStringContains() {
+  @Test
+  public void expectFailStringContains() {
     EXPECT.that("abc").contains("x");
   }
 
-  @Test public void expectFailContainsAllOf() {
+  @Test
+  public void expectFailContainsAllOf() {
     EXPECT.that(Arrays.asList("a", "b", "c")).containsAllOf("a", "c", "d");
   }
 
-  @Test public void expectFailContainsAnyOf() {
+  @Test
+  public void expectFailContainsAnyOf() {
     EXPECT.that(Arrays.asList("a", "b", "c")).containsAnyOf("z", "q");
   }
 
@@ -58,10 +62,12 @@ public class ExpectFailureTest {
       super(gatherer);
     }
 
-    @Override public Statement apply(Statement base, Description description) {
+    @Override
+    public Statement apply(Statement base, Description description) {
       final Statement s = super.apply(base, description);
       return new Statement() {
-        @Override public void evaluate() throws Throwable {
+        @Override
+        public void evaluate() throws Throwable {
           try {
             s.evaluate();
           } catch (AssertionError e) {

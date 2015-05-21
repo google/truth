@@ -33,21 +33,23 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class CustomFailureMessageTest {
-
-  @Test public void assertWithMessageIsPrepended() {
+  @Test
+  public void assertWithMessageIsPrepended() {
     try {
       assertWithMessage("Invalid month").that(13).isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
+      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
     }
   }
 
-  @Test public void assertWithMessageIsPrependedWithNamed() {
+  @Test
+  public void assertWithMessageIsPrependedWithNamed() {
     try {
       assertWithMessage("Invalid month")
-          .that(13).named("Septober").isIn(Range.closed(1, 12));
+          .that(13)
+          .named("Septober")
+          .isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -55,7 +57,8 @@ public class CustomFailureMessageTest {
     }
   }
 
-  @Test public void assertWithMessageThat() {
+  @Test
+  public void assertWithMessageThat() {
     try {
       assertWithMessage("This is a custom message").that(false).isTrue();
       fail("Should have thrown");
@@ -65,20 +68,27 @@ public class CustomFailureMessageTest {
     }
   }
 
-  @Test public void customMessageIsPrepended() {
+  @Test
+  public void customMessageIsPrepended() {
     try {
-      assert_().withFailureMessage("Invalid month").that(13).isIn(Range.closed(1, 12));
+      assert_()
+          .withFailureMessage("Invalid month")
+          .that(13)
+          .isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
+      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
     }
   }
 
-  @Test public void customMessageIsPrependedWithNamed() {
+  @Test
+  public void customMessageIsPrependedWithNamed() {
     try {
-      assert_().withFailureMessage("Invalid month")
-          .that(13).named("Septober").isIn(Range.closed(1, 12));
+      assert_()
+          .withFailureMessage("Invalid month")
+          .that(13)
+          .named("Septober")
+          .isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -86,9 +96,13 @@ public class CustomFailureMessageTest {
     }
   }
 
-  @Test public void customMessage() {
+  @Test
+  public void customMessage() {
     try {
-      assert_().withFailureMessage("This is a custom message").that(false).isTrue();
+      assert_()
+          .withFailureMessage("This is a custom message")
+          .that(false)
+          .isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected).hasMessage(

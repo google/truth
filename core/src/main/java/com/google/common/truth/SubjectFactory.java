@@ -23,14 +23,13 @@ import com.google.common.annotations.GwtIncompatible;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public abstract class SubjectFactory<S extends Subject<S,T>, T> {
-
+public abstract class SubjectFactory<S extends Subject<S, T>, T> {
   @GwtIncompatible("reflection")
   private static final int SUBJECT_TYPE_PARAMETER = 0;
 
   @GwtIncompatible("reflection")
   private final Class<S> type =
-      (Class<S>)ReflectionUtil.typeParameter(getClass(), SUBJECT_TYPE_PARAMETER);
+      (Class<S>) ReflectionUtil.typeParameter(getClass(), SUBJECT_TYPE_PARAMETER);
 
   public abstract S getSubject(FailureStrategy fs, T that);
 
@@ -38,6 +37,4 @@ public abstract class SubjectFactory<S extends Subject<S,T>, T> {
   public Class<S> getSubjectClass() {
     return type;
   }
-
 }
-

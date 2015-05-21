@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>> {
-
   OptionalSubject(FailureStrategy failureStrategy, @Nullable Optional<T> subject) {
     super(failureStrategy, subject);
   }

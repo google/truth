@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
-
   BooleanSubject(FailureStrategy failureStrategy, @Nullable Boolean subject) {
     super(failureStrategy, subject);
   }

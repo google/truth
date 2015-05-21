@@ -32,7 +32,6 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class IteratingWrapperClassBuilderTest {
-
   private static final String TOP_BOILERPLATE =
       "package com.google.common.truth.codegen;\n" +
       "\n" +
@@ -75,35 +74,35 @@ public class IteratingWrapperClassBuilderTest {
       "    }\n" +
       "  }";
 
-  @Test public void testSubjectWrapperGeneration_PlainClass() {
+  @Test
+  public void testSubjectWrapperGeneration_PlainClass() {
     IteratingWrapperClassBuilder builder = new IteratingWrapperClassBuilder(BarSubject.BAR);
     String code = builder.build().toString();
     assertThat(code).contains(TOP_BOILERPLATE);
     assertThat(code).contains(SUBJECT_FACTORY_FIELD);
     assertThat(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
-    assertThat(code)
-          .contains(String.format(CONSTRUCTOR, "Bar", "java.lang.String"));
+    assertThat(code).contains(String.format(CONSTRUCTOR, "Bar", "java.lang.String"));
     assertThat(code).contains(String.format(CLASS_DECLARATION, "Bar"));
     assertThat(code).contains(BAR_WRAPPED_METHOD);
   }
 
-  @Test public void testSubjectWrapperGeneration_InnerClass() {
+  @Test
+  public void testSubjectWrapperGeneration_InnerClass() {
     IteratingWrapperClassBuilder builder = new IteratingWrapperClassBuilder(FooSubject.FOO);
     String code = builder.build().toString();
     assertThat(code).contains(TOP_BOILERPLATE);
     assertThat(code).contains(SUBJECT_FACTORY_FIELD);
     assertThat(code).contains(String.format(ITERABLE_FIELD, "java.lang.String"));
-    assertThat(code)
-          .contains(String.format(CONSTRUCTOR, "Foo", "java.lang.String"));
+    assertThat(code).contains(String.format(CONSTRUCTOR, "Foo", "java.lang.String"));
     assertThat(code).contains(String.format(CLASS_DECLARATION, "Foo"));
     assertThat(code).contains(FOO_WRAPPED_METHOD);
   }
 
   public static class FooSubject extends Subject<FooSubject, String> {
-
     public static final SubjectFactory<FooSubject, String> FOO =
         new SubjectFactory<FooSubject, String>() {
-          @Override public FooSubject getSubject(FailureStrategy fs, String target) {
+          @Override
+          public FooSubject getSubject(FailureStrategy fs, String target) {
             return new FooSubject(fs, target);
           }
         };
@@ -117,6 +116,5 @@ public class IteratingWrapperClassBuilderTest {
         fail("matches", getSubject(), suffix);
       }
     }
-
   }
 }

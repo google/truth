@@ -30,21 +30,24 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class PrimitiveLongArraySubjectTest {
-
-  @Test public void isEqualTo() {
+  @Test
+  public void isEqualTo() {
     assertThat(array(2L, 5)).isEqualTo(array(2L, 5));
   }
 
-  @Test public void isEqualTo_Same() {
+  @Test
+  public void isEqualTo_Same() {
     long[] same = array(2L, 5);
     assertThat(same).isEqualTo(same);
   }
 
-  @Test public void asList() {
+  @Test
+  public void asList() {
     assertThat(array(5, 2, 9)).asList().containsAllOf(2L, 9L);
   }
 
-  @Test public void isEqualTo_Fail_UnequalOrdering() {
+  @Test
+  public void isEqualTo_Fail_UnequalOrdering() {
     try {
       assertThat(array(2, 3)).isEqualTo(array(3, 2));
     } catch (AssertionError e) {
@@ -52,7 +55,8 @@ public class PrimitiveLongArraySubjectTest {
     }
   }
 
-  @Test public void isEqualTo_Fail_NotAnArray() {
+  @Test
+  public void isEqualTo_Fail_NotAnArray() {
     try {
       assertThat(array(2, 3, 4)).isEqualTo(new int[] {});
     } catch (AssertionError e) {
@@ -61,34 +65,37 @@ public class PrimitiveLongArraySubjectTest {
     }
   }
 
-  @Test public void isNotEqualTo_SameLengths() {
+  @Test
+  public void isNotEqualTo_SameLengths() {
     assertThat(array(2, 3)).isNotEqualTo(array(3, 2));
   }
 
-  @Test public void isNotEqualTo_DifferentLengths() {
+  @Test
+  public void isNotEqualTo_DifferentLengths() {
     assertThat(array(2, 3)).isNotEqualTo(array(2, 3, 1));
   }
 
-  @Test public void isNotEqualTo_DifferentTypes() {
+  @Test
+  public void isNotEqualTo_DifferentTypes() {
     assertThat(array(2, 3)).isNotEqualTo(new Object());
   }
 
-  @Test public void isNotEqualTo_FailEquals() {
+  @Test
+  public void isNotEqualTo_FailEquals() {
     try {
       assertThat(array(2, 3)).isNotEqualTo(array(2, 3));
     } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessage("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e).hasMessage("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 
-  @Test public void isNotEqualTo_FailSame() {
+  @Test
+  public void isNotEqualTo_FailSame() {
     try {
       long[] same = array(2, 3);
       assertThat(same).isNotEqualTo(same);
     } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessage("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e).hasMessage("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 

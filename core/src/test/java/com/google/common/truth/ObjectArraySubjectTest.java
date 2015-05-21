@@ -33,28 +33,32 @@ import java.util.Set;
  */
 @RunWith(JUnit4.class)
 public class ObjectArraySubjectTest {
-
   private static final Object[] EMPTY = new Object[0];
 
-  @Test public void isEqualTo() {
+  @Test
+  public void isEqualTo() {
     assertThat(objectArray("A", 5L)).isEqualTo(objectArray("A", 5L));
   }
 
-  @Test public void isEqualTo_Same() {
+  @Test
+  public void isEqualTo_Same() {
     Object[] same = objectArray("A", 5L);
     assertThat(same).isEqualTo(same);
   }
 
-  @Test public void asList() {
+  @Test
+  public void asList() {
     assertThat(objectArray("A", 5L)).asList().contains("A");
   }
 
-  @Test public void hasLength() {
+  @Test
+  public void hasLength() {
     assertThat(EMPTY).hasLength(0);
     assertThat(objectArray("A", 5L)).hasLength(2);
   }
 
-  @Test public void hasLengthFail() {
+  @Test
+  public void hasLengthFail() {
     try {
       assertThat(objectArray("A", 5L)).hasLength(1);
       throw new Error("Expected to throw.");
@@ -63,7 +67,8 @@ public class ObjectArraySubjectTest {
     }
   }
 
-  @Test public void hasLengthNegative() {
+  @Test
+  public void hasLengthNegative() {
     try {
       assertThat(objectArray(2, 5)).hasLength(-1);
       throw new Error("Expected to throw.");
@@ -71,11 +76,13 @@ public class ObjectArraySubjectTest {
     }
   }
 
-  @Test public void isEmpty() {
+  @Test
+  public void isEmpty() {
     assertThat(EMPTY).isEmpty();
   }
 
-  @Test public void isEmptyFail() {
+  @Test
+  public void isEmptyFail() {
     try {
       assertThat(objectArray("A", 5L)).isEmpty();
       throw new Error("Expected to throw.");
@@ -84,11 +91,13 @@ public class ObjectArraySubjectTest {
     }
   }
 
-  @Test public void isNotEmpty() {
+  @Test
+  public void isNotEmpty() {
     assertThat(objectArray("A", 5L)).isNotEmpty();
   }
 
-  @Test public void isNotEmptyFail() {
+  @Test
+  public void isNotEmptyFail() {
     try {
       assertThat(EMPTY).isNotEmpty();
       throw new Error("Expected to throw.");
@@ -97,7 +106,8 @@ public class ObjectArraySubjectTest {
     }
   }
 
-  @Test public void isEqualTo_Fail_UnequalOrdering() {
+  @Test
+  public void isEqualTo_Fail_UnequalOrdering() {
     try {
       assertThat(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
       throw new Error("Expected to throw.");
@@ -107,7 +117,8 @@ public class ObjectArraySubjectTest {
     }
   }
 
-  @Test public void isEqualTo_Fail_NotAnArray() {
+  @Test
+  public void isEqualTo_Fail_NotAnArray() {
     try {
       assertThat(objectArray("A", 5L)).isEqualTo(new Object());
       throw new Error("Expected to throw.");
@@ -118,19 +129,23 @@ public class ObjectArraySubjectTest {
     }
   }
 
-  @Test public void isNotEqualTo_SameLengths() {
+  @Test
+  public void isNotEqualTo_SameLengths() {
     assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("C", 5L));
   }
 
-  @Test public void isNotEqualTo_DifferentLengths() {
+  @Test
+  public void isNotEqualTo_DifferentLengths() {
     assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L, "c"));
   }
 
-  @Test public void isNotEqualTo_DifferentTypes() {
+  @Test
+  public void isNotEqualTo_DifferentTypes() {
     assertThat(objectArray("A", 5L)).isNotEqualTo(new Object());
   }
 
-  @Test public void isNotEqualTo_FailEquals() {
+  @Test
+  public void isNotEqualTo_FailEquals() {
     try {
       assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
       throw new Error("Expected to throw.");
@@ -139,7 +154,8 @@ public class ObjectArraySubjectTest {
     }
   }
 
-  @Test public void isNotEqualTo_FailSame() {
+  @Test
+  public void isNotEqualTo_FailSame() {
     try {
       Object[] same = objectArray("A", 5L);
       assertThat(same).isNotEqualTo(same);
@@ -149,19 +165,22 @@ public class ObjectArraySubjectTest {
     }
   }
 
-  private static Object[] objectArray(Object ... ts) {
+  private static Object[] objectArray(Object... ts) {
     return ts;
   }
 
-  @Test public void stringArrayIsEqualTo() {
+  @Test
+  public void stringArrayIsEqualTo() {
     assertThat(objectArray("A", "B")).isEqualTo(objectArray("A", "B"));
   }
 
-  @Test public void stringArrayAsList() {
+  @Test
+  public void stringArrayAsList() {
     assertThat(objectArray("A", "B")).asList().contains("A");
   }
 
-  @Test public void stringArrayIsEqualTo_Fail_UnequalLength() {
+  @Test
+  public void stringArrayIsEqualTo_Fail_UnequalLength() {
     try {
       assertThat(objectArray("A", "B")).isEqualTo(objectArray("B"));
       throw new Error("Expected to throw.");
@@ -170,7 +189,8 @@ public class ObjectArraySubjectTest {
     }
   }
 
-  @Test public void stringArrayIsEqualTo_Fail_UnequalOrdering() {
+  @Test
+  public void stringArrayIsEqualTo_Fail_UnequalOrdering() {
     try {
       assertThat(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
       throw new Error("Expected to throw.");
@@ -184,7 +204,8 @@ public class ObjectArraySubjectTest {
     return ts;
   }
 
-  @Test public void SetArrayIsEqualTo_Fail_UnequalOrdering() {
+  @Test
+  public void SetArrayIsEqualTo_Fail_UnequalOrdering() {
     try {
       assertThat(objectArray(ImmutableSet.of("A"), ImmutableSet.of("B")))
           .isEqualTo(objectArray(ImmutableSet.of("B"), ImmutableSet.of("A")));
@@ -193,7 +214,7 @@ public class ObjectArraySubjectTest {
       assertThat(e).hasMessage(
           "Not true that <(Set[]) [[A], [B]]> is equal to <[[B], [A]]>. It differs at index <0>");
       // Maybe one day:
-      // .isEqualTo("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
+      // .hasMessage("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
     }
   }
 

@@ -21,11 +21,9 @@ package com.google.common.truth.extension;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class MyType {
-
   final int value;
 
   public MyType(int value) {
     this.value = value;
   }
-
 }

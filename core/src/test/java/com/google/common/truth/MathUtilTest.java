@@ -30,20 +30,24 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class MathUtilTest {
-
-  @Test public void floatEquality() {
+  @Test
+  public void floatEquality() {
     assertThat(MathUtil.equals(1.3f, 1.3f, 0.00000000000001f)).isTrue();
     assertThat(MathUtil.equals(1.3f, 1.3f, 0.0f)).isTrue();
-    assertThat(MathUtil.equals(0.0f, 1.0f+2.0-3.0, 0.00000000000000000000000000000001f)).isTrue();
+    assertThat(MathUtil.equals(0.0f, 1.0f + 2.0 - 3.0, 0.00000000000000000000000000000001f))
+        .isTrue();
   }
 
-  @Test public void doubleEquality() {
+  @Test
+  public void doubleEquality() {
     assertThat(MathUtil.equals(1.3d, 1.3d, 0.00000000000001f)).isTrue();
     assertThat(MathUtil.equals(1.3d, 1.3d, 0.0f)).isTrue();
-    assertThat(MathUtil.equals(0.0d, 1.0d+2.0-3.0, 0.00000000000000000000000000000001d)).isTrue();
+    assertThat(MathUtil.equals(0.0d, 1.0d + 2.0 - 3.0, 0.00000000000000000000000000000001d))
+        .isTrue();
   }
 
-  @Test public void doubleEqualityDifferentTypes() {
+  @Test
+  public void doubleEqualityDifferentTypes() {
     assertThat(MathUtil.equals(1.3d, 1.3f, 0.00000000000001d)).isFalse();
     assertThat(MathUtil.equals(1.3f, 1.3d, 0.00000000000001f)).isFalse();
   }

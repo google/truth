@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double> {
-
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 
   DoubleSubject(FailureStrategy failureStrategy, @Nullable Double subject) {
@@ -84,13 +83,12 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
       @Override
       public void of(double expected) {
         Double actual = getSubject();
-        checkNotNull(actual, "actual value cannot be null. tolerance=%s expected=%s",
-            tolerance, expected);
+        checkNotNull(
+            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
 
         if (!MathUtil.equals(actual, expected, tolerance)) {
-          failWithRawMessage(
-              "%s should have been within %s of %s", actual, tolerance, expected);
+          failWithRawMessage("%s should have been within %s of %s", actual, tolerance, expected);
         }
       }
     };
@@ -106,8 +104,8 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
       @Override
       public void of(double expected) {
         Double actual = getSubject();
-        checkNotNull(actual, "actual value cannot be null. tolerance=%s expected=%s",
-            tolerance, expected);
+        checkNotNull(
+            actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
 
         if (!MathUtil.notEquals(actual, expected, tolerance)) {
@@ -149,8 +147,10 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
   private static void checkTolerance(double tolerance) {
     checkArgument(!Double.isNaN(tolerance), "tolerance cannot be NaN");
     checkArgument(tolerance >= 0.0, "tolerance (%s) cannot be negative", tolerance);
-    checkArgument(doubleToLongBits(tolerance) != NEG_ZERO_BITS,
-        "tolerance (%s) cannot be negative", tolerance);
+    checkArgument(
+        doubleToLongBits(tolerance) != NEG_ZERO_BITS,
+        "tolerance (%s) cannot be negative",
+        tolerance);
     checkArgument(tolerance != Double.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
 

@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
  */
 public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T>
     extends Subject<S, T> {
-
   AbstractArraySubject(FailureStrategy failureStrategy, @Nullable T subject) {
     super(failureStrategy, subject);
   }
@@ -63,7 +62,8 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
     }
   }
 
-  @Override public S named(String name) {
+  @Override
+  public S named(String name) {
     return (S) super.named(name);
   }
 
@@ -71,7 +71,8 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
 
   abstract List<?> listRepresentation();
 
-  @Override protected String getDisplaySubject() {
+  @Override
+  protected String getDisplaySubject() {
     return (internalCustomName() == null)
         ? "<(" + underlyingType() + "[]) " + listRepresentation() + ">"
         : this.internalCustomName();
@@ -81,7 +82,9 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
     String expectedType = (expected.getClass().isArray())
         ? expected.getClass().getComponentType().getName() + "[]"
         : expected.getClass().getName();
-    failWithRawMessage("Incompatible types compared. expected: %s, actual: %s[]",
-        Platform.compressType(expectedType), underlyingType());
+    failWithRawMessage(
+        "Incompatible types compared. expected: %s, actual: %s[]",
+        Platform.compressType(expectedType),
+        underlyingType());
   }
 }

@@ -46,15 +46,14 @@ import javax.annotation.Nullable;
  */
 public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M extends Multimap<K, V>>
     extends Subject<S, M> {
-
   MultimapSubject(FailureStrategy failureStrategy, @Nullable M multimap) {
     super(failureStrategy, multimap);
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings({"unchecked", "rawtypes"})
   static <K, V, M extends Multimap<K, V>>
-  MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> create(
-      FailureStrategy failureStrategy, @Nullable Multimap<K, V> multimap) {
+      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> create(
+          FailureStrategy failureStrategy, @Nullable Multimap<K, V> multimap) {
     return new MultimapSubject(failureStrategy, multimap);
   }
 
@@ -131,8 +130,9 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
    * assertions must be chained onto this method call to test properties of the Multimap.
    */
   @CheckReturnValue
-  public IterableSubject<? extends IterableSubject<?, V, ? extends Collection<V>>, V,
-      ? extends Collection<V>> valuesForKey(@Nullable K key) {
+  public IterableSubject<
+          ? extends IterableSubject<?, V, ? extends Collection<V>>, V, ? extends Collection<V>>
+      valuesForKey(@Nullable K key) {
     return new IterableValuesForKey(failureStrategy, this, key);
   }
 
@@ -143,10 +143,15 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
           || (getSubject() instanceof SetMultimap && other instanceof ListMultimap)) {
         String mapType1 = (getSubject() instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
         String mapType2 = (other instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
-        failWithRawMessage("Not true that %s %s is equal to %s <%s>. "
+        failWithRawMessage(
+            "Not true that %s %s is equal to %s <%s>. "
                 + "A %s cannot equal a %s if either is non-empty.",
-            mapType1, getDisplaySubject(), mapType2, other,
-            mapType1, mapType2);
+            mapType1,
+            getDisplaySubject(),
+            mapType2,
+            other,
+            mapType1,
+            mapType2);
       } else {
         fail("is equal to", other);
       }
@@ -175,17 +180,18 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
       if (!extra.isEmpty()) {
         failWithRawMessage(
             "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>",
-            getDisplaySubject(), failVerb, expectedMultimap,
-            countDuplicatesMultimap(missing), countDuplicatesMultimap(extra));
+            getDisplaySubject(),
+            failVerb,
+            expectedMultimap,
+            countDuplicatesMultimap(missing),
+            countDuplicatesMultimap(extra));
       } else {
         failWithBadResults(
-            failVerb, expectedMultimap,
-            "is missing", countDuplicatesMultimap(missing));
+            failVerb, expectedMultimap, "is missing", countDuplicatesMultimap(missing));
       }
     } else if (!extra.isEmpty()) {
       failWithBadResults(
-          failVerb, expectedMultimap,
-          "has unexpected items", countDuplicatesMultimap(extra));
+          failVerb, expectedMultimap, "has unexpected items", countDuplicatesMultimap(extra));
     }
 
     return new MultimapInOrder(expectedMultimap);
@@ -193,8 +199,8 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
 
   private class IterableValuesForKey
       extends IterableSubject<IterableValuesForKey, V, Collection<V>> {
-
     @Nullable private final K key;
+
     @Nullable private final String multimapDisplaySubject;
 
     IterableValuesForKey(
@@ -208,9 +214,9 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
 
     @Override
     protected String getDisplaySubject() {
-      String innerDisplaySubject = ""
-          + "<Values for key <" + key + "> (<" + getSubject() + ">) "
-          + "in " + multimapDisplaySubject + ">";
+      String innerDisplaySubject =
+          "<Values for key <" + key + "> (<" + getSubject() + ">) in "
+              + multimapDisplaySubject + ">";
 
       if (internalCustomName() != null) {
         return internalCustomName() + " (" + innerDisplaySubject + ")";
@@ -218,7 +224,6 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
         return innerDisplaySubject;
       }
     }
-
   }
 
   private class MultimapInOrder implements Ordered {
@@ -230,8 +235,8 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
 
     @Override
     public void inOrder() {
-      boolean keysInOrder = Lists.newArrayList(getSubject().keySet()).equals(
-          Lists.newArrayList(expectedMultimap.keySet()));
+      boolean keysInOrder = Lists.newArrayList(getSubject().keySet())
+          .equals(Lists.newArrayList(expectedMultimap.keySet()));
 
       LinkedHashSet<Object> keysWithValuesOutOfOrder = Sets.newLinkedHashSet();
       LinkedHashSet<Object> allKeys = Sets.newLinkedHashSet();
@@ -247,19 +252,25 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
 
       if (!keysInOrder) {
         if (!keysWithValuesOutOfOrder.isEmpty()) {
-          failWithRawMessage("Not true that %s contains exactly <%s> in order. "
-              + "The keys are not in order, and the values for keys <%s> are not "
-              + "in order either",
-              getDisplaySubject(), expectedMultimap, keysWithValuesOutOfOrder);
+          failWithRawMessage(
+              "Not true that %s contains exactly <%s> in order. The keys are not in order, "
+                  + "and the values for keys <%s> are not in order either",
+              getDisplaySubject(),
+              expectedMultimap,
+              keysWithValuesOutOfOrder);
         } else {
-          failWithRawMessage("Not true that %s contains exactly <%s> in order. "
-              + "The keys are not in order",
-              getDisplaySubject(), expectedMultimap);
+          failWithRawMessage(
+              "Not true that %s contains exactly <%s> in order. The keys are not in order",
+              getDisplaySubject(),
+              expectedMultimap);
         }
       } else if (!keysWithValuesOutOfOrder.isEmpty()) {
-        failWithRawMessage("Not true that %s contains exactly <%s> in order. "
-            + "The values for keys <%s> are not in order",
-            getDisplaySubject(), expectedMultimap, keysWithValuesOutOfOrder);
+        failWithRawMessage(
+            "Not true that %s contains exactly <%s> in order. "
+                + "The values for keys <%s> are not in order",
+            getDisplaySubject(),
+            expectedMultimap,
+            keysWithValuesOutOfOrder);
       }
     }
   }
@@ -276,8 +287,7 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
     LinkedListMultimap<Object, Object> difference = LinkedListMultimap.create();
     for (Object key : minuend.keySet()) {
       List<?> valDifference = difference(
-          Lists.newArrayList(get(minuend, key)),
-          Lists.newArrayList(get(subtrahend, key)));
+          Lists.newArrayList(get(minuend, key)), Lists.newArrayList(get(subtrahend, key)));
       difference.putAll(key, valDifference);
     }
     return difference;
@@ -306,5 +316,4 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
     sb.append("}");
     return sb.toString();
   }
-
 }

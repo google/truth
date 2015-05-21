@@ -30,38 +30,42 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class PrimitiveIntArraySubjectTest {
-
   private static final int[] EMPTY = new int[0];
 
-  @Test public void isEqualTo() {
+  @Test
+  public void isEqualTo() {
     assertThat(array(2, 5)).isEqualTo(array(2, 5));
   }
 
-  @Test public void isEqualTo_Same() {
+  @Test
+  public void isEqualTo_Same() {
     int[] same = array(2, 5);
     assertThat(same).isEqualTo(same);
   }
 
-  @Test public void asList() {
+  @Test
+  public void asList() {
     assertThat(array(5, 2, 9)).asList().containsAllOf(2, 9);
   }
 
-  @Test public void hasLength() {
+  @Test
+  public void hasLength() {
     assertThat(EMPTY).hasLength(0);
     assertThat(array(2, 5)).hasLength(2);
   }
 
-  @Test public void hasLengthFail() {
+  @Test
+  public void hasLengthFail() {
     try {
       assertThat(array(2, 5)).hasLength(1);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessage("Not true that <(int[]) [2, 5]> has length <1>");
+      assertThat(e).hasMessage("Not true that <(int[]) [2, 5]> has length <1>");
     }
   }
 
-  @Test public void hasLengthNegative() {
+  @Test
+  public void hasLengthNegative() {
     try {
       assertThat(array(2, 5)).hasLength(-1);
       throw new Error("Expected to throw.");
@@ -69,35 +73,38 @@ public class PrimitiveIntArraySubjectTest {
     }
   }
 
-  @Test public void isEmpty() {
+  @Test
+  public void isEmpty() {
     assertThat(EMPTY).isEmpty();
   }
 
-  @Test public void isEmptyFail() {
+  @Test
+  public void isEmptyFail() {
     try {
       assertThat(array(2, 5)).isEmpty();
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessage("Not true that <(int[]) [2, 5]> is empty");
+      assertThat(e).hasMessage("Not true that <(int[]) [2, 5]> is empty");
     }
   }
 
-  @Test public void isNotEmpty() {
+  @Test
+  public void isNotEmpty() {
     assertThat(array(2, 5)).isNotEmpty();
   }
 
-  @Test public void isNotEmptyFail() {
+  @Test
+  public void isNotEmptyFail() {
     try {
       assertThat(EMPTY).isNotEmpty();
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessage("Not true that <(int[]) []> is not empty");
+      assertThat(e).hasMessage("Not true that <(int[]) []> is not empty");
     }
   }
 
-  @Test public void isEqualTo_Fail_UnequalOrdering() {
+  @Test
+  public void isEqualTo_Fail_UnequalOrdering() {
     try {
       assertThat(array(2, 3)).isEqualTo(array(3, 2));
     } catch (AssertionError e) {
@@ -105,7 +112,8 @@ public class PrimitiveIntArraySubjectTest {
     }
   }
 
-  @Test public void isEqualTo_Fail_NotAnArray() {
+  @Test
+  public void isEqualTo_Fail_NotAnArray() {
     try {
       assertThat(array(2, 3, 4)).isEqualTo(new Object());
     } catch (AssertionError e) {
@@ -114,34 +122,37 @@ public class PrimitiveIntArraySubjectTest {
     }
   }
 
-  @Test public void isNotEqualTo_SameLengths() {
+  @Test
+  public void isNotEqualTo_SameLengths() {
     assertThat(array(2, 3)).isNotEqualTo(array(3, 2));
   }
 
-  @Test public void isNotEqualTo_DifferentLengths() {
+  @Test
+  public void isNotEqualTo_DifferentLengths() {
     assertThat(array(2, 3)).isNotEqualTo(array(2, 3, 1));
   }
 
-  @Test public void isNotEqualTo_DifferentTypes() {
+  @Test
+  public void isNotEqualTo_DifferentTypes() {
     assertThat(array(2, 3)).isNotEqualTo(new Object());
   }
 
-  @Test public void isNotEqualTo_FailEquals() {
+  @Test
+  public void isNotEqualTo_FailEquals() {
     try {
       assertThat(array(2, 3)).isNotEqualTo(array(2, 3));
     } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessage("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e).hasMessage("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 
-  @Test public void isNotEqualTo_FailSame() {
+  @Test
+  public void isNotEqualTo_FailSame() {
     try {
       int[] same = array(2, 3);
       assertThat(same).isNotEqualTo(same);
     } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessage("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e).hasMessage("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 

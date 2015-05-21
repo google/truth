@@ -119,8 +119,8 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
 
     @Override
     public void failComparing(String message, CharSequence expected, CharSequence actual) {
-      delegate.fail(failureMessagePrepend + ": "
-          + StringUtil.messageFor(message, expected, actual));
+      delegate.fail(
+          failureMessagePrepend + ": " + StringUtil.messageFor(message, expected, actual));
     }
   }
 }

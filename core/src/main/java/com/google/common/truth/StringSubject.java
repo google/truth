@@ -31,12 +31,12 @@ import javax.annotation.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class StringSubject extends ComparableSubject<StringSubject, String> {
-
   public StringSubject(FailureStrategy failureStrategy, @Nullable String string) {
     super(failureStrategy, string);
   }
 
-  @Override protected String getDisplaySubject() {
+  @Override
+  protected String getDisplaySubject() {
     if (internalCustomName() != null) {
       return internalCustomName() + " (<" + quote(getSubject()) + ">)";
     } else {
@@ -44,23 +44,29 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  @Override public void isEqualTo(@Nullable Object expected) {
+  @Override
+  public void isEqualTo(@Nullable Object expected) {
     if (getSubject() == null) {
       if (expected != null) {
         if (expected instanceof String) {
-          failWithRawMessage("Not true that null reference is equal to <%s>",
-              quote((String) expected));
+          failWithRawMessage(
+              "Not true that null reference is equal to <%s>", quote((String) expected));
         } else {
-          failWithRawMessage("Not true that null reference is equal to (%s)<%s>",
-              expected.getClass().getName(), expected);
+          failWithRawMessage(
+              "Not true that null reference is equal to (%s)<%s>",
+              expected.getClass().getName(),
+              expected);
         }
       }
     } else {
       if (expected == null) {
         isNull();
       } else if (!(expected instanceof String)) {
-        failWithRawMessage("Not true that %s is equal to (%s)<%s>",
-            getDisplaySubject(), expected.getClass().getName(), expected);
+        failWithRawMessage(
+            "Not true that %s is equal to (%s)<%s>",
+            getDisplaySubject(),
+            expected.getClass().getName(),
+            expected);
       } else if (!getSubject().equals(expected)) {
         if (internalCustomName() != null) {
           failureStrategy.failComparing(
@@ -83,7 +89,8 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /**
    * Fails if the string is not null.
    */
-  @Override public void isNull() {
+  @Override
+  public void isNull() {
     if (getSubject() != null) {
       failWithRawMessage("Not true that %s is null", getDisplaySubject());
     }
@@ -96,8 +103,11 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     checkArgument(expectedLength >= 0, "expectedLength(%s) must be >= 0", expectedLength);
     int actualLength = getSubject().length();
     if (actualLength != expectedLength) {
-      failWithRawMessage("Not true that %s has a length of %s. It is %s.",
-          getDisplaySubject(), expectedLength, actualLength);
+      failWithRawMessage(
+          "Not true that %s has a length of %s. It is %s.",
+          getDisplaySubject(),
+          expectedLength,
+          actualLength);
     }
   }
 
@@ -234,8 +244,8 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotContainMatch(Pattern pattern) {
     if (pattern.matcher(getSubject()).find()) {
-      failWithRawMessage("%s should not have contained a match for <%s>",
-          getDisplaySubject(), pattern);
+      failWithRawMessage(
+          "%s should not have contained a match for <%s>", getDisplaySubject(), pattern);
     }
   }
 
@@ -244,8 +254,8 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    */
   public void doesNotContainMatch(String regex) {
     if (Platform.containsMatch(getSubject(), regex)) {
-      failWithRawMessage("%s should not have contained a match for <%s>",
-          getDisplaySubject(), regex);
+      failWithRawMessage(
+          "%s should not have contained a match for <%s>", getDisplaySubject(), regex);
     }
   }
 

@@ -29,12 +29,13 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class BooleanTest {
-
-  @Test public void isTrue() {
+  @Test
+  public void isTrue() {
     assertThat(true).isTrue();
   }
 
-  @Test public void isTrueFailing() {
+  @Test
+  public void isTrueFailing() {
     try {
       assertThat(false).isTrue();
       fail("Should have thrown");
@@ -43,11 +44,13 @@ public class BooleanTest {
     }
   }
 
-  @Test public void isFalse() {
+  @Test
+  public void isFalse() {
     assertThat(false).isFalse();
   }
 
-  @Test public void isFalseFailing() {
+  @Test
+  public void isFalseFailing() {
     try {
       assertThat(true).isFalse();
       fail("Should have thrown");
