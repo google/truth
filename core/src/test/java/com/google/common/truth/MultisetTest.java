@@ -100,8 +100,9 @@ public class MultisetTest {
     try {
       assertThat(multiset).hasCount("kurt", 3);
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[kurt x 2, kluever]> has a count for <kurt> of <3>. It is <2>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[kurt x 2, kluever]> has a count for <kurt> of <3>. It is <2>");
       return;
     }
     fail("Should have thrown.");

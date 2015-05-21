@@ -86,8 +86,10 @@ public class RelabeledSubjectsTest {
       assertThat(Arrays.asList("a", "b", "c")).named("crazy list").containsAllOf("c", "d");
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that crazy list (<[a, b, c]>) contains all of <[c, d]>. It is missing <[d]>");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that crazy list (<[a, b, c]>) contains all of <[c, d]>. "
+                  + "It is missing <[d]>");
     }
   }
 

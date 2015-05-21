@@ -47,8 +47,9 @@ public class ClassTest {
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Not true that <class java.lang.Object> "
-              + "is assignable to <class java.lang.String>");
+          .hasMessage(
+              "Not true that <class java.lang.Object> "
+                  + "is assignable to <class java.lang.String>");
     }
   }
 
@@ -59,8 +60,9 @@ public class ClassTest {
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Not true that <class java.lang.String> "
-              + "is assignable to <class java.lang.Exception>");
+          .hasMessage(
+              "Not true that <class java.lang.String> "
+                  + "is assignable to <class java.lang.Exception>");
     }
   }
 }

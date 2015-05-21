@@ -47,8 +47,9 @@ public class ThrowableTest {
       assertThat(subject).hasMessage("foobar");
       throw new Error("Expected to fail.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).isEqualTo(
-          "Not true that <java.lang.NullPointerException: message> has message <foobar>");
+      assertThat(expected.getMessage())
+          .isEqualTo(
+              "Not true that <java.lang.NullPointerException: message> has message <foobar>");
       assertThat(expected.getCause()).isEqualTo(subject);
     }
   }

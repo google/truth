@@ -141,9 +141,10 @@ public class SubjectTest {
       assertThat(5).isEqualTo(wrapper);
       fail("Should have thrown.");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that <5> (java.lang.Integer) "
-              + "is equal to <5> (com.google.common.truth.SubjectTest$IntWrapper)");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <5> (java.lang.Integer) "
+                  + "is equal to <5> (com.google.common.truth.SubjectTest$IntWrapper)");
     }
   }
 
@@ -212,9 +213,10 @@ public class SubjectTest {
       assertThat(a).isSameAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <true> (java.lang.String) is the same"
-              + " instance as <true> (java.lang.Boolean)");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <true> (java.lang.String) is the same"
+                  + " instance as <true> (java.lang.Boolean)");
     }
   }
 
@@ -375,9 +377,10 @@ public class SubjectTest {
       assertThat(a).isEqualTo(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <true> (java.lang.String) is equal to"
-              + " <true> (java.lang.Boolean)");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <true> (java.lang.String) is equal to"
+                  + " <true> (java.lang.Boolean)");
     }
   }
 
@@ -465,9 +468,10 @@ public class SubjectTest {
       assertThat(4.5).isInstanceOf(Long.class);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <4.5> is an instance of <java.lang.Long>."
-              + " It is an instance of <java.lang.Double>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <4.5> is an instance of <java.lang.Long>."
+                  + " It is an instance of <java.lang.Double>");
     }
   }
 

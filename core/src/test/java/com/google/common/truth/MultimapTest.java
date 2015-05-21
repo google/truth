@@ -82,10 +82,11 @@ public class MultimapTest {
           .containsExactly(4);
       fail("Should have thrown.");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that "
-              + "<Values for key <1> (<[5]>) in multymap (<{1=[5]}>)> contains exactly <[4]>. "
-              + "It is missing <[4]> and has unexpected items <[5]>");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that "
+                  + "<Values for key <1> (<[5]>) in multymap (<{1=[5]}>)> contains exactly <[4]>. "
+                  + "It is missing <[4]> and has unexpected items <[5]>");
     }
   }
 
@@ -99,10 +100,11 @@ public class MultimapTest {
           .containsExactly(4);
       fail("Should have thrown.");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that "
-              + "valuez (<Values for key <1> (<[5]>) in <{1=[5]}>>) contains exactly <[4]>. "
-              + "It is missing <[4]> and has unexpected items <[5]>");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that "
+                  + "valuez (<Values for key <1> (<[5]>) in <{1=[5]}>>) contains exactly <[4]>. "
+                  + "It is missing <[4]> and has unexpected items <[5]>");
     }
   }
 
@@ -297,12 +299,13 @@ public class MultimapTest {
       assertThat(actual).containsExactly(expected);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          String.format(
-              "Not true that <%s> contains exactly <%s>. "
-                  + "It has unexpected items <{3=[one], 4=[five]}>",
-              actual,
-              expected));
+      assertThat(e)
+          .hasMessage(
+              String.format(
+                  "Not true that <%s> contains exactly <%s>. "
+                      + "It has unexpected items <{3=[one], 4=[five]}>",
+                  actual,
+                  expected));
     }
   }
 
@@ -318,12 +321,13 @@ public class MultimapTest {
       assertThat(actual).containsExactly(expected);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          String.format(
-              "Not true that <%s> contains exactly <%s>. "
-                  + "It is missing <{3=[six], 4=[five]}>",
-              actual,
-              expected));
+      assertThat(e)
+          .hasMessage(
+              String.format(
+                  "Not true that <%s> contains exactly <%s>. "
+                      + "It is missing <{3=[six], 4=[five]}>",
+                  actual,
+                  expected));
     }
   }
 
@@ -339,12 +343,13 @@ public class MultimapTest {
       assertThat(actual).containsExactly(expected);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          String.format(
-              "Not true that <%s> contains exactly <%s>. "
-                  + "It has unexpected items <{4=[nine], 5=[eight]}>",
-              actual,
-              expected));
+      assertThat(e)
+          .hasMessage(
+              String.format(
+                  "Not true that <%s> contains exactly <%s>. "
+                      + "It has unexpected items <{4=[nine], 5=[eight]}>",
+                  actual,
+                  expected));
     }
   }
 
@@ -362,13 +367,14 @@ public class MultimapTest {
       assertThat(actual).containsExactly(expected);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          String.format(
-              "Not true that <%s> contains exactly <%s>. "
-                  + "It is missing <{3=[six], 4=[five]}> "
-                  + "and has unexpected items <{4=[nine], 5=[eight]}>",
-              actual,
-              expected));
+      assertThat(e)
+          .hasMessage(
+              String.format(
+                  "Not true that <%s> contains exactly <%s>. "
+                      + "It is missing <{3=[six], 4=[five]}> "
+                      + "and has unexpected items <{4=[nine], 5=[eight]}>",
+                  actual,
+                  expected));
     }
   }
 
@@ -422,12 +428,13 @@ public class MultimapTest {
       assertThat(actual).containsExactly(expected).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          String.format(
-              "Not true that <%s> contains exactly <%s> in order. "
-                  + "The values for keys <[3]> are not in order",
-              actual,
-              expected));
+      assertThat(e)
+          .hasMessage(
+              String.format(
+                  "Not true that <%s> contains exactly <%s> in order. "
+                      + "The values for keys <[3]> are not in order",
+                  actual,
+                  expected));
     }
   }
 }

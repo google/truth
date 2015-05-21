@@ -51,11 +51,12 @@ public class MapTest {
     try {
       assertThat(actualMap).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, april=4, march=5}>. "
-              + "The subject is missing the following entries: {april=4} and "
-              + "has the following extra entries: {feb=2} and "
-              + "has the following different entries: {march=(5, 3)}");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, april=4, march=5}>. "
+                  + "The subject is missing the following entries: {april=4} and "
+                  + "has the following extra entries: {feb=2} and "
+                  + "has the following different entries: {march=(5, 3)}");
       return;
     }
     fail("Should have thrown.");
@@ -69,9 +70,10 @@ public class MapTest {
     try {
       assertThat(actualMap).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=4}>. "
-              + "The subject has the following different entries: {march=(4, 3)}");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=4}>. "
+                  + "The subject has the following different entries: {march=(4, 3)}");
       return;
     }
     fail("Should have thrown.");
@@ -85,9 +87,10 @@ public class MapTest {
     try {
       assertThat(actualMap).named("foo").isEqualTo(expectedMap);
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to <{jan=1, feb=2, march=4}>. "
-              + "The subject has the following different entries: {march=(4, 3)}");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to <{jan=1, feb=2, march=4}>."
+                  + " The subject has the following different entries: {march=(4, 3)}");
       return;
     }
     fail("Should have thrown.");
@@ -101,9 +104,10 @@ public class MapTest {
     try {
       assertThat(actualMap).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2}>. "
-              + "The subject has the following extra entries: {march=3}");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2}>. "
+                  + "The subject has the following extra entries: {march=3}");
       return;
     }
     fail("Should have thrown.");
@@ -117,9 +121,10 @@ public class MapTest {
     try {
       assertThat(actualMap).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that <{jan=1, feb=2}> is equal to <{jan=1, feb=2, march=3}>. "
-              + "The subject is missing the following entries: {march=3}");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <{jan=1, feb=2}> is equal to <{jan=1, feb=2, march=3}>. "
+                  + "The subject is missing the following entries: {march=3}");
       return;
     }
     fail("Should have thrown.");
@@ -133,10 +138,11 @@ public class MapTest {
     try {
       assertThat(actualMap).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, mar=3}>. "
-              + "The subject is missing the following entries: {mar=3} "
-              + "and has the following extra entries: {march=3}");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, mar=3}>. "
+                  + "The subject is missing the following entries: {mar=3} "
+                  + "and has the following extra entries: {march=3}");
       return;
     }
     fail("Should have thrown.");
@@ -149,8 +155,9 @@ public class MapTest {
     try {
       assertThat(map).isNotEqualTo(map);
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "Not true that <{jan=1, feb=2, march=3}> is not equal to <{jan=1, feb=2, march=3}>");
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <{jan=1, feb=2, march=3}> is not equal to <{jan=1, feb=2, march=3}>");
       return;
     }
     fail("Should have thrown.");
@@ -349,8 +356,8 @@ public class MapTest {
       assertThat(map).doesNotContainEntry("kurt", "kluever");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <{kurt=kluever}> does not contain entry <kurt=kluever>");
+      assertThat(e)
+          .hasMessage("Not true that <{kurt=kluever}> does not contain entry <kurt=kluever>");
     }
   }
 

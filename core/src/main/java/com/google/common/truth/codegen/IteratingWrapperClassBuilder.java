@@ -20,6 +20,7 @@ import static java.lang.reflect.Modifier.isPrivate;
 import static java.lang.reflect.Modifier.isStatic;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Joiner;
 import com.google.common.truth.ReflectionUtil;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
@@ -40,6 +41,7 @@ import java.util.List;
  */
 @GwtIncompatible("java.lang.reflect.*")
 public class IteratingWrapperClassBuilder {
+  private static final Joiner NEW_LINE_JOINER = Joiner.on("%n");
 
   /**
    * <p>A string intended for use in String.format() representing the
@@ -55,28 +57,29 @@ public class IteratingWrapperClassBuilder {
    * </p>
    */
   private static final String CLASS_TEMPLATE =
-      "package %1$s;%n" +
-      "%n" +
-      "import com.google.common.truth.FailureStrategy;%n" +
-      "import com.google.common.truth.SubjectFactory;%n" +
-      "%n" +
-      "public class %2$sIteratingWrapper extends %2$s {%n" +
-      "%n" +
-      "  private final SubjectFactory subjectFactory;%n" +
-      "  private final Iterable<%3$s> data;%n" +
-      "%n" +
-      "  public %2$sIteratingWrapper(%n" +
-      "      FailureStrategy failureStrategy,%n" +
-      "      SubjectFactory<?, ?> subjectFactory,%n" +
-      "      Iterable<%3$s> data%n" +
-      "  ) {%n" +
-      "    super(failureStrategy, (%3$s)null);%n" +
-      "    this.subjectFactory = subjectFactory;%n" +
-      "    this.data = data;%n" +
-      "  }%n" +
-      "%n" +
-      "%4$s" +
-      "}%n";
+      NEW_LINE_JOINER.join(
+          "package %1$s;",
+          "",
+          "import com.google.common.truth.FailureStrategy;",
+          "import com.google.common.truth.SubjectFactory;",
+          "",
+          "public class %2$sIteratingWrapper extends %2$s {",
+          "",
+          "  private final SubjectFactory subjectFactory;",
+          "  private final Iterable<%3$s> data;",
+          "",
+          "  public %2$sIteratingWrapper(",
+          "      FailureStrategy failureStrategy,",
+          "      SubjectFactory<?, ?> subjectFactory,",
+          "      Iterable<%3$s> data",
+          "  ) {",
+          "    super(failureStrategy, (%3$s)null);",
+          "    this.subjectFactory = subjectFactory;",
+          "    this.data = data;",
+          "  }",
+          "",
+          "%4$s",
+          "}");
 
   /**
    * <p>A string intended for use in String.format() representing the
@@ -95,12 +98,13 @@ public class IteratingWrapperClassBuilder {
    * </p>
    */
   private static final String WRAPPER_METHOD_TEMPLATE =
-      "  @Override %1$s %2$s %3$s(%4$s) {%n" +
-      "    for (%5$s item : data) {%n" +
-      "      %6$s subject = (%6$s)subjectFactory.getSubject(failureStrategy, item);%n" +
-      "      subject.%3$s(%7$s);%n" +
-      "    }%n" +
-      "  }%n";
+      NEW_LINE_JOINER.join(
+          "  @Override %1$s %2$s %3$s(%4$s) {",
+          "    for (%5$s item : data) {",
+          "      %6$s subject = (%6$s)subjectFactory.getSubject(failureStrategy, item);",
+          "      subject.%3$s(%7$s);",
+          "    }",
+          "  }");
 
   private static final int TARGET_TYPE_PARAMETER = 1;
 
@@ -110,7 +114,7 @@ public class IteratingWrapperClassBuilder {
 
   public final String className;
 
-  public IteratingWrapperClassBuilder(SubjectFactory<?,?> subjectFactory) {
+  public IteratingWrapperClassBuilder(SubjectFactory<?, ?> subjectFactory) {
     this.subjectFactory = subjectFactory;
     this.className = subjectFactory.getSubjectClass().getCanonicalName() + ITERATING_WRAPPER;
   }
@@ -121,43 +125,39 @@ public class IteratingWrapperClassBuilder {
     Class<?> targetType = ReflectionUtil.typeParameter(subjectClass, TARGET_TYPE_PARAMETER);
 
     StringBuilder methodWrappers = new StringBuilder();
-    for (Method m : methods)  {
+    for (Method m : methods) {
       appendMethodWrapper(methodWrappers, subjectClass, targetType, m);
     }
-    String code = String.format(
-        CLASS_TEMPLATE,
-        subjectClass.getPackage().getName(),
-        subjectClass.getSimpleName(),
-        targetType.getCanonicalName(),
-        methodWrappers.toString());
+    String code =
+        String.format(
+            CLASS_TEMPLATE,
+            subjectClass.getPackage().getName(),
+            subjectClass.getSimpleName(),
+            targetType.getCanonicalName(),
+            methodWrappers.toString());
 
     return code;
   }
 
   private void appendMethodWrapper(
-      StringBuilder code,
-      Class<?> subjectType,
-      Class<?> targetType,
-      Method method) {
+      StringBuilder code, Class<?> subjectType, Class<?> targetType, Method method) {
     int modifiers = method.getModifiers();
     boolean shouldWrap =
-        !method.getDeclaringClass().equals(Subject.class) &&
-        !method.getDeclaringClass().equals(Object.class) &&
-        !(isFinal(modifiers) || isPrivate(modifiers) || isStatic(modifiers));
+        (method.getDeclaringClass() != Subject.class)
+            && !method.getDeclaringClass().equals(Object.class)
+            && !(isFinal(modifiers) || isPrivate(modifiers) || isStatic(modifiers));
 
     if (shouldWrap) {
-      code.append(String.format(
-          WRAPPER_METHOD_TEMPLATE,
-          stringVisibility(modifiers),
-          method.getReturnType().getCanonicalName(),
-          method.getName(),
-          methodSignature(
-              method.getParameterTypes(),
-              method.getParameterAnnotations()).toString(),
-          targetType.getCanonicalName(),
-          subjectType.getCanonicalName(),
-          methodParameterList(method.getParameterTypes().length)
-          ));
+      code.append(
+          String.format(
+              WRAPPER_METHOD_TEMPLATE,
+              stringVisibility(modifiers),
+              method.getReturnType().getCanonicalName(),
+              method.getName(),
+              methodSignature(method.getParameterTypes(), method.getParameterAnnotations()),
+              targetType.getCanonicalName(),
+              subjectType.getCanonicalName(),
+              methodParameterList(method.getParameterTypes().length)));
     }
   }
 
@@ -195,5 +195,4 @@ public class IteratingWrapperClassBuilder {
       return "";
     }
   }
-
 }

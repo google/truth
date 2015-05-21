@@ -37,33 +37,41 @@ import javax.annotation.CheckReturnValue;
  */
 @RunWith(Theories.class)
 public class AbstractVerbTest {
-  private final AtomicReference<String> failureMessage = new AtomicReference<String>();
+  private static final AtomicReference<String> failureMessage = new AtomicReference<String>();
 
-  private final AbstractVerb<?> captureFailure = new AbstractVerb(new FailureStrategy() {
-    @Override public void fail(String message, Throwable ignoreInThisTest) {
-      failureMessage.set(message);
-    }
-  }) {
-    @Override
-    @CheckReturnValue
-    public AbstractVerb<?> withFailureMessage(String failureMessage) {
-      throw new UnsupportedOperationException();
-    }
+  private static final FailureStrategy FAILURE_STRATEGY =
+      new FailureStrategy() {
+        @Override
+        public void fail(String message, Throwable ignoreInThisTest) {
+          failureMessage.set(message);
+        }
+      };
 
-    @Override protected String getFailureMessage() {
-      return null;
-    }
-  };
+  private static final AbstractVerb<?> CAPTURE_FAILURE =
+      new AbstractVerb(FAILURE_STRATEGY) {
+        @Override
+        @CheckReturnValue
+        public AbstractVerb<?> withFailureMessage(String failureMessage) {
+          throw new UnsupportedOperationException();
+        }
 
-	@DataPoints public static String[] strings = new String[] {"a", "b"};
+        @Override
+        protected String getFailureMessage() {
+          return null;
+        }
+      };
 
-  @Test public void noArgFail() {
-    captureFailure.fail();
+  @DataPoints public static String[] strings = new String[] {"a", "b"};
+
+  @Test
+  public void noArgFail() {
+    CAPTURE_FAILURE.fail();
     assertThat(failureMessage.get()).isEqualTo("");
   }
 
-  @Theory public void argFail(String message) {
-    captureFailure.fail(message);
+  @Theory
+  public void argFail(String message) {
+    CAPTURE_FAILURE.fail(message);
     assertThat(failureMessage.get()).isEqualTo(message);
   }
 }

@@ -63,8 +63,9 @@ public class CustomFailureMessageTest {
       assertWithMessage("This is a custom message").that(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "This is a custom message: The subject was expected to be true, but was false");
+      assertThat(expected)
+          .hasMessage(
+              "This is a custom message: The subject was expected to be true, but was false");
     }
   }
 
@@ -105,8 +106,9 @@ public class CustomFailureMessageTest {
           .isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage(
-          "This is a custom message: The subject was expected to be true, but was false");
+      assertThat(expected)
+          .hasMessage(
+              "This is a custom message: The subject was expected to be true, but was false");
     }
   }
 }

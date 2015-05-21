@@ -52,8 +52,9 @@ public class PrimitiveBooleanArraySubjectTest {
       assertThat(array(true, false, true)).isEqualTo(array(false, true, true));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <(boolean[]) [true, false, true]> is equal to <[false, true, true]>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(boolean[]) [true, false, true]> is equal to <[false, true, true]>");
     }
   }
 

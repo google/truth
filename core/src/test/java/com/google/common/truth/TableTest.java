@@ -98,8 +98,9 @@ public class TableTest {
       assertThat(table).contains("row", "row");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <{row={col=val}}> contains mapping for row/column <row> <row>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{row={col=val}}> contains mapping for row/column <row> <row>");
     }
   }
 
@@ -119,8 +120,10 @@ public class TableTest {
       assertThat(table).doesNotContain("row", "col");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <{row={col=val}}> does not contain mapping for row/column <row> <col>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{row={col=val}}> does not contain mapping for "
+                  + "row/column <row> <col>");
     }
   }
 

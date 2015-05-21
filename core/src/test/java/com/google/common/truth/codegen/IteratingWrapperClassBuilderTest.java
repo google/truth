@@ -17,6 +17,7 @@ package com.google.common.truth.codegen;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.base.Joiner;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
@@ -32,47 +33,53 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class IteratingWrapperClassBuilderTest {
+  private static final Joiner NEW_LINE_JOINER = Joiner.on("\n");
+
   private static final String TOP_BOILERPLATE =
-      "package com.google.common.truth.codegen;\n" +
-      "\n" +
-      "import com.google.common.truth.FailureStrategy;\n" +
-      "import com.google.common.truth.SubjectFactory;\n" +
-      "\n";
+      NEW_LINE_JOINER.join(
+          "package com.google.common.truth.codegen;",
+          "",
+          "import com.google.common.truth.FailureStrategy;",
+          "import com.google.common.truth.SubjectFactory;",
+          "");
 
   private static final String SUBJECT_FACTORY_FIELD =
       "private final SubjectFactory subjectFactory;";
-  private static final String ITERABLE_FIELD =
-      "private final Iterable<%s> data;";
+
+  private static final String ITERABLE_FIELD = "private final Iterable<%s> data;";
 
   private static final String CONSTRUCTOR =
-      "  public %1$sSubjectIteratingWrapper(\n" +
-      "      FailureStrategy failureStrategy,\n" +
-      "      SubjectFactory<?, ?> subjectFactory,\n" +
-      "      Iterable<%2$s> data\n" +
-      "  ) {\n" +
-      "    super(failureStrategy, (%2$s)null);\n" +
-      "    this.subjectFactory = subjectFactory;\n" +
-      "    this.data = data;\n" +
-      "  }";
+      NEW_LINE_JOINER.join(
+          "  public %1$sSubjectIteratingWrapper(",
+          "      FailureStrategy failureStrategy,",
+          "      SubjectFactory<?, ?> subjectFactory,",
+          "      Iterable<%2$s> data",
+          "  ) {",
+          "    super(failureStrategy, (%2$s)null);",
+          "    this.subjectFactory = subjectFactory;",
+          "    this.data = data;",
+          "  }");
 
   private static final String CLASS_DECLARATION =
       "public class %1$sSubjectIteratingWrapper extends %1$sSubject {";
 
   private static final String FOO_WRAPPED_METHOD =
-      "  @Override public void endsWith(java.lang.String arg0) {\n" +
-      "    for (java.lang.String item : data) {\n" +
-      "      com.google.common.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject subject = (com.google.common.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
-      "      subject.endsWith(arg0);\n" +
-      "    }\n" +
-      "  }";
+      NEW_LINE_JOINER.join(
+          "  @Override public void endsWith(java.lang.String arg0) {",
+          "    for (java.lang.String item : data) {",
+          "      com.google.common.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject subject = (com.google.common.truth.codegen.IteratingWrapperClassBuilderTest.FooSubject)subjectFactory.getSubject(failureStrategy, item);",
+          "      subject.endsWith(arg0);",
+          "    }",
+          "  }");
 
   private static final String BAR_WRAPPED_METHOD =
-      "  @Override public void startsWith(@javax.annotation.Nullable java.lang.String arg0) {\n" +
-      "    for (java.lang.String item : data) {\n" +
-      "      com.google.common.truth.codegen.BarSubject subject = (com.google.common.truth.codegen.BarSubject)subjectFactory.getSubject(failureStrategy, item);\n" +
-      "      subject.startsWith(arg0);\n" +
-      "    }\n" +
-      "  }";
+      NEW_LINE_JOINER.join(
+          "  @Override public void startsWith(@javax.annotation.Nullable java.lang.String arg0) {",
+          "    for (java.lang.String item : data) {",
+          "      com.google.common.truth.codegen.BarSubject subject = (com.google.common.truth.codegen.BarSubject)subjectFactory.getSubject(failureStrategy, item);",
+          "      subject.startsWith(arg0);",
+          "    }",
+          "  }");
 
   @Test
   public void testSubjectWrapperGeneration_PlainClass() {

@@ -201,7 +201,7 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
       extends IterableSubject<IterableValuesForKey, V, Collection<V>> {
     @Nullable private final K key;
 
-    @Nullable private final String multimapDisplaySubject;
+    @Nullable private final String display;
 
     IterableValuesForKey(
         FailureStrategy failureStrategy,
@@ -209,14 +209,13 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
         @Nullable K key) {
       super(failureStrategy, multimapSubject.getSubject().get(key));
       this.key = key;
-      this.multimapDisplaySubject = multimapSubject.getDisplaySubject();
+      this.display = multimapSubject.getDisplaySubject();
     }
 
     @Override
     protected String getDisplaySubject() {
       String innerDisplaySubject =
-          "<Values for key <" + key + "> (<" + getSubject() + ">) in "
-              + multimapDisplaySubject + ">";
+          "<Values for key <" + key + "> (<" + getSubject() + ">) in " + display + ">";
 
       if (internalCustomName() != null) {
         return internalCustomName() + " (" + innerDisplaySubject + ")";
@@ -235,8 +234,9 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
 
     @Override
     public void inOrder() {
-      boolean keysInOrder = Lists.newArrayList(getSubject().keySet())
-          .equals(Lists.newArrayList(expectedMultimap.keySet()));
+      boolean keysInOrder =
+          Lists.newArrayList(getSubject().keySet())
+              .equals(Lists.newArrayList(expectedMultimap.keySet()));
 
       LinkedHashSet<Object> keysWithValuesOutOfOrder = Sets.newLinkedHashSet();
       LinkedHashSet<Object> allKeys = Sets.newLinkedHashSet();

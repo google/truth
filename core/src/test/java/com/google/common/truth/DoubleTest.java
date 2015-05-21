@@ -213,8 +213,9 @@ public class DoubleTest {
     try {
       assertThat(value).isPositiveInfinity();
     } catch (AssertionError assertionError) {
-      assertThat(assertionError).hasMessage(
-          "Not true that <" + value + "> is equal to <" + Double.POSITIVE_INFINITY + ">");
+      assertThat(assertionError)
+          .hasMessage(
+              "Not true that <" + value + "> is equal to <" + Double.POSITIVE_INFINITY + ">");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -233,8 +234,9 @@ public class DoubleTest {
     try {
       assertThat(value).isNegativeInfinity();
     } catch (AssertionError assertionError) {
-      assertThat(assertionError).hasMessage(
-          "Not true that <" + value + "> is equal to <" + Double.NEGATIVE_INFINITY + ">");
+      assertThat(assertionError)
+          .hasMessage(
+              "Not true that <" + value + "> is equal to <" + Double.NEGATIVE_INFINITY + ">");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");

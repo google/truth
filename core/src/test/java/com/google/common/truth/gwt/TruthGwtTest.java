@@ -29,11 +29,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
-* Test of Truth under GWT - should be enough tests here to force compilation
-* of all Subject implementations.
-*
-* @author Christian Gruber (cgruber@israfil.net)
-*/
+ * Test of Truth under GWT - should be enough tests here to force compilation
+ * of all Subject implementations.
+ *
+ * @author Christian Gruber (cgruber@israfil.net)
+ */
 
 public class TruthGwtTest extends GWTTestCase {
   @Override public String getModuleName() {

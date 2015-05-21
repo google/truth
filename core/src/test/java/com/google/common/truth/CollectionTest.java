@@ -105,8 +105,8 @@ public class CollectionTest {
       assertThat(collection(1, 2, 3)).containsAllOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
+      assertThat(e)
+          .hasMessage("Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
     }
   }
 
@@ -183,8 +183,9 @@ public class CollectionTest {
       assertThat(collection(1, 2, 3)).containsNoneOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. " + "It contains <[1, 2]>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. " + "It contains <[1, 2]>");
     }
   }
 
@@ -194,9 +195,10 @@ public class CollectionTest {
       assertThat(collection(1, 2, 2, 3)).containsNoneOf(1, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[1, 2, 2, 3]> contains none of <[1, 2, 4]>. "
-              + "It contains <[1, 2]>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[1, 2, 2, 3]> contains none of <[1, 2, 4]>. "
+                  + "It contains <[1, 2]>");
     }
   }
 
@@ -206,9 +208,10 @@ public class CollectionTest {
       assertThat(collection(1, 2, 3)).containsNoneOf(1, 2, 2, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[1, 2, 3]> contains none of <[1, 2, 2, 4]>. "
-              + "It contains <[1, 2]>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[1, 2, 3]> contains none of <[1, 2, 2, 4]>. "
+                  + "It contains <[1, 2]>");
     }
   }
 
@@ -272,9 +275,10 @@ public class CollectionTest {
       assertThat(collection(1, 2, 3)).containsExactly(1, 2, 2, 2, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3]>. "
-              + "It is missing <[2 [2 copies]]>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3]>. "
+                  + "It is missing <[2 [2 copies]]>");
     }
   }
 
@@ -284,9 +288,10 @@ public class CollectionTest {
       assertThat(collection(1, 2, 3)).containsExactly(1, 2, 2, 2, 3, 4);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3, 4]>. "
-              + "It is missing <[2 [2 copies], 4]>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3, 4]>. "
+                  + "It is missing <[2 [2 copies], 4]>");
     }
   }
 
@@ -296,9 +301,10 @@ public class CollectionTest {
       assertThat(collection(1, 2, 2, 2, 2, 3)).containsExactly(1, 2, 2, 3);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage(
-          "Not true that <[1, 2, 2, 2, 2, 3]> contains exactly <[1, 2, 2, 3]>. "
-              + "It has unexpected items <[2 [2 copies]]>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[1, 2, 2, 2, 2, 3]> contains exactly <[1, 2, 2, 3]>. "
+                  + "It has unexpected items <[2 [2 copies]]>");
     }
   }
 
