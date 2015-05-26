@@ -33,8 +33,8 @@ import javax.annotation.Nullable;
 
 @GwtIncompatible("JUnit4")
 public class Expect extends TestVerb implements TestRule {
-  protected static class ExpectationGatherer extends FailureStrategy {
-    List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
+  public static class ExpectationGatherer extends FailureStrategy {
+    private List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
 
     @Override
     public void fail(String message) {
@@ -50,6 +50,10 @@ public class Expect extends TestVerb implements TestRule {
     @Override
     public void fail(String message, Throwable cause) {
       messages.add(ExpectationFailure.create(message, cause));
+    }
+
+    public List<ExpectationFailure> getMessages() {
+      return messages;
     }
   }
 
@@ -93,7 +97,7 @@ public class Expect extends TestVerb implements TestRule {
   }
 
   public boolean hasFailures() {
-    return !gatherer.messages.isEmpty();
+    return !gatherer.getMessages().isEmpty();
   }
 
   @Override
@@ -115,10 +119,10 @@ public class Expect extends TestVerb implements TestRule {
         base.evaluate();
         inRuleContext = false;
         Throwable earliestCause = null;
-        if (!gatherer.messages.isEmpty()) {
+        if (!gatherer.getMessages().isEmpty()) {
           StringBuilder message = new StringBuilder("All failed expectations:\n");
           int count = 0;
-          for (ExpectationFailure failure : gatherer.messages) {
+          for (ExpectationFailure failure : gatherer.getMessages()) {
             if (earliestCause == null && failure.cause() != null) {
               earliestCause = failure.cause();
             }
