@@ -79,11 +79,19 @@ public class Expect extends TestVerb implements TestRule {
   private boolean inRuleContext = false;
 
   public static Expect create() {
-    return new Expect(new ExpectationGatherer());
+    return create(new ExpectationGatherer());
+  }
+
+  public static Expect create(ExpectationGatherer gatherer) {
+    return new Expect(gatherer);
   }
 
   public static Expect createAndEnableStackTrace() {
-    return new Expect(new ExpectationGatherer(), true /* showStackTrace */);
+    return createAndEnableStackTrace(new ExpectationGatherer());
+  }
+
+  public static Expect createAndEnableStackTrace(ExpectationGatherer gatherer) {
+    return new Expect(gatherer, true /* showStackTrace */);
   }
 
   Expect(ExpectationGatherer gatherer) {
