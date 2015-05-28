@@ -34,7 +34,16 @@ import javax.annotation.Nullable;
 @GwtIncompatible("JUnit4")
 public class Expect extends TestVerb implements TestRule {
   public static class ExpectationGatherer extends FailureStrategy {
-    private List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
+    private final List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
+    private final boolean showStackTrace;
+
+    public ExpectationGatherer() {
+      this.showStackTrace = false;
+    }
+
+    public ExpectationGatherer(boolean showStackTrace) {
+      this.showStackTrace = showStackTrace;
+    }
 
     @Override
     public void fail(String message) {
@@ -54,6 +63,32 @@ public class Expect extends TestVerb implements TestRule {
 
     public List<ExpectationFailure> getMessages() {
       return messages;
+    }
+
+    @Override
+    public String toString() {
+      Throwable earliestCause = null;
+      StringBuilder message = new StringBuilder("All failed expectations:\n");
+      int count = 0;
+      for (ExpectationFailure failure : getMessages()) {
+        if (earliestCause == null && failure.cause() != null) {
+          earliestCause = failure.cause();
+        }
+        message
+            .append("  ")
+            .append((count++) + 1)
+            .append(". ")
+            .append(failure.message())
+            .append("\n");
+        if (showStackTrace && failure.cause() != null) {
+          // Append stack trace to the failure message
+          StringWriter stackTraceWriter = new StringWriter();
+          failure.cause().printStackTrace(new PrintWriter(stackTraceWriter));
+          message.append(stackTraceWriter + "\n");
+        }
+      }
+
+      return message.toString();
     }
   }
 
@@ -75,7 +110,6 @@ public class Expect extends TestVerb implements TestRule {
   }
 
   private final ExpectationGatherer gatherer;
-  private final boolean showStackTrace;
   private boolean inRuleContext = false;
 
   public static Expect create() {
@@ -87,21 +121,12 @@ public class Expect extends TestVerb implements TestRule {
   }
 
   public static Expect createAndEnableStackTrace() {
-    return createAndEnableStackTrace(new ExpectationGatherer());
-  }
-
-  public static Expect createAndEnableStackTrace(ExpectationGatherer gatherer) {
-    return new Expect(gatherer, true /* showStackTrace */);
+    return new Expect(new ExpectationGatherer(true /* showStackTrace */));
   }
 
   Expect(ExpectationGatherer gatherer) {
-    this(gatherer, false /* showStackTrace */);
-  }
-
-  Expect(ExpectationGatherer gatherer, boolean showStackTrace) {
     super(gatherer);
     this.gatherer = gatherer;
-    this.showStackTrace = showStackTrace;
   }
 
   public boolean hasFailures() {
@@ -128,26 +153,7 @@ public class Expect extends TestVerb implements TestRule {
         inRuleContext = false;
         Throwable earliestCause = null;
         if (!gatherer.getMessages().isEmpty()) {
-          StringBuilder message = new StringBuilder("All failed expectations:\n");
-          int count = 0;
-          for (ExpectationFailure failure : gatherer.getMessages()) {
-            if (earliestCause == null && failure.cause() != null) {
-              earliestCause = failure.cause();
-            }
-            message
-                .append("  ")
-                .append((count++) + 1)
-                .append(". ")
-                .append(failure.message())
-                .append("\n");
-            if (showStackTrace && failure.cause() != null) {
-              // Append stack trace to the failure message
-              StringWriter stackTraceWriter = new StringWriter();
-              failure.cause().printStackTrace(new PrintWriter(stackTraceWriter));
-              message.append(stackTraceWriter + "\n");
-            }
-          }
-          AssertionError error = new AssertionError(message.toString());
+          AssertionError error = new AssertionError(gatherer.toString());
           error.initCause(earliestCause);
           throw error;
         }
