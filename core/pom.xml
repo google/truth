@@ -9,7 +9,6 @@
   </parent>
   <artifactId>truth</artifactId>
   <properties>
-    <javadoc.param></javadoc.param>
     <gwt.version>2.6.1</gwt.version>
   </properties>
   <dependencies>
@@ -39,7 +38,7 @@
     <dependency>
       <groupId>com.google.auto.value</groupId>
       <artifactId>auto-value</artifactId>
-      <version>1.0-rc1</version>
+      <version>1.0</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -57,7 +56,7 @@
     <dependency>
       <groupId>com.google.testing.compile</groupId>
       <artifactId>compile-testing</artifactId>
-      <version>0.6</version>
+      <version>0.7</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -86,32 +85,13 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-docs</id>
-            <phase>post-integration-test</phase>
-            <goals><goal>jar</goal></goals>
-            <configuration>
-                <additionalparam>${javadoc.param}</additionalparam>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>post-integration-test</phase>
-            <goals><goal>jar-no-fork</goal></goals>
-            <configuration>
-              <excludes>
-                <exclude>**/super/**</exclude>
-                <exclude>**/*.gwt.xml</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-        </executions>
+        <configuration>
+          <excludes>
+            <exclude>**/super/**</exclude>
+            <exclude>**/*.gwt.xml</exclude>
+          </excludes>
+        </configuration>
       </plugin>
       <plugin>
         <!-- TODO(cgruber): Replace this with Gwt annotation processing plugin. -->
@@ -208,14 +188,14 @@
     </plugins>
   </reporting>
   <profiles>
-  <profile>
-    <id>java8</id>
-    <activation>
-      <jdk>[1.8,)</jdk>
-    </activation>
-    <properties>
-      <javadoc.param>-Xdoclint:none</javadoc.param>
-    </properties>
-  </profile>
-</profiles>
+    <profile>
+      <id>java8</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <properties>
+        <javadoc.param>-Xdoclint:none</javadoc.param>
+      </properties>
+    </profile>
+  </profiles>
 </project>
