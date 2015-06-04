@@ -17,4 +17,5 @@ if [ "${keystatus}" != "pub" ]; then
   exit 1
 fi
 
-mvn ${params} clean site:jar -Dgpg.skip=false -Dgpg.keyname=${key} deploy
+mvn ${params} clean site:jar -P sonatype-oss-release -Dgpg.keyname=${key} deploy
+
