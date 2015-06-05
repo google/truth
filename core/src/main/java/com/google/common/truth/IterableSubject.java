@@ -470,9 +470,21 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  // TODO(kak): Rename to isOrdered after we release 0.26 without the old isOrdered()
+  public final void isOrdered() {
+    isOrdered((Ordering) Ordering.natural());
+  }
+
+  /**
+   * Fails if the list is not ordered according to the natural ordering of its elements.
+   * Null elements are not permitted.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   * @deprecated Use {@link #isOrdered} instead.
+   */
+  @Deprecated
   public final void isPartiallyOrdered() {
-    isPartiallyOrdered((Ordering) Ordering.natural());
+    isOrdered();
   }
 
   /**
@@ -482,8 +494,7 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  // TODO(kak): Rename to isOrdered after we release 0.26 without the old isOrdered()
-  public final void isPartiallyOrdered(final Comparator<? super T> comparator) {
+  public final void isOrdered(final Comparator<? super T> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
         new PairwiseChecker<T>() {
@@ -494,6 +505,19 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
             }
           }
         });
+  }
+
+  /**
+   * Fails if the list is not ordered according to the given comparator.
+   * Null elements are not permitted.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   * @deprecated Use {@link #isOrdered(Comparator)} instead.
+   */
+  @Deprecated
+  public final void isPartiallyOrdered(final Comparator<? super T> comparator) {
+    isOrdered(comparator);
   }
 
   private interface PairwiseChecker<T> {
