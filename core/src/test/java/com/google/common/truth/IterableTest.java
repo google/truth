@@ -68,17 +68,17 @@ public class IterableTest {
   }
 
   @Test
-  public void iterableContainsItem() {
+  public void iterableContains() {
     assertThat(asList(1, 2, 3)).contains(1);
   }
 
   @Test
-  public void iterableContainsItemWithNull() {
+  public void iterableContainsWithNull() {
     assertThat(asList(1, null, 3)).contains(null);
   }
 
   @Test
-  public void iterableContainsItemFailure() {
+  public void iterableContainsFailure() {
     try {
       assertThat(asList(1, 2, 3)).contains(5);
       fail("Should have thrown.");
@@ -88,7 +88,7 @@ public class IterableTest {
   }
 
   @Test
-  public void namedIterableContainsItemFailure() {
+  public void namedIterableContainsFailure() {
     try {
       assertThat(asList(1, 2, 3)).named("numbers").contains(5);
       fail("Should have thrown.");
@@ -98,7 +98,7 @@ public class IterableTest {
   }
 
   @Test
-  public void failureMessageIterableContainsItemFailure() {
+  public void failureMessageIterableContainsFailure() {
     try {
       assertWithMessage("custom msg").that(asList(1, 2, 3)).contains(5);
       fail("Should have thrown.");
@@ -108,17 +108,17 @@ public class IterableTest {
   }
 
   @Test
-  public void iterableDoesntHaveItem() {
+  public void iterableDoesNotContain() {
     assertThat(asList(1, null, 3)).doesNotContain(5);
   }
 
   @Test
-  public void iterableDoesntHaveItemWithNull() {
+  public void iterableDoesNotContainNull() {
     assertThat(asList(1, 2, 3)).doesNotContain(null);
   }
 
   @Test
-  public void iterableDoesntHaveItemFailure() {
+  public void iterableDoesNotContainFailure() {
     try {
       assertThat(asList(1, 2, 3)).doesNotContain(2);
       fail("Should have thrown.");
