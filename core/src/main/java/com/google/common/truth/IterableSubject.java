@@ -433,8 +433,9 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
       };
 
   /**
-   * Fails if the list is not strictly ordered according to the natural ordering of its elements.
-   * Null elements are not permitted.
+   * Fails if the iterable is not strictly ordered, according to the natural ordering of its
+   * elements. Strictly ordered means that each element in the iterable is <i>strictly</i> greater
+   * than the element that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
@@ -444,11 +445,11 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Fails if the list is not strictly ordered according to the given comparator.
-   * Null elements are not permitted.
+   * Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
+   * ordered means that each element in the iterable is <i>strictly</i> greater than the element
+   * that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @throws NullPointerException if any element is null
    */
   public final void isStrictlyOrdered(final Comparator<? super T> comparator) {
     checkNotNull(comparator);
@@ -464,8 +465,9 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Fails if the list is not ordered according to the natural ordering of its elements.
-   * Null elements are not permitted.
+   * Fails if the iterable is not ordered, according to the natural ordering of its elements.
+   * Ordered means that each element in the iterable is greater than or equal to the element that
+   * preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
@@ -475,11 +477,6 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Fails if the list is not ordered according to the natural ordering of its elements.
-   * Null elements are not permitted.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @throws NullPointerException if any element is null
    * @deprecated Use {@link #isOrdered} instead.
    */
   @Deprecated
@@ -488,11 +485,10 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   /**
-   * Fails if the list is not ordered according to the given comparator.
-   * Null elements are not permitted.
+   * Fails if the iterable is not ordered, according to the given comparator. Ordered means that
+   * each element in the iterable is greater than or equal to the element that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @throws NullPointerException if any element is null
    */
   public final void isOrdered(final Comparator<? super T> comparator) {
     checkNotNull(comparator);
@@ -501,18 +497,13 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
           @Override
           public void check(T prev, T next) {
             if (comparator.compare(prev, next) > 0) {
-              fail("is partially ordered", prev, next);
+              fail("is ordered", prev, next);
             }
           }
         });
   }
 
   /**
-   * Fails if the list is not ordered according to the given comparator.
-   * Null elements are not permitted.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @throws NullPointerException if any element is null
    * @deprecated Use {@link #isOrdered(Comparator)} instead.
    */
   @Deprecated
