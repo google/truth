@@ -62,16 +62,16 @@ public class ListTest {
   }
 
   @Test
-  public void listIsPartiallyOrdered() {
-    assertThat(Arrays.<Integer>asList()).isPartiallyOrdered();
-    assertThat(Arrays.asList(1)).isPartiallyOrdered();
-    assertThat(Arrays.asList(1, 1, 2, 3, 3, 3, 4)).isPartiallyOrdered();
+  public void listIsOrdered() {
+    assertThat(Arrays.<Integer>asList()).isOrdered();
+    assertThat(Arrays.asList(1)).isOrdered();
+    assertThat(Arrays.asList(1, 1, 2, 3, 3, 3, 4)).isOrdered();
   }
 
   @Test
-  public void isPartiallyOrderedFailure() {
+  public void isOrderedFailure() {
     try {
-      assertThat(Arrays.asList(1, 3, 2, 4)).isPartiallyOrdered();
+      assertThat(Arrays.asList(1, 3, 2, 4)).isOrdered();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("is partially ordered");
@@ -80,9 +80,9 @@ public class ListTest {
   }
 
   @Test
-  public void isPartiallyOrderedWithNonComparableElementsFailure() {
+  public void isOrderedWithNonComparableElementsFailure() {
     try {
-      assertThat(Arrays.<Object>asList(1, "2", 2, "3")).isPartiallyOrdered();
+      assertThat(Arrays.<Object>asList(1, "2", 2, "3")).isOrdered();
       fail("Should have thrown.");
     } catch (ClassCastException e) {
     }
@@ -108,17 +108,17 @@ public class ListTest {
   }
 
   @Test
-  public void listIsPartiallyOrderedWithComparator() {
-    assertThat(Arrays.<String>asList()).isPartiallyOrdered(COMPARE_AS_DECIMAL);
-    assertThat(Arrays.asList("1")).isPartiallyOrdered(COMPARE_AS_DECIMAL);
+  public void listIsOrderedWithComparator() {
+    assertThat(Arrays.<String>asList()).isOrdered(COMPARE_AS_DECIMAL);
+    assertThat(Arrays.asList("1")).isOrdered(COMPARE_AS_DECIMAL);
     assertThat(Arrays.asList("1", "1", "2", "10", "10", "10", "20"))
-        .isPartiallyOrdered(COMPARE_AS_DECIMAL);
+        .isOrdered(COMPARE_AS_DECIMAL);
   }
 
   @Test
-  public void listIsPartiallyOrderedWithComparatorFailure() {
+  public void listIsOrderedWithComparatorFailure() {
     try {
-      assertThat(Arrays.asList("1", "10", "2", "20")).isPartiallyOrdered(COMPARE_AS_DECIMAL);
+      assertThat(Arrays.asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage()).contains("is partially ordered");
@@ -159,7 +159,7 @@ public class ListTest {
   @Test
   public void listOrderedByBaseClassComparator() {
     List<Bar> targetList = Arrays.asList(new Bar(1), new Bar(2), new Bar(3));
-    assertThat(targetList).isPartiallyOrdered(FOO_COMPARATOR);
+    assertThat(targetList).isOrdered(FOO_COMPARATOR);
     assertThat(targetList).isStrictlyOrdered(FOO_COMPARATOR);
   }
 }
