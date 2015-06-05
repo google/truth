@@ -74,7 +74,7 @@ public class ListTest {
       assertThat(Arrays.asList(1, 3, 2, 4)).isOrdered();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("is partially ordered");
+      assertThat(e.getMessage()).contains("is ordered");
       assertThat(e.getMessage()).contains("<3> <2>");
     }
   }
@@ -121,7 +121,7 @@ public class ListTest {
       assertThat(Arrays.asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("is partially ordered");
+      assertThat(e.getMessage()).contains("is ordered");
       assertThat(e.getMessage()).contains("<10> <2>");
     }
   }
