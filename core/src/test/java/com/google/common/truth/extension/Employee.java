@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Google, Inc.
+ * Copyright (c) 2015 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,29 @@
  */
 package com.google.common.truth.extension;
 
-/**
- * Sample custom type to test extension verbs.
- *
- * @author Christian Gruber (cgruber@israfil.net)
- */
-public class MyType {
-  final int value;
+import com.google.auto.value.AutoValue;
 
-  public MyType(int value) {
-    this.value = value;
+/**
+ * Represents an employee.
+ */
+@AutoValue
+public abstract class Employee {
+  public static Employee create(String username, long id, String name, Location location) {
+    return new AutoValue_Employee(username, id, name, location);
+  }
+
+  abstract String username();
+
+  abstract long id();
+
+  abstract String name();
+
+  abstract Location location();
+
+  public enum Location {
+    MTV,
+    PIT,
+    CHI,
+    NYC
   }
 }
