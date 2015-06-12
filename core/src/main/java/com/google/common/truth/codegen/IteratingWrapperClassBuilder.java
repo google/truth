@@ -40,6 +40,7 @@ import java.util.List;
  * Subject in a for-each style.
  */
 @GwtIncompatible("java.lang.reflect.*")
+@J2ObjCIncompatible("Code generation and loading.")
 public class IteratingWrapperClassBuilder {
   private static final Joiner NEW_LINE_JOINER = Joiner.on("%n");
 

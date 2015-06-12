@@ -94,6 +94,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   }
 
   @GwtIncompatible("com.google.common.truth.IteratingVerb")
+  @J2ObjCIncompatible("Code generation and loading.")
   public <T> IteratingVerb<T> in(Iterable<T> data) {
     return new IteratingVerb<T>(data, getFailureStrategy());
   }
