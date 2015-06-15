@@ -53,4 +53,5 @@ elif [ ${key_count} -gt 1 ]; then
   exit 1;
 fi
 
-mvn ${params} clean site:jar -P sonatype-oss-release ${key_param} deploy
+mvn ${params} clean site:jar -P sonatype-oss-release -Dgpg.keyname=${key} deploy
+
