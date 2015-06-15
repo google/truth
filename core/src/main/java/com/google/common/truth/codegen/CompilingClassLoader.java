@@ -78,6 +78,7 @@ import javax.tools.ToolProvider;
  * @see javax.tools.JavaCompiler
  */
 @GwtIncompatible("java.lang.reflect.*")
+@J2ObjCIncompatible("Code generation and loading.")
 public class CompilingClassLoader extends ClassLoader {
 
   /**

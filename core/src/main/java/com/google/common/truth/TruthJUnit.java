@@ -51,7 +51,7 @@ import org.junit.internal.AssumptionViolatedException;
 @GwtIncompatible("JUnit4")
 public class TruthJUnit {
   @GwtIncompatible("JUnit4")
-  public static final FailureStrategy THROW_ASSUMPTION_ERROR =
+  private static final FailureStrategy THROW_ASSUMPTION_ERROR =
       new FailureStrategy() {
         @Override
         public void fail(String message) {
@@ -68,6 +68,11 @@ public class TruthJUnit {
           throw new ThrowableAssumptionViolatedException(message, cause);
         }
       };
+
+  @GwtIncompatible("JUnit4")
+  public static final FailureStrategy throwAssumptionError() {
+    return THROW_ASSUMPTION_ERROR;
+  }
 
   @GwtIncompatible("JUnit4")
   private static final TestVerb ASSUME = new TestVerb(THROW_ASSUMPTION_ERROR);

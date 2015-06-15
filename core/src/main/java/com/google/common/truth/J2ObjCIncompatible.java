@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Google, Inc.
+ * Copyright (c) 2015 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.common.truth.extension;
+package com.google.common.truth;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * Sample custom type to test extension verbs.
- *
- * @author Christian Gruber (cgruber@israfil.net)
+ * Marks an element as incompatible with j2objc transpiler.
  */
-public class MyType {
-  final int value;
-
-  public MyType(int value) {
-    this.value = value;
-  }
+@Retention(RetentionPolicy.SOURCE)
+@interface J2ObjCIncompatible {
+  String value();
 }

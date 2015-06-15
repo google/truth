@@ -33,6 +33,7 @@ import javax.annotation.CheckReturnValue;
  * A verb that iterates over data and applies the predicate iteratively
  */
 @GwtIncompatible("Code generation and loading.")
+@J2ObjCIncompatible("Code generation and loading.")
 public class IteratingVerb<T> {
   private static final String CANNOT_WRAP_MSG = "Cannot build an iterating wrapper around ";
 
