@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -203,7 +204,7 @@ public class IterableTest {
 
   @Test
   public void iterableContainsAllOfWithNullAtThirdAndFinalPosition() {
-    assertThat(asList(1, null, 3)).containsAllOf(1, 3, null);
+    assertThat(asList(1, null, 3)).containsAllOf(1, 3, (Object) null);
   }
 
   @Test
@@ -318,7 +319,7 @@ public class IterableTest {
 
   @Test
   public void iterableContainsAllOfInOrderWithOneShotIterable() {
-    final Iterable<Object> iterable = asList(2, 1, null, 4, "a", 3, "b");
+    final Iterable<Object> iterable = Arrays.<Object>asList(2, 1, null, 4, "a", 3, "b");
     final Iterator<Object> iterator = iterable.iterator();
     Iterable<Object> oneShot =
         new Iterable<Object>() {
@@ -353,7 +354,7 @@ public class IterableTest {
         };
 
     try {
-      assertThat(iterable).containsAllOf(1, 3, null).inOrder();
+      assertThat(iterable).containsAllOf(1, 3, (Object) null).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -414,7 +415,7 @@ public class IterableTest {
   public void arrayContainsExactly() {
     ImmutableList<String> iterable = ImmutableList.of("a", "b");
     String[] array = {"a", "b"};
-    assertThat(iterable).containsExactly(array);
+    assertThat(iterable).containsExactly((Object[]) array);
   }
 
   @Test
@@ -438,9 +439,16 @@ public class IterableTest {
   }
 
   @Test
+  public void iterableContainsExactlyWithOnlyNullPassedAsNullArray() {
+    // Truth is tolerant of this erroneous varargs call.
+    Iterable<Object> actual = asList((Object) null);
+    assertThat(actual).containsExactly((Object[]) null);
+  }
+
+  @Test
   public void iterableContainsExactlyWithOnlyNull() {
     Iterable<Object> actual = asList((Object) null);
-    assertThat(actual).containsExactly(null);
+    assertThat(actual).containsExactly((Object) null);
   }
 
   @Test
