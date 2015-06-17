@@ -21,6 +21,8 @@ import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
 
+import javax.annotation.Nullable;
+
 /**
  * A <a href="https://github.com/google/truth">Truth</a> subject for {@link Employee}.
  *
@@ -29,7 +31,7 @@ import com.google.common.truth.SubjectFactory;
 public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
 
   // User-defined entry point
-  public static EmployeeSubject assertThat(Employee employee) {
+  public static EmployeeSubject assertThat(@Nullable Employee employee) {
     return assertAbout(EMPLOYEE_SUBJECT_FACTORY).that(employee);
   }
 
@@ -42,12 +44,13 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
   private static final SubjectFactory<EmployeeSubject, Employee> EMPLOYEE_SUBJECT_FACTORY =
       new SubjectFactory<EmployeeSubject, Employee>() {
         @Override
-        public EmployeeSubject getSubject(FailureStrategy failureStrategy, Employee target) {
+        public EmployeeSubject getSubject(
+            FailureStrategy failureStrategy, @Nullable Employee target) {
           return new EmployeeSubject(failureStrategy, target);
         }
       };
 
-  private EmployeeSubject(FailureStrategy failureStrategy, Employee subject) {
+  private EmployeeSubject(FailureStrategy failureStrategy, @Nullable Employee subject) {
     super(failureStrategy, subject);
   }
 
