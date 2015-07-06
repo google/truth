@@ -50,10 +50,11 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
       if (expected != null) {
         if (expected instanceof String) {
           failWithRawMessage(
-              "Not true that null reference is equal to <%s>", quote((String) expected));
+              "Not true that " + getDisplaySubject() + " is equal to <%s>",
+              quote((String) expected));
         } else {
           failWithRawMessage(
-              "Not true that null reference is equal to (%s)<%s>",
+              "Not true that " + getDisplaySubject() + " is equal to (%s)<%s>",
               expected.getClass().getName(),
               expected);
         }
@@ -259,7 +260,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  private static String quote(CharSequence toBeWrapped) {
-    return "\"" + toBeWrapped + "\"";
+  private static String quote(@Nullable CharSequence toBeWrapped) {
+    return (toBeWrapped == null)
+        ? "null"
+        : "\"" + toBeWrapped + "\"";
   }
 }

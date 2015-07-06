@@ -172,6 +172,16 @@ public class StringTest {
   }
 
   @Test
+  public void stringNamedNullFail() {
+    try {
+      assertThat((String) null).named("foo").isEqualTo("abd");
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage("Not true that foo (<null>) is equal to <\"abd\">");
+    }
+  }
+
+  @Test
   public void stringStartsWith() {
     assertThat("abc").startsWith("ab");
   }
