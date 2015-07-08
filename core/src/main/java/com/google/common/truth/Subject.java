@@ -82,7 +82,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   public void isEqualTo(@Nullable Object other) {
     if (!Objects.equal(getSubject(), other)) {
-      fail("is equal to", other);
+      failComparingToStrings("is equal to", other, true);
     }
   }
 
@@ -100,7 +100,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   public void isSameAs(@Nullable Object other) {
     if (getSubject() != other) {
-      fail("is the same instance as", other);
+      failComparingToStrings("is the same instance as", other, true);
     }
   }
 
@@ -228,29 +228,31 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param part the value against which the subject is compared
    */
   protected void fail(String verb, Object part) {
+    failComparingToStrings(verb, part, false);
+  }
+
+  private void failComparingToStrings(String verb, Object part, boolean compareToStrings) {
     StringBuilder message =
         new StringBuilder("Not true that ").append(getDisplaySubject()).append(" ");
     // If the subject and parts aren't null, and they have equal toString()'s but different
     // classes, we need to disambiguate them.
-    boolean needsDisambiguation = (part != null) && (getSubject() != null)
-        && getSubject().toString().equals(part.toString())
-        && !getSubject().getClass().equals(part.getClass());
-    if (needsDisambiguation) {
-      message
-          .append("(")
-          .append(getSubject().getClass().getName())
-          .append(") ");
+    boolean neitherNull = (part != null) && (getSubject() != null);
+    boolean sameToStrings = neitherNull && getSubject().toString().equals(part.toString());
+    boolean needsClassDisambiguation =
+        neitherNull && sameToStrings && !getSubject().getClass().equals(part.getClass());
+    if (needsClassDisambiguation) {
+      message.append("(").append(getSubject().getClass().getName()).append(") ");
     }
     message
         .append(verb)
         .append(" <")
         .append(part)
         .append(">");
-    if (needsDisambiguation) {
-      message
-          .append(" (")
-          .append(part.getClass().getName())
-          .append(")");
+    if (needsClassDisambiguation) {
+      message.append(" (").append(part.getClass().getName()).append(")");
+    }
+    if (!needsClassDisambiguation && sameToStrings && compareToStrings) {
+      message.append(" (although their toString() representations are the same)");
     }
     failureStrategy.fail(message.toString());
   }
