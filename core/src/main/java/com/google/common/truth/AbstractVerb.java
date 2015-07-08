@@ -53,12 +53,14 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
    * Overrides the failure message of the subsequent subject's propositions.
    *
    * @see com.google.common.truth.delegation.DelegationTest
-   * @param factory a SubjectFactory<S, T> implementation
-   * @returns A custom verb for the type returned by the SubjectFactory
+   * @param failureMessage a descriptive message. {@code null} to remove any current message.
+   * @return A custom verb which will show the descriptive message along with the normal failure
+   *     text.
    */
   @CheckReturnValue
-  public abstract T withFailureMessage(String failureMessage);
+  public abstract T withFailureMessage(@Nullable String failureMessage);
 
+  @Nullable
   protected abstract String getFailureMessage();
 
   /**
@@ -94,6 +96,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   }
 
   @GwtIncompatible("com.google.common.truth.IteratingVerb")
+  @J2ObjCIncompatible("Code generation and loading.")
   public <T> IteratingVerb<T> in(Iterable<T> data) {
     return new IteratingVerb<T>(data, getFailureStrategy());
   }

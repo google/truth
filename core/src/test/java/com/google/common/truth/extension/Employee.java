@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Google, Inc.
+ * Copyright (c) 2015 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,29 @@
  */
 package com.google.common.truth.extension;
 
-import com.google.common.truth.FailureStrategy;
-import com.google.common.truth.Subject;
+import com.google.auto.value.AutoValue;
 
 /**
- * A simple example Subject to demonstrate extension.
- *
- * @author Christian Gruber (christianedwardgruber@gmail.com)
+ * Represents an employee.
  */
-public class MySubject extends Subject<MySubject, MyType> {
-  public MySubject(FailureStrategy failureStrategy, MyType subject) {
-    super(failureStrategy, subject);
+@AutoValue
+public abstract class Employee {
+  public static Employee create(String username, long id, String name, Location location) {
+    return new AutoValue_Employee(username, id, name, location);
   }
 
-  public void matches(MyType object) {
-    if (getSubject().value != object.value) {
-      fail("matches", getSubject(), object);
-    }
+  abstract String username();
+
+  abstract long id();
+
+  abstract String name();
+
+  abstract Location location();
+
+  public enum Location {
+    MTV,
+    PIT,
+    CHI,
+    NYC
   }
 }

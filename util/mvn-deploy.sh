@@ -54,4 +54,3 @@ elif [ ${key_count} -gt 1 ]; then
 fi
 
 mvn ${params} clean site:jar -P sonatype-oss-release ${key_param} deploy
-
