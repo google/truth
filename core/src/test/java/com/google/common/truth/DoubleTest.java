@@ -211,11 +211,15 @@ public class DoubleTest {
 
   private static void assertThatIsPositiveInfinityFails(@Nullable Double value) {
     try {
-      assertThat(value).isPositiveInfinity();
+      assertThat(value).named("testValue").isPositiveInfinity();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
           .hasMessage(
-              "Not true that <" + value + "> is equal to <" + Double.POSITIVE_INFINITY + ">");
+              "Not true that testValue (<"
+                  + value
+                  + ">) is equal to <"
+                  + Double.POSITIVE_INFINITY
+                  + ">");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -232,11 +236,15 @@ public class DoubleTest {
 
   private static void assertThatIsNegativeInfinityFails(@Nullable Double value) {
     try {
-      assertThat(value).isNegativeInfinity();
+      assertThat(value).named("testValue").isNegativeInfinity();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
           .hasMessage(
-              "Not true that <" + value + "> is equal to <" + Double.NEGATIVE_INFINITY + ">");
+              "Not true that testValue (<"
+                  + value
+                  + ">) is equal to <"
+                  + Double.NEGATIVE_INFINITY
+                  + ">");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -253,10 +261,52 @@ public class DoubleTest {
 
   private static void assertThatIsNaNFails(@Nullable Double value) {
     try {
-      assertThat(value).isNaN();
+      assertThat(value).named("testValue").isNaN();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
-          .hasMessage("Not true that <" + value + "> is equal to <" + Double.NaN + ">");
+          .hasMessage("Not true that testValue (<" + value + ">) is equal to <" + Double.NaN + ">");
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
+  }
+
+  @Test
+  public void isFinite() {
+    assertThat(1.23).isFinite();
+    assertThat(Double.MAX_VALUE).isFinite();
+    assertThat(-1.0 * Double.MIN_VALUE).isFinite();
+    assertThatIsFiniteFails(Double.POSITIVE_INFINITY);
+    assertThatIsFiniteFails(Double.NEGATIVE_INFINITY);
+    assertThatIsFiniteFails(Double.NaN);
+    assertThatIsFiniteFails(null);
+  }
+
+  private static void assertThatIsFiniteFails(@Nullable Double value) {
+    try {
+      assertThat(value).named("testValue").isFinite();
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError).hasMessage("testValue (<" + value + ">) should have been finite");
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
+  }
+
+  @Test
+  public void isNotNaN() {
+    assertThat(1.23).isNotNaN();
+    assertThat(Double.MAX_VALUE).isNotNaN();
+    assertThat(-1.0 * Double.MIN_VALUE).isNotNaN();
+    assertThat(Double.POSITIVE_INFINITY).isNotNaN();
+    assertThat(Double.NEGATIVE_INFINITY).isNotNaN();
+    assertThatIsNotNaNFails(Double.NaN);
+    assertThatIsNotNaNFails(null);
+  }
+
+  private static void assertThatIsNotNaNFails(@Nullable Double value) {
+    try {
+      assertThat(value).named("testValue").isNotNaN();
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError).hasMessage("testValue (<" + value + ">) should not have been NaN");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");

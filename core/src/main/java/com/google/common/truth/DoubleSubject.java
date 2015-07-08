@@ -174,4 +174,24 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
   public final void isNaN() {
     super.isEqualTo(Double.NaN);
   }
+
+  /**
+   * Asserts that the subject is finite, i.e. not {@link Double#POSITIVE_INFINITY},
+   * {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}.
+   */
+  public final void isFinite() {
+    if (getSubject() == null || getSubject().isNaN() || getSubject().isInfinite()) {
+      failWithRawMessage("%s should have been finite", getDisplaySubject());
+    }
+  }
+
+  /**
+   * Asserts that the subject is not {@link Double#NaN} (but it may be
+   * {@link Double#POSITIVE_INFINITY} or {@link Double#NEGATIVE_INFINITY}).
+   */
+  public final void isNotNaN() {
+    if (getSubject() == null || getSubject().isNaN()) {
+      failWithRawMessage("%s should not have been NaN", getDisplaySubject());
+    }
+  }
 }
