@@ -74,8 +74,17 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
   }
 
   /**
-   * Prepares for a check that the subject is within the given tolerance of an expected value
-   * that will be provided in the next call in the fluent chain.
+   * Prepares for a check that the subject is a finite number within the given tolerance of an
+   * expected value that will be provided in the next call in the fluent chain.
+   *
+   * <p>The check will fail if either the subject or the object is
+   * {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}. To
+   * check for those values, use {@link #isPositiveInfinity}, {@link isNegativeInfinity}, or
+   * {@link isNaN}.
+   *
+   * @param tolerance an inclusive upper bound on the difference between the subject and object
+   *     allowed by the check, which must be a non-negative finite value, i.e. not
+   *     {@link Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   @CheckReturnValue
   public TolerantDoubleComparison isWithin(final double tolerance) {
@@ -88,15 +97,28 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
         checkTolerance(tolerance);
 
         if (!MathUtil.equals(actual, expected, tolerance)) {
-          failWithRawMessage("%s should have been within %s of %s", actual, tolerance, expected);
+          failWithRawMessage(
+              "%s and <%s> should have been finite values within <%s> of each other",
+              getDisplaySubject(),
+              expected,
+              tolerance);
         }
       }
     };
   }
 
   /**
-   * Prepares for a check that the subject is not within the given tolerance of an expected value
-   * that will be provided in the next call in the fluent chain.
+   * Prepares for a check that the subject is a finite number not within the given tolerance of an
+   * expected value that will be provided in the next call in the fluent chain.
+   *
+   * <p>The check will fail if either the subject or the object is
+   * {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}.
+   * See {@link #isFinite} and {@link #isNotNaN}, or use {@link #isIn} with a suitable
+   * {@link com.google.common.collect.Range Range}.
+   *
+   * @param tolerance an exclusive lower bound on the difference between the subject and object
+   *     allowed by the check, which must be a non-negative finite value, i.e. not
+   *     {@code Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   @CheckReturnValue
   public TolerantDoubleComparison isNotWithin(final double tolerance) {
@@ -110,7 +132,10 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
 
         if (!MathUtil.notEquals(actual, expected, tolerance)) {
           failWithRawMessage(
-              "%s should not have been within %s of %s", actual, tolerance, expected);
+              "%s and <%s> should have been finite values not within <%s> of each other",
+              getDisplaySubject(),
+              expected,
+              tolerance);
         }
       }
     };
