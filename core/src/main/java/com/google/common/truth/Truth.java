@@ -186,7 +186,7 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static <T> OptionalSubject<T> assertThat(@Nullable Optional<T> target) {
+  public static OptionalSubject assertThat(@Nullable Optional<?> target) {
     return assert_().that(target);
   }
 
