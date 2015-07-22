@@ -50,7 +50,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new BigDecimalSubject(getFailureStrategy(), target);
   }
 
-  public Subject<DefaultSubject, Object> that(@Nullable Object target) {
+  public <T> Subject<DefaultSubject<T>, T> that(@Nullable T target) {
     return new DefaultSubject(getFailureStrategy(), target);
   }
 

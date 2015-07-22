@@ -17,8 +17,8 @@ package com.google.common.truth;
 
 import javax.annotation.Nullable;
 
-public class DefaultSubject extends Subject<DefaultSubject, Object> {
-  public DefaultSubject(FailureStrategy failureStrategy, @Nullable Object o) {
+public class DefaultSubject<T> extends Subject<DefaultSubject<T>, T> {
+  public DefaultSubject(FailureStrategy failureStrategy, @Nullable T o) {
     super(failureStrategy, o);
   }
 }
