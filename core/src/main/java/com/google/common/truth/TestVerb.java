@@ -71,6 +71,10 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new DoubleSubject(getFailureStrategy(), target);
   }
 
+  public FloatSubject that(@Nullable Float target) {
+    return new FloatSubject(getFailureStrategy(), target);
+  }
+
   public IntegerSubject that(@Nullable Integer target) {
     return new IntegerSubject(getFailureStrategy(), target);
   }

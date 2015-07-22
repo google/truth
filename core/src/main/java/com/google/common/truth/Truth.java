@@ -132,6 +132,10 @@ public final class Truth {
     return assert_().that(target);
   }
 
+  public static FloatSubject assertThat(@Nullable Float target) {
+    return assert_().that(target);
+  }
+
   public static IntegerSubject assertThat(@Nullable Integer target) {
     return assert_().that(target);
   }
