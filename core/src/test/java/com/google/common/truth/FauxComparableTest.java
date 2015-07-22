@@ -213,7 +213,7 @@ public class FauxComparableTest {
         .that(file)
         .failsToCompile()
         .withErrorContaining(
-            "method whenComparedUsing in class com.google.common.truth.Subject<S,T> cannot be applied to given types")
+            "java.util.Comparator<java.lang.String> cannot be converted to java.util.Comparator<? super java.lang.Object>")
         .in(file)
         .onLine(12);
   }
@@ -242,7 +242,7 @@ public class FauxComparableTest {
         .that(file)
         .failsToCompile()
         .withErrorContaining(
-            "method isGreaterThan in class com.google.common.truth.FauxComparable<S,T> cannot be applied to given types")
+            "int cannot be converted to java.lang.String")
         .in(file)
         .onLine(12);
   }
