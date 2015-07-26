@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.fail;
+
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.SubjectFactory;
@@ -42,5 +44,26 @@ public class SubjectFactoryReflectionTest {
           }
         };
     assertThat(factory.getSubjectClass()).isEqualTo(StringSubject.class);
+  }
+
+  @Test
+  public void parameterizedSubject_shouldNotFail_Bug17658655() {
+    try {
+      new SubjectFactory<ParameterizedSubject<String>, String>() {
+        @Override
+        public ParameterizedSubject<String> getSubject(FailureStrategy fs, String target) {
+          return new ParameterizedSubject<String>(fs, target);
+        }
+      };
+    } catch (ClassCastException e) {
+      fail("Should not throw with parameterized subjects");
+    }
+  }
+
+  private static class ParameterizedSubject<T>
+      extends Subject<ParameterizedSubject<T>, T> {
+    ParameterizedSubject(FailureStrategy fs, T subject) {
+      super(fs, subject);
+    }
   }
 }

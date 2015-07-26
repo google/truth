@@ -36,6 +36,9 @@ public final class ReflectionUtil {
       throw new IllegalArgumentException("" + superclass + " isn't parameterized");
     }
     Type[] typeParams = ((ParameterizedType) superclass).getActualTypeArguments();
+    if (typeParams[paramIndex] instanceof ParameterizedType) {
+      typeParams[paramIndex] = ((ParameterizedType) typeParams[paramIndex]).getRawType();
+    }
     return (Class<?>) typeParams[paramIndex];
   }
 }
