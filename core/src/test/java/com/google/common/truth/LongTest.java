@@ -31,7 +31,7 @@ import org.junit.runners.JUnit4;
  * Tests for Long Subjects.
  *
  * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  */
 @RunWith(JUnit4.class)
 public class LongTest {
@@ -50,6 +50,18 @@ public class LongTest {
   @Test
   public void simpleInequality() {
     assertThat(2L + 2).isNotEqualTo(5L);
+  }
+
+  @Test
+  public void equalityWithInts() {
+    long x = 0;
+    assertThat(x).isEqualTo(0);
+    try {
+      assertThat(x).isNotEqualTo(0);
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage("Not true that <0> is not equal to <0>");
+    }
   }
 
   @Test

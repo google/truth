@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
  * Propositions for {@code long} subjects.
  *
  * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  * @author Kurt Alfred Kluever
  */
 // Can't be final because we use codegen to generate a subclass
@@ -46,7 +46,11 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
     super.isNotEqualTo(other);
   }
 
-  public void isEqualTo(int other) {
-    isEqualTo((long) other);
+  public void isEqualTo(@Nullable Integer other) {
+    super.isEqualTo((other == null) ? null : (long) other);
+  }
+
+  public void isNotEqualTo(@Nullable Integer other) {
+    super.isNotEqualTo((other == null) ? null : (long) other);
   }
 }

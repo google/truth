@@ -15,15 +15,13 @@
  */
 package com.google.common.truth;
 
-import com.google.common.primitives.Ints;
-
 import javax.annotation.Nullable;
 
 /**
  * Propositions for {@link Integer} subjects.
  *
  * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  * @author Kurt Alfred Kluever
  */
 // Can't be final because we use codegen to generate a subclass
@@ -48,7 +46,27 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
     super.isNotEqualTo(other);
   }
 
-  public void isEqualTo(long other) {
-    super.isEqualTo(Ints.saturatedCast(other));
+  public void isEqualTo(@Nullable Long other) {
+    if (other == null) {
+      super.isEqualTo(null);
+    } else {
+      if (other.intValue() == other) {
+        super.isEqualTo(other.intValue());
+      } else {
+        super.isEqualTo(other); // this will certainly fail...
+      }
+    }
+  }
+
+  public void isNotEqualTo(@Nullable Long other) {
+    if (other == null) {
+      super.isNotEqualTo(null);
+    } else {
+      if (other.intValue() == other) {
+        super.isNotEqualTo(other.intValue());
+      } else {
+        super.isNotEqualTo(other); // this will certainly fail...
+      }
+    }
   }
 }
