@@ -32,7 +32,7 @@ import org.junit.runners.JUnit4;
  * Tests for Integer Subjects.
  *
  * @author David Saff
- * @author Christian Gruber
+ * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
 public class IntegerTest {
@@ -41,18 +41,6 @@ public class IntegerTest {
   @Test
   public void simpleEquality() {
     assertThat(2 + 2).isEqualTo(4);
-  }
-
-  @Test
-  public void equalityWithLongs() {
-    int x = 0;
-    assertThat(x).isEqualTo(0L);
-    try {
-      assertThat(x).isNotEqualTo(0L);
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <0> is not equal to <0>");
-    }
   }
 
   @Test
@@ -117,24 +105,8 @@ public class IntegerTest {
 
   @Test
   public void inequalityOfNulls() {
-    assertThat(4).isNotEqualTo((Long) null);
-    assertThat(4).isNotEqualTo((Integer) null);
-    assertThat(4).isNotEqualTo((Object) null);
-    assertThat(4L).isNotEqualTo((Long) null);
-    assertThat(4L).isNotEqualTo((Integer) null);
-    assertThat(4L).isNotEqualTo((Object) null);
     assertThat((Long) null).isNotEqualTo(4);
-    assertThat((Long) null).isNotEqualTo(4L);
-    assertThat((Integer) null).isNotEqualTo(4);
-    assertThat((Integer) null).isNotEqualTo(4L);
-
-    assertThat((Integer) null).isEqualTo((Integer) null);
-    assertThat((Integer) null).isEqualTo((Long) null);
-    assertThat((Integer) null).isEqualTo((Object) null);
-
-    assertThat((Long) null).isEqualTo((Integer) null);
-    assertThat((Long) null).isEqualTo((Long) null);
-    assertThat((Long) null).isEqualTo((Object) null);
+    assertThat(4).isNotEqualTo((Long) null);
   }
 
   @Test
@@ -143,37 +115,7 @@ public class IntegerTest {
       assertThat((Long) null).isNotEqualTo((Integer) null);
       fail("Should have thrown");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <null> is not equal to <null>");
-    }
-    try {
-      assertThat((Long) null).isNotEqualTo((Long) null);
-      fail("Should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <null> is not equal to <null>");
-    }
-    try {
-      assertThat((Integer) null).isNotEqualTo((Integer) null);
-      fail("Should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <null> is not equal to <null>");
-    }
-    try {
-      assertThat((Integer) null).isNotEqualTo((Long) null);
-      fail("Should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <null> is not equal to <null>");
-    }
-    try {
-      assertThat((Integer) null).isNotEqualTo((Object) null);
-      fail("Should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <null> is not equal to <null>");
-    }
-    try {
-      assertThat((Long) null).isNotEqualTo((Object) null);
-      fail("Should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <null> is not equal to <null>");
+      assertThat(e.getMessage()).contains("Not true that <null> is not equal to <null>");
     }
   }
 
@@ -208,31 +150,9 @@ public class IntegerTest {
     } catch (AssertionError expected) {
     }
 
-    // But boxed primitives are equal to "similar" unboxed primitives
-    assertThat(new Integer(4)).isEqualTo(4L);
-    assertThat(new Long(4L)).isEqualTo(4);
-  }
-
-  @Test
-  public void newInteger_isNotEqualTo_Long() {
-    try {
-      assertThat(new Integer(4)).isNotEqualTo(new Long(4L));
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <4> is not equal to <4>");
-      return;
-    }
-    fail("Expected an AssertionError to be thrown but wasn't");
-  }
-
-  @Test
-  public void newLong_isNotEqualTo_Integer() {
-    try {
-      assertThat(new Long(4L)).isNotEqualTo(new Integer(4));
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <4> is not equal to <4>");
-      return;
-    }
-    fail("Expected an AssertionError to be thrown but wasn't");
+    // Truth says boxed primitives are not .equals()
+    assertThat(new Integer(4)).isNotEqualTo(new Long(4L));
+    assertThat(new Long(4L)).isNotEqualTo(new Integer(4));
   }
 
   @Test
@@ -248,61 +168,11 @@ public class IntegerTest {
     // Assert.assertEquals(new Integer(4), 4L);
     // Assert.assertEquals(4L, new Integer(4));
 
-    assertThat(new Integer(4)).isEqualTo(4L);
-    assertThat(new Long(4L)).isEqualTo(4);
-  }
-
-  @Test
-  public void int_isNotEqualTo_Long() {
-    try {
-      assertThat(4).isNotEqualTo(new Long(4L));
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <4> is not equal to <4>");
-      return;
-    }
-    fail("Expected an AssertionError to be thrown but wasn't");
-  }
-
-  @Test
-  public void long_isNotEqualTo_Integer() {
-    try {
-      assertThat(4L).isNotEqualTo(new Integer(4));
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <4> is not equal to <4>");
-      return;
-    }
-    fail("Expected an AssertionError to be thrown but wasn't");
-  }
-
-  @Test
-  public void isEqualTo_biggerThanIntegerMaxValue() {
-    try {
-      assertThat(4).isEqualTo(new Long(Integer.MAX_VALUE) + 1L);
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <4> is equal to <2147483648>");
-      return;
-    }
-    fail("Expected an AssertionError to be thrown but wasn't");
-  }
-
-  @Test
-  public void isNotEqualTo_biggerThanIntegerMaxValue() {
-    assertThat(4).isNotEqualTo(new Long(Integer.MAX_VALUE) + 1L);
-  }
-
-  @Test
-  public void isEqualTo_lessThanIntegerMinValue() {
-    try {
-      assertThat(4).isEqualTo(new Long(Integer.MIN_VALUE) - 1L);
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <4> is equal to <-2147483649>");
-      return;
-    }
-    fail("Expected an AssertionError to be thrown but wasn't");
-  }
-
-  @Test
-  public void isNotEqualTo_lessThanIntegerMinValue() {
-    assertThat(4).isNotEqualTo(new Long(Integer.MIN_VALUE) - 1L);
+    // Truth says boxed primitives are not .equals() to an unboxed primitive
+    assertThat(new Integer(4)).isNotEqualTo(4L);
+    assertThat(new Long(4L)).isNotEqualTo(4);
+    // And vice-versa
+    assertThat(4L).isNotEqualTo(new Integer(4));
+    assertThat(4).isNotEqualTo(new Long(4L));
   }
 }
