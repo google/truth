@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
 import com.google.common.collect.ListMultimap;
@@ -31,15 +33,33 @@ import javax.annotation.Nullable;
 
 @CheckReturnValue
 public class TestVerb extends AbstractVerb<TestVerb> {
-  @Nullable private final String failureMessage;
+  private static final Object[] EMPTY_ARGS = new Object[0];
+
+  @Nullable private final String format;
+  private final Object[] args;
 
   public TestVerb(FailureStrategy failureStrategy) {
     this(failureStrategy, null);
   }
 
-  public TestVerb(FailureStrategy failureStrategy, @Nullable String failureMessage) {
+  public TestVerb(FailureStrategy failureStrategy, @Nullable String format) {
+    this(failureStrategy, format, EMPTY_ARGS);
+  }
+
+  public TestVerb(
+      FailureStrategy failureStrategy, @Nullable String format, @Nullable Object... args) {
     super(failureStrategy);
-    this.failureMessage = failureMessage;
+    this.format = format;
+    this.args = checkNotNull(args);
+
+    int numOfPlaceholders = countPlaceholders(format);
+    if (numOfPlaceholders != args.length) {
+      throw new IllegalArgumentException(
+          StringUtil.format(
+              "The number of placeholders (%s) in the format string (%s) "
+              + "does not equal the number of args (%s) given",
+              numOfPlaceholders, format, args.length));
+    }
   }
 
   public <T extends Comparable<?>> ComparableSubject<?, T> that(@Nullable T target) {
@@ -164,9 +184,49 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new TestVerb(getFailureStrategy(), failureMessage); // Must be a new instance.
   }
 
+  /**
+   * Returns a {@link TestVerb} that will prepend the formatted message using the specified
+   * arguments to the failure message in the event of a test failure.
+   *
+   * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
+   * not the full range of {@link java.util.Formatter} specifiers.
+   *
+   * @throws IllegalArgumentException if the number of placeholders in the format string does not
+   *     equal the number of given arguments
+   */
+  // TODO(kak): This probably should go on AbstractVerb, but that's a breaking change and will
+  // require an atomic migration of the codebase.
+  public TestVerb withFailureMessage(String format, Object... args) {
+    return new TestVerb(getFailureStrategy(), format, args); // Must be a new instance.
+  }
+
   @Override
   @Nullable
   public String getFailureMessage() {
-    return failureMessage;
+    return hasFailureMessage()
+        ? StringUtil.format(format, args)
+        : null;
+  }
+
+  @Override
+  protected boolean hasFailureMessage() {
+    return (format != null);
+  }
+
+  static int countPlaceholders(@Nullable String template) {
+    if (template == null) {
+      return 0;
+    }
+    int index = 0;
+    int count = 0;
+    while (true) {
+      index = template.indexOf("%s", index);
+      if (index == -1) {
+        break;
+      }
+      index++;
+      count++;
+    }
+    return count;
   }
 }
