@@ -114,7 +114,7 @@ public class Subject<S extends Subject<S, T>, T> {
     }
     if (Objects.equal(subject, other) != expectEqual) {
       failComparingToStrings(
-          expectEqual ? "is equal to" : "is not equal to", subject, other, expectEqual);
+          expectEqual ? "is equal to" : "is not equal to", subject, other, rawOther, expectEqual);
     }
   }
 
@@ -141,7 +141,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   public void isSameAs(@Nullable Object other) {
     if (getSubject() != other) {
-      failComparingToStrings("is the same instance as", getSubject(), other, true);
+      failComparingToStrings("is the same instance as", getSubject(), other, other, true);
     }
   }
 
@@ -269,11 +269,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param other the value against which the subject is compared
    */
   protected void fail(String verb, Object other) {
-    failComparingToStrings(verb, getSubject(), other, false);
+    failComparingToStrings(verb, getSubject(), other, other, false);
   }
 
   private void failComparingToStrings(
-      String verb, Object subject, Object other, boolean compareToStrings) {
+      String verb, Object subject, Object other, Object displayOther, boolean compareToStrings) {
     StringBuilder message =
         new StringBuilder("Not true that ").append(getDisplaySubject()).append(" ");
     // If the subject and parts aren't null, and they have equal toString()'s but different
@@ -288,7 +288,7 @@ public class Subject<S extends Subject<S, T>, T> {
     message
         .append(verb)
         .append(" <")
-        .append(other)
+        .append(displayOther)
         .append(">");
     if (needsClassDisambiguation) {
       message.append(" (").append(other.getClass().getName()).append(")");

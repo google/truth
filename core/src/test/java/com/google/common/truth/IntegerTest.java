@@ -500,7 +500,7 @@ public class IntegerTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       // 42 in ASCII is '*'
-      assertThat(expected).hasMessage("Not true that <42> is not equal to <42>");
+      assertThat(expected).hasMessage("Not true that <42> is not equal to <*>");
     }
 
     try {
