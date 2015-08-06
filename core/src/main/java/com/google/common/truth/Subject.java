@@ -78,20 +78,61 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Fails if the subject is not equal to the given object.
+   * Fails if the subject is not equal to the given object. For the purposes of this comparison,
+   * two objects are equal if any of the following is true:
+   *
+   * <ul>
+   * <li>they are equal according to {@link Objects#equal}
+   * <li>they are arrays and are considered equal by the appropriate {@link Arrays#equals} overload
+   * <li>they are boxed integer types ({@code Byte}, {@code Short}, {@code Character},
+   *     {@code Integer}, or {@code Long}) and they are numerically equal when converted to
+   *     {@code Long}.
+   * </ul>
    */
   public void isEqualTo(@Nullable Object other) {
-    if (!Objects.equal(getSubject(), other)) {
-      failComparingToStrings("is equal to", other, true);
-    }
+    doEqualCheck(getSubject(), other, true);
   }
 
   /**
-   * Fails if the subject is equal to the given object.
+   * Fails if the subject is equal to the given object. The meaning of equality is the same as
+   * for the {@link #isEqualTo} method.
    */
   public void isNotEqualTo(@Nullable Object other) {
-    if (Objects.equal(getSubject(), other)) {
-      fail("is not equal to", other);
+    doEqualCheck(getSubject(), other, false);
+  }
+
+  private void doEqualCheck(
+      @Nullable Object rawSubject, @Nullable Object rawOther, boolean expectEqual) {
+    Object subject;
+    Object other;
+    if (isIntegralBoxedPrimitive(rawSubject) && isIntegralBoxedPrimitive(rawOther)) {
+      subject = integralValue(rawSubject);
+      other = integralValue(rawOther);
+    } else {
+      subject = rawSubject;
+      other = rawOther;
+    }
+    if (Objects.equal(subject, other) != expectEqual) {
+      failComparingToStrings(
+          expectEqual ? "is equal to" : "is not equal to", subject, other, expectEqual);
+    }
+  }
+
+  private static boolean isIntegralBoxedPrimitive(@Nullable Object o) {
+    return o instanceof Byte
+        || o instanceof Short
+        || o instanceof Character
+        || o instanceof Integer
+        || o instanceof Long;
+  }
+
+  private static Long integralValue(Object o) {
+    if (o instanceof Character) {
+      return (long) ((Character) o).charValue();
+    } else if (o instanceof Number) {
+      return ((Number) o).longValue();
+    } else {
+      throw new AssertionError(o + " must be either a Character or a Number.");
     }
   }
 
@@ -100,7 +141,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   public void isSameAs(@Nullable Object other) {
     if (getSubject() != other) {
-      failComparingToStrings("is the same instance as", other, true);
+      failComparingToStrings("is the same instance as", getSubject(), other, true);
     }
   }
 
@@ -222,34 +263,35 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /**
    * Assembles a failure message and passes such to the FailureStrategy. Also performs
-   * disambiguation if the subject and {@code part} have the same toString()'s.
+   * disambiguation if the subject and {@code other} have the same toString()'s.
    *
    * @param verb the proposition being asserted
-   * @param part the value against which the subject is compared
+   * @param other the value against which the subject is compared
    */
-  protected void fail(String verb, Object part) {
-    failComparingToStrings(verb, part, false);
+  protected void fail(String verb, Object other) {
+    failComparingToStrings(verb, getSubject(), other, false);
   }
 
-  private void failComparingToStrings(String verb, Object part, boolean compareToStrings) {
+  private void failComparingToStrings(
+      String verb, Object subject, Object other, boolean compareToStrings) {
     StringBuilder message =
         new StringBuilder("Not true that ").append(getDisplaySubject()).append(" ");
     // If the subject and parts aren't null, and they have equal toString()'s but different
     // classes, we need to disambiguate them.
-    boolean neitherNull = (part != null) && (getSubject() != null);
-    boolean sameToStrings = neitherNull && getSubject().toString().equals(part.toString());
+    boolean neitherNull = (other != null) && (subject != null);
+    boolean sameToStrings = neitherNull && subject.toString().equals(other.toString());
     boolean needsClassDisambiguation =
-        neitherNull && sameToStrings && !getSubject().getClass().equals(part.getClass());
+        neitherNull && sameToStrings && !subject.getClass().equals(other.getClass());
     if (needsClassDisambiguation) {
-      message.append("(").append(getSubject().getClass().getName()).append(") ");
+      message.append("(").append(subject.getClass().getName()).append(") ");
     }
     message
         .append(verb)
         .append(" <")
-        .append(part)
+        .append(other)
         .append(">");
     if (needsClassDisambiguation) {
-      message.append(" (").append(part.getClass().getName()).append(")");
+      message.append(" (").append(other.getClass().getName()).append(")");
     }
     if (!needsClassDisambiguation && sameToStrings && compareToStrings) {
       message.append(" (although their toString() representations are the same)");

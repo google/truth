@@ -37,16 +37,4 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
   public final void isEquivalentAccordingToCompareTo(Long other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
-
-  public void isEqualTo(@Nullable Object other) {
-    super.isEqualTo(other);
-  }
-
-  public void isNotEqualTo(@Nullable Object other) {
-    super.isNotEqualTo(other);
-  }
-
-  public void isEqualTo(int other) {
-    isEqualTo((long) other);
-  }
 }

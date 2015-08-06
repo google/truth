@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import com.google.common.primitives.Ints;
-
 import javax.annotation.Nullable;
 
 /**
@@ -38,17 +36,5 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
   @Deprecated
   public final void isEquivalentAccordingToCompareTo(Integer other) {
     super.isEquivalentAccordingToCompareTo(other);
-  }
-
-  public void isEqualTo(@Nullable Object other) {
-    super.isEqualTo(other);
-  }
-
-  public void isNotEqualTo(@Nullable Object other) {
-    super.isNotEqualTo(other);
-  }
-
-  public void isEqualTo(long other) {
-    super.isEqualTo(Ints.saturatedCast(other));
   }
 }

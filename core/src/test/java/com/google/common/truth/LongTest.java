@@ -19,9 +19,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.TruthJUnit.assume;
 import static org.junit.Assert.fail;
 
-import com.google.common.truth.Expect;
-
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.runner.RunWith;
@@ -31,12 +28,11 @@ import org.junit.runners.JUnit4;
  * Tests for Long Subjects.
  *
  * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
+ * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
 public class LongTest {
-  @Rule public final Expect EXPECT = Expect.create();
-
   @Test
   public void simpleEquality() {
     assertThat(2L + 2).isEqualTo(4L);
@@ -53,12 +49,26 @@ public class LongTest {
   }
 
   @Test
+  public void equalityWithInts() {
+    long x = 0;
+
+    assertThat(x).isEqualTo(0);
+
+    try {
+      assertThat(x).isNotEqualTo(0);
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage("Not true that <0> is not equal to <0>");
+    }
+  }
+
+  @Test
   public void equalityFail() {
     try {
       assertThat(2L + 2).isEqualTo(5L);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).contains("Not true that <4> is equal to <5>");
+      assertThat(expected).hasMessage("Not true that <4> is equal to <5>");
     }
   }
 
@@ -68,7 +78,7 @@ public class LongTest {
       assertThat(2L + 2).isNotEqualTo(4L);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).contains("Not true that <4> is not equal to <4>");
+      assertThat(expected).hasMessage("Not true that <4> is not equal to <4>");
     }
   }
 
@@ -91,14 +101,14 @@ public class LongTest {
     try {
       assertThat((Long) null).isEqualTo(5L);
       fail("Should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <null> is equal to <5>");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage("Not true that <null> is equal to <5>");
     }
     try {
       assertThat(5L).isEqualTo((Long) null);
       fail("Should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <5> is equal to <null>");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage("Not true that <5> is equal to <null>");
     }
   }
 
@@ -113,8 +123,8 @@ public class LongTest {
     try {
       assertThat((Long) null).isNotEqualTo((Long) null);
       fail("Should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <null> is not equal to <null>");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage("Not true that <null> is not equal to <null>");
     }
   }
 }
