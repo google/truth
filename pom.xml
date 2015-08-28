@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.sonatype.oss</groupId>
@@ -19,7 +21,7 @@
     <module>core</module>
     <module>extensions</module>
   </modules>
-  <prerequisites><maven>3.0.3</maven></prerequisites>
+  <prerequisites><maven>3.1.1</maven></prerequisites>
   <developers>
     <developer>
       <id>cgruber</id>
@@ -74,17 +76,7 @@
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
-    <url>https://truth.ci.cloudbees.com/</url>
-    <notifiers>
-      <notifier>
-        <type>mail</type>
-        <sendOnError>true</sendOnError>
-        <sendOnFailure>true</sendOnFailure>
-        <sendOnSuccess>false</sendOnSuccess>
-        <sendOnWarning>false</sendOnWarning>
-        <configuration><address>truth-dev+build@googlecode.com</address></configuration>
-      </notifier>
-    </notifiers>
+    <url>https://travis-ci.org/google/truth</url>
   </ciManagement>
   <mailingLists>
     <mailingList>
@@ -103,6 +95,34 @@
   <scm>
     <connection>scm:git:git@github.com:google/truth.git</connection>
     <url>scm:git:git@github.com:google/truth.git</url>
-    <!-- <developerConnection>scm:git:git@github.com:truth0/truth.git</developerConnection> -->
   </scm>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.5</version> <!-- work around ubuntu bug -->
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <profiles>
+    <profile>
+      <id>disable-java8-doclint</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <!-- Disable doclint in java8 where problems are errors -->
+              <additionalparam>-Xdoclint:none</additionalparam>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
