@@ -176,7 +176,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * Ensures that the given tolerance is a non-negative finite value, i.e. not {@code Double.NaN},
    * {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}.
    */
-  private static void checkTolerance(double tolerance) {
+  static void checkTolerance(double tolerance) {
     checkArgument(!Double.isNaN(tolerance), "tolerance cannot be NaN");
     checkArgument(tolerance >= 0.0, "tolerance (%s) cannot be negative", tolerance);
     checkArgument(
