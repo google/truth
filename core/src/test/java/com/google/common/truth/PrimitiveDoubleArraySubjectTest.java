@@ -158,7 +158,7 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void isEqualTo_Fail_LongerOneInfinity() {
     try {
-      assertThat(array(2.2d, 3.3)).isEqualTo(array(POSITIVE_INFINITY), DEFAULT_TOLERANCE);
+      assertThat(array(2.2d, 3.3d)).isEqualTo(array(POSITIVE_INFINITY), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -445,7 +445,7 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void hasValuesWithin_NegativeTolerance() {
     try {
-      assertThat(array(3.3d, 2.2d)).hasValuesWithin(-0.001).of(array(3.3d, 2.2d));
+      assertThat(array(3.3d, 2.2d)).hasValuesWithin(-0.001d).of(array(3.3d, 2.2d));
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
@@ -586,7 +586,7 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void hasValuesNotWithin_NegativeTolerance() {
     try {
-      assertThat(array(3.3d, 2.2d)).hasValuesNotWithin(-0.001).of(array(3.3d, 2.2d));
+      assertThat(array(3.3d, 2.2d)).hasValuesNotWithin(-0.001d).of(array(3.3d, 2.2d));
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");

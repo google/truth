@@ -132,8 +132,8 @@ public class PrimitiveDoubleArraySubject
    * (including if one is a clone of the other) then non-finite values are considered not equal so
    * the any non-finite value in either argument will cause the test to pass.
    *
-   * <p>This method is scheduled for deprecation in favour of {@link #hasValuesNotWithin(double)},
-   * noting the different behaviour for non-finite values.
+   * @deprecated use {@link #hasValuesNotWithin(double)}, noting the different behaviour for
+   *     non-finite values
    */
   @Deprecated
   public void isNotEqualTo(Object expectedArray, double tolerance) {
