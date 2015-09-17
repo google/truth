@@ -175,7 +175,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * Ensures that the given tolerance is a non-negative finite value, i.e. not {@code Float.NaN},
    * {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}.
    */
-  private static void checkTolerance(float tolerance) {
+  static void checkTolerance(float tolerance) {
     checkArgument(!Float.isNaN(tolerance), "tolerance cannot be NaN");
     checkArgument(tolerance >= 0.0f, "tolerance (%s) cannot be negative", tolerance);
     checkArgument(
