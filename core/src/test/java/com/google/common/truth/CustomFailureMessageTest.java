@@ -54,10 +54,7 @@ public class CustomFailureMessageTest {
   @Test
   public void assertWithMessageIsPrependedWithNamed() {
     try {
-      assertWithMessage("Invalid month")
-          .that(13)
-          .named("Septober")
-          .isIn(Range.closed(1, 12));
+      assertWithMessage("Invalid month").that(13).named("Septober").isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -80,10 +77,7 @@ public class CustomFailureMessageTest {
   @Test
   public void customMessageIsPrepended() {
     try {
-      assert_()
-          .withFailureMessage("Invalid month")
-          .that(13)
-          .isIn(Range.closed(1, 12));
+      assert_().withFailureMessage("Invalid month").that(13).isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
@@ -108,10 +102,7 @@ public class CustomFailureMessageTest {
   @Test
   public void customMessage() {
     try {
-      assert_()
-          .withFailureMessage("This is a custom message")
-          .that(false)
-          .isTrue();
+      assert_().withFailureMessage("This is a custom message").that(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -150,10 +141,7 @@ public class CustomFailureMessageTest {
   @Test
   public void assertWithMessageIsPrependedWithNamed_withPlaceholders() {
     try {
-      assertWithMessage("Invalid %snth", "mo")
-          .that(13)
-          .named("Septober")
-          .isIn(Range.closed(1, 12));
+      assertWithMessage("Invalid %snth", "mo").that(13).named("Septober").isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -176,10 +164,7 @@ public class CustomFailureMessageTest {
   @Test
   public void customMessageIsPrepended_withPlaceholders() {
     try {
-      assert_()
-          .withFailureMessage("In%slid%snth", "va", " mo")
-          .that(13)
-          .isIn(Range.closed(1, 12));
+      assert_().withFailureMessage("In%slid%snth", "va", " mo").that(13).isIn(Range.closed(1, 12));
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
@@ -204,10 +189,7 @@ public class CustomFailureMessageTest {
   @Test
   public void customMessage_withPlaceholders() {
     try {
-      assert_()
-          .withFailureMessage("This is a %s %s", "custom", "message")
-          .that(false)
-          .isTrue();
+      assert_().withFailureMessage("This is a %s %s", "custom", "message").that(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -219,10 +201,7 @@ public class CustomFailureMessageTest {
   @Test
   public void extraPlaceholderThrowsIae() {
     try {
-      assert_()
-          .withFailureMessage("This is a %s %s", "custom")
-          .that(true)
-          .isTrue();
+      assert_().withFailureMessage("This is a %s %s", "custom").that(true).isTrue();
       fail("Should have thrown");
     } catch (IllegalArgumentException expected) {
     }
@@ -231,10 +210,7 @@ public class CustomFailureMessageTest {
   @Test
   public void missingPlaceholderThrowsIae() {
     try {
-      assert_()
-          .withFailureMessage("This is a %s", "custom", "message")
-          .that(true)
-          .isTrue();
+      assert_().withFailureMessage("This is a %s", "custom", "message").that(true).isTrue();
       fail("Should have thrown");
     } catch (IllegalArgumentException expected) {
     }
@@ -243,10 +219,7 @@ public class CustomFailureMessageTest {
   @Test
   public void noPlaceholdersWithArgsThrowsIae() {
     try {
-      assert_()
-          .withFailureMessage("This is a custom message", "bad arg")
-          .that(true)
-          .isTrue();
+      assert_().withFailureMessage("This is a custom message", "bad arg").that(true).isTrue();
       fail("Should have thrown");
     } catch (IllegalArgumentException expected) {
     }
@@ -255,18 +228,13 @@ public class CustomFailureMessageTest {
   @Test
   public void placeholderWithoutArgsThrows() {
     try {
-      assertWithMessage("This is a %s")
-          .that(true)
-          .isTrue();
+      assertWithMessage("This is a %s").that(true).isTrue();
       fail("Should have thrown");
     } catch (IllegalArgumentException expected) {
     }
 
     try {
-      assert_()
-          .withFailureMessage("This is a %s")
-          .that(true)
-          .isTrue();
+      assert_().withFailureMessage("This is a %s").that(true).isTrue();
       fail("Should have thrown");
     } catch (IllegalArgumentException expected) {
     }
@@ -274,15 +242,14 @@ public class CustomFailureMessageTest {
 
   @Test
   public void placeholdersArentEagerlyEvaluated() {
-    Object toStringThrows = new Object() {
-      @Override
-      public String toString() {
-        throw new RuntimeException("Don't call me!");
-      }
-    };
-    assertWithMessage("Evaluating this will blow up: %s", toStringThrows)
-        .that(true)
-        .isTrue();
+    Object toStringThrows =
+        new Object() {
+          @Override
+          public String toString() {
+            throw new RuntimeException("Don't call me!");
+          }
+        };
+    assertWithMessage("Evaluating this will blow up: %s", toStringThrows).that(true).isTrue();
     assert_()
         .withFailureMessage("Evaluating this will blow up: %s", toStringThrows)
         .that(true)

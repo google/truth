@@ -77,8 +77,8 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
    *          a SubjectFactory<S, T> implementation
    * @returns A custom verb for the type returned by the SubjectFactory
    */
-  public <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>> DelegatedVerb<S, T>
-      about(SF factory) {
+  public <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>> DelegatedVerb<S, T> about(
+      SF factory) {
     return new DelegatedVerb<S, T>(getFailureStrategy(), factory);
   }
 

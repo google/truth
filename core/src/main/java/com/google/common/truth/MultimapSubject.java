@@ -200,7 +200,6 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   private class IterableValuesForKey
       extends IterableSubject<IterableValuesForKey, V, Collection<V>> {
     @Nullable private final K key;
-
     @Nullable private final String display;
 
     IterableValuesForKey(

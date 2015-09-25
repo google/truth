@@ -34,7 +34,6 @@ import javax.annotation.Nullable;
 @CheckReturnValue
 public class TestVerb extends AbstractVerb<TestVerb> {
   private static final Object[] EMPTY_ARGS = new Object[0];
-
   @Nullable private final String format;
   private final Object[] args;
 
@@ -57,8 +56,10 @@ public class TestVerb extends AbstractVerb<TestVerb> {
       throw new IllegalArgumentException(
           StringUtil.format(
               "The number of placeholders (%s) in the format string (%s) "
-              + "does not equal the number of args (%s) given",
-              numOfPlaceholders, format, args.length));
+                  + "does not equal the number of args (%s) given",
+              numOfPlaceholders,
+              format,
+              args.length));
     }
   }
 
@@ -107,8 +108,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new StringSubject(getFailureStrategy(), target);
   }
 
-  public <T, C extends Iterable<T>>
-      IterableSubject<? extends IterableSubject<?, T, C>, T, C> that(@Nullable Iterable<T> target) {
+  public <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> that(
+      @Nullable Iterable<T> target) {
     return IterableSubject.create(getFailureStrategy(), target);
   }
 
@@ -170,8 +171,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return SetMultimapSubject.create(getFailureStrategy(), target);
   }
 
-  public <E, M extends Multiset<E>>
-      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(@Nullable Multiset<E> target) {
+  public <E, M extends Multiset<E>> MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(
+      @Nullable Multiset<E> target) {
     return MultisetSubject.create(getFailureStrategy(), target);
   }
 
@@ -203,9 +204,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   @Override
   @Nullable
   public String getFailureMessage() {
-    return hasFailureMessage()
-        ? StringUtil.format(format, args)
-        : null;
+    return hasFailureMessage() ? StringUtil.format(format, args) : null;
   }
 
   @Override

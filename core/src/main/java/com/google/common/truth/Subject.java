@@ -285,11 +285,7 @@ public class Subject<S extends Subject<S, T>, T> {
     if (needsClassDisambiguation) {
       message.append("(").append(subject.getClass().getName()).append(") ");
     }
-    message
-        .append(verb)
-        .append(" <")
-        .append(displayOther)
-        .append(">");
+    message.append(verb).append(" <").append(displayOther).append(">");
     if (needsClassDisambiguation) {
       message.append(" (").append(other.getClass().getName()).append(")");
     }
@@ -313,15 +309,9 @@ public class Subject<S extends Subject<S, T>, T> {
       fail(verb, messageParts[0]);
     } else {
       StringBuilder message = new StringBuilder("Not true that ");
-      message
-          .append(getDisplaySubject())
-          .append(" ")
-          .append(verb);
+      message.append(getDisplaySubject()).append(" ").append(verb);
       for (Object part : messageParts) {
-        message
-            .append(" <")
-            .append(part)
-            .append(">");
+        message.append(" <").append(part).append(">");
       }
       failureStrategy.fail(message.toString());
     }

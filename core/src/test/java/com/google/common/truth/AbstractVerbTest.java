@@ -65,7 +65,6 @@ public class AbstractVerbTest {
           return false;
         }
       };
-
   @DataPoints public static String[] strings = new String[] {"a", "b"};
 
   @Test

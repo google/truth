@@ -60,8 +60,7 @@ public class SubjectFactoryReflectionTest {
     }
   }
 
-  private static class ParameterizedSubject<T>
-      extends Subject<ParameterizedSubject<T>, T> {
+  private static class ParameterizedSubject<T> extends Subject<ParameterizedSubject<T>, T> {
     ParameterizedSubject(FailureStrategy fs, T subject) {
       super(fs, subject);
     }

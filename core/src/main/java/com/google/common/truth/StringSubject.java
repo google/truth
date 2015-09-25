@@ -261,8 +261,6 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   }
 
   private static String quote(@Nullable CharSequence toBeWrapped) {
-    return (toBeWrapped == null)
-        ? "null"
-        : "\"" + toBeWrapped + "\"";
+    return (toBeWrapped == null) ? "null" : "\"" + toBeWrapped + "\"";
   }
 }

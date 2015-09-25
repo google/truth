@@ -179,9 +179,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
     checkArgument(!Float.isNaN(tolerance), "tolerance cannot be NaN");
     checkArgument(tolerance >= 0.0f, "tolerance (%s) cannot be negative", tolerance);
     checkArgument(
-        floatToIntBits(tolerance) != NEG_ZERO_BITS,
-        "tolerance (%s) cannot be negative",
-        tolerance);
+        floatToIntBits(tolerance) != NEG_ZERO_BITS, "tolerance (%s) cannot be negative", tolerance);
     checkArgument(tolerance != Float.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
 

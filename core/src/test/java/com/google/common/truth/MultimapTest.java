@@ -76,10 +76,7 @@ public class MultimapTest {
   public void multimapNamedValuesForKey() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     try {
-      assertThat(multimap)
-          .named("multymap")
-          .valuesForKey(1)
-          .containsExactly(4);
+      assertThat(multimap).named("multymap").valuesForKey(1).containsExactly(4);
       fail("Should have thrown.");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -94,10 +91,7 @@ public class MultimapTest {
   public void valuesForKeyNamed() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     try {
-      assertThat(multimap)
-          .valuesForKey(1)
-          .named("valuez")
-          .containsExactly(4);
+      assertThat(multimap).valuesForKey(1).named("valuez").containsExactly(4);
       fail("Should have thrown.");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -234,10 +228,7 @@ public class MultimapTest {
 
     assertThat(multimap).valuesForKey(3).hasSize(3);
     assertThat(multimap).valuesForKey(4).containsExactly("four", "five");
-    assertThat(multimap)
-        .valuesForKey(3)
-        .containsAllOf("one", "six")
-        .inOrder();
+    assertThat(multimap).valuesForKey(3).containsAllOf("one", "six").inOrder();
     assertThat(multimap).valuesForKey(5).isEmpty();
   }
 

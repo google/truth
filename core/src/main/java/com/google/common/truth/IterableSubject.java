@@ -263,11 +263,12 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
 
   private Ordered containsExactly(
       String failVerb, Iterable<?> required, boolean addElementsInWarning) {
-    String failSuffix = addElementsInWarning
-        ? ". Passing an iterable to the varargs method containsExactly(Object...) is "
-            + "often not the correct thing to do. Did you mean to call "
-            + "containsExactlyElementsIn(Iterable) instead?"
-        : "";
+    String failSuffix =
+        addElementsInWarning
+            ? ". Passing an iterable to the varargs method containsExactly(Object...) is "
+                + "often not the correct thing to do. Did you mean to call "
+                + "containsExactlyElementsIn(Iterable) instead?"
+            : "";
     Iterator<?> actualIter = getSubject().iterator();
     Iterator<?> requiredIter = required.iterator();
 
