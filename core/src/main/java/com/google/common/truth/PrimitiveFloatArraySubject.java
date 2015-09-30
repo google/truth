@@ -77,9 +77,10 @@ public class PrimitiveFloatArraySubject
    * (including if one is a clone of the other) then non-finite values are considered not equal so
    * the any non-finite value in either argument will cause the test to fail.
    *
-   * <p>This method is scheduled for deprecation in favour of {@link #hasValuesWithin(float)},
-   * noting the different behaviour for non-finite values.
+   * @deprecated use {@link #hasValuesWithin(float)}, noting the different behaviour for non-finite
+   *     values
    */
+  @Deprecated
   public void isEqualTo(Object expected, float tolerance) {
     float[] actual = getSubject();
     if (actual == expected) {

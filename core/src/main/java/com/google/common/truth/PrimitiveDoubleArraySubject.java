@@ -77,9 +77,10 @@ public class PrimitiveDoubleArraySubject
    * (including if one is a clone of the other) then non-finite values are considered not equal so
    * the any non-finite value in either argument will cause the test to fail.
    *
-   * <p>This method is scheduled for deprecation in favour of {@link #hasValuesWithin(double)},
-   * noting the different behaviour for non-finite values.
+   * @deprecated use {@link #hasValuesWithin(double)}, noting the different behaviour for non-finite
+   *     values
    */
+  @Deprecated
   public void isEqualTo(Object expected, double tolerance) {
     double[] actual = getSubject();
     if (actual == expected) {
