@@ -25,6 +25,8 @@ you are free to use it or modify it subject only to the terms in that license.
 ## An example
 
 {% highlight java %}
+import static org.junit.Assert.assertTrue;
+
 Set<Foo> foo = ...;
 assertTrue(foo.isEmpty()); // or, shudder, foo.size() == 0
 {% endhighlight %}
@@ -41,6 +43,8 @@ java.lang.AssertionError
 whereas:
 
 {% highlight java %}
+import static com.google.common.truth.Truth.assertThat;
+
 Set<Foo> foo = ...;
 assertThat(foo).isEmpty()
 {% endhighlight %}
@@ -84,6 +88,10 @@ Any operation that can be done with `assert_()` can be done with `assume()` or a
 way to get the TestVerb.
 
 ## Common and handy propositions
+
+### Before you start
+
+`assertThat` is on the `Truth` class, so be sure to `import static com.google.common.truth.Truth.assertThat;`
 
 ### Basics
 
