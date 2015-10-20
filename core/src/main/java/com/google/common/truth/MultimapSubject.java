@@ -153,6 +153,16 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
             mapType1,
             mapType2);
       } else {
+        if (getSubject() instanceof ListMultimap) {
+          // If we're comparing ListMultimaps, check for order
+          containsExactly((Multimap<?, ?>) other).inOrder();
+        } else if (getSubject() instanceof SetMultimap) {
+          // If we're comparing SetMultimaps, don't check for order
+          containsExactly((Multimap<?, ?>) other);
+        }
+        // This statement should generally never be reached because one of the two containsExactly
+        // calls above should throw an exception. It'll only be reached if we're looking at a
+        // non-ListMultimap and non-SetMultimap (e.g., a custom Multimap implementation).
         fail("is equal to", other);
       }
     }
