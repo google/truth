@@ -121,6 +121,10 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new PrimitiveBooleanArraySubject(getFailureStrategy(), target);
   }
 
+  public PrimitiveShortArraySubject that(@Nullable short[] target) {
+    return new PrimitiveShortArraySubject(getFailureStrategy(), target);
+  }
+
   public PrimitiveIntArraySubject that(@Nullable int[] target) {
     return new PrimitiveIntArraySubject(getFailureStrategy(), target);
   }

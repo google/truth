@@ -176,6 +176,10 @@ public final class Truth {
     return assert_().that(target);
   }
 
+  public static PrimitiveShortArraySubject assertThat(@Nullable short[] target) {
+    return assert_().that(target);
+  }
+
   public static PrimitiveIntArraySubject assertThat(@Nullable int[] target) {
     return assert_().that(target);
   }
