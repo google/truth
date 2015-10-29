@@ -15,25 +15,52 @@
  */
 package com.google.common.truth;
 
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Floats;
+
 /**
  * Math utilities to be shared by numeric subjects.
  */
 public final class MathUtil {
   private MathUtil() {}
 
+  /**
+   * Returns true iff {@code left} and {@code right} are finite values within {@code tolerance} of
+   * each other. Note that both this method and {@link #notEquals} returns false if either {@code
+   * left} or {@code right} is infinite or NaN.
+   */
   public static boolean equals(double left, double right, double tolerance) {
     return Math.abs(left - right) <= Math.abs(tolerance);
   }
 
+  /**
+   * Returns true iff {@code left} and {@code right} are finite values within {@code tolerance} of
+   * each other. Note that both this method and {@link #notEquals} returns false if either {@code
+   * left} or {@code right} is infinite or NaN.
+   */
   public static boolean equals(float left, float right, float tolerance) {
     return equals((double) left, (double) right, (double) tolerance);
   }
 
+  /**
+   * Returns true iff {@code left} and {@code right} are finite values not within {@code tolerance}
+   * of each other. Note that both this method and {@link #notEquals} returns false if either {@code
+   * left} or {@code right} is infinite or NaN.
+   */
   public static boolean notEquals(double left, double right, double tolerance) {
-    return Math.abs(left - right) > Math.abs(tolerance);
+    if (Doubles.isFinite(left) && Doubles.isFinite(right)) {
+      return Math.abs(left - right) > Math.abs(tolerance);
+    } else {
+      return false;
+    }
   }
 
+  /**
+   * Returns true iff {@code left} and {@code right} are finite values not within {@code tolerance}
+   * of each other. Note that both this method and {@link #notEquals} returns false if either {@code
+   * left} or {@code right} is infinite or NaN.
+   */
   public static boolean notEquals(float left, float right, float tolerance) {
-    return equals((double) left, (double) right, (double) tolerance);
+    return notEquals((double) left, (double) right, (double) tolerance);
   }
 }

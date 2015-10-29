@@ -33,7 +33,8 @@ import org.junit.runners.model.Statement;
 public class ExpectFailureWithStackTraceTest {
   private static final String METHOD_NAME = "ExpectFailureWithStackTraceTest.expectTwoFailures";
 
-  @Rule public final Expect failToExpect =
+  @Rule
+  public final Expect failToExpect =
       new FailingExpect(new ExpectationGatherer(true /* showStackTrace */));
 
   @Test

@@ -60,8 +60,8 @@ public class IteratingVerb<T> {
     return wrap(failureStrategy, factory, data);
   }
 
-  private <S extends Subject<S, T>, SF extends SubjectFactory<S, T>>
-      S wrap(FailureStrategy fs, SF factory, Iterable<T> data) {
+  private <S extends Subject<S, T>, SF extends SubjectFactory<S, T>> S wrap(
+      FailureStrategy fs, SF factory, Iterable<T> data) {
     Type t = factory.getSubjectClass();
     Class<?> wrapperClass;
     try {

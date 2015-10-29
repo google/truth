@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
 import com.google.common.collect.ListMultimap;
@@ -31,15 +33,34 @@ import javax.annotation.Nullable;
 
 @CheckReturnValue
 public class TestVerb extends AbstractVerb<TestVerb> {
-  @Nullable private final String failureMessage;
+  private static final Object[] EMPTY_ARGS = new Object[0];
+  @Nullable private final String format;
+  private final Object[] args;
 
   public TestVerb(FailureStrategy failureStrategy) {
     this(failureStrategy, null);
   }
 
-  public TestVerb(FailureStrategy failureStrategy, @Nullable String failureMessage) {
+  public TestVerb(FailureStrategy failureStrategy, @Nullable String format) {
+    this(failureStrategy, format, EMPTY_ARGS);
+  }
+
+  public TestVerb(
+      FailureStrategy failureStrategy, @Nullable String format, @Nullable Object... args) {
     super(failureStrategy);
-    this.failureMessage = failureMessage;
+    this.format = format;
+    this.args = checkNotNull(args);
+
+    int numOfPlaceholders = countPlaceholders(format);
+    if (numOfPlaceholders != args.length) {
+      throw new IllegalArgumentException(
+          StringUtil.format(
+              "The number of placeholders (%s) in the format string (%s) "
+                  + "does not equal the number of args (%s) given",
+              numOfPlaceholders,
+              format,
+              args.length));
+    }
   }
 
   public <T extends Comparable<?>> ComparableSubject<?, T> that(@Nullable T target) {
@@ -71,6 +92,10 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new DoubleSubject(getFailureStrategy(), target);
   }
 
+  public FloatSubject that(@Nullable Float target) {
+    return new FloatSubject(getFailureStrategy(), target);
+  }
+
   public IntegerSubject that(@Nullable Integer target) {
     return new IntegerSubject(getFailureStrategy(), target);
   }
@@ -83,8 +108,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new StringSubject(getFailureStrategy(), target);
   }
 
-  public <T, C extends Iterable<T>>
-      IterableSubject<? extends IterableSubject<?, T, C>, T, C> that(@Nullable Iterable<T> target) {
+  public <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> that(
+      @Nullable Iterable<T> target) {
     return IterableSubject.create(getFailureStrategy(), target);
   }
 
@@ -94,6 +119,10 @@ public class TestVerb extends AbstractVerb<TestVerb> {
 
   public PrimitiveBooleanArraySubject that(@Nullable boolean[] target) {
     return new PrimitiveBooleanArraySubject(getFailureStrategy(), target);
+  }
+
+  public PrimitiveShortArraySubject that(@Nullable short[] target) {
+    return new PrimitiveShortArraySubject(getFailureStrategy(), target);
   }
 
   public PrimitiveIntArraySubject that(@Nullable int[] target) {
@@ -120,8 +149,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new PrimitiveDoubleArraySubject(getFailureStrategy(), target);
   }
 
-  public <T> OptionalSubject<T> that(@Nullable Optional<T> target) {
-    return new OptionalSubject<T>(getFailureStrategy(), target);
+  public OptionalSubject that(@Nullable Optional<?> target) {
+    return new OptionalSubject(getFailureStrategy(), target);
   }
 
   public MapSubject that(@Nullable Map<?, ?> target) {
@@ -146,8 +175,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return SetMultimapSubject.create(getFailureStrategy(), target);
   }
 
-  public <E, M extends Multiset<E>>
-      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(@Nullable Multiset<E> target) {
+  public <E, M extends Multiset<E>> MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(
+      @Nullable Multiset<E> target) {
     return MultisetSubject.create(getFailureStrategy(), target);
   }
 
@@ -160,9 +189,47 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new TestVerb(getFailureStrategy(), failureMessage); // Must be a new instance.
   }
 
+  /**
+   * Returns a {@link TestVerb} that will prepend the formatted message using the specified
+   * arguments to the failure message in the event of a test failure.
+   *
+   * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
+   * not the full range of {@link java.util.Formatter} specifiers.
+   *
+   * @throws IllegalArgumentException if the number of placeholders in the format string does not
+   *     equal the number of given arguments
+   */
+  // TODO(kak): This probably should go on AbstractVerb, but that's a breaking change and will
+  // require an atomic migration of the codebase.
+  public TestVerb withFailureMessage(String format, Object... args) {
+    return new TestVerb(getFailureStrategy(), format, args); // Must be a new instance.
+  }
+
   @Override
   @Nullable
   public String getFailureMessage() {
-    return failureMessage;
+    return hasFailureMessage() ? StringUtil.format(format, args) : null;
+  }
+
+  @Override
+  protected boolean hasFailureMessage() {
+    return (format != null);
+  }
+
+  static int countPlaceholders(@Nullable String template) {
+    if (template == null) {
+      return 0;
+    }
+    int index = 0;
+    int count = 0;
+    while (true) {
+      index = template.indexOf("%s", index);
+      if (index == -1) {
+        break;
+      }
+      index++;
+      count++;
+    }
+    return count;
   }
 }

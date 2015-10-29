@@ -20,12 +20,12 @@ import com.google.common.base.Optional;
 import javax.annotation.Nullable;
 
 /**
- * Propositions for {@link Optional}{@code <T>} subjects.
+ * Propositions for {@link Optional} subjects.
  *
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  */
-public class OptionalSubject<T> extends Subject<OptionalSubject<T>, Optional<T>> {
-  OptionalSubject(FailureStrategy failureStrategy, @Nullable Optional<T> subject) {
+public class OptionalSubject extends Subject<OptionalSubject, Optional<?>> {
+  OptionalSubject(FailureStrategy failureStrategy, @Nullable Optional<?> subject) {
     super(failureStrategy, subject);
   }
 

@@ -92,6 +92,20 @@ public final class Truth {
   }
 
   /**
+   * Returns a {@link TestVerb} that will prepend the formatted message using the specified
+   * arguments to the failure message in the event of a test failure.
+   *
+   * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
+   * not the full range of {@link java.util.Formatter} specifiers.
+   *
+   * @throws IllegalArgumentException if the number of placeholders in the format string does not
+   *     equal the number of given arguments
+   */
+  public static TestVerb assertWithMessage(String format, Object... args) {
+    return assert_().withFailureMessage(format, args);
+  }
+
+  /**
    * The recommended method of extension of Truth to new types, which is
    * documented in {@link com.google.common.truth.delegation.DelegationTest}.
    *
@@ -132,6 +146,10 @@ public final class Truth {
     return assert_().that(target);
   }
 
+  public static FloatSubject assertThat(@Nullable Float target) {
+    return assert_().that(target);
+  }
+
   public static IntegerSubject assertThat(@Nullable Integer target) {
     return assert_().that(target);
   }
@@ -155,6 +173,10 @@ public final class Truth {
   }
 
   public static PrimitiveBooleanArraySubject assertThat(@Nullable boolean[] target) {
+    return assert_().that(target);
+  }
+
+  public static PrimitiveShortArraySubject assertThat(@Nullable short[] target) {
     return assert_().that(target);
   }
 
@@ -182,7 +204,7 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static <T> OptionalSubject<T> assertThat(@Nullable Optional<T> target) {
+  public static OptionalSubject assertThat(@Nullable Optional<?> target) {
     return assert_().that(target);
   }
 

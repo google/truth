@@ -53,7 +53,7 @@ public class Inventory {
   IterableSubject<?, ?, ?> g;
   MapSubject i;
   ObjectArraySubject<?> j;
-  OptionalSubject<?> k;
+  OptionalSubject k;
   Ordered l;
   Platform v;
   PrimitiveBooleanArraySubject m;

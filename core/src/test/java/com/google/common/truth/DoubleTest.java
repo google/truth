@@ -36,11 +36,51 @@ public class DoubleTest {
     assertThat(2.0).isWithin(0.00001).of(2.0);
     assertThat(2.0).isWithin(1000.0).of(2.0);
     assertThat(2.0).isWithin(1.00001).of(3.0);
+    assertThatIsWithinFails(2.0, 0.99999, 3.0);
+    assertThatIsWithinFails(2.0, 1000.0, 1003.0);
+  }
+
+  private static void assertThatIsWithinFails(double actual, double tolerance, double expected) {
+    try {
+      assertThat(actual).named("testValue").isWithin(tolerance).of(expected);
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError)
+          .hasMessage(
+              String.format(
+                  "testValue (<%s>) and <%s> should have been finite values within"
+                      + " <%s> of each other",
+                  actual,
+                  expected,
+                  tolerance));
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
   }
 
   @Test
   public void isNotWithinOf() {
-    assertThat(2.0).isNotWithin(0.1).of(2.5);
+    assertThatIsNotWithinFails(2.0, 0.00001, 2.0);
+    assertThatIsNotWithinFails(2.0, 1000.0, 2.0);
+    assertThatIsNotWithinFails(2.0, 1.00001, 3.0);
+    assertThat(2.0).isNotWithin(0.99999).of(3.0);
+    assertThat(2.0).isNotWithin(1000.0).of(1003.0);
+  }
+
+  private static void assertThatIsNotWithinFails(double actual, double tolerance, double expected) {
+    try {
+      assertThat(actual).named("testValue").isNotWithin(tolerance).of(expected);
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError)
+          .hasMessage(
+              String.format(
+                  "testValue (<%s>) and <%s> should have been finite values not within"
+                      + " <%s> of each other",
+                  actual,
+                  expected,
+                  tolerance));
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
   }
 
   @Test
@@ -145,24 +185,6 @@ public class DoubleTest {
   }
 
   @Test
-  public void isWithinOfNaN() {
-    assertThatNaNFailsWithin(0.00001, Double.NaN);
-    assertThatNaNFailsWithin(0.00001, 0.0);
-    assertThatNaNFailsWithin(0.00001, +0.0);
-    assertThatNaNFailsWithin(0.00001, -0.0);
-  }
-
-  @Test
-  public void isNotWithinOfNaN() {
-    assertThatNaNFailsNotWithin(0.00001, Double.NaN);
-    assertThatNaNFailsNotWithin(0.00001, 0.0);
-    assertThatNaNFailsNotWithin(0.00001, +0.0);
-    assertThatNaNFailsNotWithin(0.00001, -0.0);
-    assertThatNaNFailsNotWithin(0.00001, 1.0);
-    assertThatNaNFailsNotWithin(0.00001, +1.0);
-  }
-
-  @Test
   public void isNotWithinOfZero() {
     assertThat(+0.0).isNotWithin(0.00001).of(+1.0);
     assertThat(+0.0).isNotWithin(0.00001).of(-1.0);
@@ -180,24 +202,102 @@ public class DoubleTest {
     assertThat(-1.0).isNotWithin(0.0).of(-0.0);
   }
 
-  private static void assertThatNaNFailsWithin(double tolerance, double expected) {
-    try {
-      assertThat(Double.NaN).isWithin(tolerance).of(expected);
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError.getMessage()).contains("NaN");
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  @Test
+  public void isWithinZeroTolerance() {
+    double max = Double.MAX_VALUE;
+    double nearlyMax = Math.nextAfter(Double.MAX_VALUE, 0.0);
+    assertThat(max).isWithin(0.0).of(max);
+    assertThat(nearlyMax).isWithin(0.0).of(nearlyMax);
+    assertThatIsWithinFails(max, 0.0, nearlyMax);
+    assertThatIsWithinFails(nearlyMax, 0.0, max);
+
+    double negativeMax = -1.0 * Double.MAX_VALUE;
+    double negativeNearlyMax = Math.nextAfter(-1.0 * Double.MAX_VALUE, 0.0);
+    assertThat(negativeMax).isWithin(0.0).of(negativeMax);
+    assertThat(negativeNearlyMax).isWithin(0.0).of(negativeNearlyMax);
+    assertThatIsWithinFails(negativeMax, 0.0, negativeNearlyMax);
+    assertThatIsWithinFails(negativeNearlyMax, 0.0, negativeMax);
+
+    double min = Double.MIN_VALUE;
+    double justOverMin = Math.nextAfter(Double.MIN_VALUE, 1.0);
+    assertThat(min).isWithin(0.0).of(min);
+    assertThat(justOverMin).isWithin(0.0).of(justOverMin);
+    assertThatIsWithinFails(min, 0.0, justOverMin);
+    assertThatIsWithinFails(justOverMin, 0.0, min);
+
+    double negativeMin = -1.0 * Double.MIN_VALUE;
+    double justUnderNegativeMin = Math.nextAfter(-1.0 * Double.MIN_VALUE, -1.0);
+    assertThat(negativeMin).isWithin(0.0).of(negativeMin);
+    assertThat(justUnderNegativeMin).isWithin(0.0).of(justUnderNegativeMin);
+    assertThatIsWithinFails(negativeMin, 0.0, justUnderNegativeMin);
+    assertThatIsWithinFails(justUnderNegativeMin, 0.0, negativeMin);
   }
 
-  private static void assertThatNaNFailsNotWithin(double tolerance, double expected) {
-    try {
-      assertThat(Double.NaN).isNotWithin(tolerance).of(expected);
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError.getMessage()).contains("NaN");
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  @Test
+  public void isNotWithinZeroTolerance() {
+    double max = Double.MAX_VALUE;
+    double nearlyMax = Math.nextAfter(Double.MAX_VALUE, 0.0);
+    assertThatIsNotWithinFails(max, 0.0, max);
+    assertThatIsNotWithinFails(nearlyMax, 0.0, nearlyMax);
+    assertThat(max).isNotWithin(0.0).of(nearlyMax);
+    assertThat(nearlyMax).isNotWithin(0.0).of(max);
+
+    double min = Double.MIN_VALUE;
+    double justOverMin = Math.nextAfter(Double.MIN_VALUE, 1.0);
+    assertThatIsNotWithinFails(min, 0.0, min);
+    assertThatIsNotWithinFails(justOverMin, 0.0, justOverMin);
+    assertThat(min).isNotWithin(0.0).of(justOverMin);
+    assertThat(justOverMin).isNotWithin(0.0).of(min);
+  }
+
+  @Test
+  public void isWithinNonFinite() {
+    assertThatIsWithinFails(Double.NaN, 0.00001, Double.NaN);
+    assertThatIsWithinFails(Double.NaN, 0.00001, Double.POSITIVE_INFINITY);
+    assertThatIsWithinFails(Double.NaN, 0.00001, Double.NEGATIVE_INFINITY);
+    assertThatIsWithinFails(Double.NaN, 0.00001, +0.0);
+    assertThatIsWithinFails(Double.NaN, 0.00001, -0.0);
+    assertThatIsWithinFails(Double.NaN, 0.00001, +1.0);
+    assertThatIsWithinFails(Double.NaN, 0.00001, -0.0);
+    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, Double.POSITIVE_INFINITY);
+    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, Double.NEGATIVE_INFINITY);
+    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, +0.0);
+    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, +1.0);
+    assertThatIsWithinFails(Double.POSITIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, Double.NEGATIVE_INFINITY);
+    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, +0.0);
+    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, +1.0);
+    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsWithinFails(+1.0, 0.00001, Double.NaN);
+    assertThatIsWithinFails(+1.0, 0.00001, Double.POSITIVE_INFINITY);
+    assertThatIsWithinFails(+1.0, 0.00001, Double.NEGATIVE_INFINITY);
+  }
+
+  @Test
+  public void isNotWithinNonFinite() {
+    assertThatIsNotWithinFails(Double.NaN, 0.00001, Double.NaN);
+    assertThatIsNotWithinFails(Double.NaN, 0.00001, Double.POSITIVE_INFINITY);
+    assertThatIsNotWithinFails(Double.NaN, 0.00001, Double.NEGATIVE_INFINITY);
+    assertThatIsNotWithinFails(Double.NaN, 0.00001, +0.0);
+    assertThatIsNotWithinFails(Double.NaN, 0.00001, -0.0);
+    assertThatIsNotWithinFails(Double.NaN, 0.00001, +1.0);
+    assertThatIsNotWithinFails(Double.NaN, 0.00001, -0.0);
+    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, Double.POSITIVE_INFINITY);
+    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, Double.NEGATIVE_INFINITY);
+    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, +0.0);
+    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, +1.0);
+    assertThatIsNotWithinFails(Double.POSITIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, Double.NEGATIVE_INFINITY);
+    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, +0.0);
+    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, +1.0);
+    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 0.00001, -0.0);
+    assertThatIsNotWithinFails(+1.0, 0.00001, Double.NaN);
+    assertThatIsNotWithinFails(+1.0, 0.00001, Double.POSITIVE_INFINITY);
+    assertThatIsNotWithinFails(+1.0, 0.00001, Double.NEGATIVE_INFINITY);
   }
 
   @Test
@@ -211,11 +311,15 @@ public class DoubleTest {
 
   private static void assertThatIsPositiveInfinityFails(@Nullable Double value) {
     try {
-      assertThat(value).isPositiveInfinity();
+      assertThat(value).named("testValue").isPositiveInfinity();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
           .hasMessage(
-              "Not true that <" + value + "> is equal to <" + Double.POSITIVE_INFINITY + ">");
+              "Not true that testValue (<"
+                  + value
+                  + ">) is equal to <"
+                  + Double.POSITIVE_INFINITY
+                  + ">");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -232,11 +336,15 @@ public class DoubleTest {
 
   private static void assertThatIsNegativeInfinityFails(@Nullable Double value) {
     try {
-      assertThat(value).isNegativeInfinity();
+      assertThat(value).named("testValue").isNegativeInfinity();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
           .hasMessage(
-              "Not true that <" + value + "> is equal to <" + Double.NEGATIVE_INFINITY + ">");
+              "Not true that testValue (<"
+                  + value
+                  + ">) is equal to <"
+                  + Double.NEGATIVE_INFINITY
+                  + ">");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -253,10 +361,52 @@ public class DoubleTest {
 
   private static void assertThatIsNaNFails(@Nullable Double value) {
     try {
-      assertThat(value).isNaN();
+      assertThat(value).named("testValue").isNaN();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
-          .hasMessage("Not true that <" + value + "> is equal to <" + Double.NaN + ">");
+          .hasMessage("Not true that testValue (<" + value + ">) is equal to <" + Double.NaN + ">");
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
+  }
+
+  @Test
+  public void isFinite() {
+    assertThat(1.23).isFinite();
+    assertThat(Double.MAX_VALUE).isFinite();
+    assertThat(-1.0 * Double.MIN_VALUE).isFinite();
+    assertThatIsFiniteFails(Double.POSITIVE_INFINITY);
+    assertThatIsFiniteFails(Double.NEGATIVE_INFINITY);
+    assertThatIsFiniteFails(Double.NaN);
+    assertThatIsFiniteFails(null);
+  }
+
+  private static void assertThatIsFiniteFails(@Nullable Double value) {
+    try {
+      assertThat(value).named("testValue").isFinite();
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError).hasMessage("testValue (<" + value + ">) should have been finite");
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
+  }
+
+  @Test
+  public void isNotNaN() {
+    assertThat(1.23).isNotNaN();
+    assertThat(Double.MAX_VALUE).isNotNaN();
+    assertThat(-1.0 * Double.MIN_VALUE).isNotNaN();
+    assertThat(Double.POSITIVE_INFINITY).isNotNaN();
+    assertThat(Double.NEGATIVE_INFINITY).isNotNaN();
+    assertThatIsNotNaNFails(Double.NaN);
+    assertThatIsNotNaNFails(null);
+  }
+
+  private static void assertThatIsNotNaNFails(@Nullable Double value) {
+    try {
+      assertThat(value).named("testValue").isNotNaN();
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError).hasMessage("testValue (<" + value + ">) should not have been NaN");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");

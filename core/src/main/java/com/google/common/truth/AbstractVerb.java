@@ -30,8 +30,8 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   }
 
   protected FailureStrategy getFailureStrategy() {
-    return (getFailureMessage() != null)
-        ? new MessagePrependingFailureStrategy(failureStrategy, getFailureMessage())
+    return (hasFailureMessage())
+        ? new MessagePrependingFailureStrategy(failureStrategy, this)
         : failureStrategy;
   }
 
@@ -63,6 +63,11 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   @Nullable
   protected abstract String getFailureMessage();
 
+  // TODO(kak): This should probably be abstract...
+  protected boolean hasFailureMessage() {
+    return false;
+  }
+
   /**
    * The recommended method of extension of Truth to new types, which is
    * documented in {@link com.google.common.truth.delegation.DelegationTest }.
@@ -72,8 +77,8 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
    *          a SubjectFactory<S, T> implementation
    * @returns A custom verb for the type returned by the SubjectFactory
    */
-  public <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>> DelegatedVerb<S, T>
-      about(SF factory) {
+  public <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>> DelegatedVerb<S, T> about(
+      SF factory) {
     return new DelegatedVerb<S, T>(getFailureStrategy(), factory);
   }
 
@@ -103,27 +108,27 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
 
   protected static class MessagePrependingFailureStrategy extends FailureStrategy {
     private final FailureStrategy delegate;
-    private final String failureMessagePrepend;
+    private final AbstractVerb<?> verb;
 
-    protected MessagePrependingFailureStrategy(FailureStrategy delegate, String failureMessage) {
+    protected MessagePrependingFailureStrategy(FailureStrategy delegate, AbstractVerb<?> verb) {
       this.delegate = delegate;
-      this.failureMessagePrepend = failureMessage;
+      this.verb = verb;
     }
 
     @Override
     public void fail(String message) {
-      delegate.fail(failureMessagePrepend + ": " + message);
+      delegate.fail(verb.getFailureMessage() + ": " + message);
     }
 
     @Override
     public void fail(String message, Throwable cause) {
-      delegate.fail(failureMessagePrepend + ": " + message, cause);
+      delegate.fail(verb.getFailureMessage() + ": " + message, cause);
     }
 
     @Override
     public void failComparing(String message, CharSequence expected, CharSequence actual) {
       delegate.fail(
-          failureMessagePrepend + ": " + StringUtil.messageFor(message, expected, actual));
+          verb.getFailureMessage() + ": " + StringUtil.messageFor(message, expected, actual));
     }
   }
 }

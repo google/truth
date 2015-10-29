@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.HashMultimap;
@@ -38,6 +39,88 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class MultimapTest {
+
+  @Test
+  public void listMultimapIsEqualTo_passes() {
+    ImmutableListMultimap<String, String> multimapA =
+        ImmutableListMultimap.<String, String>builder()
+            .putAll("kurt", "kluever", "russell", "cobain")
+            .build();
+    ImmutableListMultimap<String, String> multimapB =
+        ImmutableListMultimap.<String, String>builder()
+            .putAll("kurt", "kluever", "russell", "cobain")
+            .build();
+
+    assertThat(multimapA.equals(multimapB)).isTrue();
+
+    assertThat(multimapA).isEqualTo(multimapB);
+  }
+
+  @Test
+  public void listMultimapIsEqualTo_fails() {
+    ImmutableListMultimap<String, String> multimapA =
+        ImmutableListMultimap.<String, String>builder()
+            .putAll("kurt", "kluever", "russell", "cobain")
+            .build();
+    ImmutableListMultimap<String, String> multimapB =
+        ImmutableListMultimap.<String, String>builder()
+            .putAll("kurt", "kluever", "cobain", "russell")
+            .build();
+
+    assertThat(multimapA.equals(multimapB)).isFalse();
+
+    try {
+      assertThat(multimapA).isEqualTo(multimapB);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{kurt=[kluever, russell, cobain]}> contains exactly "
+                  + "<{kurt=[kluever, cobain, russell]}> in order. "
+                  + "The values for keys <[kurt]> are not in order");
+    }
+  }
+
+  @Test
+  public void setMultimapIsEqualTo_passes() {
+    ImmutableSetMultimap<String, String> multimapA =
+        ImmutableSetMultimap.<String, String>builder()
+            .putAll("kurt", "kluever", "russell", "cobain")
+            .build();
+    ImmutableSetMultimap<String, String> multimapB =
+        ImmutableSetMultimap.<String, String>builder()
+            .putAll("kurt", "kluever", "cobain", "russell")
+            .build();
+
+    assertThat(multimapA.equals(multimapB)).isTrue();
+
+    assertThat(multimapA).isEqualTo(multimapB);
+  }
+
+  @Test
+  public void setMultimapIsEqualTo_fails() {
+    ImmutableSetMultimap<String, String> multimapA =
+        ImmutableSetMultimap.<String, String>builder()
+            .putAll("kurt", "kluever", "russell", "cobain")
+            .build();
+    ImmutableSetMultimap<String, String> multimapB =
+        ImmutableSetMultimap.<String, String>builder()
+            .putAll("kurt", "kluever", "russell")
+            .build();
+
+    assertThat(multimapA.equals(multimapB)).isFalse();
+
+    try {
+      assertThat(multimapA).isEqualTo(multimapB);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{kurt=[kluever, russell, cobain]}> contains exactly "
+                  + "<{kurt=[kluever, russell]}>. It has unexpected items <{kurt=[cobain]}>");
+    }
+  }
+
   @Test
   public void multimapIsEmpty() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of();
@@ -76,10 +159,7 @@ public class MultimapTest {
   public void multimapNamedValuesForKey() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     try {
-      assertThat(multimap)
-          .named("multymap")
-          .valuesForKey(1)
-          .containsExactly(4);
+      assertThat(multimap).named("multymap").valuesForKey(1).containsExactly(4);
       fail("Should have thrown.");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -94,10 +174,7 @@ public class MultimapTest {
   public void valuesForKeyNamed() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     try {
-      assertThat(multimap)
-          .valuesForKey(1)
-          .named("valuez")
-          .containsExactly(4);
+      assertThat(multimap).valuesForKey(1).named("valuez").containsExactly(4);
       fail("Should have thrown.");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -234,10 +311,7 @@ public class MultimapTest {
 
     assertThat(multimap).valuesForKey(3).hasSize(3);
     assertThat(multimap).valuesForKey(4).containsExactly("four", "five");
-    assertThat(multimap)
-        .valuesForKey(3)
-        .containsAllOf("one", "six")
-        .inOrder();
+    assertThat(multimap).valuesForKey(3).containsAllOf("one", "six").inOrder();
     assertThat(multimap).valuesForKey(5).isEmpty();
   }
 

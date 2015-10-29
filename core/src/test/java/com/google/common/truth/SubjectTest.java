@@ -18,12 +18,14 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterators;
@@ -37,6 +39,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -201,7 +204,10 @@ public class SubjectTest {
       assertThat(a).isSameAs(b);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <ab> is the same instance as <ab>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <ab> is the same instance as <ab>"
+                  + " (although their toString() representations are the same)");
     }
   }
 
@@ -526,7 +532,7 @@ public class SubjectTest {
       assertThat((String) null).isIn(oneShotIterable("a", "b", "c"));
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <\"null\"> is equal to any element in <[a, b, c]>");
+      assertThat(e).hasMessage("Not true that <null> is equal to any element in <[a, b, c]>");
     }
   }
 
@@ -576,7 +582,7 @@ public class SubjectTest {
       assertThat((String) null).isAnyOf("a", "b", "c");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <\"null\"> is equal to any of <[a, b, c]>");
+      assertThat(e).hasMessage("Not true that <null> is equal to any of <[a, b, c]>");
     }
   }
 
@@ -608,7 +614,7 @@ public class SubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <\"null\"> is not in [a, b, null]. It was found at index 2");
+          .hasMessage("Not true that <null> is not in [a, b, null]. It was found at index 2");
     }
   }
 
@@ -645,7 +651,7 @@ public class SubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <\"null\"> is not in [a, b, null]. It was found at index 2");
+          .hasMessage("Not true that <null> is not in [a, b, null]. It was found at index 2");
     }
   }
 
@@ -697,5 +703,48 @@ public class SubjectTest {
         return Arrays.toString(values);
       }
     };
+  }
+
+  @AutoValue
+  abstract static class Foo {
+    public static Foo create(Collection<Long> nums) {
+      return new AutoValue_SubjectTest_Foo(nums);
+    }
+
+    abstract Collection<Long> nums();
+  }
+
+  @Test
+  public void disambiguationWithSameToString_autovalue() {
+    Foo foo1 = Foo.create(Arrays.asList(1L, 2L));
+    Foo foo2 = Foo.create(ImmutableSet.of(1L, 2L));
+
+    try {
+      assertThat(foo1).isEqualTo(foo2);
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <Foo{nums=[1, 2]}> is equal to <Foo{nums=[1, 2]}> "
+                  + "(although their toString() representations are the same)");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test
+  public void disambiguationWithSameToString_immutableSets() {
+    ImmutableSet<Integer> ints = ImmutableSet.of(1, 2, 3);
+    ImmutableSet<Long> longs = ImmutableSet.of(1L, 2L, 3L);
+
+    try {
+      assertThat(ints).isEqualTo(longs);
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[1, 2, 3]> is equal to <[1, 2, 3]> "
+                  + "(although their toString() representations are the same)");
+      return;
+    }
+    fail("Should have thrown.");
   }
 }

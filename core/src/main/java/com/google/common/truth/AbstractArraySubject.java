@@ -79,9 +79,10 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
   }
 
   void failWithBadType(Object expected) {
-    String expectedType = (expected.getClass().isArray())
-        ? expected.getClass().getComponentType().getName() + "[]"
-        : expected.getClass().getName();
+    String expectedType =
+        (expected.getClass().isArray())
+            ? expected.getClass().getComponentType().getName() + "[]"
+            : expected.getClass().getName();
     failWithRawMessage(
         "Incompatible types compared. expected: %s, actual: %s[]",
         Platform.compressType(expectedType),

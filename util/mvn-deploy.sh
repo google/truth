@@ -5,16 +5,13 @@ key_count="$(echo ${keys} | wc -w)"
 seen=""
 while [[ $# > 0 ]] ; do
   param="$1"
-  case $param in
-    --signing-key)
-      # disambiguating or overriding key
-      key="$2"
-      shift
-    ;;
-    *)
-      seen="${seen} ${param}"
-    ;;
-  esac
+  if [[ $param == "--signing-key" ]]; then
+    # disambiguating or overriding key
+    key="$2"
+    shift
+  else
+    seen="${seen} ${param}"
+  fi
   shift
 done
 params=${seen}

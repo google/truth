@@ -59,8 +59,12 @@ public class AbstractVerbTest {
         protected String getFailureMessage() {
           return null;
         }
-      };
 
+        @Override
+        protected boolean hasFailureMessage() {
+          return false;
+        }
+      };
   @DataPoints public static String[] strings = new String[] {"a", "b"};
 
   @Test

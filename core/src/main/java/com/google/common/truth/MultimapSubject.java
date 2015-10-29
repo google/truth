@@ -153,6 +153,16 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
             mapType1,
             mapType2);
       } else {
+        if (getSubject() instanceof ListMultimap) {
+          // If we're comparing ListMultimaps, check for order
+          containsExactly((Multimap<?, ?>) other).inOrder();
+        } else if (getSubject() instanceof SetMultimap) {
+          // If we're comparing SetMultimaps, don't check for order
+          containsExactly((Multimap<?, ?>) other);
+        }
+        // This statement should generally never be reached because one of the two containsExactly
+        // calls above should throw an exception. It'll only be reached if we're looking at a
+        // non-ListMultimap and non-SetMultimap (e.g., a custom Multimap implementation).
         fail("is equal to", other);
       }
     }
@@ -200,7 +210,6 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   private class IterableValuesForKey
       extends IterableSubject<IterableValuesForKey, V, Collection<V>> {
     @Nullable private final K key;
-
     @Nullable private final String display;
 
     IterableValuesForKey(
@@ -294,7 +303,7 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   }
 
   private static List<?> difference(List<?> minuend, List<?> subtrahend) {
-    LinkedHashMultiset<Object> remaining = LinkedHashMultiset.create(subtrahend);
+    LinkedHashMultiset<Object> remaining = LinkedHashMultiset.<Object>create(subtrahend);
     List<Object> difference = Lists.newArrayList();
     for (Object elem : minuend) {
       if (!remaining.remove(elem)) {
