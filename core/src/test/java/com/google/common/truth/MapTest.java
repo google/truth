@@ -38,9 +38,9 @@ public class MapTest {
   @Test
   public void mapIsEqualToPass() {
     ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
-    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "mar", 3);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
-    assertThat(actualMap).isEqualTo(actualMap);
+    assertThat(actualMap).isEqualTo(expectedMap);
   }
 
   @Test
