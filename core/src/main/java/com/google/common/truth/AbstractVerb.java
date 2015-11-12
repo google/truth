@@ -17,8 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.truth.StringUtil.format;
 
-import com.google.common.annotations.GwtIncompatible;
-
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
@@ -98,12 +96,6 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
     public S that(T target) {
       return factory.getSubject(failureStrategy, target);
     }
-  }
-
-  @GwtIncompatible("com.google.common.truth.IteratingVerb")
-  @J2ObjCIncompatible("Code generation and loading.")
-  public <T> IteratingVerb<T> in(Iterable<T> data) {
-    return new IteratingVerb<T>(data, getFailureStrategy());
   }
 
   protected static class MessagePrependingFailureStrategy extends FailureStrategy {
