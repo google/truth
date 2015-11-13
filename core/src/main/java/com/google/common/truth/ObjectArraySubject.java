@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2014 Google, Inc.
- * Copyright (c) 2013, Square, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +24,7 @@ import javax.annotation.Nullable;
 /**
  * A Subject to handle testing propositions for {@code Object[]} and more generically {@code T[]}.
  *
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  */
 public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubject<T>, T[]> {
   private final String typeName;
