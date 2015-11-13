@@ -149,8 +149,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new PrimitiveDoubleArraySubject(getFailureStrategy(), target);
   }
 
-  public OptionalSubject that(@Nullable Optional<?> target) {
-    return new OptionalSubject(getFailureStrategy(), target);
+  public GuavaOptionalSubject that(@Nullable Optional<?> target) {
+    return new GuavaOptionalSubject(getFailureStrategy(), target);
   }
 
   public MapSubject that(@Nullable Map<?, ?> target) {

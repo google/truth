@@ -204,7 +204,7 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static OptionalSubject assertThat(@Nullable Optional<?> target) {
+  public static GuavaOptionalSubject assertThat(@Nullable Optional<?> target) {
     return assert_().that(target);
   }
 
