@@ -324,12 +324,12 @@ public class MultimapTest {
   }
 
   @Test
-  public void containsExactly() {
+  public void containsExactlyEntriesIn() {
     ImmutableListMultimap<Integer, String> listMultimap =
         ImmutableListMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
     ImmutableSetMultimap<Integer, String> setMultimap = ImmutableSetMultimap.copyOf(listMultimap);
 
-    assertThat(listMultimap).containsExactly(setMultimap);
+    assertThat(listMultimap).containsExactlyEntriesIn(setMultimap);
   }
 
   @Test
@@ -337,8 +337,8 @@ public class MultimapTest {
     ImmutableListMultimap<Integer, String> actual = ImmutableListMultimap.of();
     ImmutableSetMultimap<Integer, String> expected = ImmutableSetMultimap.of();
 
-    assertThat(actual).containsExactly(expected);
-    assertThat(actual).containsExactly(expected).inOrder();
+    assertThat(actual).containsExactlyEntriesIn(expected);
+    assertThat(actual).containsExactlyEntriesIn(expected).inOrder();
   }
 
   @Test
@@ -347,7 +347,7 @@ public class MultimapTest {
         ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
 
     try {
-      assertThat(multimap).containsExactly(null);
+      assertThat(multimap).containsExactlyEntriesIn(null);
       fail("Should have thrown.");
     } catch (NullPointerException expected) {
     }
@@ -360,7 +360,7 @@ public class MultimapTest {
     ImmutableListMultimap<Integer, String> expected =
         ImmutableListMultimap.of(3, "two", 4, "five", 3, "one", 4, "five", 3, "one");
 
-    assertThat(actual).containsExactly(expected);
+    assertThat(actual).containsExactlyEntriesIn(expected);
   }
 
   @Test
@@ -370,7 +370,7 @@ public class MultimapTest {
     ImmutableSetMultimap<Integer, String> expected = ImmutableSetMultimap.copyOf(actual);
 
     try {
-      assertThat(actual).containsExactly(expected);
+      assertThat(actual).containsExactlyEntriesIn(expected);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -392,7 +392,7 @@ public class MultimapTest {
     actual.remove(4, "five");
 
     try {
-      assertThat(actual).containsExactly(expected);
+      assertThat(actual).containsExactlyEntriesIn(expected);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -414,7 +414,7 @@ public class MultimapTest {
     actual.put(5, "eight");
 
     try {
-      assertThat(actual).containsExactly(expected);
+      assertThat(actual).containsExactlyEntriesIn(expected);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -438,7 +438,7 @@ public class MultimapTest {
     actual.put(5, "eight");
 
     try {
-      assertThat(actual).containsExactly(expected);
+      assertThat(actual).containsExactlyEntriesIn(expected);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -459,7 +459,7 @@ public class MultimapTest {
     ImmutableMultimap<Integer, String> expected =
         ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
 
-    assertThat(actual).containsExactly(expected).inOrder();
+    assertThat(actual).containsExactlyEntriesIn(expected).inOrder();
   }
 
   @Test
@@ -468,7 +468,7 @@ public class MultimapTest {
         ImmutableListMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
     ImmutableSetMultimap<Integer, String> setMultimap = ImmutableSetMultimap.copyOf(listMultimap);
 
-    assertThat(listMultimap).containsExactly(setMultimap).inOrder();
+    assertThat(listMultimap).containsExactlyEntriesIn(setMultimap).inOrder();
   }
 
   @Test
@@ -478,9 +478,9 @@ public class MultimapTest {
     ImmutableMultimap<Integer, String> expected =
         ImmutableMultimap.of(4, "four", 3, "six", 4, "five", 3, "two", 3, "one");
 
-    assertThat(actual).containsExactly(expected);
+    assertThat(actual).containsExactlyEntriesIn(expected);
     try {
-      assertThat(actual).containsExactly(expected).inOrder();
+      assertThat(actual).containsExactlyEntriesIn(expected).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e.getMessage())
@@ -497,9 +497,9 @@ public class MultimapTest {
     ImmutableMultimap<Integer, String> expected =
         ImmutableMultimap.of(3, "six", 3, "two", 3, "one", 4, "five", 4, "four");
 
-    assertThat(actual).containsExactly(expected);
+    assertThat(actual).containsExactlyEntriesIn(expected);
     try {
-      assertThat(actual).containsExactly(expected).inOrder();
+      assertThat(actual).containsExactlyEntriesIn(expected).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)

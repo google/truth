@@ -155,14 +155,15 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
       } else {
         if (getSubject() instanceof ListMultimap) {
           // If we're comparing ListMultimaps, check for order
-          containsExactly((Multimap<?, ?>) other).inOrder();
+          containsExactlyEntriesIn((Multimap<?, ?>) other).inOrder();
         } else if (getSubject() instanceof SetMultimap) {
           // If we're comparing SetMultimaps, don't check for order
-          containsExactly((Multimap<?, ?>) other);
+          containsExactlyEntriesIn((Multimap<?, ?>) other);
         }
-        // This statement should generally never be reached because one of the two containsExactly
-        // calls above should throw an exception. It'll only be reached if we're looking at a
-        // non-ListMultimap and non-SetMultimap (e.g., a custom Multimap implementation).
+        // This statement should generally never be reached because one of the two
+        // containsExactlyEntriesIn calls above should throw an exception. It'll only be reached if
+        // we're looking at a non-ListMultimap and non-SetMultimap
+        // (e.g., a custom Multimap implementation).
         fail("is equal to", other);
       }
     }
@@ -175,9 +176,21 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
    * that the two Multimaps iterate fully in the same order.  That is, their key sets iterate
    * in the same order, and the value collections for each key iterate in the same order.
    */
-  public Ordered containsExactly(Multimap<?, ?> expectedMultimap) {
+  public Ordered containsExactlyEntriesIn(Multimap<?, ?> expectedMultimap) {
     checkNotNull(expectedMultimap, "expectedMultimap");
     return containsExactly("contains exactly", expectedMultimap);
+  }
+
+  /**
+   * Fails if the Multimap does not contain precisely the same entries as the argument Multimap.
+   *
+   * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify
+   * that the two Multimaps iterate fully in the same order.  That is, their key sets iterate
+   * in the same order, and the value collections for each key iterate in the same order.
+   */
+  // TODO(b/25742898): @deprecated Use {@link #containsExactlyEntiesIn} instead.
+  public Ordered containsExactly(Multimap<?, ?> expectedMultimap) {
+    return containsExactlyEntriesIn(expectedMultimap);
   }
 
   private Ordered containsExactly(String failVerb, Multimap<?, ?> expectedMultimap) {
