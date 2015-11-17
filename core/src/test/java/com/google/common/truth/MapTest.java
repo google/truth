@@ -28,28 +28,180 @@ import org.junit.runners.JUnit4;
 import java.util.Map;
 
 /**
- * Tests for Map Subjects.
+ * Tests for {@link Map} subjects.
  *
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Christian Gruber
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
 public class MapTest {
   @Test
-  public void mapIsEqualToPass() {
-    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
-    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+  public void containsExactlyWithNullKey() {
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put(null, "value");
 
-    assertThat(actualMap).isEqualTo(expectedMap);
+    assertThat(actual).containsExactly(null, "value");
+    assertThat(actual).containsExactly(null, "value").inOrder();
+    assertThat(actual).containsExactlyEntriesIn(actual);
+    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
   }
 
   @Test
-  public void mapIsEqualToFailureExtraMissingAndDiffering() {
-    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+  public void containsExactlyWithNullValue() {
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put("key", null);
+
+    assertThat(actual).containsExactly("key", null);
+    assertThat(actual).containsExactly("key", null).inOrder();
+    assertThat(actual).containsExactlyEntriesIn(actual);
+    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
+  }
+
+  @Test
+  public void containsExactlyEmpty() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of();
+
+    assertThat(actual).containsExactly();
+    assertThat(actual).containsExactly().inOrder();
+    assertThat(actual).containsExactlyEntriesIn(actual);
+    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
+  }
+
+  @Test
+  public void containsExactlyOneEntry() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1);
+
+    assertThat(actual).containsExactly("jan", 1);
+    assertThat(actual).containsExactly("jan", 1).inOrder();
+    assertThat(actual).containsExactlyEntriesIn(actual);
+    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
+  }
+
+  @Test
+  public void containsExactlyMultipleEntries() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    assertThat(actual).containsExactly("jan", 1, "feb", 2, "march", 3);
+    assertThat(actual).containsExactly("jan", 1, "feb", 2, "march", 3).inOrder();
+    assertThat(actual).containsExactlyEntriesIn(actual);
+    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
+  }
+
+  @Test
+  public void containsExactlyDuplicateKeys() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    try {
+      assertThat(actual).containsExactly("jan", 1, "jan", 2, "jan", 3);
+      fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessage("Duplicate keys ([jan x 3]) cannot be passed to containsExactly().");
+    }
+  }
+
+  @Test
+  public void containsExactlyMultipleDuplicateKeys() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    try {
+      assertThat(actual).containsExactly("jan", 1, "jan", 1, "feb", 2, "feb", 2);
+      fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessage("Duplicate keys ([jan x 2, feb x 2]) cannot be passed to containsExactly().");
+    }
+  }
+
+  @Test
+  public void containsExactlyMissingEntry() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    assertThat(actual).containsExactlyEntriesIn(actual);
+    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
+
+    try {
+      assertThat(actual).containsExactly("jan", 1, "feb", 2);
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[jan=1, feb=2, march=3]> contains exactly <[jan=1, feb=2]>. "
+                  + "It has unexpected items <[march=3]>");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test
+  public void containsExactlyMissingEntryInOrder() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    assertThat(actual).containsExactlyEntriesIn(actual);
+    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
+
+    try {
+      assertThat(actual).containsExactly("feb", 2, "jan", 1).inOrder();
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[jan=1, feb=2, march=3]> contains exactly <[feb=2, jan=1]>. "
+                  + "It has unexpected items <[march=3]>");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test
+  public void containsExactlyNotInOrder() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    assertThat(actual).containsExactlyEntriesIn(actual);
+    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
+
+    assertThat(actual).containsExactly("jan", 1, "march", 3, "feb", 2);
+    try {
+      assertThat(actual).containsExactly("jan", 1, "march", 3, "feb", 2).inOrder();
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[jan=1, feb=2, march=3]> contains only these elements in order "
+                  + "<[jan=1, march=3, feb=2]>");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test
+  public void containsExactlyBadNumberOfArgs() {
+    ImmutableMap<String, Integer> actual =
+        ImmutableMap.of("jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5);
+    assertThat(actual).containsExactlyEntriesIn(actual);
+    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
+
+    try {
+      assertThat(actual)
+          .containsExactly("jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5, "june", 6, "july");
+      fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessage(
+              "There must be an equal number of key/value pairs "
+                  + "(i.e., the number of key/value parameters (13) must be even).");
+    }
+  }
+
+  @Test
+  public void isEqualToPass() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    assertThat(actual).isEqualTo(expectedMap);
+  }
+
+  @Test
+  public void isEqualToFailureExtraMissingAndDiffering() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "april", 4, "march", 5);
 
     try {
-      assertThat(actualMap).isEqualTo(expectedMap);
+      assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
@@ -63,12 +215,12 @@ public class MapTest {
   }
 
   @Test
-  public void mapIsEqualToFailureDiffering() {
-    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+  public void isEqualToFailureDiffering() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 4);
 
     try {
-      assertThat(actualMap).isEqualTo(expectedMap);
+      assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
@@ -81,11 +233,11 @@ public class MapTest {
 
   @Test
   public void namedMapIsEqualToFailureDiffering() {
-    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 4);
 
     try {
-      assertThat(actualMap).named("foo").isEqualTo(expectedMap);
+      assertThat(actual).named("foo").isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
@@ -97,12 +249,12 @@ public class MapTest {
   }
 
   @Test
-  public void mapIsEqualToFailureExtra() {
-    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+  public void isEqualToFailureExtra() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2);
 
     try {
-      assertThat(actualMap).isEqualTo(expectedMap);
+      assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
@@ -114,12 +266,12 @@ public class MapTest {
   }
 
   @Test
-  public void mapIsEqualToFailureMissing() {
-    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2);
+  public void isEqualToFailureMissing() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
     try {
-      assertThat(actualMap).isEqualTo(expectedMap);
+      assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
@@ -131,12 +283,12 @@ public class MapTest {
   }
 
   @Test
-  public void mapIsEqualToFailureExtraAndMissing() {
-    ImmutableMap<String, Integer> actualMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+  public void isEqualToFailureExtraAndMissing() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "mar", 3);
 
     try {
-      assertThat(actualMap).isEqualTo(expectedMap);
+      assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
@@ -149,11 +301,11 @@ public class MapTest {
   }
 
   @Test
-  public void mapIsNotEqualTo() {
-    ImmutableMap<String, Integer> map = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+  public void isNotEqualTo() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
     try {
-      assertThat(map).isNotEqualTo(map);
+      assertThat(actual).isNotEqualTo(actual);
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
@@ -164,16 +316,16 @@ public class MapTest {
   }
 
   @Test
-  public void mapIsEmpty() {
-    ImmutableMap<String, String> map = ImmutableMap.of();
-    assertThat(map).isEmpty();
+  public void isEmpty() {
+    ImmutableMap<String, String> actual = ImmutableMap.of();
+    assertThat(actual).isEmpty();
   }
 
   @Test
-  public void mapIsEmptyWithFailure() {
-    ImmutableMap<Integer, Integer> map = ImmutableMap.of(1, 5);
+  public void isEmptyWithFailure() {
+    ImmutableMap<Integer, Integer> actual = ImmutableMap.of(1, 5);
     try {
-      assertThat(map).isEmpty();
+      assertThat(actual).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{1=5}> is empty");
@@ -181,16 +333,16 @@ public class MapTest {
   }
 
   @Test
-  public void mapIsNotEmpty() {
-    ImmutableMap<Integer, Integer> map = ImmutableMap.of(1, 5);
-    assertThat(map).isNotEmpty();
+  public void isNotEmpty() {
+    ImmutableMap<Integer, Integer> actual = ImmutableMap.of(1, 5);
+    assertThat(actual).isNotEmpty();
   }
 
   @Test
-  public void mapIsNotEmptyWithFailure() {
-    ImmutableMap<Integer, Integer> map = ImmutableMap.of();
+  public void isNotEmptyWithFailure() {
+    ImmutableMap<Integer, Integer> actual = ImmutableMap.of();
     try {
-      assertThat(map).isNotEmpty();
+      assertThat(actual).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{}> is not empty");
@@ -218,15 +370,15 @@ public class MapTest {
 
   @Test
   public void containsKey() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
-    assertThat(map).containsKey("kurt");
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
+    assertThat(actual).containsKey("kurt");
   }
 
   @Test
   public void containsKeyFailure() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     try {
-      assertThat(map).containsKey("greg");
+      assertThat(actual).containsKey("greg");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{kurt=kluever}> contains key <greg>");
@@ -235,9 +387,9 @@ public class MapTest {
 
   @Test
   public void containsKeyNullFailure() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     try {
-      assertThat(map).containsKey(null);
+      assertThat(actual).containsKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{kurt=kluever}> contains key <null>");
@@ -246,23 +398,23 @@ public class MapTest {
 
   @Test
   public void containsNullKey() {
-    Map<String, String> map = Maps.newHashMap();
-    map.put(null, "null");
-    assertThat(map).containsKey(null);
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put(null, "null");
+    assertThat(actual).containsKey(null);
   }
 
   @Test
   public void doesNotContainKey() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
-    assertThat(map).doesNotContainKey("greg");
-    assertThat(map).doesNotContainKey(null);
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
+    assertThat(actual).doesNotContainKey("greg");
+    assertThat(actual).doesNotContainKey(null);
   }
 
   @Test
   public void doesNotContainKeyFailure() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     try {
-      assertThat(map).doesNotContainKey("kurt");
+      assertThat(actual).doesNotContainKey("kurt");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{kurt=kluever}> does not contain key <kurt>");
@@ -271,10 +423,10 @@ public class MapTest {
 
   @Test
   public void doesNotContainNullKey() {
-    Map<String, String> map = Maps.newHashMap();
-    map.put(null, "null");
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put(null, "null");
     try {
-      assertThat(map).doesNotContainKey(null);
+      assertThat(actual).doesNotContainKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{null=null}> does not contain key <null>");
@@ -283,15 +435,15 @@ public class MapTest {
 
   @Test
   public void containsEntry() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
-    assertThat(map).containsEntry("kurt", "kluever");
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
+    assertThat(actual).containsEntry("kurt", "kluever");
   }
 
   @Test
   public void containsEntryFailure() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     try {
-      assertThat(map).containsEntry("greg", "kick");
+      assertThat(actual).containsEntry("greg", "kick");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{kurt=kluever}> contains entry <greg=kick>");
@@ -300,9 +452,9 @@ public class MapTest {
 
   @Test
   public void containsNullKeyAndValue() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     try {
-      assertThat(map).containsEntry(null, null);
+      assertThat(actual).containsEntry(null, null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{kurt=kluever}> contains entry <null=null>");
@@ -311,17 +463,17 @@ public class MapTest {
 
   @Test
   public void containsNullEntry() {
-    Map<String, String> map = Maps.newHashMap();
-    map.put(null, null);
-    assertThat(map).containsEntry(null, null);
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put(null, null);
+    assertThat(actual).containsEntry(null, null);
   }
 
   @Test
   public void containsNullEntryValue() {
-    Map<String, String> map = Maps.newHashMap();
-    map.put(null, null);
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put(null, null);
     try {
-      assertThat(map).containsEntry("kurt", null);
+      assertThat(actual).containsEntry("kurt", null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{null=null}> contains entry <kurt=null>");
@@ -330,10 +482,10 @@ public class MapTest {
 
   @Test
   public void containsNullEntryKey() {
-    Map<String, String> map = Maps.newHashMap();
-    map.put(null, null);
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put(null, null);
     try {
-      assertThat(map).containsEntry(null, "kluever");
+      assertThat(actual).containsEntry(null, "kluever");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{null=null}> contains entry <null=kluever>");
@@ -342,18 +494,18 @@ public class MapTest {
 
   @Test
   public void doesNotContainEntry() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
-    assertThat(map).doesNotContainEntry("greg", "kick");
-    assertThat(map).doesNotContainEntry(null, null);
-    assertThat(map).doesNotContainEntry("kurt", null);
-    assertThat(map).doesNotContainEntry(null, "kluever");
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
+    assertThat(actual).doesNotContainEntry("greg", "kick");
+    assertThat(actual).doesNotContainEntry(null, null);
+    assertThat(actual).doesNotContainEntry("kurt", null);
+    assertThat(actual).doesNotContainEntry(null, "kluever");
   }
 
   @Test
   public void doesNotContainEntryFailure() {
-    ImmutableMap<String, String> map = ImmutableMap.of("kurt", "kluever");
+    ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     try {
-      assertThat(map).doesNotContainEntry("kurt", "kluever");
+      assertThat(actual).doesNotContainEntry("kurt", "kluever");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -363,18 +515,18 @@ public class MapTest {
 
   @Test
   public void doesNotContainNullEntry() {
-    Map<String, String> map = Maps.newHashMap();
-    map.put(null, null);
-    assertThat(map).doesNotContainEntry("kurt", null);
-    assertThat(map).doesNotContainEntry(null, "kluever");
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put(null, null);
+    assertThat(actual).doesNotContainEntry("kurt", null);
+    assertThat(actual).doesNotContainEntry(null, "kluever");
   }
 
   @Test
   public void doesNotContainNullEntryFailure() {
-    Map<String, String> map = Maps.newHashMap();
-    map.put(null, null);
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put(null, null);
     try {
-      assertThat(map).doesNotContainEntry(null, null);
+      assertThat(actual).doesNotContainEntry(null, null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{null=null}> does not contain entry <null=null>");
@@ -382,16 +534,10 @@ public class MapTest {
   }
 
   @Test
-  public void mapContainsKey() {
-    ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
-    assertThat(map).containsKey("a");
-  }
-
-  @Test
   public void failMapContainsKey() {
-    ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
+    ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).containsKey("b");
+      assertThat(actual).containsKey("b");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{a=A}> contains key <b>");
@@ -400,9 +546,9 @@ public class MapTest {
 
   @Test
   public void failMapContainsKeyWithNull() {
-    ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
+    ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).containsKey(null);
+      assertThat(actual).containsKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{a=A}> contains key <null>");
@@ -410,16 +556,10 @@ public class MapTest {
   }
 
   @Test
-  public void mapLacksKey() {
-    ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
-    assertThat(map).doesNotContainKey("b");
-  }
-
-  @Test
   public void failMapLacksKey() {
-    ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
+    ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).doesNotContainKey("a");
+      assertThat(actual).doesNotContainKey("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{a=A}> does not contain key <a>");
@@ -427,23 +567,23 @@ public class MapTest {
   }
 
   @Test
-  public void mapContainsKeyWithValue() {
-    ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
-    assertThat(map).containsEntry("a", "A");
+  public void containsKeyWithValue() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
+    assertThat(actual).containsEntry("a", "A");
   }
 
   @Test
-  public void mapContainsKeyWithNullValueNullExpected() {
-    Map<String, String> map = Maps.newHashMap();
-    map.put("a", null);
-    assertThat(map).containsEntry("a", null);
+  public void containsKeyWithNullValueNullExpected() {
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put("a", null);
+    assertThat(actual).containsEntry("a", null);
   }
 
   @Test
   public void failMapContainsKeyWithValue() {
-    ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
+    ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).containsEntry("a", "a");
+      assertThat(actual).containsEntry("a", "a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{a=A}> contains entry <a=a>");
@@ -452,10 +592,10 @@ public class MapTest {
 
   @Test
   public void failMapContainsKeyWithNullValuePresentExpected() {
-    Map<String, String> map = Maps.newHashMap();
-    map.put("a", null);
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put("a", null);
     try {
-      assertThat(map).containsEntry("a", "A");
+      assertThat(actual).containsEntry("a", "A");
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{a=null}> contains entry <a=A>");
@@ -464,9 +604,9 @@ public class MapTest {
 
   @Test
   public void failMapContainsKeyWithPresentValueNullExpected() {
-    ImmutableMap<String, String> map = ImmutableMap.of("a", "A");
+    ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     try {
-      assertThat(map).containsEntry("a", null);
+      assertThat(actual).containsEntry("a", null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{a=A}> contains entry <a=null>");

@@ -18,8 +18,10 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multiset;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -89,8 +91,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /**
    * Fails if the map does not have the given size.
    */
-  public final void hasSize(int expectedSize) {
-    checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
+  public void hasSize(int expectedSize) {
+    checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
     int actualSize = getSubject().size();
     if (actualSize != expectedSize) {
       failWithBadResults("has a size of", expectedSize, "is", actualSize);
@@ -133,5 +135,49 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     if (getSubject().entrySet().contains(entry)) {
       fail("does not contain entry", entry);
     }
+  }
+
+  /**
+   * Fails if the map is not empty.
+   */
+  public Ordered containsExactly() {
+    return check().that(getSubject().entrySet()).containsExactly();
+  }
+
+  /**
+   * Fails if the map does not contain exactly the given set of key/value pairs.
+   *
+   * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+   * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+   */
+  // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
+  public Ordered containsExactly(@Nullable Object k0, @Nullable Object v0, Object... rest) {
+    checkArgument(
+        rest.length % 2 == 0,
+        "There must be an equal number of key/value pairs "
+            + "(i.e., the number of key/value parameters (%s) must be even).",
+        rest.length + 2);
+
+    Map<Object, Object> expectedMap = Maps.newLinkedHashMap();
+    expectedMap.put(k0, v0);
+    Multiset<Object> keys = LinkedHashMultiset.create();
+    keys.add(k0);
+    for (int i = 0; i < rest.length; i += 2) {
+      Object key = rest[i];
+      expectedMap.put(key, rest[i + 1]);
+      keys.add(key);
+    }
+    checkArgument(
+        keys.size() == expectedMap.size(),
+        "Duplicate keys (%s) cannot be passed to containsExactly().",
+        keys);
+    return containsExactlyEntriesIn(expectedMap);
+  }
+
+  /**
+   * Fails if the map does not contain exactly the given set of entries in the given map.
+   */
+  public Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
+    return check().that(getSubject().entrySet()).containsExactlyElementsIn(expectedMap.entrySet());
   }
 }
