@@ -182,13 +182,9 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   }
 
   /**
-   * Fails if the Multimap does not contain precisely the same entries as the argument Multimap.
-   *
-   * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify
-   * that the two Multimaps iterate fully in the same order.  That is, their key sets iterate
-   * in the same order, and the value collections for each key iterate in the same order.
+   * @deprecated Use {@link #containsExactlyEntiesIn} instead.
    */
-  // TODO(b/25742898): @deprecated Use {@link #containsExactlyEntiesIn} instead.
+  @Deprecated
   public Ordered containsExactly(Multimap<?, ?> expectedMultimap) {
     return containsExactlyEntriesIn(expectedMultimap);
   }
