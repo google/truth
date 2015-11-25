@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import javax.annotation.Nullable;
 
 /**
@@ -31,7 +33,11 @@ final class StringUtil {
    * TODO(cgruber): Do something closer to what JUnit's {@code ComparisonFailure} does.
    */
   static String messageFor(String message, CharSequence expected, CharSequence actual) {
-    return message + "\n\nExpected:\n" + expected + "\n\nActual:\n" + actual;
+    return checkNotNull(message)
+        + "\n\nExpected:\n"
+        + checkNotNull(expected)
+        + "\n\nActual:\n"
+        + checkNotNull(actual);
   }
 
   /**

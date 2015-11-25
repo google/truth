@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.messageFor;
 
 import com.google.auto.value.AutoValue;
@@ -47,7 +48,7 @@ public class Expect extends TestVerb implements TestRule {
 
     @Override
     public void fail(String message) {
-      fail(message, new Throwable(message));
+      fail(checkNotNull(message), new Throwable(message));
     }
 
     @Override
@@ -126,7 +127,7 @@ public class Expect extends TestVerb implements TestRule {
 
   Expect(ExpectationGatherer gatherer) {
     super(gatherer);
-    this.gatherer = gatherer;
+    this.gatherer = checkNotNull(gatherer);
   }
 
   public boolean hasFailures() {
@@ -145,6 +146,8 @@ public class Expect extends TestVerb implements TestRule {
   // TODO(cgruber): Make this override TestRule when 4.9 is released.
   @Override
   public Statement apply(final Statement base, Description description) {
+    checkNotNull(base);
+    checkNotNull(description);
     return new Statement() {
       @Override
       public void evaluate() throws Throwable {

@@ -47,7 +47,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
 
   public TestVerb(
       FailureStrategy failureStrategy, @Nullable String format, @Nullable Object... args) {
-    super(failureStrategy);
+    super(checkNotNull(failureStrategy));
     this.format = format;
     this.args = checkNotNull(args);
 

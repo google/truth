@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.format;
 
 import javax.annotation.CheckReturnValue;
@@ -24,7 +25,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   private final FailureStrategy failureStrategy;
 
   public AbstractVerb(FailureStrategy failureStrategy) {
-    this.failureStrategy = failureStrategy;
+    this.failureStrategy = checkNotNull(failureStrategy);
   }
 
   protected FailureStrategy getFailureStrategy() {
@@ -87,9 +88,9 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
     private final SubjectFactory<S, T> factory;
     private final FailureStrategy failureStrategy;
 
-    public DelegatedVerb(FailureStrategy fs, SubjectFactory<S, T> factory) {
-      this.factory = factory;
-      this.failureStrategy = fs;
+    public DelegatedVerb(FailureStrategy failureStrategy, SubjectFactory<S, T> factory) {
+      this.factory = checkNotNull(factory);
+      this.failureStrategy = checkNotNull(failureStrategy);
     }
 
     @CheckReturnValue
@@ -103,8 +104,8 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
     private final AbstractVerb<?> verb;
 
     protected MessagePrependingFailureStrategy(FailureStrategy delegate, AbstractVerb<?> verb) {
-      this.delegate = delegate;
-      this.verb = verb;
+      this.delegate = checkNotNull(delegate);
+      this.verb = checkNotNull(verb);
     }
 
     @Override
