@@ -182,7 +182,7 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
   }
 
   /**
-   * @deprecated Use {@link #containsExactlyEntiesIn} instead.
+   * @deprecated Use {@link #containsExactlyEntriesIn} instead.
    */
   @Deprecated
   public Ordered containsExactly(Multimap<?, ?> expectedMultimap) {
