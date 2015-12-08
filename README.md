@@ -1,16 +1,14 @@
-Truth
-=====
+# Truth
 
 ***We've made failure a strategy***
 
 **Main Website:** *[google.github.io/truth](http://google.github.io/truth/)*
 &nbsp; **Continuous Integration:** [![Build
 Status](https://secure.travis-ci.org/google/truth.png?branch=master)]
-(https://travis-ci.org/google/truth) <br /> **Latest Release:** *0.27* &nbsp;
-**Latest Artifact:** *org.junit.contrib:truth:jar:0.27* <br />
+(https://travis-ci.org/google/truth) <br /> **Latest Release:** *0.28* &nbsp;
+**Latest Artifact:** *org.junit.contrib:truth:jar:0.28* <br />
 
-What is Truth?
---------------
+## What is Truth?
 
 Truth is an assertion/proposition framework appropriate for testing, inspired by
 FEST, and driven by some extensibility needs, written nearly entirely by Google
@@ -22,13 +20,11 @@ or it can be used alongside where other approaches seem more suitable.
 
 #### The full documentation and website for Truth is available at http://google.github.io/truth
 
-License
--------
+## License
 
 Truth is licensed under the open-source Apache 2.0 license.
 
-Acknowledgements
-----------------
+## Acknowledgements
 
 Thanks to Github and Travis-CI for having a strong commitment to open-source,
 and providing us with tools so we can provide others with code. And thanks to
