@@ -77,7 +77,7 @@ public class PrimitiveShortArraySubject
     }
   }
 
-  public IterableSubject<?, Short, List<Short>> asList() {
-    return IterableSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject asList() {
+    return new IterableSubject(failureStrategy, listRepresentation());
   }
 }

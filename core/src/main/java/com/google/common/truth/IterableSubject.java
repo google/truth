@@ -44,17 +44,20 @@ import javax.annotation.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends Iterable<T>>
-    extends Subject<S, C> {
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  static <T, C extends Iterable<T>>
-      IterableSubject<? extends IterableSubject<?, T, C>, T, C> create(
-          FailureStrategy failureStrategy, @Nullable Iterable<T> list) {
-    return new IterableSubject(failureStrategy, list);
+public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
+
+  protected IterableSubject(FailureStrategy failureStrategy, @Nullable Iterable<?> list) {
+    super(failureStrategy, list);
   }
 
-  protected IterableSubject(FailureStrategy failureStrategy, @Nullable C list) {
-    super(failureStrategy, list);
+  /**
+   * Renames the subject so that this name appears in the error messages in place of string
+   * representations of the subject.
+   */
+  @Override
+  public IterableSubject named(String name) {
+    super.named(name);
+    return this;
   }
 
   /**
@@ -114,8 +117,8 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * Attests that the subject does not contain duplicate elements.
    */
   public final void containsNoDuplicates() {
-    List<Entry<T>> duplicates = Lists.newArrayList();
-    for (Multiset.Entry<T> entry : LinkedHashMultiset.create(getSubject()).entrySet()) {
+    List<Entry<?>> duplicates = Lists.newArrayList();
+    for (Multiset.Entry<?> entry : LinkedHashMultiset.create(getSubject()).entrySet()) {
       if (entry.getCount() > 1) {
         duplicates.add(entry);
       }
@@ -143,11 +146,11 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
   }
 
   private void containsAny(String failVerb, Iterable<?> expected) {
-    Collection<T> subject;
+    Collection<?> subject;
     if (getSubject() instanceof Collection) {
       // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
       // iterable, right? I sure hope so.
-      subject = (Collection<T>) getSubject();
+      subject = (Collection<?>) getSubject();
     } else {
       // Would really like to use a HashSet here, but that would mean this would fail for elements
       // that don't implement hashCode correctly (or even throw an exception from it), where using
@@ -452,13 +455,14 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public final void isStrictlyOrdered(final Comparator<? super T> comparator) {
+  @SuppressWarnings({"unchecked"})
+  public final void isStrictlyOrdered(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
-        new PairwiseChecker<T>() {
+        new PairwiseChecker() {
           @Override
-          public void check(T prev, T next) {
-            if (comparator.compare(prev, next) >= 0) {
+          public void check(Object prev, Object next) {
+            if (((Comparator<Object>) comparator).compare(prev, next) >= 0) {
               fail("is strictly ordered", prev, next);
             }
           }
@@ -491,13 +495,14 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public final void isOrdered(final Comparator<? super T> comparator) {
+  @SuppressWarnings({"unchecked"})
+  public final void isOrdered(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
-        new PairwiseChecker<T>() {
+        new PairwiseChecker() {
           @Override
-          public void check(T prev, T next) {
-            if (comparator.compare(prev, next) > 0) {
+          public void check(Object prev, Object next) {
+            if (((Comparator<Object>) comparator).compare(prev, next) > 0) {
               fail("is ordered", prev, next);
             }
           }
@@ -508,20 +513,20 @@ public class IterableSubject<S extends IterableSubject<S, T, C>, T, C extends It
    * @deprecated Use {@link #isOrdered(Comparator)} instead.
    */
   @Deprecated
-  public final void isPartiallyOrdered(final Comparator<? super T> comparator) {
+  public final void isPartiallyOrdered(final Comparator<?> comparator) {
     isOrdered(comparator);
   }
 
-  private interface PairwiseChecker<T> {
-    void check(T prev, T next);
+  private interface PairwiseChecker {
+    void check(Object prev, Object next);
   }
 
-  private void pairwiseCheck(PairwiseChecker<T> checker) {
-    Iterator<T> iterator = getSubject().iterator();
+  private void pairwiseCheck(PairwiseChecker checker) {
+    Iterator<?> iterator = getSubject().iterator();
     if (iterator.hasNext()) {
-      T prev = iterator.next();
+      Object prev = iterator.next();
       while (iterator.hasNext()) {
-        T next = iterator.next();
+        Object next = iterator.next();
         checker.check(prev, next);
         prev = next;
       }

@@ -77,7 +77,7 @@ public class PrimitiveBooleanArraySubject
     }
   }
 
-  public IterableSubject<?, Boolean, List<Boolean>> asList() {
-    return IterableSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject asList() {
+    return new IterableSubject(failureStrategy, listRepresentation());
   }
 }

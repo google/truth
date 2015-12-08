@@ -26,17 +26,20 @@ import javax.annotation.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-public final class MultisetSubject<S extends MultisetSubject<S, E, M>, E, M extends Multiset<E>>
-    extends IterableSubject<S, E, M> {
-  private MultisetSubject(FailureStrategy failureStrategy, @Nullable M multiset) {
+public final class MultisetSubject extends IterableSubject {
+
+  MultisetSubject(FailureStrategy failureStrategy, @Nullable Multiset<?> multiset) {
     super(failureStrategy, multiset);
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  static <E, M extends Multiset<E>>
-      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> create(
-          FailureStrategy failureStrategy, @Nullable Multiset<E> multiset) {
-    return new MultisetSubject(failureStrategy, multiset);
+  /**
+   * Renames the subject so that this name appears in the error messages in place of string
+   * representations of the subject.
+   */
+  @Override
+  public MultisetSubject named(String name) {
+    super.named(name);
+    return this;
   }
 
   /**
@@ -44,7 +47,7 @@ public final class MultisetSubject<S extends MultisetSubject<S, E, M>, E, M exte
    */
   public final void hasCount(@Nullable Object element, int expectedCount) {
     checkArgument(expectedCount >= 0, "expectedCount(%s) must be >= 0", expectedCount);
-    int actualCount = getSubject().count(element);
+    int actualCount = ((Multiset<?>) getSubject()).count(element);
     if (actualCount != expectedCount) {
       failWithBadResults("has a count for <" + element + "> of", expectedCount, "is", actualCount);
     }

@@ -107,7 +107,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
     }
   }
 
-  public IterableSubject<?, T, List<T>> asList() {
-    return IterableSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject asList() {
+    return new IterableSubject(failureStrategy, listRepresentation());
   }
 }

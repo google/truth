@@ -92,6 +92,8 @@ public class MultisetTest {
     assertThat(multiset).hasCount("kurt", 2);
     assertThat(multiset).hasCount("kluever", 1);
     assertThat(multiset).hasCount("alfred", 0);
+
+    assertThat(multiset).named("name").hasCount("kurt", 2);
   }
 
   @Test

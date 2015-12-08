@@ -112,8 +112,8 @@ public final class Truth {
    * @param factory a SubjectFactory<S, T> implementation
    * @return A custom verb for the type returned by the SubjectFactory
    */
-  public static <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>>
-      DelegatedVerb<S, T> assertAbout(SF factory) {
+  public static <S extends Subject<S, T>, T> DelegatedVerb<S, T> assertAbout(
+      SubjectFactory<S, T> factory) {
     return assert_().about(factory);
   }
 
@@ -162,9 +162,8 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static <T, C extends Iterable<T>>
-      IterableSubject<? extends IterableSubject<?, T, C>, T, C> assertThat(
-          @Nullable Iterable<T> target) {
+  // TODO(b/26080262): Remove the <T> type param
+  public static <T> IterableSubject assertThat(@Nullable Iterable<T> target) {
     return assert_().that(target);
   }
 
@@ -212,27 +211,23 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static <K, V, M extends Multimap<K, V>>
-      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> assertThat(
-          @Nullable Multimap<K, V> target) {
+  // TODO(b/26080262): Remove the <K, V> type params
+  public static <K, V> MultimapSubject assertThat(@Nullable Multimap<K, V> target) {
     return assert_().that(target);
   }
 
-  public static <K, V, M extends ListMultimap<K, V>>
-      ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> assertThat(
-          @Nullable ListMultimap<K, V> target) {
+  // TODO(b/26080262): Remove the <K, V> type params
+  public static <K, V> ListMultimapSubject assertThat(@Nullable ListMultimap<K, V> target) {
     return assert_().that(target);
   }
 
-  public static <K, V, M extends SetMultimap<K, V>>
-      SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> assertThat(
-          @Nullable SetMultimap<K, V> target) {
+  // TODO(b/26080262): Remove the <K, V> type params
+  public static <K, V> SetMultimapSubject assertThat(@Nullable SetMultimap<K, V> target) {
     return assert_().that(target);
   }
 
-  public static <E, M extends Multiset<E>>
-      MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> assertThat(
-          @Nullable Multiset<E> target) {
+  // TODO(b/26080262): Remove the <E> type param
+  public static <E> MultisetSubject assertThat(@Nullable Multiset<E> target) {
     return assert_().that(target);
   }
 

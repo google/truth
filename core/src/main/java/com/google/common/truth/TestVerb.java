@@ -108,9 +108,9 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new StringSubject(getFailureStrategy(), target);
   }
 
-  public <T, C extends Iterable<T>> IterableSubject<? extends IterableSubject<?, T, C>, T, C> that(
-      @Nullable Iterable<T> target) {
-    return IterableSubject.create(getFailureStrategy(), target);
+  // TODO(b/26080262): Remove the <T> type param
+  public <T> IterableSubject that(@Nullable Iterable<T> target) {
+    return new IterableSubject(getFailureStrategy(), target);
   }
 
   public <T> ObjectArraySubject<T> that(@Nullable T[] target) {
@@ -157,27 +157,24 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new MapSubject(getFailureStrategy(), target);
   }
 
-  public <K, V, M extends Multimap<K, V>>
-      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> that(
-          @Nullable Multimap<K, V> target) {
-    return MultimapSubject.create(getFailureStrategy(), target);
+  // TODO(b/26080262): Remove the <K, V> type params
+  public <K, V> MultimapSubject that(@Nullable Multimap<K, V> target) {
+    return new MultimapSubject(getFailureStrategy(), target);
   }
 
-  public <K, V, M extends ListMultimap<K, V>>
-      ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> that(
-          @Nullable ListMultimap<K, V> target) {
-    return ListMultimapSubject.create(getFailureStrategy(), target);
+  // TODO(b/26080262): Remove the <K, V> type params
+  public <K, V> ListMultimapSubject that(@Nullable ListMultimap<K, V> target) {
+    return new ListMultimapSubject(getFailureStrategy(), target);
   }
 
-  public <K, V, M extends SetMultimap<K, V>>
-      SetMultimapSubject<? extends SetMultimapSubject<?, K, V, M>, K, V, M> that(
-          @Nullable SetMultimap<K, V> target) {
-    return SetMultimapSubject.create(getFailureStrategy(), target);
+  // TODO(b/26080262): Remove the <K, V> type params
+  public <K, V> SetMultimapSubject that(@Nullable SetMultimap<K, V> target) {
+    return new SetMultimapSubject(getFailureStrategy(), target);
   }
 
-  public <E, M extends Multiset<E>> MultisetSubject<? extends MultisetSubject<?, E, M>, E, M> that(
-      @Nullable Multiset<E> target) {
-    return MultisetSubject.create(getFailureStrategy(), target);
+  // TODO(b/26080262): Remove the <E> type param
+  public <E> MultisetSubject that(@Nullable Multiset<E> target) {
+    return new MultisetSubject(getFailureStrategy(), target);
   }
 
   public TableSubject that(@Nullable Table<?, ?, ?> target) {

@@ -77,7 +77,7 @@ public class PrimitiveByteArraySubject
     }
   }
 
-  public IterableSubject<?, Byte, List<Byte>> asList() {
-    return IterableSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject asList() {
+    return new IterableSubject(failureStrategy, listRepresentation());
   }
 }

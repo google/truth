@@ -82,5 +82,5 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
 
   // TODO(kak): Add methods that return other subjects. E.g.,
   // public StringSubject username() {}
-  // public IterableSubject<?, String, ?> languages() {}
+  // public IterableSubject languages() {}
 }

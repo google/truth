@@ -28,18 +28,9 @@ import javax.annotation.Nullable;
  *
  * @author Daniel Ploch
  */
-public class ListMultimapSubject<
-        S extends ListMultimapSubject<S, K, V, M>, K, V, M extends ListMultimap<K, V>>
-    extends MultimapSubject<S, K, V, M> {
-  ListMultimapSubject(FailureStrategy failureStrategy, @Nullable M multimap) {
+public class ListMultimapSubject extends MultimapSubject {
+  ListMultimapSubject(FailureStrategy failureStrategy, @Nullable ListMultimap<?, ?> multimap) {
     super(failureStrategy, multimap);
-  }
-
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  static <K, V, M extends ListMultimap<K, V>>
-      ListMultimapSubject<? extends ListMultimapSubject<?, K, V, M>, K, V, M> create(
-          FailureStrategy failureStrategy, @Nullable ListMultimap<K, V> multimap) {
-    return new ListMultimapSubject(failureStrategy, multimap);
   }
 
   /**

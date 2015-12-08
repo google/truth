@@ -77,7 +77,7 @@ public class PrimitiveLongArraySubject
     }
   }
 
-  public IterableSubject<?, Long, List<Long>> asList() {
-    return IterableSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject asList() {
+    return new IterableSubject(failureStrategy, listRepresentation());
   }
 }

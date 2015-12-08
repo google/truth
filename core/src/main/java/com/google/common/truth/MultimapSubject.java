@@ -44,17 +44,19 @@ import javax.annotation.Nullable;
  * @author Daniel Ploch
  * @author Kurt Alfred Kluever
  */
-public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M extends Multimap<K, V>>
-    extends Subject<S, M> {
-  MultimapSubject(FailureStrategy failureStrategy, @Nullable M multimap) {
+public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
+  MultimapSubject(FailureStrategy failureStrategy, @Nullable Multimap<?, ?> multimap) {
     super(failureStrategy, multimap);
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  static <K, V, M extends Multimap<K, V>>
-      MultimapSubject<? extends MultimapSubject<?, K, V, M>, K, V, M> create(
-          FailureStrategy failureStrategy, @Nullable Multimap<K, V> multimap) {
-    return new MultimapSubject(failureStrategy, multimap);
+  /**
+   * Renames the subject so that this name appears in the error messages in place of string
+   * representations of the subject.
+   */
+  @Override
+  public MultimapSubject named(String name) {
+    super.named(name);
+    return this;
   }
 
   /**
@@ -130,9 +132,7 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
    * assertions must be chained onto this method call to test properties of the Multimap.
    */
   @CheckReturnValue
-  public IterableSubject<
-          ? extends IterableSubject<?, V, ? extends Collection<V>>, V, ? extends Collection<V>>
-      valuesForKey(@Nullable K key) {
+  public IterableSubject valuesForKey(@Nullable Object key) {
     return new IterableValuesForKey(failureStrategy, this, key);
   }
 
@@ -216,16 +216,14 @@ public class MultimapSubject<S extends MultimapSubject<S, K, V, M>, K, V, M exte
     return new MultimapInOrder(expectedMultimap);
   }
 
-  private class IterableValuesForKey
-      extends IterableSubject<IterableValuesForKey, V, Collection<V>> {
-    @Nullable private final K key;
+  private class IterableValuesForKey extends IterableSubject {
+    @Nullable private final Object key;
     @Nullable private final String display;
 
+    @SuppressWarnings({"unchecked"})
     IterableValuesForKey(
-        FailureStrategy failureStrategy,
-        MultimapSubject<?, K, V, ?> multimapSubject,
-        @Nullable K key) {
-      super(failureStrategy, multimapSubject.getSubject().get(key));
+        FailureStrategy failureStrategy, MultimapSubject multimapSubject, @Nullable Object key) {
+      super(failureStrategy, ((Multimap<Object, Object>) multimapSubject.getSubject()).get(key));
       this.key = key;
       this.display = multimapSubject.getDisplaySubject();
     }

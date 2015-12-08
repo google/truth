@@ -77,7 +77,7 @@ public class PrimitiveCharArraySubject
     }
   }
 
-  public IterableSubject<?, Character, List<Character>> asList() {
-    return IterableSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject asList() {
+    return new IterableSubject(failureStrategy, listRepresentation());
   }
 }

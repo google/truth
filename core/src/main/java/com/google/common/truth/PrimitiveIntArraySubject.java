@@ -77,7 +77,7 @@ public class PrimitiveIntArraySubject
     }
   }
 
-  public IterableSubject<?, Integer, List<Integer>> asList() {
-    return IterableSubject.create(failureStrategy, listRepresentation());
+  public IterableSubject asList() {
+    return new IterableSubject(failureStrategy, listRepresentation());
   }
 }
