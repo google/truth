@@ -15,9 +15,10 @@
  */
 package com.google.common.truth;
 
+import com.google.common.base.Objects;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -84,7 +85,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
             expectedArray.length);
       } else {
         for (int i = 0; i < actual.length; i++) {
-          if (!Objects.equals(actual[i], expectedArray[i])) {
+          if (!Objects.equal(actual[i], expectedArray[i])) {
             failWithBadResults("is equal to", Arrays.asList(expectedArray), "differs at index", i);
           }
         }

@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.primitives.Ints;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -906,7 +907,7 @@ public class IterableTest {
       new Comparator<Foo>() {
         @Override
         public int compare(Foo a, Foo b) {
-          return Integer.compare(a.x, b.x);
+          return Ints.compare(a.x, b.x);
         }
       };
 
