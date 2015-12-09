@@ -211,18 +211,15 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  // TODO(b/26080262): Remove the <K, V> type params
-  public static <K, V> MultimapSubject assertThat(@Nullable Multimap<K, V> target) {
+  public static MultimapSubject assertThat(@Nullable Multimap<?, ?> target) {
     return assert_().that(target);
   }
 
-  // TODO(b/26080262): Remove the <K, V> type params
-  public static <K, V> ListMultimapSubject assertThat(@Nullable ListMultimap<K, V> target) {
+  public static ListMultimapSubject assertThat(@Nullable ListMultimap<?, ?> target) {
     return assert_().that(target);
   }
 
-  // TODO(b/26080262): Remove the <K, V> type params
-  public static <K, V> SetMultimapSubject assertThat(@Nullable SetMultimap<K, V> target) {
+  public static SetMultimapSubject assertThat(@Nullable SetMultimap<?, ?> target) {
     return assert_().that(target);
   }
 

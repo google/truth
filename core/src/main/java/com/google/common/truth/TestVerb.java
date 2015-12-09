@@ -157,18 +157,15 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new MapSubject(getFailureStrategy(), target);
   }
 
-  // TODO(b/26080262): Remove the <K, V> type params
-  public <K, V> MultimapSubject that(@Nullable Multimap<K, V> target) {
+  public MultimapSubject that(@Nullable Multimap<?, ?> target) {
     return new MultimapSubject(getFailureStrategy(), target);
   }
 
-  // TODO(b/26080262): Remove the <K, V> type params
-  public <K, V> ListMultimapSubject that(@Nullable ListMultimap<K, V> target) {
+  public ListMultimapSubject that(@Nullable ListMultimap<?, ?> target) {
     return new ListMultimapSubject(getFailureStrategy(), target);
   }
 
-  // TODO(b/26080262): Remove the <K, V> type params
-  public <K, V> SetMultimapSubject that(@Nullable SetMultimap<K, V> target) {
+  public SetMultimapSubject that(@Nullable SetMultimap<?, ?> target) {
     return new SetMultimapSubject(getFailureStrategy(), target);
   }
 
