@@ -21,8 +21,6 @@ import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Math.nextAfter;
 
-import com.google.common.truth.PrimitiveDoubleArraySubject;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

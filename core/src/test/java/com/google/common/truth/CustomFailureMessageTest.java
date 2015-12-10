@@ -35,13 +35,6 @@ import org.junit.runners.JUnit4;
 public class CustomFailureMessageTest {
 
   @Test
-  public void hasFailureMessage() {
-    assertThat(assertWithMessage(null).hasFailureMessage()).isFalse();
-    assertThat(assertWithMessage("foo").hasFailureMessage()).isTrue();
-    assertThat(assertWithMessage("foo %s", "foo").hasFailureMessage()).isTrue();
-  }
-
-  @Test
   public void assertWithMessageIsPrepended() {
     try {
       assertWithMessage("Invalid month").that(13).isIn(Range.closed(1, 12));

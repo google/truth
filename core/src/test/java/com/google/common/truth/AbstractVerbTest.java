@@ -17,9 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.AbstractVerb;
-import com.google.common.truth.FailureStrategy;
-
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
@@ -27,8 +24,6 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import java.util.concurrent.atomic.AtomicReference;
-
-import javax.annotation.CheckReturnValue;
 
 /**
  * Tests for AbstractVerbs.
@@ -47,24 +42,19 @@ public class AbstractVerbTest {
         }
       };
 
-  private static final AbstractVerb<?> CAPTURE_FAILURE =
-      new AbstractVerb(FAILURE_STRATEGY) {
-        @Override
-        @CheckReturnValue
-        public AbstractVerb<?> withFailureMessage(String failureMessage) {
-          throw new UnsupportedOperationException();
-        }
+  private static final AbstractVerb<?> CAPTURE_FAILURE = new TestVerb(FAILURE_STRATEGY);
 
-        @Override
-        protected String getFailureMessage() {
-          return null;
-        }
+  static class TestVerb extends AbstractVerb<TestVerb> {
+    private TestVerb(FailureStrategy fs) {
+      super(fs);
+    }
 
-        @Override
-        protected boolean hasFailureMessage() {
-          return false;
-        }
-      };
+    @Override
+    public TestVerb withFailureMessage(String format, Object ... args) {
+      throw new UnsupportedOperationException();
+    }
+  }
+
   @DataPoints public static String[] strings = new String[] {"a", "b"};
 
   @Test

@@ -16,7 +16,10 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.StringUtil.format;
+
+import com.google.common.base.Preconditions;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -29,9 +32,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   }
 
   protected FailureStrategy getFailureStrategy() {
-    return (hasFailureMessage())
-        ? new MessagePrependingFailureStrategy(failureStrategy, this)
-        : failureStrategy;
+    return failureStrategy;
   }
 
   /**
@@ -49,7 +50,26 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   }
 
   /**
-   * Overrides the failure message of the subsequent subject's propositions.
+   * Overrides the failure message of the subsequent subject's propositions by prepending a
+   * custom message.
+   *
+   * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
+   * not the full range of {@link java.util.Formatter} specifiers.
+   *
+   *
+   * <strong>SPI Notes for implementers</strong>
+   *
+   * <p>Note, all implementations should override this abstract method by the following
+   * pattern: <pre>{@code
+   *
+   *   @Override
+   *   public CustomVerb withFailureMessage(String format, Object... args) {
+   *     return new CustomVerb(failureStrategyWithMessage(format, args));
+   *   }
+   * }</pre>
+   *
+   * <p>This permits the custom TestVerb to be returned as a strong type, so that any
+   * {@code that(Foo foo)} methods are accessible in the returned type.
    *
    * @see com.google.common.truth.delegation.DelegationTest
    * @param failureMessage a descriptive message. {@code null} to remove any current message.
@@ -57,15 +77,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
    *     text.
    */
   @CheckReturnValue
-  public abstract T withFailureMessage(@Nullable String failureMessage);
-
-  @Nullable
-  protected abstract String getFailureMessage();
-
-  // TODO(kak): This should probably be abstract...
-  protected boolean hasFailureMessage() {
-    return false;
-  }
+  public abstract T withFailureMessage(@Nullable String format, Object... args);
 
   /**
    * The recommended method of extension of Truth to new types, which is
@@ -81,6 +93,12 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
     return new DelegatedVerb<S, T>(getFailureStrategy(), factory);
   }
 
+  protected FailureStrategy failureStrategyWithMessage(String format, Object... args) {
+    // TODO(cgruber) Should we consider loosening this?  Does it really matter?
+    checkState(!(getFailureStrategy() instanceof DelegatingFailureStrategy),
+        "Overriding failure message has already been set for this call-chain.");
+    return new DelegatingFailureStrategy(getFailureStrategy(), format, args);
+  }
   /**
    * A special Verb implementation which wraps a SubjectFactory
    */
@@ -99,29 +117,40 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
     }
   }
 
-  protected static class MessagePrependingFailureStrategy extends FailureStrategy {
+  /**
+   * A {@link FailureStrategy} which delegates to an original strategy, and overrides the message
+   * when the various {@code fail()} methods are called, prepending the supplied formatted string
+   * to the Subject-supplied error message.
+   */
+  private static class DelegatingFailureStrategy extends FailureStrategy {
     private final FailureStrategy delegate;
-    private final AbstractVerb<?> verb;
+    private final String fmt;
+    private final Object[] args;
 
-    protected MessagePrependingFailureStrategy(FailureStrategy delegate, AbstractVerb<?> verb) {
-      this.delegate = checkNotNull(delegate);
-      this.verb = checkNotNull(verb);
+    private DelegatingFailureStrategy(FailureStrategy delegate, String fmt, Object[] args) {
+      this.delegate = delegate;
+      // This is checked here, even though StringUtil.format would fail in a similar way, because
+      // it's better to catch this immediately, and not in a deep stack trace.
+      Preconditions.checkArgument(StringUtil.countOfPlaceholders(fmt) == args.length,
+          "Too many parameters for " + args.length + " argument: \"" + fmt + "\"");
+      this.fmt = fmt;
+      this.args = args;
     }
 
     @Override
     public void fail(String message) {
-      delegate.fail(verb.getFailureMessage() + ": " + message);
+      delegate.fail(StringUtil.format(fmt, args) + ": " + message);
     }
 
     @Override
     public void fail(String message, Throwable cause) {
-      delegate.fail(verb.getFailureMessage() + ": " + message, cause);
+      delegate.fail(StringUtil.format(fmt, args) + ": " + message, cause);
     }
 
     @Override
     public void failComparing(String message, CharSequence expected, CharSequence actual) {
-      delegate.fail(
-          verb.getFailureMessage() + ": " + StringUtil.messageFor(message, expected, actual));
+      delegate.failComparing(
+          StringUtil.format(fmt, args) + ": " + message, expected, actual);
     }
   }
 }

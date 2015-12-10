@@ -33,24 +33,23 @@ import javax.annotation.Nullable;
 
 @CheckReturnValue
 public class TestVerb extends AbstractVerb<TestVerb> {
-  private static final Object[] EMPTY_ARGS = new Object[0];
-  @Nullable private final String format;
-  private final Object[] args;
-
   public TestVerb(FailureStrategy failureStrategy) {
-    this(failureStrategy, null);
-  }
-
-  public TestVerb(FailureStrategy failureStrategy, @Nullable String format) {
-    this(failureStrategy, format, EMPTY_ARGS);
-  }
-
-  public TestVerb(
-      FailureStrategy failureStrategy, @Nullable String format, @Nullable Object... args) {
     super(checkNotNull(failureStrategy));
-    this.format = format;
-    this.args = checkNotNull(args);
+  }
 
+  /**
+   * Returns a {@link TestVerb} that will prepend the formatted message using the specified
+   * arguments to the failure message in the event of a test failure.
+   *
+   * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
+   * not the full range of {@link java.util.Formatter} specifiers.
+   *
+   * @throws IllegalArgumentException if the number of placeholders in the format string does not
+   *     equal the number of given arguments
+   */
+  @Override
+  public TestVerb withFailureMessage(@Nullable String format, @Nullable Object... args) {
+    checkNotNull(args);
     int numOfPlaceholders = countPlaceholders(format);
     if (numOfPlaceholders != args.length) {
       throw new IllegalArgumentException(
@@ -61,6 +60,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
               format,
               args.length));
     }
+    return new TestVerb(failureStrategyWithMessage(format, args));
   }
 
   public <T extends Comparable<?>> ComparableSubject<?, T> that(@Nullable T target) {
@@ -176,38 +176,6 @@ public class TestVerb extends AbstractVerb<TestVerb> {
 
   public TableSubject that(@Nullable Table<?, ?, ?> target) {
     return new TableSubject(getFailureStrategy(), target);
-  }
-
-  @Override
-  public TestVerb withFailureMessage(@Nullable String failureMessage) {
-    return new TestVerb(getFailureStrategy(), failureMessage); // Must be a new instance.
-  }
-
-  /**
-   * Returns a {@link TestVerb} that will prepend the formatted message using the specified
-   * arguments to the failure message in the event of a test failure.
-   *
-   * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
-   * not the full range of {@link java.util.Formatter} specifiers.
-   *
-   * @throws IllegalArgumentException if the number of placeholders in the format string does not
-   *     equal the number of given arguments
-   */
-  // TODO(kak): This probably should go on AbstractVerb, but that's a breaking change and will
-  // require an atomic migration of the codebase.
-  public TestVerb withFailureMessage(String format, Object... args) {
-    return new TestVerb(getFailureStrategy(), format, args); // Must be a new instance.
-  }
-
-  @Override
-  @Nullable
-  public String getFailureMessage() {
-    return hasFailureMessage() ? StringUtil.format(format, args) : null;
-  }
-
-  @Override
-  protected boolean hasFailureMessage() {
-    return (format != null);
   }
 
   static int countPlaceholders(@Nullable String template) {
