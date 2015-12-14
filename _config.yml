@@ -16,7 +16,7 @@ navigation:
 - text: Change
   url: /truth/changelog/
 - text: Javadoc
-  url: /truth/api/
+  url: /truth/api/0.28/
 - text: FAQ
   url: /truth/faq/
 - text: Usage
