@@ -108,8 +108,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new StringSubject(getFailureStrategy(), target);
   }
 
-  // TODO(b/26080262): Remove the <T> type param
-  public <T> IterableSubject that(@Nullable Iterable<T> target) {
+  public IterableSubject that(@Nullable Iterable<?> target) {
     return new IterableSubject(getFailureStrategy(), target);
   }
 
@@ -169,8 +168,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new SetMultimapSubject(getFailureStrategy(), target);
   }
 
-  // TODO(b/26080262): Remove the <E> type param
-  public <E> MultisetSubject that(@Nullable Multiset<E> target) {
+  public MultisetSubject that(@Nullable Multiset<?> target) {
     return new MultisetSubject(getFailureStrategy(), target);
   }
 

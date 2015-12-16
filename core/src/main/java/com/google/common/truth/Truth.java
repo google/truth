@@ -162,8 +162,7 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  // TODO(b/26080262): Remove the <T> type param
-  public static <T> IterableSubject assertThat(@Nullable Iterable<T> target) {
+  public static IterableSubject assertThat(@Nullable Iterable<?> target) {
     return assert_().that(target);
   }
 
@@ -223,8 +222,7 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  // TODO(b/26080262): Remove the <E> type param
-  public static <E> MultisetSubject assertThat(@Nullable Multiset<E> target) {
+  public static MultisetSubject assertThat(@Nullable Multiset<?> target) {
     return assert_().that(target);
   }
 
