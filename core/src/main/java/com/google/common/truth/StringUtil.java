@@ -70,6 +70,10 @@ final class StringUtil {
       builder.append(args[i++]);
       templateStart = placeholderStart + 2;
     }
+    if (template.indexOf("%s", templateStart) >= 0) {
+      throw new IllegalStateException(
+          "Too many parameters for " + args.length + " argument: \"" + template + "\"");
+    }
     builder.append(template.substring(templateStart));
 
     // if we run out of placeholders, append the extra args in square braces
@@ -84,5 +88,21 @@ final class StringUtil {
     }
 
     return builder.toString();
+  }
+
+  /**
+   * Returns the number of {@code %s} placeholders in the template.
+   */
+  static int countOfPlaceholders(@Nullable String template) {
+    template = String.valueOf(template); // null -> "null"
+    int templateStart = 0;
+    int count = 0;
+    int placeholderStart = template.indexOf("%s", templateStart);
+    while (placeholderStart != -1) {
+      templateStart = placeholderStart + 2;
+      count++;
+      placeholderStart = template.indexOf("%s", templateStart);
+    }
+    return count;
   }
 }
