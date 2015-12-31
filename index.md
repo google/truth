@@ -155,7 +155,7 @@ or download the jar directly from the link below and add it to
 your tests classpath
 
 {% highlight text %}
-http://search.maven.org/remotecontent?filepath=org/truth0/truth/{{site.version}}/truth-{{site.version}}.jar
+http://search.maven.org/remotecontent?filepath=com/google/truth/truth/{{site.version}}/truth-{{site.version}}.jar
 {% endhighlight %}
 
 # More Detailed Usage Information
