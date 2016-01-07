@@ -21,7 +21,9 @@ import static java.lang.Float.NaN;
 import static java.lang.Float.POSITIVE_INFINITY;
 import static java.lang.Math.nextAfter;
 
-import com.google.common.truth.PrimitiveFloatArraySubject;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Floats;
+import com.google.common.primitives.Longs;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -296,23 +298,21 @@ public class PrimitiveFloatArraySubjectTest {
 
   @Test
   public void hasValuesWithinOf() {
-    assertThat(array(2.2f, 5.4f)).hasValuesWithin(DEFAULT_TOLERANCE).of(array(2.2f, 5.4f));
+    assertThat(array(2.2f, 5.4f)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2f, 5.4f);
   }
 
   @Test
   public void hasValuesWithinOf_ApproximatelyEquals() {
     assertThat(array(2.2f, 3.3f))
         .hasValuesWithin(DEFAULT_TOLERANCE)
-        .of(array(2.2f, nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)));
+        .of(2.2f, nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY));
   }
 
   @Test
   public void hasValuesWithinOf_FailNotQuiteApproximatelyEquals() {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
     try {
-      assertThat(array(2.2f, 3.3f))
-          .hasValuesWithin(DEFAULT_TOLERANCE)
-          .of(array(2.2f, roughly3point3));
+      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2f, roughly3point3);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -326,7 +326,7 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void hasValuesWithinOf_Fail_DifferentOrder() {
     try {
-      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(array(3.3f, 2.2f));
+      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(3.3f, 2.2f);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -339,7 +339,7 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void hasValuesWithinOf_Fail_Longer() {
     try {
-      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(array(2.2f, 3.3f, 1.1f));
+      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2f, 3.3f, 1.1f);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -352,7 +352,7 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void hasValuesWithinOf_Fail_Shorter() {
     try {
-      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(array(2.2f));
+      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2f);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -367,7 +367,7 @@ public class PrimitiveFloatArraySubjectTest {
     try {
       assertThat(array(2.2f, POSITIVE_INFINITY))
           .hasValuesWithin(DEFAULT_TOLERANCE)
-          .of(array(2.2f, POSITIVE_INFINITY));
+          .of(2.2f, POSITIVE_INFINITY);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -394,9 +394,7 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void hasValuesWithinOf_Fail_OneInfinity() {
     try {
-      assertThat(array(2.2f, 3.3f))
-          .hasValuesWithin(DEFAULT_TOLERANCE)
-          .of(array(2.2f, POSITIVE_INFINITY));
+      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2f, POSITIVE_INFINITY);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -409,7 +407,7 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void hasValuesWithinOf_Fail_LongerOneInfinity() {
     try {
-      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(array(POSITIVE_INFINITY));
+      assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(POSITIVE_INFINITY);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -422,7 +420,7 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void hasValuesWithinOf_Fail_NaN() {
     try {
-      assertThat(array(NaN)).hasValuesWithin(DEFAULT_TOLERANCE).of(array(NaN));
+      assertThat(array(NaN)).hasValuesWithin(DEFAULT_TOLERANCE).of(NaN);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -433,19 +431,211 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
-  public void hasValuesWithinOf_Null() {
+  public void hasValuesWithinOf_NullSubject() {
     float[] nullArray = null;
     try {
-      assertThat(nullArray).hasValuesWithin(DEFAULT_TOLERANCE).of(array(3.3f, 2.2f));
+      assertThat(nullArray).hasValuesWithin(DEFAULT_TOLERANCE).of(3.3f, 2.2f);
       throw new Error("Expected to throw.");
     } catch (NullPointerException expected) {
     }
   }
 
   @Test
-  public void hasValuesWithin_NegativeTolerance() {
+  public void hasValuesWithinOf_NullObbject() {
+    float[] nullArray = null;
     try {
-      assertThat(array(3.3f, 2.2f)).hasValuesWithin(-0.001f).of(array(3.3f, 2.2f));
+      assertThat(array(3.3f, 2.2f)).hasValuesWithin(DEFAULT_TOLERANCE).of(nullArray);
+      throw new Error("Expected to throw.");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOf_NegativeTolerance() {
+    try {
+      assertThat(array(3.3f, 2.2f)).hasValuesWithin(-0.001f).of(3.3f, 2.2f);
+      throw new Error("Expected to throw.");
+    } catch (IllegalArgumentException e) {
+      assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_floats() {
+    assertThat(array(2.2f, 5.4f))
+        .hasValuesWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Floats.asList(2.2f, 5.4f));
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_doubles() {
+    assertThat(array(2.2f, 5.4f))
+        .hasValuesWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Doubles.asList(2.2d, 5.4d));
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_longs() {
+    assertThat(array(2.0f, 5.0f))
+        .hasValuesWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Longs.asList(2L, 5L));
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_ApproximatelyEquals() {
+    assertThat(array(2.2f, 3.3f))
+        .hasValuesWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Floats.asList(2.2f, nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)));
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_FailNotQuiteApproximatelyEquals() {
+    float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
+    try {
+      assertThat(array(2.2f, 3.3f))
+          .hasValuesWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(2.2f, roughly3point3));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, "
+                  + roughly3point3
+                  + "]>. It differs at indexes <[1]>");
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_Fail_DifferentOrder() {
+    try {
+      assertThat(array(2.2f, 3.3f))
+          .hasValuesWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(3.3f, 2.2f));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[3.3, 2.2]>."
+                  + " It differs at indexes <[0, 1]>");
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_Fail_Longer() {
+    try {
+      assertThat(array(2.2f, 3.3f))
+          .hasValuesWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(2.2f, 3.3f, 1.1f));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, 3.3, 1.1]>."
+                  + " Expected length <3> but got <2>");
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_Fail_Shorter() {
+    try {
+      assertThat(array(2.2f, 3.3f))
+          .hasValuesWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(2.2f));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2]>."
+                  + " Expected length <1> but got <2>");
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_Fail_Infinity() {
+    try {
+      assertThat(array(2.2f, POSITIVE_INFINITY))
+          .hasValuesWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(2.2f, POSITIVE_INFINITY));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, Infinity]> has values within 5.0E-6 of"
+                  + " <[2.2, Infinity]>. It differs at indexes <[1]>");
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_Fail_OneInfinity() {
+    try {
+      assertThat(array(2.2f, 3.3f))
+          .hasValuesWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(2.2f, POSITIVE_INFINITY));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, Infinity]>."
+                  + " It differs at indexes <[1]>");
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_Fail_LongerOneInfinity() {
+    try {
+      assertThat(array(2.2f, 3.3f))
+          .hasValuesWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(POSITIVE_INFINITY));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[Infinity]>."
+                  + " Expected length <1> but got <2>");
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_Fail_NaN() {
+    try {
+      assertThat(array(NaN)).hasValuesWithin(DEFAULT_TOLERANCE).ofElementsIn(Floats.asList(NaN));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [NaN]> has values within 5.0E-6 of <[NaN]>."
+                  + " It differs at indexes <[0]>");
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_NullSubject() {
+    float[] nullArray = null;
+    try {
+      assertThat(nullArray)
+          .hasValuesWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(3.3f, 2.2f));
+      throw new Error("Expected to throw.");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_NullObject() {
+    Iterable<Number> nullIterable = null;
+    try {
+      assertThat(array(3.3f, 2.2f)).hasValuesWithin(DEFAULT_TOLERANCE).ofElementsIn(nullIterable);
+      throw new Error("Expected to throw.");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void hasValuesWithinOfElementsIn_NegativeTolerance() {
+    try {
+      assertThat(array(3.3f, 2.2f))
+          .hasValuesWithin(-0.001f)
+          .ofElementsIn(Floats.asList(3.3f, 2.2f));
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
@@ -454,18 +644,18 @@ public class PrimitiveFloatArraySubjectTest {
 
   @Test
   public void hasValuesNotWithinOf_DifferentOrder() {
-    assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(array(3.3f, 2.2f));
+    assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(3.3f, 2.2f);
   }
 
   @Test
   public void hasValuesNotWithinOf_DifferentLengths() {
-    assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(array(2.2f, 3.3f, 1.1f));
+    assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(2.2f, 3.3f, 1.1f);
   }
 
   @Test
   public void hasValuesNotWithinOf_FailEquals() {
     try {
-      assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(array(2.2f, 3.3f));
+      assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(2.2f, 3.3f);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -478,9 +668,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesNotWithinOf_FailApproximatelyEquals() {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     try {
-      assertThat(array(2.2f, 3.3f))
-          .hasValuesNotWithin(DEFAULT_TOLERANCE)
-          .of(array(2.2f, roughly3point3));
+      assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(2.2f, roughly3point3);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -495,7 +683,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesNotWithinOf_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2f, 3.3f))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
-        .of(array(2.2f, nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY)));
+        .of(2.2f, nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY));
   }
 
   @Test
@@ -516,7 +704,7 @@ public class PrimitiveFloatArraySubjectTest {
     try {
       assertThat(array(2.2f, POSITIVE_INFINITY))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
-          .of(array(2.2f, POSITIVE_INFINITY));
+          .of(2.2f, POSITIVE_INFINITY);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -545,7 +733,7 @@ public class PrimitiveFloatArraySubjectTest {
     try {
       assertThat(array(2.2f, 3.3f))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
-          .of(array(2.2f, POSITIVE_INFINITY));
+          .of(2.2f, POSITIVE_INFINITY);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -557,15 +745,13 @@ public class PrimitiveFloatArraySubjectTest {
 
   @Test
   public void hasValuesNotWithinOf_LongerOneInfinity() {
-    assertThat(array(2.2f, 3.3f))
-        .hasValuesNotWithin(DEFAULT_TOLERANCE)
-        .of(array(POSITIVE_INFINITY));
+    assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(POSITIVE_INFINITY);
   }
 
   @Test
   public void hasValuesNotWithinOf_Fail_NaN() {
     try {
-      assertThat(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(array(NaN));
+      assertThat(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(NaN);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
@@ -574,19 +760,179 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
-  public void hasValuesNotWithinOf_Null() {
+  public void hasValuesNotWithinOf_NullSubject() {
     float[] nullArray = null;
     try {
-      assertThat(nullArray).hasValuesNotWithin(DEFAULT_TOLERANCE).of(array(3.3f, 2.2f));
+      assertThat(nullArray).hasValuesNotWithin(DEFAULT_TOLERANCE).of(3.3f, 2.2f);
       throw new Error("Expected to throw.");
     } catch (NullPointerException expected) {
     }
   }
 
   @Test
-  public void hasValuesNotWithin_NegativeTolerance() {
+  public void hasValuesNotWithinOf_NullObject() {
+    float[] nullArray = null;
     try {
-      assertThat(array(3.3f, 2.2f)).hasValuesNotWithin(-0.001f).of(array(3.3f, 2.2f));
+      assertThat(array(3.3f, 2.2f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(nullArray);
+      throw new Error("Expected to throw.");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void hasValuesNotWithinOf_NegativeTolerance() {
+    try {
+      assertThat(array(3.3f, 2.2f)).hasValuesNotWithin(-0.001f).of(3.3f, 2.2f);
+      throw new Error("Expected to throw.");
+    } catch (IllegalArgumentException e) {
+      assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
+    }
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_DifferentOrderFloats() {
+    assertThat(array(2.2f, 3.3f))
+        .hasValuesNotWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Floats.asList(3.3f, 2.2f));
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_DifferentOrderDoubles() {
+    assertThat(array(2.2f, 3.3f))
+        .hasValuesNotWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Doubles.asList(3.3d, 2.2d));
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_DifferentOrderLongs() {
+    assertThat(array(2f, 3f))
+        .hasValuesNotWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Longs.asList(3L, 2L));
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_DifferentLengths() {
+    assertThat(array(2.2f, 3.3f))
+        .hasValuesNotWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Floats.asList(2.2f, 3.3f, 1.1f));
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_FailEquals() {
+    try {
+      assertThat(array(2.2f, 3.3f))
+          .hasValuesNotWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(2.2f, 3.3f));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, 3.3]>");
+    }
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_FailApproximatelyEquals() {
+    float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
+    try {
+      assertThat(array(2.2f, 3.3f))
+          .hasValuesNotWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(2.2f, roughly3point3));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, "
+                  + roughly3point3
+                  + "]>");
+    }
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_NotQuiteApproximatelyEquals() {
+    assertThat(array(2.2f, 3.3f))
+        .hasValuesNotWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Floats.asList(2.2f, nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY)));
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_Fail_Infinity() {
+    try {
+      assertThat(array(2.2f, POSITIVE_INFINITY))
+          .hasValuesNotWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(2.2f, POSITIVE_INFINITY));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, Infinity]> has values not within 5.0E-6 of"
+                  + " <[2.2, Infinity]>");
+    }
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_OneInfinity() {
+    try {
+      assertThat(array(2.2f, 3.3f))
+          .hasValuesNotWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(2.2f, POSITIVE_INFINITY));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of"
+                  + " <[2.2, Infinity]>");
+    }
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_LongerOneInfinity() {
+    assertThat(array(2.2f, 3.3f))
+        .hasValuesNotWithin(DEFAULT_TOLERANCE)
+        .ofElementsIn(Floats.asList(POSITIVE_INFINITY));
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_Fail_NaN() {
+    try {
+      assertThat(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).ofElementsIn(Floats.asList(NaN));
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage("Not true that <(float[]) [NaN]> has values not within 5.0E-6 of <[NaN]>");
+    }
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_NullSubject() {
+    float[] nullArray = null;
+    try {
+      assertThat(nullArray)
+          .hasValuesNotWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(Floats.asList(3.3f, 2.2f));
+      throw new Error("Expected to throw.");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_NullObject() {
+    Iterable<Number> nullIterable = null;
+    try {
+      assertThat(array(3.3f, 2.2f))
+          .hasValuesNotWithin(DEFAULT_TOLERANCE)
+          .ofElementsIn(nullIterable);
+      throw new Error("Expected to throw.");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void hasValuesNotWithinOfElementsIn_NegativeTolerance() {
+    try {
+      assertThat(array(3.3f, 2.2f))
+          .hasValuesNotWithin(-0.001f)
+          .ofElementsIn(Floats.asList(3.3f, 2.2f));
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");

@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.FloatSubject.checkTolerance;
 
+import com.google.common.collect.Iterables;
 import com.google.common.primitives.Floats;
 
 import java.util.ArrayList;
@@ -173,24 +174,33 @@ public class PrimitiveFloatArraySubject
     private TolerantPrimitiveFloatArrayComparison() {}
 
     /**
-     * Fails if the values in the subject wer expected to be within the tolerance of the given
-     * values but were not <i>or</i> if they wer expected <i>not</i> to be within the tolerance but
-     * were. The expectation, subject, and tolerance are all specified earlier in the fluent call
-     * chain.
+     * Fails if the values in the subject were expected to be within the tolerance of the given
+     * values but were not <i>or</i> if they were expected <i>not</i> to be within the tolerance but
+     * were. The subject and tolerance are specified earlier in the fluent call chain.
      */
-    public abstract void of(float[] expectedFloats);
+    public void of(float... expected) {
+      ofElementsIn(Floats.asList(expected));
+    }
+
+    /**
+     * Fails if the values in the subject were expected to be within the tolerance of the given
+     * values but were not <i>or</i> if they were expected <i>not</i> to be within the tolerance but
+     * were. The subject and tolerance are specified earlier in the fluent call chain. The values
+     * will be cast to floats if necessary, which might lose precision.
+     */
+    public abstract void ofElementsIn(Iterable<? extends Number> expected);
 
     /**
      * @throws UnsupportedOperationException always
      * @deprecated {@link Object#equals(Object)} is not supported on
      *     TolerantPrimitiveFloatArrayComparison. If you meant to compare float arrays, use
-     *     {@link #of(float[])} instead.
+     *     {@link #of} or {@link #ofElementsIn} instead.
      */
     @Deprecated
     @Override
     public boolean equals(@Nullable Object o) {
       throw new UnsupportedOperationException(
-          "If you meant to compare floats, use .of(float[]) instead.");
+          "If you meant to compare float arrays, use .of() or .ofElementsIn() instead.");
     }
 
     /**
@@ -223,28 +233,33 @@ public class PrimitiveFloatArraySubject
     return new TolerantPrimitiveFloatArrayComparison() {
 
       @Override
-      public void of(float[] expected) {
+      public void ofElementsIn(Iterable<? extends Number> expected) {
         checkTolerance(tolerance);
         float[] actual = checkNotNull(getSubject());
-        if (actual.length != expected.length) {
+        List<Integer> mismatches = new ArrayList<Integer>();
+        int expectedCount = 0;
+        for (Number expectedValue : expected) {
+          // if expected is longer than actual, we can skip the excess values: this case is covered
+          // by the length check below
+          if (expectedCount < actual.length
+              && !MathUtil.equals(actual[expectedCount], expectedValue.floatValue(), tolerance)) {
+            mismatches.add(expectedCount);
+          }
+          expectedCount++;
+        }
+        if (actual.length != expectedCount) {
           failWithRawMessage(
               "Not true that %s has values within %s of <%s>. Expected length <%s> but got <%s>",
               getDisplaySubject(),
               tolerance,
-              Floats.asList(expected),
-              expected.length,
+              Iterables.toString(expected),
+              expectedCount,
               actual.length);
-        }
-        List<Integer> mismatches = new ArrayList<Integer>();
-        for (int i = 0; i < expected.length; i++) {
-          if (!MathUtil.equals(actual[i], expected[i], tolerance)) {
-            mismatches.add(i);
-          }
         }
         if (!mismatches.isEmpty()) {
           failWithBadResults(
               "has values within " + tolerance + " of",
-              Floats.asList(expected),
+              Iterables.toString(expected),
               "differs at indexes",
               mismatches);
         }
@@ -271,24 +286,24 @@ public class PrimitiveFloatArraySubject
     return new TolerantPrimitiveFloatArrayComparison() {
 
       @Override
-      public void of(float[] expected) {
+      public void ofElementsIn(Iterable<? extends Number> expected) {
         checkTolerance(tolerance);
         float[] actual = checkNotNull(getSubject());
-        if (expected.length != actual.length) {
-          // By the method contract, the assertion passes if the lengths are different. This is so
-          // that isNotWithin behaves like isNotEqualTo with a tolerance (and different handling of
-          // non-finite values).
-          return;
-        }
-        boolean pass = false;
-        for (int i = 0; i < expected.length; i++) {
-          if (MathUtil.notEquals(actual[i], expected[i], tolerance)) {
-            pass = true;
-            break;
+        int expectedCount = 0;
+        for (Number expectedValue : expected) {
+          // if expected is longer than actual, we can skip the excess values: this case is covered
+          // by the length check below
+          if (expectedCount < actual.length
+              && MathUtil.notEquals(actual[expectedCount], expectedValue.floatValue(), tolerance)) {
+            return;
           }
+          expectedCount++;
         }
-        if (!pass) {
-          fail("has values not within " + tolerance + " of", Floats.asList(expected));
+        // By the method contract, the assertion passes if the lengths are different. This is so
+        // that isNotWithin behaves like isNotEqualTo with a tolerance (and different handling of
+        // non-finite values).
+        if (actual.length == expectedCount) {
+          fail("has values not within " + tolerance + " of", Iterables.toString(expected));
         }
       }
     };
