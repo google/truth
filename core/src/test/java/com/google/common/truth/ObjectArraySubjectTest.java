@@ -55,6 +55,8 @@ public class ObjectArraySubjectTest {
   public void hasLength() {
     assertThat(EMPTY).hasLength(0);
     assertThat(objectArray("A", 5L)).hasLength(2);
+    assertThat(new Object[][] {}).hasLength(0);
+    assertThat(new Object[][] {{}}).hasLength(1);
   }
 
   @Test
@@ -64,6 +66,16 @@ public class ObjectArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <(Object[]) [A, 5]> has length <1>");
+    }
+  }
+
+  @Test
+  public void hasLengthMultiFail() {
+    try {
+      assertThat(new Object[][] {{"A"}, {5L}}).hasLength(1);
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <(Object[][]) [[A], [5]]> has length <1>");
     }
   }
 
@@ -79,6 +91,7 @@ public class ObjectArraySubjectTest {
   @Test
   public void isEmpty() {
     assertThat(EMPTY).isEmpty();
+    assertThat(new Object[][] {}).isEmpty();
   }
 
   @Test
@@ -94,6 +107,7 @@ public class ObjectArraySubjectTest {
   @Test
   public void isNotEmpty() {
     assertThat(objectArray("A", 5L)).isNotEmpty();
+    assertThat(new Object[][] {{"A"}, {5L}}).isNotEmpty();
   }
 
   @Test
@@ -114,7 +128,36 @@ public class ObjectArraySubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <(Object[]) [A, 5]> is equal to <[5, A]>. It differs at index <0>");
+              "Not true that <(Object[]) [A, 5]> is equal to <[5, A]>. It differs at index <[0]>");
+    }
+  }
+
+  @Test
+  public void isEqualTo_Fail_UnequalOrderingMultiDimensional() {
+    try {
+      assertThat(new Object[][] {{"A"}, {5L}}).isEqualTo(new Object[][] {{5L}, {"A"}});
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <(Object[][]) [[A], [5]]> is equal to <[[5], [A]]>."
+          + " It differs at index <[0][0]>");
+    }
+    
+    try {
+      assertThat(new Object[][] {{"A", "B"}, {5L}}).isEqualTo(new Object[][] {{"A"}, {5L}});
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage(
+          "Not true that <(Object[][]) [[A, B], [5]]> is equal to <[[A], [5]]>."
+          + " It differs at index <[0][1]>");
+    }
+
+    try {
+      assertThat(new Object[][] {{"A"}, {5L}}).isEqualTo(new Object[][] {{"A"}, {5L, 6L}});
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage(
+          "Not true that <(Object[][]) [[A], [5]]> is equal to <[[A], [5, 6]]>."
+          + " It differs at index <[1][1]>");
     }
   }
 
@@ -133,11 +176,14 @@ public class ObjectArraySubjectTest {
   @Test
   public void isNotEqualTo_SameLengths() {
     assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("C", 5L));
+    assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"C"}, {5L}});
   }
 
   @Test
   public void isNotEqualTo_DifferentLengths() {
     assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L, "c"));
+    assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"A", "c"}, {5L}});
+    assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"A"}, {5L}, {"C"}});
   }
 
   @Test
@@ -156,6 +202,16 @@ public class ObjectArraySubjectTest {
   }
 
   @Test
+  public void isNotEqualTo_FailEqualsMultiDimensional() {
+    try {
+      assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"A"}, {5L}});
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("<(Object[][]) [[A], [5]]> unexpectedly equal to [[A], [5]].");
+    }
+  }
+
+  @Test
   public void isNotEqualTo_FailSame() {
     try {
       Object[] same = objectArray("A", 5L);
@@ -166,6 +222,17 @@ public class ObjectArraySubjectTest {
     }
   }
 
+  @Test
+  public void isNotEqualTo_FailSameMultiDimensional() {
+    try {
+      Object[][] same = new Object[][] {{"A"}, {5L}};
+      assertThat(same).isNotEqualTo(same);
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("<(Object[][]) [[A], [5]]> unexpectedly equal to [[A], [5]].");
+    }
+  }
+
   private static Object[] objectArray(Object... ts) {
     return ts;
   }
@@ -173,11 +240,18 @@ public class ObjectArraySubjectTest {
   @Test
   public void stringArrayIsEqualTo() {
     assertThat(objectArray("A", "B")).isEqualTo(objectArray("A", "B"));
+    assertThat(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"A"}, {"B"}});
   }
 
   @Test
   public void stringArrayAsList() {
     assertThat(objectArray("A", "B")).asList().contains("A");
+  }
+
+  @Test
+  public void multiDimensionalStringArrayAsList() {
+    String[] ab = {"A", "B"};
+    assertThat(new String[][] {ab, {"C"}}).asList().contains(ab);
   }
 
   @Test
@@ -191,6 +265,16 @@ public class ObjectArraySubjectTest {
   }
 
   @Test
+  public void stringArrayIsEqualTo_Fail_UnequalLengthMultiDimensional() {
+    try {
+      assertThat(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"A"}});
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("<(String[][]) [[A], [B]]> has length 2. Expected length is 1");
+    }
+  }
+
+  @Test
   public void stringArrayIsEqualTo_Fail_UnequalOrdering() {
     try {
       assertThat(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
@@ -198,7 +282,18 @@ public class ObjectArraySubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <(String[]) [A, B]> is equal to <[B, A]>. It differs at index <0>");
+              "Not true that <(String[]) [A, B]> is equal to <[B, A]>. It differs at index <[0]>");
+    }
+  }
+
+  @Test
+  public void stringArrayIsEqualTo_Fail_UnequalOrderingMultiDimensional() {
+    try {
+      assertThat(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"B"}, {"A"}});
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <(String[][]) [[A], [B]]> is equal to <[[B], [A]]>."
+          + " It differs at index <[0][0]>");
     }
   }
 
@@ -216,9 +311,45 @@ public class ObjectArraySubjectTest {
       assertThat(e)
           .hasMessage(
               "Not true that <(Set[]) [[A], [B]]> is equal to <[[B], [A]]>. "
-                  + "It differs at index <0>");
+                  + "It differs at index <[0]>");
       // Maybe one day:
       // .hasMessage("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
+    }
+  }
+
+  @Test
+  public void primitiveMultiDimensionalArrayIsEqualTo() {
+    assertThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+        .isEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}});
+  }
+
+  @Test
+  public void primitiveMultiDimensionalArrayIsEqualTo_Fail_UnequalOrdering() {
+    try {
+      assertThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+          .isEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6, 7}});
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <(int[][]) [[1, 2], [3], [4, 5, 6]]> "
+          + "is equal to <[[1, 2], [3], [4, 5, 6, 7]]>. It differs at index <[2][3]>");
+    }
+  }
+
+  @Test
+  public void primitiveMultiDimensionalArrayIsNotEqualTo() {
+    assertThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+        .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6, 7}});
+  }
+
+  @Test
+  public void primitiveMultiDimensionalArrayIsNotEqualTo_Fail_Equal() {
+    try {
+      assertThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+          .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}});
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("<(int[][]) [[1, 2], [3], [4, 5, 6]]> unexpectedly "
+          + "equal to [[1, 2], [3], [4, 5, 6]].");
     }
   }
 

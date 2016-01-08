@@ -19,6 +19,7 @@ import com.google.common.annotations.GwtIncompatible;
 
 import org.junit.ComparisonFailure;
 
+import java.lang.reflect.Array;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -145,5 +146,19 @@ public final class Platform {
    */
   public static boolean containsMatch(String subject, String regex) {
     return Pattern.compile(regex).matcher(subject).find();
+  }
+
+  /**
+   * Returns the length of an array.
+   */
+  static int getArrayLength(Object array) {
+    return Array.getLength(array);
+  }
+
+  /**
+   * Returns the item in the array at index i.
+   */
+  static Object getFromArray(Object array, int i) {
+    return Array.get(array, i);
   }
 }

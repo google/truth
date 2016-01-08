@@ -15,11 +15,24 @@
  */
 package com.google.common.truth;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Booleans;
+import com.google.common.primitives.Bytes;
+import com.google.common.primitives.Chars;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Floats;
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
+import com.google.common.primitives.Shorts;
 
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 /**
@@ -27,25 +40,69 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber
  */
+@CheckReturnValue
 public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubject<T>, T[]> {
   private final String typeName;
+  private final int numberOfDimensions;
 
   ObjectArraySubject(FailureStrategy failureStrategy, @Nullable T[] o) {
     super(failureStrategy, o);
     typeName = typeNameFromInstance(o);
+    numberOfDimensions = numberOfDimensions(o);
   }
 
   @Override
   protected String underlyingType() {
     return typeName;
   }
-
+  
   @Override
-  protected List<T> listRepresentation() {
-    return Arrays.asList(getSubject());
+  String brackets() {
+    return Strings.repeat("[]", numberOfDimensions);
   }
 
-  private String typeNameFromInstance(Object instance) {
+  @Override
+  protected List<?> listRepresentation() {
+    // Note: we don't use an ImmutableList or FluentIterable.toList
+    // because some arrays have null, and ImmutableList doesn't allow null.
+    return Lists.newArrayList(stringableIterable(getSubject()));
+  }
+
+  private static Iterable<?> stringableIterable(Object[] array) {
+    return Iterables.transform(Arrays.asList(array), STRINGIFY);
+  }
+  
+  private static Function<Object, Object> STRINGIFY = new Function<Object, Object>() {
+    @Override
+    public Object apply(@Nullable Object input) {
+      if (input != null && input.getClass().isArray()) {
+        Iterable<?> iterable;
+        if (input.getClass() == boolean[].class) {
+          iterable = Booleans.asList((boolean[]) input);
+        } else if (input.getClass() == int[].class) {
+          iterable = Ints.asList((int[]) input);
+        } else if (input.getClass() == long[].class) {
+          iterable = Longs.asList((long[]) input);
+        } else if (input.getClass() == short[].class) {
+          iterable = Shorts.asList((short[]) input);
+        } else if (input.getClass() == byte[].class) {
+          iterable = Bytes.asList((byte[]) input);
+        } else if (input.getClass() == double[].class) {
+          iterable = Doubles.asList((double[]) input);
+        } else if (input.getClass() == float[].class) {
+          iterable = Floats.asList((float[]) input);
+        } else if (input.getClass() == char[].class) {
+          iterable = Chars.asList((char[]) input);
+        } else {
+          iterable = Arrays.asList((Object[]) input);
+        }
+        return Iterables.transform(iterable, STRINGIFY);
+      }
+      return input;
+    }
+  };
+
+  private static String typeNameFromInstance(Object instance) {
     if (instance == null) {
       return "null reference of unknown array type";
     } else {
@@ -57,11 +114,27 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
       if (type.isPrimitive()) {
         throw new IllegalArgumentException("Primitive array passed into T[] subject.");
       }
+      while (type.isArray()) {
+        type = type.getComponentType();
+      }
       // TODO(cgruber): Improve the compression of arrays with generic types like Set<Foo>[]
       //     That will need extracting of all of the type information, or a string representation
       //     that compressType can handle.
       return Platform.compressType(type.toString());
     }
+  }
+  
+  private static int numberOfDimensions(Object instance) {
+    if (instance == null) {
+      return 0;
+    }
+    Class<?> type = instance.getClass();
+    int dimensions = 0;
+    while (type.isArray()) {
+      dimensions++;
+      type = type.getComponentType();
+    }
+    return dimensions;
   }
 
   /**
@@ -84,15 +157,46 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
             actual.length,
             expectedArray.length);
       } else {
-        for (int i = 0; i < actual.length; i++) {
-          if (!Objects.equal(actual[i], expectedArray[i])) {
-            failWithBadResults("is equal to", Arrays.asList(expectedArray), "differs at index", i);
-          }
+        String index = checkArrayEqualsRecursive(expectedArray, actual, "");
+        if (index != null) {
+          failWithBadResults(
+              "is equal to", stringableIterable(expectedArray), "differs at index", index);
         }
       }
     } catch (ClassCastException e) {
       failWithBadType(expected);
     }
+  }
+  
+  /**
+   * Returns null if the arrays are equal, recursively.  If not equal, returns the string
+   * of the index at which they're different. 
+   */
+  @Nullable
+  private String checkArrayEqualsRecursive(
+      Object expectedArray, Object actualArray, String lastIndex) {
+    String index = "";
+    int actualLength = Platform.getArrayLength(actualArray);
+    int expectedLength = Platform.getArrayLength(expectedArray);
+    for (int i = 0; i < actualLength || i < expectedLength; i++) {
+      index = lastIndex + "[" + i + "]";
+      if (i < expectedLength && i < actualLength) {
+        Object expected = Platform.getFromArray(expectedArray, i);
+        Object actual = Platform.getFromArray(actualArray, i);
+        if (actual != null && actual.getClass().isArray()
+            && expected != null && expected.getClass().isArray()) {
+          String result = checkArrayEqualsRecursive(expected, actual, index);
+          if (result != null) {
+            return result;
+          }
+          continue;
+        } else if (Objects.equal(actual, expected)) {
+          continue;
+        }
+      }
+      return index;
+    }
+    return null;
   }
 
   @Override
@@ -100,15 +204,15 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
     Object[] actual = getSubject();
     try {
       Object[] expectedArray = (Object[]) expected;
-      if (actual == expected || Arrays.equals(actual, expectedArray)) {
+      if (actual == expected || checkArrayEqualsRecursive(expectedArray, actual, "") == null) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Arrays.asList(expectedArray));
+            "%s unexpectedly equal to %s.", getDisplaySubject(), stringableIterable(expectedArray));
       }
     } catch (ClassCastException ignored) {
     }
   }
 
   public IterableSubject asList() {
-    return new IterableSubject(failureStrategy, listRepresentation());
+    return new IterableSubject(failureStrategy, Arrays.asList(getSubject()));
   }
 }

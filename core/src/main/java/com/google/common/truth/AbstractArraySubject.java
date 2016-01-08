@@ -69,23 +69,36 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
 
   abstract String underlyingType();
 
+  /** Returns a List representation suitable for displaying in a string. */
   abstract List<?> listRepresentation();
 
   @Override
   protected String getDisplaySubject() {
     return (internalCustomName() == null)
-        ? "<(" + underlyingType() + "[]) " + listRepresentation() + ">"
+        ? "<(" + underlyingType() + brackets() + ") " + listRepresentation() + ">"
         : this.internalCustomName();
   }
 
   void failWithBadType(Object expected) {
-    String expectedType =
-        (expected.getClass().isArray())
-            ? expected.getClass().getComponentType().getName() + "[]"
-            : expected.getClass().getName();
+    String expectedBrackets = "";
+    Class<?> expectedType = expected.getClass();
+    while (expectedType.isArray()) {
+      expectedBrackets += "[]";
+      expectedType = expectedType.getComponentType();
+    }
+    String expectedTypeString = expectedType.getName() + expectedBrackets;
     failWithRawMessage(
-        "Incompatible types compared. expected: %s, actual: %s[]",
-        Platform.compressType(expectedType),
-        underlyingType());
+        "Incompatible types compared. expected: %s, actual: %s%s",
+        Platform.compressType(expectedTypeString),
+        underlyingType(),
+        brackets());
+  }
+  
+  /**
+   * Returns the brackets to put after the underlying type.  Multi-dimensional array subjects
+   * should override this to return the correct number of brackets.
+   */
+  String brackets() {
+    return "[]";
   }
 }
