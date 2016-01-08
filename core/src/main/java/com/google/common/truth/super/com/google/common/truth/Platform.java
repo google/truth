@@ -17,8 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.StringUtil.format;
 
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
+import jsinterop.annotations.JsPackage;
+import jsinterop.annotations.JsType;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -75,18 +75,10 @@ public final class Platform {
   }
 
   /**
-   * Determines if the entirety of the given subject matches the given regex.
-   */
-  static boolean matches(String subject, String regex) {
-    MatchResult match = RegExp.compile(regex).exec(subject);
-    return match != null && match.getGroup(0).equals(subject);
-  }
-
-  /**
    * Determines if the given subject contains a match for the given regex.
    */
   static boolean containsMatch(String subject, String regex) {
-    return RegExp.compile(regex).exec(subject) != null;
+    return compile(regex).test(subject);
   }
 
   /**
@@ -149,5 +141,16 @@ public final class Platform {
     } else {
       return ((Object[]) array)[i];
     }
+  }
+
+  // TODO(user): Move this logic to a common location.
+  private static NativeRegExp compile(String pattern) {
+    return new NativeRegExp(pattern);
+  }
+
+  @JsType(isNative = true, name = "RegExp", namespace = JsPackage.GLOBAL)
+  private static class NativeRegExp {
+    public NativeRegExp(String pattern) {}
+    public native boolean test(String input);
   }
 }

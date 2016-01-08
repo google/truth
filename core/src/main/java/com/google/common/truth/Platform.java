@@ -135,13 +135,6 @@ public final class Platform {
   }
 
   /**
-   * Determines if the entirety of the given subject matches the given regex.
-   */
-  public static boolean matches(String subject, String regex) {
-    return Pattern.matches(regex, subject);
-  }
-
-  /**
    * Determines if the given subject contains a match for the given regex.
    */
   public static boolean containsMatch(String subject, String regex) {

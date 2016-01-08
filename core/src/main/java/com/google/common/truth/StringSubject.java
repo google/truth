@@ -186,7 +186,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    * Fails if the string does not match the given regex.
    */
   public void matches(String regex) {
-    if (!Platform.matches(getSubject(), regex)) {
+    if (!getSubject().matches(regex)) {
       fail("matches", regex);
     }
   }
@@ -205,7 +205,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    * Fails if the string matches the given regex.
    */
   public void doesNotMatch(String regex) {
-    if (Platform.matches(getSubject(), regex)) {
+    if (getSubject().matches(regex)) {
       fail("fails to match", regex);
     }
   }
