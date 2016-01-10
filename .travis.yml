@@ -8,10 +8,10 @@ jdk:
   - openjdk7
 
 install:
-  - mvn -U -P!standard-with-extra-repos dependency:go-offline test clean --quiet --fail-never -DskipTests=true
+  - mvn -B -U -P!standard-with-extra-repos dependency:go-offline test clean --quiet --fail-never -DskipTests=true
 
 script:
-  - mvn -U -P!standard-with-extra-repos verify --fail-at-end -Dsource.skip=true -Dmaven.javadoc.skip=true
+  - mvn -B -U -P!standard-with-extra-repos verify --fail-at-end -Dsource.skip=true -Dmaven.javadoc.skip=true
 
 env:
   global:
