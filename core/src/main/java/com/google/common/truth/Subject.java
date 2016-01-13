@@ -103,18 +103,18 @@ public class Subject<S extends Subject<S, T>, T> {
 
   private void doEqualCheck(
       @Nullable Object rawSubject, @Nullable Object rawOther, boolean expectEqual) {
-    Object subject;
+    Object localSubject;
     Object other;
     if (isIntegralBoxedPrimitive(rawSubject) && isIntegralBoxedPrimitive(rawOther)) {
-      subject = integralValue(rawSubject);
+      localSubject = integralValue(rawSubject);
       other = integralValue(rawOther);
     } else {
-      subject = rawSubject;
+      localSubject = rawSubject;
       other = rawOther;
     }
-    if (Objects.equal(subject, other) != expectEqual) {
+    if (Objects.equal(localSubject, other) != expectEqual) {
       failComparingToStrings(
-          expectEqual ? "is equal to" : "is not equal to", subject, other, rawOther, expectEqual);
+          expectEqual ? "is equal to" : "is not equal to", localSubject, other, rawOther, expectEqual);
     }
   }
 
@@ -361,8 +361,8 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param verb the proposition being asserted
    */
   protected void failWithoutSubject(String verb) {
-    String subject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    failureStrategy.fail(format("Not true that %s %s", subject, verb));
+    String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
+    failureStrategy.fail(format("Not true that %s %s", strSubject, verb));
   }
 
   /**
