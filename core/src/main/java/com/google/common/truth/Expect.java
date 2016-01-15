@@ -18,8 +18,8 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.messageFor;
 
-import com.google.auto.value.AutoValue;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Objects;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -93,21 +93,42 @@ public class Expect extends TestVerb implements TestRule {
     }
   }
 
-  @AutoValue
-  static abstract class ExpectationFailure {
-    static ExpectationFailure create(String message, Throwable cause) {
-      return new AutoValue_Expect_ExpectationFailure(message, cause);
+  static final class ExpectationFailure {
+    private final String message;
+    @Nullable private final Throwable cause;
+
+    static ExpectationFailure create(String message, @Nullable Throwable cause) {
+      return new ExpectationFailure(message, cause);
     }
 
-    static ExpectationFailure create(String message) {
-      return new AutoValue_Expect_ExpectationFailure(message, null);
+    private ExpectationFailure(String message, @Nullable Throwable cause) {
+      this.message = checkNotNull(message);
+      this.cause = cause;
     }
 
-    ExpectationFailure() {}
+    String message() {
+      return message;
+    }
 
-    abstract String message();
+    @Nullable
+    Throwable cause() {
+      return cause;
+    }
 
-    abstract @Nullable Throwable cause();
+    @Override
+    public boolean equals(@Nullable Object other) {
+      if (other instanceof ExpectationFailure) {
+        ExpectationFailure that = (ExpectationFailure) other;
+        return this.message.equals(that.message) && Objects.equal(this.cause, that.cause);
+      } else {
+        return false;
+      }
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(message, cause);
+    }
   }
 
   private final ExpectationGatherer gatherer;
