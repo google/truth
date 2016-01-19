@@ -376,7 +376,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         verb,
         expected,
         failVerb,
-        ((actual == null) ? "null reference" : actual),
+        (actual == null) ? "null reference" : actual,
         suffix);
   }
 

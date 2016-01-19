@@ -333,7 +333,7 @@ public class Subject<S extends Subject<S, T>, T> {
             verb,
             expected,
             failVerb,
-            ((actual == null) ? "null reference" : actual));
+            (actual == null) ? "null reference" : actual);
     failureStrategy.fail(message);
   }
 
@@ -349,7 +349,7 @@ public class Subject<S extends Subject<S, T>, T> {
     String message =
         format(
             "Not true that <%s> %s <%s>",
-            ((actual == null) ? "null reference" : actual),
+            (actual == null) ? "null reference" : actual,
             verb,
             expected);
     failureStrategy.fail(message);

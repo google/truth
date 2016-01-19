@@ -118,7 +118,7 @@ public final class Platform {
   }
 
   private static String stripIfPrefixed(String string, String prefix) {
-    return (string.startsWith(prefix)) ? string.substring(prefix.length()) : string;
+    return string.startsWith(prefix) ? string.substring(prefix.length()) : string;
   }
 
   private static String stripIfInPackage(String type, String packagePrefix) {
