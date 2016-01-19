@@ -38,6 +38,8 @@ public class Subject<S extends Subject<S, T>, T> {
   protected final FailureStrategy failureStrategy;
   private final T subject;
   private String customName = null;
+  private static final String IS_AN_INSTANCE_OF = "is an instance of";
+  private static final String NOT_TRUE_THAT = "Not true that ";
 
   public Subject(FailureStrategy failureStrategy, @Nullable T subject) {
     this.failureStrategy = checkNotNull(failureStrategy);
@@ -164,12 +166,12 @@ public class Subject<S extends Subject<S, T>, T> {
     if (!Platform.isInstanceOfType(getSubject(), clazz)) {
       if (getSubject() != null) {
         failWithBadResults(
-            "is an instance of",
+        	IS_AN_INSTANCE_OF,
             clazz.getName(),
-            "is an instance of",
+            IS_AN_INSTANCE_OF,
             getSubject().getClass().getName());
       } else {
-        fail("is an instance of", clazz.getName());
+        fail(IS_AN_INSTANCE_OF, clazz.getName());
       }
     }
   }
@@ -258,7 +260,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param verb the proposition being asserted
    */
   protected void fail(String verb) {
-    failureStrategy.fail("Not true that " + getDisplaySubject() + " " + verb);
+    failureStrategy.fail(NOT_TRUE_THAT + getDisplaySubject() + " " + verb);
   }
 
   /**
@@ -275,7 +277,7 @@ public class Subject<S extends Subject<S, T>, T> {
   private void failComparingToStrings(
       String verb, Object subject, Object other, Object displayOther, boolean compareToStrings) {
     StringBuilder message =
-        new StringBuilder("Not true that ").append(getDisplaySubject()).append(" ");
+        new StringBuilder(NOT_TRUE_THAT).append(getDisplaySubject()).append(" ");
     // If the subject and parts aren't null, and they have equal toString()'s but different
     // classes, we need to disambiguate them.
     boolean neitherNull = (other != null) && (subject != null);
@@ -308,7 +310,7 @@ public class Subject<S extends Subject<S, T>, T> {
     } else if (messageParts.length == 1) {
       fail(verb, messageParts[0]);
     } else {
-      StringBuilder message = new StringBuilder("Not true that ");
+      StringBuilder message = new StringBuilder(NOT_TRUE_THAT);
       message.append(getDisplaySubject()).append(" ").append(verb);
       for (Object part : messageParts) {
         message.append(" <").append(part).append(">");

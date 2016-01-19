@@ -180,7 +180,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
     checkArgument(tolerance >= 0.0f, "tolerance (%s) cannot be negative", tolerance);
     checkArgument(
         floatToIntBits(tolerance) != NEG_ZERO_BITS, "tolerance (%s) cannot be negative", tolerance);
-    checkArgument(tolerance != Float.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
+    checkArgument(Float.floatToRawIntBits(tolerance) != Float.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
 
   /**

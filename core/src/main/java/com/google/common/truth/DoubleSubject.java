@@ -183,7 +183,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
         doubleToLongBits(tolerance) != NEG_ZERO_BITS,
         "tolerance (%s) cannot be negative",
         tolerance);
-    checkArgument(tolerance != Double.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
+    checkArgument(Double.doubleToRawLongBits(tolerance) != Double.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
 
   /**

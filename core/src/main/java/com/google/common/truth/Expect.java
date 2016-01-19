@@ -94,7 +94,7 @@ public class Expect extends TestVerb implements TestRule {
   }
 
   @AutoValue
-  static abstract class ExpectationFailure {
+  abstract static class ExpectationFailure {
     static ExpectationFailure create(String message, Throwable cause) {
       return new AutoValue_Expect_ExpectationFailure(message, cause);
     }
