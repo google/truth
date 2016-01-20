@@ -205,7 +205,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
 
   @Override
   protected boolean hasFailureMessage() {
-    return (format != null);
+    return format != null;
   }
 
   static int countPlaceholders(@Nullable String template) {

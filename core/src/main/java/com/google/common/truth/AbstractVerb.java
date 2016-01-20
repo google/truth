@@ -29,7 +29,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
   }
 
   protected FailureStrategy getFailureStrategy() {
-    return (hasFailureMessage())
+    return hasFailureMessage()
         ? new MessagePrependingFailureStrategy(failureStrategy, this)
         : failureStrategy;
   }
