@@ -101,7 +101,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
 
-        if (!MathUtil.equals(actual, expected, tolerance)) {
+        if (!MathUtil.isEquals(actual, expected, tolerance)) {
           failWithRawMessage(
               "%s and <%s> should have been finite values within <%s> of each other",
               getDisplaySubject(),

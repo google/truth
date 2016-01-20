@@ -97,7 +97,7 @@ public class PrimitiveDoubleArraySubject
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expectedArray.length; i++) {
-        if (!MathUtil.equals(actual[i], expectedArray[i], tolerance)) {
+        if (!MathUtil.isEquals(actual[i], expectedArray[i], tolerance)) {
           unequalIndices.add(i);
         }
       }
@@ -151,7 +151,7 @@ public class PrimitiveDoubleArraySubject
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expected.length; i++) {
-        if (!MathUtil.equals(actual[i], expected[i], tolerance)) {
+        if (!MathUtil.isEquals(actual[i], expected[i], tolerance)) {
           unequalIndices.add(i);
         }
       }
@@ -242,7 +242,7 @@ public class PrimitiveDoubleArraySubject
           // if expected is longer than actual, we can skip the excess values: this case is covered
           // by the length check below
           if (expectedCount < actual.length
-              && !MathUtil.equals(actual[expectedCount], expectedValue.doubleValue(), tolerance)) {
+              && !MathUtil.isEquals(actual[expectedCount], expectedValue.doubleValue(), tolerance)) {
             mismatches.add(expectedCount);
           }
           expectedCount++;

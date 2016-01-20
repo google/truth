@@ -29,7 +29,7 @@ public final class MathUtil {
    * each other. Note that both this method and {@link #notEquals} returns false if either {@code
    * left} or {@code right} is infinite or NaN.
    */
-  public static boolean equals(double left, double right, double tolerance) {
+  public static boolean isEquals(double left, double right, double tolerance) {
     return Math.abs(left - right) <= Math.abs(tolerance);
   }
 
@@ -38,8 +38,8 @@ public final class MathUtil {
    * each other. Note that both this method and {@link #notEquals} returns false if either {@code
    * left} or {@code right} is infinite or NaN.
    */
-  public static boolean equals(float left, float right, float tolerance) {
-    return equals((double) left, (double) right, (double) tolerance);
+  public static boolean isEquals(float left, float right, float tolerance) {
+    return isEquals((double) left, (double) right, (double) tolerance);
   }
 
   /**

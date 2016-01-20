@@ -32,33 +32,33 @@ import org.junit.runners.JUnit4;
 public class MathUtilTest {
   @Test
   public void floatEquals() {
-    assertThat(MathUtil.equals(1.3f, 1.3f, 0.00000000000001f)).isTrue();
-    assertThat(MathUtil.equals(1.3f, 1.3f, 0.0f)).isTrue();
-    assertThat(MathUtil.equals(0.0f, 1.0f + 2.0f - 3.0f, 0.00000000000000000000000000000001f))
+    assertThat(MathUtil.isEquals(1.3f, 1.3f, 0.00000000000001f)).isTrue();
+    assertThat(MathUtil.isEquals(1.3f, 1.3f, 0.0f)).isTrue();
+    assertThat(MathUtil.isEquals(0.0f, 1.0f + 2.0f - 3.0f, 0.00000000000000000000000000000001f))
         .isTrue();
-    assertThat(MathUtil.equals(1.3f, 1.303f, 0.004f)).isTrue();
-    assertThat(MathUtil.equals(1.3f, 1.303f, 0.002f)).isFalse();
-    assertThat(MathUtil.equals(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, 0.01f)).isFalse();
-    assertThat(MathUtil.equals(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.01f)).isFalse();
-    assertThat(MathUtil.equals(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.01f)).isFalse();
-    assertThat(MathUtil.equals(Float.NaN, Float.NaN, 0.01f)).isFalse();
+    assertThat(MathUtil.isEquals(1.3f, 1.303f, 0.004f)).isTrue();
+    assertThat(MathUtil.isEquals(1.3f, 1.303f, 0.002f)).isFalse();
+    assertThat(MathUtil.isEquals(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, 0.01f)).isFalse();
+    assertThat(MathUtil.isEquals(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.01f)).isFalse();
+    assertThat(MathUtil.isEquals(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.01f)).isFalse();
+    assertThat(MathUtil.isEquals(Float.NaN, Float.NaN, 0.01f)).isFalse();
   }
 
   @Test
   public void doubleEquals() {
-    assertThat(MathUtil.equals(1.3d, 1.3d, 0.00000000000001d)).isTrue();
-    assertThat(MathUtil.equals(1.3d, 1.3d, 0.0d)).isTrue();
-    assertThat(MathUtil.equals(0.0d, 1.0d + 2.0d - 3.0d, 0.00000000000000000000000000000001d))
+    assertThat(MathUtil.isEquals(1.3d, 1.3d, 0.00000000000001d)).isTrue();
+    assertThat(MathUtil.isEquals(1.3d, 1.3d, 0.0d)).isTrue();
+    assertThat(MathUtil.isEquals(0.0d, 1.0d + 2.0d - 3.0d, 0.00000000000000000000000000000001d))
         .isTrue();
-    assertThat(MathUtil.equals(1.3d, 1.303d, 0.004d)).isTrue();
-    assertThat(MathUtil.equals(1.3d, 1.303d, 0.002d)).isFalse();
-    assertThat(MathUtil.equals(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, 0.01d))
+    assertThat(MathUtil.isEquals(1.3d, 1.303d, 0.004d)).isTrue();
+    assertThat(MathUtil.isEquals(1.3d, 1.303d, 0.002d)).isFalse();
+    assertThat(MathUtil.isEquals(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, 0.01d))
         .isFalse();
-    assertThat(MathUtil.equals(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.01d))
+    assertThat(MathUtil.isEquals(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.01d))
         .isFalse();
-    assertThat(MathUtil.equals(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.01d))
+    assertThat(MathUtil.isEquals(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.01d))
         .isFalse();
-    assertThat(MathUtil.equals(Double.NaN, Double.NaN, 0.01d)).isFalse();
+    assertThat(MathUtil.isEquals(Double.NaN, Double.NaN, 0.01d)).isFalse();
   }
 
   @Test
@@ -97,8 +97,8 @@ public class MathUtilTest {
 
   @Test
   public void equalsDifferentTypes() {
-    assertThat(MathUtil.equals(1.3d, 1.3f, 0.00000000000001d)).isFalse();
-    assertThat(MathUtil.equals(1.3f, 1.3d, 0.00000000000001f)).isFalse();
+    assertThat(MathUtil.isEquals(1.3d, 1.3f, 0.00000000000001d)).isFalse();
+    assertThat(MathUtil.isEquals(1.3f, 1.3d, 0.00000000000001f)).isFalse();
   }
 
   // TODO(cgruber): More complicated ways to break float/double casting to make sure.
