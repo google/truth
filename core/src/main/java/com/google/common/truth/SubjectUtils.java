@@ -27,6 +27,10 @@ import java.util.List;
  * @author Christian Gruber
  */
 final class SubjectUtils {
+	
+  private SubjectUtils(){
+	throw new AssertionError("Must not instantiate this class");
+  }
 
   static <T> List<T> accumulate(T first, T second, T... rest) {
     // rest should never be deliberately null, so assume that the caller passed null
