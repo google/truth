@@ -192,11 +192,11 @@ Equality is simply "is" in Truth.
 
 Type information is as usual:
 
-    ASSERT.that(this).isA(MyObject.class);
+    ASSERT.that(this).isInstanceOf(MyObject.class);
 
 Often propositions have negative forms:
 
-    ASSERT.that(this).isNotA(String.class);
+    ASSERT.that(this).isNotInstanceOf(String.class);
 
 Nullness is checked simply with:
 
