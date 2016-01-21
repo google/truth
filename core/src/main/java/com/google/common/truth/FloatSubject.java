@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.MathUtil.equalWithinTolerance;
+import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 import static java.lang.Float.floatToIntBits;
 
 import javax.annotation.CheckReturnValue;
@@ -101,7 +104,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
 
-        if (!MathUtil.equals(actual, expected, tolerance)) {
+        if (!equalWithinTolerance(actual, expected, tolerance)) {
           failWithRawMessage(
               "%s and <%s> should have been finite values within <%s> of each other",
               getDisplaySubject(),
@@ -136,7 +139,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
 
-        if (!MathUtil.notEquals(actual, expected, tolerance)) {
+        if (!notEqualWithinTolerance(actual, expected, tolerance)) {
           failWithRawMessage(
               "%s and <%s> should have been finite values not within <%s> of each other",
               getDisplaySubject(),
@@ -166,6 +169,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   /**
    * @deprecated Use {@link #isWithin} instead. Float comparison should always have a tolerance.
    */
+  @Override
   @Deprecated
   public final void isEquivalentAccordingToCompareTo(Float other) {
     super.isEquivalentAccordingToCompareTo(other);

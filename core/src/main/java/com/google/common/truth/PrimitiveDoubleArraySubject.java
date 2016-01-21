@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
+import static com.google.common.truth.MathUtil.equalWithinTolerance;
+import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Doubles;
@@ -97,7 +100,7 @@ public class PrimitiveDoubleArraySubject
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expectedArray.length; i++) {
-        if (!MathUtil.equals(actual[i], expectedArray[i], tolerance)) {
+        if (!equalWithinTolerance(actual[i], expectedArray[i], tolerance)) {
           unequalIndices.add(i);
         }
       }
@@ -151,7 +154,7 @@ public class PrimitiveDoubleArraySubject
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expected.length; i++) {
-        if (!MathUtil.equals(actual[i], expected[i], tolerance)) {
+        if (!equalWithinTolerance(actual[i], expected[i], tolerance)) {
           unequalIndices.add(i);
         }
       }
@@ -242,7 +245,8 @@ public class PrimitiveDoubleArraySubject
           // if expected is longer than actual, we can skip the excess values: this case is covered
           // by the length check below
           if (expectedCount < actual.length
-              && !MathUtil.equals(actual[expectedCount], expectedValue.doubleValue(), tolerance)) {
+              && !equalWithinTolerance(
+                  actual[expectedCount], expectedValue.doubleValue(), tolerance)) {
             mismatches.add(expectedCount);
           }
           expectedCount++;
@@ -294,7 +298,7 @@ public class PrimitiveDoubleArraySubject
           // if expected is longer than actual, we can skip the excess values: this case is covered
           // by the length check below
           if (expectedCount < actual.length
-              && MathUtil.notEquals(
+              && notEqualWithinTolerance(
                   actual[expectedCount], expectedValue.doubleValue(), tolerance)) {
             return;
           }
