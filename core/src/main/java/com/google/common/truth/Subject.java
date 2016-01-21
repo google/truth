@@ -361,8 +361,8 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param verb the proposition being asserted
    */
   protected void failWithoutSubject(String verb) {
-    String subject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    failureStrategy.fail(format("Not true that %s %s", subject, verb));
+    String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
+    failureStrategy.fail(format("Not true that %s %s", strSubject, verb));
   }
 
   /**

@@ -175,11 +175,10 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
   @Nullable
   private String checkArrayEqualsRecursive(
       Object expectedArray, Object actualArray, String lastIndex) {
-    String index = "";
     int actualLength = Platform.getArrayLength(actualArray);
     int expectedLength = Platform.getArrayLength(expectedArray);
     for (int i = 0; i < actualLength || i < expectedLength; i++) {
-      index = lastIndex + "[" + i + "]";
+      String index = lastIndex + "[" + i + "]";
       if (i < expectedLength && i < actualLength) {
         Object expected = Platform.getFromArray(expectedArray, i);
         Object actual = Platform.getFromArray(actualArray, i);

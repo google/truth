@@ -69,6 +69,8 @@ import javax.annotation.Nullable;
  */
 @CheckReturnValue
 public final class Truth {
+  private Truth() {}
+
   public static final FailureStrategy THROW_ASSERTION_ERROR =
       new FailureStrategy() {
         @Override

@@ -18,7 +18,6 @@ package com.google.common.truth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,6 +26,7 @@ import java.util.List;
  * @author Christian Gruber
  */
 final class SubjectUtils {
+  private SubjectUtils() {}
 
   static <T> List<T> accumulate(T first, T second, T... rest) {
     // rest should never be deliberately null, so assume that the caller passed null
