@@ -77,6 +77,47 @@ public class ThrowableTest {
   }
 
   @Test
+  public void hasMessageContaining() {
+    NullPointerException npe = new NullPointerException("abc");
+    assertThat(npe).hasMessageContaining("b");
+  }
+
+  @Test
+  public void hasMessageContaining_failure() {
+    NullPointerException npe = new NullPointerException("abc");
+    try {
+      assertThat(npe).hasMessageContaining("foobar");
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage()).isEqualTo(
+          "Not true that <java.lang.NullPointerException: abc> has message containing <foobar>");
+    }
+  }
+
+  @Test
+  public void hasMessageContaining_HasNullMessage_failure() {
+    NullPointerException npe = new NullPointerException();
+    try {
+      assertThat(npe).hasMessageContaining("foobar");
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage()).isEqualTo(
+          "Not true that null message reference contains <foobar>");
+    }
+  }
+
+  @Test
+  public void hasMessageContaining_NullMessageExpected_failure() {
+    NullPointerException npe = new NullPointerException("abc");
+    try {
+      assertThat(npe).hasMessageContaining(null);
+      throw new Error("Expected to fail.");
+    } catch (NullPointerException expected) {
+      // Expected
+    }
+  }
+
+  @Test
   public void inheritedMethodChainsSubject() {
     NullPointerException expected = new NullPointerException("expected");
     NullPointerException actual = new NullPointerException("actual");

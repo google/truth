@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Objects;
 
 import javax.annotation.Nullable;
@@ -36,6 +38,18 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
   public void hasMessage(@Nullable String message) {
     if (!Objects.equal(message, getSubject().getMessage())) {
       fail("has message", message);
+    }
+  }
+
+  /**
+   * Fails if the subject's message does not contain the given sequence.
+   */
+  public void hasMessageContaining(CharSequence string) {
+    checkNotNull(string);
+    if (getSubject().getMessage() == null) {
+      failWithRawMessage("Not true that null message reference contains <%s>", string);
+    } else if (!getSubject().getMessage().contains(string)) {
+      fail("has message containing", string);
     }
   }
 
