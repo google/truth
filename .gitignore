@@ -5,3 +5,6 @@ target
 .settings
 .clover
 .*
+*.iml
+*.ipr
+*.iws
