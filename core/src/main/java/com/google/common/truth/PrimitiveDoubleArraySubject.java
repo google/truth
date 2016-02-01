@@ -27,7 +27,6 @@ import com.google.common.primitives.Doubles;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 /**
@@ -39,7 +38,6 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@CheckReturnValue
 public class PrimitiveDoubleArraySubject
     extends AbstractArraySubject<PrimitiveDoubleArraySubject, double[]> {
   PrimitiveDoubleArraySubject(FailureStrategy failureStrategy, @Nullable double[] o) {

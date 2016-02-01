@@ -28,10 +28,8 @@ import com.google.common.collect.Table;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
-@CheckReturnValue
 public class TestVerb extends AbstractVerb<TestVerb> {
   private static final Object[] EMPTY_ARGS = new Object[0];
   @Nullable private final String format;

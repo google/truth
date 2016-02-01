@@ -22,6 +22,7 @@ import static com.google.common.truth.SubjectUtils.accumulate;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * representations of the subject.
    */
   @SuppressWarnings("unchecked")
+  @CanIgnoreReturnValue
   public S named(String name) {
     // TODO: use check().withFailureMessage... here?
     this.customName = checkNotNull(name, "Name passed to named() cannot be null.");

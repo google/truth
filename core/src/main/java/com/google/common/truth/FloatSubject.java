@@ -22,7 +22,6 @@ import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 import static java.lang.Float.floatToIntBits;
 
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 /**
@@ -30,7 +29,6 @@ import javax.annotation.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-@CheckReturnValue
 public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
 

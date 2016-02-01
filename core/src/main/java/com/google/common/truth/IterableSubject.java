@@ -30,6 +30,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,6 +56,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * representations of the subject.
    */
   @Override
+  @CanIgnoreReturnValue
   public IterableSubject named(String name) {
     super.named(name);
     return this;
@@ -174,6 +176,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
+  @CanIgnoreReturnValue
   public final Ordered containsAllOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     return containsAll("contains all of", accumulate(first, second, rest));
@@ -187,6 +190,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
+  @CanIgnoreReturnValue
   public final Ordered containsAllIn(Iterable<?> expected) {
     return containsAll("contains all elements in", expected);
   }
@@ -242,6 +246,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
+  @CanIgnoreReturnValue
   public final Ordered containsExactly(@Nullable Object... varargs) {
     List<Object> expected = (varargs == null) ? Lists.newArrayList((Object) null) : asList(varargs);
     return containsExactly(
@@ -260,6 +265,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * <p>Callers may optionally chain an {@code inOrder()} call if its expected
    * contents must be contained in the given order.
    */
+  @CanIgnoreReturnValue
   public final Ordered containsExactlyElementsIn(Iterable<?> expected) {
     return containsExactly("contains exactly", expected, false);
   }

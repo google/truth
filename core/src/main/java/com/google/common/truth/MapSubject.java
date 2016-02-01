@@ -22,6 +22,7 @@ import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -42,6 +43,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /**
    * Fails if the subject is not equal to the given object.
    */
+  @Override
   public void isEqualTo(@Nullable Object other) {
     if (!Objects.equal(getSubject(), other)) {
       if (other instanceof Map) {
@@ -140,6 +142,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /**
    * Fails if the map is not empty.
    */
+  @CanIgnoreReturnValue
   public Ordered containsExactly() {
     return check().that(getSubject().entrySet()).containsExactly();
   }
@@ -151,6 +154,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
    */
   // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
+  @CanIgnoreReturnValue
   public Ordered containsExactly(@Nullable Object k0, @Nullable Object v0, Object... rest) {
     checkArgument(
         rest.length % 2 == 0,
@@ -177,6 +181,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /**
    * Fails if the map does not contain exactly the given set of entries in the given map.
    */
+  @CanIgnoreReturnValue
   public Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
     return check().that(getSubject().entrySet()).containsExactlyElementsIn(expectedMap.entrySet());
   }

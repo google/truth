@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.format;
 
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 public abstract class AbstractVerb<T extends AbstractVerb<T>> {
@@ -56,7 +55,6 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
    * @return A custom verb which will show the descriptive message along with the normal failure
    *     text.
    */
-  @CheckReturnValue
   public abstract T withFailureMessage(@Nullable String failureMessage);
 
   @Nullable
@@ -93,7 +91,6 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> {
       this.failureStrategy = checkNotNull(failureStrategy);
     }
 
-    @CheckReturnValue
     public S that(T target) {
       return factory.getSubject(failureStrategy, target);
     }

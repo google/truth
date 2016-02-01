@@ -27,7 +27,6 @@ import com.google.common.truth.AbstractVerb.DelegatedVerb;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 /**
@@ -67,7 +66,6 @@ import javax.annotation.Nullable;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-@CheckReturnValue
 public final class Truth {
   private Truth() {}
 

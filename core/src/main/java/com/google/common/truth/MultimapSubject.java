@@ -28,6 +28,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +36,6 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 /**
@@ -131,7 +131,6 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
    * <p>This method performs no checks on its own and cannot cause test failures.  Subsequent
    * assertions must be chained onto this method call to test properties of the Multimap.
    */
-  @CheckReturnValue
   public IterableSubject valuesForKey(@Nullable Object key) {
     return new IterableValuesForKey(failureStrategy, this, key);
   }
@@ -176,6 +175,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
    * that the two Multimaps iterate fully in the same order.  That is, their key sets iterate
    * in the same order, and the value collections for each key iterate in the same order.
    */
+  @CanIgnoreReturnValue
   public Ordered containsExactlyEntriesIn(Multimap<?, ?> expectedMultimap) {
     checkNotNull(expectedMultimap, "expectedMultimap");
     return containsExactly("contains exactly", expectedMultimap);
@@ -185,6 +185,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
    * @deprecated Use {@link #containsExactlyEntriesIn} instead.
    */
   @Deprecated
+  @CanIgnoreReturnValue
   public Ordered containsExactly(Multimap<?, ?> expectedMultimap) {
     return containsExactlyEntriesIn(expectedMultimap);
   }

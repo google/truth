@@ -32,7 +32,6 @@ import com.google.common.primitives.Shorts;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 /**
@@ -40,7 +39,6 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber
  */
-@CheckReturnValue
 public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubject<T>, T[]> {
   private final String typeName;
   private final int numberOfDimensions;

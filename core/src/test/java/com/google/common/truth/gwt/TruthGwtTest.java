@@ -151,6 +151,6 @@ public class TruthGwtTest extends GWTTestCase {
   }
 
   public void testInvokePlatformMethods() {
-    Platform.isInstanceOfType(new Object(), Object.class);
+    boolean unused = Platform.isInstanceOfType(new Object(), Object.class);
   }
 }

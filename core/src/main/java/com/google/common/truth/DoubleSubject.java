@@ -22,7 +22,6 @@ import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 import static java.lang.Double.doubleToLongBits;
 
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 /**
@@ -94,7 +93,6 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    *     allowed by the check, which must be a non-negative finite value, i.e. not
    *     {@link Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
-  @CheckReturnValue
   public TolerantDoubleComparison isWithin(final double tolerance) {
     return new TolerantDoubleComparison() {
       @Override
@@ -130,7 +128,6 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    *     allowed by the check, which must be a non-negative finite value, i.e. not
    *     {@code Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
-  @CheckReturnValue
   public TolerantDoubleComparison isNotWithin(final double tolerance) {
     return new TolerantDoubleComparison() {
       @Override

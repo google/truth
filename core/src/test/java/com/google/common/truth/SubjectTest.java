@@ -670,7 +670,7 @@ public class SubjectTest {
   @Test
   public void equalsThrowsUSOE() {
     try {
-      assertThat(5).equals(5);
+      boolean unused = assertThat(5).equals(5);
     } catch (UnsupportedOperationException expected) {
       assertThat(expected)
           .hasMessage("If you meant to test object equality, use .isEqualTo(other) instead.");
@@ -682,7 +682,7 @@ public class SubjectTest {
   @Test
   public void hashCodeThrowsUSOE() {
     try {
-      assertThat(5).hashCode();
+      int unused = assertThat(5).hashCode();
     } catch (UnsupportedOperationException expected) {
       assertThat(expected).hasMessage("Subject.hashCode() is not supported.");
       return;
