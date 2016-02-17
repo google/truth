@@ -76,7 +76,7 @@ public class ComparableSubjectTest {
       assertThat(6).isIn(oneToFive);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <6> is in <[1‥5]>");
+      assertThat(e.getMessage()).contains("Not true that <6> is in <" + oneToFive + ">");
     }
   }
 
@@ -89,7 +89,7 @@ public class ComparableSubjectTest {
       assertThat(4).isNotIn(oneToFive);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <4> is not in <[1‥5]>");
+      assertThat(e.getMessage()).contains("Not true that <4> is not in <" + oneToFive + ">");
     }
   }
 

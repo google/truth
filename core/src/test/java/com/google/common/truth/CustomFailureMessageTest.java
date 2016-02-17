@@ -43,22 +43,24 @@ public class CustomFailureMessageTest {
 
   @Test
   public void assertWithMessageIsPrepended() {
+    Range<Integer> range = Range.closed(1, 12);
     try {
-      assertWithMessage("Invalid month").that(13).isIn(Range.closed(1, 12));
+      assertWithMessage("Invalid month").that(13).isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
+      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <" + range + ">");
     }
   }
 
   @Test
   public void assertWithMessageIsPrependedWithNamed() {
+    Range<Integer> range = Range.closed(1, 12);
     try {
-      assertWithMessage("Invalid month").that(13).named("Septober").isIn(Range.closed(1, 12));
+      assertWithMessage("Invalid month").that(13).named("Septober").isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Invalid month: Not true that Septober (<13>) is in <[1‥12]>");
+          .hasMessage("Invalid month: Not true that Septober (<13>) is in <" + range + ">");
     }
   }
 
@@ -76,26 +78,24 @@ public class CustomFailureMessageTest {
 
   @Test
   public void customMessageIsPrepended() {
+    Range<Integer> range = Range.closed(1, 12);
     try {
-      assert_().withFailureMessage("Invalid month").that(13).isIn(Range.closed(1, 12));
+      assert_().withFailureMessage("Invalid month").that(13).isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
+      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <" + range + ">");
     }
   }
 
   @Test
   public void customMessageIsPrependedWithNamed() {
+    Range<Integer> range = Range.closed(1, 12);
     try {
-      assert_()
-          .withFailureMessage("Invalid month")
-          .that(13)
-          .named("Septober")
-          .isIn(Range.closed(1, 12));
+      assert_().withFailureMessage("Invalid month").that(13).named("Septober").isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Invalid month: Not true that Septober (<13>) is in <[1‥12]>");
+          .hasMessage("Invalid month: Not true that Septober (<13>) is in <" + range + ">");
     }
   }
 
@@ -130,22 +130,24 @@ public class CustomFailureMessageTest {
 
   @Test
   public void assertWithMessageIsPrepended_withPlaceholders() {
+    Range<Integer> range = Range.closed(1, 12);
     try {
-      assertWithMessage("Invalid %s", "month").that(13).isIn(Range.closed(1, 12));
+      assertWithMessage("Invalid %s", "month").that(13).isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
+      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <" + range + ">");
     }
   }
 
   @Test
   public void assertWithMessageIsPrependedWithNamed_withPlaceholders() {
+    Range<Integer> range = Range.closed(1, 12);
     try {
-      assertWithMessage("Invalid %snth", "mo").that(13).named("Septober").isIn(Range.closed(1, 12));
+      assertWithMessage("Invalid %snth", "mo").that(13).named("Septober").isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Invalid month: Not true that Septober (<13>) is in <[1‥12]>");
+          .hasMessage("Invalid month: Not true that Septober (<13>) is in <" + range + ">");
     }
   }
 
@@ -163,26 +165,28 @@ public class CustomFailureMessageTest {
 
   @Test
   public void customMessageIsPrepended_withPlaceholders() {
+    Range<Integer> range = Range.closed(1, 12);
     try {
-      assert_().withFailureMessage("In%slid%snth", "va", " mo").that(13).isIn(Range.closed(1, 12));
+      assert_().withFailureMessage("In%slid%snth", "va", " mo").that(13).isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <[1‥12]>");
+      assertThat(expected).hasMessage("Invalid month: Not true that <13> is in <" + range + ">");
     }
   }
 
   @Test
   public void customMessageIsPrependedWithNamed_withPlaceholders() {
+    Range<Integer> range = Range.closed(1, 12);
     try {
       assert_()
           .withFailureMessage("Inval%sd mon%s", 'i', "th")
           .that(13)
           .named("Septober")
-          .isIn(Range.closed(1, 12));
+          .isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Invalid month: Not true that Septober (<13>) is in <[1‥12]>");
+          .hasMessage("Invalid month: Not true that Septober (<13>) is in <" + range + ">");
     }
   }
 
