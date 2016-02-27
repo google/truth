@@ -25,14 +25,18 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class EmployeeTest {
+public final class EmployeeTest {
 
-  // This is not my real employee ID :-)
+  // Note: not real employee IDs :-)
+
   private static final Employee KURT =
-      Employee.create("kak", 37802, "Kurt Alfred Kluever", Location.NYC);
+      Employee.create("kak", 37802, "Kurt Alfred Kluever", Location.NYC, false);
+
+  private static final Employee SUNDAR =
+      Employee.create("sundar", 5243, "Sundar Pichai", Location.MTV, true);
 
   @Test
-  public void testEmployee() {
+  public void kurt() {
     // These assertions use Truth.assertThat() overloads
     assertThat("kurt alfred kluever").contains("alfred");
     assertThat(42).isGreaterThan(41);
@@ -42,5 +46,16 @@ public class EmployeeTest {
     assertThat(KURT).hasUsername("kak");
     assertThat(KURT).hasName("Kurt Alfred Kluever");
     assertThat(KURT).hasLocation(Location.NYC);
+    assertThat(KURT).isNotCeo();
+  }
+
+  @Test
+  public void sundar() {
+    // These assertions use the EmployeeSubject.assertThat(Employee) overload
+    assertThat(SUNDAR).hasId(5243);
+    assertThat(SUNDAR).hasUsername("sundar");
+    assertThat(SUNDAR).hasName("Sundar Pichai");
+    assertThat(SUNDAR).hasLocation(Location.MTV);
+    assertThat(SUNDAR).isCeo();
   }
 }

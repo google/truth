@@ -80,6 +80,18 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
     }
   }
 
+  public void isCeo() {
+    if (!getSubject().isCeo()) {
+      fail("is CEO");
+    }
+  }
+
+  public void isNotCeo() {
+    if (getSubject().isCeo()) {
+      fail("is not CEO");
+    }
+  }
+
   // TODO(kak): Add methods that return other subjects. E.g.,
   // public StringSubject username() {}
   // public IterableSubject languages() {}

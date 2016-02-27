@@ -22,8 +22,9 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class Employee {
-  public static Employee create(String username, long id, String name, Location location) {
-    return new AutoValue_Employee(username, id, name, location);
+  public static Employee create(
+      String username, long id, String name, Location location, boolean isCeo) {
+    return new AutoValue_Employee(username, id, name, location, isCeo);
   }
 
   abstract String username();
@@ -33,6 +34,8 @@ public abstract class Employee {
   abstract String name();
 
   abstract Location location();
+
+  abstract boolean isCeo();
 
   public enum Location {
     MTV,
