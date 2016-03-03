@@ -23,3 +23,7 @@ after_success:
   - bash util/generate-latest-docs.sh
   - bash util/publish-snapshot-on-commit.sh
 
+branches:
+  only:
+    - master
+    - /^release.*$/
