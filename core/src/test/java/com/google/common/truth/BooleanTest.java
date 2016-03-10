@@ -35,6 +35,28 @@ public class BooleanTest {
   }
 
   @Test
+  public void nullIsTrueFailing() {
+    try {
+      Boolean nullBoolean = null;
+      assertThat(nullBoolean).isTrue();
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage("The subject was expected to be true, but was null");
+    }
+  }
+
+  @Test
+  public void nullIsFalseFailing() {
+    try {
+      Boolean nullBoolean = null;
+      assertThat(nullBoolean).isFalse();
+      fail("Should have thrown");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessage("The subject was expected to be false, but was null");
+    }
+  }
+
+  @Test
   public void isTrueFailing() {
     try {
       assertThat(false).isTrue();

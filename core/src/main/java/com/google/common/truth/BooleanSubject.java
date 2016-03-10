@@ -36,19 +36,23 @@ public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
   }
 
   /**
-   * Fails if the subject is false.
+   * Fails if the subject is false or {@code null}.
    */
   public void isTrue() {
-    if (getSubject() == null || !getSubject()) {
+    if (getSubject() == null) {
+      failWithRawMessage("%s was expected to be true, but was null", booleanSubject());
+    } else if (!getSubject()) {
       failWithRawMessage("%s was expected to be true, but was false", booleanSubject());
     }
   }
 
   /**
-   * Fails if the subject is true.
+   * Fails if the subject is true or {@code null}.
    */
   public void isFalse() {
-    if (getSubject() == null || getSubject()) {
+    if (getSubject() == null) {
+      failWithRawMessage("%s was expected to be false, but was null", booleanSubject());
+    } else if (getSubject()) {
       failWithRawMessage("%s was expected to be false, but was true", booleanSubject());
     }
   }
