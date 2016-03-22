@@ -58,7 +58,7 @@ public class PrimitiveFloatArraySubject
    * This form is unsafe for floating point types, and will throw an
    * {@link UnsupportedOperationException}.
    *
-   * @deprecated use {@link #isWithin(float)}
+   * @deprecated use {@link #hasValuesWithin(float)}
    */
   @Deprecated
   @Override
@@ -115,7 +115,7 @@ public class PrimitiveFloatArraySubject
    * This form is unsafe for floating point types, and will throw an
    * {@link UnsupportedOperationException}.
    *
-   * @deprecated use {@link #isNotWithin(float)}
+   * @deprecated use {@link #hasValuesNotWithin(float)}
    */
   @Deprecated
   @Override
@@ -303,8 +303,8 @@ public class PrimitiveFloatArraySubject
           expectedCount++;
         }
         // By the method contract, the assertion passes if the lengths are different. This is so
-        // that isNotWithin behaves like isNotEqualTo with a tolerance (and different handling of
-        // non-finite values).
+        // that hasValuesNotWithin behaves like isNotEqualTo with a tolerance (and different
+        // handling of non-finite values).
         if (actual.length == expectedCount) {
           fail("has values not within " + tolerance + " of", Iterables.toString(expected));
         }
