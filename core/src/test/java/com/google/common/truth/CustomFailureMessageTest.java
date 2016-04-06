@@ -36,7 +36,7 @@ public class CustomFailureMessageTest {
 
   @Test
   public void hasFailureMessage() {
-    assertThat(assertWithMessage(null).hasFailureMessage()).isFalse();
+    assertThat(assert_().hasFailureMessage()).isFalse();
     assertThat(assertWithMessage("foo").hasFailureMessage()).isTrue();
     assertThat(assertWithMessage("foo %s", "foo").hasFailureMessage()).isTrue();
   }
@@ -224,21 +224,6 @@ public class CustomFailureMessageTest {
   public void noPlaceholdersWithArgsThrowsIae() {
     try {
       assert_().withFailureMessage("This is a custom message", "bad arg").that(true).isTrue();
-      fail("Should have thrown");
-    } catch (IllegalArgumentException expected) {
-    }
-  }
-
-  @Test
-  public void placeholderWithoutArgsThrows() {
-    try {
-      assertWithMessage("This is a %s").that(true).isTrue();
-      fail("Should have thrown");
-    } catch (IllegalArgumentException expected) {
-    }
-
-    try {
-      assert_().withFailureMessage("This is a %s").that(true).isTrue();
       fail("Should have thrown");
     } catch (IllegalArgumentException expected) {
     }

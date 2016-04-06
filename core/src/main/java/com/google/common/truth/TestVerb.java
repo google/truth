@@ -30,37 +30,25 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+/*>>>import org.checkerframework.checker.nullness.compatqual.NullableType;*/
 public class TestVerb extends AbstractVerb<TestVerb> {
-  private static final Object[] EMPTY_ARGS = new Object[0];
-  @Nullable private final String format;
-  private final Object[] args;
-
   public TestVerb(FailureStrategy failureStrategy) {
     this(failureStrategy, null);
   }
 
-  public TestVerb(FailureStrategy failureStrategy, @Nullable String format) {
-    this(failureStrategy, format, EMPTY_ARGS);
+  public TestVerb(FailureStrategy failureStrategy, @Nullable String message) {
+    this(
+        failureStrategy,
+        message == null ? null : "%s",
+        message == null ? new Object[0] : new Object[] {message});
   }
 
   public TestVerb(
-      FailureStrategy failureStrategy, @Nullable String format, @Nullable Object... args) {
-    super(checkNotNull(failureStrategy));
-    this.format = format;
-    this.args = checkNotNull(args);
-
-    int numOfPlaceholders = countPlaceholders(format);
-    if (numOfPlaceholders != args.length) {
-      throw new IllegalArgumentException(
-          StringUtil.format(
-              "The number of placeholders (%s) in the format string (%s) "
-                  + "does not equal the number of args (%s) given",
-              numOfPlaceholders,
-              format,
-              args.length));
-    }
+      FailureStrategy failureStrategy, @Nullable String format, Object /*@NullableType*/... args) {
+    super(checkNotNull(failureStrategy), format, args);
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public <T extends Comparable<?>> ComparableSubject<?, T> that(@Nullable T target) {
     return new ComparableSubject(getFailureStrategy(), target) {};
   }
@@ -176,7 +164,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
 
   @Override
   public TestVerb withFailureMessage(@Nullable String failureMessage) {
-    return new TestVerb(getFailureStrategy(), failureMessage); // Must be a new instance.
+    return new TestVerb(getFailureStrategy(), "%s", failureMessage); // Must be a new instance.
   }
 
   /**
@@ -191,35 +179,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
    */
   // TODO(kak): This probably should go on AbstractVerb, but that's a breaking change and will
   // require an atomic migration of the codebase.
-  public TestVerb withFailureMessage(String format, Object... args) {
+  @Override
+  public TestVerb withFailureMessage(@Nullable String format, Object /* @NullableType */... args) {
     return new TestVerb(getFailureStrategy(), format, args); // Must be a new instance.
-  }
-
-  @Override
-  @Nullable
-  public String getFailureMessage() {
-    return hasFailureMessage() ? StringUtil.format(format, args) : null;
-  }
-
-  @Override
-  protected boolean hasFailureMessage() {
-    return format != null;
-  }
-
-  static int countPlaceholders(@Nullable String template) {
-    if (template == null) {
-      return 0;
-    }
-    int index = 0;
-    int count = 0;
-    while (true) {
-      index = template.indexOf("%s", index);
-      if (index == -1) {
-        break;
-      }
-      index++;
-      count++;
-    }
-    return count;
   }
 }

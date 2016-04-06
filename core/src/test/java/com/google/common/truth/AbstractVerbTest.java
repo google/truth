@@ -17,9 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.AbstractVerb;
-import com.google.common.truth.FailureStrategy;
-
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
@@ -52,6 +49,12 @@ public class AbstractVerbTest {
         @Override
         @CheckReturnValue
         public AbstractVerb<?> withFailureMessage(String failureMessage) {
+          throw new UnsupportedOperationException();
+        }
+
+        @Override
+        @CheckReturnValue
+        public AbstractVerb<?> withFailureMessage(String failureMessage, Object... args) {
           throw new UnsupportedOperationException();
         }
 

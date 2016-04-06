@@ -49,16 +49,15 @@ public class DelegationTest {
 
   @Test
   public void customTypeProposition() {
-    assert_().about(foo()).that(new Foo(5)).matches(new Foo(2 + 3));
+    assertAbout(foo()).that(new Foo(5)).matches(new Foo(2 + 3));
   }
 
   @Test
-  public void customTypePropositionWithFailure() {
+  public void customTypePropositionWithFailureMessage() {
     try {
-      assert_().about(foo()).that(new Foo(5)).matches(new Foo(4));
+      assertAbout(foo()).withFailureMessage("failureMessage").that(new Foo(5)).matches(new Foo(4));
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("matches");
+      assertThat(e).hasMessage("failureMessage: Not true that <Foo(5)> matches <Foo(4)>");
       return;
     }
     assert_().fail("Should have thrown.");
