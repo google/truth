@@ -24,8 +24,10 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -111,6 +113,23 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   public void containsEntry(@Nullable Object key, @Nullable Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (!getSubject().entrySet().contains(entry)) {
+      if (getSubject().containsKey(key)) {
+        failWithRawMessage(
+            "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
+            getDisplaySubject(), entry, key, getSubject().get(key));
+      }
+      if (getSubject().containsValue(value)) {
+        Set<Object> keys = new LinkedHashSet<Object>();
+        for (Entry<Object, Object> actualEntry : ((Map<Object, Object>) getSubject()).entrySet()) {
+          if (Objects.equal(actualEntry.getValue(), value)) {
+            keys.add(actualEntry.getKey());
+          }
+        }
+        failWithRawMessage(
+            "Not true that %s contains entry <%s>. "
+                + "However, the following keys are mapped to <%s>: %s",
+            getDisplaySubject(), entry, value, keys);
+      }
       fail("contains entry", entry);
     }
   }

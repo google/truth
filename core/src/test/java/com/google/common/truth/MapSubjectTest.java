@@ -476,7 +476,10 @@ public class MapSubjectTest {
       assertThat(actual).containsEntry("kurt", null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{null=null}> contains entry <kurt=null>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{null=null}> contains entry <kurt=null>. "
+                  + "However, the following keys are mapped to <null>: [null]");
     }
   }
 
@@ -488,7 +491,10 @@ public class MapSubjectTest {
       assertThat(actual).containsEntry(null, "kluever");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{null=null}> contains entry <null=kluever>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{null=null}> contains entry <null=kluever>. "
+                  + "However, it has a mapping from <null> to <null>");
     }
   }
 
@@ -586,7 +592,10 @@ public class MapSubjectTest {
       assertThat(actual).containsEntry("a", "a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{a=A}> contains entry <a=a>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{a=A}> contains entry <a=a>. "
+                  + "However, it has a mapping from <a> to <A>");
     }
   }
 
@@ -598,7 +607,10 @@ public class MapSubjectTest {
       assertThat(actual).containsEntry("a", "A");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{a=null}> contains entry <a=A>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{a=null}> contains entry <a=A>. "
+                  + "However, it has a mapping from <a> to <null>");
     }
   }
 
@@ -609,7 +621,10 @@ public class MapSubjectTest {
       assertThat(actual).containsEntry("a", null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{a=A}> contains entry <a=null>");
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{a=A}> contains entry <a=null>. "
+                  + "However, it has a mapping from <a> to <A>");
     }
   }
 }
