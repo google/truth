@@ -124,7 +124,7 @@ assertThat(myBooleanResult).isTrue();
 assertThat(myBooleanResult).named("hasError()").isTrue();
 
 // Reports: My custom Message
-assert_().withFailureMessage("My arbitrary custom message")
+assertWithMessage("My arbitrary custom message")
     .that(myBooleanResult).named("hasError()").isTrue();
 {% endhighlight %}
 
@@ -135,8 +135,8 @@ custom "Subjects" for these types, whose usage might look like this:
 
 {% highlight java %}
 // customType() returns an adapter (SubjectFactory).
-assert_().about(customType()).that(theObject).hasSomeComplexProperty(); // specialized assertion
-assert_().about(customType()).that(theObject).isEqualTo(anotherObject); // overridden equality
+assertAbout(customType()).that(theObject).hasSomeComplexProperty(); // specialized assertion
+assertAbout(customType()).that(theObject).isEqualTo(anotherObject); // overridden equality
 {% endhighlight %}
 
 # Setup
