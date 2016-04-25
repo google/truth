@@ -123,9 +123,13 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * Fails if the map does not contain the given entry.
    */
   public void containsEntry(@Nullable Object key, @Nullable Object value) {
-    Entry<Object, Object> entry = Maps.immutableEntry(key, value);
-    if (!getSubject().entrySet().contains(entry)) {
-      fail("contains entry", entry);
+    if (!getSubject().containsKey(key)){
+      fail("contains entry", Maps.immutableEntry(key, value));
+    }
+    Object actualValue = getSubject().get(key);
+    if ((actualValue == null && value != null) ||
+            (actualValue != null && !actualValue.equals(value))) {
+      fail("contains entry", Maps.immutableEntry(key, value));
     }
   }
 
@@ -133,9 +137,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * Fails if the map contains the given entry.
    */
   public void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
-    Entry<Object, Object> entry = Maps.immutableEntry(key, value);
-    if (getSubject().entrySet().contains(entry)) {
-      fail("does not contain entry", entry);
+    Object actualValue = getSubject().get(key);
+    if (getSubject().containsKey(key) && (actualValue == value || (actualValue != null && actualValue.equals(value)))) {
+      fail("does not contain entry", Maps.immutableEntry(key, value));
     }
   }
 
