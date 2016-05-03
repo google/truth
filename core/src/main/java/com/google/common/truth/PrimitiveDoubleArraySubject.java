@@ -315,8 +315,10 @@ public class PrimitiveDoubleArraySubject
   // TODO(b/25905290): Find a way to safely expose this. But disable it for now, since it will
   // nearly always be incorrect to simply treat a list of floats and do normal set operations that
   // are based on bare comparisons.
+  // In the meantime, anyone who really does want this behaviour can call
+  // com.google.common.primitives.Doubles.asList() on their subject.
   @SuppressWarnings("unused")
-  public IterableSubject asList() {
+  private IterableSubject asList() {
     return new IterableSubject(failureStrategy, listRepresentation());
   }
 }
