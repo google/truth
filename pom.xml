@@ -103,6 +103,27 @@
           <artifactId>maven-jar-plugin</artifactId>
           <version>2.5</version> <!-- work around ubuntu bug -->
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>animal-sniffer-maven-plugin</artifactId>
+          <version>1.14</version>
+          <configuration>
+            <signature>
+              <groupId>org.codehaus.mojo.signature</groupId>
+              <artifactId>java16-sun</artifactId>
+              <version>1.10</version>
+            </signature>
+          </configuration>
+          <executions>
+            <execution>
+              <id>check-java-version-compatibility</id>
+              <phase>test</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
