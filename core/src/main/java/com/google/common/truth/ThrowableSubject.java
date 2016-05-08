@@ -33,9 +33,15 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
   /**
    * Fails if the subject does not have the given message.
    */
-  public void hasMessage(@Nullable String message) {
-    if (!Objects.equal(message, getSubject().getMessage())) {
-      fail("has message", message);
+  public void hasMessage(@Nullable String expected) {
+    String actual = getSubject().getMessage();
+    if (!Objects.equal(expected, actual)) {
+      if (expected != null && actual != null) {
+        failureStrategy.failComparing(
+            getDisplaySubject() + " does not have message <" + expected + ">", expected, actual);
+      } else {
+        fail("has message", expected);
+      }
     }
   }
 
@@ -55,7 +61,15 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
 
       @Override
       public void failComparing(String message, CharSequence expected, CharSequence actual) {
-        delegate.fail(StringUtil.messageFor(message, expected, actual), defaultCause);
+        // Invoke failComparing directly on the delegate so that it can do custom comparisons if
+        // possible. Notably, the default FailureStrategy throws a ComparisonFailure which some IDEs
+        // have special support for.
+        try {
+          delegate.failComparing(message, expected, actual);
+        } catch (AssertionError e) {
+          e.initCause(defaultCause);
+          throw e;
+        }
       }
     };
   }

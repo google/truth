@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -46,10 +47,11 @@ public class ThrowableTest {
     try {
       assertThat(subject).hasMessage("foobar");
       throw new Error("Expected to fail.");
-    } catch (AssertionError expected) {
+    } catch (ComparisonFailure expected) {
       assertThat(expected.getMessage())
           .isEqualTo(
-              "Not true that <java.lang.NullPointerException: message> has message <foobar>");
+              "<java.lang.NullPointerException: message> does not have message <foobar> "
+                  + "expected:<[foobar]> but was:<[message]>");
       assertThat(expected.getCause()).isEqualTo(subject);
     }
   }
