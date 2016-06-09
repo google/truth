@@ -52,17 +52,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Renames the subject so that this name appears in the error messages in place of string
-   * representations of the subject.
-   */
-  @Override
-  @CanIgnoreReturnValue
-  public IterableSubject named(String name) {
-    super.named(name);
-    return this;
-  }
-
-  /**
    * Fails if the subject is not empty.
    */
   public final void isEmpty() {
