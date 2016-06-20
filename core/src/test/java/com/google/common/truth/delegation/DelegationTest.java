@@ -24,10 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/**
- * A test that's more or less intended to show how one uses an extended verb.
- *
- */
+/** A test that's more or less intended to show how one uses an extended verb. */
 @RunWith(JUnit4.class)
 public class DelegationTest {
   @Test

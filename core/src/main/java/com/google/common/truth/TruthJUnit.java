@@ -22,19 +22,17 @@ import com.google.common.annotations.GwtIncompatible;
 import org.junit.internal.AssumptionViolatedException;
 
 /**
- * Truth - a proposition framework for tests, supporting JUnit style
- * assertion and assumption semantics in a fluent style.
+ * Truth - a proposition framework for tests, supporting JUnit style assertion and assumption
+ * semantics in a fluent style.
  *
- * TruthJUnit contains a junit-specific "failure strategy" known as an
- * assumption.  An assumption is a proposition that, if the proposition is
- * false, aborts (skips) the test.  This is especially useful in JUnit
- * theories or parameterized tests, or other combinatorial tests where
- * some subset of the combinations are simply not applicable for testing.
+ * <p>TruthJUnit contains a junit-specific "failure strategy" known as an assumption. An assumption
+ * is a proposition that, if the proposition is false, aborts (skips) the test. This is especially
+ * useful in JUnit theories or parameterized tests, or other combinatorial tests where some subset
+ * of the combinations are simply not applicable for testing.
  *
- * TruthJUnit is the entry point for assumptions, via the {@link #assume()} method.
+ * <p>TruthJUnit is the entry point for assumptions, via the {@link #assume()} method.
  *
- * eg:
- * <pre>{@code
+ * <p>eg: <pre>{@code
  * import static com.google.common.truth.Truth.assertThat;
  * import static com.google.common.truth.TruthJUnit.assume;
  *

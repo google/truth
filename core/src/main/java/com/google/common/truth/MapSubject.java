@@ -40,9 +40,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     super(failureStrategy, map);
   }
 
-  /**
-   * Fails if the subject is not equal to the given object.
-   */
+  /** Fails if the subject is not equal to the given object. */
   @Override
   public void isEqualTo(@Nullable Object other) {
     if (!Objects.equal(getSubject(), other)) {
@@ -72,27 +70,21 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     }
   }
 
-  /**
-   * Fails if the map is not empty.
-   */
+  /** Fails if the map is not empty. */
   public void isEmpty() {
     if (!getSubject().isEmpty()) {
       fail("is empty");
     }
   }
 
-  /**
-   * Fails if the map is empty.
-   */
+  /** Fails if the map is empty. */
   public void isNotEmpty() {
     if (getSubject().isEmpty()) {
       fail("is not empty");
     }
   }
 
-  /**
-   * Fails if the map does not have the given size.
-   */
+  /** Fails if the map does not have the given size. */
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
     int actualSize = getSubject().size();
@@ -101,27 +93,21 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     }
   }
 
-  /**
-   * Fails if the map does not contain the given key.
-   */
+  /** Fails if the map does not contain the given key. */
   public void containsKey(@Nullable Object key) {
     if (!getSubject().containsKey(key)) {
       fail("contains key", key);
     }
   }
 
-  /**
-   * Fails if the map contains the given key.
-   */
+  /** Fails if the map contains the given key. */
   public void doesNotContainKey(@Nullable Object key) {
     if (getSubject().containsKey(key)) {
       fail("does not contain key", key);
     }
   }
 
-  /**
-   * Fails if the map does not contain the given entry.
-   */
+  /** Fails if the map does not contain the given entry. */
   public void containsEntry(@Nullable Object key, @Nullable Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (!getSubject().entrySet().contains(entry)) {
@@ -129,9 +115,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     }
   }
 
-  /**
-   * Fails if the map contains the given entry.
-   */
+  /** Fails if the map contains the given entry. */
   public void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (getSubject().entrySet().contains(entry)) {
@@ -139,9 +123,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     }
   }
 
-  /**
-   * Fails if the map is not empty.
-   */
+  /** Fails if the map is not empty. */
   @CanIgnoreReturnValue
   public Ordered containsExactly() {
     return check().that(getSubject().entrySet()).containsExactly();
@@ -178,9 +160,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     return containsExactlyEntriesIn(expectedMap);
   }
 
-  /**
-   * Fails if the map does not contain exactly the given set of entries in the given map.
-   */
+  /** Fails if the map does not contain exactly the given set of entries in the given map. */
   @CanIgnoreReturnValue
   public Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
     return check().that(getSubject().entrySet()).containsExactlyElementsIn(expectedMap.entrySet());

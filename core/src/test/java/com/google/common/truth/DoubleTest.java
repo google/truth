@@ -49,9 +49,7 @@ public class DoubleTest {
               String.format(
                   "testValue (<%s>) and <%s> should have been finite values within"
                       + " <%s> of each other",
-                  actual,
-                  expected,
-                  tolerance));
+                  actual, expected, tolerance));
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -75,9 +73,7 @@ public class DoubleTest {
               String.format(
                   "testValue (<%s>) and <%s> should have been finite values not within"
                       + " <%s> of each other",
-                  actual,
-                  expected,
-                  tolerance));
+                  actual, expected, tolerance));
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");

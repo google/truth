@@ -30,9 +30,7 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
     super(failureStrategy, integer);
   }
 
-  /**
-   * @deprecated Use {@link #isEqualTo} instead. Integer comparison is consistent with equality.
-   */
+  /** @deprecated Use {@link #isEqualTo} instead. Integer comparison is consistent with equality. */
   @Deprecated
   public final void isEquivalentAccordingToCompareTo(Integer other) {
     super.isEquivalentAccordingToCompareTo(other);

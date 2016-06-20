@@ -51,18 +51,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     super(failureStrategy, list);
   }
 
-  /**
-   * Fails if the subject is not empty.
-   */
+  /** Fails if the subject is not empty. */
   public final void isEmpty() {
     if (!Iterables.isEmpty(getSubject())) {
       fail("is empty");
     }
   }
 
-  /**
-   * Fails if the subject is empty.
-   */
+  /** Fails if the subject is empty. */
   public final void isNotEmpty() {
     if (Iterables.isEmpty(getSubject())) {
       // TODO(kak): "Not true that <[]> is not empty" doesn't really need the <[]>,
@@ -73,9 +69,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
-  /**
-   * Fails if the subject does not have the given size.
-   */
+  /** Fails if the subject does not have the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
     int actualSize = Iterables.size(getSubject());
@@ -84,29 +78,21 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
-  /**
-   * Attests (with a side-effect failure) that the subject contains the
-   * supplied item.
-   */
+  /** Attests (with a side-effect failure) that the subject contains the supplied item. */
   public final void contains(@Nullable Object element) {
     if (!Iterables.contains(getSubject(), element)) {
       failWithRawMessage("%s should have contained <%s>", getDisplaySubject(), element);
     }
   }
 
-  /**
-   * Attests (with a side-effect failure) that the subject does not contain
-   * the supplied item.
-   */
+  /** Attests (with a side-effect failure) that the subject does not contain the supplied item. */
   public final void doesNotContain(@Nullable Object element) {
     if (Iterables.contains(getSubject(), element)) {
       failWithRawMessage("%s should not have contained <%s>", getDisplaySubject(), element);
     }
   }
 
-  /**
-   * Attests that the subject does not contain duplicate elements.
-   */
+  /** Attests that the subject does not contain duplicate elements. */
   public final void containsNoDuplicates() {
     List<Entry<?>> duplicates = Lists.newArrayList();
     for (Multiset.Entry<?> entry : LinkedHashMultiset.create(getSubject()).entrySet()) {
@@ -119,18 +105,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
-  /**
-   * Attests that the subject contains at least one of the provided objects
-   * or fails.
-   */
+  /** Attests that the subject contains at least one of the provided objects or fails. */
   public final void containsAnyOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsAny("contains any of", accumulate(first, second, rest));
   }
 
   /**
-   * Attests that a Collection contains at least one of the objects contained
-   * in the provided collection or fails.
+   * Attests that a Collection contains at least one of the objects contained in the provided
+   * collection or fails.
    */
   public final void containsAnyIn(Iterable<?> expected) {
     containsAny("contains any element in", expected);
@@ -158,12 +141,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that the subject contains at least all of the provided objects
-   * or fails, potentially permitting duplicates in both the subject and the
-   * parameters (if the subject even can have duplicates).
+   * Attests that the subject contains at least all of the provided objects or fails, potentially
+   * permitting duplicates in both the subject and the parameters (if the subject even can have
+   * duplicates).
    *
-   * <p>Callers may optionally chain an {@code inOrder()} call if its expected
-   * contents must be contained in the given order.
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method.
    */
   @CanIgnoreReturnValue
   public final Ordered containsAllOf(
@@ -172,12 +155,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that the subject contains at least all of the provided objects
-   * or fails, potentially permitting duplicates in both the subject and the
-   * parameters (if the subject even can have duplicates).
+   * Attests that the subject contains at least all of the provided objects or fails, potentially
+   * permitting duplicates in both the subject and the parameters (if the subject even can have
+   * duplicates).
    *
-   * <p>Callers may optionally chain an {@code inOrder()} call if its expected
-   * contents must be contained in the given order.
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method.
    */
   @CanIgnoreReturnValue
   public final Ordered containsAllIn(Iterable<?> expected) {
@@ -216,8 +199,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Removes at most the given number of available elements from the input list
-   * and adds them to the given output collection.
+   * Removes at most the given number of available elements from the input list and adds them to the
+   * given output collection.
    */
   private static void moveElements(List<?> input, Collection<Object> output, int maxElements) {
     for (int i = 0; i < maxElements; i++) {
@@ -228,12 +211,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /**
    * Attests that a subject contains exactly the provided objects or fails.
    *
-   * <p>Multiplicity is respected. For example, an object duplicated exactly 3
-   * times in the parameters asserts that the object must likewise be duplicated
-   * exactly 3 times in the subject.
+   * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
+   * parameters asserts that the object must likewise be duplicated exactly 3 times in the subject.
    *
-   * <p>Callers may optionally chain an {@code inOrder()} call if its expected
-   * contents must be contained in the given order.
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method.
    */
   @CanIgnoreReturnValue
   public final Ordered containsExactly(@Nullable Object... varargs) {
@@ -247,12 +229,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /**
    * Attests that a subject contains exactly the provided objects or fails.
    *
-   * <p>Multiplicity is respected. For example, an object duplicated exactly 3
-   * times in the {@code Iterable} parameter asserts that the object must
-   * likewise be duplicated exactly 3 times in the subject.
+   * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the {@code
+   * Iterable} parameter asserts that the object must likewise be duplicated exactly 3 times in the
+   * subject.
    *
-   * <p>Callers may optionally chain an {@code inOrder()} call if its expected
-   * contents must be contained in the given order.
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method.
    */
   @CanIgnoreReturnValue
   public final Ordered containsExactlyElementsIn(Iterable<?> expected) {
@@ -375,18 +357,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         suffix);
   }
 
-  /**
-   * Attests that a subject contains none of the provided objects
-   * or fails, eliding duplicates.
-   */
+  /** Attests that a subject contains none of the provided objects or fails, eliding duplicates. */
   public final void containsNoneOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsNone("contains none of", accumulate(first, second, rest));
   }
 
   /**
-   * Attests that a Collection contains none of the objects contained
-   * in the provided collection or fails, eliding duplicates.
+   * Attests that a Collection contains none of the objects contained in the provided collection or
+   * fails, eliding duplicates.
    */
   public final void containsNoneIn(Iterable<?> excluded) {
     containsNone("contains no elements in", excluded);
@@ -404,9 +383,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
-  /**
-   * Ordered implementation that always fails.
-   */
+  /** Ordered implementation that always fails. */
   private class NotInOrder implements Ordered {
     private final String check;
     private final Iterable<?> required;
@@ -422,9 +399,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
-  /**
-   * Ordered implementation that does nothing because it's already known to be true.
-   */
+  /** Ordered implementation that does nothing because it's already known to be true. */
   private static final Ordered IN_ORDER =
       new Ordered() {
         @Override
@@ -476,9 +451,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     isOrdered((Ordering) Ordering.natural());
   }
 
-  /**
-   * @deprecated Use {@link #isOrdered} instead.
-   */
+  /** @deprecated Use {@link #isOrdered} instead. */
   @Deprecated
   public final void isPartiallyOrdered() {
     isOrdered();
@@ -504,9 +477,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         });
   }
 
-  /**
-   * @deprecated Use {@link #isOrdered(Comparator)} instead.
-   */
+  /** @deprecated Use {@link #isOrdered(Comparator)} instead. */
   @Deprecated
   public final void isPartiallyOrdered(final Comparator<?> comparator) {
     isOrdered(comparator);

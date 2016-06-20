@@ -21,8 +21,8 @@ import com.google.common.collect.SetMultimap;
 import javax.annotation.Nullable;
 
 /**
- * Type-specific extensions of {@link com.google.common.collect.Multimap} subjects for
- * {@link com.google.common.collect.SetMultimap} subjects.
+ * Type-specific extensions of {@link com.google.common.collect.Multimap} subjects for {@link
+ * com.google.common.collect.SetMultimap} subjects.
  *
  * @author Daniel Ploch
  */
@@ -35,10 +35,10 @@ public class SetMultimapSubject extends MultimapSubject {
 
   /**
    * @deprecated {@code #isEqualTo} A ListMultimap can never compare equal with a SetMultimap if
-   *      either Multimap is non-empty, because {@link java.util.List} and {@link java.util.Set}
-   *      can never compare equal.  Prefer
-   *      {@link MultimapSubject#containsExactlyEntriesIn(com.google.common.collect.Multimap)}
-   *      instead. Consult {@link com.google.common.collect.Multimap#equals} for more information.
+   *     either Multimap is non-empty, because {@link java.util.List} and {@link java.util.Set} can
+   *     never compare equal. Prefer {@link
+   *     MultimapSubject#containsExactlyEntriesIn(com.google.common.collect.Multimap)} instead.
+   *     Consult {@link com.google.common.collect.Multimap#equals} for more information.
    */
   @Deprecated
   public void isEqualTo(@Nullable ListMultimap<?, ?> other) {

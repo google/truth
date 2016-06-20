@@ -43,8 +43,8 @@ public final class Re2jSubjects {
   }
 
   /**
-   * Subject for {@link String} subjects which you can use to assert things about
-   * {@link com.google.re2j.Pattern} regexes.
+   * Subject for {@link String} subjects which you can use to assert things about {@link
+   * com.google.re2j.Pattern} regexes.
    *
    * @see #re2jString
    */
@@ -70,18 +70,14 @@ public final class Re2jSubjects {
       }
     }
 
-    /**
-     * Fails if the string does not match the given regex.
-     */
+    /** Fails if the string does not match the given regex. */
     public void matches(String regex) {
       if (!Pattern.matches(regex, getSubject())) {
         fail("matches", regex);
       }
     }
 
-    /**
-     * Fails if the string does not match the given regex.
-     */
+    /** Fails if the string does not match the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void matches(Pattern regex) {
       if (!regex.matcher(getSubject()).matches()) {
@@ -89,18 +85,14 @@ public final class Re2jSubjects {
       }
     }
 
-    /**
-     * Fails if the string matches the given regex.
-     */
+    /** Fails if the string matches the given regex. */
     public void doesNotMatch(String regex) {
       if (Pattern.matches(regex, getSubject())) {
         fail("fails to match", regex);
       }
     }
 
-    /**
-     * Fails if the string matches the given regex.
-     */
+    /** Fails if the string matches the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void doesNotMatch(Pattern regex) {
       if (regex.matcher(getSubject()).matches()) {
@@ -108,46 +100,36 @@ public final class Re2jSubjects {
       }
     }
 
-    /**
-     * Fails if the string does not contain a match on the given regex.
-     */
+    /** Fails if the string does not contain a match on the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void containsMatch(Pattern pattern) {
       if (!pattern.matcher(getSubject()).find()) {
         failWithRawMessage(
-            "%s should have contained a match for <%s>",
-            getDisplaySubject(),
-            pattern);
+            "%s should have contained a match for <%s>", getDisplaySubject(), pattern);
       }
     }
 
-    /**
-     * Fails if the string does not contain a match on the given regex.
-     */
+    /** Fails if the string does not contain a match on the given regex. */
     public void containsMatch(String regex) {
       if (!containsMatch(getSubject(), regex)) {
         failWithRawMessage("%s should have contained a match for <%s>", getDisplaySubject(), regex);
       }
     }
 
-    /**
-     * Fails if the string contains a match on the given regex.
-     */
+    /** Fails if the string contains a match on the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void doesNotContainMatch(Pattern pattern) {
       if (pattern.matcher(getSubject()).find()) {
-        failWithRawMessage("%s should not have contained a match for <%s>",
-            getDisplaySubject(), pattern);
+        failWithRawMessage(
+            "%s should not have contained a match for <%s>", getDisplaySubject(), pattern);
       }
     }
 
-    /**
-     * Fails if the string contains a match on the given regex.
-     */
+    /** Fails if the string contains a match on the given regex. */
     public void doesNotContainMatch(String regex) {
       if (containsMatch(getSubject(), regex)) {
-        failWithRawMessage("%s should not have contained a match for <%s>",
-            getDisplaySubject(), regex);
+        failWithRawMessage(
+            "%s should not have contained a match for <%s>", getDisplaySubject(), regex);
       }
     }
 

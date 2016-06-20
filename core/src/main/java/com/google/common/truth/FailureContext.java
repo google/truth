@@ -22,8 +22,8 @@ import javax.annotation.Nullable;
 /**
  * An abstract type which holds a context message and formats it on demand.
  *
- * <p>{@code FailureMessageHolder} is a parent to those Verb types which will need to be
- * modified with failure message state.
+ * <p>{@code FailureMessageHolder} is a parent to those Verb types which will need to be modified
+ * with failure message state.
  */
 // TODO(cgruber) Extract supplementary message state from the Verb hierarchy entirely.
 //     Requres lots of client fixes.

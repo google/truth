@@ -29,8 +29,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * Propositions for arbitrarily typed subjects and for properties
- * of Object
+ * Propositions for arbitrarily typed subjects.
  *
  * @author David Saff
  * @author Christian Gruber
@@ -61,18 +60,14 @@ public class Subject<S extends Subject<S, T>, T> {
     return (S) this;
   }
 
-  /**
-   * Fails if the subject is not null.
-   */
+  /** Fails if the subject is not null. */
   public void isNull() {
     if (getSubject() != null) {
       fail("is null");
     }
   }
 
-  /**
-   * Fails if the subject is null.
-   */
+  /** Fails if the subject is null. */
   public void isNotNull() {
     if (getSubject() == null) {
       failWithoutSubject("is a non-null reference");
@@ -80,15 +75,14 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Fails if the subject is not equal to the given object. For the purposes of this comparison,
-   * two objects are equal if any of the following is true:
+   * Fails if the subject is not equal to the given object. For the purposes of this comparison, two
+   * objects are equal if any of the following is true:
    *
    * <ul>
    * <li>they are equal according to {@link Objects#equal}
    * <li>they are arrays and are considered equal by the appropriate {@link Arrays#equals} overload
-   * <li>they are boxed integer types ({@code Byte}, {@code Short}, {@code Character},
-   *     {@code Integer}, or {@code Long}) and they are numerically equal when converted to
-   *     {@code Long}.
+   * <li>they are boxed integer types ({@code Byte}, {@code Short}, {@code Character}, {@code
+   *     Integer}, or {@code Long}) and they are numerically equal when converted to {@code Long}.
    * </ul>
    */
   public void isEqualTo(@Nullable Object other) {
@@ -96,8 +90,8 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Fails if the subject is equal to the given object. The meaning of equality is the same as
-   * for the {@link #isEqualTo} method.
+   * Fails if the subject is equal to the given object. The meaning of equality is the same as for
+   * the {@link #isEqualTo} method.
    */
   public void isNotEqualTo(@Nullable Object other) {
     doEqualCheck(getSubject(), other, false);
@@ -138,27 +132,21 @@ public class Subject<S extends Subject<S, T>, T> {
     }
   }
 
-  /**
-   * Fails if the subject is not the same instance as the given object.
-   */
+  /** Fails if the subject is not the same instance as the given object. */
   public void isSameAs(@Nullable Object other) {
     if (getSubject() != other) {
       failComparingToStrings("is the same instance as", getSubject(), other, other, true);
     }
   }
 
-  /**
-   * Fails if the subject is the same instance as the given object.
-   */
+  /** Fails if the subject is the same instance as the given object. */
   public void isNotSameAs(@Nullable Object other) {
     if (getSubject() == other) {
       fail("is not the same instance as", other);
     }
   }
 
-  /**
-   * Fails if the subject is not an instance of the given class.
-   */
+  /** Fails if the subject is not an instance of the given class. */
   public void isInstanceOf(Class<?> clazz) {
     if (clazz == null) {
       throw new NullPointerException("clazz");
@@ -176,9 +164,7 @@ public class Subject<S extends Subject<S, T>, T> {
     }
   }
 
-  /**
-   * Fails if the subject is an instance of the given class.
-   */
+  /** Fails if the subject is an instance of the given class. */
   public void isNotInstanceOf(Class<?> clazz) {
     if (clazz == null) {
       throw new NullPointerException("clazz");
@@ -189,23 +175,18 @@ public class Subject<S extends Subject<S, T>, T> {
     if (Platform.isInstanceOfType(getSubject(), clazz)) {
       failWithRawMessage(
           "%s expected not to be an instance of %s, but was.",
-          getDisplaySubject(),
-          clazz.getName());
+          getDisplaySubject(), clazz.getName());
     }
   }
 
-  /**
-   * Fails unless the subject is equal to any element in the given iterable.
-   */
+  /** Fails unless the subject is equal to any element in the given iterable. */
   public void isIn(Iterable<?> iterable) {
     if (!Iterables.contains(iterable, getSubject())) {
       fail("is equal to any element in", iterable);
     }
   }
 
-  /**
-   * Fails unless the subject is equal to any of the given elements.
-   */
+  /** Fails unless the subject is equal to any of the given elements. */
   public void isAnyOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     List<Object> list = accumulate(first, second, rest);
     if (!list.contains(getSubject())) {
@@ -213,23 +194,17 @@ public class Subject<S extends Subject<S, T>, T> {
     }
   }
 
-  /**
-   * Fails if the subject is equal to any element in the given iterable.
-   */
+  /** Fails if the subject is equal to any element in the given iterable. */
   public void isNotIn(Iterable<?> iterable) {
     int index = Iterables.indexOf(iterable, Predicates.<Object>equalTo(getSubject()));
     if (index != -1) {
       failWithRawMessage(
           "Not true that %s is not in %s. It was found at index %s",
-          getDisplaySubject(),
-          iterable,
-          index);
+          getDisplaySubject(), iterable, index);
     }
   }
 
-  /**
-   * Fails if the subject is equal to any of the given elements.
-   */
+  /** Fails if the subject is equal to any of the given elements. */
   public void isNoneOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     isNotIn(accumulate(first, second, rest));
   }
@@ -247,8 +222,8 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * A convenience for implementers of {@link Subject} subclasses to use other truth
-   * {@code Subject} wrappers within their own propositional logic.
+   * A convenience for implementers of {@link Subject} subclasses to use other truth {@code Subject}
+   * wrappers within their own propositional logic.
    */
   protected TestVerb check() {
     return new TestVerb(failureStrategy);
@@ -340,8 +315,8 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Assembles a failure message with an alternative representation of the wrapped subject
-   * and passes it to the FailureStrategy
+   * Assembles a failure message with an alternative representation of the wrapped subject and
+   * passes it to the FailureStrategy
    *
    * @param verb the proposition being asserted
    * @param expected the expected value of the proposition
@@ -351,9 +326,7 @@ public class Subject<S extends Subject<S, T>, T> {
     String message =
         format(
             "Not true that <%s> %s <%s>",
-            (actual == null) ? "null reference" : actual,
-            verb,
-            expected);
+            (actual == null) ? "null reference" : actual, verb, expected);
     failureStrategy.fail(message);
   }
 
@@ -368,15 +341,13 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Passes through a failure message verbatim.  Used for {@link Subject} subclasses which
-   * need to provide alternate language for more fit-to-purpose error messages.
+   * Passes through a failure message verbatim. Used for {@link Subject} subclasses which need to
+   * provide alternate language for more fit-to-purpose error messages.
    *
-   *
-   * @param message the message template to be passed to the failure.  Note, this method only
-   *     guarantees to process {@code %s} tokens.  It is not guaranteed to be compatible
-   *     with {@code String.format()}.  Any other formatting desired (such as floats or
-   *     scientific notation) should be performed before the method call and the formatted
-   *     value passed in as a string.
+   * @param message the message template to be passed to the failure. Note, this method only
+   *     guarantees to process {@code %s} tokens. It is not guaranteed to be compatible with {@code
+   *     String.format()}. Any other formatting desired (such as floats or scientific notation)
+   *     should be performed before the method call and the formatted value passed in as a string.
    * @param parameters the object parameters which will be applied to the message template.
    */
   protected void failWithRawMessage(String message, Object... parameters) {
@@ -385,8 +356,8 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /**
    * @throws UnsupportedOperationException always
-   * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects.
-   *     If you meant to test object equality, use {@link #isEqualTo(Object)} instead.
+   * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects. If you meant to
+   *     test object equality, use {@link #isEqualTo(Object)} instead.
    */
   @Deprecated
   @Override

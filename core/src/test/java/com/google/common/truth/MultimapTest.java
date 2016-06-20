@@ -104,9 +104,7 @@ public class MultimapTest {
             .putAll("kurt", "kluever", "russell", "cobain")
             .build();
     ImmutableSetMultimap<String, String> multimapB =
-        ImmutableSetMultimap.<String, String>builder()
-            .putAll("kurt", "kluever", "russell")
-            .build();
+        ImmutableSetMultimap.<String, String>builder().putAll("kurt", "kluever", "russell").build();
 
     assertThat(multimapA.equals(multimapB)).isFalse();
 
@@ -378,8 +376,7 @@ public class MultimapTest {
               String.format(
                   "Not true that <%s> contains exactly <%s>. "
                       + "It has unexpected items <{3=[one], 4=[five]}>",
-                  actual,
-                  expected));
+                  actual, expected));
     }
   }
 
@@ -400,8 +397,7 @@ public class MultimapTest {
               String.format(
                   "Not true that <%s> contains exactly <%s>. "
                       + "It is missing <{3=[six], 4=[five]}>",
-                  actual,
-                  expected));
+                  actual, expected));
     }
   }
 
@@ -422,8 +418,7 @@ public class MultimapTest {
               String.format(
                   "Not true that <%s> contains exactly <%s>. "
                       + "It has unexpected items <{4=[nine], 5=[eight]}>",
-                  actual,
-                  expected));
+                  actual, expected));
     }
   }
 
@@ -447,8 +442,7 @@ public class MultimapTest {
                   "Not true that <%s> contains exactly <%s>. "
                       + "It is missing <{3=[six], 4=[five]}> "
                       + "and has unexpected items <{4=[nine], 5=[eight]}>",
-                  actual,
-                  expected));
+                  actual, expected));
     }
   }
 
@@ -507,8 +501,7 @@ public class MultimapTest {
               String.format(
                   "Not true that <%s> contains exactly <%s> in order. "
                       + "The values for keys <[3]> are not in order",
-                  actual,
-                  expected));
+                  actual, expected));
     }
   }
 }

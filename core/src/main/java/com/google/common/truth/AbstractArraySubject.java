@@ -32,18 +32,14 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
     super(failureStrategy, subject);
   }
 
-  /**
-   * Fails if the array is not empty (i.e. {@code array.length != 0}).
-   */
+  /** Fails if the array is not empty (i.e. {@code array.length != 0}). */
   public void isEmpty() {
     if (!listRepresentation().isEmpty()) {
       fail("is empty");
     }
   }
 
-  /**
-   * Fails if the array is empty (i.e. {@code array.length == 0}).
-   */
+  /** Fails if the array is empty (i.e. {@code array.length == 0}). */
   public void isNotEmpty() {
     if (listRepresentation().isEmpty()) {
       fail("is not empty");
@@ -89,14 +85,12 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
     String expectedTypeString = expectedType.getName() + expectedBrackets;
     failWithRawMessage(
         "Incompatible types compared. expected: %s, actual: %s%s",
-        Platform.compressType(expectedTypeString),
-        underlyingType(),
-        brackets());
+        Platform.compressType(expectedTypeString), underlyingType(), brackets());
   }
-  
+
   /**
-   * Returns the brackets to put after the underlying type.  Multi-dimensional array subjects
-   * should override this to return the correct number of brackets.
+   * Returns the brackets to put after the underlying type. Multi-dimensional array subjects should
+   * override this to return the correct number of brackets.
    */
   String brackets() {
     return "[]";

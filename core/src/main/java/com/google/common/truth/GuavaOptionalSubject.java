@@ -29,18 +29,14 @@ public class GuavaOptionalSubject extends Subject<GuavaOptionalSubject, Optional
     super(failureStrategy, subject);
   }
 
-  /**
-   * Fails if the {@link Optional}{@code <T>} is absent or the subject is null.
-   */
+  /** Fails if the {@link Optional}{@code <T>} is absent or the subject is null. */
   public void isPresent() {
     if (getSubject() == null || !getSubject().isPresent()) {
       failWithoutSubject("is present");
     }
   }
 
-  /**
-   * Fails if the {@link Optional}{@code <T>} is present or the subject is null..
-   */
+  /** Fails if the {@link Optional}{@code <T>} is present or the subject is null.. */
   public void isAbsent() {
     if (getSubject() == null || getSubject().isPresent()) {
       fail("is absent");

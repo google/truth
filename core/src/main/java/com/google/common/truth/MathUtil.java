@@ -18,9 +18,7 @@ package com.google.common.truth;
 
 import com.google.common.primitives.Doubles;
 
-/**
- * Math utilities to be shared by numeric subjects.
- */
+/** Math utilities to be shared by numeric subjects. */
 public final class MathUtil {
   private MathUtil() {}
 

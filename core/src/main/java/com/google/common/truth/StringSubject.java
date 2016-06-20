@@ -65,9 +65,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
       } else if (!(expected instanceof String)) {
         failWithRawMessage(
             "Not true that %s is equal to (%s)<%s>",
-            getDisplaySubject(),
-            expected.getClass().getName(),
-            expected);
+            getDisplaySubject(), expected.getClass().getName(), expected);
       } else if (!getSubject().equals(expected)) {
         if (internalCustomName() != null) {
           failureStrategy.failComparing(
@@ -79,17 +77,13 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * @deprecated Use {@link #isEqualTo} instead. String comparison is consistent with equality.
-   */
+  /** @deprecated Use {@link #isEqualTo} instead. String comparison is consistent with equality. */
   @Deprecated
   public final void isEquivalentAccordingToCompareTo(String other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
 
-  /**
-   * Fails if the string is not null.
-   */
+  /** Fails if the string is not null. */
   @Override
   public void isNull() {
     if (getSubject() != null) {
@@ -97,24 +91,18 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string does not have the given length.
-   */
+  /** Fails if the string does not have the given length. */
   public void hasLength(int expectedLength) {
     checkArgument(expectedLength >= 0, "expectedLength(%s) must be >= 0", expectedLength);
     int actualLength = getSubject().length();
     if (actualLength != expectedLength) {
       failWithRawMessage(
           "Not true that %s has a length of %s. It is %s.",
-          getDisplaySubject(),
-          expectedLength,
-          actualLength);
+          getDisplaySubject(), expectedLength, actualLength);
     }
   }
 
-  /**
-   * Fails if the string is not equal to the zero-length "empty string."
-   */
+  /** Fails if the string is not equal to the zero-length "empty string." */
   public void isEmpty() {
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference is empty");
@@ -123,9 +111,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string is equal to the zero-length "empty string."
-   */
+  /** Fails if the string is equal to the zero-length "empty string." */
   public void isNotEmpty() {
     if (getSubject() == null) {
       failWithRawMessage("Not true that null reference is not empty");
@@ -134,9 +120,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string does not contain the given sequence.
-   */
+  /** Fails if the string does not contain the given sequence. */
   public void contains(CharSequence string) {
     checkNotNull(string);
     if (getSubject() == null) {
@@ -146,9 +130,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string contains the given sequence.
-   */
+  /** Fails if the string contains the given sequence. */
   public void doesNotContain(CharSequence string) {
     checkNotNull(string);
     if (getSubject() == null) {
@@ -158,9 +140,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string does not start with the given string.
-   */
+  /** Fails if the string does not start with the given string. */
   public void startsWith(String string) {
     checkNotNull(string);
     if (getSubject() == null) {
@@ -170,9 +150,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string does not end with the given string.
-   */
+  /** Fails if the string does not end with the given string. */
   public void endsWith(String string) {
     checkNotNull(string);
     if (getSubject() == null) {
@@ -182,18 +160,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string does not match the given regex.
-   */
+  /** Fails if the string does not match the given regex. */
   public void matches(String regex) {
     if (!getSubject().matches(regex)) {
       fail("matches", regex);
     }
   }
 
-  /**
-   * Fails if the string does not match the given regex.
-   */
+  /** Fails if the string does not match the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void matches(Pattern regex) {
     if (!regex.matcher(getSubject()).matches()) {
@@ -201,18 +175,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string matches the given regex.
-   */
+  /** Fails if the string matches the given regex. */
   public void doesNotMatch(String regex) {
     if (getSubject().matches(regex)) {
       fail("fails to match", regex);
     }
   }
 
-  /**
-   * Fails if the string matches the given regex.
-   */
+  /** Fails if the string matches the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotMatch(Pattern regex) {
     if (regex.matcher(getSubject()).matches()) {
@@ -220,9 +190,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string does not contain a match on the given regex.
-   */
+  /** Fails if the string does not contain a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void containsMatch(Pattern pattern) {
     if (!pattern.matcher(getSubject()).find()) {
@@ -230,18 +198,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string does not contain a match on the given regex.
-   */
+  /** Fails if the string does not contain a match on the given regex. */
   public void containsMatch(String regex) {
     if (!Platform.containsMatch(getSubject(), regex)) {
       failWithRawMessage("%s should have contained a match for <%s>", getDisplaySubject(), regex);
     }
   }
 
-  /**
-   * Fails if the string contains a match on the given regex.
-   */
+  /** Fails if the string contains a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotContainMatch(Pattern pattern) {
     if (pattern.matcher(getSubject()).find()) {
@@ -250,9 +214,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     }
   }
 
-  /**
-   * Fails if the string contains a match on the given regex.
-   */
+  /** Fails if the string contains a match on the given regex. */
   public void doesNotContainMatch(String regex) {
     if (Platform.containsMatch(getSubject(), regex)) {
       failWithRawMessage(

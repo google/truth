@@ -26,24 +26,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Extracted routines that need to be swapped in for GWT, to allow for
- * minimal deltas between the GWT and non-GWT version.
+ * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the
+ * GWT and non-GWT version.
  *
  * @author Christian Gruber (cgruber@google.com)
  */
 public final class Platform {
   private Platform() {}
 
-  /**
-   * Returns true if the instance is assignable to the type Clazz.
-   */
+  /** Returns true if the instance is assignable to the type Clazz. */
   public static boolean isInstanceOfType(Object instance, Class<?> clazz) {
     return isInstanceOfTypeJava(instance, clazz);
   }
 
   /**
-   * Returns true if the instance is assignable to the type Clazz (suitable for a JVM
-   * environment).
+   * Returns true if the instance is assignable to the type Clazz (suitable for a JVM environment).
    */
   @GwtIncompatible("Reflection")
   static boolean isInstanceOfTypeJava(Object instance, Class<?> clazz) {
@@ -51,8 +48,7 @@ public final class Platform {
   }
 
   /**
-   * Returns true if the instance is assignable to the type Clazz (suitable for a GWT
-   * environment).
+   * Returns true if the instance is assignable to the type Clazz (suitable for a GWT environment).
    */
   static boolean isInstanceOfTypeGWT(Object instance, Class<?> clazz) {
     String className = clazz.getName();
@@ -83,9 +79,7 @@ public final class Platform {
 
   public static final Pattern TYPE_PATTERN = Pattern.compile("(?:[\\w$]+\\.)*([\\w\\.*$]+)");
 
-  /**
-   * Inspired by JavaWriter.
-   */
+  /** Inspired by JavaWriter. */
   public static String compressType(String type) {
     type = typeOnly(type);
     StringBuilder sb = new StringBuilder();
@@ -134,23 +128,17 @@ public final class Platform {
     return new ComparisonFailure(message, expected, actual);
   }
 
-  /**
-   * Determines if the given subject contains a match for the given regex.
-   */
+  /** Determines if the given subject contains a match for the given regex. */
   public static boolean containsMatch(String subject, String regex) {
     return Pattern.compile(regex).matcher(subject).find();
   }
 
-  /**
-   * Returns the length of an array.
-   */
+  /** Returns the length of an array. */
   static int getArrayLength(Object array) {
     return Array.getLength(array);
   }
 
-  /**
-   * Returns the item in the array at index i.
-   */
+  /** Returns the item in the array at index i. */
   static Object getFromArray(Object array, int i) {
     return Array.get(array, i);
   }

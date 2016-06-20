@@ -59,27 +59,21 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     return this;
   }
 
-  /**
-   * Fails if the multimap is not empty.
-   */
+  /** Fails if the multimap is not empty. */
   public void isEmpty() {
     if (!getSubject().isEmpty()) {
       fail("is empty");
     }
   }
 
-  /**
-   * Fails if the multimap is empty.
-   */
+  /** Fails if the multimap is empty. */
   public void isNotEmpty() {
     if (getSubject().isEmpty()) {
       fail("is not empty");
     }
   }
 
-  /**
-   * Fails if the multimap does not have the given size.
-   */
+  /** Fails if the multimap does not have the given size. */
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
     int actualSize = getSubject().size();
@@ -88,36 +82,28 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     }
   }
 
-  /**
-   * Fails if the multimap does not contain the given key.
-   */
+  /** Fails if the multimap does not contain the given key. */
   public void containsKey(@Nullable Object key) {
     if (!getSubject().containsKey(key)) {
       fail("contains key", key);
     }
   }
 
-  /**
-   * Fails if the multimap contains the given key.
-   */
+  /** Fails if the multimap contains the given key. */
   public void doesNotContainKey(@Nullable Object key) {
     if (getSubject().containsKey(key)) {
       fail("does not contain key", key);
     }
   }
 
-  /**
-   * Fails if the multimap does not contain the given entry.
-   */
+  /** Fails if the multimap does not contain the given entry. */
   public void containsEntry(@Nullable Object key, @Nullable Object value) {
     if (!getSubject().containsEntry(key, value)) {
       fail("contains entry", Maps.immutableEntry(key, value));
     }
   }
 
-  /**
-   * Fails if the multimap contains the given entry.
-   */
+  /** Fails if the multimap contains the given entry. */
   public void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
     if (getSubject().containsEntry(key, value)) {
       fail("does not contain entry", Maps.immutableEntry(key, value));
@@ -125,10 +111,10 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   }
 
   /**
-   * Returns a context-aware Subject for making assertions about the values for the given key
-   * within the Multimap.
+   * Returns a context-aware Subject for making assertions about the values for the given key within
+   * the Multimap.
    *
-   * <p>This method performs no checks on its own and cannot cause test failures.  Subsequent
+   * <p>This method performs no checks on its own and cannot cause test failures. Subsequent
    * assertions must be chained onto this method call to test properties of the Multimap.
    */
   public IterableSubject valuesForKey(@Nullable Object key) {
@@ -145,12 +131,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         failWithRawMessage(
             "Not true that %s %s is equal to %s <%s>. "
                 + "A %s cannot equal a %s if either is non-empty.",
-            mapType1,
-            getDisplaySubject(),
-            mapType2,
-            other,
-            mapType1,
-            mapType2);
+            mapType1, getDisplaySubject(), mapType2, other, mapType1, mapType2);
       } else {
         if (getSubject() instanceof ListMultimap) {
           // If we're comparing ListMultimaps, check for order
@@ -171,9 +152,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   /**
    * Fails if the Multimap does not contain precisely the same entries as the argument Multimap.
    *
-   * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify
-   * that the two Multimaps iterate fully in the same order.  That is, their key sets iterate
-   * in the same order, and the value collections for each key iterate in the same order.
+   * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify that
+   * the two Multimaps iterate fully in the same order. That is, their key sets iterate in the same
+   * order, and the value collections for each key iterate in the same order.
    */
   @CanIgnoreReturnValue
   public Ordered containsExactlyEntriesIn(Multimap<?, ?> expectedMultimap) {
@@ -181,9 +162,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     return containsExactly("contains exactly", expectedMultimap);
   }
 
-  /**
-   * @deprecated Use {@link #containsExactlyEntriesIn} instead.
-   */
+  /** @deprecated Use {@link #containsExactlyEntriesIn} instead. */
   @Deprecated
   @CanIgnoreReturnValue
   public Ordered containsExactly(Multimap<?, ?> expectedMultimap) {
@@ -272,22 +251,17 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           failWithRawMessage(
               "Not true that %s contains exactly <%s> in order. The keys are not in order, "
                   + "and the values for keys <%s> are not in order either",
-              getDisplaySubject(),
-              expectedMultimap,
-              keysWithValuesOutOfOrder);
+              getDisplaySubject(), expectedMultimap, keysWithValuesOutOfOrder);
         } else {
           failWithRawMessage(
               "Not true that %s contains exactly <%s> in order. The keys are not in order",
-              getDisplaySubject(),
-              expectedMultimap);
+              getDisplaySubject(), expectedMultimap);
         }
       } else if (!keysWithValuesOutOfOrder.isEmpty()) {
         failWithRawMessage(
             "Not true that %s contains exactly <%s> in order. "
                 + "The values for keys <%s> are not in order",
-            getDisplaySubject(),
-            expectedMultimap,
-            keysWithValuesOutOfOrder);
+            getDisplaySubject(), expectedMultimap, keysWithValuesOutOfOrder);
       }
     }
   }
@@ -303,8 +277,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   private static Multimap<?, ?> difference(Multimap<?, ?> minuend, Multimap<?, ?> subtrahend) {
     LinkedListMultimap<Object, Object> difference = LinkedListMultimap.create();
     for (Object key : minuend.keySet()) {
-      List<?> valDifference = difference(
-          Lists.newArrayList(get(minuend, key)), Lists.newArrayList(get(subtrahend, key)));
+      List<?> valDifference =
+          difference(
+              Lists.newArrayList(get(minuend, key)), Lists.newArrayList(get(subtrahend, key)));
       difference.putAll(key, valDifference);
     }
     return difference;

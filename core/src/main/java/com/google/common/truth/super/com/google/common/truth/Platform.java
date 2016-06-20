@@ -24,25 +24,22 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Extracted routines that need to be swapped in for GWT, to allow for
- * minimal deltas between the GWT and non-GWT version.
+ * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the
+ * GWT and non-GWT version.
  *
  * @author Christian Gruber (cgruber@google.com)
  */
 public final class Platform {
   private Platform() {}
 
-  /**
-   * Returns true if the instance is assignable to the type Clazz.
-   */
+  /** Returns true if the instance is assignable to the type Clazz. */
   public static boolean isInstanceOfType(Object instance, Class<?> clazz) {
     return isInstanceOfTypeGWT(instance, clazz);
   }
 
   /**
-   * Returns true if the instance is assignable to the type Clazz (though in GWT
-   * clazz can only be a concrete class that is an ancestor class of the instance
-   * or the direct type of the instance.
+   * Returns true if the instance is assignable to the type Clazz (though in GWT clazz can only be a
+   * concrete class that is an ancestor class of the instance or the direct type of the instance.
    */
   static boolean isInstanceOfTypeGWT(Object instance, Class<?> clazz) {
     String className = clazz.getName();
@@ -63,9 +60,7 @@ public final class Platform {
     }
   }
 
-  /**
-   * This is a no-op in GWT as it relies on matching.
-   */
+  /** This is a no-op in GWT as it relies on matching. */
   public static String compressType(String type) {
     return type;
   }
@@ -74,16 +69,12 @@ public final class Platform {
     return new AssertionError(format("%s: expected: %s actual: %s", message, expected, actual));
   }
 
-  /**
-   * Determines if the given subject contains a match for the given regex.
-   */
+  /** Determines if the given subject contains a match for the given regex. */
   static boolean containsMatch(String subject, String regex) {
     return compile(regex).test(subject);
   }
 
-  /**
-   * Returns the length of an array.
-   */
+  /** Returns the length of an array. */
   static int getArrayLength(Object array) {
     if (array == null || !array.getClass().isArray()) {
       throw new IllegalArgumentException("not an array: " + array);
@@ -110,9 +101,7 @@ public final class Platform {
     }
   }
 
-  /**
-   * Returns the item in the array at index i.
-   */
+  /** Returns the item in the array at index i. */
   static Object getFromArray(Object array, int i) {
     if (array == null) {
       throw new NullPointerException("array is null");
@@ -151,6 +140,7 @@ public final class Platform {
   @JsType(isNative = true, name = "RegExp", namespace = JsPackage.GLOBAL)
   private static class NativeRegExp {
     public NativeRegExp(String pattern) {}
+
     public native boolean test(String input);
   }
 }

@@ -33,8 +33,8 @@ import javax.annotation.Nullable;
  * A Subject to handle testing propositions for {@code float[]}.
  *
  * <p>Note: this class deprecates some common methods because the operation of equality and
- * comparison on floating point numbers requires additional specification.  Alternative
- * equality tests are provided.
+ * comparison on floating point numbers requires additional specification. Alternative equality
+ * tests are provided.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -55,8 +55,8 @@ public class PrimitiveFloatArraySubject
   }
 
   /**
-   * This form is unsafe for floating point types, and will throw an
-   * {@link UnsupportedOperationException}.
+   * This form is unsafe for floating point types, and will throw an {@link
+   * UnsupportedOperationException}.
    *
    * @deprecated use {@link #hasValuesWithin(float)}
    */
@@ -69,13 +69,13 @@ public class PrimitiveFloatArraySubject
   }
 
   /**
-   * A proposition that the provided float[] is an array of the same length and type, and
-   * contains elements such that each element in {@code expected} is equal to each element
-   * in the subject, and in the same position.
+   * A proposition that the provided float[] is an array of the same length and type, and contains
+   * elements such that each element in {@code expected} is equal to each element in the subject,
+   * and in the same position.
    *
-   * <p>Behaviour for non-finite values ({@link Float#POSITIVE_INFINITY POSITIVE_INFINITY},
-   * {@link Float#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Float#NaN NaN}) is as follows:
-   * If the subject and the object of the assertion are the same array the test will pass. If not
+   * <p>Behaviour for non-finite values ({@link Float#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
+   * Float#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Float#NaN NaN}) is as follows: If the
+   * subject and the object of the assertion are the same array, the test will pass. If not
    * (including if one is a clone of the other) then non-finite values are considered not equal so
    * the any non-finite value in either argument will cause the test to fail.
    *
@@ -93,8 +93,7 @@ public class PrimitiveFloatArraySubject
       if (expectedArray.length != actual.length) {
         failWithRawMessage(
             "Arrays are of different lengths. expected: %s, actual %s",
-            Floats.asList(expectedArray),
-            Floats.asList(actual));
+            Floats.asList(expectedArray), Floats.asList(actual));
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expectedArray.length; i++) {
@@ -112,8 +111,8 @@ public class PrimitiveFloatArraySubject
   }
 
   /**
-   * This form is unsafe for floating point types, and will throw an
-   * {@link UnsupportedOperationException}.
+   * This form is unsafe for floating point types, and will throw an {@link
+   * UnsupportedOperationException}.
    *
    * @deprecated use {@link #hasValuesNotWithin(float)}
    */
@@ -126,12 +125,12 @@ public class PrimitiveFloatArraySubject
   }
 
   /**
-   * A proposition that the provided float[] is not an array of the same length or type, or
-   * has at least one element that does not pass an equality test within the given tolerance.
+   * A proposition that the provided float[] is not an array of the same length or type, or has at
+   * least one element that does not pass an equality test within the given tolerance.
    *
-   * <p>Behaviour for non-finite values ({@link Float#POSITIVE_INFINITY POSITIVE_INFINITY},
-   * {@link Float#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Float#NaN NaN}) is as follows:
-   * If the subject and the object of the assertion are the same array the test will fail. If not
+   * <p>Behaviour for non-finite values ({@link Float#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
+   * Float#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Float#NaN NaN}) is as follows: If the
+   * subject and the object of the assertion are the same array, the test will fail. If not
    * (including if one is a clone of the other) then non-finite values are considered not equal so
    * the any non-finite value in either argument will cause the test to pass.
    *
@@ -194,8 +193,8 @@ public class PrimitiveFloatArraySubject
     /**
      * @throws UnsupportedOperationException always
      * @deprecated {@link Object#equals(Object)} is not supported on
-     *     TolerantPrimitiveFloatArrayComparison. If you meant to compare float arrays, use
-     *     {@link #of} or {@link #ofElementsIn} instead.
+     *     TolerantPrimitiveFloatArrayComparison. If you meant to compare float arrays, use {@link
+     *     #of} or {@link #ofElementsIn} instead.
      */
     @Deprecated
     @Override
@@ -219,16 +218,16 @@ public class PrimitiveFloatArraySubject
   /**
    * Prepares for a check that the subject and object are arrays both (a) of the same length, and
    * (b) where the values at all corresponding positions in each array are finite values within
-   * {@code tolerance} of each other, that is
-   * {@code assertThat(actual[i]).isWithin(tolerance).of(expected[i])} passes for all {@code i}
-   * (see the {@link FloatSubject#isWithin isWithin} assertion for floats).
+   * {@code tolerance} of each other, that is {@code
+   * assertThat(actual[i]).isWithin(tolerance).of(expected[i])} passes for all {@code i} (see the
+   * {@link FloatSubject#isWithin isWithin} assertion for floats).
    *
-   * <p>The check will fail if any value in either the subject array or the object array is
-   * {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.
+   * <p>The check will fail if any value in either the subject array or the object array is {@link
+   * Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.
    *
    * @param tolerance an inclusive upper bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not
-   *     {@link Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
+   *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
+   *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantPrimitiveFloatArrayComparison hasValuesWithin(final float tolerance) {
     return new TolerantPrimitiveFloatArrayComparison() {
@@ -272,17 +271,17 @@ public class PrimitiveFloatArraySubject
   /**
    * Prepares for a check that the subject and object are arrays either (a) of the different
    * lengths, or (b) of the same length but where the values at at least one corresponding position
-   * in each array are finite values not within {@code tolerance} of each other, that is
-   * {@code assertThat(actual[i]).isNotWithin(tolerance).of(expected[i])} passes for at least one
-   * {@code i} (see the {@link FloatSubject#isNotWithin isNotWithin} assertion for floats).
+   * in each array are finite values not within {@code tolerance} of each other, that is {@code
+   * assertThat(actual[i]).isNotWithin(tolerance).of(expected[i])} passes for at least one {@code i}
+   * (see the {@link FloatSubject#isNotWithin isNotWithin} assertion for floats).
    *
    * <p>In the case (b), a pair of subject and object values will not cause the test to pass if
-   * either of them is {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or
-   * {@link Float#NaN}.
+   * either of them is {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or {@link
+   * Float#NaN}.
    *
    * @param tolerance an exclusive lower bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not
-   *     {@code Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
+   *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
+   *     Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantPrimitiveFloatArrayComparison hasValuesNotWithin(final float tolerance) {
     return new TolerantPrimitiveFloatArrayComparison() {

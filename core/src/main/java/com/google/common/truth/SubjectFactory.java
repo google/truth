@@ -18,8 +18,7 @@ package com.google.common.truth;
 import com.google.common.annotations.GwtIncompatible;
 
 /**
- * A custom subject factory which will return a FooSubject (which
- * is a Subject<Foo>).
+ * A custom subject factory which will return a FooSubject (which is a {@code Subject<Foo>}).
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

@@ -30,21 +30,18 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
- * Truth - a proposition framework for tests, supporting JUnit style
- * assertion and assumption semantics in a fluent style.
+ * Truth - a proposition framework for tests, supporting JUnit style assertion and assumption
+ * semantics in a fluent style.
  *
- * <p>Truth is the simplest entry point class. A developer can statically
- * import the assertThat() method to get easy access to the library's
- * capabilities. Then, instead of writing:
- *
- * <pre>   {@code
+ * <p>Truth is the simplest entry point class. A developer can statically import the assertThat()
+ * method to get easy access to the library's capabilities. Then, instead of writing: <pre>   {@code
  *   Assert.assertEquals(a, b);
  *   Assert.assertTrue(c);
  *   Assert.assertTrue(d.contains(a));
  *   Assert.assertTrue(d.contains(a) && d.contains(b));
  *   Assert.assertTrue(d.contains(a) || d.contains(b) || d.contains(c));}</pre>
- * one would write:
- * <pre>   {@code
+ *
+ * one would write: <pre>   {@code
  *   assertThat(a).isEqualTo(b);
  *   assertThat(c).isTrue();
  *   assertThat(d).contains(a);
@@ -53,11 +50,9 @@ import javax.annotation.Nullable;
  *
  * <p>Tests should be easier to read, and flow more clearly.
  *
- * <p>Often, tests assert a relationship between a value produced by the test
- * (the "actual" value) and some reference value (the "expected" value). It is
- * strongly recommended that the actual value is made the subject of the
- * assertion. For example:
- * <pre>   {@code
+ * <p>Often, tests assert a relationship between a value produced by the test (the "actual" value)
+ * and some reference value (the "expected" value). It is strongly recommended that the actual value
+ * is made the subject of the assertion. For example: <pre>   {@code
  *   assertThat(actual).isEqualTo(expected);  // recommended
  *   assertThat(expected).isEqualTo(actual);  // not recommended
  *   assertThat(actual).isIn(expectedPossibilities);  // recommended
@@ -84,8 +79,8 @@ public final class Truth {
   }
 
   /**
-   * Returns a {@link TestVerb} that will prepend the given message to the failure message in
-   * the event of a test failure.
+   * Returns a {@link TestVerb} that will prepend the given message to the failure message in the
+   * event of a test failure.
    */
   public static TestVerb assertWithMessage(String messageToPrepend) {
     return assert_().withFailureMessage(messageToPrepend);
@@ -106,8 +101,8 @@ public final class Truth {
   }
 
   /**
-   * The recommended method of extension of Truth to new types, which is
-   * documented in {@link com.google.common.truth.delegation.DelegationTest}.
+   * The recommended method of extension of Truth to new types, which is documented in {@link
+   * com.google.common.truth.delegation.DelegationTest}.
    *
    * @param factory a SubjectFactory<S, T> implementation
    * @return A custom verb for the type returned by the SubjectFactory

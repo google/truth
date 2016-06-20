@@ -21,9 +21,7 @@ import com.google.common.truth.SubjectFactory;
 
 import javax.annotation.Nullable;
 
-/**
- * Subclass of Subject to be used for Testing.
- */
+/** Subclass of Subject to be used for Testing. */
 public class BarSubject extends Subject<BarSubject, String> {
   public static final SubjectFactory<BarSubject, String> BAR =
       new SubjectFactory<BarSubject, String>() {

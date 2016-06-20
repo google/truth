@@ -53,7 +53,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
   protected String underlyingType() {
     return typeName;
   }
-  
+
   @Override
   String brackets() {
     return Strings.repeat("[]", numberOfDimensions);
@@ -69,36 +69,37 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
   private static Iterable<?> stringableIterable(Object[] array) {
     return Iterables.transform(Arrays.asList(array), STRINGIFY);
   }
-  
-  private static Function<Object, Object> STRINGIFY = new Function<Object, Object>() {
-    @Override
-    public Object apply(@Nullable Object input) {
-      if (input != null && input.getClass().isArray()) {
-        Iterable<?> iterable;
-        if (input.getClass() == boolean[].class) {
-          iterable = Booleans.asList((boolean[]) input);
-        } else if (input.getClass() == int[].class) {
-          iterable = Ints.asList((int[]) input);
-        } else if (input.getClass() == long[].class) {
-          iterable = Longs.asList((long[]) input);
-        } else if (input.getClass() == short[].class) {
-          iterable = Shorts.asList((short[]) input);
-        } else if (input.getClass() == byte[].class) {
-          iterable = Bytes.asList((byte[]) input);
-        } else if (input.getClass() == double[].class) {
-          iterable = Doubles.asList((double[]) input);
-        } else if (input.getClass() == float[].class) {
-          iterable = Floats.asList((float[]) input);
-        } else if (input.getClass() == char[].class) {
-          iterable = Chars.asList((char[]) input);
-        } else {
-          iterable = Arrays.asList((Object[]) input);
+
+  private static final Function<Object, Object> STRINGIFY =
+      new Function<Object, Object>() {
+        @Override
+        public Object apply(@Nullable Object input) {
+          if (input != null && input.getClass().isArray()) {
+            Iterable<?> iterable;
+            if (input.getClass() == boolean[].class) {
+              iterable = Booleans.asList((boolean[]) input);
+            } else if (input.getClass() == int[].class) {
+              iterable = Ints.asList((int[]) input);
+            } else if (input.getClass() == long[].class) {
+              iterable = Longs.asList((long[]) input);
+            } else if (input.getClass() == short[].class) {
+              iterable = Shorts.asList((short[]) input);
+            } else if (input.getClass() == byte[].class) {
+              iterable = Bytes.asList((byte[]) input);
+            } else if (input.getClass() == double[].class) {
+              iterable = Doubles.asList((double[]) input);
+            } else if (input.getClass() == float[].class) {
+              iterable = Floats.asList((float[]) input);
+            } else if (input.getClass() == char[].class) {
+              iterable = Chars.asList((char[]) input);
+            } else {
+              iterable = Arrays.asList((Object[]) input);
+            }
+            return Iterables.transform(iterable, STRINGIFY);
+          }
+          return input;
         }
-        return Iterables.transform(iterable, STRINGIFY);
-      }
-      return input;
-    }
-  };
+      };
 
   private static String typeNameFromInstance(Object instance) {
     if (instance == null) {
@@ -121,7 +122,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
       return Platform.compressType(type.toString());
     }
   }
-  
+
   private static int numberOfDimensions(Object instance) {
     if (instance == null) {
       return 0;
@@ -136,9 +137,9 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
   }
 
   /**
-   * A proposition that the provided Object[] is an array of the same length and type, and
-   * contains elements such that each element in {@code expected} is equal to each element
-   * in the subject, and in the same position.
+   * A proposition that the provided Object[] is an array of the same length and type, and contains
+   * elements such that each element in {@code expected} is equal to each element in the subject,
+   * and in the same position.
    */
   @Override
   public void isEqualTo(Object expected) {
@@ -151,9 +152,7 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
       if (actual.length != expectedArray.length) {
         failWithRawMessage(
             "%s has length %s. Expected length is %s",
-            getDisplaySubject(),
-            actual.length,
-            expectedArray.length);
+            getDisplaySubject(), actual.length, expectedArray.length);
       } else {
         String index = checkArrayEqualsRecursive(expectedArray, actual, "");
         if (index != null) {
@@ -165,10 +164,10 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
       failWithBadType(expected);
     }
   }
-  
+
   /**
-   * Returns null if the arrays are equal, recursively.  If not equal, returns the string
-   * of the index at which they're different. 
+   * Returns null if the arrays are equal, recursively. If not equal, returns the string of the
+   * index at which they're different.
    */
   @Nullable
   private String checkArrayEqualsRecursive(
@@ -180,8 +179,10 @@ public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubje
       if (i < expectedLength && i < actualLength) {
         Object expected = Platform.getFromArray(expectedArray, i);
         Object actual = Platform.getFromArray(actualArray, i);
-        if (actual != null && actual.getClass().isArray()
-            && expected != null && expected.getClass().isArray()) {
+        if (actual != null
+            && actual.getClass().isArray()
+            && expected != null
+            && expected.getClass().isArray()) {
           String result = checkArrayEqualsRecursive(expected, actual, index);
           if (result != null) {
             return result;

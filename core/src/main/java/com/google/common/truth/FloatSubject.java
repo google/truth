@@ -37,8 +37,8 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   }
 
   /**
-   * A partially specified proposition about an approximate relationship to a {@code float}
-   * subject using a tolerance.
+   * A partially specified proposition about an approximate relationship to a {@code float} subject
+   * using a tolerance.
    */
   public abstract class TolerantFloatComparison {
 
@@ -54,8 +54,8 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
 
     /**
      * @throws UnsupportedOperationException always
-     * @deprecated {@link Object#equals(Object)} is not supported on TolerantFloatComparison
-     *     If you meant to compare floats, use {@link #of(float)} instead.
+     * @deprecated {@link Object#equals(Object)} is not supported on TolerantFloatComparison. If you
+     *     meant to compare floats, use {@link #of(float)} instead.
      */
     @Deprecated
     @Override
@@ -84,14 +84,13 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * that a return value is copied unchanged from the input, by specifying an exact constant value
    * to be returned, or by specifying an exact sequence of arithmetic operations to be followed.
    *
-   * <p>The check will fail if either the subject or the object is
-   * {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}. To
-   * check for those values, use {@link #isPositiveInfinity}, {@link isNegativeInfinity}, or
-   * {@link isNaN}.
+   * <p>The check will fail if either the subject or the object is {@link Float#POSITIVE_INFINITY},
+   * {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}. To check for those values, use {@link
+   * #isPositiveInfinity}, {@link isNegativeInfinity}, or {@link isNaN}.
    *
    * @param tolerance an inclusive upper bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not
-   *     {@link Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
+   *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
+   *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isWithin(final float tolerance) {
     return new TolerantFloatComparison() {
@@ -105,9 +104,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
         if (!equalWithinTolerance(actual, expected, tolerance)) {
           failWithRawMessage(
               "%s and <%s> should have been finite values within <%s> of each other",
-              getDisplaySubject(),
-              expected,
-              tolerance);
+              getDisplaySubject(), expected, tolerance);
         }
       }
     };
@@ -119,14 +116,13 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    *
    * <p>You can use a tolerance of {@code 0.0f} to assert the exact inequality of finite floats.
    *
-   * <p>The check will fail if either the subject or the object is
-   * {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.
-   * See {@link #isFinite} and {@link #isNotNaN}, or use {@link #isIn} with a suitable
-   * {@link com.google.common.collect.Range Range}.
+   * <p>The check will fail if either the subject or the object is {@link Float#POSITIVE_INFINITY},
+   * {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}. See {@link #isFinite} and {@link
+   * #isNotNaN}, or use {@link #isIn} with a suitable {@link com.google.common.collect.Range Range}.
    *
    * @param tolerance an exclusive lower bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not
-   *     {@code Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
+   *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
+   *     Float.NaN}, {@code Float.POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public TolerantFloatComparison isNotWithin(final float tolerance) {
     return new TolerantFloatComparison() {
@@ -140,17 +136,13 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
         if (!notEqualWithinTolerance(actual, expected, tolerance)) {
           failWithRawMessage(
               "%s and <%s> should have been finite values not within <%s> of each other",
-              getDisplaySubject(),
-              expected,
-              tolerance);
+              getDisplaySubject(), expected, tolerance);
         }
       }
     };
   }
 
-  /**
-   * @deprecated Use {@link #isWithin} instead. Float comparison should always have a tolerance.
-   */
+  /** @deprecated Use {@link #isWithin} instead. Float comparison should always have a tolerance. */
   @Deprecated
   public final void isEqualTo(@Nullable Float other) {
     super.isEqualTo(other);
@@ -164,9 +156,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
     super.isNotEqualTo(other);
   }
 
-  /**
-   * @deprecated Use {@link #isWithin} instead. Float comparison should always have a tolerance.
-   */
+  /** @deprecated Use {@link #isWithin} instead. Float comparison should always have a tolerance. */
   @Override
   @Deprecated
   public final void isEquivalentAccordingToCompareTo(Float other) {
@@ -185,30 +175,24 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
     checkArgument(tolerance != Float.POSITIVE_INFINITY, "tolerance cannot be POSITIVE_INFINITY");
   }
 
-  /**
-   * Asserts that the subject is {@link Float#POSITIVE_INFINITY}.
-   */
+  /** Asserts that the subject is {@link Float#POSITIVE_INFINITY}. */
   public final void isPositiveInfinity() {
     super.isEqualTo(Float.POSITIVE_INFINITY);
   }
 
-  /**
-   * Asserts that the subject is {@link Float#NEGATIVE_INFINITY}.
-   */
+  /** Asserts that the subject is {@link Float#NEGATIVE_INFINITY}. */
   public final void isNegativeInfinity() {
     super.isEqualTo(Float.NEGATIVE_INFINITY);
   }
 
-  /**
-   * Asserts that the subject is {@link Float#NaN}.
-   */
+  /** Asserts that the subject is {@link Float#NaN}. */
   public final void isNaN() {
     super.isEqualTo(Float.NaN);
   }
 
   /**
-   * Asserts that the subject is finite, i.e. not {@link Float#POSITIVE_INFINITY},
-   * {@link Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.
+   * Asserts that the subject is finite, i.e. not {@link Float#POSITIVE_INFINITY}, {@link
+   * Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.
    */
   public final void isFinite() {
     if (getSubject() == null || getSubject().isNaN() || getSubject().isInfinite()) {
@@ -217,8 +201,8 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   }
 
   /**
-   * Asserts that the subject is not {@link Float#NaN} (but it may be
-   * {@link Float#POSITIVE_INFINITY} or {@link Float#NEGATIVE_INFINITY}).
+   * Asserts that the subject is not {@link Float#NaN} (but it may be {@link
+   * Float#POSITIVE_INFINITY} or {@link Float#NEGATIVE_INFINITY}).
    */
   public final void isNotNaN() {
     if (getSubject() == null || getSubject().isNaN()) {

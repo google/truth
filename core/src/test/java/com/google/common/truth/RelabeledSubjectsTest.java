@@ -25,8 +25,7 @@ import org.junit.runners.JUnit4;
 import java.util.Arrays;
 
 /**
- * Tests (and effectively sample code) for the Expect verb (implemented as a
- * rule)
+ * Tests (and effectively sample code) for the Expect verb (implemented as a rule)
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)

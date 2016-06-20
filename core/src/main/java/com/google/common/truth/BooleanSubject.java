@@ -27,17 +27,13 @@ public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
     super(failureStrategy, subject);
   }
 
-  /**
-   * @deprecated Use {@link #isEqualTo} instead. Boolean comparison is consistent with equality.
-   */
+  /** @deprecated Use {@link #isEqualTo} instead. Boolean comparison is consistent with equality. */
   @Deprecated
   public final void isEquivalentAccordingToCompareTo(Boolean other) {
     super.isEquivalentAccordingToCompareTo(other);
   }
 
-  /**
-   * Fails if the subject is false or {@code null}.
-   */
+  /** Fails if the subject is false or {@code null}. */
   public void isTrue() {
     if (getSubject() == null) {
       failWithRawMessage("%s was expected to be true, but was null", booleanSubject());
@@ -46,9 +42,7 @@ public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
     }
   }
 
-  /**
-   * Fails if the subject is true or {@code null}.
-   */
+  /** Fails if the subject is true or {@code null}. */
   public void isFalse() {
     if (getSubject() == null) {
       failWithRawMessage("%s was expected to be false, but was null", booleanSubject());

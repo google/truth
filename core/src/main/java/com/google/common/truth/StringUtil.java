@@ -30,7 +30,7 @@ final class StringUtil {
   /**
    * Returns a message appropriate for string comparisons.
    *
-   * TODO(cgruber): Do something closer to what JUnit's {@code ComparisonFailure} does.
+   * <p>TODO(cgruber): Do something closer to what JUnit's {@code ComparisonFailure} does.
    */
   static String messageFor(String message, CharSequence expected, CharSequence actual) {
     return checkNotNull(message)
@@ -41,18 +41,17 @@ final class StringUtil {
   }
 
   /**
-   * Substitutes each {@code %s} in {@code template} with an argument. These
-   * are matched by position - the first {@code %s} gets {@code args[0]}, etc.
-   * If there are more arguments than placeholders, the unmatched arguments will
-   * be appended to the end of the formatted message in square braces.
+   * Substitutes each {@code %s} in {@code template} with an argument. These are matched by position
+   * - the first {@code %s} gets {@code args[0]}, etc. If there are more arguments than
+   * placeholders, the unmatched arguments will be appended to the end of the formatted message in
+   * square braces.
    *
-   * Cribbed from Guava's {@link com.google.common.base.Preconditions} to allow for a
+   * <p>Cribbed from Guava's {@link com.google.common.base.Preconditions} to allow for a
    * GWT-compatible alternative to {@link String#format(String, Object...)}
    *
    * @param template a string containing 0 or more {@code %s} placeholders
-   * @param args the arguments to be substituted into the message
-   *     template. Arguments are converted to strings using
-   *     {@link String#valueOf(Object)}. Arguments can be null.
+   * @param args the arguments to be substituted into the message template. Arguments are converted
+   *     to strings using {@link String#valueOf(Object)}. Arguments can be null.
    */
   static String format(@Nullable String template, Object... args) {
     template = String.valueOf(template); // null -> "null"

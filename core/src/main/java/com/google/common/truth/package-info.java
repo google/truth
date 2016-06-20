@@ -15,11 +15,11 @@
  */
 
 /**
- * Truth is an open source, fluent testing framework for Java that is designed to make your
- * test assertions and failure messages more readable.
+ * Truth is an open source, fluent testing framework for Java that is designed to make your test
+ * assertions and failure messages more readable.
  *
- * <p>This package is a part of the open-source
- * <a href="http://github.com/google/truth">Truth</a> library.
+ * <p>This package is a part of the open-source <a href="http://github.com/google/truth">Truth</a>
+ * library.
  */
 @CheckReturnValue
 @ParametersAreNonnullByDefault

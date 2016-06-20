@@ -30,18 +30,14 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
     super(failureStrategy, subject);
   }
 
-  /**
-   * Fails if the subject is not in the given range.
-   */
+  /** Fails if the subject is not in the given range. */
   public final void isIn(Range<T> range) {
     if (!range.contains(getSubject())) {
       fail("is in", range);
     }
   }
 
-  /**
-   * Fails if the subject is in the given range.
-   */
+  /** Fails if the subject is in the given range. */
   public final void isNotIn(Range<T> range) {
     if (range.contains(getSubject())) {
       fail("is not in", range);
@@ -49,27 +45,26 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
   }
 
   /**
-   * Fails if the subject is not equivalent to the given value according to
-   * {@link Comparable#compareTo}, (i.e., fails if {@code a.comparesTo(b) != 0}).
+   * Fails if the subject is not equivalent to the given value according to {@link
+   * Comparable#compareTo}, (i.e., fails if {@code a.comparesTo(b) != 0}).
    *
-   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use
-   * {@link #isEqualTo(Object)}.
+   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
+   * #isEqualTo(Object)}.
    */
   public void isEquivalentAccordingToCompareTo(T other) {
     if (getSubject().compareTo(other) != 0) {
       failWithRawMessage(
           "%s should have been equivalent to <%s> according to compareTo()",
-          getDisplaySubject(),
-          other);
+          getDisplaySubject(), other);
     }
   }
 
   /**
-   * Fails if the subject is not equivalent to the given value according to
-   * {@link Comparable#compareTo}, (i.e., fails if {@code a.comparesTo(b) != 0}).
+   * Fails if the subject is not equivalent to the given value according to {@link
+   * Comparable#compareTo}, (i.e., fails if {@code a.comparesTo(b) != 0}).
    *
-   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use
-   * {@link #isEqualTo(Object)}.
+   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
+   * #isEqualTo(Object)}.
    *
    * @deprecated Use {@link #isEquivalentAccordingToCompareTo} instead.
    */
@@ -78,36 +73,28 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
     isEquivalentAccordingToCompareTo(other);
   }
 
-  /**
-   * Fails if the subject is not greater than the given value.
-   */
+  /** Fails if the subject is not greater than the given value. */
   public final void isGreaterThan(T other) {
     if (getSubject().compareTo(other) <= 0) {
       fail("is greater than", other);
     }
   }
 
-  /**
-   * Fails if the subject is not less than the given value.
-   */
+  /** Fails if the subject is not less than the given value. */
   public final void isLessThan(T other) {
     if (getSubject().compareTo(other) >= 0) {
       fail("is less than", other);
     }
   }
 
-  /**
-   * Fails if the subject is greater than the given value.
-   */
+  /** Fails if the subject is greater than the given value. */
   public final void isAtMost(T other) {
     if (getSubject().compareTo(other) > 0) {
       fail("is at most", other);
     }
   }
 
-  /**
-   * Fails if the subject is less than the given value.
-   */
+  /** Fails if the subject is less than the given value. */
   public final void isAtLeast(T other) {
     if (getSubject().compareTo(other) < 0) {
       fail("is at least", other);

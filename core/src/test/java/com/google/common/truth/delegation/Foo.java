@@ -16,8 +16,7 @@
 package com.google.common.truth.delegation;
 
 /**
- * A custom object for demonstration of the delegation aproach to
- * extending truth.
+ * A custom object for demonstration of the delegation aproach to extending truth.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

@@ -41,7 +41,7 @@ import java.lang.reflect.Modifier;
  */
 @RunWith(JUnit4.class)
 public class TruthAssertThatTest {
-  private final static Function<Method, TypeToken<?>> METHOD_TO_RETURN_TYPE_TOKEN =
+  private static final Function<Method, TypeToken<?>> METHOD_TO_RETURN_TYPE_TOKEN =
       new Function<Method, TypeToken<?>>() {
         @Override
         public TypeToken<?> apply(Method input) {

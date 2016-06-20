@@ -57,8 +57,7 @@ import com.google.common.truth.Truth;
 import com.google.common.truth.TruthJUnit;
 
 /**
- * Static references to a variety of classes to force their loading during
- * the {@link TruthGwtTest}.
+ * Static references to a variety of classes to force their loading during the {@link TruthGwtTest}.
  */
 public class Inventory {
   AbstractArraySubject abstractArraySubject;

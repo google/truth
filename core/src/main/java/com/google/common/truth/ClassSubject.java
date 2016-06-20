@@ -31,8 +31,8 @@ public class ClassSubject extends Subject<ClassSubject, Class<?>> {
   }
 
   /**
-   * Fails if this class or interface is not the same as or a subclass or subinterface of,
-   * the given class or interface.
+   * Fails if this class or interface is not the same as or a subclass or subinterface of, the given
+   * class or interface.
    */
   public void isAssignableTo(Class<?> clazz) {
     if (!clazz.isAssignableFrom(getSubject())) {

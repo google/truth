@@ -21,9 +21,7 @@ import static com.google.common.truth.StringUtil.format;
 import javax.annotation.Nullable;
 
 /*>>>import org.checkerframework.checker.nullness.compatqual.NullableType;*/
-/**
- * A parent type for some infrastructure used in the Verb.
- */
+/** A parent type for some infrastructure used in the Verb. */
 // TODO(cgruber) Remove the FailureMessageHolder inheritance and restructure to simplify verbs.
 public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureContext {
   private final FailureStrategy failureStrategy;
@@ -45,16 +43,12 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
         : failureStrategy;
   }
 
-  /**
-   * Triggers the failure strategy with an empty failure message
-   */
+  /** Triggers the failure strategy with an empty failure message */
   public void fail() {
     getFailureStrategy().fail("");
   }
 
-  /**
-   * Triggers the failure strategy with the given failure message
-   */
+  /** Triggers the failure strategy with the given failure message */
   public void fail(@Nullable String format, Object /*@NullableType*/... args) {
     getFailureStrategy().fail(format(format, args));
   }
@@ -82,22 +76,19 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
   public abstract T withFailureMessage(@Nullable String format, Object /*@NullableType*/... args);
 
   /**
-   * The recommended method of extension of Truth to new types, which is
-   * documented in {@link com.google.common.truth.delegation.DelegationTest }.
+   * The recommended method of extension of Truth to new types, which is documented in {@link
+   * com.google.common.truth.delegation.DelegationTest}.
    *
    * @see com.google.common.truth.delegation.DelegationTest
-   * @param factory
-   *          a SubjectFactory<S, T> implementation
-   * @returns A custom verb for the type returned by the SubjectFactory
+   * @param factory a {@code SubjectFactory<S, T>} implementation
+   * @return A custom verb for the type returned by the SubjectFactory
    */
   public <S extends Subject<S, T>, T, SF extends SubjectFactory<S, T>> DelegatedVerb<S, T> about(
       SF factory) {
     return new DelegatedVerb<S, T>(getFailureStrategy(), factory);
   }
 
-  /**
-   * A special Verb implementation which wraps a SubjectFactory
-   */
+  /** A special Verb implementation which wraps a SubjectFactory */
   public static final class DelegatedVerb<S extends Subject<S, T>, T> {
     private final SubjectFactory<S, T> factory;
     private final FailureStrategy failureStrategy;

@@ -30,8 +30,8 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
   }
 
   /**
-   * Fails if the subject's value is not equal to the value of the given {@link BigDecimal}.
-   * (i.e., fails if {@code actual.comparesTo(expected) != 0}).
+   * Fails if the subject's value is not equal to the value of the given {@link BigDecimal}. (i.e.,
+   * fails if {@code actual.comparesTo(expected) != 0}).
    *
    * <p><b>Note:</b> The scale of the BigDecimal is ignored. If you want to compare the values and
    * the scales, use {@link #isEqualTo(Object)}.
@@ -53,8 +53,8 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
 
   /**
    * Fails if the subject's value is not equal to the value of the {@link BigDecimal} created from
-   * the expected {@code long} (i.e., fails if
-   * {@code actual.comparesTo(new BigDecimal(expected)) != 0}).
+   * the expected {@code long} (i.e., fails if {@code actual.comparesTo(new BigDecimal(expected)) !=
+   * 0}).
    *
    * <p><b>Note:</b> The scale of the BigDecimal is ignored. If you want to compare the values and
    * the scales, use {@link #isEqualTo(Object)}.
@@ -74,12 +74,12 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
   }
 
   /**
-   * Fails if the subject is not equivalent to the given value according to
-   * {@link Comparable#compareTo}, (i.e., fails if {@code a.comparesTo(b) != 0}). This method
-   * behaves identically to (the more clearly named) {@link #isEqualToIgnoringScale(BigDecimal)}.
+   * Fails if the subject is not equivalent to the given value according to {@link
+   * Comparable#compareTo}, (i.e., fails if {@code a.comparesTo(b) != 0}). This method behaves
+   * identically to (the more clearly named) {@link #isEqualToIgnoringScale(BigDecimal)}.
    *
-   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use
-   * {@link #isEqualTo(Object)}.
+   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
+   * #isEqualTo(Object)}.
    */
   public void isEquivalentAccordingToCompareTo(BigDecimal expected) {
     compareValues(expected);
@@ -89,8 +89,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
     if (getSubject().compareTo(expected) != 0) {
       failWithRawMessage(
           "%s should have had the same value as <%s> (scale is ignored)",
-          getDisplaySubject(),
-          expected);
+          getDisplaySubject(), expected);
     }
   }
 }

@@ -24,8 +24,8 @@ import java.util.Arrays;
 /**
  * A simple example Subject to demonstrate extension.
  *
- * <p>Callers would call {@code assertAbout(foo()).that(foo).matches(bar);}
- * or {@code assertAbout(foo()).that(foo).matchesEither(bar, baz);}
+ * <p>Callers would call {@code assertAbout(foo()).that(foo).matches(bar);} or {@code
+ * assertAbout(foo()).that(foo).matchesEither(bar, baz);}
  *
  * @author Christian Gruber (christianedwardgruber@gmail.com)
  */
