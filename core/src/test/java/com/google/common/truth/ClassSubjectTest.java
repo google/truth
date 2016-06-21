@@ -28,7 +28,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class ClassTest {
+public class ClassSubjectTest {
   @Test
   public void testIsAssignableTo_same() {
     assertThat(String.class).isAssignableTo(String.class);

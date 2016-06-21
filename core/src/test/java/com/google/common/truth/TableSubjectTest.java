@@ -31,7 +31,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class TableTest {
+public class TableSubjectTest {
   @Test
   public void tableIsEmpty() {
     ImmutableTable<String, String, String> table = ImmutableTable.of();

@@ -30,7 +30,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class GuavaOptionalTest {
+public class GuavaOptionalSubjectTest {
   @Test
   public void namedOptional() {
     Optional<String> optional = Optional.of("actual");

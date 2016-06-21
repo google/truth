@@ -35,7 +35,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class IntegerTest {
+public class IntegerSubjectTest {
   @Test
   public void simpleEquality() {
     assertThat(2 + 2).isEqualTo(4);

@@ -34,7 +34,7 @@ import java.util.Map;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class MapTest {
+public class MapSubjectTest {
   @Test
   public void containsExactlyWithNullKey() {
     Map<String, String> actual = Maps.newHashMap();

@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class StringTest {
+public class StringSubjectTest {
   @Test
   public void hasLength() {
     assertThat("kurt").hasLength(4);

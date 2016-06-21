@@ -32,7 +32,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class LongTest {
+public class LongSubjectTest {
   @Test
   public void simpleEquality() {
     assertThat(2L + 2).isEqualTo(4L);

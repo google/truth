@@ -31,7 +31,7 @@ import java.math.BigDecimal;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class BigDecimalTest {
+public class BigDecimalSubjectTest {
   @Test
   public void isEqualTo() {
     // make sure this still works

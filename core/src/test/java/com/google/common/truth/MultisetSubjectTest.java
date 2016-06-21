@@ -32,7 +32,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class MultisetTest {
+public class MultisetSubjectTest {
   @Test
   public void multisetIsEmpty() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of();

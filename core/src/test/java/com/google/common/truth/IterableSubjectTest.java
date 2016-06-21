@@ -39,7 +39,7 @@ import java.util.Iterator;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class IterableTest {
+public class IterableSubjectTest {
   @Test
   public void hasSize() {
     assertThat(ImmutableList.of(1, 2, 3)).hasSize(3);

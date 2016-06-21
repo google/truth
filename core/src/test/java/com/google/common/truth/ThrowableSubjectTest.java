@@ -28,7 +28,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class ThrowableTest {
+public class ThrowableSubjectTest {
   @Test
   public void hasMessage() {
     NullPointerException npe = new NullPointerException("message");

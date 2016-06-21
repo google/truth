@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class DoubleTest {
+public class DoubleSubjectTest {
   @Test
   public void isWithinOf() {
     assertThat(2.0).isWithin(0.00001).of(2.0);

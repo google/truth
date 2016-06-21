@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.HashMultimap;
@@ -38,7 +37,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class MultimapTest {
+public class MultimapSubjectTest {
 
   @Test
   public void listMultimapIsEqualTo_passes() {

@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class FloatTest {
+public class FloatSubjectTest {
   @Test
   public void isWithinOf() {
     assertThat(2.0f).isWithin(0.00001f).of(2.0f);
