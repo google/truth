@@ -24,6 +24,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
+import com.google.common.util.concurrent.AtomicLongMap;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -160,6 +161,10 @@ public class TestVerb extends AbstractVerb<TestVerb> {
 
   public TableSubject that(@Nullable Table<?, ?, ?> target) {
     return new TableSubject(getFailureStrategy(), target);
+  }
+
+  public AtomicLongMapSubject that(@Nullable AtomicLongMap<?> target) {
+    return new AtomicLongMapSubject(getFailureStrategy(), target);
   }
 
   @Override

@@ -23,6 +23,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.truth.AbstractVerb.DelegatedVerb;
+import com.google.common.util.concurrent.AtomicLongMap;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -222,6 +223,10 @@ public final class Truth {
   }
 
   public static TableSubject assertThat(@Nullable Table<?, ?, ?> target) {
+    return assert_().that(target);
+  }
+
+  public static AtomicLongMapSubject assertThat(@Nullable AtomicLongMap<?> target) {
     return assert_().that(target);
   }
 }
