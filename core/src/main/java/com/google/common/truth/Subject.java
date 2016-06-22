@@ -361,7 +361,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   @Deprecated
   @Override
-  public boolean equals(@Nullable Object o) {
+  public final boolean equals(@Nullable Object o) {
     throw new UnsupportedOperationException(
         "If you meant to test object equality, use .isEqualTo(other) instead.");
   }
@@ -372,7 +372,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   @Deprecated
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
   }
 }
