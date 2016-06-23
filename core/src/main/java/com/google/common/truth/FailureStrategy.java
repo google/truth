@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import java.util.Arrays;
+
 public abstract class FailureStrategy {
   public void fail(String message) {
     fail(message, null);
@@ -22,19 +24,35 @@ public abstract class FailureStrategy {
 
   public void fail(String message, Throwable cause) {
     AssertionError up = new AssertionError(message);
-    if (cause != null) {
-      try {
-        up.initCause(cause);
-      } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-        // https://code.google.com/p/android/issues/detail?id=29378
-        // No message, but it's the best we can do without awful hacks.
-        throw new AssertionError(cause);
-      }
+    if (cause == null) {
+      cause = new AssertionError(message);
     }
+    try {
+      up.initCause(cause);
+    } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
+      // https://code.google.com/p/android/issues/detail?id=29378
+      // No message, but it's the best we can do without awful hacks.
+      throw new AssertionError(cause);
+    }
+    stripTruthStackFrames(up);
     throw up;
   }
 
   public void failComparing(String message, CharSequence expected, CharSequence actual) {
     fail(StringUtil.messageFor(message, expected, actual));
+  }
+
+  /**
+   * Strips stack frames from the throwable that have a class starting with com.google.common.truth.
+   */
+  private static void stripTruthStackFrames(Throwable throwable) {
+    StackTraceElement[] stackTrace = throwable.getStackTrace();
+
+    int i = 0;
+    while (i < stackTrace.length
+        && stackTrace[i].getClassName().startsWith("com.google.common.truth")) {
+      i++;
+    }
+    throwable.setStackTrace(Arrays.copyOfRange(stackTrace, i, stackTrace.length));
   }
 }
