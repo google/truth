@@ -25,7 +25,7 @@ if [[ ${key_count} -lt 1 ]]; then
 fi
 
 # if a key is specified, use that, else use the default, unless there are many
-if [[ -n "${key}" ]]; then 
+if [[ -n "${key}" ]]; then
   #validate key
   keystatus=$(gpg --list-keys | grep ${key} | awk '{print $1}')
   if [ "${keystatus}" != "pub" ]; then
