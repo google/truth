@@ -22,15 +22,9 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class BooleanSubject extends ComparableSubject<BooleanSubject, Boolean> {
+public final class BooleanSubject extends Subject<BooleanSubject, Boolean> {
   BooleanSubject(FailureStrategy failureStrategy, @Nullable Boolean subject) {
     super(failureStrategy, subject);
-  }
-
-  /** @deprecated Use {@link #isEqualTo} instead. Boolean comparison is consistent with equality. */
-  @Deprecated
-  public final void isEquivalentAccordingToCompareTo(Boolean other) {
-    super.isEquivalentAccordingToCompareTo(other);
   }
 
   /** Fails if the subject is false or {@code null}. */

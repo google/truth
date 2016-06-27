@@ -199,25 +199,6 @@ public class ComparableSubjectTest {
     assertThat("d").isNotIn(range);
   }
 
-  // Weirdest tests ever...
-  @Test
-  public void booleans() {
-    assertThat(true).isGreaterThan(false);
-    assertThat(false).isLessThan(true);
-
-    assertThat(true).isAtMost(true);
-    assertThat(true).isAtLeast(true);
-    assertThat(true).isAtLeast(false);
-
-    assertThat(false).isAtLeast(false);
-    assertThat(false).isAtMost(false);
-    assertThat(false).isAtMost(true);
-
-    Range<Boolean> range = Range.closed(true, true);
-    assertThat(true).isIn(range);
-    assertThat(false).isNotIn(range);
-  }
-
   @Test
   public void comparableType() {
     assertThat(new ComparableType(4)).isGreaterThan(new ComparableType(3));
