@@ -6,18 +6,14 @@ url: /truth
 
 Truth is an [open source][github], [fluent] testing framework for Java that is
 designed to make your [test assertions](benefits#readable-assertions) and
-[failure messages](benefits#readable-messages) more readable. It natively
-supports many JDK types (e.g., `Iterable`, `String`, `Map`) and [Guava] types
-(e.g., `Optional`, `Multimap`, `Multiset`, `Table`), and is also [extensible]
-(extension) to new types (`YourCustomType`). See all of the known types [here]
-(known_types).
+[failure messages](benefits#readable-messages) more readable, as well as other
+[benefits](benefits). It natively supports many JDK types (e.g., `Iterable`,
+`String`, `Map`) and [Guava] types (e.g., `Optional`, `Multimap`, `Multiset`,
+`Table`), and is also [extensible](extension) to new types (`YourCustomType`).
+See all of the known types [here](known_types).
 
-**Read about [the many benefits of Truth](benefits).**
-
-# Documentation
-
-Since Truth is an open source project, most of its documentation is available
-externally on [github]. You can read its source directly or view its [API docs].
+You can also [read Truth's source directly][source], view its [API docs],
+and [compare it to common alternatives](comparison).
 
 # How to use Truth
 
@@ -83,6 +79,7 @@ information can be found here:
 <!-- References -->
 
 [github]: https://github.com/google/truth
+[source]: https://github.com/google/truth
 [fluent]: http://en.wikipedia.org/wiki/Fluent_interface
 [Github issues]: https://github.com/google/truth/issues
 [Stack Overflow]: http://stackoverflow.com/questions/tagged/google-truth
