@@ -1,8 +1,5 @@
 # Jekyll Settings
 markdown: kramdown
-kramdown:
-  use_coderay: true
-pygments: true
 
 # Site settings
 version: "0.28"
@@ -13,13 +10,13 @@ description: "A proposition/assertion framework for testing in Java"
 
 # Navigation
 navigation:
-- text: Change
-  url: /truth/changelog/
+- text: Compare
+  url: /truth/comparison
 - text: Javadoc
   url: /truth/api/0.28/
 - text: FAQ
-  url: /truth/faq/
-- text: Usage
-  url: /truth/usage/
+  url: /truth/faq
+- text: Benefit
+  url: /truth/benefits
 - text: Home
   url: /truth

@@ -84,8 +84,8 @@ pre {
 }
 
 table {
-  width:100%;
   border-collapse:collapse;
+  border-bottom-width: 1px solid #e5e5e5;
 }
 
 th, td {

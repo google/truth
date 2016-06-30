@@ -4,179 +4,90 @@ subtitle: We've made failure a strategy
 url: /truth
 ---
 
-* auto-gen TOC:
-{:toc}
+Truth is an [open source][github], [fluent] testing framework for Java that is
+designed to make your [test assertions](benefits#readable-assertions) and
+[failure messages](benefits#readable-messages) more readable. It natively
+supports many JDK types (e.g., `Iterable`, `String`, `Map`) and [Guava] types
+(e.g., `Optional`, `Multimap`, `Multiset`, `Table`), and is also [extensible]
+(extension) to new types (`YourCustomType`). See all of the known types [here]
+(known_types).
 
-# Introduction
+**Read about [the many benefits of Truth](benefits).**
 
-Truth is a testing framework designed to make your tests and their error messages 
-more readable and discoverable, while being extensible to new types of objects.  
+# Documentation
 
-Truth adopts a fluent style for 
-test propositions, is extensible in several ways, supports IDE completion/discovery 
-of available propositions, and supports different responses to un-true propositions. 
-Truth can be used to declare JUnit-style assumptions (which skip the test on 
-failure), assertions (interrupt the test on failure), and expectations (continue 
-the test, but collect errors and report failure at the end).
+Since Truth is an open source project, most of its documentation is available
+externally on [github]. You can read its source directly or view its [API docs].
 
-Truth is open-source software licensed under Apache 2.0 license.  As such, 
-you are free to use it or modify it subject only to the terms in that license.
+# How to use Truth
 
-## An example
+## 1. Add the appropriate dependency to your build file:
 
-{% highlight java %}
-import static org.junit.Assert.assertTrue;
+### Maven:
 
-Set<Foo> foo = ...;
-assertTrue(foo.isEmpty()); // or, shudder, foo.size() == 0
-{% endhighlight %}
-
-reports an unhelpful stack trace of: 
-
-{% highlight text %}
-java.lang.AssertionError
-    at org.junit.Assert.fail(Assert.java:92)
-    at org.junit.Assert.assertTrue(Assert.java:43)
-    ...
-{% endhighlight %}
-
-whereas:
-
-{% highlight java %}
-import static com.google.common.truth.Truth.assertThat;
-
-Set<Foo> foo = ...;
-assertThat(foo).isEmpty()
-{% endhighlight %}
-
-reports:
-
-{% highlight text %}
-org.truth0.FailureStrategy$ThrowableAssertionError: Not true that <[a]> is empty
-    at org.truth0.FailureStrategy.fail(FailureStrategy.java:33)
-    ...
-{% endhighlight %}
-
-Truth's propositions are intended to read (more or less) like English, and thereby be more
-obvious in their intent, as well as report meaningful errors about the information.  
-
-## Alternate ways to call in to Truth
-
-There are two ways to access Truth.  Truth orients around a verb (assert, assume, expect) 
-which implies a different behavior for failure.  Because assert is the most common, and it
-is a java keyword, a single method short-hand similar to hamcrest and FEST is there for
-normal assertion usage:
-
-{% highlight java %}
-assertThat(someInt).isEqualTo(5);     // Convenience method to access assert_().that()
-{% endhighlight %}
-
-However, for non-assert cases, or where functionality requires access to the "TestVerb",
-a form that returns the raw verb object is available:
-
-{% highlight java %}
-assert_().that(someInt).isEqualTo(5); // Assert is a keyword in java, so no assert().that()
-assert_().about(...).that(...)...     // Extensibility (see later in this page)
-assume().that(someValue).isNotNull(); // JUnit-style Assume behavior.
-
-{% endhighlight %}
-
-Truth's documentation will use `assertThat(...)` for all examples of assertion, unless 
-otherwise required by functionality, though `assert_().that(...)` would also work.
-
-Any operation that can be done with `assert_()` can be done with `assume()` or any other
-way to get the TestVerb.
-
-## Common and handy propositions
-
-### Before you start
-
-`assertThat` is on the `Truth` class, so be sure to `import static com.google.common.truth.Truth.assertThat;`
-
-### Basics
-
-{% highlight java %}
-assertThat(someInt).isEqualTo(5);
-assertThat(aString).isEqualTo("Blah Foo");
-assertThat(aString).contains("lah");
-assertThat(foo).isNotNull();
-{% endhighlight %}
-
-### Collections and Maps
-
-{% highlight java %}
-assertThat(someCollection).contains("a");                       // contains this item
-assertThat(someCollection).containsAllOf("a", "b").inOrder();   // contains items in the given order
-assertThat(someCollection).containsExactly("a", "b", "c", "d"); // contains all and only these items
-assertThat(someCollection).containsNoneOf("q", "r", "s");       // contains none of these items
-assertThat(aMap).containsKey("foo");                            // has a key
-assertThat(aMap).containsEntry("foo", "bar");                   // has a key, with given value
-assertThat(aMap).doesNotContainEntry("foo", "Bar");             // does not have the given entry
-{% endhighlight %}
-
-### Custom Error Messages
-
-{% highlight java %}
-// Reports: The subject is unexpectedly false
-assertThat(myBooleanResult).isTrue();
-
-// Reports: "hasError()" is unexpectedly false
-assertThat(myBooleanResult).named("hasError()").isTrue();
-
-// Reports: My custom Message
-assertWithMessage("My arbitrary custom message")
-    .that(myBooleanResult).named("hasError()").isTrue();
-{% endhighlight %}
-
-## New types, new propositions
-
-Truth is also designed to be exensible to new types, and developers can create
-custom "Subjects" for these types, whose usage might look like this:
-
-{% highlight java %}
-// customType() returns an adapter (SubjectFactory).
-assertAbout(customType()).that(theObject).hasSomeComplexProperty(); // specialized assertion
-assertAbout(customType()).that(theObject).isEqualTo(anotherObject); // overridden equality
-{% endhighlight %}
-
-# Setup
-
-To prepare to use Truth, declare this dependency in maven or an equivalent:
-
-{% highlight xml %}
+```xml
 <dependency>
   <groupId>com.google.truth</groupId>
   <artifactId>truth</artifactId>
-  <version>{{site.version}}</version>
+  <version>0.28</version>
 </dependency>
-{% endhighlight %}
+```
 
-or download the jar directly from the link below and add it to
-your tests classpath
+### Gradle:
 
-{% highlight text %}
-http://search.maven.org/remotecontent?filepath=com/google/truth/truth/{{site.version}}/truth-{{site.version}}.jar
-{% endhighlight %}
+```groovy
+buildscript {
+  repositories.mavenLocal()
+}
+dependencies {
+  testCompile "com.google.truth:truth:0.28"
+}
+```
 
-# More Detailed Usage Information
 
-For more information, check out the section [about how truth works](/truth/usage#how-does-truth-work), 
-and more [detailed inventory of built-in propositions](/truth/usage#built-in-propositions).
+## 2. Add static imports for Truth’s entry point(s):
 
-# Acknowledgements
+```java
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+```
 
-Thanks to Github and Travis-CI for having a strong commitment to open-source, and 
-providing us with tools so we can provide others with code.  And thanks to Google 
-for [Guava][1], for the [compile-testing][2] extension to Truth, for generous 
-open-source contributions and for encouraging developers to try to solve problems
-in better ways and share that with the world.
+## 3. Write a test assertion:
 
-Also thanks to the authors of JUnit, TestNG, Hamcrest, FEST, and others for creating
-testing tools that let us write high-quality code, for inspiring this work and for 
-moving the ball forward in the field of automated software testing.  This project
-works with, works alongside, and sometimes works in competition with the above
-tools, but owes a debt that everyone owes to those gone before.  They paved the 
-way, and we hope this contribution is helpful to the field.
+```java
+String string = "awesome";
+assertThat(string).startsWith("awe");
+assertWithMessage("Without me, it's just aweso").that(string).contains("me");
 
-[1]: http://code.google.com/p/guava-libraries
-[2]: http://github.com/google/compile-testing
+Iterable<Color> googleColors = googleLogo.getColors();
+assertThat(googleColors)
+    .containsExactly(BLUE, RED, YELLOW, BLUE, GREEN, RED)
+    .inOrder();
+```
+
+If you’re using an IDE with autocompletion, you should be able to hit `<TAB>`
+and get a list of assertions you can make about the given type. If your IDE does
+not support autocompletion, please consult the documentation listed above (e.g.,
+if you’re looking for assertions about a `Map`, look at the documentation for
+[`MapSubject`]).
+
+# More information {#more-information}
+
+Truth is owned and maintained by the [Java Core Libraries Team]. More
+information can be found here:
+
+*   [Stack Overflow]
+
+*   [Github issues]
+
+<!-- References -->
+
+[github]: https://github.com/google/truth
+[fluent]: http://en.wikipedia.org/wiki/Fluent_interface
+[Github issues]: https://github.com/google/truth/issues
+[Stack Overflow]: http://stackoverflow.com/questions/tagged/google-truth
+[Guava]: http://github.com/google/guava
+[API docs]: http://google.github.io/truth/api/latest/
+[`MapSubject`]: https://google.github.io/truth/api/latest/com/google/common/truth/MapSubject
+[Java Core Libraries Team]: https://www.reddit.com/r/java/comments/1y9e6t/ama_were_the_google_team_behind_guava_dagger/
+
