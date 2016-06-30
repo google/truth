@@ -26,15 +26,12 @@ JUnit     | `assertEquals(expected, actual);`
 
 ## Custom error messages
 
-| Framework | Code example                                       |
-| --------- | -------------------------------------------------- |
-| Truth     | `assertWithMessage("custom                         |
-:           : msg").that(actual).isEqualTo(expected);`           :
-| AssertJ   | `assertThat(actual).overridingErrorMessage("custom |
-:           : msg").isEqualTo(expected);`                        :
-| Hamcrest  | `assertThat("custom msg", actual,                  |
-:           : equalTo(expected));`                               :
-| JUnit     | `assertEquals("custom msg", expected, actual);`    |
+Framework | Code example
+--------- | --------------------------------------------------
+Truth     | `assertWithMessage("custom msg").that(actual).isEqualTo(expected);`
+AssertJ   | `assertThat(actual).overridingErrorMessage("custom msg").isEqualTo(expected);`
+Hamcrest  | `assertThat("custom msg", actual, equalTo(expected));`
+JUnit     | `assertEquals("custom msg", expected, actual);`
 
 ## Custom labeling
 
