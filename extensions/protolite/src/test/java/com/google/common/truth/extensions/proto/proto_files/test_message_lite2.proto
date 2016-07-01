@@ -1,0 +1,27 @@
+syntax = "proto2";
+
+package com.google.common.truth.extensions.proto;
+
+option optimize_for = LITE_RUNTIME;
+
+option java_package = "com.google.common.truth.extensions.proto";
+option java_multiple_files = true;
+option java_api_version = 2;
+
+message TestMessageLite2 {
+  optional int32 optional_int = 1;
+
+  message SubMessage {
+    optional string optional_string = 1;
+  }
+  optional SubMessage sub_message = 2;
+}
+
+message OtherTestMessageLite2 {
+  optional int32 optional_int = 1;
+}
+
+message TestMessageLite2WithRequiredFields {
+  required int32 required_int = 1;
+  optional string optional_string = 2;
+}
