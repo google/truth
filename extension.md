@@ -8,7 +8,7 @@ url: /extension
 ## Known extensions
 
 
-Projects which are not part of core for to limit Truth's dependency graph or for
+Projects which are not part of core to limit Truth's dependency graph or for
 other grouping reasons, but are considered part of the overall truth effort are
 found in the /extensions folder, including:
 
@@ -16,7 +16,7 @@ found in the /extensions folder, including:
 
 Other extensions that are not part of the Truth project itself include:
 
-*   [Compile-Testing] for testing annotation processors and compilation jobs
+*   [Compile Testing] for testing annotation processors and compilation jobs
 
 
 ## Writing your own Truth extension
