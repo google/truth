@@ -95,13 +95,15 @@ public class RelabeledSubjectsTest {
   @Test
   public void relabelledPrimitiveFloatArrays() {
     float[] expected = {1.3f, 1.0f};
-    float[] actual = {1.3f, 1.0f};
+    float[] actual = {1.3f, 1.1f};
     try {
-      assertThat(actual).named("crazy list").hasValuesNotWithin(0.0000001f).of(expected);
+      assertThat(actual).named("crazy list").hasValuesWithin(0.0000001f).of(expected);
       fail("Should have thrown");
     } catch (AssertionError error) {
       assertThat(error)
-          .hasMessage("Not true that crazy list has values not within 1.0E-7 of <[1.3, 1.0]>");
+          .hasMessage(
+              "Not true that crazy list has values within 1.0E-7 of <[1.3, 1.0]>. "
+                  + "It differs at indexes <[1]>");
     }
   }
 }

@@ -114,7 +114,9 @@ public class PrimitiveDoubleArraySubject
    * This form is unsafe for double-precision floating point types, and will throw an {@link
    * UnsupportedOperationException}.
    *
-   * @deprecated use {@link #hasValuesNotWithin(double)}
+   * @deprecated If you really want this, convert the array to a list, possibly using {@link
+   *     Doubles#asList}, and do the assertion on that, e.g. {@code
+   *     assertThat(asList(actualDoubleArray)).isNotEqualTo(asList(expectedDoubleArray));}.
    */
   @Deprecated
   @Override
@@ -134,8 +136,8 @@ public class PrimitiveDoubleArraySubject
    * (including if one is a clone of the other) then non-finite values are considered not equal so
    * the any non-finite value in either argument will cause the test to pass.
    *
-   * @deprecated use {@link #hasValuesNotWithin(double)}, noting the different behaviour for
-   *     non-finite values
+   * @deprecated Write a for loop over the values looking for mismatches (see this implementation
+   *     for an example)
    */
   @Deprecated
   public void isNotEqualTo(Object expectedArray, double tolerance) {
@@ -168,7 +170,7 @@ public class PrimitiveDoubleArraySubject
    * A partially specified proposition about an approximate relationship to a {@code double[]}
    * subject using a tolerance.
    */
-  public abstract class TolerantPrimitiveDoubleArrayComparison {
+  public abstract static class TolerantPrimitiveDoubleArrayComparison {
 
     // Prevent subclassing outside of this class
     private TolerantPrimitiveDoubleArrayComparison() {}
@@ -282,8 +284,12 @@ public class PrimitiveDoubleArraySubject
    * @param tolerance an exclusive lower bound on the difference between the subject and object
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
    *     Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
+   * @deprecated Write a for loop over the values looking for mismatches (see this implementation
+   *     for an example)
    */
-  public TolerantPrimitiveDoubleArrayComparison hasValuesNotWithin(final double tolerance) {
+  @Deprecated
+  public TolerantPrimitiveDoubleArrayComparison hasValuesNotWithin(
+      final double tolerance) {
     return new TolerantPrimitiveDoubleArrayComparison() {
 
       @Override
@@ -311,9 +317,7 @@ public class PrimitiveDoubleArraySubject
     };
   }
 
-  // TODO(b/25905290): Find a way to safely expose this. But disable it for now, since it will
-  // nearly always be incorrect to simply treat a list of floats and do normal set operations that
-  // are based on bare comparisons.
+  // TODO(b/29966314): Get rid of this in favour of comparingElementsUsing.
   // In the meantime, anyone who really does want this behaviour can call
   // com.google.common.primitives.Doubles.asList() on their subject.
   @SuppressWarnings("unused")
