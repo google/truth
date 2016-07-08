@@ -15,6 +15,7 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.extensions.proto.ProtoLiteSubject.assertThat;
 import static com.google.common.truth.extensions.proto.ProtoLiteSubject.protoLite;
 import static org.junit.Assert.fail;
@@ -23,6 +24,7 @@ import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Expect;
+import com.google.common.truth.Subject;
 import com.google.protobuf.MessageLite;
 import com.google.protobuf.MessageLiteOrBuilder;
 
@@ -32,6 +34,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
@@ -59,7 +62,7 @@ public class ProtoLiteSubjectTest {
 
     abstract MessageLite defaultInstanceOfOtherType();
 
-    abstract Optional<MessageLite.Builder> messageBuilderWithoutRequiredFields();
+    abstract Optional<MessageLite> messageWithoutRequiredFields();
 
     public static Builder newBuilder() {
       return new AutoValue_ProtoLiteSubjectTest_Config.Builder();
@@ -79,8 +82,7 @@ public class ProtoLiteSubjectTest {
 
       abstract Builder setDefaultInstanceOfOtherType(MessageLite messageLite);
 
-      abstract Builder setMessageBuilderWithoutRequiredFields(
-          MessageLite.Builder messageLiteBuilder);
+      abstract Builder setMessageWithoutRequiredFields(MessageLite messageLite);
 
       abstract Config build();
     }
@@ -89,8 +91,8 @@ public class ProtoLiteSubjectTest {
   @Parameters(name = "{0}")
   public static Collection<Object[]> data() {
     // Missing a required_int field.
-    TestMessageLite2WithRequiredFields.Builder withoutRequiredFields =
-        TestMessageLite2WithRequiredFields.newBuilder().setOptionalString("foo");
+    TestMessageLite2WithRequiredFields withoutRequiredFields =
+        TestMessageLite2WithRequiredFields.newBuilder().setOptionalString("foo").buildPartial();
 
     Config proto2Config =
         Config.newBuilder()
@@ -106,7 +108,7 @@ public class ProtoLiteSubjectTest {
                 OtherTestMessageLite2.newBuilder().setOptionalInt(3).build())
             .setDefaultInstance(TestMessageLite2.newBuilder().buildPartial())
             .setDefaultInstanceOfOtherType(OtherTestMessageLite2.newBuilder().buildPartial())
-            .setMessageBuilderWithoutRequiredFields(withoutRequiredFields)
+            .setMessageWithoutRequiredFields(withoutRequiredFields)
             .build();
     Config proto3Config =
         Config.newBuilder()
@@ -134,8 +136,31 @@ public class ProtoLiteSubjectTest {
     this.config = config;
   }
 
-  private ProtoLiteSubject<?, ?> expectThat(@Nullable MessageLiteOrBuilder m) {
+  private ProtoLiteSubject<?, ?> expectThat(@Nullable MessageLite m) {
     return expect.about(protoLite()).that(m);
+  }
+
+  private Subject<?, ?> expectThat(@Nullable Object o) {
+    return expect.that(o);
+  }
+
+  @Test
+  public void testSubjectMethods() {
+    expectThat(config.nonEmptyMessage()).isSameAs(config.nonEmptyMessage());
+    expectThat(config.nonEmptyMessage().toBuilder()).isNotSameAs(config.nonEmptyMessage());
+
+    expectThat(config.nonEmptyMessage()).isInstanceOf(MessageLite.class);
+    expectThat(config.nonEmptyMessage().toBuilder()).isInstanceOf(MessageLite.Builder.class);
+    expectThat(config.nonEmptyMessage()).isNotInstanceOf(MessageLite.Builder.class);
+    expectThat(config.nonEmptyMessage().toBuilder()).isNotInstanceOf(MessageLite.class);
+
+    expectThat(config.nonEmptyMessage()).isIn(Arrays.asList(config.nonEmptyMessage()));
+    expectThat(config.nonEmptyMessage())
+        .isNotIn(Arrays.asList(config.nonEmptyMessageOfOtherValue()));
+    expectThat(config.nonEmptyMessage())
+        .isAnyOf(config.nonEmptyMessage(), config.nonEmptyMessageOfOtherValue());
+    expectThat(config.nonEmptyMessage())
+        .isNoneOf(config.nonEmptyMessageOfOtherValue(), config.nonEmptyMessageOfOtherType());
   }
 
   @Test
@@ -144,16 +169,8 @@ public class ProtoLiteSubjectTest {
     expectThat(null).isNull();
 
     expectThat(config.nonEmptyMessage()).isEqualTo(config.nonEmptyMessage());
-    expectThat(config.nonEmptyMessage().toBuilder()).isEqualTo(config.nonEmptyMessage());
-    expectThat(config.nonEmptyMessage()).isEqualTo(config.nonEmptyMessage().toBuilder());
-    expectThat(config.nonEmptyMessage().toBuilder())
-        .isEqualTo(config.nonEmptyMessage().toBuilder());
-
     expectThat(config.nonEmptyMessage()).isEqualTo(config.equivalentNonEmptyMessage());
-    expectThat(config.nonEmptyMessage().toBuilder()).isEqualTo(config.equivalentNonEmptyMessage());
-    expectThat(config.nonEmptyMessage()).isEqualTo(config.equivalentNonEmptyMessage().toBuilder());
-    expectThat(config.nonEmptyMessage().toBuilder())
-        .isEqualTo(config.equivalentNonEmptyMessage().toBuilder());
+    expectThat(config.nonEmptyMessage()).isNotEqualTo(config.nonEmptyMessage().toBuilder());
 
     assertThat(config.defaultInstance()).isNotEqualTo(config.defaultInstanceOfOtherType());
     assertThat(config.nonEmptyMessage()).isNotEqualTo(config.nonEmptyMessageOfOtherType());
@@ -196,12 +213,12 @@ public class ProtoLiteSubjectTest {
 
   @Test
   public void testHasAllRequiredFields_failures() {
-    if (!config.messageBuilderWithoutRequiredFields().isPresent()) {
+    if (!config.messageWithoutRequiredFields().isPresent()) {
       return;
     }
 
     try {
-      assertThat(config.messageBuilderWithoutRequiredFields().get()).hasAllRequiredFields();
+      assertThat(config.messageWithoutRequiredFields().get()).hasAllRequiredFields();
       fail("Should have failed.");
     } catch (AssertionError e) {
       expectRegex(
@@ -219,7 +236,6 @@ public class ProtoLiteSubjectTest {
 
     expectThat(null).isNotEqualToDefaultInstance();
     expectThat(config.nonEmptyMessage()).isNotEqualToDefaultInstance();
-    expectThat(config.nonEmptyMessage().toBuilder()).isNotEqualToDefaultInstance();
   }
 
   @Test

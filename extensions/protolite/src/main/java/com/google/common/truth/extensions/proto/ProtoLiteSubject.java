@@ -22,10 +22,8 @@ import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
-import com.google.common.truth.TestVerb;
 import com.google.common.truth.Truth;
 import com.google.protobuf.MessageLite;
-import com.google.protobuf.MessageLiteOrBuilder;
 
 import java.util.regex.Pattern;
 
@@ -39,9 +37,9 @@ import javax.annotation.Nullable;
  * detailed comparisons between messages.
  *
  * @param <S> Subject class type.
- * @param <M> MessageLiteOrBuilder type.
+ * @param <M> MessageLite type.
  */
-public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends MessageLiteOrBuilder>
+public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends MessageLite>
     extends Subject<S, M> {
 
   /**
@@ -51,39 +49,24 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
    * {@link Truth#assertAbout(SubjectFactory)}, whilst also hiding the Untyped classes which are not
    * meant to be exposed.
    */
-  public abstract static class Factory<
-          S extends ProtoLiteSubject<S, M>, M extends MessageLiteOrBuilder>
+  public abstract static class Factory<S extends ProtoLiteSubject<S, M>, M extends MessageLite>
       extends SubjectFactory<S, M> {}
 
   /**
    * Returns a SubjectFactory for {@link MessageLite} subjects which you can use to assert things
    * about Lite Protobuf properties.
    */
-  public static Factory<?, MessageLiteOrBuilder> protoLite() {
+  public static Factory<?, MessageLite> protoLite() {
     return UntypedSubjectFactory.INSTANCE;
   }
 
-  /**
-   * Returns a Subject using the assertion strategy on the provided {@link MessageLiteOrBuilder}, by
-   * converting the argument to a {@link MessageLite}, using {@link
-   * com.google.protobuf.MessageLite.Builder#buildPartial()} if needed.
-   *
-   * <p>Additionally, calling {@link #isEqualTo(Object)} will invoke {@code buildPartial} if needed.
-   * Builders never compare equal to anything except themselves, so you rarely ever want to check
-   * for equality with them.
-   */
-  public static ProtoLiteSubject<?, ?> assertThat(@Nullable MessageLiteOrBuilder m) {
+  /** Returns a Subject using the assertion strategy on the provided {@link MessageLite}. */
+  public static ProtoLiteSubject<?, ?> assertThat(@Nullable MessageLite m) {
     return assertAbout(protoLite()).that(m);
   }
 
-  @SuppressWarnings("unchecked")
-  protected ProtoLiteSubject(FailureStrategy failureStrategy, @Nullable M messageLiteOrBuilder) {
-    super(failureStrategy, (M) buildPartial(messageLiteOrBuilder));
-  }
-
-  protected MessageLite getMessageLiteSubject() {
-    // Guaranteed by 'getSubject()'
-    return (MessageLite) getSubject();
+  protected ProtoLiteSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
+    super(failureStrategy, messageLite);
   }
 
   // It is wrong to compare protos using their string representations. The MessageLite runtime
@@ -92,14 +75,13 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
   // from the strings alone. So, we manually strip this prefix.
   // In case the class names are actually relevant, Subject.isEqualTo() will add them back for us.
   // TODO(user): Maybe get a way to do this upstream.
-  private static String getTrimmedToString(@Nullable MessageLiteOrBuilder messageLiteOrBuilder) {
-    String subjectString = String.valueOf(messageLiteOrBuilder).trim();
+  private static String getTrimmedToString(@Nullable MessageLite messageLite) {
+    String subjectString = String.valueOf(messageLite).trim();
     if (subjectString.startsWith("# ")) {
       String objectToString =
           String.format(
               "# %s@%s",
-              messageLiteOrBuilder.getClass().getName(),
-              Integer.toHexString(messageLiteOrBuilder.hashCode()));
+              messageLite.getClass().getName(), Integer.toHexString(messageLite.hashCode()));
       if (subjectString.startsWith(objectToString)) {
         subjectString = subjectString.replaceFirst(Pattern.quote(objectToString), "").trim();
       }
@@ -119,19 +101,12 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
   /**
    * Checks whether the MessageLite is equivalent to the argument, using the standard equals()
    * implementation.
-   *
-   * <p>If passed a {@link com.google.protobuf.MessageLite.Builder}, it calls {@code buildPartial()}
-   * on the argument before doing comparison. Builders never compare equal to anything except
-   * themselves, so you never really want to check equality with a Builder.
    */
   @Override
   public void isEqualTo(@Nullable Object expected) {
     // TODO(user): Do better here when MessageLite descriptors are available.
-    if (expected instanceof MessageLiteOrBuilder) {
-      expected = buildPartial((MessageLiteOrBuilder) expected);
-    }
     if (!Objects.equal(getSubject(), expected)) {
-      if (getSubject() == null || !(expected instanceof MessageLiteOrBuilder)) {
+      if (getSubject() == null || !(expected instanceof MessageLite)) {
         super.isEqualTo(expected);
       } else {
         String ourString = getTrimmedToString(getSubject());
@@ -151,11 +126,17 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
     }
   }
 
+  /**
+   * @deprecated A Builder can never compare equal to a MessageLite instance. Use {@code build()},
+   *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead.
+   */
+  @Deprecated
+  public void isEqualTo(@Nullable MessageLite.Builder builder) {
+    isEqualTo((Object) builder);
+  }
+
   @Override
   public void isNotEqualTo(@Nullable Object expected) {
-    if (expected instanceof MessageLiteOrBuilder) {
-      expected = buildPartial((MessageLiteOrBuilder) expected);
-    }
     if (Objects.equal(getSubject(), expected)) {
       if (getSubject() == null) {
         super.isNotEqualTo(expected);
@@ -165,6 +146,15 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
             getSubject().getClass().getName(), getTrimmedToString(getSubject()));
       }
     }
+  }
+
+  /**
+   * @deprecated A Builder will never compare equal to a MessageLite instance. Use {@code build()},
+   *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead.
+   */
+  @Deprecated
+  public void isNotEqualTo(@Nullable MessageLite.Builder builder) {
+    isNotEqualTo((Object) builder);
   }
 
   /** Checks whether the subject is a {@link MessageLite} with no fields set. */
@@ -209,35 +199,23 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
    * assertThat(myProto).serializedSize().isAtLeast(16)}, etc.
    */
   public IntegerSubject serializedSize() {
-    return new TestVerb(failureStrategy)
-        .that(getMessageLiteSubject().getSerializedSize())
+    return check().that(getSubject().getSerializedSize())
         .named("sizeOf(" + getTrimmedDisplaySubject() + ")");
   }
 
-  private static final class UntypedSubject
-      extends ProtoLiteSubject<UntypedSubject, MessageLiteOrBuilder> {
-    private UntypedSubject(
-        FailureStrategy failureStrategy, @Nullable MessageLiteOrBuilder messageLiteOrBuilder) {
-      super(failureStrategy, messageLiteOrBuilder);
+  private static final class UntypedSubject extends ProtoLiteSubject<UntypedSubject, MessageLite> {
+    private UntypedSubject(FailureStrategy failureStrategy, @Nullable MessageLite messageLite) {
+      super(failureStrategy, messageLite);
     }
   }
 
-  private static final class UntypedSubjectFactory
-      extends Factory<UntypedSubject, MessageLiteOrBuilder> {
+  private static final class UntypedSubjectFactory extends Factory<UntypedSubject, MessageLite> {
     private static final UntypedSubjectFactory INSTANCE = new UntypedSubjectFactory();
 
     @Override
     public UntypedSubject getSubject(
-        FailureStrategy failureStrategy, MessageLiteOrBuilder messageLite) {
+        FailureStrategy failureStrategy, @Nullable MessageLite messageLite) {
       return new UntypedSubject(failureStrategy, messageLite);
-    }
-  }
-
-  private static MessageLite buildPartial(@Nullable MessageLiteOrBuilder m) {
-    if (m instanceof MessageLite.Builder) {
-      return ((MessageLite.Builder) m).buildPartial();
-    } else {
-      return (MessageLite) m;
     }
   }
 }
