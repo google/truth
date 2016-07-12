@@ -29,13 +29,13 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
-
+import java.util.Map.Entry;
+import java.util.Set;
 import javax.annotation.Nullable;
 
 /**
@@ -98,7 +98,27 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   /** Fails if the multimap does not contain the given entry. */
   public void containsEntry(@Nullable Object key, @Nullable Object value) {
+    // TODO(kak): Can we share any of this logic w/ MapSubject.containsEntry()?
     if (!getSubject().containsEntry(key, value)) {
+      Entry<Object, Object> entry = Maps.immutableEntry(key, value);
+      if (getSubject().containsKey(key)) {
+        failWithRawMessage(
+            "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
+            getDisplaySubject(), entry, key, ((Multimap<Object, Object>) getSubject()).get(key));
+      }
+      if (getSubject().containsValue(value)) {
+        Set<Object> keys = new LinkedHashSet<Object>();
+        for (Entry<Object, Object> actualEntry :
+            ((Multimap<Object, Object>) getSubject()).entries()) {
+          if (Objects.equal(actualEntry.getValue(), value)) {
+            keys.add(actualEntry.getKey());
+          }
+        }
+        failWithRawMessage(
+            "Not true that %s contains entry <%s>. "
+                + "However, the following keys are mapped to <%s>: %s",
+            getDisplaySubject(), entry, value, keys);
+      }
       fail("contains entry", Maps.immutableEntry(key, value));
     }
   }

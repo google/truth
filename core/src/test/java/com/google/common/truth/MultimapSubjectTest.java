@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMultimap;
@@ -25,7 +26,6 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -280,6 +280,56 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Not true that <{kurt=[kluever]}> contains entry <daniel=ploch>");
+    }
+  }
+
+  @Test
+  public void containsEntryWithNullValueNullExpected() {
+    ListMultimap<String, String> actual = ArrayListMultimap.create();
+    actual.put("a", null);
+    assertThat(actual).containsEntry("a", null);
+  }
+
+  @Test
+  public void failContainsEntry() {
+    ImmutableMultimap<String, String> actual = ImmutableMultimap.of("a", "A");
+    try {
+      assertThat(actual).containsEntry("a", "a");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{a=[A]}> contains entry <a=a>. "
+                  + "However, it has a mapping from <a> to <[A]>");
+    }
+  }
+
+  @Test
+  public void failContainsEntryWithNullValuePresentExpected() {
+    ListMultimap<String, String> actual = ArrayListMultimap.create();
+    actual.put("a", null);
+    try {
+      assertThat(actual).containsEntry("a", "A");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{a=[null]}> contains entry <a=A>. "
+                  + "However, it has a mapping from <a> to <[null]>");
+    }
+  }
+
+  @Test
+  public void failContainsEntryWithPresentValueNullExpected() {
+    ImmutableMultimap<String, String> actual = ImmutableMultimap.of("a", "A");
+    try {
+      assertThat(actual).containsEntry("a", null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{a=[A]}> contains entry <a=null>. "
+                  + "However, it has a mapping from <a> to <[A]>");
     }
   }
 
