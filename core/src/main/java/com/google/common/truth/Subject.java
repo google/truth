@@ -24,6 +24,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -207,6 +208,10 @@ public class Subject<S extends Subject<S, T>, T> {
   /** Fails if the subject is equal to any of the given elements. */
   public void isNoneOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     isNotIn(accumulate(first, second, rest));
+  }
+
+  public FauxComparable<S, T> whenComparedUsing(Comparator<? super T> comparator) {
+    return new FauxComparable<S, T>(checkNotNull(comparator), this);
   }
 
   protected T getSubject() {

@@ -121,7 +121,7 @@ public final class Truth {
     return assert_().that(target);
   }
 
-  public static Subject<DefaultSubject, Object> assertThat(@Nullable Object target) {
+  public static <T> Subject<DefaultSubject<T>, T> assertThat(@Nullable T target) {
     return assert_().that(target);
   }
 
