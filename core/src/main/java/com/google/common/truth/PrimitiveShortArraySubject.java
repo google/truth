@@ -16,10 +16,8 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Shorts;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -27,7 +25,7 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class PrimitiveShortArraySubject
+public final class PrimitiveShortArraySubject
     extends AbstractArraySubject<PrimitiveShortArraySubject, short[]> {
   PrimitiveShortArraySubject(FailureStrategy failureStrategy, @Nullable short[] o) {
     super(failureStrategy, o);

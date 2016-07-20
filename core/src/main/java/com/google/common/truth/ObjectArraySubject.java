@@ -28,10 +28,8 @@ import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.common.primitives.Shorts;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -39,7 +37,7 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber
  */
-public class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubject<T>, T[]> {
+public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubject<T>, T[]> {
   private final String typeName;
   private final int numberOfDimensions;
 

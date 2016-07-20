@@ -44,6 +44,7 @@ import javax.annotation.Nullable;
  * @author Daniel Ploch
  * @author Kurt Alfred Kluever
  */
+// Not final since SetMultimapSubject and ListMultimapSubject extends this
 public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   MultimapSubject(FailureStrategy failureStrategy, @Nullable Multimap<?, ?> multimap) {
     super(failureStrategy, multimap);

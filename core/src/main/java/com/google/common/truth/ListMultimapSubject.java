@@ -17,9 +17,7 @@ package com.google.common.truth;
 
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.SetMultimap;
-
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -28,7 +26,7 @@ import javax.annotation.Nullable;
  *
  * @author Daniel Ploch
  */
-public class ListMultimapSubject extends MultimapSubject {
+public final class ListMultimapSubject extends MultimapSubject {
   ListMultimapSubject(FailureStrategy failureStrategy, @Nullable ListMultimap<?, ?> multimap) {
     super(failureStrategy, multimap);
   }

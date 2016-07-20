@@ -23,12 +23,10 @@ import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 /**
@@ -37,7 +35,7 @@ import javax.annotation.Nullable;
  * @author Christian Gruber
  * @author Kurt Alfred Kluever
  */
-public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
+public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   MapSubject(FailureStrategy failureStrategy, @Nullable Map<?, ?> map) {
     super(failureStrategy, map);
   }

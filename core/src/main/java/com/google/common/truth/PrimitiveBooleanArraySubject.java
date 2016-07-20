@@ -16,10 +16,8 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Booleans;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -27,7 +25,7 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class PrimitiveBooleanArraySubject
+public final class PrimitiveBooleanArraySubject
     extends AbstractArraySubject<PrimitiveBooleanArraySubject, boolean[]> {
   PrimitiveBooleanArraySubject(FailureStrategy failureStrategy, @Nullable boolean[] o) {
     super(failureStrategy, o);

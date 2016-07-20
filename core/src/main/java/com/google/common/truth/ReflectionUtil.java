@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -26,7 +25,7 @@ import java.lang.reflect.Type;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtIncompatible("java.lang.reflect.*")
-public final class ReflectionUtil {
+final class ReflectionUtil {
   private ReflectionUtil() {}
 
   /** Returns the captured type. */

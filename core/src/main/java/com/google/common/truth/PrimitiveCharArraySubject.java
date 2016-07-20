@@ -16,10 +16,8 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Chars;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -27,7 +25,7 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class PrimitiveCharArraySubject
+public final class PrimitiveCharArraySubject
     extends AbstractArraySubject<PrimitiveCharArraySubject, char[]> {
   PrimitiveCharArraySubject(FailureStrategy failureStrategy, @Nullable char[] o) {
     super(failureStrategy, o);

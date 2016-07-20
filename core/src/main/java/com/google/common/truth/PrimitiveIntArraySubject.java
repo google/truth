@@ -16,10 +16,8 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Ints;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -27,7 +25,7 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class PrimitiveIntArraySubject
+public final class PrimitiveIntArraySubject
     extends AbstractArraySubject<PrimitiveIntArraySubject, int[]> {
   PrimitiveIntArraySubject(FailureStrategy failureStrategy, @Nullable int[] o) {
     super(failureStrategy, o);

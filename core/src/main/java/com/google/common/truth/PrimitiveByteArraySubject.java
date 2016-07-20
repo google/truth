@@ -16,10 +16,8 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Bytes;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -27,7 +25,7 @@ import javax.annotation.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-public class PrimitiveByteArraySubject
+public final class PrimitiveByteArraySubject
     extends AbstractArraySubject<PrimitiveByteArraySubject, byte[]> {
   PrimitiveByteArraySubject(FailureStrategy failureStrategy, @Nullable byte[] o) {
     super(failureStrategy, o);

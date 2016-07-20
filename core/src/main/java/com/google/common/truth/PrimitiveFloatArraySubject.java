@@ -23,10 +23,8 @@ import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Floats;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -38,7 +36,7 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class PrimitiveFloatArraySubject
+public final class PrimitiveFloatArraySubject
     extends AbstractArraySubject<PrimitiveFloatArraySubject, float[]> {
   PrimitiveFloatArraySubject(FailureStrategy failureStrategy, @Nullable float[] o) {
     super(failureStrategy, o);

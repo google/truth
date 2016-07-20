@@ -31,13 +31,11 @@ import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -45,8 +43,10 @@ import javax.annotation.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
+// Can't be final since MultisetSubject extends it
 public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
+  // TODO(kak): Make this package-protected?
   protected IterableSubject(FailureStrategy failureStrategy, @Nullable Iterable<?> list) {
     super(failureStrategy, list);
   }

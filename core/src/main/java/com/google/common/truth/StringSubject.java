@@ -19,9 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
-
 import java.util.regex.Pattern;
-
 import javax.annotation.Nullable;
 
 /**
@@ -30,7 +28,9 @@ import javax.annotation.Nullable;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
+// TODO(kak): Make this final
 public class StringSubject extends ComparableSubject<StringSubject, String> {
+  // TODO(kak): Make this package-private
   public StringSubject(FailureStrategy failureStrategy, @Nullable String string) {
     super(failureStrategy, string);
   }

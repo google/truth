@@ -17,7 +17,9 @@ package com.google.common.truth;
 
 import javax.annotation.Nullable;
 
+// TODO(kak): Make this final?
 public class DefaultSubject extends Subject<DefaultSubject, Object> {
+  // TODO(kak): Make this package-protected?
   public DefaultSubject(FailureStrategy failureStrategy, @Nullable Object o) {
     super(failureStrategy, o);
   }

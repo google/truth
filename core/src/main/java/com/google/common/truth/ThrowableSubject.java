@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import com.google.common.base.Objects;
-
 import javax.annotation.Nullable;
 
 /**
@@ -25,6 +24,7 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
+  // TODO(kak): Make this package-private?
   public ThrowableSubject(FailureStrategy failureStrategy, @Nullable Throwable throwable) {
     super(causeInsertingStrategy(failureStrategy, throwable), throwable);
   }

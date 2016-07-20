@@ -16,10 +16,8 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Longs;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**
@@ -27,7 +25,7 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public class PrimitiveLongArraySubject
+public final class PrimitiveLongArraySubject
     extends AbstractArraySubject<PrimitiveLongArraySubject, long[]> {
   PrimitiveLongArraySubject(FailureStrategy failureStrategy, @Nullable long[] o) {
     super(failureStrategy, o);

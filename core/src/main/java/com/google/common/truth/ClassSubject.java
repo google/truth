@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
-
 import javax.annotation.Nullable;
 
 /**
@@ -25,7 +24,7 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 @GwtIncompatible("reflection")
-public class ClassSubject extends Subject<ClassSubject, Class<?>> {
+public final class ClassSubject extends Subject<ClassSubject, Class<?>> {
   ClassSubject(FailureStrategy failureStrategy, @Nullable Class<?> o) {
     super(failureStrategy, o);
   }

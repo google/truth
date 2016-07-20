@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import com.google.common.base.Optional;
-
 import javax.annotation.Nullable;
 
 /**
@@ -24,7 +23,7 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber
  */
-public class GuavaOptionalSubject extends Subject<GuavaOptionalSubject, Optional<?>> {
+public final class GuavaOptionalSubject extends Subject<GuavaOptionalSubject, Optional<?>> {
   GuavaOptionalSubject(FailureStrategy failureStrategy, @Nullable Optional<?> subject) {
     super(failureStrategy, subject);
   }
