@@ -20,17 +20,14 @@ import static com.google.common.truth.StringUtil.messageFor;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Objects;
-
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Nullable;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 
 @GwtIncompatible("JUnit4")
 public class Expect extends TestVerb implements TestRule {

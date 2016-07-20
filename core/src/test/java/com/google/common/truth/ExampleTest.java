@@ -24,15 +24,13 @@ import static org.junit.Assert.fail;
 import com.google.common.collect.Range;
 import com.google.common.truth.Expect;
 import com.google.common.truth.delegation.Foo;
-
+import java.util.Arrays;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
-import java.util.Arrays;
 
 @RunWith(Theories.class)
 public class ExampleTest {

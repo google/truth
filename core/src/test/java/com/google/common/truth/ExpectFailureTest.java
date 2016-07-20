@@ -16,15 +16,13 @@
 package com.google.common.truth;
 
 import com.google.common.truth.Expect.ExpectationGatherer;
-
+import java.util.Arrays;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.model.Statement;
-
-import java.util.Arrays;
 
 /**
  * Tests (and effectively sample code) for the Expect verb (implemented as a rule)

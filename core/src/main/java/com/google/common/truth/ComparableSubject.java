@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import com.google.common.collect.Range;
-
 import javax.annotation.Nullable;
 
 /**

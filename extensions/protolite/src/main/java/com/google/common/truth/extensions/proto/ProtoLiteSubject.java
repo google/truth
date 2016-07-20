@@ -24,9 +24,7 @@ import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
 import com.google.common.truth.Truth;
 import com.google.protobuf.MessageLite;
-
 import java.util.regex.Pattern;
-
 import javax.annotation.Nullable;
 
 /**
@@ -199,7 +197,8 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
    * assertThat(myProto).serializedSize().isAtLeast(16)}, etc.
    */
   public IntegerSubject serializedSize() {
-    return check().that(getSubject().getSerializedSize())
+    return check()
+        .that(getSubject().getSerializedSize())
         .named("sizeOf(" + getTrimmedDisplaySubject() + ")");
   }
 

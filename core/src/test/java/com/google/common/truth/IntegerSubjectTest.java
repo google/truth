@@ -20,7 +20,6 @@ import static com.google.common.truth.TruthJUnit.assume;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableSet;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;

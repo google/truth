@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import java.math.BigDecimal;
-
 import javax.annotation.Nullable;
 
 /**

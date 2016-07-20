@@ -16,14 +16,12 @@
 package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
-
-import org.junit.ComparisonFailure;
-
 import java.lang.reflect.Array;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.junit.ComparisonFailure;
 
 /**
  * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the

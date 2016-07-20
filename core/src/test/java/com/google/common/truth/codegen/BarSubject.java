@@ -18,7 +18,6 @@ package com.google.common.truth.codegen;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
-
 import javax.annotation.Nullable;
 
 /** Subclass of Subject to be used for Testing. */

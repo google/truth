@@ -15,11 +15,10 @@
  */
 package com.google.common.truth.extensions.re2j;
 
-import static com.google.common.truth.extensions.re2j.Re2jSubjects.re2jString;
 import static com.google.common.truth.Truth.assertAbout;
+import static com.google.common.truth.extensions.re2j.Re2jSubjects.re2jString;
 
 import com.google.re2j.Pattern;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

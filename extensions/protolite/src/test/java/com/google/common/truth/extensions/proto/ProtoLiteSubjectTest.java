@@ -26,19 +26,15 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Expect;
 import com.google.common.truth.Subject;
 import com.google.protobuf.MessageLite;
-import com.google.protobuf.MessageLiteOrBuilder;
-
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.regex.Pattern;
-
-import javax.annotation.Nullable;
 
 /** Unit tests for {@link ProtoLiteSubject}. */
 @RunWith(Parameterized.class)

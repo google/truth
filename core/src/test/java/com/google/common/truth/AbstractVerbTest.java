@@ -17,15 +17,13 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.util.concurrent.atomic.AtomicReference;
+import javax.annotation.CheckReturnValue;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
-import java.util.concurrent.atomic.AtomicReference;
-
-import javax.annotation.CheckReturnValue;
 
 /**
  * Tests for AbstractVerbs.

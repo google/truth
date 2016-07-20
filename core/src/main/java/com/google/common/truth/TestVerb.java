@@ -25,10 +25,8 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.util.concurrent.AtomicLongMap;
-
 import java.math.BigDecimal;
 import java.util.Map;
-
 import javax.annotation.Nullable;
 
 /*>>>import org.checkerframework.checker.nullness.compatqual.NullableType;*/

@@ -24,10 +24,8 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.truth.AbstractVerb.DelegatedVerb;
 import com.google.common.util.concurrent.AtomicLongMap;
-
 import java.math.BigDecimal;
 import java.util.Map;
-
 import javax.annotation.Nullable;
 
 /**

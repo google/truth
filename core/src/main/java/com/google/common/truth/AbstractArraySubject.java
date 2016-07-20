@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 /**

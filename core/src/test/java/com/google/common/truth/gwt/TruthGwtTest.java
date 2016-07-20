@@ -21,7 +21,6 @@ import static java.util.Arrays.asList;
 
 import com.google.common.truth.Platform;
 import com.google.gwt.junit.client.GWTTestCase;
-
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;

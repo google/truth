@@ -20,7 +20,6 @@ import static com.google.common.truth.Truth.assertAbout;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
-
 import javax.annotation.Nullable;
 
 /**

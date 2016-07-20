@@ -22,14 +22,11 @@ import static org.junit.Assert.fail;
 
 import com.google.common.collect.Range;
 import com.google.testing.compile.JavaFileObjects;
-
+import java.math.BigDecimal;
+import javax.tools.JavaFileObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import java.math.BigDecimal;
-
-import javax.tools.JavaFileObject;
 
 /**
  * Tests for Comparable Subjects.

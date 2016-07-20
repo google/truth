@@ -17,11 +17,10 @@ package com.google.common.truth;
 
 import static com.google.common.truth.StringUtil.format;
 
-import jsinterop.annotations.JsPackage;
-import jsinterop.annotations.JsType;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
+import jsinterop.annotations.JsPackage;
+import jsinterop.annotations.JsType;
 
 /**
  * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the
