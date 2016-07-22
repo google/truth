@@ -12,6 +12,7 @@ Projects which are not part of core to limit Truth's dependency graph or for
 other grouping reasons, but are considered part of the overall truth effort are
 found in the /extensions folder, including:
 
+*   [Java8] for java8 types such as `java.util.Optional`
 *   [`Re2jSubjects`] for `com.google.re2j.Pattern`
 *   [`ProtoLiteSubject`] for `MessageLite` style protocol buffers (unreleased)
 
@@ -159,6 +160,7 @@ There are basically three parts to the example:
 <!-- References -->
 
 [`@AutoValue`]:           http://github.com/google/auto/tree/master/value
+[Java8]:                  http://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/Truth8.java
 [`Re2jSubjects`]:         http://github.com/google/truth/blob/master/extensions/re2j/src/main/java/com/google/common/truth/extensions/re2j/Re2jSubjects.java
 [`ProtoLiteSubject`]:     http://github.com/google/truth/blob/master/extensions/protolite/src/main/java/com/google/common/truth/extensions/proto/ProtoLiteSubject.java
 [Compile Testing]:        http://github.com/google/compile-testing

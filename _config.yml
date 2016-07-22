@@ -2,7 +2,7 @@
 markdown: kramdown
 
 # Site settings
-version: "0.29"
+version: "0.30"
 url: http://google.github.io/truth
 title: Truth
 tagline: We've made failure a strategy
@@ -13,7 +13,7 @@ navigation:
 - text: Compare
   url: /truth/comparison
 - text: Javadoc
-  url: /truth/api/0.28/
+  url: /truth/api/0.30/
 - text: FAQ
   url: /truth/faq
 - text: Benefit
