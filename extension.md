@@ -81,7 +81,7 @@ There are basically three parts to the example:
         a static method that returns the `SubjectFactory` constant:
 
         ```java
-        public static SubjectFactory<EmployeeSubject, Employee> employee() {
+        public static SubjectFactory<EmployeeSubject, Employee> employees() {
           return EMPLOYEE_SUBJECT_FACTORY;
         }
         ```
@@ -90,15 +90,19 @@ There are basically three parts to the example:
         technique for accessing the custom `Subject`:
 
         ```java
-        import static com.google.common.truth.extension.EmployeeSubject.employee;
+        import static com.google.common.truth.extension.EmployeeSubject.employees;
         …
-        assertAbout(employee()).that(employee)
+        assertAbout(employees()).that(employee)
         ```
 
         Note that it's generally preferable to expose a static method (e.g.,
-        `EmployeeSubject.employee()`) that returns a reference to the
+        `EmployeeSubject.employees()`) that returns a reference to the
         `SubjectFactory` constant, rather exposing the constant directly (e.g.,
         `EmployeeSubject.EMPLOYEE`).
+
+        We generally recommend naming this method in the *plural form* (e.g.,
+        `EmployeeSubject.employees()`, `PersonSubject.people()`, etc.) for more
+        readable test assertions.
 
     5.  You also need to define a (private) constructor that accepts a
         `FailureStrategy` and a reference to the *instance under test*. These
