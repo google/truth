@@ -498,4 +498,59 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
     }
   }
+
+  /**
+   * Starts a method chain for a test proposition in which the actual elements (i.e. the elements of
+   * the {@link Iterable} under test) are compared to expected elements using the given {@link
+   * Correspondence}. The actual elements must be of type {@code A}, the expected elements must be
+   * of type {@code E}. The proposition is actually executed by continuing the method chain. For
+   * example: <pre>   {@code
+   *   assertThat(actualIterable).comparingElementsUsing(correspondence).contains(expected);}</pre>
+   * where {@code actualIterable} is an {@code Iterable<A>} (or, more generally, an {@code
+   * Iterable<? extends A>}), {@code correspondence} is a {@code Correspondence<A, E>}, and {@code
+   * expected} is an {@code E}.
+   *
+   * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
+   * encounter an actual element which is not of type {@code A}.
+   */
+  public <A, E> UsingCorrespondence<A, E> comparingElementsUsing(
+      Correspondence<A, E> correspondence) {
+    return new UsingCorrespondence<A, E>(correspondence);
+  }
+
+  /**
+   * A partially specified proposition in which the actual elements (i.e. the elements of the {@link
+   * Iterable} under test) are compared to expected elements using a {@link Correspondence}. The
+   * expected elements are of type {@code E}. Call methods on this object to actually execute the
+   * proposition.
+   *
+   * <p>TODO(b/29966314): Add something about what it means in the context of the primitive double
+   * and float arrays, since users who got here by doing {@code withTolerance} on one of those won't
+   * know anything about any {@code Correspondence}.
+   */
+  public final class UsingCorrespondence<A, E> {
+
+    private final Correspondence<A, E> correspondence;
+
+    private UsingCorrespondence(Correspondence<A, E> correspondence) {
+      this.correspondence = checkNotNull(correspondence);
+    }
+
+    /**
+     * Attests that at least one of the actual elements corresponds to the given expected element.
+     */
+    public void contains(@Nullable E expected) {
+      for (A actual : getCastSubject()) {
+        if (correspondence.compare(actual, expected)) {
+          return;
+        }
+      }
+      fail("contains one or more elements which " + correspondence, expected);
+    }
+
+    @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
+    private Iterable<A> getCastSubject() {
+      return (Iterable<A>) (Iterable<?>) getSubject();
+    }
+  }
 }

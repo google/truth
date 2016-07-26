@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
@@ -29,6 +30,8 @@ import java.util.Iterator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import javax.annotation.Nullable;
 
 /**
  * Tests for Collection Subjects.
@@ -914,5 +917,52 @@ public class IterableSubjectTest {
     Iterable<Bar> targetList = asList(new Bar(1), new Bar(2), new Bar(3));
     assertThat(targetList).isOrdered(FOO_COMPARATOR);
     assertThat(targetList).isStrictlyOrdered(FOO_COMPARATOR);
+  }
+
+  private static final Correspondence<String, Integer> INTEGER_STRING_CORRESPONDENCE =
+      new Correspondence<String, Integer>() {
+
+        @Override
+        public boolean compare(@Nullable String actual, @Nullable Integer expected) {
+          @Nullable Integer parsedActual = Ints.tryParse(Strings.nullToEmpty(actual));
+          return parsedActual != null && parsedActual.equals(expected);
+        }
+
+        @Override
+        public String toString() {
+          return "parse to";
+        }
+      };
+
+  @Test
+  public void comparingElementsUsing_contains_success() {
+    ImmutableList<String> actual = ImmutableList.of("not a number", "123", "456", "789");
+    assertThat(actual).comparingElementsUsing(INTEGER_STRING_CORRESPONDENCE).contains(456);
+  }
+
+  @Test
+  public void comparingElementsUsing_contains_failure() {
+    ImmutableList<String> actual = ImmutableList.of("not a number", "123", "456", "789");
+    try {
+      assertThat(actual).comparingElementsUsing(INTEGER_STRING_CORRESPONDENCE).contains(2345);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[not a number, 123, 456, 789]> contains one or more elements which"
+                  + " parse to <2345>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_wrongTypeInActual() {
+    ImmutableList<?> actual = ImmutableList.of("valid", 123);
+    IterableSubject.UsingCorrespondence<String, Integer> intermediate =
+        assertThat(actual).comparingElementsUsing(INTEGER_STRING_CORRESPONDENCE);
+    try {
+      intermediate.contains(456);
+      fail("Expected ClassCastException as actual Iterable contains a non-String");
+    } catch (ClassCastException expected) {
+    }
   }
 }
