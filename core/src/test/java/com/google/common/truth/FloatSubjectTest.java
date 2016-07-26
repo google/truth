@@ -32,11 +32,16 @@ import org.junit.runners.JUnit4;
 public class FloatSubjectTest {
   @Test
   public void isWithinOf() {
+    assertThat(2.0f).isWithin(0.0f).of(2.0f);
     assertThat(2.0f).isWithin(0.00001f).of(2.0f);
     assertThat(2.0f).isWithin(1000.0f).of(2.0f);
     assertThat(2.0f).isWithin(1.00001f).of(3.0f);
     assertThatIsWithinFails(2.0f, 0.99999f, 3.0f);
     assertThatIsWithinFails(2.0f, 1000.0f, 1003.0f);
+    assertThatIsWithinFails(2.0f, 1000.0f, Float.POSITIVE_INFINITY);
+    assertThatIsWithinFails(2.0f, 1000.0f, Float.NaN);
+    assertThatIsWithinFails(Float.NEGATIVE_INFINITY, 1000.0f, 2.0f);
+    assertThatIsWithinFails(Float.NaN, 1000.0f, 2.0f);
   }
 
   private static void assertThatIsWithinFails(float actual, float tolerance, float expected) {
@@ -56,11 +61,16 @@ public class FloatSubjectTest {
 
   @Test
   public void isNotWithinOf() {
+    assertThatIsNotWithinFails(2.0f, 0.0f, 2.0f);
     assertThatIsNotWithinFails(2.0f, 0.00001f, 2.0f);
     assertThatIsNotWithinFails(2.0f, 1000.0f, 2.0f);
     assertThatIsNotWithinFails(2.0f, 1.00001f, 3.0f);
     assertThat(2.0f).isNotWithin(0.99999f).of(3.0f);
     assertThat(2.0f).isNotWithin(1000.0f).of(1003.0f);
+    assertThatIsNotWithinFails(2.0f, 0.0f, Float.POSITIVE_INFINITY);
+    assertThatIsNotWithinFails(2.0f, 0.0f, Float.NaN);
+    assertThatIsNotWithinFails(Float.NEGATIVE_INFINITY, 1000.0f, 2.0f);
+    assertThatIsNotWithinFails(Float.NaN, 1000.0f, 2.0f);
   }
 
   private static void assertThatIsNotWithinFails(float actual, float tolerance, float expected) {

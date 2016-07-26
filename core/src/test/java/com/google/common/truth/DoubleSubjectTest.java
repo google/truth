@@ -32,11 +32,16 @@ import org.junit.runners.JUnit4;
 public class DoubleSubjectTest {
   @Test
   public void isWithinOf() {
+    assertThat(2.0).isWithin(0.0).of(2.0);
     assertThat(2.0).isWithin(0.00001).of(2.0);
     assertThat(2.0).isWithin(1000.0).of(2.0);
     assertThat(2.0).isWithin(1.00001).of(3.0);
     assertThatIsWithinFails(2.0, 0.99999, 3.0);
     assertThatIsWithinFails(2.0, 1000.0, 1003.0);
+    assertThatIsWithinFails(2.0, 1000.0, Double.POSITIVE_INFINITY);
+    assertThatIsWithinFails(2.0, 1000.0, Double.NaN);
+    assertThatIsWithinFails(Double.NEGATIVE_INFINITY, 1000.0, 2.0);
+    assertThatIsWithinFails(Double.NaN, 1000.0, 2.0);
   }
 
   private static void assertThatIsWithinFails(double actual, double tolerance, double expected) {
@@ -56,11 +61,16 @@ public class DoubleSubjectTest {
 
   @Test
   public void isNotWithinOf() {
+    assertThatIsNotWithinFails(2.0, 0.0, 2.0);
     assertThatIsNotWithinFails(2.0, 0.00001, 2.0);
     assertThatIsNotWithinFails(2.0, 1000.0, 2.0);
     assertThatIsNotWithinFails(2.0, 1.00001, 3.0);
     assertThat(2.0).isNotWithin(0.99999).of(3.0);
     assertThat(2.0).isNotWithin(1000.0).of(1003.0);
+    assertThatIsNotWithinFails(2.0, 0.0, Double.POSITIVE_INFINITY);
+    assertThatIsNotWithinFails(2.0, 0.0, Double.NaN);
+    assertThatIsNotWithinFails(Double.NEGATIVE_INFINITY, 1000.0, 2.0);
+    assertThatIsNotWithinFails(Double.NaN, 1000.0, 2.0);
   }
 
   private static void assertThatIsNotWithinFails(double actual, double tolerance, double expected) {
