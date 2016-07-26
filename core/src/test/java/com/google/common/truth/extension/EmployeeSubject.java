@@ -35,7 +35,7 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
   }
 
   // Static method for getting the subject factory (for use with assertAbout())
-  public static SubjectFactory<EmployeeSubject, Employee> employee() {
+  public static SubjectFactory<EmployeeSubject, Employee> employees() {
     return EMPLOYEE_SUBJECT_FACTORY;
   }
 

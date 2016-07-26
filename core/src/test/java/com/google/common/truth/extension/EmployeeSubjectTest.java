@@ -15,11 +15,12 @@
  */
 package com.google.common.truth.extension;
 
+import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.extension.Employee.Location;
 import static com.google.common.truth.extension.EmployeeSubject.assertThat;
-import static com.google.common.truth.extension.EmployeeSubject.employee;
+import static com.google.common.truth.extension.EmployeeSubject.employees;
 
+import com.google.common.truth.extension.Employee.Location;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -45,8 +46,10 @@ public final class EmployeeSubjectTest {
     assertThat(KURT).hasId(37802);
     assertThat(KURT).hasUsername("kak");
     assertThat(KURT).hasName("Kurt Alfred Kluever");
-    assertThat(KURT).hasLocation(Location.NYC);
-    assertThat(KURT).isNotCeo();
+
+    // These assertions use assertAbout and the EmployeeSubject static factory method
+    assertAbout(employees()).that(KURT).isNotCeo();
+    assertAbout(employees()).that(KURT).hasLocation(Location.NYC);
   }
 
   @Test
