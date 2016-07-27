@@ -519,14 +519,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * A partially specified proposition in which the actual elements (i.e. the elements of the {@link
-   * Iterable} under test) are compared to expected elements using a {@link Correspondence}. The
-   * expected elements are of type {@code E}. Call methods on this object to actually execute the
-   * proposition.
+   * A partially specified proposition in which the actual elements (normally the elements of the
+   * {@link Iterable} under test) are compared to expected elements using a {@link Correspondence}.
+   * The expected elements are of type {@code E}. Call methods on this object to actually execute
+   * the proposition.
    *
-   * <p>TODO(b/29966314): Add something about what it means in the context of the primitive double
-   * and float arrays, since users who got here by doing {@code withTolerance} on one of those won't
-   * know anything about any {@code Correspondence}.
+   * <p>The actual elements may alternatively be from an array of doubles or floats (see {@link
+   * PrimitiveDoubleArraySubject#withTolerance} and {@link
+   * PrimitiveFloatArraySubject#withTolerance}).
    */
   public final class UsingCorrespondence<A, E> {
 

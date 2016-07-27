@@ -20,6 +20,7 @@ import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Math.nextAfter;
+import static org.junit.Assert.fail;
 
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
@@ -37,7 +38,7 @@ import org.junit.runners.JUnit4;
 public class PrimitiveDoubleArraySubjectTest {
   private static final double DEFAULT_TOLERANCE = 0.000005d;
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Default_Fail() {
     try {
@@ -47,13 +48,13 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo() {
     assertThat(array(2.2d, 5.4d)).isEqualTo(array(2.2d, 5.4d), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_ApproximatelyEquals() {
     assertThat(array(2.2d, 3.3d))
@@ -61,7 +62,7 @@ public class PrimitiveDoubleArraySubjectTest {
             array(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_FailNotQuiteApproximatelyEquals() {
     double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
@@ -75,7 +76,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_DifferentOrder() {
     try {
@@ -86,7 +87,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_Longer() {
     try {
@@ -99,7 +100,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_Shorter() {
     try {
@@ -111,7 +112,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_NotAnArray() {
     try {
@@ -123,7 +124,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_Infinity() {
     try {
@@ -136,14 +137,14 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_SameInfinity() {
     double[] same = array(2.2d, POSITIVE_INFINITY);
     assertThat(same).isEqualTo(same, DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_OneInfinity() {
     try {
@@ -155,7 +156,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_LongerOneInfinity() {
     try {
@@ -167,7 +168,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_NaN() {
     try {
@@ -178,7 +179,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Default_Fail() {
     try {
@@ -188,31 +189,31 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_DifferentOrder() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(3.3d, 2.2d), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Longer() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, 3.3d, 1.1d), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Shorter() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_DifferentTypes() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(new Object(), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_FailEquals() {
     try {
@@ -223,7 +224,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_FailApproximatelyEquals() {
     double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
@@ -237,7 +238,7 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2d, 3.3d))
@@ -245,7 +246,7 @@ public class PrimitiveDoubleArraySubjectTest {
             array(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY)), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_FailSame() {
     try {
@@ -257,14 +258,14 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Fail_Infinity() {
     assertThat(array(2.2d, POSITIVE_INFINITY))
         .isNotEqualTo(array(2.2d, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Fail_SameInfinity() {
     try {
@@ -277,19 +278,19 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_OneInfinity() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_LongerOneInfinity() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(POSITIVE_INFINITY), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Fail_NaN() {
     assertThat(array(NaN)).isNotEqualTo(array(NaN), DEFAULT_TOLERANCE);
@@ -642,16 +643,19 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_DifferentOrder() {
     assertThat(array(2.2d, 3.3d)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(3.3d, 2.2d);
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_DifferentLengths() {
     assertThat(array(2.2d, 3.3d)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(2.2d, 3.3d, 1.1d);
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailEquals() {
     try {
       assertThat(array(2.2d, 3.3d)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(2.2d, 3.3d);
@@ -664,6 +668,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailApproximatelyEquals() {
     double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     try {
@@ -679,6 +684,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -686,6 +692,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailSame() {
     try {
       double[] same = array(2.2d, 3.3d);
@@ -699,6 +706,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_Fail_Infinity() {
     try {
       assertThat(array(2.2d, POSITIVE_INFINITY))
@@ -714,6 +722,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_Fail_SameInfinity() {
     try {
       double[] same = array(2.2d, POSITIVE_INFINITY);
@@ -728,6 +737,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_OneInfinity() {
     try {
       assertThat(array(2.2d, 3.3d))
@@ -743,11 +753,13 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_LongerOneInfinity() {
     assertThat(array(2.2d, 3.3d)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(POSITIVE_INFINITY);
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_Fail_NaN() {
     try {
       assertThat(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(NaN);
@@ -759,6 +771,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_NullSubject() {
     double[] nullArray = null;
     try {
@@ -769,6 +782,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_NullObject() {
     double[] nullArray = null;
     try {
@@ -779,6 +793,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_NegativeTolerance() {
     try {
       assertThat(array(3.3d, 2.2d)).hasValuesNotWithin(-0.001d).of(3.3d, 2.2d);
@@ -789,6 +804,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_DifferentOrderDoubles() {
     assertThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -796,6 +812,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_DifferentOrderFloats() {
     assertThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -803,6 +820,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_DifferentOrderLongs() {
     assertThat(array(2d, 3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -810,6 +828,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_DifferentLengths() {
     assertThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -817,6 +836,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_FailEquals() {
     try {
       assertThat(array(2.2d, 3.3d))
@@ -831,6 +851,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_FailApproximatelyEquals() {
     double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     try {
@@ -848,6 +869,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -855,6 +877,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_Fail_Infinity() {
     try {
       assertThat(array(2.2d, POSITIVE_INFINITY))
@@ -870,6 +893,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_OneInfinity() {
     try {
       assertThat(array(2.2d, 3.3d))
@@ -885,6 +909,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_LongerOneInfinity() {
     assertThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -892,6 +917,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_Fail_NaN() {
     try {
       assertThat(array(NaN))
@@ -905,6 +931,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_NullSubject() {
     double[] nullArray = null;
     try {
@@ -917,6 +944,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_NullObject() {
     Iterable<Number> nullIterable = null;
     try {
@@ -929,6 +957,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_NegativeTolerance() {
     try {
       assertThat(array(3.3d, 2.2d))
@@ -937,6 +966,59 @@ public class PrimitiveDoubleArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
+    }
+  }
+
+  @Test
+  public void withTolerance_contains_success() {
+    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
+        .withTolerance(DEFAULT_TOLERANCE)
+        .contains(2.0);
+  }
+
+  @Test
+  public void withTolerance_contains_successWithExpectedLong() {
+    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
+        .withTolerance(DEFAULT_TOLERANCE)
+        .contains(2L);
+  }
+
+  @Test
+  public void withTolerance_contains_failure() {
+    double justOverTwoPlusTolerance = nextAfter(2.0 + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
+    try {
+      assertThat(array(1.0, justOverTwoPlusTolerance, 3.0))
+          .withTolerance(DEFAULT_TOLERANCE)
+          .contains(2.0);
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[1.0, "
+                  + justOverTwoPlusTolerance
+                  + ", 3.0]> contains one or more elements which are finite numbers within "
+                  + DEFAULT_TOLERANCE
+                  + " of <2.0>");
+    }
+  }
+
+  @Test
+  public void withTolerance_contains_nullExpected() {
+    try {
+      assertThat(array(1.0, 2.0, 3.0)).withTolerance(DEFAULT_TOLERANCE).contains(null);
+      fail("Expected NullPointerException to be thrown but wasn't");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void withTolerance_contains_negativeTolerance() {
+    try {
+      assertThat(array(1.0, 2.0, 3.0)).withTolerance(-1.0 * DEFAULT_TOLERANCE).contains(2.0f);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessage("tolerance (" + -1.0 * DEFAULT_TOLERANCE + ") cannot be negative");
     }
   }
 

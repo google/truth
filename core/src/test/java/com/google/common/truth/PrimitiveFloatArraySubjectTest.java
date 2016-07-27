@@ -20,6 +20,7 @@ import static java.lang.Float.NEGATIVE_INFINITY;
 import static java.lang.Float.NaN;
 import static java.lang.Float.POSITIVE_INFINITY;
 import static java.lang.Math.nextAfter;
+import static org.junit.Assert.fail;
 
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
@@ -37,7 +38,7 @@ import org.junit.runners.JUnit4;
 public class PrimitiveFloatArraySubjectTest {
   private static final float DEFAULT_TOLERANCE = 0.000005f;
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Default_Fail() {
     try {
@@ -47,13 +48,13 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo() {
     assertThat(array(2.2f, 5.4f)).isEqualTo(array(2.2f, 5.4f), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_ApproximatelyEquals() {
     assertThat(array(2.2f, 3.3f))
@@ -61,7 +62,7 @@ public class PrimitiveFloatArraySubjectTest {
             array(2.2f, nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_FailNotQuiteApproximatelyEquals() {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
@@ -75,7 +76,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_DifferentOrder() {
     try {
@@ -86,7 +87,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_Longer() {
     try {
@@ -99,7 +100,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_Shorter() {
     try {
@@ -111,7 +112,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_NotAnArray() {
     try {
@@ -123,7 +124,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_Infinity() {
     try {
@@ -136,14 +137,14 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_SameInfinity() {
     float[] same = array(2.2f, POSITIVE_INFINITY);
     assertThat(same).isEqualTo(same, DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_OneInfinity() {
     try {
@@ -155,7 +156,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_LongerOneInfinity() {
     try {
@@ -167,7 +168,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_Fail_NaN() {
     try {
@@ -178,7 +179,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Default_Fail() {
     try {
@@ -188,31 +189,31 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_DifferentOrder() {
     assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(3.3f, 2.2f), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Longer() {
     assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, 3.3f, 1.1f), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Shorter() {
     assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_DifferentTypes() {
     assertThat(array(2.2f, 3.3f)).isNotEqualTo(new Object(), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_FailEquals() {
     try {
@@ -223,7 +224,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_FailApproximatelyEquals() {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
@@ -237,7 +238,7 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2f, 3.3f))
@@ -245,7 +246,7 @@ public class PrimitiveFloatArraySubjectTest {
             array(2.2f, nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY)), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_FailSame() {
     try {
@@ -257,14 +258,14 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Fail_Infinity() {
     assertThat(array(2.2f, POSITIVE_INFINITY))
         .isNotEqualTo(array(2.2f, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Fail_SameInfinity() {
     try {
@@ -277,19 +278,19 @@ public class PrimitiveFloatArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_OneInfinity() {
     assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_LongerOneInfinity() {
     assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(POSITIVE_INFINITY), DEFAULT_TOLERANCE);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_Fail_NaN() {
     assertThat(array(NaN)).isNotEqualTo(array(NaN), DEFAULT_TOLERANCE);
@@ -642,16 +643,19 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_DifferentOrder() {
     assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(3.3f, 2.2f);
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_DifferentLengths() {
     assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(2.2f, 3.3f, 1.1f);
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailEquals() {
     try {
       assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(2.2f, 3.3f);
@@ -664,6 +668,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailApproximatelyEquals() {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     try {
@@ -679,6 +684,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2f, 3.3f))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -686,6 +692,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailSame() {
     try {
       float[] same = array(2.2f, 3.3f);
@@ -699,6 +706,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_Fail_Infinity() {
     try {
       assertThat(array(2.2f, POSITIVE_INFINITY))
@@ -714,6 +722,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_Fail_SameInfinity() {
     try {
       float[] same = array(2.2f, POSITIVE_INFINITY);
@@ -728,6 +737,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_OneInfinity() {
     try {
       assertThat(array(2.2f, 3.3f))
@@ -743,11 +753,13 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_LongerOneInfinity() {
     assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(POSITIVE_INFINITY);
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_Fail_NaN() {
     try {
       assertThat(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(NaN);
@@ -759,6 +771,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_NullSubject() {
     float[] nullArray = null;
     try {
@@ -769,6 +782,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_NullObject() {
     float[] nullArray = null;
     try {
@@ -779,6 +793,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_NegativeTolerance() {
     try {
       assertThat(array(3.3f, 2.2f)).hasValuesNotWithin(-0.001f).of(3.3f, 2.2f);
@@ -789,6 +804,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_DifferentOrderFloats() {
     assertThat(array(2.2f, 3.3f))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -796,6 +812,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_DifferentOrderDoubles() {
     assertThat(array(2.2f, 3.3f))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -803,6 +820,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_DifferentOrderLongs() {
     assertThat(array(2f, 3f))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -810,6 +828,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_DifferentLengths() {
     assertThat(array(2.2f, 3.3f))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -817,6 +836,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_FailEquals() {
     try {
       assertThat(array(2.2f, 3.3f))
@@ -831,6 +851,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_FailApproximatelyEquals() {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     try {
@@ -848,6 +869,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2f, 3.3f))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -855,6 +877,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_Fail_Infinity() {
     try {
       assertThat(array(2.2f, POSITIVE_INFINITY))
@@ -870,6 +893,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_OneInfinity() {
     try {
       assertThat(array(2.2f, 3.3f))
@@ -885,6 +909,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_LongerOneInfinity() {
     assertThat(array(2.2f, 3.3f))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
@@ -892,6 +917,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_Fail_NaN() {
     try {
       assertThat(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).ofElementsIn(Floats.asList(NaN));
@@ -903,6 +929,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_NullSubject() {
     float[] nullArray = null;
     try {
@@ -915,6 +942,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_NullObject() {
     Iterable<Number> nullIterable = null;
     try {
@@ -927,6 +955,7 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_NegativeTolerance() {
     try {
       assertThat(array(3.3f, 2.2f))
@@ -935,6 +964,59 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
+    }
+  }
+
+  @Test
+  public void withTolerance_contains_success() {
+    assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
+        .withTolerance(DEFAULT_TOLERANCE)
+        .contains(2.0f);
+  }
+
+  @Test
+  public void withTolerance_contains_successWithExpectedLong() {
+    assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
+        .withTolerance(DEFAULT_TOLERANCE)
+        .contains(2L);
+  }
+
+  @Test
+  public void withTolerance_contains_failure() {
+    float justOverTwoPlusTolerance = nextAfter(2.0f + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
+    try {
+      assertThat(array(1.0f, justOverTwoPlusTolerance, 3.0f))
+          .withTolerance(DEFAULT_TOLERANCE)
+          .contains(2.0f);
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[1.0, "
+                  + justOverTwoPlusTolerance
+                  + ", 3.0]> contains one or more elements which are finite numbers within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of <2.0>");
+    }
+  }
+
+  @Test
+  public void withTolerance_contains_nullExpected() {
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).withTolerance(DEFAULT_TOLERANCE).contains(null);
+      fail("Expected NullPointerException to be thrown but wasn't");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void withTolerance_contains_negativeTolerance() {
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).withTolerance(-1.0f * DEFAULT_TOLERANCE).contains(2.0f);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessage("tolerance (" + -1.0 * DEFAULT_TOLERANCE + ") cannot be negative");
     }
   }
 

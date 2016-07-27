@@ -15,16 +15,19 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.DoubleSubject.checkTolerance;
+
 import javax.annotation.Nullable;
 
 /**
  * Determines whether an instance of type {@code A} corresponds in some way to an instance of type
- * {@code E}. For example, an implementation might implement approximate equality between numeric
- * values, with values being said to correspond if the difference between them is does not exceed
- * some fixed tolerance. (TODO(b/29966314): Replace "an implementation" with a reference to the
- * tolerance method once it exists.) The instances of type {@code A} are typically actual values
- * from a collection returned by the code under test; the instances of type {@code E} are typically
- * expected values with which the actual values are compared by the test.
+ * {@code E}. For example, the implementation returned by the {@link #tolerance(double)} factory
+ * method implements approximate equality between numeric values, with values being said to
+ * correspond if the difference between them is does not exceed some fixed tolerance. The instances
+ * of type {@code A} are typically actual values from a collection returned by the code under test;
+ * the instances of type {@code E} are typically expected values with which the actual values are
+ * compared by the test.
  *
  * <p>The correspondence is required to be consistent: for any given values {@code actual} and
  * {@code expected}, multiple invocations of {@code compare(actual, expected)} must consistently
@@ -40,6 +43,49 @@ import javax.annotation.Nullable;
  * @author Pete Gillin
  */
 public abstract class Correspondence<A, E> {
+
+  /**
+   * Returns a {@link Correspondence} between {@link Number} instances which considers instances to
+   * correspond (i.e. {@link Correspondence#compare(Number, Number)} returns {@code true}) if the
+   * double values of each instance (i.e. the result of calling {@link Number#doubleValue()} on
+   * them) are finite values within {@code tolerance} of each other.
+   *
+   * <ul>
+   * <li>It does not consider instances to correspond if either value is infinite or NaN.
+   * <li>The conversion to double may result in a loss of precision for some numeric types.
+   * <li>The {@link Correspondence#compare(Number, Number)} method throws a {@link
+   *     NullPointerException} if either {@link Number} instance is null.
+   * </ul>
+   *
+   * @param tolerance an inclusive upper bound on the difference between the double values of the
+   *     two {@link Number} instances, which must be a non-negative finite value, i.e. not {@link
+   *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
+   */
+  public static Correspondence<Number, Number> tolerance(double tolerance) {
+    return new TolerantNumericEquality(tolerance);
+  }
+
+  private static final class TolerantNumericEquality extends Correspondence<Number, Number> {
+
+    private final double tolerance;
+
+    private TolerantNumericEquality(double tolerance) {
+      this.tolerance = tolerance;
+    }
+
+    @Override
+    public boolean compare(Number actual, Number expected) {
+      checkTolerance(tolerance);
+      double actualDouble = checkNotNull(actual).doubleValue();
+      double expectedDouble = checkNotNull(expected).doubleValue();
+      return MathUtil.equalWithinTolerance(actualDouble, expectedDouble, tolerance);
+    }
+
+    @Override
+    public String toString() {
+      return "are finite numbers within " + tolerance + " of";
+    }
+  }
 
   /**
    * Returns whether or not the {@code actual} value is said to correspond to the {@code expected}

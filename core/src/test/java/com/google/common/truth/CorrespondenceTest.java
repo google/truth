@@ -15,8 +15,11 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -28,6 +31,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public final class CorrespondenceTest {
+
+  // Tests of the abstract base class (just assert that equals and hashCode throw).
 
   private static final Correspondence<Object, Object> INSTANCE =
       new Correspondence<Object, Object>() {
@@ -44,6 +49,7 @@ public final class CorrespondenceTest {
       };
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void testEquals_throws() {
     try {
       INSTANCE.equals(new Object());
@@ -53,11 +59,92 @@ public final class CorrespondenceTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation") // testing deprecated method
   public void testHashCode_throws() {
     try {
       INSTANCE.hashCode();
       fail("Expected UnsupportedOperationException from Correspondence.hashCode");
     } catch (UnsupportedOperationException expected) {
+    }
+  }
+
+  // Tests of the tolerance factory method. Includes both direct tests of the compare method and
+  // indirect tests using it in a basic call chain.
+
+  @Test
+  public void testTolerance_compare_doubles() {
+    assertThat(tolerance(0.0).compare(2.0, 2.0)).isTrue();
+    assertThat(tolerance(0.00001).compare(2.0, 2.0)).isTrue();
+    assertThat(tolerance(1000.0).compare(2.0, 2.0)).isTrue();
+    assertThat(tolerance(1.00001).compare(2.0, 3.0)).isTrue();
+    assertThat(tolerance(1000.0).compare(2.0, 1003.0)).isFalse();
+    assertThat(tolerance(1000.0).compare(2.0, Double.POSITIVE_INFINITY)).isFalse();
+    assertThat(tolerance(1000.0).compare(2.0, Double.NaN)).isFalse();
+  }
+
+  @Test
+  public void testTolerance_compare_floats() {
+    assertThat(tolerance(0.0).compare(2.0f, 2.0f)).isTrue();
+    assertThat(tolerance(0.00001).compare(2.0f, 2.0f)).isTrue();
+    assertThat(tolerance(1000.0).compare(2.0f, 2.0f)).isTrue();
+    assertThat(tolerance(1.00001).compare(2.0f, 3.0f)).isTrue();
+    assertThat(tolerance(1000.0).compare(2.0f, 1003.0f)).isFalse();
+    assertThat(tolerance(1000.0).compare(2.0f, Float.POSITIVE_INFINITY)).isFalse();
+    assertThat(tolerance(1000.0).compare(2.0f, Float.NaN)).isFalse();
+  }
+
+  @Test
+  public void testTolerance_compare_doublesVsInts() {
+    assertThat(tolerance(0.0).compare(2.0, 2)).isTrue();
+    assertThat(tolerance(0.00001).compare(2.0, 2)).isTrue();
+    assertThat(tolerance(1000.0).compare(2.0, 2)).isTrue();
+    assertThat(tolerance(1.00001).compare(2.0, 3)).isTrue();
+    assertThat(tolerance(1000.0).compare(2.0, 1003)).isFalse();
+  }
+
+  @Test
+  public void testTolerance_compare_negativeTolerance() {
+    try {
+      tolerance(-0.05).compare(1.0, 2.0);
+      fail("Expected IllegalArgumentException to be thrown but wasn't");
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected).hasMessage("tolerance (-0.05) cannot be negative");
+    }
+  }
+
+  @Test
+  public void testTolerance_compare_null() {
+    try {
+      tolerance(0.05).compare(1.0, null);
+      fail("Expected NullPointerException to be thrown but wasn't");
+    } catch (NullPointerException expected) {
+    }
+    try {
+      tolerance(0.05).compare(null, 2.0);
+      fail("Expected NullPointerException to be thrown but wasn't");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void testTolerance_viaIterableSubjectContains_success() {
+    assertThat(ImmutableList.of(1.02, 2.04, 3.08))
+        .comparingElementsUsing(tolerance(0.05))
+        .contains(2.0);
+  }
+
+  @Test
+  public void testTolerance_viaIterableSubjectContains_failure() {
+    try {
+      assertThat(ImmutableList.of(1.02, 2.04, 3.08))
+          .comparingElementsUsing(tolerance(0.05))
+          .contains(3.0);
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[1.02, 2.04, 3.08]> contains one or more elements which "
+                  + "are finite numbers within 0.05 of <3.0>");
     }
   }
 }

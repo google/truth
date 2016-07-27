@@ -17,6 +17,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
@@ -315,11 +316,28 @@ public final class PrimitiveDoubleArraySubject
     };
   }
 
-  // TODO(b/29966314): Get rid of this in favour of comparingElementsUsing.
-  // In the meantime, anyone who really does want this behaviour can call
-  // com.google.common.primitives.Doubles.asList() on their subject.
-  @SuppressWarnings("unused")
-  private IterableSubject asList() {
-    return new IterableSubject(failureStrategy, listRepresentation());
+  /**
+   * Starts a method chain for a test proposition in which the actual values (i.e. the elements of
+   * the array under test) are compared to expected elements using a {@link Correspondence} which
+   * considers values to correspond if they are finite values within {@code tolerance} of each
+   * other. The proposition is actually executed by continuing the method chain. For example:
+   * <pre>   {@code
+   * assertThat(actualDoubleArray).withTolerance(1.0e-5).contains(3.14159);}</pre>
+   *
+   * <ul>
+   * <li>It does not consider values to correspond if either value is infinite or NaN.
+   * <li>The expected values provided later in the chain will be {@link Number} instances which will
+   *     be converted to doubles, which may result in a loss of precision for some numeric types.
+   * <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
+   *     expected {@link Number} instance is null.
+   * </ul>
+   *
+   * @param tolerance an inclusive upper bound on the difference between the double values of the
+   *     actual and expected numbers, which must be a non-negative finite value, i.e. not {@link
+   *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
+   */
+  public IterableSubject.UsingCorrespondence<Number, Number> withTolerance(double tolerance) {
+    return new IterableSubject(failureStrategy, listRepresentation())
+        .comparingElementsUsing(tolerance(tolerance));
   }
 }
