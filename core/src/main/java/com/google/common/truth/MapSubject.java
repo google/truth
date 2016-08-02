@@ -118,7 +118,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       }
       if (getSubject().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<Object>();
-        for (Entry<Object, Object> actualEntry : ((Map<Object, Object>) getSubject()).entrySet()) {
+        for (Entry<?, ?> actualEntry : getSubject().entrySet()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
           }

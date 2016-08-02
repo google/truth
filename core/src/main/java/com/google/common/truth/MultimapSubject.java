@@ -105,12 +105,11 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       if (getSubject().containsKey(key)) {
         failWithRawMessage(
             "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
-            getDisplaySubject(), entry, key, ((Multimap<Object, Object>) getSubject()).get(key));
+            getDisplaySubject(), entry, key, getSubject().asMap().get(key));
       }
       if (getSubject().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<Object>();
-        for (Entry<Object, Object> actualEntry :
-            ((Multimap<Object, Object>) getSubject()).entries()) {
+        for (Entry<?, ?> actualEntry : getSubject().entries()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
           }
@@ -289,7 +288,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   private static <K, V> Collection<V> get(Multimap<K, V> multimap, @Nullable Object key) {
     if (multimap.containsKey(key)) {
-      return multimap.get((K) key);
+      return multimap.asMap().get(key);
     } else {
       return Collections.emptyList();
     }
