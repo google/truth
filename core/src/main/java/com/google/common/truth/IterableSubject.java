@@ -112,7 +112,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that a Collection contains at least one of the objects contained in the provided
+   * Attests that the subject contains at least one of the objects contained in the provided
    * collection or fails.
    */
   public final void containsAnyIn(Iterable<?> expected) {
@@ -142,12 +142,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   /**
    * Attests that the subject contains at least all of the provided objects or fails, potentially
-   * permitting duplicates in both the subject and the parameters (if the subject even can have
+   * permitting duplicates in both the subject and the parameters (if the subject can even have
    * duplicates).
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method.
    */
+  // TODO(peteg): Clarify a couple of things in this javadoc. What exactly does it mean about the
+  // duplicates, i.e. if something appears N times in the expected does it have to appear at least
+  // that many times in the subject? Does inOrder() require that they be consecutive? Also applies
+  // to containsAllIn and the UsingCorrespondence methods.
   @CanIgnoreReturnValue
   public final Ordered containsAllOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
@@ -156,7 +160,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   /**
    * Attests that the subject contains at least all of the provided objects or fails, potentially
-   * permitting duplicates in both the subject and the parameters (if the subject even can have
+   * permitting duplicates in both the subject and the parameters (if the subject can even have
    * duplicates).
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
@@ -358,13 +362,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /** Attests that a subject contains none of the provided objects or fails, eliding duplicates. */
+  // TODO(peteg): Clarify this javadoc. What does "eliding duplicates" mean??? Also applies to
+  // containsNoneIn and the UsingCorrespondence methods.
   public final void containsNoneOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsNone("contains none of", accumulate(first, second, rest));
   }
 
   /**
-   * Attests that a Collection contains none of the objects contained in the provided collection or
+   * Attests that a subject contains none of the objects contained in the provided iterable or
    * fails, eliding duplicates.
    */
   public final void containsNoneIn(Iterable<?> excluded) {
@@ -527,6 +533,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * <p>The actual elements may alternatively be from an array of doubles or floats (see {@link
    * PrimitiveDoubleArraySubject#withTolerance} and {@link
    * PrimitiveFloatArraySubject#withTolerance}).
+   *
+   * <p>NOTE: This class is under constructions and more methods will be added in future versions.
    */
   public final class UsingCorrespondence<A, E> {
 
@@ -537,7 +545,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that at least one of the actual elements corresponds to the given expected element.
+     * Attests that the subject contains at least one element which corresponds to the given
+     * expected element.
      */
     public void contains(@Nullable E expected) {
       for (A actual : getCastSubject()) {
@@ -548,9 +557,105 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       fail("contains one or more elements which " + correspondence, expected);
     }
 
+    /** Attests that none of the actual elements correspond to the given element. */
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private void doesNotContain(@Nullable E element) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Attests that subject contains exactly elements which correspond to the expected elements,
+     * i.e. that there is a 1:1 mapping between the actual elements and the expected elements where
+     * each pair of elements correspond.
+     *
+     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+     * on the object returned by this method.
+     */
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private Ordered containsExactly(@Nullable E... expected) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Attests that subject contains exactly elements which correspond to the expected elements,
+     * i.e. that there is a 1:1 mapping between the actual elements and the expected elements where
+     * each pair of elements correspond.
+     *
+     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+     * on the object returned by this method.
+     */
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private Ordered containsExactlyElementsIn(Iterable<E> expected) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Attests that the subject contains elements which corresponds to all of the expected elements,
+     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+     * elements where each pair of elements correspond.
+     *
+     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+     * on the object returned by this method.
+     */
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private Ordered containsAllOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Attests that the subject contains elements which corresponds to all of the expected elements,
+     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+     * elements where each pair of elements correspond.
+     *
+     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+     * on the object returned by this method.
+     */
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private Ordered containsAllIn(Iterable<E> expected) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Attests that the subject contains at least one element which corresponds to at least one of
+     * the expected elements.
+     */
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private void containsAnyOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Attests that the subject contains at least one element which corresponds to at least one of
+     * the expected elements.
+     */
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private void containsAnyIn(Iterable<E> expected) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Attests that the subject contains no elements which correspond to any of the given elements.
+     */
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private void containsNoneOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Attests that the subject contains no elements which correspond to any of the given elements.
+     */
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private void containsNoneIn(Iterable<E> excluded) {
+      throw new UnsupportedOperationException();
+    }
+
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Iterable<A> getCastSubject() {
-      return (Iterable<A>) (Iterable<?>) getSubject();
+      return (Iterable<A>) getSubject();
     }
   }
 }
