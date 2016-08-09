@@ -19,6 +19,5 @@
   </description>
   <modules>
     <module>re2j</module>
-    <module>protolite</module>
   </modules>
 </project>
