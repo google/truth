@@ -2,11 +2,10 @@
 
 ***We've made failure a strategy***
 
-**Main Website:** *[google.github.io/truth](http://google.github.io/truth/)*
-&nbsp; **Continuous Integration:** [![Build
-Status](https://secure.travis-ci.org/google/truth.png?branch=master)]
-(https://travis-ci.org/google/truth) <br /> **Latest Release:** *0.28* &nbsp;
-**Latest Artifact:** *org.junit.contrib:truth:jar:0.28* <br />
+[![Main Site][gh-pages-shield]][gh-pages-link]
+[![Build Status][travis-shield]][travis-link]
+[![Maven Release][maven-shield]][maven-link]
+[![Stackoverflow][stackoverflow-shield]][stackoverflow-link]
 
 ## What is Truth?
 
@@ -18,20 +17,24 @@ librarians.
 Truth can be used in place of JUnit's assertions, FEST, or Hamcrest's matchers,
 or it can be used alongside where other approaches seem more suitable.
 
-#### The full documentation and website for Truth is available at http://google.github.io/truth
+The full documentation for Truth is available at [its main website](http://google.github.io/truth)
 
 ## License
 
-Truth is licensed under the open-source Apache 2.0 license.
+Truth is licensed under the open-source [Apache 2.0 license](LICENSE).
+
+## Contributing
+
+Please [see the guidelines for contributing](CONTRIBUTING.md) before creating
+pull requests.
 
 ## Acknowledgements
 
 Thanks to Github and Travis-CI for having a strong commitment to open-source,
 and providing us with tools so we can provide others with code. And thanks to
-Google for [Guava](http://code.google.com/p/guava-libraries "Guava"), for taking
-on the Truth project and making it part of their core-libraries effort, and for
-encouraging us to try to solve problems in better ways and share that with the
-world.
+Google for [Guava], for taking on the Truth project and making it part of their
+core-libraries effort, and for encouraging us to try to solve problems in
+better ways and share that with the world.
 
 Also thanks to the authors of JUnit, TestNG, Hamcrest, FEST, and others for
 creating testing tools that let us write high-quality code, for inspiring this
@@ -39,3 +42,15 @@ work and for moving the ball forward in the field of automated software testing.
 This project works with, works alongside, and sometimes works in competition
 with the above tools, but owes a debt that everyone owes to those gone before.
 They paved the way, and we hope this contribution is helpful to the field.
+
+<!-- references -->
+
+[Guava]: http://github.com/google/guava
+[gh-pages-shield]: https://img.shields.io/badge/main%20site-google.github.io/truth-ff55ff.svg?style=flat
+[gh-pages-link]: http://google.github.io/truth/
+[travis-shield]: https://img.shields.io/travis/google/truth.svg
+[travis-link]: https://travis-ci.org/google/truth
+[maven-shield]: https://img.shields.io/maven-central/v/com.google.truth/truth.svg
+[maven-link]: http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.google.truth%22%20AND%20a%3A%22truth%22
+[stackoverflow-shield]: https://img.shields.io/badge/stackoverflow-truth-5555ff.svg?style=flat
+[stackoverflow-link]: http://stackoverflow.com/search?q=[truth]
