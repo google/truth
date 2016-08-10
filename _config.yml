@@ -2,7 +2,7 @@
 markdown: kramdown
 
 # Site settings
-version: "0.28"
+version: "0.29"
 url: http://google.github.io/truth
 title: Truth
 tagline: We've made failure a strategy
