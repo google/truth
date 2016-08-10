@@ -29,6 +29,8 @@ import javax.annotation.Nullable;
 /**
  * Propositions for arbitrarily typed subjects.
  *
+ * @param <S> the self-type, allowing {@code this}-returning methods to avoid needing subclassing
+ * @param <T> the type of the object being tested by this {@code Subject}
  * @author David Saff
  * @author Christian Gruber
  */
@@ -47,8 +49,10 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Renames the subject so that this name appears in the error messages in place of string
-   * representations of the subject.
+   * Adds a prefix to the subject, when it is displayed in error messages.  This is especially
+   * useful in the context of types that have no helpful {@code toString()} representation,
+   * e.g. boolean.  Writing {@code assertThat(foo).named("foo").isTrue();} then results in a
+   * more reasonable error message.
    */
   @SuppressWarnings("unchecked")
   @CanIgnoreReturnValue
