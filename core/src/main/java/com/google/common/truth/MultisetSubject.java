@@ -31,13 +31,9 @@ public final class MultisetSubject extends IterableSubject {
     super(failureStrategy, multiset);
   }
 
-  /**
-   * Renames the subject so that this name appears in the error messages in place of string
-   * representations of the subject.
-   */
   @Override
-  public MultisetSubject named(String name) {
-    super.named(name);
+  public MultisetSubject named(String format, Object... args) {
+    super.named(format, args);
     return this;
   }
 

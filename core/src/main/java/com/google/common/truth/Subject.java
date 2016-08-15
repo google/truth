@@ -49,16 +49,22 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Adds a prefix to the subject, when it is displayed in error messages.  This is especially
-   * useful in the context of types that have no helpful {@code toString()} representation,
-   * e.g. boolean.  Writing {@code assertThat(foo).named("foo").isTrue();} then results in a
-   * more reasonable error message.
+   * Adds a prefix to the subject, when it is displayed in error messages. This is especially useful
+   * in the context of types that have no helpful {@code toString()} representation, e.g. boolean.
+   * Writing {@code assertThat(foo).named("foo").isTrue();} then results in a more reasonable error
+   * message.
+   *
+   * <p>{@code named()} takes a format template and argument objects which will be substituted into
+   * the template, similar to {@link String#format(String, Object...)}, the chief difference being
+   * that extra parameters (for which there are no template variables) will be appended to the
+   * resulting string in brackets. Additionally, this only supports the {@code %s} template variable
+   * type.
    */
   @SuppressWarnings("unchecked")
   @CanIgnoreReturnValue
-  public S named(String name) {
-    // TODO: use check().withFailureMessage... here?
-    this.customName = checkNotNull(name, "Name passed to named() cannot be null.");
+  public S named(String format, Object... args) {
+    checkNotNull(format, "Name passed to named() cannot be null.");
+    this.customName = StringUtil.format(format, args);
     return (S) this;
   }
 

@@ -57,11 +57,6 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
     }
   }
 
-  @Override
-  public S named(String name) {
-    return (S) super.named(name);
-  }
-
   abstract String underlyingType();
 
   /** Returns a List representation suitable for displaying in a string. */

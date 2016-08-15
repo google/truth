@@ -50,13 +50,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     super(failureStrategy, multimap);
   }
 
-  /**
-   * Renames the subject so that this name appears in the error messages in place of string
-   * representations of the subject.
-   */
   @Override
-  public MultimapSubject named(String name) {
-    super.named(name);
+  public MultimapSubject named(String format, Object... args) {
+    super.named(format, args);
     return this;
   }
 
