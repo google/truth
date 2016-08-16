@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.LinkedHashMultiset;
@@ -181,5 +182,133 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   @CanIgnoreReturnValue
   public Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
     return check().that(getSubject().entrySet()).containsExactlyElementsIn(expectedMap.entrySet());
+  }
+
+  /**
+   * Starts a method chain for a test proposition in which the actual values (i.e. the values of the
+   * {@link Map} under test) are compared to expected values using the given {@link Correspondence}.
+   * The actual values must be of type {@code A}, the expected values must be of type {@code E}. The
+   * proposition is actually executed by continuing the method chain. For example:<pre>   {@code
+   *   assertThat(actualMap)
+   *     .comparingValuesUsing(correspondence)
+   *     .containsEntry(expectedKey, expectedValue);}</pre>
+   * where {@code actualMap} is a {@code Map<?, A>} (or, more generally, a {@code Map<?, ? extends
+   * A>}), {@code correspondence} is a {@code Correspondence<A, E>}, and {@code expectedValue} is an
+   * {@code E}.
+   *
+   * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
+   *
+   * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
+   * encounter an actual value which is not of type {@code A} or an expected value which is not of
+   * type {@code E}.
+   */
+  public <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
+      Correspondence<A, E> correspondence) {
+    return new UsingCorrespondence<A, E>(correspondence);
+  }
+
+  /**
+   * A partially specified proposition in which the actual values (i.e. the values of the {@link
+   * Map} under test) are compared to expected values using a {@link Correspondence}. The expected
+   * values are of type {@code E}. Call methods on this object to actually execute the proposition.
+   *
+   * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
+   */
+  public final class UsingCorrespondence<A, E> {
+
+    private final Correspondence<A, E> correspondence;
+
+    private UsingCorrespondence(Correspondence<A, E> correspondence) {
+      this.correspondence = checkNotNull(correspondence);
+    }
+
+    /**
+     * Fails if the map does not contain an entry with the given key and a value which corresponds
+     * to the given value.
+     */
+    public void containsEntry(@Nullable Object expectedKey, @Nullable E expectedValue) {
+      if (getSubject().containsKey(expectedKey)) {
+        // Found matching key.
+        A actualValue = getCastSubject().get(expectedKey);
+        if (correspondence.compare(actualValue, expectedValue)) {
+          // Found matching key and value. Test passes!
+          return;
+        }
+        // Found matching key with non-matching value.
+        failWithRawMessage(
+            "Not true that %s contains the expected entry: it contains the key <%s>, but the value "
+                + "is <%s> which does not %s <%s>",
+            getDisplaySubject(), expectedKey, actualValue, correspondence, expectedValue);
+      } else {
+        // Did not find matching key.
+        Set<Object> keys = new LinkedHashSet<Object>();
+        for (Entry<?, A> actualEntry : getCastSubject().entrySet()) {
+          if (correspondence.compare(actualEntry.getValue(), expectedValue)) {
+            keys.add(actualEntry.getKey());
+          }
+        }
+        if (!keys.isEmpty()) {
+          // Found matching values with non-matching keys.
+          failWithRawMessage(
+              "Not true that %s contains the expected entry: it does not contain the key <%s>, "
+                  + "but does contain values which %s <%s> at the following keys: <%s>",
+              getDisplaySubject(), expectedKey, correspondence, expectedValue, keys);
+        } else {
+          // Did not find matching key or value.
+          failWithRawMessage(
+              "Not true that %s contains the expected entry: it does not contain the key <%s>, "
+                  + "and it does not contain any values which %s <%s>",
+              getDisplaySubject(), expectedKey, correspondence, expectedValue);
+        }
+      }
+    }
+
+    /**
+     * Fails if the map contains an entry with the given key and a value which corresponds to the
+     * given value.
+     */
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private void doesNotContainEntry(@Nullable Object key, @Nullable E value) {
+      throw new UnsupportedOperationException();
+    }
+
+    /** Fails if the map is not empty. */
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private Ordered containsExactly() {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Fails if the map does not contain exactly the given set of keys mapping to values which
+     * correspond to the given values.
+     *
+     * <p>The values must all be of type {@code E}, and a {@link ClassCastException} will be thrown
+     * if any other type is encountered.
+     *
+     * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+     * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+     */
+    // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private Ordered containsExactly(@Nullable Object k0, @Nullable E v0, Object... rest) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Fails if the map does not contain exactly the keys in the given map, mapping to values which
+     * correspond to the values of the given map.
+     */
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private Ordered containsExactlyEntriesIn(Map<?, ? extends E> expectedMap) {
+      throw new UnsupportedOperationException();
+    }
+
+    @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
+    private Map<?, A> getCastSubject() {
+      return (Map<?, A>) getSubject();
+    }
   }
 }

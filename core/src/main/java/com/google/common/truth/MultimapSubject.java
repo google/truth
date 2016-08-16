@@ -324,4 +324,128 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     sb.append("}");
     return sb.toString();
   }
+
+  /**
+   * Starts a method chain for a test proposition in which the actual values (i.e. the values of the
+   * {@link Multimap} under test) are compared to expected values using the given {@link
+   * Correspondence}. The actual values must be of type {@code A}, the expected values must be of
+   * type {@code E}. The proposition is actually executed by continuing the method chain. For
+   * example:<pre>   {@code
+   *   assertThat(actualMultimap)
+   *     .comparingValuesUsing(correspondence)
+   *     .containsEntry(expectedKey, expectedValue);}</pre>
+   * where {@code actualMultimap} is a {@code Multimap<?, A>} (or, more generally, a {@code
+   * Multimap<?, ? extends A>}), {@code correspondence} is a {@code Correspondence<A, E>}, and
+   * {@code expectedValue} is an {@code E}.
+   *
+   * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
+   *
+   * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
+   * encounter an actual value which is not of type {@code A}.
+   */
+  public <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
+      Correspondence<A, E> correspondence) {
+    return new UsingCorrespondence<A, E>(correspondence);
+  }
+
+  /**
+   * A partially specified proposition in which the actual values (i.e. the values of the {@link
+   * Multimap} under test) are compared to expected values using a {@link Correspondence}. The
+   * expected values are of type {@code E}. Call methods on this object to actually execute the
+   * proposition.
+   *
+   * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
+   */
+  public final class UsingCorrespondence<A, E> {
+
+    private final Correspondence<A, E> correspondence;
+
+    private UsingCorrespondence(Correspondence<A, E> correspondence) {
+      this.correspondence = checkNotNull(correspondence);
+    }
+
+    /**
+     * Fails if the multimap does not contain an entry with the given key and a value which
+     * corresponds to the given value.
+     */
+    public void containsEntry(@Nullable Object expectedKey, @Nullable E expectedValue) {
+      if (getSubject().containsKey(expectedKey)) {
+        // Found matching key.
+        Collection<A> actualValues = getCastSubject().asMap().get(expectedKey);
+        for (A actualValue : actualValues) {
+          if (correspondence.compare(actualValue, expectedValue)) {
+            // Found matching key and value. Test passes!
+            return;
+          }
+        }
+        // Found matching key with non-matching values.
+        failWithRawMessage(
+            "Not true that %s contains the expected entry: it contains the key <%s>, but the "
+                + "values are <%s> none of which %s <%s>",
+            getDisplaySubject(), expectedKey, actualValues, correspondence, expectedValue);
+      } else {
+        // Did not find matching key.
+        Set<Object> keys = new LinkedHashSet<Object>();
+        for (Entry<?, A> actualEntry : getCastSubject().entries()) {
+          if (correspondence.compare(actualEntry.getValue(), expectedValue)) {
+            keys.add(actualEntry.getKey());
+          }
+        }
+        if (!keys.isEmpty()) {
+          // Found matching values with non-matching keys.
+          failWithRawMessage(
+              "Not true that %s contains the expected entry: it does not contain the key <%s>, "
+                  + "but does contain values which %s <%s> at the following keys: <%s>",
+              getDisplaySubject(), expectedKey, correspondence, expectedValue, keys);
+        } else {
+          // Did not find matching key or value.
+          failWithRawMessage(
+              "Not true that %s contains the expected entry: it does not contain the key <%s>, "
+                  + "and it does not contain any values which %s <%s>",
+              getDisplaySubject(), expectedKey, correspondence, expectedValue);
+        }
+      }
+    }
+
+    /**
+     * Fails if the multimap contains an entry with the given key and a value which corresponds to
+     * the given value.
+     */
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private void doesNotContainEntry(@Nullable Object key, @Nullable E value) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Fails if the map does not contain exactly the keys in the given multimap, mapping to values
+     * which correspond to the values of the given multimap.
+     *
+     * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify
+     * that the two Multimaps iterate fully in the same order. That is, their key sets iterate in
+     * the same order, and the corresponding value collections for each key iterate in the same
+     * order.
+     */
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private Ordered containsExactlyEntriesIn(Multimap<?, ? extends E> expectedMultimap) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Returns a context-aware object for making assertions about the values for the given key
+     * within the multimap, using the associated correspondence to compare the values.
+     *
+     * <p>This method performs no checks on its own and cannot cause test failures. Subsequent
+     * assertions must be chained onto this method call to test properties of the multimap.
+     */
+    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
+    private IterableSubject.UsingCorrespondence<A, E> valuesForKey(@Nullable Object key) {
+      throw new UnsupportedOperationException();
+    }
+
+    @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
+    private Multimap<?, A> getCastSubject() {
+      return (Multimap<?, A>) getSubject();
+    }
+  }
 }

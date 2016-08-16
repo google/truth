@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.IterableSubjectTest.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -623,6 +624,65 @@ public class MapSubjectTest {
           .hasMessage(
               "Not true that <{a=A}> contains entry <a=null>. "
                   + "However, it has a mapping from <a> to <A>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_success() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsEntry("def", 456);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_failsExpectedKeyHasWrongValues() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsEntry("def", 123);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{abc=123, def=456}> contains the expected entry: "
+                  + "it contains the key <def>, "
+                  + "but the value is <456> which does not parse to <123>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_failsWrongKeyHasExpectedValue() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsEntry("xyz", 456);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{abc=123, def=456}> contains the expected entry: "
+                  + "it does not contain the key <xyz>, "
+                  + "but does contain values which parse to <456> at the following keys: <[def]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_failsMissingExpectedKeyAndValue() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsEntry("xyz", 321);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{abc=123, def=456}> contains the expected entry: "
+                  + "it does not contain the key <xyz>, "
+                  + "and it does not contain any values which parse to <321>");
     }
   }
 }

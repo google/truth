@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.IterableSubjectTest.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -551,6 +552,69 @@ public class MultimapSubjectTest {
                   "Not true that <%s> contains exactly <%s> in order. "
                       + "The values for keys <[3]> are not in order",
                   actual, expected));
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_success() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "123", "def", "456", "def", "789");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsEntry("def", 789);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_failsExpectedKeyHasWrongValues() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "123", "def", "456", "def", "789");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsEntry("def", 123);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{abc=[123], def=[456, 789]}> contains the expected entry: "
+                  + "it contains the key <def>, "
+                  + "but the values are <[456, 789]> none of which parse to <123>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_failsWrongKeyHasExpectedValue() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "123", "def", "456", "def", "789");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsEntry("xyz", 789);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{abc=[123], def=[456, 789]}> contains the expected entry: "
+                  + "it does not contain the key <xyz>, "
+                  + "but does contain values which parse to <789> at the following keys: <[def]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_failsMissingExpectedKeyAndValue() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "123", "def", "456", "def", "789");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsEntry("xyz", 321);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{abc=[123], def=[456, 789]}> contains the expected entry: "
+                  + "it does not contain the key <xyz>, "
+                  + "and it does not contain any values which parse to <321>");
     }
   }
 }

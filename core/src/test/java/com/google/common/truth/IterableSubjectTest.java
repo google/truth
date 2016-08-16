@@ -27,11 +27,10 @@ import com.google.common.primitives.Ints;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import javax.annotation.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import javax.annotation.Nullable;
 
 /**
  * Tests for Collection Subjects.
@@ -919,7 +918,11 @@ public class IterableSubjectTest {
     assertThat(targetList).isStrictlyOrdered(FOO_COMPARATOR);
   }
 
-  private static final Correspondence<String, Integer> INTEGER_STRING_CORRESPONDENCE =
+  /**
+   * A correspondence between strings and integers which tests whether the string parses as the
+   * integer.
+   */
+  static final Correspondence<String, Integer> STRING_PARSES_TO_INTEGER_CORRESPONDENCE =
       new Correspondence<String, Integer>() {
 
         @Override
@@ -937,14 +940,18 @@ public class IterableSubjectTest {
   @Test
   public void comparingElementsUsing_contains_success() {
     ImmutableList<String> actual = ImmutableList.of("not a number", "123", "456", "789");
-    assertThat(actual).comparingElementsUsing(INTEGER_STRING_CORRESPONDENCE).contains(456);
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .contains(456);
   }
 
   @Test
   public void comparingElementsUsing_contains_failure() {
     ImmutableList<String> actual = ImmutableList.of("not a number", "123", "456", "789");
     try {
-      assertThat(actual).comparingElementsUsing(INTEGER_STRING_CORRESPONDENCE).contains(2345);
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .contains(2345);
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
@@ -958,7 +965,7 @@ public class IterableSubjectTest {
   public void comparingElementsUsing_wrongTypeInActual() {
     ImmutableList<?> actual = ImmutableList.of("valid", 123);
     IterableSubject.UsingCorrespondence<String, Integer> intermediate =
-        assertThat(actual).comparingElementsUsing(INTEGER_STRING_CORRESPONDENCE);
+        assertThat(actual).comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
     try {
       intermediate.contains(456);
       fail("Expected ClassCastException as actual Iterable contains a non-String");
