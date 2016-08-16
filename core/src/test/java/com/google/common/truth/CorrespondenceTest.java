@@ -143,7 +143,7 @@ public final class CorrespondenceTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
-              "Not true that <[1.02, 2.04, 3.08]> contains one or more elements which "
+              "Not true that <[1.02, 2.04, 3.08]> contains one or more elements that "
                   + "are finite numbers within 0.05 of <3.0>");
     }
   }

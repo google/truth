@@ -141,30 +141,31 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that the subject contains at least all of the provided objects or fails, potentially
-   * permitting duplicates in both the subject and the parameters (if the subject can even have
-   * duplicates).
+   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements to this call then it must appear at
+   * least that number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
    */
-  // TODO(peteg): Clarify a couple of things in this javadoc. What exactly does it mean about the
-  // duplicates, i.e. if something appears N times in the expected does it have to appear at least
-  // that many times in the subject? Does inOrder() require that they be consecutive? Also applies
-  // to containsAllIn and the UsingCorrespondence methods.
   @CanIgnoreReturnValue
   public final Ordered containsAllOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
-    return containsAll("contains all of", accumulate(first, second, rest));
+      @Nullable Object firstExpected,
+      @Nullable Object secondExpected,
+      @Nullable Object... restOfExpected) {
+    return containsAll(
+        "contains all of", accumulate(firstExpected, secondExpected, restOfExpected));
   }
 
   /**
-   * Attests that the subject contains at least all of the provided objects or fails, potentially
-   * permitting duplicates in both the subject and the parameters (if the subject can even have
-   * duplicates).
+   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements then it must appear at least that
+   * number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
   public final Ordered containsAllIn(Iterable<?> expected) {
@@ -361,17 +362,21 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         suffix);
   }
 
-  /** Attests that a subject contains none of the provided objects or fails, eliding duplicates. */
-  // TODO(peteg): Clarify this javadoc. What does "eliding duplicates" mean??? Also applies to
-  // containsNoneIn and the UsingCorrespondence methods.
+  /**
+   * Attests that a actual iterable contains none of the excluded objects or fails. (Duplicates are
+   * irrelevant to this test, which fails if any of the actual elements equal any of the excluded.)
+   */
   public final void containsNoneOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
-    containsNone("contains none of", accumulate(first, second, rest));
+      @Nullable Object firstExcluded,
+      @Nullable Object secondExcluded,
+      @Nullable Object... restOfExcluded) {
+    containsNone("contains none of", accumulate(firstExcluded, secondExcluded, restOfExcluded));
   }
 
   /**
-   * Attests that a subject contains none of the objects contained in the provided iterable or
-   * fails, eliding duplicates.
+   * Attests that a actual iterable contains none of the elements contained in the excluded iterable
+   * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
+   * equal any of the excluded.)
    */
   public final void containsNoneIn(Iterable<?> excluded) {
     containsNone("contains no elements in", excluded);
@@ -554,7 +559,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           return;
         }
       }
-      fail("contains one or more elements which " + correspondence, expected);
+      fail("contains one or more elements that " + correspondence, expected);
     }
 
     /** Attests that none of the actual elements correspond to the given element. */
@@ -597,7 +602,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * elements where each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-     * on the object returned by this method.
+     * on the object returned by this method. The elements must appear in the given order within the
+     * subject, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
     @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
@@ -611,7 +617,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * elements where each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-     * on the object returned by this method.
+     * on the object returned by this method. The elements must appear in the given order within the
+     * subject, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
     @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
@@ -639,6 +646,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     /**
      * Attests that the subject contains no elements which correspond to any of the given elements.
+     * (Duplicates are irrelevant to this test, which fails if any of the subject elements
+     * correspond to any of the given elements.)
      */
     @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
     private void containsNoneOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
@@ -647,6 +656,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     /**
      * Attests that the subject contains no elements which correspond to any of the given elements.
+     * (Duplicates are irrelevant to this test, which fails if any of the subject elements
+     * correspond to any of the given elements.)
      */
     @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
     private void containsNoneIn(Iterable<E> excluded) {

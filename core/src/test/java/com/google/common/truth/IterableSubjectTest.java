@@ -956,7 +956,7 @@ public class IterableSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <[not a number, 123, 456, 789]> contains one or more elements which"
+              "Not true that <[not a number, 123, 456, 789]> contains one or more elements that"
                   + " parse to <2345>");
     }
   }
