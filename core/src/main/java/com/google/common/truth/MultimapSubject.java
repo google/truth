@@ -341,7 +341,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
    * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
    *
    * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
-   * encounter an actual value which is not of type {@code A}.
+   * encounter an actual value that is not of type {@code A}.
    */
   public <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
       Correspondence<A, E> correspondence) {
@@ -365,7 +365,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     }
 
     /**
-     * Fails if the multimap does not contain an entry with the given key and a value which
+     * Fails if the multimap does not contain an entry with the given key and a value that
      * corresponds to the given value.
      */
     public void containsEntry(@Nullable Object expectedKey, @Nullable E expectedValue) {
@@ -380,9 +380,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         }
         // Found matching key with non-matching values.
         failWithRawMessage(
-            "Not true that %s contains the expected entry: it contains the key <%s>, but the "
-                + "values are <%s> none of which %s <%s>",
-            getDisplaySubject(), expectedKey, actualValues, correspondence, expectedValue);
+            "Not true that %s contains at least one entry with key <%s> and a value that %s <%s>. "
+                + "However, it has a mapping from that key to <%s>",
+            getDisplaySubject(), expectedKey, correspondence, expectedValue, actualValues);
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<Object>();
@@ -394,31 +394,43 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         if (!keys.isEmpty()) {
           // Found matching values with non-matching keys.
           failWithRawMessage(
-              "Not true that %s contains the expected entry: it does not contain the key <%s>, "
-                  + "but does contain values which %s <%s> at the following keys: <%s>",
+              "Not true that %s contains at least one entry with key <%s> and a value that %s <%s>."
+                  + " However, the following keys are mapped to such values: <%s>",
               getDisplaySubject(), expectedKey, correspondence, expectedValue, keys);
         } else {
           // Did not find matching key or value.
           failWithRawMessage(
-              "Not true that %s contains the expected entry: it does not contain the key <%s>, "
-                  + "and it does not contain any values which %s <%s>",
+              "Not true that %s contains at least one entry with key <%s> and a value that %s <%s>",
               getDisplaySubject(), expectedKey, correspondence, expectedValue);
         }
       }
     }
 
     /**
-     * Fails if the multimap contains an entry with the given key and a value which corresponds to
+     * Fails if the multimap contains an entry with the given key and a value that corresponds to
      * the given value.
      */
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private void doesNotContainEntry(@Nullable Object key, @Nullable E value) {
-      throw new UnsupportedOperationException();
+    public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable E excludedValue) {
+      if (getSubject().containsKey(excludedKey)) {
+        Collection<A> actualValues = getCastSubject().asMap().get(excludedKey);
+        List<A> matchingValues = new ArrayList<A>();
+        for (A actualValue : actualValues) {
+          if (correspondence.compare(actualValue, excludedValue)) {
+            matchingValues.add(actualValue);
+          }
+        }
+        if (!matchingValues.isEmpty()) {
+          failWithRawMessage(
+              "Not true that %s did not contain an entry with key <%s> and a value that %s <%s>. "
+                  + "It maps that key to the following such values: <%s>",
+              getDisplaySubject(), excludedKey, correspondence, excludedValue, matchingValues);
+        }
+      }
     }
 
     /**
      * Fails if the map does not contain exactly the keys in the given multimap, mapping to values
-     * which correspond to the values of the given multimap.
+     * that correspond to the values of the given multimap.
      *
      * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify
      * that the two Multimaps iterate fully in the same order. That is, their key sets iterate in

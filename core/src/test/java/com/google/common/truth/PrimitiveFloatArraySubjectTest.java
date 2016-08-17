@@ -994,7 +994,7 @@ public class PrimitiveFloatArraySubjectTest {
           .hasMessage(
               "Not true that <[1.0, "
                   + justOverTwoPlusTolerance
-                  + ", 3.0]> contains one or more elements that are finite numbers within "
+                  + ", 3.0]> contains at least one element that is a finite number within "
                   + (double) DEFAULT_TOLERANCE
                   + " of <2.0>");
     }

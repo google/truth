@@ -20,7 +20,6 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
@@ -920,26 +919,32 @@ public class IterableSubjectTest {
 
   /**
    * A correspondence between strings and integers which tests whether the string parses as the
-   * integer.
+   * integer. Parsing is as specified by {@link Integer#decode(String)}.
    */
   static final Correspondence<String, Integer> STRING_PARSES_TO_INTEGER_CORRESPONDENCE =
       new Correspondence<String, Integer>() {
 
         @Override
         public boolean compare(@Nullable String actual, @Nullable Integer expected) {
-          @Nullable Integer parsedActual = Ints.tryParse(Strings.nullToEmpty(actual));
-          return parsedActual != null && parsedActual.equals(expected);
+          if (actual == null) {
+            return false;
+          }
+          try {
+            return Integer.decode(actual).equals(expected);
+          } catch (NumberFormatException e) {
+            return false;
+          }
         }
 
         @Override
         public String toString() {
-          return "parse to";
+          return "parses to";
         }
       };
 
   @Test
   public void comparingElementsUsing_contains_success() {
-    ImmutableList<String> actual = ImmutableList.of("not a number", "123", "456", "789");
+    ImmutableList<String> actual = ImmutableList.of("not a number", "+123", "+456", "+789");
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .contains(456);
@@ -947,7 +952,7 @@ public class IterableSubjectTest {
 
   @Test
   public void comparingElementsUsing_contains_failure() {
-    ImmutableList<String> actual = ImmutableList.of("not a number", "123", "456", "789");
+    ImmutableList<String> actual = ImmutableList.of("not a number", "+123", "+456", "+789");
     try {
       assertThat(actual)
           .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
@@ -956,8 +961,8 @@ public class IterableSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <[not a number, 123, 456, 789]> contains one or more elements that"
-                  + " parse to <2345>");
+              "Not true that <[not a number, +123, +456, +789]> contains at least one element that"
+                  + " parses to <2345>");
     }
   }
 
@@ -970,6 +975,30 @@ public class IterableSubjectTest {
       intermediate.contains(456);
       fail("Expected ClassCastException as actual Iterable contains a non-String");
     } catch (ClassCastException expected) {
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_doesNotContain_success() {
+    ImmutableList<String> actual = ImmutableList.of("not a number", "+123", "+456", "+789");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContain(2345);
+  }
+
+  @Test
+  public void comparingElementsUsing_doesNotContains_failure() {
+    ImmutableList<String> actual = ImmutableList.of("not a number", "+123", "+456", "+789");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .doesNotContain(456);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "<[not a number, +123, +456, +789]> should not have contained an element that "
+                  + "parses to <456>. It contained the following such elements: <[+456]>");
     }
   }
 }

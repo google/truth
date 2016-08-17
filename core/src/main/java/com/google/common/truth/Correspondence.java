@@ -45,7 +45,7 @@ import javax.annotation.Nullable;
 public abstract class Correspondence<A, E> {
 
   /**
-   * Returns a {@link Correspondence} between {@link Number} instances which considers instances to
+   * Returns a {@link Correspondence} between {@link Number} instances that considers instances to
    * correspond (i.e. {@link Correspondence#compare(Number, Number)} returns {@code true}) if the
    * double values of each instance (i.e. the result of calling {@link Number#doubleValue()} on
    * them) are finite values within {@code tolerance} of each other.
@@ -83,7 +83,7 @@ public abstract class Correspondence<A, E> {
 
     @Override
     public String toString() {
-      return "are finite numbers within " + tolerance + " of";
+      return "is a finite number within " + tolerance + " of";
     }
   }
 
@@ -95,12 +95,18 @@ public abstract class Correspondence<A, E> {
 
   /**
    * Returns a description of the correspondence, suitable to fill the gap in a failure message of
-   * the form {@code "Not true that <[a1, a2, a3]> contains exactly elements which ... <expected>"}.
+   * the form {@code "<some actual element> is an element that ... <some expected element>"}. Note
+   * that this is a fragment of a verb phrase which takes a singular subject.
    *
-   * <p>For example, for a {@code Correspondence<String, Integer>} which tests whether the actual
-   * string parses to the expected integer, this would return {@code "parse to"} to result in a
-   * failure message of the form {@code "Not true that <[foo, 123, bar]> contains exactly elements
-   * which parse to <[123, 456]>"}.
+   * <p>Example 1: For a {@code Correspondence<String, Integer>} that tests whether the actual
+   * string parses to the expected integer, this would return {@code "parses to"} to result in a
+   * failure message of the form {@code "<some actual string> is an element that parses to <some
+   * expected integer>"}.
+   *
+   * <p>Example 2: For the {@code Correspondence<Number, Number>} returns by {@link #tolerance} this
+   * returns {@code "is a finite number within " + tolerance + " of"} to result in a failure message
+   * of the form {@code "<some actual number> is an element that is a finite number within 0.0001 of
+   * <some expected number>"}.
    */
   @Override
   public abstract String toString();

@@ -199,7 +199,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
    *
    * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
-   * encounter an actual value which is not of type {@code A} or an expected value which is not of
+   * encounter an actual value that is not of type {@code A} or an expected value that is not of
    * type {@code E}.
    */
   public <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
@@ -223,8 +223,8 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     }
 
     /**
-     * Fails if the map does not contain an entry with the given key and a value which corresponds
-     * to the given value.
+     * Fails if the map does not contain an entry with the given key and a value that corresponds to
+     * the given value.
      */
     public void containsEntry(@Nullable Object expectedKey, @Nullable E expectedValue) {
       if (getSubject().containsKey(expectedKey)) {
@@ -236,9 +236,9 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         }
         // Found matching key with non-matching value.
         failWithRawMessage(
-            "Not true that %s contains the expected entry: it contains the key <%s>, but the value "
-                + "is <%s> which does not %s <%s>",
-            getDisplaySubject(), expectedKey, actualValue, correspondence, expectedValue);
+            "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
+                + "However, it has a mapping from that key to <%s>",
+            getDisplaySubject(), expectedKey, correspondence, expectedValue, actualValue);
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<Object>();
@@ -250,26 +250,32 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         if (!keys.isEmpty()) {
           // Found matching values with non-matching keys.
           failWithRawMessage(
-              "Not true that %s contains the expected entry: it does not contain the key <%s>, "
-                  + "but does contain values which %s <%s> at the following keys: <%s>",
+              "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
+                  + "However, the following keys are mapped to such values: <%s>",
               getDisplaySubject(), expectedKey, correspondence, expectedValue, keys);
         } else {
           // Did not find matching key or value.
           failWithRawMessage(
-              "Not true that %s contains the expected entry: it does not contain the key <%s>, "
-                  + "and it does not contain any values which %s <%s>",
+              "Not true that %s contains an entry with key <%s> and a value that %s <%s>",
               getDisplaySubject(), expectedKey, correspondence, expectedValue);
         }
       }
     }
 
     /**
-     * Fails if the map contains an entry with the given key and a value which corresponds to the
+     * Fails if the map contains an entry with the given key and a value that corresponds to the
      * given value.
      */
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private void doesNotContainEntry(@Nullable Object key, @Nullable E value) {
-      throw new UnsupportedOperationException();
+    public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable E excludedValue) {
+      if (getSubject().containsKey(excludedKey)) {
+        A actualValue = getCastSubject().get(excludedKey);
+        if (correspondence.compare(actualValue, excludedValue)) {
+          failWithRawMessage(
+              "Not true that %s does not contain an entry with key <%s> and a value that %s <%s>. "
+                  + "It maps that key to <%s>",
+              getDisplaySubject(), excludedKey, correspondence, excludedValue, actualValue);
+        }
+      }
     }
 
     /** Fails if the map is not empty. */
@@ -280,7 +286,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     }
 
     /**
-     * Fails if the map does not contain exactly the given set of keys mapping to values which
+     * Fails if the map does not contain exactly the given set of keys mapping to values that
      * correspond to the given values.
      *
      * <p>The values must all be of type {@code E}, and a {@link ClassCastException} will be thrown
@@ -297,7 +303,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     }
 
     /**
-     * Fails if the map does not contain exactly the keys in the given map, mapping to values which
+     * Fails if the map does not contain exactly the keys in the given map, mapping to values that
      * correspond to the values of the given map.
      */
     @CanIgnoreReturnValue

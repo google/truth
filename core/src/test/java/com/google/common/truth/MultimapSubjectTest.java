@@ -558,7 +558,7 @@ public class MultimapSubjectTest {
   @Test
   public void comparingValuesUsing_containsEntry_success() {
     ImmutableListMultimap<String, String> actual =
-        ImmutableListMultimap.of("abc", "123", "def", "456", "def", "789");
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
     assertThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsEntry("def", 789);
@@ -567,7 +567,7 @@ public class MultimapSubjectTest {
   @Test
   public void comparingValuesUsing_containsEntry_failsExpectedKeyHasWrongValues() {
     ImmutableListMultimap<String, String> actual =
-        ImmutableListMultimap.of("abc", "123", "def", "456", "def", "789");
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
     try {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
@@ -576,16 +576,16 @@ public class MultimapSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <{abc=[123], def=[456, 789]}> contains the expected entry: "
-                  + "it contains the key <def>, "
-                  + "but the values are <[456, 789]> none of which parse to <123>");
+              "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
+                  + "key <def> and a value that parses to <123>. "
+                  + "However, it has a mapping from that key to <[+456, +789]>");
     }
   }
 
   @Test
   public void comparingValuesUsing_containsEntry_failsWrongKeyHasExpectedValue() {
     ImmutableListMultimap<String, String> actual =
-        ImmutableListMultimap.of("abc", "123", "def", "456", "def", "789");
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
     try {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
@@ -594,16 +594,16 @@ public class MultimapSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <{abc=[123], def=[456, 789]}> contains the expected entry: "
-                  + "it does not contain the key <xyz>, "
-                  + "but does contain values which parse to <789> at the following keys: <[def]>");
+              "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
+                  + "key <xyz> and a value that parses to <789>. "
+                  + "However, the following keys are mapped to such values: <[def]>");
     }
   }
 
   @Test
   public void comparingValuesUsing_containsEntry_failsMissingExpectedKeyAndValue() {
     ImmutableListMultimap<String, String> actual =
-        ImmutableListMultimap.of("abc", "123", "def", "456", "def", "789");
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
     try {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
@@ -612,9 +612,53 @@ public class MultimapSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <{abc=[123], def=[456, 789]}> contains the expected entry: "
-                  + "it does not contain the key <xyz>, "
-                  + "and it does not contain any values which parse to <321>");
+              "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
+                  + "key <xyz> and a value that parses to <321>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_successExcludeKeyHasWrongValues() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContainEntry("def", 123);
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_successWrongKeyHasExcludedValue() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContainEntry("xyz", 789);
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_successMissingExcludedKeyAndValue() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContainEntry("xyz", 321);
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_failure() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .doesNotContainEntry("def", 789);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{abc=[+123], def=[+456, +789]}> did not contain an entry with "
+                  + "key <def> and a value that parses to <789>. "
+                  + "It maps that key to the following such values: <[+789]>");
     }
   }
 }

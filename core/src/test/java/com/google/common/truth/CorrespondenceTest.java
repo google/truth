@@ -44,7 +44,7 @@ public final class CorrespondenceTest {
 
         @Override
         public String toString() {
-          return "example";
+          return "has example property";
         }
       };
 
@@ -143,8 +143,8 @@ public final class CorrespondenceTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
-              "Not true that <[1.02, 2.04, 3.08]> contains one or more elements that "
-                  + "are finite numbers within 0.05 of <3.0>");
+              "Not true that <[1.02, 2.04, 3.08]> contains at least one element that "
+                  + "is a finite number within 0.05 of <3.0>");
     }
   }
 }

@@ -522,7 +522,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * expected} is an {@code E}.
    *
    * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
-   * encounter an actual element which is not of type {@code A}.
+   * encounter an actual element that is not of type {@code A}.
    */
   public <A, E> UsingCorrespondence<A, E> comparingElementsUsing(
       Correspondence<A, E> correspondence) {
@@ -550,8 +550,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains at least one element which corresponds to the given
-     * expected element.
+     * Attests that the subject contains at least one element that corresponds to the given expected
+     * element.
      */
     public void contains(@Nullable E expected) {
       for (A actual : getCastSubject()) {
@@ -559,19 +559,29 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           return;
         }
       }
-      fail("contains one or more elements that " + correspondence, expected);
+      fail("contains at least one element that " + correspondence, expected);
     }
 
     /** Attests that none of the actual elements correspond to the given element. */
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private void doesNotContain(@Nullable E element) {
-      throw new UnsupportedOperationException();
+    public void doesNotContain(@Nullable E excluded) {
+      List<A> matchingElements = new ArrayList<A>();
+      for (A actual : getCastSubject()) {
+        if (correspondence.compare(actual, excluded)) {
+          matchingElements.add(actual);
+        }
+      }
+      if (!matchingElements.isEmpty()) {
+        failWithRawMessage(
+            "%s should not have contained an element that %s <%s>. "
+                + "It contained the following such elements: <%s>",
+            getDisplaySubject(), correspondence, excluded, matchingElements);
+      }
     }
 
     /**
-     * Attests that subject contains exactly elements which correspond to the expected elements,
-     * i.e. that there is a 1:1 mapping between the actual elements and the expected elements where
-     * each pair of elements correspond.
+     * Attests that subject contains exactly elements that correspond to the expected elements, i.e.
+     * that there is a 1:1 mapping between the actual elements and the expected elements where each
+     * pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method.
@@ -583,9 +593,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that subject contains exactly elements which correspond to the expected elements,
-     * i.e. that there is a 1:1 mapping between the actual elements and the expected elements where
-     * each pair of elements correspond.
+     * Attests that subject contains exactly elements that correspond to the expected elements, i.e.
+     * that there is a 1:1 mapping between the actual elements and the expected elements where each
+     * pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method.
@@ -597,7 +607,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains elements which corresponds to all of the expected elements,
+     * Attests that the subject contains elements that corresponds to all of the expected elements,
      * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
@@ -612,7 +622,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains elements which corresponds to all of the expected elements,
+     * Attests that the subject contains elements that corresponds to all of the expected elements,
      * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
@@ -627,7 +637,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains at least one element which corresponds to at least one of
+     * Attests that the subject contains at least one element that corresponds to at least one of
      * the expected elements.
      */
     @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
@@ -636,7 +646,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains at least one element which corresponds to at least one of
+     * Attests that the subject contains at least one element that corresponds to at least one of
      * the expected elements.
      */
     @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
@@ -645,7 +655,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains no elements which correspond to any of the given elements.
+     * Attests that the subject contains no elements that correspond to any of the given elements.
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */
@@ -655,7 +665,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains no elements which correspond to any of the given elements.
+     * Attests that the subject contains no elements that correspond to any of the given elements.
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */

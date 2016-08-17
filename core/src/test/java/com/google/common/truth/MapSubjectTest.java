@@ -637,7 +637,7 @@ public class MapSubjectTest {
 
   @Test
   public void comparingValuesUsing_containsEntry_failsExpectedKeyHasWrongValues() {
-    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
     try {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
@@ -646,15 +646,15 @@ public class MapSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <{abc=123, def=456}> contains the expected entry: "
-                  + "it contains the key <def>, "
-                  + "but the value is <456> which does not parse to <123>");
+              "Not true that <{abc=+123, def=+456}> contains an entry with "
+                  + "key <def> and a value that parses to <123>. "
+                  + "However, it has a mapping from that key to <+456>");
     }
   }
 
   @Test
   public void comparingValuesUsing_containsEntry_failsWrongKeyHasExpectedValue() {
-    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
     try {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
@@ -663,15 +663,15 @@ public class MapSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <{abc=123, def=456}> contains the expected entry: "
-                  + "it does not contain the key <xyz>, "
-                  + "but does contain values which parse to <456> at the following keys: <[def]>");
+              "Not true that <{abc=+123, def=+456}> contains an entry with "
+                  + "key <xyz> and a value that parses to <456>. "
+                  + "However, the following keys are mapped to such values: <[def]>");
     }
   }
 
   @Test
   public void comparingValuesUsing_containsEntry_failsMissingExpectedKeyAndValue() {
-    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
     try {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
@@ -680,9 +680,48 @@ public class MapSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <{abc=123, def=456}> contains the expected entry: "
-                  + "it does not contain the key <xyz>, "
-                  + "and it does not contain any values which parse to <321>");
+              "Not true that <{abc=+123, def=+456}> contains an entry with "
+                  + "key <xyz> and a value that parses to <321>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_successExcludedKeyHasWrongValues() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContainEntry("def", 123);
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_successWrongKeyHasExcludedValue() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContainEntry("xyz", 456);
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_failsMissingExcludedKeyAndValue() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContainEntry("xyz", 321);
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_failure() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .doesNotContainEntry("def", 456);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <{abc=+123, def=+456}> does not contain an entry with "
+                  + "key <def> and a value that parses to <456>. It maps that key to <+456>");
     }
   }
 }
