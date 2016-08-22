@@ -22,6 +22,12 @@ import static com.google.common.truth.SubjectUtils.countDuplicates;
 import static java.util.Arrays.asList;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.LinkedHashMultiset;
@@ -36,12 +42,14 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Nullable;
 
 /**
  * Propositions for {@link Iterable} subjects.
  *
  * @author Kurt Alfred Kluever
+ * @author Pete Gillin
  */
 // Can't be final since MultisetSubject extends it
 public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
@@ -599,11 +607,205 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method.
+     *
+     * <p>THIS METHOD IS UNDER CONSTRUCTION. It will work under some conditions, and throw
+     * {@link UnsupportedOperationException} under others. DO NOT USE!
      */
     @CanIgnoreReturnValue
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private Ordered containsExactlyElementsIn(Iterable<E> expected) {
+    // TODO(b/29966314): Finish implementing this, remove the "under construction" in the javadoc,
+    // and make it public.
+    Ordered containsExactlyElementsIn(Iterable<? extends E> expected) {
+      // Check if the elements correspond in order. This allows the common case of a passing test
+      // using inOrder() to complete in linear time.
+      if (correspondInOrder(getCastSubject().iterator(), expected.iterator())) {
+        return IN_ORDER;
+      }
+      // We know they don't correspond in order, so we're going to have to do an any-order test.
+      // Find a many:many mapping between the indexes of the elements which correspond, and check
+      // it for completeness.
+      ImmutableList<A> actualList = ImmutableList.copyOf(getCastSubject());
+      ImmutableList<? extends E> expectedList = ImmutableList.copyOf(expected);
+      ImmutableSetMultimap<Integer, Integer> candidateMapping =
+          findCandidateMapping(actualList, expectedList);
+      failIfCandidateMappingHasMissingOrExtra(actualList, expectedList, candidateMapping);
+      // We know that every expected element maps to at least one actual element, and vice versa.
+      // Find a maximal 1:1 mapping, and check it for completeness.
+      ImmutableBiMap<Integer, Integer> maximalOneToOneMapping =
+          findMaximalOneToOneMapping(candidateMapping);
+      failIfOneToOneMappingHasMissingOrExtra(actualList, expectedList, maximalOneToOneMapping);
+      // The 1:1 mapping is complete, so the test succeeds (but we know from above that the mapping
+      // is not in order).
+      return new NotInOrder(
+          "contains, in order, exactly one element that " + correspondence + " each element of",
+          expected);
+    }
+
+    /**
+     * Returns whether the actual and expected iterators have the same number of elements and, when
+     * iterated pairwise, every pair of actual and expected values satisfies the correspondence.
+     */
+    private boolean correspondInOrder(
+        Iterator<? extends A> actual, Iterator<? extends E> expected) {
+      while (actual.hasNext() && expected.hasNext()) {
+        A actualElement = actual.next();
+        E expectedElement = expected.next();
+        if (!correspondence.compare(actualElement, expectedElement)) {
+          return false;
+        }
+      }
+      return !(actual.hasNext() || expected.hasNext());
+    }
+
+    /**
+     * Given a list of actual elements and a list of expected elements, finds a many:many mapping
+     * between actual and expected elements where a pair of elements maps if it satisfies the
+     * correspondence. Returns this mapping as a multimap where the keys are indexes into the actual
+     * list and the values are indexes into the expected list.
+     */
+    private ImmutableSetMultimap<Integer, Integer> findCandidateMapping(
+        List<? extends A> actual, List<? extends E> expected) {
+      ImmutableSetMultimap.Builder<Integer, Integer> mapping = ImmutableSetMultimap.builder();
+      for (int actualIndex = 0; actualIndex < actual.size(); actualIndex++) {
+        for (int expectedIndex = 0; expectedIndex < expected.size(); expectedIndex++) {
+          if (correspondence.compare(actual.get(actualIndex), expected.get(expectedIndex))) {
+            mapping.put(actualIndex, expectedIndex);
+          }
+        }
+      }
+      return mapping.build();
+    }
+
+    /**
+     * Given a list of actual elements, a list of expected elements, and a many:many mapping between
+     * actual and expected elements specified as a multimap of indexes into the actual list to
+     * indexes into the expected list, checks that every actual element maps to at least one
+     * expected element and vice versa, and fails if this is not the case.
+     */
+    void failIfCandidateMappingHasMissingOrExtra(
+        List<? extends A> actual,
+        List<? extends E> expected,
+        ImmutableMultimap<Integer, Integer> mapping) {
+      ImmutableList<? extends A> extra = findNotIndexed(actual, mapping.keySet());
+      ImmutableList<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
+      Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
+      if (missingOrExtraMessage.isPresent()) {
+          failWithRawMessage(
+              "Not true that %s contains exactly one element that %s each element of <%s>. It %s",
+              getDisplaySubject(),
+              correspondence,
+              expected,
+              missingOrExtraMessage.get());
+      }
+    }
+
+    /**
+     * Given a list of extra elements and a list of missing elements, returns an absent value if
+     * both are empty, and otherwise returns a verb phrase (suitable for appearing after the subject
+     * of the verb) describing them.
+     */
+    private Optional<String> describeMissingOrExtra(
+        List<? extends A> extra, List<? extends E> missing) {
+      if (!missing.isEmpty() && !extra.isEmpty()) {
+        return Optional.of(
+            StringUtil.format(
+                "is missing an element that %s %s and has unexpected elements <%s>",
+                correspondence, formatMissing(missing), extra));
+      } else if (!missing.isEmpty()) {
+        return Optional.of(
+            StringUtil.format(
+                "is missing an element that %s %s", correspondence, formatMissing(missing)));
+      } else if (!extra.isEmpty()) {
+        return Optional.of(StringUtil.format("has unexpected elements <%s>", extra));
+      } else {
+        return Optional.absent();
+      }
+    }
+
+    /**
+     * Returns all the elements of the given list other than those with the given indexes. Assumes
+     * that all the given indexes really are valid indexes into the list.
+     */
+    private <T> ImmutableList<T> findNotIndexed(List<T> list, Set<Integer> indexes) {
+      if (indexes.size() == list.size()) {
+        // If there are as many distinct valid indexes are there are elements in the list then every
+        // index must be in there once.
+        return ImmutableList.of();
+      }
+      ImmutableList.Builder<T> notIndexed = ImmutableList.builder();
+      for (int index = 0; index < list.size(); index++) {
+        if (!indexes.contains(index)) {
+          notIndexed.add(list.get(index));
+        }
+      }
+      return notIndexed.build();
+    }
+
+    /**
+     * Returns a description of the missing items suitable for inclusion in failure messages. If
+     * there is a single item, returns {@code "<item>"}. Otherwise, returns
+     * {@code "each of <[item, item, item]>"}.
+     */
+    private String formatMissing(List<?> missing) {
+      if (missing.size() == 1) {
+        return "<" + missing.get(0) + ">";
+      } else {
+        return "each of <" + missing + ">";
+      }
+    }
+
+    /**
+     * Given a many:many mapping between actual elements and expected elements, finds a 1:1
+     * mapping which is the subset of that many:many mapping which includes the largest possible
+     * number of elements. The input and output mappings are each described as a map or multimap
+     * where the keys are indexes into the actual list and the values are indexes into the expected
+     * list. If there are multiple possible output mappings tying for the largest possible, this
+     * returns an arbitrary one.
+     */
+    private ImmutableBiMap<Integer, Integer> findMaximalOneToOneMapping(
+        ImmutableMultimap<Integer, Integer> edges) {
+      /*
+       * Finding this 1:1 mapping is analogous to finding a maximum cardinality bipartite matching
+       * (https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs).
+       *  - The two sets of elements together correspond to the vertices of a graph.
+       *  - The many:many mapping corresponds to the edges of that graph.
+       *  - The graph is therefore bipartite, with the two sets of elements corresponding to the two
+       * parts.
+       *  - A 1:1 mapping corresponds to a matching on that bipartite graph (aka an independent edge
+       * set, i.e. a subset of the edges with no common vertices).
+       *  - And the 1:1 mapping which includes the largest possible number of elements corresponds
+       * to the maximum cardinality matching.
+       *
+       * So we'll apply a standard algorithm for doing maximum cardinality bipartite matching.
+       */
       throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Given a list of actual elements, a list of expected elements, and a 1:1 mapping between
+     * actual and expected elements specified as a bimap of indexes into the actual list to indexes
+     * into the expected list, checks that every actual element maps to an expected element and vice
+     * versa, and fails if this is not the case.
+     */
+    void failIfOneToOneMappingHasMissingOrExtra(
+        List<? extends A> actual,
+        List<? extends E> expected,
+        BiMap<Integer, Integer> mapping) {
+      ImmutableList<? extends A> extra = findNotIndexed(actual, mapping.keySet());
+      ImmutableList<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
+      Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
+      if (missingOrExtraMessage.isPresent()) {
+        failWithRawMessage(
+            "Not true that %s contains exactly one element that %s each element of <%s>. "
+                + "It contains at least one element that matches each expected element, "
+                + "and every element it contains matches at least one expected element, "
+                + "but there was no 1:1 mapping between all the actual and expected elements. "
+                + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
+                + "it %s",
+            getDisplaySubject(),
+            correspondence,
+            expected,
+            missingOrExtraMessage.get());
+      }
     }
 
     /**

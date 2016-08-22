@@ -810,7 +810,7 @@ public class IterableSubjectTest {
     try {
       assertThat(asList((Object) 1, "2", 3, "4")).isStrictlyOrdered();
       fail("Should have thrown.");
-    } catch (ClassCastException e) {
+    } catch (ClassCastException expected) {
     }
   }
 
@@ -837,7 +837,7 @@ public class IterableSubjectTest {
     try {
       assertThat(asList((Object) 1, "2", 2, "3")).isOrdered();
       fail("Should have thrown.");
-    } catch (ClassCastException e) {
+    } catch (ClassCastException expected) {
     }
   }
 
@@ -1001,4 +1001,134 @@ public class IterableSubjectTest {
                   + "parses to <456>. It contained the following such elements: <[+456]>");
     }
   }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_inOrder_success() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+64", "+128", "+256", "0x80");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsMissingOneCandidate() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+64", "+128", "0x40", "0x80");
+    // Actual list has candidate matches for 64, 128, and the other 128, but is missing 256.
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+64, +128, 0x40, 0x80]> contains exactly one element that "
+                  + "parses to each element of <[64, 128, 256, 128]>. "
+                  + "It is missing an element that parses to <256>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsMultipleMissingCandidates() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+64", "+64", "0x40", "0x40");
+    // Actual list has candidate matches for 64 only, and is missing 128, 256, and the other 128.
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+64, +64, 0x40, 0x40]> contains exactly one element that "
+                  + "parses to each element of <[64, 128, 256, 128]>. "
+                  + "It is missing an element that parses to each of <[128, 256, 128]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsOrderedMissingOneCandidate() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 512);
+    ImmutableList<String> actual = ImmutableList.of("+64", "+128", "+256");
+    // Actual list has in-order candidate matches for 64, 128, and 256, but is missing 512.
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+64, +128, +256]> contains exactly one element that "
+                  + "parses to each element of <[64, 128, 256, 512]>. "
+                  + "It is missing an element that parses to <512>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsExtraCandidates() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+64", "+128", "+256", "cheese");
+    // Actual list has candidate matches for all the expected, but has extra cheese.
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+64, +128, +256, cheese]> contains exactly one element that "
+                  + "parses to each element of <[64, 128, 256, 128]>. "
+                  + "It has unexpected elements <[cheese]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsOrderedExtraCandidates() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+64", "+128", "+256", "0x80", "cheese");
+    // Actual list has in-order candidate matches for all the expected, but has extra cheese.
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+64, +128, +256, 0x80, cheese]> contains exactly one element that "
+                  + "parses to each element of <[64, 128, 256, 128]>. "
+                  + "It has unexpected elements <[cheese]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsMissingAndExtraCandidates() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+64", "+128", "jalapenos", "cheese");
+    // Actual list has candidate matches for 64, 128, and the other 128, but is missing 256 and has
+    // extra jalapenos and cheese.
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+64, +128, jalapenos, cheese]> contains exactly one element that "
+                  + "parses to each element of <[64, 128, 256, 128]>. "
+                  + "It is missing an element that parses to <256> "
+                  + "and has unexpected elements <[jalapenos, cheese]>");
+    }
+  }
+
+  // TODO(b/29966314): Add tests for the out-of-order success case, and for the failure cases where
+  // the candidate mapping succeeds but the 1:1 mapping fails, and for the failure case where the
+  // any-order test would pass but we do an in-order assertion.
 }
