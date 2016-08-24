@@ -30,14 +30,14 @@ import javax.annotation.Nullable;
 /**
  * Truth subjects for the Lite version of Protocol Buffers.
  *
- * <p>ProtoLiteSubject supports versions 2 and 3 of Protocol Buffers. Due to the lack of runtime
+ * <p>LiteProtoSubject supports versions 2 and 3 of Protocol Buffers. Due to the lack of runtime
  * descriptors, its functionality is limited compared to ProtoSubject, in particular in performing
  * detailed comparisons between messages.
  *
  * @param <S> Subject class type.
  * @param <M> MessageLite type.
  */
-public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends MessageLite>
+public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends MessageLite>
     extends Subject<S, M> {
 
   /**
@@ -47,23 +47,23 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
    * {@link Truth#assertAbout(SubjectFactory)}, whilst also hiding the Untyped classes which are not
    * meant to be exposed.
    */
-  public abstract static class Factory<S extends ProtoLiteSubject<S, M>, M extends MessageLite>
+  public abstract static class Factory<S extends LiteProtoSubject<S, M>, M extends MessageLite>
       extends SubjectFactory<S, M> {}
 
   /**
    * Returns a SubjectFactory for {@link MessageLite} subjects which you can use to assert things
    * about Lite Protobuf properties.
    */
-  public static Factory<?, MessageLite> protoLite() {
+  public static Factory<?, MessageLite> liteProtos() {
     return UntypedSubjectFactory.INSTANCE;
   }
 
   /** Returns a Subject using the assertion strategy on the provided {@link MessageLite}. */
-  public static ProtoLiteSubject<?, ?> assertThat(@Nullable MessageLite m) {
-    return assertAbout(protoLite()).that(m);
+  public static LiteProtoSubject<?, ?> assertThat(@Nullable MessageLite m) {
+    return assertAbout(liteProtos()).that(m);
   }
 
-  protected ProtoLiteSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
+  protected LiteProtoSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
     super(failureStrategy, messageLite);
   }
 
@@ -202,7 +202,7 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
         .named("sizeOf(" + getTrimmedDisplaySubject() + ")");
   }
 
-  private static final class UntypedSubject extends ProtoLiteSubject<UntypedSubject, MessageLite> {
+  private static final class UntypedSubject extends LiteProtoSubject<UntypedSubject, MessageLite> {
     private UntypedSubject(FailureStrategy failureStrategy, @Nullable MessageLite messageLite) {
       super(failureStrategy, messageLite);
     }
