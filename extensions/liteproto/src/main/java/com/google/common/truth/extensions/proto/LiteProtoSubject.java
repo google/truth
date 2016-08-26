@@ -54,13 +54,15 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * Returns a SubjectFactory for {@link MessageLite} subjects which you can use to assert things
    * about Lite Protobuf properties.
    */
-  public static Factory<?, MessageLite> liteProtos() {
-    return UntypedSubjectFactory.INSTANCE;
+  @SuppressWarnings("unchecked")
+  public static <M extends MessageLite> Factory<?, M> liteProtos() {
+    // Implementation is fully variant.
+    return (Factory<?, M>) UntypedSubjectFactory.INSTANCE;
   }
 
   /** Returns a Subject using the assertion strategy on the provided {@link MessageLite}. */
-  public static LiteProtoSubject<?, ?> assertThat(@Nullable MessageLite m) {
-    return assertAbout(liteProtos()).that(m);
+  public static <M extends MessageLite> LiteProtoSubject<?, M> assertThat(@Nullable M messageLite) {
+    return assertAbout(LiteProtoSubject.<M>liteProtos()).that(messageLite);
   }
 
   protected LiteProtoSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
@@ -73,7 +75,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   // from the strings alone. So, we manually strip this prefix.
   // In case the class names are actually relevant, Subject.isEqualTo() will add them back for us.
   // TODO(user): Maybe get a way to do this upstream.
-  private static String getTrimmedToString(@Nullable MessageLite messageLite) {
+  static String getTrimmedToString(@Nullable MessageLite messageLite) {
     String subjectString = String.valueOf(messageLite).trim();
     if (subjectString.startsWith("# ")) {
       String objectToString =
@@ -104,8 +106,15 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   public void isEqualTo(@Nullable Object expected) {
     // TODO(user): Do better here when MessageLite descriptors are available.
     if (!Objects.equal(getSubject(), expected)) {
-      if (getSubject() == null || !(expected instanceof MessageLite)) {
+      if (getSubject() == null || expected == null) {
         super.isEqualTo(expected);
+      } else if (getSubject().getClass() != expected.getClass()) {
+        failWithRawMessage(
+            "Not true that (%s) %s is equal to the expected (%s) object. "
+                + "They are not of the same class.",
+            getSubject().getClass().getName(),
+            internalCustomName() != null ? internalCustomName() + " (proto)" : "proto",
+            expected.getClass().getName());
       } else {
         String ourString = getTrimmedToString(getSubject());
         String theirString = getTrimmedToString((MessageLite) expected);

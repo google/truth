@@ -16,7 +16,6 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.extensions.proto.LiteProtoSubject.assertThat;
-import static com.google.common.truth.extensions.proto.LiteProtoSubject.liteProtos;
 import static org.junit.Assert.fail;
 
 import com.google.auto.value.AutoValue;
@@ -132,7 +131,7 @@ public class LiteProtoSubjectTest {
   }
 
   private LiteProtoSubject<?, ?> expectThat(@Nullable MessageLite m) {
-    return expect.about(liteProtos()).that(m);
+    return expect.about(LiteProtoSubject.<MessageLite>liteProtos()).that(m);
   }
 
   private Subject<?, ?> expectThat(@Nullable Object o) {
@@ -186,7 +185,10 @@ public class LiteProtoSubjectTest {
       assertThat(config.nonEmptyMessage()).isEqualTo(config.nonEmptyMessageOfOtherType());
       fail("Should have failed.");
     } catch (AssertionError e) {
-      expectRegex(e, ".*expected:.*\\[Other\\]TestMessage.*but was:.*\\[\\]TestMessage.*");
+      expectRegex(
+          e,
+          "Not true that \\(.*\\) proto is equal to the expected \\(.*\\) object\\.\\s*"
+              + "They are not of the same class\\.");
     }
 
     try {
