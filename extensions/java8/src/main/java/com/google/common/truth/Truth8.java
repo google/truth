@@ -18,7 +18,9 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertAbout;
 
 import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.OptionalInt;
+import java.util.OptionalLong;
 import javax.annotation.Nullable;
 
 /**
@@ -36,6 +38,14 @@ public final class Truth8 {
 
   public static OptionalIntSubject assertThat(@Nullable OptionalInt target) {
     return assertAbout(OptionalIntSubject.optionalInts()).that(target);
+  }
+
+  public static OptionalLongSubject assertThat(@Nullable OptionalLong target) {
+    return assertAbout(OptionalLongSubject.optionalLongs()).that(target);
+  }
+
+  public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble target) {
+    return assertAbout(OptionalDoubleSubject.optionalDoubles()).that(target);
   }
 
   private Truth8() {}
