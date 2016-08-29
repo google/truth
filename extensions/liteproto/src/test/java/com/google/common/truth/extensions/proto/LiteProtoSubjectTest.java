@@ -15,9 +15,7 @@
  */
 package com.google.common.truth.extensions.proto;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.extensions.proto.ProtoLiteSubject.assertThat;
-import static com.google.common.truth.extensions.proto.ProtoLiteSubject.protoLite;
+import static com.google.common.truth.extensions.proto.LiteProtoSubject.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.auto.value.AutoValue;
@@ -36,9 +34,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-/** Unit tests for {@link ProtoLiteSubject}. */
+/** Unit tests for {@link LiteProtoSubject}. */
 @RunWith(Parameterized.class)
-public class ProtoLiteSubjectTest {
+public class LiteProtoSubjectTest {
 
   /**
    * We run (almost) all the tests for both proto2 and proto3 implementations. This class organizes
@@ -61,7 +59,7 @@ public class ProtoLiteSubjectTest {
     abstract Optional<MessageLite> messageWithoutRequiredFields();
 
     public static Builder newBuilder() {
-      return new AutoValue_ProtoLiteSubjectTest_Config.Builder();
+      return new AutoValue_LiteProtoSubjectTest_Config.Builder();
     }
 
     @AutoValue.Builder
@@ -128,12 +126,12 @@ public class ProtoLiteSubjectTest {
   @Rule public final Expect expect = Expect.create();
   private final Config config;
 
-  public ProtoLiteSubjectTest(@SuppressWarnings("unused") String name, Config config) {
+  public LiteProtoSubjectTest(@SuppressWarnings("unused") String name, Config config) {
     this.config = config;
   }
 
-  private ProtoLiteSubject<?, ?> expectThat(@Nullable MessageLite m) {
-    return expect.about(protoLite()).that(m);
+  private LiteProtoSubject<?, ?> expectThat(@Nullable MessageLite m) {
+    return expect.about(LiteProtoSubject.<MessageLite>liteProtos()).that(m);
   }
 
   private Subject<?, ?> expectThat(@Nullable Object o) {
@@ -187,7 +185,10 @@ public class ProtoLiteSubjectTest {
       assertThat(config.nonEmptyMessage()).isEqualTo(config.nonEmptyMessageOfOtherType());
       fail("Should have failed.");
     } catch (AssertionError e) {
-      expectRegex(e, ".*expected:.*\\[Other\\]TestMessage.*but was:.*\\[\\]TestMessage.*");
+      expectRegex(
+          e,
+          "Not true that \\(.*\\) proto is equal to the expected \\(.*\\) object\\.\\s*"
+              + "They are not of the same class\\.");
     }
 
     try {

@@ -30,14 +30,14 @@ import javax.annotation.Nullable;
 /**
  * Truth subjects for the Lite version of Protocol Buffers.
  *
- * <p>ProtoLiteSubject supports versions 2 and 3 of Protocol Buffers. Due to the lack of runtime
+ * <p>LiteProtoSubject supports versions 2 and 3 of Protocol Buffers. Due to the lack of runtime
  * descriptors, its functionality is limited compared to ProtoSubject, in particular in performing
  * detailed comparisons between messages.
  *
  * @param <S> Subject class type.
  * @param <M> MessageLite type.
  */
-public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends MessageLite>
+public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends MessageLite>
     extends Subject<S, M> {
 
   /**
@@ -47,23 +47,25 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
    * {@link Truth#assertAbout(SubjectFactory)}, whilst also hiding the Untyped classes which are not
    * meant to be exposed.
    */
-  public abstract static class Factory<S extends ProtoLiteSubject<S, M>, M extends MessageLite>
+  public abstract static class Factory<S extends LiteProtoSubject<S, M>, M extends MessageLite>
       extends SubjectFactory<S, M> {}
 
   /**
    * Returns a SubjectFactory for {@link MessageLite} subjects which you can use to assert things
    * about Lite Protobuf properties.
    */
-  public static Factory<?, MessageLite> protoLite() {
-    return UntypedSubjectFactory.INSTANCE;
+  @SuppressWarnings("unchecked")
+  public static <M extends MessageLite> Factory<?, M> liteProtos() {
+    // Implementation is fully variant.
+    return (Factory<?, M>) UntypedSubjectFactory.INSTANCE;
   }
 
   /** Returns a Subject using the assertion strategy on the provided {@link MessageLite}. */
-  public static ProtoLiteSubject<?, ?> assertThat(@Nullable MessageLite m) {
-    return assertAbout(protoLite()).that(m);
+  public static <M extends MessageLite> LiteProtoSubject<?, M> assertThat(@Nullable M messageLite) {
+    return assertAbout(LiteProtoSubject.<M>liteProtos()).that(messageLite);
   }
 
-  protected ProtoLiteSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
+  protected LiteProtoSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
     super(failureStrategy, messageLite);
   }
 
@@ -73,7 +75,7 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
   // from the strings alone. So, we manually strip this prefix.
   // In case the class names are actually relevant, Subject.isEqualTo() will add them back for us.
   // TODO(user): Maybe get a way to do this upstream.
-  private static String getTrimmedToString(@Nullable MessageLite messageLite) {
+  static String getTrimmedToString(@Nullable MessageLite messageLite) {
     String subjectString = String.valueOf(messageLite).trim();
     if (subjectString.startsWith("# ")) {
       String objectToString =
@@ -104,8 +106,15 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
   public void isEqualTo(@Nullable Object expected) {
     // TODO(user): Do better here when MessageLite descriptors are available.
     if (!Objects.equal(getSubject(), expected)) {
-      if (getSubject() == null || !(expected instanceof MessageLite)) {
+      if (getSubject() == null || expected == null) {
         super.isEqualTo(expected);
+      } else if (getSubject().getClass() != expected.getClass()) {
+        failWithRawMessage(
+            "Not true that (%s) %s is equal to the expected (%s) object. "
+                + "They are not of the same class.",
+            getSubject().getClass().getName(),
+            internalCustomName() != null ? internalCustomName() + " (proto)" : "proto",
+            expected.getClass().getName());
       } else {
         String ourString = getTrimmedToString(getSubject());
         String theirString = getTrimmedToString((MessageLite) expected);
@@ -202,7 +211,7 @@ public class ProtoLiteSubject<S extends ProtoLiteSubject<S, M>, M extends Messag
         .named("sizeOf(" + getTrimmedDisplaySubject() + ")");
   }
 
-  private static final class UntypedSubject extends ProtoLiteSubject<UntypedSubject, MessageLite> {
+  private static final class UntypedSubject extends LiteProtoSubject<UntypedSubject, MessageLite> {
     private UntypedSubject(FailureStrategy failureStrategy, @Nullable MessageLite messageLite) {
       super(failureStrategy, messageLite);
     }
