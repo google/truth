@@ -40,7 +40,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * A partially specified proposition about an approximate relationship to a {@code float} subject
    * using a tolerance.
    */
-  public abstract class TolerantFloatComparison {
+  public abstract static class TolerantFloatComparison {
 
     // Prevent subclassing outside of this class
     private TolerantFloatComparison() {}

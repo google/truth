@@ -762,7 +762,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * returns an arbitrary one.
      */
     private ImmutableBiMap<Integer, Integer> findMaximalOneToOneMapping(
-        ImmutableMultimap<Integer, Integer> edges) {
+        ImmutableMultimap<Integer, Integer> unused) {
       /*
        * Finding this 1:1 mapping is analogous to finding a maximum cardinality bipartite matching
        * (https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs).
@@ -834,7 +834,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     @CanIgnoreReturnValue
     @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private Ordered containsAllIn(Iterable<E> expected) {
+    private Ordered containsAllIn(Iterable<E> unused) {
       throw new UnsupportedOperationException();
     }
 
@@ -852,7 +852,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * the expected elements.
      */
     @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private void containsAnyIn(Iterable<E> expected) {
+    private void containsAnyIn(Iterable<E> unused) {
       throw new UnsupportedOperationException();
     }
 
@@ -872,7 +872,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * correspond to any of the given elements.)
      */
     @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private void containsNoneIn(Iterable<E> excluded) {
+    private void containsNoneIn(Iterable<E> unused) {
       throw new UnsupportedOperationException();
     }
 

@@ -68,6 +68,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
    * <p><b>Note:</b> If you only want to compare the values of the BigDecimals and not their scales,
    * use {@link #isEqualToIgnoringScale(BigDecimal)} instead.
    */
+  @Override // To express more specific javadoc
   public void isEqualTo(@Nullable Object expected) {
     super.isEqualTo(expected);
   }
@@ -80,6 +81,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
    * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
    * #isEqualTo(Object)}.
    */
+  @Override
   public void isEquivalentAccordingToCompareTo(BigDecimal expected) {
     compareValues(expected);
   }
