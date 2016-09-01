@@ -607,14 +607,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method.
-     *
-     * <p>THIS METHOD IS UNDER CONSTRUCTION. It will work under some conditions, and throw
-     * {@link UnsupportedOperationException} under others. DO NOT USE!
      */
     @CanIgnoreReturnValue
-    // TODO(b/29966314): Finish implementing this, remove the "under construction" in the javadoc,
-    // and make it public.
-    Ordered containsExactlyElementsIn(Iterable<? extends E> expected) {
+    public Ordered containsExactlyElementsIn(Iterable<? extends E> expected) {
       // Check if the elements correspond in order. This allows the common case of a passing test
       // using inOrder() to complete in linear time.
       if (correspondInOrder(getCastSubject().iterator(), expected.iterator())) {
@@ -762,7 +757,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * returns an arbitrary one.
      */
     private ImmutableBiMap<Integer, Integer> findMaximalOneToOneMapping(
-        ImmutableMultimap<Integer, Integer> unused) {
+        ImmutableMultimap<Integer, Integer> edges) {
       /*
        * Finding this 1:1 mapping is analogous to finding a maximum cardinality bipartite matching
        * (https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs).
@@ -777,7 +772,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
        *
        * So we'll apply a standard algorithm for doing maximum cardinality bipartite matching.
        */
-      throw new UnsupportedOperationException();
+      return GraphMatching.maximumCardinalityBipartiteMatching(edges);
     }
 
     /**

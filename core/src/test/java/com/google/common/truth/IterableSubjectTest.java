@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.collect.Collections2.permutations;
+import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Arrays.asList;
@@ -26,6 +28,7 @@ import com.google.common.primitives.Ints;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import javax.annotation.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -1013,6 +1016,33 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_successOutOfOrder() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "0x80", "+256");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_successNonGreedy() {
+    // (We use doubles with approximate equality for this test, because we can't illustrate this
+    // case with the string parsing correspondence used in the other tests, because one string
+    // won't parse to more than one integer.)
+    ImmutableList<Double> expected = ImmutableList.of(1.0, 1.1, 1.2);
+    ImmutableList<Double> actual = ImmutableList.of(1.05, 1.15, 0.95);
+    // The comparingElementsUsing test with a tolerance of 0.1 should succeed by pairing 1.0 with
+    // 0.95, 1.1 with 1.05, and 1.2 with 1.15. A left-to-right greedy implementation would fail as
+    // it would pair 1.0 with 1.05 and 1.1 with 1.15, and fail to pair 1.2 with 0.95. Check that the
+    // implementation is truly non-greedy by testing all permutations.
+    for (List<Double> permutedActual : permutations(actual)) {
+      assertThat(permutedActual)
+          .comparingElementsUsing(tolerance(0.1))
+          .containsExactlyElementsIn(expected);
+    }
+  }
+
+  @Test
   public void comparingElementsUsing_containsExactlyElementsIn_failsMissingOneCandidate() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+64", "+128", "0x40", "0x80");
@@ -1128,7 +1158,90 @@ public class IterableSubjectTest {
     }
   }
 
-  // TODO(b/29966314): Add tests for the out-of-order success case, and for the failure cases where
-  // the candidate mapping succeeds but the 1:1 mapping fails, and for the failure case where the
-  // any-order test would pass but we do an in-order assertion.
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsMissingElementInOneToOne() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+128, +64, +256]> contains exactly one element that parses "
+                  + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
+                  + "that matches each expected element, and every element it contains matches at "
+                  + "least one expected element, but there was no 1:1 mapping between all the "
+                  + "actual and expected elements. Using the most complete 1:1 mapping (or one "
+                  + "such mapping, if there is a tie), it is missing an element that parses to "
+                  + "<128>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsExtraElementInOneToOne() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x80", "0x40");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+    } catch (AssertionError e) {
+      String expectedPreamble =
+          "Not true that <[+128, +64, +256, 0x80, 0x40]> contains exactly one element that parses "
+              + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
+              + "that matches each expected element, and every element it contains matches at "
+              + "least one expected element, but there was no 1:1 mapping between all the "
+              + "actual and expected elements. Using the most complete 1:1 mapping (or one "
+              + "such mapping, if there is a tie), it has unexpected elements ";
+      ImmutableList<String> possibleRemainders = ImmutableList.of("<[0x40]>", "<[+64]>");
+      String actualMessage = e.getMessage();
+      assertThat(actualMessage).startsWith(expectedPreamble);
+      String actualRemainder = actualMessage.substring(expectedPreamble.length());
+      assertThat(actualRemainder).isIn(possibleRemainders);
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsMissingAndExtraInOneToOne() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+    } catch (AssertionError e) {
+      String expectedPreamble =
+          "Not true that <[+128, +64, +256, 0x40]> contains exactly one element that parses "
+              + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
+              + "that matches each expected element, and every element it contains matches at "
+              + "least one expected element, but there was no 1:1 mapping between all the "
+              + "actual and expected elements. Using the most complete 1:1 mapping (or one "
+              + "such mapping, if there is a tie), it is missing an element that parses to "
+              + "<128> and has unexpected elements ";
+      ImmutableList<String> possibleRemainders = ImmutableList.of("<[0x40]>", "<[+64]>");
+      String actualMessage = e.getMessage();
+      assertThat(actualMessage).startsWith(expectedPreamble);
+      String actualRemainder = actualMessage.substring(expectedPreamble.length());
+      assertThat(actualRemainder).isIn(possibleRemainders);
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_inOrder_failsOutOfOrder() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "0x80", "+256");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected)
+          .inOrder();
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+128, +64, 0x80, +256]> contains, in order, exactly one element "
+                  + "that parses to each element of <[64, 128, 256, 128]>");
+    }
+  }
 }
