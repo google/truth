@@ -38,7 +38,7 @@ public final class PrimitiveByteArraySubject
 
   @Override
   protected List<Byte> listRepresentation() {
-    return Bytes.asList(getSubject());
+    return Bytes.asList(actual());
   }
 
   /**
@@ -48,7 +48,7 @@ public final class PrimitiveByteArraySubject
    */
   @Override
   public void isEqualTo(Object expected) {
-    byte[] actual = getSubject();
+    byte[] actual = actual();
     if (actual == expected) {
       return; // short-cut.
     }
@@ -64,12 +64,12 @@ public final class PrimitiveByteArraySubject
 
   @Override
   public void isNotEqualTo(Object expected) {
-    byte[] actual = getSubject();
+    byte[] actual = actual();
     try {
       byte[] expectedArray = (byte[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Arrays.toString(expectedArray));
+            "%s unexpectedly equal to %s.", actualAsString(), Arrays.toString(expectedArray));
       }
     } catch (ClassCastException ignored) {
     }

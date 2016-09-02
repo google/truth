@@ -44,9 +44,9 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the subject is not equal to the given object. */
   @Override
   public void isEqualTo(@Nullable Object other) {
-    if (!Objects.equal(getSubject(), other)) {
+    if (!Objects.equal(actual(), other)) {
       if (other instanceof Map) {
-        MapDifference<?, ?> diff = Maps.difference((Map<?, ?>) other, (Map<?, ?>) getSubject());
+        MapDifference<?, ?> diff = Maps.difference((Map<?, ?>) other, (Map<?, ?>) actual());
         String errorMsg = "The subject";
         if (!diff.entriesOnlyOnLeft().isEmpty()) {
           errorMsg += " is missing the following entries: " + diff.entriesOnlyOnLeft();
@@ -64,7 +64,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           errorMsg += " has the following different entries: " + diff.entriesDiffering();
         }
         failWithRawMessage(
-            "Not true that %s is equal to <%s>. " + errorMsg, getDisplaySubject(), other);
+            "Not true that %s is equal to <%s>. " + errorMsg, actualAsString(), other);
       } else {
         fail("is equal to", other);
       }
@@ -73,14 +73,14 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
   /** Fails if the map is not empty. */
   public void isEmpty() {
-    if (!getSubject().isEmpty()) {
+    if (!actual().isEmpty()) {
       fail("is empty");
     }
   }
 
   /** Fails if the map is empty. */
   public void isNotEmpty() {
-    if (getSubject().isEmpty()) {
+    if (actual().isEmpty()) {
       fail("is not empty");
     }
   }
@@ -88,7 +88,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map does not have the given size. */
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
-    int actualSize = getSubject().size();
+    int actualSize = actual().size();
     if (actualSize != expectedSize) {
       failWithBadResults("has a size of", expectedSize, "is", actualSize);
     }
@@ -96,14 +96,14 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
   /** Fails if the map does not contain the given key. */
   public void containsKey(@Nullable Object key) {
-    if (!getSubject().containsKey(key)) {
+    if (!actual().containsKey(key)) {
       fail("contains key", key);
     }
   }
 
   /** Fails if the map contains the given key. */
   public void doesNotContainKey(@Nullable Object key) {
-    if (getSubject().containsKey(key)) {
+    if (actual().containsKey(key)) {
       fail("does not contain key", key);
     }
   }
@@ -111,15 +111,15 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map does not contain the given entry. */
   public void containsEntry(@Nullable Object key, @Nullable Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
-    if (!getSubject().entrySet().contains(entry)) {
-      if (getSubject().containsKey(key)) {
+    if (!actual().entrySet().contains(entry)) {
+      if (actual().containsKey(key)) {
         failWithRawMessage(
             "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
-            getDisplaySubject(), entry, key, getSubject().get(key));
+            actualAsString(), entry, key, actual().get(key));
       }
-      if (getSubject().containsValue(value)) {
+      if (actual().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<Object>();
-        for (Entry<?, ?> actualEntry : getSubject().entrySet()) {
+        for (Entry<?, ?> actualEntry : actual().entrySet()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
           }
@@ -127,7 +127,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         failWithRawMessage(
             "Not true that %s contains entry <%s>. "
                 + "However, the following keys are mapped to <%s>: %s",
-            getDisplaySubject(), entry, value, keys);
+            actualAsString(), entry, value, keys);
       }
       fail("contains entry", entry);
     }
@@ -136,7 +136,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map contains the given entry. */
   public void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
-    if (getSubject().entrySet().contains(entry)) {
+    if (actual().entrySet().contains(entry)) {
       fail("does not contain entry", entry);
     }
   }
@@ -144,7 +144,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map is not empty. */
   @CanIgnoreReturnValue
   public Ordered containsExactly() {
-    return check().that(getSubject().entrySet()).containsExactly();
+    return check().that(actual().entrySet()).containsExactly();
   }
 
   /**
@@ -181,7 +181,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map does not contain exactly the given set of entries in the given map. */
   @CanIgnoreReturnValue
   public Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
-    return check().that(getSubject().entrySet()).containsExactlyElementsIn(expectedMap.entrySet());
+    return check().that(actual().entrySet()).containsExactlyElementsIn(expectedMap.entrySet());
   }
 
   /**
@@ -227,7 +227,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
      * the given value.
      */
     public void containsEntry(@Nullable Object expectedKey, @Nullable E expectedValue) {
-      if (getSubject().containsKey(expectedKey)) {
+      if (actual().containsKey(expectedKey)) {
         // Found matching key.
         A actualValue = getCastSubject().get(expectedKey);
         if (correspondence.compare(actualValue, expectedValue)) {
@@ -238,7 +238,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         failWithRawMessage(
             "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
                 + "However, it has a mapping from that key to <%s>",
-            getDisplaySubject(), expectedKey, correspondence, expectedValue, actualValue);
+            actualAsString(), expectedKey, correspondence, expectedValue, actualValue);
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<Object>();
@@ -252,12 +252,12 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           failWithRawMessage(
               "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
                   + "However, the following keys are mapped to such values: <%s>",
-              getDisplaySubject(), expectedKey, correspondence, expectedValue, keys);
+              actualAsString(), expectedKey, correspondence, expectedValue, keys);
         } else {
           // Did not find matching key or value.
           failWithRawMessage(
               "Not true that %s contains an entry with key <%s> and a value that %s <%s>",
-              getDisplaySubject(), expectedKey, correspondence, expectedValue);
+              actualAsString(), expectedKey, correspondence, expectedValue);
         }
       }
     }
@@ -267,13 +267,13 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
      * given value.
      */
     public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable E excludedValue) {
-      if (getSubject().containsKey(excludedKey)) {
+      if (actual().containsKey(excludedKey)) {
         A actualValue = getCastSubject().get(excludedKey);
         if (correspondence.compare(actualValue, excludedValue)) {
           failWithRawMessage(
               "Not true that %s does not contain an entry with key <%s> and a value that %s <%s>. "
                   + "It maps that key to <%s>",
-              getDisplaySubject(), excludedKey, correspondence, excludedValue, actualValue);
+              actualAsString(), excludedKey, correspondence, excludedValue, actualValue);
         }
       }
     }
@@ -314,7 +314,7 @@ public final class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Map<?, A> getCastSubject() {
-      return (Map<?, A>) getSubject();
+      return (Map<?, A>) actual();
     }
   }
 }

@@ -50,7 +50,7 @@ public final class PrimitiveFloatArraySubject
 
   @Override
   protected List<Float> listRepresentation() {
-    return Floats.asList(getSubject());
+    return Floats.asList(actual());
   }
 
   /**
@@ -83,7 +83,7 @@ public final class PrimitiveFloatArraySubject
    */
   @Deprecated
   public void isEqualTo(Object expected, float tolerance) {
-    float[] actual = getSubject();
+    float[] actual = actual();
     if (actual == expected) {
       return; // short-cut.
     }
@@ -140,12 +140,12 @@ public final class PrimitiveFloatArraySubject
    */
   @Deprecated
   public void isNotEqualTo(Object expectedArray, float tolerance) {
-    float[] actual = getSubject();
+    float[] actual = actual();
     try {
       float[] expected = (float[]) expectedArray;
       if (actual == expected) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Floats.asList(expected));
+            "%s unexpectedly equal to %s.", actualAsString(), Floats.asList(expected));
       }
       if (expected.length != actual.length) {
         return; // Unequal-lengthed arrays are not equal.
@@ -158,7 +158,7 @@ public final class PrimitiveFloatArraySubject
       }
       if (unequalIndices.isEmpty()) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Floats.asList(expected));
+            "%s unexpectedly equal to %s.", actualAsString(), Floats.asList(expected));
       }
     } catch (ClassCastException ignored) {
       // Unequal since they are of different types.
@@ -236,7 +236,7 @@ public final class PrimitiveFloatArraySubject
       @Override
       public void ofElementsIn(Iterable<? extends Number> expected) {
         checkTolerance(tolerance);
-        float[] actual = checkNotNull(getSubject());
+        float[] actual = checkNotNull(actual());
         List<Integer> mismatches = new ArrayList<Integer>();
         int expectedCount = 0;
         for (Number expectedValue : expected) {
@@ -252,7 +252,7 @@ public final class PrimitiveFloatArraySubject
         if (actual.length != expectedCount) {
           failWithRawMessage(
               "Not true that %s has values within %s of <%s>. Expected length <%s> but got <%s>",
-              getDisplaySubject(),
+              actualAsString(),
               tolerance,
               Iterables.toString(expected),
               expectedCount,
@@ -294,7 +294,7 @@ public final class PrimitiveFloatArraySubject
       @Override
       public void ofElementsIn(Iterable<? extends Number> expected) {
         checkTolerance(tolerance);
-        float[] actual = checkNotNull(getSubject());
+        float[] actual = checkNotNull(actual());
         int expectedCount = 0;
         for (Number expectedValue : expected) {
           // if expected is longer than actual, we can skip the excess values: this case is covered

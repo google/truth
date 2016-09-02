@@ -50,22 +50,16 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     super(failureStrategy, multimap);
   }
 
-  @Override
-  public MultimapSubject named(String format, Object... args) {
-    super.named(format, args);
-    return this;
-  }
-
   /** Fails if the multimap is not empty. */
   public void isEmpty() {
-    if (!getSubject().isEmpty()) {
+    if (!actual().isEmpty()) {
       fail("is empty");
     }
   }
 
   /** Fails if the multimap is empty. */
   public void isNotEmpty() {
-    if (getSubject().isEmpty()) {
+    if (actual().isEmpty()) {
       fail("is not empty");
     }
   }
@@ -73,7 +67,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   /** Fails if the multimap does not have the given size. */
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    int actualSize = getSubject().size();
+    int actualSize = actual().size();
     if (actualSize != expectedSize) {
       failWithBadResults("has a size of", expectedSize, "is", actualSize);
     }
@@ -81,14 +75,14 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   /** Fails if the multimap does not contain the given key. */
   public void containsKey(@Nullable Object key) {
-    if (!getSubject().containsKey(key)) {
+    if (!actual().containsKey(key)) {
       fail("contains key", key);
     }
   }
 
   /** Fails if the multimap contains the given key. */
   public void doesNotContainKey(@Nullable Object key) {
-    if (getSubject().containsKey(key)) {
+    if (actual().containsKey(key)) {
       fail("does not contain key", key);
     }
   }
@@ -96,16 +90,16 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   /** Fails if the multimap does not contain the given entry. */
   public void containsEntry(@Nullable Object key, @Nullable Object value) {
     // TODO(kak): Can we share any of this logic w/ MapSubject.containsEntry()?
-    if (!getSubject().containsEntry(key, value)) {
+    if (!actual().containsEntry(key, value)) {
       Entry<Object, Object> entry = Maps.immutableEntry(key, value);
-      if (getSubject().containsKey(key)) {
+      if (actual().containsKey(key)) {
         failWithRawMessage(
             "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
-            getDisplaySubject(), entry, key, getSubject().asMap().get(key));
+            actualAsString(), entry, key, actual().asMap().get(key));
       }
-      if (getSubject().containsValue(value)) {
+      if (actual().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<Object>();
-        for (Entry<?, ?> actualEntry : getSubject().entries()) {
+        for (Entry<?, ?> actualEntry : actual().entries()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
           }
@@ -113,7 +107,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         failWithRawMessage(
             "Not true that %s contains entry <%s>. "
                 + "However, the following keys are mapped to <%s>: %s",
-            getDisplaySubject(), entry, value, keys);
+            actualAsString(), entry, value, keys);
       }
       fail("contains entry", Maps.immutableEntry(key, value));
     }
@@ -121,7 +115,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   /** Fails if the multimap contains the given entry. */
   public void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
-    if (getSubject().containsEntry(key, value)) {
+    if (actual().containsEntry(key, value)) {
       fail("does not contain entry", Maps.immutableEntry(key, value));
     }
   }
@@ -139,20 +133,20 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   @Override
   public void isEqualTo(@Nullable Object other) {
-    if (!Objects.equal(getSubject(), other)) {
-      if ((getSubject() instanceof ListMultimap && other instanceof SetMultimap)
-          || (getSubject() instanceof SetMultimap && other instanceof ListMultimap)) {
-        String mapType1 = (getSubject() instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
+    if (!Objects.equal(actual(), other)) {
+      if ((actual() instanceof ListMultimap && other instanceof SetMultimap)
+          || (actual() instanceof SetMultimap && other instanceof ListMultimap)) {
+        String mapType1 = (actual() instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
         String mapType2 = (other instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
         failWithRawMessage(
             "Not true that %s %s is equal to %s <%s>. "
                 + "A %s cannot equal a %s if either is non-empty.",
-            mapType1, getDisplaySubject(), mapType2, other, mapType1, mapType2);
+            mapType1, actualAsString(), mapType2, other, mapType1, mapType2);
       } else {
-        if (getSubject() instanceof ListMultimap) {
+        if (actual() instanceof ListMultimap) {
           // If we're comparing ListMultimaps, check for order
           containsExactlyEntriesIn((Multimap<?, ?>) other).inOrder();
-        } else if (getSubject() instanceof SetMultimap) {
+        } else if (actual() instanceof SetMultimap) {
           // If we're comparing SetMultimaps, don't check for order
           containsExactlyEntriesIn((Multimap<?, ?>) other);
         }
@@ -186,8 +180,8 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   }
 
   private Ordered containsExactly(String failVerb, Multimap<?, ?> expectedMultimap) {
-    Multimap<?, ?> missing = difference(expectedMultimap, getSubject());
-    Multimap<?, ?> extra = difference(getSubject(), expectedMultimap);
+    Multimap<?, ?> missing = difference(expectedMultimap, actual());
+    Multimap<?, ?> extra = difference(actual(), expectedMultimap);
 
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
     // the subject but not enough times. Similarly for unexpected extra items.
@@ -195,7 +189,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       if (!extra.isEmpty()) {
         failWithRawMessage(
             "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>",
-            getDisplaySubject(),
+            actualAsString(),
             failVerb,
             expectedMultimap,
             countDuplicatesMultimap(missing),
@@ -214,26 +208,19 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   private class IterableValuesForKey extends IterableSubject {
     @Nullable private final Object key;
-    @Nullable private final String display;
+    @Nullable private final String stringRepresentation;
 
     @SuppressWarnings({"unchecked"})
     IterableValuesForKey(
         FailureStrategy failureStrategy, MultimapSubject multimapSubject, @Nullable Object key) {
-      super(failureStrategy, ((Multimap<Object, Object>) multimapSubject.getSubject()).get(key));
+      super(failureStrategy, ((Multimap<Object, Object>) multimapSubject.actual()).get(key));
       this.key = key;
-      this.display = multimapSubject.getDisplaySubject();
+      this.stringRepresentation = multimapSubject.actualAsString();
     }
 
     @Override
-    protected String getDisplaySubject() {
-      String innerDisplaySubject =
-          "<Values for key <" + key + "> (<" + getSubject() + ">) in " + display + ">";
-
-      if (internalCustomName() != null) {
-        return internalCustomName() + " (" + innerDisplaySubject + ")";
-      } else {
-        return innerDisplaySubject;
-      }
+    protected String actualCustomStringRepresentation() {
+      return "Values for key <" + key + "> (<" + actual() + ">) in " + stringRepresentation;
     }
   }
 
@@ -247,15 +234,15 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     @Override
     public void inOrder() {
       boolean keysInOrder =
-          Lists.newArrayList(getSubject().keySet())
+          Lists.newArrayList(actual().keySet())
               .equals(Lists.newArrayList(expectedMultimap.keySet()));
 
       LinkedHashSet<Object> keysWithValuesOutOfOrder = Sets.newLinkedHashSet();
       LinkedHashSet<Object> allKeys = Sets.newLinkedHashSet();
-      allKeys.addAll(getSubject().keySet());
+      allKeys.addAll(actual().keySet());
       allKeys.addAll(expectedMultimap.keySet());
       for (Object key : allKeys) {
-        List<?> actualVals = Lists.newArrayList(get(getSubject(), key));
+        List<?> actualVals = Lists.newArrayList(get(actual(), key));
         List<?> expectedVals = Lists.newArrayList(get(expectedMultimap, key));
         if (!actualVals.equals(expectedVals)) {
           keysWithValuesOutOfOrder.add(key);
@@ -267,17 +254,17 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           failWithRawMessage(
               "Not true that %s contains exactly <%s> in order. The keys are not in order, "
                   + "and the values for keys <%s> are not in order either",
-              getDisplaySubject(), expectedMultimap, keysWithValuesOutOfOrder);
+              actualAsString(), expectedMultimap, keysWithValuesOutOfOrder);
         } else {
           failWithRawMessage(
               "Not true that %s contains exactly <%s> in order. The keys are not in order",
-              getDisplaySubject(), expectedMultimap);
+              actualAsString(), expectedMultimap);
         }
       } else if (!keysWithValuesOutOfOrder.isEmpty()) {
         failWithRawMessage(
             "Not true that %s contains exactly <%s> in order. "
                 + "The values for keys <%s> are not in order",
-            getDisplaySubject(), expectedMultimap, keysWithValuesOutOfOrder);
+            actualAsString(), expectedMultimap, keysWithValuesOutOfOrder);
       }
     }
   }
@@ -369,7 +356,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
      * corresponds to the given value.
      */
     public void containsEntry(@Nullable Object expectedKey, @Nullable E expectedValue) {
-      if (getSubject().containsKey(expectedKey)) {
+      if (actual().containsKey(expectedKey)) {
         // Found matching key.
         Collection<A> actualValues = getCastSubject().asMap().get(expectedKey);
         for (A actualValue : actualValues) {
@@ -382,7 +369,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         failWithRawMessage(
             "Not true that %s contains at least one entry with key <%s> and a value that %s <%s>. "
                 + "However, it has a mapping from that key to <%s>",
-            getDisplaySubject(), expectedKey, correspondence, expectedValue, actualValues);
+            actualAsString(), expectedKey, correspondence, expectedValue, actualValues);
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<Object>();
@@ -396,12 +383,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           failWithRawMessage(
               "Not true that %s contains at least one entry with key <%s> and a value that %s <%s>."
                   + " However, the following keys are mapped to such values: <%s>",
-              getDisplaySubject(), expectedKey, correspondence, expectedValue, keys);
+              actualAsString(), expectedKey, correspondence, expectedValue, keys);
         } else {
           // Did not find matching key or value.
           failWithRawMessage(
               "Not true that %s contains at least one entry with key <%s> and a value that %s <%s>",
-              getDisplaySubject(), expectedKey, correspondence, expectedValue);
+              actualAsString(), expectedKey, correspondence, expectedValue);
         }
       }
     }
@@ -411,7 +398,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
      * the given value.
      */
     public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable E excludedValue) {
-      if (getSubject().containsKey(excludedKey)) {
+      if (actual().containsKey(excludedKey)) {
         Collection<A> actualValues = getCastSubject().asMap().get(excludedKey);
         List<A> matchingValues = new ArrayList<A>();
         for (A actualValue : actualValues) {
@@ -423,7 +410,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           failWithRawMessage(
               "Not true that %s did not contain an entry with key <%s> and a value that %s <%s>. "
                   + "It maps that key to the following such values: <%s>",
-              getDisplaySubject(), excludedKey, correspondence, excludedValue, matchingValues);
+              actualAsString(), excludedKey, correspondence, excludedValue, matchingValues);
         }
       }
     }
@@ -457,7 +444,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Multimap<?, A> getCastSubject() {
-      return (Multimap<?, A>) getSubject();
+      return (Multimap<?, A>) actual();
     }
   }
 }

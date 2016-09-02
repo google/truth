@@ -56,37 +56,37 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
   // User-defined test assertion SPI below this point
 
   public void hasName(String name) {
-    if (!getSubject().name().equals(name)) {
+    if (!actual().name().equals(name)) {
       fail("has name", name);
     }
   }
 
   public void hasUsername(String username) {
-    if (!getSubject().username().equals(username)) {
+    if (!actual().username().equals(username)) {
       fail("has username", username);
     }
   }
 
   public void hasId(long id) {
-    if (getSubject().id() != id) {
+    if (actual().id() != id) {
       fail("has id", id);
     }
   }
 
   public void hasLocation(Employee.Location location) {
-    if (getSubject().location() != location) {
+    if (actual().location() != location) {
       fail("has location", location);
     }
   }
 
   public void isCeo() {
-    if (!getSubject().isCeo()) {
+    if (!actual().isCeo()) {
       fail("is CEO");
     }
   }
 
   public void isNotCeo() {
-    if (getSubject().isCeo()) {
+    if (actual().isCeo()) {
       fail("is not CEO");
     }
   }

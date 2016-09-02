@@ -87,10 +87,10 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
   }
 
   private void compareValues(BigDecimal expected) {
-    if (getSubject().compareTo(expected) != 0) {
+    if (actual().compareTo(expected) != 0) {
       failWithRawMessage(
           "%s should have had the same value as <%s> (scale is ignored)",
-          getDisplaySubject(), expected);
+          actualAsString(), expected);
     }
   }
 }

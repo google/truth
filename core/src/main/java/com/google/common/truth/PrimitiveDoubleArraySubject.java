@@ -50,7 +50,7 @@ public final class PrimitiveDoubleArraySubject
 
   @Override
   protected List<Double> listRepresentation() {
-    return Doubles.asList(getSubject());
+    return Doubles.asList(actual());
   }
 
   /**
@@ -83,7 +83,7 @@ public final class PrimitiveDoubleArraySubject
    */
   @Deprecated
   public void isEqualTo(Object expected, double tolerance) {
-    double[] actual = getSubject();
+    double[] actual = actual();
     if (actual == expected) {
       return; // short-cut.
     }
@@ -140,12 +140,12 @@ public final class PrimitiveDoubleArraySubject
    */
   @Deprecated
   public void isNotEqualTo(Object expectedArray, double tolerance) {
-    double[] actual = getSubject();
+    double[] actual = actual();
     try {
       double[] expected = (double[]) expectedArray;
       if (actual == expected) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Doubles.asList(expected));
+            "%s unexpectedly equal to %s.", actualAsString(), Doubles.asList(expected));
       }
       if (expected.length != actual.length) {
         return; // Unequal-lengthed arrays are not equal.
@@ -158,7 +158,7 @@ public final class PrimitiveDoubleArraySubject
       }
       if (unequalIndices.isEmpty()) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Doubles.asList(expected));
+            "%s unexpectedly equal to %s.", actualAsString(), Doubles.asList(expected));
       }
     } catch (ClassCastException ignored) {
       // Unequal since they are of different types.
@@ -236,7 +236,7 @@ public final class PrimitiveDoubleArraySubject
       @Override
       public void ofElementsIn(Iterable<? extends Number> expected) {
         checkTolerance(tolerance);
-        double[] actual = checkNotNull(getSubject());
+        double[] actual = checkNotNull(actual());
         List<Integer> mismatches = new ArrayList<Integer>();
         int expectedCount = 0;
         for (Number expectedValue : expected) {
@@ -252,7 +252,7 @@ public final class PrimitiveDoubleArraySubject
         if (actual.length != expectedCount) {
           failWithRawMessage(
               "Not true that %s has values within %s of <%s>. Expected length <%s> but got <%s>",
-              getDisplaySubject(),
+              actualAsString(),
               tolerance,
               Iterables.toString(expected),
               expectedCount,
@@ -294,7 +294,7 @@ public final class PrimitiveDoubleArraySubject
       @Override
       public void ofElementsIn(Iterable<? extends Number> expected) {
         checkTolerance(tolerance);
-        double[] actual = checkNotNull(getSubject());
+        double[] actual = checkNotNull(actual());
         int expectedCount = 0;
         for (Number expectedValue : expected) {
           // if expected is longer than actual, we can skip the excess values: this case is covered

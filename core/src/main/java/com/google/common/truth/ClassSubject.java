@@ -34,7 +34,7 @@ public final class ClassSubject extends Subject<ClassSubject, Class<?>> {
    * class or interface.
    */
   public void isAssignableTo(Class<?> clazz) {
-    if (!clazz.isAssignableFrom(getSubject())) {
+    if (!clazz.isAssignableFrom(actual())) {
       fail("is assignable to", clazz);
     }
   }

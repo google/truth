@@ -38,7 +38,7 @@ public final class PrimitiveBooleanArraySubject
 
   @Override
   protected List<Boolean> listRepresentation() {
-    return Booleans.asList(getSubject());
+    return Booleans.asList(actual());
   }
 
   /**
@@ -48,7 +48,7 @@ public final class PrimitiveBooleanArraySubject
    */
   @Override
   public void isEqualTo(Object expected) {
-    boolean[] actual = getSubject();
+    boolean[] actual = actual();
     if (actual == expected) {
       return; // short-cut.
     }
@@ -64,12 +64,12 @@ public final class PrimitiveBooleanArraySubject
 
   @Override
   public void isNotEqualTo(Object expected) {
-    boolean[] actual = getSubject();
+    boolean[] actual = actual();
     try {
       boolean[] expectedArray = (boolean[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Booleans.asList(expectedArray));
+            "%s unexpectedly equal to %s.", actualAsString(), Booleans.asList(expectedArray));
       }
     } catch (ClassCastException ignored) {
     }

@@ -38,7 +38,7 @@ public class AbstractArraySubjectTest {
     CapturingFailureStrategy failureStrategy = new CapturingFailureStrategy();
     String[] strings = {"Foo", "Bar"};
     TestableStringArraySubject subject = new TestableStringArraySubject(failureStrategy, strings);
-    assertThat(subject.getDisplaySubject()).isEqualTo("<(String[]) [Foo, Bar]>");
+    assertThat(subject.actualAsString()).isEqualTo("<(String[]) [Foo, Bar]>");
   }
 
   @Test
@@ -56,7 +56,7 @@ public class AbstractArraySubjectTest {
     assertAbout(new TestSubjectFactory()).that(strings).hasLength(2);
   }
 
-  class TestableStringArraySubject
+  static class TestableStringArraySubject
       extends AbstractArraySubject<TestableStringArraySubject, String[]> {
     public TestableStringArraySubject(FailureStrategy failureStrategy, String[] subject) {
       super(failureStrategy, subject);
@@ -69,16 +69,11 @@ public class AbstractArraySubjectTest {
 
     @Override
     protected List<?> listRepresentation() {
-      return Arrays.asList(getSubject());
-    }
-
-    @Override
-    protected String getDisplaySubject() {
-      return super.getDisplaySubject();
+      return Arrays.asList(actual());
     }
   }
 
-  class CapturingFailureStrategy extends FailureStrategy {
+  static class CapturingFailureStrategy extends FailureStrategy {
     @Override
     public void fail(String message, Throwable cause) {
       /* noop */

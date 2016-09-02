@@ -61,14 +61,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   /** Fails if the subject is not empty. */
   public final void isEmpty() {
-    if (!Iterables.isEmpty(getSubject())) {
+    if (!Iterables.isEmpty(actual())) {
       fail("is empty");
     }
   }
 
   /** Fails if the subject is empty. */
   public final void isNotEmpty() {
-    if (Iterables.isEmpty(getSubject())) {
+    if (Iterables.isEmpty(actual())) {
       // TODO(kak): "Not true that <[]> is not empty" doesn't really need the <[]>,
       // since it's empty. But would the bulkier "the subject" really be better?
       // At best, we could *replace* <[]> with a given label (rather than supplementing it).
@@ -80,7 +80,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Fails if the subject does not have the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    int actualSize = Iterables.size(getSubject());
+    int actualSize = Iterables.size(actual());
     if (actualSize != expectedSize) {
       failWithBadResults("has a size of", expectedSize, "is", actualSize);
     }
@@ -88,28 +88,28 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   /** Attests (with a side-effect failure) that the subject contains the supplied item. */
   public final void contains(@Nullable Object element) {
-    if (!Iterables.contains(getSubject(), element)) {
-      failWithRawMessage("%s should have contained <%s>", getDisplaySubject(), element);
+    if (!Iterables.contains(actual(), element)) {
+      failWithRawMessage("%s should have contained <%s>", actualAsString(), element);
     }
   }
 
   /** Attests (with a side-effect failure) that the subject does not contain the supplied item. */
   public final void doesNotContain(@Nullable Object element) {
-    if (Iterables.contains(getSubject(), element)) {
-      failWithRawMessage("%s should not have contained <%s>", getDisplaySubject(), element);
+    if (Iterables.contains(actual(), element)) {
+      failWithRawMessage("%s should not have contained <%s>", actualAsString(), element);
     }
   }
 
   /** Attests that the subject does not contain duplicate elements. */
   public final void containsNoDuplicates() {
     List<Entry<?>> duplicates = Lists.newArrayList();
-    for (Multiset.Entry<?> entry : LinkedHashMultiset.create(getSubject()).entrySet()) {
+    for (Multiset.Entry<?> entry : LinkedHashMultiset.create(actual()).entrySet()) {
       if (entry.getCount() > 1) {
         duplicates.add(entry);
       }
     }
     if (!duplicates.isEmpty()) {
-      failWithRawMessage("%s has the following duplicates: <%s>", getDisplaySubject(), duplicates);
+      failWithRawMessage("%s has the following duplicates: <%s>", actualAsString(), duplicates);
     }
   }
 
@@ -129,15 +129,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   private void containsAny(String failVerb, Iterable<?> expected) {
     Collection<?> subject;
-    if (getSubject() instanceof Collection) {
+    if (actual() instanceof Collection) {
       // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
       // iterable, right? I sure hope so.
-      subject = (Collection<?>) getSubject();
+      subject = (Collection<?>) actual();
     } else {
       // Would really like to use a HashSet here, but that would mean this would fail for elements
       // that don't implement hashCode correctly (or even throw an exception from it), where using
       // Iterables.contains would not fail.
-      subject = Lists.newArrayList(getSubject());
+      subject = Lists.newArrayList(actual());
     }
 
     for (Object item : expected) {
@@ -181,7 +181,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   private Ordered containsAll(String failVerb, Iterable<?> expectedIterable) {
-    List<?> actual = Lists.newLinkedList(getSubject());
+    List<?> actual = Lists.newLinkedList(actual());
     List<?> expected = Lists.newArrayList(expectedIterable);
 
     List<Object> missing = Lists.newArrayList();
@@ -262,7 +262,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 + "often not the correct thing to do. Did you mean to call "
                 + "containsExactlyElementsIn(Iterable) instead?"
             : "";
-    Iterator<?> actualIter = getSubject().iterator();
+    Iterator<?> actualIter = actual().iterator();
     Iterator<?> requiredIter = required.iterator();
 
     // Step through both iterators comparing elements pairwise.
@@ -304,7 +304,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             // Subject is both missing required elements and contains extra elements
             failWithRawMessage(
                 "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>%s",
-                getDisplaySubject(),
+                actualAsString(),
                 failVerb,
                 required,
                 countDuplicates(missing),
@@ -362,7 +362,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       String verb, Object expected, String failVerb, Object actual, String suffix) {
     failWithRawMessage(
         "Not true that %s %s <%s>. It %s <%s>%s",
-        getDisplaySubject(),
+        actualAsString(),
         verb,
         expected,
         failVerb,
@@ -393,7 +393,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   private void containsNone(String failVerb, Iterable<?> excluded) {
     Collection<Object> present = new ArrayList<Object>();
     for (Object item : Sets.newLinkedHashSet(excluded)) {
-      if (Iterables.contains(getSubject(), item)) {
+      if (Iterables.contains(actual(), item)) {
         present.add(item);
       }
     }
@@ -507,7 +507,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   private void pairwiseCheck(PairwiseChecker checker) {
-    Iterator<?> iterator = getSubject().iterator();
+    Iterator<?> iterator = actual().iterator();
     if (iterator.hasNext()) {
       Object prev = iterator.next();
       while (iterator.hasNext()) {
@@ -582,7 +582,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         failWithRawMessage(
             "%s should not have contained an element that %s <%s>. "
                 + "It contained the following such elements: <%s>",
-            getDisplaySubject(), correspondence, excluded, matchingElements);
+            actualAsString(), correspondence, excluded, matchingElements);
       }
     }
 
@@ -686,7 +686,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       if (missingOrExtraMessage.isPresent()) {
           failWithRawMessage(
               "Not true that %s contains exactly one element that %s each element of <%s>. It %s",
-              getDisplaySubject(),
+              actualAsString(),
               correspondence,
               expected,
               missingOrExtraMessage.get());
@@ -796,7 +796,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 + "but there was no 1:1 mapping between all the actual and expected elements. "
                 + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
                 + "it %s",
-            getDisplaySubject(),
+            actualAsString(),
             correspondence,
             expected,
             missingOrExtraMessage.get());
@@ -873,7 +873,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Iterable<A> getCastSubject() {
-      return (Iterable<A>) getSubject();
+      return (Iterable<A>) actual();
     }
   }
 }

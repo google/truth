@@ -30,14 +30,14 @@ public final class GuavaOptionalSubject extends Subject<GuavaOptionalSubject, Op
 
   /** Fails if the {@link Optional}{@code <T>} is absent or the subject is null. */
   public void isPresent() {
-    if (getSubject() == null || !getSubject().isPresent()) {
-      failWithoutSubject("is present");
+    if (actual() == null || !actual().isPresent()) {
+      failWithoutActual("is present");
     }
   }
 
   /** Fails if the {@link Optional}{@code <T>} is present or the subject is null.. */
   public void isAbsent() {
-    if (getSubject() == null || getSubject().isPresent()) {
+    if (actual() == null || actual().isPresent()) {
       fail("is absent");
     }
   }
@@ -49,10 +49,10 @@ public final class GuavaOptionalSubject extends Subject<GuavaOptionalSubject, Op
     if (expected == null) {
       throw new NullPointerException("Optional cannot have a null value.");
     }
-    if (getSubject() == null || !getSubject().isPresent()) {
+    if (actual() == null || !actual().isPresent()) {
       fail("has value", expected);
     } else {
-      Object actual = getSubject().get();
+      Object actual = actual().get();
       if (!actual.equals(expected)) {
         fail("has value", expected);
       }

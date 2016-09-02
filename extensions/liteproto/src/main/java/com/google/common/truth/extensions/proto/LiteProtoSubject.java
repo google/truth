@@ -92,9 +92,9 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
   protected String getTrimmedDisplaySubject() {
     if (internalCustomName() != null) {
-      return internalCustomName() + " (<" + getTrimmedToString(getSubject()) + ">)";
+      return internalCustomName() + " (<" + getTrimmedToString(actual()) + ">)";
     } else {
-      return "<" + getTrimmedToString(getSubject()) + ">";
+      return "<" + getTrimmedToString(actual()) + ">";
     }
   }
 
@@ -105,26 +105,26 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   @Override
   public void isEqualTo(@Nullable Object expected) {
     // TODO(user): Do better here when MessageLite descriptors are available.
-    if (!Objects.equal(getSubject(), expected)) {
-      if (getSubject() == null || expected == null) {
+    if (!Objects.equal(actual(), expected)) {
+      if (actual() == null || expected == null) {
         super.isEqualTo(expected);
-      } else if (getSubject().getClass() != expected.getClass()) {
+      } else if (actual().getClass() != expected.getClass()) {
         failWithRawMessage(
             "Not true that (%s) %s is equal to the expected (%s) object. "
                 + "They are not of the same class.",
-            getSubject().getClass().getName(),
+            actual().getClass().getName(),
             internalCustomName() != null ? internalCustomName() + " (proto)" : "proto",
             expected.getClass().getName());
       } else {
-        String ourString = getTrimmedToString(getSubject());
+        String ourString = getTrimmedToString(actual());
         String theirString = getTrimmedToString((MessageLite) expected);
         if (!ourString.equals(theirString)) {
           failureStrategy.failComparing("Not true that protos are equal:", theirString, ourString);
-        } else if (getSubject().getClass() != expected.getClass()) {
+        } else if (actual().getClass() != expected.getClass()) {
           failureStrategy.failComparing(
               "Not true that protos are equal:",
               String.format("(%s) %s", expected.getClass().getName(), theirString),
-              String.format("(%s) %s", getSubject().getClass().getName(), ourString));
+              String.format("(%s) %s", actual().getClass().getName(), ourString));
         } else {
           // This will include the Object.toString() headers.
           super.isEqualTo(expected);
@@ -144,13 +144,13 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
   @Override
   public void isNotEqualTo(@Nullable Object expected) {
-    if (Objects.equal(getSubject(), expected)) {
-      if (getSubject() == null) {
+    if (Objects.equal(actual(), expected)) {
+      if (actual() == null) {
         super.isNotEqualTo(expected);
       } else {
         failWithRawMessage(
             "Not true that protos are different. Both are (%s) <%s>.",
-            getSubject().getClass().getName(), getTrimmedToString(getSubject()));
+            actual().getClass().getName(), getTrimmedToString(actual()));
       }
     }
   }
@@ -166,10 +166,10 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
   /** Checks whether the subject is a {@link MessageLite} with no fields set. */
   public void isEqualToDefaultInstance() {
-    if (getSubject() == null) {
+    if (actual() == null) {
       failWithRawMessage(
           "Not true that %s is a default proto instance. It is null.", getTrimmedDisplaySubject());
-    } else if (!getSubject().equals(getSubject().getDefaultInstanceForType())) {
+    } else if (!actual().equals(actual().getDefaultInstanceForType())) {
       failWithRawMessage(
           "Not true that %s is a default proto instance. It has set values.",
           getTrimmedDisplaySubject());
@@ -178,10 +178,10 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
   /** Checks whether the subject is not equivalent to a {@link MessageLite} with no fields set. */
   public void isNotEqualToDefaultInstance() {
-    if (getSubject() != null && getSubject().equals(getSubject().getDefaultInstanceForType())) {
+    if (actual() != null && actual().equals(actual().getDefaultInstanceForType())) {
       failWithRawMessage(
           "Not true that (%s) %s is not a default proto instance. It has no set values.",
-          getSubject().getClass().getName(), getTrimmedDisplaySubject());
+          actual().getClass().getName(), getTrimmedDisplaySubject());
     }
   }
 
@@ -190,7 +190,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * {@code build()}, which itself fails if required fields aren't set.
    */
   public void hasAllRequiredFields() {
-    if (!getSubject().isInitialized()) {
+    if (!actual().isInitialized()) {
       // MessageLite doesn't support reflection so this is the best we can do.
       failWithRawMessage(
           "Not true that %s has all required fields set. "
@@ -207,7 +207,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    */
   public IntegerSubject serializedSize() {
     return check()
-        .that(getSubject().getSerializedSize())
+        .that(actual().getSerializedSize())
         .named("sizeOf(" + getTrimmedDisplaySubject() + ")");
   }
 

@@ -96,7 +96,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
     return new TolerantDoubleComparison() {
       @Override
       public void of(double expected) {
-        Double actual = getSubject();
+        Double actual = actual();
         checkNotNull(
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
@@ -104,7 +104,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
         if (!equalWithinTolerance(actual, expected, tolerance)) {
           failWithRawMessage(
               "%s and <%s> should have been finite values within <%s> of each other",
-              getDisplaySubject(), expected, tolerance);
+              actualAsString(), expected, tolerance);
         }
       }
     };
@@ -128,7 +128,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
     return new TolerantDoubleComparison() {
       @Override
       public void of(double expected) {
-        Double actual = getSubject();
+        Double actual = actual();
         checkNotNull(
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
@@ -136,7 +136,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
         if (!notEqualWithinTolerance(actual, expected, tolerance)) {
           failWithRawMessage(
               "%s and <%s> should have been finite values not within <%s> of each other",
-              getDisplaySubject(), expected, tolerance);
+              actualAsString(), expected, tolerance);
         }
       }
     };
@@ -201,8 +201,8 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * Double#NEGATIVE_INFINITY}, or {@link Double#NaN}.
    */
   public final void isFinite() {
-    if (getSubject() == null || getSubject().isNaN() || getSubject().isInfinite()) {
-      failWithRawMessage("%s should have been finite", getDisplaySubject());
+    if (actual() == null || actual().isNaN() || actual().isInfinite()) {
+      failWithRawMessage("%s should have been finite", actualAsString());
     }
   }
 
@@ -211,8 +211,8 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * Double#POSITIVE_INFINITY} or {@link Double#NEGATIVE_INFINITY}).
    */
   public final void isNotNaN() {
-    if (getSubject() == null || getSubject().isNaN()) {
-      failWithRawMessage("%s should not have been NaN", getDisplaySubject());
+    if (actual() == null || actual().isNaN()) {
+      failWithRawMessage("%s should not have been NaN", actualAsString());
     }
   }
 }

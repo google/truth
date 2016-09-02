@@ -38,7 +38,7 @@ public final class PrimitiveIntArraySubject
 
   @Override
   protected List<Integer> listRepresentation() {
-    return Ints.asList(getSubject());
+    return Ints.asList(actual());
   }
 
   /**
@@ -48,7 +48,7 @@ public final class PrimitiveIntArraySubject
    */
   @Override
   public void isEqualTo(Object expected) {
-    int[] actual = getSubject();
+    int[] actual = actual();
     if (actual == expected) {
       return; // short-cut.
     }
@@ -64,12 +64,12 @@ public final class PrimitiveIntArraySubject
 
   @Override
   public void isNotEqualTo(Object expected) {
-    int[] actual = getSubject();
+    int[] actual = actual();
     try {
       int[] expectedArray = (int[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Ints.asList(expectedArray));
+            "%s unexpectedly equal to %s.", actualAsString(), Ints.asList(expectedArray));
       }
     } catch (ClassCastException ignored) {
     }

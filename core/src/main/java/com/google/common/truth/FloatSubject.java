@@ -96,7 +96,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
     return new TolerantFloatComparison() {
       @Override
       public void of(float expected) {
-        Float actual = getSubject();
+        Float actual = actual();
         checkNotNull(
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
@@ -104,7 +104,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
         if (!equalWithinTolerance(actual, expected, tolerance)) {
           failWithRawMessage(
               "%s and <%s> should have been finite values within <%s> of each other",
-              getDisplaySubject(), expected, tolerance);
+              actualAsString(), expected, tolerance);
         }
       }
     };
@@ -128,7 +128,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
     return new TolerantFloatComparison() {
       @Override
       public void of(float expected) {
-        Float actual = getSubject();
+        Float actual = actual();
         checkNotNull(
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
@@ -136,7 +136,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
         if (!notEqualWithinTolerance(actual, expected, tolerance)) {
           failWithRawMessage(
               "%s and <%s> should have been finite values not within <%s> of each other",
-              getDisplaySubject(), expected, tolerance);
+              actualAsString(), expected, tolerance);
         }
       }
     };
@@ -195,8 +195,8 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.
    */
   public final void isFinite() {
-    if (getSubject() == null || getSubject().isNaN() || getSubject().isInfinite()) {
-      failWithRawMessage("%s should have been finite", getDisplaySubject());
+    if (actual() == null || actual().isNaN() || actual().isInfinite()) {
+      failWithRawMessage("%s should have been finite", actualAsString());
     }
   }
 
@@ -205,8 +205,8 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * Float#POSITIVE_INFINITY} or {@link Float#NEGATIVE_INFINITY}).
    */
   public final void isNotNaN() {
-    if (getSubject() == null || getSubject().isNaN()) {
-      failWithRawMessage("%s should not have been NaN", getDisplaySubject());
+    if (actual() == null || actual().isNaN()) {
+      failWithRawMessage("%s should not have been NaN", actualAsString());
     }
   }
 }

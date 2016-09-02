@@ -48,7 +48,7 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
   /**
    * Fails if the array does not have the given length.
    *
-   * @throws {@link IllegalArgumentException} if {@code length < 0}
+   * @throws IllegalArgumentException if {@code length < 0}
    */
   public void hasLength(int length) {
     checkArgument(length >= 0, "length (%s) must be >= 0");
@@ -62,11 +62,12 @@ public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>,
   /** Returns a List representation suitable for displaying in a string. */
   abstract List<?> listRepresentation();
 
+  // TODO(cgruber): Kill once displayedAs() exists, since this attempts to make .named() do that.
   @Override
-  protected String getDisplaySubject() {
+  protected String actualCustomStringRepresentation() {
     return (internalCustomName() == null)
-        ? "<(" + underlyingType() + brackets() + ") " + listRepresentation() + ">"
-        : this.internalCustomName();
+        ? "(" + underlyingType() + brackets() + ") " + listRepresentation() + ""
+        : "";
   }
 
   void failWithBadType(Object expected) {

@@ -61,7 +61,7 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
   protected List<?> listRepresentation() {
     // Note: we don't use an ImmutableList or FluentIterable.toList
     // because some arrays have null, and ImmutableList doesn't allow null.
-    return Lists.newArrayList(stringableIterable(getSubject()));
+    return Lists.newArrayList(stringableIterable(actual()));
   }
 
   private static Iterable<?> stringableIterable(Object[] array) {
@@ -141,7 +141,7 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
    */
   @Override
   public void isEqualTo(Object expected) {
-    Object[] actual = getSubject();
+    Object[] actual = actual();
     if (actual == expected) {
       return; // short-cut.
     }
@@ -150,7 +150,7 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
       if (actual.length != expectedArray.length) {
         failWithRawMessage(
             "%s has length %s. Expected length is %s",
-            getDisplaySubject(), actual.length, expectedArray.length);
+            actualAsString(), actual.length, expectedArray.length);
       } else {
         String index = checkArrayEqualsRecursive(expectedArray, actual, "");
         if (index != null) {
@@ -197,18 +197,18 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
 
   @Override
   public void isNotEqualTo(Object expected) {
-    Object[] actual = getSubject();
+    Object[] actual = actual();
     try {
       Object[] expectedArray = (Object[]) expected;
       if (actual == expected || checkArrayEqualsRecursive(expectedArray, actual, "") == null) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), stringableIterable(expectedArray));
+            "%s unexpectedly equal to %s.", actualAsString(), stringableIterable(expectedArray));
       }
     } catch (ClassCastException ignored) {
     }
   }
 
   public IterableSubject asList() {
-    return new IterableSubject(failureStrategy, Arrays.asList(getSubject()));
+    return new IterableSubject(failureStrategy, Arrays.asList(actual()));
   }
 }

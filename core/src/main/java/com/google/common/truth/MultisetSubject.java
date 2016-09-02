@@ -40,7 +40,7 @@ public final class MultisetSubject extends IterableSubject {
   /** Fails if the element does not have the given count. */
   public final void hasCount(@Nullable Object element, int expectedCount) {
     checkArgument(expectedCount >= 0, "expectedCount(%s) must be >= 0", expectedCount);
-    int actualCount = ((Multiset<?>) getSubject()).count(element);
+    int actualCount = ((Multiset<?>) actual()).count(element);
     if (actualCount != expectedCount) {
       failWithBadResults("has a count for <" + element + "> of", expectedCount, "is", actualCount);
     }

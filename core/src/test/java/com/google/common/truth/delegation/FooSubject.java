@@ -47,14 +47,14 @@ public class FooSubject extends Subject<FooSubject, Foo> {
   }
 
   public void matches(Foo expected) {
-    if (getSubject().value != expected.value) {
+    if (actual().value != expected.value) {
       fail("matches", expected);
     }
   }
 
   public void matchesAny(Foo... expecteds) {
     for (Foo expected : expecteds) {
-      if (getSubject().value == expected.value) {
+      if (actual().value == expected.value) {
         return;
       }
     }

@@ -31,14 +31,14 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
 
   /** Fails if the subject is not in the given range. */
   public final void isIn(Range<T> range) {
-    if (!range.contains(getSubject())) {
+    if (!range.contains(actual())) {
       fail("is in", range);
     }
   }
 
   /** Fails if the subject is in the given range. */
   public final void isNotIn(Range<T> range) {
-    if (range.contains(getSubject())) {
+    if (range.contains(actual())) {
       fail("is not in", range);
     }
   }
@@ -51,10 +51,10 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    * #isEqualTo(Object)}.
    */
   public void isEquivalentAccordingToCompareTo(T other) {
-    if (getSubject().compareTo(other) != 0) {
+    if (actual().compareTo(other) != 0) {
       failWithRawMessage(
           "%s should have been equivalent to <%s> according to compareTo()",
-          getDisplaySubject(), other);
+          actualAsString(), other);
     }
   }
 
@@ -74,28 +74,28 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
 
   /** Fails if the subject is not greater than the given value. */
   public final void isGreaterThan(T other) {
-    if (getSubject().compareTo(other) <= 0) {
+    if (actual().compareTo(other) <= 0) {
       fail("is greater than", other);
     }
   }
 
   /** Fails if the subject is not less than the given value. */
   public final void isLessThan(T other) {
-    if (getSubject().compareTo(other) >= 0) {
+    if (actual().compareTo(other) >= 0) {
       fail("is less than", other);
     }
   }
 
   /** Fails if the subject is greater than the given value. */
   public final void isAtMost(T other) {
-    if (getSubject().compareTo(other) > 0) {
+    if (actual().compareTo(other) > 0) {
       fail("is at most", other);
     }
   }
 
   /** Fails if the subject is less than the given value. */
   public final void isAtLeast(T other) {
-    if (getSubject().compareTo(other) < 0) {
+    if (actual().compareTo(other) < 0) {
       fail("is at least", other);
     }
   }

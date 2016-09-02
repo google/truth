@@ -38,7 +38,7 @@ public final class PrimitiveCharArraySubject
 
   @Override
   protected List<Character> listRepresentation() {
-    return Chars.asList(getSubject());
+    return Chars.asList(actual());
   }
 
   /**
@@ -48,7 +48,7 @@ public final class PrimitiveCharArraySubject
    */
   @Override
   public void isEqualTo(Object expected) {
-    char[] actual = getSubject();
+    char[] actual = actual();
     if (actual == expected) {
       return; // short-cut.
     }
@@ -64,12 +64,12 @@ public final class PrimitiveCharArraySubject
 
   @Override
   public void isNotEqualTo(Object expected) {
-    char[] actual = getSubject();
+    char[] actual = actual();
     try {
       char[] expectedArray = (char[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Chars.asList(expectedArray));
+            "%s unexpectedly equal to %s.", actualAsString(), Chars.asList(expectedArray));
       }
     } catch (ClassCastException ignored) {
     }

@@ -38,7 +38,7 @@ public final class PrimitiveShortArraySubject
 
   @Override
   protected List<Short> listRepresentation() {
-    return Shorts.asList(getSubject());
+    return Shorts.asList(actual());
   }
 
   /**
@@ -48,7 +48,7 @@ public final class PrimitiveShortArraySubject
    */
   @Override
   public void isEqualTo(Object expected) {
-    short[] actual = getSubject();
+    short[] actual = actual();
     if (actual == expected) {
       return; // short-cut.
     }
@@ -64,12 +64,12 @@ public final class PrimitiveShortArraySubject
 
   @Override
   public void isNotEqualTo(Object expected) {
-    short[] actual = getSubject();
+    short[] actual = actual();
     try {
       short[] expectedArray = (short[]) expected;
       if (actual == expected || Arrays.equals(actual, expectedArray)) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", getDisplaySubject(), Shorts.asList(expectedArray));
+            "%s unexpectedly equal to %s.", actualAsString(), Shorts.asList(expectedArray));
       }
     } catch (ClassCastException ignored) {
     }

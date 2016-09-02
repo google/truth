@@ -27,7 +27,13 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * Propositions for arbitrarily typed subjects.
+ * A {@code Subject} in {@code Truth} fits into the assertion fluent chain, taking the place
+ * of the "subject of the test".  For instance, in {@code assertThat("foo").isNotNull()}, 
+ * {@code Truth#assertThat(String)} returns a StringSubject which wraps the actual value itself,
+ * providing a hook for methods which test propositions about the actual value.
+ * 
+ * <p>Custom sub-types of Subject provide type-appropriate methods which can then provide more
+ * suitable error messages than the traditional assertions may provide.
  *
  * @param <S> the self-type, allowing {@code this}-returning methods to avoid needing subclassing
  * @param <T> the type of the object being tested by this {@code Subject}
@@ -36,14 +42,15 @@ import javax.annotation.Nullable;
  */
 public class Subject<S extends Subject<S, T>, T> {
   protected final FailureStrategy failureStrategy;
-  private final T subject;
+  private final T actual;
   private String customName = null;
 
-  public Subject(FailureStrategy failureStrategy, @Nullable T subject) {
+  public Subject(FailureStrategy failureStrategy, @Nullable T actual) {
     this.failureStrategy = checkNotNull(failureStrategy);
-    this.subject = subject;
+    this.actual = actual;
   }
 
+  /** An internal method used to obtain the value set by {@link #named(String, Object...)}. */
   protected String internalCustomName() {
     return customName;
   }
@@ -70,15 +77,15 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails if the subject is not null. */
   public void isNull() {
-    if (getSubject() != null) {
+    if (actual() != null) {
       fail("is null");
     }
   }
 
   /** Fails if the subject is null. */
   public void isNotNull() {
-    if (getSubject() == null) {
-      failWithoutSubject("is a non-null reference");
+    if (actual() == null) {
+      failWithoutActual("is a non-null reference");
     }
   }
 
@@ -94,7 +101,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * </ul>
    */
   public void isEqualTo(@Nullable Object other) {
-    doEqualCheck(getSubject(), other, true);
+    doEqualCheck(actual(), other, true);
   }
 
   /**
@@ -102,7 +109,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * the {@link #isEqualTo} method.
    */
   public void isNotEqualTo(@Nullable Object other) {
-    doEqualCheck(getSubject(), other, false);
+    doEqualCheck(actual(), other, false);
   }
 
   private void doEqualCheck(
@@ -142,14 +149,14 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails if the subject is not the same instance as the given object. */
   public void isSameAs(@Nullable Object other) {
-    if (getSubject() != other) {
-      failComparingToStrings("is the same instance as", getSubject(), other, other, true);
+    if (actual() != other) {
+      failComparingToStrings("is the same instance as", actual(), other, other, true);
     }
   }
 
   /** Fails if the subject is the same instance as the given object. */
   public void isNotSameAs(@Nullable Object other) {
-    if (getSubject() == other) {
+    if (actual() == other) {
       fail("is not the same instance as", other);
     }
   }
@@ -159,13 +166,13 @@ public class Subject<S extends Subject<S, T>, T> {
     if (clazz == null) {
       throw new NullPointerException("clazz");
     }
-    if (!Platform.isInstanceOfType(getSubject(), clazz)) {
-      if (getSubject() != null) {
+    if (!Platform.isInstanceOfType(actual(), clazz)) {
+      if (actual() != null) {
         failWithBadResults(
             "is an instance of",
             clazz.getName(),
             "is an instance of",
-            getSubject().getClass().getName());
+            actual().getClass().getName());
       } else {
         fail("is an instance of", clazz.getName());
       }
@@ -177,19 +184,19 @@ public class Subject<S extends Subject<S, T>, T> {
     if (clazz == null) {
       throw new NullPointerException("clazz");
     }
-    if (getSubject() == null) {
+    if (actual() == null) {
       return; // null is not an instance of clazz.
     }
-    if (Platform.isInstanceOfType(getSubject(), clazz)) {
+    if (Platform.isInstanceOfType(actual(), clazz)) {
       failWithRawMessage(
           "%s expected not to be an instance of %s, but was.",
-          getDisplaySubject(), clazz.getName());
+          actualAsString(), clazz.getName());
     }
   }
 
   /** Fails unless the subject is equal to any element in the given iterable. */
   public void isIn(Iterable<?> iterable) {
-    if (!Iterables.contains(iterable, getSubject())) {
+    if (!Iterables.contains(iterable, actual())) {
       fail("is equal to any element in", iterable);
     }
   }
@@ -197,18 +204,18 @@ public class Subject<S extends Subject<S, T>, T> {
   /** Fails unless the subject is equal to any of the given elements. */
   public void isAnyOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     List<Object> list = accumulate(first, second, rest);
-    if (!list.contains(getSubject())) {
+    if (!list.contains(actual())) {
       fail("is equal to any of", list);
     }
   }
 
   /** Fails if the subject is equal to any element in the given iterable. */
   public void isNotIn(Iterable<?> iterable) {
-    int index = Iterables.indexOf(iterable, Predicates.<Object>equalTo(getSubject()));
+    int index = Iterables.indexOf(iterable, Predicates.<Object>equalTo(actual()));
     if (index != -1) {
       failWithRawMessage(
           "Not true that %s is not in %s. It was found at index %s",
-          getDisplaySubject(), iterable, index);
+          actualAsString(), iterable, index);
     }
   }
 
@@ -217,17 +224,65 @@ public class Subject<S extends Subject<S, T>, T> {
     isNotIn(accumulate(first, second, rest));
   }
 
+  /**
+   * @deprecated Prefer {@code #getActualValue()} for direct access to the subject.
+   */
+  @Deprecated
   protected T getSubject() {
-    return subject;
+    // TODO(cgruber): move functionality to getActualValue() and delete when no callers.
+    return actual;
   }
 
+  /**
+   * Returns the unedited, unformatted raw actual value. 
+   */
+
+  protected final T actual() {
+    return getSubject();
+  }
+
+  /**
+   * @deprecated Prefer {@code #getActualForDisplay()} for display-formatted access to the subject.
+   */
+  @Deprecated
   protected String getDisplaySubject() {
+    // TODO(cgruber) migrate people from this method once no one is subclassing it.
+    String formatted = actualCustomStringRepresentation();
     if (customName != null) {
-      return customName + " (<" + getSubject() + ">)";
+      // Covers some rare cases where a type might return "" from their custom formatter.
+      // This is actually pretty terrible, as it comes from subjects overriding (formerly)
+      // getDisplaySubject() in cases of .named() to make it not prefixing but replacing. 
+      // That goes against the stated contract of .named().  Once displayedAs() is in place,
+      // we can rip this out and callers can use that instead.
+      // TODO(cgruber) 
+      return customName + (formatted.isEmpty() ? "" : " (<" + formatted + ">)");
     } else {
-      return "<" + getSubject() + ">";
+      return "<" + actualCustomStringRepresentation() + ">";
     }
   }
+  
+  /**
+   * Returns a string representation of the actual value.  This will either be the toString() of 
+   * the value or a prefixed "name" along with the string representation.
+   */
+  protected final String actualAsString() {
+    return getDisplaySubject();
+  }
+  
+  /**
+   * Supplies the direct string representation of the actual value to other methods which may
+   * prefix or otherwise position it in an error message. This should only be overridden to
+   * provide an improved string representation of the value under test, as it would appear in
+   * any given error message, and should not be used for additional prefixing.
+   * 
+   * <p>Subjects should override this with care.
+   * 
+   * <p>By default, this returns {@code String.ValueOf(getActualValue())}. 
+   */
+  protected String actualCustomStringRepresentation() {
+    return String.valueOf(actual());
+  }
+  
 
   /**
    * A convenience for implementers of {@link Subject} subclasses to use other truth {@code Subject}
@@ -243,7 +298,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param verb the proposition being asserted
    */
   protected void fail(String verb) {
-    failureStrategy.fail("Not true that " + getDisplaySubject() + " " + verb);
+    failureStrategy.fail("Not true that " + actualAsString() + " " + verb);
   }
 
   /**
@@ -254,13 +309,13 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param other the value against which the subject is compared
    */
   protected void fail(String verb, Object other) {
-    failComparingToStrings(verb, getSubject(), other, other, false);
+    failComparingToStrings(verb, actual(), other, other, false);
   }
 
   private void failComparingToStrings(
       String verb, Object subject, Object other, Object displayOther, boolean compareToStrings) {
     StringBuilder message =
-        new StringBuilder("Not true that ").append(getDisplaySubject()).append(" ");
+        new StringBuilder("Not true that ").append(actualAsString()).append(" ");
     // If the subject and parts aren't null, and they have equal toString()'s but different
     // classes, we need to disambiguate them.
     boolean neitherNull = (other != null) && (subject != null);
@@ -294,7 +349,7 @@ public class Subject<S extends Subject<S, T>, T> {
       fail(verb, messageParts[0]);
     } else {
       StringBuilder message = new StringBuilder("Not true that ");
-      message.append(getDisplaySubject()).append(" ").append(verb);
+      message.append(actualAsString()).append(" ").append(verb);
       for (Object part : messageParts) {
         message.append(" <").append(part).append(">");
       }
@@ -314,7 +369,7 @@ public class Subject<S extends Subject<S, T>, T> {
     String message =
         format(
             "Not true that %s %s <%s>. It %s <%s>",
-            getDisplaySubject(),
+            actualAsString(),
             verb,
             expected,
             failVerb,
@@ -338,14 +393,20 @@ public class Subject<S extends Subject<S, T>, T> {
     failureStrategy.fail(message);
   }
 
+  /** @deprecated Use {@link #failWithoutActual(String)} */
+  @Deprecated
+  protected void failWithoutSubject(String proposition) {
+    String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
+    failureStrategy.fail(format("Not true that %s %s", strSubject, proposition));
+  }
+
   /**
    * Assembles a failure message without a given subject and passes it to the FailureStrategy
    *
-   * @param verb the proposition being asserted
+   * @param proposition the proposition being asserted
    */
-  protected void failWithoutSubject(String verb) {
-    String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    failureStrategy.fail(format("Not true that %s %s", strSubject, verb));
+  protected void failWithoutActual(String proposition) {
+    failWithoutSubject(proposition);
   }
 
   /**
@@ -365,7 +426,8 @@ public class Subject<S extends Subject<S, T>, T> {
   /**
    * @throws UnsupportedOperationException always
    * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects. If you meant to
-   *     test object equality, use {@link #isEqualTo(Object)} instead.
+   *     test object equality between an expected and the actual value, use 
+   *     {@link #isEqualTo(Object)} instead.
    */
   @Deprecated
   @Override

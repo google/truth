@@ -34,14 +34,14 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
 
   /** Fails if the table is not empty. */
   public void isEmpty() {
-    if (!getSubject().isEmpty()) {
+    if (!actual().isEmpty()) {
       fail("is empty");
     }
   }
 
   /** Fails if the table is empty. */
   public void isNotEmpty() {
-    if (getSubject().isEmpty()) {
+    if (actual().isEmpty()) {
       fail("is not empty");
     }
   }
@@ -49,7 +49,7 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   /** Fails if the table does not have the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    int actualSize = getSubject().size();
+    int actualSize = actual().size();
     if (actualSize != expectedSize) {
       failWithBadResults("has a size of", expectedSize, "is", actualSize);
     }
@@ -57,14 +57,14 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
 
   /** Fails if the table does not contain a mapping for the given row key and column key. */
   public void contains(@Nullable Object rowKey, @Nullable Object columnKey) {
-    if (!getSubject().contains(rowKey, columnKey)) {
+    if (!actual().contains(rowKey, columnKey)) {
       fail("contains mapping for row/column", rowKey, columnKey);
     }
   }
 
   /** Fails if the table contains a mapping for the given row key and column key. */
   public void doesNotContain(@Nullable Object rowKey, @Nullable Object columnKey) {
-    if (getSubject().contains(rowKey, columnKey)) {
+    if (actual().contains(rowKey, columnKey)) {
       fail("does not contain mapping for row/column", rowKey, columnKey);
     }
   }
@@ -73,7 +73,7 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   public void containsCell(
       @Nullable Object rowKey, @Nullable Object colKey, @Nullable Object value) {
     Cell<Object, Object, Object> cell = Tables.immutableCell(rowKey, colKey, value);
-    if (!getSubject().cellSet().contains(cell)) {
+    if (!actual().cellSet().contains(cell)) {
       fail("contains cell", cell);
     }
   }
@@ -82,28 +82,28 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   public void doesNotContainCell(
       @Nullable Object rowKey, @Nullable Object colKey, @Nullable Object value) {
     Cell<Object, Object, Object> cell = Tables.immutableCell(rowKey, colKey, value);
-    if (getSubject().cellSet().contains(cell)) {
+    if (actual().cellSet().contains(cell)) {
       fail("does not contain cell", cell);
     }
   }
 
   /** Fails if the table does not contain the given row key. */
   public void containsRow(@Nullable Object rowKey) {
-    if (!getSubject().containsRow(rowKey)) {
+    if (!actual().containsRow(rowKey)) {
       fail("contains row", rowKey);
     }
   }
 
   /** Fails if the table does not contain the given column key. */
   public void containsColumn(@Nullable Object columnKey) {
-    if (!getSubject().containsColumn(columnKey)) {
+    if (!actual().containsColumn(columnKey)) {
       fail("contains column", columnKey);
     }
   }
 
   /** Fails if the table does not contain the given value. */
   public void containsValue(@Nullable Object value) {
-    if (!getSubject().containsValue(value)) {
+    if (!actual().containsValue(value)) {
       fail("contains value", value);
     }
   }

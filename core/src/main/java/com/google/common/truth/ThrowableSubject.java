@@ -32,11 +32,11 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
   // TODO(kak): Should this be @Nullable or should we have .doesNotHaveMessage()?
   /** Fails if the subject does not have the given message. */
   public void hasMessage(@Nullable String expected) {
-    String actual = getSubject().getMessage();
+    String actual = actual().getMessage();
     if (!Objects.equal(expected, actual)) {
       if (expected != null && actual != null) {
         failureStrategy.failComparing(
-            getDisplaySubject() + " does not have message <" + expected + ">", expected, actual);
+            actualAsString() + " does not have message <" + expected + ">", expected, actual);
       } else {
         fail("has message", expected);
       }

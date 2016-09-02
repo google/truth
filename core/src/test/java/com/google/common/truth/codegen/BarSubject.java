@@ -35,8 +35,8 @@ public class BarSubject extends Subject<BarSubject, String> {
   }
 
   public void startsWith(@Nullable String prefix) {
-    if (getSubject().startsWith(prefix)) {
-      fail("matches", getSubject(), prefix);
+    if (actual().startsWith(prefix)) {
+      fail("matches", actual(), prefix);
     }
   }
 }

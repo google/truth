@@ -56,14 +56,14 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
 
   /** Fails if the {@link AtomicLongMap} is not empty. */
   public void isEmpty() {
-    if (!getSubject().isEmpty()) {
+    if (!actual().isEmpty()) {
       fail("is empty");
     }
   }
 
   /** Fails if the {@link AtomicLongMap} is empty. */
   public void isNotEmpty() {
-    if (getSubject().isEmpty()) {
+    if (actual().isEmpty()) {
       fail("is not empty");
     }
   }
@@ -71,7 +71,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} does not have the given size. */
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
-    int actualSize = getSubject().size();
+    int actualSize = actual().size();
     if (actualSize != expectedSize) {
       failWithBadResults("has a size of", expectedSize, "is", actualSize);
     }
@@ -79,7 +79,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
 
   /** Fails if the {@link AtomicLongMap} does not have the given sum. */
   public void hasSum(long expectedSum) {
-    long actualSum = getSubject().sum();
+    long actualSum = actual().sum();
     if (actualSum != expectedSum) {
       failWithBadResults("has a sum of", expectedSum, "is", actualSum);
     }
@@ -88,7 +88,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} does not contain the given key. */
   public void containsKey(Object key) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
-    if (!getSubject().containsKey(key)) {
+    if (!actual().containsKey(key)) {
       fail("contains key", key);
     }
   }
@@ -96,7 +96,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} contains the given key. */
   public void doesNotContainKey(Object key) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
-    if (getSubject().containsKey(key)) {
+    if (actual().containsKey(key)) {
       fail("does not contain key", key);
     }
   }
@@ -104,7 +104,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} does not contain the given entry. */
   public void containsEntry(Object key, long value) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
-    long actualValue = ((AtomicLongMap<Object>) getSubject()).get(key);
+    long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
     if (actualValue != value) {
       fail("contains entry", Maps.immutableEntry(key, value));
     }
@@ -113,7 +113,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} contains the given entry. */
   public void doesNotContainEntry(@Nullable Object key, long value) {
     if (key != null) {
-      long actualValue = ((AtomicLongMap<Object>) getSubject()).get(key);
+      long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
       if (actualValue == value) {
         fail("does not contain entry", Maps.immutableEntry(key, value));
       }

@@ -29,23 +29,23 @@ public final class BooleanSubject extends Subject<BooleanSubject, Boolean> {
 
   /** Fails if the subject is false or {@code null}. */
   public void isTrue() {
-    if (getSubject() == null) {
+    if (actual() == null) {
       failWithRawMessage("%s was expected to be true, but was null", booleanSubject());
-    } else if (!getSubject()) {
+    } else if (!actual()) {
       failWithRawMessage("%s was expected to be true, but was false", booleanSubject());
     }
   }
 
   /** Fails if the subject is true or {@code null}. */
   public void isFalse() {
-    if (getSubject() == null) {
+    if (actual() == null) {
       failWithRawMessage("%s was expected to be false, but was null", booleanSubject());
-    } else if (getSubject()) {
+    } else if (actual()) {
       failWithRawMessage("%s was expected to be false, but was true", booleanSubject());
     }
   }
 
   private String booleanSubject() {
-    return internalCustomName() == null ? "The subject" : getDisplaySubject();
+    return internalCustomName() == null ? "The subject" : actualAsString();
   }
 }
