@@ -225,11 +225,11 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * @deprecated Prefer {@code #getActualValue()} for direct access to the subject.
+   * @deprecated Prefer {@code #actual()} for direct access to the subject.
    */
   @Deprecated
   protected T getSubject() {
-    // TODO(cgruber): move functionality to getActualValue() and delete when no callers.
+    // TODO(cgruber): move functionality to actual() and delete when no callers.
     return actual;
   }
 
@@ -242,7 +242,7 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * @deprecated Prefer {@code #getActualForDisplay()} for display-formatted access to the subject.
+   * @deprecated Prefer {@code #actualAsString()} for display-formatted access to the subject.
    */
   @Deprecated
   protected String getDisplaySubject() {
