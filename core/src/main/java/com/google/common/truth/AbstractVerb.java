@@ -98,7 +98,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
       this.failureStrategy = checkNotNull(failureStrategy);
     }
 
-    public S that(T target) {
+    public S that(@Nullable T target) {
       return factory.getSubject(failureStrategy, target);
     }
 
