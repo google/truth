@@ -18,8 +18,18 @@
     the Truth assertion framework.
   </description>
   <modules>
-    <module>java8</module>
     <module>re2j</module>
     <module>liteproto</module>
   </modules>
+  <profiles>
+    <profile>
+      <id>disable-java8-doclint</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <modules>
+        <module>java8</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
