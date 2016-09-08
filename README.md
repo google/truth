@@ -46,11 +46,11 @@ They paved the way, and we hope this contribution is helpful to the field.
 <!-- references -->
 
 [Guava]: http://github.com/google/guava
-[gh-pages-shield]: https://img.shields.io/badge/main%20site-google.github.io/truth-ff55ff.svg?style=flat
+[gh-pages-shield]: https://img.shields.io/badge/main%20site-google.github.io/truth-ff55ff.png?style=flat
 [gh-pages-link]: http://google.github.io/truth/
-[travis-shield]: https://img.shields.io/travis/google/truth.svg
+[travis-shield]: https://img.shields.io/travis/google/truth.png
 [travis-link]: https://travis-ci.org/google/truth
-[maven-shield]: https://img.shields.io/maven-central/v/com.google.truth/truth.svg
+[maven-shield]: https://img.shields.io/maven-central/v/com.google.truth/truth.png
 [maven-link]: http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.google.truth%22%20AND%20a%3A%22truth%22
-[stackoverflow-shield]: https://img.shields.io/badge/stackoverflow-truth-5555ff.svg?style=flat
+[stackoverflow-shield]: https://img.shields.io/badge/stackoverflow-truth-5555ff.png?style=flat
 [stackoverflow-link]: http://stackoverflow.com/search?q=[truth]
