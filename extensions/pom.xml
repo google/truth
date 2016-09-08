@@ -19,7 +19,7 @@
   </description>
   <modules>
     <module>re2j</module>
-    <module>liteproto</module>
+    <!-- <module>liteproto</module> -->
   </modules>
   <profiles>
     <profile>
