@@ -76,7 +76,8 @@ For more information, see b/18222873
 
 ## Does it matter if I write `assertThat(a).isEqualTo(b)` or `assertThat(b).isEqualTo(a)`? {#order}
 
-Yes! You should always be writing assertions in the form:
+Yes! Truth's error messages will make more sense if you always use this
+pattern:
 
 ```java
 assertThat(actualValue).isEqualTo(expectedValue);
