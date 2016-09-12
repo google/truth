@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package com.google.common.truth.extensions.proto;
+
+option java_package = "com.google.common.truth.extensions.proto";
+option java_multiple_files = true;
+option java_api_version = 2;
+
+// For brevity: o_ means 'optional', r_ means 'repeated'
+
+message TestMessage3 {
+  enum TestEnum3 {
+    DEFAULT = 0;
+    ONE = 1;
+    TWO = 2;
+  }
+
+  int32 o_int = 1;
+  repeated string r_string = 2;
+  TestEnum3 o_enum = 3;
+
+  TestMessage3 o_test_message = 4;
+  repeated TestMessage3 r_test_message = 5;
+  SubTestMessage3 o_sub_test_message = 6;
+  repeated SubTestMessage3 r_sub_test_message = 7;
+}
+
+message SubTestMessage3 {
+  int32 o_int = 1;
+  repeated string r_string = 2;
+
+  TestMessage3 o_test_message = 3;
+}
