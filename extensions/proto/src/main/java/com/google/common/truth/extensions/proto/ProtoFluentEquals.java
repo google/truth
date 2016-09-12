@@ -114,6 +114,44 @@ public interface ProtoFluentEquals<M extends Message> {
   ProtoFluentEquals<M> ignoringRepeatedFieldOrder();
 
   /**
+   * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
+   *
+   * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
+   * ProtoFluentEquals} is already scoped to a {@link FieldScope} {@code X}, and this method is
+   * invoked with {@link FieldScope} {@code Y}, the resultant {@link ProtoFluentEquals} is
+   * constrained to the intersection of {@link FieldScope}s {@code X} and {@code Y}.
+   *
+   * <p>By default, {@link ProtoFluentEquals} is constrained to {@link FieldScopes#all()}, that is,
+   * no fields are excluded from comparison.
+   */
+  ProtoFluentEquals<M> withPartialScope(FieldScope<M> fieldScope);
+
+  /**
+   * Excludes the top-level message field with the given tag number from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified field is ignored recursively. All sub-fields of this field
+   * number, are ignored, and all sub-messages of type {@code M} will also have this field ignored.
+   *
+   * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
+   * runtime exception.
+   */
+  ProtoFluentEquals<M> ignoringField(int fieldNumber);
+
+  /**
+   * Excludes all specific field paths under the argument {@link FieldScope} from the comparison.
+   *
+   * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
+   * ProtoFluentEquals} is already scoped to a {@link FieldScope} {@code X}, and this method is
+   * invoked with {@link FieldScope} {@code Y}, the resultant {@link ProtoFluentEquals} is
+   * constrained to the subtraction of {@code X - Y}.
+   *
+   * <p>By default, {@link ProtoFluentEquals} is constrained to {@link FieldScopes#all()}, that is,
+   * no fields are excluded from comparison.
+   */
+  ProtoFluentEquals<M> ignoringFieldScope(FieldScope<M> fieldScope);
+
+  /**
    * If set, in the event of a comparison failure, the error message printed will list only those
    * specific fields that did not match between the actual and expected values. Useful for very
    * large protocol buffers.

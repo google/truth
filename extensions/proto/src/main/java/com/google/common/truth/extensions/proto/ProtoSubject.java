@@ -15,6 +15,7 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Truth.assertAbout;
 
 import com.google.auto.value.AutoValue;
@@ -22,11 +23,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.SubjectFactory;
 import com.google.common.truth.Truth;
-import com.google.protobuf.Message;
-import com.google.protobuf.TextFormat;
 import com.google.common.truth.extensions.proto.MessageDifferencer.ReportType;
 import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
 import com.google.common.truth.extensions.proto.MessageDifferencer.StreamReporter;
+import com.google.protobuf.Message;
+import com.google.protobuf.TextFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -48,6 +49,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   private boolean ignoreFieldAbsence = false;
   private boolean ignoreRepeatedFieldOrder = false;
   private boolean reportMismatchesOnly = false;
+  private FieldScope<M> fieldScope = FieldScopes.all();
 
   /**
    * Typed extension of {@link SubjectFactory}.
@@ -87,6 +89,25 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   @Override
   public ProtoFluentEquals<M> ignoringRepeatedFieldOrder() {
     ignoreRepeatedFieldOrder = true;
+    return this;
+  }
+
+  @Override
+  public ProtoFluentEquals<M> withPartialScope(FieldScope<M> fieldScope) {
+    this.fieldScope = FieldScopeImpl.and(this.fieldScope, checkNotNull(fieldScope));
+    return this;
+  }
+
+  @Override
+  public ProtoFluentEquals<M> ignoringField(int fieldNumber) {
+    this.fieldScope = fieldScope.ignoringFields(fieldNumber);
+    return this;
+  }
+
+  @Override
+  public ProtoFluentEquals<M> ignoringFieldScope(FieldScope<M> fieldScope) {
+    this.fieldScope =
+        FieldScopeImpl.and(this.fieldScope, FieldScopeImpl.not(checkNotNull(fieldScope)));
     return this;
   }
 
@@ -144,6 +165,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
                 ? MessageDifferencer.RepeatedFieldComparison.AS_SET
                 : MessageDifferencer.RepeatedFieldComparison.AS_LIST)
         .setReportMatches(!reportMismatchesOnly)
+        .addIgnoreCriteria(fieldScope.toIgnoreCriteria(getSubject().getDescriptorForType()))
         .build();
   }
 
