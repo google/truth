@@ -293,12 +293,12 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Assembles a failure message and passes such to the FailureStrategy
+   * Reports a failure constructing a message from a simple verb.
    *
-   * @param verb the proposition being asserted
+   * @param proposition the proposition being asserted
    */
-  protected void fail(String verb) {
-    failureStrategy.fail("Not true that " + actualAsString() + " " + verb);
+  protected final void fail(String proposition) {
+    failureStrategy.fail("Not true that " + actualAsString() + " " + proposition);
   }
 
   /**
@@ -308,7 +308,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param verb the proposition being asserted
    * @param other the value against which the subject is compared
    */
-  protected void fail(String verb, Object other) {
+  protected final void fail(String verb, Object other) {
     failComparingToStrings(verb, actual(), other, other, false);
   }
 
@@ -341,7 +341,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param verb the proposition being asserted
    * @param messageParts the expectations against which the subject is compared
    */
-  protected void fail(String verb, Object... messageParts) {
+  protected final void fail(String verb, Object... messageParts) {
     // For backwards binary compatibility
     if (messageParts.length == 0) {
       fail(verb);
@@ -365,7 +365,8 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param failVerb the failure of the proposition being asserted
    * @param actual the actual value the subject was compared against
    */
-  protected void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
+  protected final void failWithBadResults(
+      String verb, Object expected, String failVerb, Object actual) {
     String message =
         format(
             "Not true that %s %s <%s>. It %s <%s>",
@@ -385,7 +386,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param expected the expected value of the proposition
    * @param actual the custom representation of the subject to be reported in the failure.
    */
-  protected void failWithCustomSubject(String verb, Object expected, Object actual) {
+  protected final void failWithCustomSubject(String verb, Object expected, Object actual) {
     String message =
         format(
             "Not true that <%s> %s <%s>",
@@ -395,7 +396,7 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** @deprecated Use {@link #failWithoutActual(String)} */
   @Deprecated
-  protected void failWithoutSubject(String proposition) {
+  protected final void failWithoutSubject(String proposition) {
     String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
     failureStrategy.fail(format("Not true that %s %s", strSubject, proposition));
   }
@@ -405,7 +406,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *
    * @param proposition the proposition being asserted
    */
-  protected void failWithoutActual(String proposition) {
+  protected final void failWithoutActual(String proposition) {
     failWithoutSubject(proposition);
   }
 
@@ -419,6 +420,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     should be performed before the method call and the formatted value passed in as a string.
    * @param parameters the object parameters which will be applied to the message template.
    */
+  // TODO(cgruber) final
   protected void failWithRawMessage(String message, Object... parameters) {
     failureStrategy.fail(format(message, parameters));
   }
