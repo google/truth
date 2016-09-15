@@ -7,6 +7,25 @@ url: /faq
 1. auto-gen TOC:
 {:toc}
 
+## How do I use Truth with the new Java 8 types? {#java8}
+
+First, make sure you're depending on `//third_party/java/truth:truth8`
+
+Next, you will need to add *both* of the following static imports to your class:
+
+```java
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth8.assertThat;
+...
+// This assertion uses the `Truth8.assertThat(java.util.Optional)` overload.
+Optional<String> javaUtilOptional = someStream.map(...).filter(...).findFirst();
+assertThat(javaUtilOptional).hasValue("duke");
+
+// This assertion uses the `Truth.assertThat(com.google.common.base.Optional)` overload.
+Optional<String> guavaOptional = user.getMiddleName();
+assertThat(guavaOptional).hasValue("alfred");
+```
+
 ## What if I have an import conflict with another `assertThat()` method? {#imports}
 
 We recommend static importing Truth's `assertThat()` shortcut method. However,
@@ -76,8 +95,7 @@ For more information, see b/18222873
 
 ## Does it matter if I write `assertThat(a).isEqualTo(b)` or `assertThat(b).isEqualTo(a)`? {#order}
 
-Yes! Truth's error messages will make more sense if you always use this
-pattern:
+Yes! Truth's error messages will make more sense if you always use this pattern:
 
 ```java
 assertThat(actualValue).isEqualTo(expectedValue);

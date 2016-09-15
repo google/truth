@@ -12,8 +12,8 @@ designed to make your [test assertions](benefits#readable-assertions) and
 `Table`), and is also [extensible](extension) to new types (`YourCustomType`).
 See all of the known types [here](known_types).
 
-You can also [read Truth's source directly][source], view its [API docs],
-and [compare it to common alternatives](comparison).
+You can also [read Truth's source directly][source], view its [API docs], and
+[compare it to common alternatives](comparison).
 
 # How to use Truth
 
@@ -46,6 +46,7 @@ dependencies {
 ```java
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth8.assertThat; // for assertions on Java 8 types
 ```
 
 ## 3. Write a test assertion:
