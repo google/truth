@@ -26,6 +26,20 @@ Optional<String> guavaOptional = user.getMiddleName();
 assertThat(guavaOptional).hasValue("alfred");
 ```
 
+## Why do I get a "`cannot find symbol .someMethod("foo");`" error when testing a custom type? {#missing-import}
+
+This is a symptom that you are passing the object being tested to the main
+`Truth.assertThat(...)` overloads, which don't include the type you are
+testing, and so you are matching `assertThat(Object)`.
+
+To resolve this, either find the appropriate `assertThat(YourType)` overload
+and statically import it ([such as you would have to do for Java8
+types](#java8)), or use the `assertAbout(someType())` mechanism, i.e.
+
+```java
+assertAbout(gwtHasVisibility()).that(view).isVisible();
+```
+
 ## What if I have an import conflict with another `assertThat()` method? {#imports}
 
 We recommend static importing Truth's `assertThat()` shortcut method. However,
