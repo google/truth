@@ -20,18 +20,29 @@ import static org.junit.Assert.fail;
 
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
+import java.util.Collection;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
-/** Unit tests for {@link ProtoSubject}, parameterized on the syntax version. */
-public abstract class AbstractProtoSubjectTest<M extends Message> extends ProtoSubjectTestBase<M> {
-  protected AbstractProtoSubjectTest(TestType<M> testType) {
+/** Unit tests for {@link ProtoSubject}. */
+@RunWith(Parameterized.class)
+public class ProtoSubjectTest extends ProtoSubjectTestBase {
+
+  @Parameters(name = "{0}")
+  public static Collection<Object[]> parameters() {
+    return ProtoSubjectTestBase.parameters();
+  }
+
+  public ProtoSubjectTest(TestType testType) {
     super(testType);
   }
 
   @Test
   public void testIgnoringFieldAbsence() {
-    M message = parse("o_int: 3");
-    M diffMessage = parse("o_int: 3 o_enum: DEFAULT");
+    Message message = parse("o_int: 3");
+    Message diffMessage = parse("o_int: 3 o_enum: DEFAULT");
 
     if (isProto3()) {
       expectThat(diffMessage).isEqualTo(message);
@@ -41,8 +52,8 @@ public abstract class AbstractProtoSubjectTest<M extends Message> extends ProtoS
     expectThat(diffMessage).ignoringFieldAbsence().isEqualTo(message);
 
     if (!isProto3()) {
-      M customDefaultMessage = parse("o_int: 3");
-      M diffCustomDefaultMessage = parse("o_int: 3 o_long_defaults_to_42: 42");
+      Message customDefaultMessage = parse("o_int: 3");
+      Message diffCustomDefaultMessage = parse("o_int: 3 o_long_defaults_to_42: 42");
 
       expectThat(diffCustomDefaultMessage).isNotEqualTo(customDefaultMessage);
       expectThat(diffCustomDefaultMessage).ignoringFieldAbsence().isEqualTo(customDefaultMessage);
@@ -79,22 +90,20 @@ public abstract class AbstractProtoSubjectTest<M extends Message> extends ProtoS
       return;
     }
 
-    M message =
-        (M)
-            newBuilder()
-                .setUnknownFields(
-                    UnknownFieldSet.newBuilder()
-                        .addField(99, UnknownFieldSet.Field.newBuilder().addVarint(42).build())
-                        .build())
-                .build();
-    M diffMessage =
-        (M)
-            newBuilder()
-                .setUnknownFields(
-                    UnknownFieldSet.newBuilder()
-                        .addField(93, UnknownFieldSet.Field.newBuilder().addVarint(42).build())
-                        .build())
-                .build();
+    Message message =
+        newBuilder()
+            .setUnknownFields(
+                UnknownFieldSet.newBuilder()
+                    .addField(99, UnknownFieldSet.Field.newBuilder().addVarint(42).build())
+                    .build())
+            .build();
+    Message diffMessage =
+        newBuilder()
+            .setUnknownFields(
+                UnknownFieldSet.newBuilder()
+                    .addField(93, UnknownFieldSet.Field.newBuilder().addVarint(42).build())
+                    .build())
+            .build();
 
     expectThat(diffMessage).isNotEqualTo(message);
     expectThat(diffMessage).ignoringFieldAbsence().isEqualTo(message);
@@ -118,9 +127,9 @@ public abstract class AbstractProtoSubjectTest<M extends Message> extends ProtoS
 
   @Test
   public void testRepeatedFieldOrder() {
-    M message = parse("r_string: \"foo\" r_string: \"bar\"");
-    M eqMessage = parse("r_string: \"bar\" r_string: \"foo\"");
-    M diffMessage = parse("r_string: \"foo\" r_string: \"foo\" r_string: \"bar\"");
+    Message message = parse("r_string: \"foo\" r_string: \"bar\"");
+    Message eqMessage = parse("r_string: \"bar\" r_string: \"foo\"");
+    Message diffMessage = parse("r_string: \"foo\" r_string: \"foo\" r_string: \"bar\"");
 
     expectThat(message).isEqualTo(message.toBuilder().build());
     expectThat(message).ignoringRepeatedFieldOrder().isEqualTo(message.toBuilder().build());
@@ -129,15 +138,15 @@ public abstract class AbstractProtoSubjectTest<M extends Message> extends ProtoS
     expectThat(eqMessage).isNotEqualTo(message);
     expectThat(eqMessage).ignoringRepeatedFieldOrder().isEqualTo(message);
 
-    M nestedMessage =
+    Message nestedMessage =
         parse(
             "r_test_message: { o_int: 33 r_string: \"foo\" r_string: \"bar\" } "
                 + "r_test_message: { o_int: 44 r_string: \"baz\" r_string: \"qux\" } ");
-    M diffNestedMessage =
+    Message diffNestedMessage =
         parse(
             "r_test_message: { o_int: 33 r_string: \"qux\" r_string: \"baz\" } "
                 + "r_test_message: { o_int: 44 r_string: \"bar\" r_string: \"foo\" } ");
-    M eqNestedMessage =
+    Message eqNestedMessage =
         parse(
             "r_test_message: { o_int: 44 r_string: \"qux\" r_string: \"baz\" } "
                 + "r_test_message: { o_int: 33 r_string: \"bar\" r_string: \"foo\" } ");
@@ -182,8 +191,8 @@ public abstract class AbstractProtoSubjectTest<M extends Message> extends ProtoS
 
   @Test
   public void testReportingMismatchesOnly_isEqualTo() {
-    M message = parse("r_string: \"foo\" r_string: \"bar\"");
-    M diffMessage = parse("r_string: \"foo\" r_string: \"not_bar\"");
+    Message message = parse("r_string: \"foo\" r_string: \"bar\"");
+    Message diffMessage = parse("r_string: \"foo\" r_string: \"not_bar\"");
 
     try {
       assertThat(diffMessage).isEqualTo(message);
@@ -208,8 +217,8 @@ public abstract class AbstractProtoSubjectTest<M extends Message> extends ProtoS
 
   @Test
   public void testReportingMismatchesOnly_isNotEqualTo() {
-    M message = parse("o_int: 33 r_string: \"foo\" r_string: \"bar\"");
-    M diffMessage = parse("o_int: 33 r_string: \"bar\" r_string: \"foo\"");
+    Message message = parse("o_int: 33 r_string: \"foo\" r_string: \"bar\"");
+    Message diffMessage = parse("o_int: 33 r_string: \"bar\" r_string: \"foo\"");
 
     try {
       assertThat(diffMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message);

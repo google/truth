@@ -24,27 +24,34 @@ import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
 import com.google.protobuf.UnknownFieldSet.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
-/**
- * Unit tests for {@link FieldScope}, and their interaction with {@link ProtoSubject}, parameterized
- * on the syntax version.
- */
-public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSubjectTestBase<M> {
+/** Unit tests for {@link FieldScope}, and their interaction with {@link ProtoSubject}. */
+@RunWith(Parameterized.class)
+public class FieldScopesTest extends ProtoSubjectTestBase {
+
+  @Parameters(name = "{0}")
+  public static Collection<Object[]> parameters() {
+    return ProtoSubjectTestBase.parameters();
+  }
 
   // Set up for the ignoringTopLevelField tests.
   // ignoringFieldMessage and ignoringFieldDiffMessage are simple messages with two fields set. They
   // are the same for the "good" field, and different for the "bad" field. The *FieldNumber and
   // *FieldDescriptor members point to these fields.
 
-  private final M ignoringFieldMessage;
-  private final M ignoringFieldDiffMessage;
+  private final Message ignoringFieldMessage;
+  private final Message ignoringFieldDiffMessage;
   private final int goodFieldNumber;
   private final int badFieldNumber;
   private final FieldDescriptor goodFieldDescriptor;
   private final FieldDescriptor badFieldDescriptor;
 
-  protected AbstractFieldScopesTest(TestType<M> testType) {
+  public FieldScopesTest(TestType testType) {
     super(testType);
 
     ignoringFieldMessage = parse("o_int: 3 r_string: \"foo\"");
@@ -57,22 +64,22 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
 
   @Test
   public void testUnequalMessages() {
-    M message = parse("o_int: 3 r_string: \"foo\"");
-    M diffMessage = parse("o_int: 5 r_string: \"bar\"");
+    Message message = parse("o_int: 3 r_string: \"foo\"");
+    Message diffMessage = parse("o_int: 5 r_string: \"bar\"");
 
     expectThat(diffMessage).isNotEqualTo(message);
   }
 
   @Test
   public void testFieldScopes_all() {
-    M message = parse("o_int: 3 r_string: \"foo\"");
-    M diffMessage = parse("o_int: 5 r_string: \"bar\"");
+    Message message = parse("o_int: 3 r_string: \"foo\"");
+    Message diffMessage = parse("o_int: 5 r_string: \"bar\"");
 
-    expectThat(diffMessage).withPartialScope(FieldScopes.<M>all()).isNotEqualTo(message);
-    expectThat(diffMessage).ignoringFieldScope(FieldScopes.<M>all()).isEqualTo(message);
+    expectThat(diffMessage).withPartialScope(FieldScopes.all()).isNotEqualTo(message);
+    expectThat(diffMessage).ignoringFieldScope(FieldScopes.all()).isEqualTo(message);
 
     try {
-      assertThat(diffMessage).ignoringFieldScope(FieldScopes.<M>all()).isNotEqualTo(message);
+      assertThat(diffMessage).ignoringFieldScope(FieldScopes.all()).isNotEqualTo(message);
       fail("Expected error.");
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
@@ -83,14 +90,14 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
 
   @Test
   public void testFieldScopes_none() {
-    M message = parse("o_int: 3 r_string: \"foo\"");
-    M diffMessage = parse("o_int: 5 r_string: \"bar\"");
+    Message message = parse("o_int: 3 r_string: \"foo\"");
+    Message diffMessage = parse("o_int: 5 r_string: \"bar\"");
 
-    expectThat(diffMessage).ignoringFieldScope(FieldScopes.<M>none()).isNotEqualTo(message);
-    expectThat(diffMessage).withPartialScope(FieldScopes.<M>none()).isEqualTo(message);
+    expectThat(diffMessage).ignoringFieldScope(FieldScopes.none()).isNotEqualTo(message);
+    expectThat(diffMessage).withPartialScope(FieldScopes.none()).isEqualTo(message);
 
     try {
-      assertThat(diffMessage).withPartialScope(FieldScopes.<M>none()).isNotEqualTo(message);
+      assertThat(diffMessage).withPartialScope(FieldScopes.none()).isNotEqualTo(message);
       fail("Expected error.");
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
@@ -132,74 +139,74 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
   @Test
   public void testIgnoringTopLevelField_fieldScopes_ignoringFields() {
     expectThat(ignoringFieldDiffMessage)
-        .withPartialScope(FieldScopes.<M>ignoringFields(goodFieldNumber))
+        .withPartialScope(FieldScopes.ignoringFields(goodFieldNumber))
         .isNotEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .ignoringFieldScope(FieldScopes.<M>ignoringFields(goodFieldNumber))
+        .ignoringFieldScope(FieldScopes.ignoringFields(goodFieldNumber))
         .isEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .withPartialScope(FieldScopes.<M>ignoringFields(badFieldNumber))
+        .withPartialScope(FieldScopes.ignoringFields(badFieldNumber))
         .isEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .ignoringFieldScope(FieldScopes.<M>ignoringFields(badFieldNumber))
+        .ignoringFieldScope(FieldScopes.ignoringFields(badFieldNumber))
         .isNotEqualTo(ignoringFieldMessage);
   }
 
   @Test
   public void testIgnoringTopLevelField_fieldScopes_allowingFields() {
     expectThat(ignoringFieldDiffMessage)
-        .withPartialScope(FieldScopes.<M>allowingFields(goodFieldNumber))
+        .withPartialScope(FieldScopes.allowingFields(goodFieldNumber))
         .isEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .ignoringFieldScope(FieldScopes.<M>allowingFields(goodFieldNumber))
+        .ignoringFieldScope(FieldScopes.allowingFields(goodFieldNumber))
         .isNotEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .withPartialScope(FieldScopes.<M>allowingFields(badFieldNumber))
+        .withPartialScope(FieldScopes.allowingFields(badFieldNumber))
         .isNotEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .ignoringFieldScope(FieldScopes.<M>allowingFields(badFieldNumber))
+        .ignoringFieldScope(FieldScopes.allowingFields(badFieldNumber))
         .isEqualTo(ignoringFieldMessage);
   }
 
   @Test
   public void testIgnoringTopLevelField_fieldScopes_allowingFieldDescriptors() {
     expectThat(ignoringFieldDiffMessage)
-        .withPartialScope(FieldScopes.<M>allowingFieldDescriptors(goodFieldDescriptor))
+        .withPartialScope(FieldScopes.allowingFieldDescriptors(goodFieldDescriptor))
         .isEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .ignoringFieldScope(FieldScopes.<M>allowingFieldDescriptors(goodFieldDescriptor))
+        .ignoringFieldScope(FieldScopes.allowingFieldDescriptors(goodFieldDescriptor))
         .isNotEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .withPartialScope(FieldScopes.<M>allowingFieldDescriptors(badFieldDescriptor))
+        .withPartialScope(FieldScopes.allowingFieldDescriptors(badFieldDescriptor))
         .isNotEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .ignoringFieldScope(FieldScopes.<M>allowingFieldDescriptors(badFieldDescriptor))
+        .ignoringFieldScope(FieldScopes.allowingFieldDescriptors(badFieldDescriptor))
         .isEqualTo(ignoringFieldMessage);
   }
 
   @Test
   public void testIgnoringTopLevelField_fieldScopes_ignoringFieldDescriptors() {
     expectThat(ignoringFieldDiffMessage)
-        .withPartialScope(FieldScopes.<M>ignoringFieldDescriptors(goodFieldDescriptor))
+        .withPartialScope(FieldScopes.ignoringFieldDescriptors(goodFieldDescriptor))
         .isNotEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .ignoringFieldScope(FieldScopes.<M>ignoringFieldDescriptors(goodFieldDescriptor))
+        .ignoringFieldScope(FieldScopes.ignoringFieldDescriptors(goodFieldDescriptor))
         .isEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .withPartialScope(FieldScopes.<M>ignoringFieldDescriptors(badFieldDescriptor))
+        .withPartialScope(FieldScopes.ignoringFieldDescriptors(badFieldDescriptor))
         .isEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .ignoringFieldScope(FieldScopes.<M>ignoringFieldDescriptors(badFieldDescriptor))
+        .ignoringFieldScope(FieldScopes.ignoringFieldDescriptors(badFieldDescriptor))
         .isNotEqualTo(ignoringFieldMessage);
   }
 
   @Test
   public void testIgnoreSubMessageField() {
-    M message = parse("o_int: 1 o_sub_test_message: { o_int: 2 }");
-    M diffMessage = parse("o_int: 2 o_sub_test_message: { o_int: 2 }");
-    M eqMessage1 = parse("o_int: 1");
-    M eqMessage2 = parse("o_int: 1 o_sub_test_message: {}");
-    M eqMessage3 = parse("o_int: 1 o_sub_test_message: { o_int: 3 r_string: \"x\" }");
+    Message message = parse("o_int: 1 o_sub_test_message: { o_int: 2 }");
+    Message diffMessage = parse("o_int: 2 o_sub_test_message: { o_int: 2 }");
+    Message eqMessage1 = parse("o_int: 1");
+    Message eqMessage2 = parse("o_int: 1 o_sub_test_message: {}");
+    Message eqMessage3 = parse("o_int: 1 o_sub_test_message: { o_int: 3 r_string: \"x\" }");
     int fieldNumber = getFieldNumber("o_sub_test_message");
 
     expectThat(diffMessage).ignoringField(fieldNumber).isNotEqualTo(message);
@@ -228,37 +235,37 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
   public void testIgnoringAllButOneFieldOfSubMessage() {
     // Consider all of TestMessage, but none of o_sub_test_message, except
     // o_sub_test_message.o_int.
-    M message =
+    Message message =
         parse(
             "o_int: 3 o_sub_test_message: { o_int: 4 r_string: \"foo\" } "
                 + "r_sub_test_message: { o_int: 5 r_string: \"bar\" }");
 
     // All of these differ in a critical field.
-    M diffMessage1 =
+    Message diffMessage1 =
         parse(
             "o_int: 999999 o_sub_test_message: { o_int: 4 r_string: \"foo\" } "
                 + "r_sub_test_message: { o_int: 5 r_string: \"bar\" }");
-    M diffMessage2 =
+    Message diffMessage2 =
         parse(
             "o_int: 3 o_sub_test_message: { o_int: 999999 r_string: \"foo\" } "
                 + "r_sub_test_message: { o_int: 5 r_string: \"bar\" }");
-    M diffMessage3 =
+    Message diffMessage3 =
         parse(
             "o_int: 3 o_sub_test_message: { o_int: 4 r_string: \"foo\" } "
                 + "r_sub_test_message: { o_int: 999999 r_string: \"bar\" }");
-    M diffMessage4 =
+    Message diffMessage4 =
         parse(
             "o_int: 3 o_sub_test_message: { o_int: 4 r_string: \"foo\" } "
                 + "r_sub_test_message: { o_int: 5 r_string: \"999999\" }");
 
     // This one only differs in o_sub_test_message.r_string, which is ignored.
-    M eqMessage =
+    Message eqMessage =
         parse(
             "o_int: 3 o_sub_test_message: { o_int: 4 r_string: \"999999\" } "
                 + "r_sub_test_message: { o_int: 5 r_string: \"bar\" }");
 
-    FieldScope<M> fieldScope =
-        FieldScopes.<M>ignoringFields(getFieldNumber("o_sub_test_message"))
+    FieldScope fieldScope =
+        FieldScopes.ignoringFields(getFieldNumber("o_sub_test_message"))
             .allowingFieldDescriptors(
                 getFieldDescriptor("o_sub_test_message").getMessageType().findFieldByName("o_int"));
 
@@ -287,27 +294,27 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
 
   @Test
   public void testFromSetFields() {
-    M scopeMessage =
+    Message scopeMessage =
         parse(
             "o_int: 1 r_string: \"x\" o_test_message: { o_int: 1 } "
                 + "r_test_message: { r_string: \"x\" } r_test_message: { o_int: 1 } "
                 + "o_sub_test_message: { o_test_message: { o_int: 1 } }");
 
     // 1 = compared, [2, 3] = ignored, 4 = compared and fails
-    M message =
+    Message message =
         parse(
             "o_int: 1 r_string: \"1\" o_test_message: {o_int: 1 r_string: \"2\" } "
                 + "r_test_message: { o_int: 1 r_string: \"1\" } "
                 + "r_test_message: { o_int: 1 r_string: \"1\" } "
                 + "o_sub_test_message: { o_int: 2 o_test_message: { o_int: 1 r_string: \"2\" } }");
-    M diffMessage =
+    Message diffMessage =
         parse(
             "o_int: 4 r_string: \"4\" o_test_message: {o_int: 4 r_string: \"3\" } "
                 + "r_test_message: { o_int: 4 r_string: \"4\" } "
                 + "r_test_message: { o_int: 4 r_string: \"4\" }"
                 + "o_sub_test_message: { r_string: \"3\" o_int: 3 "
                 + "o_test_message: { o_int: 4 r_string: \"3\" } }");
-    M eqMessage =
+    Message eqMessage =
         parse(
             "o_int: 1 r_string: \"1\" o_test_message: {o_int: 1 r_string: \"3\" } "
                 + "r_test_message: { o_int: 1 r_string: \"1\" } "
@@ -370,151 +377,134 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
 
     // Make sure that merging of repeated fields, separation by tag number, and separation by
     // unknown field type all work.
-    M scopeMessage =
-        (M)
-            newBuilder()
-                .setUnknownFields(
-                    UnknownFieldSet.newBuilder()
-                        .addField(20, Field.newBuilder().addFixed32(1).addFixed64(1).build())
-                        .addField(
-                            21,
-                            Field.newBuilder()
-                                .addVarint(1)
-                                .addLengthDelimited(
-                                    ByteString.copyFrom("1", StandardCharsets.UTF_8))
-                                .addGroup(
-                                    UnknownFieldSet.newBuilder()
-                                        .addField(1, Field.newBuilder().addFixed32(1).build())
-                                        .build())
-                                .addGroup(
-                                    UnknownFieldSet.newBuilder()
-                                        .addField(2, Field.newBuilder().addFixed64(1).build())
-                                        .build())
-                                .build())
-                        .build())
-                .build();
+    Message scopeMessage =
+        newBuilder()
+            .setUnknownFields(
+                UnknownFieldSet.newBuilder()
+                    .addField(20, Field.newBuilder().addFixed32(1).addFixed64(1).build())
+                    .addField(
+                        21,
+                        Field.newBuilder()
+                            .addVarint(1)
+                            .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
+                            .addGroup(
+                                UnknownFieldSet.newBuilder()
+                                    .addField(1, Field.newBuilder().addFixed32(1).build())
+                                    .build())
+                            .addGroup(
+                                UnknownFieldSet.newBuilder()
+                                    .addField(2, Field.newBuilder().addFixed64(1).build())
+                                    .build())
+                            .build())
+                    .build())
+            .build();
 
     // 1 = compared, [2, 3] = ignored, 4 = compared and fails
-    M message =
-        (M)
-            newBuilder()
-                .setUnknownFields(
-                    UnknownFieldSet.newBuilder()
-                        .addField(19, Field.newBuilder().addFixed32(2).addFixed64(2).build())
-                        .addField(
-                            20,
-                            Field.newBuilder()
-                                .addFixed32(1)
-                                .addFixed64(1)
-                                .addVarint(2)
-                                .addLengthDelimited(
-                                    ByteString.copyFrom("2", StandardCharsets.UTF_8))
-                                .addGroup(
-                                    UnknownFieldSet.newBuilder()
-                                        .addField(1, Field.newBuilder().addFixed32(2).build())
-                                        .build())
-                                .build())
-                        .addField(
-                            21,
-                            Field.newBuilder()
-                                .addFixed32(2)
-                                .addFixed64(2)
-                                .addVarint(1)
-                                .addLengthDelimited(
-                                    ByteString.copyFrom("1", StandardCharsets.UTF_8))
-                                .addGroup(
-                                    UnknownFieldSet.newBuilder()
-                                        .addField(
-                                            1,
-                                            Field.newBuilder().addFixed32(1).addFixed64(2).build())
-                                        .addField(
-                                            2,
-                                            Field.newBuilder().addFixed32(2).addFixed64(1).build())
-                                        .addField(3, Field.newBuilder().addFixed32(2).build())
-                                        .build())
-                                .build())
-                        .build())
-                .build();
-    M diffMessage =
-        (M)
-            newBuilder()
-                .setUnknownFields(
-                    UnknownFieldSet.newBuilder()
-                        .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
-                        .addField(
-                            20,
-                            Field.newBuilder()
-                                .addFixed32(4)
-                                .addFixed64(4)
-                                .addVarint(3)
-                                .addLengthDelimited(
-                                    ByteString.copyFrom("3", StandardCharsets.UTF_8))
-                                .addGroup(
-                                    UnknownFieldSet.newBuilder()
-                                        .addField(1, Field.newBuilder().addFixed32(3).build())
-                                        .build())
-                                .build())
-                        .addField(
-                            21,
-                            Field.newBuilder()
-                                .addFixed32(3)
-                                .addFixed64(3)
-                                .addVarint(4)
-                                .addLengthDelimited(
-                                    ByteString.copyFrom("4", StandardCharsets.UTF_8))
-                                .addGroup(
-                                    UnknownFieldSet.newBuilder()
-                                        .addField(
-                                            1,
-                                            Field.newBuilder().addFixed32(4).addFixed64(3).build())
-                                        .addField(
-                                            2,
-                                            Field.newBuilder().addFixed32(3).addFixed64(4).build())
-                                        .addField(3, Field.newBuilder().addFixed32(3).build())
-                                        .build())
-                                .build())
-                        .build())
-                .build();
-    M eqMessage =
-        (M)
-            newBuilder()
-                .setUnknownFields(
-                    UnknownFieldSet.newBuilder()
-                        .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
-                        .addField(
-                            20,
-                            Field.newBuilder()
-                                .addFixed32(1)
-                                .addFixed64(1)
-                                .addVarint(3)
-                                .addLengthDelimited(
-                                    ByteString.copyFrom("3", StandardCharsets.UTF_8))
-                                .addGroup(
-                                    UnknownFieldSet.newBuilder()
-                                        .addField(1, Field.newBuilder().addFixed32(3).build())
-                                        .build())
-                                .build())
-                        .addField(
-                            21,
-                            Field.newBuilder()
-                                .addFixed32(3)
-                                .addFixed64(3)
-                                .addVarint(1)
-                                .addLengthDelimited(
-                                    ByteString.copyFrom("1", StandardCharsets.UTF_8))
-                                .addGroup(
-                                    UnknownFieldSet.newBuilder()
-                                        .addField(
-                                            1,
-                                            Field.newBuilder().addFixed32(1).addFixed64(3).build())
-                                        .addField(
-                                            2,
-                                            Field.newBuilder().addFixed32(3).addFixed64(1).build())
-                                        .addField(3, Field.newBuilder().addFixed32(3).build())
-                                        .build())
-                                .build())
-                        .build())
-                .build();
+    Message message =
+        newBuilder()
+            .setUnknownFields(
+                UnknownFieldSet.newBuilder()
+                    .addField(19, Field.newBuilder().addFixed32(2).addFixed64(2).build())
+                    .addField(
+                        20,
+                        Field.newBuilder()
+                            .addFixed32(1)
+                            .addFixed64(1)
+                            .addVarint(2)
+                            .addLengthDelimited(ByteString.copyFrom("2", StandardCharsets.UTF_8))
+                            .addGroup(
+                                UnknownFieldSet.newBuilder()
+                                    .addField(1, Field.newBuilder().addFixed32(2).build())
+                                    .build())
+                            .build())
+                    .addField(
+                        21,
+                        Field.newBuilder()
+                            .addFixed32(2)
+                            .addFixed64(2)
+                            .addVarint(1)
+                            .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
+                            .addGroup(
+                                UnknownFieldSet.newBuilder()
+                                    .addField(
+                                        1, Field.newBuilder().addFixed32(1).addFixed64(2).build())
+                                    .addField(
+                                        2, Field.newBuilder().addFixed32(2).addFixed64(1).build())
+                                    .addField(3, Field.newBuilder().addFixed32(2).build())
+                                    .build())
+                            .build())
+                    .build())
+            .build();
+    Message diffMessage =
+        newBuilder()
+            .setUnknownFields(
+                UnknownFieldSet.newBuilder()
+                    .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
+                    .addField(
+                        20,
+                        Field.newBuilder()
+                            .addFixed32(4)
+                            .addFixed64(4)
+                            .addVarint(3)
+                            .addLengthDelimited(ByteString.copyFrom("3", StandardCharsets.UTF_8))
+                            .addGroup(
+                                UnknownFieldSet.newBuilder()
+                                    .addField(1, Field.newBuilder().addFixed32(3).build())
+                                    .build())
+                            .build())
+                    .addField(
+                        21,
+                        Field.newBuilder()
+                            .addFixed32(3)
+                            .addFixed64(3)
+                            .addVarint(4)
+                            .addLengthDelimited(ByteString.copyFrom("4", StandardCharsets.UTF_8))
+                            .addGroup(
+                                UnknownFieldSet.newBuilder()
+                                    .addField(
+                                        1, Field.newBuilder().addFixed32(4).addFixed64(3).build())
+                                    .addField(
+                                        2, Field.newBuilder().addFixed32(3).addFixed64(4).build())
+                                    .addField(3, Field.newBuilder().addFixed32(3).build())
+                                    .build())
+                            .build())
+                    .build())
+            .build();
+    Message eqMessage =
+        newBuilder()
+            .setUnknownFields(
+                UnknownFieldSet.newBuilder()
+                    .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
+                    .addField(
+                        20,
+                        Field.newBuilder()
+                            .addFixed32(1)
+                            .addFixed64(1)
+                            .addVarint(3)
+                            .addLengthDelimited(ByteString.copyFrom("3", StandardCharsets.UTF_8))
+                            .addGroup(
+                                UnknownFieldSet.newBuilder()
+                                    .addField(1, Field.newBuilder().addFixed32(3).build())
+                                    .build())
+                            .build())
+                    .addField(
+                        21,
+                        Field.newBuilder()
+                            .addFixed32(3)
+                            .addFixed64(3)
+                            .addVarint(1)
+                            .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
+                            .addGroup(
+                                UnknownFieldSet.newBuilder()
+                                    .addField(
+                                        1, Field.newBuilder().addFixed32(1).addFixed64(3).build())
+                                    .addField(
+                                        2, Field.newBuilder().addFixed32(3).addFixed64(1).build())
+                                    .addField(3, Field.newBuilder().addFixed32(3).build())
+                                    .build())
+                            .build())
+                    .build())
+            .build();
 
     expectThat(diffMessage).isNotEqualTo(message);
     expectThat(eqMessage).isNotEqualTo(message);
@@ -564,30 +554,31 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
   @Test
   public void testFieldNumbersAreRecursive() {
     // o_int is compared, r_string is not.
-    M message = parse("o_int: 1 r_string: \"foo\" r_test_message: { o_int: 2 r_string: \"bar\" }");
-    M diffMessage =
+    Message message =
+        parse("o_int: 1 r_string: \"foo\" r_test_message: { o_int: 2 r_string: \"bar\" }");
+    Message diffMessage =
         parse("o_int: 2 r_string: \"bar\" r_test_message: { o_int: 1 r_string: \"foo\" }");
-    M eqMessage =
+    Message eqMessage =
         parse("o_int: 1 r_string: \"bar\" r_test_message: { o_int: 2 r_string: \"foo\" }");
     int fieldNumber = getFieldNumber("o_int");
     FieldDescriptor fieldDescriptor = getFieldDescriptor("o_int");
 
     expectThat(diffMessage)
-        .withPartialScope(FieldScopes.<M>allowingFields(fieldNumber))
+        .withPartialScope(FieldScopes.allowingFields(fieldNumber))
         .isNotEqualTo(message);
     expectThat(eqMessage)
-        .withPartialScope(FieldScopes.<M>allowingFields(fieldNumber))
+        .withPartialScope(FieldScopes.allowingFields(fieldNumber))
         .isEqualTo(message);
     expectThat(diffMessage)
-        .withPartialScope(FieldScopes.<M>allowingFieldDescriptors(fieldDescriptor))
+        .withPartialScope(FieldScopes.allowingFieldDescriptors(fieldDescriptor))
         .isNotEqualTo(message);
     expectThat(eqMessage)
-        .withPartialScope(FieldScopes.<M>allowingFieldDescriptors(fieldDescriptor))
+        .withPartialScope(FieldScopes.allowingFieldDescriptors(fieldDescriptor))
         .isEqualTo(message);
 
     try {
       assertThat(diffMessage)
-          .withPartialScope(FieldScopes.<M>allowingFields(fieldNumber))
+          .withPartialScope(FieldScopes.allowingFields(fieldNumber))
           .isEqualTo(message);
       fail("Expected error.");
     } catch (AssertionError e) {
@@ -598,7 +589,7 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
 
     try {
       assertThat(eqMessage)
-          .withPartialScope(FieldScopes.<M>allowingFields(fieldNumber))
+          .withPartialScope(FieldScopes.allowingFields(fieldNumber))
           .isNotEqualTo(message);
       fail("Expected error.");
     } catch (AssertionError e) {
@@ -609,12 +600,12 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
 
   @Test
   public void testMultipleFieldNumbers() {
-    M message = parse("o_int: 1 r_string: \"x\" o_enum: TWO");
-    M diffMessage = parse("o_int: 2 r_string: \"y\" o_enum: TWO");
-    M eqMessage =
+    Message message = parse("o_int: 1 r_string: \"x\" o_enum: TWO");
+    Message diffMessage = parse("o_int: 2 r_string: \"y\" o_enum: TWO");
+    Message eqMessage =
         parse("o_int: 1 r_string: \"x\" o_enum: ONE o_sub_test_message: { r_string: \"bar\" }");
 
-    FieldScope<M> fieldScope =
+    FieldScope fieldScope =
         FieldScopes.allowingFields(getFieldNumber("o_int"), getFieldNumber("r_string"));
 
     expectThat(diffMessage).withPartialScope(fieldScope).isNotEqualTo(message);
@@ -641,8 +632,8 @@ public abstract class AbstractFieldScopesTest<M extends Message> extends ProtoSu
 
   @Test
   public void testInvalidFieldNumber() {
-    M message1 = parse("o_int: 44");
-    M message2 = parse("o_int: 33");
+    Message message1 = parse("o_int: 44");
+    Message message2 = parse("o_int: 33");
 
     try {
       expectThat(message1).ignoringField(999).isEqualTo(message2);

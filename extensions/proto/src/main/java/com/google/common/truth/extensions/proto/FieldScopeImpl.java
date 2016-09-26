@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -44,7 +45,7 @@ import javax.annotation.Nullable;
  * and perform no delegation, and Compound subtypes, which combine one or more {@code
  * FieldScopeImpls} with specific operations.
  */
-abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
+abstract class FieldScopeImpl extends FieldScope {
 
   private final Set<Descriptor> validatedDescriptors = Sets.newConcurrentHashSet();
 
@@ -55,7 +56,7 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
       validatedDescriptors.add(descriptor);
     }
 
-    final Cache<M> cache = new Cache<M>();
+    final Cache cache = new Cache();
     return new IgnoreCriteria() {
       @Override
       public boolean isIgnored(
@@ -93,11 +94,11 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
   // A temporary cache for repeat processing of messages in a single MessageDifferencer run.
   // Cache data must be temporary because messages may be mutable, and change between
   // MessageDifferencer runs, which invalidates them as keys and invalidates the results.
-  private static final class Cache<M extends Message> {
-    private final Map<FieldMatcherBaseScopeImpl<M>, Map<Message, Boolean>>
-        messagesWithMatchingField = Maps.newHashMap();
+  private static final class Cache {
+    private final Map<FieldMatcherBaseScopeImpl, Map<Message, Boolean>> messagesWithMatchingField =
+        Maps.newHashMap();
 
-    public Map<Message, Boolean> getMessagesWithMatchingField(FieldMatcherBaseScopeImpl<M> key) {
+    public Map<Message, Boolean> getMessagesWithMatchingField(FieldMatcherBaseScopeImpl key) {
       Map<Message, Boolean> map = messagesWithMatchingField.get(key);
       if (map == null) {
         map = Maps.newHashMap();
@@ -110,7 +111,7 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
   @AutoValue
   abstract static class Context {
 
-    /** The Message Descriptor for <M>. */
+    /** The Message Descriptor for the message being tested. */
     abstract Descriptor descriptor();
 
     /**
@@ -144,7 +145,7 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
   }
 
   /** Whether or not this implementation includes the specified specific field path. */
-  abstract boolean includesField(Context context, Cache<M> cache);
+  abstract boolean includesField(Context context, Cache cache);
 
   /**
    * Performs any validation that requires a Descriptor to validate against.
@@ -166,81 +167,91 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
   }
 
   @Override
-  public FieldScope<M> ignoringFields(int... fieldNumbers) {
+  public FieldScope ignoringFields(int... fieldNumbers) {
     if (isEmpty(fieldNumbers)) {
       return this;
     }
-    return and(this, new NegationScopeImpl<M>(new FieldNumbersScopeImpl<M>(fieldNumbers)));
+    return and(this, new NegationScopeImpl(new FieldNumbersScopeImpl(fieldNumbers)));
   }
 
   @Override
-  public FieldScope<M> ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+  public FieldScope ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
     if (isEmpty(fieldDescriptors)) {
       return this;
     }
-    return and(this, new NegationScopeImpl<M>(new FieldDescriptorsScopeImpl<M>(fieldDescriptors)));
+    return and(this, new NegationScopeImpl(new FieldDescriptorsScopeImpl(fieldDescriptors)));
   }
 
   @Override
-  public FieldScope<M> allowingFields(int... fieldNumbers) {
+  public FieldScope allowingFields(int... fieldNumbers) {
     if (isEmpty(fieldNumbers)) {
       return this;
     }
-    return or(this, new FieldNumbersScopeImpl<M>(fieldNumbers));
+    return or(this, new FieldNumbersScopeImpl(fieldNumbers));
   }
 
   @Override
-  public FieldScope<M> allowingFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+  public FieldScope allowingFieldDescriptors(FieldDescriptor... fieldDescriptors) {
     if (isEmpty(fieldDescriptors)) {
       return this;
     }
-    return or(this, new FieldDescriptorsScopeImpl<M>(fieldDescriptors));
+    return or(this, new FieldDescriptorsScopeImpl(fieldDescriptors));
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // CONCRETE SUBTYPES
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  private static final FieldScope<Message> ALL =
-      new FieldScopeImpl<Message>() {
+  private static final FieldScope ALL =
+      new FieldScopeImpl() {
         @Override
-        boolean includesField(Context context, Cache<Message> cache) {
+        boolean includesField(Context context, Cache cache) {
           return true;
         }
       };
-  private static final FieldScope<Message> NONE =
-      new FieldScopeImpl<Message>() {
+  private static final FieldScope NONE =
+      new FieldScopeImpl() {
         @Override
-        boolean includesField(Context context, Cache<Message> cache) {
+        boolean includesField(Context context, Cache cache) {
           return false;
         }
       };
 
-  @SuppressWarnings("unchecked")
-  static <M extends Message> FieldScope<M> all() {
-    return (FieldScope<M>) ALL;
+  static FieldScope all() {
+    return ALL;
   }
 
-  @SuppressWarnings("unchecked")
-  static <M extends Message> FieldScope<M> none() {
-    return (FieldScope<M>) NONE;
+  static FieldScope none() {
+    return NONE;
   }
 
-  private static final class PartialScopeImpl<M extends Message> extends FieldScopeImpl<M> {
+  private static final class PartialScopeImpl extends FieldScopeImpl {
     private final FieldNumberTree fieldNumberTree;
+    private final Descriptor expectedDescriptor;
 
-    PartialScopeImpl(M message) {
+    PartialScopeImpl(Message message) {
       this.fieldNumberTree = FieldNumberTree.fromMessage(message);
+      this.expectedDescriptor = message.getDescriptorForType();
     }
 
     @Override
-    boolean includesField(Context context, Cache<M> cache) {
+    void validate(Descriptor descriptor) {
+      Preconditions.checkArgument(
+          expectedDescriptor.equals(descriptor),
+          "Message given to FieldScopes.fromSetFields() does not have the same descriptor as the "
+              + "message being tested. Expected %s, got %s.",
+          expectedDescriptor,
+          descriptor);
+    }
+
+    @Override
+    boolean includesField(Context context, Cache cache) {
       return fieldNumberTree.matches(context.fieldPath(), context.field());
     }
   }
 
-  static <M extends Message> FieldScope<M> partialScope(M message) {
-    return new PartialScopeImpl<M>(message);
+  static FieldScope partialScope(Message message) {
+    return new PartialScopeImpl(message);
   }
 
   // TODO(user): Performance: Optimize FieldNumbersScopeImpl and FieldDescriptorsScopeImpl for
@@ -248,21 +259,20 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
   // costs for long chains of allows/ignores.
 
   // Common functionality for FieldNumbersScopeImpl and FieldDescriptorsScopeImpl.
-  private abstract static class FieldMatcherBaseScopeImpl<M extends Message>
-      extends FieldScopeImpl<M> {
+  private abstract static class FieldMatcherBaseScopeImpl extends FieldScopeImpl {
 
     /**
      * Determines whether the FieldDescriptor is equal to one of the explicitly defined components
      * of this FieldScopeImpl.
      *
-     * @param descriptor Descriptor of <M>.
+     * @param descriptor Descriptor of the message being tested.
      * @param fieldDescriptor FieldDescriptor being inspected for a direct match to the scope's
      *     definition.
      */
     abstract boolean matchesFieldDescriptor(Descriptor descriptor, FieldDescriptor fieldDescriptor);
 
     @Override
-    boolean includesField(Context context, Cache<M> cache) {
+    boolean includesField(Context context, Cache cache) {
       if (context.field().isPresent()
           && matchesFieldDescriptor(context.descriptor(), context.field().get())) {
         return true;
@@ -285,7 +295,7 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
       return false;
     }
 
-    private boolean messageHasMatchingField(Context context, Cache<M> cache, Message message) {
+    private boolean messageHasMatchingField(Context context, Cache cache, Message message) {
       Map<Message, Boolean> messagesWithMatchingField = cache.getMessagesWithMatchingField(this);
       if (messagesWithMatchingField.containsKey(message)) {
         return messagesWithMatchingField.get(message);
@@ -322,8 +332,7 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
 
   // Matches any specific fields which fall under a sub-message field (or root) matching the root
   // message type and one of the specified field numbers.
-  private static final class FieldNumbersScopeImpl<M extends Message>
-      extends FieldMatcherBaseScopeImpl<M> {
+  private static final class FieldNumbersScopeImpl extends FieldMatcherBaseScopeImpl {
     private final ImmutableSet<Integer> fieldNumbers;
 
     FieldNumbersScopeImpl(int... fieldNumbers) {
@@ -350,8 +359,7 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
   }
 
   // Matches any specific fields which fall under one of the specified FieldDescriptors.
-  private static final class FieldDescriptorsScopeImpl<M extends Message>
-      extends FieldMatcherBaseScopeImpl<M> {
+  private static final class FieldDescriptorsScopeImpl extends FieldMatcherBaseScopeImpl {
     private final ImmutableSet<FieldDescriptor> fieldDescriptors;
 
     FieldDescriptorsScopeImpl(FieldDescriptor... fieldDescriptors) {
@@ -368,75 +376,69 @@ abstract class FieldScopeImpl<M extends Message> extends FieldScope<M> {
   // COMPOUND SUBTYPES
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  private abstract static class CompoundFieldScopeImpl<M extends Message>
-      extends FieldScopeImpl<M> {
-    final ImmutableList<FieldScopeImpl<M>> elements;
+  private abstract static class CompoundFieldScopeImpl extends FieldScopeImpl {
+    final ImmutableList<FieldScopeImpl> elements;
 
-    CompoundFieldScopeImpl(FieldScopeImpl<M> singleElem) {
+    CompoundFieldScopeImpl(FieldScopeImpl singleElem) {
       elements = ImmutableList.of(singleElem);
     }
 
-    CompoundFieldScopeImpl(FieldScopeImpl<M> firstElem, FieldScopeImpl<M> secondElem) {
+    CompoundFieldScopeImpl(FieldScopeImpl firstElem, FieldScopeImpl secondElem) {
       elements = ImmutableList.of(firstElem, secondElem);
     }
 
     @Override
     final void validate(Descriptor descriptor) {
-      for (FieldScopeImpl<M> elem : elements) {
+      for (FieldScopeImpl elem : elements) {
         elem.validate(descriptor);
       }
     }
   }
 
-  private static final class IntersectionScopeImpl<M extends Message>
-      extends CompoundFieldScopeImpl<M> {
-    IntersectionScopeImpl(FieldScopeImpl<M> subject1, FieldScopeImpl<M> subject2) {
+  private static final class IntersectionScopeImpl extends CompoundFieldScopeImpl {
+    IntersectionScopeImpl(FieldScopeImpl subject1, FieldScopeImpl subject2) {
       super(subject1, subject2);
     }
 
     @Override
-    boolean includesField(Context context, Cache<M> cache) {
+    boolean includesField(Context context, Cache cache) {
       return elements.get(0).includesField(context, cache)
           && elements.get(1).includesField(context, cache);
     }
   }
 
-  private static final class UnionScopeImpl<M extends Message> extends CompoundFieldScopeImpl<M> {
-    UnionScopeImpl(FieldScopeImpl<M> subject1, FieldScopeImpl<M> subject2) {
+  private static final class UnionScopeImpl extends CompoundFieldScopeImpl {
+    UnionScopeImpl(FieldScopeImpl subject1, FieldScopeImpl subject2) {
       super(subject1, subject2);
     }
 
     @Override
-    boolean includesField(Context context, Cache<M> cache) {
+    boolean includesField(Context context, Cache cache) {
       return elements.get(0).includesField(context, cache)
           || elements.get(1).includesField(context, cache);
     }
   }
 
-  private static final class NegationScopeImpl<M extends Message>
-      extends CompoundFieldScopeImpl<M> {
-    NegationScopeImpl(FieldScopeImpl<M> subject) {
+  private static final class NegationScopeImpl extends CompoundFieldScopeImpl {
+    NegationScopeImpl(FieldScopeImpl subject) {
       super(subject);
     }
 
     @Override
-    boolean includesField(Context context, Cache<M> cache) {
+    boolean includesField(Context context, Cache cache) {
       return !elements.get(0).includesField(context, cache);
     }
   }
 
-  static <M extends Message> FieldScope<M> and(
-      FieldScope<M> fieldScope1, FieldScope<M> fieldScope2) {
-    return new IntersectionScopeImpl<M>(
-        (FieldScopeImpl<M>) fieldScope1, (FieldScopeImpl<M>) fieldScope2);
+  static FieldScope and(FieldScope fieldScope1, FieldScope fieldScope2) {
+    return new IntersectionScopeImpl((FieldScopeImpl) fieldScope1, (FieldScopeImpl) fieldScope2);
   }
 
-  static <M extends Message> FieldScope<M> or(
-      FieldScope<M> fieldScope1, FieldScope<M> fieldScope2) {
-    return new UnionScopeImpl<M>((FieldScopeImpl<M>) fieldScope1, (FieldScopeImpl<M>) fieldScope2);
+  static FieldScope or(FieldScope fieldScope1, FieldScope fieldScope2) {
+    return new UnionScopeImpl((FieldScopeImpl) fieldScope1, (FieldScopeImpl) fieldScope2);
   }
 
-  static <M extends Message> FieldScope<M> not(FieldScope<M> subject) {
-    return new NegationScopeImpl<M>((FieldScopeImpl<M>) subject);
+  static FieldScope not(FieldScope subject) {
+    return new NegationScopeImpl((FieldScopeImpl) subject);
   }
 }

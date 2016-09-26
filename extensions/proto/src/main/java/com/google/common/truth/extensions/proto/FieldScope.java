@@ -19,7 +19,6 @@ package com.google.common.truth.extensions.proto;
 import com.google.common.truth.extensions.proto.MessageDifferencer.IgnoreCriteria;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
-import com.google.protobuf.Message;
 
 /**
  * An immutable, abstract representation of a set of specific field paths. See {@link FieldScopes}
@@ -38,7 +37,7 @@ import com.google.protobuf.Message;
  *
  * <pre>{@code
  * FieldScopes.ignoringFields(A.B_FIELD_NUMBER)
- *     .allowingFieldDescriptors(B.getDescriptor().findFieldByName("flag")
+ *     .allowingFieldDescriptors(B.getDescriptor().findFieldByName("flag"))
  * }</pre>
  *
  * ...will match all fields on A, except fields on the message type B, but including B's flag field.
@@ -54,7 +53,7 @@ import com.google.protobuf.Message;
  * @see com.google.protobuf.FieldMask
  * @see com.google.protobuf.util.FieldMaskUtil
  */
-public abstract class FieldScope<M extends Message> {
+public abstract class FieldScope {
 
   /**
    * Returns a {@code FieldScope} equivalent to this one, minus all fields defined by the given
@@ -65,11 +64,11 @@ public abstract class FieldScope<M extends Message> {
    * numbers are encountered.
    *
    * <p>The field numbers are ignored recursively on this type. That is, if {@code YourMessage}
-   * contains another {@code YourMessage} somewhere within its subtree, a {@code
-   * FieldScope<YourMessage> ignoringFields(X)} will ignore field number {@code X} for all
-   * submessages of type {@code YourMessage}, as well as for the top-level message.
+   * contains another {@code YourMessage} somewhere within its subtree, a {@code FieldScope
+   * ignoringFields(X)} will ignore field number {@code X} for all submessages of type {@code
+   * YourMessage}, as well as for the top-level message.
    */
-  public abstract FieldScope<M> ignoringFields(int... fieldNumbers);
+  public abstract FieldScope ignoringFields(int... fieldNumbers);
 
   /**
    * Returns a {@code FieldScope} equivalent to this one, minus all fields matching the given {@link
@@ -84,7 +83,7 @@ public abstract class FieldScope<M extends Message> {
    * FooMessage.field_bar} is ignored, {@code field_bar} will be ignored for all submessages of the
    * parent type of type {@code FooMessage}.
    */
-  public abstract FieldScope<M> ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors);
+  public abstract FieldScope ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors);
 
   /**
    * Returns a {@code FieldScope} equivalent to this one, plus all fields defined by the given field
@@ -99,7 +98,7 @@ public abstract class FieldScope<M extends Message> {
    * FieldScope<YourMessage> allowingFields(X)} will include field number {@code X} for all
    * submessages of type {@code YourMessage}, as well as for the top-level message.
    */
-  public abstract FieldScope<M> allowingFields(int... fieldNumbers);
+  public abstract FieldScope allowingFields(int... fieldNumbers);
 
   /**
    * Returns a {@code FieldScope} equivalent to this one, plus all fields matching the given {@link
@@ -114,7 +113,7 @@ public abstract class FieldScope<M extends Message> {
    * FooMessage.field_bar} is included, {@code field_bar} will be included for all submessages of
    * the parent type of type {@code FooMessage}.
    */
-  public abstract FieldScope<M> allowingFieldDescriptors(FieldDescriptor... fieldDescriptors);
+  public abstract FieldScope allowingFieldDescriptors(FieldDescriptor... fieldDescriptors);
 
   // package-protected: Should not be implemented outside the package.
   FieldScope() {}

@@ -44,12 +44,12 @@ import javax.annotation.Nullable;
  * @see ProtoFluentEquals
  */
 public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
-    extends LiteProtoSubject<S, M> implements ProtoFluentEquals<M> {
+    extends LiteProtoSubject<S, M> implements ProtoFluentEquals {
 
   private boolean ignoreFieldAbsence = false;
   private boolean ignoreRepeatedFieldOrder = false;
   private boolean reportMismatchesOnly = false;
-  private FieldScope<M> fieldScope = FieldScopes.all();
+  private FieldScope fieldScope = FieldScopes.all();
 
   /**
    * Typed extension of {@link SubjectFactory}.
@@ -65,15 +65,13 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
    * Returns a {@link SubjectFactory} for {@link Message} subjects which you can use to assert
    * things about Protobuf properties.
    */
-  @SuppressWarnings("unchecked")
-  public static <M extends Message> Factory<?, M> protos() {
-    // Implementation is fully variant.
-    return (Factory<?, M>) UntypedSubjectFactory.INSTANCE;
+  public static Factory<?, Message> protos() {
+    return UntypedSubjectFactory.INSTANCE;
   }
 
   /** Returns a {@link Subject} using the assertion strategy on the provided {@link Message}. */
-  public static <M extends Message> ProtoSubject<?, M> assertThat(@Nullable M message) {
-    return assertAbout(ProtoSubject.<M>protos()).that(message);
+  public static ProtoSubject<?, Message> assertThat(@Nullable Message message) {
+    return assertAbout(ProtoSubject.protos()).that(message);
   }
 
   protected ProtoSubject(FailureStrategy failureStrategy, M message) {
@@ -81,38 +79,38 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
-  public ProtoFluentEquals<M> ignoringFieldAbsence() {
+  public ProtoFluentEquals ignoringFieldAbsence() {
     ignoreFieldAbsence = true;
     return this;
   }
 
   @Override
-  public ProtoFluentEquals<M> ignoringRepeatedFieldOrder() {
+  public ProtoFluentEquals ignoringRepeatedFieldOrder() {
     ignoreRepeatedFieldOrder = true;
     return this;
   }
 
   @Override
-  public ProtoFluentEquals<M> withPartialScope(FieldScope<M> fieldScope) {
+  public ProtoFluentEquals withPartialScope(FieldScope fieldScope) {
     this.fieldScope = FieldScopeImpl.and(this.fieldScope, checkNotNull(fieldScope));
     return this;
   }
 
   @Override
-  public ProtoFluentEquals<M> ignoringField(int fieldNumber) {
+  public ProtoFluentEquals ignoringField(int fieldNumber) {
     this.fieldScope = fieldScope.ignoringFields(fieldNumber);
     return this;
   }
 
   @Override
-  public ProtoFluentEquals<M> ignoringFieldScope(FieldScope<M> fieldScope) {
+  public ProtoFluentEquals ignoringFieldScope(FieldScope fieldScope) {
     this.fieldScope =
         FieldScopeImpl.and(this.fieldScope, FieldScopeImpl.not(checkNotNull(fieldScope)));
     return this;
   }
 
   @Override
-  public ProtoFluentEquals<M> reportingMismatchesOnly() {
+  public ProtoFluentEquals reportingMismatchesOnly() {
     reportMismatchesOnly = true;
     return this;
   }

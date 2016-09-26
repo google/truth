@@ -54,15 +54,13 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * Returns a SubjectFactory for {@link MessageLite} subjects which you can use to assert things
    * about Lite Protobuf properties.
    */
-  @SuppressWarnings("unchecked")
-  public static <M extends MessageLite> Factory<?, M> liteProtos() {
-    // Implementation is fully variant.
-    return (Factory<?, M>) UntypedSubjectFactory.INSTANCE;
+  public static Factory<?, MessageLite> liteProtos() {
+    return UntypedSubjectFactory.INSTANCE;
   }
 
   /** Returns a Subject using the assertion strategy on the provided {@link MessageLite}. */
-  public static <M extends MessageLite> LiteProtoSubject<?, M> assertThat(@Nullable M messageLite) {
-    return assertAbout(LiteProtoSubject.<M>liteProtos()).that(messageLite);
+  public static LiteProtoSubject<?, MessageLite> assertThat(@Nullable MessageLite messageLite) {
+    return assertAbout(LiteProtoSubject.liteProtos()).that(messageLite);
   }
 
   protected LiteProtoSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {

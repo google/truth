@@ -66,7 +66,7 @@ public class FieldScopes {
   // Alternatively, gather evidence to show that the existing behavior is fine/preferable.
   // Alternatively II, add Scope.PARTIAL support to ProtoFluentEquals, but with a different name and
   // explicit documentation that it may cause issues with Proto 3.
-  public static <M extends Message> FieldScope<M> fromSetFields(M message) {
+  public static FieldScope fromSetFields(Message message) {
     return FieldScopeImpl.partialScope(checkNotNull(message));
   }
 
@@ -75,7 +75,7 @@ public class FieldScopes {
    * uses this scope by default, so this is generally not needed unless you need to also ignore
    * certain fields.
    */
-  public static <M extends Message> FieldScope<M> all() {
+  public static FieldScope all() {
     return FieldScopeImpl.all();
   }
 
@@ -84,7 +84,7 @@ public class FieldScopes {
    * always trivially pass, so generally an {@code allowing} call is expected after calling this
    * method.
    */
-  public static <M extends Message> FieldScope<M> none() {
+  public static FieldScope none() {
     return FieldScopeImpl.none();
   }
 
@@ -94,8 +94,8 @@ public class FieldScopes {
    *
    * @see FieldScope#ignoringFields
    */
-  public static <M extends Message> FieldScope<M> ignoringFields(int... fieldNumbers) {
-    return FieldScopes.<M>all().ignoringFields(fieldNumbers);
+  public static FieldScope ignoringFields(int... fieldNumbers) {
+    return FieldScopes.all().ignoringFields(fieldNumbers);
   }
 
   /**
@@ -104,9 +104,8 @@ public class FieldScopes {
    *
    * @see FieldScope#ignoringFieldDescriptors
    */
-  public static <M extends Message> FieldScope<M> ignoringFieldDescriptors(
-      FieldDescriptor... fieldDescriptors) {
-    return FieldScopes.<M>all().ignoringFieldDescriptors(fieldDescriptors);
+  public static FieldScope ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+    return FieldScopes.all().ignoringFieldDescriptors(fieldDescriptors);
   }
 
   /**
@@ -115,8 +114,8 @@ public class FieldScopes {
    *
    * @see FieldScope#allowingFields
    */
-  public static <M extends Message> FieldScope<M> allowingFields(int... fieldNumbers) {
-    return FieldScopes.<M>none().allowingFields(fieldNumbers);
+  public static FieldScope allowingFields(int... fieldNumbers) {
+    return FieldScopes.none().allowingFields(fieldNumbers);
   }
 
   /**
@@ -125,8 +124,7 @@ public class FieldScopes {
    *
    * @see FieldScope#allowingFieldDescriptors
    */
-  public static <M extends Message> FieldScope<M> allowingFieldDescriptors(
-      FieldDescriptor... fieldDescriptors) {
-    return FieldScopes.<M>none().allowingFieldDescriptors(fieldDescriptors);
+  public static FieldScope allowingFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+    return FieldScopes.none().allowingFieldDescriptors(fieldDescriptors);
   }
 }

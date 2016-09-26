@@ -18,33 +18,37 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Expect;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
 import com.google.protobuf.TextFormat.ParseException;
+import java.util.Collection;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import org.junit.Rule;
 
-/**
- * Base class for testing {@link ProtoSubject} methods. Generics are required for using FieldScopes,
- * so we must provide a generic base class instead of using raw Parameterized elements.
- */
-public class ProtoSubjectTestBase<M extends Message> {
+/** Base class for testing {@link ProtoSubject} methods. */
+public class ProtoSubjectTestBase {
 
   // Type information for subclasses.
   @AutoValue
-  abstract static class TestType<M extends Message> {
-    abstract M defaultInstance();
+  abstract static class TestType {
+    abstract Message defaultInstance();
 
     abstract boolean isProto3();
+
+    @Override
+    public final String toString() {
+      return isProto3() ? "Proto3" : "Proto2";
+    }
   }
 
-  protected static final TestType<TestMessage2> PROTO2 =
-      new AutoValue_ProtoSubjectTestBase_TestType<>(TestMessage2.getDefaultInstance(), false);
-  protected static final TestType<TestMessage3> PROTO3 =
-      new AutoValue_ProtoSubjectTestBase_TestType<>(TestMessage3.getDefaultInstance(), true);
+  protected static final TestType PROTO2 =
+      new AutoValue_ProtoSubjectTestBase_TestType(TestMessage2.getDefaultInstance(), false);
+  protected static final TestType PROTO3 =
+      new AutoValue_ProtoSubjectTestBase_TestType(TestMessage3.getDefaultInstance(), true);
 
   private static final TextFormat.Parser PARSER =
       TextFormat.Parser.newBuilder()
@@ -53,12 +57,17 @@ public class ProtoSubjectTestBase<M extends Message> {
               TextFormat.Parser.SingularOverwritePolicy.FORBID_SINGULAR_OVERWRITES)
           .build();
 
+  // For Parameterized testing.
+  protected static Collection<Object[]> parameters() {
+    return ImmutableList.of(new Object[] {PROTO2}, new Object[] {PROTO3});
+  }
+
   @Rule public final Expect expect = Expect.create();
 
-  private final M defaultInstance;
+  private final Message defaultInstance;
   private final boolean isProto3;
 
-  protected ProtoSubjectTestBase(TestType<M> testType) {
+  protected ProtoSubjectTestBase(TestType testType) {
     this.defaultInstance = testType.defaultInstance();
     this.isProto3 = testType.isProto3();
   }
@@ -82,23 +91,21 @@ public class ProtoSubjectTestBase<M extends Message> {
     return getFieldDescriptor(fieldName).getNumber();
   }
 
-  @SuppressWarnings("unchecked")
-  protected final M parse(String textProto) {
+  protected final Message parse(String textProto) {
     try {
       Message.Builder builder = defaultInstance.toBuilder();
       PARSER.merge(textProto, builder);
-      return (M) builder.build();
+      return builder.build();
     } catch (ParseException e) {
       throw new RuntimeException(e);
     }
   }
 
-  @SuppressWarnings("unchecked")
-  protected final M parsePartial(String textProto) {
+  protected final Message parsePartial(String textProto) {
     try {
       Message.Builder builder = defaultInstance.toBuilder();
       PARSER.merge(textProto, builder);
-      return (M) builder.buildPartial();
+      return builder.buildPartial();
     } catch (ParseException e) {
       throw new RuntimeException(e);
     }
@@ -108,8 +115,8 @@ public class ProtoSubjectTestBase<M extends Message> {
     return isProto3;
   }
 
-  protected ProtoSubject<? extends ProtoSubject<?, M>, M> expectThat(@Nullable M message) {
-    return expect.about(ProtoSubject.<M>protos()).that(message);
+  protected final ProtoSubject<?, Message> expectThat(@Nullable Message message) {
+    return expect.about(ProtoSubject.protos()).that(message);
   }
 
   protected final void expectIsEqualToFailed(AssertionError e) {
@@ -128,25 +135,25 @@ public class ProtoSubjectTestBase<M extends Message> {
   }
 
   // TODO(cgruber): These probably belong in ThrowableSubject.
-  protected void expectRegex(Throwable t, String regex) {
+  protected final void expectRegex(Throwable t, String regex) {
     expect
         .withFailureMessage(String.format("Expected <%s> to match '%s'.", regex, t.getMessage()))
         .that(Pattern.compile(regex, Pattern.DOTALL).matcher(t.getMessage()).matches())
         .isTrue();
   }
 
-  protected void expectNoRegex(Throwable t, String regex) {
+  protected final void expectNoRegex(Throwable t, String regex) {
     expect
         .withFailureMessage(String.format("Expected <%s> to match '%s'.", regex, t.getMessage()))
         .that(Pattern.compile(regex, Pattern.DOTALL).matcher(t.getMessage()).matches())
         .isFalse();
   }
 
-  protected void expectSubstr(Throwable t, String substr) {
+  protected final void expectSubstr(Throwable t, String substr) {
     expect.that(t.getMessage()).contains(substr);
   }
 
-  protected void expectNoSubstr(Throwable t, String substr) {
+  protected final void expectNoSubstr(Throwable t, String substr) {
     expect.that(t.getMessage()).doesNotContain(substr);
   }
 }

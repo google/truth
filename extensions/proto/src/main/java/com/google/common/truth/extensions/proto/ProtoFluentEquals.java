@@ -28,10 +28,8 @@ import javax.annotation.Nullable;
  * left undefined. Implementations may choose to return a modified copy, modify themselves in place,
  * or something else entirely. Users should not retain references to {@code ProtoFluentEquals}
  * instances.
- *
- * @param <M> the specific message type being tested
  */
-public interface ProtoFluentEquals<M extends Message> {
+public interface ProtoFluentEquals {
 
   /**
    * Specifies that the 'has' bit of individual fields should be ignored when comparing for
@@ -47,7 +45,7 @@ public interface ProtoFluentEquals<M extends Message> {
    * default value are indistinguishable from unset fields in proto 3. Proto 3 also eliminates
    * unknown fields, so this setting has no effect there either.
    */
-  ProtoFluentEquals<M> ignoringFieldAbsence();
+  ProtoFluentEquals ignoringFieldAbsence();
 
   /**
    * Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
@@ -111,7 +109,7 @@ public interface ProtoFluentEquals<M extends Message> {
    * <p>This setting does not apply to map fields, for which field order is always ignored. The
    * serialization order of map fields is undefined, and it may change from runtime to runtime.
    */
-  ProtoFluentEquals<M> ignoringRepeatedFieldOrder();
+  ProtoFluentEquals ignoringRepeatedFieldOrder();
 
   /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
@@ -124,7 +122,7 @@ public interface ProtoFluentEquals<M extends Message> {
    * <p>By default, {@link ProtoFluentEquals} is constrained to {@link FieldScopes#all()}, that is,
    * no fields are excluded from comparison.
    */
-  ProtoFluentEquals<M> withPartialScope(FieldScope<M> fieldScope);
+  ProtoFluentEquals withPartialScope(FieldScope fieldScope);
 
   /**
    * Excludes the top-level message field with the given tag number from the comparison.
@@ -136,7 +134,7 @@ public interface ProtoFluentEquals<M extends Message> {
    * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
    * runtime exception.
    */
-  ProtoFluentEquals<M> ignoringField(int fieldNumber);
+  ProtoFluentEquals ignoringField(int fieldNumber);
 
   /**
    * Excludes all specific field paths under the argument {@link FieldScope} from the comparison.
@@ -149,7 +147,7 @@ public interface ProtoFluentEquals<M extends Message> {
    * <p>By default, {@link ProtoFluentEquals} is constrained to {@link FieldScopes#all()}, that is,
    * no fields are excluded from comparison.
    */
-  ProtoFluentEquals<M> ignoringFieldScope(FieldScope<M> fieldScope);
+  ProtoFluentEquals ignoringFieldScope(FieldScope fieldScope);
 
   /**
    * If set, in the event of a comparison failure, the error message printed will list only those
@@ -158,7 +156,7 @@ public interface ProtoFluentEquals<M extends Message> {
    *
    * <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.
    */
-  ProtoFluentEquals<M> reportingMismatchesOnly();
+  ProtoFluentEquals reportingMismatchesOnly();
 
   /**
    * Compares the subject of the assertion to {@code expected}, using all of the rules specified by
