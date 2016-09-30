@@ -29,12 +29,12 @@ assertThat(guavaOptional).hasValue("alfred");
 ## Why do I get a "`cannot find symbol .someMethod("foo");`" error when testing a custom type? {#missing-import}
 
 This is a symptom that you are passing the object being tested to the main
-`Truth.assertThat(...)` overloads, which don't include the type you are
-testing, and so you are matching `assertThat(Object)`.
+`Truth.assertThat(...)` overloads, which don't include the type you are testing,
+and so you are matching `assertThat(Object)`.
 
-To resolve this, either find the appropriate `assertThat(YourType)` overload
-and statically import it ([such as you would have to do for Java8
-types](#java8)), or use the `assertAbout(someType())` mechanism, i.e.
+To resolve this, either find the appropriate `assertThat(YourType)` overload and
+statically import it ([such as you would have to do for Java8 types](#java8)),
+or use the `assertAbout(someType())` mechanism, i.e.
 
 ```java
 assertAbout(gwtHasVisibility()).that(view).isVisible();
@@ -54,6 +54,59 @@ String string = "google";
 assertThat(string).endsWith("gle");
 assert_().that(string).endsWith("gle");
 ```
+
+## Referencing a Truth subject directly is _generally_ an anti-pattern {#subject-references}
+
+If you find yourself referencing a Truth subject type, there's a good chance
+that there's a cleaner way to write your code. For example, we've often see
+folks write test helper methods like this:
+
+```java
+// Please don't do this!
+private static BooleanSubject assertThatBooleanWpcs(
+    WebProperty webProperty, WebPropertyChannelSetting.Key key) {
+  return assertThat(
+      webProperty.getBooleanWebPropertyChannelSetting(
+          /* channel */ null, key, /* inherit */ true, /* useDefault */ false));
+}
+```
+
+Then in their tests, they call their helper method and chain `.isTrue()` or
+`.isFalse()` onto the end of it. E.g.,
+
+```java
+// Please don't do this!
+assertThatBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING).isTrue();
+assertThatBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING).isFalse();
+```
+
+**In general, please avoid helper methods that return Truth subjects**
+
+Instead, return the *value-under-test* from your helper method:
+
+```java
+private static boolean getBooleanWpcs(
+    WebProperty webProperty, WebPropertyChannelSetting.Key key) {
+  return webProperty.getBooleanWebPropertyChannelSetting(
+      /* channel */ null, key, /* inherit */ true, /* useDefault */ false);
+}
+```
+
+...and then in your tests, call your helper method inside `assertThat(...)`:
+
+```java
+assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING)).isTrue();
+assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING)).isFalse();
+```
+
+A tell-tale sign that you might be violating this anti-pattern is if you are
+importing a built-in Truth subject (e.g., `import
+com.google.common.truth.BooleanSubject`). Instead of passing a Truth subject
+around, you should be passing your *value-under-test*.
+
+Note that this is just a guideline, not a hard and fast rule. If you're
+including a failure message or configuring parameters on a subject (e.g.
+`ProtoSubject`), then this may be an acceptable pattern.
 
 ## When writing my own Truth extension, how should I name my assertion methods? {#assertion-naming}
 
