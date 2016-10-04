@@ -35,6 +35,12 @@ import javax.annotation.Nullable;
 /**
  * Truth subjects for the full version of Protocol Buffers.
  *
+ * <p>{@code ProtoSubject.assertThat(actual).isEqualTo(expected)} performs the same assertion as
+ * {@code Truth.assertThat(actual).isEqualTo(expected)}, but with a better failure message.
+ * By default, the assertions are strict with respect to repeated field order, missing fields, etc.
+ * This behavior can be changed with the configuration methods on this subject, e.g.
+ * {@code ProtoSubject.assertThat(actual).ignoringRepeatedFieldOrder().isEqualTo(expected)}.
+ *
  * <p>Equality tests, and other methods, may yield slightly different behavior for versions 2 and 3
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
