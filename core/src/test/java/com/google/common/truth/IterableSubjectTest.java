@@ -717,7 +717,8 @@ public class IterableSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <[1, null, 3]> contains only these elements in order <[null, 1, 3]>");
+              "Not true that <[1, null, 3]> contains exactly these elements in order "
+                  + "<[null, 1, 3]>");
     }
   }
 
@@ -756,7 +757,8 @@ public class IterableSubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
-              "Not true that <BadIterable> contains only these elements in order <[1, 3, null]>");
+              "Not true that <BadIterable> contains exactly "
+                  + "these elements in order <[1, 3, null]>");
     }
   }
 

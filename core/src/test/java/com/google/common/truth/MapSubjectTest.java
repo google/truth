@@ -160,7 +160,7 @@ public class MapSubjectTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessage(
-              "Not true that <[jan=1, feb=2, march=3]> contains only these elements in order "
+              "Not true that <[jan=1, feb=2, march=3]> contains exactly these elements in order "
                   + "<[jan=1, march=3, feb=2]>");
       return;
     }

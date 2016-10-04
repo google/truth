@@ -233,10 +233,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   @CanIgnoreReturnValue
   public final Ordered containsExactly(@Nullable Object... varargs) {
     List<Object> expected = (varargs == null) ? Lists.newArrayList((Object) null) : asList(varargs);
-    return containsExactly(
-        "contains exactly",
-        expected,
-        varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
+    return containsExactlyElementsIn(
+        expected, varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
   }
 
   /**
@@ -251,11 +249,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   @CanIgnoreReturnValue
   public final Ordered containsExactlyElementsIn(Iterable<?> expected) {
-    return containsExactly("contains exactly", expected, false);
+    return containsExactlyElementsIn(expected, false);
   }
 
-  private Ordered containsExactly(
-      String failVerb, Iterable<?> required, boolean addElementsInWarning) {
+  private Ordered containsExactlyElementsIn(Iterable<?> required, boolean addElementsInWarning) {
     String failSuffix =
         addElementsInWarning
             ? ". Passing an iterable to the varargs method containsExactly(Object...) is "
@@ -303,25 +300,29 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           if (!extra.isEmpty()) {
             // Subject is both missing required elements and contains extra elements
             failWithRawMessage(
-                "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>%s",
+                "Not true that %s contains exactly <%s>. "
+                    + "It is missing <%s> and has unexpected items <%s>%s",
                 actualAsString(),
-                failVerb,
                 required,
                 countDuplicates(missing),
                 countDuplicates(extra),
                 failSuffix);
           } else {
             failWithBadResultsAndSuffix(
-                failVerb, required, "is missing", countDuplicates(missing), failSuffix);
+                "contains exactly", required, "is missing", countDuplicates(missing), failSuffix);
           }
         }
         if (!extra.isEmpty()) {
           failWithBadResultsAndSuffix(
-              failVerb, required, "has unexpected items", countDuplicates(extra), failSuffix);
+              "contains exactly",
+              required,
+              "has unexpected items",
+              countDuplicates(extra),
+              failSuffix);
         }
 
         // Since we know the iterables were not in the same order, inOrder() can just fail.
-        return new NotInOrder("contains only these elements in order", required);
+        return new NotInOrder("contains exactly these elements in order", required);
       }
     }
 
@@ -330,14 +331,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     // extras. If the required iterator has elements, they're missing elements.
     if (actualIter.hasNext()) {
       failWithBadResultsAndSuffix(
-          failVerb,
+          "contains exactly",
           required,
           "has unexpected items",
           countDuplicates(Lists.newArrayList(actualIter)),
           failSuffix);
     } else if (requiredIter.hasNext()) {
       failWithBadResultsAndSuffix(
-          failVerb,
+          "contains exactly",
           required,
           "is missing",
           countDuplicates(Lists.newArrayList(requiredIter)),
