@@ -70,8 +70,8 @@ abstract class FieldScopeImpl extends FieldScope {
           addSubMessages(fieldDescriptor, message2, subMessages);
         }
 
-        return !includesField(
-            Context.create(descriptor, fieldPath, fieldDescriptor, subMessages), cache);
+        Context context = Context.create(descriptor, fieldPath, fieldDescriptor, subMessages);
+        return !matchesContentOfSubMessages(context, cache) && !matchesFieldPath(context, cache);
       }
     };
   }
@@ -145,7 +145,17 @@ abstract class FieldScopeImpl extends FieldScope {
   }
 
   /** Whether or not this implementation includes the specified specific field path. */
-  abstract boolean includesField(Context context, Cache cache);
+  abstract boolean matchesFieldPath(Context context, Cache cache);
+
+  /**
+   * Whether or not this implementation matches some sub-field of one of the messages at the end of
+   * the field path. Necessary for negation to work with arbitrary FieldDescriptors.
+   *
+   * <p>Returns false by default, since most FieldScopeImpls don't inspect sub-message contents.
+   */
+  boolean matchesContentOfSubMessages(Context context, Cache cache) {
+    return false;
+  }
 
   /**
    * Performs any validation that requires a Descriptor to validate against.
@@ -205,14 +215,14 @@ abstract class FieldScopeImpl extends FieldScope {
   private static final FieldScope ALL =
       new FieldScopeImpl() {
         @Override
-        boolean includesField(Context context, Cache cache) {
+        boolean matchesFieldPath(Context context, Cache cache) {
           return true;
         }
       };
   private static final FieldScope NONE =
       new FieldScopeImpl() {
         @Override
-        boolean includesField(Context context, Cache cache) {
+        boolean matchesFieldPath(Context context, Cache cache) {
           return false;
         }
       };
@@ -245,7 +255,7 @@ abstract class FieldScopeImpl extends FieldScope {
     }
 
     @Override
-    boolean includesField(Context context, Cache cache) {
+    boolean matchesFieldPath(Context context, Cache cache) {
       return fieldNumberTree.matches(context.fieldPath(), context.field());
     }
   }
@@ -272,7 +282,7 @@ abstract class FieldScopeImpl extends FieldScope {
     abstract boolean matchesFieldDescriptor(Descriptor descriptor, FieldDescriptor fieldDescriptor);
 
     @Override
-    boolean includesField(Context context, Cache cache) {
+    boolean matchesFieldPath(Context context, Cache cache) {
       if (context.field().isPresent()
           && matchesFieldDescriptor(context.descriptor(), context.field().get())) {
         return true;
@@ -286,12 +296,16 @@ abstract class FieldScopeImpl extends FieldScope {
         }
       }
 
+      return false;
+    }
+
+    @Override
+    boolean matchesContentOfSubMessages(Context context, Cache cache) {
       for (Message message : context.messageFields()) {
         if (messageHasMatchingField(context, cache, message)) {
           return true;
         }
       }
-
       return false;
     }
 
@@ -388,6 +402,18 @@ abstract class FieldScopeImpl extends FieldScope {
     }
 
     @Override
+    final boolean matchesContentOfSubMessages(Context context, Cache cache) {
+      // We ignore compound logic for checking sub-messages, since we want to ensure we inspect
+      // any sub-message which could match a FieldScopeImpl at a deeper path.
+      for (FieldScopeImpl impl : elements) {
+        if (impl.matchesContentOfSubMessages(context, cache)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    @Override
     final void validate(Descriptor descriptor) {
       for (FieldScopeImpl elem : elements) {
         elem.validate(descriptor);
@@ -401,9 +427,9 @@ abstract class FieldScopeImpl extends FieldScope {
     }
 
     @Override
-    boolean includesField(Context context, Cache cache) {
-      return elements.get(0).includesField(context, cache)
-          && elements.get(1).includesField(context, cache);
+    boolean matchesFieldPath(Context context, Cache cache) {
+      return elements.get(0).matchesFieldPath(context, cache)
+          && elements.get(1).matchesFieldPath(context, cache);
     }
   }
 
@@ -413,9 +439,9 @@ abstract class FieldScopeImpl extends FieldScope {
     }
 
     @Override
-    boolean includesField(Context context, Cache cache) {
-      return elements.get(0).includesField(context, cache)
-          || elements.get(1).includesField(context, cache);
+    boolean matchesFieldPath(Context context, Cache cache) {
+      return elements.get(0).matchesFieldPath(context, cache)
+          || elements.get(1).matchesFieldPath(context, cache);
     }
   }
 
@@ -425,8 +451,8 @@ abstract class FieldScopeImpl extends FieldScope {
     }
 
     @Override
-    boolean includesField(Context context, Cache cache) {
-      return !elements.get(0).includesField(context, cache);
+    boolean matchesFieldPath(Context context, Cache cache) {
+      return !elements.get(0).matchesFieldPath(context, cache);
     }
   }
 

@@ -232,6 +232,39 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testIgnoreFieldOfSubMessage() {
+    // Ignore o_int of sub message fields.
+    Message message = parse("o_int: 1 o_sub_test_message: { o_int: 2 r_string: \"foo\" }");
+    Message diffMessage1 = parse("o_int: 2 o_sub_test_message: { o_int: 2 r_string: \"foo\" }");
+    Message diffMessage2 = parse("o_int: 1 o_sub_test_message: { o_int: 2 r_string: \"bar\" }");
+    Message eqMessage = parse("o_int: 1 o_sub_test_message: { o_int: 3 r_string: \"foo\" }");
+
+    FieldDescriptor fieldDescriptor =
+        getFieldDescriptor("o_sub_test_message").getMessageType().findFieldByName("o_int");
+    FieldScope partialScope = FieldScopes.ignoringFieldDescriptors(fieldDescriptor);
+
+    expectThat(diffMessage1).withPartialScope(partialScope).isNotEqualTo(message);
+    expectThat(diffMessage2).withPartialScope(partialScope).isNotEqualTo(message);
+    expectThat(eqMessage).withPartialScope(partialScope).isEqualTo(message);
+
+    try {
+      assertThat(diffMessage1).withPartialScope(partialScope).isEqualTo(message);
+      fail("Expected error.");
+    } catch (AssertionError e) {
+      expectIsEqualToFailed(e);
+      expectSubstr(e, "modified: o_int: 1 -> 2");
+    }
+
+    try {
+      assertThat(diffMessage2).withPartialScope(partialScope).isEqualTo(message);
+      fail("Expected error.");
+    } catch (AssertionError e) {
+      expectIsEqualToFailed(e);
+      expectSubstr(e, "modified: o_sub_test_message.r_string[0]: \"foo\" -> \"bar\"");
+    }
+  }
+
+  @Test
   public void testIgnoringAllButOneFieldOfSubMessage() {
     // Consider all of TestMessage, but none of o_sub_test_message, except
     // o_sub_test_message.o_int.
