@@ -109,15 +109,15 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   @Test
   public void testIgnoringTopLevelField_ignoringField() {
     expectThat(ignoringFieldDiffMessage)
-        .ignoringField(goodFieldNumber)
+        .ignoringFields(goodFieldNumber)
         .isNotEqualTo(ignoringFieldMessage);
     expectThat(ignoringFieldDiffMessage)
-        .ignoringField(badFieldNumber)
+        .ignoringFields(badFieldNumber)
         .isEqualTo(ignoringFieldMessage);
 
     try {
       assertThat(ignoringFieldDiffMessage)
-          .ignoringField(goodFieldNumber)
+          .ignoringFields(goodFieldNumber)
           .isEqualTo(ignoringFieldMessage);
       fail("Expected error.");
     } catch (AssertionError e) {
@@ -127,7 +127,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(ignoringFieldDiffMessage)
-          .ignoringField(badFieldNumber)
+          .ignoringFields(badFieldNumber)
           .isNotEqualTo(ignoringFieldMessage);
       fail("Expected error.");
     } catch (AssertionError e) {
@@ -209,13 +209,13 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     Message eqMessage3 = parse("o_int: 1 o_sub_test_message: { o_int: 3 r_string: \"x\" }");
     int fieldNumber = getFieldNumber("o_sub_test_message");
 
-    expectThat(diffMessage).ignoringField(fieldNumber).isNotEqualTo(message);
-    expectThat(eqMessage1).ignoringField(fieldNumber).isEqualTo(message);
-    expectThat(eqMessage2).ignoringField(fieldNumber).isEqualTo(message);
-    expectThat(eqMessage3).ignoringField(fieldNumber).isEqualTo(message);
+    expectThat(diffMessage).ignoringFields(fieldNumber).isNotEqualTo(message);
+    expectThat(eqMessage1).ignoringFields(fieldNumber).isEqualTo(message);
+    expectThat(eqMessage2).ignoringFields(fieldNumber).isEqualTo(message);
+    expectThat(eqMessage3).ignoringFields(fieldNumber).isEqualTo(message);
 
     try {
-      assertThat(diffMessage).ignoringField(fieldNumber).isEqualTo(message);
+      assertThat(diffMessage).ignoringFields(fieldNumber).isEqualTo(message);
       fail("Expected error.");
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
@@ -223,7 +223,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     }
 
     try {
-      assertThat(eqMessage3).ignoringField(fieldNumber).isNotEqualTo(message);
+      assertThat(eqMessage3).ignoringFields(fieldNumber).isNotEqualTo(message);
       fail("Expected error.");
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
@@ -669,7 +669,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     Message message2 = parse("o_int: 33");
 
     try {
-      expectThat(message1).ignoringField(999).isEqualTo(message2);
+      expectThat(message1).ignoringFields(999).isEqualTo(message2);
       fail("Expected error.");
     } catch (IllegalArgumentException e) {
       expectSubstr(e, "Message type " + fullMessageName() + " has no field with number 999.");

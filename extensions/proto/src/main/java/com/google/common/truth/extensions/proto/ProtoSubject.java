@@ -26,6 +26,7 @@ import com.google.common.truth.Truth;
 import com.google.common.truth.extensions.proto.MessageDifferencer.ReportType;
 import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
 import com.google.common.truth.extensions.proto.MessageDifferencer.StreamReporter;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
 import java.util.ArrayList;
@@ -103,8 +104,14 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
-  public ProtoFluentEquals ignoringField(int fieldNumber) {
-    this.fieldScope = fieldScope.ignoringFields(fieldNumber);
+  public ProtoFluentEquals ignoringFields(int... fieldNumbers) {
+    this.fieldScope = fieldScope.ignoringFields(fieldNumbers);
+    return this;
+  }
+
+  @Override
+  public ProtoFluentEquals ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+    this.fieldScope = fieldScope.ignoringFieldDescriptors(fieldDescriptors);
     return this;
   }
 

@@ -24,13 +24,13 @@ import com.google.protobuf.Descriptors.FieldDescriptor;
  * An immutable, abstract representation of a set of specific field paths. See {@link FieldScopes}
  * for entry points to obtain a {@code FieldScope} object.
  *
- * <p>A {@code FieldScope} is similar in concept to a {@link com.google.protobuf.FieldMask}, which
- * is an explicitly enumerated set of specific field paths. A FieldScope is more general, allowing
- * for the description of arbitrary classes of specific field paths to be included or excluded from
- * its definition. For example, given a large protocol buffer with many field definitions, and a
- * single string field named 'x', it is arduous to specify "All fields except 'x'" as a {@code
- * FieldMask}. With a {@code FieldScope}, it is simply {@code
- * FieldScopes.all().ignoringFields(MyMessage.X_FIELD_NUMBER)}.
+ * <p>A {@code FieldScope} is similar in concept to a {@code FieldMask}, which is an explicitly
+ * enumerated set of specific field paths. A FieldScope is more general, allowing for the
+ * description of arbitrary classes of specific field paths to be included or excluded from its
+ * definition. For example, given a large protocol buffer with many field definitions, and a single
+ * string field named 'x', it is arduous to specify "All fields except 'x'" as a {@code FieldMask}.
+ * With a {@code FieldScope}, it is simply {@code
+ * FieldScopes.ignoringFields(MyMessage.X_FIELD_NUMBER)}.
  *
  * <p>All inclusion and exclusion operations on message-type fields are recursive, but may be
  * overridden by subsequent operations. In this way, a complex {@code FieldScope} such as:
@@ -45,13 +45,10 @@ import com.google.protobuf.Descriptors.FieldDescriptor;
  * completely different, so long as the 'flag' fields for each B matches. Because of this, method
  * ordering matters. Generally, exclusions should come after inclusions.
  *
- * <p>FieldScopes are not designed to be compact or efficient, trading flexibility of use for
- * runtime efficiency, generally composing themselves as recursive structures. For this reason, it
- * is not recommended to use FieldScopes in production code. Prefer to use {@link
- * MessageDifferencer}, and proper {@link FieldMask}s, directly in production code.
- *
- * @see com.google.protobuf.FieldMask
- * @see com.google.protobuf.util.FieldMaskUtil
+ * <p>{@code FieldScope}s are not designed to be compact or efficient, trading flexibility of use
+ * for runtime efficiency, generally composing themselves as recursive structures. For this reason,
+ * it is not recommended to use {@code FieldScope} in production code. Prefer to use proper {@code
+ * FieldMask}s, directly in production code.
  */
 public abstract class FieldScope {
 
@@ -94,9 +91,9 @@ public abstract class FieldScope {
    * numbers are encountered.
    *
    * <p>The field numbers are included recursively on this type. That is, if {@code YourMessage}
-   * contains another {@code YourMessage} somewhere within its subtree, a {@code
-   * FieldScope<YourMessage> allowingFields(X)} will include field number {@code X} for all
-   * submessages of type {@code YourMessage}, as well as for the top-level message.
+   * contains another {@code YourMessage} somewhere within its subtree, a {@code FieldScope
+   * allowingFields(X)} will include field number {@code X} for all submessages of type {@code
+   * YourMessage}, as well as for the top-level message.
    */
   public abstract FieldScope allowingFields(int... fieldNumbers);
 

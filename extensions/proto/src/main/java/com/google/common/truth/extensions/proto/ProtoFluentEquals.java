@@ -15,6 +15,7 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import javax.annotation.Nullable;
 
@@ -125,16 +126,29 @@ public interface ProtoFluentEquals {
   ProtoFluentEquals withPartialScope(FieldScope fieldScope);
 
   /**
-   * Excludes the top-level message field with the given tag number from the comparison.
+   * Excludes the top-level message fields with the given tag numbers from the comparison.
    *
    * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
-   * changes to ensure the specified field is ignored recursively. All sub-fields of this field
-   * number, are ignored, and all sub-messages of type {@code M} will also have this field ignored.
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * numbers are ignored, and all sub-messages of type {@code M} will also have these field numbers
+   * ignored.
    *
    * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
    * runtime exception.
    */
-  ProtoFluentEquals ignoringField(int fieldNumber);
+  ProtoFluentEquals ignoringFields(int... fieldNumbers);
+
+  /**
+   * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * descriptors are ignored, no matter where they occur in the tree.
+   *
+   * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
+   * is silently ignored.
+   */
+  ProtoFluentEquals ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors);
 
   /**
    * Excludes all specific field paths under the argument {@link FieldScope} from the comparison.
@@ -175,7 +189,7 @@ public interface ProtoFluentEquals {
   /**
    * @deprecated Do not call {@code equals()} on a {@code ProtoFluentEquals}. Use {@link
    *     #isEqualTo(Object)} instead.
-   * @see Subject#equals(Object)
+   * @see com.google.common.truth.Subject#equals(Object)
    */
   @Override
   @Deprecated
@@ -184,7 +198,7 @@ public interface ProtoFluentEquals {
   /**
    * @deprecated {@code ProtoFluentEquals} does not support {@code hashCode()}. Use {@link
    *     #isEqualTo(Object)} for testing.
-   * @see Subject#hashCode()
+   * @see com.google.common.truth.Subject#hashCode()
    */
   @Override
   @Deprecated
