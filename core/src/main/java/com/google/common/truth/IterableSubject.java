@@ -596,9 +596,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * on the object returned by this method.
      */
     @CanIgnoreReturnValue
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private Ordered containsExactly(@Nullable E... expected) {
-      throw new UnsupportedOperationException();
+    public final Ordered containsExactly(@Nullable E... expected) {
+      return containsExactlyElementsIn(
+          (expected == null) ? Lists.newArrayList((E) null) : asList(expected));
     }
 
     /**

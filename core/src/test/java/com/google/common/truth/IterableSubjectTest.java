@@ -911,7 +911,7 @@ public class IterableSubjectTest {
       new Comparator<Foo>() {
         @Override
         public int compare(Foo a, Foo b) {
-          return Ints.compare(a.x, b.x);
+          return (a.x < b.x) ? -1 : ((a.x > b.x) ? 1 : 0);
         }
       };
 
@@ -924,7 +924,8 @@ public class IterableSubjectTest {
 
   /**
    * A correspondence between strings and integers which tests whether the string parses as the
-   * integer. Parsing is as specified by {@link Integer#decode(String)}.
+   * integer. Parsing is as specified by {@link Integer#decode(String)}. It considers null to
+   * correspond to null only.
    */
   static final Correspondence<String, Integer> STRING_PARSES_TO_INTEGER_CORRESPONDENCE =
       new Correspondence<String, Integer>() {
@@ -932,7 +933,7 @@ public class IterableSubjectTest {
         @Override
         public boolean compare(@Nullable String actual, @Nullable Integer expected) {
           if (actual == null) {
-            return false;
+            return expected == null;
           }
           try {
             return Integer.decode(actual).equals(expected);
@@ -969,6 +970,14 @@ public class IterableSubjectTest {
               "Not true that <[not a number, +123, +456, +789]> contains at least one element that"
                   + " parses to <2345>");
     }
+  }
+
+  @Test
+  public void comparingElementsUsing_contains_null() {
+    List<String> actual = Arrays.asList("+123", null, "+789");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .contains(null);
   }
 
   @Test
@@ -1245,5 +1254,75 @@ public class IterableSubjectTest {
               "Not true that <[+128, +64, 0x80, +256]> contains, in order, exactly one element "
                   + "that parses to each element of <[64, 128, 256, 128]>");
     }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_null() {
+    List<Integer> expected = Arrays.asList((Integer) null);
+    List<String> actual = Arrays.asList((String) null);
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactly_inOrder_success() {
+    ImmutableList<String> actual = ImmutableList.of("+64", "+128", "+256", "0x80");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly(64, 128, 256, 128)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactly_successOutOfOrder() {
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "0x80", "+256");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly(64, 128, 256, 128);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactly_failsMissingAndExtraInOneToOne() {
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly(64, 128, 256, 128);
+    } catch (AssertionError e) {
+      String expectedPreamble =
+          "Not true that <[+128, +64, +256, 0x40]> contains exactly one element that parses "
+              + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
+              + "that matches each expected element, and every element it contains matches at "
+              + "least one expected element, but there was no 1:1 mapping between all the "
+              + "actual and expected elements. Using the most complete 1:1 mapping (or one "
+              + "such mapping, if there is a tie), it is missing an element that parses to "
+              + "<128> and has unexpected elements ";
+      ImmutableList<String> possibleRemainders = ImmutableList.of("<[0x40]>", "<[+64]>");
+      String actualMessage = e.getMessage();
+      assertThat(actualMessage).startsWith(expectedPreamble);
+      String actualRemainder = actualMessage.substring(expectedPreamble.length());
+      assertThat(actualRemainder).isIn(possibleRemainders);
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactly_nullValueInArray() {
+    List<String> actual = Arrays.asList((String) null);
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly((Integer) null)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactly_nullArray() {
+    // Truth is tolerant of this erroneous varargs call.
+    List<String> actual = Arrays.asList((String) null);
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly((Integer[]) null)
+        .inOrder();
   }
 }
