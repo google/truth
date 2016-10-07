@@ -15,7 +15,7 @@
  */
 package com.google.common.truth.extensions.proto;
 
-import static com.google.common.truth.extensions.proto.ProtoSubject.assertThat;
+import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.protobuf.Message;

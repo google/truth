@@ -23,8 +23,8 @@ import javax.annotation.Nullable;
 /**
  * A set of static methods to begin a Truth assertion chain for types that require java8.
  *
- * <p><em>Note: Usage of different failure strategies such as <em>assume</em> and <em>about</em>
- * should rely on {@link
+ * <p>Note: Usage of different failure strategies such as <em>assume</em> and <em>expect</em> should
+ * rely on {@link
  * com.google.common.truth.AbstractVerb#about(com.google.common.truth.SubjectFactory)} to begin a
  * chain with those alternative behaviors.
  */

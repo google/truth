@@ -55,11 +55,13 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * about Lite Protobuf properties.
    */
   public static Factory<?, MessageLite> liteProtos() {
+    // TODO(user): Migrate users, make this package-private.
     return UntypedSubjectFactory.INSTANCE;
   }
 
   /** Returns a Subject using the assertion strategy on the provided {@link MessageLite}. */
   public static LiteProtoSubject<?, MessageLite> assertThat(@Nullable MessageLite messageLite) {
+    // TODO(user): Migrate users, delete this method.
     return assertAbout(LiteProtoSubject.liteProtos()).that(messageLite);
   }
 

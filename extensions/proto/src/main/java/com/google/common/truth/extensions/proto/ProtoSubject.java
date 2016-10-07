@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -34,13 +35,13 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * Truth subjects for the full version of Protocol Buffers.
+ * Truth subject for the full version of Protocol Buffers.
  *
  * <p>{@code ProtoSubject.assertThat(actual).isEqualTo(expected)} performs the same assertion as
- * {@code Truth.assertThat(actual).isEqualTo(expected)}, but with a better failure message.
- * By default, the assertions are strict with respect to repeated field order, missing fields, etc.
- * This behavior can be changed with the configuration methods on this subject, e.g.
- * {@code ProtoSubject.assertThat(actual).ignoringRepeatedFieldOrder().isEqualTo(expected)}.
+ * {@code Truth.assertThat(actual).isEqualTo(expected)}, but with a better failure message. By
+ * default, the assertions are strict with respect to repeated field order, missing fields, etc.
+ * This behavior can be changed with the configuration methods on this subject, e.g. {@code
+ * ProtoSubject.assertThat(actual).ignoringRepeatedFieldOrder().isEqualTo(expected)}.
  *
  * <p>Equality tests, and other methods, may yield slightly different behavior for versions 2 and 3
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
@@ -73,11 +74,15 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
    * things about Protobuf properties.
    */
   public static Factory<?, Message> protos() {
+    // TODO(user): Migrate users, make this package-private.
     return UntypedSubjectFactory.INSTANCE;
   }
 
-  /** Returns a {@link Subject} using the assertion strategy on the provided {@link Message}. */
+  /**
+   * Returns a {@link Subject} using the assertion strategy on the provided {@link Message}.
+   */
   public static ProtoSubject<?, Message> assertThat(@Nullable Message message) {
+    // TODO(user): Migrate users, delete this method.
     return assertAbout(ProtoSubject.protos()).that(message);
   }
 

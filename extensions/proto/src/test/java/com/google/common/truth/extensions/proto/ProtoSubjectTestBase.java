@@ -116,7 +116,7 @@ public class ProtoSubjectTestBase {
   }
 
   protected final ProtoSubject<?, Message> expectThat(@Nullable Message message) {
-    return expect.about(ProtoSubject.protos()).that(message);
+    return expect.about(ProtoTruth.protos()).that(message);
   }
 
   protected final void expectIsEqualToFailed(AssertionError e) {

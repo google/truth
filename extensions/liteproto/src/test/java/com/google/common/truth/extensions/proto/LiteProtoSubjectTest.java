@@ -15,7 +15,7 @@
  */
 package com.google.common.truth.extensions.proto;
 
-import static com.google.common.truth.extensions.proto.LiteProtoSubject.assertThat;
+import static com.google.common.truth.extensions.proto.LiteProtoTruth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.auto.value.AutoValue;
@@ -130,8 +130,8 @@ public class LiteProtoSubjectTest {
     this.config = config;
   }
 
-  private LiteProtoSubject<?, ?> expectThat(@Nullable MessageLite m) {
-    return expect.about(LiteProtoSubject.<MessageLite>liteProtos()).that(m);
+  private LiteProtoSubject<?, MessageLite> expectThat(@Nullable MessageLite m) {
+    return expect.about(LiteProtoTruth.liteProtos()).that(m);
   }
 
   private Subject<?, ?> expectThat(@Nullable Object o) {
