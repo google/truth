@@ -24,7 +24,6 @@ import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.primitives.Ints;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -1258,12 +1257,11 @@ public class IterableSubjectTest {
 
   @Test
   public void comparingElementsUsing_containsExactlyElementsIn_null() {
-    List<Integer> expected = Arrays.asList((Integer) null);
-    List<String> actual = Arrays.asList((String) null);
+    List<Integer> expected = Arrays.asList(128, null);
+    List<String> actual = Arrays.asList(null, "0x80");
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsExactlyElementsIn(expected)
-        .inOrder();
+        .containsExactlyElementsIn(expected);
   }
 
   @Test
@@ -1309,11 +1307,10 @@ public class IterableSubjectTest {
 
   @Test
   public void comparingElementsUsing_containsExactly_nullValueInArray() {
-    List<String> actual = Arrays.asList((String) null);
+    List<String> actual = Arrays.asList(null, "0x80");
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsExactly((Integer) null)
-        .inOrder();
+        .containsExactly(128, null);
   }
 
   @Test

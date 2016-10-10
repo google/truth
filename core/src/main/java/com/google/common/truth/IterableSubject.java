@@ -619,8 +619,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // We know they don't correspond in order, so we're going to have to do an any-order test.
       // Find a many:many mapping between the indexes of the elements which correspond, and check
       // it for completeness.
-      ImmutableList<A> actualList = ImmutableList.copyOf(getCastSubject());
-      ImmutableList<? extends E> expectedList = ImmutableList.copyOf(expected);
+      List<A> actualList = Lists.newArrayList(getCastSubject());
+      List<? extends E> expectedList = Lists.newArrayList(expected);
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
           findCandidateMapping(actualList, expectedList);
       failIfCandidateMappingHasMissingOrExtra(actualList, expectedList, candidateMapping);
@@ -681,8 +681,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends A> actual,
         List<? extends E> expected,
         ImmutableMultimap<Integer, Integer> mapping) {
-      ImmutableList<? extends A> extra = findNotIndexed(actual, mapping.keySet());
-      ImmutableList<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
+      List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
+      List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
       if (missingOrExtraMessage.isPresent()) {
           failWithRawMessage(
@@ -721,19 +721,19 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * Returns all the elements of the given list other than those with the given indexes. Assumes
      * that all the given indexes really are valid indexes into the list.
      */
-    private <T> ImmutableList<T> findNotIndexed(List<T> list, Set<Integer> indexes) {
+    private <T> List<T> findNotIndexed(List<T> list, Set<Integer> indexes) {
       if (indexes.size() == list.size()) {
         // If there are as many distinct valid indexes are there are elements in the list then every
         // index must be in there once.
         return ImmutableList.of();
       }
-      ImmutableList.Builder<T> notIndexed = ImmutableList.builder();
+      List<T> notIndexed = Lists.newArrayList();
       for (int index = 0; index < list.size(); index++) {
         if (!indexes.contains(index)) {
           notIndexed.add(list.get(index));
         }
       }
-      return notIndexed.build();
+      return notIndexed;
     }
 
     /**
@@ -786,8 +786,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends A> actual,
         List<? extends E> expected,
         BiMap<Integer, Integer> mapping) {
-      ImmutableList<? extends A> extra = findNotIndexed(actual, mapping.keySet());
-      ImmutableList<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
+      List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
+      List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
       if (missingOrExtraMessage.isPresent()) {
         failWithRawMessage(
