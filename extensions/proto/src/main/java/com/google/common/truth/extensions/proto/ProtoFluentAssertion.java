@@ -25,12 +25,10 @@ import javax.annotation.Nullable;
  * <p>Methods may be chained in any order, but the chain should terminate with {@link
  * #isEqualTo(Object)} or {@link #isNotEqualTo(Object)}.
  *
- * <p>The state of a {@code ProtoFluentEquals} object after another method has been called on it is
- * left undefined. Implementations may choose to return a modified copy, modify themselves in place,
- * or something else entirely. Users should not retain references to {@code ProtoFluentEquals}
- * instances.
+ * <p>The state of a {@code ProtoFluentAssertion} object after each method is called is left
+ * undefined. Users should not retain references to {@code ProtoFluentAssertion} instances.
  */
-public interface ProtoFluentEquals {
+public interface ProtoFluentAssertion {
 
   /**
    * Specifies that the 'has' bit of individual fields should be ignored when comparing for
@@ -46,7 +44,7 @@ public interface ProtoFluentEquals {
    * default value are indistinguishable from unset fields in proto 3. Proto 3 also eliminates
    * unknown fields, so this setting has no effect there either.
    */
-  ProtoFluentEquals ignoringFieldAbsence();
+  ProtoFluentAssertion ignoringFieldAbsence();
 
   /**
    * Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
@@ -110,20 +108,20 @@ public interface ProtoFluentEquals {
    * <p>This setting does not apply to map fields, for which field order is always ignored. The
    * serialization order of map fields is undefined, and it may change from runtime to runtime.
    */
-  ProtoFluentEquals ignoringRepeatedFieldOrder();
+  ProtoFluentAssertion ignoringRepeatedFieldOrder();
 
   /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
-   * ProtoFluentEquals} is already scoped to a {@link FieldScope} {@code X}, and this method is
-   * invoked with {@link FieldScope} {@code Y}, the resultant {@link ProtoFluentEquals} is
+   * ProtoFluentAssertion} is already scoped to a {@link FieldScope} {@code X}, and this method is
+   * invoked with {@link FieldScope} {@code Y}, the resultant {@link ProtoFluentAssertion} is
    * constrained to the intersection of {@link FieldScope}s {@code X} and {@code Y}.
    *
-   * <p>By default, {@link ProtoFluentEquals} is constrained to {@link FieldScopes#all()}, that is,
-   * no fields are excluded from comparison.
+   * <p>By default, {@link ProtoFluentAssertion} is constrained to {@link FieldScopes#all()}, that
+   * is, no fields are excluded from comparison.
    */
-  ProtoFluentEquals withPartialScope(FieldScope fieldScope);
+  ProtoFluentAssertion withPartialScope(FieldScope fieldScope);
 
   /**
    * Excludes the top-level message fields with the given tag numbers from the comparison.
@@ -136,7 +134,7 @@ public interface ProtoFluentEquals {
    * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
    * runtime exception.
    */
-  ProtoFluentEquals ignoringFields(int... fieldNumbers);
+  ProtoFluentAssertion ignoringFields(int... fieldNumbers);
 
   /**
    * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
@@ -148,20 +146,20 @@ public interface ProtoFluentEquals {
    * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
    * is silently ignored.
    */
-  ProtoFluentEquals ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors);
+  ProtoFluentAssertion ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors);
 
   /**
    * Excludes all specific field paths under the argument {@link FieldScope} from the comparison.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
-   * ProtoFluentEquals} is already scoped to a {@link FieldScope} {@code X}, and this method is
-   * invoked with {@link FieldScope} {@code Y}, the resultant {@link ProtoFluentEquals} is
+   * ProtoFluentAssertion} is already scoped to a {@link FieldScope} {@code X}, and this method is
+   * invoked with {@link FieldScope} {@code Y}, the resultant {@link ProtoFluentAssertion} is
    * constrained to the subtraction of {@code X - Y}.
    *
-   * <p>By default, {@link ProtoFluentEquals} is constrained to {@link FieldScopes#all()}, that is,
-   * no fields are excluded from comparison.
+   * <p>By default, {@link ProtoFluentAssertion} is constrained to {@link FieldScopes#all()}, that
+   * is, no fields are excluded from comparison.
    */
-  ProtoFluentEquals ignoringFieldScope(FieldScope fieldScope);
+  ProtoFluentAssertion ignoringFieldScope(FieldScope fieldScope);
 
   /**
    * If set, in the event of a comparison failure, the error message printed will list only those
@@ -170,7 +168,7 @@ public interface ProtoFluentEquals {
    *
    * <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.
    */
-  ProtoFluentEquals reportingMismatchesOnly();
+  ProtoFluentAssertion reportingMismatchesOnly();
 
   /**
    * Compares the subject of the assertion to {@code expected}, using all of the rules specified by
@@ -187,7 +185,7 @@ public interface ProtoFluentEquals {
   void isNotEqualTo(@Nullable Object expected);
 
   /**
-   * @deprecated Do not call {@code equals()} on a {@code ProtoFluentEquals}. Use {@link
+   * @deprecated Do not call {@code equals()} on a {@code ProtoFluentAssertion}. Use {@link
    *     #isEqualTo(Object)} instead.
    * @see com.google.common.truth.Subject#equals(Object)
    */
@@ -196,7 +194,7 @@ public interface ProtoFluentEquals {
   boolean equals(Object o);
 
   /**
-   * @deprecated {@code ProtoFluentEquals} does not support {@code hashCode()}. Use {@link
+   * @deprecated {@code ProtoFluentAssertion} does not support {@code hashCode()}. Use {@link
    *     #isEqualTo(Object)} for testing.
    * @see com.google.common.truth.Subject#hashCode()
    */

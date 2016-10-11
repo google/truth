@@ -671,8 +671,23 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     try {
       expectThat(message1).ignoringFields(999).isEqualTo(message2);
       fail("Expected error.");
-    } catch (IllegalArgumentException e) {
-      expectSubstr(e, "Message type " + fullMessageName() + " has no field with number 999.");
+    } catch (Exception e) {
+      // TODO(user): Use hasTransitiveCauseThat() if/when it becomes available.
+
+      Throwable cause = e;
+      while (cause != null) {
+        if (cause
+            .getMessage()
+            .contains("Message type " + fullMessageName() + " has no field with number 999.")) {
+          break;
+        } else {
+          cause = cause.getCause();
+        }
+      }
+      if (cause == null) {
+        fail("No cause with field number error message.");
+      }
     }
+
   }
 }

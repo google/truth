@@ -47,17 +47,13 @@ import javax.annotation.Nullable;
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
  *
- * @param <S> Subject class type.
- * @param <M> Message type.
- * @see ProtoFluentEquals
+ * @param <S> subject class type.
+ * @param <M> message type.
  */
 public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
-    extends LiteProtoSubject<S, M> implements ProtoFluentEquals {
+    extends LiteProtoSubject<S, M> implements ProtoFluentAssertion {
 
-  private boolean ignoreFieldAbsence = false;
-  private boolean ignoreRepeatedFieldOrder = false;
-  private boolean reportMismatchesOnly = false;
-  private FieldScope fieldScope = FieldScopes.all();
+  private final FluentEqualityConfig config;
 
   /**
    * Typed extension of {@link SubjectFactory}.
@@ -86,51 +82,56 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     return assertAbout(ProtoSubject.protos()).that(message);
   }
 
-  protected ProtoSubject(FailureStrategy failureStrategy, M message) {
+  protected ProtoSubject(FailureStrategy failureStrategy, @Nullable M message) {
+    this(failureStrategy, FluentEqualityConfig.defaultInstance(), message);
+  }
+
+  ProtoSubject(FailureStrategy failureStrategy, FluentEqualityConfig config, @Nullable M message) {
     super(failureStrategy, message);
+    this.config = config;
+  }
+
+  ProtoSubject<?, Message> usingConfig(FluentEqualityConfig newConfig) {
+    UntypedSubject newSubject = new UntypedSubject(failureStrategy, newConfig, getSubject());
+    if (internalCustomName() != null) {
+      newSubject = newSubject.named(internalCustomName());
+    }
+    return newSubject;
   }
 
   @Override
-  public ProtoFluentEquals ignoringFieldAbsence() {
-    ignoreFieldAbsence = true;
-    return this;
+  public ProtoFluentAssertion ignoringFieldAbsence() {
+    return usingConfig(config.ignoringFieldAbsence());
   }
 
   @Override
-  public ProtoFluentEquals ignoringRepeatedFieldOrder() {
-    ignoreRepeatedFieldOrder = true;
-    return this;
+  public ProtoFluentAssertion ignoringRepeatedFieldOrder() {
+    return usingConfig(config.ignoringRepeatedFieldOrder());
   }
 
   @Override
-  public ProtoFluentEquals withPartialScope(FieldScope fieldScope) {
-    this.fieldScope = FieldScopeImpl.and(this.fieldScope, checkNotNull(fieldScope));
-    return this;
+  public ProtoFluentAssertion withPartialScope(FieldScope fieldScope) {
+    return usingConfig(config.withPartialScope(checkNotNull(fieldScope, "fieldScope")));
   }
 
   @Override
-  public ProtoFluentEquals ignoringFields(int... fieldNumbers) {
-    this.fieldScope = fieldScope.ignoringFields(fieldNumbers);
-    return this;
+  public ProtoFluentAssertion ignoringFields(int... fieldNumbers) {
+    return usingConfig(config.ignoringFields(fieldNumbers));
   }
 
   @Override
-  public ProtoFluentEquals ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
-    this.fieldScope = fieldScope.ignoringFieldDescriptors(fieldDescriptors);
-    return this;
+  public ProtoFluentAssertion ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+    return usingConfig(config.ignoringFieldDescriptors(fieldDescriptors));
   }
 
   @Override
-  public ProtoFluentEquals ignoringFieldScope(FieldScope fieldScope) {
-    this.fieldScope =
-        FieldScopeImpl.and(this.fieldScope, FieldScopeImpl.not(checkNotNull(fieldScope)));
-    return this;
+  public ProtoFluentAssertion ignoringFieldScope(FieldScope fieldScope) {
+    return usingConfig(config.ignoringFieldScope(checkNotNull(fieldScope, "fieldScope")));
   }
 
   @Override
-  public ProtoFluentEquals reportingMismatchesOnly() {
-    reportMismatchesOnly = true;
-    return this;
+  public ProtoFluentAssertion reportingMismatchesOnly() {
+    return usingConfig(config.reportingMismatchesOnly());
   }
 
   @Override
@@ -144,6 +145,20 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
       if (!makeDifferencer().compare((Message) expected, getSubject(), reporter)) {
         reporter.failEqual((Message) expected);
       }
+    }
+  }
+
+  /**
+   * Same as {@link #isEqualTo(Object)}, except it returns true on success and false on failure
+   * without throwing any exceptions.
+   */
+  boolean testIsEqualTo(@Nullable Object expected) {
+    if (getSubject() == null || expected == null) {
+      return getSubject() == expected; // Only true if both null.
+    } else if (getSubject().getClass() != expected.getClass()) {
+      return false;
+    } else {
+      return makeDifferencer().compare((Message) expected, getSubject(), null);
     }
   }
 
@@ -171,18 +186,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   private MessageDifferencer makeDifferencer() {
-    return MessageDifferencer.newBuilder()
-        .setMessageFieldComparison(
-            ignoreFieldAbsence
-                ? MessageDifferencer.MessageFieldComparison.EQUIVALENT
-                : MessageDifferencer.MessageFieldComparison.EQUAL)
-        .setRepeatedFieldComparison(
-            ignoreRepeatedFieldOrder
-                ? MessageDifferencer.RepeatedFieldComparison.AS_SET
-                : MessageDifferencer.RepeatedFieldComparison.AS_LIST)
-        .setReportMatches(!reportMismatchesOnly)
-        .addIgnoreCriteria(fieldScope.toIgnoreCriteria(getSubject().getDescriptorForType()))
-        .build();
+    return config.toMessageDifferencer(getSubject().getDescriptorForType());
   }
 
   /**
@@ -222,7 +226,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
           }
         }
 
-        if (anyNotices && !ProtoSubject.this.reportMismatchesOnly) {
+        if (anyNotices && !ProtoSubject.this.config.reportMismatchesOnly()) {
           // Append the full report.
           rawMessage.append("\nFull diff:\n");
           for (ReporterRecord record : records) {
@@ -232,7 +236,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
         }
       } else {
         rawMessage.append("No differences were reported.");
-        if (!ProtoSubject.this.reportMismatchesOnly) {
+        if (!ProtoSubject.this.config.reportMismatchesOnly()) {
           if (anyNotices) {
             rawMessage.append("\nFull diff:\n");
             for (ReporterRecord record : records) {
@@ -261,7 +265,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
         rawMessage.append("messages compare not equal. ");
       }
 
-      if (!records.isEmpty() && !ProtoSubject.this.reportMismatchesOnly) {
+      if (!records.isEmpty() && !ProtoSubject.this.config.reportMismatchesOnly()) {
         rawMessage.append("Only ignorable differences were found:\n");
         StreamReporter streamReporter = new StreamReporter(rawMessage);
         for (ReporterRecord record : records) {
@@ -269,7 +273,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
         }
       } else {
         rawMessage.append("No differences were found.");
-        if (!ProtoSubject.this.reportMismatchesOnly) {
+        if (!ProtoSubject.this.config.reportMismatchesOnly()) {
           rawMessage.append("\nActual:\n");
           rawMessage.append(TextFormat.printToString(getSubject()));
           rawMessage.append("Expected:\n");
@@ -305,8 +309,9 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   private static final class UntypedSubject extends ProtoSubject<UntypedSubject, Message> {
-    private UntypedSubject(FailureStrategy failureStrategy, @Nullable Message message) {
-      super(failureStrategy, message);
+    private UntypedSubject(
+        FailureStrategy failureStrategy, FluentEqualityConfig config, @Nullable Message message) {
+      super(failureStrategy, config, message);
     }
   }
 
@@ -315,7 +320,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
 
     @Override
     public UntypedSubject getSubject(FailureStrategy failureStrategy, @Nullable Message message) {
-      return new UntypedSubject(failureStrategy, message);
+      return new UntypedSubject(failureStrategy, FluentEqualityConfig.defaultInstance(), message);
     }
   }
 }
