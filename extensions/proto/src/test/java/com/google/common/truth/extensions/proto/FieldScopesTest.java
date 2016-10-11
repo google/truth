@@ -18,6 +18,7 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -401,7 +402,6 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void testFromSetFields_unknownFields() {
     if (isProto3()) {
       // No unknown fields in Proto 3.
@@ -580,7 +580,10 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       fail("Expected error.");
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
-      // TODO(user): Add proper checks.
+      expectSubstr(e, "1 -> 4");
+      expectSubstr(e, "\"1\" -> \"4\"");
+      expectNoSubstr(e, "2 -> 3");
+      expectNoSubstr(e, "\"2\" -> \"3\"");
     }
   }
 
@@ -689,5 +692,75 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       }
     }
 
+  }
+
+  @Test
+  public void testIgnoreFieldsAtDifferentLevels() {
+    // Ignore all 'o_int' fields, in different ways.
+    Message message =
+        parse(
+            "o_int: 1 r_string: \"foo\" o_sub_test_message: { o_int: 2 "
+                + "o_sub_sub_test_message: { o_int: 3 r_string: \"bar\" } }");
+
+    // Even though o_int is ignored, message presence is not.  So these all fail.
+    Message diffMessage1 = parse("r_string: \"baz\"");
+    Message diffMessage2 = parse("r_string: \"foo\"");
+    Message diffMessage3 = parse("r_string: \"foo\" o_sub_test_message: {}");
+    Message diffMessage4 =
+        parse("r_string: \"foo\" o_sub_test_message: { o_sub_sub_test_message: {} }");
+
+    // All of these messages are equivalent, because all o_int are ignored.
+    Message eqMessage1 =
+        parse(
+            "o_int: 111 r_string: \"foo\" o_sub_test_message: { o_int: 222 "
+                + "o_sub_sub_test_message: { o_int: 333 r_string: \"bar\" } }");
+    Message eqMessage2 =
+        parse(
+            "o_int: 1 r_string: \"foo\" o_sub_test_message: { o_int: 2 "
+                + "o_sub_sub_test_message: { o_int: 3 r_string: \"bar\" } }");
+    Message eqMessage3 =
+        parse(
+            "r_string: \"foo\" o_sub_test_message: { "
+                + "o_sub_sub_test_message: { r_string: \"bar\" } }");
+    Message eqMessage4 =
+        parse(
+            "o_int: 333 r_string: \"foo\" o_sub_test_message: { o_int: 111 "
+                + "o_sub_sub_test_message: { o_int: 222 r_string: \"bar\" } }");
+
+    FieldDescriptor top = getFieldDescriptor("o_int");
+    FieldDescriptor middle =
+        getFieldDescriptor("o_sub_test_message").getMessageType().findFieldByName("o_int");
+    FieldDescriptor bottom =
+        getFieldDescriptor("o_sub_test_message")
+            .getMessageType()
+            .findFieldByName("o_sub_sub_test_message")
+            .getMessageType()
+            .findFieldByName("o_int");
+
+    ImmutableMap<String, FieldScope> fieldScopes =
+        ImmutableMap.of(
+            "BASIC", FieldScopes.ignoringFieldDescriptors(top, middle, bottom),
+            "CHAINED",
+                FieldScopes.ignoringFieldDescriptors(top)
+                    .ignoringFieldDescriptors(middle)
+                    .ignoringFieldDescriptors(bottom),
+            "REPEATED",
+                FieldScopes.ignoringFieldDescriptors(top, middle)
+                    .ignoringFieldDescriptors(middle, bottom));
+
+    for (String scopeName : fieldScopes.keySet()) {
+      String msg = "FieldScope(" + scopeName + ")";
+      FieldScope scope = fieldScopes.get(scopeName);
+
+      expectThatWithMessage(msg, diffMessage1).withPartialScope(scope).isNotEqualTo(message);
+      expectThatWithMessage(msg, diffMessage2).withPartialScope(scope).isNotEqualTo(message);
+      expectThatWithMessage(msg, diffMessage3).withPartialScope(scope).isNotEqualTo(message);
+      expectThatWithMessage(msg, diffMessage4).withPartialScope(scope).isNotEqualTo(message);
+
+      expectThatWithMessage(msg, eqMessage1).withPartialScope(scope).isEqualTo(message);
+      expectThatWithMessage(msg, eqMessage2).withPartialScope(scope).isEqualTo(message);
+      expectThatWithMessage(msg, eqMessage3).withPartialScope(scope).isEqualTo(message);
+      expectThatWithMessage(msg, eqMessage4).withPartialScope(scope).isEqualTo(message);
+    }
   }
 }

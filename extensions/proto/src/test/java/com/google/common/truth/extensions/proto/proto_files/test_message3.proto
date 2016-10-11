@@ -30,4 +30,10 @@ message SubTestMessage3 {
   repeated string r_string = 2;
 
   TestMessage3 o_test_message = 3;
+  SubSubTestMessage3 o_sub_sub_test_message = 4;
+}
+
+message SubSubTestMessage3 {
+  int32 o_int = 1;
+  repeated string r_string = 2;
 }

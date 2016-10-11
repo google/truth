@@ -37,4 +37,10 @@ message SubTestMessage2 {
   repeated string r_string = 2;
 
   optional TestMessage2 o_test_message = 3;
+  optional SubSubTestMessage2 o_sub_sub_test_message = 4;
+}
+
+message SubSubTestMessage2 {
+  optional int32 o_int = 1;
+  repeated string r_string = 2;
 }

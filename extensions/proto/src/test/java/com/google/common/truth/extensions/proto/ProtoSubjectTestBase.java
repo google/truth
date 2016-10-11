@@ -119,6 +119,11 @@ public class ProtoSubjectTestBase {
     return expect.about(ProtoTruth.protos()).that(message);
   }
 
+  protected final ProtoSubject<?, Message> expectThatWithMessage(
+      String msg, @Nullable Message message) {
+    return expect.withFailureMessage(msg).about(ProtoTruth.protos()).that(message);
+  }
+
   protected final void expectIsEqualToFailed(AssertionError e) {
     expectRegex(
         e,
