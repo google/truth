@@ -48,6 +48,18 @@ import javax.annotation.Nullable;
 /**
  * Propositions for {@link Iterable} subjects.
  *
+ * <p><b>Note:</b>
+ *
+ * <ul>
+ *   <li>Assertions may iterate through the given {@link Iterable} more than once. If you have an
+ *       unusual implementation of {@link Iterable} which does not support multiple iterations
+ *       (sometimes known as a "one-shot iterable"), you must copy your iterable into a collection
+ *       which does (e.g. {@code ImmutableList.copyOf(iterable)} or, if your iterable may contain
+ *       null, {@code newArrayList(iterable)}). If you don't, you may see surprising failures.
+ *   <li>Assertions may also require that the elements in the given {@link Iterable} implement
+ *       {@link Object#hashCode} correctly.
+ * </ul>
+ *
  * @author Kurt Alfred Kluever
  * @author Pete Gillin
  */
