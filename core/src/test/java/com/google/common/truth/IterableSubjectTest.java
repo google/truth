@@ -1322,4 +1322,157 @@ public class IterableSubjectTest {
         .containsExactly((Integer[]) null)
         .inOrder();
   }
+
+  @Test
+  public void comparingElementsUsing_containsAnyOf_success() {
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAnyOf(255, 256, 257);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAnyOf_failure() {
+    ImmutableList<String> actual =
+        ImmutableList.of("+128", "+64", "This is not the string you're looking for", "0x40");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsAnyOf(255, 256, 257);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
+                  + "contains at least one element that parses to any of <[255, 256, 257]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAnyOf_null() {
+    List<String> actual = asList("+128", "+64", null, "0x40");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAnyOf(255, null, 257);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAnyIn_success() {
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
+    ImmutableList<Integer> expected = ImmutableList.of(255, 256, 257);
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAnyIn(expected);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAnyIn_failure() {
+    ImmutableList<String> actual =
+        ImmutableList.of("+128", "+64", "This is not the string you're looking for", "0x40");
+    ImmutableList<Integer> expected = ImmutableList.of(255, 256, 257);
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsAnyIn(expected);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
+                  + "contains at least one element that parses to any element in "
+                  + "<[255, 256, 257]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAnyIn_null() {
+    List<String> actual = asList("+128", "+64", null, "0x40");
+    List<Integer> expected = asList(255, null, 257);
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAnyIn(expected);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsNoneOf_success() {
+    ImmutableList<String> actual =
+        ImmutableList.of("+128", "+64", "This is not the string you're looking for", "0x40");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsNoneOf(255, 256, 257);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsNoneOf_failure() {
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsNoneOf(255, 256, 257);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to any of "
+                  + "<[255, 256, 257]>. It contains at least one element that parses to each of "
+                  + "<[256]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsNoneOf_null() {
+    List<String> actual = asList("+128", "+64", null, "0x40");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsNoneOf(255, null, 257);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+128, +64, null, 0x40]> contains no element that parses to any of "
+                  + "<[255, null, 257]>. It contains at least one element that parses to each of "
+                  + "<[null]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsNoneIn_success() {
+    ImmutableList<String> actual =
+        ImmutableList.of("+128", "+64", "This is not the string you're looking for", "0x40");
+    ImmutableList<Integer> excluded = ImmutableList.of(255, 256, 257);
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsNoneIn(excluded);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsNoneIn_failure() {
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
+    ImmutableList<Integer> excluded = ImmutableList.of(255, 256, 257);
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsNoneIn(excluded);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to "
+                  + "any element in <[255, 256, 257]>. It contains at least one element that "
+                  + "parses to each of <[256]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsNoneIn_null() {
+    List<String> actual = asList("+128", "+64", null, "0x40");
+    List<Integer> excluded = asList(255, null, 257);
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsNoneIn(excluded);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[+128, +64, null, 0x40]> contains no element that parses to "
+                  + "any element in <[255, null, 257]>. It contains at least one element that "
+                  + "parses to each of <[null]>");
+    }
+  }
 }

@@ -140,24 +140,23 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   private void containsAny(String failVerb, Iterable<?> expected) {
-    Collection<?> subject;
-    if (actual() instanceof Collection) {
-      // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
-      // iterable, right? I sure hope so.
-      subject = (Collection<?>) actual();
-    } else {
-      // Would really like to use a HashSet here, but that would mean this would fail for elements
-      // that don't implement hashCode correctly (or even throw an exception from it), where using
-      // Iterables.contains would not fail.
-      subject = Lists.newArrayList(actual());
-    }
-
+    Collection<?> actual = iterableToCollection(actual());
     for (Object item : expected) {
-      if (subject.contains(item)) {
+      if (actual.contains(item)) {
         return;
       }
     }
     fail(failVerb, expected);
+  }
+
+  private static <T> Collection<T> iterableToCollection(Iterable<T> iterable) {
+    if (iterable instanceof Collection) {
+      // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
+      // iterable, right? I sure hope so.
+      return (Collection<T>) iterable;
+    } else {
+      return Lists.newArrayList(iterable);
+    }
   }
 
   /**
@@ -404,9 +403,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   private void containsNone(String failVerb, Iterable<?> excluded) {
+    Collection<?> actual = iterableToCollection(actual());
     Collection<Object> present = new ArrayList<Object>();
     for (Object item : Sets.newLinkedHashSet(excluded)) {
-      if (Iterables.contains(actual(), item)) {
+      if (actual.contains(item)) {
         present.add(item);
       }
     }
@@ -575,7 +575,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * element.
      */
     public void contains(@Nullable E expected) {
-      for (A actual : getCastSubject()) {
+      for (A actual : getCastActual()) {
         if (correspondence.compare(actual, expected)) {
           return;
         }
@@ -586,7 +586,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     /** Attests that none of the actual elements correspond to the given element. */
     public void doesNotContain(@Nullable E excluded) {
       List<A> matchingElements = new ArrayList<A>();
-      for (A actual : getCastSubject()) {
+      for (A actual : getCastActual()) {
         if (correspondence.compare(actual, excluded)) {
           matchingElements.add(actual);
         }
@@ -625,13 +625,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     public Ordered containsExactlyElementsIn(Iterable<? extends E> expected) {
       // Check if the elements correspond in order. This allows the common case of a passing test
       // using inOrder() to complete in linear time.
-      if (correspondInOrder(getCastSubject().iterator(), expected.iterator())) {
+      if (correspondInOrder(getCastActual().iterator(), expected.iterator())) {
         return IN_ORDER;
       }
       // We know they don't correspond in order, so we're going to have to do an any-order test.
       // Find a many:many mapping between the indexes of the elements which correspond, and check
       // it for completeness.
-      List<A> actualList = Lists.newArrayList(getCastSubject());
+      List<A> actualList = Lists.newArrayList(getCastActual());
       List<? extends E> expectedList = Lists.newArrayList(expected);
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
           findCandidateMapping(actualList, expectedList);
@@ -850,18 +850,32 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * Attests that the subject contains at least one element that corresponds to at least one of
      * the expected elements.
      */
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private void containsAnyOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
-      throw new UnsupportedOperationException();
+    public void containsAnyOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
+      containsAny(
+          StringUtil.format("contains at least one element that %s any of", correspondence),
+          accumulate(first, second, rest));
     }
 
     /**
      * Attests that the subject contains at least one element that corresponds to at least one of
      * the expected elements.
      */
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private void containsAnyIn(Iterable<E> unused) {
-      throw new UnsupportedOperationException();
+    public void containsAnyIn(Iterable<E> expected) {
+      containsAny(
+          StringUtil.format("contains at least one element that %s any element in", correspondence),
+          expected);
+    }
+
+    private void containsAny(String failVerb, Iterable<E> expected) {
+      Collection<A> actual = iterableToCollection(getCastActual());
+      for (E expectedItem : expected) {
+        for (A actualItem : actual) {
+          if (correspondence.compare(actualItem, expectedItem)) {
+            return;
+          }
+        }
+      }
+      fail(failVerb, expected);
     }
 
     /**
@@ -869,9 +883,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private void containsNoneOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
-      throw new UnsupportedOperationException();
+    public void containsNoneOf(
+        @Nullable E firstExcluded, @Nullable E secondExcluded, @Nullable E... restOfExcluded) {
+      containsNone("any of", accumulate(firstExcluded, secondExcluded, restOfExcluded));
     }
 
     /**
@@ -879,13 +893,30 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private void containsNoneIn(Iterable<E> unused) {
-      throw new UnsupportedOperationException();
+    public void containsNoneIn(Iterable<E> excluded) {
+      containsNone("any element in", excluded);
+    }
+
+    private void containsNone(String excludedPrefix, Iterable<E> excluded) {
+      Collection<A> actual = iterableToCollection(getCastActual());
+      Collection<E> present = new ArrayList<E>();
+      for (E excludedItem : Sets.newLinkedHashSet(excluded)) {
+        for (A actualItem : actual) {
+          if (correspondence.compare(actualItem, excludedItem)) {
+            present.add(excludedItem);
+          }
+        }
+      }
+      if (!present.isEmpty()) {
+        failWithRawMessage(
+            "Not true that %s contains no element that %s %s <%s>. "
+                + "It contains at least one element that %s each of <%s>",
+            actualAsString(), correspondence, excludedPrefix, excluded, correspondence, present);
+      }
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
-    private Iterable<A> getCastSubject() {
+    private Iterable<A> getCastActual() {
       return (Iterable<A>) actual();
     }
   }
