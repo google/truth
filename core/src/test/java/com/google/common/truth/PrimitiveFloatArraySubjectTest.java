@@ -968,25 +968,25 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
-  public void withTolerance_contains_success() {
+  public void usingTolerance_contains_success() {
     assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
-        .withTolerance(DEFAULT_TOLERANCE)
+        .usingTolerance(DEFAULT_TOLERANCE)
         .contains(2.0f);
   }
 
   @Test
-  public void withTolerance_contains_successWithExpectedLong() {
+  public void usingTolerance_contains_successWithExpectedLong() {
     assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
-        .withTolerance(DEFAULT_TOLERANCE)
+        .usingTolerance(DEFAULT_TOLERANCE)
         .contains(2L);
   }
 
   @Test
-  public void withTolerance_contains_failure() {
+  public void usingTolerance_contains_failure() {
     float justOverTwoPlusTolerance = nextAfter(2.0f + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
     try {
       assertThat(array(1.0f, justOverTwoPlusTolerance, 3.0f))
-          .withTolerance(DEFAULT_TOLERANCE)
+          .usingTolerance(DEFAULT_TOLERANCE)
           .contains(2.0f);
       fail("Expected AssertionError to be thrown but wasn't");
     } catch (AssertionError expected) {
@@ -1001,18 +1001,18 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
-  public void withTolerance_contains_nullExpected() {
+  public void usingTolerance_contains_nullExpected() {
     try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).withTolerance(DEFAULT_TOLERANCE).contains(null);
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingTolerance(DEFAULT_TOLERANCE).contains(null);
       fail("Expected NullPointerException to be thrown but wasn't");
     } catch (NullPointerException expected) {
     }
   }
 
   @Test
-  public void withTolerance_contains_negativeTolerance() {
+  public void usingTolerance_contains_negativeTolerance() {
     try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).withTolerance(-1.0f * DEFAULT_TOLERANCE).contains(2.0f);
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingTolerance(-1.0f * DEFAULT_TOLERANCE).contains(2.0f);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)

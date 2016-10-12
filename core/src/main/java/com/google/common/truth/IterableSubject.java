@@ -557,8 +557,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * the proposition.
    *
    * <p>The actual elements may alternatively be from an array of doubles or floats (see {@link
-   * PrimitiveDoubleArraySubject#withTolerance} and {@link
-   * PrimitiveFloatArraySubject#withTolerance}).
+   * PrimitiveDoubleArraySubject#usingTolerance} and {@link
+   * PrimitiveFloatArraySubject#usingTolerance}).
    *
    * <p>NOTE: This class is under constructions and more methods will be added in future versions.
    */

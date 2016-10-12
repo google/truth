@@ -322,7 +322,7 @@ public final class PrimitiveDoubleArraySubject
    * considers values to correspond if they are finite values within {@code tolerance} of each
    * other. The proposition is actually executed by continuing the method chain. For example:
    * <pre>   {@code
-   * assertThat(actualDoubleArray).withTolerance(1.0e-5).contains(3.14159);}</pre>
+   * assertThat(actualDoubleArray).usingTolerance(1.0e-5).contains(3.14159);}</pre>
    *
    * <ul>
    * <li>It does not consider values to correspond if either value is infinite or NaN.
@@ -336,7 +336,7 @@ public final class PrimitiveDoubleArraySubject
    *     actual and expected numbers, which must be a non-negative finite value, i.e. not {@link
    *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
-  public IterableSubject.UsingCorrespondence<Number, Number> withTolerance(double tolerance) {
+  public IterableSubject.UsingCorrespondence<Number, Number> usingTolerance(double tolerance) {
     return new IterableSubject(failureStrategy, listRepresentation())
         .comparingElementsUsing(tolerance(tolerance));
   }

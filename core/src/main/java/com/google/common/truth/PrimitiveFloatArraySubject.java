@@ -322,7 +322,7 @@ public final class PrimitiveFloatArraySubject
    * considers values to correspond if they are finite values within {@code tolerance} of each
    * other. The proposition is actually executed by continuing the method chain. For example:
    * <pre>   {@code
-   * assertThat(actualFloatArray).withTolerance(1.0e-5f).contains(3.14159f);}</pre>
+   * assertThat(actualFloatArray).usingTolerance(1.0e-5f).contains(3.14159f);}</pre>
    *
    * <ul>
    * <li>It does not consider values to correspond if either value is infinite or NaN.
@@ -336,7 +336,7 @@ public final class PrimitiveFloatArraySubject
    *     actual and expected numbers, which must be a non-negative finite value, i.e. not {@link
    *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
-  public IterableSubject.UsingCorrespondence<Number, Number> withTolerance(float tolerance) {
+  public IterableSubject.UsingCorrespondence<Number, Number> usingTolerance(float tolerance) {
     return new IterableSubject(failureStrategy, listRepresentation())
         .comparingElementsUsing(tolerance(tolerance));
   }
