@@ -16,6 +16,7 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.Truth.assertAbout;
+import static com.google.common.truth.extensions.proto.LiteProtoTruth.liteProtos;
 
 import com.google.common.base.Objects;
 import com.google.common.truth.FailureStrategy;
@@ -53,16 +54,24 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   /**
    * Returns a SubjectFactory for {@link MessageLite} subjects which you can use to assert things
    * about Lite Protobuf properties.
+   *
+   * @deprecated Use {@link LiteProtoTruth#liteProtos()}.
    */
+  @Deprecated
   public static Factory<?, MessageLite> liteProtos() {
     // TODO(user): Migrate users, make this package-private.
     return UntypedSubjectFactory.INSTANCE;
   }
 
-  /** Returns a Subject using the assertion strategy on the provided {@link MessageLite}. */
+  /**
+   * Returns a Subject using the assertion strategy on the provided {@link MessageLite}.
+   *
+   * @deprecated Use {@link LiteProtoTruth#assertThat(MessageLite)}.
+   */
+  @Deprecated
   public static LiteProtoSubject<?, MessageLite> assertThat(@Nullable MessageLite messageLite) {
     // TODO(user): Migrate users, delete this method.
-    return assertAbout(LiteProtoSubject.liteProtos()).that(messageLite);
+    return assertAbout(liteProtos()).that(messageLite);
   }
 
   protected LiteProtoSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
