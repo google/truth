@@ -159,6 +159,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
+  private static <T> List<T> iterableToList(Iterable<T> iterable) {
+    if (iterable instanceof List) {
+      return (List<T>) iterable;
+    } else {
+      return Lists.newArrayList(iterable);
+    }
+  }
+
   /**
    * Attests that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements to this call then it must appear at
@@ -193,7 +201,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   private Ordered containsAll(String failVerb, Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(actual());
-    List<?> expected = Lists.newArrayList(expectedIterable);
+    Collection<?> expected = iterableToCollection(expectedIterable);
 
     List<Object> missing = Lists.newArrayList();
     List<Object> actualNotInOrder = Lists.newArrayList();
@@ -623,16 +631,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     @CanIgnoreReturnValue
     public Ordered containsExactlyElementsIn(Iterable<? extends E> expected) {
+      List<A> actualList = iterableToList(getCastActual());
+      List<? extends E> expectedList = iterableToList(expected);
       // Check if the elements correspond in order. This allows the common case of a passing test
       // using inOrder() to complete in linear time.
-      if (correspondInOrder(getCastActual().iterator(), expected.iterator())) {
+      if (correspondInOrderExactly(actualList.iterator(), expectedList.iterator())) {
         return IN_ORDER;
       }
       // We know they don't correspond in order, so we're going to have to do an any-order test.
       // Find a many:many mapping between the indexes of the elements which correspond, and check
       // it for completeness.
-      List<A> actualList = Lists.newArrayList(getCastActual());
-      List<? extends E> expectedList = Lists.newArrayList(expected);
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
           findCandidateMapping(actualList, expectedList);
       failIfCandidateMappingHasMissingOrExtra(actualList, expectedList, candidateMapping);
@@ -652,7 +660,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * Returns whether the actual and expected iterators have the same number of elements and, when
      * iterated pairwise, every pair of actual and expected values satisfies the correspondence.
      */
-    private boolean correspondInOrder(
+    private boolean correspondInOrderExactly(
         Iterator<? extends A> actual, Iterator<? extends E> expected) {
       while (actual.hasNext() && expected.hasNext()) {
         A actualElement = actual.next();
@@ -799,7 +807,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends E> expected,
         BiMap<Integer, Integer> mapping) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
-      List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
+      List<? extends E> missing = findNotIndexed(expected, mapping.values());
       Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
       if (missingOrExtraMessage.isPresent()) {
         failWithRawMessage(
@@ -826,9 +834,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * subject, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private Ordered containsAllOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
-      throw new UnsupportedOperationException();
+    public Ordered containsAllOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
+      return containsAllIn(accumulate(first, second, rest));
     }
 
     /**
@@ -841,9 +848,103 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * subject, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private Ordered containsAllIn(Iterable<E> unused) {
-      throw new UnsupportedOperationException();
+    public Ordered containsAllIn(Iterable<? extends E> expected) {
+      List<A> actualList = iterableToList(getCastActual());
+      List<? extends E> expectedList = iterableToList(expected);
+      // Check if the expected elements correspond in order to any subset of the actual elements.
+      // This allows the common case of a passing test using inOrder() to complete in linear time.
+      if (correspondInOrderAllIn(actualList.iterator(), expectedList.iterator())) {
+        return IN_ORDER;
+      }
+      // We know they don't correspond in order, so we're going to have to do an any-order test.
+      // Find a many:many mapping between the indexes of the elements which correspond, and check
+      // it for completeness.
+      ImmutableSetMultimap<Integer, Integer> candidateMapping =
+          findCandidateMapping(actualList, expectedList);
+      failIfCandidateMappingHasMissing(expectedList, candidateMapping);
+      // We know that every expected element maps to at least one actual element, and vice versa.
+      // Find a maximal 1:1 mapping, and check it for completeness.
+      ImmutableBiMap<Integer, Integer> maximalOneToOneMapping =
+          findMaximalOneToOneMapping(candidateMapping);
+      failIfOneToOneMappingHasMissing(expectedList, maximalOneToOneMapping);
+      // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
+      // above that the mapping is not in order).
+      return new NotInOrder(
+          "contains, in order, at least one element that " + correspondence + " each element of",
+          expected);
+    }
+
+    /**
+     * Returns whether all the elements of the expected iterator and any subset of the elements of
+     * the actual iterator can be paired up in order, such that every pair of actual and expected
+     * elements satisfies the correspondence.
+     */
+    private boolean correspondInOrderAllIn(
+        Iterator<? extends A> actual, Iterator<? extends E> expected) {
+      // We take a greedy approach here, iterating through the expected elements and pairing each
+      // with the first applicable actual element. This is fine for the in-order test, since there's
+      // no way that paring an expected element with a later actual element permits a solution which
+      // couldn't be achieved by pairing it with the first. (For the any-order test, we may want to
+      // pair an expected element with a later actual element so that we can pair the earlier actual
+      // element with a later expected element, but that doesn't apply here.)
+      while (expected.hasNext()) {
+        E expectedElement = expected.next();
+        if (!findCorresponding(actual, expectedElement)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    /**
+     * Advances the actual iterator looking for an element which corresponds to the expected
+     * element. Returns whether or not it finds one.
+     */
+    private boolean findCorresponding(Iterator<? extends A> actual, E expectedElement) {
+      while (actual.hasNext()) {
+        A actualElement = actual.next();
+        if (correspondence.compare(actualElement, expectedElement)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    /**
+     * Given a list of expected elements and a many:many mapping between actual and expected
+     * elements specified as a multimap of indexes into an actual list to indexes into the expected
+     * list, checks that every expected element maps to at least one actual element, and fails if
+     * this is not the case. Actual elements which do not map to any expected elements are ignored.
+     */
+    void failIfCandidateMappingHasMissing(
+        List<? extends E> expected, ImmutableMultimap<Integer, Integer> mapping) {
+      List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
+      if (!missing.isEmpty()) {
+        failWithRawMessage(
+            "Not true that %s contains at least one element that %s each element of <%s>. "
+                + "It is missing an element that %s %s",
+            actualAsString(), correspondence, expected, correspondence, formatMissing(missing));
+      }
+    }
+
+    /**
+     * Given a list of expected elements, and a 1:1 mapping between actual and expected elements
+     * specified as a bimap of indexes into an actual list to indexes into the expected list, checks
+     * that every expected element maps to an actual element. Actual elements which do not map to
+     * any expected elements are ignored.
+     */
+    void failIfOneToOneMappingHasMissing(
+        List<? extends E> expected, BiMap<Integer, Integer> mapping) {
+      List<? extends E> missing = findNotIndexed(expected, mapping.values());
+      if (!missing.isEmpty()) {
+        failWithRawMessage(
+            "Not true that %s contains at least one element that %s each element of <%s>. "
+                + "It contains at least one element that matches each expected element, "
+                + "but there was no 1:1 mapping between all the expected elements and any subset "
+                + "of the actual elements. Using the most complete 1:1 mapping (or one such "
+                + "mapping, if there is a tie), it is missing an element that %s %s",
+            actualAsString(), correspondence, expected, correspondence, formatMissing(missing));
+      }
     }
 
     /**
@@ -860,13 +961,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * Attests that the subject contains at least one element that corresponds to at least one of
      * the expected elements.
      */
-    public void containsAnyIn(Iterable<E> expected) {
+    public void containsAnyIn(Iterable<? extends E> expected) {
       containsAny(
           StringUtil.format("contains at least one element that %s any element in", correspondence),
           expected);
     }
 
-    private void containsAny(String failVerb, Iterable<E> expected) {
+    private void containsAny(String failVerb, Iterable<? extends E> expected) {
       Collection<A> actual = iterableToCollection(getCastActual());
       for (E expectedItem : expected) {
         for (A actualItem : actual) {
@@ -893,11 +994,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */
-    public void containsNoneIn(Iterable<E> excluded) {
+    public void containsNoneIn(Iterable<? extends E> excluded) {
       containsNone("any element in", excluded);
     }
 
-    private void containsNone(String excludedPrefix, Iterable<E> excluded) {
+    private void containsNone(String excludedPrefix, Iterable<? extends E> excluded) {
       Collection<A> actual = iterableToCollection(getCastActual());
       Collection<E> present = new ArrayList<E>();
       for (E excludedItem : Sets.newLinkedHashSet(excluded)) {

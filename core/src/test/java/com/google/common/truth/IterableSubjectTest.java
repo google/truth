@@ -1324,6 +1324,200 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void comparingElementsUsing_containsAllIn_inOrder_success() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+64", "+128", "fi", "fo", "+256", "0x80", "fum");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllIn(expected)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_successOutOfOrder() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+128", "+64", "fi", "fo", "0x80", "+256", "fum");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllIn(expected);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_successNonGreedy() {
+    // (We use doubles with approximate equality for this test, because we can't illustrate this
+    // case with the string parsing correspondence used in the other tests, because one string
+    // won't parse to more than one integer.)
+    ImmutableList<Double> expected = ImmutableList.of(1.0, 1.1, 1.2);
+    ImmutableList<Double> actual = ImmutableList.of(99.999, 1.05, 99.999, 1.15, 0.95, 99.999);
+    // The comparingElementsUsing test with a tolerance of 0.1 should succeed by pairing 1.0 with
+    // 0.95, 1.1 with 1.05, and 1.2 with 1.15. A left-to-right greedy implementation would fail as
+    // it would pair 1.0 with 1.05 and 1.1 with 1.15, and fail to pair 1.2 with 0.95. Check that the
+    // implementation is truly non-greedy by testing all permutations.
+    for (List<Double> permutedActual : permutations(actual)) {
+      assertThat(permutedActual)
+          .comparingElementsUsing(tolerance(0.1))
+          .containsAllIn(expected);
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_failsMissingOneCandidate() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+64", "+128", "fi", "fo", "0x40", "0x80", "fum");
+    // Actual list has candidate matches for 64, 128, and the other 128, but is missing 256.
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsAllIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[fee, +64, +128, fi, fo, 0x40, 0x80, fum]> contains at least one "
+                  + "element that parses to each element of <[64, 128, 256, 128]>. "
+                  + "It is missing an element that parses to <256>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_failsMultipleMissingCandidates() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+64", "+64", "fi", "fo", "0x40", "0x40", "fum");
+    // Actual list has candidate matches for 64 only, and is missing 128, 256, and the other 128.
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsAllIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[fee, +64, +64, fi, fo, 0x40, 0x40, fum]> contains at least one "
+                  + "element that parses to each element of <[64, 128, 256, 128]>. "
+                  + "It is missing an element that parses to each of <[128, 256, 128]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_failsOrderedMissingOneCandidate() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 512);
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+64", "fi", "fo", "+128", "+256", "fum");
+    // Actual list has in-order candidate matches for 64, 128, and 256, but is missing 512.
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsAllIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[fee, +64, fi, fo, +128, +256, fum]> contains at least one "
+                  + "element that parses to each element of <[64, 128, 256, 512]>. "
+                  + "It is missing an element that parses to <512>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_failsMissingElementInOneToOne() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+128", "fi", "fo", "+64", "+256", "fum");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsAllIn(expected);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
+                  + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
+                  + "one element that matches each expected element, but there was no 1:1 mapping "
+                  + "between all the expected elements and any subset of the actual elements. "
+                  + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
+                  + "it is missing an element that parses to <128>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_inOrder_failsOutOfOrder() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+128", "+64", "fi", "fo", "0x80", "+256", "fum");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsAllIn(expected)
+          .inOrder();
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[fee, +128, +64, fi, fo, 0x80, +256, fum]> contains, in order, "
+                  + "at least one element that parses to each element of <[64, 128, 256, 128]>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_null() {
+    List<Integer> expected = Arrays.asList(128, null);
+    List<String> actual = Arrays.asList(null, "fee", "0x80");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllIn(expected);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllOf_inOrder_success() {
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+64", "+128", "fi", "fo", "+256", "0x80", "fum");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllOf(64, 128, 256, 128)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllOf_successOutOfOrder() {
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+128", "+64", "fi", "fo", "0x80", "+256", "fum");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllOf(64, 128, 256, 128);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllOf_failsMissingElementInOneToOne() {
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+128", "fi", "fo", "+64", "+256", "fum");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsAllOf(64, 128, 256, 128);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
+                  + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
+                  + "one element that matches each expected element, but there was no 1:1 mapping "
+                  + "between all the expected elements and any subset of the actual elements. "
+                  + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
+                  + "it is missing an element that parses to <128>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllOf_nullValueInArray() {
+    List<String> actual = Arrays.asList(null, "fee", "0x80");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllOf(128, null);
+  }
+
+  @Test
   public void comparingElementsUsing_containsAnyOf_success() {
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
     assertThat(actual)
