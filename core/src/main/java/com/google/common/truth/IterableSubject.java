@@ -455,7 +455,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * @throws NullPointerException if any element is null
    */
   public final void isStrictlyOrdered() {
-    isStrictlyOrdered((Ordering) Ordering.natural());
+    isStrictlyOrdered(Ordering.natural());
   }
 
   /**
@@ -488,7 +488,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * @throws NullPointerException if any element is null
    */
   public final void isOrdered() {
-    isOrdered((Ordering) Ordering.natural());
+    isOrdered(Ordering.natural());
   }
 
   /** @deprecated Use {@link #isOrdered} instead. */
@@ -615,6 +615,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method.
      */
+    @SafeVarargs
     @CanIgnoreReturnValue
     public final Ordered containsExactly(@Nullable E... expected) {
       return containsExactlyElementsIn(
@@ -833,8 +834,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * on the object returned by this method. The elements must appear in the given order within the
      * subject, but they are not required to be consecutive.
      */
+    @SafeVarargs
     @CanIgnoreReturnValue
-    public Ordered containsAllOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
+    public final Ordered containsAllOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
       return containsAllIn(accumulate(first, second, rest));
     }
 
@@ -951,7 +953,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * Attests that the subject contains at least one element that corresponds to at least one of
      * the expected elements.
      */
-    public void containsAnyOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
+    @SafeVarargs
+    public final void containsAnyOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
       containsAny(
           StringUtil.format("contains at least one element that %s any of", correspondence),
           accumulate(first, second, rest));
@@ -984,7 +987,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */
-    public void containsNoneOf(
+    @SafeVarargs
+    public final void containsNoneOf(
         @Nullable E firstExcluded, @Nullable E secondExcluded, @Nullable E... restOfExcluded) {
       containsNone("any of", accumulate(firstExcluded, secondExcluded, restOfExcluded));
     }
