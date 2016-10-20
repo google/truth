@@ -251,13 +251,13 @@ public class Subject<S extends Subject<S, T>, T> {
     if (customName != null) {
       // Covers some rare cases where a type might return "" from their custom formatter.
       // This is actually pretty terrible, as it comes from subjects overriding (formerly)
-      // getDisplaySubject() in cases of .named() to make it not prefixing but replacing. 
+      // getDisplaySubject() in cases of .named() to make it not prefixing but replacing.
       // That goes against the stated contract of .named().  Once displayedAs() is in place,
       // we can rip this out and callers can use that instead.
-      // TODO(cgruber) 
+      // TODO(cgruber)
       return customName + (formatted.isEmpty() ? "" : " (<" + formatted + ">)");
     } else {
-      return "<" + actualCustomStringRepresentation() + ">";
+      return "<" + formatted + ">";
     }
   }
   
