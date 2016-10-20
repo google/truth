@@ -16,7 +16,12 @@
 
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.truth.extensions.proto.FieldScopeUtil.join;
+
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -40,7 +45,8 @@ abstract class FluentEqualityConfig {
           .setIgnoreFieldAbsence(false)
           .setIgnoreRepeatedFieldOrder(false)
           .setReportMismatchesOnly(false)
-          .setFieldScope(FieldScopes.all())
+          .setFieldScopeLogic(FieldScopeLogic.all())
+          .setUsingCorrespondenceStringFunction(Functions.constant(""))
           .build();
 
   static FluentEqualityConfig defaultInstance() {
@@ -57,7 +63,9 @@ abstract class FluentEqualityConfig {
                 }
               });
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   // Storage of AbstractProtoFluentEquals configuration data.
+  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   abstract boolean ignoreFieldAbsence();
 
@@ -65,43 +73,73 @@ abstract class FluentEqualityConfig {
 
   abstract boolean reportMismatchesOnly();
 
-  abstract FieldScope fieldScope();
+  abstract FieldScopeLogic fieldScopeLogic();
 
-  // Mutators of AbstractProtoFluentEquals configuration data.
+  // For pretty-printing, does not affect behavior.
+  abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();
+
+  final String usingCorrespondenceString(Optional<Descriptor> descriptor) {
+    return usingCorrespondenceStringFunction().apply(descriptor);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  // Mutators of FluentEqualityConfig configuration data.
+  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   final FluentEqualityConfig ignoringFieldAbsence() {
-    return toBuilder().setIgnoreFieldAbsence(true).build();
+    return toBuilder()
+        .setIgnoreFieldAbsence(true)
+        .addUsingCorrespondenceString(".ignoringFieldAbsence()")
+        .build();
   }
 
   final FluentEqualityConfig ignoringRepeatedFieldOrder() {
-    return toBuilder().setIgnoreRepeatedFieldOrder(true).build();
+    return toBuilder()
+        .setIgnoreRepeatedFieldOrder(true)
+        .addUsingCorrespondenceString(".ignoringRepeatedFieldOrder()")
+        .build();
   }
 
   final FluentEqualityConfig reportingMismatchesOnly() {
-    return toBuilder().setReportMismatchesOnly(true).build();
+    return toBuilder()
+        .setReportMismatchesOnly(true)
+        .addUsingCorrespondenceString(".reportingMismatchesOnly()")
+        .build();
   }
 
   final FluentEqualityConfig withPartialScope(FieldScope partialScope) {
-    return toBuilder().setFieldScope(FieldScopeImpl.and(fieldScope(), partialScope)).build();
+    return toBuilder()
+        .setFieldScopeLogic(FieldScopeLogic.and(fieldScopeLogic(), partialScope.logic()))
+        .addUsingCorrespondenceFieldScopeString(".withPartialScope(%s)", partialScope)
+        .build();
   }
 
   final FluentEqualityConfig ignoringFields(int... fieldNumbers) {
-    return toBuilder().setFieldScope(fieldScope().ignoringFields(fieldNumbers)).build();
+    return toBuilder()
+        .setFieldScopeLogic(fieldScopeLogic().ignoringFields(fieldNumbers))
+        .addUsingCorrespondenceFieldNumbersString(".ignoringFields(%s)", fieldNumbers)
+        .build();
   }
 
   final FluentEqualityConfig ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
     return toBuilder()
-        .setFieldScope(fieldScope().ignoringFieldDescriptors(fieldDescriptors))
+        .setFieldScopeLogic(fieldScopeLogic().ignoringFieldDescriptors(fieldDescriptors))
+        .addUsingCorrespondenceFieldDescriptorsString(
+            ".ignoringFieldDescriptors(%s)", fieldDescriptors)
         .build();
   }
 
   final FluentEqualityConfig ignoringFieldScope(FieldScope fieldScope) {
     return toBuilder()
-        .setFieldScope(FieldScopeImpl.and(fieldScope(), FieldScopeImpl.not(fieldScope)))
+        .setFieldScopeLogic(
+            FieldScopeLogic.and(fieldScopeLogic(), FieldScopeLogic.not(fieldScope.logic())))
+        .addUsingCorrespondenceFieldScopeString(".ignoringFieldScope(%s)", fieldScope)
         .build();
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   // Converters into comparison utilities.
+  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   private MessageDifferencer makeMessageDifferencer(Descriptor descriptor) {
     return MessageDifferencer.newBuilder()
@@ -114,7 +152,7 @@ abstract class FluentEqualityConfig {
                 ? MessageDifferencer.RepeatedFieldComparison.AS_SET
                 : MessageDifferencer.RepeatedFieldComparison.AS_LIST)
         .setReportMatches(!reportMismatchesOnly())
-        .addIgnoreCriteria(fieldScope().toIgnoreCriteria(descriptor))
+        .addIgnoreCriteria(fieldScopeLogic().toIgnoreCriteria(descriptor))
         .build();
   }
 
@@ -122,7 +160,8 @@ abstract class FluentEqualityConfig {
     return messageDifferencers.getUnchecked(descriptor);
   }
 
-  final Correspondence<Message, Message> toCorrespondence() {
+  final Correspondence<Message, Message> toCorrespondence(
+      final Optional<Descriptor> optDescriptor) {
     return new Correspondence<Message, Message>() {
       @Override
       public final boolean compare(@Nullable Message actual, @Nullable Message expected) {
@@ -133,26 +172,65 @@ abstract class FluentEqualityConfig {
 
       @Override
       public final String toString() {
-        // TODO(user): Provide good error messaging.
-        throw new UnsupportedOperationException("Not ready yet.");
+        return "is equivalent according to assertThat(proto)"
+            + usingCorrespondenceString(optDescriptor)
+            + ".isEqualTo(target) to";
       }
     };
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   // Builder methods.
+  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   abstract Builder toBuilder();
 
   @AutoValue.Builder
-  interface Builder {
-    Builder setIgnoreFieldAbsence(boolean ignoringFieldAbsence);
+  abstract static class Builder {
+    abstract Builder setIgnoreFieldAbsence(boolean ignoringFieldAbsence);
 
-    Builder setIgnoreRepeatedFieldOrder(boolean ignoringRepeatedFieldOrder);
+    abstract Builder setIgnoreRepeatedFieldOrder(boolean ignoringRepeatedFieldOrder);
 
-    Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
+    abstract Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
 
-    Builder setFieldScope(FieldScope fieldScope);
+    abstract Builder setFieldScopeLogic(FieldScopeLogic fieldScopeLogic);
 
-    FluentEqualityConfig build();
+    abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();
+
+    abstract Builder setUsingCorrespondenceStringFunction(
+        Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction);
+
+    abstract FluentEqualityConfig build();
+
+    // Lazy formatting methods.
+    // These allow us to print raw integer field numbers with meaningful names.
+
+    final Builder addUsingCorrespondenceString(String fmt, Object... args) {
+      return setUsingCorrespondenceStringFunction(
+          FieldScopeUtil.concat(
+              usingCorrespondenceStringFunction(), Functions.constant(String.format(fmt, args))));
+    }
+
+    final Builder addUsingCorrespondenceFieldNumbersString(String fmt, int... fieldNumbers) {
+      return setUsingCorrespondenceStringFunction(
+          FieldScopeUtil.concat(
+              usingCorrespondenceStringFunction(),
+              FieldScopeUtil.fieldNumbersFunction(fmt, fieldNumbers)));
+    }
+
+    final Builder addUsingCorrespondenceFieldDescriptorsString(
+        String fmt, FieldDescriptor... fieldDescriptors) {
+      return setUsingCorrespondenceStringFunction(
+          FieldScopeUtil.concat(
+              usingCorrespondenceStringFunction(),
+              Functions.constant(String.format(fmt, join(fieldDescriptors)))));
+    }
+
+    final Builder addUsingCorrespondenceFieldScopeString(String fmt, FieldScope fieldScope) {
+      return setUsingCorrespondenceStringFunction(
+          FieldScopeUtil.concat(
+              usingCorrespondenceStringFunction(),
+              FieldScopeUtil.fieldScopeFunction(fmt, fieldScope)));
+    }
   }
 }

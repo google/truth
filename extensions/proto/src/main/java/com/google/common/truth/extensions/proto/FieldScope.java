@@ -16,7 +16,7 @@
 
 package com.google.common.truth.extensions.proto;
 
-import com.google.common.truth.extensions.proto.MessageDifferencer.IgnoreCriteria;
+import com.google.common.base.Optional;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 
@@ -115,13 +115,16 @@ public abstract class FieldScope {
   // package-protected: Should not be implemented outside the package.
   FieldScope() {}
 
+  /** Returns the underlying logical implementation of the {@link FieldScope}. */
+  abstract FieldScopeLogic logic();
+
   /**
-   * Convert this into an {@link IgnoreCriteria} for use with {@link MessageDifferencer}.
+   * Returns a human-readable representation of this {@link FieldScope}, detailing its construction.
    *
-   * <p>The returned object is only good for one {@link MessageDifferencer} invocation. The client
-   * should request a new {@link IgnoreCriteria} for every {@link MessageDifferencer} call.
+   * <p>For use in {@link com.google.common.truth.Correspondence#toString()} for clarity.
    *
-   * @param descriptor Message Descriptor for M.
+   * @param descriptor a unique message {@link Descriptor} that applies to all non-null arguments,
+   *     if present. Used to pretty-print raw field numbers.
    */
-  abstract IgnoreCriteria toIgnoreCriteria(Descriptor descriptor);
+  abstract String usingCorrespondenceString(Optional<Descriptor> descriptor);
 }

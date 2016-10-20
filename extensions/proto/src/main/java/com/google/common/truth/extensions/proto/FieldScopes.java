@@ -15,15 +15,11 @@
  */
 package com.google.common.truth.extensions.proto;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 
 /** Factory class for {@link FieldScope} instances. */
-public class FieldScopes {
-  private FieldScopes() {}
-
+public final class FieldScopes {
   /**
    * Returns a {@link FieldScope} which is constrained to precisely those specific field paths that
    * are explicitly set in the message. Note that, for version 3 protobufs, such a {@link
@@ -67,25 +63,19 @@ public class FieldScopes {
   // Alternatively II, add Scope.PARTIAL support to ProtoFluentEquals, but with a different name and
   // explicit documentation that it may cause issues with Proto 3.
   public static FieldScope fromSetFields(Message message) {
-    return FieldScopeImpl.partialScope(checkNotNull(message));
+    return FieldScopeImpl.createFromSetFields(message);
   }
 
   /**
-   * Returns a {@link FieldScope} which matches all fields without exception. {@link ProtoSubject}
-   * uses this scope by default, so this is generally not needed unless you need to also ignore
-   * certain fields.
+   * Creates a {@link FieldScope} convering the fields set in every message in the provided list of
+   * messages, with the same semantics as in {@link #fromSetFields(Message)}.
+   *
+   * <p>This can be thought of as the union of the {@link FieldScope}s for each individual message,
+   * or the {@link FieldScope} for the merge of all the messages. These are equivalent.
    */
-  public static FieldScope all() {
-    return FieldScopeImpl.all();
-  }
-
-  /**
-   * Returns a {@link FieldScope} which matches no fields. A comparison made using this scope will
-   * always trivially pass, so generally an {@code allowing} call is expected after calling this
-   * method.
-   */
-  public static FieldScope none() {
-    return FieldScopeImpl.none();
+  // TODO(user): Make public when IterableProtoSubject is exposed and this has valid use.
+  private static FieldScope fromSetFields(Iterable<? extends Message> messages) {
+    return FieldScopeImpl.createFromSetFields(messages);
   }
 
   /**
@@ -95,7 +85,7 @@ public class FieldScopes {
    * @see FieldScope#ignoringFields
    */
   public static FieldScope ignoringFields(int... fieldNumbers) {
-    return FieldScopes.all().ignoringFields(fieldNumbers);
+    return FieldScopeImpl.createIgnoringFields(fieldNumbers);
   }
 
   /**
@@ -105,7 +95,7 @@ public class FieldScopes {
    * @see FieldScope#ignoringFieldDescriptors
    */
   public static FieldScope ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
-    return FieldScopes.all().ignoringFieldDescriptors(fieldDescriptors);
+    return FieldScopeImpl.createIgnoringFieldDescriptors(fieldDescriptors);
   }
 
   /**
@@ -115,7 +105,7 @@ public class FieldScopes {
    * @see FieldScope#allowingFields
    */
   public static FieldScope allowingFields(int... fieldNumbers) {
-    return FieldScopes.none().allowingFields(fieldNumbers);
+    return FieldScopeImpl.createAllowingFields(fieldNumbers);
   }
 
   /**
@@ -125,6 +115,25 @@ public class FieldScopes {
    * @see FieldScope#allowingFieldDescriptors
    */
   public static FieldScope allowingFieldDescriptors(FieldDescriptor... fieldDescriptors) {
-    return FieldScopes.none().allowingFieldDescriptors(fieldDescriptors);
+    return FieldScopeImpl.createAllowingFieldDescriptors(fieldDescriptors);
   }
+
+  /**
+   * Returns a {@link FieldScope} which matches all fields without exception. Generally not needed,
+   * since the other factory functions will build on top of this for you.
+   */
+  public static FieldScope all() {
+    return FieldScopeImpl.all();
+  }
+
+  /**
+   * Returns a {@link FieldScope} which matches no fields. A comparison made using this scope alone
+   * will always trivially pass. Generally not needed, since the other factory functions will build
+   * on top of this for you.
+   */
+  public static FieldScope none() {
+    return FieldScopeImpl.none();
+  }
+
+  private FieldScopes() {}
 }
