@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for generic Subject behaviour.
+ * Tests for generic Subject behavior.
  *
  * @author David Saff
  * @author Christian Gruber
@@ -54,10 +54,13 @@ public class SubjectTest {
 
     // TODO(kak): Automatically generate this list with reflection,
     // or maybe use AbstractPackageSanityTests?
+    npTester.testAllPublicInstanceMethods(assertThat(BigDecimal.TEN));
     npTester.testAllPublicInstanceMethods(assertThat(false));
     npTester.testAllPublicInstanceMethods(assertThat(String.class));
-    npTester.testAllPublicInstanceMethods(assertThat((Comparable) "hello"));
+    npTester.testAllPublicInstanceMethods(assertThat((Comparable<String>) "hello"));
     npTester.testAllPublicInstanceMethods(assertThat(2d));
+    npTester.testAllPublicInstanceMethods(assertThat(2f));
+    npTester.testAllPublicInstanceMethods(assertThat(Optional.absent()));
     npTester.testAllPublicInstanceMethods(assertThat(1));
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableList.of()));
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableListMultimap.of()));
@@ -65,12 +68,12 @@ public class SubjectTest {
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableMap.of()));
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableMultimap.of()));
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableMultiset.of()));
-    npTester.testAllPublicInstanceMethods(assertThat(Optional.absent()));
+    npTester.testAllPublicInstanceMethods(assertThat(new Object[0]));
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableSetMultimap.of()));
     npTester.testAllPublicInstanceMethods(assertThat("hello"));
     npTester.testAllPublicInstanceMethods(assertThat(new Object()));
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableTable.of()));
-    npTester.testAllPublicInstanceMethods(assertThat(BigDecimal.TEN));
+    npTester.testAllPublicInstanceMethods(assertThat(new Exception()));
   }
 
   @Test
@@ -688,6 +691,7 @@ public class SubjectTest {
     fail("Should have thrown.");
   }
 
+  @SafeVarargs
   private static <T> Iterable<T> oneShotIterable(final T... values) {
     final Iterator<T> iterator = Iterators.forArray(values);
     return new Iterable<T>() {
