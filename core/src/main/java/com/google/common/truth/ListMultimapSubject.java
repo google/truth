@@ -31,6 +31,12 @@ public final class ListMultimapSubject extends MultimapSubject {
     super(failureStrategy, multimap);
   }
 
+  @Override
+  public ListMultimapSubject named(String format, Object... args) {
+    super.named(format, args);
+    return this;
+  }
+
   /**
    * @deprecated {@code #isEqualTo} A SetMultimap can never compare equal with a ListMultimap if
    *     either Multimap is non-empty, because {@link java.util.Set} and {@link List} can never

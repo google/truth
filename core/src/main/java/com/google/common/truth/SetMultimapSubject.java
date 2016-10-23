@@ -30,6 +30,12 @@ public final class SetMultimapSubject extends MultimapSubject {
     super(failureStrategy, multimap);
   }
 
+  @Override
+  public SetMultimapSubject named(String format, Object... args) {
+    super.named(format, args);
+    return this;
+  }
+
   // TODO(user):  Add a valuesForKey override for SetSubject if we make SetSubject
 
   /**
