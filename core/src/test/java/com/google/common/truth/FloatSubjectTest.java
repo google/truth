@@ -205,6 +205,8 @@ public class FloatSubjectTest {
     assertThat(+1.0f).isNotWithin(0.0f).of(-0.0f);
     assertThat(-1.0f).isNotWithin(0.0f).of(+0.0f);
     assertThat(-1.0f).isNotWithin(0.0f).of(-0.0f);
+
+    assertThatIsNotWithinFails(-0.0f, 0.0f, 0.0f);
   }
 
   @Test
@@ -303,6 +305,97 @@ public class FloatSubjectTest {
     assertThatIsNotWithinFails(+1.0f, 0.00001f, Float.NaN);
     assertThatIsNotWithinFails(+1.0f, 0.00001f, Float.POSITIVE_INFINITY);
     assertThatIsNotWithinFails(+1.0f, 0.00001f, Float.NEGATIVE_INFINITY);
+  }
+
+  @Test
+  public void isEqualTo() {
+    assertThat(1.23f).isEqualTo(1.23f);
+    assertThatIsEqualToFails(1.23f, Math.nextAfter(1.23f, Float.POSITIVE_INFINITY));
+    assertThat(Float.POSITIVE_INFINITY).isEqualTo(Float.POSITIVE_INFINITY);
+    assertThat(Float.NaN).isEqualTo(Float.NaN);
+    assertThatIsEqualToFails(-0.0f, 0.0f);
+    assertThat((Float) null).isEqualTo(null);
+    try {
+      assertThat(1.23f).isEqualTo(1.23);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              String.format(
+                  "Not true that <%s> (java.lang.Float) is equal to <%s> (java.lang.Double)",
+                  1.23f, 1.23));
+    }
+  }
+
+  private static void assertThatIsEqualToFails(float actual, float expected) {
+    try {
+      assertThat(actual).isEqualTo(expected);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(String.format("Not true that <%s> is equal to <%s>", actual, expected));
+    }
+  }
+
+  @Test
+  public void isNotEqualTo() {
+    assertThatIsNotEqualToFails(1.23f);
+    assertThat(1.23).isNotEqualTo(Math.nextAfter(1.23f, Float.POSITIVE_INFINITY));
+    assertThatIsNotEqualToFails(Float.POSITIVE_INFINITY);
+    assertThatIsNotEqualToFails(Float.NaN);
+    assertThat(-0.0f).isNotEqualTo(0.0f);
+    assertThatIsNotEqualToFails(null);
+    assertThat(1.23f).isNotEqualTo(1.23);
+  }
+
+  private static void assertThatIsNotEqualToFails(@Nullable Float value) {
+    try {
+      assertThat(value).isNotEqualTo(value);
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(String.format("Not true that <%s> is not equal to <%s>", value, value));
+    }
+  }
+
+  @Test
+  public void isZero() {
+    assertThat(0.0f).isZero();
+    assertThat(-0.0f).isZero();
+    assertThatIsZeroFails(Float.MIN_VALUE);
+    assertThatIsZeroFails(-1.23f);
+    assertThatIsZeroFails(Float.POSITIVE_INFINITY);
+    assertThatIsZeroFails(Float.NaN);
+    assertThatIsZeroFails(null);
+  }
+
+  private static void assertThatIsZeroFails(@Nullable Float value) {
+    try {
+      assertThat(value).named("testValue").isZero();
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError).hasMessage("Not true that testValue (<" + value + ">) is zero");
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
+  }
+
+  @Test
+  public void isNonZero() {
+    assertThatIsNonZeroFails(0.0f);
+    assertThatIsNonZeroFails(-0.0f);
+    assertThat(Float.MIN_VALUE).isNonZero();
+    assertThat(-1.23f).isNonZero();
+    assertThat(Float.POSITIVE_INFINITY).isNonZero();
+    assertThat(Float.NaN).isNonZero();
+    assertThatIsNonZeroFails(null);
+  }
+
+  private static void assertThatIsNonZeroFails(@Nullable Float value) {
+    try {
+      assertThat(value).named("testValue").isNonZero();
+    } catch (AssertionError assertionError) {
+      assertThat(assertionError)
+          .hasMessage("Not true that testValue (<" + value + ">) is non-zero");
+      return;
+    }
+    fail("Expected AssertionError to be thrown but wasn't");
   }
 
   @Test

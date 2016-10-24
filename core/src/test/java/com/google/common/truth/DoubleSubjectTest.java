@@ -316,13 +316,13 @@ public class DoubleSubjectTest {
     assertThatIsEqualToFails(-0.0, 0.0);
     assertThat((Double) null).isEqualTo(null);
     try {
-      assertThat(1.23f).isEqualTo(1.23);
+      assertThat(1.23).isEqualTo(1.23f);
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessage(
               String.format(
-                  "Not true that <%s> (java.lang.Float) is equal to <%s> (java.lang.Double)",
-                  1.23f, 1.23));
+                  "Not true that <%s> (java.lang.Double) is equal to <%s> (java.lang.Float)",
+                  1.23, 1.23f));
     }
   }
 
@@ -343,7 +343,7 @@ public class DoubleSubjectTest {
     assertThatIsNotEqualToFails(Double.NaN);
     assertThat(-0.0).isNotEqualTo(0.0);
     assertThatIsNotEqualToFails(null);
-    assertThat(1.23f).isNotEqualTo(1.23);
+    assertThat(1.23).isNotEqualTo(1.23f);
   }
 
   private static void assertThatIsNotEqualToFails(@Nullable Double value) {
