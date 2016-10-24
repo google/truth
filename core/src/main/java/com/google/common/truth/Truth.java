@@ -26,6 +26,8 @@ import com.google.common.truth.AbstractVerb.DelegatedVerb;
 import com.google.common.util.concurrent.AtomicLongMap;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import javax.annotation.Nullable;
 
 /**
@@ -160,6 +162,10 @@ public final class Truth {
     return assert_().that(target);
   }
 
+  public static SortedSetSubject assertThat(@Nullable SortedSet<?> target) {
+    return assert_().that(target);
+  }
+
   public static <T> ObjectArraySubject<T> assertThat(@Nullable T[] target) {
     return assert_().that(target);
   }
@@ -201,6 +207,10 @@ public final class Truth {
   }
 
   public static MapSubject assertThat(@Nullable Map<?, ?> target) {
+    return assert_().that(target);
+  }
+
+  public static SortedMapSubject assertThat(@Nullable SortedMap<?, ?> target) {
     return assert_().that(target);
   }
 

@@ -63,7 +63,7 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  * @author Pete Gillin
  */
-// Can't be final since MultisetSubject extends it
+// Can't be final since MultisetSubject and SortedSetSubject extend it
 public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   // TODO(kak): Make this package-protected?

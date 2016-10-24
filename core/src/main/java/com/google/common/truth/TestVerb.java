@@ -27,6 +27,8 @@ import com.google.common.collect.Table;
 import com.google.common.util.concurrent.AtomicLongMap;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import javax.annotation.Nullable;
 
 /*>>>import org.checkerframework.checker.nullness.compatqual.NullableType;*/
@@ -97,6 +99,10 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new IterableSubject(getFailureStrategy(), target);
   }
 
+  public SortedSetSubject that(@Nullable SortedSet<?> target) {
+    return new SortedSetSubject(getFailureStrategy(), target);
+  }
+
   public <T> ObjectArraySubject<T> that(@Nullable T[] target) {
     return new ObjectArraySubject<T>(getFailureStrategy(), target);
   }
@@ -139,6 +145,10 @@ public class TestVerb extends AbstractVerb<TestVerb> {
 
   public MapSubject that(@Nullable Map<?, ?> target) {
     return new MapSubject(getFailureStrategy(), target);
+  }
+
+  public SortedMapSubject that(@Nullable SortedMap<?, ?> target) {
+    return new SortedMapSubject(getFailureStrategy(), target);
   }
 
   public MultimapSubject that(@Nullable Multimap<?, ?> target) {
