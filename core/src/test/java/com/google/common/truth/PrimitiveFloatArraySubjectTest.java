@@ -1001,6 +1001,47 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  public void usingTolerance_contains_failureWithInfinity() {
+    try {
+      assertThat(array(1.0f, POSITIVE_INFINITY, 3.0f))
+          .usingTolerance(DEFAULT_TOLERANCE)
+          .contains(POSITIVE_INFINITY);
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[1.0, Infinity, 3.0]> contains at least one element that is "
+                  + "a finite number within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of <Infinity>");
+    }
+  }
+
+  @Test
+  public void usingTolerance_contains_failureWithNaN() {
+    try {
+      assertThat(array(1.0f, NaN, 3.0f))
+          .usingTolerance(DEFAULT_TOLERANCE)
+          .contains(NaN);
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[1.0, NaN, 3.0]> contains at least one element that is "
+                  + "a finite number within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of <NaN>");
+    }
+  }
+
+  @Test
+  public void usingTolerance_contains_successWithNegativeZero() {
+    assertThat(array(1.0f, -0.0f, 3.0f))
+        .usingTolerance(0.0f)
+        .contains(0.0f);
+  }
+
+  @Test
   public void usingTolerance_contains_nullExpected() {
     try {
       assertThat(array(1.0f, 2.0f, 3.0f)).usingTolerance(DEFAULT_TOLERANCE).contains(null);
@@ -1017,6 +1058,59 @@ public class PrimitiveFloatArraySubjectTest {
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessage("tolerance (" + -1.0 * DEFAULT_TOLERANCE + ") cannot be negative");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_contains_success() {
+    assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(2.0f);
+  }
+
+  @Test
+  public void usingExactEquality_contains_failure() {
+    float justOverTwo = nextAfter(2.0f, POSITIVE_INFINITY);
+    try {
+      assertThat(array(1.0f, justOverTwo, 3.0f)).usingExactEquality().contains(2.0f);
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[1.0, "
+                  + justOverTwo
+                  + ", 3.0]> contains at least one element that is exactly equal to <2.0>");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_contains_successWithInfinity() {
+    assertThat(array(1.0f, POSITIVE_INFINITY, 3.0f))
+        .usingExactEquality()
+        .contains(POSITIVE_INFINITY);
+  }
+
+  @Test
+  public void usingExactEquality_contains_successWithNaN() {
+    assertThat(array(1.0f, NaN, 3.0f)).usingExactEquality().contains(NaN);
+  }
+
+  @Test
+  public void usingExactEquality_contains_failureWithNegativeZero() {
+    try {
+      assertThat(array(1.0f, -0.0f, 3.0f)).usingExactEquality().contains(0.0f);
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessage(
+              "Not true that <[1.0, -0.0, 3.0]> contains at least one element that is "
+                  + "exactly equal to <0.0>");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_contains_nullExpected() {
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(null);
+      fail("Expected NullPointerException to be thrown but wasn't");
+    } catch (NullPointerException expected) {
     }
   }
 
