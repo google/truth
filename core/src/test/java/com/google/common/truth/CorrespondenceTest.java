@@ -79,7 +79,11 @@ public final class CorrespondenceTest {
     assertThat(tolerance(1.00001).compare(2.0, 3.0)).isTrue();
     assertThat(tolerance(1000.0).compare(2.0, 1003.0)).isFalse();
     assertThat(tolerance(1000.0).compare(2.0, Double.POSITIVE_INFINITY)).isFalse();
+    assertThat(tolerance(1000.0).compare(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY))
+        .isFalse();
     assertThat(tolerance(1000.0).compare(2.0, Double.NaN)).isFalse();
+    assertThat(tolerance(1000.0).compare(Double.NaN, Double.NaN)).isFalse();
+    assertThat(tolerance(0.0).compare(-0.0, 0.0)).isTrue();
   }
 
   @Test
@@ -90,7 +94,11 @@ public final class CorrespondenceTest {
     assertThat(tolerance(1.00001).compare(2.0f, 3.0f)).isTrue();
     assertThat(tolerance(1000.0).compare(2.0f, 1003.0f)).isFalse();
     assertThat(tolerance(1000.0).compare(2.0f, Float.POSITIVE_INFINITY)).isFalse();
+    assertThat(tolerance(1000.0).compare(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY))
+        .isFalse();
     assertThat(tolerance(1000.0).compare(2.0f, Float.NaN)).isFalse();
+    assertThat(tolerance(1000.0).compare(Float.NaN, Float.NaN)).isFalse();
+    assertThat(tolerance(0.0).compare(-0.0f, 0.0f)).isTrue();
   }
 
   @Test

@@ -326,6 +326,7 @@ public final class PrimitiveDoubleArraySubject
    *
    * <ul>
    * <li>It does not consider values to correspond if either value is infinite or NaN.
+   * <li>It considers {@code -0.0} to be within any tolerance of {@code 0.0}.
    * <li>The expected values provided later in the chain will be {@link Number} instances which will
    *     be converted to doubles, which may result in a loss of precision for some numeric types.
    * <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
@@ -339,5 +340,48 @@ public final class PrimitiveDoubleArraySubject
   public IterableSubject.UsingCorrespondence<Number, Number> usingTolerance(double tolerance) {
     return new IterableSubject(failureStrategy, listRepresentation())
         .comparingElementsUsing(tolerance(tolerance));
+  }
+
+  private static final Correspondence<Double, Double> EXACT_EQUALITY_CORRESPONDENCE =
+      new Correspondence<Double, Double>() {
+
+        @Override
+        public boolean compare(Double actual, Double expected) {
+          return actual.equals(checkNotNull(expected));
+        }
+
+        @Override
+        public String toString() {
+          return "is exactly equal to";
+        }
+      };
+
+  /**
+   * Starts a method chain for a test proposition in which the actual values (i.e. the elements of
+   * the array under test) are compared to expected elements using a {@link Correspondence} which
+   * considers values to correspond if they are exactly equal, with equality defined by {@link
+   * Double#equals}. This method is <i>not</i> recommended when the code under test is doing any
+   * kind of arithmetic: use {@link #usingTolerance} with a suitable tolerance in that case.
+   * (Remember that the exact result of floating point arithmetic is sensitive to apparently trivial
+   * changes such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
+   * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
+   * of precision for the intermediate result.) This method is recommended when the code under test
+   * is specified as either copying a value without modification from its input or returning a
+   * well-defined literal or constant value. The proposition is actually executed by continuing the
+   * method chain. For example:
+   * <pre>   {@code
+   * assertThat(actualDoubleArray).usingExactEquality().contains(3.14159);}</pre>
+   *
+   * <ul>
+   *   <li>It considers {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, and
+   *       {@link Double#NaN} to be equal to themselves.
+   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0}.
+   *   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
+   *       expected {@link Double} instance is null.
+   * </ul>
+   */
+  public IterableSubject.UsingCorrespondence<Double, Double> usingExactEquality() {
+    return new IterableSubject(failureStrategy, listRepresentation())
+        .comparingElementsUsing(EXACT_EQUALITY_CORRESPONDENCE);
   }
 }
