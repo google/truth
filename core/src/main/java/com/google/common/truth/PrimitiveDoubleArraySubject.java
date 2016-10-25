@@ -57,14 +57,18 @@ public final class PrimitiveDoubleArraySubject
    * This form is unsafe for double-precision floating point types, and will throw an {@link
    * UnsupportedOperationException}.
    *
-   * @deprecated use {@link #hasValuesWithin(double)}
+   * @deprecated use either {@code
+   *     usingTolerance(someTolerance).containsExactly(someValues).inOrder()} or {@code
+   *     usingExactEquality().containsExactly(someValues).inOrder()}
    */
   @Deprecated
   @Override
   public void isEqualTo(Object expected) {
     throw new UnsupportedOperationException(
-        "Comparing raw equality of doubles is unsafe, "
-            + "use isEqualTo(double[] array, double tolerance) instead.");
+        "Comparing raw equality of doubles is often unsafe. Use either "
+            + "usingTolerance(someTolerance).containsExactly(someValues).inOrder() to compare with"
+            + "a tolerance or usingExactEquality().containsExactly(someValues).inOrder() if you"
+            + "really want exact equality instead.");
   }
 
   /**
@@ -78,8 +82,8 @@ public final class PrimitiveDoubleArraySubject
    * (including if one is a clone of the other) then non-finite values are considered not equal so
    * the any non-finite value in either argument will cause the test to fail.
    *
-   * @deprecated use {@link #hasValuesWithin(double)}, noting the different behaviour for non-finite
-   *     values
+   * @deprecated use {@code usingTolerance(someTolerance).containsExactly(someValues).inOrder()},
+   *     noting the different behaviour for non-finite values
    */
   @Deprecated
   public void isEqualTo(Object expected, double tolerance) {
