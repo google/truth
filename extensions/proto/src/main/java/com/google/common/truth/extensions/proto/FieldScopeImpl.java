@@ -23,9 +23,11 @@ import com.google.auto.value.AutoValue;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import java.util.List;
 
 /**
  * Implementation of a {@link FieldScope}. It takes a logic component {@link FieldScopeLogic}, and
@@ -75,7 +77,7 @@ abstract class FieldScopeImpl extends FieldScope {
     checkArgument(
         optDescriptor.isPresent(),
         "Cannot create scope from messages with different descriptors: %s",
-        messages);
+        getDescriptors(messages));
 
     Message.Builder builder = null;
     for (Message message : messages) {
@@ -90,7 +92,7 @@ abstract class FieldScopeImpl extends FieldScope {
 
     return create(
         FieldScopeLogic.partialScope(builder.build()),
-        Functions.constant(String.format("FieldScopes.fromSetFields(%s)", messages.toString())));
+        Functions.constant(String.format("FieldScopes.fromSetFields(%s)", formatList(messages))));
   }
 
   static FieldScope createIgnoringFields(int... fieldNumbers) {
@@ -180,12 +182,6 @@ abstract class FieldScopeImpl extends FieldScope {
             ".allowingFieldDescriptors(%s)", fieldDescriptors));
   }
 
-  private Function<Optional<Descriptor>, String> addUsingCorrespondenceString(
-      String fmt, Object... args) {
-    return FieldScopeUtil.concat(
-        usingCorrespondenceStringFunction(), Functions.constant(String.format(fmt, args)));
-  }
-
   private Function<Optional<Descriptor>, String> addUsingCorrespondenceFieldNumbersString(
       String fmt, int... fieldNumbers) {
     return FieldScopeUtil.concat(
@@ -198,5 +194,21 @@ abstract class FieldScopeImpl extends FieldScope {
     return FieldScopeUtil.concat(
         usingCorrespondenceStringFunction(),
         Functions.constant(String.format(fmt, join(fieldDescriptors))));
+  }
+
+  private static Iterable<String> getDescriptors(Iterable<? extends Message> messages) {
+    List<String> descriptors = Lists.newArrayList();
+    for (Message message : messages) {
+      descriptors.add(message == null ? "null" : message.getDescriptorForType().getFullName());
+    }
+    return descriptors;
+  }
+
+  private static String formatList(Iterable<? extends Message> messages) {
+    List<String> strings = Lists.newArrayList();
+    for (Message message : messages) {
+      strings.add(message == null ? "null" : "{" + message + "}");
+    }
+    return "[" + join(strings) + "]";
   }
 }

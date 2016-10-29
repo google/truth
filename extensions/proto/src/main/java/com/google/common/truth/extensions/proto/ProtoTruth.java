@@ -44,16 +44,40 @@ public final class ProtoTruth {
     return assertAbout(protos()).that(message);
   }
 
+  // Note: We must specify M explicitly here. The presence of the type parameter makes this method
+  // signature distinct from Truth.assertThat(Iterable<?>), and allows users to import both static
+  // methods without conflict. If this method instead accepted Iterable<? extends Message>, this
+  // would result in method ambiguity errors.
+  // See http://stackoverflow.com/a/8467804 for a more thorough explanation.
+  public static <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> assertThat(
+      @Nullable Iterable<M> messages) {
+    return assertAbout(IterableOfProtosSubject.<M>iterablesOfProtos()).that(messages);
+  }
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // SubjectFactory factories.
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
+  /** Returns a {@link SubjectFactory} for the lite version of protocol buffers. */
+  public static LiteProtoSubject.Factory<?, MessageLite> liteProtos() {
+    return LiteProtoSubject.liteProtos();
+  }
+
+  /** Returns a {@link SubjectFactory} for protocol buffers. */
   public static ProtoSubject.Factory<?, Message> protos() {
     return ProtoSubject.protos();
   }
 
-  public static LiteProtoSubject.Factory<?, MessageLite> liteProtos() {
-    return LiteProtoSubject.liteProtos();
+  /**
+   * Returns a {@link SubjectFactory} for {@link Iterable}s of protocol buffers.
+   *
+   * @param messageClass an explicit type specifier for the {@link SubjectFactory}.
+   */
+  public static <M extends Message>
+      IterableOfProtosSubject.Factory<
+              IterableOfProtosSubject.IterableOfMessagesSubject<M>, M, Iterable<M>>
+          iterablesOfProtos(Class<M> messageClass) {
+    return IterableOfProtosSubject.<M>iterablesOfProtos();
   }
 
   private ProtoTruth() {}

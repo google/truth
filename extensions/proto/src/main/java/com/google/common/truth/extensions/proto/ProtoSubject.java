@@ -18,7 +18,6 @@ package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Truth.assertAbout;
-import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
@@ -38,11 +37,11 @@ import javax.annotation.Nullable;
 /**
  * Truth subject for the full version of Protocol Buffers.
  *
- * <p>{@code ProtoSubject.assertThat(actual).isEqualTo(expected)} performs the same assertion as
+ * <p>{@code ProtoTruth.assertThat(actual).isEqualTo(expected)} performs the same assertion as
  * {@code Truth.assertThat(actual).isEqualTo(expected)}, but with a better failure message. By
  * default, the assertions are strict with respect to repeated field order, missing fields, etc.
  * This behavior can be changed with the configuration methods on this subject, e.g. {@code
- * ProtoSubject.assertThat(actual).ignoringRepeatedFieldOrder().isEqualTo(expected)}.
+ * ProtoTruth.assertThat(actual).ignoringRepeatedFieldOrder().isEqualTo(expected)}.
  *
  * <p>Equality tests, and other methods, may yield slightly different behavior for versions 2 and 3
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
@@ -54,6 +53,8 @@ import javax.annotation.Nullable;
 public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     extends LiteProtoSubject<S, M> implements ProtoFluentAssertion {
 
+  // TODO(user): Type this if we solve the typing assertAbout() problem for
+  // IterableOfProtosSubject and there is use for such typing.
   private final FluentEqualityConfig config;
 
   /**

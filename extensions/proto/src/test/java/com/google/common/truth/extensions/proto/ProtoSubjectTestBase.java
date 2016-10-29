@@ -16,6 +16,7 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static org.junit.Assert.fail;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
@@ -91,7 +92,7 @@ public class ProtoSubjectTestBase {
     return getFieldDescriptor(fieldName).getNumber();
   }
 
-  protected final Message parse(String textProto) {
+  protected Message parse(String textProto) {
     try {
       Message.Builder builder = defaultInstance.toBuilder();
       PARSER.merge(textProto, builder);
@@ -122,6 +123,30 @@ public class ProtoSubjectTestBase {
   protected final ProtoSubject<?, Message> expectThatWithMessage(
       String msg, @Nullable Message message) {
     return expect.withFailureMessage(msg).about(ProtoTruth.protos()).that(message);
+  }
+
+  protected final <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> expectThat(
+      Iterable<M> messages) {
+    @SuppressWarnings("unchecked") // Object not used.
+    Class<M> clazz = (Class<M>) null;
+
+    return expect.about(ProtoTruth.iterablesOfProtos(clazz)).that(messages);
+  }
+
+  /**
+   * Assert than an AssertionError was expected before we got to this line.
+   *
+   * <p>Intended for try-catch blocks, where the previous line is meant to throw an AssertionError
+   * and it's a test failure if we reach the next line in the try block. The catch block should
+   * inspect the message, possibly with 'expectFailureNotMissing' to ensure that the expected
+   * AssertionError was thrown.
+   */
+  protected final void expectedFailure() {
+    fail("Expected failure.");
+  }
+
+  protected final void expectFailureNotMissing(AssertionError expected) {
+    expectNoSubstr(expected, "Expected failure.");
   }
 
   protected final void expectIsEqualToFailed(AssertionError e) {
@@ -160,5 +185,9 @@ public class ProtoSubjectTestBase {
 
   protected final void expectNoSubstr(Throwable t, String substr) {
     expect.that(t.getMessage()).doesNotContain(substr);
+  }
+
+  protected static final <M extends Message> ImmutableList<M> listOf(M... messages) {
+    return ImmutableList.copyOf(messages);
   }
 }

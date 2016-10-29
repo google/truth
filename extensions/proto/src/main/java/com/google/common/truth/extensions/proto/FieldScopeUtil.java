@@ -23,6 +23,8 @@ import com.google.common.primitives.Ints;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /** Utility methods for {@link FieldScope}s and {@link FluentEqualityConfig}. */
@@ -92,6 +94,15 @@ final class FieldScopeUtil {
     return optDescriptor;
   }
 
+  /** Joins the arguments into a {@link List} for convenience. */
+  static <T> List<T> makeList(T first, T second, T... rest) {
+    List<T> list = new ArrayList<T>();
+    list.add(first);
+    list.add(second);
+    list.addAll(Arrays.asList(rest));
+    return list;
+  }
+
   private static final Joiner JOINER = Joiner.on(", ");
 
   static String join(int... fieldNumbers) {
@@ -121,7 +132,7 @@ final class FieldScopeUtil {
         FieldDescriptor field = descriptor.findFieldByNumber(fieldNumber);
         strings.add(field != null ? field.toString() : String.format("%d (?)", fieldNumber));
       }
-      return join(strings);
+      return String.format(fmt, join(strings));
     } else {
       return String.format(fmt, join(fieldNumbers));
     }

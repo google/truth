@@ -19,6 +19,7 @@ import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -26,6 +27,7 @@ import com.google.protobuf.UnknownFieldSet;
 import com.google.protobuf.UnknownFieldSet.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -81,7 +83,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(diffMessage).ignoringFieldScope(FieldScopes.all()).isNotEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: o_int");
@@ -99,7 +101,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(diffMessage).withPartialScope(FieldScopes.none()).isNotEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: o_int");
@@ -120,7 +122,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(ignoringFieldDiffMessage)
           .ignoringFields(goodFieldNumber)
           .isEqualTo(ignoringFieldMessage);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "modified: r_string[0]: \"foo\" -> \"bar\"");
@@ -130,7 +132,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(ignoringFieldDiffMessage)
           .ignoringFields(badFieldNumber)
           .isNotEqualTo(ignoringFieldMessage);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: r_string[0]");
@@ -217,7 +219,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(diffMessage).ignoringFields(fieldNumber).isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "modified: o_int: 1 -> 2");
@@ -225,7 +227,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(eqMessage3).ignoringFields(fieldNumber).isNotEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: o_sub_test_message");
@@ -250,7 +252,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(diffMessage1).withPartialScope(partialScope).isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "modified: o_int: 1 -> 2");
@@ -258,7 +260,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(diffMessage2).withPartialScope(partialScope).isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "modified: o_sub_test_message.r_string[0]: \"foo\" -> \"bar\"");
@@ -311,7 +313,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(diffMessage4).withPartialScope(fieldScope).isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "modified: r_sub_test_message[0].r_string[0]: \"bar\" -> \"999999\"");
@@ -319,7 +321,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(eqMessage).withPartialScope(fieldScope).isNotEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: o_sub_test_message.r_string[0]");
@@ -367,7 +369,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(diffMessage).isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "1 -> 4");
@@ -380,7 +382,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(diffMessage)
           .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
           .isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "1 -> 4");
@@ -393,7 +395,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(eqMessage)
           .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
           .isNotEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: o_test_message.r_string[0]");
@@ -551,7 +553,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(diffMessage).isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "1 -> 4");
@@ -564,7 +566,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(diffMessage)
           .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
           .isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "1 -> 4");
@@ -577,7 +579,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(eqMessage)
           .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
           .isNotEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "1 -> 4");
@@ -616,7 +618,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(diffMessage)
           .withPartialScope(FieldScopes.allowingFields(fieldNumber))
           .isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "modified: o_int: 1 -> 2");
@@ -627,7 +629,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(eqMessage)
           .withPartialScope(FieldScopes.allowingFields(fieldNumber))
           .isNotEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: r_test_message[0].r_string[0]");
@@ -649,7 +651,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(diffMessage).withPartialScope(fieldScope).isEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
       expectSubstr(e, "modified: o_int: 1 -> 2");
@@ -658,7 +660,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(eqMessage).withPartialScope(fieldScope).isNotEqualTo(message);
-      fail("Expected error.");
+      expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: o_enum");
@@ -673,7 +675,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     try {
       expectThat(message1).ignoringFields(999).isEqualTo(message2);
-      fail("Expected error.");
+      expectedFailure();
     } catch (Exception e) {
       // TODO(user): Use hasTransitiveCauseThat() if/when it becomes available.
 
@@ -761,6 +763,159 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       expectThatWithMessage(msg, eqMessage2).withPartialScope(scope).isEqualTo(message);
       expectThatWithMessage(msg, eqMessage3).withPartialScope(scope).isEqualTo(message);
       expectThatWithMessage(msg, eqMessage4).withPartialScope(scope).isEqualTo(message);
+    }
+  }
+
+  @Test
+  public void testFromSetFields_skipNulls() {
+    Message message1 = parse("o_int: 1 r_string: \"foo\" r_string: \"bar\"");
+    Message eqMessage1 = parse("o_int: 1 r_string: \"foo\" r_string: \"bar\"");
+    Message eqIgnoredMessage1 = parse("o_int: 2 r_string: \"foo\" r_string: \"bar\"");
+    Message message2 = parse("o_int: 3 r_string: \"baz\" r_string: \"qux\"");
+    Message eqMessage2 = parse("o_int: 3 r_string: \"baz\" r_string: \"qux\"");
+    Message eqIgnoredMessage2 = parse("o_int: 4 r_string: \"baz\" r_string: \"qux\"");
+
+    List<Message> messages = Lists.newArrayList();
+    Message nullMessage = null;
+    messages.add(parse("o_int: -1"));
+    messages.add(nullMessage);
+    messages.add(parse("r_string: \"NaN\""));
+
+    expectThat(listOf(message1, message2))
+        .withPartialScope(FieldScopes.fromSetFields(messages))
+        .containsExactly(eqMessage1, eqMessage2);
+    expectThat(listOf(message1, message2))
+        .withPartialScope(
+            FieldScopes.fromSetFields(parse("o_int: -1"), nullMessage, parse("r_string: \"NaN\"")))
+        .containsExactly(eqMessage1, eqMessage2);
+
+    try {
+      assertThat(listOf(message1, message2))
+          .withPartialScope(FieldScopes.fromSetFields(messages))
+          .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
+      fail("Expected failure.");
+    } catch (AssertionError expected) {
+      expectSubstr(
+          expected,
+          "is equivalent according to "
+              + "assertThat(proto)"
+              + ".withPartialScope("
+              + "FieldScopes.fromSetFields(["
+              + "{o_int: -1\n}, null, {r_string: \"NaN\"\n}]))"
+              + ".isEqualTo(target)");
+    }
+
+    try {
+      assertThat(listOf(message1, message2))
+          .withPartialScope(
+              FieldScopes.fromSetFields(
+                  parse("o_int: -1"), nullMessage, parse("r_string: \"NaN\"")))
+          .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
+      fail("Expected failure.");
+    } catch (AssertionError expected) {
+      expectSubstr(
+          expected,
+          "is equivalent according to "
+              + "assertThat(proto)"
+              + ".withPartialScope("
+              + "FieldScopes.fromSetFields(["
+              + "{o_int: -1\n}, null, {r_string: \"NaN\"\n}]))"
+              + ".isEqualTo(target)");
+    }
+  }
+
+  @Test
+  public void testFromSetFields_iterables_vacuousIfEmptyOrAllNull() {
+    Message message1 = parse("o_int: 1 r_string: \"foo\" r_string: \"bar\"");
+    Message eqIgnoredMessage1 = parse("o_int: 2 r_string: \"foo\" r_string: \"bar\"");
+    Message message2 = parse("o_int: 3 r_string: \"baz\" r_string: \"qux\"");
+    Message eqIgnoredMessage2 = parse("o_int: 4 r_string: \"baz\" r_string: \"qux\"");
+
+    List<Message> messages = Lists.newArrayList();
+    messages.add(null);
+    messages.add(null);
+
+    expectThat(listOf(message1, message2))
+        .withPartialScope(FieldScopes.fromSetFields(listOf()))
+        .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
+    expectThat(listOf(message1, message2))
+        .withPartialScope(FieldScopes.fromSetFields(messages))
+        .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
+
+    try {
+      assertThat(listOf(message1, message2))
+          .withPartialScope(FieldScopes.fromSetFields(listOf()))
+          .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2);
+      fail("Expected failure.");
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+
+    try {
+      assertThat(listOf(message1, message2))
+          .withPartialScope(FieldScopes.fromSetFields(messages))
+          .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2);
+      fail("Expected failure.");
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+  }
+
+  @Test
+  public void testFromSetFields_iterables_errorForDifferentMessageTypes() {
+    if (isProto3()) return; // Only run this test once.
+
+    try {
+      FieldScopes.fromSetFields(parse("o_int: 1"), TestMessage3.newBuilder().setOInt(2).build());
+      fail("Expected failure.");
+    } catch (RuntimeException expected) {
+      expectSubstr(expected, "Cannot create scope from messages with different descriptors");
+      expectSubstr(expected, TestMessage2.getDescriptor().getFullName());
+      expectSubstr(expected, TestMessage3.getDescriptor().getFullName());
+    }
+  }
+
+  @Test
+  public void testFromSetFields_iterables_errorIfDescriptorMismatchesSubject() {
+    if (isProto3()) return; // Only run this test once.
+
+    Message message = parse("o_int: 1 r_string: \"foo\" r_string: \"bar\"");
+    Message eqMessage = parse("o_int: 1 r_string: \"foo\" r_string: \"bar\"");
+
+    try {
+      assertThat(message)
+          .withPartialScope(
+              FieldScopes.fromSetFields(
+                  TestMessage3.newBuilder().setOInt(2).build(),
+                  TestMessage3.newBuilder().addRString("foo").build()))
+          .isEqualTo(eqMessage);
+      fail("Expected failure.");
+    } catch (RuntimeException expected) {
+      expectSubstr(
+          expected,
+          "Message given to FieldScopes.fromSetFields() "
+              + "does not have the same descriptor as the message being tested");
+      expectSubstr(expected, TestMessage2.getDescriptor().getFullName());
+      expectSubstr(expected, TestMessage3.getDescriptor().getFullName());
+    }
+  }
+
+  @Test
+  public void testFromSetFields_iterables_unionsElements() {
+    Message message = parse("o_int: 1 r_string: \"foo\" r_string: \"bar\"");
+    Message diffMessage1 = parse("o_int: 2 r_string: \"foo\" r_string: \"bar\"");
+    Message diffMessage2 = parse("o_int: 4 r_string: \"baz\" r_string: \"qux\"");
+
+    expectThat(listOf(message))
+        .ignoringFieldScope(FieldScopes.fromSetFields(parse("o_int: 1"), parse("o_enum: TWO")))
+        .containsExactly(diffMessage1);
+
+    try {
+      assertThat(listOf(message))
+          .ignoringFieldScope(FieldScopes.fromSetFields(parse("o_int: 1"), parse("o_enum: TWO")))
+          .containsExactly(diffMessage2);
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
     }
   }
 }

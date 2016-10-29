@@ -160,11 +160,11 @@ abstract class FluentEqualityConfig {
     return messageDifferencers.getUnchecked(descriptor);
   }
 
-  final Correspondence<Message, Message> toCorrespondence(
+  final <M extends Message> Correspondence<M, M> toCorrespondence(
       final Optional<Descriptor> optDescriptor) {
-    return new Correspondence<Message, Message>() {
+    return new Correspondence<M, M>() {
       @Override
-      public final boolean compare(@Nullable Message actual, @Nullable Message expected) {
+      public final boolean compare(@Nullable M actual, @Nullable M expected) {
         return ProtoTruth.assertThat(actual)
             .usingConfig(FluentEqualityConfig.this)
             .testIsEqualTo(expected);

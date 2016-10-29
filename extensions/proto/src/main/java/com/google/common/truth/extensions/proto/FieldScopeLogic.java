@@ -331,8 +331,8 @@ abstract class FieldScopeLogic {
           expectedDescriptor.equals(descriptor),
           "Message given to FieldScopes.fromSetFields() does not have the same descriptor as the "
               + "message being tested. Expected %s, got %s.",
-          expectedDescriptor,
-          descriptor);
+          expectedDescriptor.getFullName(),
+          descriptor.getFullName());
     }
 
     @Override

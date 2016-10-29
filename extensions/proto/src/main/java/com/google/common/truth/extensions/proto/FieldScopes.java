@@ -73,8 +73,19 @@ public final class FieldScopes {
    * <p>This can be thought of as the union of the {@link FieldScope}s for each individual message,
    * or the {@link FieldScope} for the merge of all the messages. These are equivalent.
    */
-  // TODO(user): Make public when IterableProtoSubject is exposed and this has valid use.
-  private static FieldScope fromSetFields(Iterable<? extends Message> messages) {
+  public static FieldScope fromSetFields(
+      Message firstMessage, Message secondMessage, Message... rest) {
+    return fromSetFields(FieldScopeUtil.makeList(firstMessage, secondMessage, rest));
+  }
+
+  /**
+   * Creates a {@link FieldScope} convering the fields set in every message in the provided list of
+   * messages, with the same semantics as in {@link #fromSetFields(Message)}.
+   *
+   * <p>This can be thought of as the union of the {@link FieldScope}s for each individual message,
+   * or the {@link FieldScope} for the merge of all the messages. These are equivalent.
+   */
+  public static FieldScope fromSetFields(Iterable<? extends Message> messages) {
     return FieldScopeImpl.createFromSetFields(messages);
   }
 
