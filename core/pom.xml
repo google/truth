@@ -9,8 +9,8 @@
   </parent>
   <artifactId>truth</artifactId>
   <properties>
-    <guava.version>19.0</guava.version>
-    <gwt.version>2.8.0-beta1</gwt.version>
+    <guava.version>20.0</guava.version>
+    <gwt.version>2.8.0</gwt.version>
   </properties>
   <dependencies>
     <dependency>
@@ -148,7 +148,7 @@
             <configuration>
               <mode>htmlunit</mode>
               <productionMode>true</productionMode>
-              <sourceLevel>1.7</sourceLevel>
+              <sourceLevel>auto</sourceLevel>
               <userAgents>gecko1_8</userAgents>
               <includes>**/*GwtTest.java</includes>
             </configuration>

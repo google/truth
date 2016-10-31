@@ -24,7 +24,7 @@
     <auto-value.version>1.2</auto-value.version>
     <error_prone_annotations.version>2.0.8</error_prone_annotations.version>
     <findbugs.version>2.0.1</findbugs.version>
-    <guava.version>19.0</guava.version>
+    <guava.version>20.0</guava.version>
     <protobuf.version>3.0.0-beta-2</protobuf.version>
     <truth.version>1.0-SNAPSHOT</truth.version>
   </properties>
