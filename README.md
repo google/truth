@@ -53,4 +53,4 @@ They paved the way, and we hope this contribution is helpful to the field.
 [maven-shield]: https://img.shields.io/maven-central/v/com.google.truth/truth.png
 [maven-link]: http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.google.truth%22%20AND%20a%3A%22truth%22
 [stackoverflow-shield]: https://img.shields.io/badge/stackoverflow-truth-5555ff.png?style=flat
-[stackoverflow-link]: http://stackoverflow.com/search?q=[truth]
+[stackoverflow-link]: http://stackoverflow.com/questions/tagged/google-truth
