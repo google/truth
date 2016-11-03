@@ -23,8 +23,6 @@ import com.google.common.primitives.Ints;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /** Utility methods for {@link FieldScope}s and {@link FluentEqualityConfig}. */
@@ -36,7 +34,7 @@ final class FieldScopeUtil {
    * @param fmt Format string that must contain exactly one '%s' and no other format parameters.
    */
   static Function<Optional<Descriptor>, String> fieldNumbersFunction(
-      final String fmt, final int... fieldNumbers) {
+      final String fmt, final List<Integer> fieldNumbers) {
     return new Function<Optional<Descriptor>, String>() {
       @Override
       public String apply(Optional<Descriptor> optDescriptor) {
@@ -95,23 +93,14 @@ final class FieldScopeUtil {
   }
 
   /** Joins the arguments into a {@link List} for convenience. */
-  static <T> List<T> makeList(T first, T second, T... rest) {
-    List<T> list = new ArrayList<T>();
+  static List<Integer> asList(int first, int... rest) {
+    List<Integer> list = Lists.newArrayList();
     list.add(first);
-    list.add(second);
-    list.addAll(Arrays.asList(rest));
+    list.addAll(Ints.asList(rest));
     return list;
   }
 
   private static final Joiner JOINER = Joiner.on(", ");
-
-  static String join(int... fieldNumbers) {
-    return JOINER.join(Ints.asList(fieldNumbers));
-  }
-
-  static String join(FieldDescriptor... fieldDescriptors) {
-    return JOINER.join(fieldDescriptors);
-  }
 
   static String join(Iterable<?> objects) {
     return JOINER.join(objects);
@@ -124,7 +113,7 @@ final class FieldScopeUtil {
    * @param fmt Format string that must contain exactly one '%s' and no other format parameters.
    */
   private static String resolveFieldNumbers(
-      Optional<Descriptor> optDescriptor, String fmt, int... fieldNumbers) {
+      Optional<Descriptor> optDescriptor, String fmt, List<Integer> fieldNumbers) {
     if (optDescriptor.isPresent()) {
       Descriptor descriptor = optDescriptor.get();
       List<String> strings = Lists.newArrayList();

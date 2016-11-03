@@ -17,6 +17,8 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.Lists.asList;
+import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.join;
 
 import com.google.auto.value.AutoValue;
@@ -95,26 +97,26 @@ abstract class FieldScopeImpl extends FieldScope {
         Functions.constant(String.format("FieldScopes.fromSetFields(%s)", formatList(messages))));
   }
 
-  static FieldScope createIgnoringFields(int... fieldNumbers) {
+  static FieldScope createIgnoringFields(List<Integer> fieldNumbers) {
     return create(
         FieldScopeLogic.all().ignoringFields(fieldNumbers),
         FieldScopeUtil.fieldNumbersFunction("FieldScopes.ignoringFields(%s)", fieldNumbers));
   }
 
-  static FieldScope createIgnoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+  static FieldScope createIgnoringFieldDescriptors(List<FieldDescriptor> fieldDescriptors) {
     return create(
         FieldScopeLogic.all().ignoringFieldDescriptors(fieldDescriptors),
         Functions.constant(
             String.format("FieldScopes.ignoringFieldDescriptors(%s)", join(fieldDescriptors))));
   }
 
-  static FieldScope createAllowingFields(int... fieldNumbers) {
+  static FieldScope createAllowingFields(List<Integer> fieldNumbers) {
     return create(
         FieldScopeLogic.none().allowingFields(fieldNumbers),
         FieldScopeUtil.fieldNumbersFunction("FieldScopes.allowingFields(%s)", fieldNumbers));
   }
 
-  static FieldScope createAllowingFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+  static FieldScope createAllowingFieldDescriptors(List<FieldDescriptor> fieldDescriptors) {
     return create(
         FieldScopeLogic.none().allowingFieldDescriptors(fieldDescriptors),
         Functions.constant(
@@ -153,14 +155,17 @@ abstract class FieldScopeImpl extends FieldScope {
   }
 
   @Override
-  public final FieldScope ignoringFields(int... fieldNumbers) {
+  public final FieldScope ignoringFields(int firstFieldNumber, int... rest) {
+    List<Integer> fieldNumbers = asList(firstFieldNumber, rest);
     return create(
         logic().ignoringFields(fieldNumbers),
         addUsingCorrespondenceFieldNumbersString(".ignoringFields(%s)", fieldNumbers));
   }
 
   @Override
-  public final FieldScope ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+  public final FieldScope ignoringFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    List<FieldDescriptor> fieldDescriptors = asList(firstFieldDescriptor, rest);
     return create(
         logic().ignoringFieldDescriptors(fieldDescriptors),
         addUsingCorrespondenceFieldDescriptorsString(
@@ -168,14 +173,17 @@ abstract class FieldScopeImpl extends FieldScope {
   }
 
   @Override
-  public final FieldScope allowingFields(int... fieldNumbers) {
+  public final FieldScope allowingFields(int firstFieldNumber, int... rest) {
+    List<Integer> fieldNumbers = asList(firstFieldNumber, rest);
     return create(
         logic().allowingFields(fieldNumbers),
         addUsingCorrespondenceFieldNumbersString(".allowingFields(%s)", fieldNumbers));
   }
 
   @Override
-  public final FieldScope allowingFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+  public final FieldScope allowingFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    List<FieldDescriptor> fieldDescriptors = asList(firstFieldDescriptor, rest);
     return create(
         logic().allowingFieldDescriptors(fieldDescriptors),
         addUsingCorrespondenceFieldDescriptorsString(
@@ -183,14 +191,14 @@ abstract class FieldScopeImpl extends FieldScope {
   }
 
   private Function<Optional<Descriptor>, String> addUsingCorrespondenceFieldNumbersString(
-      String fmt, int... fieldNumbers) {
+      String fmt, List<Integer> fieldNumbers) {
     return FieldScopeUtil.concat(
         usingCorrespondenceStringFunction(),
         FieldScopeUtil.fieldNumbersFunction(fmt, fieldNumbers));
   }
 
   private Function<Optional<Descriptor>, String> addUsingCorrespondenceFieldDescriptorsString(
-      String fmt, FieldDescriptor... fieldDescriptors) {
+      String fmt, List<FieldDescriptor> fieldDescriptors) {
     return FieldScopeUtil.concat(
         usingCorrespondenceStringFunction(),
         Functions.constant(String.format(fmt, join(fieldDescriptors))));

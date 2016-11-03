@@ -17,6 +17,8 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.asList;
+import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.common.truth.Correspondence;
 import com.google.common.truth.FailureStrategy;
@@ -447,8 +449,8 @@ public class IterableOfProtosSubject<
    * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
    * runtime exception.
    */
-  public IterableOfProtosFluentAssertion<M> ignoringFields(int... fieldNumbers) {
-    return usingConfig(config.ignoringFields(fieldNumbers));
+  public IterableOfProtosFluentAssertion<M> ignoringFields(int firstFieldNumber, int... rest) {
+    return usingConfig(config.ignoringFields(asList(firstFieldNumber, rest)));
   }
 
   /**
@@ -462,8 +464,8 @@ public class IterableOfProtosSubject<
    * is silently ignored.
    */
   public IterableOfProtosFluentAssertion<M> ignoringFieldDescriptors(
-      FieldDescriptor... fieldDescriptors) {
-    return usingConfig(config.ignoringFieldDescriptors(fieldDescriptors));
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(config.ignoringFieldDescriptors(asList(firstFieldDescriptor, rest)));
   }
 
   /**
@@ -530,14 +532,14 @@ public class IterableOfProtosSubject<
     }
 
     @Override
-    public IterableOfProtosFluentAssertion<M> ignoringFields(int... fieldNumbers) {
-      return subject.ignoringFields(fieldNumbers);
+    public IterableOfProtosFluentAssertion<M> ignoringFields(int firstFieldNumber, int... rest) {
+      return subject.ignoringFields(firstFieldNumber, rest);
     }
 
     @Override
     public IterableOfProtosFluentAssertion<M> ignoringFieldDescriptors(
-        FieldDescriptor... fieldDescriptors) {
-      return subject.ignoringFieldDescriptors(fieldDescriptors);
+        FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.ignoringFieldDescriptors(firstFieldDescriptor, rest);
     }
 
     @Override

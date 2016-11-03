@@ -134,7 +134,7 @@ public interface ProtoFluentAssertion {
    * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
    * runtime exception.
    */
-  ProtoFluentAssertion ignoringFields(int... fieldNumbers);
+  ProtoFluentAssertion ignoringFields(int firstFieldNumber, int... rest);
 
   /**
    * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
@@ -146,7 +146,8 @@ public interface ProtoFluentAssertion {
    * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
    * is silently ignored.
    */
-  ProtoFluentAssertion ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors);
+  ProtoFluentAssertion ignoringFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
 
   /**
    * Excludes all specific field paths under the argument {@link FieldScope} from the comparison.

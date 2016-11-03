@@ -139,7 +139,7 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
    * runtime exception.
    */
-  IterableOfProtosFluentAssertion<M> ignoringFields(int... fieldNumbers);
+  IterableOfProtosFluentAssertion<M> ignoringFields(int firstFieldNumber, int... rest);
 
   /**
    * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
@@ -151,7 +151,8 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
    * is silently ignored.
    */
-  IterableOfProtosFluentAssertion<M> ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors);
+  IterableOfProtosFluentAssertion<M> ignoringFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
 
   /**
    * Excludes all specific field paths under the argument {@link FieldScope} from the comparison.

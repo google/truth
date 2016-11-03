@@ -27,7 +27,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.common.primitives.Ints;
 import com.google.common.truth.extensions.proto.MessageDifferencer.IgnoreCriteria;
 import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
 import com.google.protobuf.Descriptors.Descriptor;
@@ -236,40 +235,36 @@ abstract class FieldScopeLogic {
    */
   void validate(Descriptor descriptor) {}
 
-  private static boolean isEmpty(int... ints) {
-    return ints.length == 0;
-  }
-
-  private static boolean isEmpty(FieldDescriptor... fieldDescriptors) {
-    for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
-      checkNotNull(fieldDescriptor);
+  private static boolean isEmpty(List<?> container) {
+    for (Object element : container) {
+      checkNotNull(element);
     }
 
-    return fieldDescriptors.length == 0;
+    return container.isEmpty();
   }
 
-  FieldScopeLogic ignoringFields(int... fieldNumbers) {
+  FieldScopeLogic ignoringFields(List<Integer> fieldNumbers) {
     if (isEmpty(fieldNumbers)) {
       return this;
     }
     return and(this, new NegationFieldScopeLogic(new FieldNumbersLogic(fieldNumbers)));
   }
 
-  FieldScopeLogic ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+  FieldScopeLogic ignoringFieldDescriptors(List<FieldDescriptor> fieldDescriptors) {
     if (isEmpty(fieldDescriptors)) {
       return this;
     }
     return and(this, new NegationFieldScopeLogic(new FieldDescriptorsLogic(fieldDescriptors)));
   }
 
-  FieldScopeLogic allowingFields(int... fieldNumbers) {
+  FieldScopeLogic allowingFields(List<Integer> fieldNumbers) {
     if (isEmpty(fieldNumbers)) {
       return this;
     }
     return or(this, new FieldNumbersLogic(fieldNumbers));
   }
 
-  FieldScopeLogic allowingFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+  FieldScopeLogic allowingFieldDescriptors(List<FieldDescriptor> fieldDescriptors) {
     if (isEmpty(fieldDescriptors)) {
       return this;
     }
@@ -438,8 +433,8 @@ abstract class FieldScopeLogic {
   private static final class FieldNumbersLogic extends FieldMatcherLogicBase {
     private final ImmutableSet<Integer> fieldNumbers;
 
-    FieldNumbersLogic(int... fieldNumbers) {
-      this.fieldNumbers = ImmutableSet.copyOf(Ints.asList(fieldNumbers));
+    FieldNumbersLogic(List<Integer> fieldNumbers) {
+      this.fieldNumbers = ImmutableSet.copyOf(fieldNumbers);
     }
 
     @Override
@@ -470,7 +465,7 @@ abstract class FieldScopeLogic {
   private static final class FieldDescriptorsLogic extends FieldMatcherLogicBase {
     private final ImmutableSet<FieldDescriptor> fieldDescriptors;
 
-    FieldDescriptorsLogic(FieldDescriptor... fieldDescriptors) {
+    FieldDescriptorsLogic(List<FieldDescriptor> fieldDescriptors) {
       this.fieldDescriptors = ImmutableSet.copyOf(fieldDescriptors);
     }
 

@@ -57,15 +57,15 @@ public abstract class FieldScope {
    * field numbers.
    *
    * <p>Validation of the field numbers is performed when the {@code FieldScope} is invoked
-   * (typically by {@link ProtoFluentEquals#isEqualTo}). A runtime exception will occur if bad field
-   * numbers are encountered.
+   * (typically by {@link ProtoFluentAssertion#isEqualTo}). A runtime exception will occur if bad
+   * field numbers are encountered.
    *
    * <p>The field numbers are ignored recursively on this type. That is, if {@code YourMessage}
    * contains another {@code YourMessage} somewhere within its subtree, a {@code FieldScope
    * ignoringFields(X)} will ignore field number {@code X} for all submessages of type {@code
    * YourMessage}, as well as for the top-level message.
    */
-  public abstract FieldScope ignoringFields(int... fieldNumbers);
+  public abstract FieldScope ignoringFields(int firstFieldNumber, int... rest);
 
   /**
    * Returns a {@code FieldScope} equivalent to this one, minus all fields matching the given {@link
@@ -80,22 +80,23 @@ public abstract class FieldScope {
    * FooMessage.field_bar} is ignored, {@code field_bar} will be ignored for all submessages of the
    * parent type of type {@code FooMessage}.
    */
-  public abstract FieldScope ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors);
+  public abstract FieldScope ignoringFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
 
   /**
    * Returns a {@code FieldScope} equivalent to this one, plus all fields defined by the given field
    * numbers.
    *
    * <p>Validation of the field numbers is performed when the {@code FieldScope} is invoked
-   * (typically by {@link ProtoFluentEquals#isEqualTo}). A runtime exception will occur if bad field
-   * numbers are encountered.
+   * (typically by {@link ProtoFluentAssertion#isEqualTo}). A runtime exception will occur if bad
+   * field numbers are encountered.
    *
    * <p>The field numbers are included recursively on this type. That is, if {@code YourMessage}
    * contains another {@code YourMessage} somewhere within its subtree, a {@code FieldScope
    * allowingFields(X)} will include field number {@code X} for all submessages of type {@code
    * YourMessage}, as well as for the top-level message.
    */
-  public abstract FieldScope allowingFields(int... fieldNumbers);
+  public abstract FieldScope allowingFields(int firstFieldNumber, int... rest);
 
   /**
    * Returns a {@code FieldScope} equivalent to this one, plus all fields matching the given {@link
@@ -110,7 +111,8 @@ public abstract class FieldScope {
    * FooMessage.field_bar} is included, {@code field_bar} will be included for all submessages of
    * the parent type of type {@code FooMessage}.
    */
-  public abstract FieldScope allowingFieldDescriptors(FieldDescriptor... fieldDescriptors);
+  public abstract FieldScope allowingFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
 
   // package-protected: Should not be implemented outside the package.
   FieldScope() {}

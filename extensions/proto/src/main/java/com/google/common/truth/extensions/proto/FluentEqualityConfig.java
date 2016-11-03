@@ -29,6 +29,7 @@ import com.google.common.truth.Correspondence;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import java.util.List;
 import javax.annotation.Nullable;
 
 /**
@@ -114,14 +115,14 @@ abstract class FluentEqualityConfig {
         .build();
   }
 
-  final FluentEqualityConfig ignoringFields(int... fieldNumbers) {
+  final FluentEqualityConfig ignoringFields(List<Integer> fieldNumbers) {
     return toBuilder()
         .setFieldScopeLogic(fieldScopeLogic().ignoringFields(fieldNumbers))
         .addUsingCorrespondenceFieldNumbersString(".ignoringFields(%s)", fieldNumbers)
         .build();
   }
 
-  final FluentEqualityConfig ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
+  final FluentEqualityConfig ignoringFieldDescriptors(List<FieldDescriptor> fieldDescriptors) {
     return toBuilder()
         .setFieldScopeLogic(fieldScopeLogic().ignoringFieldDescriptors(fieldDescriptors))
         .addUsingCorrespondenceFieldDescriptorsString(
@@ -205,13 +206,12 @@ abstract class FluentEqualityConfig {
     // Lazy formatting methods.
     // These allow us to print raw integer field numbers with meaningful names.
 
-    final Builder addUsingCorrespondenceString(String fmt, Object... args) {
+    final Builder addUsingCorrespondenceString(String string) {
       return setUsingCorrespondenceStringFunction(
-          FieldScopeUtil.concat(
-              usingCorrespondenceStringFunction(), Functions.constant(String.format(fmt, args))));
+          FieldScopeUtil.concat(usingCorrespondenceStringFunction(), Functions.constant(string)));
     }
 
-    final Builder addUsingCorrespondenceFieldNumbersString(String fmt, int... fieldNumbers) {
+    final Builder addUsingCorrespondenceFieldNumbersString(String fmt, List<Integer> fieldNumbers) {
       return setUsingCorrespondenceStringFunction(
           FieldScopeUtil.concat(
               usingCorrespondenceStringFunction(),
@@ -219,7 +219,7 @@ abstract class FluentEqualityConfig {
     }
 
     final Builder addUsingCorrespondenceFieldDescriptorsString(
-        String fmt, FieldDescriptor... fieldDescriptors) {
+        String fmt, List<FieldDescriptor> fieldDescriptors) {
       return setUsingCorrespondenceStringFunction(
           FieldScopeUtil.concat(
               usingCorrespondenceStringFunction(),

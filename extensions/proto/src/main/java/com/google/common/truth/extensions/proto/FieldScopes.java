@@ -15,6 +15,9 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.collect.Lists.asList;
+import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
+
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 
@@ -75,7 +78,7 @@ public final class FieldScopes {
    */
   public static FieldScope fromSetFields(
       Message firstMessage, Message secondMessage, Message... rest) {
-    return fromSetFields(FieldScopeUtil.makeList(firstMessage, secondMessage, rest));
+    return fromSetFields(asList(firstMessage, secondMessage, rest));
   }
 
   /**
@@ -95,8 +98,8 @@ public final class FieldScopes {
    *
    * @see FieldScope#ignoringFields
    */
-  public static FieldScope ignoringFields(int... fieldNumbers) {
-    return FieldScopeImpl.createIgnoringFields(fieldNumbers);
+  public static FieldScope ignoringFields(int firstFieldNumber, int... rest) {
+    return FieldScopeImpl.createIgnoringFields(asList(firstFieldNumber, rest));
   }
 
   /**
@@ -105,8 +108,9 @@ public final class FieldScopes {
    *
    * @see FieldScope#ignoringFieldDescriptors
    */
-  public static FieldScope ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
-    return FieldScopeImpl.createIgnoringFieldDescriptors(fieldDescriptors);
+  public static FieldScope ignoringFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return FieldScopeImpl.createIgnoringFieldDescriptors(asList(firstFieldDescriptor, rest));
   }
 
   /**
@@ -115,8 +119,8 @@ public final class FieldScopes {
    *
    * @see FieldScope#allowingFields
    */
-  public static FieldScope allowingFields(int... fieldNumbers) {
-    return FieldScopeImpl.createAllowingFields(fieldNumbers);
+  public static FieldScope allowingFields(int firstFieldNumber, int... rest) {
+    return FieldScopeImpl.createAllowingFields(asList(firstFieldNumber, rest));
   }
 
   /**
@@ -125,8 +129,9 @@ public final class FieldScopes {
    *
    * @see FieldScope#allowingFieldDescriptors
    */
-  public static FieldScope allowingFieldDescriptors(FieldDescriptor... fieldDescriptors) {
-    return FieldScopeImpl.createAllowingFieldDescriptors(fieldDescriptors);
+  public static FieldScope allowingFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return FieldScopeImpl.createAllowingFieldDescriptors(asList(firstFieldDescriptor, rest));
   }
 
   /**

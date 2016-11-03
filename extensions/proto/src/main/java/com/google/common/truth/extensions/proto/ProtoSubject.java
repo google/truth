@@ -17,7 +17,9 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.Truth.assertAbout;
+import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
@@ -123,13 +125,14 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
-  public ProtoFluentAssertion ignoringFields(int... fieldNumbers) {
-    return usingConfig(config.ignoringFields(fieldNumbers));
+  public ProtoFluentAssertion ignoringFields(int firstFieldNumber, int... rest) {
+    return usingConfig(config.ignoringFields(asList(firstFieldNumber, rest)));
   }
 
   @Override
-  public ProtoFluentAssertion ignoringFieldDescriptors(FieldDescriptor... fieldDescriptors) {
-    return usingConfig(config.ignoringFieldDescriptors(fieldDescriptors));
+  public ProtoFluentAssertion ignoringFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(config.ignoringFieldDescriptors(asList(firstFieldDescriptor, rest)));
   }
 
   @Override
