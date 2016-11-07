@@ -36,6 +36,24 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-gwt-sources</id>
+            <phase>post-integration-test</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <classifier>gwt</classifier>
+              <classesDirectory>src/main/java</classesDirectory>
+              <includes>
+                <include>**/*.java</include>
+                <include>**/*.gwt.xml</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
