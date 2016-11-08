@@ -1,6 +1,7 @@
 package com.google.common.truth;
 
 import android.view.View;
+import android.view.animation.Animation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import java.util.Random;
 
 import static com.google.common.truth.AndroidTruth.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -46,6 +48,28 @@ public class ViewSubjectTest {
             fail("Should have thrown.");
         } catch (AssertionError e) {
             Truth.assertThat(e).hasMessage("Not true that <view> has alpha: 101.0, actual: " + viewSpy.getAlpha());
+        }
+    }
+
+    @Test
+    public void testHasAnimation() {
+        Animation animation = mock(Animation.class);
+        assertThat(withAnimation(animation))
+                .hasAnimation(animation);
+    }
+
+    @Test
+    public void testHasAnimationFailure() {
+        Animation animation = mock(Animation.class);
+        Animation expect = mock(Animation.class);
+        try {
+            assertThat(withAnimation(animation))
+                    .hasAnimation(expect);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <Mock for Animation, hashCode: "
+                    + animation.hashCode() + "> is the same instance as <Mock for Animation, hashCode: "
+                    + expect.hashCode() + ">");
         }
     }
 
@@ -94,6 +118,12 @@ public class ViewSubjectTest {
         } catch (AssertionError e) {
             Truth.assertThat(e).hasMessage("Not true that <view> is visible");
         }
+    }
+
+    private View withAnimation(Animation animation) {
+        when(viewSpy.getAnimation())
+                .thenReturn(animation);
+        return viewSpy;
     }
 
     private View withVisibility(int visibility) {

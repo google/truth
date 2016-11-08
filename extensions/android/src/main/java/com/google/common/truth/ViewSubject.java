@@ -1,8 +1,12 @@
 package com.google.common.truth;
 
 import android.view.View;
+import android.view.animation.Animation;
 
 import javax.annotation.Nullable;
+
+import static com.google.common.truth.Truth.assertThat;
+
 
 /**
  * @author Kevin Leigh Crain
@@ -20,6 +24,11 @@ public class ViewSubject extends Subject<ViewSubject, View> {
     public final void hasAlpha(float alpha) {
         float actualAlpha = actual().getAlpha();
         if(actual().getAlpha() != alpha) fail("has alpha: " + alpha + ", actual: " + actualAlpha);
+    }
+
+    public final void hasAnimation(Animation animation) {
+        assertThat(actual().getAnimation())
+                .isSameAs(animation);
     }
 
     public final void isVisible() {
