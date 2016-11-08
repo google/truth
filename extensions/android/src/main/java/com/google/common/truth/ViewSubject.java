@@ -13,6 +13,11 @@ public class ViewSubject extends Subject<ViewSubject, View> {
         super(failureStrategy, actual);
     }
 
+    public final void hasAlpha(float alpha) {
+        float actualAlpha = actual().getAlpha();
+        if(actual().getAlpha() != alpha) fail("has alpha: " + alpha + ", actual: " + actualAlpha);
+    }
+
     public final void isVisible() {
         if(actual().getVisibility() != View.VISIBLE) fail("is not visible");
     }

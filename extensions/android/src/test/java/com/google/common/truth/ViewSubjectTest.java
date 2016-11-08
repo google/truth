@@ -8,6 +8,8 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Random;
+
 import static com.google.common.truth.AndroidTruth.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.spy;
@@ -27,6 +29,24 @@ public class ViewSubjectTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         viewSpy = spy(view);
+    }
+
+    @Test
+    public void testHasAlpha() {
+        float alpha = new Random(99).nextFloat();
+        assertThat(withAlpha(alpha))
+                .hasAlpha(alpha);
+    }
+
+    @Test
+    public void testHasAlphaFailure() {
+        try {
+            assertThat(withAlpha(new Random(99).nextFloat()))
+                    .hasAlpha(101);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <view> has alpha: 101.0, actual: " + viewSpy.getAlpha());
+        }
     }
 
     @Test
@@ -79,6 +99,12 @@ public class ViewSubjectTest {
     private View withVisibility(int visibility) {
         when(viewSpy.getVisibility())
                 .thenReturn(visibility);
+        return viewSpy;
+    }
+
+    private View withAlpha(float alpha) {
+        when(viewSpy.getAlpha())
+                .thenReturn(alpha);
         return viewSpy;
     }
 }
