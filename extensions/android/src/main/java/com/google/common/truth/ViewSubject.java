@@ -18,7 +18,7 @@ public class ViewSubject extends Subject<ViewSubject, View> {
     }
 
     public final void isNotVisible() {
-        if(actual().getVisibility() == View.VISIBLE) fail("is visible");
+        if(actual().getVisibility() == View.VISIBLE || actual().getVisibility() == View.GONE) fail("is visible or gone");
     }
 
     public static SubjectFactory<ViewSubject, View> views() {
