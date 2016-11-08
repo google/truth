@@ -7,6 +7,10 @@ import javax.annotation.Nullable;
 /**
  * @author Kevin Leigh Crain
  */
+
+/**
+ * Todo: remove finals on method and make class abstract
+ */
 public class ViewSubject extends Subject<ViewSubject, View> {
 
     public ViewSubject(FailureStrategy failureStrategy, @Nullable View actual) {
