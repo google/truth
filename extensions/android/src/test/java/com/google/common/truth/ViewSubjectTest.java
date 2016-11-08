@@ -10,7 +10,8 @@ import org.mockito.MockitoAnnotations;
 
 import static com.google.common.truth.AndroidTruth.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Kevin Leigh Crain
@@ -20,30 +21,32 @@ public class ViewSubjectTest {
 
     @Mock
     View view;
+    View viewSpy;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        viewSpy = spy(view);
     }
 
     @Test
     public void testIsVisible() {
-        assertThat(createViewSpyWithVisibility(view, View.VISIBLE))
+        assertThat(withVisibility(view, View.VISIBLE))
                 .isVisible();
     }
 
     @Test
     public void testIsNotVisible() {
-        assertThat(createViewSpyWithVisibility(view, View.INVISIBLE))
+        assertThat(withVisibility(view, View.INVISIBLE))
                 .isNotVisible();
-        assertThat(createViewSpyWithVisibility(view, View.GONE))
+        assertThat(withVisibility(view, View.GONE))
                 .isNotVisible();
     }
 
     @Test
     public void testIsVisibleFailure_invisible() {
         try {
-            assertThat(createViewSpyWithVisibility(view, View.INVISIBLE))
+            assertThat(withVisibility(view, View.INVISIBLE))
                     .isVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -54,7 +57,7 @@ public class ViewSubjectTest {
     @Test
     public void testIsVisibleFailure_gone() {
         try {
-            assertThat(createViewSpyWithVisibility(view, View.GONE))
+            assertThat(withVisibility(view, View.GONE))
                     .isVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -65,7 +68,7 @@ public class ViewSubjectTest {
     @Test
     public void testIsNotVisibleFailure() {
         try {
-            assertThat(createViewSpyWithVisibility(view, View.VISIBLE))
+            assertThat(withVisibility(view, View.VISIBLE))
                     .isNotVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -73,8 +76,7 @@ public class ViewSubjectTest {
         }
     }
 
-    private View createViewSpyWithVisibility(View view, int visibility) {
-        View viewSpy = spy(view);
+    private View withVisibility(View view, int visibility) {
         when(viewSpy.getVisibility())
                 .thenReturn(visibility);
         return viewSpy;
