@@ -27,6 +27,20 @@ public class ViewSubjectTest {
     }
 
     @Test
+    public void testIsVisible() {
+        assertThat(createViewSpyWithVisibility(view, View.VISIBLE))
+                .isVisible();
+    }
+
+    @Test
+    public void testIsNotVisible() {
+        assertThat(createViewSpyWithVisibility(view, View.INVISIBLE))
+                .isNotVisible();
+        assertThat(createViewSpyWithVisibility(view, View.GONE))
+                .isNotVisible();
+    }
+
+    @Test
     public void testIsVisibleFailure_invisible() {
         try {
             assertThat(createViewSpyWithVisibility(view, View.INVISIBLE))
@@ -55,7 +69,7 @@ public class ViewSubjectTest {
                     .isNotVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            Truth.assertThat(e).hasMessage("Not true that <view> is visible or gone");
+            Truth.assertThat(e).hasMessage("Not true that <view> is visible");
         }
     }
 
