@@ -31,22 +31,22 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsVisible() {
-        assertThat(withVisibility(view, View.VISIBLE))
+        assertThat(withVisibility(View.VISIBLE))
                 .isVisible();
     }
 
     @Test
     public void testIsNotVisible() {
-        assertThat(withVisibility(view, View.INVISIBLE))
+        assertThat(withVisibility(View.INVISIBLE))
                 .isNotVisible();
-        assertThat(withVisibility(view, View.GONE))
+        assertThat(withVisibility(View.GONE))
                 .isNotVisible();
     }
 
     @Test
     public void testIsVisibleFailure_invisible() {
         try {
-            assertThat(withVisibility(view, View.INVISIBLE))
+            assertThat(withVisibility(View.INVISIBLE))
                     .isVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -57,7 +57,7 @@ public class ViewSubjectTest {
     @Test
     public void testIsVisibleFailure_gone() {
         try {
-            assertThat(withVisibility(view, View.GONE))
+            assertThat(withVisibility(View.GONE))
                     .isVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -68,7 +68,7 @@ public class ViewSubjectTest {
     @Test
     public void testIsNotVisibleFailure() {
         try {
-            assertThat(withVisibility(view, View.VISIBLE))
+            assertThat(withVisibility(View.VISIBLE))
                     .isNotVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -76,7 +76,7 @@ public class ViewSubjectTest {
         }
     }
 
-    private View withVisibility(View view, int visibility) {
+    private View withVisibility(int visibility) {
         when(viewSpy.getVisibility())
                 .thenReturn(visibility);
         return viewSpy;
