@@ -36,14 +36,14 @@ public class ViewSubjectTest {
     @Test
     public void testHasAlpha() {
         float alpha = new Random(99).nextFloat();
-        assertThat(withAlpha(alpha))
+        assertThat(whenReturn(viewSpy.getAlpha(), alpha))
                 .hasAlpha(alpha);
     }
 
     @Test
     public void testHasAlphaFailure() {
         try {
-            assertThat(withAlpha(new Random(99).nextFloat()))
+            assertThat(whenReturn(viewSpy.getAlpha(), new Random(99).nextFloat()))
                     .hasAlpha(101);
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -54,7 +54,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasAnimation() {
         Animation animation = mock(Animation.class);
-        assertThat(withAnimation(animation))
+        assertThat(whenReturn(viewSpy.getAnimation(), animation))
                 .hasAnimation(animation);
     }
 
@@ -63,7 +63,7 @@ public class ViewSubjectTest {
         Animation animation = mock(Animation.class);
         Animation expect = mock(Animation.class);
         try {
-            assertThat(withAnimation(animation))
+            assertThat(whenReturn(viewSpy.getAnimation(), animation))
                     .hasAnimation(expect);
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -75,22 +75,22 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsVisible() {
-        assertThat(withVisibility(View.VISIBLE))
+        assertThat(whenReturn(viewSpy.getVisibility(), View.VISIBLE))
                 .isVisible();
     }
 
     @Test
     public void testIsNotVisible() {
-        assertThat(withVisibility(View.INVISIBLE))
+        assertThat(whenReturn(viewSpy.getVisibility(), View.INVISIBLE))
                 .isNotVisible();
-        assertThat(withVisibility(View.GONE))
+        assertThat(whenReturn(viewSpy.getVisibility(), View.GONE))
                 .isNotVisible();
     }
 
     @Test
     public void testIsVisibleFailure_invisible() {
         try {
-            assertThat(withVisibility(View.INVISIBLE))
+            assertThat(whenReturn(viewSpy.getVisibility(), View.INVISIBLE))
                     .isVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -101,7 +101,7 @@ public class ViewSubjectTest {
     @Test
     public void testIsVisibleFailure_gone() {
         try {
-            assertThat(withVisibility(View.GONE))
+            assertThat(whenReturn(viewSpy.getVisibility(), View.GONE))
                     .isVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -112,7 +112,7 @@ public class ViewSubjectTest {
     @Test
     public void testIsNotVisibleFailure() {
         try {
-            assertThat(withVisibility(View.VISIBLE))
+            assertThat(whenReturn(viewSpy.getVisibility(), View.VISIBLE))
                     .isNotVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -120,21 +120,9 @@ public class ViewSubjectTest {
         }
     }
 
-    private View withAnimation(Animation animation) {
-        when(viewSpy.getAnimation())
-                .thenReturn(animation);
-        return viewSpy;
-    }
-
-    private View withVisibility(int visibility) {
-        when(viewSpy.getVisibility())
-                .thenReturn(visibility);
-        return viewSpy;
-    }
-
-    private View withAlpha(float alpha) {
-        when(viewSpy.getAlpha())
-                .thenReturn(alpha);
-        return viewSpy;
+    private <T> View whenReturn(T methodCall, T value) {
+        return when(methodCall)
+                .thenReturn(value)
+                .getMock();
     }
 }
