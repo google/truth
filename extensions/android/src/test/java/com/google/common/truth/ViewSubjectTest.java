@@ -13,10 +13,14 @@ import org.mockito.MockitoAnnotations;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static com.google.common.truth.AndroidTruth.assertThat;
 import static org.junit.Assert.fail;
@@ -116,11 +120,11 @@ public class ViewSubjectTest {
     }
 
     /**
-     * Todo: Remove not really dynamic/flexible ugly, error prone assertion tests generator method {@link #generateSuccessAssertionTests()}
-     *
+     * Todo: Remove not really dynamic/flexible ugly, error prone assertion tests generator method
+     * <p>
      * RememberTo: find method in {@link View} - strip away assertions first word and use contains
-     *             (think of exceptions like not etc..)
-     *
+     * (think of exceptions like not etc..)
+     * <p>
      * RememberTo: generate a failure generation version
      * RememberTo: remove tight coupling between {@link ViewSubjectTest} doing next RememberTo
      * RememberTo: abstraction (DRY) for remainder of AssertJ porting of classes
@@ -128,102 +132,102 @@ public class ViewSubjectTest {
      */
     @Test
     public void generateSuccessAssertionTests() {
-        ViewSubject mock = new ViewSubject(new FailureStrategy() {
+        ViewSubject subject = new ViewSubject(new FailureStrategy() {
             @Override
             public void fail(String message) {
                 super.fail(message);
             }
         }, null);
 
-        Method[] methods = mock.getClass().getDeclaredMethods();
+        Method[] declaredMethods = subject.getClass().getDeclaredMethods();
+        List<String> superClassMethodNames = Lists.newArrayList(
+                Lists.transform(Lists.newArrayList(subject.getClass().getSuperclass().getDeclaredMethods()),
+                        method -> method.getName()));
 
-        List<String> subClassMethodNames = Lists.newArrayList(
-                Lists.transform(Lists.newArrayList(mock.getClass().getSuperclass().getDeclaredMethods()),
-                        method1 -> method1.getName()));
+        Predicate<? super Method> superClassMethodFilter = method -> !superClassMethodNames.contains(method.getName()) && !method.getName().contains("views");
 
-        HashMap<String, HashMap<String, String>> assertionParamMap = new HashMap<>();
-
-        ArrayList<String> assertionMethodsNames = Lists.newArrayList();
-        Lists.newArrayList(methods).stream()
-                .filter(method -> !subClassMethodNames.contains(method.getName()) || !method.getName().contains("views"))
-                .forEach(method -> {
-                    String assertionMethodName = method.getName();
-
-                    ArrayList<Parameter> parameters = Lists.newArrayList(method.getParameters());
-                    if (parameters.size() > 0) {
-                        Parameter parameter = parameters.get(0);
-                        assertionParamMap.put(assertionMethodName, new HashMap<String, String>() {{
-                            // Maybe integrate dependency to get parameter name: https://github.com/paul-hammant/paranamer
-                            put(parameter.getName(), parameter.getParameterizedType().getTypeName());
-                        }});
-                    } else assertionParamMap.put(assertionMethodName, null);
-
-                    assertionMethodsNames.add(assertionMethodName);
-                });
-
-        assertionMethodsNames.sort((str1, str2) -> ComparisonChain.start().
-                compare(str1, str2, String.CASE_INSENSITIVE_ORDER).
-                compare(str1, str2).
-                result());
-
-        assertionMethodsNames.forEach(assertionMethodName -> {
-            String testName = String.valueOf(assertionMethodName.charAt(0)).toUpperCase()
-                    + assertionMethodName.substring(1, assertionMethodName.length());
-
-            String methodCall = "";
-            if (assertionMethodName.contains("has")) {
-                methodCall = assertionMethodName.replace("has", "get");
-            } else {
-                methodCall = assertionMethodName;
-            } // move into features/tags
-
-            String valueInstantiationLine = null;
-            String value = null;
-
-            HashMap<String, String> paramMap = assertionParamMap.get(assertionMethodName);
-
-            if (paramMap != null) {
-
-                String paramName = Lists.newArrayList(paramMap.keySet()).get(0);
-                String paramType = paramMap.get(paramName);
-
-                if (paramType != null) {
-                    switch (paramType) {
-                        case "float":
-                            value = "randomGenerator.nextFloat()";
-                            break;
-                        case "int":
-                            value = "randomGenerator.nextInt()";
-                            break;
-                        case "boolean":
-                            value = "true";
-                            break;
-                        case "java.lang.CharSequence":
-                            value = "DUMMY_STRING";
-                            break;
-                        default:
-                            value = String.format("mock(%s.class)", paramType);
-                            break;
-                    }
-                } // move into features/tags
-
-                paramName = "value";
-                valueInstantiationLine = String.format("%s %s = %s;", paramType, paramName, value);
-
-                System.out.println(String.format("\n@Test\n" +
-                        "    public void test%s() {\n" +
-                        "        %s\n" +
-                        "        assertThat(whenReturn(viewSpy.%s(), value))\n" +
-                        "                .%s(%s);\n" +
-                        "    }\n", testName, valueInstantiationLine, methodCall, assertionMethodName, paramName));
-            } else {
-                System.out.println(String.format("\n@Test\n" +
-                        "    public void test%s() {\n" +
-                        "        assertThat(whenReturn(viewSpy.%s(), value))\n" +
-                        "                .%s();\n" +
-                        "    }\n", testName, methodCall, assertionMethodName));
+        Function<? super Method, ? extends String> keyMethodNameMapper = method -> method.getName();
+        Function<? super Method, ? extends String[]> valueParamNameTypeMapMapper = method -> {
+            Parameter[] params = method.getParameters();
+            /**
+             * Todo: determine whether its worth the effort for a more dynamic approach of mapping more than one parameter
+             */
+            if (params.length > 0) {
+                Parameter param = params[0];
+                return new String[]{param.getName(), param.getType().getTypeName()};
             }
-        });
+            return new String[0];
+        };
+
+        BiConsumer<? super String, ? super String[]> consumeMethodAndParamTypeMap =
+                (methodName, paramValueAndType) -> {
+                    String testName = String.valueOf(methodName.charAt(0)).toUpperCase()
+                            + methodName.substring(1, methodName.length());
+
+                    String methodCall = "";
+                    if (methodName.contains("has")) {
+                        methodCall = methodName.replace("has", "get");
+                    } else {
+                        methodCall = methodName;
+                    } // move into features/tags
+
+                    String valueInstantiationLine = null;
+                    String value = null;
+
+                    if (paramValueAndType.length > 0) {
+                        String paramName = paramValueAndType[0];
+                        String paramType = paramValueAndType[1];
+
+                        if (paramType != null) {
+                            switch (paramType) {
+                                case "float":
+                                    value = "randomGenerator.nextFloat()";
+                                    break;
+                                case "int":
+                                    value = "randomGenerator.nextInt()";
+                                    break;
+                                case "boolean":
+                                    value = "true";
+                                    break;
+                                case "java.lang.CharSequence":
+                                    value = "DUMMY_STRING";
+                                    break;
+                                default:
+                                    value = String.format("mock(%s.class)", paramType);
+                                    break;
+                            }
+                        } // move into features/tags
+
+                        paramName = "value";
+                        valueInstantiationLine = String.format("%s %s = %s;", paramType, paramName, value);
+
+                        System.out.println(String.format("\n@Test\n" +
+                                "    public void test%s() {\n" +
+                                "        %s\n" +
+                                "        assertThat(whenReturn(viewSpy.%s(), value))\n" +
+                                "                .%s(%s);\n" +
+                                "    }\n", testName, valueInstantiationLine, methodCall, methodName, paramName));
+                    } else {
+                        System.out.println(String.format("\n@Test\n" +
+                                "    public void test%s() {\n" +
+                                "        assertThat(whenReturn(viewSpy.%s(), value))\n" +
+                                "                .%s();\n" +
+                                "    }\n", testName, methodCall, methodName));
+                    }
+                };
+
+        Function<List<Method>, Map<String, String[]>> sortAndMapMethodParamValueAndType =
+                methods -> methods.stream()
+                        .filter(superClassMethodFilter)
+                        .sorted((mX, mY) -> ComparisonChain.start().
+                                compare(mX.getName(), mY.getName(), String.CASE_INSENSITIVE_ORDER).
+                                compare(mX.getName(), mY.getName()).result())
+                        .collect(Collectors.toMap(keyMethodNameMapper, valueParamNameTypeMapMapper,
+                                (BinaryOperator<String[]>) (strings, strings2) -> new String[0]));
+
+        sortAndMapMethodParamValueAndType
+                .apply(Lists.newArrayList(declaredMethods))
+                .forEach(consumeMethodAndParamTypeMap);
 
     }
 
