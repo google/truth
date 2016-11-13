@@ -119,6 +119,7 @@ public class ViewSubjectTest {
         }
     }
 
+
     /**
      * Todo: Remove not really dynamic/flexible ugly, error prone assertion tests generator method
      * <p>
@@ -132,6 +133,10 @@ public class ViewSubjectTest {
      */
     @Test
     public void generateSuccessAssertionTests() {
+        Function<Class<?>, List<String>> getClassDeclaredMetodNames = cls -> Lists.newArrayList(
+                Lists.transform(Lists.newArrayList(cls.getSuperclass().getDeclaredMethods()),
+                        method -> method.getName()));
+
         ViewSubject subject = new ViewSubject(new FailureStrategy() {
             @Override
             public void fail(String message) {
@@ -140,9 +145,7 @@ public class ViewSubjectTest {
         }, null);
 
         Method[] declaredMethods = subject.getClass().getDeclaredMethods();
-        List<String> superClassMethodNames = Lists.newArrayList(
-                Lists.transform(Lists.newArrayList(subject.getClass().getSuperclass().getDeclaredMethods()),
-                        method -> method.getName()));
+        List<String> superClassMethodNames = getClassDeclaredMetodNames.apply(subject.getClass());
 
         Predicate<? super Method> superClassMethodFilter = method -> !superClassMethodNames.contains(method.getName()) && !method.getName().contains("views");
 
