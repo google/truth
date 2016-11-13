@@ -133,7 +133,7 @@ public class ViewSubjectTest {
      */
     @Test
     public void generateSuccessAssertionTests() {
-        Function<Class<?>, List<String>> getClassDeclaredMetodNames = cls -> Lists.newArrayList(
+        Function<Class<?>, List<String>> getClassDeclaredMethodNames = cls -> Lists.newArrayList(
                 Lists.transform(Lists.newArrayList(cls.getSuperclass().getDeclaredMethods()),
                         method -> method.getName()));
 
@@ -145,7 +145,7 @@ public class ViewSubjectTest {
         }, null);
 
         Method[] declaredMethods = subject.getClass().getDeclaredMethods();
-        List<String> superClassMethodNames = getClassDeclaredMetodNames.apply(subject.getClass());
+        List<String> superClassMethodNames = getClassDeclaredMethodNames.apply(subject.getClass());
 
         Predicate<? super Method> superClassMethodFilter = method -> !superClassMethodNames.contains(method.getName()) && !method.getName().contains("views");
 
