@@ -30,16 +30,13 @@ public class ViewSubjectTest {
 
     private static final String DUMMY_STRING = "DUMMY_STRING";
 
-    @Mock
-    View view;
-    View viewSpy;
+    private View view;
 
     private Random randomGenerator;
 
     @Before
     public void setup() {
         view = PowerMockito.mock(View.class);
-        viewSpy = PowerMockito.spy(view);
 
         randomGenerator = new Random(99);
     }
@@ -47,31 +44,31 @@ public class ViewSubjectTest {
     @After
     public void tearDown() {
         view = null;
-        viewSpy = null;
+        view = null;
     }
 
     @Test
     public void testHasAlpha() {
         float alpha = new Random(99).nextFloat();
-        assertThat(whenReturn(viewSpy.getAlpha(), alpha))
+        assertThat(whenReturn(view.getAlpha(), alpha))
                 .hasAlpha(alpha);
     }
 
     @Test
     public void testHasAlphaFailure() {
         try {
-            assertThat(whenReturn(viewSpy.getAlpha(), new Random(99).nextFloat()))
+            assertThat(whenReturn(view.getAlpha(), new Random(99).nextFloat()))
                     .hasAlpha(101);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            Truth.assertThat(e).hasMessage("Not true that <view> has alpha: 101.0, actual: " + viewSpy.getAlpha());
+            Truth.assertThat(e).hasMessage("Not true that <view> has alpha: 101.0, actual: " + view.getAlpha());
         }
     }
 
     @Test
     public void testHasAnimation() {
         Animation animation = mock(Animation.class);
-        assertThat(whenReturn(viewSpy.getAnimation(), animation))
+        assertThat(whenReturn(view.getAnimation(), animation))
                 .hasAnimation(animation);
     }
 
@@ -80,7 +77,7 @@ public class ViewSubjectTest {
         Animation animation = mock(Animation.class);
         Animation expect = mock(Animation.class);
         try {
-            assertThat(whenReturn(viewSpy.getAnimation(), animation))
+            assertThat(whenReturn(view.getAnimation(), animation))
                     .hasAnimation(expect);
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -92,22 +89,22 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsVisible() {
-        assertThat(whenReturn(viewSpy.getVisibility(), View.VISIBLE))
+        assertThat(whenReturn(view.getVisibility(), View.VISIBLE))
                 .isVisible();
     }
 
     @Test
     public void testIsNotVisible() {
-        assertThat(whenReturn(viewSpy.getVisibility(), View.INVISIBLE))
+        assertThat(whenReturn(view.getVisibility(), View.INVISIBLE))
                 .isNotVisible();
-        assertThat(whenReturn(viewSpy.getVisibility(), View.GONE))
+        assertThat(whenReturn(view.getVisibility(), View.GONE))
                 .isNotVisible();
     }
 
     @Test
     public void testIsVisibleFailure_invisible() {
         try {
-            assertThat(whenReturn(viewSpy.getVisibility(), View.INVISIBLE))
+            assertThat(whenReturn(view.getVisibility(), View.INVISIBLE))
                     .isVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -125,13 +122,13 @@ public class ViewSubjectTest {
     @Test
     public void testHasRootView() {
         android.view.View value = mock(android.view.View.class);
-        assertThat(whenReturn(viewSpy.getRootView(), value))
+        assertThat(whenReturn(view.getRootView(), value))
                 .hasRootView(value);
     }
 
     @Test
     public void testIsOpaque() {
-        assertThat(whenReturn(viewSpy.isOpaque(), true))
+        assertThat(whenReturn(view.isOpaque(), true))
                 .isOpaque();
     }
 
@@ -143,20 +140,20 @@ public class ViewSubjectTest {
 
     @Test
     public void testHasVerticalFadingEdgeDisabled() {
-        assertThat(whenReturn(viewSpy.isVerticalFadingEdgeEnabled(), false))
+        assertThat(whenReturn(view.isVerticalFadingEdgeEnabled(), false))
                 .hasVerticalFadingEdgeDisabled();
     }
 
     @Test
     public void testIsLongClickable() {
-        assertThat(whenReturn(viewSpy.isLongClickable(), true))
+        assertThat(whenReturn(view.isLongClickable(), true))
                 .isLongClickable();
     }
 
     @Test
     public void testHasSolidColor() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getSolidColor(), value))
+        assertThat(whenReturn(view.getSolidColor(), value))
                 .hasSolidColor(value);
     }
 
@@ -169,7 +166,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsNotOpaque() {
-        assertThat(whenReturn(viewSpy.isOpaque(), false))
+        assertThat(whenReturn(view.isOpaque(), false))
                 .isNotOpaque();
     }
 
@@ -190,32 +187,32 @@ public class ViewSubjectTest {
     @Test
     public void testHasVerticalScrollbarPosition() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getVerticalScrollbarPosition(), value))
+        assertThat(whenReturn(view.getVerticalScrollbarPosition(), value))
                 .hasVerticalScrollbarPosition(value);
     }
 
     @Test
     public void testHasHorizontalScrollbarEnabled() {
-        assertThat(whenReturn(viewSpy.isHorizontalScrollBarEnabled(), true))
+        assertThat(whenReturn(view.isHorizontalScrollBarEnabled(), true))
                 .hasHorizontalScrollbarEnabled();
     }
 
     @Test
     public void testHasNoFocus() {
-        assertThat(whenReturn(viewSpy.isFocused(), false))
+        assertThat(whenReturn(view.isFocused(), false))
                 .hasNoFocus();
     }
 
     @Test
     public void testHasVerticalScrollBarEnabled() {
-        assertThat(whenReturn(viewSpy.isVerticalScrollBarEnabled(), true))
+        assertThat(whenReturn(view.isVerticalScrollBarEnabled(), true))
                 .hasVerticalScrollBarEnabled();
     }
 
     @Test
     public void testHasDrawingCacheBackgroundColor() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getDrawingCacheBackgroundColor(), value))
+        assertThat(whenReturn(view.getDrawingCacheBackgroundColor(), value))
                 .hasDrawingCacheBackgroundColor(value);
     }
 
@@ -227,7 +224,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsDisabled() {
-        assertThat(whenReturn(viewSpy.isEnabled(), false))
+        assertThat(whenReturn(view.isEnabled(), false))
                 .isDisabled();
     }
 
@@ -241,45 +238,45 @@ public class ViewSubjectTest {
     @Test
     public void testHasScrollBarFadeDuration() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getScrollBarFadeDuration(), value))
+        assertThat(whenReturn(view.getScrollBarFadeDuration(), value))
                 .hasScrollBarFadeDuration(value);
     }
 
     @Test
     public void testIsNotClickable() {
-        assertThat(whenReturn(viewSpy.isClickable(), false))
+        assertThat(whenReturn(view.isClickable(), false))
                 .isNotClickable();
     }
 
     @Test
     public void testHasPaddingRight() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getPaddingRight(), value))
+        assertThat(whenReturn(view.getPaddingRight(), value))
                 .hasPaddingRight(value);
     }
 
     @Test
     public void testHasVerticalFadingEdgeLength() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getVerticalFadingEdgeLength(), value))
+        assertThat(whenReturn(view.getVerticalFadingEdgeLength(), value))
                 .hasVerticalFadingEdgeLength(value);
     }
 
     @Test
     public void testIsNotDirty() {
-        assertThat(whenReturn(viewSpy.isDirty(), false))
+        assertThat(whenReturn(view.isDirty(), false))
                 .isNotDirty();
     }
 
     @Test
     public void testHasVerticalFadingEdgeEnabled() {
-        assertThat(whenReturn(viewSpy.isVerticalFadingEdgeEnabled(), true))
+        assertThat(whenReturn(view.isVerticalFadingEdgeEnabled(), true))
                 .hasVerticalFadingEdgeEnabled();
     }
 
     @Test
     public void testHasContentDescription() {
-        assertThat(whenReturn(viewSpy.getContentDescription(), DUMMY_STRING))
+        assertThat(whenReturn(view.getContentDescription(), DUMMY_STRING))
                 .hasContentDescription(DUMMY_STRING);
     }
 
@@ -292,39 +289,39 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsEnabled() {
-        assertThat(whenReturn(viewSpy.isEnabled(), true))
+        assertThat(whenReturn(view.isEnabled(), true))
                 .isEnabled();
     }
 
     @Test
     public void testHasMinimumHeight() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getMinimumHeight(), value))
+        assertThat(whenReturn(view.getMinimumHeight(), value))
                 .hasMinimumHeight(value);
     }
 
     @Test
     public void testHasSaveEnabled() {
-        assertThat(whenReturn(viewSpy.isSaveEnabled(), true))
+        assertThat(whenReturn(view.isSaveEnabled(), true))
                 .hasSaveEnabled();
     }
 
     @Test
     public void testHasBaseline() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getBaseline(), value))
+        assertThat(whenReturn(view.getBaseline(), value))
                 .hasBaseline(value);
     }
 
     @Test
     public void testIsInTouchMode() {
-        assertThat(whenReturn(viewSpy.isInTouchMode(), true))
+        assertThat(whenReturn(view.isInTouchMode(), true))
                 .isInTouchMode();
     }
 
     @Test
     public void testIsHovered() {
-        assertThat(whenReturn(viewSpy.isHovered(), true))
+        assertThat(whenReturn(view.isHovered(), true))
                 .isHovered();
     }
 
@@ -338,7 +335,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasScaleY() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getScaleY(), value))
+        assertThat(whenReturn(view.getScaleY(), value))
                 .hasScaleY(value);
     }
 
@@ -358,75 +355,75 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsNotShown() {
-        assertThat(whenReturn(viewSpy.isShown(), false))
+        assertThat(whenReturn(view.isShown(), false))
                 .isNotShown();
     }
 
     @Test
     public void testHasTranslationX() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getTranslationX(), value))
+        assertThat(whenReturn(view.getTranslationX(), value))
                 .hasTranslationX(value);
     }
 
     @Test
     public void testIsGone() {
-        assertThat(whenReturn(viewSpy.getVisibility(), View.GONE))
+        assertThat(whenReturn(view.getVisibility(), View.GONE))
                 .isGone();
     }
 
     @Test
     public void testHasTranslationY() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getTranslationY(), value))
+        assertThat(whenReturn(view.getTranslationY(), value))
                 .hasTranslationY(value);
     }
 
     @Test
     public void testIsScrollContainer() {
-        assertThat(whenReturn(viewSpy.isScrollContainer(), true))
+        assertThat(whenReturn(view.isScrollContainer(), true))
                 .isScrollContainer();
     }
 
     @Test
     public void testIsDirty() {
-        assertThat(whenReturn(viewSpy.isDirty(), true))
+        assertThat(whenReturn(view.isDirty(), true))
                 .isDirty();
     }
 
     @Test
     public void testIsNotInFocusedWindow() {
-        assertThat(whenReturn(viewSpy.hasWindowFocus(), false))
+        assertThat(whenReturn(view.hasWindowFocus(), false))
                 .isNotInFocusedWindow();
     }
 
     @Test
     public void testIsSelected() {
-        assertThat(whenReturn(viewSpy.isSelected(), true))
+        assertThat(whenReturn(view.isSelected(), true))
                 .isSelected();
     }
 
     @Test
     public void testIsNotFocused() {
-        assertThat(whenReturn(viewSpy.isFocused(), false))
+        assertThat(whenReturn(view.isFocused(), false))
                 .isNotFocused();
     }
 
     @Test
     public void testIsNotHardwareAccelerated() {
-        assertThat(whenReturn(viewSpy.isHardwareAccelerated(), false))
+        assertThat(whenReturn(view.isHardwareAccelerated(), false))
                 .isNotHardwareAccelerated();
     }
 
     @Test
     public void testHasFocus() {
-        assertThat(whenReturn(viewSpy.hasFocus(), true))
+        assertThat(whenReturn(view.hasFocus(), true))
                 .hasFocus();
     }
 
     @Test
     public void testHasVerticalScrollBarDisabled() {
-        assertThat(whenReturn(viewSpy.isVerticalScrollBarEnabled(), false))
+        assertThat(whenReturn(view.isVerticalScrollBarEnabled(), false))
                 .hasVerticalScrollBarDisabled();
     }
 
@@ -440,69 +437,69 @@ public class ViewSubjectTest {
     @Test
     public void testHasOverScrollMode() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getOverScrollMode(), value))
+        assertThat(whenReturn(view.getOverScrollMode(), value))
                 .hasOverScrollMode(value);
     }
 
     @Test
     public void testIsShown() {
-        assertThat(whenReturn(viewSpy.isShown(), true))
+        assertThat(whenReturn(view.isShown(), true))
                 .isShown();
     }
 
     @Test
     public void testHasWindowVisibility() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getWindowVisibility(), value))
+        assertThat(whenReturn(view.getWindowVisibility(), value))
                 .hasWindowVisibility(value);
     }
 
     @Test
     public void testIsUsingDrawingCache() {
-        assertThat(whenReturn(viewSpy.isDrawingCacheEnabled(), true))
+        assertThat(whenReturn(view.isDrawingCacheEnabled(), true))
                 .isUsingDrawingCache();
     }
 
     @Test
     public void testHasSaveFromParentEnabled() {
-        assertThat(whenReturn(viewSpy.isSaveFromParentEnabled(), true))
+        assertThat(whenReturn(view.isSaveFromParentEnabled(), true))
                 .hasSaveFromParentEnabled();
     }
 
     @Test
     public void testIsNotPressed() {
-        assertThat(whenReturn(viewSpy.isPressed(), false))
+        assertThat(whenReturn(view.isPressed(), false))
                 .isNotPressed();
     }
 
     @Test
     public void testHasHorizontalFadingEdgesDisabled() {
-        assertThat(whenReturn(viewSpy.isHorizontalFadingEdgeEnabled(), false))
+        assertThat(whenReturn(view.isHorizontalFadingEdgeEnabled(), false))
                 .hasHorizontalFadingEdgesDisabled();
     }
 
 
     @Test
     public void testHasHapticFeedbackDisabled() {
-        assertThat(whenReturn(viewSpy.isHapticFeedbackEnabled(), false))
+        assertThat(whenReturn(view.isHapticFeedbackEnabled(), false))
                 .hasHapticFeedbackDisabled();
     }
 
     @Test
     public void testIsInFocusedWindow() {
-        assertThat(whenReturn(viewSpy.hasWindowFocus(), true))
+        assertThat(whenReturn(view.hasWindowFocus(), true))
                 .isInFocusedWindow();
     }
 
     @Test
     public void testIsNotScrollContainer() {
-        assertThat(whenReturn(viewSpy.isScrollContainer(), false))
+        assertThat(whenReturn(view.isScrollContainer(), false))
                 .isNotScrollContainer();
     }
 
     @Test
     public void testHasNoLayoutRequested() {
-        assertThat(whenReturn(viewSpy.isLayoutRequested(), false))
+        assertThat(whenReturn(view.isLayoutRequested(), false))
                 .hasNoLayoutRequested();
     }
 
@@ -528,52 +525,52 @@ public class ViewSubjectTest {
 
     @Test
     public void testHasSoundEffectsDisabled() {
-        assertThat(whenReturn(viewSpy.isSoundEffectsEnabled(), false))
+        assertThat(whenReturn(view.isSoundEffectsEnabled(), false))
                 .hasSoundEffectsDisabled();
     }
 
     @Test
     public void testHasVisibility() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getVisibility(), value))
+        assertThat(whenReturn(view.getVisibility(), value))
                 .hasVisibility(value);
     }
 
     @Test
     public void testHasSoundEffectsEnabled() {
-        assertThat(whenReturn(viewSpy.isSoundEffectsEnabled(), true))
+        assertThat(whenReturn(view.isSoundEffectsEnabled(), true))
                 .hasSoundEffectsEnabled();
     }
 
     @Test
     public void testHasNextFocusLeftId() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getNextFocusLeftId(), value))
+        assertThat(whenReturn(view.getNextFocusLeftId(), value))
                 .hasNextFocusLeftId(value);
     }
 
     @Test
     public void testHasHorizontalFadingEdgeLength() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getHorizontalFadingEdgeLength(), value))
+        assertThat(whenReturn(view.getHorizontalFadingEdgeLength(), value))
                 .hasHorizontalFadingEdgeLength(value);
     }
 
     @Test
     public void testIsNotActivated() {
-        assertThat(whenReturn(viewSpy.isActivated(), false))
+        assertThat(whenReturn(view.isActivated(), false))
                 .isNotActivated();
     }
 
     @Test
     public void testHasLayoutRequested() {
-        assertThat(whenReturn(viewSpy.isLayoutRequested(), true))
+        assertThat(whenReturn(view.isLayoutRequested(), true))
                 .hasLayoutRequested();
     }
 
     @Test
     public void testHasHapticFeedbackEnabled() {
-        assertThat(whenReturn(viewSpy.isHapticFeedbackEnabled(), true))
+        assertThat(whenReturn(view.isHapticFeedbackEnabled(), true))
                 .hasHapticFeedbackEnabled();
     }
 
@@ -581,53 +578,53 @@ public class ViewSubjectTest {
     @Test
     public void testHasNextFocusDownId() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getNextFocusDownId(), value))
+        assertThat(whenReturn(view.getNextFocusDownId(), value))
                 .hasNextFocusDownId(value);
     }
 
     @Test
     public void testHasSaveFromParentDisabled() {
-        assertThat(whenReturn(viewSpy.isSaveFromParentEnabled(), false))
+        assertThat(whenReturn(view.isSaveFromParentEnabled(), false))
                 .hasSaveFromParentDisabled();
     }
 
     @Test
     public void testHasPaddingBottom() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getPaddingBottom(), value))
+        assertThat(whenReturn(view.getPaddingBottom(), value))
                 .hasPaddingBottom(value);
     }
 
     @Test
     public void testIsInEditMode() {
-        assertThat(whenReturn(viewSpy.isInEditMode(), true))
+        assertThat(whenReturn(view.isInEditMode(), true))
                 .isInEditMode();
     }
 
     @Test
     public void testIsNotDuplicatingParentState() {
-        assertThat(whenReturn(viewSpy.isDuplicateParentStateEnabled(), false))
+        assertThat(whenReturn(view.isDuplicateParentStateEnabled(), false))
                 .isNotDuplicatingParentState();
     }
 
     @Test
     public void testHasVerticalScrollbarWidth() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getVerticalScrollbarWidth(), value))
+        assertThat(whenReturn(view.getVerticalScrollbarWidth(), value))
                 .hasVerticalScrollbarWidth(value);
     }
 
     @Test
     public void testHasPivotX() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getPivotX(), value))
+        assertThat(whenReturn(view.getPivotX(), value))
                 .hasPivotX(value);
     }
 
     @Test
     public void testHasPivotY() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getPivotY(), value))
+        assertThat(whenReturn(view.getPivotY(), value))
                 .hasPivotY(value);
     }
 
@@ -641,102 +638,102 @@ public class ViewSubjectTest {
     @Test
     public void testHasScrollBarStyle() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getScrollBarStyle(), value))
+        assertThat(whenReturn(view.getScrollBarStyle(), value))
                 .hasScrollBarStyle(value);
     }
 
     @Test
     public void testHasTag() {
-        assertThat(whenReturn(viewSpy.getTag(), DUMMY_STRING))
+        assertThat(whenReturn(view.getTag(), DUMMY_STRING))
                 .hasTag(DUMMY_STRING);
     }
 
     @Test
     public void testIsKeepingScreenOn() {
-        assertThat(whenReturn(viewSpy.getKeepScreenOn(), true))
+        assertThat(whenReturn(view.getKeepScreenOn(), true))
                 .isKeepingScreenOn();
     }
 
     @Test
     public void testIsActivated() {
-        assertThat(whenReturn(viewSpy.isActivated(), true))
+        assertThat(whenReturn(view.isActivated(), true))
                 .isActivated();
     }
 
     @Test
     public void testIsFocused() {
-        assertThat(whenReturn(viewSpy.isFocused(), true))
+        assertThat(whenReturn(view.isFocused(), true))
                 .isFocused();
     }
 
     @Test
     public void testIsNotLongClickable() {
-        assertThat(whenReturn(viewSpy.isLongClickable(), false))
+        assertThat(whenReturn(view.isLongClickable(), false))
                 .isNotLongClickable();
     }
 
     @Test
     public void testHasHorizontalScrollbarDisabled() {
-        assertThat(whenReturn(viewSpy.isHorizontalScrollBarEnabled(), false))
+        assertThat(whenReturn(view.isHorizontalScrollBarEnabled(), false))
                 .hasHorizontalScrollbarDisabled();
     }
 
     @Test
     public void testHasId() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getId(), value))
+        assertThat(whenReturn(view.getId(), value))
                 .hasId(value);
     }
 
     @Test
     public void testIsNotKeepingScreenOn() {
-        assertThat(whenReturn(viewSpy.getKeepScreenOn(), false))
+        assertThat(whenReturn(view.getKeepScreenOn(), false))
                 .isNotKeepingScreenOn();
     }
 
     @Test
     public void testHasScrollbarFadingEnabled() {
-        assertThat(whenReturn(viewSpy.isScrollbarFadingEnabled(), true))
+        assertThat(whenReturn(view.isScrollbarFadingEnabled(), true))
                 .hasScrollbarFadingEnabled();
     }
 
     @Test
     public void testHasScrollBarSize() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getScrollBarSize(), value))
+        assertThat(whenReturn(view.getScrollBarSize(), value))
                 .hasScrollBarSize(value);
     }
 
     @Test
     public void testHasLayerType() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getLayerType(), value))
+        assertThat(whenReturn(view.getLayerType(), value))
                 .hasLayerType(value);
     }
 
     @Test
     public void testHasNextFocusForwardId() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getNextFocusForwardId(), value))
+        assertThat(whenReturn(view.getNextFocusForwardId(), value))
                 .hasNextFocusForwardId(value);
     }
 
     @Test
     public void testHasScrollbarFadingDisabled() {
-        assertThat(whenReturn(viewSpy.isScrollbarFadingEnabled(), false))
+        assertThat(whenReturn(view.isScrollbarFadingEnabled(), false))
                 .hasScrollbarFadingDisabled();
     }
 
     @Test
     public void testHasPaddingLeft() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getPaddingLeft(), value))
+        assertThat(whenReturn(view.getPaddingLeft(), value))
                 .hasPaddingLeft(value);
     }
 
     @Test
     public void testIsNotGone() {
-        assertThat(whenReturn(viewSpy.getVisibility(), View.VISIBLE))
+        assertThat(whenReturn(view.getVisibility(), View.VISIBLE))
                 .isNotGone();
     }
 
@@ -750,7 +747,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasPaddingTop() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getPaddingTop(), value))
+        assertThat(whenReturn(view.getPaddingTop(), value))
                 .hasPaddingTop(value);
     }
 
@@ -764,21 +761,21 @@ public class ViewSubjectTest {
     @Test
     public void testHasX() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getX(), value))
+        assertThat(whenReturn(view.getX(), value))
                 .hasX(value);
     }
 
     @Test
     public void testHasY() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getY(), value))
+        assertThat(whenReturn(view.getY(), value))
                 .hasY(value);
     }
 
     @Test
     public void testHasNextFocusRightId() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getNextFocusRightId(), value))
+        assertThat(whenReturn(view.getNextFocusRightId(), value))
                 .hasNextFocusRightId(value);
     }
 
@@ -791,27 +788,27 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsNotHovered() {
-        assertThat(whenReturn(viewSpy.isHovered(), false))
+        assertThat(whenReturn(view.isHovered(), false))
                 .isNotHovered();
     }
 
     @Test
     public void testHasRotation() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getRotation(), value))
+        assertThat(whenReturn(view.getRotation(), value))
                 .hasRotation(value);
     }
 
     @Test
     public void testHasBackground() {
         android.graphics.drawable.Drawable value = mock(android.graphics.drawable.Drawable.class);
-        assertThat(whenReturn(viewSpy.getBackground(), value))
+        assertThat(whenReturn(view.getBackground(), value))
                 .hasBackground(value);
     }
 
     @Test
     public void testIsNotInEditMode() {
-        assertThat(whenReturn(viewSpy.isInEditMode(), false))
+        assertThat(whenReturn(view.isInEditMode(), false))
                 .isNotInEditMode();
     }
 
@@ -823,7 +820,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsPressed() {
-        assertThat(whenReturn(viewSpy.isPressed(), true))
+        assertThat(whenReturn(view.isPressed(), true))
                 .isPressed();
     }
 
@@ -836,98 +833,98 @@ public class ViewSubjectTest {
     @Test
     public void testHasScrollBarDefaultDelayBeforeFade() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getScrollBarDefaultDelayBeforeFade(), value))
+        assertThat(whenReturn(view.getScrollBarDefaultDelayBeforeFade(), value))
                 .hasScrollBarDefaultDelayBeforeFade(value);
     }
 
     @Test
     public void testIsDuplicatingParentState() {
-        assertThat(whenReturn(viewSpy.isDuplicateParentStateEnabled(), true))
+        assertThat(whenReturn(view.isDuplicateParentStateEnabled(), true))
                 .isDuplicatingParentState();
     }
 
     @Test
     public void testHasNextFocusUpId() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getNextFocusUpId(), value))
+        assertThat(whenReturn(view.getNextFocusUpId(), value))
                 .hasNextFocusUpId(value);
     }
 
     @Test
     public void testHasRotationY() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getRotationY(), value))
+        assertThat(whenReturn(view.getRotationY(), value))
                 .hasRotationY(value);
     }
 
     @Test
     public void testHasParentForAccessibility() {
         android.view.ViewParent value = mock(android.view.ViewParent.class);
-        assertThat(whenReturn(viewSpy.getParentForAccessibility(), value))
+        assertThat(whenReturn(view.getParentForAccessibility(), value))
                 .hasParentForAccessibility(value);
     }
 
     @Test
     public void testHasSystemUiVisibility() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getSystemUiVisibility(), value))
+        assertThat(whenReturn(view.getSystemUiVisibility(), value))
                 .hasSystemUiVisibility(value);
     }
 
     @Test
     public void testHasRotationX() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getRotationX(), value))
+        assertThat(whenReturn(view.getRotationX(), value))
                 .hasRotationX(value);
     }
 
     @Test
     public void testHasMinimumWidth() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getMinimumWidth(), value))
+        assertThat(whenReturn(view.getMinimumWidth(), value))
                 .hasMinimumWidth(value);
     }
 
     @Test
     public void testIsNotSelected() {
-        assertThat(whenReturn(viewSpy.isSelected(), false))
+        assertThat(whenReturn(view.isSelected(), false))
                 .isNotSelected();
     }
 
     @Test
     public void testHasSaveDisabled() {
-        assertThat(whenReturn(viewSpy.isSaveEnabled(), false))
+        assertThat(whenReturn(view.isSaveEnabled(), false))
                 .hasSaveDisabled();
     }
 
     @Test
     public void testHasHorizontalFadingEdgesEnabled() {
-        assertThat(whenReturn(viewSpy.isHorizontalFadingEdgeEnabled(), true))
+        assertThat(whenReturn(view.isHorizontalFadingEdgeEnabled(), true))
                 .hasHorizontalFadingEdgesEnabled();
     }
 
     @Test
     public void testIsHardwareAccelerated() {
-        assertThat(whenReturn(viewSpy.isHardwareAccelerated(), true))
+        assertThat(whenReturn(view.isHardwareAccelerated(), true))
                 .isHardwareAccelerated();
     }
 
     @Test
     public void testIsClickable() {
-        assertThat(whenReturn(viewSpy.isClickable(), true))
+        assertThat(whenReturn(view.isClickable(), true))
                 .isClickable();
     }
 
     @Test
     public void testHasDrawingCacheQuality() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getDrawingCacheQuality(), value))
+        assertThat(whenReturn(view.getDrawingCacheQuality(), value))
                 .hasDrawingCacheQuality(value);
     }
 
     @Test
     public void testIsNotInTouchMode() {
-        assertThat(whenReturn(viewSpy.isInTouchMode(), false))
+        assertThat(whenReturn(view.isInTouchMode(), false))
                 .isNotInTouchMode();
     }
 
