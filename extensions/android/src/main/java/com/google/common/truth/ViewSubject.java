@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 
 import javax.annotation.Nullable;
 
+import static android.os.Build.VERSION_CODES.*;
 import static com.google.common.truth.Truth.assertThat;
 
 
@@ -17,7 +18,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Todo: remove finals on method and make class abstract
- * Todo: Uncomment {@link TargetApi} versions after static importing all versions required for class
  */
 public class ViewSubject extends Subject<ViewSubject, View> {
 
@@ -94,7 +94,7 @@ public class ViewSubject extends Subject<ViewSubject, View> {
     }
 
     public void isKeepingScreenOn() {
-        assertThat(actual().getKeepScreenOn()) //
+        assertThat(actual().getKeepScreenOn())
                 .isTrue();
     }
 
@@ -103,7 +103,7 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isFalse();
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasLayerType(int type) {
         int actualType = actual().getLayerType();
         assertThat(actualType)
@@ -122,14 +122,14 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isEqualTo(height);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasMeasuredHeightAndState(int heightAndState) {
         int actualHeightAndState = actual().getMeasuredHeightAndState();
         assertThat(actualHeightAndState)
                 .isEqualTo(heightAndState);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasMeasuredState(int state) {
         int actualState = actual().getMeasuredState();
         assertThat(actualState)
@@ -142,21 +142,21 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isEqualTo(width);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasMeasuredWidthAndState(int widthAndState) {
         int actualWidthAndState = actual().getMeasuredWidthAndState();
         assertThat(actualWidthAndState)
                 .isEqualTo(widthAndState);
     }
 
-    //    @TargetApi(JELLY_BEAN)
+    @TargetApi(JELLY_BEAN)
     public void hasMinimumHeight(int height) {
         int actualHeight = actual().getMinimumHeight();
         assertThat(actualHeight)
                 .isEqualTo(height);
     }
 
-    //    @TargetApi(JELLY_BEAN)
+    @TargetApi(JELLY_BEAN)
     public void hasMinimumWidth(int width) {
         int actualWidth = actual().getMinimumWidth();
         assertThat(actualWidth)
@@ -169,7 +169,7 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isEqualTo(id);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasNextFocusForwardId(int id) {
         int actualId = actual().getNextFocusForwardId();
         assertThat(actualId)
@@ -194,7 +194,7 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isEqualTo(id);
     }
 
-    //    @TargetApi(GINGERBREAD)
+    @TargetApi(GINGERBREAD)
     public void hasOverScrollMode(int mode) {
         int actualMode = actual().getOverScrollMode();
         assertThat(actualMode)
@@ -231,21 +231,21 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isSameAs(parent);
     }
 
-    //    @TargetApi(JELLY_BEAN)
+    @TargetApi(JELLY_BEAN)
     public void hasParentForAccessibility(ViewParent parent) {
         ViewParent actualParent = actual().getParentForAccessibility();
         assertThat(actualParent)
                 .isSameAs(parent);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasPivotX(float pivotX) {
         float actualPivotX = actual().getPivotX();
         assertThat(actualPivotX)
                 .isEqualTo(pivotX);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasPivotY(float pivotY) {
         float actualPivotY = actual().getPivotY();
         assertThat(actualPivotY)
@@ -264,56 +264,56 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isSameAs(view);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasRotation(float rotation) {
         float actualRotation = actual().getRotation();
         assertThat(actualRotation)
                 .isEqualTo(rotation);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasRotationX(float rotation) {
         float actualRotation = actual().getRotationX();
         assertThat(actualRotation)
                 .isEqualTo(rotation);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasRotationY(float rotation) {
         float actualRotation = actual().getRotationY();
         assertThat(actualRotation)
                 .isEqualTo(rotation);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasScaleX(float scale) {
         float actualScale = actual().getScaleX();
         assertThat(actualScale)
                 .isEqualTo(scale);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasScaleY(float scale) {
         float actualScale = actual().getScaleY();
         assertThat(actualScale)
                 .isEqualTo(scale);
     }
 
-    //    @TargetApi(JELLY_BEAN)
+    @TargetApi(JELLY_BEAN)
     public void hasScrollBarDefaultDelayBeforeFade(int fade) {
         int actualFade = actual().getScrollBarDefaultDelayBeforeFade();
         assertThat(actualFade)
                 .isEqualTo(fade);
     }
 
-    //    @TargetApi(JELLY_BEAN)
+    @TargetApi(JELLY_BEAN)
     public void hasScrollBarFadeDuration(int fade) {
         int actualFade = actual().getScrollBarFadeDuration();
         assertThat(actualFade)
                 .isEqualTo(fade);
     }
 
-    //    @TargetApi(JELLY_BEAN)
+    @TargetApi(JELLY_BEAN)
     public void hasScrollBarSize(int size) {
         int actualSize = actual().getScrollBarSize();
         assertThat(actualSize)
@@ -344,7 +344,7 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isEqualTo(color);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasSystemUiVisibility(int visibility) {
         int actualVisibility = actual().getSystemUiVisibility();
         assertThat(actualVisibility)
@@ -370,14 +370,14 @@ public class ViewSubject extends Subject<ViewSubject, View> {
 
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasTranslationX(float translation) {
         float actualTranslation = actual().getTranslationX();
         assertThat(actualTranslation)
                 .isEqualTo(translation);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasTranslationY(float translation) {
         float actualTranslation = actual().getTranslationY();
         assertThat(actualTranslation)
@@ -390,7 +390,7 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isEqualTo(length);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasVerticalScrollbarPosition(int position) {
         int actualPosition = actual().getVerticalScrollbarPosition();
         assertThat(actualPosition)
@@ -441,14 +441,14 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isEqualTo(visibility);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasX(float x) {
         float actualX = actual().getX();
         assertThat(actualX)
                 .isEqualTo(x);
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void hasY(float y) {
         float actualY = actual().getY();
         assertThat(actualY)
@@ -480,13 +480,13 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isFalse();
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void isActivated() {
         assertThat(actual().isActivated())
                 .isTrue();
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void isNotActivated() {
         assertThat(actual().isActivated())
                 .isFalse();
@@ -507,7 +507,7 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isTrue();
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void isNotDirty() {
         assertThat(actual().isDirty())
                 .isFalse();
@@ -583,13 +583,13 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isFalse();
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void isHardwareAccelerated() {
         assertThat(actual().isHardwareAccelerated())
                 .isTrue();
     }
 
-    //    @TargetApi(HONEYCOMB)
+    @TargetApi(HONEYCOMB)
     public void isNotHardwareAccelerated() {
         assertThat(actual().isHardwareAccelerated())
                 .isFalse();
@@ -615,13 +615,13 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isFalse();
     }
 
-    //    @TargetApi(ICE_CREAM_SANDWICH)
+    @TargetApi(ICE_CREAM_SANDWICH)
     public void isHovered() {
         assertThat(actual().isHovered())
                 .isTrue();
     }
 
-    //    @TargetApi(ICE_CREAM_SANDWICH)
+    @TargetApi(ICE_CREAM_SANDWICH)
     public void isNotHovered() {
         assertThat(actual().isHovered())
                 .isFalse();
