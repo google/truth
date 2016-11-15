@@ -268,35 +268,35 @@ public class ViewSubject extends Subject<ViewSubject, View> {
     public void hasRotation(float rotation) {
         float actualRotation = actual().getRotation();
         assertThat(actualRotation)
-                .isSameAs(rotation);
+                .isEqualTo(rotation);
     }
 
     //    @TargetApi(HONEYCOMB)
     public void hasRotationX(float rotation) {
         float actualRotation = actual().getRotationX();
         assertThat(actualRotation)
-                .isSameAs(rotation);
+                .isEqualTo(rotation);
     }
 
     //    @TargetApi(HONEYCOMB)
     public void hasRotationY(float rotation) {
         float actualRotation = actual().getRotationY();
         assertThat(actualRotation)
-                .isSameAs(rotation);
+                .isEqualTo(rotation);
     }
 
     //    @TargetApi(HONEYCOMB)
     public void hasScaleX(float scale) {
         float actualScale = actual().getScaleX();
         assertThat(actualScale)
-                .isSameAs(scale);
+                .isEqualTo(scale);
     }
 
     //    @TargetApi(HONEYCOMB)
     public void hasScaleY(float scale) {
         float actualScale = actual().getScaleY();
         assertThat(actualScale)
-                .isSameAs(scale);
+                .isEqualTo(scale);
     }
 
     //    @TargetApi(JELLY_BEAN)

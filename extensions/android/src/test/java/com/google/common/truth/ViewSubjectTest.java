@@ -1,5 +1,6 @@
 package com.google.common.truth;
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.animation.Animation;
 import org.junit.After;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.*;
  * @author Kevin Leigh Crain
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(View.class)
+@PrepareForTest({View.class, Bitmap.class})
 public class ViewSubjectTest {
 
 
@@ -116,8 +117,9 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsNotUsingDrawingCache() {
-        assertThat(whenReturn(viewSpy.getDrawingCache(), false))
-                .isNotUsingDrawingCache();
+        PowerMockito.when(view.getDrawingCache())
+                .thenReturn(null);
+        assertThat(view).isNotUsingDrawingCache();
     }
 
     @Test
@@ -329,7 +331,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasScaleX() {
         float value = randomGenerator.nextFloat();
-        assertThat(whenReturn(viewSpy.getScaleX(), value))
+        assertThat(whenReturn(view.getScaleX(), value))
                 .hasScaleX(value);
     }
 
@@ -457,7 +459,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsUsingDrawingCache() {
-        assertThat(whenReturn(view.getDrawingCache(), true))
+        assertThat(whenReturn(viewSpy.isDrawingCacheEnabled(), true))
                 .isUsingDrawingCache();
     }
 
@@ -827,7 +829,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testHasFocusable() {
-        assertThat(whenReturn(view.isFocusable(), true))
+        assertThat(whenReturn(view.hasFocusable(), true))
                 .hasFocusable();
     }
 
