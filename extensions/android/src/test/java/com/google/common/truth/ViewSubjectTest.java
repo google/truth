@@ -3,22 +3,23 @@ package com.google.common.truth;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.animation.Animation;
+import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Random;
 
 import static com.google.common.truth.AndroidTruth.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Kevin Leigh Crain
@@ -44,7 +45,7 @@ public class ViewSubjectTest {
     @After
     public void tearDown() {
         view = null;
-        view = null;
+        randomGenerator = null;
     }
 
     @Test
@@ -55,36 +56,10 @@ public class ViewSubjectTest {
     }
 
     @Test
-    public void testHasAlphaFailure() {
-        try {
-            assertThat(whenReturn(view.getAlpha(), new Random(99).nextFloat()))
-                    .hasAlpha(101);
-            fail("Should have thrown.");
-        } catch (AssertionError e) {
-            Truth.assertThat(e).hasMessage("Not true that <view> has alpha: 101.0, actual: " + view.getAlpha());
-        }
-    }
-
-    @Test
     public void testHasAnimation() {
         Animation animation = mock(Animation.class);
         assertThat(whenReturn(view.getAnimation(), animation))
                 .hasAnimation(animation);
-    }
-
-    @Test
-    public void testHasAnimationFailure() {
-        Animation animation = mock(Animation.class);
-        Animation expect = mock(Animation.class);
-        try {
-            assertThat(whenReturn(view.getAnimation(), animation))
-                    .hasAnimation(expect);
-            fail("Should have thrown.");
-        } catch (AssertionError e) {
-            Truth.assertThat(e).hasMessage("Not true that <Mock for Animation, hashCode: "
-                    + animation.hashCode() + "> is the same instance as <Mock for Animation, hashCode: "
-                    + expect.hashCode() + ">");
-        }
     }
 
     @Test
@@ -99,17 +74,6 @@ public class ViewSubjectTest {
                 .isNotVisible();
         assertThat(whenReturn(view.getVisibility(), View.GONE))
                 .isNotVisible();
-    }
-
-    @Test
-    public void testIsVisibleFailure_invisible() {
-        try {
-            assertThat(whenReturn(view.getVisibility(), View.INVISIBLE))
-                    .isVisible();
-            fail("Should have thrown.");
-        } catch (AssertionError e) {
-            Truth.assertThat(e).hasMessage("Not true that <view> is not visible");
-        }
     }
 
     @Test
@@ -927,6 +891,1471 @@ public class ViewSubjectTest {
         assertThat(whenReturn(view.isInTouchMode(), false))
                 .isNotInTouchMode();
     }
+
+    @Test
+    public void testHasAlphaFailure() {
+        try {
+            assertThat(whenReturn(view.getAlpha(), new Random(99).nextFloat()))
+                    .hasAlpha(101);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <view> has alpha: 101.0, actual: " + view.getAlpha());
+        }
+    }
+
+    @Test
+    public void testHasAnimationFailure() {
+        Animation animation = mock(Animation.class);
+        Animation expect = mock(Animation.class);
+        try {
+            assertThat(whenReturn(view.getAnimation(), animation))
+                    .hasAnimation(expect);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <Mock for Animation, hashCode: "
+                    + animation.hashCode() + "> is the same instance as <Mock for Animation, hashCode: "
+                    + expect.hashCode() + ">");
+        }
+    }
+
+    @Test
+    public void testIsVisibleFailure_invisible() {
+        try {
+            assertThat(whenReturn(view.getVisibility(), View.INVISIBLE))
+                    .isVisible();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <view> is not visible");
+        }
+    }
+
+    @Test
+    public void testHasYFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasXFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsVisibleFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotVisibleFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotUsingDrawingCacheFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasRootViewFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsOpaqueFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotFocusableFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasVerticalFadingEdgeDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsLongClickableFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasSolidColorFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasRightFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotOpaqueFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasMeasuredWidthFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasMeasuredStateFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasVerticalScrollbarPositionFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasHorizontalScrollbarEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasNoFocusFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasVerticalScrollBarEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasDrawingCacheBackgroundColorFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsFocusableInTouchModeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasBottomFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScrollBarFadeDurationFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotClickableFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasPaddingRightFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasVerticalFadingEdgeLengthFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotDirtyFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasVerticalFadingEdgeEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasContentDescriptionFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasMeasuredHeightAndStateFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasMinimumHeightFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasSaveEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasBaselineFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsInTouchModeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsHoveredFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScaleXFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScaleYFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasLeftFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasHeightFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotShownFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasTranslationXFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsGoneFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasTranslationYFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsScrollContainerFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsDirtyFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotInFocusedWindowFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsSelectedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotFocusedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotHardwareAcceleratedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasFocusFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasVerticalScrollBarDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasTopFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasOverScrollModeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsShownFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasWindowVisibilityFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsUsingDrawingCacheFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasSaveFromParentEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotPressedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasHorizontalFadingEdgesDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasHapticFeedbackDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsInFocusedWindowFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotScrollContainerFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasNoLayoutRequestedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsFocusableFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasParentFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasMeasuredHeightFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasSoundEffectsDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasVisibilityFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasSoundEffectsEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasNextFocusLeftIdFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasHorizontalFadingEdgeLengthFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotActivatedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasLayoutRequestedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasHapticFeedbackEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasNextFocusDownIdFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasSaveFromParentDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasPaddingBottomFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsInEditModeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotDuplicatingParentStateFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasVerticalScrollbarWidthFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasPivotXFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasPivotYFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasWidthFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScrollBarStyleFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasTagFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsKeepingScreenOnFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsActivatedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsFocusedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotLongClickableFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasHorizontalScrollbarDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasIdFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotKeepingScreenOnFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScrollbarFadingEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScrollBarSizeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasLayerTypeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasNextFocusForwardIdFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScrollbarFadingDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasPaddingLeftFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotGoneFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScrollYFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasPaddingTopFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScrollXFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasNextFocusRightIdFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasMeasuredWidthAndStateFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotHoveredFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasRotationFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasBackgroundFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotInEditModeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotFocusableInTouchModeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsPressedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasFocusableFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasScrollBarDefaultDelayBeforeFadeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsDuplicatingParentStateFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasNextFocusUpIdFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasRotationYFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasParentForAccessibilityFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasSystemUiVisibilityFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasRotationXFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasMinimumWidthFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotSelectedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasSaveDisabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasHorizontalFadingEdgesEnabledFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsHardwareAcceleratedFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsClickableFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testHasDrawingCacheQualityFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void testIsNotInTouchModeFailure() {
+        try {
+            // XXX: Todo
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            // XXX: Todo
+            Truth.assertThat(e).hasMessage("");
+        }
+    }
+
+    @Test
+    public void generateFailureTests() {
+        List<Method> testMethods = Lists.newArrayList(ViewSubjectTest.class.getDeclaredMethods());
+        testMethods.stream()
+                .filter(m -> m.getName().contains("test") && !m.getName().contains("Failure"))
+                .forEach(m -> {
+                    System.out.println(String.format("@Test\n" +
+                            "    public void %sFailure() {\n" +
+                            "        try {\n" +
+                            "            // XXX: Todo\n" +
+                            "            fail(\"Should have thrown.\");\n" +
+                            "        } catch (AssertionError e) {\n" +
+                            "            // XXX: Todo\n" +
+                            "            Truth.assertThat(e).hasMessage(\"\");\n" +
+                            "        }\n" +
+                            "    }\n", m.getName()));
+                });
+    }
+
 
     private <T> View whenReturn(T methodCall, T value) {
         return when(methodCall)
