@@ -9,6 +9,7 @@ import android.view.animation.Animation;
 import javax.annotation.Nullable;
 
 import static android.os.Build.VERSION_CODES.*;
+import static android.view.View.*;
 import static com.google.common.truth.Truth.assertThat;
 
 
@@ -776,6 +777,181 @@ public abstract class BaseViewSubject extends Subject<BaseViewSubject, View> {
                 .isFalse();
     }
 
+    @TargetApi(KITKAT)
+    public void canResolveLayoutDirection() {
+
+        assertThat(actual().canResolveLayoutDirection()) //
+                .isTrue();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void canNotResolveLayoutDirection() {
+
+        assertThat(actual().canResolveLayoutDirection()) //
+                .isFalse();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void canResolveTextAlignment() {
+
+        assertThat(actual().canResolveLayoutDirection()) //
+                .isTrue();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void canNotResolveTextAlignment() {
+
+        assertThat(actual().canResolveLayoutDirection()) //
+                .isFalse();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void canResolveTextDirection() {
+        assertThat(actual().canResolveTextDirection()) //
+                .isTrue();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void canNotResolveTextDirection() {
+        assertThat(actual().canResolveTextDirection()) //
+                .isFalse();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void isAttachedToWindow() {
+        assertThat(actual().isAttachedToWindow()) //
+                .isTrue();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void isNotAttachedToWindow() {
+        assertThat(actual().isAttachedToWindow()) //
+                .isFalse();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void isLaidOut() {
+        assertThat(actual().isLaidOut()) //
+                .isTrue();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void isNotLaidOut() {
+        assertThat(actual().isLaidOut()) //
+                .isFalse();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void hasResolvedLayoutDirection() {
+        assertThat(actual().isLayoutDirectionResolved()) //
+                .isTrue();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void hasNotResolvedLayoutDirection() {
+        assertThat(actual().isLayoutDirectionResolved()) //
+                .isFalse();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void hasResolvedTextAlignment() {
+        assertThat(actual().isTextAlignmentResolved()) //
+                .isTrue();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void hasNotResolvedTextAlignment() {
+        assertThat(actual().isTextAlignmentResolved()) //
+                .isFalse();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void hasResolvedTextDirection() {
+        assertThat(actual().isTextDirectionResolved()) //
+                .isTrue();
+
+    }
+
+    @TargetApi(KITKAT)
+    public void hasNotResolvedTextDirection() {
+        assertThat(actual().isTextDirectionResolved()) //
+                .isFalse();
+
+    }
+
+    @TargetApi(JELLY_BEAN_MR2)
+    public void isInLayout() {
+        assertThat(actual().isInLayout())
+                .isTrue();
+
+    }
+
+    @TargetApi(JELLY_BEAN_MR2)
+    public void isNotInLayout() {
+        assertThat(actual().isInLayout())
+                .isFalse();
+
+    }
+
+    @TargetApi(JELLY_BEAN_MR1)
+    public void hasLabelFor(int id) {
+        int actualId = actual().getLabelFor();
+        assertThat(actualId)
+                .isEqualTo(id);
+
+    }
+
+    @TargetApi(JELLY_BEAN_MR1)
+    public void hasTextAlignment(int alignment) {
+        int actualAlignment = actual().getTextAlignment();
+        assertThat(actualAlignment) //
+                .isEqualTo(alignment);
+
+    }
+
+    @TargetApi(JELLY_BEAN_MR1)
+    public void hasTextDirection(int direction) {
+        int actualDirection = actual().getTextDirection();
+        assertThat(actualDirection)
+                .isEqualTo(direction);
+    }
+
+    @TargetApi(JELLY_BEAN_MR1)
+    public void hasLayoutDirection(int direction) {
+        int actualDirection = actual().getLayoutDirection();
+        assertThat(actualDirection)
+                .isEqualTo(direction);
+    }
+
+    @TargetApi(JELLY_BEAN_MR1)
+    public void hasPaddingEnd(int padding) {
+        int actualPadding = actual().getPaddingEnd();
+        assertThat(actualPadding)
+                .isEqualTo(padding);
+    }
+
+    @TargetApi(JELLY_BEAN_MR1)
+    public void hasPaddingStart(int padding) {
+        int actualPadding = actual().getPaddingStart();
+        assertThat(actualPadding)
+                .isEqualTo(padding);
+
+    }
+
     public static SubjectFactory<BaseViewSubject, View> views() {
         return FACTORY;
     }
@@ -783,303 +959,25 @@ public abstract class BaseViewSubject extends Subject<BaseViewSubject, View> {
     private static final SubjectFactory<BaseViewSubject, View> FACTORY = new SubjectFactory<BaseViewSubject, View>() {
         @Override
         public BaseViewSubject getSubject(FailureStrategy fs, View that) {
-            return new BaseViewSubject(fs, that) {};
+            return new BaseViewSubject(fs, that) {
+            };
         }
     };
 }
 
-/**
- * Port commented out remaining assertion methods
- */
+// Todo: attempt port residual methods below
 
-//
-//
-//    @TargetApi(KITKAT)
-//    public void canResolveLayoutDirection() {
-//
-//        assertThat(actual().canResolveLayoutDirection()) //
-//                .isTrue();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void canNotResolveLayoutDirection() {
-//
-//        assertThat(actual().canResolveLayoutDirection()) //
-//                .isFalse();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void canResolveTextAlignment() {
-//
-//        assertThat(actual().canResolveLayoutDirection()) //
-//                .isTrue();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void canNotResolveTextAlignment() {
-//
-//        assertThat(actual().canResolveLayoutDirection()) //
-//                .isFalse();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void canResolveTextDirection() {
-//
-//        assertThat(actual().canResolveTextDirection()) //
-//                .isTrue();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void canNotResolveTextDirection() {
-//
-//        assertThat(actual().canResolveTextDirection()) //
-//                .isFalse();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void isAttachedToWindow() {
-//
-//        assertThat(actual().isAttachedToWindow()) //
-//                .isTrue();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void isNotAttachedToWindow() {
-//
-//        assertThat(actual().isAttachedToWindow()) //
-//                .isFalse();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void isLaidOut() {
-//
-//        assertThat(actual().isLaidOut()) //
-//                .isTrue();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void isNotLaidOut() {
-//
-//        assertThat(actual().isLaidOut()) //
-//                .isFalse();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void hasResolvedLayoutDirection() {
-//
-//        assertThat(actual().isLayoutDirectionResolved()) //
-//                .isTrue();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void hasNotResolvedLayoutDirection() {
-//
-//        assertThat(actual().isLayoutDirectionResolved()) //
-//                .isFalse();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void hasResolvedTextAlignment() {
-//
-//        assertThat(actual().isTextAlignmentResolved()) //
-//                .isTrue();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void hasNotResolvedTextAlignment() {
-//
-//        assertThat(actual().isTextAlignmentResolved()) //
-//                .isFalse();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void hasResolvedTextDirection() {
-//
-//        assertThat(actual().isTextDirectionResolved()) //
-//                .isTrue();
-//
-//    }
-//
-//    @TargetApi(KITKAT)
-//    public void hasNotResolvedTextDirection() {
-//
-//        assertThat(actual().isTextDirectionResolved()) //
-//                .isFalse();
-//
-//    }
-//
-//    public static String visibilityToString(@ViewVisibility int visibility) {
-//        return buildNamedValueString(visibility)
-//                .value(VISIBLE, "visible")
-//                .value(INVISIBLE, "invisible")
-//                .value(GONE, "gone")
-//                .get();
-//    }
-//
-//    @TargetApi(HONEYCOMB)
-//    public static String layerTypeToString(@ViewLayerType int type) {
-//        return buildNamedValueString(type)
-//                .value(LAYER_TYPE_NONE, "none")
-//                .value(LAYER_TYPE_SOFTWARE, "software")
-//                .value(LAYER_TYPE_HARDWARE, "hardware")
-//                .get();
-//    }
-//
 //    @TargetApi(JELLY_BEAN_MR1)
-//    public static String layoutDirectionToString(@ViewLayoutDirection int direction) {
-//        return buildNamedValueString(direction)
-//                .value(LAYOUT_DIRECTION_RTL, "right_to_left")
-//                .value(LAYOUT_DIRECTION_LTR, "left_to_right")
-//                .value(LAYOUT_DIRECTION_INHERIT, "inherit")
-//                .value(LAYOUT_DIRECTION_LOCALE, "locale")
-//                .get();
-//    }
-//
-//    @TargetApi(GINGERBREAD)
-//    public static String overScrollModeToString(@ViewOverscrollMode int mode) {
-//        return buildNamedValueString(mode)
-//                .value(OVER_SCROLL_ALWAYS, "always")
-//                .value(OVER_SCROLL_IF_CONTENT_SCROLLS, "ifContentScrolls")
-//                .value(OVER_SCROLL_NEVER, "never")
-//                .get();
-//    }
-//
-//    public static String scrollBarStyleToString(@ViewScrollBarStyle int style) {
-//        return buildNamedValueString(style)
-//                .value(SCROLLBARS_INSIDE_INSET, "insideInset")
-//                .value(SCROLLBARS_INSIDE_OVERLAY, "insideOverlay")
-//                .value(SCROLLBARS_OUTSIDE_INSET, "outsideInset")
-//                .value(SCROLLBARS_OUTSIDE_OVERLAY, "outsideOverlay")
-//                .get();
-//    }
-//
-//    @TargetApi(HONEYCOMB)
-//    public static String verticalScrollBarPositionToString(@ViewScrollBarPosition int position) {
-//        return buildNamedValueString(position)
-//                .value(SCROLLBAR_POSITION_DEFAULT, "default")
-//                .value(SCROLLBAR_POSITION_LEFT, "left")
-//                .value(SCROLLBAR_POSITION_RIGHT, "right")
-//                .get();
-//    }
-//
-//    public static String textAlignmentToString(@ViewTextAlignment int alignment) {
-//        return buildNamedValueString(alignment)
-//                .value(TEXT_ALIGNMENT_INHERIT, "inherit")
-//                .value(TEXT_ALIGNMENT_GRAVITY, "gravity")
-//                .value(TEXT_ALIGNMENT_TEXT_START, "text_start")
-//                .value(TEXT_ALIGNMENT_TEXT_END, "text_end")
-//                .value(TEXT_ALIGNMENT_CENTER, "center")
-//                .value(TEXT_ALIGNMENT_VIEW_START, "view_start")
-//                .value(TEXT_ALIGNMENT_VIEW_END, "view_end")
-//                .get();
-//    }
-//
-//    public static String textDirectionToString(@ViewTextDirection int direction) {
-//        return buildNamedValueString(direction)
-//                .value(TEXT_DIRECTION_INHERIT, "inherit")
-//                .value(TEXT_DIRECTION_FIRST_STRONG, "first_strong")
-//                .value(TEXT_DIRECTION_ANY_RTL, "any_right_to_left")
-//                .value(TEXT_DIRECTION_LTR, "left_to_right")
-//                .value(TEXT_DIRECTION_RTL, "right_to_left")
-//                .value(TEXT_DIRECTION_LOCALE, "locale")
-//                .get();
-//    }
-//
-//
-//    //    @TargetApi(JELLY_BEAN_MR2)
-//    public void isInLayout() {
-//        assertThat(actual().isInLayout()) //
-//                .isTrue();
-//
-//    }
-//
-//    //    @TargetApi(JELLY_BEAN_MR2)
-//    public void isNotInLayout() {
-//        assertThat(actual().isInLayout()) //
-//                .isFalse();
-//
-//    }
-
-//     TODO API 17
 //    public void isImportantForVisibility() {
-//
-//      assertThat(actual().getImportantForVisibility()) //
-//          .overridingErrorMessage("Expected to be important for visibility but was not") //
-//          .isTrue();
+//        assertThat(actual().getImportantForVisibility())
+//                .overridingErrorMessage("Expected to be important for visibility but was not")
+//                .isTrue();
 //
 //    }
 //
 //    public void isNotImportantForVisibility() {
-//
-//      assertThat(actual().getImportantForVisibility()) //
-//          .overridingErrorMessage("Expected to not be important for visibility but was") //
-//          .isFalse();
-//
-//    }
-
-//    @TargetApi(JELLY_BEAN_MR1)
-//    public void hasLabelFor(int id) {
-//
-//        int actualId = actual().getLabelFor();
-//        assertThat(actualId) //
-//                .overridingErrorMessage("Expected to have label for ID <%s> but was <%s>", id, actualId) //
-//                .isEqualTo(id);
-//
-//    }
-//
-//    @TargetApi(JELLY_BEAN_MR1)
-//    public void hasTextAlignment(@ViewTextAlignment int alignment) {
-//        int actualAlignment = actual().getTextAlignment();
-//        assertThat(actualAlignment) //
-//                .overridingErrorMessage("Expected text alignment <%s> but was <%s>",
-//                        textAlignmentToString(alignment), textAlignmentToString(actualAlignment)) //
-//                .isEqualTo(alignment);
-//
-//    }
-//
-//    @TargetApi(JELLY_BEAN_MR1)
-//    public void hasTextDirection(@ViewTextDirection int direction) {
-//        int actualDirection = actual().getTextDirection();
-//        assertThat(actualDirection) //
-//                .overridingErrorMessage("Expected text direction <%s> but was <%s>",
-//                        textDirectionToString(direction), textDirectionToString(actualDirection)) //
-//                .isEqualTo(direction);
-//    }
-
-//    @TargetApi(JELLY_BEAN_MR1)
-//    public void hasLayoutDirection(int direction) {
-//        int actualDirection = actual().getLayoutDirection();
-//        assertThat(actualDirection)
-//                .isEqualTo(direction);
-//    }
-//
-//    //    @TargetApi(JELLY_BEAN_MR1)
-//    public void hasPaddingEnd(int padding) {
-//        int actualPadding = actual().getPaddingEnd();
-//        assertThat(actualPadding)
-//                .isEqualTo(padding);
-//    }
-//
-//    //    @TargetApi(JELLY_BEAN_MR1)
-//    public void hasPaddingStart(int padding) {
-//        int actualPadding = actual().getPaddingStart();
-//        assertThat(actualPadding)
-//                .overridingErrorMessage("Expected padding start <%s> but was <%s>", padding,
-//                        actualPadding) //
-//                .isEqualTo(padding);
+//        assertThat(actual().getImportantForVisibility()) //
+//                .overridingErrorMessage("Expected to not be important for visibility but was") //
+//                .isFalse();
 //
 //    }

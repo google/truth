@@ -3,17 +3,15 @@ package com.google.common.truth;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.animation.Animation;
-import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Random;
 
 import static com.google.common.truth.AndroidTruth.assertThat;
@@ -26,7 +24,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({View.class, Bitmap.class})
-public class ViewSubjectTest {
+public class BaseViewSubjectTest {
 
 
     private static final String DUMMY_STRING = "DUMMY_STRING";
@@ -57,6 +55,7 @@ public class ViewSubjectTest {
                 .hasAlpha(alpha);
     }
 
+    @Ignore("java.lang.UnsatisfiedLinkError: android.os.SystemProperties.native_get_boolean(Ljava/lang/String;Z)Z")
     @Test
     public void testHasAnimation() {
         Animation animation = mock(Animation.class);
@@ -905,6 +904,7 @@ public class ViewSubjectTest {
         }
     }
 
+    @Ignore("java.lang.NoClassDefFoundError: Could not initialize class android.view.animation.Animation$$EnhancerByMockitoWithCGLIB$$35ec556")
     @Test
     public void testHasAnimationFailure() {
         Animation animation = mock(Animation.class);

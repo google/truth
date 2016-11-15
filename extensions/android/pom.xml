@@ -34,22 +34,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.google.android/android-test -->
-        <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android-test</artifactId>
-            <version>4.1.1.4</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Todo: temporary, dependency should be provide at runtime -->
-        <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android-test</artifactId>
-            <version>4.1.1.4</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
         <dependency>
             <groupId>org.powermock</groupId>
@@ -63,6 +47,20 @@
             <artifactId>powermock-api-mockito</artifactId>
             <version>1.6.5</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.robolectric</groupId>
+            <artifactId>android-all</artifactId>
+            <version>5.0.0_r2-robolectric-1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.robolectric</groupId>
+            <artifactId>android-all</artifactId>
+            <version>5.0.0_r2-robolectric-1</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
