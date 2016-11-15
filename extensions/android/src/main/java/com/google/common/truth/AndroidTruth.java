@@ -11,8 +11,8 @@ import static com.google.common.truth.Truth.assertAbout;
  */
 public class AndroidTruth {
 
-    public static ViewSubject assertThat(@Nullable View target) {
-        return assertAbout(ViewSubject.views()).that(target);
+    public static BaseViewSubject assertThat(@Nullable View target) {
+        return assertAbout(BaseViewSubject.views()).that(target);
     }
 
 }

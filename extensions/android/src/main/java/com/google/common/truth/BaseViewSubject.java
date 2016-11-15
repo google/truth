@@ -15,22 +15,18 @@ import static com.google.common.truth.Truth.assertThat;
 /**
  * @author Kevin Leigh Crain
  */
+public abstract class BaseViewSubject extends Subject<BaseViewSubject, View> {
 
-/**
- * Todo: remove finals on method and make class abstract
- */
-public class ViewSubject extends Subject<ViewSubject, View> {
-
-    public ViewSubject(FailureStrategy failureStrategy, @Nullable View actual) {
+    public BaseViewSubject(FailureStrategy failureStrategy, @Nullable View actual) {
         super(failureStrategy, actual);
     }
 
-    public final void hasAlpha(float alpha) {
+    public void hasAlpha(float alpha) {
         float actualAlpha = actual().getAlpha();
         if (actual().getAlpha() != alpha) fail("has alpha: " + alpha + ", actual: " + actualAlpha);
     }
 
-    public final void hasAnimation(Animation animation) {
+    public void hasAnimation(Animation animation) {
         assertThat(actual().getAnimation())
                 .isSameAs(animation);
     }
@@ -780,14 +776,14 @@ public class ViewSubject extends Subject<ViewSubject, View> {
                 .isFalse();
     }
 
-    public static SubjectFactory<ViewSubject, View> views() {
+    public static SubjectFactory<BaseViewSubject, View> views() {
         return FACTORY;
     }
 
-    private static final SubjectFactory<ViewSubject, View> FACTORY = new SubjectFactory<ViewSubject, View>() {
+    private static final SubjectFactory<BaseViewSubject, View> FACTORY = new SubjectFactory<BaseViewSubject, View>() {
         @Override
-        public ViewSubject getSubject(FailureStrategy fs, View that) {
-            return new ViewSubject(fs, that);
+        public BaseViewSubject getSubject(FailureStrategy fs, View that) {
+            return new BaseViewSubject(fs, that) {};
         }
     };
 }
