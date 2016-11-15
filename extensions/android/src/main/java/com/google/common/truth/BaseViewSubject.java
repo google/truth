@@ -16,6 +16,10 @@ import static com.google.common.truth.Truth.assertThat;
 /**
  * @author Kevin Leigh Crain
  */
+
+/**
+ * Todo: Find best workaround to generify subject class.. delegation maybe
+ */
 public abstract class BaseViewSubject extends Subject<BaseViewSubject, View> {
 
     public BaseViewSubject(FailureStrategy failureStrategy, @Nullable View actual) {
