@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 @PrepareForTest({View.class, Bitmap.class})
 public class BaseViewSubjectTest {
 
-
     private static final String DUMMY_STRING = "DUMMY_STRING";
     private static final int DUMMY_INT = 99;
     private static final float DUMMY_FLOAT = 9.9f;
@@ -894,6 +893,156 @@ public class BaseViewSubjectTest {
     }
 
     @Test
+    public void testCanResolveLayoutDirection() {
+        assertThat(whenReturn(view.canResolveLayoutDirection(), true))
+                .canResolveLayoutDirection();
+    }
+
+    @Test
+    public void testCanNotResolveLayoutDirection() {
+        assertThat(whenReturn(view.canResolveLayoutDirection(), false))
+                .canNotResolveLayoutDirection();
+    }
+
+    @Test
+    public void testCanResolveTextAlignment() {
+        assertThat(whenReturn(view.canResolveTextAlignment(), true))
+                .canResolveTextAlignment();
+    }
+
+    @Test
+    public void testCanNotResolveTextAlignment() {
+        assertThat(whenReturn(view.canResolveTextAlignment(), false))
+                .canNotResolveTextAlignment();
+    }
+
+    @Test
+    public void testCanResolveTextDirection() {
+        assertThat(whenReturn(view.canResolveTextDirection(), true))
+                .canResolveTextDirection();
+    }
+
+    @Test
+    public void testCanNotResolveTextDirection() {
+        assertThat(whenReturn(view.canResolveTextDirection(), false))
+                .canNotResolveTextDirection();
+    }
+
+    @Test
+    public void testIsAttachedToWindow() {
+        assertThat(whenReturn(view.isAttachedToWindow(), true))
+                .isAttachedToWindow();
+    }
+
+    @Test
+    public void testIsNotAttachedToWindow() {
+        assertThat(whenReturn(view.isAttachedToWindow(), false))
+                .isNotAttachedToWindow();
+    }
+
+    @Test
+    public void testIsLaidOut() {
+        assertThat(whenReturn(view.isLaidOut(), true))
+                .isLaidOut();
+    }
+
+    @Test
+    public void testIsNotLaidOut() {
+        assertThat(whenReturn(view.isLaidOut(), false))
+                .isNotLaidOut();
+    }
+
+    @Test
+    public void testHasResolvedLayoutDirection() {
+        assertThat(whenReturn(view.isLayoutDirectionResolved(), true))
+                .hasResolvedLayoutDirection();
+    }
+
+    @Test
+    public void testHasNotResolvedLayoutDirection() {
+        assertThat(whenReturn(view.isLayoutDirectionResolved(), false))
+                .hasNotResolvedLayoutDirection();
+    }
+
+    @Test
+    public void testHasResolvedTextAlignment() {
+        assertThat(whenReturn(view.isTextAlignmentResolved(), true))
+                .hasResolvedTextAlignment();
+    }
+
+    @Test
+    public void testHasNotResolvedTextAlignment() {
+        assertThat(whenReturn(view.isTextAlignmentResolved(), false))
+                .hasNotResolvedTextAlignment();
+    }
+
+    @Test
+    public void testHasResolvedTextDirection() {
+        assertThat(whenReturn(view.isTextDirectionResolved(), true))
+                .hasResolvedTextDirection();
+    }
+
+    @Test
+    public void testHasNotResolvedTextDirection() {
+        assertThat(whenReturn(view.isTextDirectionResolved(), false))
+                .hasNotResolvedTextDirection();
+    }
+
+    @Test
+    public void testIsInLayout() {
+        assertThat(whenReturn(view.isInLayout(), true))
+                .isInLayout();
+    }
+
+    @Test
+    public void testIsNotInLayout() {
+        assertThat(whenReturn(view.isInLayout(), false))
+                .isNotInLayout();
+    }
+
+    @Test
+    public void testHasLabelFor() {
+        int value = randomGenerator.nextInt();
+        assertThat(whenReturn(view.getLabelFor(), value))
+                .hasLabelFor(value);
+    }
+
+    @Test
+    public void testHasTextAlignment() {
+        int value = randomGenerator.nextInt();
+        assertThat(whenReturn(view.getTextAlignment(), value))
+                .hasTextAlignment(value);
+    }
+
+    @Test
+    public void testHasTextDirection() {
+        int value = randomGenerator.nextInt();
+        assertThat(whenReturn(view.getTextDirection(), value))
+                .hasTextDirection(value);
+    }
+
+    @Test
+    public void testHasLayoutDirection() {
+        int value = randomGenerator.nextInt();
+        assertThat(whenReturn(view.getLayoutDirection(), value))
+                .hasLayoutDirection(value);
+    }
+
+    @Test
+    public void testHasPaddingEnd() {
+        int value = randomGenerator.nextInt();
+        assertThat(whenReturn(view.getPaddingEnd(), value))
+                .hasPaddingEnd(value);
+    }
+
+    @Test
+    public void testHasPaddingStart() {
+        int value = randomGenerator.nextInt();
+        assertThat(whenReturn(view.getPaddingStart(), value))
+                .hasPaddingStart(value);
+    }
+
+    @Test
     public void testHasAlphaFailure() {
         try {
             assertThat(whenReturn(view.getAlpha(), new Random(99).nextFloat()))
@@ -1380,7 +1529,6 @@ public class BaseViewSubjectTest {
                     .isNotShown();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
             Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
@@ -1392,7 +1540,6 @@ public class BaseViewSubjectTest {
                     .hasTranslationX(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
             Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
@@ -1729,7 +1876,7 @@ public class BaseViewSubjectTest {
     @Test
     public void testHasHorizontalFadingEdgeLengthFailure() {
         try {
-        assertThat(whenReturn(view.getHorizontalFadingEdgeLength(), DUMMY_INT))
+            assertThat(whenReturn(view.getHorizontalFadingEdgeLength(), DUMMY_INT))
                     .hasHorizontalFadingEdgeLength(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
@@ -2341,6 +2488,259 @@ public class BaseViewSubjectTest {
             fail("Should have thrown.");
         } catch (AssertionError e) {
             Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testCanNotResolveLayoutDirectionFailure() {
+        try {
+            assertThat(whenReturn(view.canResolveLayoutDirection(), true))
+                    .canNotResolveLayoutDirection();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testCanResolveTextAlignmentFailure() {
+        try {
+            assertThat(whenReturn(view.canResolveTextAlignment(), false))
+                    .canResolveTextAlignment();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
+        }
+    }
+
+    @Test
+    public void testCanNotResolveTextAlignmentFailure() {
+        try {
+            assertThat(whenReturn(view.canResolveTextAlignment(), true))
+                    .canNotResolveTextAlignment();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testCanResolveTextDirectionFailure() {
+        try {
+            assertThat(whenReturn(view.canResolveTextDirection(), false))
+                    .canResolveTextDirection();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
+        }
+    }
+
+    @Test
+    public void testCanNotResolveTextDirectionFailure() {
+        try {
+            assertThat(whenReturn(view.canResolveTextDirection(), true))
+                    .canNotResolveTextDirection();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testIsAttachedToWindowFailure() {
+        try {
+            assertThat(whenReturn(view.isAttachedToWindow(), false))
+                    .isAttachedToWindow();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
+        }
+    }
+
+    @Test
+    public void testIsNotAttachedToWindowFailure() {
+        try {
+            assertThat(whenReturn(view.isAttachedToWindow(), true))
+                    .isNotAttachedToWindow();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testIsLaidOutFailure() {
+        try {
+            assertThat(whenReturn(view.isLaidOut(), false))
+                    .isLaidOut();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
+        }
+    }
+
+    @Test
+    public void testIsNotLaidOutFailure() {
+        try {
+            assertThat(whenReturn(view.isLaidOut(), true))
+                    .isNotLaidOut();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testHasResolvedLayoutDirectionFailure() {
+        try {
+            assertThat(whenReturn(view.isLayoutDirectionResolved(), false))
+                    .hasResolvedLayoutDirection();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
+        }
+    }
+
+    @Test
+    public void testHasNotResolvedLayoutDirectionFailure() {
+        try {
+            assertThat(whenReturn(view.isLayoutDirectionResolved(), true))
+                    .hasNotResolvedLayoutDirection();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testHasResolvedTextAlignmentFailure() {
+        try {
+            assertThat(whenReturn(view.isTextAlignmentResolved(), false))
+                    .hasResolvedTextAlignment();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
+        }
+    }
+
+    @Test
+    public void testHasNotResolvedTextAlignmentFailure() {
+        try {
+            assertThat(whenReturn(view.isTextAlignmentResolved(), true))
+                    .hasNotResolvedTextAlignment();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testHasResolvedTextDirectionFailure() {
+        try {
+            assertThat(whenReturn(view.isTextDirectionResolved(), false))
+                    .hasResolvedTextDirection();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
+        }
+    }
+
+    @Test
+    public void testHasNotResolvedTextDirectionFailure() {
+        try {
+            assertThat(whenReturn(view.isTextDirectionResolved(), true))
+                    .hasNotResolvedTextDirection();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testIsInLayoutFailure() {
+        try {
+            assertThat(whenReturn(view.isInLayout(), false))
+                    .isInLayout();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
+        }
+    }
+
+    @Test
+    public void testIsNotInLayoutFailure() {
+        try {
+            assertThat(whenReturn(view.isInLayout(), true))
+                    .isNotInLayout();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
+        }
+    }
+
+    @Test
+    public void testHasLabelForFailure() {
+        try {
+            assertThat(whenReturn(view.getLabelFor(), DUMMY_INT))
+                    .hasLabelFor(0);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
+        }
+    }
+
+    @Test
+    public void testHasTextAlignmentFailure() {
+        try {
+            assertThat(whenReturn(view.getTextAlignment(), DUMMY_INT))
+                    .hasTextAlignment(0);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
+        }
+    }
+
+    @Test
+    public void testHasTextDirectionFailure() {
+        try {
+            assertThat(whenReturn(view.getTextDirection(), DUMMY_INT))
+                    .hasTextDirection(0);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
+        }
+    }
+
+    @Test
+    public void testHasLayoutDirectionFailure() {
+        try {
+            assertThat(whenReturn(view.getLayoutDirection(), DUMMY_INT))
+                    .hasLayoutDirection(0);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
+        }
+    }
+
+    @Test
+    public void testHasPaddingEndFailure() {
+        try {
+            assertThat(whenReturn(view.getPaddingEnd(), DUMMY_INT))
+                    .hasPaddingEnd(0);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
+        }
+    }
+
+    @Test
+    public void testHasPaddingStartFailure() {
+        try {
+            assertThat(whenReturn(view.getPaddingStart(), DUMMY_INT))
+                    .hasPaddingStart(0);
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 

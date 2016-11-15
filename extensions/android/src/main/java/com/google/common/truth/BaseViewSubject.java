@@ -779,116 +779,107 @@ public abstract class BaseViewSubject extends Subject<BaseViewSubject, View> {
 
     @TargetApi(KITKAT)
     public void canResolveLayoutDirection() {
-
-        assertThat(actual().canResolveLayoutDirection()) //
+        assertThat(actual().canResolveLayoutDirection())
                 .isTrue();
 
     }
 
     @TargetApi(KITKAT)
     public void canNotResolveLayoutDirection() {
-
-        assertThat(actual().canResolveLayoutDirection()) //
+        assertThat(actual().canResolveLayoutDirection())
                 .isFalse();
 
     }
 
     @TargetApi(KITKAT)
     public void canResolveTextAlignment() {
-
-        assertThat(actual().canResolveLayoutDirection()) //
+        assertThat(actual().canResolveTextAlignment())
                 .isTrue();
 
     }
 
     @TargetApi(KITKAT)
     public void canNotResolveTextAlignment() {
-
-        assertThat(actual().canResolveLayoutDirection()) //
+        assertThat(actual().canResolveTextAlignment())
                 .isFalse();
 
     }
 
     @TargetApi(KITKAT)
     public void canResolveTextDirection() {
-        assertThat(actual().canResolveTextDirection()) //
+        assertThat(actual().canResolveTextDirection())
                 .isTrue();
 
     }
 
     @TargetApi(KITKAT)
     public void canNotResolveTextDirection() {
-        assertThat(actual().canResolveTextDirection()) //
+        assertThat(actual().canResolveTextDirection())
                 .isFalse();
 
     }
 
     @TargetApi(KITKAT)
     public void isAttachedToWindow() {
-        assertThat(actual().isAttachedToWindow()) //
+        assertThat(actual().isAttachedToWindow())
                 .isTrue();
 
     }
 
     @TargetApi(KITKAT)
     public void isNotAttachedToWindow() {
-        assertThat(actual().isAttachedToWindow()) //
+        assertThat(actual().isAttachedToWindow())
                 .isFalse();
 
     }
 
     @TargetApi(KITKAT)
     public void isLaidOut() {
-        assertThat(actual().isLaidOut()) //
+        assertThat(actual().isLaidOut())
                 .isTrue();
-
     }
 
     @TargetApi(KITKAT)
     public void isNotLaidOut() {
-        assertThat(actual().isLaidOut()) //
+        assertThat(actual().isLaidOut())
                 .isFalse();
-
     }
 
     @TargetApi(KITKAT)
     public void hasResolvedLayoutDirection() {
-        assertThat(actual().isLayoutDirectionResolved()) //
+        assertThat(actual().isLayoutDirectionResolved())
                 .isTrue();
-
     }
 
     @TargetApi(KITKAT)
     public void hasNotResolvedLayoutDirection() {
-        assertThat(actual().isLayoutDirectionResolved()) //
+        assertThat(actual().isLayoutDirectionResolved())
                 .isFalse();
-
     }
 
     @TargetApi(KITKAT)
     public void hasResolvedTextAlignment() {
-        assertThat(actual().isTextAlignmentResolved()) //
+        assertThat(actual().isTextAlignmentResolved())
                 .isTrue();
-
     }
 
     @TargetApi(KITKAT)
     public void hasNotResolvedTextAlignment() {
-        assertThat(actual().isTextAlignmentResolved()) //
+        assertThat(actual().isTextAlignmentResolved())
                 .isFalse();
 
     }
 
     @TargetApi(KITKAT)
     public void hasResolvedTextDirection() {
-        assertThat(actual().isTextDirectionResolved()) //
+        assertThat(actual().isTextDirectionResolved())
                 .isTrue();
 
     }
 
     @TargetApi(KITKAT)
     public void hasNotResolvedTextDirection() {
-        assertThat(actual().isTextDirectionResolved()) //
+        assertThat(actual().isTextDirectionResolved())
                 .isFalse();
 
     }
@@ -918,7 +909,7 @@ public abstract class BaseViewSubject extends Subject<BaseViewSubject, View> {
     @TargetApi(JELLY_BEAN_MR1)
     public void hasTextAlignment(int alignment) {
         int actualAlignment = actual().getTextAlignment();
-        assertThat(actualAlignment) //
+        assertThat(actualAlignment)
                 .isEqualTo(alignment);
 
     }
