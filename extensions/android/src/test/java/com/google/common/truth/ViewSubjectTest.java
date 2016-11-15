@@ -8,8 +8,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Random;
 
@@ -20,7 +22,8 @@ import static org.mockito.Mockito.*;
 /**
  * @author Kevin Leigh Crain
  */
-@RunWith(JUnit4.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(View.class)
 public class ViewSubjectTest {
 
 
@@ -34,8 +37,8 @@ public class ViewSubjectTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-        viewSpy = spy(view);
+        view = PowerMockito.mock(View.class);
+        viewSpy = PowerMockito.spy(view);
 
         randomGenerator = new Random(99);
     }
@@ -132,7 +135,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsNotFocusable() {
-        assertThat(whenReturn(viewSpy.isFocusable(), true))
+        assertThat(whenReturn(view.isFocusable(), false))
                 .isNotFocusable();
     }
 
@@ -158,7 +161,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasRight() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getRight(), value))
+        assertThat(whenReturn(view.getRight(), value))
                 .hasRight(value);
     }
 
@@ -171,14 +174,14 @@ public class ViewSubjectTest {
     @Test
     public void testHasMeasuredWidth() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getMeasuredWidth(), value))
+        assertThat(whenReturn(view.getMeasuredWidth(), value))
                 .hasMeasuredWidth(value);
     }
 
     @Test
     public void testHasMeasuredState() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getMeasuredState(), value))
+        assertThat(whenReturn(view.getMeasuredState(), value))
                 .hasMeasuredState(value);
     }
 
@@ -203,7 +206,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testHasVerticalScrollBarEnabled() {
-        assertThat(whenReturn(viewSpy.isVerticalFadingEdgeEnabled(), true))
+        assertThat(whenReturn(viewSpy.isVerticalScrollBarEnabled(), true))
                 .hasVerticalScrollBarEnabled();
     }
 
@@ -216,7 +219,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsFocusableInTouchMode() {
-        assertThat(whenReturn(viewSpy.isFocusableInTouchMode(), true))
+        assertThat(whenReturn(view.isFocusableInTouchMode(), true))
                 .isFocusableInTouchMode();
     }
 
@@ -229,7 +232,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasBottom() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getBottom(), value))
+        assertThat(whenReturn(view.getBottom(), value))
                 .hasBottom(value);
     }
 
@@ -281,7 +284,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasMeasuredHeightAndState() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getMeasuredHeightAndState(), value))
+        assertThat(whenReturn(view.getMeasuredHeightAndState(), value))
                 .hasMeasuredHeightAndState(value);
     }
 
@@ -340,14 +343,14 @@ public class ViewSubjectTest {
     @Test
     public void testHasLeft() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getLeft(), value))
+        assertThat(whenReturn(view.getLeft(), value))
                 .hasLeft(value);
     }
 
     @Test
     public void testHasHeight() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getHeight(), value))
+        assertThat(whenReturn(view.getHeight(), value))
                 .hasHeight(value);
     }
 
@@ -428,7 +431,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasTop() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getTop(), value))
+        assertThat(whenReturn(view.getTop(), value))
                 .hasTop(value);
     }
 
@@ -454,7 +457,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsUsingDrawingCache() {
-        assertThat(whenReturn(viewSpy.getDrawingCache(), true))
+        assertThat(whenReturn(view.getDrawingCache(), true))
                 .isUsingDrawingCache();
     }
 
@@ -485,7 +488,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsInFocusedWindow() {
-        assertThat(whenReturn(viewSpy.hasWindowFocus(), false))
+        assertThat(whenReturn(viewSpy.hasWindowFocus(), true))
                 .isInFocusedWindow();
     }
 
@@ -503,21 +506,21 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsFocusable() {
-        assertThat(whenReturn(viewSpy.isFocusable(), true))
+        assertThat(whenReturn(view.isFocusable(), true))
                 .isFocusable();
     }
 
     @Test
     public void testHasParent() {
         android.view.ViewParent value = mock(android.view.ViewParent.class);
-        assertThat(whenReturn(viewSpy.getParent(), value))
+        assertThat(whenReturn(view.getParent(), value))
                 .hasParent(value);
     }
 
     @Test
     public void testHasMeasuredHeight() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getMeasuredHeight(), value))
+        assertThat(whenReturn(view.getMeasuredHeight(), value))
                 .hasMeasuredHeight(value);
     }
 
@@ -568,7 +571,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testHasHapticFeedbackEnabled() {
-        assertThat(whenReturn(viewSpy.isHapticFeedbackEnabled(), false))
+        assertThat(whenReturn(viewSpy.isHapticFeedbackEnabled(), true))
                 .hasHapticFeedbackEnabled();
     }
 
@@ -629,7 +632,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasWidth() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getWidth(), value))
+        assertThat(whenReturn(view.getWidth(), value))
                 .hasWidth(value);
     }
 
@@ -731,14 +734,14 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsNotGone() {
-        assertThat(whenReturn(viewSpy.getVisibility(), View.GONE))
+        assertThat(whenReturn(viewSpy.getVisibility(), View.VISIBLE))
                 .isNotGone();
     }
 
     @Test
     public void testHasScrollY() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getScrollY(), value))
+        assertThat(whenReturn(view.getScrollY(), value))
                 .hasScrollY(value);
     }
 
@@ -752,7 +755,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasScrollX() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getScrollX(), value))
+        assertThat(whenReturn(view.getScrollX(), value))
                 .hasScrollX(value);
     }
 
@@ -780,7 +783,7 @@ public class ViewSubjectTest {
     @Test
     public void testHasMeasuredWidthAndState() {
         int value = randomGenerator.nextInt();
-        assertThat(whenReturn(viewSpy.getMeasuredWidthAndState(), value))
+        assertThat(whenReturn(view.getMeasuredWidthAndState(), value))
                 .hasMeasuredWidthAndState(value);
     }
 
@@ -812,7 +815,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testIsNotFocusableInTouchMode() {
-        assertThat(whenReturn(viewSpy.isFocusableInTouchMode(), false))
+        assertThat(whenReturn(view.isFocusableInTouchMode(), false))
                 .isNotFocusableInTouchMode();
     }
 
@@ -824,7 +827,7 @@ public class ViewSubjectTest {
 
     @Test
     public void testHasFocusable() {
-        assertThat(whenReturn(viewSpy.isFocusable(), true))
+        assertThat(whenReturn(view.isFocusable(), true))
                 .hasFocusable();
     }
 
