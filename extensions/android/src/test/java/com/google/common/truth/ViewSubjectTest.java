@@ -30,6 +30,8 @@ public class ViewSubjectTest {
 
 
     private static final String DUMMY_STRING = "DUMMY_STRING";
+    private static final int DUMMY_INT = 99;
+    private static final float DUMMY_FLOAT = 9.9f;
 
     private View view;
 
@@ -932,1430 +934,1415 @@ public class ViewSubjectTest {
     @Test
     public void testHasYFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getY(), DUMMY_FLOAT))
+                    .hasY(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testHasXFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getX(), DUMMY_FLOAT))
+                    .hasX(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
-        }
-    }
-
-    @Test
-    public void testIsVisibleFailure() {
-        try {
-            // XXX: Todo
-            fail("Should have thrown.");
-        } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testIsNotVisibleFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getVisibility(), View.VISIBLE))
+                    .isNotVisible();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <view> is visible");
         }
     }
 
     @Test
     public void testIsNotUsingDrawingCacheFailure() {
         try {
-            // XXX: Todo
+            PowerMockito.when(view.isDrawingCacheEnabled())
+                    .thenReturn(true);
+            assertThat(view).isNotUsingDrawingCache();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasRootViewFailure() {
+        android.view.View value = mock(android.view.View.class);
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getRootView(), null))
+                    .hasRootView(value);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage(String.format("Not true that <null> is the same instance as <Mock for View, hashCode: %d>", value.hashCode()));
         }
     }
 
     @Test
     public void testIsOpaqueFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isOpaque(), false))
+                    .isOpaque();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsNotFocusableFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isFocusable(), true))
+                    .isNotFocusable();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasVerticalFadingEdgeDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isVerticalFadingEdgeEnabled(), true))
+                    .hasVerticalFadingEdgeDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testIsLongClickableFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isLongClickable(), false))
+                    .isLongClickable();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasSolidColorFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getSolidColor(), DUMMY_INT))
+                    .hasSolidColor(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasRightFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getRight(), DUMMY_INT))
+                    .hasRight(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotOpaqueFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isOpaque(), true))
+                    .isNotOpaque();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasMeasuredWidthFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getMeasuredWidth(), DUMMY_INT))
+                    .hasMeasuredWidth(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasMeasuredStateFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getMeasuredState(), DUMMY_INT))
+                    .hasMeasuredState(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasVerticalScrollbarPositionFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getVerticalScrollbarPosition(), DUMMY_INT))
+                    .hasVerticalScrollbarPosition(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasHorizontalScrollbarEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHorizontalScrollBarEnabled(), false))
+                    .hasHorizontalScrollbarEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasNoFocusFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.hasFocus(), true))
+                    .hasNoFocus();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasVerticalScrollBarEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isVerticalScrollBarEnabled(), false))
+                    .hasVerticalScrollBarEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasDrawingCacheBackgroundColorFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getDrawingCacheBackgroundColor(), DUMMY_INT))
+                    .hasDrawingCacheBackgroundColor(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsFocusableInTouchModeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isFocusableInTouchMode(), false))
+                    .isFocusableInTouchMode();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isEnabled(), true))
+                    .isDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasBottomFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getBottom(), DUMMY_INT))
+                    .hasBottom(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasScrollBarFadeDurationFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getScrollBarFadeDuration(), DUMMY_INT))
+                    .hasScrollBarFadeDuration(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotClickableFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isClickable(), true))
+                    .isNotClickable();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasPaddingRightFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getPaddingRight(), DUMMY_INT))
+                    .hasPaddingRight(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasVerticalFadingEdgeLengthFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getVerticalFadingEdgeLength(), DUMMY_INT))
+                    .hasVerticalFadingEdgeLength(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotDirtyFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isDirty(), true))
+                    .isNotDirty();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasVerticalFadingEdgeEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isVerticalFadingEdgeEnabled(), false))
+                    .hasVerticalFadingEdgeEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasContentDescriptionFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getContentDescription(), null))
+                    .hasContentDescription(DUMMY_STRING);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <null> is equal to <DUMMY_STRING>");
         }
     }
 
     @Test
     public void testHasMeasuredHeightAndStateFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getMeasuredHeightAndState(), DUMMY_INT))
+                    .hasMeasuredHeightAndState(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isEnabled(), false))
+                    .isEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasMinimumHeightFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getMinimumHeight(), DUMMY_INT))
+                    .hasMinimumHeight(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasSaveEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isSaveEnabled(), false))
+                    .hasSaveEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasBaselineFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getBaseline(), DUMMY_INT))
+                    .hasBaseline(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsInTouchModeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isInTouchMode(), false))
+                    .isInTouchMode();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsHoveredFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHovered(), false))
+                    .isHovered();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasScaleXFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getScaleX(), DUMMY_FLOAT))
+                    .hasScaleX(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testHasScaleYFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getScaleY(), DUMMY_FLOAT))
+                    .hasScaleY(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testHasLeftFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getLeft(), DUMMY_INT))
+                    .hasLeft(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasHeightFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getHeight(), DUMMY_INT))
+                    .hasHeight(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotShownFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isShown(), true))
+                    .isNotShown();
             fail("Should have thrown.");
         } catch (AssertionError e) {
             // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasTranslationXFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getTranslationX(), DUMMY_FLOAT))
+                    .hasTranslationX(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
             // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testIsGoneFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getVisibility(), View.VISIBLE))
+                    .isGone();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <0> is equal to <8>");
+        }
+
+        try {
+            assertThat(whenReturn(view.getVisibility(), View.INVISIBLE))
+                    .isGone();
+            fail("Should have thrown.");
+        } catch (AssertionError e) {
+            Truth.assertThat(e).hasMessage("Not true that <4> is equal to <8>");
         }
     }
 
     @Test
     public void testHasTranslationYFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getTranslationY(), DUMMY_FLOAT))
+                    .hasTranslationY(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testIsScrollContainerFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isScrollContainer(), false))
+                    .isScrollContainer();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsDirtyFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isDirty(), false))
+                    .isDirty();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsNotInFocusedWindowFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.hasWindowFocus(), true))
+                    .isNotInFocusedWindow();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testIsSelectedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isSelected(), false))
+                    .isSelected();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsNotFocusedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isFocused(), true))
+                    .isNotFocused();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testIsNotHardwareAcceleratedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHardwareAccelerated(), true))
+                    .isNotHardwareAccelerated();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasFocusFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.hasFocus(), false))
+                    .hasFocus();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasVerticalScrollBarDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isVerticalScrollBarEnabled(), true))
+                    .hasVerticalScrollBarDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasTopFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getTop(), DUMMY_INT))
+                    .hasTop(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasOverScrollModeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getOverScrollMode(), DUMMY_INT))
+                    .hasOverScrollMode(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsShownFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isShown(), false))
+                    .isShown();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasWindowVisibilityFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getWindowVisibility(), DUMMY_INT))
+                    .hasWindowVisibility(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsUsingDrawingCacheFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isDrawingCacheEnabled(), false))
+                    .isUsingDrawingCache();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasSaveFromParentEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isSaveFromParentEnabled(), false))
+                    .hasSaveFromParentEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsNotPressedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isPressed(), true))
+                    .isNotPressed();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasHorizontalFadingEdgesDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHorizontalFadingEdgeEnabled(), true))
+                    .hasHorizontalFadingEdgesDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasHapticFeedbackDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHapticFeedbackEnabled(), true))
+                    .hasHapticFeedbackDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testIsInFocusedWindowFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.hasWindowFocus(), false))
+                    .isInFocusedWindow();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsNotScrollContainerFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isScrollContainer(), true))
+                    .isNotScrollContainer();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasNoLayoutRequestedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isLayoutRequested(), true))
+                    .hasNoLayoutRequested();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testIsFocusableFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isFocusable(), false))
+                    .isFocusable();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasParentFailure() {
+        android.view.ViewParent value = mock(android.view.ViewParent.class);
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getParent(), null))
+                    .hasParent(value);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage(String.format("Not true that <null> is the same instance as <Mock for ViewParent, hashCode: %d>", value.hashCode()));
         }
     }
 
     @Test
     public void testHasMeasuredHeightFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getMeasuredHeight(), DUMMY_INT))
+                    .hasMeasuredHeight(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasSoundEffectsDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isSoundEffectsEnabled(), true))
+                    .hasSoundEffectsDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
             // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasVisibilityFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getVisibility(), DUMMY_INT))
+                    .hasVisibility(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasSoundEffectsEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isSoundEffectsEnabled(), false))
+                    .hasSoundEffectsEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasNextFocusLeftIdFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getNextFocusLeftId(), DUMMY_INT))
+                    .hasNextFocusLeftId(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasHorizontalFadingEdgeLengthFailure() {
         try {
-            // XXX: Todo
+        assertThat(whenReturn(view.getHorizontalFadingEdgeLength(), DUMMY_INT))
+                    .hasHorizontalFadingEdgeLength(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotActivatedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isActivated(), true))
+                    .isNotActivated();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasLayoutRequestedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isLayoutRequested(), false))
+                    .hasLayoutRequested();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasHapticFeedbackEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHapticFeedbackEnabled(), false))
+                    .hasHapticFeedbackEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasNextFocusDownIdFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getNextFocusDownId(), DUMMY_INT))
+                    .hasNextFocusDownId(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasSaveFromParentDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isSaveFromParentEnabled(), true))
+                    .hasSaveFromParentDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasPaddingBottomFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getPaddingBottom(), DUMMY_INT))
+                    .hasPaddingBottom(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsInEditModeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isInEditMode(), false))
+                    .isInEditMode();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsNotDuplicatingParentStateFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isDuplicateParentStateEnabled(), true))
+                    .isNotDuplicatingParentState();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasVerticalScrollbarWidthFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getVerticalScrollbarWidth(), DUMMY_INT))
+                    .hasVerticalScrollbarWidth(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasPivotXFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getPivotX(), DUMMY_FLOAT))
+                    .hasPivotX(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testHasPivotYFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getPivotY(), DUMMY_FLOAT))
+                    .hasPivotY(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testHasWidthFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getWidth(), DUMMY_INT))
+                    .hasWidth(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasScrollBarStyleFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getScrollBarStyle(), DUMMY_INT))
+                    .hasScrollBarStyle(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasTagFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getTag(), null))
+                    .hasTag(DUMMY_STRING);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <null> is the same instance as <DUMMY_STRING>");
         }
     }
 
     @Test
     public void testIsKeepingScreenOnFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getKeepScreenOn(), false))
+                    .isKeepingScreenOn();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsActivatedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isActivated(), false))
+                    .isActivated();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsFocusedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isFocused(), false))
+                    .isFocused();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsNotLongClickableFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isLongClickable(), true))
+                    .isNotLongClickable();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasHorizontalScrollbarDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHorizontalScrollBarEnabled(), true))
+                    .hasHorizontalScrollbarDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasIdFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getId(), DUMMY_INT))
+                    .hasId(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotKeepingScreenOnFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getKeepScreenOn(), true))
+                    .isNotKeepingScreenOn();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasScrollbarFadingEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isScrollbarFadingEnabled(), false))
+                    .hasScrollbarFadingEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasScrollBarSizeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getScrollBarSize(), DUMMY_INT))
+                    .hasScrollBarSize(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasLayerTypeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getLayerType(), DUMMY_INT))
+                    .hasLayerType(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasNextFocusForwardIdFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getNextFocusForwardId(), DUMMY_INT))
+                    .hasNextFocusForwardId(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasScrollbarFadingDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isScrollbarFadingEnabled(), true))
+                    .hasScrollbarFadingDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasPaddingLeftFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getPaddingLeft(), DUMMY_INT))
+                    .hasPaddingLeft(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotGoneFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getVisibility(), View.GONE))
+                    .isNotGone();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <8> is not equal to <8>");
         }
     }
 
     @Test
     public void testHasScrollYFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getScrollY(), DUMMY_INT))
+                    .hasScrollY(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasPaddingTopFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getPaddingTop(), DUMMY_INT))
+                    .hasPaddingTop(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasScrollXFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getScrollX(), DUMMY_INT))
+                    .hasScrollX(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasNextFocusRightIdFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getNextFocusRightId(), DUMMY_INT))
+                    .hasNextFocusRightId(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasMeasuredWidthAndStateFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getMeasuredWidthAndState(), DUMMY_INT))
+                    .hasMeasuredWidthAndState(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotHoveredFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHovered(), true))
+                    .isNotHovered();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasRotationFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getRotation(), DUMMY_FLOAT))
+                    .hasRotation(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testHasBackgroundFailure() {
+        android.graphics.drawable.Drawable value = mock(android.graphics.drawable.Drawable.class);
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getBackground(), null))
+                    .hasBackground(value);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage(String.format("Not true that <null> is the same instance as <Mock for Drawable, hashCode: %d>", value.hashCode()));
         }
     }
 
     @Test
     public void testIsNotInEditModeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isInEditMode(), true))
+                    .isNotInEditMode();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testIsNotFocusableInTouchModeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isFocusableInTouchMode(), true))
+                    .isNotFocusableInTouchMode();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testIsPressedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isPressed(), false))
+                    .isPressed();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasFocusableFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.hasFocusable(), false))
+                    .hasFocusable();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasScrollBarDefaultDelayBeforeFadeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getScrollBarDefaultDelayBeforeFade(), DUMMY_INT))
+                    .hasScrollBarDefaultDelayBeforeFade(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsDuplicatingParentStateFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isDuplicateParentStateEnabled(), false))
+                    .isDuplicatingParentState();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasNextFocusUpIdFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getNextFocusUpId(), DUMMY_INT))
+                    .hasNextFocusUpId(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasRotationYFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getRotationY(), DUMMY_FLOAT))
+                    .hasRotationY(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testHasParentForAccessibilityFailure() {
+        android.view.ViewParent value = mock(android.view.ViewParent.class);
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getParentForAccessibility(), null))
+                    .hasParentForAccessibility(value);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage(String.format("Not true that <null> is the same instance as <Mock for ViewParent, hashCode: %d>", value.hashCode()));
         }
     }
 
     @Test
     public void testHasSystemUiVisibilityFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getSystemUiVisibility(), DUMMY_INT))
+                    .hasSystemUiVisibility(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testHasRotationXFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getRotationX(), DUMMY_FLOAT))
+                    .hasRotationX(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <9.9> is equal to <0.0>");
         }
     }
 
     @Test
     public void testHasMinimumWidthFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getMinimumWidth(), DUMMY_INT))
+                    .hasMinimumWidth(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotSelectedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isSelected(), true))
+                    .isNotSelected();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasSaveDisabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isSaveEnabled(), true))
+                    .hasSaveDisabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
 
     @Test
     public void testHasHorizontalFadingEdgesEnabledFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHorizontalFadingEdgeEnabled(), false))
+                    .hasHorizontalFadingEdgesEnabled();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsHardwareAcceleratedFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isHardwareAccelerated(), false))
+                    .isHardwareAccelerated();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testIsClickableFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isClickable(), false))
+                    .isClickable();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be true, but was false");
         }
     }
 
     @Test
     public void testHasDrawingCacheQualityFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.getDrawingCacheQuality(), DUMMY_INT))
+                    .hasDrawingCacheQuality(0);
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("Not true that <99> is equal to <0>");
         }
     }
 
     @Test
     public void testIsNotInTouchModeFailure() {
         try {
-            // XXX: Todo
+            assertThat(whenReturn(view.isInTouchMode(), true))
+                    .isNotInTouchMode();
             fail("Should have thrown.");
         } catch (AssertionError e) {
-            // XXX: Todo
-            Truth.assertThat(e).hasMessage("");
+            Truth.assertThat(e).hasMessage("The subject was expected to be false, but was true");
         }
     }
-
-    @Test
-    public void generateFailureTests() {
-        List<Method> testMethods = Lists.newArrayList(ViewSubjectTest.class.getDeclaredMethods());
-        testMethods.stream()
-                .filter(m -> m.getName().contains("test") && !m.getName().contains("Failure"))
-                .forEach(m -> {
-                    System.out.println(String.format("@Test\n" +
-                            "    public void %sFailure() {\n" +
-                            "        try {\n" +
-                            "            // XXX: Todo\n" +
-                            "            fail(\"Should have thrown.\");\n" +
-                            "        } catch (AssertionError e) {\n" +
-                            "            // XXX: Todo\n" +
-                            "            Truth.assertThat(e).hasMessage(\"\");\n" +
-                            "        }\n" +
-                            "    }\n", m.getName()));
-                });
-    }
-
 
     private <T> View whenReturn(T methodCall, T value) {
         return when(methodCall)
