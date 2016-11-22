@@ -157,6 +157,11 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
   @CanIgnoreReturnValue
   public Ordered containsExactly(@Nullable Object k0, @Nullable Object v0, Object... rest) {
+    return containsExactlyEntriesIn(accumulateMap(k0, v0, rest));
+  }
+
+  private static Map<Object, Object> accumulateMap(
+      @Nullable Object k0, @Nullable Object v0, Object... rest) {
     checkArgument(
         rest.length % 2 == 0,
         "There must be an equal number of key/value pairs "
@@ -176,7 +181,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         keys.size() == expectedMap.size(),
         "Duplicate keys (%s) cannot be passed to containsExactly().",
         keys);
-    return containsExactlyEntriesIn(expectedMap);
+    return expectedMap;
   }
 
   /** Fails if the map does not contain exactly the given set of entries in the given map. */
@@ -279,13 +284,6 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       }
     }
 
-    /** Fails if the map is not empty. */
-    @CanIgnoreReturnValue
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private Ordered containsExactly() {
-      throw new UnsupportedOperationException();
-    }
-
     /**
      * Fails if the map does not contain exactly the given set of keys mapping to values that
      * correspond to the given values.
@@ -297,10 +295,12 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
      * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
      */
     // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
+    // For bonus points, checking that the even-numbered values are of type E would be sweet.
     @CanIgnoreReturnValue
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private Ordered containsExactly(@Nullable Object k0, @Nullable E v0, Object... rest) {
-      throw new UnsupportedOperationException();
+    public Ordered containsExactly(@Nullable Object k0, @Nullable E v0, Object... rest) {
+      @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
+      Map<Object, E> expectedMap = (Map<Object, E>) accumulateMap(k0, v0, rest);
+      return containsExactlyEntriesIn(expectedMap);
     }
 
     /**
@@ -308,14 +308,33 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
      * correspond to the values of the given map.
      */
     @CanIgnoreReturnValue
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private Ordered containsExactlyEntriesIn(Map<?, ? extends E> expectedMap) {
-      throw new UnsupportedOperationException();
+    public <K, V extends E> Ordered containsExactlyEntriesIn(Map<K, V> expectedMap) {
+      return check()
+          .that(actual().entrySet())
+          .comparingElementsUsing(new EntryCorrespondence<K, V>())
+          .containsExactlyElementsIn(expectedMap.entrySet());
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Map<?, A> getCastSubject() {
       return (Map<?, A>) actual();
+    }
+
+    private final class EntryCorrespondence<K, V extends E>
+        extends Correspondence<Map.Entry<Object, A>, Map.Entry<K, V>> {
+
+      @Override
+      public boolean compare(Entry<Object, A> actual, Entry<K, V> expected) {
+        return actual.getKey().equals(expected.getKey())
+            && correspondence.compare(actual.getValue(), expected.getValue());
+      }
+
+      @Override
+      public String toString() {
+        return StringUtil.format(
+            "has a key that is equal to and a value that %s the key and value of",
+            correspondence);
+      }
     }
   }
 }

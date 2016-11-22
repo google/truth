@@ -724,4 +724,266 @@ public class MapSubjectTest {
                   + "key <def> and a value that parses to <456>. It maps that key to <+456>");
     }
   }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_success() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 456, "abc", 123);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_inOrder_success() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("abc", 123, "def", 456)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_failsExtraEntry() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 456);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_failsMissingEntry() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 456, "xyz", 999, "abc", 123);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
+                  + "key that is equal to and a value that parses to the key and value of "
+                  + "<xyz=999>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_failsWrongKey() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 456, "cab", 123);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=456, cab=123]>. It is missing an element that has a "
+                  + "key that is equal to and a value that parses to the key and value of "
+                  + "<cab=123> and has unexpected elements <[abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_failsWrongValue() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 456, "abc", 321);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=456, abc=321]>. It is missing an element that has a "
+                  + "key that is equal to and a value that parses to the key and value of "
+                  + "<abc=321> and has unexpected elements <[abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_inOrder_failsOutOfOrder() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 456, "abc", 123)
+          .inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
+                  + " a key that is equal to and a value that parses to the key and value of each"
+                  + " element of <[def=456, abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_wrongValueTypeInActual() {
+    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    MapSubject.UsingCorrespondence<String, Integer> intermediate =
+        assertThat(actual).comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
+    try {
+      intermediate.containsExactly("def", 456, "abc", 123);
+      fail("Should have thrown.");
+    } catch (ClassCastException e) {
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_wrongValueTypeInExpected() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    MapSubject.UsingCorrespondence<String, Integer> intermediate =
+        assertThat(actual).comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
+    try {
+      intermediate.containsExactly("def", 456, "abc", 123L);
+      fail("Should have thrown.");
+    } catch (ClassCastException e) {
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_success() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 123);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_inOrder_success() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 123, "def", 456);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_failsExtraEntry() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_failsMissingEntry() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "xyz", 999, "abc", 123);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
+                  + "key that is equal to and a value that parses to the key and value of "
+                  + "<xyz=999>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_failsWrongKey() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "cab", 123);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=456, cab=123]>. It is missing an element that has a "
+                  + "key that is equal to and a value that parses to the key and value of "
+                  + "<cab=123> and has unexpected elements <[abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_failsWrongValue() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 321);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=456, abc=321]>. It is missing an element that has a "
+                  + "key that is equal to and a value that parses to the key and value of "
+                  + "<abc=321> and has unexpected elements <[abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_inOrder_failsOutOfOrder() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 123);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected)
+          .inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessage(
+              "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
+                  + " a key that is equal to and a value that parses to the key and value of each"
+                  + " element of <[def=456, abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_wrongValueTypeInActual() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 123);
+    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    MapSubject.UsingCorrespondence<String, Integer> intermediate =
+        assertThat(actual).comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
+    try {
+      intermediate.containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (ClassCastException e) {
+    }
+  }
 }
