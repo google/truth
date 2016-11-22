@@ -18,7 +18,6 @@ package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.asList;
-import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.auto.value.AutoValue;
@@ -72,24 +71,9 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   /**
    * Returns a {@link SubjectFactory} for {@link Message} subjects which you can use to assert
    * things about Protobuf properties.
-   *
-   * @deprecated User {@link ProtoTruth#protos()}.
    */
-  @Deprecated
-  public static Factory<?, Message> protos() {
-    // TODO(user): Migrate users, make this package-private.
+  static Factory<?, Message> protos() {
     return UntypedSubjectFactory.INSTANCE;
-  }
-
-  /**
-   * Returns a {@link Subject} using the assertion strategy on the provided {@link Message}.
-   *
-   * @deprecated User {@link ProtoTruth#assertThat(Message)}.
-   */
-  @Deprecated
-  public static ProtoSubject<?, Message> assertThat(@Nullable Message message) {
-    // TODO(user): Migrate users, delete this method.
-    return assertAbout(protos()).that(message);
   }
 
   protected ProtoSubject(FailureStrategy failureStrategy, @Nullable M message) {
