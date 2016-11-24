@@ -281,6 +281,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     Iterator<?> actualIter = actual().iterator();
     Iterator<?> requiredIter = required.iterator();
 
+    if (!requiredIter.hasNext()) {
+      // If the expected iterator is empty, call isEmpty() instead so we get a better error message
+      isEmpty();
+      // If isEmpty() doesn't throw, then we know the subject was empty, so we return IN_ORDER
+      return IN_ORDER;
+    }
+
     // Step through both iterators comparing elements pairwise.
     while (actualIter.hasNext() && requiredIter.hasNext()) {
       Object actualElement = actualIter.next();
@@ -663,6 +670,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     private boolean correspondInOrderExactly(
         Iterator<? extends A> actual, Iterator<? extends E> expected) {
+
+      if (!expected.hasNext()) {
+        // If the expected iterator is empty, call isEmpty() instead so we get a better error message
+        isEmpty();
+        // If isEmpty() doesn't throw, then we know the subject was empty, so we return true
+        return true;
+      }
+
       while (actual.hasNext() && expected.hasNext()) {
         A actualElement = actual.next();
         E expectedElement = expected.next();

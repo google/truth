@@ -513,6 +513,17 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void iterableContainsExactlyElementsInWithEmptyExpected() {
+    try {
+      assertThat(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <[foo]> is empty");
+      return;
+    }
+    fail("Should have thrown.");
+  }
+
+  @Test
   public void iterableContainsExactlyElementsInErrorMessageIsOrdered() {
     try {
       assertThat(asList("foo OR bar")).containsExactlyElementsIn(asList("foo", "bar"));
@@ -1068,6 +1079,20 @@ public class IterableSubjectTest {
               "Not true that <[+64, +128, 0x40, 0x80]> contains exactly one element that "
                   + "parses to each element of <[64, 128, 256, 128]>. "
                   + "It is missing an element that parses to <256>");
+    }
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsExpectedIsEmpty() {
+    ImmutableList<Integer> expected = ImmutableList.of();
+    ImmutableList<String> actual = ImmutableList.of("+64", "+128", "0x40", "0x80");
+    try {
+      assertThat(actual)
+          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyElementsIn(expected);
+      fail("Expected failure");
+    } catch (AssertionError e) {
+      assertThat(e).hasMessage("Not true that <[+64, +128, 0x40, 0x80]> is empty");
     }
   }
 
