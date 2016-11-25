@@ -282,9 +282,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     Iterator<?> requiredIter = required.iterator();
 
     if (!requiredIter.hasNext()) {
-      // If the expected iterator is empty, call isEmpty() instead so we get a better error message
-      isEmpty();
-      // If isEmpty() doesn't throw, then we know the subject was empty, so we return IN_ORDER
+      // If the expected iterator is empty, and the actual iterator is not empty, fail
+      if (actualIter.hasNext()) {
+        fail("is empty");
+      }
+      // If the previous branch doesn't throw, then the subject was empty, so return IN_ORDER
       return IN_ORDER;
     }
 
@@ -671,12 +673,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     private boolean correspondInOrderExactly(
         Iterator<? extends A> actual, Iterator<? extends E> expected) {
 
-      if (!expected.hasNext()) {
-        // If the expected iterator is empty, call isEmpty() instead so we get a better error message
-        isEmpty();
-        // If isEmpty() doesn't throw, then we know the subject was empty, so we return true
-        return true;
-      }
+        if (!expected.hasNext()) {
+          // If the expected iterator is empty, and the actual iterator is not empty, fail
+          if (actual.hasNext()) {
+            fail("is empty");
+          }
+          // If the previous branch doesn't throw, then the subject was empty, so return false
+          return false;
+        }
 
       while (actual.hasNext() && expected.hasNext()) {
         A actualElement = actual.next();
