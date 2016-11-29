@@ -678,8 +678,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           if (actual.hasNext()) {
             fail("is empty");
           }
-          // If the previous branch doesn't throw, then the subject was empty, so return false
-          return false;
+          // If the previous branch doesn't throw, then the subject was empty, so return true
+          return true;
         }
 
       while (actual.hasNext() && expected.hasNext()) {
