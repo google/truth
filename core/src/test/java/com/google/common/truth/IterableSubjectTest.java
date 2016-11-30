@@ -513,6 +513,11 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void iterableContainsExactlyElementsInInOrderPassesWithEmptyExpectedAndActual() {
+    assertThat(ImmutableList.of()).containsExactlyElementsIn(ImmutableList.of()).inOrder();
+  }
+
+  @Test
   public void iterableContainsExactlyElementsInWithEmptyExpected() {
     try {
       assertThat(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
@@ -1083,6 +1088,16 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_inOrder_passesWhenBothEmpty() {
+    ImmutableList<Integer> expected = ImmutableList.of();
+    ImmutableList<String> actual = ImmutableList.of();
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected)
+        .inOrder();
+  }
+
+  @Test
   public void comparingElementsUsing_containsExactlyElementsIn_failsExpectedIsEmpty() {
     ImmutableList<Integer> expected = ImmutableList.of();
     ImmutableList<String> actual = ImmutableList.of("+64", "+128", "0x40", "0x80");
@@ -1381,9 +1396,7 @@ public class IterableSubjectTest {
     // it would pair 1.0 with 1.05 and 1.1 with 1.15, and fail to pair 1.2 with 0.95. Check that the
     // implementation is truly non-greedy by testing all permutations.
     for (List<Double> permutedActual : permutations(actual)) {
-      assertThat(permutedActual)
-          .comparingElementsUsing(tolerance(0.1))
-          .containsAllIn(expected);
+      assertThat(permutedActual).comparingElementsUsing(tolerance(0.1)).containsAllIn(expected);
     }
   }
 
