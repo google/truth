@@ -577,7 +577,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * PrimitiveDoubleArraySubject#usingTolerance} and {@link
    * PrimitiveFloatArraySubject#usingTolerance}).
    *
-   * <p>NOTE: This class is under constructions and more methods will be added in future versions.
+   * <p>NOTE: This class is under construction and more methods will be added in future versions.
    */
   public final class UsingCorrespondence<A, E> {
 
