@@ -180,8 +180,8 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   }
 
   private Ordered containsExactly(String failVerb, Multimap<?, ?> expectedMultimap) {
-    Multimap<?, ?> missing = difference(expectedMultimap, actual());
-    Multimap<?, ?> extra = difference(actual(), expectedMultimap);
+    ListMultimap<?, ?> missing = difference(expectedMultimap, actual());
+    ListMultimap<?, ?> extra = difference(actual(), expectedMultimap);
 
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
     // the subject but not enough times. Similarly for unexpected extra items.
@@ -277,8 +277,8 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     }
   }
 
-  private static Multimap<?, ?> difference(Multimap<?, ?> minuend, Multimap<?, ?> subtrahend) {
-    LinkedListMultimap<Object, Object> difference = LinkedListMultimap.create();
+  private static ListMultimap<?, ?> difference(Multimap<?, ?> minuend, Multimap<?, ?> subtrahend) {
+    ListMultimap<Object, Object> difference = LinkedListMultimap.create();
     for (Object key : minuend.keySet()) {
       List<?> valDifference =
           difference(
