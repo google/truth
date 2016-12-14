@@ -25,7 +25,7 @@ and [compare it to common alternatives](comparison).
 <dependency>
   <groupId>com.google.truth</groupId>
   <artifactId>truth</artifactId>
-  <version>0.30</version>
+  <version>0.31</version>
 </dependency>
 ```
 
@@ -36,7 +36,7 @@ buildscript {
   repositories.mavenLocal()
 }
 dependencies {
-  testCompile "com.google.truth:truth:0.30"
+  testCompile "com.google.truth:truth:0.31"
 }
 ```
 
