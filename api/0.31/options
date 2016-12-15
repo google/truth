@@ -1,0 +1,25 @@
+-classpath
+'/usr/local/google/home/cgdecker/Projects/truth/core/target/classes:/usr/local/google/home/cgdecker/Projects/truth/extensions/target/classes:/usr/local/google/home/cgdecker/Projects/truth/extensions/re2j/target/classes:/usr/local/google/home/cgdecker/Projects/truth/extensions/liteproto/target/classes:/usr/local/google/home/cgdecker/Projects/truth/extensions/proto/target/classes:/usr/local/google/home/cgdecker/Projects/truth/extensions/java8/target/classes:/usr/local/google/home/cgdecker/.m2/repository/com/google/truth/truth/1.0-SNAPSHOT/truth-1.0-SNAPSHOT.jar:/usr/local/google/home/cgdecker/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/re2j/re2j/1.0/re2j-1.0.jar:/usr/local/google/home/cgdecker/.m2/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/jsinterop/jsinterop-annotations/1.0.1/jsinterop-annotations-1.0.1-sources.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/errorprone/error_prone_annotations/2.0.12/error_prone_annotations-2.0.12.jar:/usr/local/google/home/cgdecker/.m2/repository/org/w3c/css/sac/1.3/sac-1.3.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/auto/value/auto-value/1.2/auto-value-1.2.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/protobuf/protobuf-java/3.0.0-beta-2/protobuf-java-3.0.0-beta-2.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/truth/extensions/truth-liteproto-extension/0.31/truth-liteproto-extension-0.31.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/gwt/gwt-user/2.8.0/gwt-user-2.8.0.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/code/findbugs/jsr305/3.0.1/jsr305-3.0.1.jar:/usr/local/google/home/cgdecker/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/usr/local/google/home/cgdecker/.m2/repository/junit/junit/4.10/junit-4.10.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/jsinterop/jsinterop-annotations/1.0.1/jsinterop-annotations-1.0.1.jar:/usr/local/google/home/cgdecker/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar:/usr/local/google/home/cgdecker/.m2/repository/com/google/guava/guava/20.0/guava-20.0.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/usr/local/google/home/cgdecker/Projects/truth/core/src/main/java:/usr/local/google/home/cgdecker/Projects/truth/extensions/re2j/src/main/java:/usr/local/google/home/cgdecker/Projects/truth/extensions/liteproto/src/main/java:/usr/local/google/home/cgdecker/Projects/truth/extensions/proto/src/main/java:/usr/local/google/home/cgdecker/Projects/truth/extensions/java8/src/main/java'
+-Xdoclint:none
+-author
+-bottom
+'Copyright &#169; 2016. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/usr/local/google/home/cgdecker/Projects/truth/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Truth (Parent) 0.31 API'
+-linkoffline
+'http://docs.oracle.com/javase/8/docs/api' '/usr/local/google/home/cgdecker/Projects/truth/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Truth (Parent) 0.31 API'
