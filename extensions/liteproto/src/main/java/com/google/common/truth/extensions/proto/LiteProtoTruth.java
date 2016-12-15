@@ -21,7 +21,9 @@ import static com.google.common.truth.Truth.assertAbout;
 import com.google.common.truth.AbstractVerb;
 import com.google.common.truth.SubjectFactory;
 import com.google.protobuf.MessageLite;
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * A set of static methods to begin a Truth assertion chain for the lite version of protocol
@@ -35,6 +37,8 @@ import javax.annotation.Nullable;
  * rely on {@link AbstractVerb#about(SubjectFactory)} to begin a chain with those alternative
  * behaviors.
  */
+@CheckReturnValue
+@ParametersAreNonnullByDefault
 public final class LiteProtoTruth {
   public static LiteProtoSubject<?, MessageLite> assertThat(@Nullable MessageLite messageLite) {
     return assertAbout(liteProtos()).that(messageLite);

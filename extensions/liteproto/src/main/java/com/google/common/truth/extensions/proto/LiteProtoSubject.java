@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.google.common.truth.extensions.proto;
 
 import com.google.common.base.Objects;
@@ -23,7 +24,9 @@ import com.google.common.truth.SubjectFactory;
 import com.google.common.truth.Truth;
 import com.google.protobuf.MessageLite;
 import java.util.regex.Pattern;
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Truth subjects for the Lite version of Protocol Buffers.
@@ -35,6 +38,8 @@ import javax.annotation.Nullable;
  * @param <S> Subject class type.
  * @param <M> MessageLite type.
  */
+@CheckReturnValue
+@ParametersAreNonnullByDefault
 public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends MessageLite>
     extends Subject<S, M> {
 
