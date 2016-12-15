@@ -92,7 +92,7 @@ JUnit     | `assumeEquals(expected, actual);`
 Framework | Code example
 --------- | ---------------------------------------------------------------
 Truth     | `expect.that(actual).isEqualTo(expected); // supplied by @Rule`
-AssertJ   | n/a
+AssertJ   | `softly.assertThat(actual).isEqualTo(expected); // @Rule with JUnitSoftAssertions`
 Hamcrest  | n/a
 JUnit     | n/a
 
