@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertAbout;
 
 import java.util.Optional;
-import java.util.OptionalInt;
 import javax.annotation.Nullable;
 
 /**
@@ -32,10 +31,6 @@ import javax.annotation.Nullable;
 public final class Truth8 {
   public static OptionalSubject assertThat(@Nullable Optional<?> target) {
     return assertAbout(OptionalSubject.optionals()).that(target);
-  }
-
-  public static OptionalIntSubject assertThat(@Nullable OptionalInt target) {
-    return assertAbout(OptionalIntSubject.optionalInts()).that(target);
   }
 
   private Truth8() {}
