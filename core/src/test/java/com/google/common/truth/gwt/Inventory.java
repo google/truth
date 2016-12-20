@@ -15,7 +15,6 @@
  */
 package com.google.common.truth.gwt;
 
-import com.google.common.truth.AbstractArraySubject;
 import com.google.common.truth.AbstractVerb;
 import com.google.common.truth.BigDecimalSubject;
 import com.google.common.truth.BooleanSubject;
@@ -59,7 +58,6 @@ import com.google.common.truth.TruthJUnit;
  * Static references to a variety of classes to force their loading during the {@link TruthGwtTest}.
  */
 public class Inventory {
-  AbstractArraySubject abstractArraySubject;
   AbstractVerb abstractVerb;
   BigDecimalSubject bigDecimalSubject;
   BooleanSubject booleanSubject;

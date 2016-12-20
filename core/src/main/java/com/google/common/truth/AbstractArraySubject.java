@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T>
+abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T>
     extends Subject<S, T> {
   AbstractArraySubject(FailureStrategy failureStrategy, @Nullable T subject) {
     super(failureStrategy, subject);
