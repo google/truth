@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
  * @author Ben Douglass
  */
 public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, OptionalDouble> {
+
   OptionalDoubleSubject(FailureStrategy failureStrategy, @Nullable OptionalDouble subject) {
     super(failureStrategy, subject);
   }
@@ -46,8 +47,8 @@ public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, 
    * Fails if the {@link OptionalDouble} does not have the given value or the subject is null. This
    * method is <i>not</i> recommended when the code under test is doing any kind of arithmetic,
    * since the exact result of floating point arithmetic is sensitive to apparently trivial changes.
-   * Approximate comparisons can be done using {@code assertThat(optionalDouble.get())}. This method
-   * is recommended when the code under test is specified as either copying a value without
+   * More sophisticated comparisons can be done using {@link #hasValueThat()}. This method is
+   * recommended when the code under test is specified as either copying a value without
    * modification from its input or returning a well-defined literal or constant value.
    */
   public void hasValue(double expected) {
@@ -58,6 +59,19 @@ public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, 
       if (actual != expected) {
         fail("has value", expected);
       }
+    }
+  }
+
+  /**
+   * Prepares for a check regarding the value contained within the {@link OptionalDouble}. Fails
+   * immediately if the subject is empty.
+   */
+  public DoubleSubject hasValueThat() {
+    if (actual() == null || !actual().isPresent()) {
+      failWithoutActual("is present");
+      return new DoubleSubject(IgnoreFailuresFailureStrategy.INSTANCE, 0.);
+    } else {
+      return new DoubleSubject(failureStrategy, actual().getAsDouble());
     }
   }
 

@@ -42,7 +42,10 @@ public final class OptionalLongSubject extends Subject<OptionalLongSubject, Opti
     }
   }
 
-  /** Fails if the {@link OptionalLong} does not have the given value or the subject is null. */
+  /**
+   * Fails if the {@link OptionalLong} does not have the given value or the subject is null. More
+   * sophisticated comparisons can be done using {@link #hasValueThat()}.
+   */
   public void hasValue(long expected) {
     if (actual() == null || !actual().isPresent()) {
       fail("has value", expected);
@@ -51,6 +54,19 @@ public final class OptionalLongSubject extends Subject<OptionalLongSubject, Opti
       if (actual != expected) {
         fail("has value", expected);
       }
+    }
+  }
+
+  /**
+   * Prepares for a check regarding the value contained within the {@link OptionalLong}. Fails
+   * immediately if the subject is empty.
+   */
+  public LongSubject hasValueThat() {
+    if (actual() == null || !actual().isPresent()) {
+      failWithoutActual("is present");
+      return new LongSubject(IgnoreFailuresFailureStrategy.INSTANCE, 0L);
+    } else {
+      return new LongSubject(failureStrategy, actual().getAsLong());
     }
   }
 

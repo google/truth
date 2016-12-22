@@ -130,6 +130,46 @@ public class OptionalIntSubjectTest {
   }
 
   @Test
+  public void hasValueThat_FailingWithEmpty() {
+    try {
+      validateThat(OptionalInt.empty()).hasValueThat();
+      fail("Should have thrown");
+    } catch (ValidationException expected) {
+      assertThat(expected).hasMessage("Not true that the subject is present");
+    }
+  }
+
+  @Test
+  public void hasValueThat_FailingWithEmptyRespectsFailureStrategy() {
+    CountingFailureStrategy strategy = new CountingFailureStrategy();
+    TestVerb verb = new TestVerb(strategy);
+
+    verb.about(optionalInts()).that(OptionalInt.empty()).hasValueThat().isGreaterThan(42);
+    assertThat(strategy.getFailureCount()).isEqualTo(1);
+
+    verb.about(optionalInts()).that(OptionalInt.empty()).hasValueThat().isAtMost(42);
+    assertThat(strategy.getFailureCount()).isEqualTo(2);
+
+    verb.about(optionalInts()).that(OptionalInt.of(42)).hasValueThat().isLessThan(30);
+    assertThat(strategy.getFailureCount()).isEqualTo(3);
+  }
+
+  @Test
+  public void hasValueThat_FailingWithComparison() {
+    try {
+      validateThat(OptionalInt.of(1337)).hasValueThat().isLessThan(42);
+      fail("Should have thrown");
+    } catch (ValidationException expected) {
+      assertThat(expected).hasMessage("Not true that <1337> is less than <42>");
+    }
+  }
+
+  @Test
+  public void hasValueThat_SuccessWithComparison() {
+    validateThat(OptionalInt.of(1337)).hasValueThat().isGreaterThan(42);
+  }
+
+  @Test
   public void assumption() {
     try {
       assume().about(optionalInts()).that(OptionalInt.empty()).isPresent();
@@ -155,6 +195,20 @@ public class OptionalIntSubjectTest {
   private static class ValidationException extends RuntimeException {
     private ValidationException(String message, Throwable cause) {
       super(message, cause);
+    }
+  }
+
+  /** A failure strategy that increments a counter rather than throwing. */
+  private static class CountingFailureStrategy extends FailureStrategy {
+    private int failureCount = 0;
+
+    @Override
+    public void fail(String message, Throwable cause) {
+      failureCount++;
+    }
+
+    public int getFailureCount() {
+      return failureCount;
     }
   }
 }

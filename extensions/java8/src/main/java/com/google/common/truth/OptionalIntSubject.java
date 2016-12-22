@@ -42,7 +42,10 @@ public final class OptionalIntSubject extends Subject<OptionalIntSubject, Option
     }
   }
 
-  /** Fails if the {@link OptionalInt} does not have the given value or the subject is null. */
+  /**
+   * Fails if the {@link OptionalInt} does not have the given value or the subject is null. More
+   * sophisticated comparisons can be done using {@link #hasValueThat()}.
+   */
   public void hasValue(int expected) {
     if (actual() == null || !actual().isPresent()) {
       fail("has value", expected);
@@ -51,6 +54,19 @@ public final class OptionalIntSubject extends Subject<OptionalIntSubject, Option
       if (actual != expected) {
         fail("has value", expected);
       }
+    }
+  }
+
+  /**
+   * Prepares for a check regarding the value contained within the {@link OptionalInt}. Fails
+   * immediately if the subject is empty.
+   */
+  public IntegerSubject hasValueThat() {
+    if (actual() == null || !actual().isPresent()) {
+      failWithoutActual("is present");
+      return new IntegerSubject(IgnoreFailuresFailureStrategy.INSTANCE, 0);
+    } else {
+      return new IntegerSubject(failureStrategy, actual().getAsInt());
     }
   }
 
