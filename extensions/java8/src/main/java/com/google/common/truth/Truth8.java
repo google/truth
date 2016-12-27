@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 /**
@@ -46,6 +47,10 @@ public final class Truth8 {
 
   public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble target) {
     return assertAbout(OptionalDoubleSubject.optionalDoubles()).that(target);
+  }
+
+  public static StreamSubject assertThat(@Nullable Stream<?> target) {
+    return assertAbout(StreamSubject.streams()).that(target);
   }
 
   private Truth8() {}
