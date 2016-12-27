@@ -27,6 +27,16 @@ import javax.annotation.Nullable;
 /**
  * Propositions for {@link Stream} subjects.
  *
+ * <p><b>Note:</b> the wrapped stream will be drained immediately into a private collection to
+ * provide more readable failure messages. You should not use this class if you intend to leave the
+ * stream un-consumed or if the stream is <i>very</i> large or infinite.
+ *
+ * <p>If you intend to make multiple assertions on the same stream of data you should instead
+ * first collect the contents of the stream into a collection, and then assert directly on that.
+ *
+ * <p>For very large or infinite streams you may want to first {@linkplain Stream#limit limit} the
+ * stream before asserting on it.
+ *
  * @author Kurt Alfred Kluever
  */
 public final class StreamSubject extends Subject<StreamSubject, Stream<?>> {
