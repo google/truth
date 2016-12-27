@@ -319,7 +319,7 @@ public class Subject<S extends Subject<S, T>, T> {
     // If the subject and parts aren't null, and they have equal toString()'s but different
     // classes, we need to disambiguate them.
     boolean neitherNull = (other != null) && (subject != null);
-    boolean sameToStrings = neitherNull && subject.toString().equals(other.toString());
+    boolean sameToStrings = actualCustomStringRepresentation().equals(String.valueOf(other));
     boolean needsClassDisambiguation =
         neitherNull && sameToStrings && !subject.getClass().equals(other.getClass());
     if (needsClassDisambiguation) {
