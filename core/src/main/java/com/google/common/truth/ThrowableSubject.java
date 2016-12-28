@@ -31,6 +31,7 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
 
   // TODO(kak): Should this be @Nullable or should we have .doesNotHaveMessage()?
   /** Fails if the subject does not have the given message. */
+  // TODO(diamondm): deprecate this in favor of {@code hasMessageThat().isEqualTo(expected)}.
   public void hasMessage(@Nullable String expected) {
     String actual = actual().getMessage();
     if (!Objects.equal(expected, actual)) {
@@ -41,6 +42,10 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
         fail("has message", expected);
       }
     }
+  }
+
+  public StringSubject hasMessageThat() {
+    return new StringSubject(badMessageStrategy(failureStrategy, this), actual().getMessage());
   }
 
   private static FailureStrategy causeInsertingStrategy(
@@ -68,6 +73,34 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
           e.initCause(defaultCause);
           throw e;
         }
+      }
+    };
+  }
+
+  private static FailureStrategy badMessageStrategy(
+      final FailureStrategy delegate, final ThrowableSubject subject) {
+    return new FailureStrategy() {
+      private String prependMessage(String message) {
+        String name = subject.actual().getClass().getName();
+        if (subject.internalCustomName() != null) {
+          name = subject.internalCustomName() + "(" + name + ")";
+        }
+        return "Unexpected message for " + name + ":" + (message.isEmpty() ? "" : " " + message);
+      }
+
+      @Override
+      public void fail(String message) {
+        delegate.fail(prependMessage(message));
+      }
+
+      @Override
+      public void fail(String message, Throwable cause) {
+        delegate.fail(prependMessage(message), cause);
+      }
+
+      @Override
+      public void failComparing(String message, CharSequence expected, CharSequence actual) {
+        delegate.failComparing(prependMessage(message), expected, actual);
       }
     };
   }

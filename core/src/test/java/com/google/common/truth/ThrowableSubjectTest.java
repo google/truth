@@ -57,6 +57,33 @@ public class ThrowableSubjectTest {
   }
 
   @Test
+  public void hasMessageThat() {
+    NullPointerException npe = new NullPointerException("message");
+    assertThat(npe).hasMessageThat().isEqualTo("message");
+  }
+
+  @Test
+  public void hasMessageThat_null() {
+    assertThat(new NullPointerException()).hasMessageThat().isNull();
+    assertThat(new NullPointerException(null)).hasMessageThat().isNull();
+  }
+
+  @Test
+  public void hasMessageThat_failure() {
+    NullPointerException subject = new NullPointerException("message");
+    try {
+      assertThat(subject).hasMessageThat().isEqualTo("foobar");
+      throw new Error("Expected to fail.");
+    } catch (ComparisonFailure expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo(
+              "Unexpected message for java.lang.NullPointerException: "
+                  + "expected:<[foobar]> but was:<[message]>");
+      assertThat(expected.getCause()).isEqualTo(subject);
+    }
+  }
+
+  @Test
   public void hasMessage_MessageHasNullMessage_failure() {
     try {
       assertThat(new NullPointerException("message")).hasMessage(null);
@@ -64,6 +91,19 @@ public class ThrowableSubjectTest {
     } catch (AssertionError expected) {
       assertThat(expected.getMessage())
           .isEqualTo("Not true that <java.lang.NullPointerException: message> has message <null>");
+    }
+  }
+
+  @Test
+  public void hasMessage_Named_failure() {
+    try {
+      assertThat(new NullPointerException("message")).named("NPE").hasMessage("foobar");
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo(
+              "NPE (<java.lang.NullPointerException: message>) does not have message "
+                  + "<foobar> expected:<[foobar]> but was:<[message]>");
     }
   }
 
