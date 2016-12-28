@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import com.google.common.base.Objects;
 import javax.annotation.Nullable;
 
 /**
@@ -33,15 +32,7 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
   /** Fails if the subject does not have the given message. */
   // TODO(diamondm): deprecate this in favor of {@code hasMessageThat().isEqualTo(expected)}.
   public void hasMessage(@Nullable String expected) {
-    String actual = actual().getMessage();
-    if (!Objects.equal(expected, actual)) {
-      if (expected != null && actual != null) {
-        failureStrategy.failComparing(
-            actualAsString() + " does not have message <" + expected + ">", expected, actual);
-      } else {
-        fail("has message", expected);
-      }
-    }
+    hasMessageThat().isEqualTo(expected);
   }
 
   public StringSubject hasMessageThat() {
