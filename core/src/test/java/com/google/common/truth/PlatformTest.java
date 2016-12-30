@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 
-import com.google.common.truth.Platform;
 import java.net.CookieStore;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for {@link Platform} methods which are swapped in for GWT.
+ * Tests for {@link com.google.common.truth.Platform} methods which are swapped in for GWT.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -51,7 +50,7 @@ public class PlatformTest {
       assertThat(Platform.isInstanceOfTypeJava(new ArrayList<String>(), Set.class)).isTrue();
       assert_().fail("Should have thrown.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).contains("expected to be true");
+      assertThat(expected).hasMessageThat().contains("expected to be true");
     }
   }
 
@@ -79,7 +78,7 @@ public class PlatformTest {
       assertThat(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), Set.class)).isTrue();
       assert_().fail("Should have thrown.");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).contains("expected to be true");
+      assertThat(expected).hasMessageThat().contains("expected to be true");
     }
   }
 

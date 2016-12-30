@@ -47,7 +47,8 @@ public class ClassSubjectTest {
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <class java.lang.Object> "
                   + "is assignable to <class java.lang.String>");
     }
@@ -60,7 +61,8 @@ public class ClassSubjectTest {
       assert_().fail("Should have thrown an assertion error.");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <class java.lang.String> "
                   + "is assignable to <class java.lang.Exception>");
     }

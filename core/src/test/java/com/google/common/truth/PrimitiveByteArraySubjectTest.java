@@ -17,13 +17,12 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.PrimitiveByteArraySubject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for {@link PrimitiveByteArraySubject}.
+ * Tests for {@link com.google.common.truth.PrimitiveByteArraySubject}.
  *
  * @author Kurt Alfred Kluever
  */
@@ -55,7 +54,9 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(array(BYTE_0, BYTE_1)).isEqualTo(array(BYTE_1, BYTE_0));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>");
     }
   }
 
@@ -65,7 +66,8 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {});
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
+      assertThat(e)
+          .hasMessageThat()
           .contains("Incompatible types compared. expected: int[], actual: byte[]");
     }
   }
@@ -91,7 +93,7 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
+      assertThat(e).hasMessageThat().isEqualTo("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
     }
   }
 
@@ -102,7 +104,7 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
+      assertThat(e).hasMessageThat().isEqualTo("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
     }
   }
 

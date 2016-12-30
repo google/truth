@@ -49,7 +49,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hello]> (java.util.stream.ReferencePipeline$Head) "
                   + "is equal to <[hello]> (java.util.Arrays$ArrayList)");
     }
@@ -88,7 +89,7 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hello")).isEmpty();
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <[hello]> is empty");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <[hello]> is empty");
     }
   }
 
@@ -103,7 +104,7 @@ public final class StreamSubjectTest {
       assertThat(Stream.of()).isNotEmpty();
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <[]> is not empty");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
     }
   }
 
@@ -118,7 +119,9 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hello")).hasSize(2);
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <[hello]> has a size of <2>. It is <1>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <[hello]> has a size of <2>. It is <1>");
     }
   }
 
@@ -134,7 +137,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("<[hello, hello]> has the following duplicates: <[hello x 2]>");
+          .hasMessageThat()
+          .isEqualTo("<[hello, hello]> has the following duplicates: <[hello x 2]>");
     }
   }
 
@@ -149,7 +153,7 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hello")).contains("goodbye");
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("<[hello]> should have contained <goodbye>");
+      assertThat(expected).hasMessageThat().isEqualTo("<[hello]> should have contained <goodbye>");
     }
   }
 
@@ -164,7 +168,9 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hello")).containsAnyOf("goodbye", "good");
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <[hello]> contains any of <[goodbye, good]>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <[hello]> contains any of <[goodbye, good]>");
     }
   }
 
@@ -180,7 +186,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Not true that <[hello]> contains any element in <[goodbye, good]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <[hello]> contains any element in <[goodbye, good]>");
     }
   }
 
@@ -195,7 +202,9 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hello")).doesNotContain("hello");
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("<[hello]> should not have contained <hello>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("<[hello]> should not have contained <hello>");
     }
   }
 
@@ -211,7 +220,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hello]> contains none of <[hello, hell]>. It contains <[hello]>");
     }
   }
@@ -228,7 +238,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hello]> contains no elements in <[hello, hell]>. "
                   + "It contains <[hello]>");
     }
@@ -246,7 +257,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hell, hello]> contains all of <[hell, hello, goodbye]>. "
                   + "It is missing <[goodbye]>");
     }
@@ -264,7 +276,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hell, hello]> contains all elements in order <[hello, hell]>");
     }
   }
@@ -281,7 +294,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hell, hello]> contains all elements in <[hell, hello, goodbye]>. "
                   + "It is missing <[goodbye]>");
     }
@@ -299,7 +313,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hell, hello]> contains all elements in order <[hello, hell]>");
     }
   }
@@ -317,7 +332,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hell, hello]> contains exactly <[hell]>. "
                   + "It has unexpected items <[hello]>");
     }
@@ -335,7 +351,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hell, hello]> contains exactly "
                   + "these elements in order <[hello, hell]>");
     }
@@ -354,7 +371,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hell, hello]> contains exactly <[hell]>. "
                   + "It has unexpected items <[hello]>");
     }
@@ -376,7 +394,8 @@ public final class StreamSubjectTest {
       fail();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[hell, hello]> contains exactly "
                   + "these elements in order <[hello, hell]>");
     }

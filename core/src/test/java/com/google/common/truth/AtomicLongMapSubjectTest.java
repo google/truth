@@ -40,7 +40,8 @@ public final class AtomicLongMapSubjectTest {
       assertThat(alm1).isEqualTo(alm2);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{}> is equal to <{}> "
                   + "(although their toString() representations are the same)");
       return;
@@ -63,7 +64,7 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{foo=1}> is empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{foo=1}> is empty");
     }
   }
 
@@ -81,7 +82,7 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{}> is not empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{}> is not empty");
     }
   }
 
@@ -114,7 +115,9 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).hasSize(2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=1}> has a size of <2>. It is <1>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=1}> has a size of <2>. It is <1>");
     }
   }
 
@@ -146,7 +149,9 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).hasSum(2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=1}> has a sum of <2>. It is <1>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=1}> has a sum of <2>. It is <1>");
     }
   }
 
@@ -165,7 +170,7 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).containsKey("greg");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=1}> contains key <greg>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{kurt=1}> contains key <greg>");
     }
   }
 
@@ -184,7 +189,9 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).doesNotContainKey("kurt");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=1}> does not contain key <kurt>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=1}> does not contain key <kurt>");
     }
   }
 
@@ -195,7 +202,7 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).doesNotContainKey(null);
       fail("Should have thrown.");
     } catch (NullPointerException expected) {
-      assertThat(expected).hasMessage("AtomicLongMap does not support null keys");
+      assertThat(expected).hasMessageThat().isEqualTo("AtomicLongMap does not support null keys");
     }
   }
 
@@ -214,7 +221,7 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).containsEntry("greg", 2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=1}> contains entry <greg=2>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{kurt=1}> contains entry <greg=2>");
     }
   }
 
@@ -234,7 +241,9 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).doesNotContainEntry("kurt", 1);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=1}> does not contain entry <kurt=1>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=1}> does not contain entry <kurt=1>");
     }
   }
 
@@ -246,7 +255,7 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).containsKey("greg");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=1}> contains key <greg>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{kurt=1}> contains key <greg>");
     }
   }
 
@@ -258,7 +267,9 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).doesNotContainKey("kurt");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=1}> does not contain key <kurt>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=1}> does not contain key <kurt>");
     }
   }
 
@@ -277,7 +288,7 @@ public final class AtomicLongMapSubjectTest {
       assertThat(actual).containsEntry("kurt", 2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=1}> contains entry <kurt=2>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{kurt=1}> contains entry <kurt=2>");
     }
   }
 }

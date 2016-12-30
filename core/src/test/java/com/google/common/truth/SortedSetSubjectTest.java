@@ -66,28 +66,28 @@ public class SortedSetSubjectTest {
       assertThat(ImmutableSortedSet.of()).hasFirstElement(1);
       fail("Expected AssertionError");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[]> has first element <1>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[]> has first element <1>");
     }
 
     try {
       assertThat(ImmutableSortedSet.of()).hasLastElement(1);
       fail("Expected AssertionError");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[]> has last element <1>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[]> has last element <1>");
     }
 
     try {
       assertThat(ImmutableSortedSet.of()).hasFirstElement(null);
       fail("Expected AssertionError");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[]> has first element <null>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[]> has first element <null>");
     }
 
     try {
       assertThat(ImmutableSortedSet.of()).hasLastElement(null);
       fail("Expected AssertionError");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[]> has last element <null>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[]> has last element <null>");
     }
   }
 
@@ -98,7 +98,8 @@ public class SortedSetSubjectTest {
       fail("Expected AssertionError");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[0, 1, 2]> has first element <1>. "
                   + "It does contain this element, but the first element is <0>");
     }
@@ -108,7 +109,8 @@ public class SortedSetSubjectTest {
       fail("Expected AssertionError");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[0, 1, 2]> has last element <1>. "
                   + "It does contain this element, but the last element is <2>");
     }
@@ -121,7 +123,8 @@ public class SortedSetSubjectTest {
       fail("Expected AssertionError");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[0]> has first element <1>. "
                   + "It does not contain this element, and the first element is <0>");
     }
@@ -131,7 +134,8 @@ public class SortedSetSubjectTest {
       fail("Expected AssertionError");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[0]> has last element <1>. "
                   + "It does not contain this element, and the last element is <0>");
     }

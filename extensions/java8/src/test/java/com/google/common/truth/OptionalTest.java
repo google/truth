@@ -42,7 +42,8 @@ public class OptionalTest {
       fail("Should have thrown");
     } catch (ValidationException expected) {
       assertThat(expected)
-          .hasMessage("Not true that name (<Optional[actual]>) has value <expected>");
+          .hasMessageThat()
+          .isEqualTo("Not true that name (<Optional[actual]>) has value <expected>");
       return;
     }
   }
@@ -54,7 +55,7 @@ public class OptionalTest {
       validateThat(nullOptional).isEmpty();
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <null> is empty");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is empty");
       return;
     }
   }
@@ -70,7 +71,7 @@ public class OptionalTest {
       validateThat(Optional.empty()).isPresent();
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that the subject is present");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
       return;
     }
   }
@@ -81,7 +82,7 @@ public class OptionalTest {
       validateThat(Optional.empty()).named("name").isPresent();
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that \"name\" is present");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
       return;
     }
   }
@@ -97,7 +98,7 @@ public class OptionalTest {
       validateThat(Optional.of("foo")).isEmpty();
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <Optional[foo]> is empty");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[foo]> is empty");
       return;
     }
   }
@@ -113,7 +114,9 @@ public class OptionalTest {
       validateThat(Optional.empty()).hasValue("foo");
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <Optional.empty> has value <foo>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <Optional.empty> has value <foo>");
       return;
     }
   }
@@ -124,7 +127,7 @@ public class OptionalTest {
       validateThat(Optional.of("foo")).hasValue(null);
       fail("Should have thrown");
     } catch (NullPointerException expected) {
-      assertThat(expected).hasMessage("Optional cannot have a null value.");
+      assertThat(expected).hasMessageThat().isEqualTo("Optional cannot have a null value.");
       return;
     }
   }
@@ -135,7 +138,9 @@ public class OptionalTest {
       validateThat(Optional.of("foo")).hasValue("boo");
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <Optional[foo]> has value <boo>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <Optional[foo]> has value <boo>");
       return;
     }
   }
@@ -146,7 +151,7 @@ public class OptionalTest {
       validateThat(Optional.of(5)).hasValue(10);
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <Optional[5]> has value <10>");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[5]> has value <10>");
       return;
     }
   }

@@ -41,7 +41,9 @@ public class BooleanSubjectTest {
       assertThat(nullBoolean).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("The subject was expected to be true, but was null");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("The subject was expected to be true, but was null");
     }
   }
 
@@ -52,7 +54,9 @@ public class BooleanSubjectTest {
       assertThat(nullBoolean).isFalse();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("The subject was expected to be false, but was null");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("The subject was expected to be false, but was null");
     }
   }
 
@@ -62,7 +66,9 @@ public class BooleanSubjectTest {
       assertThat(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("The subject was expected to be true, but was false");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("The subject was expected to be true, but was false");
     }
   }
 
@@ -77,7 +83,9 @@ public class BooleanSubjectTest {
       assertThat(true).isFalse();
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("The subject was expected to be false, but was true");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("The subject was expected to be false, but was true");
     }
   }
 }

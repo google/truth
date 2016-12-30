@@ -45,7 +45,7 @@ public class MultisetSubjectTest {
       assertThat(multiset).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[1, 5]> is empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[1, 5]> is empty");
     }
   }
 
@@ -62,7 +62,7 @@ public class MultisetSubjectTest {
       assertThat(multiset).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[]> is not empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
     }
   }
 
@@ -102,7 +102,8 @@ public class MultisetSubjectTest {
       assertThat(multiset).hasCount("kurt", 3);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[kurt x 2, kluever]> has a count for <kurt> of <3>. It is <2>");
       return;
     }
@@ -121,7 +122,7 @@ public class MultisetSubjectTest {
     try {
       assertThat(multiset).contains("greg");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<[kurt, kluever]> should have contained <greg>");
+      assertThat(e).hasMessageThat().isEqualTo("<[kurt, kluever]> should have contained <greg>");
       return;
     }
     fail("Should have thrown.");
@@ -133,7 +134,7 @@ public class MultisetSubjectTest {
     try {
       assertThat(multiset).contains(null);
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<[kurt, kluever]> should have contained <null>");
+      assertThat(e).hasMessageThat().isEqualTo("<[kurt, kluever]> should have contained <null>");
       return;
     }
     fail("Should have thrown.");
@@ -160,7 +161,9 @@ public class MultisetSubjectTest {
       assertThat(multiset).doesNotContain("kurt");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<[kurt, kluever]> should not have contained <kurt>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("<[kurt, kluever]> should not have contained <kurt>");
     }
   }
 
@@ -172,7 +175,7 @@ public class MultisetSubjectTest {
       assertThat(multiset).doesNotContain(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<[null]> should not have contained <null>");
+      assertThat(e).hasMessageThat().isEqualTo("<[null]> should not have contained <null>");
     }
   }
 }

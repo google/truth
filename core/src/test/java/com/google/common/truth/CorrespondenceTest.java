@@ -116,7 +116,7 @@ public final class CorrespondenceTest {
       tolerance(-0.05).compare(1.0, 2.0);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException expected) {
-      assertThat(expected).hasMessage("tolerance (-0.05) cannot be negative");
+      assertThat(expected).hasMessageThat().isEqualTo("tolerance (-0.05) cannot be negative");
     }
   }
 
@@ -150,7 +150,8 @@ public final class CorrespondenceTest {
       fail("Expected AssertionError to be thrown but wasn't");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1.02, 2.04, 3.08]> contains at least one element that "
                   + "is a finite number within 0.05 of <3.0>");
     }

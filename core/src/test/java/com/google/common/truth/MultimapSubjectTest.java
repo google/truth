@@ -74,7 +74,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{kurt=[kluever, russell, cobain]}> contains exactly "
                   + "<{kurt=[kluever, cobain, russell]}> in order. "
                   + "The values for keys <[kurt]> are not in order");
@@ -113,7 +114,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{kurt=[kluever, russell, cobain]}> contains exactly "
                   + "<{kurt=[kluever, russell]}>. It has unexpected items <{kurt=[cobain]}>");
     }
@@ -132,7 +134,7 @@ public class MultimapSubjectTest {
       assertThat(multimap).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{1=[5]}> is empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{1=[5]}> is empty");
     }
   }
 
@@ -149,7 +151,7 @@ public class MultimapSubjectTest {
       assertThat(multimap).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{}> is not empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{}> is not empty");
     }
   }
 
@@ -161,7 +163,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that "
                   + "<Values for key <1> (<[5]>) in multymap (<{1=[5]}>)> contains exactly <[4]>. "
                   + "It is missing <[4]> and has unexpected items <[5]>");
@@ -176,7 +179,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that "
                   + "valuez (<Values for key <1> (<[5]>) in <{1=[5]}>>) contains exactly <[4]>. "
                   + "It is missing <[4]> and has unexpected items <[5]>");
@@ -215,7 +219,9 @@ public class MultimapSubjectTest {
       assertThat(multimap).containsKey("daniel");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=[kluever]}> contains key <daniel>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=[kluever]}> contains key <daniel>");
     }
   }
 
@@ -233,7 +239,9 @@ public class MultimapSubjectTest {
       assertThat(multimap).containsKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=[kluever]}> contains key <null>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=[kluever]}> contains key <null>");
     }
   }
 
@@ -251,7 +259,9 @@ public class MultimapSubjectTest {
       assertThat(multimap).doesNotContainKey("kurt");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=[kluever]}> does not contain key <kurt>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=[kluever]}> does not contain key <kurt>");
     }
   }
 
@@ -263,7 +273,9 @@ public class MultimapSubjectTest {
       assertThat(multimap).doesNotContainKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{null=[null]}> does not contain key <null>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{null=[null]}> does not contain key <null>");
     }
   }
 
@@ -280,7 +292,9 @@ public class MultimapSubjectTest {
       assertThat(multimap).containsEntry("daniel", "ploch");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=[kluever]}> contains entry <daniel=ploch>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=[kluever]}> contains entry <daniel=ploch>");
     }
   }
 
@@ -299,7 +313,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{a=[A]}> contains entry <a=a>. "
                   + "However, it has a mapping from <a> to <[A]>");
     }
@@ -314,7 +329,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{a=[null]}> contains entry <a=A>. "
                   + "However, it has a mapping from <a> to <[null]>");
     }
@@ -328,7 +344,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{a=[A]}> contains entry <a=null>. "
                   + "However, it has a mapping from <a> to <[A]>");
     }
@@ -348,7 +365,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <{kurt=[kluever]}> does not contain entry <kurt=kluever>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=[kluever]}> does not contain entry <kurt=kluever>");
     }
   }
 
@@ -422,7 +440,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               String.format(
                   "Not true that <%s> contains exactly <%s>. "
                       + "It has unexpected items <{3=[one], 4=[five]}>",
@@ -443,7 +462,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               String.format(
                   "Not true that <%s> contains exactly <%s>. "
                       + "It is missing <{3=[six], 4=[five]}>",
@@ -464,7 +484,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               String.format(
                   "Not true that <%s> contains exactly <%s>. "
                       + "It has unexpected items <{4=[nine], 5=[eight]}>",
@@ -487,7 +508,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               String.format(
                   "Not true that <%s> contains exactly <%s>. "
                       + "It is missing <{3=[six], 4=[five]}> "
@@ -527,7 +549,8 @@ public class MultimapSubjectTest {
       assertThat(actual).containsExactlyEntriesIn(expected).inOrder();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
+      assertThat(e)
+          .hasMessageThat()
           .startsWith(
               String.format(
                   "Not true that <%s> contains exactly <%s> in order. ", actual, expected));
@@ -547,7 +570,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               String.format(
                   "Not true that <%s> contains exactly <%s> in order. "
                       + "The values for keys <[3]> are not in order",
@@ -575,7 +599,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
                   + "key <def> and a value that parses to <123>. "
                   + "However, it has a mapping from that key to <[+456, +789]>");
@@ -593,7 +618,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
                   + "key <xyz> and a value that parses to <789>. "
                   + "However, the following keys are mapped to such values: <[def]>");
@@ -611,7 +637,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
                   + "key <xyz> and a value that parses to <321>");
     }
@@ -655,7 +682,8 @@ public class MultimapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{abc=[+123], def=[+456, +789]}> did not contain an entry with "
                   + "key <def> and a value that parses to <789>. "
                   + "It maps that key to the following such values: <[+789]>");

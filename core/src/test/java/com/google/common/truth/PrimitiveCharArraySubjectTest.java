@@ -17,13 +17,12 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.PrimitiveCharArraySubject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for {@link PrimitiveCharArraySubject}.
+ * Tests for {@link com.google.common.truth.PrimitiveCharArraySubject}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -51,7 +50,9 @@ public class PrimitiveCharArraySubjectTest {
       assertThat(array('a', 'q')).isEqualTo(array('q', 'a'));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(char[]) [a, q]> is equal to <[q, a]>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(char[]) [a, q]> is equal to <[q, a]>");
     }
   }
 
@@ -61,7 +62,8 @@ public class PrimitiveCharArraySubjectTest {
       assertThat(array('a', 'q')).isEqualTo(new int[] {});
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
+      assertThat(e)
+          .hasMessageThat()
           .contains("Incompatible types compared. expected: int[], actual: char[]");
     }
   }
@@ -87,7 +89,7 @@ public class PrimitiveCharArraySubjectTest {
       assertThat(array('a', 'q')).isNotEqualTo(array('a', 'q'));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(char[]) [a, q]> unexpectedly equal to [a, q].");
+      assertThat(e).hasMessageThat().isEqualTo("<(char[]) [a, q]> unexpectedly equal to [a, q].");
     }
   }
 
@@ -98,7 +100,7 @@ public class PrimitiveCharArraySubjectTest {
       assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(char[]) [a, q]> unexpectedly equal to [a, q].");
+      assertThat(e).hasMessageThat().isEqualTo("<(char[]) [a, q]> unexpectedly equal to [a, q].");
     }
   }
 

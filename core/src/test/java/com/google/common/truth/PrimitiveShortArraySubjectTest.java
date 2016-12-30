@@ -52,7 +52,8 @@ public class PrimitiveShortArraySubjectTest {
     } catch (AssertionError e) {
       // TODO(kak): This error message is confusing. We should include the types in there.
       assertThat(e)
-          .hasMessage("Not true that <[1, 1, 0]> contains all of <[1, 0]>. It is missing <[1, 0]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <[1, 1, 0]> contains all of <[1, 0]>. It is missing <[1, 0]>");
     }
   }
 
@@ -62,7 +63,9 @@ public class PrimitiveShortArraySubjectTest {
       assertThat(array(1, 0, 1)).isEqualTo(array(0, 1, 1));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(short[]) [1, 0, 1]> is equal to <[0, 1, 1]>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(short[]) [1, 0, 1]> is equal to <[0, 1, 1]>");
     }
   }
 
@@ -72,7 +75,8 @@ public class PrimitiveShortArraySubjectTest {
       assertThat(array(1, 0, 1)).isEqualTo(new Object());
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
+      assertThat(e)
+          .hasMessageThat()
           .contains("Incompatible types compared. expected: Object, actual: short[]");
     }
   }
@@ -98,7 +102,7 @@ public class PrimitiveShortArraySubjectTest {
       assertThat(array(1, 0)).isNotEqualTo(array(1, 0));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(short[]) [1, 0]> unexpectedly equal to [1, 0].");
+      assertThat(e).hasMessageThat().isEqualTo("<(short[]) [1, 0]> unexpectedly equal to [1, 0].");
     }
   }
 
@@ -109,7 +113,7 @@ public class PrimitiveShortArraySubjectTest {
       assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(short[]) [1, 0]> unexpectedly equal to [1, 0].");
+      assertThat(e).hasMessageThat().isEqualTo("<(short[]) [1, 0]> unexpectedly equal to [1, 0].");
     }
   }
 

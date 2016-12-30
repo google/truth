@@ -37,8 +37,8 @@ public class DelegationTest {
     try {
       assertAbout(foo()).that(new Foo(5)).matches(new Foo(4));
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that");
-      assertThat(e.getMessage()).contains("matches");
+      assertThat(e).hasMessageThat().contains("Not true that");
+      assertThat(e).hasMessageThat().contains("matches");
       return;
     }
     assert_().fail("Should have thrown.");
@@ -54,7 +54,9 @@ public class DelegationTest {
     try {
       assertAbout(foo()).withFailureMessage("failureMessage").that(new Foo(5)).matches(new Foo(4));
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("failureMessage: Not true that <Foo(5)> matches <Foo(4)>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("failureMessage: Not true that <Foo(5)> matches <Foo(4)>");
       return;
     }
     assert_().fail("Should have thrown.");

@@ -19,7 +19,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableTable;
-import com.google.common.collect.Table;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -44,7 +43,7 @@ public class TableSubjectTest {
       assertThat(table).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{1={5=7}}> is empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{1={5=7}}> is empty");
     }
   }
 
@@ -61,7 +60,7 @@ public class TableSubjectTest {
       assertThat(table).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{}> is not empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{}> is not empty");
     }
   }
 
@@ -98,8 +97,8 @@ public class TableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
-              "Not true that <{row={col=val}}> contains mapping for row/column <row> <row>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <{row={col=val}}> contains mapping for row/column <row> <row>");
     }
   }
 
@@ -120,7 +119,8 @@ public class TableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{row={col=val}}> does not contain mapping for "
                   + "row/column <row> <col>");
     }
@@ -139,7 +139,9 @@ public class TableSubjectTest {
       assertThat(table).containsCell("row", "row", "val");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{row={col=val}}> contains cell <(row,row)=val>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{row={col=val}}> contains cell <(row,row)=val>");
     }
   }
 
@@ -160,7 +162,8 @@ public class TableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <{row={col=val}}> does not contain cell <(row,col)=val>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <{row={col=val}}> does not contain cell <(row,col)=val>");
     }
   }
 }
