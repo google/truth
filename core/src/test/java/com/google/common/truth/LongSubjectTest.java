@@ -58,7 +58,7 @@ public class LongSubjectTest {
       assertThat(x).isNotEqualTo(0);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <0> is not equal to <0>");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <0> is not equal to <0>");
     }
   }
 
@@ -68,7 +68,7 @@ public class LongSubjectTest {
       assertThat(2L + 2).isEqualTo(5L);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <4> is equal to <5>");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <4> is equal to <5>");
     }
   }
 
@@ -78,7 +78,7 @@ public class LongSubjectTest {
       assertThat(2L + 2).isNotEqualTo(4L);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <4> is not equal to <4>");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <4> is not equal to <4>");
     }
   }
 
@@ -102,13 +102,13 @@ public class LongSubjectTest {
       assertThat((Long) null).isEqualTo(5L);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <null> is equal to <5>");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is equal to <5>");
     }
     try {
       assertThat(5L).isEqualTo((Long) null);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <5> is equal to <null>");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <5> is equal to <null>");
     }
   }
 
@@ -124,7 +124,9 @@ public class LongSubjectTest {
       assertThat((Long) null).isNotEqualTo((Long) null);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <null> is not equal to <null>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <null> is not equal to <null>");
     }
   }
 }

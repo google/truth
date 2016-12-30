@@ -22,7 +22,6 @@ import static com.google.common.truth.delegation.FooSubject.foo;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.Range;
-import com.google.common.truth.Expect;
 import com.google.common.truth.delegation.Foo;
 import java.util.Arrays;
 import org.junit.Rule;
@@ -58,7 +57,7 @@ public class ExampleTest {
       assertThat(x).isEqualTo(5);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).contains("Not true that <4> is equal to <5>");
+      assertThat(expected).hasMessageThat().contains("Not true that <4> is equal to <5>");
     }
   }
 

@@ -17,13 +17,12 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.PrimitiveIntArraySubject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for {@link PrimitiveIntArraySubject}.
+ * Tests for {@link com.google.common.truth.PrimitiveIntArraySubject}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -59,7 +58,7 @@ public class PrimitiveIntArraySubjectTest {
       assertThat(array(2, 5)).hasLength(1);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(int[]) [2, 5]> has length <1>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <(int[]) [2, 5]> has length <1>");
     }
   }
 
@@ -83,7 +82,7 @@ public class PrimitiveIntArraySubjectTest {
       assertThat(array(2, 5)).isEmpty();
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(int[]) [2, 5]> is empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <(int[]) [2, 5]> is empty");
     }
   }
 
@@ -98,7 +97,7 @@ public class PrimitiveIntArraySubjectTest {
       assertThat(EMPTY).isNotEmpty();
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(int[]) []> is not empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <(int[]) []> is not empty");
     }
   }
 
@@ -107,7 +106,9 @@ public class PrimitiveIntArraySubjectTest {
     try {
       assertThat(array(2, 3)).isEqualTo(array(3, 2));
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(int[]) [2, 3]> is equal to <[3, 2]>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(int[]) [2, 3]> is equal to <[3, 2]>");
     }
   }
 
@@ -116,7 +117,8 @@ public class PrimitiveIntArraySubjectTest {
     try {
       assertThat(array(2, 3, 4)).isEqualTo(new Object());
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
+      assertThat(e)
+          .hasMessageThat()
           .contains("Incompatible types compared. expected: Object, actual: int[]");
     }
   }
@@ -141,7 +143,7 @@ public class PrimitiveIntArraySubjectTest {
     try {
       assertThat(array(2, 3)).isNotEqualTo(array(2, 3));
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e).hasMessageThat().isEqualTo("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 
@@ -151,7 +153,7 @@ public class PrimitiveIntArraySubjectTest {
       int[] same = array(2, 3);
       assertThat(same).isNotEqualTo(same);
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e).hasMessageThat().isEqualTo("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 

@@ -71,7 +71,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> is equal to <[2.2, " + roughly3point3 + "]>");
     }
   }
@@ -83,7 +84,9 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f)).isEqualTo(array(3.3f, 2.2f), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(float[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(float[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
     }
   }
 
@@ -95,7 +98,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Arrays are of different lengths. expected: [2.2, 3.3, 1.1], actual [2.2, 3.3]");
     }
   }
@@ -108,7 +112,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Arrays are of different lengths. expected: [2.2], actual [2.2, 3.3]");
+          .hasMessageThat()
+          .isEqualTo("Arrays are of different lengths. expected: [2.2], actual [2.2, 3.3]");
     }
   }
 
@@ -119,7 +124,8 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f, 4.4f)).isEqualTo(new Object(), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
+      assertThat(e)
+          .hasMessageThat()
           .contains("Incompatible types compared. expected: Object, actual: float[]");
     }
   }
@@ -133,7 +139,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <(float[]) [2.2, Infinity]> is equal to <[2.2, Infinity]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <(float[]) [2.2, Infinity]> is equal to <[2.2, Infinity]>");
     }
   }
 
@@ -152,7 +159,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <(float[]) [2.2, 3.3]> is equal to <[2.2, Infinity]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <(float[]) [2.2, 3.3]> is equal to <[2.2, Infinity]>");
     }
   }
 
@@ -164,7 +172,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Arrays are of different lengths. expected: [Infinity], actual [2.2, 3.3]");
+          .hasMessageThat()
+          .isEqualTo("Arrays are of different lengths. expected: [Infinity], actual [2.2, 3.3]");
     }
   }
 
@@ -175,7 +184,9 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(NaN)).isEqualTo(array(NaN), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(float[]) [NaN]> is equal to <[NaN]>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(float[]) [NaN]> is equal to <[NaN]>");
     }
   }
 
@@ -220,7 +231,9 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, 3.3f), DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
     }
   }
 
@@ -233,8 +246,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
-              "<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, " + roughly3point3 + "].");
+          .hasMessageThat()
+          .isEqualTo("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, " + roughly3point3 + "].");
     }
   }
 
@@ -254,7 +267,9 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("<(float[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
     }
   }
 
@@ -274,7 +289,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("<(float[]) [2.2, Infinity]> unexpectedly equal to [2.2, Infinity].");
+          .hasMessageThat()
+          .isEqualTo("<(float[]) [2.2, Infinity]> unexpectedly equal to [2.2, Infinity].");
     }
   }
 
@@ -316,7 +332,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, "
                   + roughly3point3
                   + "]>. It differs at indexes <[1]>");
@@ -330,7 +347,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[3.3, 2.2]>."
                   + " It differs at indexes <[0, 1]>");
     }
@@ -343,7 +361,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, 3.3, 1.1]>."
                   + " Expected length <3> but got <2>");
     }
@@ -356,7 +375,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2]>."
                   + " Expected length <1> but got <2>");
     }
@@ -371,7 +391,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, Infinity]> has values within 5.0E-6 of"
                   + " <[2.2, Infinity]>. It differs at indexes <[1]>");
     }
@@ -385,7 +406,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, Infinity]> has values within 5.0E-6 of"
                   + " <[2.2, Infinity]>. It differs at indexes <[1]>");
     }
@@ -398,7 +420,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, Infinity]>."
                   + " It differs at indexes <[1]>");
     }
@@ -411,7 +434,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[Infinity]>."
                   + " Expected length <1> but got <2>");
     }
@@ -424,7 +448,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [NaN]> has values within 5.0E-6 of <[NaN]>."
                   + " It differs at indexes <[0]>");
     }
@@ -456,7 +481,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(3.3f, 2.2f)).hasValuesWithin(-0.001f).of(3.3f, 2.2f);
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
-      assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
+      assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
   }
 
@@ -498,7 +523,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, "
                   + roughly3point3
                   + "]>. It differs at indexes <[1]>");
@@ -514,7 +540,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[3.3, 2.2]>."
                   + " It differs at indexes <[0, 1]>");
     }
@@ -529,7 +556,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, 3.3, 1.1]>."
                   + " Expected length <3> but got <2>");
     }
@@ -544,7 +572,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2]>."
                   + " Expected length <1> but got <2>");
     }
@@ -559,7 +588,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, Infinity]> has values within 5.0E-6 of"
                   + " <[2.2, Infinity]>. It differs at indexes <[1]>");
     }
@@ -574,7 +604,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, Infinity]>."
                   + " It differs at indexes <[1]>");
     }
@@ -589,7 +620,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values within 5.0E-6 of <[Infinity]>."
                   + " Expected length <1> but got <2>");
     }
@@ -602,7 +634,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [NaN]> has values within 5.0E-6 of <[NaN]>."
                   + " It differs at indexes <[0]>");
     }
@@ -638,7 +671,7 @@ public class PrimitiveFloatArraySubjectTest {
           .ofElementsIn(Floats.asList(3.3f, 2.2f));
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
-      assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
+      assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
   }
 
@@ -662,7 +695,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, 3.3]>");
     }
   }
@@ -676,7 +710,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, "
                   + roughly3point3
                   + "]>");
@@ -700,7 +735,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, 3.3]>");
     }
   }
@@ -715,7 +751,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, Infinity]> has values not within 5.0E-6 of"
                   + " <[2.2, Infinity]>");
     }
@@ -730,7 +767,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, Infinity]> has values not within 5.0E-6 of"
                   + " <[2.2, Infinity]>");
     }
@@ -746,7 +784,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of"
                   + " <[2.2, Infinity]>");
     }
@@ -766,7 +805,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <(float[]) [NaN]> has values not within 5.0E-6 of <[NaN]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <(float[]) [NaN]> has values not within 5.0E-6 of <[NaN]>");
     }
   }
 
@@ -799,7 +839,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(3.3f, 2.2f)).hasValuesNotWithin(-0.001f).of(3.3f, 2.2f);
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
-      assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
+      assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
   }
 
@@ -845,7 +885,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, 3.3]>");
     }
   }
@@ -861,7 +902,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, "
                   + roughly3point3
                   + "]>");
@@ -886,7 +928,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, Infinity]> has values not within 5.0E-6 of"
                   + " <[2.2, Infinity]>");
     }
@@ -902,7 +945,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(float[]) [2.2, 3.3]> has values not within 5.0E-6 of"
                   + " <[2.2, Infinity]>");
     }
@@ -924,7 +968,8 @@ public class PrimitiveFloatArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <(float[]) [NaN]> has values not within 5.0E-6 of <[NaN]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <(float[]) [NaN]> has values not within 5.0E-6 of <[NaN]>");
     }
   }
 
@@ -963,7 +1008,7 @@ public class PrimitiveFloatArraySubjectTest {
           .ofElementsIn(Floats.asList(3.3f, 2.2f));
       throw new Error("Expected to throw.");
     } catch (IllegalArgumentException e) {
-      assertThat(e).hasMessage("tolerance (-0.001) cannot be negative");
+      assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
   }
 
@@ -991,7 +1036,8 @@ public class PrimitiveFloatArraySubjectTest {
       fail("Expected AssertionError to be thrown but wasn't");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1.0, "
                   + justOverTwoPlusTolerance
                   + ", 3.0]> contains at least one element that is a finite number within "
@@ -1009,7 +1055,8 @@ public class PrimitiveFloatArraySubjectTest {
       fail("Expected AssertionError to be thrown but wasn't");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1.0, Infinity, 3.0]> contains at least one element that is "
                   + "a finite number within "
                   + (double) DEFAULT_TOLERANCE
@@ -1026,7 +1073,8 @@ public class PrimitiveFloatArraySubjectTest {
       fail("Expected AssertionError to be thrown but wasn't");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1.0, NaN, 3.0]> contains at least one element that is "
                   + "a finite number within "
                   + (double) DEFAULT_TOLERANCE
@@ -1057,7 +1105,8 @@ public class PrimitiveFloatArraySubjectTest {
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
-          .hasMessage("tolerance (" + -1.0 * DEFAULT_TOLERANCE + ") cannot be negative");
+          .hasMessageThat()
+          .isEqualTo("tolerance (" + -1.0 * DEFAULT_TOLERANCE + ") cannot be negative");
     }
   }
 
@@ -1074,7 +1123,8 @@ public class PrimitiveFloatArraySubjectTest {
       fail("Expected AssertionError to be thrown but wasn't");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1.0, "
                   + justOverTwo
                   + ", 3.0]> contains at least one element that is exactly equal to <2.0>");
@@ -1099,7 +1149,8 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(1.0f, -0.0f, 3.0f)).usingExactEquality().contains(0.0f);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1.0, -0.0, 3.0]> contains at least one element that is "
                   + "exactly equal to <0.0>");
     }

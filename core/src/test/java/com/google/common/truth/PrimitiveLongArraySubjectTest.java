@@ -17,13 +17,12 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.PrimitiveLongArraySubject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for {@link PrimitiveLongArraySubject}.
+ * Tests for {@link com.google.common.truth.PrimitiveLongArraySubject}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -50,7 +49,9 @@ public class PrimitiveLongArraySubjectTest {
     try {
       assertThat(array(2, 3)).isEqualTo(array(3, 2));
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <(long[]) [2, 3]> is equal to <[3, 2]>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(long[]) [2, 3]> is equal to <[3, 2]>");
     }
   }
 
@@ -59,7 +60,8 @@ public class PrimitiveLongArraySubjectTest {
     try {
       assertThat(array(2, 3, 4)).isEqualTo(new int[] {});
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
+      assertThat(e)
+          .hasMessageThat()
           .contains("Incompatible types compared. expected: int[], actual: long[]");
     }
   }
@@ -84,7 +86,7 @@ public class PrimitiveLongArraySubjectTest {
     try {
       assertThat(array(2, 3)).isNotEqualTo(array(2, 3));
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e).hasMessageThat().isEqualTo("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 
@@ -94,7 +96,7 @@ public class PrimitiveLongArraySubjectTest {
       long[] same = array(2, 3);
       assertThat(same).isNotEqualTo(same);
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+      assertThat(e).hasMessageThat().isEqualTo("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
     }
   }
 

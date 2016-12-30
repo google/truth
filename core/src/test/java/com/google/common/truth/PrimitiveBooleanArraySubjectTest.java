@@ -17,13 +17,12 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.PrimitiveBooleanArraySubject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for {@link PrimitiveBooleanArraySubject}.
+ * Tests for {@link com.google.common.truth.PrimitiveBooleanArraySubject}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -52,7 +51,8 @@ public class PrimitiveBooleanArraySubjectTest {
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <(boolean[]) [true, false, true]> is equal to <[false, true, true]>");
     }
   }
@@ -63,7 +63,8 @@ public class PrimitiveBooleanArraySubjectTest {
       assertThat(array(true, false, true)).isEqualTo(new Object());
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage())
+      assertThat(e)
+          .hasMessageThat()
           .contains("Incompatible types compared. expected: Object, actual: boolean[]");
     }
   }
@@ -89,7 +90,9 @@ public class PrimitiveBooleanArraySubjectTest {
       assertThat(array(true, false)).isNotEqualTo(array(true, false));
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
     }
   }
 
@@ -100,7 +103,9 @@ public class PrimitiveBooleanArraySubjectTest {
       assertThat(same).isNotEqualTo(same);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
     }
   }
 

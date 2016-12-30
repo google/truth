@@ -57,7 +57,9 @@ public class IterableSubjectTest {
       assertThat(ImmutableList.of(1, 2, 3)).hasSize(4);
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <[1, 2, 3]> has a size of <4>. It is <3>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <[1, 2, 3]> has a size of <4>. It is <3>");
     }
   }
 
@@ -86,7 +88,7 @@ public class IterableSubjectTest {
       assertThat(asList(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<[1, 2, 3]> should have contained <5>");
+      assertThat(e).hasMessageThat().isEqualTo("<[1, 2, 3]> should have contained <5>");
     }
   }
 
@@ -96,7 +98,7 @@ public class IterableSubjectTest {
       assertThat(asList(1, 2, 3)).named("numbers").contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("numbers (<[1, 2, 3]>) should have contained <5>");
+      assertThat(e).hasMessageThat().isEqualTo("numbers (<[1, 2, 3]>) should have contained <5>");
     }
   }
 
@@ -106,7 +108,7 @@ public class IterableSubjectTest {
       assertWithMessage("custom msg").that(asList(1, 2, 3)).contains(5);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("custom msg: <[1, 2, 3]> should have contained <5>");
+      assertThat(e).hasMessageThat().isEqualTo("custom msg: <[1, 2, 3]> should have contained <5>");
     }
   }
 
@@ -126,7 +128,7 @@ public class IterableSubjectTest {
       assertThat(asList(1, 2, 3)).doesNotContain(2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<[1, 2, 3]> should not have contained <2>");
+      assertThat(e).hasMessageThat().isEqualTo("<[1, 2, 3]> should not have contained <2>");
     }
   }
 
@@ -146,7 +148,9 @@ public class IterableSubjectTest {
       assertThat(asList(1, 2, 2, 3)).containsNoDuplicates();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<[1, 2, 2, 3]> has the following duplicates: <[2 x 2]>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("<[1, 2, 2, 3]> has the following duplicates: <[2 x 2]>");
     }
   }
 
@@ -171,7 +175,9 @@ public class IterableSubjectTest {
       assertThat(asList(1, 2, 3)).containsAnyOf(5, 6, 0);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
     }
   }
 
@@ -216,7 +222,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
     }
   }
 
@@ -226,7 +233,8 @@ public class IterableSubjectTest {
       assertThat(asList("y", "x")).containsAllOf("x", "y", "z");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Not true that <[y, x]> contains all of <[x, y, z]>. It is missing <[z]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <[y, x]> contains all of <[x, y, z]>. It is missing <[z]>");
       return;
     }
     fail("Should have thrown.");
@@ -238,7 +246,8 @@ public class IterableSubjectTest {
       assertThat(asList("y", "x")).containsAllOf("x", "y", "y");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Not true that <[y, x]> contains all of <[x, y, y]>. It is missing <[y]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <[y, x]> contains all of <[x, y, y]>. It is missing <[y]>");
       return;
     }
     fail("Should have thrown.");
@@ -251,7 +260,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3]> contains all of <[1, 2, 2, 2, 3, 4]>. "
                   + "It is missing <[2 [2 copies], 4]>");
     }
@@ -268,7 +278,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2]> contains all of <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
     }
   }
@@ -280,7 +291,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, null, 3]> contains all of <[1, null, null, 3]>. "
                   + "It is missing <[null]>");
     }
@@ -315,7 +327,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <[1, null, 3]> contains all elements in order <[null, 1, 3]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <[1, null, 3]> contains all elements in order <[null, 1, 3]>");
     }
   }
 
@@ -360,7 +373,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <BadIterable> contains all elements in order <[1, 3, null]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <BadIterable> contains all elements in order <[1, 3, null]>");
     }
   }
 
@@ -376,7 +390,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
     }
   }
@@ -388,7 +403,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
     }
   }
@@ -400,7 +416,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3]> contains none of <[1, 2, 2, 4]>. It contains <[1, 2]>");
     }
   }
@@ -487,7 +504,8 @@ public class IterableSubjectTest {
       assertThat(asList(one, two)).containsExactly(one);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[HCT, HCT]> contains exactly <[HCT]>. "
                   + "It has unexpected items <[HCT]>");
       return;
@@ -522,7 +540,7 @@ public class IterableSubjectTest {
     try {
       assertThat(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[foo]> is empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[foo]> is empty");
       return;
     }
     fail("Should have thrown.");
@@ -534,7 +552,8 @@ public class IterableSubjectTest {
       assertThat(asList("foo OR bar")).containsExactlyElementsIn(asList("foo", "bar"));
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[foo OR bar]> contains exactly <[foo, bar]>. "
                   + "It is missing <[foo, bar]> and has unexpected items <[foo OR bar]>");
       return;
@@ -549,7 +568,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
     }
   }
 
@@ -560,7 +580,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3]> contains exactly <[1, 2]>. It has unexpected items <[3]>");
     }
   }
@@ -572,7 +593,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3]>. "
                   + "It is missing <[2 [2 copies]]>");
     }
@@ -585,7 +607,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3, 4]>. "
                   + "It is missing <[2 [2 copies], 4]>");
     }
@@ -598,7 +621,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 2, 2, 2, 3]> contains exactly <[1, 2, 2, 3]>. "
                   + "It has unexpected items <[2 [2 copies]]>");
     }
@@ -615,7 +639,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[]> contains exactly <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
     }
   }
@@ -627,7 +652,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, null, 3]> contains exactly <[1, null, null, 3]>. "
                   + "It is missing <[null]>");
     }
@@ -640,7 +666,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3]> contains exactly <[1, 2, 4]>. "
                   + "It is missing <[4]> and has unexpected items <[3]>");
     }
@@ -653,7 +680,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3, 3]> contains exactly <[1, 2, 4, 4]>. "
                   + "It is missing <[4 [2 copies]]> and has unexpected items <[3 [2 copies]]>");
     }
@@ -666,7 +694,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2, 3, 4]]>. "
                   + "It is missing <[[1, 2, 3, 4]]> and has unexpected items <[1, 2, 3, 4]>. "
                   + "Passing an iterable to the varargs method containsExactly(Object...) is "
@@ -682,7 +711,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3, 4]> contains exactly <[1, 2, 3]>. "
                   + "It has unexpected items <[4]>");
     }
@@ -695,7 +725,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2], [3, 4]]>. "
                   + "It is missing <[[1, 2], [3, 4]]> and has unexpected items <[1, 2, 3, 4]>");
     }
@@ -708,7 +739,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, 2, 3, 4]> contains exactly <[1]>. "
                   + "It has unexpected items <[2, 3, 4]>");
     }
@@ -731,7 +763,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[1, null, 3]> contains exactly these elements in order "
                   + "<[null, 1, 3]>");
     }
@@ -771,7 +804,8 @@ public class IterableSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <BadIterable> contains exactly "
                   + "these elements in order <[1, 3, null]>");
     }
@@ -788,7 +822,7 @@ public class IterableSubjectTest {
       assertThat(asList(1, null, 3)).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[1, null, 3]> is empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[1, null, 3]> is empty");
     }
   }
 
@@ -803,7 +837,7 @@ public class IterableSubjectTest {
       assertThat(asList()).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[]> is not empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
     }
   }
 
@@ -820,8 +854,8 @@ public class IterableSubjectTest {
       assertThat(asList(1, 2, 2, 4)).isStrictlyOrdered();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("is strictly ordered");
-      assertThat(e.getMessage()).contains("<2> <2>");
+      assertThat(e).hasMessageThat().contains("is strictly ordered");
+      assertThat(e).hasMessageThat().contains("<2> <2>");
     }
   }
 
@@ -847,8 +881,8 @@ public class IterableSubjectTest {
       assertThat(asList(1, 3, 2, 4)).isOrdered();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("is ordered");
-      assertThat(e.getMessage()).contains("<3> <2>");
+      assertThat(e).hasMessageThat().contains("is ordered");
+      assertThat(e).hasMessageThat().contains("<3> <2>");
     }
   }
 
@@ -876,8 +910,8 @@ public class IterableSubjectTest {
       assertThat(asList("1", "2", "2", "10")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("is strictly ordered");
-      assertThat(e.getMessage()).contains("<2> <2>");
+      assertThat(e).hasMessageThat().contains("is strictly ordered");
+      assertThat(e).hasMessageThat().contains("<2> <2>");
     }
   }
 
@@ -895,8 +929,8 @@ public class IterableSubjectTest {
       assertThat(asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("is ordered");
-      assertThat(e.getMessage()).contains("<10> <2>");
+      assertThat(e).hasMessageThat().contains("is ordered");
+      assertThat(e).hasMessageThat().contains("<10> <2>");
     }
   }
 
@@ -981,7 +1015,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[not a number, +123, +456, +789]> contains at least one element that"
                   + " parses to <2345>");
     }
@@ -1025,7 +1060,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "<[not a number, +123, +456, +789]> should not have contained an element that "
                   + "parses to <456>. It contained the following such elements: <[+456]>");
     }
@@ -1080,7 +1116,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+64, +128, 0x40, 0x80]> contains exactly one element that "
                   + "parses to each element of <[64, 128, 256, 128]>. "
                   + "It is missing an element that parses to <256>");
@@ -1107,7 +1144,7 @@ public class IterableSubjectTest {
           .containsExactlyElementsIn(expected);
       fail("Expected failure");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <[+64, +128, 0x40, 0x80]> is empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <[+64, +128, 0x40, 0x80]> is empty");
     }
   }
 
@@ -1123,7 +1160,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+64, +64, 0x40, 0x40]> contains exactly one element that "
                   + "parses to each element of <[64, 128, 256, 128]>. "
                   + "It is missing an element that parses to each of <[128, 256, 128]>");
@@ -1142,7 +1180,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+64, +128, +256]> contains exactly one element that "
                   + "parses to each element of <[64, 128, 256, 512]>. "
                   + "It is missing an element that parses to <512>");
@@ -1161,7 +1200,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+64, +128, +256, cheese]> contains exactly one element that "
                   + "parses to each element of <[64, 128, 256, 128]>. "
                   + "It has unexpected elements <[cheese]>");
@@ -1180,7 +1220,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+64, +128, +256, 0x80, cheese]> contains exactly one element that "
                   + "parses to each element of <[64, 128, 256, 128]>. "
                   + "It has unexpected elements <[cheese]>");
@@ -1200,7 +1241,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+64, +128, jalapenos, cheese]> contains exactly one element that "
                   + "parses to each element of <[64, 128, 256, 128]>. "
                   + "It is missing an element that parses to <256> "
@@ -1218,7 +1260,8 @@ public class IterableSubjectTest {
           .containsExactlyElementsIn(expected);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+128, +64, +256]> contains exactly one element that parses "
                   + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
                   + "that matches each expected element, and every element it contains matches at "
@@ -1289,7 +1332,8 @@ public class IterableSubjectTest {
           .inOrder();
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+128, +64, 0x80, +256]> contains, in order, exactly one element "
                   + "that parses to each element of <[64, 128, 256, 128]>");
     }
@@ -1413,7 +1457,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[fee, +64, +128, fi, fo, 0x40, 0x80, fum]> contains at least one "
                   + "element that parses to each element of <[64, 128, 256, 128]>. "
                   + "It is missing an element that parses to <256>");
@@ -1433,7 +1478,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[fee, +64, +64, fi, fo, 0x40, 0x40, fum]> contains at least one "
                   + "element that parses to each element of <[64, 128, 256, 128]>. "
                   + "It is missing an element that parses to each of <[128, 256, 128]>");
@@ -1453,7 +1499,8 @@ public class IterableSubjectTest {
       fail("Expected failure");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[fee, +64, fi, fo, +128, +256, fum]> contains at least one "
                   + "element that parses to each element of <[64, 128, 256, 512]>. "
                   + "It is missing an element that parses to <512>");
@@ -1471,7 +1518,8 @@ public class IterableSubjectTest {
           .containsAllIn(expected);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
                   + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
                   + "one element that matches each expected element, but there was no 1:1 mapping "
@@ -1493,7 +1541,8 @@ public class IterableSubjectTest {
           .inOrder();
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[fee, +128, +64, fi, fo, 0x80, +256, fum]> contains, in order, "
                   + "at least one element that parses to each element of <[64, 128, 256, 128]>");
     }
@@ -1537,7 +1586,8 @@ public class IterableSubjectTest {
           .containsAllOf(64, 128, 256, 128);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
                   + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
                   + "one element that matches each expected element, but there was no 1:1 mapping "
@@ -1573,7 +1623,8 @@ public class IterableSubjectTest {
           .containsAnyOf(255, 256, 257);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
                   + "contains at least one element that parses to any of <[255, 256, 257]>");
     }
@@ -1607,7 +1658,8 @@ public class IterableSubjectTest {
           .containsAnyIn(expected);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
                   + "contains at least one element that parses to any element in "
                   + "<[255, 256, 257]>");
@@ -1641,7 +1693,8 @@ public class IterableSubjectTest {
           .containsNoneOf(255, 256, 257);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to any of "
                   + "<[255, 256, 257]>. It contains at least one element that parses to each of "
                   + "<[256]>");
@@ -1657,7 +1710,8 @@ public class IterableSubjectTest {
           .containsNoneOf(255, null, 257);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+128, +64, null, 0x40]> contains no element that parses to any of "
                   + "<[255, null, 257]>. It contains at least one element that parses to each of "
                   + "<[null]>");
@@ -1684,7 +1738,8 @@ public class IterableSubjectTest {
           .containsNoneIn(excluded);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to "
                   + "any element in <[255, 256, 257]>. It contains at least one element that "
                   + "parses to each of <[256]>");
@@ -1701,7 +1756,8 @@ public class IterableSubjectTest {
           .containsNoneIn(excluded);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[+128, +64, null, 0x40]> contains no element that parses to "
                   + "any element in <[255, null, 257]>. It contains at least one element that "
                   + "parses to each of <[null]>");

@@ -49,7 +49,8 @@ public class FloatSubjectTest {
       assertThat(actual).named("testValue").isWithin(tolerance).of(expected);
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               String.format(
                   "testValue (<%s>) and <%s> should have been finite values within"
                       + " <%s> of each other",
@@ -78,7 +79,8 @@ public class FloatSubjectTest {
       assertThat(actual).named("testValue").isNotWithin(tolerance).of(expected);
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               String.format(
                   "testValue (<%s>) and <%s> should have been finite values not within"
                       + " <%s> of each other",
@@ -130,7 +132,9 @@ public class FloatSubjectTest {
       assertThat(actual).isWithin(tolerance).of(expected);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
-      assertThat(iae).hasMessage("tolerance (" + tolerance + ") cannot be negative");
+      assertThat(iae)
+          .hasMessageThat()
+          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
     }
   }
 
@@ -140,7 +144,9 @@ public class FloatSubjectTest {
       assertThat(actual).isNotWithin(tolerance).of(expected);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
-      assertThat(iae).hasMessage("tolerance (" + tolerance + ") cannot be negative");
+      assertThat(iae)
+          .hasMessageThat()
+          .isEqualTo("tolerance (" + tolerance + ") cannot be negative");
     }
   }
 
@@ -150,13 +156,13 @@ public class FloatSubjectTest {
       assertThat(1.0f).isWithin(Float.NaN).of(1.0f);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
-      assertThat(iae).hasMessage("tolerance cannot be NaN");
+      assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be NaN");
     }
     try {
       assertThat(1.0f).isNotWithin(Float.NaN).of(2.0f);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
-      assertThat(iae).hasMessage("tolerance cannot be NaN");
+      assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be NaN");
     }
   }
 
@@ -166,13 +172,13 @@ public class FloatSubjectTest {
       assertThat(1.0f).isWithin(Float.POSITIVE_INFINITY).of(1.0f);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
-      assertThat(iae).hasMessage("tolerance cannot be POSITIVE_INFINITY");
+      assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be POSITIVE_INFINITY");
     }
     try {
       assertThat(1.0f).isNotWithin(Float.POSITIVE_INFINITY).of(2.0f);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
-      assertThat(iae).hasMessage("tolerance cannot be POSITIVE_INFINITY");
+      assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be POSITIVE_INFINITY");
     }
   }
 
@@ -319,7 +325,8 @@ public class FloatSubjectTest {
       assertThat(1.23f).isEqualTo(1.23);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               String.format(
                   "Not true that <%s> (java.lang.Float) is equal to <%s> (java.lang.Double)",
                   1.23f, 1.23));
@@ -331,7 +338,8 @@ public class FloatSubjectTest {
       assertThat(actual).isEqualTo(expected);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(String.format("Not true that <%s> is equal to <%s>", actual, expected));
+          .hasMessageThat()
+          .isEqualTo(String.format("Not true that <%s> is equal to <%s>", actual, expected));
     }
   }
 
@@ -351,7 +359,8 @@ public class FloatSubjectTest {
       assertThat(value).isNotEqualTo(value);
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(String.format("Not true that <%s> is not equal to <%s>", value, value));
+          .hasMessageThat()
+          .isEqualTo(String.format("Not true that <%s> is not equal to <%s>", value, value));
     }
   }
 
@@ -370,7 +379,9 @@ public class FloatSubjectTest {
     try {
       assertThat(value).named("testValue").isZero();
     } catch (AssertionError assertionError) {
-      assertThat(assertionError).hasMessage("Not true that testValue (<" + value + ">) is zero");
+      assertThat(assertionError)
+          .hasMessageThat()
+          .isEqualTo("Not true that testValue (<" + value + ">) is zero");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -392,7 +403,8 @@ public class FloatSubjectTest {
       assertThat(value).named("testValue").isNonZero();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
-          .hasMessage("Not true that testValue (<" + value + ">) is non-zero");
+          .hasMessageThat()
+          .isEqualTo("Not true that testValue (<" + value + ">) is non-zero");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -412,7 +424,8 @@ public class FloatSubjectTest {
       assertThat(value).named("testValue").isPositiveInfinity();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that testValue (<"
                   + value
                   + ">) is equal to <"
@@ -437,7 +450,8 @@ public class FloatSubjectTest {
       assertThat(value).named("testValue").isNegativeInfinity();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that testValue (<"
                   + value
                   + ">) is equal to <"
@@ -462,7 +476,8 @@ public class FloatSubjectTest {
       assertThat(value).named("testValue").isNaN();
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
-          .hasMessage("Not true that testValue (<" + value + ">) is equal to <" + Float.NaN + ">");
+          .hasMessageThat()
+          .isEqualTo("Not true that testValue (<" + value + ">) is equal to <" + Float.NaN + ">");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -483,7 +498,9 @@ public class FloatSubjectTest {
     try {
       assertThat(value).named("testValue").isFinite();
     } catch (AssertionError assertionError) {
-      assertThat(assertionError).hasMessage("testValue (<" + value + ">) should have been finite");
+      assertThat(assertionError)
+          .hasMessageThat()
+          .isEqualTo("testValue (<" + value + ">) should have been finite");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");
@@ -504,7 +521,9 @@ public class FloatSubjectTest {
     try {
       assertThat(value).named("testValue").isNotNaN();
     } catch (AssertionError assertionError) {
-      assertThat(assertionError).hasMessage("testValue (<" + value + ">) should not have been NaN");
+      assertThat(assertionError)
+          .hasMessageThat()
+          .isEqualTo("testValue (<" + value + ">) should not have been NaN");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");

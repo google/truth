@@ -95,7 +95,8 @@ public class MapSubjectTest {
       fail("Expected IllegalArgumentException");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
-          .hasMessage("Duplicate keys ([jan x 3]) cannot be passed to containsExactly().");
+          .hasMessageThat()
+          .isEqualTo("Duplicate keys ([jan x 3]) cannot be passed to containsExactly().");
     }
   }
 
@@ -108,7 +109,8 @@ public class MapSubjectTest {
       fail("Expected IllegalArgumentException");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
-          .hasMessage("Duplicate keys ([jan x 2, feb x 2]) cannot be passed to containsExactly().");
+          .hasMessageThat()
+          .isEqualTo("Duplicate keys ([jan x 2, feb x 2]) cannot be passed to containsExactly().");
     }
   }
 
@@ -122,7 +124,8 @@ public class MapSubjectTest {
       assertThat(actual).containsExactly("jan", 1, "feb", 2);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[jan=1, feb=2, march=3]> contains exactly <[jan=1, feb=2]>. "
                   + "It has unexpected items <[march=3]>");
       return;
@@ -140,7 +143,8 @@ public class MapSubjectTest {
       assertThat(actual).containsExactly("feb", 2, "jan", 1).inOrder();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[jan=1, feb=2, march=3]> contains exactly <[feb=2, jan=1]>. "
                   + "It has unexpected items <[march=3]>");
       return;
@@ -159,7 +163,8 @@ public class MapSubjectTest {
       assertThat(actual).containsExactly("jan", 1, "march", 3, "feb", 2).inOrder();
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[jan=1, feb=2, march=3]> contains exactly these elements in order "
                   + "<[jan=1, march=3, feb=2]>");
       return;
@@ -180,7 +185,8 @@ public class MapSubjectTest {
       fail("Expected IllegalArgumentException");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "There must be an equal number of key/value pairs "
                   + "(i.e., the number of key/value parameters (13) must be even).");
     }
@@ -203,7 +209,8 @@ public class MapSubjectTest {
       assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, april=4, march=5}>. "
                   + "The subject is missing the following entries: {april=4} and "
                   + "has the following extra entries: {feb=2} and "
@@ -222,7 +229,8 @@ public class MapSubjectTest {
       assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=4}>. "
                   + "The subject has the following different entries: {march=(4, 3)}");
       return;
@@ -239,7 +247,8 @@ public class MapSubjectTest {
       assertThat(actual).named("foo").isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to <{jan=1, feb=2, march=4}>."
                   + " The subject has the following different entries: {march=(4, 3)}");
       return;
@@ -256,7 +265,8 @@ public class MapSubjectTest {
       assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2}>. "
                   + "The subject has the following extra entries: {march=3}");
       return;
@@ -273,7 +283,8 @@ public class MapSubjectTest {
       assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{jan=1, feb=2}> is equal to <{jan=1, feb=2, march=3}>. "
                   + "The subject is missing the following entries: {march=3}");
       return;
@@ -290,7 +301,8 @@ public class MapSubjectTest {
       assertThat(actual).isEqualTo(expectedMap);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, mar=3}>. "
                   + "The subject is missing the following entries: {mar=3} "
                   + "and has the following extra entries: {march=3}");
@@ -307,7 +319,8 @@ public class MapSubjectTest {
       assertThat(actual).isNotEqualTo(actual);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{jan=1, feb=2, march=3}> is not equal to <{jan=1, feb=2, march=3}>");
       return;
     }
@@ -327,7 +340,7 @@ public class MapSubjectTest {
       assertThat(actual).isEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{1=5}> is empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{1=5}> is empty");
     }
   }
 
@@ -344,7 +357,7 @@ public class MapSubjectTest {
       assertThat(actual).isNotEmpty();
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{}> is not empty");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{}> is not empty");
     }
   }
 
@@ -380,7 +393,9 @@ public class MapSubjectTest {
       assertThat(actual).containsKey("greg");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=kluever}> contains key <greg>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=kluever}> contains key <greg>");
     }
   }
 
@@ -391,7 +406,9 @@ public class MapSubjectTest {
       assertThat(actual).containsKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=kluever}> contains key <null>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=kluever}> contains key <null>");
     }
   }
 
@@ -416,7 +433,9 @@ public class MapSubjectTest {
       assertThat(actual).doesNotContainKey("kurt");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=kluever}> does not contain key <kurt>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=kluever}> does not contain key <kurt>");
     }
   }
 
@@ -428,7 +447,9 @@ public class MapSubjectTest {
       assertThat(actual).doesNotContainKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{null=null}> does not contain key <null>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{null=null}> does not contain key <null>");
     }
   }
 
@@ -445,7 +466,9 @@ public class MapSubjectTest {
       assertThat(actual).containsEntry("greg", "kick");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=kluever}> contains entry <greg=kick>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=kluever}> contains entry <greg=kick>");
     }
   }
 
@@ -456,7 +479,9 @@ public class MapSubjectTest {
       assertThat(actual).containsEntry(null, null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{kurt=kluever}> contains entry <null=null>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=kluever}> contains entry <null=null>");
     }
   }
 
@@ -476,7 +501,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{null=null}> contains entry <kurt=null>. "
                   + "However, the following keys are mapped to <null>: [null]");
     }
@@ -491,7 +517,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{null=null}> contains entry <null=kluever>. "
                   + "However, it has a mapping from <null> to <null>");
     }
@@ -514,7 +541,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage("Not true that <{kurt=kluever}> does not contain entry <kurt=kluever>");
+          .hasMessageThat()
+          .isEqualTo("Not true that <{kurt=kluever}> does not contain entry <kurt=kluever>");
     }
   }
 
@@ -534,7 +562,9 @@ public class MapSubjectTest {
       assertThat(actual).doesNotContainEntry(null, null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{null=null}> does not contain entry <null=null>");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <{null=null}> does not contain entry <null=null>");
     }
   }
 
@@ -545,7 +575,7 @@ public class MapSubjectTest {
       assertThat(actual).containsKey("b");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{a=A}> contains key <b>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{a=A}> contains key <b>");
     }
   }
 
@@ -556,7 +586,7 @@ public class MapSubjectTest {
       assertThat(actual).containsKey(null);
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{a=A}> contains key <null>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{a=A}> contains key <null>");
     }
   }
 
@@ -567,7 +597,7 @@ public class MapSubjectTest {
       assertThat(actual).doesNotContainKey("a");
       fail("Should have thrown.");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("Not true that <{a=A}> does not contain key <a>");
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <{a=A}> does not contain key <a>");
     }
   }
 
@@ -592,7 +622,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{a=A}> contains entry <a=a>. "
                   + "However, it has a mapping from <a> to <A>");
     }
@@ -607,7 +638,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{a=null}> contains entry <a=A>. "
                   + "However, it has a mapping from <a> to <null>");
     }
@@ -621,7 +653,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{a=A}> contains entry <a=null>. "
                   + "However, it has a mapping from <a> to <A>");
     }
@@ -645,7 +678,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{abc=+123, def=+456}> contains an entry with "
                   + "key <def> and a value that parses to <123>. "
                   + "However, it has a mapping from that key to <+456>");
@@ -662,7 +696,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{abc=+123, def=+456}> contains an entry with "
                   + "key <xyz> and a value that parses to <456>. "
                   + "However, the following keys are mapped to such values: <[def]>");
@@ -679,7 +714,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{abc=+123, def=+456}> contains an entry with "
                   + "key <xyz> and a value that parses to <321>");
     }
@@ -719,7 +755,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <{abc=+123, def=+456}> does not contain an entry with "
                   + "key <def> and a value that parses to <456>. It maps that key to <+456>");
     }
@@ -752,7 +789,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
                   + "that is equal to and a value that parses to the key and value of each "
                   + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
@@ -769,7 +807,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
                   + "that is equal to and a value that parses to the key and value of each "
                   + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
@@ -788,7 +827,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
                   + "that is equal to and a value that parses to the key and value of each "
                   + "element of <[def=456, cab=123]>. It is missing an element that has a "
@@ -807,7 +847,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
                   + "that is equal to and a value that parses to the key and value of each "
                   + "element of <[def=456, abc=321]>. It is missing an element that has a "
@@ -827,7 +868,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
                   + " a key that is equal to and a value that parses to the key and value of each"
                   + " element of <[def=456, abc=123]>");
@@ -888,7 +930,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
                   + "that is equal to and a value that parses to the key and value of each "
                   + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
@@ -906,7 +949,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
                   + "that is equal to and a value that parses to the key and value of each "
                   + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
@@ -926,7 +970,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
                   + "that is equal to and a value that parses to the key and value of each "
                   + "element of <[def=456, cab=123]>. It is missing an element that has a "
@@ -946,7 +991,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
                   + "that is equal to and a value that parses to the key and value of each "
                   + "element of <[def=456, abc=321]>. It is missing an element that has a "
@@ -967,7 +1013,8 @@ public class MapSubjectTest {
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
                   + " a key that is equal to and a value that parses to the key and value of each"
                   + " element of <[def=456, abc=123]>");

@@ -42,7 +42,8 @@ public class OptionalDoubleSubjectTest {
       fail("Should have thrown");
     } catch (ValidationException expected) {
       assertThat(expected)
-          .hasMessage("Not true that name (<OptionalDouble[1337.0]>) has value <42.0>");
+          .hasMessageThat()
+          .isEqualTo("Not true that name (<OptionalDouble[1337.0]>) has value <42.0>");
       return;
     }
   }
@@ -54,7 +55,7 @@ public class OptionalDoubleSubjectTest {
       validateThat(nullOptional).isEmpty();
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <null> is empty");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is empty");
       return;
     }
   }
@@ -70,7 +71,7 @@ public class OptionalDoubleSubjectTest {
       validateThat(OptionalDouble.empty()).isPresent();
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that the subject is present");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
       return;
     }
   }
@@ -81,7 +82,7 @@ public class OptionalDoubleSubjectTest {
       validateThat(OptionalDouble.empty()).named("name").isPresent();
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that \"name\" is present");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
       return;
     }
   }
@@ -97,7 +98,9 @@ public class OptionalDoubleSubjectTest {
       validateThat(OptionalDouble.of(1337.0)).isEmpty();
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <OptionalDouble[1337.0]> is empty");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <OptionalDouble[1337.0]> is empty");
       return;
     }
   }
@@ -113,7 +116,9 @@ public class OptionalDoubleSubjectTest {
       validateThat(OptionalDouble.empty()).hasValue(1337.0);
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <OptionalDouble.empty> has value <1337.0>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <OptionalDouble.empty> has value <1337.0>");
       return;
     }
   }
@@ -124,7 +129,9 @@ public class OptionalDoubleSubjectTest {
       validateThat(OptionalDouble.of(1337.0)).hasValue(42.0);
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <OptionalDouble[1337.0]> has value <42.0>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <OptionalDouble[1337.0]> has value <42.0>");
       return;
     }
   }
@@ -135,7 +142,7 @@ public class OptionalDoubleSubjectTest {
       validateThat(OptionalDouble.empty()).hasValueThat();
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that the subject is present");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
     }
   }
 
@@ -160,7 +167,7 @@ public class OptionalDoubleSubjectTest {
       validateThat(OptionalDouble.of(1337.0)).hasValueThat().isLessThan(42.0);
       fail("Should have thrown");
     } catch (ValidationException expected) {
-      assertThat(expected).hasMessage("Not true that <1337.0> is less than <42.0>");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <1337.0> is less than <42.0>");
     }
   }
 

@@ -37,9 +37,9 @@ public class RelabeledSubjectsTest {
       assertThat("kurt kluever").named("rad dude").startsWith("frazzle");
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).contains("\"kurt kluever\"");
-      assertThat(expected.getMessage()).contains("rad dude");
-      assertThat(expected.getMessage()).contains("frazzle");
+      assertThat(expected).hasMessageThat().contains("\"kurt kluever\"");
+      assertThat(expected).hasMessageThat().contains("rad dude");
+      assertThat(expected).hasMessageThat().contains("frazzle");
     }
   }
 
@@ -49,9 +49,9 @@ public class RelabeledSubjectsTest {
       assertThat(13).named("Septober").isLessThan(12);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage()).contains("13");
-      assertThat(expected.getMessage()).contains("12");
-      assertThat(expected.getMessage()).contains("Septober");
+      assertThat(expected).hasMessageThat().contains("13");
+      assertThat(expected).hasMessageThat().contains("12");
+      assertThat(expected).hasMessageThat().contains("Septober");
     }
   }
 
@@ -62,7 +62,9 @@ public class RelabeledSubjectsTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       // TODO(kak): This could probably be simplified + shortened a bit...
-      assertThat(expected).hasMessage("Foo (<false>) was expected to be true, but was false");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Foo (<false>) was expected to be true, but was false");
     }
   }
 
@@ -72,9 +74,10 @@ public class RelabeledSubjectsTest {
       assertThat("a string").named("Foo").isInstanceOf(Integer.class);
       fail("Should have thrown");
     } catch (AssertionError expected) {
-      assertThat(expected.getMessage())
+      assertThat(expected)
+          .hasMessageThat()
           .contains("Not true that Foo (<\"a string\">) is an instance of <java.lang.Integer>");
-      assertThat(expected.getMessage()).contains("It is an instance of <java.lang.String>");
+      assertThat(expected).hasMessageThat().contains("It is an instance of <java.lang.String>");
     }
   }
 
@@ -85,7 +88,8 @@ public class RelabeledSubjectsTest {
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that crazy list (<[a, b, c]>) contains all of <[c, d]>. "
                   + "It is missing <[d]>");
     }
@@ -100,7 +104,8 @@ public class RelabeledSubjectsTest {
       fail("Should have thrown");
     } catch (AssertionError error) {
       assertThat(error)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Not true that crazy list has values within 1.0E-7 of <[1.3, 1.0]>. "
                   + "It differs at indexes <[1]>");
     }

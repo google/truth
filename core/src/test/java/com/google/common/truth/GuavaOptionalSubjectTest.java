@@ -37,7 +37,8 @@ public class GuavaOptionalSubjectTest {
       assertThat(optional).named("name").hasValue("expected");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage("Not true that name (<Optional.of(actual)>) has value <expected>");
+          .hasMessageThat()
+          .isEqualTo("Not true that name (<Optional.of(actual)>) has value <expected>");
       return;
     }
     fail("Should have thrown");
@@ -49,7 +50,7 @@ public class GuavaOptionalSubjectTest {
       Optional<String> nullOptional = null;
       assertThat(nullOptional).isAbsent();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <null> is absent");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is absent");
       return;
     }
     fail("Should have thrown");
@@ -65,7 +66,7 @@ public class GuavaOptionalSubjectTest {
     try {
       assertThat(Optional.absent()).isPresent();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that the subject is present");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
       return;
     }
     fail("Should have thrown");
@@ -76,7 +77,7 @@ public class GuavaOptionalSubjectTest {
     try {
       assertThat(Optional.absent()).named("name").isPresent();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that \"name\" is present");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
       return;
     }
     fail("Should have thrown");
@@ -92,7 +93,7 @@ public class GuavaOptionalSubjectTest {
     try {
       assertThat(Optional.of("foo")).isAbsent();
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <Optional.of(foo)> is absent");
+      assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional.of(foo)> is absent");
       return;
     }
     fail("Should have thrown");
@@ -108,7 +109,9 @@ public class GuavaOptionalSubjectTest {
     try {
       assertThat(Optional.absent()).hasValue("foo");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <Optional.absent()> has value <foo>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <Optional.absent()> has value <foo>");
       return;
     }
     fail("Should have thrown");
@@ -129,7 +132,9 @@ public class GuavaOptionalSubjectTest {
     try {
       assertThat(Optional.of("foo")).hasValue("boo");
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <Optional.of(foo)> has value <boo>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <Optional.of(foo)> has value <boo>");
       return;
     }
     fail("Should have thrown");
@@ -140,7 +145,9 @@ public class GuavaOptionalSubjectTest {
     try {
       assertThat(Optional.of(5)).hasValue(10);
     } catch (AssertionError expected) {
-      assertThat(expected).hasMessage("Not true that <Optional.of(5)> has value <10>");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <Optional.of(5)> has value <10>");
       return;
     }
     fail("Should have thrown");

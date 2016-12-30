@@ -73,7 +73,7 @@ public class ComparableSubjectTest {
       assertThat(6).isIn(oneToFive);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <6> is in <" + oneToFive + ">");
+      assertThat(e).hasMessageThat().contains("Not true that <6> is in <" + oneToFive + ">");
     }
   }
 
@@ -86,7 +86,7 @@ public class ComparableSubjectTest {
       assertThat(4).isNotIn(oneToFive);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <4> is not in <" + oneToFive + ">");
+      assertThat(e).hasMessageThat().contains("Not true that <4> is not in <" + oneToFive + ">");
     }
   }
 
@@ -98,7 +98,9 @@ public class ComparableSubjectTest {
       assertThat(new BigDecimal("2.0")).isEquivalentAccordingToCompareTo(new BigDecimal("2.1"));
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("<2.0> should have had the same value as <2.1> (scale is ignored)");
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("<2.0> should have had the same value as <2.1> (scale is ignored)");
     }
   }
 
@@ -110,13 +112,13 @@ public class ComparableSubjectTest {
       assertThat(4).isGreaterThan(4);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <4> is greater than <4>");
+      assertThat(e).hasMessageThat().contains("Not true that <4> is greater than <4>");
     }
     try {
       assertThat(3).isGreaterThan(4);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <3> is greater than <4>");
+      assertThat(e).hasMessageThat().contains("Not true that <3> is greater than <4>");
     }
   }
 
@@ -128,13 +130,13 @@ public class ComparableSubjectTest {
       assertThat(4).isLessThan(4);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <4> is less than <4>");
+      assertThat(e).hasMessageThat().contains("Not true that <4> is less than <4>");
     }
     try {
       assertThat(4).isLessThan(3);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <4> is less than <3>");
+      assertThat(e).hasMessageThat().contains("Not true that <4> is less than <3>");
     }
   }
 
@@ -147,7 +149,7 @@ public class ComparableSubjectTest {
       assertThat(4).isAtMost(3);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <4> is at most <3>");
+      assertThat(e).hasMessageThat().contains("Not true that <4> is at most <3>");
     }
   }
 
@@ -160,7 +162,7 @@ public class ComparableSubjectTest {
       assertThat(4).isAtLeast(5);
       fail("should have thrown");
     } catch (AssertionError e) {
-      assertThat(e.getMessage()).contains("Not true that <4> is at least <5>");
+      assertThat(e).hasMessageThat().contains("Not true that <4> is at least <5>");
     }
   }
 
