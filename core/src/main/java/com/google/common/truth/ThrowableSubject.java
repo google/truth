@@ -23,10 +23,18 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
-  // TODO(kak): Make this package-private?
-  public ThrowableSubject(FailureStrategy failureStrategy, @Nullable Throwable throwable) {
-    super(causeInsertingStrategy(failureStrategy, throwable), throwable);
+  static ThrowableSubject create(FailureStrategy failureStrategy, @Nullable Throwable throwable) {
+    return new ThrowableSubject(causeInsertingStrategy(failureStrategy, throwable), throwable);
   }
+
+  private ThrowableSubject(FailureStrategy failureStrategy, @Nullable Throwable throwable) {
+    super(failureStrategy, throwable);
+  }
+
+  /*
+   * TODO(cpovirk): consider a special case for isEqualTo and isSameAs that adds |expected| as a
+   * suppressed exception
+   */
 
   // TODO(kak): Should this be @Nullable or should we have .doesNotHaveMessage()?
   /** Fails if the subject does not have the given message. */
@@ -35,8 +43,23 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
     hasMessageThat().isEqualTo(expected);
   }
 
+  /** Returns a {@code StringSubject} to make assertions about the throwable's message. */
   public StringSubject hasMessageThat() {
-    return new StringSubject(badMessageStrategy(failureStrategy, this), actual().getMessage());
+    return new StringSubject(badMessageStrategy(failureStrategy), actual().getMessage());
+  }
+
+  /**
+   * Returns a new {@code ThrowableSubject} that supports assertions on this throwable's direct
+   * cause. This method can be invoked repeatedly (e.g. {@code
+   * assertThat(e).hasCauseThat().hasCauseThat()....} to assert on a particular indirect cause.
+   */
+  public ThrowableSubject hasCauseThat() {
+    // provides a more helpful error message if hasCauseThat() methods are chained too deep
+    // e.g. assertThat(new Exception()).hCT().hCT()....
+    if (actual() == null) {
+      failWithRawMessage("Causal chain is not deep enough - add a .isNotNull() check?");
+    }
+    return new ThrowableSubject(badCauseStrategy(failureStrategy), actual().getCause());
   }
 
   private static FailureStrategy causeInsertingStrategy(
@@ -68,15 +91,41 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
     };
   }
 
-  private static FailureStrategy badMessageStrategy(
-      final FailureStrategy delegate, final ThrowableSubject subject) {
+  private FailureStrategy badMessageStrategy(final FailureStrategy delegate) {
     return new FailureStrategy() {
       private String prependMessage(String message) {
-        String name = subject.actual().getClass().getName();
-        if (subject.internalCustomName() != null) {
-          name = subject.internalCustomName() + "(" + name + ")";
+        String name = actual().getClass().getName();
+        if (internalCustomName() != null) {
+          name = internalCustomName() + "(" + name + ")";
         }
         return "Unexpected message for " + name + ":" + (message.isEmpty() ? "" : " " + message);
+      }
+
+      @Override
+      public void fail(String message) {
+        delegate.fail(prependMessage(message));
+      }
+
+      @Override
+      public void fail(String message, Throwable cause) {
+        delegate.fail(prependMessage(message), cause);
+      }
+
+      @Override
+      public void failComparing(String message, CharSequence expected, CharSequence actual) {
+        delegate.failComparing(prependMessage(message), expected, actual);
+      }
+    };
+  }
+
+  private FailureStrategy badCauseStrategy(final FailureStrategy delegate) {
+    return new FailureStrategy() {
+      private String prependMessage(String message) {
+        String name = actual().getClass().getName();
+        if (internalCustomName() != null) {
+          name = internalCustomName() + "(" + name + ")";
+        }
+        return "Unexpected cause for " + name + ":" + (message.isEmpty() ? "" : " " + message);
       }
 
       @Override

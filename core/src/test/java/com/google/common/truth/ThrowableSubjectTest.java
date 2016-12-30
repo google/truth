@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.io.IOException;
 import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,16 +50,16 @@ public class ThrowableSubjectTest {
 
   @Test
   public void hasMessageThat_failure() {
-    NullPointerException subject = new NullPointerException("message");
+    NullPointerException actual = new NullPointerException("message");
     try {
-      assertThat(subject).hasMessageThat().isEqualTo("foobar");
+      assertThat(actual).hasMessageThat().isEqualTo("foobar");
       throw new Error("Expected to fail.");
     } catch (ComparisonFailure expected) {
       assertThat(expected.getMessage())
           .isEqualTo(
               "Unexpected message for java.lang.NullPointerException: "
                   + "expected:<[foobar]> but was:<[message]>");
-      assertThat(expected.getCause()).isEqualTo(subject);
+      assertErrorHasActualAsCause(actual, expected);
     }
   }
 
@@ -105,6 +106,89 @@ public class ThrowableSubjectTest {
   }
 
   @Test
+  public void hasCauseThat_message() {
+    assertThat(new Exception("foobar", new IOException("barfoo")))
+        .hasCauseThat()
+        .hasMessageThat()
+        .isEqualTo("barfoo");
+  }
+
+  @Test
+  public void hasCauseThat_instanceOf() {
+    assertThat(new Exception("foobar", new IOException("barfoo")))
+        .hasCauseThat()
+        .isInstanceOf(IOException.class);
+  }
+
+  @Test
+  public void hasCauseThat_null() {
+    assertThat(new Exception("foobar")).hasCauseThat().isNull();
+  }
+
+  @Test
+  public void hasCauseThat_message_failure() {
+    Exception actual = new Exception("foobar", new IOException("barfoo"));
+    try {
+      assertThat(actual).hasCauseThat().hasMessageThat().isEqualTo("message");
+      throw new Error("Expected to fail.");
+    } catch (ComparisonFailure expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo(
+              "Unexpected cause for java.lang.Exception: Unexpected message for "
+                  + "java.io.IOException: expected:<[message]> but was:<[barfoo]>");
+      assertErrorHasActualAsCause(actual, expected);
+    }
+  }
+
+  @Test
+  public void hasCauseThat_instanceOf_failure() {
+    Exception actual = new Exception("foobar", new IOException("barfoo"));
+    try {
+      assertThat(actual).hasCauseThat().isInstanceOf(RuntimeException.class);
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo(
+              "Unexpected cause for java.lang.Exception: Not true that <java.io.IOException: "
+                  + "barfoo> is an instance of <java.lang.RuntimeException>. "
+                  + "It is an instance of <java.io.IOException>");
+      assertErrorHasActualAsCause(actual, expected);
+    }
+  }
+
+  @Test
+  public void hasCauseThat_tooDeep_failure() {
+    Exception actual = new Exception("foobar");
+    try {
+      assertThat(actual).hasCauseThat().hasCauseThat().isNull();
+      throw new Error("Expected to fail.");
+    } catch (AssertionError expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo(
+              "Unexpected cause for java.lang.Exception: "
+                  + "Causal chain is not deep enough - add a .isNotNull() check?");
+      assertErrorHasActualAsCause(actual, expected);
+    }
+  }
+
+  @Test
+  public void hasCauseThat_deepNull_failure() {
+    Exception actual =
+        new Exception("foobar", new RuntimeException("barfoo", new IOException("buzz")));
+    try {
+      assertThat(actual).hasCauseThat().hasCauseThat().hasMessageThat().isEqualTo("message");
+      throw new Error("Expected to fail.");
+    } catch (ComparisonFailure expected) {
+      assertThat(expected.getMessage())
+          .isEqualTo(
+              "Unexpected cause for java.lang.Exception: Unexpected cause for "
+                  + "java.lang.RuntimeException: Unexpected message for java.io.IOException: "
+                  + "expected:<[message]> but was:<[buzz]>");
+      assertErrorHasActualAsCause(actual, expected);
+    }
+  }
+
+  @Test
   public void inheritedMethodChainsSubject() {
     NullPointerException expected = new NullPointerException("expected");
     NullPointerException actual = new NullPointerException("actual");
@@ -112,11 +196,11 @@ public class ThrowableSubjectTest {
       assertThat(actual).isEqualTo(expected);
       throw new Error("Expected to fail.");
     } catch (AssertionError thrown) {
-      assertThat(thrown.getCause()).isEqualTo(actual);
-      /*
-       * TODO(cpovirk): consider a special case for isEqualTo and isSameAs that adds |expected| as a
-       * suppressed exception
-       */
+      assertErrorHasActualAsCause(actual, thrown);
     }
+  }
+
+  private static void assertErrorHasActualAsCause(Throwable actual, AssertionError failure) {
+    assertThat(failure.getCause()).named("AssertionError's cause").isEqualTo(actual);
   }
 }

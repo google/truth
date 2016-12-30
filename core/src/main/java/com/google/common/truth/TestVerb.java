@@ -68,7 +68,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   public ThrowableSubject that(@Nullable Throwable target) {
-    return new ThrowableSubject(getFailureStrategy(), target);
+    return ThrowableSubject.create(getFailureStrategy(), target);
   }
 
   public LongSubject that(@Nullable Long target) {
