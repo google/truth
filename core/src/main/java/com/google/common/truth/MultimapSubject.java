@@ -169,7 +169,33 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   @CanIgnoreReturnValue
   public Ordered containsExactlyEntriesIn(Multimap<?, ?> expectedMultimap) {
     checkNotNull(expectedMultimap, "expectedMultimap");
-    return containsExactly("contains exactly", expectedMultimap);
+    ListMultimap<?, ?> missing = difference(expectedMultimap, actual());
+    ListMultimap<?, ?> extra = difference(actual(), expectedMultimap);
+
+    // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
+    // the subject but not enough times. Similarly for unexpected extra items.
+    if (!missing.isEmpty()) {
+      if (!extra.isEmpty()) {
+        failWithRawMessage(
+            "Not true that %s contains exactly <%s>. "
+                + "It is missing <%s> and has unexpected items <%s>",
+            actualAsString(),
+            expectedMultimap,
+            countDuplicatesMultimap(missing),
+            countDuplicatesMultimap(extra));
+      } else {
+        failWithBadResults(
+            "contains exactly", expectedMultimap, "is missing", countDuplicatesMultimap(missing));
+      }
+    } else if (!extra.isEmpty()) {
+      failWithBadResults(
+          "contains exactly",
+          expectedMultimap,
+          "has unexpected items",
+          countDuplicatesMultimap(extra));
+    }
+
+    return new MultimapInOrder(expectedMultimap);
   }
 
   /** @deprecated Use {@link #containsExactlyEntriesIn} instead. */
@@ -179,34 +205,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     return containsExactlyEntriesIn(expectedMultimap);
   }
 
-  private Ordered containsExactly(String failVerb, Multimap<?, ?> expectedMultimap) {
-    ListMultimap<?, ?> missing = difference(expectedMultimap, actual());
-    ListMultimap<?, ?> extra = difference(actual(), expectedMultimap);
-
-    // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
-    // the subject but not enough times. Similarly for unexpected extra items.
-    if (!missing.isEmpty()) {
-      if (!extra.isEmpty()) {
-        failWithRawMessage(
-            "Not true that %s %s <%s>. It is missing <%s> and has unexpected items <%s>",
-            actualAsString(),
-            failVerb,
-            expectedMultimap,
-            countDuplicatesMultimap(missing),
-            countDuplicatesMultimap(extra));
-      } else {
-        failWithBadResults(
-            failVerb, expectedMultimap, "is missing", countDuplicatesMultimap(missing));
-      }
-    } else if (!extra.isEmpty()) {
-      failWithBadResults(
-          failVerb, expectedMultimap, "has unexpected items", countDuplicatesMultimap(extra));
-    }
-
-    return new MultimapInOrder(expectedMultimap);
-  }
-
-  private class IterableValuesForKey extends IterableSubject {
+  private static class IterableValuesForKey extends IterableSubject {
     @Nullable private final Object key;
     @Nullable private final String stringRepresentation;
 
