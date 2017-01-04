@@ -168,6 +168,15 @@ public class Subject<S extends Subject<S, T>, T> {
     }
     if (!Platform.isInstanceOfType(actual(), clazz)) {
       if (actual() != null) {
+        if (classMetadataUnsupported()) {
+          throw new UnsupportedOperationException(
+              actualAsString()
+                  + ", an instance of "
+                  + actual().getClass().getName()
+                  + ", may or may not be an instance of "
+                  + clazz.getName()
+                  + ". Under -XdisableClassMetadata, we do not have enough information to tell.");
+        }
         failWithBadResults(
             "is an instance of",
             clazz.getName(),
@@ -183,6 +192,10 @@ public class Subject<S extends Subject<S, T>, T> {
   public void isNotInstanceOf(Class<?> clazz) {
     if (clazz == null) {
       throw new NullPointerException("clazz");
+    }
+    if (classMetadataUnsupported()) {
+      throw new UnsupportedOperationException(
+          "isNotInstanceOf is not supported under -XdisableClassMetadata");
     }
     if (actual() == null) {
       return; // null is not an instance of clazz.
@@ -446,5 +459,12 @@ public class Subject<S extends Subject<S, T>, T> {
   @Override
   public final int hashCode() {
     throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
+  }
+
+  private static boolean classMetadataUnsupported() {
+    // https://github.com/google/truth/issues/198
+    // TODO(cpovirk): Consider whether to remove instanceof tests under GWT entirely.
+    // TODO(cpovirk): Run more Truth tests under GWT, and add tests for this.
+    return String.class.getSuperclass() == null;
   }
 }
