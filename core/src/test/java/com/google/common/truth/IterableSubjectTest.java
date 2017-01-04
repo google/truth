@@ -1288,11 +1288,9 @@ public class IterableSubjectTest {
               + "least one expected element, but there was no 1:1 mapping between all the "
               + "actual and expected elements. Using the most complete 1:1 mapping (or one "
               + "such mapping, if there is a tie), it has unexpected elements ";
-      ImmutableList<String> possibleRemainders = ImmutableList.of("<[0x40]>", "<[+64]>");
-      String actualMessage = e.getMessage();
-      assertThat(actualMessage).startsWith(expectedPreamble);
-      String actualRemainder = actualMessage.substring(expectedPreamble.length());
-      assertThat(actualRemainder).isIn(possibleRemainders);
+      assertThat(e)
+          .hasMessageThat()
+          .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
     }
   }
 
@@ -1313,11 +1311,9 @@ public class IterableSubjectTest {
               + "actual and expected elements. Using the most complete 1:1 mapping (or one "
               + "such mapping, if there is a tie), it is missing an element that parses to "
               + "<128> and has unexpected elements ";
-      ImmutableList<String> possibleRemainders = ImmutableList.of("<[0x40]>", "<[+64]>");
-      String actualMessage = e.getMessage();
-      assertThat(actualMessage).startsWith(expectedPreamble);
-      String actualRemainder = actualMessage.substring(expectedPreamble.length());
-      assertThat(actualRemainder).isIn(possibleRemainders);
+      assertThat(e)
+          .hasMessageThat()
+          .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
     }
   }
 
@@ -1381,11 +1377,9 @@ public class IterableSubjectTest {
               + "actual and expected elements. Using the most complete 1:1 mapping (or one "
               + "such mapping, if there is a tie), it is missing an element that parses to "
               + "<128> and has unexpected elements ";
-      ImmutableList<String> possibleRemainders = ImmutableList.of("<[0x40]>", "<[+64]>");
-      String actualMessage = e.getMessage();
-      assertThat(actualMessage).startsWith(expectedPreamble);
-      String actualRemainder = actualMessage.substring(expectedPreamble.length());
-      assertThat(actualRemainder).isIn(possibleRemainders);
+      assertThat(e)
+          .hasMessageThat()
+          .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
     }
   }
 
