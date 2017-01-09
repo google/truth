@@ -88,31 +88,44 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
     return new DelegatedVerb<S, T>(getFailureStrategy(), factory);
   }
 
-  /** A special Verb implementation which wraps a SubjectFactory */
-  public static final class DelegatedVerb<S extends Subject<S, T>, T> {
-    private final SubjectFactory<S, T> factory;
-    private final FailureStrategy failureStrategy;
+  /**
+   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
+   * DelegatedVerbFactory}. Extension creators should prefer {@link SubjectFactory} if possible.
+   *
+   * @param <V> the type of {@link AbstractDelegatedVerb} to return
+   * @param factory a {@code DelegatedVerbFactory<V>} implementation
+   * @return A custom verb of type {@code <V>}
+   */
+  public <V extends AbstractDelegatedVerb<V>> V about(DelegatedVerbFactory<V> factory) {
+    return factory.createVerb(getFailureStrategy());
+  }
 
-    public DelegatedVerb(FailureStrategy failureStrategy, SubjectFactory<S, T> factory) {
-      this.factory = checkNotNull(factory);
-      this.failureStrategy = checkNotNull(failureStrategy);
+  /** A special Verb implementation which wraps a SubjectFactory */
+  public static final class DelegatedVerb<S extends Subject<S, T>, T>
+      extends AbstractDelegatedVerb<DelegatedVerb<S, T>> {
+    private final SubjectFactory<S, T> subjectFactory;
+
+    private static class Factory<S extends Subject<S, T>, T>
+        implements DelegatedVerbFactory<DelegatedVerb<S, T>> {
+      private final SubjectFactory<S, T> subjectFactory;
+
+      private Factory(SubjectFactory<S, T> subjectFactory) {
+        this.subjectFactory = subjectFactory;
+      }
+
+      @Override
+      public DelegatedVerb<S, T> createVerb(FailureStrategy failureStrategy) {
+        return new DelegatedVerb<S, T>(failureStrategy, subjectFactory);
+      }
+    }
+
+    public DelegatedVerb(FailureStrategy failureStrategy, SubjectFactory<S, T> subjectFactory) {
+      super(failureStrategy, new Factory<S, T>(subjectFactory));
+      this.subjectFactory = checkNotNull(subjectFactory);
     }
 
     public S that(@Nullable T target) {
-      return factory.getSubject(failureStrategy, target);
-    }
-
-    public DelegatedVerb<S, T> withFailureMessage(@Nullable String failureMessage) {
-      return failureMessage == null
-          ? withFailureMessage(null, new Object[0]) // force the right overload
-          : withFailureMessage("%s", failureMessage);
-    }
-
-    public DelegatedVerb<S, T> withFailureMessage(
-        @Nullable String format, Object /* @NullableType */... args) {
-      FailureContext holder = new FailureContext(format, args);
-      return new DelegatedVerb<S, T>(
-          new MessagePrependingFailureStrategy(failureStrategy, holder), factory);
+      return subjectFactory.getSubject(failureStrategy, target);
     }
   }
 
