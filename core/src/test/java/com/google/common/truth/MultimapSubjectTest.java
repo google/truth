@@ -645,6 +645,19 @@ public class MultimapSubjectTest {
   }
 
   @Test
+  public void comparingValuesUsing_containsEntry_wrongTypeInActual() {
+    ImmutableListMultimap<String, Object> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", new Object());
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsEntry("def", 123);
+      fail("Should have thrown.");
+    } catch (ClassCastException expected) {
+    }
+  }
+
+  @Test
   public void comparingValuesUsing_doesNotContainEntry_successExcludeKeyHasWrongValues() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
@@ -687,6 +700,196 @@ public class MultimapSubjectTest {
               "Not true that <{abc=[+123], def=[+456, +789]}> did not contain an entry with "
                   + "key <def> and a value that parses to <789>. "
                   + "It maps that key to the following such values: <[+789]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_wrongTypeInActual() {
+    ImmutableListMultimap<String, Object> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", new Object());
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .doesNotContainEntry("def", 789);
+      fail("Should have thrown.");
+    } catch (ClassCastException expected) {
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_success() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 128, "def", 64, "abc", 123);
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_missingKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("def", "+64", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 128, "def", 64, "abc", 123);
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <{def=[+64, 0x40, +128]}> contains exactly one element that has a "
+                  + "key that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=64, def=128, def=64, abc=123]>. It is missing an element "
+                  + "that has a key that is equal to and a value that parses to the key and value "
+                  + "of <abc=123>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_extraKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 128, "def", 64);
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element "
+                  + "that has a key that is equal to and a value that parses to the key and value "
+                  + "of each element of <[def=64, def=128, def=64]>. It has unexpected elements "
+                  + "<[abc=+123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_wrongValueForKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 128, "def", 128, "abc", 123);
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      String expectedPreamble =
+          "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element that "
+              + "has a key that is equal to and a value that parses to the key and value of each "
+              + "element of <[def=64, def=128, def=128, abc=123]>. It contains at least one "
+              + "element that matches each expected element, and every element it contains matches "
+              + "at least one expected element, but there was no 1:1 mapping between all the "
+              + "actual and expected elements. Using the most complete 1:1 mapping (or one such "
+              + "mapping, if there is a tie), it is missing an element that has a key that is "
+              + "equal to and a value that parses to the key and value of <def=128> and has "
+              + "unexpected elements ";
+      assertThat(e)
+          .hasMessageThat()
+          .isAnyOf(expectedPreamble + "<[def=+64]>", expectedPreamble + "<[def=0x40]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_wrongTypeInActual() {
+    ImmutableListMultimap<String, Object> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", new Object());
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 123, "def", 64, "abc", 123);
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (ClassCastException e) {
+      // expected
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_inOrder_success() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("abc", 123, "def", 64, "def", 64, "def", 128);
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_inOrder_wrongKeyOrder() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 64, "def", 128, "abc", 123);
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected)
+          .inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
+                  + "element that has a key that is equal to and a value that parses to the key "
+                  + "and value of each element of <[def=64, def=64, def=128, abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_inOrder_wrongValueOrder() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("abc", 123, "def", 64, "def", 128, "def", 64);
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected)
+          .inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
+                  + "element that has a key that is equal to and a value that parses to the key "
+                  + "and value of each element of <[abc=123, def=64, def=128, def=64]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_failsWithNamed() {
+    ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("abc", 123, "def", 456);
+    try {
+      assertThat(actual)
+          .named("multymap")
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each element "
+                  + "of <[abc=123, def=456]>. It is missing an element that has a key that is "
+                  + "equal to and a value that parses to the key and value of <def=456>");
     }
   }
 }

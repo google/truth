@@ -311,7 +311,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     public <K, V extends E> Ordered containsExactlyEntriesIn(Map<K, V> expectedMap) {
       return check()
           .that(actual().entrySet())
-          .comparingElementsUsing(new EntryCorrespondence<K, V>())
+          .comparingElementsUsing(new EntryCorrespondence<K, A, V>(correspondence))
           .containsExactlyElementsIn(expectedMap.entrySet());
     }
 
@@ -319,22 +319,28 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     private Map<?, A> getCastSubject() {
       return (Map<?, A>) actual();
     }
+  }
 
-    private final class EntryCorrespondence<K, V extends E>
-        extends Correspondence<Map.Entry<Object, A>, Map.Entry<K, V>> {
+  static final class EntryCorrespondence<K, A, E>
+      extends Correspondence<Map.Entry<K, A>, Map.Entry<K, E>> {
 
-      @Override
-      public boolean compare(Entry<Object, A> actual, Entry<K, V> expected) {
-        return actual.getKey().equals(expected.getKey())
-            && correspondence.compare(actual.getValue(), expected.getValue());
-      }
+    private final Correspondence<A, ? super E> valueCorrespondence;
 
-      @Override
-      public String toString() {
-        return StringUtil.format(
-            "has a key that is equal to and a value that %s the key and value of",
-            correspondence);
-      }
+    EntryCorrespondence(Correspondence<A, ? super E> valueCorrespondence) {
+      this.valueCorrespondence = valueCorrespondence;
+    }
+
+    @Override
+    public boolean compare(Entry<K, A> actual, Entry<K, E> expected) {
+      return actual.getKey().equals(expected.getKey())
+          && valueCorrespondence.compare(actual.getValue(), expected.getValue());
+    }
+
+    @Override
+    public String toString() {
+      return StringUtil.format(
+          "has a key that is equal to and a value that %s the key and value of",
+          valueCorrespondence);
     }
   }
 }

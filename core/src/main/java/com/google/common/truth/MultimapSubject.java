@@ -207,7 +207,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   private static class IterableValuesForKey extends IterableSubject {
     @Nullable private final Object key;
-    @Nullable private final String stringRepresentation;
+    private final String stringRepresentation;
 
     @SuppressWarnings({"unchecked"})
     IterableValuesForKey(
@@ -220,6 +220,25 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     @Override
     protected String actualCustomStringRepresentation() {
       return "Values for key <" + key + "> (<" + actual() + ">) in " + stringRepresentation;
+    }
+  }
+
+  private static class IterableEntries extends IterableSubject {
+    private final String stringRepresentation;
+
+    IterableEntries(FailureStrategy failureStrategy, MultimapSubject multimapSubject) {
+      super(failureStrategy, multimapSubject.actual().entries());
+      // We want to use the multimap's toString() instead of the iterable of entries' toString():
+      this.stringRepresentation = multimapSubject.actual().toString();
+      // If the multimap subject is named() then this should be, too:
+      if (multimapSubject.internalCustomName() != null) {
+        named(multimapSubject.internalCustomName());
+      }
+    }
+
+    @Override
+    protected String actualCustomStringRepresentation() {
+      return stringRepresentation;
     }
   }
 
@@ -357,7 +376,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     public void containsEntry(@Nullable Object expectedKey, @Nullable E expectedValue) {
       if (actual().containsKey(expectedKey)) {
         // Found matching key.
-        Collection<A> actualValues = getCastSubject().asMap().get(expectedKey);
+        Collection<A> actualValues = getCastActual().asMap().get(expectedKey);
         for (A actualValue : actualValues) {
           if (correspondence.compare(actualValue, expectedValue)) {
             // Found matching key and value. Test passes!
@@ -372,7 +391,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<Object>();
-        for (Entry<?, A> actualEntry : getCastSubject().entries()) {
+        for (Entry<?, A> actualEntry : getCastActual().entries()) {
           if (correspondence.compare(actualEntry.getValue(), expectedValue)) {
             keys.add(actualEntry.getKey());
           }
@@ -398,7 +417,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
      */
     public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable E excludedValue) {
       if (actual().containsKey(excludedKey)) {
-        Collection<A> actualValues = getCastSubject().asMap().get(excludedKey);
+        Collection<A> actualValues = getCastActual().asMap().get(excludedKey);
         List<A> matchingValues = new ArrayList<A>();
         for (A actualValue : actualValues) {
           if (correspondence.compare(actualValue, excludedValue)) {
@@ -424,9 +443,14 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
      * order.
      */
     @CanIgnoreReturnValue
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private Ordered containsExactlyEntriesIn(Multimap<?, ? extends E> expectedMultimap) {
-      throw new UnsupportedOperationException();
+    public <K, V extends E> Ordered containsExactlyEntriesIn(Multimap<K, V> expectedMultimap) {
+      // TODO(b/34104379): Either resolve the inconsistency between plain old
+      // MapSubject.containsExactlyEntriesIn (which has a custom implementation and produces
+      // somewhat better failure messages than it would if it just treated the maps as iterables of
+      // entries) and this... or else decide for sure that we're happy to live with the disparity.
+      return new IterableEntries(failureStrategy, MultimapSubject.this)
+          .comparingElementsUsing(new MapSubject.EntryCorrespondence<K, A, V>(correspondence))
+          .containsExactlyElementsIn(expectedMultimap.entries());
     }
 
     /**
@@ -442,7 +466,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
-    private Multimap<?, A> getCastSubject() {
+    private Multimap<?, A> getCastActual() {
       return (Multimap<?, A>) actual();
     }
   }
