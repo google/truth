@@ -314,9 +314,10 @@ public class MapSubjectTest {
   @Test
   public void isNotEqualTo() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    ImmutableMap<String, Integer> unexpected = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
     try {
-      assertThat(actual).isNotEqualTo(actual);
+      assertThat(actual).isNotEqualTo(unexpected);
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -884,7 +885,7 @@ public class MapSubjectTest {
     try {
       intermediate.containsExactly("def", 456, "abc", 123);
       fail("Should have thrown.");
-    } catch (ClassCastException e) {
+    } catch (ClassCastException expected) {
     }
   }
 
@@ -896,7 +897,7 @@ public class MapSubjectTest {
     try {
       intermediate.containsExactly("def", 456, "abc", 123L);
       fail("Should have thrown.");
-    } catch (ClassCastException e) {
+    } catch (ClassCastException expected) {
     }
   }
 
@@ -1031,6 +1032,7 @@ public class MapSubjectTest {
       intermediate.containsExactlyEntriesIn(expected);
       fail("Should have thrown.");
     } catch (ClassCastException e) {
+      // expected
     }
   }
 }
