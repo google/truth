@@ -113,6 +113,19 @@ public final class Truth {
     return assert_().about(factory);
   }
 
+  /**
+   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
+   * DelegatedVerbFactory}. Extension creators should prefer {@link SubjectFactory} if possible.
+   *
+   * @param <V> the type of {@link AbstractDelegatedVerb} to return
+   * @param factory a {@code DelegatedVerbFactory<V>} implementation
+   * @return A custom verb of type {@code <V>}
+   */
+  public static <V extends AbstractDelegatedVerb<V>> V assertAbout(
+      DelegatedVerbFactory<V> factory) {
+    return assert_().about(factory);
+  }
+
   public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(@Nullable T target) {
     return assert_().that(target);
   }
