@@ -453,18 +453,6 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           .containsExactlyElementsIn(expectedMultimap.entries());
     }
 
-    /**
-     * Returns a context-aware object for making assertions about the values for the given key
-     * within the multimap, using the associated correspondence to compare the values.
-     *
-     * <p>This method performs no checks on its own and cannot cause test failures. Subsequent
-     * assertions must be chained onto this method call to test properties of the multimap.
-     */
-    @SuppressWarnings("unused") // TODO(b/29966314): Implement this and make it public.
-    private IterableSubject.UsingCorrespondence<A, E> valuesForKey(@Nullable Object key) {
-      throw new UnsupportedOperationException();
-    }
-
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Multimap<?, A> getCastActual() {
       return (Multimap<?, A>) actual();
