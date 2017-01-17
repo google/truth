@@ -19,7 +19,7 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
-import static com.google.common.truth.extensions.proto.ProtoTruth.iterablesOfProtos;
+import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -103,9 +103,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
 
-    assertAbout(iterablesOfProtos(TestMessage2.class))
-        .that(listOf(message1, message2))
-        .contains(eqMessage2);
+    assertAbout(protos()).that(listOf(message1, message2)).contains(eqMessage2);
   }
 
   @Test

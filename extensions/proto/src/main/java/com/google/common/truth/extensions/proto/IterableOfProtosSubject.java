@@ -25,8 +25,6 @@ import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.IterableSubject;
 import com.google.common.truth.Ordered;
 import com.google.common.truth.Subject;
-import com.google.common.truth.SubjectFactory;
-import com.google.common.truth.Truth;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -80,8 +78,7 @@ public class IterableOfProtosSubject<
     // The work around would be annoyingly verbose for users, so we expose IterableOfMessagesSubject
     // explicitly so that there are no wildcards to have conflicting bounds.
 
-    private IterableOfMessagesSubject(
-        FailureStrategy failureStrategy, @Nullable Iterable<M> messages) {
+    IterableOfMessagesSubject(FailureStrategy failureStrategy, @Nullable Iterable<M> messages) {
       super(failureStrategy, messages);
     }
 
@@ -91,40 +88,6 @@ public class IterableOfProtosSubject<
         @Nullable Iterable<M> messages) {
       super(failureStrategy, config, messages);
     }
-
-    /** Default implementation of {@link IterableOfProtosSubject.Factory}. */
-    private static final class Factory<M extends Message>
-        extends IterableOfProtosSubject.Factory<IterableOfMessagesSubject<M>, M, Iterable<M>> {
-      private static final Factory<Message> INSTANCE = new Factory<Message>();
-
-      @Override
-      public IterableOfMessagesSubject<M> getSubject(
-          FailureStrategy failureStrategy, @Nullable Iterable<M> messages) {
-        return new IterableOfMessagesSubject<M>(failureStrategy, messages);
-      }
-    }
-  }
-
-  /**
-   * Typed extension of {@link SubjectFactory}.
-   *
-   * <p>The existence of this class is necessary in order to satisfy the generic constraints of
-   * {@link Truth#assertAbout(SubjectFactory)}, whilst also hiding the Untyped classes which are not
-   * meant to be exposed.
-   */
-  public abstract static class Factory<
-          S extends IterableOfProtosSubject<S, M, C>, M extends Message, C extends Iterable<M>>
-      extends SubjectFactory<S, C> {}
-
-  /**
-   * Returns a {@link SubjectFactory} for Iterables of {@link Message} subjects which you can use to
-   * assert things about Protobuf properties.
-   */
-  @SuppressWarnings("unchecked") // IterableOfMessagesSubject.Factory is fully variant.
-  static <M extends Message>
-      Factory<IterableOfMessagesSubject<M>, M, Iterable<M>> iterablesOfProtos() {
-    return (Factory<IterableOfMessagesSubject<M>, M, Iterable<M>>)
-        IterableOfMessagesSubject.Factory.INSTANCE;
   }
 
   protected IterableOfProtosSubject(FailureStrategy failureStrategy, @Nullable C messages) {

@@ -19,6 +19,7 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.truth.Truth.assertAbout;
 
 import com.google.common.truth.AbstractVerb;
+import com.google.common.truth.DelegatedVerbFactory;
 import com.google.common.truth.SubjectFactory;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
@@ -32,12 +33,18 @@ import javax.annotation.Nullable;
  * behaviors.
  */
 public final class ProtoTruth {
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  // assertThat() overloads.
-  //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Returns a {@link DelegatedVerbFactory}, akin to a {@link
+   * com.google.common.truth.SubjectFactory}, which can be used to assert on multiple types of
+   * Protos and collections containing them.
+   */
+  public static DelegatedVerbFactory<ProtoTruthDelegatedVerb> protos() {
+    return ProtoTruthDelegatedVerb.factory();
+  }
 
   public static LiteProtoSubject<?, MessageLite> assertThat(@Nullable MessageLite messageLite) {
-    return assertAbout(liteProtos()).that(messageLite);
+    return assertAbout(protos()).that(messageLite);
   }
 
   public static ProtoSubject<?, Message> assertThat(@Nullable Message message) {
@@ -51,33 +58,7 @@ public final class ProtoTruth {
   // See http://stackoverflow.com/a/8467804 for a more thorough explanation.
   public static <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> assertThat(
       @Nullable Iterable<M> messages) {
-    return assertAbout(IterableOfProtosSubject.<M>iterablesOfProtos()).that(messages);
-  }
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  // SubjectFactory factories.
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  /** Returns a {@link SubjectFactory} for the lite version of protocol buffers. */
-  public static LiteProtoSubject.Factory<?, MessageLite> liteProtos() {
-    return LiteProtoSubject.liteProtos();
-  }
-
-  /** Returns a {@link SubjectFactory} for protocol buffers. */
-  public static ProtoSubject.Factory<?, Message> protos() {
-    return ProtoSubject.protos();
-  }
-
-  /**
-   * Returns a {@link SubjectFactory} for {@link Iterable}s of protocol buffers.
-   *
-   * @param messageClass an explicit type specifier for the {@link SubjectFactory}.
-   */
-  public static <M extends Message>
-      IterableOfProtosSubject.Factory<
-              IterableOfProtosSubject.IterableOfMessagesSubject<M>, M, Iterable<M>>
-          iterablesOfProtos(Class<M> messageClass) {
-    return IterableOfProtosSubject.<M>iterablesOfProtos();
+    return assertAbout(protos()).that(messages);
   }
 
   private ProtoTruth() {}

@@ -58,7 +58,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * about Lite Protobuf properties.
    */
   static Factory<?, MessageLite> liteProtos() {
-    return UntypedSubjectFactory.INSTANCE;
+    return MessageLiteSubjectFactory.INSTANCE;
   }
 
   protected LiteProtoSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
@@ -207,19 +207,20 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
         .named("sizeOf(" + getTrimmedDisplaySubject() + ")");
   }
 
-  private static final class UntypedSubject extends LiteProtoSubject<UntypedSubject, MessageLite> {
-    private UntypedSubject(FailureStrategy failureStrategy, @Nullable MessageLite messageLite) {
+  static final class MessageLiteSubject extends LiteProtoSubject<MessageLiteSubject, MessageLite> {
+    MessageLiteSubject(FailureStrategy failureStrategy, @Nullable MessageLite messageLite) {
       super(failureStrategy, messageLite);
     }
   }
 
-  private static final class UntypedSubjectFactory extends Factory<UntypedSubject, MessageLite> {
-    private static final UntypedSubjectFactory INSTANCE = new UntypedSubjectFactory();
+  private static final class MessageLiteSubjectFactory
+      extends Factory<MessageLiteSubject, MessageLite> {
+    private static final MessageLiteSubjectFactory INSTANCE = new MessageLiteSubjectFactory();
 
     @Override
-    public UntypedSubject getSubject(
+    public MessageLiteSubject getSubject(
         FailureStrategy failureStrategy, @Nullable MessageLite messageLite) {
-      return new UntypedSubject(failureStrategy, messageLite);
+      return new MessageLiteSubject(failureStrategy, messageLite);
     }
   }
 }
