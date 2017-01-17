@@ -127,10 +127,7 @@ public class ProtoSubjectTestBase {
 
   protected final <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> expectThat(
       Iterable<M> messages) {
-    @SuppressWarnings("unchecked") // Object not used.
-    Class<M> clazz = (Class<M>) null;
-
-    return expect.about(ProtoTruth.iterablesOfProtos(clazz)).that(messages);
+    return expect.about(ProtoTruth.protos()).that(messages);
   }
 
   /**

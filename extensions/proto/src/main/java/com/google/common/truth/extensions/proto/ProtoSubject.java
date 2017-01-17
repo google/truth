@@ -23,8 +23,6 @@ import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.FailureStrategy;
-import com.google.common.truth.SubjectFactory;
-import com.google.common.truth.Truth;
 import com.google.common.truth.extensions.proto.MessageDifferencer.ReportType;
 import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
 import com.google.common.truth.extensions.proto.MessageDifferencer.StreamReporter;
@@ -58,24 +56,6 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   // IterableOfProtosSubject and there is use for such typing.
   private final FluentEqualityConfig config;
 
-  /**
-   * Typed extension of {@link SubjectFactory}.
-   *
-   * <p>The existence of this class is necessary in order to satisfy the generic constraints of
-   * {@link Truth#assertAbout(SubjectFactory)}, whilst also hiding the Untyped classes which are not
-   * meant to be exposed.
-   */
-  public abstract static class Factory<S extends ProtoSubject<S, M>, M extends Message>
-      extends LiteProtoSubject.Factory<S, M> {}
-
-  /**
-   * Returns a {@link SubjectFactory} for {@link Message} subjects which you can use to assert
-   * things about Protobuf properties.
-   */
-  static Factory<?, Message> protos() {
-    return UntypedSubjectFactory.INSTANCE;
-  }
-
   protected ProtoSubject(FailureStrategy failureStrategy, @Nullable M message) {
     this(failureStrategy, FluentEqualityConfig.defaultInstance(), message);
   }
@@ -86,7 +66,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   ProtoSubject<?, Message> usingConfig(FluentEqualityConfig newConfig) {
-    UntypedSubject newSubject = new UntypedSubject(failureStrategy, newConfig, getSubject());
+    MessageSubject newSubject = new MessageSubject(failureStrategy, newConfig, getSubject());
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
@@ -303,19 +283,14 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     }
   }
 
-  private static final class UntypedSubject extends ProtoSubject<UntypedSubject, Message> {
-    private UntypedSubject(
+  static final class MessageSubject extends ProtoSubject<MessageSubject, Message> {
+    MessageSubject(FailureStrategy failureStrategy, @Nullable Message message) {
+      super(failureStrategy, message);
+    }
+
+    private MessageSubject(
         FailureStrategy failureStrategy, FluentEqualityConfig config, @Nullable Message message) {
       super(failureStrategy, config, message);
-    }
-  }
-
-  private static final class UntypedSubjectFactory extends Factory<UntypedSubject, Message> {
-    private static final UntypedSubjectFactory INSTANCE = new UntypedSubjectFactory();
-
-    @Override
-    public UntypedSubject getSubject(FailureStrategy failureStrategy, @Nullable Message message) {
-      return new UntypedSubject(failureStrategy, FluentEqualityConfig.defaultInstance(), message);
     }
   }
 }
