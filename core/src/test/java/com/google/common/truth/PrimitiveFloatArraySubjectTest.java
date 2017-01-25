@@ -25,6 +25,8 @@ import static org.junit.Assert.fail;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import com.google.common.primitives.Longs;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -1090,6 +1092,44 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  public void usingTolerance_contains_otherTypes() {
+    // Expected value is Double
+    assertThat(array(1.0f, 2.0f + 0.5f * DEFAULT_TOLERANCE, 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(2.0);
+    // Expected value is Integer
+    assertThat(array(1.0f, 2.0f + 0.5f * DEFAULT_TOLERANCE, 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(2);
+    // Expected value is Integer.MIN_VALUE. This is -1*2^31, which has an exact float
+    // representation. For the actual value we use the next value down, which is 2^8 smaller
+    // (because the resolution of floats with absolute values between 2^31 and 2^32 is 2^8). So
+    // we'll make the assertion with a tolerance of 2^9.
+    assertThat(array(1.0f, Integer.MIN_VALUE + 0.5f * DEFAULT_TOLERANCE, 3.0f))
+        .usingTolerance(1 << 9)
+        .contains(Integer.MIN_VALUE);
+    // Expected value is Long
+    assertThat(array(1.0f, 2.0f + 0.5f * DEFAULT_TOLERANCE, 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(2L);
+    // Expected value is Long.MIN_VALUE. This is -1*2^63, which has an exact float representation.
+    // For the actual value we use the next value down, which is is 2^40 smaller (because the
+    // resolution of floats with absolute values between 2^63 and 2^64 is 2^40). So we'll make the
+    // assertion with a tolerance of 2^41.
+    assertThat(array(1.0f, nextAfter(Long.MIN_VALUE, NEGATIVE_INFINITY), 3.0f))
+        .usingTolerance(1L << 41)
+        .contains(Long.MIN_VALUE);
+    // Expected value is BigInteger
+    assertThat(array(1.0f, 2.0f + 0.5f * DEFAULT_TOLERANCE, 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(BigInteger.valueOf(2));
+    // Expected value is BigDecimal
+    assertThat(array(1.0f, 2.0f + 0.5f * DEFAULT_TOLERANCE, 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(BigDecimal.valueOf(2.0));
+  }
+
+  @Test
   public void usingTolerance_contains_nullExpected() {
     try {
       assertThat(array(1.0f, 2.0f, 3.0f)).usingTolerance(DEFAULT_TOLERANCE).contains(null);
@@ -1128,6 +1168,67 @@ public class PrimitiveFloatArraySubjectTest {
               "Not true that <[1.0, "
                   + justOverTwo
                   + ", 3.0]> contains at least one element that is exactly equal to <2.0>");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes() {
+    // Expected value is Integer - supported up to +/- 2^24
+    assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(2);
+    assertThat(array(1.0f, 1 << 24, 3.0f)).usingExactEquality().contains(1 << 24);
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains((1 << 24) + 1);
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Expected value 16777217 in assertion using exact float equality was an int with an "
+                  + "absolute value greater than 2^24 which has no exact float representation");
+    }
+    // Expected value is Long - supported up to +/- 2^24
+    assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(2L);
+    assertThat(array(1.0f, 1 << 24, 3.0f)).usingExactEquality().contains(1L << 24);
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains((1L << 24) + 1L);
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Expected value 16777217 in assertion using exact float equality was a long with an "
+                  + "absolute value greater than 2^24 which has no exact float representation");
+    }
+    // Expected value is Double - not supported
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(2.0);
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Expected value in assertion using exact double equality was of unsupported type "
+                  + Double.class
+                  + " (it may not have an exact double representation)");
+    }
+    // Expected value is BigInteger - not supported
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(BigInteger.valueOf(2));
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Expected value in assertion using exact double equality was of unsupported type "
+                  + BigInteger.class
+                  + " (it may not have an exact double representation)");
+    }
+    // Expected value is BigDecimal - not supported
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(BigDecimal.valueOf(2.0));
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+      .hasMessageThat()
+      .isEqualTo(
+          "Expected value in assertion using exact double equality was of unsupported type "
+              + BigDecimal.class
+              + " (it may not have an exact double representation)");
     }
   }
 

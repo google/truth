@@ -16,6 +16,7 @@
 
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.FloatSubject.checkTolerance;
@@ -346,12 +347,12 @@ public final class PrimitiveFloatArraySubject
         .comparingElementsUsing(tolerance(tolerance));
   }
 
-  private static final Correspondence<Float, Float> EXACT_EQUALITY_CORRESPONDENCE =
-      new Correspondence<Float, Float>() {
+  private static final Correspondence<Float, Number> EXACT_EQUALITY_CORRESPONDENCE =
+      new Correspondence<Float, Number>() {
 
         @Override
-        public boolean compare(Float actual, Float expected) {
-          return actual.equals(checkNotNull(expected));
+        public boolean compare(Float actual, Number expected) {
+          return actual.equals(checkedToFloat(expected));
         }
 
         @Override
@@ -359,6 +360,30 @@ public final class PrimitiveFloatArraySubject
           return "is exactly equal to";
         }
       };
+
+  private static float checkedToFloat(Number expected) {
+    checkNotNull(expected);
+    checkArgument(
+        expected instanceof Float || expected instanceof Integer || expected instanceof Long,
+        "Expected value in assertion using exact double equality was of unsupported type %s "
+            + "(it may not have an exact double representation)",
+        expected.getClass());
+    if (expected instanceof Integer) {
+      checkArgument(
+          Math.abs((Integer) expected) <= 1 << 24,
+          "Expected value %s in assertion using exact float equality was an int with an absolute "
+              + "value greater than 2^24 which has no exact float representation",
+          expected);
+    }
+    if (expected instanceof Long) {
+      checkArgument(
+          Math.abs((Long) expected) <= 1L << 24,
+          "Expected value %s in assertion using exact float equality was a long with an absolute "
+              + "value greater than 2^24 which has no exact float representation",
+          expected);
+    }
+    return expected.floatValue();
+  }
 
   /**
    * Starts a method chain for a test proposition in which the actual values (i.e. the elements of
@@ -376,6 +401,12 @@ public final class PrimitiveFloatArraySubject
    * <pre>   {@code
    * assertThat(actualFloatArray).usingExactEquality().contains(3.14159f);}</pre>
    *
+   * <p>For convenience, some subsequent methods accept expected values as {@link Number} instances.
+   * These numbers must be either of type {@link Float}, {@link Integer}, or {@link Long}, and if
+   * they are {@link Integer} or {@link Long} then their absolute values must not exceed 2^24 which
+   * is 16,777,216. (This restriction ensures that the expected values have exact {@link Float}
+   * representations: using exact equality makes no sense if they do not.)
+   *
    * <ul>
    *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and
    *       {@link Float#NaN} to be equal to themselves.
@@ -384,7 +415,7 @@ public final class PrimitiveFloatArraySubject
    *       expected {@link Float} instance is null.
    * </ul>
    */
-  public IterableSubject.UsingCorrespondence<Float, Float> usingExactEquality() {
+  public IterableSubject.UsingCorrespondence<Float, Number> usingExactEquality() {
     return new IterableSubject(failureStrategy, listRepresentation())
         .comparingElementsUsing(EXACT_EQUALITY_CORRESPONDENCE);
   }

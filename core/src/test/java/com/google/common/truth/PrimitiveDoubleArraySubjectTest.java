@@ -25,6 +25,8 @@ import static org.junit.Assert.fail;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import com.google.common.primitives.Longs;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -1093,6 +1095,41 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  public void usingTolerance_contains_otherTypes() {
+    // Expected value is Float
+    assertThat(array(1.0, 2.0 + 0.5 * DEFAULT_TOLERANCE, 3.0))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(2.0f);
+    // Expected value is Integer
+    assertThat(array(1.0, 2.0 + 0.5 * DEFAULT_TOLERANCE, 3.0))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(2);
+    // Expected value is Integer.MAX_VALUE
+    assertThat(array(1.0, Integer.MAX_VALUE + 0.5 * DEFAULT_TOLERANCE, 3.0))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(Integer.MAX_VALUE);
+    // Expected value is Long
+    assertThat(array(1.0, 2.0 + 0.5 * DEFAULT_TOLERANCE, 3.0))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(2L);
+    // Expected value is Long.MIN_VALUE. This is -1*2^63, which has an exact double representation.
+    // For the actual value we use the next value down, which is is 2^11 smaller (because the
+    // resolution of doubles with absolute values between 2^63 and 2^64 is 2^11). So we'll make the
+    // assertion with a tolerance of 2^12.
+    assertThat(array(1.0, nextAfter((double) Long.MIN_VALUE, NEGATIVE_INFINITY), 3.0))
+        .usingTolerance(1 << 12)
+        .contains(Long.MIN_VALUE);
+    // Expected value is BigInteger
+    assertThat(array(1.0, 2.0 + 0.5 * DEFAULT_TOLERANCE, 3.0))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(BigInteger.valueOf(2));
+    // Expected value is BigDecimal
+    assertThat(array(1.0, 2.0 + 0.5 * DEFAULT_TOLERANCE, 3.0))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(BigDecimal.valueOf(2.0));
+  }
+
+  @Test
   public void usingTolerance_contains_nullExpected() {
     try {
       assertThat(array(1.0, 2.0, 3.0)).usingTolerance(DEFAULT_TOLERANCE).contains(null);
@@ -1131,6 +1168,50 @@ public class PrimitiveDoubleArraySubjectTest {
               "Not true that <[1.0, "
                   + justOverTwo
                   + ", 3.0]> contains at least one element that is exactly equal to <2.0>");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes() {
+    // Expected value is Float
+    assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(2.0f);
+    // Expected value is Integer
+    assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(2);
+    assertThat(array(1.0, Integer.MAX_VALUE, 3.0)).usingExactEquality().contains(Integer.MAX_VALUE);
+    // Expected value is Long - supported up to +/- 2^53
+    assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(2L);
+    assertThat(array(1.0, 1L << 53, 3.0)).usingExactEquality().contains(1L << 53);
+    try {
+      assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains((1L << 53) + 1L);
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Expected value 9007199254740993 in assertion using exact double equality was a long "
+                  + "with an absolute value greater than 2^52 which has no exact double "
+                  + "representation");
+    }
+    // Expected value is BigInteger - not supported
+    try {
+      assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(BigInteger.valueOf(2));
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Expected value in assertion using exact double equality was of unsupported type "
+                  + BigInteger.class
+                  + " (it may not have an exact double representation)");
+    }
+    // Expected value is BigDecimal - not supported
+    try {
+      assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(BigDecimal.valueOf(2.0));
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+      .hasMessageThat()
+      .isEqualTo(
+          "Expected value in assertion using exact double equality was of unsupported type "
+              + BigDecimal.class
+              + " (it may not have an exact double representation)");
     }
   }
 

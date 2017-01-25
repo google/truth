@@ -16,6 +16,7 @@
 
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
@@ -346,12 +347,12 @@ public final class PrimitiveDoubleArraySubject
         .comparingElementsUsing(tolerance(tolerance));
   }
 
-  private static final Correspondence<Double, Double> EXACT_EQUALITY_CORRESPONDENCE =
-      new Correspondence<Double, Double>() {
+  private static final Correspondence<Double, Number> EXACT_EQUALITY_CORRESPONDENCE =
+      new Correspondence<Double, Number>() {
 
         @Override
-        public boolean compare(Double actual, Double expected) {
-          return actual.equals(checkNotNull(expected));
+        public boolean compare(Double actual, Number expected) {
+          return actual.equals(checkedToDouble(expected));
         }
 
         @Override
@@ -359,6 +360,26 @@ public final class PrimitiveDoubleArraySubject
           return "is exactly equal to";
         }
       };
+
+  private static double checkedToDouble(Number expected) {
+    checkNotNull(expected);
+    checkArgument(
+        expected instanceof Double
+            || expected instanceof Float
+            || expected instanceof Integer
+            || expected instanceof Long,
+        "Expected value in assertion using exact double equality was of unsupported type %s "
+            + "(it may not have an exact double representation)",
+        expected.getClass());
+    if (expected instanceof Long) {
+      checkArgument(
+          Math.abs((Long) expected) <= 1L << 53,
+          "Expected value %s in assertion using exact double equality was a long with an absolute "
+              + "value greater than 2^52 which has no exact double representation",
+          expected);
+    }
+    return expected.doubleValue();
+  }
 
   /**
    * Starts a method chain for a test proposition in which the actual values (i.e. the elements of
@@ -376,6 +397,12 @@ public final class PrimitiveDoubleArraySubject
    * <pre>   {@code
    * assertThat(actualDoubleArray).usingExactEquality().contains(3.14159);}</pre>
    *
+   * <p>For convenience, some subsequent methods accept expected values as {@link Number} instances.
+   * These numbers must be either of type {@link Double}, {@link Float}, {@link Integer}, or
+   * {@link Long}, and if they are {@link Long} then their absolute values must not exceed 2^53
+   * which is just over 9e15. (This restriction ensures that the expected values have exact
+   * {@link Double} representations: using exact equality makes no sense if they do not.)
+   *
    * <ul>
    *   <li>It considers {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, and
    *       {@link Double#NaN} to be equal to themselves.
@@ -384,7 +411,7 @@ public final class PrimitiveDoubleArraySubject
    *       expected {@link Double} instance is null.
    * </ul>
    */
-  public IterableSubject.UsingCorrespondence<Double, Double> usingExactEquality() {
+  public IterableSubject.UsingCorrespondence<Double, Number> usingExactEquality() {
     return new IterableSubject(failureStrategy, listRepresentation())
         .comparingElementsUsing(EXACT_EQUALITY_CORRESPONDENCE);
   }
