@@ -333,12 +333,12 @@ public final class PrimitiveFloatArraySubject
    * <li>It does not consider values to correspond if either value is infinite or NaN.
    * <li>It considers {@code -0.0f} to be within any tolerance of {@code 0.0f}.
    * <li>The expected values provided later in the chain will be {@link Number} instances which will
-   *     be converted to doubles, which may result in a loss of precision for some numeric types.
+   *     be converted to floats, which may result in a loss of precision for some numeric types.
    * <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
    *     expected {@link Number} instance is null.
    * </ul>
    *
-   * @param tolerance an inclusive upper bound on the difference between the double values of the
+   * @param tolerance an inclusive upper bound on the difference between the float values of the
    *     actual and expected numbers, which must be a non-negative finite value, i.e. not {@link
    *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
@@ -364,9 +364,13 @@ public final class PrimitiveFloatArraySubject
   private static float checkedToFloat(Number expected) {
     checkNotNull(expected);
     checkArgument(
+        !(expected instanceof Double),
+        "Expected value in assertion using exact float equality was a double, which is not "
+            + "supported as a double may not have an exact float representation");
+    checkArgument(
         expected instanceof Float || expected instanceof Integer || expected instanceof Long,
-        "Expected value in assertion using exact double equality was of unsupported type %s "
-            + "(it may not have an exact double representation)",
+        "Expected value in assertion using exact float equality was of unsupported type %s "
+            + "(it may not have an exact float representation)",
         expected.getClass());
     if (expected instanceof Integer) {
       checkArgument(

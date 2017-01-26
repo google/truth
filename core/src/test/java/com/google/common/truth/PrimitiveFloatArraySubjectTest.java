@@ -1204,9 +1204,8 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "Expected value in assertion using exact double equality was of unsupported type "
-                  + Double.class
-                  + " (it may not have an exact double representation)");
+              "Expected value in assertion using exact float equality was a double, which is not "
+                  + "supported as a double may not have an exact float representation");
     }
     // Expected value is BigInteger - not supported
     try {
@@ -1215,9 +1214,9 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "Expected value in assertion using exact double equality was of unsupported type "
+              "Expected value in assertion using exact float equality was of unsupported type "
                   + BigInteger.class
-                  + " (it may not have an exact double representation)");
+                  + " (it may not have an exact float representation)");
     }
     // Expected value is BigDecimal - not supported
     try {
@@ -1226,9 +1225,9 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(expected)
       .hasMessageThat()
       .isEqualTo(
-          "Expected value in assertion using exact double equality was of unsupported type "
+          "Expected value in assertion using exact float equality was of unsupported type "
               + BigDecimal.class
-              + " (it may not have an exact double representation)");
+              + " (it may not have an exact float representation)");
     }
   }
 
