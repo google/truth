@@ -80,7 +80,7 @@ assertThatBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING).isT
 assertThatBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING).isFalse();
 ```
 
-**In general, please avoid helper methods that return Truth subjects**
+**In general, please avoid helper methods that return Truth subjects.**
 
 Instead, return the *value-under-test* from your helper method:
 
@@ -97,6 +97,17 @@ private static boolean getBooleanWpcs(
 ```java
 assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING)).isTrue();
 assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING)).isFalse();
+```
+
+...or even go one step further and extract the value under test into a local
+variable:
+
+```java
+boolean generalCategoryFilter = getBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING);
+assertThat(generalCategoryFilter).isTrue();
+
+boolean categoryFilter = getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING);
+assertThat(categoryFilter).isFalse();
 ```
 
 A tell-tale sign that you might be violating this anti-pattern is if you are
