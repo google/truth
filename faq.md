@@ -82,7 +82,7 @@ assertThatBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING).isFalse();
 
 **In general, please avoid helper methods that return Truth subjects.**
 
-Instead, return the *value-under-test* from your helper method:
+Instead, return the *object-under-test* from your helper method:
 
 ```java
 private static boolean getBooleanWpcs(
@@ -99,7 +99,7 @@ assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_GENERAL_CATEGORY_FILTERING)
 assertThat(getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING)).isFalse();
 ```
 
-...or even go one step further and extract the value under test into a local
+...or even go one step further and extract the *object-under-test* into a local
 variable:
 
 ```java
@@ -110,10 +110,10 @@ boolean categoryFilter = getBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILT
 assertThat(categoryFilter).isFalse();
 ```
 
-A tell-tale sign that you might be violating this anti-pattern is if you are
+A tell-tale sign that you might be violating this anti-pattern is if you're
 importing a built-in Truth subject (e.g., `import
 com.google.common.truth.BooleanSubject`). Instead of passing a Truth subject
-around, you should be passing your *value-under-test*.
+around, you should be passing your *object-under-test*.
 
 Note that this is just a guideline, not a hard and fast rule. If you're
 including a failure message or configuring parameters on a subject (e.g.
