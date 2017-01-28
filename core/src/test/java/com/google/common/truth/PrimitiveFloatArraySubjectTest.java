@@ -1151,6 +1151,181 @@ public class PrimitiveFloatArraySubjectTest {
   }
 
   @Test
+  public void usingTolerance_containsAllOf_primitiveFloatArray_success() {
+    assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsAllOf(array(2.0f, 1.0f));
+  }
+
+  @Test
+  public void usingTolerance_containsAllOf_primitiveFloatArray_failure() {
+    float justOverTwoPlusTolerance = nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
+    try {
+      assertThat(array(1.0f, justOverTwoPlusTolerance, 3.0f))
+          .usingTolerance(DEFAULT_TOLERANCE)
+          .containsAllOf(array(2.0f, 99.99f));
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, "
+                  + justOverTwoPlusTolerance
+                  + ", 3.0]> contains at least one element that is a finite number "
+                  + "within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of each element of <[2.0, 99.99]>. It is missing an element that is a finite "
+                  + "number within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of <99.99>");
+    }
+  }
+
+  @Test
+  public void usingTolerance_containsAllOf_primitiveFloatArray_inOrder_success() {
+    assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsAllOf(array(1.0f, 2.0f))
+        .inOrder();
+  }
+
+  @Test
+  public void usingTolerance_containsAllOf_primitiveFloatArray_inOrder_failure() {
+    float justOverTwoPlusTolerance = nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
+    try {
+      assertThat(array(1.0f, justOverTwoPlusTolerance, 3.0f))
+          .usingTolerance(DEFAULT_TOLERANCE)
+          .containsAllOf(array(2.0f, 1.0f))
+          .inOrder();
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, "
+                  + justOverTwoPlusTolerance
+                  + ", 3.0]> contains, in order, at least one element that is a finite number "
+                  + "within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of each element of <[2.0, 1.0]>");
+    }
+  }
+
+  @Test
+  public void usingTolerance_containsAnyOf_primitiveFloatArray_success() {
+    assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsAnyOf(array(99.99f, 2.0f));
+  }
+
+  @Test
+  public void usingTolerance_containsAnyOf_primitiveFloatArray_failure() {
+    float justOverTwoPlusTolerance = nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
+    try {
+      assertThat(array(1.0f, justOverTwoPlusTolerance, 3.0f))
+          .usingTolerance(DEFAULT_TOLERANCE)
+          .containsAnyOf(array(99.99f, 999.999f));
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, "
+                  + justOverTwoPlusTolerance
+                  + ", 3.0]> contains at least one element that is a finite number within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of any element in <[99.99, 999.999]>");
+    }
+  }
+
+  @Test
+  public void usingTolerance_containsExactly_primitiveFloatArray_success() {
+    assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsExactly(array(2.0f, 1.0f, 3.0f));
+  }
+
+  @Test
+  public void usingTolerance_containsExactly_primitiveFloatArray_failure() {
+    float justOverTwoPlusTolerance = nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
+    try {
+      assertThat(array(1.0f, justOverTwoPlusTolerance, 3.0f))
+          .usingTolerance(DEFAULT_TOLERANCE)
+          .containsExactly(array(2.0f, 1.0f));
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, "
+                  + justOverTwoPlusTolerance
+                  + ", 3.0]> contains exactly one element that is a finite number within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of each element of <[2.0, 1.0]>. It has unexpected elements <[3.0]>");
+    }
+  }
+
+  @Test
+  public void usingTolerance_containsExactly_primitiveFloatArray_inOrder_success() {
+    assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsExactly(array(1.0f, 2.0f, 3.0f))
+        .inOrder();
+  }
+
+  @Test
+  public void usingTolerance_containsExactly_primitiveFloatArray_inOrder_failure() {
+    float justOverTwoPlusTolerance = nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
+    try {
+      assertThat(array(1.0f, justOverTwoPlusTolerance, 3.0f))
+          .usingTolerance(DEFAULT_TOLERANCE)
+          .containsExactly(array(2.0f, 1.0f, 3.0f))
+          .inOrder();
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, "
+                  + justOverTwoPlusTolerance
+                  + ", 3.0]> contains, in order, exactly one element that is a finite number "
+                  + "within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of each element of <[2.0, 1.0, 3.0]>");
+    }
+  }
+
+  @Test
+  public void usingTolerance_containsNoneOf_primitiveFloatArray_success() {
+    assertThat(array(1.0f, nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsNoneOf(array(99.99f, 999.999f));
+  }
+
+  @Test
+  public void usingTolerance_containsNoneOf_primitiveFloatArray_failure() {
+    float justOverTwoPlusTolerance = nextAfter(2.0f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
+    try {
+      assertThat(array(1.0f, justOverTwoPlusTolerance, 3.0f))
+          .usingTolerance(DEFAULT_TOLERANCE)
+          .containsNoneOf(array(99.99f, 2.0f));
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, "
+                  + justOverTwoPlusTolerance
+                  + ", 3.0]> contains no element that is a finite number within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of any element in <[99.99, 2.0]>. It contains at least one element that is a "
+                  + "finite number within "
+                  + (double) DEFAULT_TOLERANCE
+                  + " of each of <[2.0]>");
+    }
+  }
+
+  @Test
   public void usingExactEquality_contains_success() {
     assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(2.0f);
   }
@@ -1262,6 +1437,140 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(null);
       fail("Expected NullPointerException to be thrown but wasn't");
     } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void usingExactEquality_containsAllOf_primitiveFloatArray_success() {
+    assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().containsAllOf(array(2.0f, 1.0f));
+  }
+
+  @Test
+  public void usingExactEquality_containsAllOf_primitiveFloatArray_failure() {
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().containsAllOf(array(2.0f, 99.99f));
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, 2.0, 3.0]> contains at least one element that is exactly equal "
+                  + "to each element of <[2.0, 99.99]>. It is missing an element that is exactly "
+                  + "equal to <99.99>");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_containsAllOf_primitiveFloatArray_inOrder_success() {
+    assertThat(array(1.0f, 2.0f, 3.0f))
+        .usingExactEquality()
+        .containsAllOf(array(1.0f, 2.0f))
+        .inOrder();
+  }
+
+  @Test
+  public void usingExactEquality_containsAllOf_primitiveFloatArray_inOrder_failure() {
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f))
+          .usingExactEquality()
+          .containsAllOf(array(2.0f, 1.0f))
+          .inOrder();
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, 2.0, 3.0]> contains, in order, at least one element that is "
+                  + "exactly equal to each element of <[2.0, 1.0]>");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_containsAnyOf_primitiveFloatArray_success() {
+    assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().containsAnyOf(array(99.99f, 2.0f));
+  }
+
+  @Test
+  public void usingExactEquality_containsAnyOf_primitiveFloatArray_failure() {
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f))
+          .usingExactEquality()
+          .containsAnyOf(array(99.99f, 999.999f));
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, 2.0, 3.0]> contains at least one element that is exactly equal "
+                  + "to any element in <[99.99, 999.999]>");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_containsExactly_primitiveFloatArray_success() {
+    assertThat(array(1.0f, 2.0f, 3.0f))
+        .usingExactEquality()
+        .containsExactly(array(2.0f, 1.0f, 3.0f));
+  }
+
+  @Test
+  public void usingExactEquality_containsExactly_primitiveFloatArray_failure() {
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().containsExactly(array(2.0f, 1.0f));
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, 2.0, 3.0]> contains exactly one element that is exactly equal "
+                  + "to each element of <[2.0, 1.0]>. It has unexpected elements <[3.0]>");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_containsExactly_primitiveFloatArray_inOrder_success() {
+    assertThat(array(1.0f, 2.0f, 3.0f))
+        .usingExactEquality()
+        .containsExactly(array(1.0f, 2.0f, 3.0f))
+        .inOrder();
+  }
+
+  @Test
+  public void usingExactEquality_containsExactly_primitiveFloatArray_inOrder_failure() {
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f))
+          .usingExactEquality()
+          .containsExactly(array(2.0f, 1.0f, 3.0f))
+          .inOrder();
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, 2.0, 3.0]> contains, in order, exactly one element that is "
+                  + "exactly equal to each element of <[2.0, 1.0, 3.0]>");
+    }
+  }
+
+  @Test
+  public void usingExactEquality_containsNoneOf_primitiveFloatArray_success() {
+    assertThat(array(1.0f, 2.0f, 3.0f))
+        .usingExactEquality()
+        .containsNoneOf(array(99.99f, 999.999f));
+  }
+
+  @Test
+  public void usingExactEquality_containsNoneOf_primitiveFloatArray_failure() {
+    try {
+      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().containsNoneOf(array(99.99f, 2.0f));
+      fail("Expected AssertionError to be thrown but wasn't");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1.0, 2.0, 3.0]> contains no element that is exactly equal to any "
+                  + "element in <[99.99, 2.0]>. It contains at least one element that is exactly "
+                  + "equal to each of <[2.0]>");
     }
   }
 

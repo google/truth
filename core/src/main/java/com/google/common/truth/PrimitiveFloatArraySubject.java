@@ -25,6 +25,7 @@ import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Floats;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -330,21 +331,21 @@ public final class PrimitiveFloatArraySubject
    * assertThat(actualFloatArray).usingTolerance(1.0e-5f).contains(3.14159f);}</pre>
    *
    * <ul>
-   * <li>It does not consider values to correspond if either value is infinite or NaN.
-   * <li>It considers {@code -0.0f} to be within any tolerance of {@code 0.0f}.
-   * <li>The expected values provided later in the chain will be {@link Number} instances which will
-   *     be converted to floats, which may result in a loss of precision for some numeric types.
-   * <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
-   *     expected {@link Number} instance is null.
+   *   <li>It does not consider values to correspond if either value is infinite or NaN.
+   *   <li>It considers {@code -0.0f} to be within any tolerance of {@code 0.0f}.
+   *   <li>The expected values provided later in the chain will be {@link Number} instances which
+   *       will be converted to floats, which may result in a loss of precision for some numeric
+   *       types.
+   *   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
+   *       expected {@link Number} instance is null.
    * </ul>
    *
    * @param tolerance an inclusive upper bound on the difference between the float values of the
    *     actual and expected numbers, which must be a non-negative finite value, i.e. not {@link
    *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
-  public IterableSubject.UsingCorrespondence<Number, Number> usingTolerance(float tolerance) {
-    return new IterableSubject(failureStrategy, listRepresentation())
-        .comparingElementsUsing(tolerance(tolerance));
+  public FloatArrayAsIterable usingTolerance(double tolerance) {
+    return new FloatArrayAsIterable(tolerance(tolerance), check().that(listRepresentation()));
   }
 
   private static final Correspondence<Float, Number> EXACT_EQUALITY_CORRESPONDENCE =
@@ -393,10 +394,10 @@ public final class PrimitiveFloatArraySubject
    * Starts a method chain for a test proposition in which the actual values (i.e. the elements of
    * the array under test) are compared to expected elements using a {@link Correspondence} which
    * considers values to correspond if they are exactly equal, with equality defined by {@link
-   * Float#equals}. This method is <i>not</i> recommended when the code under test is doing any
-   * kind of arithmetic: use {@link #usingTolerance} with a suitable tolerance in that case.
-   * (Remember that the exact result of floating point arithmetic is sensitive to apparently trivial
-   * changes such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
+   * Float#equals}. This method is <i>not</i> recommended when the code under test is doing any kind
+   * of arithmetic: use {@link #usingTolerance} with a suitable tolerance in that case. (Remember
+   * that the exact result of floating point arithmetic is sensitive to apparently trivial changes
+   * such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
    * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
    * of precision for the intermediate result.) This method is recommended when the code under test
    * is specified as either copying a value without modification from its input or returning a
@@ -412,15 +413,56 @@ public final class PrimitiveFloatArraySubject
    * representations: using exact equality makes no sense if they do not.)
    *
    * <ul>
-   *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and
-   *       {@link Float#NaN} to be equal to themselves.
+   *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and {@link
+   *       Float#NaN} to be equal to themselves.
    *   <li>It does <i>not</i> consider {@code -0.0f} to be equal to {@code 0.0f}.
    *   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
    *       expected {@link Float} instance is null.
    * </ul>
    */
-  public IterableSubject.UsingCorrespondence<Float, Number> usingExactEquality() {
-    return new IterableSubject(failureStrategy, listRepresentation())
-        .comparingElementsUsing(EXACT_EQUALITY_CORRESPONDENCE);
+  public FloatArrayAsIterable usingExactEquality() {
+    return new FloatArrayAsIterable(
+        EXACT_EQUALITY_CORRESPONDENCE, check().that(listRepresentation()));
+  }
+
+  /**
+   * A partially specified proposition for doing assertions on the array similar to the assertions
+   * supported for {@link Iterable} subjects, in which the elements of the array under test are
+   * compared to expected elements using either exact or tolerant float equality: see {@link
+   * #usingExactEquality} and {@link #usingTolerance}. Call methods on this object to actually
+   * execute the proposition.
+   *
+   * <p>In the exact equality case, the methods on this class which take {@link Number} arguments
+   * only accept certain instances: again, see {@link #usingExactEquality} for details.
+   */
+  public static final class FloatArrayAsIterable
+      extends IterableSubject.UsingCorrespondence<Float, Number> {
+
+    FloatArrayAsIterable(
+        Correspondence<? super Float, Number> correspondence, IterableSubject subject) {
+      subject.super(correspondence);
+    }
+
+    /** As {@link #containsAllOf(Number, Number, Number...)} but taking a primitive float array. */
+    @CanIgnoreReturnValue
+    public Ordered containsAllOf(float[] expected) {
+      return containsAllIn(Floats.asList(expected));
+    }
+
+    /** As {@link #containsAnyOf(Number, Number, Number...)} but taking a primitive float array. */
+    public void containsAnyOf(float[] expected) {
+      containsAnyIn(Floats.asList(expected));
+    }
+
+    /** As {@link #containsExactly(Number...)} but taking a primitive float array. */
+    @CanIgnoreReturnValue
+    public Ordered containsExactly(float[] expected) {
+      return containsExactlyElementsIn(Floats.asList(expected));
+    }
+
+    /** As {@link #containsNoneOf(Number, Number, Number...)} but taking a primitive float array. */
+    public void containsNoneOf(float[] excluded) {
+      containsNoneIn(Floats.asList(excluded));
+    }
   }
 }

@@ -1288,7 +1288,8 @@ public class PrimitiveDoubleArraySubjectTest {
           .isEqualTo(
               "Not true that <[1.0, "
                   + justOverTwoPlusTolerance
-                  + ", 3.0]> contains, in order, exactly one element that is a finite number within "
+                  + ", 3.0]> contains, in order, exactly one element that is a finite number "
+                  + "within "
                   + DEFAULT_TOLERANCE
                   + " of each element of <[2.0, 1.0, 3.0]>");
     }
