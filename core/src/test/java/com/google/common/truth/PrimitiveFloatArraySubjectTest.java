@@ -45,7 +45,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isEqualTo_Default_Fail() {
     try {
       assertThat(array(2.2f, 5.4f)).isEqualTo(array(2.2f, 5.4f));
-      throw new Error("Expected to throw.");
+      fail("Expected UnsupportedOperationException to be thrown");
     } catch (UnsupportedOperationException expected) {
     }
   }
@@ -70,7 +70,7 @@ public class PrimitiveFloatArraySubjectTest {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
     try {
       assertThat(array(2.2f, 3.3f)).isEqualTo(array(2.2f, roughly3point3), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -84,7 +84,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isEqualTo_Fail_DifferentOrder() {
     try {
       assertThat(array(2.2f, 3.3f)).isEqualTo(array(3.3f, 2.2f), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -97,7 +97,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isEqualTo_Fail_Longer() {
     try {
       assertThat(array(2.2f, 3.3f)).isEqualTo(array(2.2f, 3.3f, 1.1f), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -111,7 +111,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isEqualTo_Fail_Shorter() {
     try {
       assertThat(array(2.2f, 3.3f)).isEqualTo(array(2.2f), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -124,7 +124,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isEqualTo_Fail_NotAnArray() {
     try {
       assertThat(array(2.2f, 3.3f, 4.4f)).isEqualTo(new Object(), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -138,7 +138,7 @@ public class PrimitiveFloatArraySubjectTest {
     try {
       assertThat(array(2.2f, POSITIVE_INFINITY))
           .isEqualTo(array(2.2f, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -158,7 +158,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isEqualTo_Fail_OneInfinity() {
     try {
       assertThat(array(2.2f, 3.3f)).isEqualTo(array(2.2f, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -171,7 +171,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isEqualTo_Fail_LongerOneInfinity() {
     try {
       assertThat(array(2.2f, 3.3f)).isEqualTo(array(POSITIVE_INFINITY), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -184,7 +184,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isEqualTo_Fail_NaN() {
     try {
       assertThat(array(NaN)).isEqualTo(array(NaN), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -197,7 +197,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isNotEqualTo_Default_Fail() {
     try {
       assertThat(array(2.2f, 5.4f)).isNotEqualTo(array(5.4f, 2.2f));
-      throw new Error("Expected to throw.");
+      fail("Expected UnsupportedOperationException to be thrown");
     } catch (UnsupportedOperationException expected) {
     }
   }
@@ -231,7 +231,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void isNotEqualTo_FailEquals() {
     try {
       assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, 3.3f), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -245,7 +245,7 @@ public class PrimitiveFloatArraySubjectTest {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     try {
       assertThat(array(2.2f, 3.3f)).isNotEqualTo(array(2.2f, roughly3point3), DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -267,7 +267,7 @@ public class PrimitiveFloatArraySubjectTest {
     try {
       float[] same = array(2.2f, 3.3f);
       assertThat(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -288,7 +288,7 @@ public class PrimitiveFloatArraySubjectTest {
     try {
       float[] same = array(2.2f, POSITIVE_INFINITY);
       assertThat(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -331,7 +331,7 @@ public class PrimitiveFloatArraySubjectTest {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
     try {
       assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2f, roughly3point3);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -346,7 +346,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesWithinOf_Fail_DifferentOrder() {
     try {
       assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(3.3f, 2.2f);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -360,7 +360,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesWithinOf_Fail_Longer() {
     try {
       assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2f, 3.3f, 1.1f);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -374,7 +374,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesWithinOf_Fail_Shorter() {
     try {
       assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2f);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -390,7 +390,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, POSITIVE_INFINITY))
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .of(2.2f, POSITIVE_INFINITY);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -405,7 +405,7 @@ public class PrimitiveFloatArraySubjectTest {
     float[] same = array(2.2f, POSITIVE_INFINITY);
     try {
       assertThat(same).hasValuesWithin(DEFAULT_TOLERANCE).of(same);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -419,7 +419,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesWithinOf_Fail_OneInfinity() {
     try {
       assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2f, POSITIVE_INFINITY);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -433,7 +433,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesWithinOf_Fail_LongerOneInfinity() {
     try {
       assertThat(array(2.2f, 3.3f)).hasValuesWithin(DEFAULT_TOLERANCE).of(POSITIVE_INFINITY);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -447,7 +447,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesWithinOf_Fail_NaN() {
     try {
       assertThat(array(NaN)).hasValuesWithin(DEFAULT_TOLERANCE).of(NaN);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -462,7 +462,7 @@ public class PrimitiveFloatArraySubjectTest {
     float[] nullArray = null;
     try {
       assertThat(nullArray).hasValuesWithin(DEFAULT_TOLERANCE).of(3.3f, 2.2f);
-      throw new Error("Expected to throw.");
+      fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -472,7 +472,7 @@ public class PrimitiveFloatArraySubjectTest {
     float[] nullArray = null;
     try {
       assertThat(array(3.3f, 2.2f)).hasValuesWithin(DEFAULT_TOLERANCE).of(nullArray);
-      throw new Error("Expected to throw.");
+      fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -481,7 +481,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesWithinOf_NegativeTolerance() {
     try {
       assertThat(array(3.3f, 2.2f)).hasValuesWithin(-0.001f).of(3.3f, 2.2f);
-      throw new Error("Expected to throw.");
+      fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
@@ -522,7 +522,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(2.2f, roughly3point3));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -539,7 +539,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(3.3f, 2.2f));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -555,7 +555,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(2.2f, 3.3f, 1.1f));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -571,7 +571,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(2.2f));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -587,7 +587,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, POSITIVE_INFINITY))
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(2.2f, POSITIVE_INFINITY));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -603,7 +603,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(2.2f, POSITIVE_INFINITY));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -619,7 +619,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(POSITIVE_INFINITY));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -633,7 +633,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesWithinOfElementsIn_Fail_NaN() {
     try {
       assertThat(array(NaN)).hasValuesWithin(DEFAULT_TOLERANCE).ofElementsIn(Floats.asList(NaN));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -650,7 +650,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(nullArray)
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(3.3f, 2.2f));
-      throw new Error("Expected to throw.");
+      fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -660,7 +660,7 @@ public class PrimitiveFloatArraySubjectTest {
     Iterable<Number> nullIterable = null;
     try {
       assertThat(array(3.3f, 2.2f)).hasValuesWithin(DEFAULT_TOLERANCE).ofElementsIn(nullIterable);
-      throw new Error("Expected to throw.");
+      fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -671,7 +671,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(3.3f, 2.2f))
           .hasValuesWithin(-0.001f)
           .ofElementsIn(Floats.asList(3.3f, 2.2f));
-      throw new Error("Expected to throw.");
+      fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
@@ -694,7 +694,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesNotWithinOf_FailEquals() {
     try {
       assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(2.2f, 3.3f);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -709,7 +709,7 @@ public class PrimitiveFloatArraySubjectTest {
     float roughly3point3 = nextAfter(3.3f + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     try {
       assertThat(array(2.2f, 3.3f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(2.2f, roughly3point3);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -734,7 +734,7 @@ public class PrimitiveFloatArraySubjectTest {
     try {
       float[] same = array(2.2f, 3.3f);
       assertThat(same).hasValuesNotWithin(DEFAULT_TOLERANCE).of(same);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -750,7 +750,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, POSITIVE_INFINITY))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .of(2.2f, POSITIVE_INFINITY);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -766,7 +766,7 @@ public class PrimitiveFloatArraySubjectTest {
     try {
       float[] same = array(2.2f, POSITIVE_INFINITY);
       assertThat(same).hasValuesNotWithin(DEFAULT_TOLERANCE).of(same);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -783,7 +783,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .of(2.2f, POSITIVE_INFINITY);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -804,7 +804,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesNotWithinOf_Fail_NaN() {
     try {
       assertThat(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(NaN);
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -818,7 +818,7 @@ public class PrimitiveFloatArraySubjectTest {
     float[] nullArray = null;
     try {
       assertThat(nullArray).hasValuesNotWithin(DEFAULT_TOLERANCE).of(3.3f, 2.2f);
-      throw new Error("Expected to throw.");
+      fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -829,7 +829,7 @@ public class PrimitiveFloatArraySubjectTest {
     float[] nullArray = null;
     try {
       assertThat(array(3.3f, 2.2f)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(nullArray);
-      throw new Error("Expected to throw.");
+      fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -839,7 +839,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesNotWithinOf_NegativeTolerance() {
     try {
       assertThat(array(3.3f, 2.2f)).hasValuesNotWithin(-0.001f).of(3.3f, 2.2f);
-      throw new Error("Expected to throw.");
+      fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
@@ -884,7 +884,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(2.2f, 3.3f));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -901,7 +901,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(2.2f, roughly3point3));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -927,7 +927,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, POSITIVE_INFINITY))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(2.2f, POSITIVE_INFINITY));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -944,7 +944,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(2.2f, 3.3f))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(2.2f, POSITIVE_INFINITY));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -967,7 +967,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void hasValuesNotWithinOfElementsIn_Fail_NaN() {
     try {
       assertThat(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).ofElementsIn(Floats.asList(NaN));
-      throw new Error("Expected to throw.");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
@@ -983,7 +983,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(nullArray)
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Floats.asList(3.3f, 2.2f));
-      throw new Error("Expected to throw.");
+      fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -996,7 +996,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(3.3f, 2.2f))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(nullIterable);
-      throw new Error("Expected to throw.");
+      fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -1008,7 +1008,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(3.3f, 2.2f))
           .hasValuesNotWithin(-0.001f)
           .ofElementsIn(Floats.asList(3.3f, 2.2f));
-      throw new Error("Expected to throw.");
+      fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
@@ -1035,7 +1035,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(1.0f, justOverTwoPlusTolerance, 3.0f))
           .usingTolerance(DEFAULT_TOLERANCE)
           .contains(2.0f);
-      fail("Expected AssertionError to be thrown but wasn't");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1054,7 +1054,7 @@ public class PrimitiveFloatArraySubjectTest {
       assertThat(array(1.0f, POSITIVE_INFINITY, 3.0f))
           .usingTolerance(DEFAULT_TOLERANCE)
           .contains(POSITIVE_INFINITY);
-      fail("Expected AssertionError to be thrown but wasn't");
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1069,10 +1069,8 @@ public class PrimitiveFloatArraySubjectTest {
   @Test
   public void usingTolerance_contains_failureWithNaN() {
     try {
-      assertThat(array(1.0f, NaN, 3.0f))
-          .usingTolerance(DEFAULT_TOLERANCE)
-          .contains(NaN);
-      fail("Expected AssertionError to be thrown but wasn't");
+      assertThat(array(1.0f, NaN, 3.0f)).usingTolerance(DEFAULT_TOLERANCE).contains(NaN);
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1086,9 +1084,7 @@ public class PrimitiveFloatArraySubjectTest {
 
   @Test
   public void usingTolerance_contains_successWithNegativeZero() {
-    assertThat(array(1.0f, -0.0f, 3.0f))
-        .usingTolerance(0.0f)
-        .contains(0.0f);
+    assertThat(array(1.0f, -0.0f, 3.0f)).usingTolerance(0.0f).contains(0.0f);
   }
 
   @Test
@@ -1353,6 +1349,7 @@ public class PrimitiveFloatArraySubjectTest {
     assertThat(array(1.0f, 1 << 24, 3.0f)).usingExactEquality().contains(1 << 24);
     try {
       assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains((1 << 24) + 1);
+      fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1365,6 +1362,7 @@ public class PrimitiveFloatArraySubjectTest {
     assertThat(array(1.0f, 1 << 24, 3.0f)).usingExactEquality().contains(1L << 24);
     try {
       assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains((1L << 24) + 1L);
+      fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1375,6 +1373,7 @@ public class PrimitiveFloatArraySubjectTest {
     // Expected value is Double - not supported
     try {
       assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(2.0);
+      fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1385,6 +1384,7 @@ public class PrimitiveFloatArraySubjectTest {
     // Expected value is BigInteger - not supported
     try {
       assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(BigInteger.valueOf(2));
+      fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1396,13 +1396,14 @@ public class PrimitiveFloatArraySubjectTest {
     // Expected value is BigDecimal - not supported
     try {
       assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(BigDecimal.valueOf(2.0));
+      fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
-      .hasMessageThat()
-      .isEqualTo(
-          "Expected value in assertion using exact float equality was of unsupported type "
-              + BigDecimal.class
-              + " (it may not have an exact float representation)");
+          .hasMessageThat()
+          .isEqualTo(
+              "Expected value in assertion using exact float equality was of unsupported type "
+                  + BigDecimal.class
+                  + " (it may not have an exact float representation)");
     }
   }
 
@@ -1422,6 +1423,7 @@ public class PrimitiveFloatArraySubjectTest {
   public void usingExactEquality_contains_failureWithNegativeZero() {
     try {
       assertThat(array(1.0f, -0.0f, 3.0f)).usingExactEquality().contains(0.0f);
+      fail("Expected AssertionError to be thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
