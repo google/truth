@@ -16,6 +16,7 @@
 
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
@@ -24,6 +25,7 @@ import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Doubles;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -329,29 +331,29 @@ public final class PrimitiveDoubleArraySubject
    * assertThat(actualDoubleArray).usingTolerance(1.0e-5).contains(3.14159);}</pre>
    *
    * <ul>
-   * <li>It does not consider values to correspond if either value is infinite or NaN.
-   * <li>It considers {@code -0.0} to be within any tolerance of {@code 0.0}.
-   * <li>The expected values provided later in the chain will be {@link Number} instances which will
-   *     be converted to doubles, which may result in a loss of precision for some numeric types.
-   * <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
-   *     expected {@link Number} instance is null.
+   *   <li>It does not consider values to correspond if either value is infinite or NaN.
+   *   <li>It considers {@code -0.0} to be within any tolerance of {@code 0.0}.
+   *   <li>The expected values provided later in the chain will be {@link Number} instances which
+   *       will be converted to doubles, which may result in a loss of precision for some numeric
+   *       types.
+   *   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
+   *       expected {@link Number} instance is null.
    * </ul>
    *
    * @param tolerance an inclusive upper bound on the difference between the double values of the
    *     actual and expected numbers, which must be a non-negative finite value, i.e. not {@link
    *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
-  public IterableSubject.UsingCorrespondence<Number, Number> usingTolerance(double tolerance) {
-    return new IterableSubject(failureStrategy, listRepresentation())
-        .comparingElementsUsing(tolerance(tolerance));
+  public DoubleArrayAsIterable usingTolerance(double tolerance) {
+    return new DoubleArrayAsIterable(tolerance(tolerance), check().that(listRepresentation()));
   }
 
-  private static final Correspondence<Double, Double> EXACT_EQUALITY_CORRESPONDENCE =
-      new Correspondence<Double, Double>() {
+  private static final Correspondence<Double, Number> EXACT_EQUALITY_CORRESPONDENCE =
+      new Correspondence<Double, Number>() {
 
         @Override
-        public boolean compare(Double actual, Double expected) {
-          return actual.equals(checkNotNull(expected));
+        public boolean compare(Double actual, Number expected) {
+          return actual.equals(checkedToDouble(expected));
         }
 
         @Override
@@ -359,6 +361,26 @@ public final class PrimitiveDoubleArraySubject
           return "is exactly equal to";
         }
       };
+
+  private static double checkedToDouble(Number expected) {
+    checkNotNull(expected);
+    checkArgument(
+        expected instanceof Double
+            || expected instanceof Float
+            || expected instanceof Integer
+            || expected instanceof Long,
+        "Expected value in assertion using exact double equality was of unsupported type %s "
+            + "(it may not have an exact double representation)",
+        expected.getClass());
+    if (expected instanceof Long) {
+      checkArgument(
+          Math.abs((Long) expected) <= 1L << 53,
+          "Expected value %s in assertion using exact double equality was a long with an absolute "
+              + "value greater than 2^52 which has no exact double representation",
+          expected);
+    }
+    return expected.doubleValue();
+  }
 
   /**
    * Starts a method chain for a test proposition in which the actual values (i.e. the elements of
@@ -376,6 +398,12 @@ public final class PrimitiveDoubleArraySubject
    * <pre>   {@code
    * assertThat(actualDoubleArray).usingExactEquality().contains(3.14159);}</pre>
    *
+   * <p>For convenience, some subsequent methods accept expected values as {@link Number} instances.
+   * These numbers must be either of type {@link Double}, {@link Float}, {@link Integer}, or {@link
+   * Long}, and if they are {@link Long} then their absolute values must not exceed 2^53 which is
+   * just over 9e15. (This restriction ensures that the expected values have exact {@link Double}
+   * representations: using exact equality makes no sense if they do not.)
+   *
    * <ul>
    *   <li>It considers {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, and
    *       {@link Double#NaN} to be equal to themselves.
@@ -384,8 +412,51 @@ public final class PrimitiveDoubleArraySubject
    *       expected {@link Double} instance is null.
    * </ul>
    */
-  public IterableSubject.UsingCorrespondence<Double, Double> usingExactEquality() {
-    return new IterableSubject(failureStrategy, listRepresentation())
-        .comparingElementsUsing(EXACT_EQUALITY_CORRESPONDENCE);
+  public DoubleArrayAsIterable usingExactEquality() {
+    return new DoubleArrayAsIterable(
+        EXACT_EQUALITY_CORRESPONDENCE, check().that(listRepresentation()));
+  }
+
+  /**
+   * A partially specified proposition for doing assertions on the array similar to the assertions
+   * supported for {@link Iterable} subjects, in which the elements of the array under test are
+   * compared to expected elements using either exact or tolerant double equality: see {@link
+   * #usingExactEquality} and {@link #usingTolerance}. Call methods on this object to actually
+   * execute the proposition.
+   *
+   * <p>In the exact equality case, the methods on this class which take {@link Number} arguments
+   * only accept certain instances: again, see {@link #usingExactEquality} for details.
+   */
+  public static final class DoubleArrayAsIterable
+      extends IterableSubject.UsingCorrespondence<Double, Number> {
+
+    DoubleArrayAsIterable(
+        Correspondence<? super Double, Number> correspondence, IterableSubject subject) {
+      subject.super(correspondence);
+    }
+
+    /** As {@link #containsAllOf(Number, Number, Number...)} but taking a primitive double array. */
+    @CanIgnoreReturnValue
+    public Ordered containsAllOf(double[] expected) {
+      return containsAllIn(Doubles.asList(expected));
+    }
+
+    /** As {@link #containsAnyOf(Number, Number, Number...)} but taking a primitive double array. */
+    public void containsAnyOf(double[] expected) {
+      containsAnyIn(Doubles.asList(expected));
+    }
+
+    /** As {@link #containsExactly(Number...)} but taking a primitive double array. */
+    @CanIgnoreReturnValue
+    public Ordered containsExactly(double[] expected) {
+      return containsExactlyElementsIn(Doubles.asList(expected));
+    }
+
+    /**
+     * As {@link #containsNoneOf(Number, Number, Number...)} but taking a primitive double array.
+     */
+    public void containsNoneOf(double[] excluded) {
+      containsNoneIn(Doubles.asList(excluded));
+    }
   }
 }

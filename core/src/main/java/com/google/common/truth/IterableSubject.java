@@ -572,18 +572,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * {@link Iterable} under test) are compared to expected elements using a {@link Correspondence}.
    * The expected elements are of type {@code E}. Call methods on this object to actually execute
    * the proposition.
-   *
-   * <p>The actual elements may alternatively be from an array of doubles or floats (see {@link
-   * PrimitiveDoubleArraySubject#usingTolerance} and {@link
-   * PrimitiveFloatArraySubject#usingTolerance}).
-   *
-   * <p>NOTE: This class is under construction and more methods will be added in future versions.
    */
-  public final class UsingCorrespondence<A, E> {
+  public class UsingCorrespondence<A, E> {
 
-    private final Correspondence<A, E> correspondence;
+    private final Correspondence<? super A, ? super E> correspondence;
 
-    private UsingCorrespondence(Correspondence<A, E> correspondence) {
+    UsingCorrespondence(Correspondence<? super A, ? super E> correspondence) {
       this.correspondence = checkNotNull(correspondence);
     }
 
