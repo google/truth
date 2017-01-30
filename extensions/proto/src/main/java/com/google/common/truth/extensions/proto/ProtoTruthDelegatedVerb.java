@@ -21,6 +21,7 @@ import com.google.common.truth.DelegatedVerbFactory;
 import com.google.common.truth.FailureStrategy;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
@@ -61,5 +62,10 @@ public final class ProtoTruthDelegatedVerb extends AbstractDelegatedVerb<ProtoTr
   public <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> that(
       @Nullable Iterable<M> messages) {
     return new IterableOfProtosSubject.IterableOfMessagesSubject<M>(failureStrategy, messages);
+  }
+
+  public <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> that(
+      @Nullable Map<K, M> map) {
+    return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<K, M>(failureStrategy, map);
   }
 }

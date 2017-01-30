@@ -20,9 +20,12 @@ import static com.google.common.truth.Truth.assertAbout;
 
 import com.google.common.truth.AbstractVerb;
 import com.google.common.truth.DelegatedVerbFactory;
+import com.google.common.truth.IterableSubject;
+import com.google.common.truth.MapSubject;
 import com.google.common.truth.SubjectFactory;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
@@ -43,14 +46,22 @@ public final class ProtoTruth {
     return ProtoTruthDelegatedVerb.factory();
   }
 
+  /** Assert on a single {@link MessageLite} instance. */
   public static LiteProtoSubject<?, MessageLite> assertThat(@Nullable MessageLite messageLite) {
     return assertAbout(protos()).that(messageLite);
   }
 
+  /** Assert on a single {@link Message} instance. */
   public static ProtoSubject<?, Message> assertThat(@Nullable Message message) {
     return assertAbout(protos()).that(message);
   }
 
+  /**
+   * Assert on a sequence of {@link Message}s.
+   *
+   * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
+   * comparison tests available on {@link IterableSubject#UsingCorrespondence}.
+   */
   // Note: We must specify M explicitly here. The presence of the type parameter makes this method
   // signature distinct from Truth.assertThat(Iterable<?>), and allows users to import both static
   // methods without conflict. If this method instead accepted Iterable<? extends Message>, this
@@ -59,6 +70,17 @@ public final class ProtoTruth {
   public static <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> assertThat(
       @Nullable Iterable<M> messages) {
     return assertAbout(protos()).that(messages);
+  }
+
+  /**
+   * Assert on a map with {@link Message} values.
+   *
+   * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
+   * comparison tests available on {@link MapSubject#UsingCorrespondence}.
+   */
+  public static <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> assertThat(
+      @Nullable Map<K, M> map) {
+    return assertAbout(protos()).that(map);
   }
 
   private ProtoTruth() {}

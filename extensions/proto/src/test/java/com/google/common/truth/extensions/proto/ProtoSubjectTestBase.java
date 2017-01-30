@@ -19,13 +19,16 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static org.junit.Assert.fail;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.truth.Expect;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
 import com.google.protobuf.TextFormat.ParseException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import org.junit.Rule;
@@ -125,9 +128,14 @@ public class ProtoSubjectTestBase {
     return expect.withFailureMessage(msg).about(ProtoTruth.protos()).that(message);
   }
 
-  protected final <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> expectThat(
+  protected final <M extends Message> IterableOfProtosSubject<?, M, ?> expectThat(
       Iterable<M> messages) {
     return expect.about(ProtoTruth.protos()).that(messages);
+  }
+
+  protected final <M extends Message> MapWithProtoValuesSubject<?, ?, M, ?> expectThat(
+      Map<?, M> map) {
+    return expect.about(ProtoTruth.protos()).that(map);
   }
 
   /**
@@ -184,7 +192,19 @@ public class ProtoSubjectTestBase {
     expect.that(t.getMessage()).doesNotContain(substr);
   }
 
-  protected static final <M extends Message> ImmutableList<M> listOf(M... messages) {
+  protected static final <M> ImmutableList<M> listOf(M... messages) {
     return ImmutableList.copyOf(messages);
+  }
+
+  @SuppressWarnings("unchecked")
+  protected static final <K, V> ImmutableMap<K, V> mapOf(K k0, V v0, Object... rest) {
+    Preconditions.checkArgument(rest.length % 2 == 0, "Uneven args: %s", rest.length);
+
+    ImmutableMap.Builder<K, V> builder = new ImmutableMap.Builder<K, V>();
+    builder.put(k0, v0);
+    for (int i = 0; i < rest.length; i += 2) {
+      builder.put((K) rest[i], (V) rest[i + 1]);
+    }
+    return builder.build();
   }
 }

@@ -282,7 +282,7 @@ public class IterableOfProtosSubject<
    * <p>Note that the {@code IterableOfProtosSubject} is designed to save you from having to write
    * your own {@link Correspondence}. The configuration methods, such as {@link
    * #ignoringRepeatedFieldOrder()} will construct a {@link Correspondence} under the hood which
-   * performs protobuf comparisions with {@link #ignoringRepeatedFieldOrder()}.
+   * performs protobuf comparisons with {@link #ignoringRepeatedFieldOrder()}.
    */
   public <A, E> IterableSubject.UsingCorrespondence<A, E> comparingElementsUsing(
       Correspondence<A, E> correspondence) {
@@ -462,9 +462,8 @@ public class IterableOfProtosSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   private IterableSubject.UsingCorrespondence<M, M> usingCorrespondence() {
-    return delegate()
-        .comparingElementsUsing(
-            config.<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(actual())));
+    return comparingElementsUsing(
+        config.<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(actual())));
   }
 
   // The UsingCorrespondence methods have conflicting erasure with default IterableSubject methods,

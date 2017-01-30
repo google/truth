@@ -22,6 +22,7 @@ import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -161,5 +162,69 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
 
     assertThat(altActualObjects).containsExactly(21 * 2, "Foo! Bar!".substring(0, 4));
     assertThat(altActualObjects).containsNoneOf(message1, message2);
+  }
+
+  @Test
+  public void testMapOverloads_assertAbout() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
+
+    assertAbout(protos()).that(mapOf(1, message1, 2, message2)).containsEntry(2, eqMessage2);
+  }
+
+  @Test
+  public void testMapOverloads_testMessages_normalMethods() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
+    Object object1 = message1;
+    Object object2 = message2;
+    ImmutableMap<Object, TestMessage2> actualMessages = mapOf(1, message1, 2, message2);
+
+    assertThat(actualMessages).containsExactly(1, message1, 2, message2).inOrder();
+    assertThat(actualMessages).containsExactly(1, object1, 2, object2).inOrder();
+    assertThat(actualMessages).hasSize(2);
+    assertThat(actualMessages).isEqualTo(mapOf(2, eqMessage2, 1, object1));
+    assertThat(actualMessages).isNotEqualTo(mapOf(1, object2, 2, object1));
+  }
+
+  @Test
+  public void testMapOverloads_testMessages_specializedMethods() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 message3 = parse("o_int: 3 r_string: \"baz\"");
+    TestMessage2 message4 = parse("o_int: 4 r_string: \"qux\"");
+    ImmutableMap<Integer, TestMessage2> actualMessages = mapOf(1, message1, 2, message2);
+
+    assertThat(actualMessages)
+        .ignoringFieldsForValues(getFieldNumber("o_int"), getFieldNumber("r_string"))
+        .containsExactly(1, message3, 2, message4)
+        .inOrder();
+  }
+
+  @Test
+  public void testMapOverloads_objects_actuallyMessages() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
+    Object object1 = message1;
+    Object object2 = message2;
+    ImmutableMap<String, Object> actualObjects = mapOf("a", object1, "b", object2);
+
+    assertThat(actualObjects).containsExactly("a", message1, "b", message2).inOrder();
+    assertThat(actualObjects).hasSize(2);
+    assertThat(actualObjects).containsEntry("b", eqMessage2);
+  }
+
+  @Test
+  public void testMapOverloads_objects_actuallyNotMessages() {
+    TestMessage2 message1 = TestMessage2.newBuilder().setOInt(1).addRString("foo").build();
+    TestMessage2 message2 = TestMessage2.newBuilder().setOInt(2).addRString("bar").build();
+    ImmutableMap<Object, Object> altActualObjects = mapOf("a", "Foo!", "b", 42);
+
+    assertThat(altActualObjects).containsExactly("a", "Foo! Bar!".substring(0, 4), "b", 21 * 2);
+    assertThat(altActualObjects).doesNotContainEntry("a", message1);
+    assertThat(altActualObjects).doesNotContainEntry("b", message2);
   }
 }

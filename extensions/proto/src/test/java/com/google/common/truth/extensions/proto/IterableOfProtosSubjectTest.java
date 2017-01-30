@@ -334,14 +334,18 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .containsAllIn(listOf(eqRepeatedMessage1, eqRepeatedMessage2));
 
     try {
-      assertThat(listOf(message1)).containsAllOf(eqMessage1, eqMessage2);
+      assertThat(listOf(message1))
+          .ignoringRepeatedFieldOrder()
+          .containsAllOf(eqMessage1, eqMessage2);
       expectedFailure();
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);
     }
 
     try {
-      assertThat(listOf(message1)).containsAllIn(listOf(eqMessage1, eqMessage2));
+      assertThat(listOf(message1))
+          .ignoringRepeatedFieldOrder()
+          .containsAllIn(listOf(eqMessage1, eqMessage2));
       expectedFailure();
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);
@@ -350,30 +354,25 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
 
   @Test
   public void testFluent_containsExactly() {
-    expectThat(listOf(message1, message2)).containsExactly(eqMessage2, eqMessage1);
-    expectThat(listOf(message1, message2)).containsExactly(eqMessage1, eqMessage2).inOrder();
     expectThat(listOf(message1, message2))
-        .containsExactlyElementsIn(listOf(eqMessage2, eqMessage1));
+        .ignoringFields(ignoreFieldNumber)
+        .containsExactly(eqIgnoredMessage2, eqIgnoredMessage1);
     expectThat(listOf(message1, message2))
-        .containsExactlyElementsIn(listOf(eqMessage1, eqMessage2))
+        .ignoringRepeatedFieldOrder()
+        .containsExactly(eqRepeatedMessage1, eqRepeatedMessage2)
+        .inOrder();
+    expectThat(listOf(message1, message2))
+        .ignoringFields(ignoreFieldNumber)
+        .containsExactlyElementsIn(listOf(eqIgnoredMessage2, eqIgnoredMessage1));
+    expectThat(listOf(message1, message2))
+        .ignoringRepeatedFieldOrder()
+        .containsExactlyElementsIn(listOf(eqRepeatedMessage1, eqRepeatedMessage2))
         .inOrder();
 
     try {
-      assertThat(listOf(message1)).containsExactly(eqMessage1, eqMessage2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
-
-    try {
-      assertThat(listOf(message1, message2)).containsExactly(eqMessage2, eqMessage1).inOrder();
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
-
-    try {
-      assertThat(listOf(message1)).containsExactlyElementsIn(listOf(eqMessage1, eqMessage2));
+      assertThat(listOf(message1))
+          .ignoringRepeatedFieldOrder()
+          .containsExactly(eqMessage1, eqMessage2);
       expectedFailure();
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);
@@ -381,6 +380,26 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(listOf(message1, message2))
+          .ignoringRepeatedFieldOrder()
+          .containsExactly(eqMessage2, eqMessage1)
+          .inOrder();
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+
+    try {
+      assertThat(listOf(message1))
+          .ignoringRepeatedFieldOrder()
+          .containsExactlyElementsIn(listOf(eqMessage1, eqMessage2));
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+
+    try {
+      assertThat(listOf(message1, message2))
+          .ignoringRepeatedFieldOrder()
           .containsExactlyElementsIn(listOf(eqMessage2, eqMessage1))
           .inOrder();
       expectedFailure();

@@ -19,21 +19,27 @@ import com.google.common.truth.Ordered;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
- * Fluent API to perform detailed, customizable comparison of iterables of protocol buffers. The
- * same comparison rules are applied to all pairs of protocol buffers which get compared.
+ * Fluent API to perform detailed, customizable comparison of maps containing protocol buffers as
+ * values. The same comparison rules are applied to all pairs of protocol buffers which get
+ * compared.
+ *
+ * <p>The <b>keys</b> of these maps are treated as ordinary objects, and keys which happen to be
+ * protocol buffers are not given special treatment. They are compared with {@link Object#equals()}
+ * and {@link Object#hashCode()} as documented by the {@link java.util.Map} interface.
  *
  * <p>Methods may be chained in any order, but the chain should terminate with a method that doesn't
- * return an IterableOfProtosFluentAssertion, such as {@link #containsExactly}, or {@link
- * #containsAnyIn}.
+ * return a {@code MapWithProtoValuesFluentAssertion}, such as {@link #containsExactly} or {@link
+ * #containsEntry}.
  *
- * <p>The state of an {@code IterableOfProtosFluentAssertion} object after each method is called is
- * left undefined. Users should not retain references to {@code IterableOfProtosFluentAssertion}
+ * <p>The state of a {@code MapWithProtoValuesFluentAssertion} object after each method is called is
+ * left undefined. Users should not retain references to {@code MapWithProtoValuesFluentAssertion}
  * instances.
  */
-public interface IterableOfProtosFluentAssertion<M extends Message> {
+public interface MapWithProtoValuesFluentAssertion<M extends Message> {
 
   /**
    * Specifies that the 'has' bit of individual fields should be ignored when comparing for
@@ -49,7 +55,7 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    * default value are indistinguishable from unset fields in proto 3. Proto 3 also eliminates
    * unknown fields, so this setting has no effect there either.
    */
-  IterableOfProtosFluentAssertion<M> ignoringFieldAbsence();
+  MapWithProtoValuesFluentAssertion<M> ignoringFieldAbsenceForValues();
 
   /**
    * Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
@@ -113,21 +119,21 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    * <p>This setting does not apply to map fields, for which field order is always ignored. The
    * serialization order of map fields is undefined, and it may change from runtime to runtime.
    */
-  IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrder();
+  MapWithProtoValuesFluentAssertion<M> ignoringRepeatedFieldOrderForValues();
 
   /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
-   * IterableOfProtosFluentAssertion} is already scoped to a {@link FieldScope} {@code X}, and this
-   * method is invoked with {@link FieldScope} {@code Y}, the resultant {@link
-   * IterableOfProtosFluentAssertion} is constrained to the intersection of {@link FieldScope}s
+   * MapWithProtoValuesFluentAssertion} is already scoped to a {@link FieldScope} {@code X}, and
+   * this method is invoked with {@link FieldScope} {@code Y}, the resultant {@link
+   * MapWithProtoValuesFluentAssertion} is constrained to the intersection of {@link FieldScope}s
    * {@code X} and {@code Y}.
    *
-   * <p>By default, {@link IterableOfProtosFluentAssertion} is constrained to {@link
+   * <p>By default, {@link MapWithProtoValuesFluentAssertion} is constrained to {@link
    * FieldScopes#all()}, that is, no fields are excluded from comparison.
    */
-  IterableOfProtosFluentAssertion<M> withPartialScope(FieldScope fieldScope);
+  MapWithProtoValuesFluentAssertion<M> withPartialScopeForValues(FieldScope fieldScope);
 
   /**
    * Excludes the top-level message fields with the given tag numbers from the comparison.
@@ -140,7 +146,7 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
    * runtime exception.
    */
-  IterableOfProtosFluentAssertion<M> ignoringFields(int firstFieldNumber, int... rest);
+  MapWithProtoValuesFluentAssertion<M> ignoringFieldsForValues(int firstFieldNumber, int... rest);
 
   /**
    * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
@@ -152,21 +158,21 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
    * is silently ignored.
    */
-  IterableOfProtosFluentAssertion<M> ignoringFieldDescriptors(
+  MapWithProtoValuesFluentAssertion<M> ignoringFieldDescriptorsForValues(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
 
   /**
    * Excludes all specific field paths under the argument {@link FieldScope} from the comparison.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
-   * IterableOfProtosFluentAssertion} is already scoped to a {@link FieldScope} {@code X}, and this
-   * method is invoked with {@link FieldScope} {@code Y}, the resultant {@link
-   * IterableOfProtosFluentAssertion} is constrained to the subtraction of {@code X - Y}.
+   * MapWithProtoValuesFluentAssertion} is already scoped to a {@link FieldScope} {@code X}, and
+   * this method is invoked with {@link FieldScope} {@code Y}, the resultant {@link
+   * MapWithProtoValuesFluentAssertion} is constrained to the subtraction of {@code X - Y}.
    *
-   * <p>By default, {@link IterableOfProtosFluentAssertion} is constrained to {@link
+   * <p>By default, {@link MapWithProtoValuesFluentAssertion} is constrained to {@link
    * FieldScopes#all()}, that is, no fields are excluded from comparison.
    */
-  IterableOfProtosFluentAssertion<M> ignoringFieldScope(FieldScope fieldScope);
+  MapWithProtoValuesFluentAssertion<M> ignoringFieldScopeForValues(FieldScope fieldScope);
 
   /**
    * If set, in the event of a comparison failure, the error message printed will list only those
@@ -175,92 +181,42 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    *
    * <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.
    */
-  IterableOfProtosFluentAssertion<M> reportingMismatchesOnly();
+  MapWithProtoValuesFluentAssertion<M> reportingMismatchesOnlyForValues();
 
   /**
-   * Attests that the subject contains at least one element that corresponds to the given expected
-   * element.
+   * Fails if the map does not contain an entry with the given key and a value that corresponds to
+   * the given value.
    */
-  void contains(@Nullable M expected);
-
-  /** Attests that none of the actual elements correspond to the given element. */
-  void doesNotContain(@Nullable M excluded);
+  void containsEntry(@Nullable Object expectedKey, @Nullable M expectedValue);
 
   /**
-   * Attests that subject contains exactly elements that correspond to the expected elements, i.e.
-   * that there is a 1:1 mapping between the actual elements and the expected elements where each
-   * pair of elements correspond.
+   * Fails if the map contains an entry with the given key and a value that corresponds to the given
+   * value.
+   */
+  void doesNotContainEntry(@Nullable Object excludedKey, @Nullable M excludedValue);
+
+  /**
+   * Fails if the map does not contain exactly the given set of keys mapping to values that
+   * correspond to the given values.
    *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
+   * <p>The values must all be of type {@code M}, and a {@link ClassCastException} will be thrown if
+   * any other type is encountered.
+   *
+   * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+   * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
    */
   @CanIgnoreReturnValue
-  Ordered containsExactly(@Nullable M... expected);
+  Ordered containsExactly(@Nullable Object k0, @Nullable M v0, Object... rest);
 
   /**
-   * Attests that subject contains exactly elements that correspond to the expected elements, i.e.
-   * that there is a 1:1 mapping between the actual elements and the expected elements where each
-   * pair of elements correspond.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
+   * Fails if the map does not contain exactly the keys in the given map, mapping to values that
+   * correspond to the values of the given map.
    */
   @CanIgnoreReturnValue
-  Ordered containsExactlyElementsIn(Iterable<? extends M> expected);
+  Ordered containsExactlyEntriesIn(Map<?, ? extends M> expectedMap);
 
   /**
-   * Attests that the subject contains elements that corresponds to all of the expected elements,
-   * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
-   * elements where each pair of elements correspond.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The elements must appear in the given order within the
-   * subject, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  Ordered containsAllOf(@Nullable M first, @Nullable M second, @Nullable M... rest);
-
-  /**
-   * Attests that the subject contains elements that corresponds to all of the expected elements,
-   * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
-   * elements where each pair of elements correspond.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The elements must appear in the given order within the
-   * subject, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  Ordered containsAllIn(Iterable<? extends M> expected);
-
-  /**
-   * Attests that the subject contains at least one element that corresponds to at least one of the
-   * expected elements.
-   */
-  void containsAnyOf(@Nullable M first, @Nullable M second, @Nullable M... rest);
-
-  /**
-   * Attests that the subject contains at least one element that corresponds to at least one of the
-   * expected elements.
-   */
-  void containsAnyIn(Iterable<? extends M> expected);
-
-  /**
-   * Attests that the subject contains no elements that correspond to any of the given elements.
-   * (Duplicates are irrelevant to this test, which fails if any of the subject elements correspond
-   * to any of the given elements.)
-   */
-  void containsNoneOf(
-      @Nullable M firstExcluded, @Nullable M secondExcluded, @Nullable M... restOfExcluded);
-
-  /**
-   * Attests that the subject contains no elements that correspond to any of the given elements.
-   * (Duplicates are irrelevant to this test, which fails if any of the subject elements correspond
-   * to any of the given elements.)
-   */
-  void containsNoneIn(Iterable<? extends M> excluded);
-
-  /**
-   * @deprecated Do not call {@code equals()} on a {@code IterableOfProtosFluentAssertion}.
+   * @deprecated Do not call {@code equals()} on a {@code MapWithProtoValuesFluentAssertion}.
    * @see com.google.common.truth.Subject#equals(Object)
    */
   @Override
@@ -268,7 +224,7 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
   boolean equals(Object o);
 
   /**
-   * @deprecated {@code IterableOfProtosFluentAssertion} does not support {@code hashCode()}.
+   * @deprecated {@code MapWithProtoValuesFluentAssertion} does not support {@code hashCode()}.
    * @see com.google.common.truth.Subject#hashCode()
    */
   @Override
