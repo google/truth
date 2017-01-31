@@ -54,6 +54,11 @@ public final class GuavaOptionalSubject extends Subject<GuavaOptionalSubject, Op
     } else {
       Object actual = actual().get();
       if (!actual.equals(expected)) {
+        if (actual.toString().equals(expected.toString())) {
+          failWithRawMessage(
+              "Not true that %s (%s) has value <%s> (%s)",
+              actualAsString(), actual.getClass(), expected, expected.getClass());
+        }
         fail("has value", expected);
       }
     }
