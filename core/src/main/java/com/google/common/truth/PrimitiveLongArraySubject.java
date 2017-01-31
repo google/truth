@@ -42,9 +42,9 @@ public final class PrimitiveLongArraySubject
   }
 
   /**
-   * A proposition that the provided Object[] is an array of the same length and type, and contains
-   * elements such that each element in {@code expected} is equal to each element in the subject,
-   * and in the same position.
+   * A proposition that the actual array and {@code expected} are arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is equal to each element
+   * in the actual array, and in the same position.
    */
   @Override
   public void isEqualTo(Object expected) {
@@ -62,6 +62,11 @@ public final class PrimitiveLongArraySubject
     }
   }
 
+  /**
+   * A proposition that the actual array and {@code expected} are not arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is equal to each element
+   * in the actual array, and in the same position.
+   */
   @Override
   public void isNotEqualTo(Object expected) {
     long[] actual = actual();
@@ -72,6 +77,7 @@ public final class PrimitiveLongArraySubject
             "%s unexpectedly equal to %s.", actualAsString(), Longs.asList(expectedArray));
       }
     } catch (ClassCastException ignored) {
+      // If it's not long[] then it's not equal and the test passes.
     }
   }
 
