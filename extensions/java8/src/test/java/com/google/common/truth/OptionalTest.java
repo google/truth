@@ -157,6 +157,34 @@ public class OptionalTest {
   }
 
   @Test
+  public void hasValue_Named_Failing() {
+    try {
+      assertThat(Optional.of("foo")).named("bar").hasValue("boo");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that bar (<Optional[foo]>) has value <boo>");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
+  @Test
+  public void hasValue_Named_FailingWithSameToStrings() {
+    try {
+      assertThat(Optional.of(10)).named("bar").hasValue("10");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that bar (<Optional[10]>) (class java.lang.Integer) "
+                  + "has value <10> (class java.lang.String)");
+      return;
+    }
+    fail("Should have thrown");
+  }
+
+  @Test
   public void assumption() {
     try {
       assume().about(optionals()).that(Optional.empty()).isPresent();
