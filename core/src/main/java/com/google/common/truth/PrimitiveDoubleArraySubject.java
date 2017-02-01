@@ -27,6 +27,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.primitives.Doubles;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -56,25 +57,47 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * This form is unsafe for double-precision floating point types, and will throw an {@link
-   * UnsupportedOperationException}.
+   * A proposition that the actual array and {@code expected} are arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is equal to each element
+   * in the actual array, and in the same position, with element equality defined the same way that
+   * {@link Arrays.equals(double[], double[])} and {@link Double#equals(Object)} define it (which is
+   * different to the way that the {@code ==} operator on primitive {@code double} defines it). This
+   * method is <i>not</i> recommended when the code under test is doing any kind of arithmetic: use
+   * {@link #usingTolerance} with a suitable tolerance in that case, e.g. {@code
+   * assertThat(actualArray).usingTolerance(1.0e-10).containsExactly(expectedArray).inOrder()}.
+   * (Remember that the exact result of floating point arithmetic is sensitive to apparently trivial
+   * changes such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
+   * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
+   * of precision for the intermediate result.) This method is recommended when the code under test
+   * is specified as either copying values without modification from its input or returning
+   * well-defined literal or constant values.
    *
-   * @deprecated use either {@code
-   *     usingTolerance(someTolerance).containsExactly(someValues).inOrder()} or {@code
-   *     usingExactEquality().containsExactly(someValues).inOrder()}
+   * <ul>
+   *   <li>It considers {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, and
+   *       {@link Double#NaN} to be equal to themselves (contrast with {@code #usingTolerance(0.0)
+   *       which does not).
+   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0} (contrast with
+   *       {@code #usingTolerance(0.0) which does).
+   * </ul>
    */
-  @Deprecated
   @Override
   public void isEqualTo(Object expected) {
-    throw new UnsupportedOperationException(
-        "Comparing raw equality of doubles is often unsafe. Use either "
-            + "usingTolerance(someTolerance).containsExactly(someValues).inOrder() to compare with"
-            + "a tolerance or usingExactEquality().containsExactly(someValues).inOrder() if you"
-            + "really want exact equality instead.");
+    double[] actual = actual();
+    if (actual == expected) {
+      return; // short-cut.
+    }
+    try {
+      double[] expectedArray = (double[]) expected;
+      if (!Arrays.equals(actual, expectedArray)) {
+        fail("is equal to", Doubles.asList(expectedArray));
+      }
+    } catch (ClassCastException e) {
+      failWithBadType(expected);
+    }
   }
 
   /**
-   * A proposition that the provided double[] is an array of the same length and type, and contains
+   * A proposition that {@code expected} is an array of the same length and type, and contains
    * elements such that each element in {@code expected} is equal to each element in the subject,
    * and in the same position.
    *
@@ -116,19 +139,31 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * This form is unsafe for double-precision floating point types, and will throw an {@link
-   * UnsupportedOperationException}.
+   * A proposition that the actual array and {@code expected} are not arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is equal to each element
+   * in the actual array, and in the same position, with element equality defined the same way that
+   * {@link Arrays.equals(double[], double[])} and {@link Double#equals(Object)} define it (which is
+   * different to the way that the {@code ==} operator on primitive {@code double} defines it). See
+   * {@link #isEqualTo(Object)} for advice on when exact equality is recommended.
    *
-   * @deprecated If you really want this, convert the array to a list, possibly using {@link
-   *     Doubles#asList}, and do the assertion on that, e.g. {@code
-   *     assertThat(asList(actualDoubleArray)).isNotEqualTo(asList(expectedDoubleArray));}.
+   * <ul>
+   *   <li>It considers {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, and
+   *       {@link Double#NaN} to be equal to themselves.
+   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0}.
+   * </ul>
    */
-  @Deprecated
   @Override
   public void isNotEqualTo(Object expected) {
-    throw new UnsupportedOperationException(
-        "Comparing raw equality of doubles is unsafe, "
-            + "use isNotEqualTo(double[] array, double tolerance) instead.");
+    double[] actual = actual();
+    try {
+      double[] expectedArray = (double[]) expected;
+      if (actual == expected || Arrays.equals(actual, expectedArray)) {
+        failWithRawMessage(
+            "%s unexpectedly equal to %s.", actualAsString(), Doubles.asList(expectedArray));
+      }
+    } catch (ClassCastException ignored) {
+      // If it's not double[] then it's not equal and the test passes.
+    }
   }
 
   /**
@@ -406,8 +441,10 @@ public final class PrimitiveDoubleArraySubject
    *
    * <ul>
    *   <li>It considers {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, and
-   *       {@link Double#NaN} to be equal to themselves.
-   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0}.
+   *       {@link Double#NaN} to be equal to themselves (contrast with {@code #usingTolerance(0.0)
+   *       which does not).
+   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0} (contrast with
+   *       {@code #usingTolerance(0.0) which does not).
    *   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
    *       expected {@link Double} instance is null.
    * </ul>
