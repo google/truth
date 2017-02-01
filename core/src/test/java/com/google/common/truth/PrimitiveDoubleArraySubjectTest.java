@@ -40,25 +40,95 @@ import org.junit.runners.JUnit4;
 public class PrimitiveDoubleArraySubjectTest {
   private static final double DEFAULT_TOLERANCE = 0.000005d;
 
-  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_Default_Fail() {
+  public void isEqualTo_WithoutToleranceParameter_Success() {
+    assertThat(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
+        .isEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0));
+  }
+
+  @Test
+  public void isEqualTo_WithoutToleranceParameter_Fail_NotEqual() {
+    double justOverTwoPointTwo = nextAfter(2.2d, POSITIVE_INFINITY);
     try {
-      assertThat(array(2.2d, 5.4d)).isEqualTo(array(2.2d, 5.4d));
-      fail("Expected UnsupportedOperationException to be thrown");
-    } catch (UnsupportedOperationException expected) {
+      assertThat(array(2.2d)).isEqualTo(array(justOverTwoPointTwo));
+      fail("Expected AssertionError to be thrown");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <(double[]) [2.2]> is equal to <[" + justOverTwoPointTwo + "]>");
+    }
+  }
+
+  @Test
+  public void isEqualTo_WithoutToleranceParameter_Fail_DifferentOrder() {
+    try {
+      assertThat(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d));
+      fail("Expected AssertionError to be thrown");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(double[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
+    }
+  }
+
+  @Test
+  public void isEqualTo_WithoutToleranceParameter_Fail_Longer() {
+    try {
+      assertThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 4.4d));
+      fail("Expected AssertionError to be thrown");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(double[]) [2.2, 3.3]> is equal to <[2.2, 3.3, 4.4]>");
+    }
+  }
+
+  @Test
+  public void isEqualTo_WithoutToleranceParameter_Fail_Shorter() {
+    try {
+      assertThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d));
+      fail("Expected AssertionError to be thrown");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(double[]) [2.2, 3.3]> is equal to <[2.2]>");
+    }
+  }
+
+  @Test
+  public void isEqualTo_WithoutToleranceParameter_Fail_PlusMinusZero() {
+    try {
+      assertThat(array(0.0d)).isEqualTo(array(-0.0d));
+      fail("Expected AssertionError to be thrown");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo("Not true that <(double[]) [0.0]> is equal to <[-0.0]>");
+    }
+  }
+
+  @Test
+  public void isEqualTo_WithoutToleranceParameter_Fail_NotAnArray() {
+    try {
+      assertThat(array(2.2d, 3.3d, 4.4d)).isEqualTo(new Object());
+      fail("Expected AssertionError to be thrown");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .contains("Incompatible types compared. expected: Object, actual: double[]");
     }
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo() {
+  public void isEqualTo_WithToleranceParameter_ExactlyEqual() {
     assertThat(array(2.2d, 5.4d)).isEqualTo(array(2.2d, 5.4d), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_ApproximatelyEquals() {
+  public void isEqualTo_WithToleranceParameter_ApproximatelyEquals() {
     assertThat(array(2.2d, 3.3d))
         .isEqualTo(
             array(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)), DEFAULT_TOLERANCE);
@@ -66,7 +136,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_FailNotQuiteApproximatelyEquals() {
+  public void isEqualTo_WithToleranceParameter_FailNotQuiteApproximatelyEquals() {
     double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
     try {
       assertThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d, roughly3point3), DEFAULT_TOLERANCE);
@@ -81,7 +151,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_Fail_DifferentOrder() {
+  public void isEqualTo_WithToleranceParameter_Fail_DifferentOrder() {
     try {
       assertThat(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d), DEFAULT_TOLERANCE);
       fail("Expected AssertionError to be thrown");
@@ -94,7 +164,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_Fail_Longer() {
+  public void isEqualTo_WithToleranceParameter_Fail_Longer() {
     try {
       assertThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 1.1d), DEFAULT_TOLERANCE);
       fail("Expected AssertionError to be thrown");
@@ -108,7 +178,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_Fail_Shorter() {
+  public void isEqualTo_WithToleranceParameter_Fail_Shorter() {
     try {
       assertThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d), DEFAULT_TOLERANCE);
       fail("Expected AssertionError to be thrown");
@@ -121,7 +191,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_Fail_NotAnArray() {
+  public void isEqualTo_WithToleranceParameter_Fail_NotAnArray() {
     try {
       assertThat(array(2.2d, 3.3d, 4.4d)).isEqualTo(new Object(), DEFAULT_TOLERANCE);
       fail("Expected AssertionError to be thrown");
@@ -134,7 +204,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_Fail_Infinity() {
+  public void isEqualTo_WithToleranceParameter_Fail_Infinity() {
     try {
       assertThat(array(2.2d, POSITIVE_INFINITY))
           .isEqualTo(array(2.2d, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
@@ -148,14 +218,16 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_SameInfinity() {
+  public void isEqualTo_WithToleranceParameter_SameInfinity() {
+    // N.B. The fact that this assertion passes where the one in the previous test fails is a
+    // (documented) pecularity of the semantic and part of the reason why this method is deprecated.
     double[] same = array(2.2d, POSITIVE_INFINITY);
     assertThat(same).isEqualTo(same, DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_Fail_OneInfinity() {
+  public void isEqualTo_WithToleranceParameter_Fail_OneInfinity() {
     try {
       assertThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
       fail("Expected AssertionError to be thrown");
@@ -168,7 +240,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_Fail_LongerOneInfinity() {
+  public void isEqualTo_WithToleranceParameter_Fail_LongerOneInfinity() {
     try {
       assertThat(array(2.2d, 3.3d)).isEqualTo(array(POSITIVE_INFINITY), DEFAULT_TOLERANCE);
       fail("Expected AssertionError to be thrown");
@@ -181,7 +253,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isEqualTo_Fail_NaN() {
+  public void isEqualTo_WithToleranceParameter_Fail_NaN() {
     try {
       assertThat(array(NaN)).isEqualTo(array(NaN), DEFAULT_TOLERANCE);
       fail("Expected AssertionError to be thrown");
@@ -192,43 +264,78 @@ public class PrimitiveDoubleArraySubjectTest {
     }
   }
 
-  @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_Default_Fail() {
+  public void isNotEqualTo_WithoutToleranceParameter_FailEquals() {
     try {
-      assertThat(array(2.2d, 5.4d)).isNotEqualTo(array(5.4d, 2.2d));
-      fail("Expected UnsupportedOperationException to be thrown");
-    } catch (UnsupportedOperationException expected) {
+      assertThat(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
+          .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0));
+      fail("Expected AssertionError to be thrown");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "<(double[]) [2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0]> unexpectedly equal to "
+                  + "[2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0].");
     }
+  }
+
+  @Test
+  public void isNotEqualTo_WithoutToleranceParameter_Success_NotEqual() {
+    assertThat(array(2.2d)).isNotEqualTo(array(nextAfter(2.2d, POSITIVE_INFINITY)));
+  }
+
+  @Test
+  public void isNotEqualTo_WithoutToleranceParameter_Success_DifferentOrder() {
+    assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(3.3d, 2.2d));
+  }
+
+  @Test
+  public void isNotEqualTo_WithoutToleranceParameter_Success_Longer() {
+    assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, 3.3d, 4.4d));
+  }
+
+  @Test
+  public void isNotEqualTo_WithoutToleranceParameter_Success_Shorter() {
+    assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d));
+  }
+
+  @Test
+  public void isNotEqualTo_WithoutToleranceParameter_Success_PlusMinusZero() {
+    assertThat(array(0.0d)).isNotEqualTo(array(-0.0d));
+  }
+
+  @Test
+  public void isNotEqualTo_WithoutToleranceParameter_Success_NotAnArray() {
+    assertThat(array(2.2d, 3.3d, 4.4d)).isNotEqualTo(new Object());
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_DifferentOrder() {
+  public void isNotEqualTo_WithToleranceParameter_DifferentOrder() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(3.3d, 2.2d), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_Longer() {
+  public void isNotEqualTo_WithToleranceParameter_Longer() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, 3.3d, 1.1d), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_Shorter() {
+  public void isNotEqualTo_WithToleranceParameter_Shorter() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_DifferentTypes() {
+  public void isNotEqualTo_WithToleranceParameter_DifferentTypes() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(new Object(), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_FailEquals() {
+  public void isNotEqualTo_WithToleranceParameter_FailEquals() {
     try {
       assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, 3.3d), DEFAULT_TOLERANCE);
       fail("Expected AssertionError to be thrown");
@@ -241,7 +348,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_FailApproximatelyEquals() {
+  public void isNotEqualTo_WithToleranceParameter_FailApproximatelyEquals() {
     double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     try {
       assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, roughly3point3), DEFAULT_TOLERANCE);
@@ -256,7 +363,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_NotQuiteApproximatelyEquals() {
+  public void isNotEqualTo_WithToleranceParameter_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2d, 3.3d))
         .isNotEqualTo(
             array(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY)), DEFAULT_TOLERANCE);
@@ -264,7 +371,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_FailSame() {
+  public void isNotEqualTo_WithToleranceParameter_FailSame() {
     try {
       double[] same = array(2.2d, 3.3d);
       assertThat(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
@@ -278,14 +385,16 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_Fail_Infinity() {
+  public void isNotEqualTo_WithToleranceParameter_Fail_Infinity() {
     assertThat(array(2.2d, POSITIVE_INFINITY))
         .isNotEqualTo(array(2.2d, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_Fail_SameInfinity() {
+  public void isNotEqualTo_WithToleranceParameter_Fail_SameInfinity() {
+    // N.B. The fact that this assertion fails where the one in the previous test passes is a
+    // (documented) pecularity of the semantic and part of the reason why this method is deprecated.
     try {
       double[] same = array(2.2d, POSITIVE_INFINITY);
       assertThat(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
@@ -299,19 +408,19 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_OneInfinity() {
+  public void isNotEqualTo_WithToleranceParameter_OneInfinity() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_LongerOneInfinity() {
+  public void isNotEqualTo_WithToleranceParameter_LongerOneInfinity() {
     assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(POSITIVE_INFINITY), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
-  public void isNotEqualTo_Fail_NaN() {
+  public void isNotEqualTo_WithToleranceParameter_Fail_NaN() {
     assertThat(array(NaN)).isNotEqualTo(array(NaN), DEFAULT_TOLERANCE);
   }
 
