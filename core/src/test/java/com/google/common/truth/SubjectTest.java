@@ -699,7 +699,7 @@ public class SubjectTest {
       Truth.THROW_ASSERTION_ERROR.fail(msg, cause);
     } catch (AssertionError expected) {
       assertThat(expected).hasMessageThat().isEqualTo(msg);
-      assertThat(expected.getCause()).isSameAs(cause);
+      assertThat(expected).hasCauseThat().isSameAs(cause);
     }
   }
 

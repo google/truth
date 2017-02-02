@@ -102,7 +102,8 @@ public class DelegatedVerbFactoryTest {
           .hasIdFragment("xyz");
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Fancy prepended message: Not true that "
                   + "id of Foo{id=abcdef, item=42} (<\"abcdef\">) contains <\"xyz\">");
     }
@@ -114,7 +115,8 @@ public class DelegatedVerbFactoryTest {
           .hasItem(24L);
     } catch (AssertionError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "Fancy prepended message: Not true that "
                   + "item of Foo{id=abcdef, item=42} (<42>) is equal to <24>");
     }
