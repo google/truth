@@ -27,15 +27,12 @@ import com.google.common.collect.Iterables;
 import com.google.common.primitives.Floats;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
 
 /**
  * A Subject to handle testing propositions for {@code float[]}.
- *
- * <p>Note: this class deprecates some common methods because the operation of equality and
- * comparison on floating point numbers requires additional specification. Alternative equality
- * tests are provided.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -56,27 +53,49 @@ public final class PrimitiveFloatArraySubject
   }
 
   /**
-   * This form is unsafe for floating point types, and will throw an {@link
-   * UnsupportedOperationException}.
+   * A proposition that the actual array and {@code expected} are arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is equal to each element
+   * in the actual array, and in the same position, with element equality defined the same way that
+   * {@link Arrays.equals(float[], float[])} and {@link Float#equals(Object)} define it (which is
+   * different to the way that the {@code ==} operator on primitive {@code float} defines it). This
+   * method is <i>not</i> recommended when the code under test is doing any kind of arithmetic: use
+   * {@link #usingTolerance} with a suitable tolerance in that case, e.g. {@code
+   * assertThat(actualArray).usingTolerance(1.0e-5).containsExactly(expectedArray).inOrder()}.
+   * (Remember that the exact result of floating point arithmetic is sensitive to apparently trivial
+   * changes such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
+   * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
+   * of precision for the intermediate result.) This method is recommended when the code under test
+   * is specified as either copying values without modification from its input or returning
+   * well-defined literal or constant values.
    *
-   * @deprecated use either {@code
-   *     usingTolerance(someTolerance).containsExactly(someValues).inOrder()} or {@code
-   *     usingExactEquality().containsExactly(someValues).inOrder()}
+   * <ul>
+   *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and
+   *       {@link Float#NaN} to be equal to themselves (contrast with {@code #usingTolerance(0.0)
+   *       which does not).
+   *   <li>It does <i>not</i> consider {@code -0.0f} to be equal to {@code 0.0f} (contrast with
+   *       {@code #usingTolerance(0.0) which does).
+   * </ul>
    */
-  @Deprecated
   @Override
   public void isEqualTo(Object expected) {
-    throw new UnsupportedOperationException(
-        "Comparing raw equality of floats is often unsafe. Use either "
-            + "usingTolerance(someTolerance).containsExactly(someValues).inOrder() to compare with"
-            + "a tolerance or usingExactEquality().containsExactly(someValues).inOrder() if you"
-            + "really want exact equality instead.");
+    float[] actual = actual();
+    if (actual == expected) {
+      return; // short-cut.
+    }
+    try {
+      float[] expectedArray = (float[]) expected;
+      if (!Arrays.equals(actual, expectedArray)) {
+        fail("is equal to", Floats.asList(expectedArray));
+      }
+    } catch (ClassCastException e) {
+      failWithBadType(expected);
+    }
   }
 
   /**
-   * A proposition that the provided float[] is an array of the same length and type, and contains
-   * elements such that each element in {@code expected} is equal to each element in the subject,
-   * and in the same position.
+   * A proposition that the actual array and {@code expected} are arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is within {@link
+   * tolerance} of each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Float#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
    * Float#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Float#NaN NaN}) is as follows: If the
@@ -116,24 +135,37 @@ public final class PrimitiveFloatArraySubject
   }
 
   /**
-   * This form is unsafe for floating point types, and will throw an {@link
-   * UnsupportedOperationException}.
+   * A proposition that the actual array and {@code expected} are not arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is equal to each element
+   * in the actual array, and in the same position, with element equality defined the same way that
+   * {@link Arrays.equals(float[], float[])} and {@link Float#equals(Object)} define it (which is
+   * different to the way that the {@code ==} operator on primitive {@code float} defines it). See
+   * {@link #isEqualTo(Object)} for advice on when exact equality is recommended.
    *
-   * @deprecated If you really want this, convert the array to a list, possibly using {@link
-   *     Floats#asList}, and do the assertion on that, e.g. {@code
-   *     assertThat(asList(actualFloatArray)).isNotEqualTo(asList(expectedFloatArray));}.
+   * <ul>
+   *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and {@link
+   *       Float#NaN} to be equal to themselves.
+   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0}.
+   * </ul>
    */
-  @Deprecated
   @Override
   public void isNotEqualTo(Object expected) {
-    throw new UnsupportedOperationException(
-        "Comparing raw equality of floats is unsafe, "
-            + "use isNotEqualTo(float[] array, float tolerance) instead.");
+    float[] actual = actual();
+    try {
+      float[] expectedArray = (float[]) expected;
+      if (actual == expected || Arrays.equals(actual, expectedArray)) {
+        failWithRawMessage(
+            "%s unexpectedly equal to %s.", actualAsString(), Floats.asList(expectedArray));
+      }
+    } catch (ClassCastException ignored) {
+      // If it's not float[] then it's not equal and the test passes.
+    }
   }
 
   /**
-   * A proposition that the provided float[] is not an array of the same length or type, or has at
-   * least one element that does not pass an equality test within the given tolerance.
+   * A proposition that the actual array and {@code expected} are not arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is within {@link
+   * tolerance} of each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Float#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
    * Float#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Float#NaN NaN}) is as follows: If the
@@ -414,8 +446,10 @@ public final class PrimitiveFloatArraySubject
    *
    * <ul>
    *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and {@link
-   *       Float#NaN} to be equal to themselves.
-   *   <li>It does <i>not</i> consider {@code -0.0f} to be equal to {@code 0.0f}.
+   *       Float#NaN} to be equal to themselves (contrast with {@code #usingTolerance(0.0)
+   *       which does not).
+   *   <li>It does <i>not</i> consider {@code -0.0f} to be equal to {@code 0.0f} (contrast with
+   *       {@code #usingTolerance(0.0) which does).
    *   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
    *       expected {@link Float} instance is null.
    * </ul>

@@ -34,10 +34,6 @@ import javax.annotation.Nullable;
 /**
  * A Subject to handle testing propositions for {@code double[]}.
  *
- * <p>Note: this class deprecates some common methods because the operation of equality and
- * comparison on floating point numbers requires additional specification. Alternative equality
- * tests are provided.
- *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class PrimitiveDoubleArraySubject
@@ -97,9 +93,9 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A proposition that {@code expected} is an array of the same length and type, and contains
-   * elements such that each element in {@code expected} is equal to each element in the subject,
-   * and in the same position.
+   * A proposition that the actual array and {@code expected} are arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is within {@link
+   * tolerance} of each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Double#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
    * Double#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Double#NaN NaN}) is as follows: If the
@@ -167,8 +163,9 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A proposition that the provided double[] is not an array of the same length or type, or has at
-   * least one element that does not pass an equality test within the given tolerance.
+   * A proposition that the actual array and {@code expected} are not arrays of the same length and
+   * type, containing elements such that each element in {@code expected} is within {@link
+   * tolerance} of each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Double#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
    * Double#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Double#NaN NaN}) is as follows: If the
