@@ -121,11 +121,11 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   }
 
   /**
-   * Returns a context-aware Subject for making assertions about the values for the given key within
-   * the Multimap.
+   * Returns a context-aware {@link Subject} for making assertions about the values for the given
+   * key within the {@link Multimap}.
    *
    * <p>This method performs no checks on its own and cannot cause test failures. Subsequent
-   * assertions must be chained onto this method call to test properties of the Multimap.
+   * assertions must be chained onto this method call to test properties of the {@link Multimap}.
    */
   public IterableSubject valuesForKey(@Nullable Object key) {
     return new IterableValuesForKey(failureStrategy, this, key);
@@ -160,10 +160,11 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   }
 
   /**
-   * Fails if the Multimap does not contain precisely the same entries as the argument Multimap.
+   * Fails if the {@link Multimap} does not contain precisely the same entries as the argument
+   * {@link Multimap}.
    *
    * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify that
-   * the two Multimaps iterate fully in the same order. That is, their key sets iterate in the same
+   * the two multimaps iterate fully in the same order. That is, their key sets iterate in the same
    * order, and the value collections for each key iterate in the same order.
    */
   @CanIgnoreReturnValue
@@ -333,12 +334,16 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   /**
    * Starts a method chain for a test proposition in which the actual values (i.e. the values of the
    * {@link Multimap} under test) are compared to expected values using the given {@link
-   * Correspondence}. The actual values must be of type {@code A}, the expected values must be of
-   * type {@code E}. The proposition is actually executed by continuing the method chain. For
-   * example:<pre>   {@code
-   *   assertThat(actualMultimap)
-   *     .comparingValuesUsing(correspondence)
-   *     .containsEntry(expectedKey, expectedValue);}</pre>
+   * Correspondence}. The actual values must be of type {@code A}, and the expected values must be
+   * of type {@code E}. The proposition is actually executed by continuing the method chain. For
+   * example:
+   *
+   * <pre>{@code
+   * assertThat(actualMultimap)
+   *   .comparingValuesUsing(correspondence)
+   *   .containsEntry(expectedKey, expectedValue);
+   * }</pre>
+   *
    * where {@code actualMultimap} is a {@code Multimap<?, A>} (or, more generally, a {@code
    * Multimap<?, ? extends A>}), {@code correspondence} is a {@code Correspondence<A, E>}, and
    * {@code expectedValue} is an {@code E}.
