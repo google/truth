@@ -16,6 +16,9 @@
 
 package com.google.common.truth.extensions.proto;
 
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.SetMultimap;
 import com.google.common.truth.AbstractDelegatedVerb;
 import com.google.common.truth.DelegatedVerbFactory;
 import com.google.common.truth.FailureStrategy;
@@ -68,4 +71,24 @@ public final class ProtoTruthDelegatedVerb extends AbstractDelegatedVerb<ProtoTr
       @Nullable Map<K, M> map) {
     return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<K, M>(failureStrategy, map);
   }
+
+  public <K, M extends Message> MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> that(
+      @Nullable Multimap<K, M> map) {
+    return new MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject<K, M>(
+        failureStrategy, map);
+  }
+
+  public <K, M extends Message>
+      ListMultimapWithProtoValuesSubject<?, K, M, ListMultimap<K, M>> that(
+          @Nullable ListMultimap<K, M> map) {
+    return new ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject<K, M>(
+        failureStrategy, map);
+  }
+
+  public <K, M extends Message> SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> that(
+      @Nullable SetMultimap<K, M> map) {
+    return new SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject<K, M>(
+        failureStrategy, map);
+  }
+
 }

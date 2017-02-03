@@ -22,6 +22,8 @@ import com.google.auto.value.AutoValue;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.truth.Expect;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -138,6 +140,11 @@ public class ProtoSubjectTestBase {
     return expect.about(ProtoTruth.protos()).that(map);
   }
 
+  protected final <M extends Message> MultimapWithProtoValuesSubject<?, ?, M, ?> expectThat(
+      Multimap<?, M> multimap) {
+    return expect.about(ProtoTruth.protos()).that(multimap);
+  }
+
   /**
    * Assert than an AssertionError was expected before we got to this line.
    *
@@ -201,6 +208,18 @@ public class ProtoSubjectTestBase {
     Preconditions.checkArgument(rest.length % 2 == 0, "Uneven args: %s", rest.length);
 
     ImmutableMap.Builder<K, V> builder = new ImmutableMap.Builder<K, V>();
+    builder.put(k0, v0);
+    for (int i = 0; i < rest.length; i += 2) {
+      builder.put((K) rest[i], (V) rest[i + 1]);
+    }
+    return builder.build();
+  }
+
+  @SuppressWarnings("unchecked")
+  protected static final <K, V> ImmutableMultimap<K, V> multimapOf(K k0, V v0, Object... rest) {
+    Preconditions.checkArgument(rest.length % 2 == 0, "Uneven args: %s", rest.length);
+
+    ImmutableMultimap.Builder<K, V> builder = new ImmutableMultimap.Builder<K, V>();
     builder.put(k0, v0);
     for (int i = 0; i < rest.length; i += 2) {
       builder.put((K) rest[i], (V) rest[i + 1]);

@@ -22,8 +22,11 @@ import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSetMultimap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -224,6 +227,139 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     ImmutableMap<Object, Object> altActualObjects = mapOf("a", "Foo!", "b", 42);
 
     assertThat(altActualObjects).containsExactly("a", "Foo! Bar!".substring(0, 4), "b", 21 * 2);
+    assertThat(altActualObjects).doesNotContainEntry("a", message1);
+    assertThat(altActualObjects).doesNotContainEntry("b", message2);
+  }
+
+  @Test
+  public void testMultimapOverloads_assertAbout() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
+
+    assertAbout(protos())
+        .that(multimapOf(1, message1, 1, message2, 2, message1))
+        .containsEntry(1, eqMessage2);
+  }
+
+  @Test
+  public void testMultimapOverloads_assertAbout_listAndSet() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
+    ImmutableMultimap<Integer, TestMessage2> multimap =
+        multimapOf(1, message1, 1, message2, 2, message1);
+    ImmutableListMultimap<Integer, TestMessage2> listMultimap =
+        ImmutableListMultimap.copyOf(multimap);
+    ImmutableSetMultimap<Integer, TestMessage2> setMultimap = ImmutableSetMultimap.copyOf(multimap);
+
+    assertAbout(protos())
+        .that(multimap)
+        .ignoringRepeatedFieldOrderForValues()
+        .containsExactlyEntriesIn(listMultimap);
+    assertAbout(protos())
+        .that(listMultimap)
+        .ignoringRepeatedFieldOrderForValues()
+        .containsExactlyEntriesIn(setMultimap);
+    assertAbout(protos())
+        .that(setMultimap)
+        .ignoringRepeatedFieldOrderForValues()
+        .containsExactlyEntriesIn(multimap);
+    assertAbout(protos()).that(listMultimap).isNotEqualTo(setMultimap);
+  }
+
+  @Test
+  public void testMultimapOverloads_testMessages_normalMethods() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
+    Object object1 = message1;
+    Object object2 = message2;
+    ImmutableMultimap<Object, TestMessage2> actualMessages =
+        multimapOf(1, message1, 1, message2, 2, message1);
+
+    assertThat(actualMessages)
+        .containsExactlyEntriesIn(multimapOf(1, message1, 1, eqMessage2, 2, message1))
+        .inOrder();
+    assertThat(actualMessages).hasSize(3);
+    assertThat(actualMessages).isEqualTo(multimapOf(2, message1, 1, message1, 1, eqMessage2));
+    assertThat(actualMessages).isNotEqualTo(multimapOf(2, object1, 1, object2, 1, object1));
+  }
+
+  @Test
+  public void testMultimapOverloads_testMessages_normalMethods_listAndSet() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
+    Object object1 = message1;
+    Object object2 = message2;
+    ImmutableMultimap<Object, TestMessage2> multimap =
+        multimapOf(1, message1, 1, message2, 2, message1);
+    ImmutableListMultimap<Object, TestMessage2> listMultimap =
+        ImmutableListMultimap.copyOf(multimap);
+    ImmutableSetMultimap<Object, TestMessage2> setMultimap = ImmutableSetMultimap.copyOf(multimap);
+
+    assertThat(multimap)
+        .containsExactlyEntriesIn(multimapOf(1, message1, 1, eqMessage2, 2, message1))
+        .inOrder();
+    assertThat(listMultimap)
+        .containsExactlyEntriesIn(multimapOf(1, message1, 1, eqMessage2, 2, message1))
+        .inOrder();
+    assertThat(setMultimap)
+        .containsExactlyEntriesIn(multimapOf(1, message1, 1, eqMessage2, 2, message1))
+        .inOrder();
+    assertThat(multimap).hasSize(3);
+    assertThat(listMultimap).hasSize(3);
+    assertThat(setMultimap).hasSize(3);
+  }
+
+  @Test
+  public void testMultimapOverloads_testMessages_specializedMethods() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 message3 = parse("o_int: 3 r_string: \"baz\"");
+    TestMessage2 message4 = parse("o_int: 4 r_string: \"qux\"");
+    ImmutableMultimap<Integer, TestMessage2> actualMessages =
+        multimapOf(1, message1, 1, message2, 2, message1);
+
+    assertThat(actualMessages)
+        .ignoringFieldsForValues(getFieldNumber("o_int"), getFieldNumber("r_string"))
+        .containsExactlyEntriesIn(multimapOf(1, message3, 1, message4, 2, message3))
+        .inOrder();
+    assertThat(actualMessages)
+        .valuesForKey(1)
+        .ignoringFields(getFieldNumber("o_int"), getFieldNumber("r_string"))
+        .containsExactly(message3, message4)
+        .inOrder();
+  }
+
+  @Test
+  public void testMultimapOverloads_objects_actuallyMessages() {
+    TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
+    TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
+    TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
+    Object object1 = message1;
+    Object object2 = message2;
+    ImmutableMultimap<String, Object> actualObjects =
+        multimapOf("a", object1, "a", object2, "b", object1);
+
+    assertThat(actualObjects)
+        .containsExactlyEntriesIn(multimapOf("a", message1, "a", message2, "b", message1))
+        .inOrder();
+    assertThat(actualObjects).hasSize(3);
+    assertThat(actualObjects).containsEntry("a", eqMessage2);
+  }
+
+  @Test
+  public void testMultimapOverloads_objects_actuallyNotMessages() {
+    TestMessage2 message1 = TestMessage2.newBuilder().setOInt(1).addRString("foo").build();
+    TestMessage2 message2 = TestMessage2.newBuilder().setOInt(2).addRString("bar").build();
+    ImmutableMultimap<Object, Object> altActualObjects =
+        multimapOf("a", "Foo!", "a", "Baz!", "b", 42);
+
+    assertThat(altActualObjects)
+        .containsExactlyEntriesIn(
+            multimapOf("b", 21 * 2, "a", "Ba" + "z!", "a", "Foo! Bar!".substring(0, 4)));
     assertThat(altActualObjects).doesNotContainEntry("a", message1);
     assertThat(altActualObjects).doesNotContainEntry("b", message2);
   }
