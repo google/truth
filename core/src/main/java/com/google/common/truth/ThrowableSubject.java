@@ -36,9 +36,14 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
    * suppressed exception
    */
 
-  // TODO(kak): Should this be @Nullable or should we have .doesNotHaveMessage()?
-  /** Fails if the subject does not have the given message. */
-  // TODO(diamondm): deprecate this in favor of {@code hasMessageThat().isEqualTo(expected)}.
+  /**
+   * Fails if the subject does not have the given message.
+   *
+   * @deprecated Use {@code hasMessageThat().isEqualTo(expected)} instead. You may also consider
+   *     using inexact matching of the message (e.g. {@code hasMessageThat().contains(substring)})
+   *     for less brittle tests.
+   */
+  @Deprecated
   public void hasMessage(@Nullable String expected) {
     hasMessageThat().isEqualTo(expected);
   }
