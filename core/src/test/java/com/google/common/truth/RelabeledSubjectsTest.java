@@ -97,17 +97,18 @@ public class RelabeledSubjectsTest {
 
   @Test
   public void relabelledPrimitiveFloatArrays() {
-    float[] expected = {1.3f, 1.0f};
     float[] actual = {1.3f, 1.1f};
     try {
-      assertThat(actual).named("crazy list").hasValuesWithin(0.0000001f).of(expected);
+      assertThat(actual).named("crazy list").usingTolerance(1.0E-7).containsExactly(1.3f, 1.0f);
       fail("Should have thrown");
     } catch (AssertionError error) {
       assertThat(error)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that crazy list has values within 1.0E-7 of <[1.3, 1.0]>. "
-                  + "It differs at indexes <[1]>");
+              "Not true that crazy list (<[1.3, 1.1]>) contains exactly one element that is a "
+                  + "finite number within 1.0E-7 of each element of <[1.3, 1.0]>. It is missing an "
+                  + "element that is a finite number within 1.0E-7 of <1.0> and has unexpected "
+                  + "elements <[1.1]>");
     }
   }
 }
