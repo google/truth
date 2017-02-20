@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
@@ -72,7 +73,12 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   /** Fails if the table does not contain the given cell. */
   public void containsCell(
       @Nullable Object rowKey, @Nullable Object colKey, @Nullable Object value) {
-    Cell<Object, Object, Object> cell = Tables.immutableCell(rowKey, colKey, value);
+    containsCell(Tables.<Object, Object, Object>immutableCell(rowKey, colKey, value));
+  }
+
+  /** Fails if the table does not contain the given cell. */
+  public void containsCell(Cell<?, ?, ?> cell) {
+    checkNotNull(cell);
     if (!actual().cellSet().contains(cell)) {
       fail("contains cell", cell);
     }
@@ -81,13 +87,18 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   /** Fails if the table contains the given cell. */
   public void doesNotContainCell(
       @Nullable Object rowKey, @Nullable Object colKey, @Nullable Object value) {
-    Cell<Object, Object, Object> cell = Tables.immutableCell(rowKey, colKey, value);
+    doesNotContainCell(Tables.<Object, Object, Object>immutableCell(rowKey, colKey, value));
+  }
+
+  /** Fails if the table contains the given cell. */
+  public void doesNotContainCell(Cell<?, ?, ?> cell) {
+    checkNotNull(cell);
     if (actual().cellSet().contains(cell)) {
       fail("does not contain cell", cell);
     }
   }
 
-  /** Fails if the table does not contain the given row key. */
+/** Fails if the table does not contain the given row key. */
   public void containsRow(@Nullable Object rowKey) {
     if (!actual().containsRow(rowKey)) {
       fail("contains row", rowKey);

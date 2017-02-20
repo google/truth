@@ -19,6 +19,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.Table.Cell;
+import com.google.common.collect.Tables;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -130,6 +132,7 @@ public class TableSubjectTest {
   public void containsCell() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     assertThat(table).containsCell("row", "col", "val");
+    assertThat(table).containsCell(cell("row", "col", "val"));
   }
 
   @Test
@@ -152,6 +155,10 @@ public class TableSubjectTest {
     assertThat(table).doesNotContainCell("col", "row", "val");
     assertThat(table).doesNotContainCell("col", "col", "val");
     assertThat(table).doesNotContainCell(null, null, null);
+    assertThat(table).doesNotContainCell(cell("row", "row", "val"));
+    assertThat(table).doesNotContainCell(cell("col", "row", "val"));
+    assertThat(table).doesNotContainCell(cell("col", "col", "val"));
+    assertThat(table).doesNotContainCell(cell(null, null, null));
   }
 
   @Test
@@ -165,5 +172,9 @@ public class TableSubjectTest {
           .hasMessageThat()
           .isEqualTo("Not true that <{row={col=val}}> does not contain cell <(row,col)=val>");
     }
+  }
+
+  private static <R, C, V> Cell<R, C, V> cell(R row, C col, V val) {
+    return Tables.immutableCell(row, col, val);
   }
 }
