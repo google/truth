@@ -82,6 +82,8 @@ public final class PrimitiveBooleanArraySubject
   }
 
   public IterableSubject asList() {
-    return new IterableSubject(failureStrategy, listRepresentation());
+    return internalCustomName() != null
+        ? check().that(listRepresentation()).named(internalCustomName())
+        : check().that(listRepresentation());
   }
 }
