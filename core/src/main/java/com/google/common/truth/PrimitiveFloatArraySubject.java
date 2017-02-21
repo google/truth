@@ -500,10 +500,8 @@ public final class PrimitiveFloatArraySubject
   }
 
   private IterableSubject iterableSubject() {
-    if (internalCustomName() != null) {
-      return check().that(listRepresentation()).named(internalCustomName());
-    } else {
-      return check().that(listRepresentation());
-    }
+    return internalCustomName() != null
+        ? check().that(listRepresentation()).named(internalCustomName())
+        : check().that(listRepresentation());
   }
 }
