@@ -111,4 +111,30 @@ public class RelabeledSubjectsTest {
                   + "elements <[1.1]>");
     }
   }
+
+  @Test
+  public void relabelledPrimitiveLongArrays() {
+    long[] actual = {123L, 456L};
+    try {
+      assertThat(actual).named("crazy list").asList().contains(789L);
+      fail("Should have thrown");
+    } catch (AssertionError error) {
+      assertThat(error)
+          .hasMessageThat()
+          .isEqualTo("crazy list (<[123, 456]>) should have contained <789>");
+    }
+  }
+
+  @Test
+  public void relabelledObjectArrays() {
+    String[] actual = {"cat", "dog"};
+    try {
+      assertThat(actual).named("crazy list").asList().contains("rabbit");
+      fail("Should have thrown");
+    } catch (AssertionError error) {
+      assertThat(error)
+          .hasMessageThat()
+          .isEqualTo("crazy list (<[cat, dog]>) should have contained <rabbit>");
+    }
+  }
 }
