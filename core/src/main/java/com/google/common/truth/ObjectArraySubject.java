@@ -205,10 +205,13 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
             "%s unexpectedly equal to %s.", actualAsString(), stringableIterable(expectedArray));
       }
     } catch (ClassCastException ignored) {
+      // If it's not Object[] then it's not equal and the test passes.
     }
   }
 
   public IterableSubject asList() {
-    return new IterableSubject(failureStrategy, Arrays.asList(actual()));
+    return internalCustomName() != null
+        ? check().that(Arrays.asList(actual())).named(internalCustomName())
+        : check().that(Arrays.asList(actual()));
   }
 }

@@ -377,7 +377,7 @@ public final class PrimitiveFloatArraySubject
    *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
    */
   public FloatArrayAsIterable usingTolerance(double tolerance) {
-    return new FloatArrayAsIterable(tolerance(tolerance), check().that(listRepresentation()));
+    return new FloatArrayAsIterable(tolerance(tolerance), iterableSubject());
   }
 
   private static final Correspondence<Float, Number> EXACT_EQUALITY_CORRESPONDENCE =
@@ -455,8 +455,7 @@ public final class PrimitiveFloatArraySubject
    * </ul>
    */
   public FloatArrayAsIterable usingExactEquality() {
-    return new FloatArrayAsIterable(
-        EXACT_EQUALITY_CORRESPONDENCE, check().that(listRepresentation()));
+    return new FloatArrayAsIterable(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject());
   }
 
   /**
@@ -498,5 +497,11 @@ public final class PrimitiveFloatArraySubject
     public void containsNoneOf(float[] excluded) {
       containsNoneIn(Floats.asList(excluded));
     }
+  }
+
+  private IterableSubject iterableSubject() {
+    return internalCustomName() != null
+        ? check().that(listRepresentation()).named(internalCustomName())
+        : check().that(listRepresentation());
   }
 }

@@ -377,7 +377,7 @@ public final class PrimitiveDoubleArraySubject
    *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
    */
   public DoubleArrayAsIterable usingTolerance(double tolerance) {
-    return new DoubleArrayAsIterable(tolerance(tolerance), check().that(listRepresentation()));
+    return new DoubleArrayAsIterable(tolerance(tolerance), iterableSubject());
   }
 
   private static final Correspondence<Double, Number> EXACT_EQUALITY_CORRESPONDENCE =
@@ -447,8 +447,7 @@ public final class PrimitiveDoubleArraySubject
    * </ul>
    */
   public DoubleArrayAsIterable usingExactEquality() {
-    return new DoubleArrayAsIterable(
-        EXACT_EQUALITY_CORRESPONDENCE, check().that(listRepresentation()));
+    return new DoubleArrayAsIterable(EXACT_EQUALITY_CORRESPONDENCE, iterableSubject());
   }
 
   /**
@@ -492,5 +491,11 @@ public final class PrimitiveDoubleArraySubject
     public void containsNoneOf(double[] excluded) {
       containsNoneIn(Doubles.asList(excluded));
     }
+  }
+
+  private IterableSubject iterableSubject() {
+    return internalCustomName() != null
+        ? check().that(listRepresentation()).named(internalCustomName())
+        : check().that(listRepresentation());
   }
 }
