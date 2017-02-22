@@ -204,7 +204,7 @@ you should stop and try to write the *inverse assertion*.
 
 ## How do I compare floating point numbers with Truth? {#floating-point}
 
-See the [floating point comparisons](comparison#floating-point). For example:
+See the [floating point comparisons](floating_point.md). For example:
 
 ```java
 assertThat(actualDouble).isWithin(tolerance).of(expectedDouble);
