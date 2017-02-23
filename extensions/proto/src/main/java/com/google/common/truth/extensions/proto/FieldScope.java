@@ -68,6 +68,14 @@ public abstract class FieldScope {
   public abstract FieldScope ignoringFields(int firstFieldNumber, int... rest);
 
   /**
+   * Returns a {@code FieldScope} equivalent to this one, minus all fields defined by the given
+   * field numbers.
+   *
+   * @see FieldScope#ignoringFields(int, int...)
+   */
+  public abstract FieldScope ignoringFields(Iterable<Integer> fieldNumbers);
+
+  /**
    * Returns a {@code FieldScope} equivalent to this one, minus all fields matching the given {@link
    * FieldDescriptor}s.
    *
@@ -82,6 +90,14 @@ public abstract class FieldScope {
    */
   public abstract FieldScope ignoringFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
+
+  /**
+   * Returns a {@code FieldScope} equivalent to this one, minus all fields defined by the given
+   * field numbers.
+   *
+   * @see FieldScope#ignoringFieldDescriptors(FieldDescriptor, FieldDescriptor...)
+   */
+  public abstract FieldScope ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors);
 
   /**
    * Returns a {@code FieldScope} equivalent to this one, plus all fields defined by the given field
@@ -99,6 +115,14 @@ public abstract class FieldScope {
   public abstract FieldScope allowingFields(int firstFieldNumber, int... rest);
 
   /**
+   * Returns a {@code FieldScope} equivalent to this one, plus all fields defined by the given field
+   * numbers.
+   *
+   * @see FieldScope#allowingFields(int, int...)
+   */
+  public abstract FieldScope allowingFields(Iterable<Integer> fieldNumbers);
+
+  /**
    * Returns a {@code FieldScope} equivalent to this one, plus all fields matching the given {@link
    * FieldDescriptor}s.
    *
@@ -113,6 +137,14 @@ public abstract class FieldScope {
    */
   public abstract FieldScope allowingFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
+
+  /**
+   * Returns a {@code FieldScope} equivalent to this one, plus all fields matching the given {@link
+   * FieldDescriptor}s.
+   *
+   * @see FieldScope#allowingFieldDescriptors(FieldDescriptor, FieldDescriptor...)
+   */
+  public abstract FieldScope allowingFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors);
 
   // package-protected: Should not be implemented outside the package.
   FieldScope() {}

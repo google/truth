@@ -235,36 +235,38 @@ abstract class FieldScopeLogic {
    */
   void validate(Descriptor descriptor) {}
 
-  private static boolean isEmpty(List<?> container) {
+  private static boolean isEmpty(Iterable<?> container) {
+    boolean isEmpty = true;
     for (Object element : container) {
       checkNotNull(element);
+      isEmpty = false;
     }
 
-    return container.isEmpty();
+    return isEmpty;
   }
 
-  FieldScopeLogic ignoringFields(List<Integer> fieldNumbers) {
+  FieldScopeLogic ignoringFields(Iterable<Integer> fieldNumbers) {
     if (isEmpty(fieldNumbers)) {
       return this;
     }
     return and(this, new NegationFieldScopeLogic(new FieldNumbersLogic(fieldNumbers)));
   }
 
-  FieldScopeLogic ignoringFieldDescriptors(List<FieldDescriptor> fieldDescriptors) {
+  FieldScopeLogic ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
     if (isEmpty(fieldDescriptors)) {
       return this;
     }
     return and(this, new NegationFieldScopeLogic(new FieldDescriptorsLogic(fieldDescriptors)));
   }
 
-  FieldScopeLogic allowingFields(List<Integer> fieldNumbers) {
+  FieldScopeLogic allowingFields(Iterable<Integer> fieldNumbers) {
     if (isEmpty(fieldNumbers)) {
       return this;
     }
     return or(this, new FieldNumbersLogic(fieldNumbers));
   }
 
-  FieldScopeLogic allowingFieldDescriptors(List<FieldDescriptor> fieldDescriptors) {
+  FieldScopeLogic allowingFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
     if (isEmpty(fieldDescriptors)) {
       return this;
     }
@@ -433,7 +435,7 @@ abstract class FieldScopeLogic {
   private static final class FieldNumbersLogic extends FieldMatcherLogicBase {
     private final ImmutableSet<Integer> fieldNumbers;
 
-    FieldNumbersLogic(List<Integer> fieldNumbers) {
+    FieldNumbersLogic(Iterable<Integer> fieldNumbers) {
       this.fieldNumbers = ImmutableSet.copyOf(fieldNumbers);
     }
 
@@ -465,7 +467,7 @@ abstract class FieldScopeLogic {
   private static final class FieldDescriptorsLogic extends FieldMatcherLogicBase {
     private final ImmutableSet<FieldDescriptor> fieldDescriptors;
 
-    FieldDescriptorsLogic(List<FieldDescriptor> fieldDescriptors) {
+    FieldDescriptorsLogic(Iterable<FieldDescriptor> fieldDescriptors) {
       this.fieldDescriptors = ImmutableSet.copyOf(fieldDescriptors);
     }
 
