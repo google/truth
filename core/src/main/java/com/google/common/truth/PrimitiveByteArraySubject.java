@@ -55,12 +55,30 @@ public final class PrimitiveByteArraySubject
     try {
       byte[] expectedArray = (byte[]) expected;
       if (!Arrays.equals(actual, expectedArray)) {
-        fail("is equal to", Arrays.toString(expectedArray));
+        failureStrategy.failComparing(
+            "Not true that "
+                + getDisplaySubject()
+                + " is equal to <"
+                + Arrays.toString(expectedArray)
+                + ">;",
+            base16(expectedArray),
+            base16(getSubject()));
       }
     } catch (ClassCastException e) {
       failWithBadType(expected);
     }
   }
+
+  // We could add a dep on com.google.common.io, but that seems overkill for base16 encoding
+  private static String base16(byte[] bytes) {
+    StringBuilder sb = new StringBuilder(2 * bytes.length);
+    for (byte b : bytes) {
+      sb.append(hexDigits[(b >> 4) & 0xf]).append(hexDigits[b & 0xf]);
+    }
+    return sb.toString();
+  }
+
+  private static final char[] hexDigits = "0123456789ABCDEF".toCharArray();
 
   /**
    * A proposition that the actual array and {@code expected} are not arrays of the same length and

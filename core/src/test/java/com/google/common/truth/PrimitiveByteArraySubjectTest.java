@@ -49,6 +49,34 @@ public class PrimitiveByteArraySubjectTest {
   }
 
   @Test
+  public void isEqualTo_Fail() {
+    byte[] actual =
+        new byte[] {
+          124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111,
+          109, 0, 0, 1, 0, 0
+        };
+    byte[] expect =
+        new byte[] {
+          124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111,
+          109, 0, 0, 1, 0, 1
+        };
+    try {
+      assertThat(actual).isEqualTo(expect);
+      throw new Error("Expected to throw.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <(byte[]) [124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, "
+                  + "109, 112, 108, 101, 3, 99, 111, 109, 0, 0, 1, 0, 0]> is equal to "
+                  + "<[124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, "
+                  + "101, 3, 99, 111, 109, 0, 0, 1, 0, 1]>; "
+                  + "expected:<...C6503636F6D000001000[1]>"
+                  + " but was:<...C6503636F6D000001000[0]>");
+    }
+  }
+
+  @Test
   public void isEqualTo_Fail_UnequalOrdering() {
     try {
       assertThat(array(BYTE_0, BYTE_1)).isEqualTo(array(BYTE_1, BYTE_0));
@@ -56,7 +84,9 @@ public class PrimitiveByteArraySubjectTest {
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
-          .isEqualTo("Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>");
+          .isEqualTo(
+              "Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>; "
+                  + "expected:<0[100]> but was:<0[001]>");
     }
   }
 
