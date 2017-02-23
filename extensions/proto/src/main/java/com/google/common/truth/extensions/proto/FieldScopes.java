@@ -103,6 +103,16 @@ public final class FieldScopes {
   }
 
   /**
+   * Returns a {@link FieldScope} which matches everything except the provided field numbers for the
+   * top level message type.
+   *
+   * @see FieldScope#ignoringFields
+   */
+  public static FieldScope ignoringFields(Iterable<Integer> fieldNumbers) {
+    return FieldScopeImpl.createIgnoringFields(fieldNumbers);
+  }
+
+  /**
    * Returns a {@link FieldScope} which matches everything except the provided field descriptors for
    * the message.
    *
@@ -111,6 +121,16 @@ public final class FieldScopes {
   public static FieldScope ignoringFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
     return FieldScopeImpl.createIgnoringFieldDescriptors(asList(firstFieldDescriptor, rest));
+  }
+
+  /**
+   * Returns a {@link FieldScope} which matches everything except the provided field descriptors for
+   * the message.
+   *
+   * @see FieldScope#ignoringFieldDescriptors
+   */
+  public static FieldScope ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
+    return FieldScopeImpl.createIgnoringFieldDescriptors(fieldDescriptors);
   }
 
   /**

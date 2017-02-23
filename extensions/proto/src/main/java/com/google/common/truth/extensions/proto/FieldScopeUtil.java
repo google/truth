@@ -34,7 +34,7 @@ final class FieldScopeUtil {
    * @param fmt Format string that must contain exactly one '%s' and no other format parameters.
    */
   static Function<Optional<Descriptor>, String> fieldNumbersFunction(
-      final String fmt, final List<Integer> fieldNumbers) {
+      final String fmt, final Iterable<Integer> fieldNumbers) {
     return new Function<Optional<Descriptor>, String>() {
       @Override
       public String apply(Optional<Descriptor> optDescriptor) {
@@ -113,7 +113,7 @@ final class FieldScopeUtil {
    * @param fmt Format string that must contain exactly one '%s' and no other format parameters.
    */
   private static String resolveFieldNumbers(
-      Optional<Descriptor> optDescriptor, String fmt, List<Integer> fieldNumbers) {
+      Optional<Descriptor> optDescriptor, String fmt, Iterable<Integer> fieldNumbers) {
     if (optDescriptor.isPresent()) {
       Descriptor descriptor = optDescriptor.get();
       List<String> strings = Lists.newArrayList();
