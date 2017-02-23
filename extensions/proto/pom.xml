@@ -21,23 +21,23 @@
     <!-- TODO(cgruber): Add protoc dependencies to support tests. -->
     <maven.test.skip>true</maven.test.skip>
 
-    <auto-value.version>1.2</auto-value.version>
-    <error_prone_annotations.version>2.0.8</error_prone_annotations.version>
-    <findbugs.version>2.0.1</findbugs.version>
+    <!-- dependency versions -->
+    <auto-value.version>1.4-rc2</auto-value.version>
+    <error_prone_annotations.version>2.0.15</error_prone_annotations.version>
+    <findbugs.version>3.0.1</findbugs.version>
     <guava.version>20.0</guava.version>
-    <protobuf.version>3.0.0-beta-2</protobuf.version>
-    <truth.version>1.0-SNAPSHOT</truth.version>
+    <protobuf.version>3.1.0</protobuf.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>com.google.truth</groupId>
       <artifactId>truth</artifactId>
-      <version>${truth.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.truth.extensions</groupId>
       <artifactId>truth-liteproto-extension</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
