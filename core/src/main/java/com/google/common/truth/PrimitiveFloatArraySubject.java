@@ -267,8 +267,12 @@ public final class PrimitiveFloatArraySubject
    * @param tolerance an inclusive upper bound on the difference between the subject and object
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
    *     Float#NaN}, {@link Float#POSITIVE_INFINITY}, or negative, including {@code -0.0f}
+   * @deprecated Use {@link #usingTolerance}, e.g. {@code
+   *     assertThat(floatArray).usingTolerance(1e-5).containsExactly(1.2f, 3.4f, 5.6f).inOrder();}
    */
-  public TolerantPrimitiveFloatArrayComparison hasValuesWithin(final float tolerance) {
+  @Deprecated
+  public TolerantPrimitiveFloatArrayComparison hasValuesWithin(
+      final float tolerance) {
     return new TolerantPrimitiveFloatArrayComparison() {
 
       @Override
