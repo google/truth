@@ -308,7 +308,23 @@ public class MapWithProtoValuesSubject<
    */
   public MapWithProtoValuesFluentAssertion<M> ignoringFieldsForValues(
       int firstFieldNumber, int... rest) {
-    return usingConfig(config.ignoringFields(asList(firstFieldNumber, rest)));
+    return ignoringFieldsForValues(asList(firstFieldNumber, rest));
+  }
+
+  /**
+   * Excludes the top-level message fields with the given tag numbers from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * numbers are ignored, and all sub-messages of type {@code M} will also have these field numbers
+   * ignored.
+   *
+   * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
+   * runtime exception.
+   */
+  public MapWithProtoValuesFluentAssertion<M> ignoringFieldsForValues(
+      Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringFields(fieldNumbers));
   }
 
   /**
@@ -323,7 +339,22 @@ public class MapWithProtoValuesSubject<
    */
   public MapWithProtoValuesFluentAssertion<M> ignoringFieldDescriptorsForValues(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
-    return usingConfig(config.ignoringFieldDescriptors(asList(firstFieldDescriptor, rest)));
+    return ignoringFieldDescriptorsForValues(asList(firstFieldDescriptor, rest));
+  }
+
+  /**
+   * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * descriptors are ignored, no matter where they occur in the tree.
+   *
+   * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
+   * is silently ignored.
+   */
+  public MapWithProtoValuesFluentAssertion<M> ignoringFieldDescriptorsForValues(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.ignoringFieldDescriptors(fieldDescriptors));
   }
 
   /**
@@ -395,9 +426,21 @@ public class MapWithProtoValuesSubject<
     }
 
     @Override
+    public MapWithProtoValuesFluentAssertion<M> ignoringFieldsForValues(
+        Iterable<Integer> fieldNumbers) {
+      return subject.ignoringFieldsForValues(fieldNumbers);
+    }
+
+    @Override
     public MapWithProtoValuesFluentAssertion<M> ignoringFieldDescriptorsForValues(
         FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
       return subject.ignoringFieldDescriptorsForValues(firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public MapWithProtoValuesFluentAssertion<M> ignoringFieldDescriptorsForValues(
+        Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.ignoringFieldDescriptorsForValues(fieldDescriptors);
     }
 
     @Override

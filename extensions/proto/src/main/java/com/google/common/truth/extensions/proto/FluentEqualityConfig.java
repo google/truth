@@ -29,7 +29,6 @@ import com.google.common.truth.Correspondence;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import java.util.List;
 import javax.annotation.Nullable;
 
 /**
@@ -115,14 +114,14 @@ abstract class FluentEqualityConfig {
         .build();
   }
 
-  final FluentEqualityConfig ignoringFields(List<Integer> fieldNumbers) {
+  final FluentEqualityConfig ignoringFields(Iterable<Integer> fieldNumbers) {
     return toBuilder()
         .setFieldScopeLogic(fieldScopeLogic().ignoringFields(fieldNumbers))
         .addUsingCorrespondenceFieldNumbersString(".ignoringFields(%s)", fieldNumbers)
         .build();
   }
 
-  final FluentEqualityConfig ignoringFieldDescriptors(List<FieldDescriptor> fieldDescriptors) {
+  final FluentEqualityConfig ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
     return toBuilder()
         .setFieldScopeLogic(fieldScopeLogic().ignoringFieldDescriptors(fieldDescriptors))
         .addUsingCorrespondenceFieldDescriptorsString(
@@ -211,7 +210,8 @@ abstract class FluentEqualityConfig {
           FieldScopeUtil.concat(usingCorrespondenceStringFunction(), Functions.constant(string)));
     }
 
-    final Builder addUsingCorrespondenceFieldNumbersString(String fmt, List<Integer> fieldNumbers) {
+    final Builder addUsingCorrespondenceFieldNumbersString(
+        String fmt, Iterable<Integer> fieldNumbers) {
       return setUsingCorrespondenceStringFunction(
           FieldScopeUtil.concat(
               usingCorrespondenceStringFunction(),
@@ -219,7 +219,7 @@ abstract class FluentEqualityConfig {
     }
 
     final Builder addUsingCorrespondenceFieldDescriptorsString(
-        String fmt, List<FieldDescriptor> fieldDescriptors) {
+        String fmt, Iterable<FieldDescriptor> fieldDescriptors) {
       return setUsingCorrespondenceStringFunction(
           FieldScopeUtil.concat(
               usingCorrespondenceStringFunction(),
