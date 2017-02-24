@@ -90,13 +90,23 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
 
   @Override
   public ProtoFluentAssertion ignoringFields(int firstFieldNumber, int... rest) {
-    return usingConfig(config.ignoringFields(asList(firstFieldNumber, rest)));
+    return ignoringFields(asList(firstFieldNumber, rest));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringFields(Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringFields(fieldNumbers));
   }
 
   @Override
   public ProtoFluentAssertion ignoringFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
-    return usingConfig(config.ignoringFieldDescriptors(asList(firstFieldDescriptor, rest)));
+    return ignoringFieldDescriptors(asList(firstFieldDescriptor, rest));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.ignoringFieldDescriptors(fieldDescriptors));
   }
 
   @Override

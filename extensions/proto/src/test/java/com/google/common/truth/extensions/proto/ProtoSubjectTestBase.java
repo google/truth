@@ -199,8 +199,8 @@ public class ProtoSubjectTestBase {
     expect.that(t.getMessage()).doesNotContain(substr);
   }
 
-  protected static final <M> ImmutableList<M> listOf(M... messages) {
-    return ImmutableList.copyOf(messages);
+  protected static final <T> ImmutableList<T> listOf(T... elements) {
+    return ImmutableList.copyOf(elements);
   }
 
   @SuppressWarnings("unchecked")

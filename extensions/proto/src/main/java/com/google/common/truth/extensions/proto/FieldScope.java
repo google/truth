@@ -71,7 +71,14 @@ public abstract class FieldScope {
    * Returns a {@code FieldScope} equivalent to this one, minus all fields defined by the given
    * field numbers.
    *
-   * @see FieldScope#ignoringFields(int, int...)
+   * <p>Validation of the field numbers is performed when the {@code FieldScope} is invoked
+   * (typically by {@link ProtoFluentAssertion#isEqualTo}). A runtime exception will occur if bad
+   * field numbers are encountered.
+   *
+   * <p>The field numbers are ignored recursively on this type. That is, if {@code YourMessage}
+   * contains another {@code YourMessage} somewhere within its subtree, a {@code FieldScope
+   * ignoringFields(X)} will ignore field number {@code X} for all submessages of type {@code
+   * YourMessage}, as well as for the top-level message.
    */
   public abstract FieldScope ignoringFields(Iterable<Integer> fieldNumbers);
 
@@ -95,7 +102,14 @@ public abstract class FieldScope {
    * Returns a {@code FieldScope} equivalent to this one, minus all fields defined by the given
    * field numbers.
    *
-   * @see FieldScope#ignoringFieldDescriptors(FieldDescriptor, FieldDescriptor...)
+   * <p>The {@link FieldDescriptor}s are not validated, as that would require scanning the entire
+   * protobuf schema recursively from this message type. If a {@link FieldDescriptor} is provided
+   * which refers to a field that is not part of this message, or any possible recursive
+   * submessages, it is silently ignored.
+   *
+   * <p>The field descriptors are also ignored recursively on the message type. That is, if {@code
+   * FooMessage.field_bar} is ignored, {@code field_bar} will be ignored for all submessages of the
+   * parent type of type {@code FooMessage}.
    */
   public abstract FieldScope ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors);
 
@@ -118,7 +132,14 @@ public abstract class FieldScope {
    * Returns a {@code FieldScope} equivalent to this one, plus all fields defined by the given field
    * numbers.
    *
-   * @see FieldScope#allowingFields(int, int...)
+   * <p>Validation of the field numbers is performed when the {@code FieldScope} is invoked
+   * (typically by {@link ProtoFluentAssertion#isEqualTo}). A runtime exception will occur if bad
+   * field numbers are encountered.
+   *
+   * <p>The field numbers are included recursively on this type. That is, if {@code YourMessage}
+   * contains another {@code YourMessage} somewhere within its subtree, a {@code FieldScope
+   * allowingFields(X)} will include field number {@code X} for all submessages of type {@code
+   * YourMessage}, as well as for the top-level message.
    */
   public abstract FieldScope allowingFields(Iterable<Integer> fieldNumbers);
 
@@ -142,7 +163,14 @@ public abstract class FieldScope {
    * Returns a {@code FieldScope} equivalent to this one, plus all fields matching the given {@link
    * FieldDescriptor}s.
    *
-   * @see FieldScope#allowingFieldDescriptors(FieldDescriptor, FieldDescriptor...)
+   * <p>The {@link FieldDescriptor}s are not validated, as that would require scanning the entire
+   * protobuf schema from this message type. If a {@link FieldDescriptor} is provided which refers
+   * to a field that is not part of this message, or any possible recursive submessages, it is
+   * silently ignored.
+   *
+   * <p>The field descriptors are also included recursively on the message type. That is, if {@code
+   * FooMessage.field_bar} is included, {@code field_bar} will be included for all submessages of
+   * the parent type of type {@code FooMessage}.
    */
   public abstract FieldScope allowingFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors);
 

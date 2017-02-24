@@ -96,7 +96,7 @@ public final class FieldScopes {
    * Returns a {@link FieldScope} which matches everything except the provided field numbers for the
    * top level message type.
    *
-   * @see FieldScope#ignoringFields
+   * @see FieldScope#ignoringFields(int, int...)
    */
   public static FieldScope ignoringFields(int firstFieldNumber, int... rest) {
     return FieldScopeImpl.createIgnoringFields(asList(firstFieldNumber, rest));
@@ -106,7 +106,7 @@ public final class FieldScopes {
    * Returns a {@link FieldScope} which matches everything except the provided field numbers for the
    * top level message type.
    *
-   * @see FieldScope#ignoringFields
+   * @see FieldScope#ignoringFields(Iterable)
    */
   public static FieldScope ignoringFields(Iterable<Integer> fieldNumbers) {
     return FieldScopeImpl.createIgnoringFields(fieldNumbers);
@@ -116,7 +116,7 @@ public final class FieldScopes {
    * Returns a {@link FieldScope} which matches everything except the provided field descriptors for
    * the message.
    *
-   * @see FieldScope#ignoringFieldDescriptors
+   * @see FieldScope#ignoringFieldDescriptors(FieldDescriptor, FieldDescriptor...)
    */
   public static FieldScope ignoringFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
@@ -127,7 +127,7 @@ public final class FieldScopes {
    * Returns a {@link FieldScope} which matches everything except the provided field descriptors for
    * the message.
    *
-   * @see FieldScope#ignoringFieldDescriptors
+   * @see FieldScope#ignoringFieldDescriptors(Iterable)
    */
   public static FieldScope ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
     return FieldScopeImpl.createIgnoringFieldDescriptors(fieldDescriptors);
@@ -137,21 +137,41 @@ public final class FieldScopes {
    * Returns a {@link FieldScope} which matches nothing except the provided field numbers for the
    * top level message type.
    *
-   * @see FieldScope#allowingFields
+   * @see FieldScope#allowingFields(int, int...)
    */
   public static FieldScope allowingFields(int firstFieldNumber, int... rest) {
     return FieldScopeImpl.createAllowingFields(asList(firstFieldNumber, rest));
   }
 
   /**
+   * Returns a {@link FieldScope} which matches nothing except the provided field numbers for the
+   * top level message type.
+   *
+   * @see FieldScope#allowingFields(Iterable)
+   */
+  public static FieldScope allowingFields(Iterable<Integer> fieldNumbers) {
+    return FieldScopeImpl.createAllowingFields(fieldNumbers);
+  }
+
+  /**
    * Returns a {@link FieldScope} which matches nothing except the provided field descriptors for
    * the message.
    *
-   * @see FieldScope#allowingFieldDescriptors
+   * @see FieldScope#allowingFieldDescriptors(FieldDescriptor, FieldDescriptor...)
    */
   public static FieldScope allowingFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
     return FieldScopeImpl.createAllowingFieldDescriptors(asList(firstFieldDescriptor, rest));
+  }
+
+  /**
+   * Returns a {@link FieldScope} which matches nothing except the provided field descriptors for
+   * the message.
+   *
+   * @see FieldScope#allowingFieldDescriptors(Iterable)
+   */
+  public static FieldScope allowingFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
+    return FieldScopeImpl.createAllowingFieldDescriptors(fieldDescriptors);
   }
 
   /**

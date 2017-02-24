@@ -137,6 +137,19 @@ public interface ProtoFluentAssertion {
   ProtoFluentAssertion ignoringFields(int firstFieldNumber, int... rest);
 
   /**
+   * Excludes the top-level message fields with the given tag numbers from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * numbers are ignored, and all sub-messages of type {@code M} will also have these field numbers
+   * ignored.
+   *
+   * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
+   * runtime exception.
+   */
+  ProtoFluentAssertion ignoringFields(Iterable<Integer> fieldNumbers);
+
+  /**
    * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
    *
    * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
@@ -148,6 +161,18 @@ public interface ProtoFluentAssertion {
    */
   ProtoFluentAssertion ignoringFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
+
+  /**
+   * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * descriptors are ignored, no matter where they occur in the tree.
+   *
+   * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
+   * is silently ignored.
+   */
+  ProtoFluentAssertion ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors);
 
   /**
    * Excludes all specific field paths under the argument {@link FieldScope} from the comparison.
