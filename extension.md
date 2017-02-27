@@ -135,7 +135,7 @@ There are basically three parts to the example:
         Inside the method, you simply do the check you're testing, and `fail()`
         if it is not true.
 
-3.  [`EmployeeTest.java`]
+3.  [`EmployeeSubjectTest.java`]
 
     This is an example of how you unit tests will look using your custom Truth
     subject (described in the previous section). The important thing to note, is
