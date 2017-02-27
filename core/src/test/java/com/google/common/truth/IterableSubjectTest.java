@@ -688,6 +688,81 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousList() {
+    try {
+      assertThat(asList(1L, 2L)).containsExactly(1, 2);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1, 2]> contains exactly <[1, 2]>. It is missing "
+                  + "<[1, 2] (java.lang.Integer)> and has unexpected items "
+                  + "<[1, 2] (java.lang.Long)>");
+    }
+  }
+
+  @Test
+  public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousListWithNull() {
+    try {
+      assertThat(asList(1L, 2L, 3L)).containsExactly(null, 1, 2, 3);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1, 2, 3]> contains exactly <[null, 1, 2, 3]>. It is missing "
+                  + "<[null, 1, 2, 3] (java.lang.Integer)> and has unexpected items "
+                  + "<[1, 2, 3] (java.lang.Long)>");
+    }
+  }
+
+  @Test
+  public void iterableContainsExactlyFailsWithSameToStringAndHeterogeneousList() {
+    try {
+      assertThat(asList(1L, 2)).containsExactly(1, null, 2L);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1, 2]> contains exactly <[1, null, 2]>. It is missing "
+                  + "<[1 (java.lang.Integer), null, 2 (java.lang.Long)]> and has unexpected items "
+                  + "<[1 (java.lang.Long), 2 (java.lang.Integer)]>");
+    }
+  }
+
+  @Test
+  public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousListWithDuplicates() {
+    try {
+      assertThat(asList(1L, 2L)).containsExactly(1, 2, 2);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1, 2]> contains exactly <[1, 2, 2]>. It is missing "
+                  + "<[1, 2 [2 copies]] (java.lang.Integer)> and has unexpected items "
+                  + "<[1, 2] (java.lang.Long)>");
+    }
+  }
+
+  @Test
+  public void iterableContainsExactlyFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
+    try {
+      assertThat(asList(1L, 2)).containsExactly(1, null, null, 2L, 2L);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1, 2]> contains exactly <[1, null, null, 2, 2]>. It is missing "
+                  + "<[1 (java.lang.Integer), null [2 copies], 2 (java.lang.Long) [2 copies]]> "
+                  + "and has unexpected items <[1 (java.lang.Long), 2 (java.lang.Integer)]>");
+    }
+  }
+
+  @Test
   public void iterableContainsExactlyWithOneIterableGivesWarning() {
     try {
       assertThat(asList(1, 2, 3, 4)).containsExactly(asList(1, 2, 3, 4));

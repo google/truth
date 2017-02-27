@@ -32,9 +32,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Lists;
+import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Ordering;
+import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
@@ -332,8 +334,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                     + "It is missing <%s> and has unexpected items <%s>%s",
                 actualAsString(),
                 required,
-                countDuplicates(missing),
-                countDuplicates(extra),
+                countDuplicatesAndAddTypeInfo(
+                    missing, extra /* itemsToCheckForMatchingToStrings */),
+                countDuplicatesAndAddTypeInfo(
+                    extra, missing /* itemsToCheckForMatchingToStrings */),
                 failSuffix);
           } else {
             failWithBadResultsAndSuffix(
@@ -376,6 +380,84 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     // If neither iterator has elements, we reached the end and the elements were in
     // order, so inOrder() can just succeed.
     return IN_ORDER;
+  }
+
+  /**
+   * Makes a String representation of {@code items} with collapsed duplicates and additional class
+   * info if there is any item in {@code itemsToCheckForMatchingToStrings} that has the same {@code
+   * toString()} value without being equal.
+   */
+  private static String countDuplicatesAndAddTypeInfo(
+      Collection<?> items, Collection<?> itemsToCheckForMatchingToStrings) {
+    boolean addTypeInfo = hasMatchingToStringPair(items, itemsToCheckForMatchingToStrings);
+
+    if (addTypeInfo) {
+      Optional<Class<?>> homogeneousClass = getHomogeneousClass(items);
+
+      if (homogeneousClass.isPresent()) {
+        return StringUtil.format(
+            "%s (%s)", countDuplicates(items), homogeneousClass.get().getName());
+      } else {
+        return countDuplicates(addTypeInfoToEveryItem(items)).toString();
+      }
+    } else { // Don't add type info
+      return countDuplicates(items).toString();
+    }
+  }
+
+  /**
+   * Returns true if there is a pair of an item from {@code items1} and one in {@code items2} that
+   * has the same {@code toString()} value without being equal.
+   *
+   * <p>Example: {@code hasMatchingToStringPair([1L, 2L], [1]) == true}
+   */
+  private static boolean hasMatchingToStringPair(Iterable<?> items1, Iterable<?> items2) {
+    SetMultimap<String, Object> stringValueToItem1 =
+        MultimapBuilder.hashKeys().hashSetValues().build();
+    for (Object item1 : items1) {
+      stringValueToItem1.put(String.valueOf(item1), item1);
+    }
+
+    for (Object item2 : items2) {
+      for (Object item1 : stringValueToItem1.get(String.valueOf(item2))) {
+        if (!item1.equals(item2)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Returns the single class of all given items or {@link Optional#absent()} if no such class
+   * exists.
+   */
+  private static Optional<Class<?>> getHomogeneousClass(Iterable<?> items) {
+    Optional<Class<?>> homogeneousClass = Optional.absent();
+    for (Object item : items) {
+      if (item == null) {
+        // Skip this item
+      } else if (!homogeneousClass.isPresent()) {
+        // This is the first non-null item
+        homogeneousClass = Optional.<Class<?>>of(item.getClass());
+      } else if (!item.getClass().equals(homogeneousClass.get())) {
+        // items is a heterogeneous collection
+        return Optional.absent();
+      }
+    }
+    return homogeneousClass;
+  }
+
+  private static List<String> addTypeInfoToEveryItem(Iterable<?> items) {
+    List<String> itemsWithTypeInfo = Lists.newArrayList();
+    for (Object item : items) {
+      if (item == null) {
+        itemsWithTypeInfo.add(null);
+      } else {
+        itemsWithTypeInfo.add(StringUtil.format("%s (%s)", item, item.getClass().getName()));
+      }
+    }
+    return itemsWithTypeInfo;
   }
 
   /**
