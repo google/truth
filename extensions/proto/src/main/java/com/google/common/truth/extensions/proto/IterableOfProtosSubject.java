@@ -413,7 +413,22 @@ public class IterableOfProtosSubject<
    * runtime exception.
    */
   public IterableOfProtosFluentAssertion<M> ignoringFields(int firstFieldNumber, int... rest) {
-    return usingConfig(config.ignoringFields(asList(firstFieldNumber, rest)));
+    return ignoringFields(asList(firstFieldNumber, rest));
+  }
+
+  /**
+   * Excludes the top-level message fields with the given tag numbers from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * numbers are ignored, and all sub-messages of type {@code M} will also have these field numbers
+   * ignored.
+   *
+   * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
+   * runtime exception.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringFields(Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringFields(fieldNumbers));
   }
 
   /**
@@ -428,7 +443,22 @@ public class IterableOfProtosSubject<
    */
   public IterableOfProtosFluentAssertion<M> ignoringFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
-    return usingConfig(config.ignoringFieldDescriptors(asList(firstFieldDescriptor, rest)));
+    return ignoringFieldDescriptors(asList(firstFieldDescriptor, rest));
+  }
+
+  /**
+   * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * descriptors are ignored, no matter where they occur in the tree.
+   *
+   * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
+   * is silently ignored.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.ignoringFieldDescriptors(fieldDescriptors));
   }
 
   /**
@@ -499,9 +529,20 @@ public class IterableOfProtosSubject<
     }
 
     @Override
+    public IterableOfProtosFluentAssertion<M> ignoringFields(Iterable<Integer> fieldNumbers) {
+      return subject.ignoringFields(fieldNumbers);
+    }
+
+    @Override
     public IterableOfProtosFluentAssertion<M> ignoringFieldDescriptors(
         FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
       return subject.ignoringFieldDescriptors(firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringFieldDescriptors(
+        Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.ignoringFieldDescriptors(fieldDescriptors);
     }
 
     @Override

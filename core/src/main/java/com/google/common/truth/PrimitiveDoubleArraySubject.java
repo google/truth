@@ -267,8 +267,12 @@ public final class PrimitiveDoubleArraySubject
    * @param tolerance an inclusive upper bound on the difference between the subject and object
    *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
    *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
+   * @deprecated Use {@link #usingTolerance}, e.g. {@code
+   *     assertThat(doubleArray).usingTolerance(1e-5).containsExactly(1.2, 3.4, 5.6).inOrder();}
    */
-  public TolerantPrimitiveDoubleArrayComparison hasValuesWithin(final double tolerance) {
+  @Deprecated
+  public TolerantPrimitiveDoubleArrayComparison hasValuesWithin(
+      final double tolerance) {
     return new TolerantPrimitiveDoubleArrayComparison() {
 
       @Override

@@ -18,7 +18,9 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
@@ -917,5 +919,104 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);
     }
+  }
+
+  @Test
+  public void testIterableFieldScopeMethodVariants_protoSubject() {
+    Message message = parse("o_int: 1 r_string: \"foo\"");
+    Message eqExceptInt = parse("o_int: 2 r_string: \"foo\"");
+
+    expectThat(message).ignoringFields(listOf(getFieldNumber("o_int"))).isEqualTo(eqExceptInt);
+    expectThat(message)
+        .reportingMismatchesOnly()
+        .ignoringFields(listOf(getFieldNumber("o_int")))
+        .isEqualTo(eqExceptInt);
+    expectThat(message)
+        .ignoringFieldScope(FieldScopes.allowingFields(listOf(getFieldNumber("o_int"))))
+        .isEqualTo(eqExceptInt);
+    expectThat(message)
+        .withPartialScope(FieldScopes.ignoringFields(listOf(getFieldNumber("o_int"))))
+        .isEqualTo(eqExceptInt);
+    expectThat(message)
+        .ignoringFieldDescriptors(listOf(getFieldDescriptor("o_int")))
+        .isEqualTo(eqExceptInt);
+    expectThat(message)
+        .reportingMismatchesOnly()
+        .ignoringFieldDescriptors(listOf(getFieldDescriptor("o_int")))
+        .isEqualTo(eqExceptInt);
+    expectThat(message)
+        .ignoringFieldScope(
+            FieldScopes.allowingFieldDescriptors(listOf(getFieldDescriptor("o_int"))))
+        .isEqualTo(eqExceptInt);
+    expectThat(message)
+        .withPartialScope(FieldScopes.ignoringFieldDescriptors(listOf(getFieldDescriptor("o_int"))))
+        .isEqualTo(eqExceptInt);
+  }
+
+  @Test
+  public void testIterableFieldScopeMethodVariants_iterableOfProtosSubject() {
+    ImmutableList<Message> messages = listOf(parse("o_int: 1 r_string: \"foo\""));
+    ImmutableList<Message> eqExceptInt = listOf(parse("o_int: 2 r_string: \"foo\""));
+
+    expectThat(messages)
+        .ignoringFields(listOf(getFieldNumber("o_int")))
+        .containsExactlyElementsIn(eqExceptInt);
+    expectThat(messages)
+        .reportingMismatchesOnly()
+        .ignoringFields(listOf(getFieldNumber("o_int")))
+        .containsExactlyElementsIn(eqExceptInt);
+    expectThat(messages)
+        .ignoringFieldDescriptors(listOf(getFieldDescriptor("o_int")))
+        .containsExactlyElementsIn(eqExceptInt);
+    expectThat(messages)
+        .reportingMismatchesOnly()
+        .ignoringFieldDescriptors(listOf(getFieldDescriptor("o_int")))
+        .containsExactlyElementsIn(eqExceptInt);
+  }
+
+  @Test
+  public void testIterableFieldScopeMethodVariants_mapWithProtoValuesSubject() {
+    ImmutableMap<String, Message> messages =
+        ImmutableMap.of("foo", parse("o_int: 1 r_string: \"foo\""));
+    ImmutableMap<String, Message> eqExceptInt =
+        ImmutableMap.of("foo", parse("o_int: 2 r_string: \"foo\""));
+
+    expectThat(messages)
+        .ignoringFieldsForValues(listOf(getFieldNumber("o_int")))
+        .containsExactlyEntriesIn(eqExceptInt);
+    expectThat(messages)
+        .reportingMismatchesOnlyForValues()
+        .ignoringFieldsForValues(listOf(getFieldNumber("o_int")))
+        .containsExactlyEntriesIn(eqExceptInt);
+    expectThat(messages)
+        .ignoringFieldDescriptorsForValues(listOf(getFieldDescriptor("o_int")))
+        .containsExactlyEntriesIn(eqExceptInt);
+    expectThat(messages)
+        .reportingMismatchesOnlyForValues()
+        .ignoringFieldDescriptorsForValues(listOf(getFieldDescriptor("o_int")))
+        .containsExactlyEntriesIn(eqExceptInt);
+  }
+
+  @Test
+  public void testIterableFieldScopeMethodVariants_multimapWithProtoValuesSubject() {
+    ImmutableMultimap<String, Message> messages =
+        ImmutableMultimap.of("foo", parse("o_int: 1 r_string: \"foo\""));
+    ImmutableMultimap<String, Message> eqExceptInt =
+        ImmutableMultimap.of("foo", parse("o_int: 2 r_string: \"foo\""));
+
+    expectThat(messages)
+        .ignoringFieldsForValues(listOf(getFieldNumber("o_int")))
+        .containsExactlyEntriesIn(eqExceptInt);
+    expectThat(messages)
+        .reportingMismatchesOnlyForValues()
+        .ignoringFieldsForValues(listOf(getFieldNumber("o_int")))
+        .containsExactlyEntriesIn(eqExceptInt);
+    expectThat(messages)
+        .ignoringFieldDescriptorsForValues(listOf(getFieldDescriptor("o_int")))
+        .containsExactlyEntriesIn(eqExceptInt);
+    expectThat(messages)
+        .reportingMismatchesOnlyForValues()
+        .ignoringFieldDescriptorsForValues(listOf(getFieldDescriptor("o_int")))
+        .containsExactlyEntriesIn(eqExceptInt);
   }
 }
