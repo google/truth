@@ -83,6 +83,34 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void iterableContainsFailsWithSameToString() {
+    try {
+      assertThat(asList(1L, 2L, 3L, 2L)).contains(2);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "<[1, 2, 3, 2]> should have contained <2 (java.lang.Integer)> but doesn't. However, "
+                  + "it does contain <[2 [2 copies]] (java.lang.Long)>.");
+    }
+  }
+
+  @Test
+  public void iterableContainsFailsWithSameToStringAndNull() {
+    try {
+      assertThat(asList(1, "null")).contains(null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "<[1, null]> should have contained <null> but doesn't. However, it does contain "
+                  + "<[null] (java.lang.String)>.");
+    }
+  }
+
+  @Test
   public void iterableContainsFailure() {
     try {
       assertThat(asList(1, 2, 3)).contains(5);

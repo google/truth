@@ -103,7 +103,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Attests (with a side-effect failure) that the subject contains the supplied item. */
   public final void contains(@Nullable Object element) {
     if (!Iterables.contains(actual(), element)) {
-      failWithRawMessage("%s should have contained <%s>", actualAsString(), element);
+      List<Object> elementList = Lists.newArrayList(element);
+      if (hasMatchingToStringPair(actual(), elementList)) {
+        failWithRawMessage(
+            "%s should have contained <%s> but doesn't. However, it does contain <%s>.",
+            actualAsString(),
+            addTypeInfo(element),
+            countDuplicatesAndAddTypeInfo(
+                retainMatchingToString(actual(), elementList /* itemsToCheck */),
+                elementList /* itemsToCheckForMatchingToStrings */));
+      } else {
+        failWithRawMessage("%s should have contained <%s>", actualAsString(), element);
+      }
     }
   }
 
@@ -406,26 +417,40 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
+   * Returns a new collection containing all elements in {@code items} for which there exists at
+   * least one element in {@code itemsToCheck} that has the same {@code toString()} value without
+   * being equal.
+   *
+   * <p>Example: {@code retainMatchingToString([1L, 2L, 2L], [2, 3]) == [2L, 2L]}
+   */
+  private static List<Object> retainMatchingToString(
+      Iterable<?> items, Iterable<?> itemsToCheck) {
+    SetMultimap<String, Object> stringValueToItemsToCheck =
+        MultimapBuilder.hashKeys().hashSetValues().build();
+    for (Object itemToCheck : itemsToCheck) {
+      stringValueToItemsToCheck.put(String.valueOf(itemToCheck), itemToCheck);
+    }
+
+    List<Object> result = Lists.newArrayList();
+    for (Object item : items) {
+      for (Object itemToCheck : stringValueToItemsToCheck.get(String.valueOf(item))) {
+        if (!Objects.equal(itemToCheck, item)) {
+          result.add(item);
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
    * Returns true if there is a pair of an item from {@code items1} and one in {@code items2} that
    * has the same {@code toString()} value without being equal.
    *
    * <p>Example: {@code hasMatchingToStringPair([1L, 2L], [1]) == true}
    */
   private static boolean hasMatchingToStringPair(Iterable<?> items1, Iterable<?> items2) {
-    SetMultimap<String, Object> stringValueToItem1 =
-        MultimapBuilder.hashKeys().hashSetValues().build();
-    for (Object item1 : items1) {
-      stringValueToItem1.put(String.valueOf(item1), item1);
-    }
-
-    for (Object item2 : items2) {
-      for (Object item1 : stringValueToItem1.get(String.valueOf(item2))) {
-        if (!item1.equals(item2)) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return !retainMatchingToString(items1, items2).isEmpty();
   }
 
   /**
@@ -451,13 +476,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   private static List<String> addTypeInfoToEveryItem(Iterable<?> items) {
     List<String> itemsWithTypeInfo = Lists.newArrayList();
     for (Object item : items) {
-      if (item == null) {
-        itemsWithTypeInfo.add(null);
-      } else {
-        itemsWithTypeInfo.add(StringUtil.format("%s (%s)", item, item.getClass().getName()));
-      }
+      itemsWithTypeInfo.add(addTypeInfo(item));
     }
     return itemsWithTypeInfo;
+  }
+
+  /** Converts the argument's value to a String and appends the class name. */
+  private static String addTypeInfo(Object item) {
+    if (item == null) {
+      return "null";
+    } else {
+      return StringUtil.format("%s (%s)", item, item.getClass().getName());
+    }
   }
 
   /**
