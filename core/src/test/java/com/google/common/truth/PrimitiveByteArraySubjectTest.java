@@ -52,18 +52,22 @@ public class PrimitiveByteArraySubjectTest {
   public void isEqualTo_Fail() {
     byte[] actual =
         new byte[] {
-          124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111,
-          109, 0, 0, 1, 0, 0
+          11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,124, 112, 1, 66, 77, 88, 124, 107, 61, 55
         };
     byte[] expect =
         new byte[] {
-          124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111,
-          109, 0, 0, 1, 0, 1
+        11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,124, 112, 1, 6, 7, 8, 124, 107, 61, 55
         };
     try {
       assertThat(actual).isEqualTo(expect);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
+      
+      System.out.println("==============================================");
+      System.out.println(e.getMessage());
+      System.out.println("==============================================");
+      
+      
       assertThat(e)
           .hasMessageThat()
           .isEqualTo(
@@ -73,6 +77,10 @@ public class PrimitiveByteArraySubjectTest {
                   + "101, 3, 99, 111, 109, 0, 0, 1, 0, 1]>; "
                   + "expected:<...C6503636F6D000001000[1]>"
                   + " but was:<...C6503636F6D000001000[0]>");
+      
+      // "Not true that <(byte[]) [...124, 132, [1, 0, 1], 99 ...]> 
+      // is equal to <[... 124. 132. [60, 60, 60], 99 ...]>
+      // Fail with 7 element mismatches, with 1st element mismatch at index 10.
     }
   }
 
