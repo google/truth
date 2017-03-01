@@ -15,14 +15,12 @@
  */
 package com.google.common.truth;
 
-import com.google.common.collect.EvictingQueue;
-import com.google.common.primitives.Bytes;
-import com.google.gwt.i18n.shared.FirstStrongDirectionEstimator;
-
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import com.google.common.primitives.Bytes;
 
 /**
  * A Subject to handle testing propositions for {@code byte[]}.
