@@ -52,13 +52,11 @@ public class PrimitiveByteArraySubjectTest {
   public void isEqualTo_Fail() {
     byte[] actual =
         new byte[] {
-          124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111,
-          109, 0, 0, 1, 0, 0
+          11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,124, 112, 1, 66, 77, 88, 124, 107, 61, 55
         };
     byte[] expect =
         new byte[] {
-          124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111,
-          109, 0, 0, 1, 0, 1
+        11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,124, 112, 1, 6, 7, 8, 124, 107, 61, 55
         };
     try {
       assertThat(actual).isEqualTo(expect);
@@ -67,12 +65,12 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(e)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <(byte[]) [124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, "
-                  + "109, 112, 108, 101, 3, 99, 111, 109, 0, 0, 1, 0, 0]> is equal to "
-                  + "<[124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, "
-                  + "101, 3, 99, 111, 109, 0, 0, 1, 0, 1]>; "
-                  + "expected:<...C6503636F6D000001000[1]>"
-                  + " but was:<...C6503636F6D000001000[0]>");
+              "Not true that <...25,124,112,1,[66,77,88,]124,107,61,55> "
+              + "is equal to <...25,124,112,1,[6,7,8,]124,107,61,55>; "
+              + "Failed with 3 element mismatches, with 1st mismatch is at index 18. "
+              + "expected:<...131415161718197C7001[06070]87C6B3D37> "
+              + "but was:<...131415161718197C7001[424D5]87C6B3D37>"
+              );
     }
   }
 
@@ -85,8 +83,10 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(e)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>; "
-                  + "expected:<0[100]> but was:<0[001]>");
+              "Not true that <[0,1> is equal to <[1,0>; "
+              + "Failed with 2 element mismatches, with 1st mismatch is at index 0. "
+              + "expected:<0[100]> but was:<0[001]>"
+              );
     }
   }
 
