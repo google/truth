@@ -33,6 +33,7 @@ public class PrimitiveCharArraySubjectTest {
     assertThat(array('a', 'q')).isEqualTo(array('a', 'q'));
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo_Same() {
     char[] same = array('a', 'q');
@@ -93,6 +94,7 @@ public class PrimitiveCharArraySubjectTest {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     try {

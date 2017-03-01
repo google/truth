@@ -37,6 +37,7 @@ public class ObjectArraySubjectTest {
     assertThat(objectArray("A", 5L)).isEqualTo(objectArray("A", 5L));
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo_Same() {
     Object[] same = objectArray("A", 5L);
@@ -220,6 +221,7 @@ public class ObjectArraySubjectTest {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     try {
@@ -231,6 +233,7 @@ public class ObjectArraySubjectTest {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSameMultiDimensional() {
     try {

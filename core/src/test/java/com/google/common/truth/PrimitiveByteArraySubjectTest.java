@@ -37,6 +37,7 @@ public class PrimitiveByteArraySubjectTest {
     assertThat(array(BYTE_0, BYTE_1)).isEqualTo(array(BYTE_0, BYTE_1));
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo_Same() {
     byte[] same = array(BYTE_0, BYTE_1);
@@ -127,6 +128,7 @@ public class PrimitiveByteArraySubjectTest {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     try {

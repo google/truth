@@ -35,6 +35,7 @@ public class PrimitiveIntArraySubjectTest {
     assertThat(array(2, 5)).isEqualTo(array(2, 5));
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo_Same() {
     int[] same = array(2, 5);
@@ -147,6 +148,7 @@ public class PrimitiveIntArraySubjectTest {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     try {
