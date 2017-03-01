@@ -33,6 +33,7 @@ public class PrimitiveShortArraySubjectTest {
     assertThat(array(1, 0, 1)).isEqualTo(array(1, 0, 1));
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo_Same() {
     short[] same = array(1, 0, 1);
@@ -106,6 +107,7 @@ public class PrimitiveShortArraySubjectTest {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     try {

@@ -33,6 +33,7 @@ public class PrimitiveLongArraySubjectTest {
     assertThat(array(2L, 5)).isEqualTo(array(2L, 5));
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo_Same() {
     long[] same = array(2L, 5);
@@ -90,6 +91,7 @@ public class PrimitiveLongArraySubjectTest {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     try {

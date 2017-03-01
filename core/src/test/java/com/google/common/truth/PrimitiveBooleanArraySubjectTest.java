@@ -33,6 +33,7 @@ public class PrimitiveBooleanArraySubjectTest {
     assertThat(array(true, false, true)).isEqualTo(array(true, false, true));
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo_Same() {
     boolean[] same = array(true, false, true);
@@ -96,6 +97,7 @@ public class PrimitiveBooleanArraySubjectTest {
     }
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
     try {
