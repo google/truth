@@ -15,12 +15,10 @@
  */
 package com.google.common.truth;
 
+import com.google.common.primitives.Bytes;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.Nullable;
-
-import com.google.common.primitives.Bytes;
 
 /**
  * A Subject to handle testing propositions for {@code byte[]}.
@@ -68,20 +66,20 @@ public final class PrimitiveByteArraySubject
   }
 
   private String getArrayDiffMessage(byte[] actual, byte[] expected) {
-    
+
     int MAX_ELEMENTS = 10;
-  
+
     boolean bracketOpen = false;
     int firstWrongLocation = -1;
 
     boolean canDropHead = true;
-    
+
     boolean headCropped = false;
     boolean tailCropped = false;
-    
+
     StringBuilder actualOut = new StringBuilder();
     StringBuilder expectedOut = new StringBuilder();
-    
+
     for (int i = 0; i < actual.length; i++) {
       if (actual[i] != expected[i] && !bracketOpen) {
         actualOut.append("[");
@@ -95,9 +93,9 @@ public final class PrimitiveByteArraySubject
         actualOut.append("]");
         expectedOut.append("]");
         bracketOpen = false;
-      } 
-      actualOut.append(actual[i] + ",");  
-      expectedOut.append(expected[i] + ",");  
+      }
+      actualOut.append(actual[i] + ",");
+      expectedOut.append(expected[i] + ",");
       if (canDropHead && i > MAX_ELEMENTS) {
         canDropHead = dropHeadElemnt(actualOut);
         dropHeadElemnt(expectedOut);
@@ -110,12 +108,12 @@ public final class PrimitiveByteArraySubject
         break;
       }
     }
-    
-    if (actualOut.charAt(actualOut.length()-1) == ',') {
-      actualOut.setLength(actualOut.length()-1);
+
+    if (actualOut.charAt(actualOut.length() - 1) == ',') {
+      actualOut.setLength(actualOut.length() - 1);
     }
-    if (expectedOut.charAt(expectedOut.length()-1) == ',') {
-      expectedOut.setLength(expectedOut.length()-1);
+    if (expectedOut.charAt(expectedOut.length() - 1) == ',') {
+      expectedOut.setLength(expectedOut.length() - 1);
     }
 
     if (headCropped) {
@@ -126,31 +124,33 @@ public final class PrimitiveByteArraySubject
       actualOut.append("...");
       expectedOut.append("...");
     }
-    
+
     int diffCount = 0;
-    for (int i=0; i<actual.length; i++) {
+    for (int i = 0; i < actual.length; i++) {
       if (actual[i] != expected[i]) {
         diffCount++;
       }
     }
-    
+
     return "Not true that <"
         + actualOut
         + "> is equal to <"
         + expectedOut
         + ">; "
-        + "Failed with " 
-        + diffCount + " element mismatches, "
+        + "Failed with "
+        + diffCount
+        + " element mismatches, "
         + "with 1st mismatch is at index "
-        + firstWrongLocation + ".";
+        + firstWrongLocation
+        + ".";
   }
 
   private boolean dropHeadElemnt(StringBuilder data) {
     int firstIndex = data.indexOf(",");
-    if (data.substring(0,  firstIndex+1).contains("[")){
+    if (data.substring(0, firstIndex + 1).contains("[")) {
       return false;
     }
-    data.delete(0, firstIndex+1);
+    data.delete(0, firstIndex + 1);
     return true;
   }
 

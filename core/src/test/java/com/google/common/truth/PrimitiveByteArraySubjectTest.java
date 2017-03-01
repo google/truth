@@ -52,11 +52,13 @@ public class PrimitiveByteArraySubjectTest {
   public void isEqualTo_Fail() {
     byte[] actual =
         new byte[] {
-          11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,124, 112, 1, 66, 77, 88, 124, 107, 61, 55
+          11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 124, 112, 1, 66, 77, 88, 124,
+          107, 61, 55
         };
     byte[] expect =
         new byte[] {
-        11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,124, 112, 1, 6, 7, 8, 124, 107, 61, 55
+          11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 124, 112, 1, 6, 7, 8, 124,
+          107, 61, 55
         };
     try {
       assertThat(actual).isEqualTo(expect);
@@ -66,11 +68,10 @@ public class PrimitiveByteArraySubjectTest {
           .hasMessageThat()
           .isEqualTo(
               "Not true that <...25,124,112,1,[66,77,88,]124,107,61,55> "
-              + "is equal to <...25,124,112,1,[6,7,8,]124,107,61,55>; "
-              + "Failed with 3 element mismatches, with 1st mismatch is at index 18. "
-              + "expected:<...131415161718197C7001[06070]87C6B3D37> "
-              + "but was:<...131415161718197C7001[424D5]87C6B3D37>"
-              );
+                  + "is equal to <...25,124,112,1,[6,7,8,]124,107,61,55>; "
+                  + "Failed with 3 element mismatches, with 1st mismatch is at index 18. "
+                  + "expected:<...131415161718197C7001[06070]87C6B3D37> "
+                  + "but was:<...131415161718197C7001[424D5]87C6B3D37>");
     }
   }
 
@@ -84,9 +85,8 @@ public class PrimitiveByteArraySubjectTest {
           .hasMessageThat()
           .isEqualTo(
               "Not true that <[0,1> is equal to <[1,0>; "
-              + "Failed with 2 element mismatches, with 1st mismatch is at index 0. "
-              + "expected:<0[100]> but was:<0[001]>"
-              );
+                  + "Failed with 2 element mismatches, with 1st mismatch is at index 0. "
+                  + "expected:<0[100]> but was:<0[001]>");
     }
   }
 
