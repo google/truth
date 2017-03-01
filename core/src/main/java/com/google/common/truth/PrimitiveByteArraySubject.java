@@ -73,7 +73,9 @@ public final class PrimitiveByteArraySubject
   
     boolean bracketOpen = false;
     int firstWrongLocation = -1;
+
     boolean canDropHead = true;
+    
     boolean headCropped = false;
     boolean tailCropped = false;
     
@@ -116,8 +118,6 @@ public final class PrimitiveByteArraySubject
       expectedOut.setLength(expectedOut.length()-1);
     }
 
-    
-    
     if (headCropped) {
       actualOut.insert(0, "...");
       expectedOut.insert(0, "...");
