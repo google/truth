@@ -62,25 +62,15 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(actual).isEqualTo(expect);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      
-      System.out.println("==============================================");
-      System.out.println(e.getMessage());
-      System.out.println("==============================================");
-      
-      
       assertThat(e)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <(byte[]) [124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, "
-                  + "109, 112, 108, 101, 3, 99, 111, 109, 0, 0, 1, 0, 0]> is equal to "
-                  + "<[124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, "
-                  + "101, 3, 99, 111, 109, 0, 0, 1, 0, 1]>; "
-                  + "expected:<...C6503636F6D000001000[1]>"
-                  + " but was:<...C6503636F6D000001000[0]>");
-      
-      // "Not true that <(byte[]) [...124, 132, [1, 0, 1], 99 ...]> 
-      // is equal to <[... 124. 132. [60, 60, 60], 99 ...]>
-      // Fail with 7 element mismatches, with 1st element mismatch at index 10.
+              "Not true that <...25,124,112,1,[66,77,88,]124,107,61,55> "
+              + "is equal to <...25,124,112,1,[6,7,8,]124,107,61,55>; "
+              + "Failed with 3 element mismatches, with 1st mismatch is at index 18. "
+              + "expected:<...131415161718197C7001[06070]87C6B3D37> "
+              + "but was:<...131415161718197C7001[424D5]87C6B3D37>"
+              );
     }
   }
 
@@ -93,8 +83,10 @@ public class PrimitiveByteArraySubjectTest {
       assertThat(e)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>; "
-                  + "expected:<0[100]> but was:<0[001]>");
+              "Not true that <[0,1> is equal to <[1,0>; "
+              + "Failed with 2 element mismatches, with 1st mismatch is at index 0. "
+              + "expected:<0[100]> but was:<0[001]>"
+              );
     }
   }
 
