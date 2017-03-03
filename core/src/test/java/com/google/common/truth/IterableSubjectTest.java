@@ -105,8 +105,8 @@ public class IterableSubjectTest {
       assertThat(e)
           .hasMessageThat()
           .isEqualTo(
-              "<[1, null]> should have contained <null> but doesn't. However, it does contain "
-                  + "<[null] (java.lang.String)>.");
+              "<[1, null]> should have contained <null (null type)> but doesn't. However, it does "
+                  + "contain <[null] (java.lang.String)>.");
     }
   }
 
@@ -206,6 +206,63 @@ public class IterableSubjectTest {
       assertThat(e)
           .hasMessageThat()
           .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
+    }
+  }
+
+  @Test
+  public void iterableContainsAnyOfFailsWithSameToStringAndHomogeneousList() {
+    try {
+      assertThat(asList(1L, 2L, 3L)).containsAnyOf(2, 3);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1, 2, 3]> contains any of <[2, 3] (java.lang.Integer)>. "
+                  + "However, it does contain <[2, 3] (java.lang.Long)>.");
+    }
+  }
+
+  @Test
+  public void iterableContainsAnyOfFailsWithSameToStringAndHomogeneousListWithDuplicates() {
+    try {
+      assertThat(asList(3L, 3L)).containsAnyOf(2, 3, 3);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[3, 3]> contains any of <[2, 3, 3] (java.lang.Integer)>. "
+                  + "However, it does contain <[3 [2 copies]] (java.lang.Long)>.");
+    }
+  }
+
+  @Test
+  public void iterableContainsAnyOfFailsWithSameToStringAndNullInSubject() {
+    try {
+      assertThat(asList(null, "abc")).containsAnyOf("def", "null");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[null, abc]> contains any of <[def, null] (java.lang.String)>. "
+                  + "However, it does contain <[null (null type)]>.");
+    }
+  }
+
+  @Test
+  public void iterableContainsAnyOfFailsWithSameToStringAndNullInExpectation() {
+    try {
+      assertThat(asList("null", "abc")).containsAnyOf("def", null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[null, abc]> contains any of "
+                  + "<[def (java.lang.String), null (null type)]>. "
+                  + "However, it does contain <[null] (java.lang.String)>.");
     }
   }
 
@@ -365,8 +422,8 @@ public class IterableSubjectTest {
       assertThat(e)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <[null, abc]> contains all of <[abc, null]>. It is missing <[null]>. "
-                  + "However, it does contain <[null] (java.lang.String)>.");
+              "Not true that <[null, abc]> contains all of <[abc, null]>. It is missing "
+                  + "<[null (null type)]>. However, it does contain <[null] (java.lang.String)>.");
     }
   }
 
@@ -790,17 +847,17 @@ public class IterableSubjectTest {
   }
 
   @Test
-  public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousListWithNull() {
+  public void iterableContainsExactlyFailsWithSameToStringAndListWithNull() {
     try {
-      assertThat(asList(1L, 2L, 3L)).containsExactly(null, 1, 2, 3);
+      assertThat(asList(1L, 2L)).containsExactly(null, 1, 2);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <[1, 2, 3]> contains exactly <[null, 1, 2, 3]>. It is missing "
-                  + "<[null, 1, 2, 3] (java.lang.Integer)> and has unexpected items "
-                  + "<[1, 2, 3] (java.lang.Long)>");
+              "Not true that <[1, 2]> contains exactly <[null, 1, 2]>. It is missing "
+                  + "<[null (null type), 1 (java.lang.Integer), 2 (java.lang.Integer)]> and has "
+                  + "unexpected items <[1, 2] (java.lang.Long)>");
     }
   }
 
@@ -814,8 +871,8 @@ public class IterableSubjectTest {
           .hasMessageThat()
           .isEqualTo(
               "Not true that <[1, 2]> contains exactly <[1, null, 2]>. It is missing "
-                  + "<[1 (java.lang.Integer), null, 2 (java.lang.Long)]> and has unexpected items "
-                  + "<[1 (java.lang.Long), 2 (java.lang.Integer)]>");
+                  + "<[1 (java.lang.Integer), null (null type), 2 (java.lang.Long)]> and has "
+                  + "unexpected items <[1 (java.lang.Long), 2 (java.lang.Integer)]>");
     }
   }
 
@@ -844,8 +901,9 @@ public class IterableSubjectTest {
           .hasMessageThat()
           .isEqualTo(
               "Not true that <[1, 2]> contains exactly <[1, null, null, 2, 2]>. It is missing "
-                  + "<[1 (java.lang.Integer), null [2 copies], 2 (java.lang.Long) [2 copies]]> "
-                  + "and has unexpected items <[1 (java.lang.Long), 2 (java.lang.Integer)]>");
+                  + "<[1 (java.lang.Integer), null (null type) [2 copies], "
+                  + "2 (java.lang.Long) [2 copies]]> and has unexpected items "
+                  + "<[1 (java.lang.Long), 2 (java.lang.Integer)]>");
     }
   }
 
