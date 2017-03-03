@@ -327,6 +327,65 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousList() {
+    try {
+      assertThat(asList(1L, 2L)).containsAllOf(1, 2);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1, 2]> contains all of <[1, 2]>. It is missing "
+                  + "<[1, 2] (java.lang.Integer)>. However, it does contain "
+                  + "<[1, 2] (java.lang.Long)>.");
+    }
+  }
+
+  @Test
+  public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithDuplicates() {
+    try {
+      assertThat(asList(1L, 2L, 2L)).containsAllOf(1, 1, 2);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1, 2, 2]> contains all of <[1, 1, 2]>. It is missing "
+                  + "<[1 [2 copies], 2] (java.lang.Integer)>. However, it does contain "
+                  + "<[1, 2 [2 copies]] (java.lang.Long)>.");
+    }
+  }
+
+  @Test
+  public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithNull() {
+    try {
+      assertThat(asList("null", "abc")).containsAllOf("abc", null);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[null, abc]> contains all of <[abc, null]>. It is missing <[null]>. "
+                  + "However, it does contain <[null] (java.lang.String)>.");
+    }
+  }
+
+  @Test
+  public void iterableContainsAllOfFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
+    try {
+      assertThat(asList(1, 2, 2L, 3L, 3L)).containsAllOf(2L, 2L, 3, 3);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[1, 2, 2, 3, 3]> contains all of <[2, 2, 3, 3]>. It is missing "
+                  + "<[2 (java.lang.Long), 3 (java.lang.Integer) [2 copies]]>. However, it does "
+                  + "contain <[2 (java.lang.Integer), 3 (java.lang.Long) [2 copies]]>.");
+    }
+  }
+
+  @Test
   public void iterableContainsAllOfInOrder() {
     assertThat(asList(3, 2, 5)).containsAllOf(3, 2, 5).inOrder();
   }

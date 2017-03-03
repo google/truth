@@ -46,15 +46,17 @@ public class PrimitiveShortArraySubjectTest {
   }
 
   @Test
-  public void asListWithoutCastingFailsWithConfusingErrorMessage() {
+  public void asListWithoutCastingFails() {
     try {
       assertThat(array(1, 1, 0)).asList().containsAllOf(1, 0);
       throw new Error("Expected to throw.");
     } catch (AssertionError e) {
-      // TODO(kak): This error message is confusing. We should include the types in there.
       assertThat(e)
           .hasMessageThat()
-          .isEqualTo("Not true that <[1, 1, 0]> contains all of <[1, 0]>. It is missing <[1, 0]>");
+          .isEqualTo(
+              "Not true that <[1, 1, 0]> contains all of <[1, 0]>. It is missing "
+                  + "<[1, 0] (java.lang.Integer)>. However, it does contain "
+                  + "<[1 [2 copies], 0] (java.lang.Short)>.");
     }
   }
 

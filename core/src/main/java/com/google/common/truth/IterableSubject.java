@@ -110,8 +110,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             actualAsString(),
             addTypeInfo(element),
             countDuplicatesAndAddTypeInfo(
-                retainMatchingToString(actual(), elementList /* itemsToCheck */),
-                elementList /* itemsToCheckForMatchingToStrings */));
+                retainMatchingToString(actual(), elementList /* itemsToCheck */)));
       } else {
         failWithRawMessage("%s should have contained <%s>", actualAsString(), element);
       }
@@ -238,7 +237,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
     // if we have any missing expected elements, fail
     if (!missing.isEmpty()) {
-      failWithBadResults(failVerb, expected, "is missing", countDuplicates(missing));
+      if (hasMatchingToStringPair(actual(), missing)) {
+        failWithRawMessage(
+            "Not true that %s %s <%s>. It is missing <%s>. However, it does contain <%s>.",
+            actualAsString(),
+            failVerb,
+            expected,
+            countDuplicatesAndAddTypeInfo(missing),
+            countDuplicatesAndAddTypeInfo(
+                retainMatchingToString(actual(), missing /* itemsToCheck */)));
+      } else {
+        failWithBadResults(failVerb, expected, "is missing", countDuplicates(missing));
+      }
     }
     return ordered ? IN_ORDER : new NotInOrder("contains all elements in order", expected);
   }
@@ -340,15 +350,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         if (!missing.isEmpty()) {
           if (!extra.isEmpty()) {
             // Subject is both missing required elements and contains extra elements
+            boolean addTypeInfo = hasMatchingToStringPair(missing, extra);
             failWithRawMessage(
                 "Not true that %s contains exactly <%s>. "
                     + "It is missing <%s> and has unexpected items <%s>%s",
                 actualAsString(),
                 required,
-                countDuplicatesAndAddTypeInfo(
-                    missing, extra /* itemsToCheckForMatchingToStrings */),
-                countDuplicatesAndAddTypeInfo(
-                    extra, missing /* itemsToCheckForMatchingToStrings */),
+                addTypeInfo ? countDuplicatesAndAddTypeInfo(missing) : countDuplicates(missing),
+                addTypeInfo ? countDuplicatesAndAddTypeInfo(extra) : countDuplicates(extra),
                 failSuffix);
           } else {
             failWithBadResultsAndSuffix(
@@ -395,25 +404,19 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   /**
    * Makes a String representation of {@code items} with collapsed duplicates and additional class
-   * info if there is any item in {@code itemsToCheckForMatchingToStrings} that has the same {@code
-   * toString()} value without being equal.
+   * info.
+   *
+   * <p>Example: {@code countDuplicatesAndAddTypeInfo([1, 2, 2, 3]) == "[1, 2 [3 copies]]
+   * (java.lang.Integer)"} and {@code countDuplicatesAndAddTypeInfo([1, 2L]) == "[1
+   * (java.lang.Integer), 2 (java.lang.Long)]"}.
    */
-  private static String countDuplicatesAndAddTypeInfo(
-      Collection<?> items, Collection<?> itemsToCheckForMatchingToStrings) {
-    boolean addTypeInfo = hasMatchingToStringPair(items, itemsToCheckForMatchingToStrings);
+  private static String countDuplicatesAndAddTypeInfo(Iterable<?> itemsIterable) {
+    Collection<?> items = iterableToCollection(itemsIterable);
+    Optional<Class<?>> homogeneousClass = getHomogeneousClass(items);
 
-    if (addTypeInfo) {
-      Optional<Class<?>> homogeneousClass = getHomogeneousClass(items);
-
-      if (homogeneousClass.isPresent()) {
-        return StringUtil.format(
-            "%s (%s)", countDuplicates(items), homogeneousClass.get().getName());
-      } else {
-        return countDuplicates(addTypeInfoToEveryItem(items)).toString();
-      }
-    } else { // Don't add type info
-      return countDuplicates(items).toString();
-    }
+    return homogeneousClass.isPresent()
+        ? StringUtil.format("%s (%s)", countDuplicates(items), homogeneousClass.get().getName())
+        : countDuplicates(addTypeInfoToEveryItem(items)).toString();
   }
 
   /**
