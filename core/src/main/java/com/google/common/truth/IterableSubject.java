@@ -108,7 +108,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         failWithRawMessage(
             "%s should have contained <%s> but doesn't. However, it does contain <%s>.",
             actualAsString(),
-            addTypeInfo(element),
+            objectToStringWithTypeInfo(element),
             countDuplicatesAndAddTypeInfo(
                 retainMatchingToString(actual(), elementList /* itemsToCheck */)));
       } else {
@@ -158,7 +158,17 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         return;
       }
     }
-    fail(failVerb, expected);
+    if (hasMatchingToStringPair(actual, expected)) {
+      failWithRawMessage(
+          "Not true that %s %s <%s>. However, it does contain <%s>.",
+          actualAsString(),
+          failVerb,
+          iterableToStringWithTypeInfo(expected),
+          countDuplicatesAndAddTypeInfo(
+              retainMatchingToString(actual(), expected /* itemsToCheck */)));
+    } else {
+      fail(failVerb, expected);
+    }
   }
 
   private static <T> Collection<T> iterableToCollection(Iterable<T> iterable) {
@@ -420,14 +430,30 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
+   * Makes a String representation of {@code items} with additional class info.
+   *
+   * <p>Example: {@code iterableToStringWithTypeInfo([1, 2]) == "[1, 2] (java.lang.Integer)"} and
+   * {@code iterableToStringWithTypeInfo([1, 2L]) == "[1 (java.lang.Integer), 2 (java.lang.Long)]"}.
+   */
+  private static String iterableToStringWithTypeInfo(Iterable<?> itemsIterable) {
+    Collection<?> items = iterableToCollection(itemsIterable);
+    Optional<Class<?>> homogeneousClass = getHomogeneousClass(items);
+
+    if (homogeneousClass.isPresent()) {
+      return StringUtil.format("%s (%s)", items, homogeneousClass.get().getName());
+    } else {
+      return addTypeInfoToEveryItem(items).toString();
+    }
+  }
+
+  /**
    * Returns a new collection containing all elements in {@code items} for which there exists at
    * least one element in {@code itemsToCheck} that has the same {@code toString()} value without
    * being equal.
    *
    * <p>Example: {@code retainMatchingToString([1L, 2L, 2L], [2, 3]) == [2L, 2L]}
    */
-  private static List<Object> retainMatchingToString(
-      Iterable<?> items, Iterable<?> itemsToCheck) {
+  private static List<Object> retainMatchingToString(Iterable<?> items, Iterable<?> itemsToCheck) {
     SetMultimap<String, Object> stringValueToItemsToCheck =
         MultimapBuilder.hashKeys().hashSetValues().build();
     for (Object itemToCheck : itemsToCheck) {
@@ -464,9 +490,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     Optional<Class<?>> homogeneousClass = Optional.absent();
     for (Object item : items) {
       if (item == null) {
-        // Skip this item
+        return Optional.absent();
       } else if (!homogeneousClass.isPresent()) {
-        // This is the first non-null item
+        // This is the first item
         homogeneousClass = Optional.<Class<?>>of(item.getClass());
       } else if (!item.getClass().equals(homogeneousClass.get())) {
         // items is a heterogeneous collection
@@ -479,15 +505,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   private static List<String> addTypeInfoToEveryItem(Iterable<?> items) {
     List<String> itemsWithTypeInfo = Lists.newArrayList();
     for (Object item : items) {
-      itemsWithTypeInfo.add(addTypeInfo(item));
+      itemsWithTypeInfo.add(objectToStringWithTypeInfo(item));
     }
     return itemsWithTypeInfo;
   }
 
   /** Converts the argument's value to a String and appends the class name. */
-  private static String addTypeInfo(Object item) {
+  private static String objectToStringWithTypeInfo(Object item) {
     if (item == null) {
-      return "null";
+      // The name "null type" comes from the interface javax.lang.model.type.NullType.
+      return "null (null type)";
     } else {
       return StringUtil.format("%s (%s)", item, item.getClass().getName());
     }
