@@ -215,6 +215,7 @@ public class IntegerSubjectTest {
     assertThat(new Long(4L)).isEqualTo(4);
   }
 
+  @SuppressWarnings("EqualsIncompatibleType")
   @Test
   public void boxedPrimitives() {
     // Java says boxed primitives are not .equals().
@@ -243,6 +244,7 @@ public class IntegerSubjectTest {
     }
   }
 
+  @SuppressWarnings("EqualsIncompatibleType")
   @Test
   public void mixedBoxedAndUnboxedPrimitives() {
     // Java says boxed primitives are not .equals() to primitives.
