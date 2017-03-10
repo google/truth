@@ -44,6 +44,13 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
 
   /**
    * Fails if the {@link Optional}{@code <T>} does not have the given value or the subject is null.
+   *
+   * <p>To make more complex assertions on the optional's value split your assertion in two:
+   *
+   * <pre>{@code
+   * assertThat(myOptional).isPresent();
+   * assertThat(myOptional.get()).contains("foo");
+   * }</pre>
    */
   public void hasValue(Object expected) {
     if (expected == null) {
