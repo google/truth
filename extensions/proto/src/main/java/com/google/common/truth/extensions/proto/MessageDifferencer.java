@@ -196,7 +196,7 @@ import javax.annotation.concurrent.Immutable;
         FieldDescriptor key = keyFields.get(i);
         Preconditions.checkArgument(
             key.getContainingType().equals(field.getMessageType()),
-            key.getFullName() + "must be a direct subfield within the repeated field: "
+            key.getFullName() + " must be a direct subfield within the repeated field: "
             + field.getFullName());
       }
       Preconditions.checkArgument(!setFields.contains(field),
