@@ -449,10 +449,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
      */
     @CanIgnoreReturnValue
     public <K, V extends E> Ordered containsExactlyEntriesIn(Multimap<K, V> expectedMultimap) {
-      // TODO(b/34104379): Either resolve the inconsistency between plain old
-      // MapSubject.containsExactlyEntriesIn (which has a custom implementation and produces
-      // somewhat better failure messages than it would if it just treated the maps as iterables of
-      // entries) and this... or else decide for sure that we're happy to live with the disparity.
+      // Note: The non-fuzzy MultimapSubject.containsExactlyEntriesIn has a custom implementation
+      // and produces somewhat better failure messages simply asserting about the iterables of
+      // entries would: it formats the expected values as  k=[v1, v2] rather than k=v1, k=v2; and in
+      // the case where inOrder() fails it says the keys and/or the values for some keys are out of
+      // order. We don't bother with that here. It would be nice, but it would be a lot of added
+      // complexity for little gain.
       return new IterableEntries(failureStrategy, MultimapSubject.this)
           .comparingElementsUsing(new MapSubject.EntryCorrespondence<K, A, V>(correspondence))
           .containsExactlyElementsIn(expectedMultimap.entries());
