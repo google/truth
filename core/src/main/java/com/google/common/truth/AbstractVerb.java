@@ -80,7 +80,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
    * com.google.common.truth.delegation.DelegationTest}.
    *
    * @see com.google.common.truth.delegation.DelegationTest
-   * @param factory a {@code SubjectFactory<S, T>} implementation
+   * @param factory a {@code SubjectFactory<S, D>} implementation
    * @return A custom verb for the type returned by the SubjectFactory
    */
   public <S extends Subject<S, D>, D, SF extends SubjectFactory<S, D>> DelegatedVerb<S, D> about(
