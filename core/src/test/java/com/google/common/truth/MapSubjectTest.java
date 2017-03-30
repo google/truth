@@ -173,6 +173,7 @@ public class MapSubjectTest {
   }
 
   @Test
+  @SuppressWarnings("ShouldHaveEvenArgs")
   public void containsExactlyBadNumberOfArgs() {
     ImmutableMap<String, Integer> actual =
         ImmutableMap.of("jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5);

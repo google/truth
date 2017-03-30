@@ -154,7 +154,6 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
    */
-  // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
   @CanIgnoreReturnValue
   public Ordered containsExactly(@Nullable Object k0, @Nullable Object v0, Object... rest) {
     return containsExactlyEntriesIn(accumulateMap(k0, v0, rest));
