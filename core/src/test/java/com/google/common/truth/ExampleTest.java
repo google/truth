@@ -63,6 +63,7 @@ public class ExampleTest {
 
   @DataPoints public static int[] ints = {-1, 0, 1, 2};
 
+  @SuppressWarnings("IdentityBinaryExpression")
   @Theory
   public void divideBySelf(int x) {
     assume().that(x).isNotEqualTo(0);
