@@ -9,7 +9,12 @@ url: /faq
 
 ## How do I use Truth with the new Java 8 types? {#java8}
 
-First, make sure you're depending on `//third_party/java/truth:truth8`
+First, make sure you're including the [Java 8 extension](extension), for instance, in Gradle:
+```groovy
+dependencies {
+  testCompile 'com.google.truth.extensions:truth-java8-extension:0.31'
+}
+```
 
 Next, you will need to add *both* of the following static imports to your class:
 
