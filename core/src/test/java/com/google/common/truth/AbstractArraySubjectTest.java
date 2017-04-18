@@ -35,9 +35,9 @@ import org.junit.runners.JUnit4;
 public class AbstractArraySubjectTest {
   @Test
   public void foo() {
-    CapturingFailureStrategy failureStrategy = new CapturingFailureStrategy();
     String[] strings = {"Foo", "Bar"};
-    TestableStringArraySubject subject = new TestableStringArraySubject(failureStrategy, strings);
+    TestableStringArraySubject subject =
+        new TestableStringArraySubject(Truth.THROW_ASSERTION_ERROR, strings);
     assertThat(subject.actualAsString()).isEqualTo("<(String[]) [Foo, Bar]>");
   }
 
@@ -70,13 +70,6 @@ public class AbstractArraySubjectTest {
     @Override
     protected List<?> listRepresentation() {
       return Arrays.asList(actual());
-    }
-  }
-
-  static class CapturingFailureStrategy extends FailureStrategy {
-    @Override
-    public void fail(String message, Throwable cause) {
-      /* noop */
     }
   }
 }
