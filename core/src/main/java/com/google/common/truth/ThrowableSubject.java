@@ -78,20 +78,19 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
       @Override
       public void fail(String message, Throwable cause) {
         delegate.fail(message, cause);
-        // TODO(cpovirk): add defaultCause as a suppressed exception?
+        // TODO(cpovirk): add defaultCause as a suppressed exception? If fail() throws...
       }
 
       @Override
       public void failComparing(String message, CharSequence expected, CharSequence actual) {
-        // Invoke failComparing directly on the delegate so that it can do custom comparisons if
-        // possible. Notably, the default FailureStrategy throws a ComparisonFailure which some IDEs
-        // have special support for.
-        try {
-          delegate.failComparing(message, expected, actual);
-        } catch (AssertionError e) {
-          e.initCause(defaultCause);
-          throw e;
-        }
+        delegate.failComparing(message, expected, actual, defaultCause);
+      }
+
+      @Override
+      public void failComparing(
+          String message, CharSequence expected, CharSequence actual, Throwable cause) {
+        delegate.failComparing(message, expected, actual, cause);
+        // TODO(cpovirk): add defaultCause as a suppressed exception? If failComparing() throws...
       }
     };
   }
@@ -120,6 +119,12 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
       public void failComparing(String message, CharSequence expected, CharSequence actual) {
         delegate.failComparing(prependMessage(message), expected, actual);
       }
+
+      @Override
+      public void failComparing(
+          String message, CharSequence expected, CharSequence actual, Throwable cause) {
+        delegate.failComparing(prependMessage(message), expected, actual, cause);
+      }
     };
   }
 
@@ -146,6 +151,12 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
       @Override
       public void failComparing(String message, CharSequence expected, CharSequence actual) {
         delegate.failComparing(prependMessage(message), expected, actual);
+      }
+
+      @Override
+      public void failComparing(
+          String message, CharSequence expected, CharSequence actual, Throwable cause) {
+        delegate.failComparing(prependMessage(message), expected, actual, cause);
       }
     };
   }

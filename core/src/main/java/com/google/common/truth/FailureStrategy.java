@@ -39,7 +39,12 @@ public abstract class FailureStrategy {
   }
 
   public void failComparing(String message, CharSequence expected, CharSequence actual) {
-    fail(StringUtil.messageFor(message, expected, actual));
+    failComparing(message, expected, actual, null);
+  }
+
+  public void failComparing(
+      String message, CharSequence expected, CharSequence actual, Throwable cause) {
+    fail(StringUtil.messageFor(message, expected, actual), cause);
   }
 
   /**

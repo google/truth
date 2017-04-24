@@ -68,8 +68,20 @@ public final class Truth {
   public static final FailureStrategy THROW_ASSERTION_ERROR =
       new FailureStrategy() {
         @Override
-        public void failComparing(String message, CharSequence expected, CharSequence actual) {
-          throw Platform.comparisonFailure(message, expected.toString(), actual.toString());
+        public void failComparing(
+            String message, CharSequence expected, CharSequence actual, Throwable cause) {
+          AssertionError e =
+              Platform.comparisonFailure(message, expected.toString(), actual.toString());
+          if (cause != null && e.getCause() == null) {
+            try {
+              e.initCause(cause);
+            } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
+              // https://code.google.com/p/android/issues/detail?id=29378
+              // No message, but it's the best we can do without awful hacks.
+              throw new AssertionError(cause);
+            }
+          }
+          throw e;
         }
       };
 
