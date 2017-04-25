@@ -61,6 +61,8 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
   public ThrowableSubject hasCauseThat() {
     // provides a more helpful error message if hasCauseThat() methods are chained too deep
     // e.g. assertThat(new Exception()).hCT().hCT()....
+    // TODO(diamondm) in keeping with other subjects' behavior this should still NPE if the subject
+    // *itself* is null, since there's no context to lose. See also b/37645583
     if (actual() == null) {
       failWithRawMessage("Causal chain is not deep enough - add a .isNotNull() check?");
     }
