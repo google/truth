@@ -59,12 +59,33 @@ import javax.annotation.concurrent.Immutable;
    * when comparing elements of a repeated field as a map.
    */
   public interface MapKeyComparator {
+    /**
+     * Decides whether the given messages match with respect to the keys of the
+     * map entries they represent.
+     *
+     * @param parentFields the stack of SpecificFields corresponding to the proto
+     * path to the given messages.
+     */
     public boolean isMatch(
         MessageDifferencer messageDifferencer,
         Message message1,
         Message message2,
         List<SpecificField> parentFields);
   }
+
+  private static class ProtoMapKeyComparator implements MapKeyComparator {
+    @Override public boolean isMatch(
+        MessageDifferencer messageDifferencer, Message message1, Message message2,
+        List<SpecificField> parentFields) {
+      FieldDescriptor keyField = message1.getDescriptorForType().findFieldByName("key");
+      return messageDifferencer.compareFieldValueUsingParentFields(
+          message1, message2,
+          // -1 indices because there is no way to declare a map key as repeated.
+          keyField, -1, -1,
+          null, parentFields);
+    }
+  }
+  private static final ProtoMapKeyComparator PROTO_MAP_KEY_COMPARATOR = new ProtoMapKeyComparator();
 
   /**
    * When comparing a repeated field as map, MultipleFieldMapKeyComparator can be used to specify
@@ -1192,6 +1213,9 @@ import javax.annotation.concurrent.Immutable;
       FieldDescriptor repeatedField, int[] matchList1, int[] matchList2,
       List<SpecificField> stack) {
     MapKeyComparator keyComparator = mapKeyComparatorMap.get(repeatedField);
+    if (repeatedField.isMapField() && keyComparator == null) {
+      keyComparator = PROTO_MAP_KEY_COMPARATOR;
+    }
     int count1 = matchList1.length;
     int count2 = matchList2.length;
     Arrays.fill(matchList1, -1);
