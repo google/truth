@@ -64,9 +64,9 @@ public final class OptionalIntSubject extends Subject<OptionalIntSubject, Option
   public IntegerSubject hasValueThat() {
     if (actual() == null || !actual().isPresent()) {
       failWithoutActual("is present");
-      return new IntegerSubject(IgnoreFailuresFailureStrategy.INSTANCE, 0);
+      return ignore().that(0);
     } else {
-      return new IntegerSubject(failureStrategy, actual().getAsInt());
+      return check().that(actual().getAsInt());
     }
   }
 

@@ -64,9 +64,9 @@ public final class OptionalLongSubject extends Subject<OptionalLongSubject, Opti
   public LongSubject hasValueThat() {
     if (actual() == null || !actual().isPresent()) {
       failWithoutActual("is present");
-      return new LongSubject(IgnoreFailuresFailureStrategy.INSTANCE, 0L);
+      return ignore().that(0L);
     } else {
-      return new LongSubject(failureStrategy, actual().getAsLong());
+      return check().that(actual().getAsLong());
     }
   }
 

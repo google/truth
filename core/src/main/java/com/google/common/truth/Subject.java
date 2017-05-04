@@ -41,6 +41,12 @@ import javax.annotation.Nullable;
  * @author Christian Gruber
  */
 public class Subject<S extends Subject<S, T>, T> {
+  private static final FailureStrategy IGNORE_STRATEGY =
+      new AbstractFailureStrategy() {
+        @Override
+        public void fail(String message, Throwable cause) {}
+      };
+
   protected final FailureStrategy failureStrategy;
   private final T actual;
   private String customName = null;
@@ -273,7 +279,7 @@ public class Subject<S extends Subject<S, T>, T> {
       return "<" + formatted + ">";
     }
   }
-  
+
   /**
    * Returns a string representation of the actual value.  This will either be the toString() of 
    * the value or a prefixed "name" along with the string representation.
@@ -281,28 +287,39 @@ public class Subject<S extends Subject<S, T>, T> {
   protected final String actualAsString() {
     return getDisplaySubject();
   }
-  
+
   /**
-   * Supplies the direct string representation of the actual value to other methods which may
-   * prefix or otherwise position it in an error message. This should only be overridden to
-   * provide an improved string representation of the value under test, as it would appear in
-   * any given error message, and should not be used for additional prefixing.
-   * 
+   * Supplies the direct string representation of the actual value to other methods which may prefix
+   * or otherwise position it in an error message. This should only be overridden to provide an
+   * improved string representation of the value under test, as it would appear in any given error
+   * message, and should not be used for additional prefixing.
+   *
    * <p>Subjects should override this with care.
-   * 
-   * <p>By default, this returns {@code String.ValueOf(getActualValue())}. 
+   *
+   * <p>By default, this returns {@code String.ValueOf(getActualValue())}.
    */
   protected String actualCustomStringRepresentation() {
     return String.valueOf(actual());
   }
-  
 
   /**
    * A convenience for implementers of {@link Subject} subclasses to use other truth {@code Subject}
    * wrappers within their own propositional logic.
    */
+  // TODO(diamondm) this should be final, can we do that safely?
   protected TestVerb check() {
     return new TestVerb(failureStrategy);
+  }
+
+  /**
+   * A convenience for implementers of {@link Subject} subclasses that use other truth {@code
+   * Subject} wrappers within their own propositional logic <i>and</i> sometimes need to
+   * short-circuit those subjects because the assertion chain has already failed. In such cases it
+   * may still be necessary to return a {@code Subject} instance even though any subsequent
+   * assertions are meaningless. Use this method to return subjects that will never report failures.
+   */
+  protected final TestVerb ignore() {
+    return new TestVerb(IGNORE_STRATEGY);
   }
 
   /**

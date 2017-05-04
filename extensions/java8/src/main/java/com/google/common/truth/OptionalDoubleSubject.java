@@ -69,9 +69,9 @@ public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, 
   public DoubleSubject hasValueThat() {
     if (actual() == null || !actual().isPresent()) {
       failWithoutActual("is present");
-      return new DoubleSubject(IgnoreFailuresFailureStrategy.INSTANCE, 0.);
+      return ignore().that(0.0);
     } else {
-      return new DoubleSubject(failureStrategy, actual().getAsDouble());
+      return check().that(actual().getAsDouble());
     }
   }
 

@@ -728,6 +728,20 @@ public class SubjectTest {
     fail("Should have thrown.");
   }
 
+  @Test
+  public void checkPersistsStrategy() {
+    try {
+      new DefaultSubject(Truth.THROW_ASSERTION_ERROR, null).check().that("foo").isNull();
+    } catch (AssertionError e) {
+      assertThat(e).hasMessageThat().isEqualTo("Not true that <\"foo\"> is null");
+    }
+  }
+
+  @Test
+  public void ignoreDiscardsFailures() {
+    new DefaultSubject(Truth.THROW_ASSERTION_ERROR, null).ignore().that("foo").isNull();
+  }
+
   @SafeVarargs
   private static <T> Iterable<T> oneShotIterable(final T... values) {
     final Iterator<T> iterator = Iterators.forArray(values);
