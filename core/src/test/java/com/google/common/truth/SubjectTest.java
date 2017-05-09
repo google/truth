@@ -738,8 +738,8 @@ public class SubjectTest {
   }
 
   @Test
-  public void ignoreDiscardsFailures() {
-    new DefaultSubject(Truth.THROW_ASSERTION_ERROR, null).ignore().that("foo").isNull();
+  public void ignoreCheckDiscardsFailures() {
+    new DefaultSubject(Truth.THROW_ASSERTION_ERROR, null).ignoreCheck().that("foo").isNull();
   }
 
   @SafeVarargs
