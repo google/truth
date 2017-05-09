@@ -318,7 +318,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * may still be necessary to return a {@code Subject} instance even though any subsequent
    * assertions are meaningless. Use this method to return subjects that will never report failures.
    */
-  protected final TestVerb ignore() {
+  protected final TestVerb ignoreCheck() {
     return new TestVerb(IGNORE_STRATEGY);
   }
 
