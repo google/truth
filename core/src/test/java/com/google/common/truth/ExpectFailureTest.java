@@ -15,64 +15,64 @@
  */
 package com.google.common.truth;
 
-import com.google.common.truth.Expect.ExpectationGatherer;
-import java.util.Arrays;
+import static com.google.common.truth.Truth.assertThat;
+
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.Description;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.junit.runners.model.Statement;
 
-/**
- * Tests (and effectively sample code) for the Expect verb (implemented as a rule)
- *
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
- */
+/** Tests for {@link ExpectFailure} */
 @RunWith(JUnit4.class)
 public class ExpectFailureTest {
-  @Rule public final Expect EXPECT = new FailingExpect(new ExpectationGatherer());
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   @Test
-  public void expectFailNotEquals() {
-    EXPECT.that(4).isNotEqualTo(4);
+  public void expectFail_notEquals() {
+    expectFailure.whenTesting().that(4).isNotEqualTo(4);
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<4> is not equal to <4>");
   }
 
   @Test
-  public void expectFailStringContains() {
-    EXPECT.that("abc").contains("x");
+  public void expectFail_stringContains() {
+    expectFailure.whenTesting().that("abc").contains("x");
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("contains <\"x\">");
   }
 
   @Test
-  public void expectFailContainsAllOf() {
-    EXPECT.that(Arrays.asList("a", "b", "c")).containsAllOf("a", "c", "d");
+  public void expectFail_withCause() {
+    expectFailure.whenTesting().that(new NullPointerException()).isNull();
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("NullPointerException");
+    assertThat(expectFailure.getFailure()).hasCauseThat().isInstanceOf(NullPointerException.class);
   }
 
   @Test
-  public void expectFailContainsAnyOf() {
-    EXPECT.that(Arrays.asList("a", "b", "c")).containsAnyOf("z", "q");
+  public void expectFail_passesIfUnused() {
+    assertThat(4).isEqualTo(4);
   }
 
-  public static class FailingExpect extends Expect {
-    protected FailingExpect(ExpectationGatherer gatherer) {
-      super(gatherer);
-    }
+  @Test
+  public void expectFail_failsOnSuccess() {
+    expectFailure.whenTesting().that(4).isEqualTo(4);
+    thrown.expectMessage("ExpectFailure did not capture a failure.");
+    @SuppressWarnings("unused")
+    AssertionError unused = expectFailure.getFailure();
+  }
 
-    @Override
-    public Statement apply(Statement base, Description description) {
-      final Statement s = super.apply(base, description);
-      return new Statement() {
-        @Override
-        public void evaluate() throws Throwable {
-          try {
-            s.evaluate();
-          } catch (AssertionError e) {
-            return; //ignore - we're happy that it threw.
-          }
-          throw new AssertionError("Should have thrown error with caught assertion failures..");
-        }
-      };
-    }
+  @Test
+  public void expectFail_failsOnMultipleFailures() {
+    expectFailure.whenTesting().that(4).isEqualTo(5);
+    thrown.expectMessage("caught multiple failures");
+    thrown.expectMessage("<4> is equal to <5>");
+    thrown.expectMessage("<5> is equal to <4>");
+    expectFailure.whenTesting().that(5).isEqualTo(4);
+  }
+
+  @Test
+  public void expectFail_failsAfterTest() {
+    expectFailure.whenTesting().that(4).isEqualTo(4);
+    thrown.expectMessage("ExpectFailure.whenTesting() invoked, but no failure was caught.");
   }
 }

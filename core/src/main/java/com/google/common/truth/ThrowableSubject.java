@@ -65,6 +65,14 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
     // *itself* is null, since there's no context to lose. See also b/37645583
     if (actual() == null) {
       failWithRawMessage("Causal chain is not deep enough - add a .isNotNull() check?");
+      return ignoreCheck()
+          .that(
+              new Throwable() {
+                @Override
+                public Throwable fillInStackTrace() {
+                  return this;
+                }
+              });
     }
     return new ThrowableSubject(badCauseStrategy(failureStrategy), actual().getCause());
   }
