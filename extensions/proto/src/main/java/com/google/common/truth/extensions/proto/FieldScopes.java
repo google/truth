@@ -39,7 +39,7 @@ public final class FieldScopes {
    * // Fails, because actual.getBaz() != expected.getBaz().
    * assertThat(actual).isEqualTo(expected);
    *
-   * Foo scope = Foo.newBuilder().setBar(2);
+   * Foo scope = Foo.newBuilder().setBar(2).build();
    * // Succeeds, because only the field 'bar' is compared.
    * assertThat(actual).withPartialScope(FieldScopes.fromSetFields(scope)).isEqualTo(expected);
    *
