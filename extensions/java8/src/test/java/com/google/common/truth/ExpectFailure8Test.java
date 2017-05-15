@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.ExpectFailure.expectFailure;
+import static com.google.common.truth.ExpectFailure.expectFailureAbout;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
@@ -35,4 +36,19 @@ public final class ExpectFailure8Test {
     AssertionError failure2 = expectFailure(whenTesting -> whenTesting.that(5).isEqualTo(4));
     assertThat(failure2).hasMessageThat().contains("<5> is equal to <4>");
   }
+
+  @Test
+  public void testExpectFailureAbout() {
+    AssertionError expected =
+        expectFailureAbout(STRINGS, whenTesting -> whenTesting.that("foo").contains("bar"));
+    assertThat(expected).hasMessageThat().contains("<\"foo\"> contains <\"bar\">");
+  }
+
+  private static final SubjectFactory<StringSubject, String> STRINGS =
+      new SubjectFactory<StringSubject, String>() {
+        @Override
+        public StringSubject getSubject(FailureStrategy fs, String target) {
+          return new StringSubject(fs, target);
+        }
+      };
 }

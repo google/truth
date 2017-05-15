@@ -121,6 +121,27 @@ public class ExpectFailure implements TestRule {
     return expectFailure.getFailure();
   }
 
+  /**
+   * Static alternative that directly returns the triggered failure. This is intended to be used in
+   * Java 8 tests similar to {@code expectThrows()}:
+   *
+   * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
+   * whenTesting.that(myType).hasProperty());}
+   */
+  public static <S extends Subject<S, D>, D>
+      AssertionError expectFailureAbout(
+          final SubjectFactory<S, D> factory,
+          final DelegatedAssertionCallback<S, D> assertionCallback) {
+    // whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory))
+    return expectFailure(
+        new AssertionCallback() {
+          @Override
+          public void invokeAssertion(TestVerb whenTesting) {
+            assertionCallback.invokeAssertion(whenTesting.about(factory));
+          }
+        });
+  }
+
   @Override
   public Statement apply(final Statement base, Description description) {
     checkNotNull(base);
@@ -144,9 +165,22 @@ public class ExpectFailure implements TestRule {
    *
    * <p>Java 8 users should pass a lambda to {@code .expectFailure()} rather than directly implement
    * this interface. Java 7 users can define an {@code @Rule ExpectFailure} instance instead,
-   * however if you prefer the {@code .expectFailure()} pattern you can use this interface.
+   * however if you prefer the {@code .expectFailure()} pattern you can use this interface to pass
+   * in an anonymous class.
    */
   public interface AssertionCallback {
     void invokeAssertion(TestVerb expect);
+  }
+
+  /**
+   * A "functional interface" for {@link #expectFailureAbout} to invoke and capture failures.
+   *
+   * <p>Java 8 users should pass a lambda to {@code .expectFailureAbout()} rather than directly
+   * implement this interface. Java 7 users can define an {@code @Rule ExpectFailure} instance
+   * instead, however if you prefer the {@code .expectFailureAbout()} pattern you can use this
+   * interface to pass in an anonymous class.
+   */
+  public interface DelegatedAssertionCallback<S extends Subject<S, D>, D> {
+    void invokeAssertion(AbstractVerb.DelegatedVerb<S, D> expect);
   }
 }
