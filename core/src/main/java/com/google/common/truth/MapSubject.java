@@ -130,12 +130,29 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   public void containsEntry(@Nullable Object key, @Nullable Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (!actual().entrySet().contains(entry)) {
-      if (actual().containsKey(key)) {
+      List<Object> keyList = Lists.newArrayList(key);
+      List<Object> valueList = Lists.newArrayList(value);
+      if (hasMatchingToStringPair(actual().keySet(), keyList)) {
+        failWithRawMessage(
+            "Not true that %s contains entry <%s (%s)>. However, it does contain keys <%s>.",
+            actualAsString(),
+            entry,
+            objectToTypeName(entry),
+            countDuplicatesAndAddTypeInfo(
+                retainMatchingToString(actual().keySet(), keyList /* itemsToCheck */)));
+      } else if (hasMatchingToStringPair(actual().values(), valueList)) {
+        failWithRawMessage(
+            "Not true that %s contains entry <%s (%s)>. However, it does contain values <%s>.",
+            actualAsString(),
+            entry,
+            objectToTypeName(entry),
+            countDuplicatesAndAddTypeInfo(
+                retainMatchingToString(actual().values(), valueList /* itemsToCheck */)));
+      } else if (actual().containsKey(key)) {
         failWithRawMessage(
             "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
             actualAsString(), entry, key, actual().get(key));
-      }
-      if (actual().containsValue(value)) {
+      } else if (actual().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<Object>();
         for (Entry<?, ?> actualEntry : actual().entrySet()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
@@ -146,8 +163,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
             "Not true that %s contains entry <%s>. "
                 + "However, the following keys are mapped to <%s>: %s",
             actualAsString(), entry, value, keys);
+      } else {
+        fail("contains entry", entry);
       }
-      fail("contains entry", entry);
     }
   }
 

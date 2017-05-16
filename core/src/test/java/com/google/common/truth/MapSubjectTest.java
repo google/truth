@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.IterableSubjectTest.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableMap;
@@ -516,6 +517,33 @@ public class MapSubjectTest {
           .hasMessageThat()
           .isEqualTo("Not true that <{kurt=kluever}> contains entry <greg=kick>");
     }
+  }
+  
+  @Test
+  public void containsEntry_failsWithSameToStringOfKey() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMap.of(1L, "value1", 2L, "value2"))
+        .containsEntry(1, "value1");
+    assertWithMessage("Full message: %s", expectFailure.getFailure().getMessage())
+        .that(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=value1, 2=value2}> contains entry <1=value1 "
+                + "(Map.Entry<java.lang.Integer,java.lang.String>)>. However, it does contain keys "
+                + "<[1] (java.lang.Long)>.");
+  }
+
+  @Test
+  public void containsEntry_failsWithSameToStringOfValue() {
+    expectFailure.whenTesting().that(ImmutableMap.of(1, "null")).containsEntry(1, null);
+    assertWithMessage("Full message: %s", expectFailure.getFailure().getMessage())
+        .that(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=null}> contains entry <1=null "
+                + "(Map.Entry<java.lang.Integer,null type>)>. However, it does contain values "
+                + "<[null] (java.lang.String)>.");
   }
 
   @Test
