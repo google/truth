@@ -15,15 +15,24 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.SubjectUtils.countDuplicates;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.SetMultimap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utility methods used in {@code Subject<T>} implementors.
  *
  * @author Christian Gruber
+ * @author Jens Nyman
  */
 final class SubjectUtils {
   private SubjectUtils() {}
@@ -69,5 +78,135 @@ final class SubjectUtils {
       params[n++] = (count > 1) ? item + " [" + count + " copies]" : item;
     }
     return Arrays.asList(params);
+  }
+
+  /**
+   * Makes a String representation of {@code items} with collapsed duplicates and additional class
+   * info.
+   *
+   * <p>Example: {@code countDuplicatesAndAddTypeInfo([1, 2, 2, 3]) == "[1, 2 [3 copies]]
+   * (java.lang.Integer)"} and {@code countDuplicatesAndAddTypeInfo([1, 2L]) == "[1
+   * (java.lang.Integer), 2 (java.lang.Long)]"}.
+   */
+  static String countDuplicatesAndAddTypeInfo(Iterable<?> itemsIterable) {
+    Collection<?> items = iterableToCollection(itemsIterable);
+    Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
+
+    return homogeneousTypeName.isPresent()
+        ? StringUtil.format("%s (%s)", countDuplicates(items), homogeneousTypeName.get())
+        : countDuplicates(addTypeInfoToEveryItem(items)).toString();
+  }
+
+  /**
+   * Makes a String representation of {@code items} with additional class info.
+   *
+   * <p>Example: {@code iterableToStringWithTypeInfo([1, 2]) == "[1, 2] (java.lang.Integer)"} and
+   * {@code iterableToStringWithTypeInfo([1, 2L]) == "[1 (java.lang.Integer), 2 (java.lang.Long)]"}.
+   */
+  static String iterableToStringWithTypeInfo(Iterable<?> itemsIterable) {
+    Collection<?> items = iterableToCollection(itemsIterable);
+    Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
+
+    if (homogeneousTypeName.isPresent()) {
+      return StringUtil.format("%s (%s)", items, homogeneousTypeName.get());
+    } else {
+      return addTypeInfoToEveryItem(items).toString();
+    }
+  }
+
+  /**
+   * Returns a new collection containing all elements in {@code items} for which there exists at
+   * least one element in {@code itemsToCheck} that has the same {@code toString()} value without
+   * being equal.
+   *
+   * <p>Example: {@code retainMatchingToString([1L, 2L, 2L], [2, 3]) == [2L, 2L]}
+   */
+  static List<Object> retainMatchingToString(Iterable<?> items, Iterable<?> itemsToCheck) {
+    SetMultimap<String, Object> stringValueToItemsToCheck =
+        MultimapBuilder.hashKeys().hashSetValues().build();
+    for (Object itemToCheck : itemsToCheck) {
+      stringValueToItemsToCheck.put(String.valueOf(itemToCheck), itemToCheck);
+    }
+
+    List<Object> result = Lists.newArrayList();
+    for (Object item : items) {
+      for (Object itemToCheck : stringValueToItemsToCheck.get(String.valueOf(item))) {
+        if (!Objects.equal(itemToCheck, item)) {
+          result.add(item);
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Returns true if there is a pair of an item from {@code items1} and one in {@code items2} that
+   * has the same {@code toString()} value without being equal.
+   *
+   * <p>Example: {@code hasMatchingToStringPair([1L, 2L], [1]) == true}
+   */
+  static boolean hasMatchingToStringPair(Iterable<?> items1, Iterable<?> items2) {
+    return !retainMatchingToString(items1, items2).isEmpty();
+  }
+
+  static String objectToTypeName(Object item) {
+    if (item == null) {
+      // The name "null type" comes from the interface javax.lang.model.type.NullType.
+      return "null type";
+    } else if (item instanceof Map.Entry) {
+      Map.Entry<?, ?> entry = (Map.Entry<?, ?>) item;
+      return StringUtil.format(
+          "Map.Entry<%s,%s>",
+          entry.getKey().getClass().getName(), entry.getValue().getClass().getName());
+    } else {
+      return item.getClass().getName();
+    }
+  }
+
+  /**
+   * Returns the name of the single type of all given items or {@link Optional#absent()} if no such
+   * type exists.
+   */
+  private static Optional<String> getHomogeneousTypeName(Iterable<?> items) {
+    Optional<String> homogeneousTypeName = Optional.absent();
+    for (Object item : items) {
+      if (item == null) {
+        return Optional.absent();
+      } else if (!homogeneousTypeName.isPresent()) {
+        // This is the first item
+        homogeneousTypeName = Optional.of(objectToTypeName(item));
+      } else if (!objectToTypeName(item).equals(homogeneousTypeName.get())) {
+        // items is a heterogeneous collection
+        return Optional.absent();
+      }
+    }
+    return homogeneousTypeName;
+  }
+
+  private static List<String> addTypeInfoToEveryItem(Iterable<?> items) {
+    List<String> itemsWithTypeInfo = Lists.newArrayList();
+    for (Object item : items) {
+      itemsWithTypeInfo.add(StringUtil.format("%s (%s)", item, objectToTypeName(item)));
+    }
+    return itemsWithTypeInfo;
+  }
+
+  static <T> Collection<T> iterableToCollection(Iterable<T> iterable) {
+    if (iterable instanceof Collection) {
+      // Should be safe to assume that any Iterable implementing Collection isn't a one-shot
+      // iterable, right? I sure hope so.
+      return (Collection<T>) iterable;
+    } else {
+      return Lists.newArrayList(iterable);
+    }
+  }
+
+  static <T> List<T> iterableToList(Iterable<T> iterable) {
+    if (iterable instanceof List) {
+      return (List<T>) iterable;
+    } else {
+      return Lists.newArrayList(iterable);
+    }
   }
 }

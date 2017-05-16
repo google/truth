@@ -433,6 +433,32 @@ public class MapSubjectTest {
   }
 
   @Test
+  public void containsKey_failsWithSameToString() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMap.of(1L, "value1", 2L, "value2", "1", "value3"))
+        .containsKey(1);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=value1, 2=value2, 1=value3}> contains key <1 (java.lang.Integer)>. "
+                + "However, it does contain keys <[1 (java.lang.Long), 1 (java.lang.String)]>.");
+  }
+
+  @Test
+  public void containsKey_failsWithNullStringAndNull() {
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put("null", "value1");
+
+    expectFailure.whenTesting().that(actual).containsKey(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{null=value1}> contains key <null (null type)>. However, "
+                + "it does contain keys <[null] (java.lang.String)>.");
+  }
+
+  @Test
   public void containsNullKey() {
     Map<String, String> actual = Maps.newHashMap();
     actual.put(null, "null");
