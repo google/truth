@@ -44,7 +44,7 @@ import org.junit.runners.model.Statement;
  */
 public class ExpectFailure implements TestRule {
   private final FailureStrategy strategy =
-      new FailureStrategy() {
+      new AbstractFailureStrategy() {
         @Override
         public void fail(String message, Throwable cause) {
           try {

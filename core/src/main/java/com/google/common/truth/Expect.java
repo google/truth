@@ -31,7 +31,7 @@ import org.junit.runners.model.Statement;
 
 @GwtIncompatible("JUnit4")
 public class Expect extends TestVerb implements TestRule {
-  public static class ExpectationGatherer extends FailureStrategy {
+  public static class ExpectationGatherer extends AbstractFailureStrategy {
     private final List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
     private final boolean showStackTrace;
 
@@ -44,19 +44,15 @@ public class Expect extends TestVerb implements TestRule {
     }
 
     @Override
-    public void fail(String message) {
-      fail(checkNotNull(message), new Throwable(message));
-    }
-
-    @Override
-    public void failComparing(String message, CharSequence expected, CharSequence actual) {
-      String errorMessage = messageFor(message, expected, actual);
-      fail(errorMessage, new Throwable(errorMessage));
+    public void failComparing(
+        String message, CharSequence expected, CharSequence actual, Throwable cause) {
+      fail(messageFor(message, expected, actual), cause);
     }
 
     @Override
     public void fail(String message, Throwable cause) {
-      messages.add(ExpectationFailure.create(message, cause));
+      messages.add(
+          ExpectationFailure.create(message, cause != null ? cause : new Throwable(message)));
     }
 
     public List<ExpectationFailure> getMessages() {
@@ -90,7 +86,7 @@ public class Expect extends TestVerb implements TestRule {
     }
   }
 
-  static final class ExpectationFailure {
+  private static final class ExpectationFailure {
     private final String message;
     @Nullable private final Throwable cause;
 

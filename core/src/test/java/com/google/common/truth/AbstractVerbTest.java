@@ -35,13 +35,14 @@ public class AbstractVerbTest {
   private static final AtomicReference<String> failureMessage = new AtomicReference<String>();
 
   private static final FailureStrategy FAILURE_STRATEGY =
-      new FailureStrategy() {
+      new AbstractFailureStrategy() {
         @Override
         public void fail(String message, Throwable ignoreInThisTest) {
           failureMessage.set(message);
         }
       };
 
+  @SuppressWarnings("rawtypes")
   private static final AbstractVerb<?> CAPTURE_FAILURE =
       new AbstractVerb(FAILURE_STRATEGY) {
         @Override

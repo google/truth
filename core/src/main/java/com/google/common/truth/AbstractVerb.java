@@ -154,6 +154,12 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
       delegate.failComparing(prependFailureMessageIfAny(message), expected, actual);
     }
 
+    @Override
+    public void failComparing(
+        String message, CharSequence expected, CharSequence actual, Throwable cause) {
+      delegate.failComparing(prependFailureMessageIfAny(message), expected, actual, cause);
+    }
+
     private String prependFailureMessageIfAny(String message) {
       return messageHolder.getFailureMessage() == null
           ? message

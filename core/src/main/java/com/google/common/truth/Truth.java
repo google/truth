@@ -75,22 +75,34 @@ public final class Truth {
   private Truth() {}
 
   public static final FailureStrategy THROW_ASSERTION_ERROR =
-      new FailureStrategy() {
+      new AbstractFailureStrategy() {
+        @Override
+        public void fail(String message, Throwable cause) {
+          throw stripFramesAndTryToAddCause(new AssertionError(message), cause);
+        }
+
         @Override
         public void failComparing(
             String message, CharSequence expected, CharSequence actual, Throwable cause) {
           AssertionError e =
               Platform.comparisonFailure(message, expected.toString(), actual.toString());
-          if (cause != null && e.getCause() == null) {
-            try {
-              e.initCause(cause);
-            } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-              // https://code.google.com/p/android/issues/detail?id=29378
-              // No message, but it's the best we can do without awful hacks.
-              throw new AssertionError(cause);
-            }
+          throw stripFramesAndTryToAddCause(e, cause);
+        }
+
+        private AssertionError stripFramesAndTryToAddCause(
+            AssertionError failure, Throwable cause) {
+          if (cause == null) {
+            // Default "cause" contains the full stacktrace, without any stripped frames
+            cause = new AssertionError(failure.getMessage());
           }
-          throw e;
+          try {
+            failure.initCause(cause);
+          } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
+            // https://code.google.com/p/android/issues/detail?id=29378
+            // No message, but it's the best we can do without awful hacks.
+            throw stripTruthStackFrames(new AssertionError(cause));
+          }
+          return stripTruthStackFrames(failure);
         }
       };
 

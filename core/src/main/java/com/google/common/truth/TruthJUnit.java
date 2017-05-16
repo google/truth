@@ -51,15 +51,11 @@ import org.junit.internal.AssumptionViolatedException;
 public class TruthJUnit {
   @GwtIncompatible("JUnit4")
   private static final FailureStrategy THROW_ASSUMPTION_ERROR =
-      new FailureStrategy() {
+      new AbstractFailureStrategy() {
         @Override
-        public void fail(String message) {
-          throw new AssumptionViolatedException(message);
-        }
-
-        @Override
-        public void failComparing(String message, CharSequence expected, CharSequence actual) {
-          throw new AssumptionViolatedException(messageFor(message, expected, actual));
+        public void failComparing(
+            String message, CharSequence expected, CharSequence actual, Throwable cause) {
+          fail(messageFor(message, expected, actual), cause);
         }
 
         @Override
@@ -81,7 +77,7 @@ public class TruthJUnit {
     return ASSUME;
   }
 
-  @SuppressWarnings("serial") // Super serial.
+  // TODO(diamondm): remove this and use org.junit.AssumptionViolatedException once we're on v4.12
   @GwtIncompatible("JUnit4")
   private static class ThrowableAssumptionViolatedException extends AssumptionViolatedException {
     public ThrowableAssumptionViolatedException(String message, Throwable throwable) {

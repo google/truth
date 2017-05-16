@@ -57,8 +57,7 @@ public abstract class FailureStrategy {
       // No message, but it's the best we can do without awful hacks.
       throw new AssertionError(cause);
     }
-    stripTruthStackFrames(up);
-    throw up;
+    throw stripTruthStackFrames(up);
   }
 
   /**
@@ -84,7 +83,7 @@ public abstract class FailureStrategy {
   /**
    * Strips stack frames from the throwable that have a class starting with com.google.common.truth.
    */
-  private static void stripTruthStackFrames(Throwable throwable) {
+  static <T extends Throwable> T stripTruthStackFrames(T throwable) {
     StackTraceElement[] stackTrace = throwable.getStackTrace();
 
     int i = 0;
@@ -93,5 +92,6 @@ public abstract class FailureStrategy {
       i++;
     }
     throwable.setStackTrace(Arrays.copyOfRange(stackTrace, i, stackTrace.length));
+    return throwable;
   }
 }
