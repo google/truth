@@ -65,8 +65,9 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
           failWithRawMessage(
               "Not true that %s (%s) has value <%s> (%s)",
               actualAsString(), actual.getClass(), expected, expected.getClass());
+        } else {
+          fail("has value", expected);
         }
-        fail("has value", expected);
       }
     }
   }

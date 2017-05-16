@@ -18,12 +18,10 @@ package com.google.common.truth;
 import static com.google.common.truth.OptionalSubject.optionals;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
-import static com.google.common.truth.TruthJUnit.assume;
 import static org.junit.Assert.fail;
 
 import java.util.Optional;
 import org.junit.Test;
-import org.junit.internal.AssumptionViolatedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -37,27 +35,17 @@ public class OptionalTest {
   @Test
   public void namedOptional() {
     Optional<String> optional = Optional.of("actual");
-    try {
-      validateThat(optional).named("name").hasValue("expected");
-      fail("Should have thrown");
-    } catch (ValidationException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that name (<Optional[actual]>) has value <expected>");
-      return;
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(optional).named("name").hasValue("expected"));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that name (<Optional[actual]>) has value <expected>");
   }
 
   @Test
   public void failOnNullSubject() {
-    try {
-      Optional<String> nullOptional = null;
-      validateThat(nullOptional).isEmpty();
-      fail("Should have thrown");
-    } catch (ValidationException expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is empty");
-      return;
-    }
+    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is empty");
   }
 
   @Test
@@ -67,24 +55,16 @@ public class OptionalTest {
 
   @Test
   public void isPresentFailing() {
-    try {
-      validateThat(Optional.empty()).isPresent();
-      fail("Should have thrown");
-    } catch (ValidationException expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
-      return;
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Optional.empty()).isPresent());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
   }
 
   @Test
   public void isPresentFailingWithNamed() {
-    try {
-      validateThat(Optional.empty()).named("name").isPresent();
-      fail("Should have thrown");
-    } catch (ValidationException expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
-      return;
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Optional.empty()).named("name").isPresent());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
   }
 
   @Test
@@ -94,13 +74,9 @@ public class OptionalTest {
 
   @Test
   public void isEmptyFailing() {
-    try {
-      validateThat(Optional.of("foo")).isEmpty();
-      fail("Should have thrown");
-    } catch (ValidationException expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[foo]> is empty");
-      return;
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).isEmpty());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[foo]> is empty");
   }
 
   @Test
@@ -110,106 +86,62 @@ public class OptionalTest {
 
   @Test
   public void hasValue_FailingWithEmpty() {
-    try {
-      validateThat(Optional.empty()).hasValue("foo");
-      fail("Should have thrown");
-    } catch (ValidationException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <Optional.empty> has value <foo>");
-      return;
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Optional.empty()).hasValue("foo"));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that <Optional.empty> has value <foo>");
   }
 
   @Test
-  public void hasValue_FailingWithNullParameter() {
+  public void hasValue_NPEWithNullParameter() {
     try {
-      validateThat(Optional.of("foo")).hasValue(null);
-      fail("Should have thrown");
+      assertThat(Optional.of("foo")).hasValue(null);
+      fail("Expected NPE");
     } catch (NullPointerException expected) {
       assertThat(expected).hasMessageThat().isEqualTo("Optional cannot have a null value.");
-      return;
     }
   }
 
   @Test
   public void hasValue_FailingWithWrongValueForString() {
-    try {
-      validateThat(Optional.of("foo")).hasValue("boo");
-      fail("Should have thrown");
-    } catch (ValidationException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <Optional[foo]> has value <boo>");
-      return;
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).hasValue("boo"));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that <Optional[foo]> has value <boo>");
   }
 
   @Test
   public void hasValue_FailingWithWrongValueForOther() {
-    try {
-      validateThat(Optional.of(5)).hasValue(10);
-      fail("Should have thrown");
-    } catch (ValidationException expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[5]> has value <10>");
-      return;
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Optional.of(5)).hasValue(10));
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[5]> has value <10>");
   }
 
   @Test
   public void hasValue_Named_Failing() {
-    try {
-      assertThat(Optional.of("foo")).named("bar").hasValue("boo");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that bar (<Optional[foo]>) has value <boo>");
-      return;
-    }
-    fail("Should have thrown");
+    AssertionError expected =
+        expectFailure(
+            whenTesting -> whenTesting.that(Optional.of("foo")).named("bar").hasValue("boo"));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that bar (<Optional[foo]>) has value <boo>");
   }
 
   @Test
   public void hasValue_Named_FailingWithSameToStrings() {
-    try {
-      assertThat(Optional.of(10)).named("bar").hasValue("10");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that bar (<Optional[10]>) (class java.lang.Integer) "
-                  + "has value <10> (class java.lang.String)");
-      return;
-    }
-    fail("Should have thrown");
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Optional.of(10)).named("bar").hasValue("10"));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that bar (<Optional[10]>) (class java.lang.Integer) "
+                + "has value <10> (class java.lang.String)");
   }
 
-  @Test
-  public void assumption() {
-    try {
-      assume().about(optionals()).that(Optional.empty()).isPresent();
-      fail("Should have thrown");
-    } catch (AssumptionViolatedException expected) {
-    }
-  }
-
-  private static OptionalSubject validateThat(Optional<?> that) {
-    return validate().about(optionals()).that(that);
-  }
-
-  private static TestVerb validate() {
-    return new TestVerb(
-        new FailureStrategy() {
-          @Override
-          public void fail(String message, Throwable cause) {
-            throw new ValidationException(message, cause);
-          }
-        });
-  }
-
-  private static class ValidationException extends RuntimeException {
-    private ValidationException(String message, Throwable cause) {
-      super(message, cause);
-    }
+  private static AssertionError expectFailure(
+      ExpectFailure.DelegatedAssertionCallback<OptionalSubject, Optional<?>> assertionCallback) {
+    return ExpectFailure.expectFailureAbout(optionals(), assertionCallback);
   }
 }
