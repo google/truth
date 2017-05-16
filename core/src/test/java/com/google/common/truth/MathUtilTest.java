@@ -20,7 +20,6 @@ import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.MathUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

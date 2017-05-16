@@ -363,8 +363,10 @@ public final class PrimitiveDoubleArraySubject
    * the array under test) are compared to expected elements using a {@link Correspondence} which
    * considers values to correspond if they are finite values within {@code tolerance} of each
    * other. The proposition is actually executed by continuing the method chain. For example:
-   * <pre>   {@code
-   * assertThat(actualDoubleArray).usingTolerance(1.0e-5).contains(3.14159);}</pre>
+   *
+   * <pre>{@code
+   * assertThat(actualDoubleArray).usingTolerance(1.0e-5).contains(3.14159);
+   * }</pre>
    *
    * <ul>
    *   <li>It does not consider values to correspond if either value is infinite or NaN.

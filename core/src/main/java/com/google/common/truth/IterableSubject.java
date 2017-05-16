@@ -695,8 +695,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * the {@link Iterable} under test) are compared to expected elements using the given {@link
    * Correspondence}. The actual elements must be of type {@code A}, the expected elements must be
    * of type {@code E}. The proposition is actually executed by continuing the method chain. For
-   * example: <pre>   {@code
-   *   assertThat(actualIterable).comparingElementsUsing(correspondence).contains(expected);}</pre>
+   * example:
+   *
+   * <pre>{@code
+   * assertThat(actualIterable).comparingElementsUsing(correspondence).contains(expected);
+   * }</pre>
+   *
    * where {@code actualIterable} is an {@code Iterable<A>} (or, more generally, an {@code
    * Iterable<? extends A>}), {@code correspondence} is a {@code Correspondence<A, E>}, and {@code
    * expected} is an {@code E}.
@@ -809,14 +813,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     private boolean correspondInOrderExactly(
         Iterator<? extends A> actual, Iterator<? extends E> expected) {
 
-        if (!expected.hasNext()) {
-          // If the expected iterator is empty, and the actual iterator is not empty, fail
-          if (actual.hasNext()) {
-            fail("is empty");
-          }
-          // If the previous branch doesn't throw, then the subject was empty, so return true
-          return true;
+      if (!expected.hasNext()) {
+        // If the expected iterator is empty, and the actual iterator is not empty, fail
+        if (actual.hasNext()) {
+          fail("is empty");
         }
+        // If the previous branch doesn't throw, then the subject was empty, so return true
+        return true;
+      }
 
       while (actual.hasNext() && expected.hasNext()) {
         A actualElement = actual.next();
@@ -861,12 +865,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
       if (missingOrExtraMessage.isPresent()) {
-          failWithRawMessage(
-              "Not true that %s contains exactly one element that %s each element of <%s>. It %s",
-              actualAsString(),
-              correspondence,
-              expected,
-              missingOrExtraMessage.get());
+        failWithRawMessage(
+            "Not true that %s contains exactly one element that %s each element of <%s>. It %s",
+            actualAsString(), correspondence, expected, missingOrExtraMessage.get());
       }
     }
 
@@ -914,8 +915,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     /**
      * Returns a description of the missing items suitable for inclusion in failure messages. If
-     * there is a single item, returns {@code "<item>"}. Otherwise, returns
-     * {@code "each of <[item, item, item]>"}.
+     * there is a single item, returns {@code "<item>"}. Otherwise, returns {@code "each of <[item,
+     * item, item]>"}.
      */
     private String formatMissing(List<?> missing) {
       if (missing.size() == 1) {
@@ -926,12 +927,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Given a many:many mapping between actual elements and expected elements, finds a 1:1
-     * mapping which is the subset of that many:many mapping which includes the largest possible
-     * number of elements. The input and output mappings are each described as a map or multimap
-     * where the keys are indexes into the actual list and the values are indexes into the expected
-     * list. If there are multiple possible output mappings tying for the largest possible, this
-     * returns an arbitrary one.
+     * Given a many:many mapping between actual elements and expected elements, finds a 1:1 mapping
+     * which is the subset of that many:many mapping which includes the largest possible number of
+     * elements. The input and output mappings are each described as a map or multimap where the
+     * keys are indexes into the actual list and the values are indexes into the expected list. If
+     * there are multiple possible output mappings tying for the largest possible, this returns an
+     * arbitrary one.
      */
     private ImmutableBiMap<Integer, Integer> findMaximalOneToOneMapping(
         ImmutableMultimap<Integer, Integer> edges) {
@@ -959,9 +960,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * versa, and fails if this is not the case.
      */
     void failIfOneToOneMappingHasMissingOrExtra(
-        List<? extends A> actual,
-        List<? extends E> expected,
-        BiMap<Integer, Integer> mapping) {
+        List<? extends A> actual, List<? extends E> expected, BiMap<Integer, Integer> mapping) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
@@ -973,10 +972,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 + "but there was no 1:1 mapping between all the actual and expected elements. "
                 + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
                 + "it %s",
-            actualAsString(),
-            correspondence,
-            expected,
-            missingOrExtraMessage.get());
+            actualAsString(), correspondence, expected, missingOrExtraMessage.get());
       }
     }
 

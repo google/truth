@@ -363,8 +363,10 @@ public final class PrimitiveFloatArraySubject
    * the array under test) are compared to expected elements using a {@link Correspondence} which
    * considers values to correspond if they are finite values within {@code tolerance} of each
    * other. The proposition is actually executed by continuing the method chain. For example:
-   * <pre>   {@code
-   * assertThat(actualFloatArray).usingTolerance(1.0e-5f).contains(3.14159f);}</pre>
+   *
+   * <pre>{@code
+   * assertThat(actualFloatArray).usingTolerance(1.0e-5f).contains(3.14159f);
+   * }</pre>
    *
    * <ul>
    *   <li>It does not consider values to correspond if either value is infinite or NaN.

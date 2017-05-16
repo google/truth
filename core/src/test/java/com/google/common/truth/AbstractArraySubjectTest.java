@@ -18,8 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.AbstractArraySubject;
-import com.google.common.truth.FailureStrategy;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;

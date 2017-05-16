@@ -189,19 +189,19 @@ final class GraphMatching {
      * path is flipped. Note several properties of this update to the matching:
      *
      * <ul>
-     * <li>Because the search path must contain one more unmatched than matched edges, the effect of
-     *     this modification is to increase the size of the matching by one.
-     * <li>This modification results in the free LHS vertex at the start of the path and the free
-     *     RHS vertex at the end of the path becoming non-free, while the intermediate non-free
-     *     vertices stay non-free.
-     * <li>None of the edges used in this search path may be used in any further DFS. They cannot be
-     *     used in the same direction as they were in this DFS because their directions are flipped;
-     *     and they cannot be used in their new directions because we only use edges leading to the
-     *     next layer of the BFS and, after flipping the directions, these edges now lead to the
-     *     previous layer.
-     * <li>As a consequence of the previous property, repeated invocations of this method will find
-     *     only paths which were used in the BFS and which were not used in any previous DFS (i.e.
-     *     the set of edges used in the paths found by repeated DFSes are disjoint).
+     *   <li>Because the search path must contain one more unmatched than matched edges, the effect
+     *       of this modification is to increase the size of the matching by one.
+     *   <li>This modification results in the free LHS vertex at the start of the path and the free
+     *       RHS vertex at the end of the path becoming non-free, while the intermediate non-free
+     *       vertices stay non-free.
+     *   <li>None of the edges used in this search path may be used in any further DFS. They cannot
+     *       be used in the same direction as they were in this DFS because their directions are
+     *       flipped; and they cannot be used in their new directions because we only use edges
+     *       leading to the next layer of the BFS and, after flipping the directions, these edges
+     *       now lead to the previous layer.
+     *   <li>As a consequence of the previous property, repeated invocations of this method will
+     *       find only paths which were used in the BFS and which were not used in any previous DFS
+     *       (i.e. the set of edges used in the paths found by repeated DFSes are disjoint).
      * </ul>
      *
      * @param matching A bimap describing the matching to be used for the BFS, which will be

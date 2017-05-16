@@ -128,10 +128,9 @@ public class ExpectFailure implements TestRule {
    * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
    * whenTesting.that(myType).hasProperty());}
    */
-  public static <S extends Subject<S, D>, D>
-      AssertionError expectFailureAbout(
-          final SubjectFactory<S, D> factory,
-          final DelegatedAssertionCallback<S, D> assertionCallback) {
+  public static <S extends Subject<S, D>, D> AssertionError expectFailureAbout(
+      final SubjectFactory<S, D> factory,
+      final DelegatedAssertionCallback<S, D> assertionCallback) {
     // whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory))
     return expectFailure(
         new AssertionCallback() {

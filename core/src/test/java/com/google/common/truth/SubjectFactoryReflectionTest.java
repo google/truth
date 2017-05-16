@@ -18,9 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-import com.google.common.truth.FailureStrategy;
-import com.google.common.truth.StringSubject;
-import com.google.common.truth.SubjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

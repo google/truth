@@ -51,10 +51,10 @@ public abstract class Correspondence<A, E> {
    * them) are finite values within {@code tolerance} of each other.
    *
    * <ul>
-   * <li>It does not consider instances to correspond if either value is infinite or NaN.
-   * <li>The conversion to double may result in a loss of precision for some numeric types.
-   * <li>The {@link Correspondence#compare(Number, Number)} method throws a {@link
-   *     NullPointerException} if either {@link Number} instance is null.
+   *   <li>It does not consider instances to correspond if either value is infinite or NaN.
+   *   <li>The conversion to double may result in a loss of precision for some numeric types.
+   *   <li>The {@link Correspondence#compare(Number, Number)} method throws a {@link
+   *       NullPointerException} if either {@link Number} instance is null.
    * </ul>
    *
    * @param tolerance an inclusive upper bound on the difference between the double values of the

@@ -39,15 +39,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   protected String actualCustomStringRepresentation() {
     return quote(actual());
   }
- 
+
   @Override
   public void isEqualTo(@Nullable Object expected) {
     if (actual() == null) {
       if (expected != null) {
         if (expected instanceof String) {
           failWithRawMessage(
-              "Not true that " + actualAsString() + " is equal to <%s>",
-              quote((String) expected));
+              "Not true that " + actualAsString() + " is equal to <%s>", quote((String) expected));
         } else {
           failWithRawMessage(
               "Not true that " + actualAsString() + " is equal to (%s)<%s>",
@@ -214,8 +213,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string contains a match on the given regex. */
   public void doesNotContainMatch(String regex) {
     if (Platform.containsMatch(actual(), regex)) {
-      failWithRawMessage(
-          "%s should not have contained a match for <%s>", actualAsString(), regex);
+      failWithRawMessage("%s should not have contained a match for <%s>", actualAsString(), regex);
     }
   }
 

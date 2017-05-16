@@ -193,10 +193,14 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * Starts a method chain for a test proposition in which the actual values (i.e. the values of the
    * {@link Map} under test) are compared to expected values using the given {@link Correspondence}.
    * The actual values must be of type {@code A}, the expected values must be of type {@code E}. The
-   * proposition is actually executed by continuing the method chain. For example:<pre>   {@code
-   *   assertThat(actualMap)
-   *     .comparingValuesUsing(correspondence)
-   *     .containsEntry(expectedKey, expectedValue);}</pre>
+   * proposition is actually executed by continuing the method chain. For example:
+   *
+   * <pre>{@code
+   * assertThat(actualMap)
+   *   .comparingValuesUsing(correspondence)
+   *   .containsEntry(expectedKey, expectedValue);
+   * }</pre>
+   *
    * where {@code actualMap} is a {@code Map<?, A>} (or, more generally, a {@code Map<?, ? extends
    * A>}), {@code correspondence} is a {@code Correspondence<A, E>}, and {@code expectedValue} is an
    * {@code E}.

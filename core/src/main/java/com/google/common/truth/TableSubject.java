@@ -98,7 +98,7 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
     }
   }
 
-/** Fails if the table does not contain the given row key. */
+  /** Fails if the table does not contain the given row key. */
   public void containsRow(@Nullable Object rowKey) {
     if (!actual().containsRow(rowKey)) {
       fail("contains row", rowKey);

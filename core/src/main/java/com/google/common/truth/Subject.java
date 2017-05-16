@@ -27,11 +27,11 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * A {@code Subject} in {@code Truth} fits into the assertion fluent chain, taking the place
- * of the "subject of the test".  For instance, in {@code assertThat("foo").isNotNull()}, 
- * {@code Truth#assertThat(String)} returns a StringSubject which wraps the actual value itself,
- * providing a hook for methods which test propositions about the actual value.
- * 
+ * A {@code Subject} in {@code Truth} fits into the assertion fluent chain, taking the place of the
+ * "subject of the test". For instance, in {@code assertThat("foo").isNotNull()}, {@code
+ * Truth#assertThat(String)} returns a StringSubject which wraps the actual value itself, providing
+ * a hook for methods which test propositions about the actual value.
+ *
  * <p>Custom sub-types of Subject provide type-appropriate methods which can then provide more
  * suitable error messages than the traditional assertions may provide.
  *
@@ -100,10 +100,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * objects are equal if any of the following is true:
    *
    * <ul>
-   * <li>they are equal according to {@link Objects#equal}
-   * <li>they are arrays and are considered equal by the appropriate {@link Arrays#equals} overload
-   * <li>they are boxed integer types ({@code Byte}, {@code Short}, {@code Character}, {@code
-   *     Integer}, or {@code Long}) and they are numerically equal when converted to {@code Long}.
+   *   <li>they are equal according to {@link Objects#equal}
+   *   <li>they are arrays and are considered equal by the appropriate {@link Arrays#equals}
+   *       overload
+   *   <li>they are boxed integer types ({@code Byte}, {@code Short}, {@code Character}, {@code
+   *       Integer}, or {@code Long}) and they are numerically equal when converted to {@code Long}.
    * </ul>
    */
   public void isEqualTo(@Nullable Object other) {
@@ -208,8 +209,7 @@ public class Subject<S extends Subject<S, T>, T> {
     }
     if (Platform.isInstanceOfType(actual(), clazz)) {
       failWithRawMessage(
-          "%s expected not to be an instance of %s, but was.",
-          actualAsString(), clazz.getName());
+          "%s expected not to be an instance of %s, but was.", actualAsString(), clazz.getName());
     }
   }
 
@@ -243,26 +243,19 @@ public class Subject<S extends Subject<S, T>, T> {
     isNotIn(accumulate(first, second, rest));
   }
 
-  /**
-   * @deprecated Prefer {@code #actual()} for direct access to the subject.
-   */
+  /** @deprecated Prefer {@code #actual()} for direct access to the subject. */
   @Deprecated
   protected T getSubject() {
     // TODO(cgruber): move functionality to actual() and delete when no callers.
     return actual;
   }
 
-  /**
-   * Returns the unedited, unformatted raw actual value. 
-   */
-
+  /** Returns the unedited, unformatted raw actual value. */
   protected final T actual() {
     return getSubject();
   }
 
-  /**
-   * @deprecated Prefer {@code #actualAsString()} for display-formatted access to the subject.
-   */
+  /** @deprecated Prefer {@code #actualAsString()} for display-formatted access to the subject. */
   @Deprecated
   protected String getDisplaySubject() {
     // TODO(cgruber) migrate people from this method once no one is subclassing it.
@@ -281,8 +274,8 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Returns a string representation of the actual value.  This will either be the toString() of 
-   * the value or a prefixed "name" along with the string representation.
+   * Returns a string representation of the actual value. This will either be the toString() of the
+   * value or a prefixed "name" along with the string representation.
    */
   protected final String actualAsString() {
     return getDisplaySubject();
@@ -458,8 +451,8 @@ public class Subject<S extends Subject<S, T>, T> {
   /**
    * @throws UnsupportedOperationException always
    * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects. If you meant to
-   *     test object equality between an expected and the actual value, use 
-   *     {@link #isEqualTo(Object)} instead.
+   *     test object equality between an expected and the actual value, use {@link
+   *     #isEqualTo(Object)} instead.
    */
   @Deprecated
   @Override

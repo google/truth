@@ -31,7 +31,9 @@ import org.junit.internal.AssumptionViolatedException;
  *
  * <p>TruthJUnit is the entry point for assumptions, via the {@link #assume()} method.
  *
- * <p>eg: <pre>{@code
+ * <p>eg:
+ *
+ * <pre>{@code
  * import static com.google.common.truth.Truth.assertThat;
  * import static com.google.common.truth.TruthJUnit.assume;
  *
