@@ -371,9 +371,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 addTypeInfo ? countDuplicatesAndAddTypeInfo(missing) : countDuplicates(missing),
                 addTypeInfo ? countDuplicatesAndAddTypeInfo(extra) : countDuplicates(extra),
                 failSuffix);
+            return ALREADY_FAILED;
           } else {
             failWithBadResultsAndSuffix(
                 "contains exactly", required, "is missing", countDuplicates(missing), failSuffix);
+            return ALREADY_FAILED;
           }
         }
         if (!extra.isEmpty()) {
@@ -383,6 +385,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
               "has unexpected items",
               countDuplicates(extra),
               failSuffix);
+          return ALREADY_FAILED;
         }
 
         // Since we know the iterables were not in the same order, inOrder() can just fail.
@@ -400,6 +403,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           "has unexpected items",
           countDuplicates(Lists.newArrayList(actualIter)),
           failSuffix);
+      return ALREADY_FAILED;
     } else if (requiredIter.hasNext()) {
       failWithBadResultsAndSuffix(
           "contains exactly",
@@ -407,6 +411,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           "is missing",
           countDuplicates(Lists.newArrayList(requiredIter)),
           failSuffix);
+      return ALREADY_FAILED;
     }
 
     // If neither iterator has elements, we reached the end and the elements were in
@@ -598,6 +603,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   /** Ordered implementation that does nothing because it's already known to be true. */
   private static final Ordered IN_ORDER =
+      new Ordered() {
+        @Override
+        public void inOrder() {}
+      };
+
+  /** Ordered implementation that does nothing because an earlier check already caused a failure. */
+  private static final Ordered ALREADY_FAILED =
       new Ordered() {
         @Override
         public void inOrder() {}

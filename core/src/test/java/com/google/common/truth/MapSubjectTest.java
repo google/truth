@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import java.util.Map;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -34,6 +35,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class MapSubjectTest {
+
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
   @Test
   public void containsExactlyWithNullKey() {
@@ -196,18 +199,16 @@ public class MapSubjectTest {
 
   @Test
   public void containsExactly_failsWithSameToString() {
-    try {
-      assertThat(ImmutableMap.of("jan", 1L, "feb", 2L)).containsExactly("jan", 1, "feb", 2);
-      fail("Should have thrown.");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[jan=1, feb=2]> contains exactly <[jan=1, feb=2]>. It is missing "
-                  + "<[jan=1, feb=2] (Map.Entry<java.lang.String,java.lang.Integer>)> and has "
-                  + "unexpected items <[jan=1, feb=2] "
-                  + "(Map.Entry<java.lang.String,java.lang.Long>)>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMap.of("jan", 1L, "feb", 2L))
+        .containsExactly("jan", 1, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[jan=1, feb=2]> contains exactly <[jan=1, feb=2]>. It is missing "
+                + "<[jan=1, feb=2] (Map.Entry<java.lang.String,java.lang.Integer>)> and has "
+                + "unexpected items <[jan=1, feb=2] (Map.Entry<java.lang.String,java.lang.Long>)>");
   }
 
   @Test
