@@ -44,6 +44,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -106,9 +107,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<Object> elementList = Lists.newArrayList(element);
       if (hasMatchingToStringPair(actual(), elementList)) {
         failWithRawMessage(
-            "%s should have contained <%s> but doesn't. However, it does contain <%s>.",
+            "%s should have contained <%s (%s)> but doesn't. However, it does contain <%s>.",
             actualAsString(),
-            objectToStringWithTypeInfo(element),
+            element,
+            objectToTypeName(element),
             countDuplicatesAndAddTypeInfo(
                 retainMatchingToString(actual(), elementList /* itemsToCheck */)));
       } else {
@@ -422,10 +424,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   private static String countDuplicatesAndAddTypeInfo(Iterable<?> itemsIterable) {
     Collection<?> items = iterableToCollection(itemsIterable);
-    Optional<Class<?>> homogeneousClass = getHomogeneousClass(items);
+    Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
 
-    return homogeneousClass.isPresent()
-        ? StringUtil.format("%s (%s)", countDuplicates(items), homogeneousClass.get().getName())
+    return homogeneousTypeName.isPresent()
+        ? StringUtil.format("%s (%s)", countDuplicates(items), homogeneousTypeName.get())
         : countDuplicates(addTypeInfoToEveryItem(items)).toString();
   }
 
@@ -437,10 +439,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   private static String iterableToStringWithTypeInfo(Iterable<?> itemsIterable) {
     Collection<?> items = iterableToCollection(itemsIterable);
-    Optional<Class<?>> homogeneousClass = getHomogeneousClass(items);
+    Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
 
-    if (homogeneousClass.isPresent()) {
-      return StringUtil.format("%s (%s)", items, homogeneousClass.get().getName());
+    if (homogeneousTypeName.isPresent()) {
+      return StringUtil.format("%s (%s)", items, homogeneousTypeName.get());
     } else {
       return addTypeInfoToEveryItem(items).toString();
     }
@@ -483,40 +485,44 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Returns the single class of all given items or {@link Optional#absent()} if no such class
-   * exists.
+   * Returns the name of the single type of all given items or {@link Optional#absent()} if no such
+   * type exists.
    */
-  private static Optional<Class<?>> getHomogeneousClass(Iterable<?> items) {
-    Optional<Class<?>> homogeneousClass = Optional.absent();
+  private static Optional<String> getHomogeneousTypeName(Iterable<?> items) {
+    Optional<String> homogeneousTypeName = Optional.absent();
     for (Object item : items) {
       if (item == null) {
         return Optional.absent();
-      } else if (!homogeneousClass.isPresent()) {
+      } else if (!homogeneousTypeName.isPresent()) {
         // This is the first item
-        homogeneousClass = Optional.<Class<?>>of(item.getClass());
-      } else if (!item.getClass().equals(homogeneousClass.get())) {
+        homogeneousTypeName = Optional.of(objectToTypeName(item));
+      } else if (!objectToTypeName(item).equals(homogeneousTypeName.get())) {
         // items is a heterogeneous collection
         return Optional.absent();
       }
     }
-    return homogeneousClass;
+    return homogeneousTypeName;
   }
 
   private static List<String> addTypeInfoToEveryItem(Iterable<?> items) {
     List<String> itemsWithTypeInfo = Lists.newArrayList();
     for (Object item : items) {
-      itemsWithTypeInfo.add(objectToStringWithTypeInfo(item));
+      itemsWithTypeInfo.add(StringUtil.format("%s (%s)", item, objectToTypeName(item)));
     }
     return itemsWithTypeInfo;
   }
 
-  /** Converts the argument's value to a String and appends the class name. */
-  private static String objectToStringWithTypeInfo(Object item) {
+  private static String objectToTypeName(Object item) {
     if (item == null) {
       // The name "null type" comes from the interface javax.lang.model.type.NullType.
-      return "null (null type)";
+      return "null type";
+    } else if (item instanceof Map.Entry) {
+      Map.Entry<?, ?> entry = (Map.Entry<?, ?>) item;
+      return StringUtil.format(
+          "Map.Entry<%s,%s>",
+          entry.getKey().getClass().getName(), entry.getValue().getClass().getName());
     } else {
-      return StringUtil.format("%s (%s)", item, item.getClass().getName());
+      return item.getClass().getName();
     }
   }
 
