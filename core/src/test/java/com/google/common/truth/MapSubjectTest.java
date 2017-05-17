@@ -208,8 +208,9 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[jan=1, feb=2]> contains exactly <[jan=1, feb=2]>. It is missing "
-                + "<[jan=1, feb=2] (Map.Entry<java.lang.String,java.lang.Integer>)> and has "
-                + "unexpected items <[jan=1, feb=2] (Map.Entry<java.lang.String,java.lang.Long>)>");
+                + "<[jan=1, feb=2] (Map.Entry<java.lang.String, java.lang.Integer>)> and has "
+                + "unexpected items "
+                + "<[jan=1, feb=2] (Map.Entry<java.lang.String, java.lang.Long>)>");
   }
 
   @Test
@@ -529,9 +530,9 @@ public class MapSubjectTest {
         .that(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <{1=value1, 2=value2}> contains entry <1=value1 "
-                + "(Map.Entry<java.lang.Integer,java.lang.String>)>. However, it does contain keys "
-                + "<[1] (java.lang.Long)>.");
+            "Not true that <{1=value1, 2=value2}> contains entry "
+                + "<1=value1 (Map.Entry<java.lang.Integer, java.lang.String>)>. "
+                + "However, it does contain keys <[1] (java.lang.Long)>.");
   }
 
   @Test
@@ -542,7 +543,7 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <{1=null}> contains entry <1=null "
-                + "(Map.Entry<java.lang.Integer,null type>)>. However, it does contain values "
+                + "(Map.Entry<java.lang.Integer, null type>)>. However, it does contain values "
                 + "<[null] (java.lang.String)>.");
   }
 

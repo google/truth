@@ -155,7 +155,8 @@ final class SubjectUtils {
     } else if (item instanceof Map.Entry) {
       Map.Entry<?, ?> entry = (Map.Entry<?, ?>) item;
       return StringUtil.format(
-          "Map.Entry<%s,%s>", objectToTypeName(entry.getKey()), objectToTypeName(entry.getValue()));
+          "Map.Entry<%s, %s>",
+          objectToTypeName(entry.getKey()), objectToTypeName(entry.getValue()));
     } else {
       return item.getClass().getName();
     }

@@ -137,9 +137,9 @@ public class MultimapSubjectTest {
           .hasMessageThat()
           .isEqualTo(
               "Not true that <{1=[a, b], 2=[c]}> contains exactly <{1=[a, b], 2=[c]}>. It is "
-                  + "missing <[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long,java.lang.String>)> and "
+                  + "missing <[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long, java.lang.String>)> and "
                   + "has unexpected items "
-                  + "<[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer,java.lang.String>)>");
+                  + "<[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer, java.lang.String>)>");
     }
   }
 
@@ -397,10 +397,10 @@ public class MultimapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <{1=[1, 1], 1=[1], 2=[3]}> contains entry "
-                + "<1=1 (Map.Entry<java.lang.Integer,java.lang.Integer>)>. However, it does "
-                + "contain entries <[1=1 (Map.Entry<java.lang.Integer,java.lang.String>), "
-                + "1=1 (Map.Entry<java.lang.Integer,java.lang.Long>), "
-                + "1=1 (Map.Entry<java.lang.Long,java.lang.Integer>)]>");
+                + "<1=1 (Map.Entry<java.lang.Integer, java.lang.Integer>)>. However, it does "
+                + "contain entries <[1=1 (Map.Entry<java.lang.Integer, java.lang.String>), "
+                + "1=1 (Map.Entry<java.lang.Integer, java.lang.Long>), "
+                + "1=1 (Map.Entry<java.lang.Long, java.lang.Integer>)]>");
   }
 
   @Test
@@ -643,9 +643,9 @@ public class MultimapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <{1=[a, b], 2=[c]}> contains exactly <{1=[a, b], 2=[c]}>. It is "
-                + "missing <[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long,java.lang.String>)> and "
+                + "missing <[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long, java.lang.String>)> and "
                 + "has unexpected items "
-                + "<[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer,java.lang.String>)>");
+                + "<[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer, java.lang.String>)>");
   }
 
   @Test
@@ -661,13 +661,13 @@ public class MultimapSubjectTest {
         .isEqualTo(
             "Not true that <{1=[a, b], 2=[c]}> contains exactly <{1=[a, b], 2=[c]}>. It is "
                 + "missing <["
-                + "1=a (Map.Entry<java.lang.Long,java.lang.String>), "
-                + "1=b (Map.Entry<java.lang.Long,java.lang.String>), "
-                + "2=c (Map.Entry<java.lang.Integer,java.lang.String>)]> "
+                + "1=a (Map.Entry<java.lang.Long, java.lang.String>), "
+                + "1=b (Map.Entry<java.lang.Long, java.lang.String>), "
+                + "2=c (Map.Entry<java.lang.Integer, java.lang.String>)]> "
                 + "and has unexpected items <["
-                + "1=a (Map.Entry<java.lang.Integer,java.lang.String>), "
-                + "1=b (Map.Entry<java.lang.Integer,java.lang.String>), "
-                + "2=c (Map.Entry<java.lang.Long,java.lang.String>)]>");
+                + "1=a (Map.Entry<java.lang.Integer, java.lang.String>), "
+                + "1=b (Map.Entry<java.lang.Integer, java.lang.String>), "
+                + "2=c (Map.Entry<java.lang.Long, java.lang.String>)]>");
   }
 
   @Test
