@@ -477,7 +477,7 @@ public class DoubleSubjectTest {
     } catch (AssertionError assertionError) {
       assertThat(assertionError)
           .hasMessageThat()
-          .isEqualTo("Not true that testValue (<" + value + ">) is equal to <" + Double.NaN + ">");
+          .isEqualTo("Not true that testValue (<" + value + ">) is NaN");
       return;
     }
     fail("Expected AssertionError to be thrown but wasn't");

@@ -237,7 +237,9 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
 
   /** Asserts that the subject is {@link Double#NaN}. */
   public final void isNaN() {
-    isEqualTo(Double.NaN);
+    if (actual() == null || !actual().isNaN()) {
+      fail("is NaN");
+    }
   }
 
   /**
