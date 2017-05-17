@@ -19,6 +19,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
+import static com.google.common.truth.SubjectUtils.objectToTypeName;
+import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -78,7 +80,18 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   /** Fails if the multimap does not contain the given key. */
   public void containsKey(@Nullable Object key) {
     if (!actual().containsKey(key)) {
-      fail("contains key", key);
+      List<Object> keyList = Lists.newArrayList(key);
+      if (hasMatchingToStringPair(actual().keySet(), keyList)) {
+        failWithRawMessage(
+            "Not true that %s contains key <%s (%s)>. However, it does contain keys <%s>.",
+            actualAsString(),
+            key,
+            objectToTypeName(key),
+            countDuplicatesAndAddTypeInfo(
+                retainMatchingToString(actual().keySet(), keyList /* itemsToCheck */)));
+      } else {
+        fail("contains key", key);
+      }
     }
   }
 

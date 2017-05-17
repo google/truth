@@ -268,6 +268,20 @@ public class MultimapSubjectTest {
   }
 
   @Test
+  public void containsKey_failsWithSameToString() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMultimap.of(1L, "value1a", 1L, "value1b", 2L, "value2", "1", "value3"))
+        .containsKey(1);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=[value1a, value1b], 2=[value2], 1=[value3]}> contains key "
+                + "<1 (java.lang.Integer)>. However, it does contain keys "
+                + "<[1 (java.lang.Long), 1 (java.lang.String)]>.");
+  }
+
+  @Test
   public void doesNotContainKey() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
     assertThat(multimap).doesNotContainKey("daniel");
