@@ -24,7 +24,7 @@ import java.util.Arrays;
  *
  * <p>It should generally be unnecessary for Truth SPI developers to define their own {@code
  * FailureStrategy} implementations, they should instead use {@link Subject#check} to invoke other
- * subjects using the current strategy. When you really do need to creatae your own strategy prefer
+ * subjects using the current strategy. When you really do need to create your own strategy prefer
  * to extend {@link AbstractFailureStrategy} rather than this class directly.
  *
  * <p>Implementation Note: the concrete methods in this class will be made abstract in the near
