@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.SubjectUtils.countDuplicates;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
