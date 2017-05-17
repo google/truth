@@ -388,6 +388,22 @@ public class MultimapSubjectTest {
   }
 
   @Test
+  public void containsEntry_failsWithSameToString() throws Exception {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMultimap.builder().put(1, "1").put(1, 1L).put(1L, 1).put(2, 3).build())
+        .containsEntry(1, 1);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=[1, 1], 1=[1], 2=[3]}> contains entry "
+                + "<1=1 (Map.Entry<java.lang.Integer,java.lang.Integer>)>. However, it does "
+                + "contain entries <[1=1 (Map.Entry<java.lang.Integer,java.lang.String>), "
+                + "1=1 (Map.Entry<java.lang.Integer,java.lang.Long>), "
+                + "1=1 (Map.Entry<java.lang.Long,java.lang.Integer>)]>");
+  }
+
+  @Test
   public void doesNotContainEntry() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
     assertThat(multimap).doesNotContainEntry("daniel", "ploch");

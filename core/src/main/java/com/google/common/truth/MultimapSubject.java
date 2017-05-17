@@ -24,6 +24,7 @@ import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -107,12 +108,20 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     // TODO(kak): Can we share any of this logic w/ MapSubject.containsEntry()?
     if (!actual().containsEntry(key, value)) {
       Entry<Object, Object> entry = Maps.immutableEntry(key, value);
-      if (actual().containsKey(key)) {
+      List<Entry<Object, Object>> entryList = ImmutableList.of(entry);
+      if (hasMatchingToStringPair(actual().entries(), entryList)) {
+        failWithRawMessage(
+            "Not true that %s contains entry <%s (%s)>. However, it does contain entries <%s>",
+            actualAsString(),
+            entry,
+            objectToTypeName(entry),
+            countDuplicatesAndAddTypeInfo(
+                retainMatchingToString(actual().entries(), entryList /* itemsToCheck */)));
+      } else if (actual().containsKey(key)) {
         failWithRawMessage(
             "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
             actualAsString(), entry, key, actual().asMap().get(key));
-      }
-      if (actual().containsValue(value)) {
+      } else if (actual().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<Object>();
         for (Entry<?, ?> actualEntry : actual().entries()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
@@ -123,8 +132,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
             "Not true that %s contains entry <%s>. "
                 + "However, the following keys are mapped to <%s>: %s",
             actualAsString(), entry, value, keys);
+      } else {
+        fail("contains entry", Maps.immutableEntry(key, value));
       }
-      fail("contains entry", Maps.immutableEntry(key, value));
     }
   }
 
