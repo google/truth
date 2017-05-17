@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
+import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
@@ -177,13 +179,21 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     // the subject but not enough times. Similarly for unexpected extra items.
     if (!missing.isEmpty()) {
       if (!extra.isEmpty()) {
+        boolean addTypeInfo = hasMatchingToStringPair(missing.entries(), extra.entries());
         failWithRawMessage(
             "Not true that %s contains exactly <%s>. "
                 + "It is missing <%s> and has unexpected items <%s>",
             actualAsString(),
             expectedMultimap,
-            countDuplicatesMultimap(missing),
-            countDuplicatesMultimap(extra));
+            // Note: The usage of countDuplicatesAndAddTypeInfo() below causes entries no longer to
+            // be grouped by key in the 'missing' and 'unexpected items' parts of the message (we
+            // still show the actual and expected multimaps in the standard format).
+            addTypeInfo
+                ? countDuplicatesAndAddTypeInfo(missing.entries())
+                : countDuplicatesMultimap(missing),
+            addTypeInfo
+                ? countDuplicatesAndAddTypeInfo(extra.entries())
+                : countDuplicatesMultimap(extra));
       } else {
         failWithBadResults(
             "contains exactly", expectedMultimap, "is missing", countDuplicatesMultimap(missing));

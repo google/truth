@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.IterableSubjectTest.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -27,6 +28,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -39,6 +41,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class MultimapSubjectTest {
+
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
   @Test
   public void listMultimapIsEqualTo_passes() {
@@ -118,6 +122,24 @@ public class MultimapSubjectTest {
           .isEqualTo(
               "Not true that <{kurt=[kluever, russell, cobain]}> contains exactly "
                   + "<{kurt=[kluever, russell]}>. It has unexpected items <{kurt=[cobain]}>");
+    }
+  }
+
+  @Test
+  public void isEqualTo_failsWithSameToString() {
+    try {
+      assertThat(ImmutableMultimap.of(1, "a", 1, "b", 2, "c"))
+          .isEqualTo(ImmutableMultimap.of(1L, "a", 1L, "b", 2L, "c"));
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertWithMessage("Full message: %s", e.getMessage())
+          .that(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <{1=[a, b], 2=[c]}> contains exactly <{1=[a, b], 2=[c]}>. It is "
+                  + "missing <[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long,java.lang.String>)> and "
+                  + "has unexpected items "
+                  + "<[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer,java.lang.String>)>");
     }
   }
 
@@ -577,6 +599,45 @@ public class MultimapSubjectTest {
                       + "The values for keys <[3]> are not in order",
                   actual, expected));
     }
+  }
+
+  @Test
+  public void containsExactlyEntriesIn_homogeneousMultimap_failsWithSameToString()
+      throws Exception {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMultimap.of(1, "a", 1, "b", 2, "c"))
+        .containsExactlyEntriesIn(ImmutableMultimap.of(1L, "a", 1L, "b", 2L, "c"));
+    assertWithMessage("Full message: %s", expectFailure.getFailure().getMessage())
+        .that(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=[a, b], 2=[c]}> contains exactly <{1=[a, b], 2=[c]}>. It is "
+                + "missing <[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long,java.lang.String>)> and "
+                + "has unexpected items "
+                + "<[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer,java.lang.String>)>");
+  }
+
+  @Test
+  public void containsExactlyEntriesIn_heterogeneousMultimap_failsWithSameToString()
+      throws Exception {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMultimap.of(1, "a", 1, "b", 2L, "c"))
+        .containsExactlyEntriesIn(ImmutableMultimap.of(1L, "a", 1L, "b", 2, "c"));
+    assertWithMessage("Full message: %s", expectFailure.getFailure().getMessage())
+        .that(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=[a, b], 2=[c]}> contains exactly <{1=[a, b], 2=[c]}>. It is "
+                + "missing <["
+                + "1=a (Map.Entry<java.lang.Long,java.lang.String>), "
+                + "1=b (Map.Entry<java.lang.Long,java.lang.String>), "
+                + "2=c (Map.Entry<java.lang.Integer,java.lang.String>)]> "
+                + "and has unexpected items <["
+                + "1=a (Map.Entry<java.lang.Integer,java.lang.String>), "
+                + "1=b (Map.Entry<java.lang.Integer,java.lang.String>), "
+                + "2=c (Map.Entry<java.lang.Long,java.lang.String>)]>");
   }
 
   @Test
