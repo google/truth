@@ -210,6 +210,10 @@ See the [floating point comparisons](floating_point). For example:
 assertThat(actualDouble).isWithin(tolerance).of(expectedDouble);
 ```
 
+## How do I assert on the contents of an `Iterable` using something other than equality of the elements? {#fuzzy}
+
+See the ["Fuzzy Truth"](fuzzy) page.
+
 ## How is this different than JUnit, Hamcrest, Fest, AssertJ, etc.?
 
 See the [comparison](comparison) page.
