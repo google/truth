@@ -87,6 +87,7 @@ an error smaller than the tolerance.
     the result, and only risk a false failure if the
     relative numerical errors are magnified by a factor of
     ~10^6.
+
 [^why-float-tolerance]: For `float` the error is at most 1 part in ~10^7. By
     using a tolerance of 1 part in 10^5 you risk a false
     pass if a bug introduces an error into the 5th
