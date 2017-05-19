@@ -29,11 +29,11 @@ import org.junit.ComparisonFailure;
  *
  * @author Christian Gruber (cgruber@google.com)
  */
-public final class Platform {
+final class Platform {
   private Platform() {}
 
   /** Returns true if the instance is assignable to the type Clazz. */
-  public static boolean isInstanceOfType(Object instance, Class<?> clazz) {
+  static boolean isInstanceOfType(Object instance, Class<?> clazz) {
     return isInstanceOfTypeJava(instance, clazz);
   }
 
@@ -53,12 +53,7 @@ public final class Platform {
     Set<String> types = new LinkedHashSet<String>();
     types.add(instance.getClass().getCanonicalName());
     addTypeNames(instance.getClass(), types);
-    for (String type : types) {
-      if (type.equals(className)) {
-        return true;
-      }
-    }
-    return false;
+    return types.contains(className);
   }
 
   private static void addInterfaceNames(Class<?>[] interfaces, Set<String> types) {
@@ -75,10 +70,10 @@ public final class Platform {
     }
   }
 
-  public static final Pattern TYPE_PATTERN = Pattern.compile("(?:[\\w$]+\\.)*([\\w\\.*$]+)");
+  private static final Pattern TYPE_PATTERN = Pattern.compile("(?:[\\w$]+\\.)*([\\w\\.*$]+)");
 
   /** Inspired by JavaWriter. */
-  public static String compressType(String type) {
+  static String compressType(String type) {
     type = typeOnly(type);
     StringBuilder sb = new StringBuilder();
     Matcher m = TYPE_PATTERN.matcher(type);
@@ -122,12 +117,12 @@ public final class Platform {
     return type;
   }
 
-  public static AssertionError comparisonFailure(String message, String expected, String actual) {
+  static AssertionError comparisonFailure(String message, String expected, String actual) {
     return new ComparisonFailure(message, expected, actual);
   }
 
   /** Determines if the given subject contains a match for the given regex. */
-  public static boolean containsMatch(String subject, String regex) {
+  static boolean containsMatch(String subject, String regex) {
     return Pattern.compile(regex).matcher(subject).find();
   }
 

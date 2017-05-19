@@ -19,7 +19,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 import static java.util.Arrays.asList;
 
-import com.google.common.truth.Platform;
 import com.google.gwt.junit.client.GWTTestCase;
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -147,9 +146,5 @@ public class TruthGwtTest extends GWTTestCase {
   public void testLegacyAssert_() {
     assert_().that(new Object()).isNotNull();
     assert_().that(new ArrayList<String>()).isInstanceOf(AbstractList.class);
-  }
-
-  public void testInvokePlatformMethods() {
-    boolean unused = Platform.isInstanceOfType(new Object(), Object.class);
   }
 }

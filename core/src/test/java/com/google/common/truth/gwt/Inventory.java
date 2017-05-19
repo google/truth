@@ -35,7 +35,6 @@ import com.google.common.truth.MultimapSubject;
 import com.google.common.truth.MultisetSubject;
 import com.google.common.truth.ObjectArraySubject;
 import com.google.common.truth.Ordered;
-import com.google.common.truth.Platform;
 import com.google.common.truth.PrimitiveBooleanArraySubject;
 import com.google.common.truth.PrimitiveByteArraySubject;
 import com.google.common.truth.PrimitiveCharArraySubject;
@@ -78,7 +77,6 @@ public class Inventory {
   MultisetSubject multisetSubject;
   ObjectArraySubject objectArraySubject;
   Ordered ordered;
-  Platform platform;
   PrimitiveBooleanArraySubject primitiveBooleanArraySubject;
   PrimitiveByteArraySubject primitiveByteArraySubject;
   PrimitiveCharArraySubject primitiveCharArraySubject;

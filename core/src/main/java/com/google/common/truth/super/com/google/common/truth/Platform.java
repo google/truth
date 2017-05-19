@@ -28,11 +28,11 @@ import jsinterop.annotations.JsType;
  *
  * @author Christian Gruber (cgruber@google.com)
  */
-public final class Platform {
+final class Platform {
   private Platform() {}
 
   /** Returns true if the instance is assignable to the type Clazz. */
-  public static boolean isInstanceOfType(Object instance, Class<?> clazz) {
+  static boolean isInstanceOfType(Object instance, Class<?> clazz) {
     return isInstanceOfTypeGWT(instance, clazz);
   }
 
@@ -44,12 +44,7 @@ public final class Platform {
     String className = clazz.getName();
     Set<String> types = new LinkedHashSet<String>();
     addTypeNames(instance.getClass(), types);
-    for (String type : types) {
-      if (type.equals(className)) {
-        return true;
-      }
-    }
-    return false;
+    return types.contains(className);
   }
 
   private static void addTypeNames(Class<?> clazz, Set<String> types) {
@@ -60,11 +55,11 @@ public final class Platform {
   }
 
   /** This is a no-op in GWT as it relies on matching. */
-  public static String compressType(String type) {
+  static String compressType(String type) {
     return type;
   }
 
-  public static AssertionError comparisonFailure(String message, String expected, String actual) {
+  static AssertionError comparisonFailure(String message, String expected, String actual) {
     return new AssertionError(format("%s: expected: %s actual: %s", message, expected, actual));
   }
 
