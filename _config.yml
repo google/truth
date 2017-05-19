@@ -16,7 +16,15 @@ navigation:
   url: /truth/api/0.32/
 - text: FAQ
   url: /truth/faq
-- text: Benefit
+- text: Benefits
   url: /truth/benefits
+- text: Known Types
+  url: /truth/known_types
+- text: Floating Point
+  url: /truth/floating_point
+- text: Fuzzy Truth
+  url: /truth/fuzzy
+- text: Extensions
+  url: /truth/extension
 - text: Home
   url: /truth
