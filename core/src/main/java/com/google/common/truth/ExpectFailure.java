@@ -79,6 +79,15 @@ public class ExpectFailure implements TestRule {
    */
   public TestVerb whenTesting() {
     checkState(inRuleContext, "ExpectFailure must be used as a JUnit @Rule");
+    if (failure != null) {
+      AssertionError error = new AssertionError("ExpectFailure already captured a failure");
+      error.initCause(failure);
+      throw error;
+    }
+    if (failureExpected) {
+      throw new AssertionError(
+          "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
+    }
     failureExpected = true;
     return new TestVerb(strategy);
   }
