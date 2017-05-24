@@ -25,7 +25,7 @@ You can also [read Truth's source directly][source], view its [API docs], and
 <dependency>
   <groupId>com.google.truth</groupId>
   <artifactId>truth</artifactId>
-  <version>0.31</version>
+  <version>0.33</version>
 </dependency>
 ```
 
@@ -36,7 +36,7 @@ buildscript {
   repositories.mavenLocal()
 }
 dependencies {
-  testCompile "com.google.truth:truth:0.31"
+  testCompile "com.google.truth:truth:0.33"
 }
 ```
 
