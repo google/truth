@@ -49,6 +49,12 @@ public class ExpectFailureTest {
   }
 
   @Test
+  public void expectFail_about() {
+    expectFailure.whenTesting().about(strings()).that("foo").isEqualTo("bar");
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<[foo]>");
+  }
+
+  @Test
   public void expectFail_passesIfUnused() {
     assertThat(4).isEqualTo(4);
   }
@@ -63,16 +69,62 @@ public class ExpectFailureTest {
 
   @Test
   public void expectFail_failsOnMultipleFailures() {
-    expectFailure.whenTesting().that(4).isEqualTo(5);
     thrown.expectMessage("caught multiple failures");
     thrown.expectMessage("<4> is equal to <5>");
     thrown.expectMessage("<5> is equal to <4>");
+    expectFailure.whenTesting().about(BadSubject.badSubject()).that(5).isEqualTo(4);
+  }
+
+  @Test
+  public void expectFail_failsOnMultiplewhenTestings() {
+    expectFailure.whenTesting().that(4).isEqualTo(4);
+    thrown.expectMessage(
+        "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
+    expectFailure.whenTesting();
+  }
+
+  @Test
+  public void expectFail_failsOnMultiplewhenTestings_thatFail() {
     expectFailure.whenTesting().that(5).isEqualTo(4);
+    thrown.expectMessage("ExpectFailure already captured a failure");
+    expectFailure.whenTesting();
   }
 
   @Test
   public void expectFail_failsAfterTest() {
     expectFailure.whenTesting().that(4).isEqualTo(4);
     thrown.expectMessage("ExpectFailure.whenTesting() invoked, but no failure was caught.");
+  }
+
+  private static SubjectFactory<StringSubject, String> strings() {
+    return new SubjectFactory<StringSubject, String>() {
+      @Override
+      public StringSubject getSubject(FailureStrategy fs, String that) {
+        return new StringSubject(fs, that);
+      }
+    };
+  }
+
+  private static class BadSubject extends Subject<BadSubject, Integer> {
+    BadSubject(FailureStrategy failureStrategy, Integer actual) {
+      super(failureStrategy, actual);
+    }
+
+    @Override
+    public void isEqualTo(Object expected) {
+      if (!actual().equals(expected)) {
+        failWithRawMessage("expected <%s> is equal to <%s>", actual(), expected);
+        failWithRawMessage("expected <%s> is equal to <%s>", expected, actual());
+      }
+    }
+
+    private static SubjectFactory<BadSubject, Integer> badSubject() {
+      return new SubjectFactory<BadSubject, Integer>() {
+        @Override
+        public BadSubject getSubject(FailureStrategy fs, Integer that) {
+          return new BadSubject(fs, that);
+        }
+      };
+    }
   }
 }
