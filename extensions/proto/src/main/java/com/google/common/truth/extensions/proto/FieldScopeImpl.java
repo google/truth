@@ -83,17 +83,20 @@ abstract class FieldScopeImpl extends FieldScope {
 
     Message.Builder builder = null;
     for (Message message : messages) {
-      if (message != null) {
-        if (builder == null) {
-          builder = message.toBuilder();
-        } else {
-          builder.mergeFrom(message);
-        }
+      if (message == null) {
+        continue;
+      }
+
+      if (builder != null) {
+        builder.mergeFrom(message);
+      } else {
+        builder = message.toBuilder();
       }
     }
 
+    Message aggregateMessage = builder.build();
     return create(
-        FieldScopeLogic.partialScope(builder.build()),
+        FieldScopeLogic.partialScope(aggregateMessage),
         Functions.constant(String.format("FieldScopes.fromSetFields(%s)", formatList(messages))));
   }
 

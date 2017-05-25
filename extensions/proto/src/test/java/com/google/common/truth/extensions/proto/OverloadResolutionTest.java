@@ -41,7 +41,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   public OverloadResolutionTest() {
     // We don't bother testing Proto3 because it's immaterial to this test, and we want to ensure
     // that using Iterable<MyMessage> works, not just Iterable<Message>.
-    super(PROTO2);
+    super(TestType.IMMUTABLE_PROTO2);
   }
 
   @Override

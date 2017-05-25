@@ -17,6 +17,7 @@ package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
 import java.util.Collection;
@@ -83,26 +84,22 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testUnknownFields() {
+  public void testUnknownFields() throws InvalidProtocolBufferException {
     if (isProto3()) {
       // Proto 3 doesn't support unknown fields.
       return;
     }
 
     Message message =
-        newBuilder()
-            .setUnknownFields(
-                UnknownFieldSet.newBuilder()
-                    .addField(99, UnknownFieldSet.Field.newBuilder().addVarint(42).build())
-                    .build())
-            .build();
+        fromUnknownFields(
+            UnknownFieldSet.newBuilder()
+                .addField(99, UnknownFieldSet.Field.newBuilder().addVarint(42).build())
+                .build());
     Message diffMessage =
-        newBuilder()
-            .setUnknownFields(
-                UnknownFieldSet.newBuilder()
-                    .addField(93, UnknownFieldSet.Field.newBuilder().addVarint(42).build())
-                    .build())
-            .build();
+        fromUnknownFields(
+            UnknownFieldSet.newBuilder()
+                .addField(93, UnknownFieldSet.Field.newBuilder().addVarint(42).build())
+                .build());
 
     expectThat(diffMessage).isNotEqualTo(message);
     expectThat(diffMessage).ignoringFieldAbsence().isEqualTo(message);
@@ -245,8 +242,9 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
 
   @Test
   public void testHasAllRequiredFields() {
+    // Proto 3 doesn't have required fields.
     if (isProto3()) {
-      return; // Proto 3 doesn't have required fields.
+      return;
     }
 
     expectThat(parsePartial("")).hasAllRequiredFields();
