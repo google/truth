@@ -18,7 +18,7 @@ readonly EXPECTED_REPO_SLUG="${ORG}/${GH_PROJECT}"
 
 if [[ -n "$RELEASE_VERSION" || \
     "$TRAVIS_REPO_SLUG" == "$EXPECTED_REPO_SLUG" && \
-    "$TRAVIS_JDK_VERSION" == "oraclejdk7" && \
+    "$TRAVIS_JDK_VERSION" == "$JDK_FOR_PUBLISHING" && \
     "$TRAVIS_PULL_REQUEST" == "false" && \
     "$TRAVIS_BRANCH" == "master" ]]; then
   echo -e "Publishing javadoc...\n"
