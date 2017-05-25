@@ -291,7 +291,7 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   @Test
   public void testCompareMultipleMessageTypes() {
     // Don't run this test twice.
-    if (isProto3()) {
+    if (!testIsRunOnce()) {
       return;
     }
 

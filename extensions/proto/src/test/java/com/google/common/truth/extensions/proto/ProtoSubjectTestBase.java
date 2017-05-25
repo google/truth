@@ -18,7 +18,6 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.junit.Assert.fail;
 
-import com.google.auto.value.AutoValue;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -26,9 +25,11 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.truth.Expect;
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
 import com.google.protobuf.TextFormat.ParseException;
+import com.google.protobuf.UnknownFieldSet;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -39,22 +40,24 @@ import org.junit.Rule;
 public class ProtoSubjectTestBase {
 
   // Type information for subclasses.
-  @AutoValue
-  abstract static class TestType {
-    abstract Message defaultInstance();
+  static enum TestType {
+    IMMUTABLE_PROTO2(TestMessage2.getDefaultInstance()),
+    PROTO3(TestMessage3.getDefaultInstance());
 
-    abstract boolean isProto3();
+    private final Message defaultInstance;
 
-    @Override
-    public final String toString() {
-      return isProto3() ? "Proto3" : "Proto2";
+    TestType(Message defaultInstance) {
+      this.defaultInstance = defaultInstance;
+    }
+
+    public Message defaultInstance() {
+      return defaultInstance;
+    }
+
+    public boolean isProto3() {
+      return this == PROTO3;
     }
   }
-
-  protected static final TestType PROTO2 =
-      new AutoValue_ProtoSubjectTestBase_TestType(TestMessage2.getDefaultInstance(), false);
-  protected static final TestType PROTO3 =
-      new AutoValue_ProtoSubjectTestBase_TestType(TestMessage3.getDefaultInstance(), true);
 
   private static final TextFormat.Parser PARSER =
       TextFormat.Parser.newBuilder()
@@ -65,7 +68,11 @@ public class ProtoSubjectTestBase {
 
   // For Parameterized testing.
   protected static Collection<Object[]> parameters() {
-    return ImmutableList.of(new Object[] {PROTO2}, new Object[] {PROTO3});
+    ImmutableList.Builder<Object[]> builder = ImmutableList.builder();
+    for (TestType testType : TestType.values()) {
+      builder.add(new Object[] {testType});
+    }
+    return builder.build();
   }
 
   @Rule public final Expect expect = Expect.create();
@@ -78,8 +85,9 @@ public class ProtoSubjectTestBase {
     this.isProto3 = testType.isProto3();
   }
 
-  protected final Message.Builder newBuilder() {
-    return defaultInstance.toBuilder();
+  protected final Message fromUnknownFields(UnknownFieldSet unknownFieldSet)
+      throws InvalidProtocolBufferException {
+    return defaultInstance.getParserForType().parseFrom(unknownFieldSet.toByteArray());
   }
 
   protected final String fullMessageName() {
@@ -118,6 +126,16 @@ public class ProtoSubjectTestBase {
   }
 
   protected final boolean isProto3() {
+    return isProto3;
+  }
+
+  /**
+   * Some tests don't vary across the different proto types, and should only be run once.
+   *
+   * <p>This method returns true for exactly one {@link TestType}, and false for all the others, and
+   * so can be used to ensure tests are only run once.
+   */
+  protected final boolean testIsRunOnce() {
     return isProto3;
   }
 

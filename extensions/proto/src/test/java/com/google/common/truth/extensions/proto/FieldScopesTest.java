@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
 import com.google.protobuf.UnknownFieldSet.Field;
@@ -406,7 +407,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     }
   }
 
-  public void testFromSetFields_unknownFields() {
+  public void testFromSetFields_unknownFields() throws InvalidProtocolBufferException {
     if (isProto3()) {
       // No unknown fields in Proto 3.
       return;
@@ -415,133 +416,119 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     // Make sure that merging of repeated fields, separation by tag number, and separation by
     // unknown field type all work.
     Message scopeMessage =
-        newBuilder()
-            .setUnknownFields(
-                UnknownFieldSet.newBuilder()
-                    .addField(20, Field.newBuilder().addFixed32(1).addFixed64(1).build())
-                    .addField(
-                        21,
-                        Field.newBuilder()
-                            .addVarint(1)
-                            .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
-                            .addGroup(
-                                UnknownFieldSet.newBuilder()
-                                    .addField(1, Field.newBuilder().addFixed32(1).build())
-                                    .build())
-                            .addGroup(
-                                UnknownFieldSet.newBuilder()
-                                    .addField(2, Field.newBuilder().addFixed64(1).build())
-                                    .build())
-                            .build())
-                    .build())
-            .build();
+        fromUnknownFields(
+            UnknownFieldSet.newBuilder()
+                .addField(20, Field.newBuilder().addFixed32(1).addFixed64(1).build())
+                .addField(
+                    21,
+                    Field.newBuilder()
+                        .addVarint(1)
+                        .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
+                        .addGroup(
+                            UnknownFieldSet.newBuilder()
+                                .addField(1, Field.newBuilder().addFixed32(1).build())
+                                .build())
+                        .addGroup(
+                            UnknownFieldSet.newBuilder()
+                                .addField(2, Field.newBuilder().addFixed64(1).build())
+                                .build())
+                        .build())
+                .build());
 
     // 1 = compared, [2, 3] = ignored, 4 = compared and fails
     Message message =
-        newBuilder()
-            .setUnknownFields(
-                UnknownFieldSet.newBuilder()
-                    .addField(19, Field.newBuilder().addFixed32(2).addFixed64(2).build())
-                    .addField(
-                        20,
-                        Field.newBuilder()
-                            .addFixed32(1)
-                            .addFixed64(1)
-                            .addVarint(2)
-                            .addLengthDelimited(ByteString.copyFrom("2", StandardCharsets.UTF_8))
-                            .addGroup(
-                                UnknownFieldSet.newBuilder()
-                                    .addField(1, Field.newBuilder().addFixed32(2).build())
-                                    .build())
-                            .build())
-                    .addField(
-                        21,
-                        Field.newBuilder()
-                            .addFixed32(2)
-                            .addFixed64(2)
-                            .addVarint(1)
-                            .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
-                            .addGroup(
-                                UnknownFieldSet.newBuilder()
-                                    .addField(
-                                        1, Field.newBuilder().addFixed32(1).addFixed64(2).build())
-                                    .addField(
-                                        2, Field.newBuilder().addFixed32(2).addFixed64(1).build())
-                                    .addField(3, Field.newBuilder().addFixed32(2).build())
-                                    .build())
-                            .build())
-                    .build())
-            .build();
+        fromUnknownFields(
+            UnknownFieldSet.newBuilder()
+                .addField(19, Field.newBuilder().addFixed32(2).addFixed64(2).build())
+                .addField(
+                    20,
+                    Field.newBuilder()
+                        .addFixed32(1)
+                        .addFixed64(1)
+                        .addVarint(2)
+                        .addLengthDelimited(ByteString.copyFrom("2", StandardCharsets.UTF_8))
+                        .addGroup(
+                            UnknownFieldSet.newBuilder()
+                                .addField(1, Field.newBuilder().addFixed32(2).build())
+                                .build())
+                        .build())
+                .addField(
+                    21,
+                    Field.newBuilder()
+                        .addFixed32(2)
+                        .addFixed64(2)
+                        .addVarint(1)
+                        .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
+                        .addGroup(
+                            UnknownFieldSet.newBuilder()
+                                .addField(1, Field.newBuilder().addFixed32(1).addFixed64(2).build())
+                                .addField(2, Field.newBuilder().addFixed32(2).addFixed64(1).build())
+                                .addField(3, Field.newBuilder().addFixed32(2).build())
+                                .build())
+                        .build())
+                .build());
     Message diffMessage =
-        newBuilder()
-            .setUnknownFields(
-                UnknownFieldSet.newBuilder()
-                    .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
-                    .addField(
-                        20,
-                        Field.newBuilder()
-                            .addFixed32(4)
-                            .addFixed64(4)
-                            .addVarint(3)
-                            .addLengthDelimited(ByteString.copyFrom("3", StandardCharsets.UTF_8))
-                            .addGroup(
-                                UnknownFieldSet.newBuilder()
-                                    .addField(1, Field.newBuilder().addFixed32(3).build())
-                                    .build())
-                            .build())
-                    .addField(
-                        21,
-                        Field.newBuilder()
-                            .addFixed32(3)
-                            .addFixed64(3)
-                            .addVarint(4)
-                            .addLengthDelimited(ByteString.copyFrom("4", StandardCharsets.UTF_8))
-                            .addGroup(
-                                UnknownFieldSet.newBuilder()
-                                    .addField(
-                                        1, Field.newBuilder().addFixed32(4).addFixed64(3).build())
-                                    .addField(
-                                        2, Field.newBuilder().addFixed32(3).addFixed64(4).build())
-                                    .addField(3, Field.newBuilder().addFixed32(3).build())
-                                    .build())
-                            .build())
-                    .build())
-            .build();
+        fromUnknownFields(
+            UnknownFieldSet.newBuilder()
+                .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
+                .addField(
+                    20,
+                    Field.newBuilder()
+                        .addFixed32(4)
+                        .addFixed64(4)
+                        .addVarint(3)
+                        .addLengthDelimited(ByteString.copyFrom("3", StandardCharsets.UTF_8))
+                        .addGroup(
+                            UnknownFieldSet.newBuilder()
+                                .addField(1, Field.newBuilder().addFixed32(3).build())
+                                .build())
+                        .build())
+                .addField(
+                    21,
+                    Field.newBuilder()
+                        .addFixed32(3)
+                        .addFixed64(3)
+                        .addVarint(4)
+                        .addLengthDelimited(ByteString.copyFrom("4", StandardCharsets.UTF_8))
+                        .addGroup(
+                            UnknownFieldSet.newBuilder()
+                                .addField(1, Field.newBuilder().addFixed32(4).addFixed64(3).build())
+                                .addField(2, Field.newBuilder().addFixed32(3).addFixed64(4).build())
+                                .addField(3, Field.newBuilder().addFixed32(3).build())
+                                .build())
+                        .build())
+                .build());
     Message eqMessage =
-        newBuilder()
-            .setUnknownFields(
-                UnknownFieldSet.newBuilder()
-                    .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
-                    .addField(
-                        20,
-                        Field.newBuilder()
-                            .addFixed32(1)
-                            .addFixed64(1)
-                            .addVarint(3)
-                            .addLengthDelimited(ByteString.copyFrom("3", StandardCharsets.UTF_8))
-                            .addGroup(
-                                UnknownFieldSet.newBuilder()
-                                    .addField(1, Field.newBuilder().addFixed32(3).build())
-                                    .build())
-                            .build())
-                    .addField(
-                        21,
-                        Field.newBuilder()
-                            .addFixed32(3)
-                            .addFixed64(3)
-                            .addVarint(1)
-                            .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
-                            .addGroup(
-                                UnknownFieldSet.newBuilder()
-                                    .addField(
-                                        1, Field.newBuilder().addFixed32(1).addFixed64(3).build())
-                                    .addField(
-                                        2, Field.newBuilder().addFixed32(3).addFixed64(1).build())
-                                    .addField(3, Field.newBuilder().addFixed32(3).build())
-                                    .build())
-                            .build())
-                    .build())
-            .build();
+        fromUnknownFields(
+            UnknownFieldSet.newBuilder()
+                .addField(19, Field.newBuilder().addFixed32(3).addFixed64(3).build())
+                .addField(
+                    20,
+                    Field.newBuilder()
+                        .addFixed32(1)
+                        .addFixed64(1)
+                        .addVarint(3)
+                        .addLengthDelimited(ByteString.copyFrom("3", StandardCharsets.UTF_8))
+                        .addGroup(
+                            UnknownFieldSet.newBuilder()
+                                .addField(1, Field.newBuilder().addFixed32(3).build())
+                                .build())
+                        .build())
+                .addField(
+                    21,
+                    Field.newBuilder()
+                        .addFixed32(3)
+                        .addFixed64(3)
+                        .addVarint(1)
+                        .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
+                        .addGroup(
+                            UnknownFieldSet.newBuilder()
+                                .addField(1, Field.newBuilder().addFixed32(1).addFixed64(3).build())
+                                .addField(2, Field.newBuilder().addFixed32(3).addFixed64(1).build())
+                                .addField(3, Field.newBuilder().addFixed32(3).build())
+                                .build())
+                        .build())
+                .build());
 
     expectThat(diffMessage).isNotEqualTo(message);
     expectThat(eqMessage).isNotEqualTo(message);
@@ -865,10 +852,15 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
   @Test
   public void testFromSetFields_iterables_errorForDifferentMessageTypes() {
-    if (isProto3()) return; // Only run this test once.
+    // Don't run this test twice.
+    if (!testIsRunOnce()) {
+      return;
+    }
 
     try {
-      FieldScopes.fromSetFields(parse("o_int: 1"), TestMessage3.newBuilder().setOInt(2).build());
+      FieldScopes.fromSetFields(
+          TestMessage2.newBuilder().setOInt(2).build(),
+          TestMessage3.newBuilder().setOInt(2).build());
       fail("Expected failure.");
     } catch (RuntimeException expected) {
       expectSubstr(expected, "Cannot create scope from messages with different descriptors");
@@ -879,10 +871,15 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
   @Test
   public void testFromSetFields_iterables_errorIfDescriptorMismatchesSubject() {
-    if (isProto3()) return; // Only run this test once.
+    // Don't run this test twice.
+    if (!testIsRunOnce()) {
+      return;
+    }
 
-    Message message = parse("o_int: 1 r_string: \"foo\" r_string: \"bar\"");
-    Message eqMessage = parse("o_int: 1 r_string: \"foo\" r_string: \"bar\"");
+    Message message =
+        TestMessage2.newBuilder().setOInt(1).addRString("foo").addRString("bar").build();
+    Message eqMessage =
+        TestMessage2.newBuilder().setOInt(1).addRString("foo").addRString("bar").build();
 
     try {
       assertThat(message)
