@@ -33,7 +33,9 @@ import org.junit.runners.model.Statement;
  * <p>By design this class expects exactly one failure per instance, meaning you should create
  * separate tests for each failure case you intend to assert on, rather than trying to capture
  * multiple failures in a single test. With {@code expectFailure()} you can safely capture multiple
- * failures in the same test method, but creating separate tests is still encouraged.
+ * failures in the same test method, but creating separate tests is still encouraged. (Currently,
+ * calling {@code whenTesting()} more than once on the same instance fails. However, you should not
+ * rely on this behaviour.)
  *
  * <p><b>Note:</b> this class is not intended for general use; it exists primarily to write tests of
  * {@link Subject} implementations and other Truth internals. If you are writing your own custom
