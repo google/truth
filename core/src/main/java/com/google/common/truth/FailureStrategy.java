@@ -23,51 +23,40 @@ import java.util.Arrays;
  * {@link Expect} and {@link TruthJUnit#assume} have different failure behavior.
  *
  * <p>It should generally be unnecessary for Truth SPI developers to define their own {@code
- * FailureStrategy} implementations, they should instead use {@link Subject#check} to invoke other
- * subjects using the current strategy. When you really do need to create your own strategy prefer
- * to extend {@link AbstractFailureStrategy} rather than this class directly.
+ * FailureStrategy} implementations. When you really do need to create your own strategy prefer to
+ * extend {@link AbstractFailureStrategy} rather than this class directly.
  *
- * <p>Implementation Note: the concrete methods in this class will be made abstract in the near
- * future (see b/37472530); please do not depend on these existing implementations in new code,
- * prefer {@code AbstractFailureStrategy}.
+ * <p>Alternatives to creating a custom {@code FailureStrategy} implementation:
+ *
+ * <ul>
+ *   <li>For unit tests of a custom subject and assert on the failure behavior use {@link
+ *       ExpectFailure}
+ *   <li>To create subjects of other types within your own subject (e.g. for chained assertions) use
+ *       {@link Subject#check}
+ *   <li>To return a no-op subject after a previous assertion has failed (e.g. for chained
+ *       assertions) use {@link Subject#ignoreCheck}
+ * </ul>
  */
 public abstract class FailureStrategy {
   /**
    * Report an assertion failure with a text message. This method should generally delegate to
    * {@link #fail(String, Throwable)}.
    */
-  public void fail(String message) {
-    fail(message, null);
-  }
+  public abstract void fail(String message);
 
   /**
    * Report an assertion failure with a text message and a throwable that indicates the cause of the
    * failure. This will be reported as the cause of the exception raised by this method (if one is
    * thrown) or otherwise recorded by the strategy as the underlying cause of the failure.
    */
-  public void fail(String message, Throwable cause) {
-    AssertionError up = new AssertionError(message);
-    if (cause == null) {
-      cause = new AssertionError(message);
-    }
-    try {
-      up.initCause(cause);
-    } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-      // https://code.google.com/p/android/issues/detail?id=29378
-      // No message, but it's the best we can do without awful hacks.
-      throw new AssertionError(cause);
-    }
-    throw stripTruthStackFrames(up);
-  }
+  public abstract void fail(String message, Throwable cause);
 
   /**
    * Convenience method to report string-comparison failures with more detail (e.g. character
    * differences). This method should generally delegate to {@link #failComparing(String,
    * CharSequence, CharSequence, Throwable)}.
    */
-  public void failComparing(String message, CharSequence expected, CharSequence actual) {
-    failComparing(message, expected, actual, null);
-  }
+  public abstract void failComparing(String message, CharSequence expected, CharSequence actual);
 
   /**
    * Convenience method to report string-comparison failures with more detail (e.g. character
@@ -75,10 +64,8 @@ public abstract class FailureStrategy {
    * reported as the cause of the exception raised by this method (if one is thrown) or otherwise
    * recorded by the strategy as the underlying cause of the failure.
    */
-  public void failComparing(
-      String message, CharSequence expected, CharSequence actual, Throwable cause) {
-    fail(StringUtil.messageFor(message, expected, actual), cause);
-  }
+  public abstract void failComparing(
+      String message, CharSequence expected, CharSequence actual, Throwable cause);
 
   /**
    * Strips stack frames from the throwable that have a class starting with com.google.common.truth.
