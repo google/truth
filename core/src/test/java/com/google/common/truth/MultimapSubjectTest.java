@@ -632,6 +632,176 @@ public class MultimapSubjectTest {
   }
 
   @Test
+  public void containsExactlyVararg() {
+    ImmutableListMultimap<Integer, String> listMultimap =
+        ImmutableListMultimap.of(1, "one", 3, "six", 3, "two");
+
+    assertThat(listMultimap).containsExactly(1, "one", 3, "six", 3, "two");
+  }
+
+  @Test
+  public void containsExactlyVarargWithNull() {
+    Multimap<Integer, String> listMultimap =
+        LinkedListMultimap.create(ImmutableListMultimap.of(1, "one", 3, "six", 3, "two"));
+    listMultimap.put(4, null);
+
+    assertThat(listMultimap).containsExactly(1, "one", 3, "six", 3, "two", 4, null);
+  }
+
+  @Test
+  public void containsExactlyVarargFailureMissing() {
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create(expected);
+    actual.remove(3, "six");
+    actual.remove(4, "five");
+
+    try {
+      assertThat(actual).containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              String.format(
+                  "Not true that <%s> contains exactly <%s>. "
+                      + "It is missing <{3=[six], 4=[five]}>",
+                  actual, expected));
+    }
+  }
+
+  @Test
+  public void containsExactlyVarargFailureExtra() {
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create(expected);
+    actual.put(4, "nine");
+    actual.put(5, "eight");
+
+    try {
+      assertThat(actual).containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              String.format(
+                  "Not true that <%s> contains exactly <%s>. "
+                      + "It has unexpected items <{4=[nine], 5=[eight]}>",
+                  actual, expected));
+    }
+  }
+
+  @Test
+  public void containsExactlyVarargFailureBoth() {
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create(expected);
+    actual.remove(3, "six");
+    actual.remove(4, "five");
+    actual.put(4, "nine");
+    actual.put(5, "eight");
+
+    try {
+      assertThat(actual).containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              String.format(
+                  "Not true that <%s> contains exactly <%s>. "
+                      + "It is missing <{3=[six], 4=[five]}> "
+                      + "and has unexpected items <{4=[nine], 5=[eight]}>",
+                  actual, expected));
+    }
+  }
+
+  @Test
+  public void containsExactlyVarargRespectsDuplicates() {
+    ImmutableListMultimap<Integer, String> actual =
+        ImmutableListMultimap.of(3, "one", 3, "two", 3, "one", 4, "five", 4, "five");
+
+    assertThat(actual).containsExactly(3, "two", 4, "five", 3, "one", 4, "five", 3, "one");
+  }
+
+  @Test
+  public void containsExactlyVarargRespectsDuplicatesFailure() {
+    ImmutableListMultimap<Integer, String> actual =
+        ImmutableListMultimap.of(3, "one", 3, "two", 3, "one", 4, "five", 4, "five");
+    ImmutableSetMultimap<Integer, String> expected = ImmutableSetMultimap.copyOf(actual);
+
+    try {
+      assertThat(actual).containsExactly(3, "one", 3, "two", 4, "five");
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              String.format(
+                  "Not true that <%s> contains exactly <%s>. "
+                      + "It has unexpected items <{3=[one], 4=[five]}>",
+                  actual, expected));
+    }
+  }
+
+  @Test
+  public void containsExactlyVarargInOrder() {
+    ImmutableMultimap<Integer, String> actual =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+
+    assertThat(actual)
+        .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four")
+        .inOrder();
+  }
+
+  @Test
+  public void containsExactlyVarargInOrderFailure() {
+    ImmutableMultimap<Integer, String> actual =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(4, "four", 3, "six", 4, "five", 3, "two", 3, "one");
+
+    assertThat(actual).containsExactly(4, "four", 3, "six", 4, "five", 3, "two", 3, "one");
+    try {
+      assertThat(actual)
+          .containsExactly(4, "four", 3, "six", 4, "five", 3, "two", 3, "one")
+          .inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .startsWith(
+              String.format(
+                  "Not true that <%s> contains exactly <%s> in order. ", actual, expected));
+    }
+  }
+
+  @Test
+  public void containsExactlyVarargInOrderFailureValuesOnly() {
+    ImmutableMultimap<Integer, String> actual =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(3, "six", 3, "two", 3, "one", 4, "five", 4, "four");
+
+    assertThat(actual).containsExactly(3, "six", 3, "two", 3, "one", 4, "five", 4, "four");
+    try {
+      assertThat(actual)
+          .containsExactly(3, "six", 3, "two", 3, "one", 4, "five", 4, "four")
+          .inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              String.format(
+                  "Not true that <%s> contains exactly <%s> in order. "
+                      + "The values for keys <[3]> are not in order",
+                  actual, expected));
+    }
+  }
+
+  @Test
   public void containsExactlyEntriesIn_homogeneousMultimap_failsWithSameToString()
       throws Exception {
     expectFailure
@@ -972,6 +1142,165 @@ public class MultimapSubjectTest {
           .named("multymap")
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
           .containsExactlyEntriesIn(expected);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a key "
+                  + "that is equal to and a value that parses to the key and value of each element "
+                  + "of <[abc=123, def=456]>. It is missing an element that has a key that is "
+                  + "equal to and a value that parses to the key and value of <def=456>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_success() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 64, "def", 128, "def", 64, "abc", 123);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_missingKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("def", "+64", "def", "0x40", "def", "+128");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 64, "def", 128, "def", 64, "abc", 123);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <{def=[+64, 0x40, +128]}> contains exactly one element that has a "
+                  + "key that is equal to and a value that parses to the key and value of each "
+                  + "element of <[def=64, def=128, def=64, abc=123]>. It is missing an element "
+                  + "that has a key that is equal to and a value that parses to the key and value "
+                  + "of <abc=123>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_extraKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 64, "def", 128, "def", 64);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element "
+                  + "that has a key that is equal to and a value that parses to the key and value "
+                  + "of each element of <[def=64, def=128, def=64]>. It has unexpected elements "
+                  + "<[abc=+123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_wrongValueForKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 64, "def", 128, "def", 128, "abc", 123);
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      String expectedPreamble =
+          "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element that "
+              + "has a key that is equal to and a value that parses to the key and value of each "
+              + "element of <[def=64, def=128, def=128, abc=123]>. It contains at least one "
+              + "element that matches each expected element, and every element it contains matches "
+              + "at least one expected element, but there was no 1:1 mapping between all the "
+              + "actual and expected elements. Using the most complete 1:1 mapping (or one such "
+              + "mapping, if there is a tie), it is missing an element that has a key that is "
+              + "equal to and a value that parses to the key and value of <def=128> and has "
+              + "unexpected elements ";
+      assertThat(e)
+          .hasMessageThat()
+          .isAnyOf(expectedPreamble + "<[def=+64]>", expectedPreamble + "<[def=0x40]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_wrongTypeInActual() {
+    ImmutableListMultimap<String, Object> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", new Object());
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 64, "def", 123, "def", 64, "abc", 123);
+      fail("Should have thrown.");
+    } catch (ClassCastException e) {
+      // expected
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_inOrder_success() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("abc", 123, "def", 64, "def", 64, "def", 128);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_inOrder_wrongKeyOrder() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("def", 64, "def", 64, "def", 128, "abc", 123)
+          .inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
+                  + "element that has a key that is equal to and a value that parses to the key "
+                  + "and value of each element of <[def=64, def=64, def=128, abc=123]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_inOrder_wrongValueOrder() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    try {
+      assertThat(actual)
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("abc", 123, "def", 64, "def", 128, "def", 64)
+          .inOrder();
+      fail("Should have thrown.");
+    } catch (AssertionError e) {
+      assertThat(e)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
+                  + "element that has a key that is equal to and a value that parses to the key "
+                  + "and value of each element of <[abc=123, def=64, def=128, def=64]>");
+    }
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactly_failsWithNamed() {
+    ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
+    try {
+      assertThat(actual)
+          .named("multymap")
+          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+          .containsExactly("abc", 123, "def", 456);
       fail("Should have thrown.");
     } catch (AssertionError e) {
       assertThat(e)
