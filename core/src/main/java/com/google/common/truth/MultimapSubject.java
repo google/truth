@@ -232,6 +232,33 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     return new MultimapInOrder(expectedMultimap);
   }
 
+  /**
+   * Fails if the multimap does not contain exactly the given set of key/value pairs.
+   *
+   * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+   * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsExactly(@Nullable Object k0, @Nullable Object v0, Object... rest) {
+    return containsExactlyEntriesIn(accumulateMultimap(k0, v0, rest));
+  }
+
+  private static Multimap<Object, Object> accumulateMultimap(
+      @Nullable Object k0, @Nullable Object v0, Object... rest) {
+    checkArgument(
+        rest.length % 2 == 0,
+        "There must be an equal number of key/value pairs "
+            + "(i.e., the number of key/value parameters (%s) must be even).",
+        rest.length + 2);
+
+    LinkedListMultimap<Object, Object> expectedMultimap = LinkedListMultimap.create();
+    expectedMultimap.put(k0, v0);
+    for (int i = 0; i < rest.length; i += 2) {
+      expectedMultimap.put(rest[i], rest[i + 1]);
+    }
+    return expectedMultimap;
+  }
+
   /** @deprecated Use {@link #containsExactlyEntriesIn} instead. */
   @Deprecated
   @CanIgnoreReturnValue
@@ -491,6 +518,20 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       return new IterableEntries(failureStrategy, MultimapSubject.this)
           .comparingElementsUsing(new MapSubject.EntryCorrespondence<K, A, V>(correspondence))
           .containsExactlyElementsIn(expectedMultimap.entries());
+    }
+
+    /**
+     * Fails if the multimap does not contain exactly the given set of key/value pairs.
+     *
+     * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+     * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+     */
+    @CanIgnoreReturnValue
+    public <K, V extends E> Ordered containsExactly(
+        @Nullable Object k0, @Nullable Object v0, Object... rest) {
+      @SuppressWarnings("unchecked")
+      Multimap<K, V> expectedMultimap = (Multimap<K, V>) accumulateMultimap(k0, v0, rest);
+      return containsExactlyEntriesIn(expectedMultimap);
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
