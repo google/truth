@@ -14,7 +14,7 @@ readable and useful to developers.
 
 Categories of stack frames that commonly clutter stack traces are identified by
 package name prefixes. These categories are defined by
-StackTraceCleaner.StackFrameType.
+`StackTraceCleaner.StackFrameType`.
 
 If two or more adjacent stack frames belong to the same category, the entire
 series of those frames will be collapsed into a single frame summarizing what
@@ -30,7 +30,7 @@ will not be helpful in determining why a test failed.
 
 Stack trace cleaning is enabled by default. To disable the cleaning and have
 Truth report the original stack traces, set the system property
-com.google.common.truth.disable_stack_trace_cleaning to true.
+`com.google.common.truth.disable_stack_trace_cleaning` to `true`.
 
 <!-- References -->
 
