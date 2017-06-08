@@ -83,24 +83,22 @@ public final class Truth {
 
         @Override
         public void failComparing(
-            String message, CharSequence expected, CharSequence actual, Throwable cause) {
+            String message, CharSequence expected, CharSequence actual, @Nullable Throwable cause) {
           AssertionError e =
               Platform.comparisonFailure(message, expected.toString(), actual.toString());
           throw stripFramesAndTryToAddCause(e, cause);
         }
 
         private AssertionError stripFramesAndTryToAddCause(
-            AssertionError failure, Throwable cause) {
-          if (cause == null) {
-            // Default "cause" contains the full stacktrace, without any stripped frames
-            cause = new AssertionError(failure.getMessage());
-          }
-          try {
-            failure.initCause(cause);
-          } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-            // https://code.google.com/p/android/issues/detail?id=29378
-            // No message, but it's the best we can do without awful hacks.
-            throw stripTruthStackFrames(new AssertionError(cause));
+            AssertionError failure, @Nullable Throwable cause) {
+          if (cause != null) {
+            try {
+              failure.initCause(cause);
+            } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
+              // https://code.google.com/p/android/issues/detail?id=29378
+              // No message, but it's the best we can do without awful hacks.
+              throw stripTruthStackFrames(new AssertionError(cause));
+            }
           }
           return stripTruthStackFrames(failure);
         }
