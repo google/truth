@@ -159,6 +159,8 @@ public class StringSubjectTest {
       throw new Error("Expected to fail.");
     } catch (ComparisonFailure expected) {
       assertThat(expected).hasMessageThat().isEqualTo("expected:<ab[d]> but was:<ab[c]>");
+      // truth used to create a synthetic cause, make sure that isn't happening anymore.
+      assertThat(expected).hasCauseThat().isNull();
     }
   }
 
