@@ -27,8 +27,8 @@ import org.junit.runners.model.Statement;
 /**
  * An assertion strategy that expects the given assertion to fail, and captures the failure rather
  * than throwing it. It should be used as a JUnit {@code @Rule}, so that unexpectedly-passing
- * assertions will cause your test to fail. In Java 8 you can use {@link #expectFailure} to instead
- * capture failures directly.
+ * assertions will cause your test to fail. In Java 8 you can use {@link #expectFailure
+ * expectFailure()} to instead capture failures directly.
  *
  * <p>By design this class expects exactly one failure per instance, meaning you should create
  * separate tests for each failure case you intend to assert on, rather than trying to capture
@@ -171,7 +171,8 @@ public class ExpectFailure implements TestRule {
   }
 
   /**
-   * A "functional interface" for {@link #expectFailure} to invoke and capture failures.
+   * A "functional interface" for {@link #expectFailure expectFailure()} to invoke and capture
+   * failures.
    *
    * <p>Java 8 users should pass a lambda to {@code .expectFailure()} rather than directly implement
    * this interface. Java 7 users can define an {@code @Rule ExpectFailure} instance instead,
@@ -183,7 +184,8 @@ public class ExpectFailure implements TestRule {
   }
 
   /**
-   * A "functional interface" for {@link #expectFailureAbout} to invoke and capture failures.
+   * A "functional interface" for {@link #expectFailureAbout expectFailureAbout()} to invoke and
+   * capture failures.
    *
    * <p>Java 8 users should pass a lambda to {@code .expectFailureAbout()} rather than directly
    * implement this interface. Java 7 users can define an {@code @Rule ExpectFailure} instance
