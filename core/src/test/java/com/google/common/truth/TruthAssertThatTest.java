@@ -89,11 +89,12 @@ public class TruthAssertThatTest {
   public void testTruthFramesAreStrippedFromStackTrace() throws Exception {
     try {
       Truth.THROW_ASSERTION_ERROR.fail("test");
-      fail("Expected THROW_ASSERTION_ERROR.fail() to throw...");
     } catch (AssertionError expected) {
       for (StackTraceElement stackTraceElement : expected.getStackTrace()) {
         assertThat(stackTraceElement.getClassName()).doesNotContain("com.google.common.truth");
       }
+      return;
     }
+    fail("Expected THROW_ASSERTION_ERROR.fail() to throw...");
   }
 }
