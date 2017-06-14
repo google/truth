@@ -70,7 +70,7 @@ public final class FieldScopes {
   }
 
   /**
-   * Creates a {@link FieldScope} convering the fields set in every message in the provided list of
+   * Creates a {@link FieldScope} covering the fields set in every message in the provided list of
    * messages, with the same semantics as in {@link #fromSetFields(Message)}.
    *
    * <p>This can be thought of as the union of the {@link FieldScope}s for each individual message,
@@ -82,7 +82,7 @@ public final class FieldScopes {
   }
 
   /**
-   * Creates a {@link FieldScope} convering the fields set in every message in the provided list of
+   * Creates a {@link FieldScope} covering the fields set in every message in the provided list of
    * messages, with the same semantics as in {@link #fromSetFields(Message)}.
    *
    * <p>This can be thought of as the union of the {@link FieldScope}s for each individual message,
