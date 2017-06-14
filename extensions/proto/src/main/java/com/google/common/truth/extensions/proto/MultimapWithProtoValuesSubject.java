@@ -175,6 +175,17 @@ public class MultimapWithProtoValuesSubject<
   }
 
   /**
+   * Fails if the multimap does not contain exactly the given set of key/value pairs.
+   *
+   * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+   * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsExactly(@Nullable Object k0, @Nullable Object v0, Object... rest) {
+    return delegate().containsExactly(k0, v0, rest);
+  }
+
+  /**
    * Starts a method chain for a test proposition in which the actual values (i.e. the values of the
    * {@link Multimap} under test) are compared to expected values using the given {@link
    * Correspondence}. The actual values must be of type {@code A} and the expected values must be of
@@ -489,6 +500,12 @@ public class MultimapWithProtoValuesSubject<
     @CanIgnoreReturnValue
     public Ordered containsExactlyEntriesIn(Multimap<?, ? extends M> expectedMap) {
       return usingCorrespondence().containsExactlyEntriesIn(expectedMap);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsExactly(@Nullable Object k0, @Nullable M v0, Object... rest) {
+      return usingCorrespondence().containsExactly(k0, v0, rest);
     }
 
     @Override

@@ -234,6 +234,15 @@ public interface MultimapWithProtoValuesFluentAssertion<M extends Message> {
   Ordered containsExactlyEntriesIn(Multimap<?, ? extends M> expectedMultimap);
 
   /**
+   * Fails if the multimap does not contain exactly the given set of key/value pairs.
+   *
+   * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+   * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsExactly(@Nullable Object k0, @Nullable M v0, Object... rest);
+
+  /**
    * @deprecated Do not call {@code equals()} on a {@code MultimapWithProtoValuesFluentAssertion}.
    * @see com.google.common.truth.Subject#equals(Object)
    */

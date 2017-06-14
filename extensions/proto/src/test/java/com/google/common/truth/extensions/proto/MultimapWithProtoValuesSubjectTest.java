@@ -159,6 +159,31 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testPlain_containsExactly() {
+    expectThat(multimapOf(1, message1, 1, message2, 2, message1))
+        .containsExactly(1, eqMessage2, 2, eqMessage1, 1, eqMessage1);
+    expectThat(multimapOf(1, message1, 1, message2, 2, message1))
+        .containsExactly(1, eqMessage1, 1, eqMessage2, 2, eqMessage1)
+        .inOrder();
+
+    try {
+      assertThat(multimapOf(1, message1)).containsExactly(1, eqMessage1, 2, eqMessage2);
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+
+    try {
+      assertThat(multimapOf(1, message1, 2, message2))
+          .containsExactly(2, eqMessage2, 1, eqMessage1)
+          .inOrder();
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+  }
+
+  @Test
   public void testPlain_valuesForKey() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .valuesForKey(1)
@@ -239,6 +264,36 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
       assertThat(multimapOf(1, message1, 2, message2))
           .ignoringFieldsForValues(ignoreFieldNumber)
           .containsExactlyEntriesIn(multimapOf(2, eqIgnoredMessage2, 1, eqIgnoredMessage1))
+          .inOrder();
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+  }
+
+  @Test
+  public void testFluent_containsExactly() {
+    expectThat(multimapOf(1, message1, 1, message2, 2, message1))
+        .ignoringFieldsForValues(ignoreFieldNumber)
+        .containsExactly(1, eqIgnoredMessage2, 2, eqIgnoredMessage1, 1, eqIgnoredMessage1);
+    expectThat(multimapOf(1, message1, 1, message2, 2, message1))
+        .ignoringRepeatedFieldOrderForValues()
+        .containsExactly(1, eqRepeatedMessage1, 1, eqRepeatedMessage2, 2, eqRepeatedMessage1)
+        .inOrder();
+
+    try {
+      assertThat(multimapOf(1, message1))
+          .ignoringRepeatedFieldOrderForValues()
+          .containsExactly(2, eqRepeatedMessage2, 1, eqRepeatedMessage1);
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+
+    try {
+      assertThat(multimapOf(1, message1, 2, message2))
+          .ignoringFieldsForValues(ignoreFieldNumber)
+          .containsExactly(2, eqIgnoredMessage2, 1, eqIgnoredMessage1)
           .inOrder();
       expectedFailure();
     } catch (AssertionError expected) {
