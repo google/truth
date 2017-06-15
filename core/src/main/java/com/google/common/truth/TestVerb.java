@@ -177,7 +177,7 @@ public class TestVerb extends AbstractVerb<TestVerb> {
 
   @Override
   public TestVerb withFailureMessage(@Nullable String failureMessage) {
-    return new TestVerb(getFailureStrategy(), "%s", failureMessage); // Must be a new instance.
+    return withMessage(failureMessage);
   }
 
   /**
@@ -190,10 +190,28 @@ public class TestVerb extends AbstractVerb<TestVerb> {
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
    */
-  // TODO(kak): This probably should go on AbstractVerb, but that's a breaking change and will
-  // require an atomic migration of the codebase.
   @Override
   public TestVerb withFailureMessage(@Nullable String format, Object /* @NullableType */... args) {
+    return withMessage(format, args);
+  }
+
+  @Override
+  public TestVerb withMessage(@Nullable String messageToPrepend) {
+    return new TestVerb(getFailureStrategy(), "%s", messageToPrepend); // Must be a new instance.
+  }
+
+  /**
+   * Returns a {@link TestVerb} that will prepend the formatted message using the specified
+   * arguments to the failure message in the event of a test failure.
+   *
+   * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
+   * not the full range of {@link java.util.Formatter} specifiers.
+   *
+   * @throws IllegalArgumentException if the number of placeholders in the format string does not
+   *     equal the number of given arguments
+   */
+  @Override
+  public TestVerb withMessage(@Nullable String format, Object /* @NullableType */... args) {
     return new TestVerb(getFailureStrategy(), format, args); // Must be a new instance.
   }
 }

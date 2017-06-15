@@ -58,6 +58,18 @@ public class AbstractVerbTest {
         }
 
         @Override
+        @CheckReturnValue
+        public AbstractVerb<?> withMessage(String failureMessage) {
+          throw new UnsupportedOperationException();
+        }
+
+        @Override
+        @CheckReturnValue
+        public AbstractVerb<?> withMessage(String failureMessage, Object... args) {
+          throw new UnsupportedOperationException();
+        }
+
+        @Override
         protected String getFailureMessage() {
           return null;
         }
@@ -67,6 +79,7 @@ public class AbstractVerbTest {
           return false;
         }
       };
+
   @DataPoints public static String[] strings = new String[] {"a", "b"};
 
   @Test

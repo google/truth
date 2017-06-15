@@ -76,6 +76,28 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
   public abstract T withFailureMessage(@Nullable String format, Object /*@NullableType*/... args);
 
   /**
+   * Overrides the failure message of the subsequent subject's propositions.
+   *
+   * @see com.google.common.truth.delegation.DelegationTest
+   * @param messageToPrepend a descriptive message.
+   * @return A custom verb which will show the descriptive message along with the normal failure
+   *     text.
+   */
+  // TODO(cgruber) try to delete this (binary incompatible, but see if there's a way.
+  public abstract T withMessage(@Nullable String messageToPrepend);
+
+  /**
+   * Overrides the failure message of the subsequent subject's propositions.
+   *
+   * @see com.google.common.truth.delegation.DelegationTest
+   * @param format a descriptive message with formatting template content.
+   * @param args object parameters to be substituted into the message template.
+   * @return A custom verb which will show the descriptive message along with the normal failure
+   *     text.
+   */
+  public abstract T withMessage(@Nullable String format, Object /*@NullableType*/... args);
+
+  /**
    * The recommended method of extension of Truth to new types, which is documented in {@link
    * com.google.common.truth.delegation.DelegationTest}.
    *
