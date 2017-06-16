@@ -47,12 +47,22 @@ public abstract class AbstractDelegatedVerb<V extends AbstractDelegatedVerb<V>> 
     this.factory = checkNotNull(factory);
   }
 
+  /**
+   * @deprecated Call {@code withFailureMessage} on the {@code AbstractVerb} <i>before</i> calling
+   *     {@code about}.
+   */
+  @Deprecated
   public final V withFailureMessage(@Nullable String failureMessage) {
     return failureMessage == null
         ? withFailureMessage(null, new Object[0]) // force the right overload
         : withFailureMessage("%s", failureMessage);
   }
 
+  /**
+   * @deprecated Call {@code withFailureMessage} on the {@code AbstractVerb} <i>before</i> calling
+   *     {@code about}.
+   */
+  @Deprecated
   public final V withFailureMessage(@Nullable String format, Object /*@NullableType*/... args) {
     FailureContext holder = new FailureContext(format, args);
     return factory.createVerb(
