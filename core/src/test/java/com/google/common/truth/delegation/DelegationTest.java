@@ -17,6 +17,7 @@ package com.google.common.truth.delegation;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.delegation.FooSubject.foo;
 
@@ -52,7 +53,7 @@ public class DelegationTest {
   @Test
   public void customTypePropositionWithFailureMessage() {
     try {
-      assertAbout(foo()).withFailureMessage("failureMessage").that(new Foo(5)).matches(new Foo(4));
+      assertWithMessage("failureMessage").about(foo()).that(new Foo(5)).matches(new Foo(4));
     } catch (AssertionError e) {
       assertThat(e)
           .hasMessageThat()
