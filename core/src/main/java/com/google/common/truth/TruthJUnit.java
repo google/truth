@@ -48,7 +48,7 @@ import org.junit.internal.AssumptionViolatedException;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtIncompatible("JUnit4")
-public class TruthJUnit {
+public final class TruthJUnit {
   @GwtIncompatible("JUnit4")
   private static final FailureStrategy THROW_ASSUMPTION_ERROR =
       new AbstractFailureStrategy() {

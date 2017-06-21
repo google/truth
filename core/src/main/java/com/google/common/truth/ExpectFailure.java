@@ -44,7 +44,7 @@ import org.junit.runners.model.Statement;
  * expectFailure.whenTesting().about(subjectFactory()).that(...)} to make assertions about custom
  * subjects.
  */
-public class ExpectFailure implements TestRule {
+public final class ExpectFailure implements TestRule {
   private final FailureStrategy strategy =
       new AbstractFailureStrategy() {
         @Override

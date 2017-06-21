@@ -15,25 +15,11 @@
  */
 package com.google.common.truth;
 
-import com.google.common.annotations.GwtIncompatible;
-
 /**
  * A custom subject factory which will return a FooSubject (which is a {@code Subject<Foo>}).
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public abstract class SubjectFactory<S extends Subject<S, T>, T> {
-  @GwtIncompatible("reflection")
-  private static final int SUBJECT_TYPE_PARAMETER = 0;
-
-  @GwtIncompatible("reflection")
-  private final Class<S> type =
-      (Class<S>) ReflectionUtil.typeParameter(getClass(), SUBJECT_TYPE_PARAMETER);
-
   public abstract S getSubject(FailureStrategy fs, T that);
-
-  @GwtIncompatible("reflection")
-  public Class<S> getSubjectClass() {
-    return type;
-  }
 }
