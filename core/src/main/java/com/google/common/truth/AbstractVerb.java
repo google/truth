@@ -64,8 +64,10 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
    * @param failureMessage a descriptive message.
    * @return A custom verb which will show the descriptive message along with the normal failure
    *     text.
+   * @deprecated Use {@code withMessage}, the new name of this method.
    */
   // TODO(cgruber) try to delete this (binary incompatible, but see if there's a way.
+  @Deprecated
   public abstract T withFailureMessage(@Nullable String failureMessage);
 
   /**
@@ -76,7 +78,9 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
    * @param args object parameters to be substituted into the message template.
    * @return A custom verb which will show the descriptive message along with the normal failure
    *     text.
+   * @deprecated Use {@code withMessage}, the new name of this method.
    */
+  @Deprecated
   public abstract T withFailureMessage(@Nullable String format, Object /*@NullableType*/... args);
 
   /**
