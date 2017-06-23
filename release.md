@@ -241,7 +241,7 @@ state used to generate that should be marked.  To push the above-mentioned
 tag to github, just do the standard git command:
 
 ```shell
-git push --tags
+git push origin release_9_45 # fake numbers, change them to the correct ones.
 ```
 
 ### Publish the release's javadocs.
