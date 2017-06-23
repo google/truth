@@ -61,6 +61,7 @@ to do the release work (to avoid clobbering anything on the master branch):
 
 ```shell
 git clone git@github.com:google/truth.git truth_release
+cd truth_release
 git checkout ${SPECIFIC_COMMIT_VERSION} # optional if not HEAD of master branch.
 git checkout -b release_truth_version_branch
 mvn verify
