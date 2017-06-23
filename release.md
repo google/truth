@@ -49,10 +49,9 @@ maven central repository.  To push bits to sonatype requires:
        </settings>
      ```
 
-The administrative steps above are all documented in Sonatype's
-[OSSRH Guide]. The GPG instructions particular to this process can be found
-in this [Sonatype GPG blog entry][GPG].
-
+The administrative steps above are all documented in Sonatype's [OSSRH Guide].
+The GPG instructions particular to this process can be found in this [Sonatype
+GPG blog entry][GPG].
 
 ### Create a release branch
 
