@@ -176,7 +176,7 @@ uid                  Christian Edward Gruber (Maven Deployments) <cgruber@google
 Given the above example, you would then run:
 
 ```shell
-${project_root}/util/mvn-deploy.sh D4906B68
+util/mvn-deploy.sh --signing-key D4906B68
 ```
 
 ... and the script will kick off the maven job, pausing when it first needs to
