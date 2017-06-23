@@ -183,7 +183,7 @@ util/mvn-deploy.sh --signing-key D4906B68
 sign binaries to ask for your GnuPG certificate passphrase (if any).  It then
 pushes the binaries and signatures up to sonatype's staging repository.
 
-###Perform the release on Sonatype's maven repository manager
+### Perform the release on Sonatype's maven repository manager
 
 Sonatype manages the `repo.maven.org/maven2` "central" repository. You need
 to use this tool to perform the final release. If you do not have a sonatype
@@ -192,7 +192,7 @@ an issue to add your username to have rights to the `com.google.truth` groupId.
 
 > ***Note:*** See [preconditions](#preconditions) above for more detailed setup.
 
-####Verify the release
+#### Verify the release
 
 Log in to [oss.sonatype.org][OSS] and select "Staging repositories".  In the
 main window, scroll to the botton where a staging repository named roughly
@@ -275,11 +275,16 @@ the release will now be nicely documented.
 
 ## Post-release
 
+### Update version numbers in docs
+
 Create a commit that updates the `_config.yml` file with the new version number. e.g. cl/156885831
 
 
+### Delete your branch
+
 Once the release is done, and the tag is pushed, the release branch can be
 safely deleted.
+
 
 [GPG]: http://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven
 [OSSRH Guide]: http://central.sonatype.org/pages/ossrh-guide.html
