@@ -17,8 +17,8 @@ package com.google.common.truth;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,8 +120,7 @@ final class SubjectUtils {
    * <p>Example: {@code retainMatchingToString([1L, 2L, 2L], [2, 3]) == [2L, 2L]}
    */
   static List<Object> retainMatchingToString(Iterable<?> items, Iterable<?> itemsToCheck) {
-    SetMultimap<String, Object> stringValueToItemsToCheck =
-        MultimapBuilder.hashKeys().hashSetValues().build();
+    SetMultimap<String, Object> stringValueToItemsToCheck = HashMultimap.create();
     for (Object itemToCheck : itemsToCheck) {
       stringValueToItemsToCheck.put(String.valueOf(itemToCheck), itemToCheck);
     }
