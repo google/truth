@@ -16,6 +16,7 @@
 
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -31,6 +32,7 @@ import org.junit.runners.JUnit4;
 public class DelegatedVerbFactoryTest {
 
   @Rule public final Expect expect = Expect.create();
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
   /** Simple object for testing. */
   @AutoValue
@@ -60,16 +62,18 @@ public class DelegatedVerbFactoryTest {
   }
 
   /** Custom verb that captures the held type for testing. */
-  private static class FooVerb extends AbstractDelegatedVerb<FooVerb> {
-    private static class Factory implements DelegatedVerbFactory<FooVerb> {
+  private static class FooVerb extends AbstractDelegatedVerb {
+    private static class Factory implements DelegatedVerbFactory {
       @Override
       public FooVerb createVerb(FailureStrategy failureStrategy) {
         return new FooVerb(failureStrategy, this);
       }
     }
 
+    private final FailureStrategy failureStrategy;
+
     FooVerb(FailureStrategy failureStrategy, DelegatedVerbFactory<FooVerb> factory) {
-      super(failureStrategy, factory);
+      this.failureStrategy = checkNotNull(failureStrategy);
     }
 
     public <T> FooSubject<T> that(@Nullable Foo<T> foo) {
@@ -92,34 +96,37 @@ public class DelegatedVerbFactoryTest {
   }
 
   @Test
-  public void testAssertAbout_withFailureMessage() {
+  public void testAssertWithMessage_aboutOneArg() {
     Foo<Long> foo = Foo.create("abcdef", 42L);
 
-    try {
-      assertAbout(foos())
-          .withFailureMessage("Fancy prepended message")
-          .that(foo)
-          .hasIdFragment("xyz");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Fancy prepended message: Not true that "
-                  + "id of Foo{id=abcdef, item=42} (<\"abcdef\">) contains <\"xyz\">");
-    }
+    expectFailure
+        .whenTesting()
+        .withMessage("Fancy prepended message")
+        .about(foos())
+        .that(foo)
+        .hasIdFragment("xyz");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Fancy prepended message: Not true that "
+                + "id of Foo{id=abcdef, item=42} (<\"abcdef\">) contains <\"xyz\">");
+  }
 
-    try {
-      assertAbout(foos())
-          .withFailureMessage("Fancy %s %s", "prepended", "message")
-          .that(foo)
-          .hasItem(24L);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Fancy prepended message: Not true that "
-                  + "item of Foo{id=abcdef, item=42} (<42>) is equal to <24>");
-    }
+  @Test
+  public void testAssertWithMessage_aboutFormatting() {
+    Foo<Long> foo = Foo.create("abcdef", 42L);
+
+    expectFailure
+        .whenTesting()
+        .withMessage("Fancy %s %s", "prepended", "message")
+        .about(foos())
+        .that(foo)
+        .hasItem(24L);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Fancy prepended message: Not true that "
+                + "item of Foo{id=abcdef, item=42} (<42>) is equal to <24>");
   }
 
   @Test

@@ -16,6 +16,8 @@
 
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
@@ -33,7 +35,7 @@ import javax.annotation.Nullable;
  *
  * <p>To obtain an instance, call {@code assertAbout(ProtoTruth.protos())}.
  */
-public final class ProtoTruthDelegatedVerb extends AbstractDelegatedVerb<ProtoTruthDelegatedVerb> {
+public final class ProtoTruthDelegatedVerb extends AbstractDelegatedVerb {
 
   /** Factory for ProtoTruthDelegatedVerb. */
   private static class Factory implements DelegatedVerbFactory<ProtoTruthDelegatedVerb> {
@@ -49,9 +51,11 @@ public final class ProtoTruthDelegatedVerb extends AbstractDelegatedVerb<ProtoTr
     return Factory.INSTANCE;
   }
 
+  private final FailureStrategy failureStrategy;
+
   private ProtoTruthDelegatedVerb(
       FailureStrategy failureStrategy, DelegatedVerbFactory<ProtoTruthDelegatedVerb> factory) {
-    super(failureStrategy, factory);
+    this.failureStrategy = checkNotNull(failureStrategy);
   }
 
   public LiteProtoSubject<?, MessageLite> that(@Nullable MessageLite messageLite) {

@@ -16,10 +16,6 @@
 
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import javax.annotation.Nullable;
-
 /**
  * An extendable type that allows plugin creators to define their own {@code that()} methods for the
  * Truth SPI. Intended for advanced usage only, generally you should prefer to create a {@link
@@ -37,37 +33,8 @@ import javax.annotation.Nullable;
  *
  * <p>For an example implementation and usage, see {@link DelegatedVerbFactoryTest}.
  */
-public abstract class AbstractDelegatedVerb<V extends AbstractDelegatedVerb<V>> {
-  private final DelegatedVerbFactory<V> factory;
-  protected final FailureStrategy failureStrategy;
-
-  protected AbstractDelegatedVerb(
-      FailureStrategy failureStrategy, DelegatedVerbFactory<V> factory) {
-    this.failureStrategy = checkNotNull(failureStrategy);
-    this.factory = checkNotNull(factory);
-  }
-
-  /**
-   * @deprecated Call {@code withFailureMessage} on the {@code AbstractVerb} <i>before</i> calling
-   *     {@code about}.
-   */
-  @Deprecated
-  public final V withFailureMessage(@Nullable String failureMessage) {
-    return failureMessage == null
-        ? withFailureMessage(null, new Object[0]) // force the right overload
-        : withFailureMessage("%s", failureMessage);
-  }
-
-  /**
-   * @deprecated Call {@code withFailureMessage} on the {@code AbstractVerb} <i>before</i> calling
-   *     {@code about}.
-   */
-  @Deprecated
-  public final V withFailureMessage(@Nullable String format, Object /*@NullableType*/... args) {
-    FailureContext holder = new FailureContext(format, args);
-    return factory.createVerb(
-        new AbstractVerb.MessagePrependingFailureStrategy(failureStrategy, holder));
-  }
+public abstract class AbstractDelegatedVerb {
+  protected AbstractDelegatedVerb() {}
 
   // TODO(user,cgruber): Better enforce that subclasses implement a that() method.
 }

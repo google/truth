@@ -152,8 +152,7 @@ public final class Truth {
    * @param factory a {@code DelegatedVerbFactory<V>} implementation
    * @return A custom verb of type {@code <V>}
    */
-  public static <V extends AbstractDelegatedVerb<V>> V assertAbout(
-      DelegatedVerbFactory<V> factory) {
+  public static <V extends AbstractDelegatedVerb> V assertAbout(DelegatedVerbFactory<V> factory) {
     return assert_().about(factory);
   }
 
