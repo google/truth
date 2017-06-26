@@ -155,8 +155,8 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
 
   /**
    * Asserts that the subject is exactly equal to the given value, with equality defined as by
-   * {@Float#equals}. This method is <i>not</i> recommended when the code under test is doing any
-   * kind of arithmetic: use {@link #isWithin} with a suitable tolerance in that case. (Remember
+   * {@code Float#equals}. This method is <i>not</i> recommended when the code under test is doing
+   * any kind of arithmetic: use {@link #isWithin} with a suitable tolerance in that case. (Remember
    * that the exact result of floating point arithmetic is sensitive to apparently trivial changes
    * such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
    * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
@@ -174,8 +174,8 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
 
   /**
    * Asserts that the subject is not exactly equal to the given value, with equality defined as by
-   * {@Float#equals}. See {@link #isEqualTo} for advice on when exact equality is recommended. Use
-   * {@link #isNotWithin} for an assertion with a tolerance.
+   * {@code Float#equals}. See {@link #isEqualTo} for advice on when exact equality is recommended.
+   * Use {@link #isNotWithin} for an assertion with a tolerance.
    *
    * <p><b>Note:</b> The assertion {@code isNotEqualTo(0.0f)} passes for {@code -0.0f}, and vice
    * versa. For an assertion that fails for either {@code 0.0f} or {@code -0.0f}, use {@link
