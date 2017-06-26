@@ -28,7 +28,7 @@ package com.google.common.truth;
  * infer the parameter type from the test object. See {@link DelegatedVerbFactoryTest} for an
  * example implementation.
  */
-public interface DelegatedVerbFactory<V extends AbstractDelegatedVerb<V>> {
+public interface DelegatedVerbFactory<V extends AbstractDelegatedVerb> {
   /** Instantiates a new V with {@code failureStrategy} and itself. */
   V createVerb(FailureStrategy failureStrategy);
 }

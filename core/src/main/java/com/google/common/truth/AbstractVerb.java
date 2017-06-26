@@ -122,13 +122,14 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
    * @param factory a {@code DelegatedVerbFactory<V>} implementation
    * @return A custom verb of type {@code <V>}
    */
-  public final <V extends AbstractDelegatedVerb<V>> V about(DelegatedVerbFactory<V> factory) {
+  public final <V extends AbstractDelegatedVerb> V about(DelegatedVerbFactory<V> factory) {
     return factory.createVerb(getFailureStrategy());
   }
 
   /** A special Verb implementation which wraps a SubjectFactory */
   public static final class DelegatedVerb<S extends Subject<S, T>, T>
-      extends AbstractDelegatedVerb<DelegatedVerb<S, T>> {
+      extends AbstractDelegatedVerb {
+    private final FailureStrategy failureStrategy;
     private final SubjectFactory<S, T> subjectFactory;
 
     private static class Factory<S extends Subject<S, T>, T>
@@ -146,7 +147,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
     }
 
     public DelegatedVerb(FailureStrategy failureStrategy, SubjectFactory<S, T> subjectFactory) {
-      super(failureStrategy, new Factory<S, T>(subjectFactory));
+      this.failureStrategy = checkNotNull(failureStrategy);
       this.subjectFactory = checkNotNull(subjectFactory);
     }
 
