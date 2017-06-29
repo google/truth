@@ -15,7 +15,7 @@
     An extension for the Truth test assertion framework supporting RE2J patterns
   </description>
   <properties>
-    <re2j.version>1.0</re2j.version>
+    <re2j.version>1.1</re2j.version>
   </properties>
   <dependencies>
     <dependency>
