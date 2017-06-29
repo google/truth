@@ -9,13 +9,14 @@
   </parent>
   <artifactId>truth</artifactId>
   <properties>
-    <guava.version>20.0</guava.version>
+    <guava.version>22.0-android</guava.version>
+    <guava-gwt.version>22.0</guava-gwt.version>
     <gwt.version>2.8.0</gwt.version>
     <junit.version>4.12</junit.version>
-    <jsr305.version>3.0.1</jsr305.version>
+    <jsr305.version>3.0.2</jsr305.version>
     <auto-value.version>1.4.1</auto-value.version>
-    <compile-testing.version>0.10</compile-testing.version>
-    <error-prone.annotations.version>2.0.18</error-prone.annotations.version>
+    <compile-testing.version>0.11</compile-testing.version>
+    <error-prone.annotations.version>2.0.19</error-prone.annotations.version>
   </properties>
   <dependencies>
     <dependency>
@@ -50,7 +51,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava-gwt</artifactId>
-      <version>${guava.version}</version>
+      <version>${guava-gwt.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
