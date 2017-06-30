@@ -16,9 +16,10 @@
 package com.google.common.truth;
 
 /**
- * A skeletal implementation of {@code FailureStrategy} that defines {@link #fail(String)} and
- * {@link #failComparing} in terms of {@link #fail(String, Throwable)}. For most implementations
- * this should be sufficient and easier to use than directly extending {@code FailureStrategy}.
+ * A skeletal implementation of {@code FailureStrategy} that defines {@link #fail(String)} and both
+ * {@code #failComparing} methods in terms of {@link #fail(String, Throwable)}. For most
+ * implementations this should be sufficient and easier to use than directly extending {@code
+ * FailureStrategy}.
  */
 public abstract class AbstractFailureStrategy extends FailureStrategy {
   @Override
