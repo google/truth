@@ -140,6 +140,8 @@
             <configuration>
               <!-- Disable doclint in java8 where problems are errors -->
               <additionalparam>-Xdoclint:none</additionalparam>
+              <doctitle>Truth ${project.version}</doctitle>
+              <windowtitle>Truth ${project.version}</windowtitle>
             </configuration>
           </plugin>
         </plugins>
