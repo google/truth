@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertAbout;
 
+import com.google.common.annotations.GwtIncompatible;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -51,6 +53,13 @@ public final class Truth8 {
 
   public static StreamSubject assertThat(@Nullable Stream<?> target) {
     return assertAbout(StreamSubject.streams()).that(target);
+  }
+
+  // Not actually a Java 8 feature, but for now this is the best option since core Truth still has
+  // to support Java environments without java.nio.file such as Android and J2CL.
+  @GwtIncompatible
+  public static PathSubject assertThat(@Nullable Path target) {
+    return assertAbout(PathSubject.paths()).that(target);
   }
 
   private Truth8() {}
