@@ -180,7 +180,7 @@ abstract class FieldScopeLogic {
   /**
    * Whether or not this implementation includes the specified specific field path.
    *
-   * <p>Unlike {@link doMatchesFieldPath}, this method does caching, and so is performant to call
+   * <p>Unlike {@link #doMatchesFieldPath}, this method does caching, and so is performant to call
    * repeatedly. Clients should call this method, but override the do method.
    */
   final boolean matchesFieldPath(Context context, Cache cache) {
@@ -195,7 +195,7 @@ abstract class FieldScopeLogic {
    * <p>Returns true by default, since most {@code FieldScopeLogics} include from the root and don't
    * exclude subtrees.
    *
-   * <p>Unlike {@link doMatchStateAppliesForAllSubPaths}, this method does caching, and so is
+   * <p>Unlike {@link #doMatchStateAppliesForAllSubPaths}, this method does caching, and so is
    * performant to call repeatedly. Clients should call this method, but override the do method.
    */
   final boolean matchStateAppliesForAllSubPaths(Context context, Cache cache) {
