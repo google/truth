@@ -19,6 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.base.Optional;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,30 +31,25 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class GuavaOptionalSubjectTest {
+  @Rule public ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void namedOptional() {
     Optional<String> optional = Optional.of("actual");
-    try {
-      assertThat(optional).named("name").hasValue("expected");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that name (<Optional.of(actual)>) has value <expected>");
-      return;
-    }
-    fail("Should have thrown");
+
+    expectFailure.whenTesting().that(optional).named("name").hasValue("expected");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that name (<Optional.of(actual)>) has value <expected>");
   }
 
   @Test
   public void failOnNullSubject() {
-    try {
       Optional<String> nullOptional = null;
-      assertThat(nullOptional).isAbsent();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is absent");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(nullOptional).isAbsent();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <null> is absent");
   }
 
   @Test
@@ -63,24 +59,18 @@ public class GuavaOptionalSubjectTest {
 
   @Test
   public void isPresentFailing() {
-    try {
-      assertThat(Optional.absent()).isPresent();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(Optional.absent()).isPresent();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that the subject is present");
   }
 
   @Test
   public void isPresentFailingWithNamed() {
-    try {
-      assertThat(Optional.absent()).named("name").isPresent();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(Optional.absent()).named("name").isPresent();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that \"name\" is present");
   }
 
   @Test
@@ -90,13 +80,10 @@ public class GuavaOptionalSubjectTest {
 
   @Test
   public void isAbsentFailing() {
-    try {
-      assertThat(Optional.of("foo")).isAbsent();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional.of(foo)> is absent");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(Optional.of("foo")).isAbsent();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <Optional.of(foo)> is absent");
   }
 
   @Test
@@ -106,22 +93,18 @@ public class GuavaOptionalSubjectTest {
 
   @Test
   public void hasValue_FailingWithAbsent() {
-    try {
-      assertThat(Optional.absent()).hasValue("foo");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <Optional.absent()> has value <foo>");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(Optional.absent()).hasValue("foo");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <Optional.absent()> has value <foo>");
   }
 
   @Test
-  public void hasValue_FailingWithNullParameter() {
+  public void hasValue_ErrorWithNullParameter() {
     try {
       assertThat(Optional.of("foo")).hasValue(null);
     } catch (NullPointerException expected) {
+      assertThat(expected).hasMessageThat().contains("Optional");
       return;
     }
     fail("Should have thrown");
@@ -129,70 +112,45 @@ public class GuavaOptionalSubjectTest {
 
   @Test
   public void hasValue_FailingWithWrongValueForString() {
-    try {
-      assertThat(Optional.of("foo")).hasValue("boo");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <Optional.of(foo)> has value <boo>");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(Optional.of("foo")).hasValue("boo");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <Optional.of(foo)> has value <boo>");
   }
 
   @Test
   public void hasValue_FailingWithWrongValueForOther() {
-    try {
-      assertThat(Optional.of(5)).hasValue(10);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <Optional.of(5)> has value <10>");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(Optional.of(5)).hasValue(10);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <Optional.of(5)> has value <10>");
   }
 
   @Test
   public void hasValue_FailingWithSameToStrings() {
-    try {
-      assertThat(Optional.of(10)).hasValue("10");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <Optional.of(10)> (class java.lang.Integer) "
-                  + "has value <10> (class java.lang.String)");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(Optional.of(10)).hasValue("10");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <Optional.of(10)> (class java.lang.Integer) "
+                + "has value <10> (class java.lang.String)");
   }
 
   @Test
   public void hasValue_Named_Failing() {
-    try {
-      assertThat(Optional.of("foo")).named("bar").hasValue("boo");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that bar (<Optional.of(foo)>) has value <boo>");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(Optional.of("foo")).named("bar").hasValue("boo");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that bar (<Optional.of(foo)>) has value <boo>");
   }
 
   @Test
   public void hasValue_Named_FailingWithSameToStrings() {
-    try {
-      assertThat(Optional.of(10)).named("bar").hasValue("10");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that bar (<Optional.of(10)>) (class java.lang.Integer) "
-                  + "has value <10> (class java.lang.String)");
-      return;
-    }
-    fail("Should have thrown");
+    expectFailure.whenTesting().that(Optional.of(10)).named("bar").hasValue("10");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that bar (<Optional.of(10)>) (class java.lang.Integer) "
+                + "has value <10> (class java.lang.String)");
   }
 }
