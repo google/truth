@@ -293,14 +293,14 @@ public class LiteProtoSubjectTest {
   // TODO(cgruber): These probably belong in ThrowableSubject.
   private void expectRegex(AssertionError e, String regex) {
     expect
-        .withFailureMessage(String.format("Expected <%s> to match '%s'.", regex, e.getMessage()))
+        .withMessage(String.format("Expected <%s> to match '%s'.", regex, e.getMessage()))
         .that(Pattern.compile(regex, Pattern.DOTALL).matcher(e.getMessage()).matches())
         .isTrue();
   }
 
   private void expectNoRegex(AssertionError e, String regex) {
     expect
-        .withFailureMessage(String.format("Expected <%s> to match '%s'.", regex, e.getMessage()))
+        .withMessage(String.format("Expected <%s> to match '%s'.", regex, e.getMessage()))
         .that(Pattern.compile(regex, Pattern.DOTALL).matcher(e.getMessage()).matches())
         .isFalse();
   }

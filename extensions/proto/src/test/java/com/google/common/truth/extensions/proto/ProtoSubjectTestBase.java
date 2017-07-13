@@ -145,7 +145,7 @@ public class ProtoSubjectTestBase {
 
   protected final ProtoSubject<?, Message> expectThatWithMessage(
       String msg, @Nullable Message message) {
-    return expect.withFailureMessage(msg).about(ProtoTruth.protos()).that(message);
+    return expect.withMessage(msg).about(ProtoTruth.protos()).that(message);
   }
 
   protected final <M extends Message> IterableOfProtosSubject<?, M, ?> expectThat(
@@ -197,14 +197,14 @@ public class ProtoSubjectTestBase {
   // TODO(cgruber): These probably belong in ThrowableSubject.
   protected final void expectRegex(Throwable t, String regex) {
     expect
-        .withFailureMessage(String.format("Expected <%s> to match '%s'.", regex, t.getMessage()))
+        .withMessage(String.format("Expected <%s> to match '%s'.", regex, t.getMessage()))
         .that(Pattern.compile(regex, Pattern.DOTALL).matcher(t.getMessage()).matches())
         .isTrue();
   }
 
   protected final void expectNoRegex(Throwable t, String regex) {
     expect
-        .withFailureMessage(String.format("Expected <%s> to match '%s'.", regex, t.getMessage()))
+        .withMessage(String.format("Expected <%s> to match '%s'.", regex, t.getMessage()))
         .that(Pattern.compile(regex, Pattern.DOTALL).matcher(t.getMessage()).matches())
         .isFalse();
   }

@@ -83,7 +83,7 @@ public class CustomFailureMessageTest {
   public void customMessageIsPrepended() {
     Range<Integer> range = Range.closed(1, 12);
     try {
-      assert_().withFailureMessage("Invalid month").that(13).isIn(range);
+      assert_().withMessage("Invalid month").that(13).isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -96,7 +96,7 @@ public class CustomFailureMessageTest {
   public void customMessageIsPrependedWithNamed() {
     Range<Integer> range = Range.closed(1, 12);
     try {
-      assert_().withFailureMessage("Invalid month").that(13).named("Septober").isIn(range);
+      assert_().withMessage("Invalid month").that(13).named("Septober").isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -108,7 +108,7 @@ public class CustomFailureMessageTest {
   @Test
   public void customMessage() {
     try {
-      assert_().withFailureMessage("This is a custom message").that(false).isTrue();
+      assert_().withMessage("This is a custom message").that(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -178,7 +178,7 @@ public class CustomFailureMessageTest {
   public void customMessageIsPrepended_withPlaceholders() {
     Range<Integer> range = Range.closed(1, 12);
     try {
-      assert_().withFailureMessage("In%slid%snth", "va", " mo").that(13).isIn(range);
+      assert_().withMessage("In%slid%snth", "va", " mo").that(13).isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -191,11 +191,7 @@ public class CustomFailureMessageTest {
   public void customMessageIsPrependedWithNamed_withPlaceholders() {
     Range<Integer> range = Range.closed(1, 12);
     try {
-      assert_()
-          .withFailureMessage("Inval%sd mon%s", 'i', "th")
-          .that(13)
-          .named("Septober")
-          .isIn(range);
+      assert_().withMessage("Inval%sd mon%s", 'i', "th").that(13).named("Septober").isIn(range);
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -207,7 +203,7 @@ public class CustomFailureMessageTest {
   @Test
   public void customMessage_withPlaceholders() {
     try {
-      assert_().withFailureMessage("This is a %s %s", "custom", "message").that(false).isTrue();
+      assert_().withMessage("This is a %s %s", "custom", "message").that(false).isTrue();
       fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
@@ -220,7 +216,7 @@ public class CustomFailureMessageTest {
   @Test
   public void extraPlaceholderThrowsIae() {
     try {
-      assert_().withFailureMessage("This is a %s %s", "custom").that(true).isTrue();
+      assert_().withMessage("This is a %s %s", "custom").that(true).isTrue();
       fail("Should have thrown");
     } catch (IllegalArgumentException expected) {
     }
@@ -229,7 +225,7 @@ public class CustomFailureMessageTest {
   @Test
   public void missingPlaceholderThrowsIae() {
     try {
-      assert_().withFailureMessage("This is a %s", "custom", "message").that(true).isTrue();
+      assert_().withMessage("This is a %s", "custom", "message").that(true).isTrue();
       fail("Should have thrown");
     } catch (IllegalArgumentException expected) {
     }
@@ -238,7 +234,7 @@ public class CustomFailureMessageTest {
   @Test
   public void noPlaceholdersWithArgsThrowsIae() {
     try {
-      assert_().withFailureMessage("This is a custom message", "bad arg").that(true).isTrue();
+      assert_().withMessage("This is a custom message", "bad arg").that(true).isTrue();
       fail("Should have thrown");
     } catch (IllegalArgumentException expected) {
     }
@@ -254,9 +250,6 @@ public class CustomFailureMessageTest {
           }
         };
     assertWithMessage("Evaluating this will blow up: %s", toStringThrows).that(true).isTrue();
-    assert_()
-        .withFailureMessage("Evaluating this will blow up: %s", toStringThrows)
-        .that(true)
-        .isTrue();
+    assert_().withMessage("Evaluating this will blow up: %s", toStringThrows).that(true).isTrue();
   }
 }

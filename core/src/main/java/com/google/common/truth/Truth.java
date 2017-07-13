@@ -115,7 +115,7 @@ public final class Truth {
    * event of a test failure.
    */
   public static TestVerb assertWithMessage(String messageToPrepend) {
-    return assert_().withFailureMessage(messageToPrepend);
+    return assert_().withMessage(messageToPrepend);
   }
 
   /**
@@ -129,7 +129,7 @@ public final class Truth {
    *     equal the number of given arguments
    */
   public static TestVerb assertWithMessage(String format, Object... args) {
-    return assert_().withFailureMessage(format, args);
+    return assert_().withMessage(format, args);
   }
 
   /**
