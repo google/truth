@@ -361,6 +361,13 @@ public class SubjectTest {
   }
 
   @Test
+  public void isEqualToWithArrays() {
+    Object a = new byte[] {1, 2, 3};
+    Object b = new byte[] {1, 2, 3};;
+    assertThat(a).isEqualTo(b);
+  }
+
+  @Test
   public void isEqualToFailureWithObjects() {
     Object a = OBJECT_1;
     Object b = OBJECT_2;
