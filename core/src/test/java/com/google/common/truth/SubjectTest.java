@@ -361,9 +361,20 @@ public class SubjectTest {
   }
 
   @Test
-  public void isEqualToWithArrays() {
+  public void isEqualToWithByteArrays() {
     Object a = new byte[] {1, 2, 3};
-    Object b = new byte[] {1, 2, 3};;
+    Object b = new byte[] {1, 2, 3};
+    assertThat(a).isEqualTo(b);
+  }
+
+  @Test
+  public void isEqualToWithObjectArrays() {
+    Integer i1 = Integer.valueOf(1);
+    Integer i2 = Integer.valueOf(2);
+    Integer i3 = Integer.valueOf(3);
+    
+    Object a = new Integer[] {i1, i2, i3};
+    Object b = new Integer[] {i1, i2, i3};
     assertThat(a).isEqualTo(b);
   }
 
