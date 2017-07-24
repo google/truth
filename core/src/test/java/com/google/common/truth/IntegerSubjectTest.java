@@ -209,8 +209,6 @@ public class IntegerSubjectTest {
   public void primitives() {
     Assert.assertEquals(4, 4L);
     Assert.assertEquals(4L, 4);
-    assertThat(4 == 4L).isTrue();
-    assertThat(4L == 4).isTrue();
     assertThat(4L).isEqualTo(4);
     assertThat(new Long(4L)).isEqualTo(4);
   }
