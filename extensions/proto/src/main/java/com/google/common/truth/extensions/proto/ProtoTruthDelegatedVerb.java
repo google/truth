@@ -43,7 +43,7 @@ public final class ProtoTruthDelegatedVerb extends AbstractDelegatedVerb {
 
     @Override
     public ProtoTruthDelegatedVerb createVerb(FailureStrategy failureStrategy) {
-      return new ProtoTruthDelegatedVerb(failureStrategy, this);
+      return new ProtoTruthDelegatedVerb(failureStrategy);
     }
   }
 
@@ -53,8 +53,7 @@ public final class ProtoTruthDelegatedVerb extends AbstractDelegatedVerb {
 
   private final FailureStrategy failureStrategy;
 
-  private ProtoTruthDelegatedVerb(
-      FailureStrategy failureStrategy, DelegatedVerbFactory<ProtoTruthDelegatedVerb> factory) {
+  private ProtoTruthDelegatedVerb(FailureStrategy failureStrategy) {
     this.failureStrategy = checkNotNull(failureStrategy);
   }
 
