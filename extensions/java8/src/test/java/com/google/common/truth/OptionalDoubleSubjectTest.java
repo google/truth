@@ -107,7 +107,10 @@ public class OptionalDoubleSubjectTest {
   @Test
   public void hasValueThat_FailingWithEmpty() {
     AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(OptionalDouble.empty()).hasValueThat());
+        expectFailure(
+            whenTesting -> {
+              DoubleSubject ignored = whenTesting.that(OptionalDouble.empty()).hasValueThat();
+            });
       assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
   }
 
