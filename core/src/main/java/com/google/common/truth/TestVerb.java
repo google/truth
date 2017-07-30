@@ -56,129 +56,130 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
-  public <T extends Comparable<?>> ComparableSubject<?, T> that(@Nullable T target) {
-    return new ComparableSubject(getFailureStrategy(), target) {};
+  public <ComparableT extends Comparable<?>> ComparableSubject<?, ComparableT> that(
+      @Nullable ComparableT actual) {
+    return new ComparableSubject(getFailureStrategy(), actual) {};
   }
 
-  public BigDecimalSubject that(@Nullable BigDecimal target) {
-    return new BigDecimalSubject(getFailureStrategy(), target);
+  public BigDecimalSubject that(@Nullable BigDecimal actual) {
+    return new BigDecimalSubject(getFailureStrategy(), actual);
   }
 
-  public Subject<DefaultSubject, Object> that(@Nullable Object target) {
-    return new DefaultSubject(getFailureStrategy(), target);
+  public Subject<DefaultSubject, Object> that(@Nullable Object actual) {
+    return new DefaultSubject(getFailureStrategy(), actual);
   }
 
   @GwtIncompatible("ClassSubject.java")
-  public ClassSubject that(@Nullable Class<?> target) {
-    return new ClassSubject(getFailureStrategy(), target);
+  public ClassSubject that(@Nullable Class<?> actual) {
+    return new ClassSubject(getFailureStrategy(), actual);
   }
 
-  public ThrowableSubject that(@Nullable Throwable target) {
-    return ThrowableSubject.create(getFailureStrategy(), target);
+  public ThrowableSubject that(@Nullable Throwable actual) {
+    return ThrowableSubject.create(getFailureStrategy(), actual);
   }
 
-  public LongSubject that(@Nullable Long target) {
-    return new LongSubject(getFailureStrategy(), target);
+  public LongSubject that(@Nullable Long actual) {
+    return new LongSubject(getFailureStrategy(), actual);
   }
 
-  public DoubleSubject that(@Nullable Double target) {
-    return new DoubleSubject(getFailureStrategy(), target);
+  public DoubleSubject that(@Nullable Double actual) {
+    return new DoubleSubject(getFailureStrategy(), actual);
   }
 
-  public FloatSubject that(@Nullable Float target) {
-    return new FloatSubject(getFailureStrategy(), target);
+  public FloatSubject that(@Nullable Float actual) {
+    return new FloatSubject(getFailureStrategy(), actual);
   }
 
-  public IntegerSubject that(@Nullable Integer target) {
-    return new IntegerSubject(getFailureStrategy(), target);
+  public IntegerSubject that(@Nullable Integer actual) {
+    return new IntegerSubject(getFailureStrategy(), actual);
   }
 
-  public BooleanSubject that(@Nullable Boolean target) {
-    return new BooleanSubject(getFailureStrategy(), target);
+  public BooleanSubject that(@Nullable Boolean actual) {
+    return new BooleanSubject(getFailureStrategy(), actual);
   }
 
-  public StringSubject that(@Nullable String target) {
-    return new StringSubject(getFailureStrategy(), target);
+  public StringSubject that(@Nullable String actual) {
+    return new StringSubject(getFailureStrategy(), actual);
   }
 
-  public IterableSubject that(@Nullable Iterable<?> target) {
-    return new IterableSubject(getFailureStrategy(), target);
+  public IterableSubject that(@Nullable Iterable<?> actual) {
+    return new IterableSubject(getFailureStrategy(), actual);
   }
 
-  public SortedSetSubject that(@Nullable SortedSet<?> target) {
-    return new SortedSetSubject(getFailureStrategy(), target);
+  public SortedSetSubject that(@Nullable SortedSet<?> actual) {
+    return new SortedSetSubject(getFailureStrategy(), actual);
   }
 
-  public <T> ObjectArraySubject<T> that(@Nullable T[] target) {
-    return new ObjectArraySubject<T>(getFailureStrategy(), target);
+  public <T> ObjectArraySubject<T> that(@Nullable T[] actual) {
+    return new ObjectArraySubject<T>(getFailureStrategy(), actual);
   }
 
-  public PrimitiveBooleanArraySubject that(@Nullable boolean[] target) {
-    return new PrimitiveBooleanArraySubject(getFailureStrategy(), target);
+  public PrimitiveBooleanArraySubject that(@Nullable boolean[] actual) {
+    return new PrimitiveBooleanArraySubject(getFailureStrategy(), actual);
   }
 
-  public PrimitiveShortArraySubject that(@Nullable short[] target) {
-    return new PrimitiveShortArraySubject(getFailureStrategy(), target);
+  public PrimitiveShortArraySubject that(@Nullable short[] actual) {
+    return new PrimitiveShortArraySubject(getFailureStrategy(), actual);
   }
 
-  public PrimitiveIntArraySubject that(@Nullable int[] target) {
-    return new PrimitiveIntArraySubject(getFailureStrategy(), target);
+  public PrimitiveIntArraySubject that(@Nullable int[] actual) {
+    return new PrimitiveIntArraySubject(getFailureStrategy(), actual);
   }
 
-  public PrimitiveLongArraySubject that(@Nullable long[] target) {
-    return new PrimitiveLongArraySubject(getFailureStrategy(), target);
+  public PrimitiveLongArraySubject that(@Nullable long[] actual) {
+    return new PrimitiveLongArraySubject(getFailureStrategy(), actual);
   }
 
-  public PrimitiveCharArraySubject that(@Nullable char[] target) {
-    return new PrimitiveCharArraySubject(getFailureStrategy(), target);
+  public PrimitiveCharArraySubject that(@Nullable char[] actual) {
+    return new PrimitiveCharArraySubject(getFailureStrategy(), actual);
   }
 
-  public PrimitiveByteArraySubject that(@Nullable byte[] target) {
-    return new PrimitiveByteArraySubject(getFailureStrategy(), target);
+  public PrimitiveByteArraySubject that(@Nullable byte[] actual) {
+    return new PrimitiveByteArraySubject(getFailureStrategy(), actual);
   }
 
-  public PrimitiveFloatArraySubject that(@Nullable float[] target) {
-    return new PrimitiveFloatArraySubject(getFailureStrategy(), target);
+  public PrimitiveFloatArraySubject that(@Nullable float[] actual) {
+    return new PrimitiveFloatArraySubject(getFailureStrategy(), actual);
   }
 
-  public PrimitiveDoubleArraySubject that(@Nullable double[] target) {
-    return new PrimitiveDoubleArraySubject(getFailureStrategy(), target);
+  public PrimitiveDoubleArraySubject that(@Nullable double[] actual) {
+    return new PrimitiveDoubleArraySubject(getFailureStrategy(), actual);
   }
 
-  public GuavaOptionalSubject that(@Nullable Optional<?> target) {
-    return new GuavaOptionalSubject(getFailureStrategy(), target);
+  public GuavaOptionalSubject that(@Nullable Optional<?> actual) {
+    return new GuavaOptionalSubject(getFailureStrategy(), actual);
   }
 
-  public MapSubject that(@Nullable Map<?, ?> target) {
-    return new MapSubject(getFailureStrategy(), target);
+  public MapSubject that(@Nullable Map<?, ?> actual) {
+    return new MapSubject(getFailureStrategy(), actual);
   }
 
-  public SortedMapSubject that(@Nullable SortedMap<?, ?> target) {
-    return new SortedMapSubject(getFailureStrategy(), target);
+  public SortedMapSubject that(@Nullable SortedMap<?, ?> actual) {
+    return new SortedMapSubject(getFailureStrategy(), actual);
   }
 
-  public MultimapSubject that(@Nullable Multimap<?, ?> target) {
-    return new MultimapSubject(getFailureStrategy(), target);
+  public MultimapSubject that(@Nullable Multimap<?, ?> actual) {
+    return new MultimapSubject(getFailureStrategy(), actual);
   }
 
-  public ListMultimapSubject that(@Nullable ListMultimap<?, ?> target) {
-    return new ListMultimapSubject(getFailureStrategy(), target);
+  public ListMultimapSubject that(@Nullable ListMultimap<?, ?> actual) {
+    return new ListMultimapSubject(getFailureStrategy(), actual);
   }
 
-  public SetMultimapSubject that(@Nullable SetMultimap<?, ?> target) {
-    return new SetMultimapSubject(getFailureStrategy(), target);
+  public SetMultimapSubject that(@Nullable SetMultimap<?, ?> actual) {
+    return new SetMultimapSubject(getFailureStrategy(), actual);
   }
 
-  public MultisetSubject that(@Nullable Multiset<?> target) {
-    return new MultisetSubject(getFailureStrategy(), target);
+  public MultisetSubject that(@Nullable Multiset<?> actual) {
+    return new MultisetSubject(getFailureStrategy(), actual);
   }
 
-  public TableSubject that(@Nullable Table<?, ?, ?> target) {
-    return new TableSubject(getFailureStrategy(), target);
+  public TableSubject that(@Nullable Table<?, ?, ?> actual) {
+    return new TableSubject(getFailureStrategy(), actual);
   }
 
-  public AtomicLongMapSubject that(@Nullable AtomicLongMap<?> target) {
-    return new AtomicLongMapSubject(getFailureStrategy(), target);
+  public AtomicLongMapSubject that(@Nullable AtomicLongMap<?> actual) {
+    return new AtomicLongMapSubject(getFailureStrategy(), actual);
   }
 
   @Override

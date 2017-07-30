@@ -25,8 +25,8 @@ import javax.annotation.Nullable;
  */
 public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T extends Comparable>
     extends Subject<S, T> {
-  protected ComparableSubject(FailureStrategy failureStrategy, @Nullable T subject) {
-    super(failureStrategy, subject);
+  protected ComparableSubject(FailureStrategy failureStrategy, @Nullable T actual) {
+    super(failureStrategy, actual);
   }
 
   /** Fails if the subject is not in the given range. */

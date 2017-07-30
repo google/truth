@@ -122,19 +122,19 @@ public class Subject<S extends Subject<S, T>, T> extends SubjectBridgeMethodInje
   }
 
   private void doEqualCheck(
-      @Nullable Object rawSubject, @Nullable Object rawOther, boolean expectEqual) {
-    Object subject;
+      @Nullable Object rawActual, @Nullable Object rawOther, boolean expectEqual) {
+    Object actual;
     Object other;
-    if (isIntegralBoxedPrimitive(rawSubject) && isIntegralBoxedPrimitive(rawOther)) {
-      subject = integralValue(rawSubject);
+    if (isIntegralBoxedPrimitive(rawActual) && isIntegralBoxedPrimitive(rawOther)) {
+      actual = integralValue(rawActual);
       other = integralValue(rawOther);
     } else {
-      subject = rawSubject;
+      actual = rawActual;
       other = rawOther;
     }
-    if (Objects.equal(subject, other) != expectEqual) {
+    if (Objects.equal(actual, other) != expectEqual) {
       failComparingToStrings(
-          expectEqual ? "is equal to" : "is not equal to", subject, other, rawOther, expectEqual);
+          expectEqual ? "is equal to" : "is not equal to", actual, other, rawOther, expectEqual);
     }
   }
 
@@ -340,17 +340,17 @@ public class Subject<S extends Subject<S, T>, T> extends SubjectBridgeMethodInje
   }
 
   private void failComparingToStrings(
-      String verb, Object subject, Object other, Object displayOther, boolean compareToStrings) {
+      String verb, Object actual, Object other, Object displayOther, boolean compareToStrings) {
     StringBuilder message =
         new StringBuilder("Not true that ").append(actualAsString()).append(" ");
-    // If the subject and parts aren't null, and they have equal toString()'s but different
+    // If the actual and parts aren't null, and they have equal toString()'s but different
     // classes, we need to disambiguate them.
-    boolean neitherNull = (other != null) && (subject != null);
+    boolean neitherNull = (other != null) && (actual != null);
     boolean sameToStrings = actualCustomStringRepresentation().equals(String.valueOf(other));
     boolean needsClassDisambiguation =
-        neitherNull && sameToStrings && !subject.getClass().equals(other.getClass());
+        neitherNull && sameToStrings && !actual.getClass().equals(other.getClass());
     if (needsClassDisambiguation) {
-      message.append("(").append(subject.getClass().getName()).append(") ");
+      message.append("(").append(actual.getClass().getName()).append(") ");
     }
     message.append(verb).append(" <").append(displayOther).append(">");
     if (needsClassDisambiguation) {

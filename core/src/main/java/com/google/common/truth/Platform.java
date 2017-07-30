@@ -122,8 +122,8 @@ final class Platform {
   }
 
   /** Determines if the given subject contains a match for the given regex. */
-  static boolean containsMatch(String subject, String regex) {
-    return Pattern.compile(regex).matcher(subject).find();
+  static boolean containsMatch(String actual, String regex) {
+    return Pattern.compile(regex).matcher(actual).find();
   }
 
   /** Returns the length of an array. */
