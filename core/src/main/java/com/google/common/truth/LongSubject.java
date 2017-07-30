@@ -24,11 +24,10 @@ import javax.annotation.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  * @author Kurt Alfred Kluever
  */
-// Can't be final because we use codegen to generate a subclass
 public class LongSubject extends ComparableSubject<LongSubject, Long> {
   // TODO(kak): Make this package-protected?
-  public LongSubject(FailureStrategy failureStrategy, @Nullable Long subject) {
-    super(failureStrategy, subject);
+  public LongSubject(FailureStrategy failureStrategy, @Nullable Long actual) {
+    super(failureStrategy, actual);
   }
 
   /** @deprecated Use {@link #isEqualTo} instead. Long comparison is consistent with equality. */

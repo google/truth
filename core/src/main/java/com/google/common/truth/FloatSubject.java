@@ -32,8 +32,8 @@ import javax.annotation.Nullable;
 public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
 
-  FloatSubject(FailureStrategy failureStrategy, @Nullable Float subject) {
-    super(failureStrategy, subject);
+  FloatSubject(FailureStrategy failureStrategy, @Nullable Float actual) {
+    super(failureStrategy, actual);
   }
 
   /**

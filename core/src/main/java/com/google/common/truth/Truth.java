@@ -177,128 +177,128 @@ public final class Truth extends TruthBridgeMethodInjector {
     return assert_().about(factory);
   }
 
-  public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(@Nullable T target) {
-    return assert_().that(target);
+  public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(@Nullable T actual) {
+    return assert_().that(actual);
   }
 
-  public static BigDecimalSubject assertThat(@Nullable BigDecimal target) {
-    return assert_().that(target);
+  public static BigDecimalSubject assertThat(@Nullable BigDecimal actual) {
+    return assert_().that(actual);
   }
 
-  public static Subject<DefaultSubject, Object> assertThat(@Nullable Object target) {
-    return assert_().that(target);
+  public static Subject<DefaultSubject, Object> assertThat(@Nullable Object actual) {
+    return assert_().that(actual);
   }
 
   @GwtIncompatible("ClassSubject.java")
-  public static ClassSubject assertThat(@Nullable Class<?> target) {
-    return assert_().that(target);
+  public static ClassSubject assertThat(@Nullable Class<?> actual) {
+    return assert_().that(actual);
   }
 
-  public static ThrowableSubject assertThat(@Nullable Throwable target) {
-    return assert_().that(target);
+  public static ThrowableSubject assertThat(@Nullable Throwable actual) {
+    return assert_().that(actual);
   }
 
-  public static LongSubject assertThat(@Nullable Long target) {
-    return assert_().that(target);
+  public static LongSubject assertThat(@Nullable Long actual) {
+    return assert_().that(actual);
   }
 
-  public static DoubleSubject assertThat(@Nullable Double target) {
-    return assert_().that(target);
+  public static DoubleSubject assertThat(@Nullable Double actual) {
+    return assert_().that(actual);
   }
 
-  public static FloatSubject assertThat(@Nullable Float target) {
-    return assert_().that(target);
+  public static FloatSubject assertThat(@Nullable Float actual) {
+    return assert_().that(actual);
   }
 
-  public static IntegerSubject assertThat(@Nullable Integer target) {
-    return assert_().that(target);
+  public static IntegerSubject assertThat(@Nullable Integer actual) {
+    return assert_().that(actual);
   }
 
-  public static BooleanSubject assertThat(@Nullable Boolean target) {
-    return assert_().that(target);
+  public static BooleanSubject assertThat(@Nullable Boolean actual) {
+    return assert_().that(actual);
   }
 
-  public static StringSubject assertThat(@Nullable String target) {
-    return assert_().that(target);
+  public static StringSubject assertThat(@Nullable String actual) {
+    return assert_().that(actual);
   }
 
-  public static IterableSubject assertThat(@Nullable Iterable<?> target) {
-    return assert_().that(target);
+  public static IterableSubject assertThat(@Nullable Iterable<?> actual) {
+    return assert_().that(actual);
   }
 
-  public static SortedSetSubject assertThat(@Nullable SortedSet<?> target) {
-    return assert_().that(target);
+  public static SortedSetSubject assertThat(@Nullable SortedSet<?> actual) {
+    return assert_().that(actual);
   }
 
-  public static <T> ObjectArraySubject<T> assertThat(@Nullable T[] target) {
-    return assert_().that(target);
+  public static <T> ObjectArraySubject<T> assertThat(@Nullable T[] actual) {
+    return assert_().that(actual);
   }
 
-  public static PrimitiveBooleanArraySubject assertThat(@Nullable boolean[] target) {
-    return assert_().that(target);
+  public static PrimitiveBooleanArraySubject assertThat(@Nullable boolean[] actual) {
+    return assert_().that(actual);
   }
 
-  public static PrimitiveShortArraySubject assertThat(@Nullable short[] target) {
-    return assert_().that(target);
+  public static PrimitiveShortArraySubject assertThat(@Nullable short[] actual) {
+    return assert_().that(actual);
   }
 
-  public static PrimitiveIntArraySubject assertThat(@Nullable int[] target) {
-    return assert_().that(target);
+  public static PrimitiveIntArraySubject assertThat(@Nullable int[] actual) {
+    return assert_().that(actual);
   }
 
-  public static PrimitiveLongArraySubject assertThat(@Nullable long[] target) {
-    return assert_().that(target);
+  public static PrimitiveLongArraySubject assertThat(@Nullable long[] actual) {
+    return assert_().that(actual);
   }
 
-  public static PrimitiveByteArraySubject assertThat(@Nullable byte[] target) {
-    return assert_().that(target);
+  public static PrimitiveByteArraySubject assertThat(@Nullable byte[] actual) {
+    return assert_().that(actual);
   }
 
-  public static PrimitiveCharArraySubject assertThat(@Nullable char[] target) {
-    return assert_().that(target);
+  public static PrimitiveCharArraySubject assertThat(@Nullable char[] actual) {
+    return assert_().that(actual);
   }
 
-  public static PrimitiveFloatArraySubject assertThat(@Nullable float[] target) {
-    return assert_().that(target);
+  public static PrimitiveFloatArraySubject assertThat(@Nullable float[] actual) {
+    return assert_().that(actual);
   }
 
-  public static PrimitiveDoubleArraySubject assertThat(@Nullable double[] target) {
-    return assert_().that(target);
+  public static PrimitiveDoubleArraySubject assertThat(@Nullable double[] actual) {
+    return assert_().that(actual);
   }
 
-  public static GuavaOptionalSubject assertThat(@Nullable Optional<?> target) {
-    return assert_().that(target);
+  public static GuavaOptionalSubject assertThat(@Nullable Optional<?> actual) {
+    return assert_().that(actual);
   }
 
-  public static MapSubject assertThat(@Nullable Map<?, ?> target) {
-    return assert_().that(target);
+  public static MapSubject assertThat(@Nullable Map<?, ?> actual) {
+    return assert_().that(actual);
   }
 
-  public static SortedMapSubject assertThat(@Nullable SortedMap<?, ?> target) {
-    return assert_().that(target);
+  public static SortedMapSubject assertThat(@Nullable SortedMap<?, ?> actual) {
+    return assert_().that(actual);
   }
 
-  public static MultimapSubject assertThat(@Nullable Multimap<?, ?> target) {
-    return assert_().that(target);
+  public static MultimapSubject assertThat(@Nullable Multimap<?, ?> actual) {
+    return assert_().that(actual);
   }
 
-  public static ListMultimapSubject assertThat(@Nullable ListMultimap<?, ?> target) {
-    return assert_().that(target);
+  public static ListMultimapSubject assertThat(@Nullable ListMultimap<?, ?> actual) {
+    return assert_().that(actual);
   }
 
-  public static SetMultimapSubject assertThat(@Nullable SetMultimap<?, ?> target) {
-    return assert_().that(target);
+  public static SetMultimapSubject assertThat(@Nullable SetMultimap<?, ?> actual) {
+    return assert_().that(actual);
   }
 
-  public static MultisetSubject assertThat(@Nullable Multiset<?> target) {
-    return assert_().that(target);
+  public static MultisetSubject assertThat(@Nullable Multiset<?> actual) {
+    return assert_().that(actual);
   }
 
-  public static TableSubject assertThat(@Nullable Table<?, ?, ?> target) {
-    return assert_().that(target);
+  public static TableSubject assertThat(@Nullable Table<?, ?, ?> actual) {
+    return assert_().that(actual);
   }
 
-  public static AtomicLongMapSubject assertThat(@Nullable AtomicLongMap<?> target) {
-    return assert_().that(target);
+  public static AtomicLongMapSubject assertThat(@Nullable AtomicLongMap<?> actual) {
+    return assert_().that(actual);
   }
 }

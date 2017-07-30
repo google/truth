@@ -32,8 +32,8 @@ import javax.annotation.Nullable;
 public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double> {
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 
-  DoubleSubject(FailureStrategy failureStrategy, @Nullable Double subject) {
-    super(failureStrategy, subject);
+  DoubleSubject(FailureStrategy failureStrategy, @Nullable Double actual) {
+    super(failureStrategy, actual);
   }
 
   /**

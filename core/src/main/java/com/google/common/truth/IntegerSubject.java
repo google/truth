@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  * @author Kurt Alfred Kluever
  */
-// Can't be final because we use codegen to generate a subclass
 public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
   // TODO(kak): Make this package-protected?
   public IntegerSubject(FailureStrategy failureStrategy, @Nullable Integer integer) {

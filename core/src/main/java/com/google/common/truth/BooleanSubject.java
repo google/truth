@@ -23,8 +23,8 @@ import javax.annotation.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class BooleanSubject extends Subject<BooleanSubject, Boolean> {
-  BooleanSubject(FailureStrategy failureStrategy, @Nullable Boolean subject) {
-    super(failureStrategy, subject);
+  BooleanSubject(FailureStrategy failureStrategy, @Nullable Boolean actual) {
+    super(failureStrategy, actual);
   }
 
   /** Fails if the subject is false or {@code null}. */
