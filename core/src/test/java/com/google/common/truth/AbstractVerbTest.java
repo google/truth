@@ -47,18 +47,6 @@ public class AbstractVerbTest {
       new AbstractVerb(FAILURE_STRATEGY) {
         @Override
         @CheckReturnValue
-        public AbstractVerb<?> withFailureMessage(String failureMessage) {
-          throw new UnsupportedOperationException();
-        }
-
-        @Override
-        @CheckReturnValue
-        public AbstractVerb<?> withFailureMessage(String failureMessage, Object... args) {
-          throw new UnsupportedOperationException();
-        }
-
-        @Override
-        @CheckReturnValue
         public AbstractVerb<?> withMessage(String failureMessage) {
           throw new UnsupportedOperationException();
         }

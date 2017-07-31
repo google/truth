@@ -41,7 +41,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
    * instead of this?
    */
   protected FailureStrategy getFailureStrategy() {
-    // TODO(cgruber): Extract this logic solely into the withFailureMessage() methods.
+    // TODO(cgruber): Extract this logic solely into the withMessage() methods.
     return hasFailureMessage()
         ? new MessagePrependingFailureStrategy(failureStrategy, this)
         : failureStrategy;
@@ -56,32 +56,6 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
   public final void fail(@Nullable String format, Object /*@NullableType*/... args) {
     getFailureStrategy().fail(format(format, args));
   }
-
-  /**
-   * Overrides the failure message of the subsequent subject's propositions.
-   *
-   * @see com.google.common.truth.delegation.DelegationTest
-   * @param failureMessage a descriptive message.
-   * @return A custom verb which will show the descriptive message along with the normal failure
-   *     text.
-   * @deprecated Use {@link #withMessage(String)} instead.
-   */
-  // TODO(cgruber) try to delete this (binary incompatible, but see if there's a way.
-  @Deprecated
-  public abstract T withFailureMessage(@Nullable String failureMessage);
-
-  /**
-   * Overrides the failure message of the subsequent subject's propositions.
-   *
-   * @see com.google.common.truth.delegation.DelegationTest
-   * @param format a descriptive message with formatting template content.
-   * @param args object parameters to be substituted into the message template.
-   * @return A custom verb which will show the descriptive message along with the normal failure
-   *     text.
-   * @deprecated Use {@link #withMessage(String, Object...)} instead.
-   */
-  @Deprecated
-  public abstract T withFailureMessage(@Nullable String format, Object /*@NullableType*/... args);
 
   /**
    * Overrides the failure message of the subsequent subject's propositions.
