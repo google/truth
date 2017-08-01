@@ -125,17 +125,12 @@ public class MapSubjectTest {
     assertThat(actual).containsExactlyEntriesIn(actual);
     assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
 
-    try {
-      assertThat(actual).containsExactly("jan", 1, "feb", 2);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[jan=1, feb=2, march=3]> contains exactly <[jan=1, feb=2]>. "
-                  + "It has unexpected items <[march=3]>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(actual).containsExactly("jan", 1, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[jan=1, feb=2, march=3]> contains exactly <[jan=1, feb=2]>. "
+                + "It has unexpected items <[march=3]>");
   }
 
   @Test
@@ -144,17 +139,12 @@ public class MapSubjectTest {
     assertThat(actual).containsExactlyEntriesIn(actual);
     assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
 
-    try {
-      assertThat(actual).containsExactly("feb", 2, "jan", 1).inOrder();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[jan=1, feb=2, march=3]> contains exactly <[feb=2, jan=1]>. "
-                  + "It has unexpected items <[march=3]>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(actual).containsExactly("feb", 2, "jan", 1).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[jan=1, feb=2, march=3]> contains exactly <[feb=2, jan=1]>. "
+                + "It has unexpected items <[march=3]>");
   }
 
   @Test
@@ -164,17 +154,16 @@ public class MapSubjectTest {
     assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
 
     assertThat(actual).containsExactly("jan", 1, "march", 3, "feb", 2);
-    try {
-      assertThat(actual).containsExactly("jan", 1, "march", 3, "feb", 2).inOrder();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[jan=1, feb=2, march=3]> contains exactly these elements in order "
-                  + "<[jan=1, march=3, feb=2]>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .containsExactly("jan", 1, "march", 3, "feb", 2)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[jan=1, feb=2, march=3]> contains exactly these elements in order "
+                + "<[jan=1, march=3, feb=2]>");
   }
 
   @Test
@@ -226,19 +215,14 @@ public class MapSubjectTest {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "april", 4, "march", 5);
 
-    try {
-      assertThat(actual).isEqualTo(expectedMap);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, april=4, march=5}>. "
-                  + "The subject is missing the following entries: {april=4} and "
-                  + "has the following extra entries: {feb=2} and "
-                  + "has the following different entries: {march=(5, 3)}");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(actual).isEqualTo(expectedMap);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, april=4, march=5}>. "
+                + "The subject is missing the following entries: {april=4} and "
+                + "has the following extra entries: {feb=2} and "
+                + "has the following different entries: {march=(5, 3)}");
   }
 
   @Test
@@ -246,17 +230,12 @@ public class MapSubjectTest {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 4);
 
-    try {
-      assertThat(actual).isEqualTo(expectedMap);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=4}>. "
-                  + "The subject has the following different entries: {march=(4, 3)}");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(actual).isEqualTo(expectedMap);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=4}>. "
+                + "The subject has the following different entries: {march=(4, 3)}");
   }
 
   @Test
@@ -264,17 +243,12 @@ public class MapSubjectTest {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 4);
 
-    try {
-      assertThat(actual).named("foo").isEqualTo(expectedMap);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to <{jan=1, feb=2, march=4}>."
-                  + " The subject has the following different entries: {march=(4, 3)}");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(actual).named("foo").isEqualTo(expectedMap);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to <{jan=1, feb=2, march=4}>."
+                + " The subject has the following different entries: {march=(4, 3)}");
   }
 
   @Test
@@ -282,17 +256,12 @@ public class MapSubjectTest {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2);
 
-    try {
-      assertThat(actual).isEqualTo(expectedMap);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2}>. "
-                  + "The subject has the following extra entries: {march=3}");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(actual).isEqualTo(expectedMap);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2}>. "
+                + "The subject has the following extra entries: {march=3}");
   }
 
   @Test
@@ -300,17 +269,12 @@ public class MapSubjectTest {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
-    try {
-      assertThat(actual).isEqualTo(expectedMap);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{jan=1, feb=2}> is equal to <{jan=1, feb=2, march=3}>. "
-                  + "The subject is missing the following entries: {march=3}");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(actual).isEqualTo(expectedMap);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2}> is equal to <{jan=1, feb=2, march=3}>. "
+                + "The subject is missing the following entries: {march=3}");
   }
 
   @Test
@@ -318,18 +282,13 @@ public class MapSubjectTest {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "mar", 3);
 
-    try {
-      assertThat(actual).isEqualTo(expectedMap);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, mar=3}>. "
-                  + "The subject is missing the following entries: {mar=3} "
-                  + "and has the following extra entries: {march=3}");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(actual).isEqualTo(expectedMap);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, mar=3}>. "
+                + "The subject is missing the following entries: {mar=3} "
+                + "and has the following extra entries: {march=3}");
   }
 
   @Test
@@ -337,16 +296,11 @@ public class MapSubjectTest {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> unexpected = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
-    try {
-      assertThat(actual).isNotEqualTo(unexpected);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{jan=1, feb=2, march=3}> is not equal to <{jan=1, feb=2, march=3}>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(actual).isNotEqualTo(unexpected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> is not equal to <{jan=1, feb=2, march=3}>");
   }
 
   @Test
@@ -358,12 +312,10 @@ public class MapSubjectTest {
   @Test
   public void isEmptyWithFailure() {
     ImmutableMap<Integer, Integer> actual = ImmutableMap.of(1, 5);
-    try {
-      assertThat(actual).isEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{1=5}> is empty");
-    }
+    expectFailure.whenTesting().that(actual).isEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{1=5}> is empty");
   }
 
   @Test
@@ -375,12 +327,10 @@ public class MapSubjectTest {
   @Test
   public void isNotEmptyWithFailure() {
     ImmutableMap<Integer, Integer> actual = ImmutableMap.of();
-    try {
-      assertThat(actual).isNotEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{}> is not empty");
-    }
+    expectFailure.whenTesting().that(actual).isNotEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{}> is not empty");
   }
 
   @Test
@@ -411,27 +361,19 @@ public class MapSubjectTest {
   @Test
   public void containsKeyFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
-    try {
-      assertThat(actual).containsKey("greg");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=kluever}> contains key <greg>");
-    }
+    expectFailure.whenTesting().that(actual).containsKey("greg");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=kluever}> contains key <greg>");
   }
 
   @Test
   public void containsKeyNullFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
-    try {
-      assertThat(actual).containsKey(null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=kluever}> contains key <null>");
-    }
+    expectFailure.whenTesting().that(actual).containsKey(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=kluever}> contains key <null>");
   }
 
   @Test
@@ -477,28 +419,20 @@ public class MapSubjectTest {
   @Test
   public void doesNotContainKeyFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
-    try {
-      assertThat(actual).doesNotContainKey("kurt");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=kluever}> does not contain key <kurt>");
-    }
+    expectFailure.whenTesting().that(actual).doesNotContainKey("kurt");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=kluever}> does not contain key <kurt>");
   }
 
   @Test
   public void doesNotContainNullKey() {
     Map<String, String> actual = Maps.newHashMap();
     actual.put(null, "null");
-    try {
-      assertThat(actual).doesNotContainKey(null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{null=null}> does not contain key <null>");
-    }
+    expectFailure.whenTesting().that(actual).doesNotContainKey(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{null=null}> does not contain key <null>");
   }
 
   @Test
@@ -510,14 +444,10 @@ public class MapSubjectTest {
   @Test
   public void containsEntryFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
-    try {
-      assertThat(actual).containsEntry("greg", "kick");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=kluever}> contains entry <greg=kick>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("greg", "kick");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=kluever}> contains entry <greg=kick>");
   }
   
   @Test
@@ -550,14 +480,10 @@ public class MapSubjectTest {
   @Test
   public void containsNullKeyAndValue() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
-    try {
-      assertThat(actual).containsEntry(null, null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=kluever}> contains entry <null=null>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry(null, null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=kluever}> contains entry <null=null>");
   }
 
   @Test
@@ -571,32 +497,24 @@ public class MapSubjectTest {
   public void containsNullEntryValue() {
     Map<String, String> actual = Maps.newHashMap();
     actual.put(null, null);
-    try {
-      assertThat(actual).containsEntry("kurt", null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{null=null}> contains entry <kurt=null>. "
-                  + "However, the following keys are mapped to <null>: [null]");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("kurt", null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{null=null}> contains entry <kurt=null>. "
+                + "However, the following keys are mapped to <null>: [null]");
   }
 
   @Test
   public void containsNullEntryKey() {
     Map<String, String> actual = Maps.newHashMap();
     actual.put(null, null);
-    try {
-      assertThat(actual).containsEntry(null, "kluever");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{null=null}> contains entry <null=kluever>. "
-                  + "However, it has a mapping from <null> to <null>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry(null, "kluever");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{null=null}> contains entry <null=kluever>. "
+                + "However, it has a mapping from <null> to <null>");
   }
 
   @Test
@@ -611,14 +529,10 @@ public class MapSubjectTest {
   @Test
   public void doesNotContainEntryFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
-    try {
-      assertThat(actual).doesNotContainEntry("kurt", "kluever");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=kluever}> does not contain entry <kurt=kluever>");
-    }
+    expectFailure.whenTesting().that(actual).doesNotContainEntry("kurt", "kluever");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=kluever}> does not contain entry <kurt=kluever>");
   }
 
   @Test
@@ -633,47 +547,37 @@ public class MapSubjectTest {
   public void doesNotContainNullEntryFailure() {
     Map<String, String> actual = Maps.newHashMap();
     actual.put(null, null);
-    try {
-      assertThat(actual).doesNotContainEntry(null, null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{null=null}> does not contain entry <null=null>");
-    }
+    expectFailure.whenTesting().that(actual).doesNotContainEntry(null, null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{null=null}> does not contain entry <null=null>");
   }
 
   @Test
   public void failMapContainsKey() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
-    try {
-      assertThat(actual).containsKey("b");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{a=A}> contains key <b>");
-    }
+    expectFailure.whenTesting().that(actual).containsKey("b");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{a=A}> contains key <b>");
   }
 
   @Test
   public void failMapContainsKeyWithNull() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
-    try {
-      assertThat(actual).containsKey(null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{a=A}> contains key <null>");
-    }
+    expectFailure.whenTesting().that(actual).containsKey(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{a=A}> contains key <null>");
   }
 
   @Test
   public void failMapLacksKey() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
-    try {
-      assertThat(actual).doesNotContainKey("a");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{a=A}> does not contain key <a>");
-    }
+    expectFailure.whenTesting().that(actual).doesNotContainKey("a");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{a=A}> does not contain key <a>");
   }
 
   @Test
@@ -692,47 +596,35 @@ public class MapSubjectTest {
   @Test
   public void failMapContainsKeyWithValue() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
-    try {
-      assertThat(actual).containsEntry("a", "a");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{a=A}> contains entry <a=a>. "
-                  + "However, it has a mapping from <a> to <A>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("a", "a");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{a=A}> contains entry <a=a>. "
+                + "However, it has a mapping from <a> to <A>");
   }
 
   @Test
   public void failMapContainsKeyWithNullValuePresentExpected() {
     Map<String, String> actual = Maps.newHashMap();
     actual.put("a", null);
-    try {
-      assertThat(actual).containsEntry("a", "A");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{a=null}> contains entry <a=A>. "
-                  + "However, it has a mapping from <a> to <null>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("a", "A");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{a=null}> contains entry <a=A>. "
+                + "However, it has a mapping from <a> to <null>");
   }
 
   @Test
   public void failMapContainsKeyWithPresentValueNullExpected() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
-    try {
-      assertThat(actual).containsEntry("a", null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{a=A}> contains entry <a=null>. "
-                  + "However, it has a mapping from <a> to <A>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("a", null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{a=A}> contains entry <a=null>. "
+                + "However, it has a mapping from <a> to <A>");
   }
 
   @Test
@@ -746,54 +638,48 @@ public class MapSubjectTest {
   @Test
   public void comparingValuesUsing_containsEntry_failsExpectedKeyHasWrongValues() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsEntry("def", 123);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=+123, def=+456}> contains an entry with "
-                  + "key <def> and a value that parses to <123>. "
-                  + "However, it has a mapping from that key to <+456>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsEntry("def", 123);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=+123, def=+456}> contains an entry with "
+                + "key <def> and a value that parses to <123>. "
+                + "However, it has a mapping from that key to <+456>");
   }
 
   @Test
   public void comparingValuesUsing_containsEntry_failsWrongKeyHasExpectedValue() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsEntry("xyz", 456);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=+123, def=+456}> contains an entry with "
-                  + "key <xyz> and a value that parses to <456>. "
-                  + "However, the following keys are mapped to such values: <[def]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsEntry("xyz", 456);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=+123, def=+456}> contains an entry with "
+                + "key <xyz> and a value that parses to <456>. "
+                + "However, the following keys are mapped to such values: <[def]>");
   }
 
   @Test
   public void comparingValuesUsing_containsEntry_failsMissingExpectedKeyAndValue() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsEntry("xyz", 321);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=+123, def=+456}> contains an entry with "
-                  + "key <xyz> and a value that parses to <321>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsEntry("xyz", 321);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=+123, def=+456}> contains an entry with "
+                + "key <xyz> and a value that parses to <321>");
   }
 
   @Test
@@ -823,18 +709,16 @@ public class MapSubjectTest {
   @Test
   public void comparingValuesUsing_doesNotContainEntry_failure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .doesNotContainEntry("def", 456);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=+123, def=+456}> does not contain an entry with "
-                  + "key <def> and a value that parses to <456>. It maps that key to <+456>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContainEntry("def", 456);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=+123, def=+456}> does not contain an entry with "
+                + "key <def> and a value that parses to <456>. It maps that key to <+456>");
   }
 
   @Test
@@ -857,98 +741,88 @@ public class MapSubjectTest {
   @Test
   public void comparingValuesUsing_containsExactly_failsExtraEntry() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 456);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 456);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactly_failsMissingEntry() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 456, "xyz", 999, "abc", 123);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
-                  + "key that is equal to and a value that parses to the key and value of "
-                  + "<xyz=999>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 456, "xyz", 999, "abc", 123);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
+                + "key that is equal to and a value that parses to the key and value of "
+                + "<xyz=999>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactly_failsWrongKey() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 456, "cab", 123);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=456, cab=123]>. It is missing an element that has a "
-                  + "key that is equal to and a value that parses to the key and value of "
-                  + "<cab=123> and has unexpected elements <[abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 456, "cab", 123);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=456, cab=123]>. It is missing an element that has a "
+                + "key that is equal to and a value that parses to the key and value of "
+                + "<cab=123> and has unexpected elements <[abc=123]>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactly_failsWrongValue() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 456, "abc", 321);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=456, abc=321]>. It is missing an element that has a "
-                  + "key that is equal to and a value that parses to the key and value of "
-                  + "<abc=321> and has unexpected elements <[abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 456, "abc", 321);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=456, abc=321]>. It is missing an element that has a "
+                + "key that is equal to and a value that parses to the key and value of "
+                + "<abc=321> and has unexpected elements <[abc=123]>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactly_inOrder_failsOutOfOrder() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 456, "abc", 123)
-          .inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
-                  + " a key that is equal to and a value that parses to the key and value of each"
-                  + " element of <[def=456, abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 456, "abc", 123)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
+                + " a key that is equal to and a value that parses to the key and value of each"
+                + " element of <[def=456, abc=123]>");
   }
 
   @Test
@@ -998,102 +872,92 @@ public class MapSubjectTest {
   public void comparingValuesUsing_containsExactlyEntriesIn_failsExtraEntry() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456);
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_failsMissingEntry() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "xyz", 999, "abc", 123);
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
-                  + "key that is equal to and a value that parses to the key and value of "
-                  + "<xyz=999>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
+                + "key that is equal to and a value that parses to the key and value of "
+                + "<xyz=999>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_failsWrongKey() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "cab", 123);
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=456, cab=123]>. It is missing an element that has a "
-                  + "key that is equal to and a value that parses to the key and value of "
-                  + "<cab=123> and has unexpected elements <[abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=456, cab=123]>. It is missing an element that has a "
+                + "key that is equal to and a value that parses to the key and value of "
+                + "<cab=123> and has unexpected elements <[abc=123]>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_failsWrongValue() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 321);
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=456, abc=321]>. It is missing an element that has a "
-                  + "key that is equal to and a value that parses to the key and value of "
-                  + "<abc=321> and has unexpected elements <[abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=456, abc=321]>. It is missing an element that has a "
+                + "key that is equal to and a value that parses to the key and value of "
+                + "<abc=321> and has unexpected elements <[abc=123]>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_inOrder_failsOutOfOrder() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 123);
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected)
-          .inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
-                  + " a key that is equal to and a value that parses to the key and value of each"
-                  + " element of <[def=456, abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
+                + " a key that is equal to and a value that parses to the key and value of each"
+                + " element of <[def=456, abc=123]>");
   }
 
   @Test
