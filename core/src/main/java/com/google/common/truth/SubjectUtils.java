@@ -18,6 +18,7 @@ package com.google.common.truth;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ final class SubjectUtils {
     return count;
   }
 
-  static <T> List<Object> countDuplicates(Collection<T> items) {
+  static <T> List<Object> countDuplicates(Iterable<T> items) {
     // We use a List to de-dupe instead of a Set in case the elements don't have a proper
     // .hashCode() method (e.g., MessageSet from old versions of protobuf).
     List<T> itemSet = new ArrayList<T>();
@@ -204,6 +205,32 @@ final class SubjectUtils {
       return (List<T>) iterable;
     } else {
       return Lists.newArrayList(iterable);
+    }
+  }
+
+  /**
+   * Returns a collection with all empty strings replaced by a non-empty human understandable
+   * indicator for an empty string.
+   *
+   * <p>Returns the given collection if it contains no empty strings.
+   */
+  static <T> Iterable<T> annotateEmptyStrings(Iterable<T> items) {
+    if (Iterables.contains(items, "")) {
+      List<T> annotatedItems = Lists.newArrayList();
+      for (T item : items) {
+        if (Objects.equal(item, "")) {
+          // This is a safe cast because know that at least one instance of T (this item) is a
+          // String.
+          @SuppressWarnings("unchecked")
+          T newItem = (T) "\"\" (empty String)";
+          annotatedItems.add(newItem);
+        } else {
+          annotatedItems.add(item);
+        }
+      }
+      return annotatedItems;
+    } else {
+      return items;
     }
   }
 }
