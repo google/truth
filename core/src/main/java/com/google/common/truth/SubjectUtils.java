@@ -36,6 +36,8 @@ import java.util.Map;
 final class SubjectUtils {
   private SubjectUtils() {}
 
+  static final String HUMAN_UNDERSTANDABLE_EMPTY_STRING = "\"\" (empty String)";
+
   static <T> List<T> accumulate(T first, T second, T... rest) {
     // rest should never be deliberately null, so assume that the caller passed null
     // in the third position but intended it to be the third element in the array of values.
@@ -209,10 +211,10 @@ final class SubjectUtils {
   }
 
   /**
-   * Returns a collection with all empty strings replaced by a non-empty human understandable
+   * Returns an iterable with all empty strings replaced by a non-empty human understandable
    * indicator for an empty string.
    *
-   * <p>Returns the given collection if it contains no empty strings.
+   * <p>Returns the given iterable if it contains no empty strings.
    */
   static <T> Iterable<T> annotateEmptyStrings(Iterable<T> items) {
     if (Iterables.contains(items, "")) {
@@ -222,7 +224,7 @@ final class SubjectUtils {
           // This is a safe cast because know that at least one instance of T (this item) is a
           // String.
           @SuppressWarnings("unchecked")
-          T newItem = (T) "\"\" (empty String)";
+          T newItem = (T) HUMAN_UNDERSTANDABLE_EMPTY_STRING;
           annotatedItems.add(newItem);
         } else {
           annotatedItems.add(item);

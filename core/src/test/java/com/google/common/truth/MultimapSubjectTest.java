@@ -571,6 +571,40 @@ public class MultimapSubjectTest {
   }
 
   @Test
+  public void containsExactlyFailureWithEmptyStringMissing() {
+    expectFailure.whenTesting().that(ImmutableMultimap.of()).containsExactly("", "a");
+
+    assertThat(expectFailure.getFailure().getMessage())
+        .isEqualTo(
+            "Not true that <{}> contains exactly <{\"\" (empty String)=[a]}>. "
+                + "It is missing <{\"\" (empty String)=[a]}>");
+  }
+
+  @Test
+  public void containsExactlyFailureWithEmptyStringExtra() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMultimap.of("a", "", "", ""))
+        .containsExactly("a", "");
+
+    assertThat(expectFailure.getFailure().getMessage())
+        .isEqualTo(
+            "Not true that <{a=[], =[]}> contains exactly <{a=[\"\" (empty String)]}>. "
+                + "It has unexpected items <{\"\" (empty String)=[\"\" (empty String)]}>");
+  }
+
+  @Test
+  public void containsExactlyFailureWithEmptyStringBoth() {
+    expectFailure.whenTesting().that(ImmutableMultimap.of("a", "")).containsExactly("", "a");
+
+    assertThat(expectFailure.getFailure().getMessage())
+        .isEqualTo(
+            "Not true that <{a=[]}> contains exactly <{\"\" (empty String)=[a]}>. "
+                + "It is missing <{\"\" (empty String)=[a]}> "
+                + "and has unexpected items <{a=[\"\" (empty String)]}>");
+  }
+
+  @Test
   public void containsExactlyInOrder() {
     ImmutableMultimap<Integer, String> actual =
         ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
