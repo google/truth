@@ -19,6 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.util.concurrent.AtomicLongMap;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -31,22 +32,19 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public final class AtomicLongMapSubjectTest {
 
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void isEqualToFail() {
     AtomicLongMap<String> alm1 = AtomicLongMap.create();
     AtomicLongMap<String> alm2 = AtomicLongMap.create();
 
-    try {
-      assertThat(alm1).isEqualTo(alm2);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{}> is equal to <{}> "
-                  + "(although their toString() representations are the same)");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(alm1).isEqualTo(alm2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{}> is equal to <{}> "
+                + "(although their toString() representations are the same)");
   }
 
   @Test
@@ -60,12 +58,10 @@ public final class AtomicLongMapSubjectTest {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("foo");
 
-    try {
-      assertThat(actual).isEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{foo=1}> is empty");
-    }
+    expectFailure.whenTesting().that(actual).isEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{foo=1}> is empty");
   }
 
   @Test
@@ -78,12 +74,10 @@ public final class AtomicLongMapSubjectTest {
   @Test
   public void isNotEmptyWithFailure() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
-    try {
-      assertThat(actual).isNotEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{}> is not empty");
-    }
+    expectFailure.whenTesting().that(actual).isNotEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{}> is not empty");
   }
 
   @Test
@@ -111,14 +105,10 @@ public final class AtomicLongMapSubjectTest {
   public void hasSizeFails() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
-    try {
-      assertThat(actual).hasSize(2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=1}> has a size of <2>. It is <1>");
-    }
+    expectFailure.whenTesting().that(actual).hasSize(2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=1}> has a size of <2>. It is <1>");
   }
 
   @Test
@@ -145,14 +135,10 @@ public final class AtomicLongMapSubjectTest {
   public void hasSumFails() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
-    try {
-      assertThat(actual).hasSum(2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=1}> has a sum of <2>. It is <1>");
-    }
+    expectFailure.whenTesting().that(actual).hasSum(2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=1}> has a sum of <2>. It is <1>");
   }
 
   @Test
@@ -166,12 +152,10 @@ public final class AtomicLongMapSubjectTest {
   public void containsKeyFailure() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
-    try {
-      assertThat(actual).containsKey("greg");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{kurt=1}> contains key <greg>");
-    }
+    expectFailure.whenTesting().that(actual).containsKey("greg");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=1}> contains key <greg>");
   }
 
   @Test
@@ -185,14 +169,10 @@ public final class AtomicLongMapSubjectTest {
   public void doesNotContainKeyFailure() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
-    try {
-      assertThat(actual).doesNotContainKey("kurt");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=1}> does not contain key <kurt>");
-    }
+    expectFailure.whenTesting().that(actual).doesNotContainKey("kurt");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=1}> does not contain key <kurt>");
   }
 
   @Test
@@ -217,12 +197,10 @@ public final class AtomicLongMapSubjectTest {
   public void containsEntryFailure() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
-    try {
-      assertThat(actual).containsEntry("greg", 2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{kurt=1}> contains entry <greg=2>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("greg", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=1}> contains entry <greg=2>");
   }
 
   @Test
@@ -237,40 +215,30 @@ public final class AtomicLongMapSubjectTest {
   public void doesNotContainEntryFailure() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
-    try {
-      assertThat(actual).doesNotContainEntry("kurt", 1);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=1}> does not contain entry <kurt=1>");
-    }
+    expectFailure.whenTesting().that(actual).doesNotContainEntry("kurt", 1);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=1}> does not contain entry <kurt=1>");
   }
 
   @Test
   public void failMapContainsKey() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
-    try {
-      assertThat(actual).containsKey("greg");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{kurt=1}> contains key <greg>");
-    }
+    expectFailure.whenTesting().that(actual).containsKey("greg");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=1}> contains key <greg>");
   }
 
   @Test
   public void failMapLacksKey() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
-    try {
-      assertThat(actual).doesNotContainKey("kurt");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=1}> does not contain key <kurt>");
-    }
+    expectFailure.whenTesting().that(actual).doesNotContainKey("kurt");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=1}> does not contain key <kurt>");
   }
 
   @Test
@@ -284,11 +252,9 @@ public final class AtomicLongMapSubjectTest {
   public void failMapContainsKeyWithValue() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
-    try {
-      assertThat(actual).containsEntry("kurt", 2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{kurt=1}> contains entry <kurt=2>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("kurt", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=1}> contains entry <kurt=2>");
   }
 }

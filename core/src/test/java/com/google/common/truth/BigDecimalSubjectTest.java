@@ -17,9 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.math.BigDecimal.TEN;
-import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -31,6 +31,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class BigDecimalSubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void isEqualTo() {
     // make sure this still works
@@ -47,40 +49,28 @@ public class BigDecimalSubjectTest {
   public void isEqualToIgnoringScale_bigDecimal() {
     assertThat(TEN).isEqualToIgnoringScale(TEN);
     assertThat(TEN).isEqualToIgnoringScale(new BigDecimal(10));
-    try {
-      assertThat(TEN).isEqualToIgnoringScale(new BigDecimal(3));
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
-    }
+    expectFailure.whenTesting().that(TEN).isEqualToIgnoringScale(new BigDecimal(3));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
   }
 
   @Test
   public void isEqualToIgnoringScale_int() {
     assertThat(TEN).isEqualToIgnoringScale(10);
-    try {
-      assertThat(TEN).isEqualToIgnoringScale(3);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
-    }
+    expectFailure.whenTesting().that(TEN).isEqualToIgnoringScale(3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
   }
 
   @Test
   public void isEqualToIgnoringScale_long() {
     assertThat(TEN).isEqualToIgnoringScale(10L);
-    try {
-      assertThat(TEN).isEqualToIgnoringScale(3L);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
-    }
+    expectFailure.whenTesting().that(TEN).isEqualToIgnoringScale(3L);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
   }
 
   @Test
@@ -89,13 +79,9 @@ public class BigDecimalSubjectTest {
     assertThat(TEN).isEqualToIgnoringScale("10.");
     assertThat(TEN).isEqualToIgnoringScale("10.0");
     assertThat(TEN).isEqualToIgnoringScale("10.00");
-    try {
-      assertThat(TEN).isEqualToIgnoringScale("3");
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
-    }
+    expectFailure.whenTesting().that(TEN).isEqualToIgnoringScale("3");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
   }
 }

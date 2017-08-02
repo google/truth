@@ -24,6 +24,7 @@ import com.google.common.collect.Range;
 import com.google.testing.compile.JavaFileObjects;
 import java.math.BigDecimal;
 import javax.tools.JavaFileObject;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -35,6 +36,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class ComparableSubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void testNulls() {
     try {
@@ -69,12 +72,10 @@ public class ComparableSubjectTest {
     Range<Integer> oneToFive = Range.closed(1, 5);
     assertThat(4).isIn(oneToFive);
 
-    try {
-      assertThat(6).isIn(oneToFive);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("Not true that <6> is in <" + oneToFive + ">");
-    }
+    expectFailure.whenTesting().that(6).isIn(oneToFive);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Not true that <6> is in <" + oneToFive + ">");
   }
 
   @Test
@@ -82,62 +83,59 @@ public class ComparableSubjectTest {
     Range<Integer> oneToFive = Range.closed(1, 5);
     assertThat(6).isNotIn(oneToFive);
 
-    try {
-      assertThat(4).isNotIn(oneToFive);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("Not true that <4> is not in <" + oneToFive + ">");
-    }
+    expectFailure.whenTesting().that(4).isNotIn(oneToFive);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Not true that <4> is not in <" + oneToFive + ">");
   }
 
   @Test
   public void isEquivalentAccordingToCompareTo() {
     assertThat(new BigDecimal("2.0")).isEquivalentAccordingToCompareTo(new BigDecimal("2.00"));
 
-    try {
-      assertThat(new BigDecimal("2.0")).isEquivalentAccordingToCompareTo(new BigDecimal("2.1"));
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<2.0> should have had the same value as <2.1> (scale is ignored)");
-    }
+    expectFailure
+        .whenTesting()
+        .that(new BigDecimal("2.0"))
+        .isEquivalentAccordingToCompareTo(new BigDecimal("2.1"));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<2.0> should have had the same value as <2.1> (scale is ignored)");
   }
 
   @Test
-  public void isGreaterThan() {
+  public void isGreaterThan_failsEqual() {
     assertThat(5).isGreaterThan(4);
 
-    try {
-      assertThat(4).isGreaterThan(4);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("Not true that <4> is greater than <4>");
-    }
-    try {
-      assertThat(3).isGreaterThan(4);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("Not true that <3> is greater than <4>");
-    }
+    expectFailure.whenTesting().that(4).isGreaterThan(4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Not true that <4> is greater than <4>");
   }
 
   @Test
-  public void isLessThan() {
+  public void isGreaterThan_failsSmaller() {
+    expectFailure.whenTesting().that(3).isGreaterThan(4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Not true that <3> is greater than <4>");
+  }
+
+  @Test
+  public void isLessThan_failsEqual() {
     assertThat(4).isLessThan(5);
 
-    try {
-      assertThat(4).isLessThan(4);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("Not true that <4> is less than <4>");
-    }
-    try {
-      assertThat(4).isLessThan(3);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("Not true that <4> is less than <3>");
-    }
+    expectFailure.whenTesting().that(4).isLessThan(4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Not true that <4> is less than <4>");
+  }
+
+  @Test
+  public void isLessThan_failsGreater() {
+    expectFailure.whenTesting().that(4).isLessThan(3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Not true that <4> is less than <3>");
   }
 
   @Test
@@ -145,12 +143,10 @@ public class ComparableSubjectTest {
     assertThat(5).isAtMost(5);
     assertThat(5).isAtMost(6);
 
-    try {
-      assertThat(4).isAtMost(3);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("Not true that <4> is at most <3>");
-    }
+    expectFailure.whenTesting().that(4).isAtMost(3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Not true that <4> is at most <3>");
   }
 
   @Test
@@ -158,12 +154,10 @@ public class ComparableSubjectTest {
     assertThat(4).isAtLeast(3);
     assertThat(4).isAtLeast(4);
 
-    try {
-      assertThat(4).isAtLeast(5);
-      fail("should have thrown");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("Not true that <4> is at least <5>");
-    }
+    expectFailure.whenTesting().that(4).isAtLeast(5);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Not true that <4> is at least <5>");
   }
 
   // Brief tests with other comparable types (no negative test cases)

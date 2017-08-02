@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -31,6 +32,7 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public final class CorrespondenceTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
   // Tests of the abstract base class (just assert that equals and hashCode throw).
 
@@ -143,17 +145,15 @@ public final class CorrespondenceTest {
 
   @Test
   public void testTolerance_viaIterableSubjectContains_failure() {
-    try {
-      assertThat(ImmutableList.of(1.02, 2.04, 3.08))
-          .comparingElementsUsing(tolerance(0.05))
-          .contains(3.0);
-      fail("Expected AssertionError to be thrown but wasn't");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1.02, 2.04, 3.08]> contains at least one element that "
-                  + "is a finite number within 0.05 of <3.0>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(ImmutableList.of(1.02, 2.04, 3.08))
+        .comparingElementsUsing(tolerance(0.05))
+        .contains(3.0);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1.02, 2.04, 3.08]> contains at least one element that "
+                + "is a finite number within 0.05 of <3.0>");
   }
 }
