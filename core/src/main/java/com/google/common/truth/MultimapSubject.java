@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.SubjectUtils.HUMAN_UNDERSTANDABLE_EMPTY_STRING;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
@@ -207,26 +208,29 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
             "Not true that %s contains exactly <%s>. "
                 + "It is missing <%s> and has unexpected items <%s>",
             actualAsString(),
-            expectedMultimap,
+            annotateEmptyStringsMultimap(expectedMultimap),
             // Note: The usage of countDuplicatesAndAddTypeInfo() below causes entries no longer to
             // be grouped by key in the 'missing' and 'unexpected items' parts of the message (we
             // still show the actual and expected multimaps in the standard format).
             addTypeInfo
-                ? countDuplicatesAndAddTypeInfo(missing.entries())
-                : countDuplicatesMultimap(missing),
+                ? countDuplicatesAndAddTypeInfo(annotateEmptyStringsMultimap(missing).entries())
+                : countDuplicatesMultimap(annotateEmptyStringsMultimap(missing)),
             addTypeInfo
-                ? countDuplicatesAndAddTypeInfo(extra.entries())
-                : countDuplicatesMultimap(extra));
+                ? countDuplicatesAndAddTypeInfo(annotateEmptyStringsMultimap(extra).entries())
+                : countDuplicatesMultimap(annotateEmptyStringsMultimap(extra)));
       } else {
         failWithBadResults(
-            "contains exactly", expectedMultimap, "is missing", countDuplicatesMultimap(missing));
+            "contains exactly",
+            annotateEmptyStringsMultimap(expectedMultimap),
+            "is missing",
+            countDuplicatesMultimap(annotateEmptyStringsMultimap(missing)));
       }
     } else if (!extra.isEmpty()) {
       failWithBadResults(
           "contains exactly",
-          expectedMultimap,
+          annotateEmptyStringsMultimap(expectedMultimap),
           "has unexpected items",
-          countDuplicatesMultimap(extra));
+          countDuplicatesMultimap(annotateEmptyStringsMultimap(extra)));
     }
 
     return new MultimapInOrder(expectedMultimap);
@@ -389,6 +393,27 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     Joiner.on(", ").appendTo(sb, entries);
     sb.append("}");
     return sb.toString();
+  }
+
+  /**
+   * Returns a multimap with all empty strings (as keys or values) replaced by a non-empty human
+   * understandable indicator for an empty string.
+   *
+   * <p>Returns the given multimap if it contains no empty strings.
+   */
+  private static Multimap<?, ?> annotateEmptyStringsMultimap(Multimap<?, ?> multimap) {
+    if (multimap.containsKey("") || multimap.containsValue("")) {
+      ListMultimap<Object, Object> annotatedMultimap = LinkedListMultimap.create();
+      for (Entry<?, ?> entry : multimap.entries()) {
+        Object key = "".equals(entry.getKey()) ? HUMAN_UNDERSTANDABLE_EMPTY_STRING : entry.getKey();
+        Object value =
+            "".equals(entry.getValue()) ? HUMAN_UNDERSTANDABLE_EMPTY_STRING : entry.getValue();
+        annotatedMultimap.put(key, value);
+      }
+      return annotatedMultimap;
+    } else {
+      return multimap;
+    }
   }
 
   /**
