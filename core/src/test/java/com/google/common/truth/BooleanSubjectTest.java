@@ -16,8 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -29,6 +29,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class BooleanSubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void isTrue() {
     assertThat(true).isTrue();
@@ -36,40 +38,28 @@ public class BooleanSubjectTest {
 
   @Test
   public void nullIsTrueFailing() {
-    try {
-      Boolean nullBoolean = null;
-      assertThat(nullBoolean).isTrue();
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("The subject was expected to be true, but was null");
-    }
+    Boolean nullBoolean = null;
+    expectFailure.whenTesting().that(nullBoolean).isTrue();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("The subject was expected to be true, but was null");
   }
 
   @Test
   public void nullIsFalseFailing() {
-    try {
-      Boolean nullBoolean = null;
-      assertThat(nullBoolean).isFalse();
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("The subject was expected to be false, but was null");
-    }
+    Boolean nullBoolean = null;
+    expectFailure.whenTesting().that(nullBoolean).isFalse();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("The subject was expected to be false, but was null");
   }
 
   @Test
   public void isTrueFailing() {
-    try {
-      assertThat(false).isTrue();
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("The subject was expected to be true, but was false");
-    }
+    expectFailure.whenTesting().that(false).isTrue();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("The subject was expected to be true, but was false");
   }
 
   @Test
@@ -79,13 +69,9 @@ public class BooleanSubjectTest {
 
   @Test
   public void isFalseFailing() {
-    try {
-      assertThat(true).isFalse();
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("The subject was expected to be false, but was true");
-    }
+    expectFailure.whenTesting().that(true).isFalse();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("The subject was expected to be false, but was true");
   }
 }

@@ -16,8 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -29,6 +29,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class ClassSubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void testIsAssignableTo_same() {
     assertThat(String.class).isAssignableTo(String.class);
@@ -42,29 +44,21 @@ public class ClassSubjectTest {
 
   @Test
   public void testIsAssignableTo_reversed() {
-    try {
-      assertThat(Object.class).isAssignableTo(String.class);
-      assert_().fail("Should have thrown an assertion error.");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <class java.lang.Object> "
-                  + "is assignable to <class java.lang.String>");
-    }
+    expectFailure.whenTesting().that(Object.class).isAssignableTo(String.class);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <class java.lang.Object> "
+                + "is assignable to <class java.lang.String>");
   }
 
   @Test
   public void testIsAssignableTo_reversedDifferentTypes() {
-    try {
-      assertThat(String.class).isAssignableTo(Exception.class);
-      assert_().fail("Should have thrown an assertion error.");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <class java.lang.String> "
-                  + "is assignable to <class java.lang.Exception>");
-    }
+    expectFailure.whenTesting().that(String.class).isAssignableTo(Exception.class);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <class java.lang.String> "
+                + "is assignable to <class java.lang.Exception>");
   }
 }
