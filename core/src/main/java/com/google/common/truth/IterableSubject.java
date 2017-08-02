@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.SubjectUtils.accumulate;
+import static com.google.common.truth.SubjectUtils.annotateEmptyStrings;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
@@ -240,12 +241,17 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             "Not true that %s %s <%s>. It is missing <%s>. However, it does contain <%s>.",
             actualAsString(),
             failVerb,
-            expected,
-            countDuplicatesAndAddTypeInfo(missing),
+            annotateEmptyStrings(expected),
+            countDuplicatesAndAddTypeInfo(annotateEmptyStrings(missing)),
             countDuplicatesAndAddTypeInfo(
-                retainMatchingToString(actual(), missing /* itemsToCheck */)));
+                annotateEmptyStrings(
+                    retainMatchingToString(actual(), missing /* itemsToCheck */))));
       } else {
-        failWithBadResults(failVerb, expected, "is missing", countDuplicates(missing));
+        failWithBadResults(
+            failVerb,
+            annotateEmptyStrings(expected),
+            "is missing",
+            countDuplicates(annotateEmptyStrings(missing)));
       }
     }
     return ordered ? IN_ORDER : new NotInOrder("contains all elements in order", expected);
@@ -353,23 +359,31 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 "Not true that %s contains exactly <%s>. "
                     + "It is missing <%s> and has unexpected items <%s>%s",
                 actualAsString(),
-                required,
-                addTypeInfo ? countDuplicatesAndAddTypeInfo(missing) : countDuplicates(missing),
-                addTypeInfo ? countDuplicatesAndAddTypeInfo(extra) : countDuplicates(extra),
+                annotateEmptyStrings(required),
+                addTypeInfo
+                    ? countDuplicatesAndAddTypeInfo(annotateEmptyStrings(missing))
+                    : countDuplicates(annotateEmptyStrings(missing)),
+                addTypeInfo
+                    ? countDuplicatesAndAddTypeInfo(annotateEmptyStrings(extra))
+                    : countDuplicates(annotateEmptyStrings(extra)),
                 failSuffix);
             return ALREADY_FAILED;
           } else {
             failWithBadResultsAndSuffix(
-                "contains exactly", required, "is missing", countDuplicates(missing), failSuffix);
+                "contains exactly",
+                annotateEmptyStrings(required),
+                "is missing",
+                countDuplicates(annotateEmptyStrings(missing)),
+                failSuffix);
             return ALREADY_FAILED;
           }
         }
         if (!extra.isEmpty()) {
           failWithBadResultsAndSuffix(
               "contains exactly",
-              required,
+              annotateEmptyStrings(required),
               "has unexpected items",
-              countDuplicates(extra),
+              countDuplicates(annotateEmptyStrings(extra)),
               failSuffix);
           return ALREADY_FAILED;
         }
@@ -385,17 +399,17 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     if (actualIter.hasNext()) {
       failWithBadResultsAndSuffix(
           "contains exactly",
-          required,
+          annotateEmptyStrings(required),
           "has unexpected items",
-          countDuplicates(Lists.newArrayList(actualIter)),
+          countDuplicates(annotateEmptyStrings(Lists.newArrayList(actualIter))),
           failSuffix);
       return ALREADY_FAILED;
     } else if (requiredIter.hasNext()) {
       failWithBadResultsAndSuffix(
           "contains exactly",
-          required,
+          annotateEmptyStrings(required),
           "is missing",
-          countDuplicates(Lists.newArrayList(requiredIter)),
+          countDuplicates(annotateEmptyStrings(Lists.newArrayList(requiredIter))),
           failSuffix);
       return ALREADY_FAILED;
     }
@@ -455,7 +469,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
     }
     if (!present.isEmpty()) {
-      failWithBadResults(failVerb, excluded, "contains", present);
+      failWithBadResults(
+          failVerb, annotateEmptyStrings(excluded), "contains", annotateEmptyStrings(present));
     }
   }
 

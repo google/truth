@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import javax.annotation.Nullable;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -41,6 +42,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class IterableSubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void hasSize() {
     assertThat(ImmutableList.of(1, 2, 3)).hasSize(3);
@@ -169,7 +172,7 @@ public class IterableSubjectTest {
   public void doesNotContainDuplicatesMixedTypes() {
     assertThat(asList(1, 2, 2L, 3)).containsNoDuplicates();
   }
-
+  
   @Test
   public void doesNotContainDuplicatesFailure() {
     try {
@@ -426,7 +429,7 @@ public class IterableSubjectTest {
                   + "<[null (null type)]>. However, it does contain <[null] (java.lang.String)>.");
     }
   }
-
+  
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
     try {
@@ -440,6 +443,16 @@ public class IterableSubjectTest {
                   + "<[2 (java.lang.Long), 3 (java.lang.Integer) [2 copies]]>. However, it does "
                   + "contain <[2 (java.lang.Integer), 3 (java.lang.Long) [2 copies]]>.");
     }
+  }
+
+  @Test
+  public void iterableContainsAllOfFailsWithEmptyString() {
+    expectFailure.whenTesting().that(asList("a", null)).containsAllOf("", null);
+
+    assertThat(expectFailure.getFailure().getMessage())
+        .isEqualTo(
+            "Not true that <[a, null]> contains all of <[\"\" (empty String), null]>. "
+                + "It is missing <[\"\" (empty String)]>");
   }
 
   @Test
@@ -567,6 +580,16 @@ public class IterableSubjectTest {
   }
 
   @Test
+  public void iterableContainsNoneOfFailureWithEmptyString() {
+    expectFailure.whenTesting().that(asList("")).containsNoneOf("", null);
+
+    assertThat(expectFailure.getFailure().getMessage())
+        .isEqualTo(
+            "Not true that <[]> contains none of <[\"\" (empty String), null]>. "
+                + "It contains <[\"\" (empty String)]>");
+  }
+
+  @Test
   public void iterableContainsExactlyArray() {
     String[] stringArray = {"a", "b"};
     ImmutableList<String[]> iterable = ImmutableList.of(stringArray);
@@ -628,10 +651,40 @@ public class IterableSubjectTest {
   public void iterableContainsExactlyWithNull() {
     assertThat(asList(1, null, 3)).containsExactly(1, null, 3);
   }
-
+  
   @Test
   public void iterableContainsExactlyWithNullOutOfOrder() {
     assertThat(asList(1, null, 3)).containsExactly(1, 3, (Integer) null);
+  }
+
+  @Test
+  public void iterableContainsExactlyWithEmptyString() {
+    expectFailure.whenTesting().that(asList()).containsExactly("");
+
+    assertThat(expectFailure.getFailure().getMessage())
+        .isEqualTo(
+            "Not true that <[]> contains exactly <[\"\" (empty String)]>. "
+                + "It is missing <[\"\" (empty String)]>");
+  }
+
+  @Test
+  public void iterableContainsExactlyWithEmptyStringAndUnexpectedItem() {
+    expectFailure.whenTesting().that(asList("a", null)).containsExactly("");
+
+    assertThat(expectFailure.getFailure().getMessage())
+        .isEqualTo(
+            "Not true that <[a, null]> contains exactly <[\"\" (empty String)]>. "
+                + "It is missing <[\"\" (empty String)]> and has unexpected items <[a, null]>");
+  }
+
+  @Test
+  public void iterableContainsExactlyWithEmptyStringAndMissingItem() {
+    expectFailure.whenTesting().that(asList("")).containsExactly("a", null);
+
+    assertThat(expectFailure.getFailure().getMessage())
+        .isEqualTo(
+            "Not true that <[]> contains exactly <[a, null]>. "
+                + "It is missing <[a, null]> and has unexpected items <[\"\" (empty String)]>");
   }
 
   @Test
