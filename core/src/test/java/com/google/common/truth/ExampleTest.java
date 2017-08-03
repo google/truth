@@ -19,7 +19,6 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.TruthJUnit.assume;
 import static com.google.common.truth.delegation.FooSubject.foo;
-import static org.junit.Assert.fail;
 
 import com.google.common.collect.Range;
 import com.google.common.truth.delegation.Foo;
@@ -33,6 +32,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(Theories.class)
 public class ExampleTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void stringContains() {
     assertThat("abc").contains("c");
@@ -53,12 +54,10 @@ public class ExampleTest {
   @Test
   public void equalityFail() {
     int x = 2 + 2;
-    try {
-      assertThat(x).isEqualTo(5);
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().contains("Not true that <4> is equal to <5>");
-    }
+    expectFailure.whenTesting().that(x).isEqualTo(5);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Not true that <4> is equal to <5>");
   }
 
   @DataPoints public static int[] ints = {-1, 0, 1, 2};

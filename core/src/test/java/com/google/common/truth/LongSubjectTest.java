@@ -19,6 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.TruthJUnit.assume;
 import static org.junit.Assert.fail;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.runner.RunWith;
@@ -33,6 +34,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class LongSubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void simpleEquality() {
     assertThat(2L + 2).isEqualTo(4L);
@@ -54,32 +57,26 @@ public class LongSubjectTest {
 
     assertThat(x).isEqualTo(0);
 
-    try {
-      assertThat(x).isNotEqualTo(0);
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <0> is not equal to <0>");
-    }
+    expectFailure.whenTesting().that(x).isNotEqualTo(0);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <0> is not equal to <0>");
   }
 
   @Test
   public void equalityFail() {
-    try {
-      assertThat(2L + 2).isEqualTo(5L);
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <4> is equal to <5>");
-    }
+    expectFailure.whenTesting().that(2L + 2).isEqualTo(5L);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <4> is equal to <5>");
   }
 
   @Test
   public void inequalityFail() {
-    try {
-      assertThat(2L + 2).isNotEqualTo(4L);
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <4> is not equal to <4>");
-    }
+    expectFailure.whenTesting().that(2L + 2).isNotEqualTo(4L);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <4> is not equal to <4>");
   }
 
   @Test
@@ -97,19 +94,19 @@ public class LongSubjectTest {
   }
 
   @Test
-  public void equalityOfNullsFail() {
-    try {
-      assertThat((Long) null).isEqualTo(5L);
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is equal to <5>");
-    }
-    try {
-      assertThat(5L).isEqualTo((Long) null);
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <5> is equal to <null>");
-    }
+  public void equalityOfNullsFail_nullActual() {
+    expectFailure.whenTesting().that((Long) null).isEqualTo(5L);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <null> is equal to <5>");
+  }
+
+  @Test
+  public void equalityOfNullsFail_nullExpected() {
+    expectFailure.whenTesting().that(5L).isEqualTo((Long) null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <5> is equal to <null>");
   }
 
   @Test
@@ -120,13 +117,9 @@ public class LongSubjectTest {
 
   @Test
   public void inequalityOfNullsFail() {
-    try {
-      assertThat((Long) null).isNotEqualTo((Long) null);
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <null> is not equal to <null>");
-    }
+    expectFailure.whenTesting().that((Long) null).isNotEqualTo((Long) null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <null> is not equal to <null>");
   }
 }

@@ -21,6 +21,7 @@ import static org.junit.Assert.fail;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -32,6 +33,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class MultisetSubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void multisetIsEmpty() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of();
@@ -41,12 +44,10 @@ public class MultisetSubjectTest {
   @Test
   public void multisetIsEmptyWithFailure() {
     ImmutableMultiset<Integer> multiset = ImmutableMultiset.of(1, 5);
-    try {
-      assertThat(multiset).isEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <[1, 5]> is empty");
-    }
+    expectFailure.whenTesting().that(multiset).isEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[1, 5]> is empty");
   }
 
   @Test
@@ -58,12 +59,10 @@ public class MultisetSubjectTest {
   @Test
   public void multisetIsNotEmptyWithFailure() {
     ImmutableMultiset<Integer> multiset = ImmutableMultiset.of();
-    try {
-      assertThat(multiset).isNotEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
-    }
+    expectFailure.whenTesting().that(multiset).isNotEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[]> is not empty");
   }
 
   @Test
@@ -98,16 +97,10 @@ public class MultisetSubjectTest {
   @Test
   public void hasCountFail() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kurt", "kluever");
-    try {
-      assertThat(multiset).hasCount("kurt", 3);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[kurt x 2, kluever]> has a count for <kurt> of <3>. It is <2>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(multiset).hasCount("kurt", 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[kurt x 2, kluever]> has a count for <kurt> of <3>. It is <2>");
   }
 
   @Test
@@ -119,25 +112,19 @@ public class MultisetSubjectTest {
   @Test
   public void containsFailure() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kluever");
-    try {
-      assertThat(multiset).contains("greg");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<[kurt, kluever]> should have contained <greg>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(multiset).contains("greg");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<[kurt, kluever]> should have contained <greg>");
   }
 
   @Test
   public void containsNullFailure() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kluever");
-    try {
-      assertThat(multiset).contains(null);
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<[kurt, kluever]> should have contained <null>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(multiset).contains(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<[kurt, kluever]> should have contained <null>");
   }
 
   @Test
@@ -157,25 +144,19 @@ public class MultisetSubjectTest {
   @Test
   public void doesNotContainFailure() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kluever");
-    try {
-      assertThat(multiset).doesNotContain("kurt");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<[kurt, kluever]> should not have contained <kurt>");
-    }
+    expectFailure.whenTesting().that(multiset).doesNotContain("kurt");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<[kurt, kluever]> should not have contained <kurt>");
   }
 
   @Test
   public void doesNotContainNull() {
     Multiset<String> multiset = HashMultiset.create();
     multiset.add(null);
-    try {
-      assertThat(multiset).doesNotContain(null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<[null]> should not have contained <null>");
-    }
+    expectFailure.whenTesting().that(multiset).doesNotContain(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<[null]> should not have contained <null>");
   }
 }

@@ -930,12 +930,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // it for completeness.
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
           findCandidateMapping(actualList, expectedList);
-      failIfCandidateMappingHasMissing(expectedList, candidateMapping);
+      if (failIfCandidateMappingHasMissing(expectedList, candidateMapping)) {
+        return ALREADY_FAILED;
+      }
       // We know that every expected element maps to at least one actual element, and vice versa.
       // Find a maximal 1:1 mapping, and check it for completeness.
       ImmutableBiMap<Integer, Integer> maximalOneToOneMapping =
           findMaximalOneToOneMapping(candidateMapping);
-      failIfOneToOneMappingHasMissing(expectedList, maximalOneToOneMapping);
+      if (failIfOneToOneMappingHasMissing(expectedList, maximalOneToOneMapping)) {
+        return ALREADY_FAILED;
+      }
       // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
       // above that the mapping is not in order).
       return new NotInOrder(
@@ -985,7 +989,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * list, checks that every expected element maps to at least one actual element, and fails if
      * this is not the case. Actual elements which do not map to any expected elements are ignored.
      */
-    void failIfCandidateMappingHasMissing(
+    boolean failIfCandidateMappingHasMissing(
         List<? extends E> expected, ImmutableMultimap<Integer, Integer> mapping) {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty()) {
@@ -993,7 +997,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             "Not true that %s contains at least one element that %s each element of <%s>. "
                 + "It is missing an element that %s %s",
             actualAsString(), correspondence, expected, correspondence, formatMissing(missing));
+        return true;
       }
+      return false;
     }
 
     /**
@@ -1002,7 +1008,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * that every expected element maps to an actual element. Actual elements which do not map to
      * any expected elements are ignored.
      */
-    void failIfOneToOneMappingHasMissing(
+    boolean failIfOneToOneMappingHasMissing(
         List<? extends E> expected, BiMap<Integer, Integer> mapping) {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty()) {
@@ -1013,7 +1019,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 + "of the actual elements. Using the most complete 1:1 mapping (or one such "
                 + "mapping, if there is a tie), it is missing an element that %s %s",
             actualAsString(), correspondence, expected, correspondence, formatMissing(missing));
+        return true;
       }
+      return false;
     }
 
     /**

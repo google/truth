@@ -52,6 +52,14 @@ import javax.annotation.Nullable;
  */
 // Not final since SetMultimapSubject and ListMultimapSubject extends this
 public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
+
+  /** Ordered implementation that does nothing because an earlier check already caused a failure. */
+  private static final Ordered ALREADY_FAILED =
+      new Ordered() {
+        @Override
+        public void inOrder() {}
+      };
+
   MultimapSubject(FailureStrategy failureStrategy, @Nullable Multimap<?, ?> multimap) {
     super(failureStrategy, multimap);
   }
@@ -172,14 +180,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         if (actual() instanceof ListMultimap) {
           // If we're comparing ListMultimaps, check for order
           containsExactlyEntriesIn((Multimap<?, ?>) other).inOrder();
+          return;
         } else if (actual() instanceof SetMultimap) {
           // If we're comparing SetMultimaps, don't check for order
           containsExactlyEntriesIn((Multimap<?, ?>) other);
+          return;
         }
-        // This statement should generally never be reached because one of the two
-        // containsExactlyEntriesIn calls above should throw an exception. It'll only be reached if
-        // we're looking at a non-ListMultimap and non-SetMultimap
-        // (e.g., a custom Multimap implementation).
         fail("is equal to", other);
       }
     }
@@ -218,12 +224,14 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
             addTypeInfo
                 ? countDuplicatesAndAddTypeInfo(annotateEmptyStringsMultimap(extra).entries())
                 : countDuplicatesMultimap(annotateEmptyStringsMultimap(extra)));
+        return ALREADY_FAILED;
       } else {
         failWithBadResults(
             "contains exactly",
             annotateEmptyStringsMultimap(expectedMultimap),
             "is missing",
             countDuplicatesMultimap(annotateEmptyStringsMultimap(missing)));
+        return ALREADY_FAILED;
       }
     } else if (!extra.isEmpty()) {
       failWithBadResults(
@@ -231,6 +239,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           annotateEmptyStringsMultimap(expectedMultimap),
           "has unexpected items",
           countDuplicatesMultimap(annotateEmptyStringsMultimap(extra)));
+      return ALREADY_FAILED;
     }
 
     return new MultimapInOrder(expectedMultimap);
