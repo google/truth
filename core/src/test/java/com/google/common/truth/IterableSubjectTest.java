@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.collect.Collections2.permutations;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
@@ -56,14 +55,10 @@ public class IterableSubjectTest {
 
   @Test
   public void hasSizeFails() {
-    try {
-      assertThat(ImmutableList.of(1, 2, 3)).hasSize(4);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[1, 2, 3]> has a size of <4>. It is <3>");
-    }
+    expectFailure.whenTesting().that(ImmutableList.of(1, 2, 3)).hasSize(4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[1, 2, 3]> has a size of <4>. It is <3>");
   }
 
   @Test
@@ -87,60 +82,46 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableContainsFailsWithSameToString() {
-    try {
-      assertThat(asList(1L, 2L, 3L, 2L)).contains(2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "<[1, 2, 3, 2]> should have contained <2 (java.lang.Integer)> but doesn't. However, "
-                  + "it does contain <[2 [2 copies]] (java.lang.Long)>.");
-    }
+    expectFailure.whenTesting().that(asList(1L, 2L, 3L, 2L)).contains(2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "<[1, 2, 3, 2]> should have contained <2 (java.lang.Integer)> but doesn't. However, "
+                + "it does contain <[2 [2 copies]] (java.lang.Long)>.");
   }
 
   @Test
   public void iterableContainsFailsWithSameToStringAndNull() {
-    try {
-      assertThat(asList(1, "null")).contains(null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "<[1, null]> should have contained <null (null type)> but doesn't. However, it does "
-                  + "contain <[null] (java.lang.String)>.");
-    }
+    expectFailure.whenTesting().that(asList(1, "null")).contains(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "<[1, null]> should have contained <null (null type)> but doesn't. However, it does "
+                + "contain <[null] (java.lang.String)>.");
   }
 
   @Test
   public void iterableContainsFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).contains(5);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<[1, 2, 3]> should have contained <5>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).contains(5);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<[1, 2, 3]> should have contained <5>");
   }
 
   @Test
   public void namedIterableContainsFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).named("numbers").contains(5);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("numbers (<[1, 2, 3]>) should have contained <5>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).named("numbers").contains(5);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("numbers (<[1, 2, 3]>) should have contained <5>");
   }
 
   @Test
   public void failureMessageIterableContainsFailure() {
-    try {
-      assertWithMessage("custom msg").that(asList(1, 2, 3)).contains(5);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("custom msg: <[1, 2, 3]> should have contained <5>");
-    }
+    expectFailure.whenTesting().withMessage("custom msg").that(asList(1, 2, 3)).contains(5);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("custom msg: <[1, 2, 3]> should have contained <5>");
   }
 
   @Test
@@ -155,12 +136,10 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableDoesNotContainFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).doesNotContain(2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<[1, 2, 3]> should not have contained <2>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).doesNotContain(2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<[1, 2, 3]> should not have contained <2>");
   }
 
   @Test
@@ -175,14 +154,10 @@ public class IterableSubjectTest {
 
   @Test
   public void doesNotContainDuplicatesFailure() {
-    try {
-      assertThat(asList(1, 2, 2, 3)).containsNoDuplicates();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<[1, 2, 2, 3]> has the following duplicates: <[2 x 2]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 2, 3)).containsNoDuplicates();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<[1, 2, 2, 3]> has the following duplicates: <[2 x 2]>");
   }
 
   @Test
@@ -202,71 +177,51 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableContainsAnyOfFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).containsAnyOf(5, 6, 0);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAnyOf(5, 6, 0);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
   }
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndHomogeneousList() {
-    try {
-      assertThat(asList(1L, 2L, 3L)).containsAnyOf(2, 3);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3]> contains any of <[2, 3] (java.lang.Integer)>. "
-                  + "However, it does contain <[2, 3] (java.lang.Long)>.");
-    }
+    expectFailure.whenTesting().that(asList(1L, 2L, 3L)).containsAnyOf(2, 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3]> contains any of <[2, 3] (java.lang.Integer)>. "
+                + "However, it does contain <[2, 3] (java.lang.Long)>.");
   }
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndHomogeneousListWithDuplicates() {
-    try {
-      assertThat(asList(3L, 3L)).containsAnyOf(2, 3, 3);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[3, 3]> contains any of <[2, 3, 3] (java.lang.Integer)>. "
-                  + "However, it does contain <[3 [2 copies]] (java.lang.Long)>.");
-    }
+    expectFailure.whenTesting().that(asList(3L, 3L)).containsAnyOf(2, 3, 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[3, 3]> contains any of <[2, 3, 3] (java.lang.Integer)>. "
+                + "However, it does contain <[3 [2 copies]] (java.lang.Long)>.");
   }
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndNullInSubject() {
-    try {
-      assertThat(asList(null, "abc")).containsAnyOf("def", "null");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[null, abc]> contains any of <[def, null] (java.lang.String)>. "
-                  + "However, it does contain <[null (null type)]>.");
-    }
+    expectFailure.whenTesting().that(asList(null, "abc")).containsAnyOf("def", "null");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[null, abc]> contains any of <[def, null] (java.lang.String)>. "
+                + "However, it does contain <[null (null type)]>.");
   }
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndNullInExpectation() {
-    try {
-      assertThat(asList("null", "abc")).containsAnyOf("def", null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[null, abc]> contains any of "
-                  + "<[def (java.lang.String), null (null type)]>. "
-                  + "However, it does contain <[null] (java.lang.String)>.");
-    }
+    expectFailure.whenTesting().that(asList("null", "abc")).containsAnyOf("def", null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[null, abc]> contains any of "
+                + "<[def (java.lang.String), null (null type)]>. "
+                + "However, it does contain <[null] (java.lang.String)>.");
   }
 
   @Test
@@ -305,54 +260,36 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableContainsAllOfFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).containsAllOf(1, 2, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAllOf(1, 2, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
   }
 
   @Test
   public void iterableContainsAllOfWithExtras() {
-    try {
-      assertThat(asList("y", "x")).containsAllOf("x", "y", "z");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[y, x]> contains all of <[x, y, z]>. It is missing <[z]>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(asList("y", "x")).containsAllOf("x", "y", "z");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[y, x]> contains all of <[x, y, z]>. It is missing <[z]>");
   }
 
   @Test
   public void iterableContainsAllOfWithExtraCopiesOfOutOfOrder() {
-    try {
-      assertThat(asList("y", "x")).containsAllOf("x", "y", "y");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[y, x]> contains all of <[x, y, y]>. It is missing <[y]>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(asList("y", "x")).containsAllOf("x", "y", "y");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[y, x]> contains all of <[x, y, y]>. It is missing <[y]>");
   }
 
   @Test
   public void iterableContainsAllOfWithDuplicatesFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3]> contains all of <[1, 2, 2, 2, 3, 4]>. "
-                  + "It is missing <[2 [2 copies], 4]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3]> contains all of <[1, 2, 2, 2, 3, 4]>. "
+                + "It is missing <[2 [2 copies], 4]>");
   }
 
   /*
@@ -361,88 +298,64 @@ public class IterableSubjectTest {
    */
   @Test
   public void iterableContainsAllOfWithDuplicateMissingElements() {
-    try {
-      assertThat(asList(1, 2)).containsAllOf(4, 4, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2]> contains all of <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2)).containsAllOf(4, 4, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2]> contains all of <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
   }
 
   @Test
   public void iterableContainsAllOfWithNullFailure() {
-    try {
-      assertThat(asList(1, null, 3)).containsAllOf(1, null, null, 3);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, null, 3]> contains all of <[1, null, null, 3]>. "
-                  + "It is missing <[null]>");
-    }
+    expectFailure.whenTesting().that(asList(1, null, 3)).containsAllOf(1, null, null, 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, null, 3]> contains all of <[1, null, null, 3]>. "
+                + "It is missing <[null]>");
   }
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousList() {
-    try {
-      assertThat(asList(1L, 2L)).containsAllOf(1, 2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2]> contains all of <[1, 2]>. It is missing "
-                  + "<[1, 2] (java.lang.Integer)>. However, it does contain "
-                  + "<[1, 2] (java.lang.Long)>.");
-    }
+    expectFailure.whenTesting().that(asList(1L, 2L)).containsAllOf(1, 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2]> contains all of <[1, 2]>. It is missing "
+                + "<[1, 2] (java.lang.Integer)>. However, it does contain "
+                + "<[1, 2] (java.lang.Long)>.");
   }
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithDuplicates() {
-    try {
-      assertThat(asList(1L, 2L, 2L)).containsAllOf(1, 1, 2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 2]> contains all of <[1, 1, 2]>. It is missing "
-                  + "<[1 [2 copies], 2] (java.lang.Integer)>. However, it does contain "
-                  + "<[1, 2 [2 copies]] (java.lang.Long)>.");
-    }
+    expectFailure.whenTesting().that(asList(1L, 2L, 2L)).containsAllOf(1, 1, 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 2]> contains all of <[1, 1, 2]>. It is missing "
+                + "<[1 [2 copies], 2] (java.lang.Integer)>. However, it does contain "
+                + "<[1, 2 [2 copies]] (java.lang.Long)>.");
   }
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithNull() {
-    try {
-      assertThat(asList("null", "abc")).containsAllOf("abc", null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[null, abc]> contains all of <[abc, null]>. It is missing "
-                  + "<[null (null type)]>. However, it does contain <[null] (java.lang.String)>.");
-    }
+    expectFailure.whenTesting().that(asList("null", "abc")).containsAllOf("abc", null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[null, abc]> contains all of <[abc, null]>. It is missing "
+                + "<[null (null type)]>. However, it does contain <[null] (java.lang.String)>.");
   }
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
-    try {
-      assertThat(asList(1, 2, 2L, 3L, 3L)).containsAllOf(2L, 2L, 3, 3);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 2, 3, 3]> contains all of <[2, 2, 3, 3]>. It is missing "
-                  + "<[2 (java.lang.Long), 3 (java.lang.Integer) [2 copies]]>. However, it does "
-                  + "contain <[2 (java.lang.Integer), 3 (java.lang.Long) [2 copies]]>.");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 2L, 3L, 3L)).containsAllOf(2L, 2L, 3, 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 2, 3, 3]> contains all of <[2, 2, 3, 3]>. It is missing "
+                + "<[2 (java.lang.Long), 3 (java.lang.Integer) [2 copies]]>. However, it does "
+                + "contain <[2 (java.lang.Integer), 3 (java.lang.Long) [2 copies]]>.");
   }
 
   @Test
@@ -480,14 +393,10 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableContainsAllOfInOrderWithFailure() {
-    try {
-      assertThat(asList(1, null, 3)).containsAllOf(null, 1, 3).inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[1, null, 3]> contains all elements in order <[null, 1, 3]>");
-    }
+    expectFailure.whenTesting().that(asList(1, null, 3)).containsAllOf(null, 1, 3).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[1, null, 3]> contains all elements in order <[null, 1, 3]>");
   }
 
   @Test
@@ -526,14 +435,10 @@ public class IterableSubjectTest {
           }
         };
 
-    try {
-      assertThat(iterable).containsAllOf(1, 3, (Object) null).inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <BadIterable> contains all elements in order <[1, 3, null]>");
-    }
+    expectFailure.whenTesting().that(iterable).containsAllOf(1, 3, (Object) null).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <BadIterable> contains all elements in order <[1, 3, null]>");
   }
 
   @Test
@@ -543,41 +448,28 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableContainsNoneOfFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).containsNoneOf(1, 2, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).containsNoneOf(1, 2, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
   }
 
   @Test
   public void iterableContainsNoneOfFailureWithDuplicateInSubject() {
-    try {
-      assertThat(asList(1, 2, 2, 3)).containsNoneOf(1, 2, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 2, 3)).containsNoneOf(1, 2, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
   }
 
   @Test
   public void iterableContainsNoneOfFailureWithDuplicateInExpected() {
-    try {
-      assertThat(asList(1, 2, 3)).containsNoneOf(1, 2, 2, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3]> contains none of <[1, 2, 2, 4]>. It contains <[1, 2]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).containsNoneOf(1, 2, 2, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3]> contains none of <[1, 2, 2, 4]>. It contains <[1, 2]>");
   }
 
   @Test
@@ -702,17 +594,12 @@ public class IterableSubjectTest {
     assertThat(asList(one, two)).containsExactlyElementsIn(asList(two, one));
     assertThat(asList(one, two)).containsExactlyElementsIn(asList(one, two)).inOrder();
 
-    try {
-      assertThat(asList(one, two)).containsExactly(one);
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[HCT, HCT]> contains exactly <[HCT]>. "
-                  + "It has unexpected items <[HCT]>");
-      return;
-    }
-    fail();
+    expectFailure.whenTesting().that(asList(one, two)).containsExactly(one);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[HCT, HCT]> contains exactly <[HCT]>. "
+                + "It has unexpected items <[HCT]>");
   }
 
   private static class HashCodeThrower {
@@ -739,95 +626,70 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableContainsExactlyElementsInWithEmptyExpected() {
-    try {
-      assertThat(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <[foo]> is empty");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure.whenTesting().that(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[foo]> is empty");
   }
 
   @Test
   public void iterableContainsExactlyElementsInErrorMessageIsOrdered() {
-    try {
-      assertThat(asList("foo OR bar")).containsExactlyElementsIn(asList("foo", "bar"));
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[foo OR bar]> contains exactly <[foo, bar]>. "
-                  + "It is missing <[foo, bar]> and has unexpected items <[foo OR bar]>");
-      return;
-    }
-    fail("Should have thrown.");
+    expectFailure
+        .whenTesting()
+        .that(asList("foo OR bar"))
+        .containsExactlyElementsIn(asList("foo", "bar"));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[foo OR bar]> contains exactly <[foo, bar]>. "
+                + "It is missing <[foo, bar]> and has unexpected items <[foo OR bar]>");
   }
 
   @Test
   public void iterableContainsExactlyMissingItemFailure() {
-    try {
-      assertThat(asList(1, 2)).containsExactly(1, 2, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2)).containsExactly(1, 2, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
   }
 
   @Test
   public void iterableContainsExactlyUnexpectedItemFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).containsExactly(1, 2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3]> contains exactly <[1, 2]>. It has unexpected items <[3]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).containsExactly(1, 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3]> contains exactly <[1, 2]>. It has unexpected items <[3]>");
   }
 
   @Test
   public void iterableContainsExactlyWithDuplicatesNotEnoughItemsFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3]>. "
-                  + "It is missing <[2 [2 copies]]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3]>. "
+                + "It is missing <[2 [2 copies]]>");
   }
 
   @Test
   public void iterableContainsExactlyWithDuplicatesMissingItemFailure() {
-    try {
-      assertThat(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3, 4]>. "
-                  + "It is missing <[2 [2 copies], 4]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3, 4]>. "
+                + "It is missing <[2 [2 copies], 4]>");
   }
 
   @Test
   public void iterableContainsExactlyWithDuplicatesUnexpectedItemFailure() {
-    try {
-      assertThat(asList(1, 2, 2, 2, 2, 3)).containsExactly(1, 2, 2, 3);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 2, 2, 2, 3]> contains exactly <[1, 2, 2, 3]>. "
-                  + "It has unexpected items <[2 [2 copies]]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 2, 2, 2, 3)).containsExactly(1, 2, 2, 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 2, 2, 2, 3]> contains exactly <[1, 2, 2, 3]>. "
+                + "It has unexpected items <[2 [2 copies]]>");
   }
 
   /*
@@ -836,192 +698,143 @@ public class IterableSubjectTest {
    */
   @Test
   public void iterableContainsExactlyWithDuplicateMissingElements() {
-    try {
-      assertThat(asList()).containsExactly(4, 4, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[]> contains exactly <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
-    }
+    expectFailure.whenTesting().that(asList()).containsExactly(4, 4, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[]> contains exactly <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
   }
 
   @Test
   public void iterableContainsExactlyWithNullFailure() {
-    try {
-      assertThat(asList(1, null, 3)).containsExactly(1, null, null, 3);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, null, 3]> contains exactly <[1, null, null, 3]>. "
-                  + "It is missing <[null]>");
-    }
+    expectFailure.whenTesting().that(asList(1, null, 3)).containsExactly(1, null, null, 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, null, 3]> contains exactly <[1, null, null, 3]>. "
+                + "It is missing <[null]>");
   }
 
   @Test
   public void iterableContainsExactlyWithMissingAndExtraElements() {
-    try {
-      assertThat(asList(1, 2, 3)).containsExactly(1, 2, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3]> contains exactly <[1, 2, 4]>. "
-                  + "It is missing <[4]> and has unexpected items <[3]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3)).containsExactly(1, 2, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3]> contains exactly <[1, 2, 4]>. "
+                + "It is missing <[4]> and has unexpected items <[3]>");
   }
 
   @Test
   public void iterableContainsExactlyWithDuplicateMissingAndExtraElements() {
-    try {
-      assertThat(asList(1, 2, 3, 3)).containsExactly(1, 2, 4, 4);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3, 3]> contains exactly <[1, 2, 4, 4]>. "
-                  + "It is missing <[4 [2 copies]]> and has unexpected items <[3 [2 copies]]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3, 3)).containsExactly(1, 2, 4, 4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3, 3]> contains exactly <[1, 2, 4, 4]>. "
+                + "It is missing <[4 [2 copies]]> and has unexpected items <[3 [2 copies]]>");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousList() {
-    try {
-      assertThat(asList(1L, 2L)).containsExactly(1, 2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2]> contains exactly <[1, 2]>. It is missing "
-                  + "<[1, 2] (java.lang.Integer)> and has unexpected items "
-                  + "<[1, 2] (java.lang.Long)>");
-    }
+    expectFailure.whenTesting().that(asList(1L, 2L)).containsExactly(1, 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2]> contains exactly <[1, 2]>. It is missing "
+                + "<[1, 2] (java.lang.Integer)> and has unexpected items "
+                + "<[1, 2] (java.lang.Long)>");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndListWithNull() {
-    try {
-      assertThat(asList(1L, 2L)).containsExactly(null, 1, 2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2]> contains exactly <[null, 1, 2]>. It is missing "
-                  + "<[null (null type), 1 (java.lang.Integer), 2 (java.lang.Integer)]> and has "
-                  + "unexpected items <[1, 2] (java.lang.Long)>");
-    }
+    expectFailure.whenTesting().that(asList(1L, 2L)).containsExactly(null, 1, 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2]> contains exactly <[null, 1, 2]>. It is missing "
+                + "<[null (null type), 1 (java.lang.Integer), 2 (java.lang.Integer)]> and has "
+                + "unexpected items <[1, 2] (java.lang.Long)>");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHeterogeneousList() {
-    try {
-      assertThat(asList(1L, 2)).containsExactly(1, null, 2L);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2]> contains exactly <[1, null, 2]>. It is missing "
-                  + "<[1 (java.lang.Integer), null (null type), 2 (java.lang.Long)]> and has "
-                  + "unexpected items <[1 (java.lang.Long), 2 (java.lang.Integer)]>");
-    }
+    expectFailure.whenTesting().that(asList(1L, 2)).containsExactly(1, null, 2L);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2]> contains exactly <[1, null, 2]>. It is missing "
+                + "<[1 (java.lang.Integer), null (null type), 2 (java.lang.Long)]> and has "
+                + "unexpected items <[1 (java.lang.Long), 2 (java.lang.Integer)]>");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousListWithDuplicates() {
-    try {
-      assertThat(asList(1L, 2L)).containsExactly(1, 2, 2);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2]> contains exactly <[1, 2, 2]>. It is missing "
-                  + "<[1, 2 [2 copies]] (java.lang.Integer)> and has unexpected items "
-                  + "<[1, 2] (java.lang.Long)>");
-    }
+    expectFailure.whenTesting().that(asList(1L, 2L)).containsExactly(1, 2, 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2]> contains exactly <[1, 2, 2]>. It is missing "
+                + "<[1, 2 [2 copies]] (java.lang.Integer)> and has unexpected items "
+                + "<[1, 2] (java.lang.Long)>");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
-    try {
-      assertThat(asList(1L, 2)).containsExactly(1, null, null, 2L, 2L);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2]> contains exactly <[1, null, null, 2, 2]>. It is missing "
-                  + "<[1 (java.lang.Integer), null (null type) [2 copies], "
-                  + "2 (java.lang.Long) [2 copies]]> and has unexpected items "
-                  + "<[1 (java.lang.Long), 2 (java.lang.Integer)]>");
-    }
+    expectFailure.whenTesting().that(asList(1L, 2)).containsExactly(1, null, null, 2L, 2L);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2]> contains exactly <[1, null, null, 2, 2]>. It is missing "
+                + "<[1 (java.lang.Integer), null (null type) [2 copies], "
+                + "2 (java.lang.Long) [2 copies]]> and has unexpected items "
+                + "<[1 (java.lang.Long), 2 (java.lang.Integer)]>");
   }
 
   @Test
   public void iterableContainsExactlyWithOneIterableGivesWarning() {
-    try {
-      assertThat(asList(1, 2, 3, 4)).containsExactly(asList(1, 2, 3, 4));
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2, 3, 4]]>. "
-                  + "It is missing <[[1, 2, 3, 4]]> and has unexpected items <[1, 2, 3, 4]>. "
-                  + "Passing an iterable to the varargs method containsExactly(Object...) is "
-                  + "often not the correct thing to do. Did you mean to call "
-                  + "containsExactlyElementsIn(Iterable) instead?");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3, 4)).containsExactly(asList(1, 2, 3, 4));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2, 3, 4]]>. "
+                + "It is missing <[[1, 2, 3, 4]]> and has unexpected items <[1, 2, 3, 4]>. "
+                + "Passing an iterable to the varargs method containsExactly(Object...) is "
+                + "often not the correct thing to do. Did you mean to call "
+                + "containsExactlyElementsIn(Iterable) instead?");
   }
 
   @Test
   public void iterableContainsExactlyElementsInWithOneIterableDoesNotGiveWarning() {
-    try {
-      assertThat(asList(1, 2, 3, 4)).containsExactlyElementsIn(asList(1, 2, 3));
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3, 4]> contains exactly <[1, 2, 3]>. "
-                  + "It has unexpected items <[4]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3, 4)).containsExactlyElementsIn(asList(1, 2, 3));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3, 4]> contains exactly <[1, 2, 3]>. "
+                + "It has unexpected items <[4]>");
   }
 
   @Test
   public void iterableContainsExactlyWithTwoIterableDoesNotGivesWarning() {
-    try {
-      assertThat(asList(1, 2, 3, 4)).containsExactly(asList(1, 2), asList(3, 4));
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2], [3, 4]]>. "
-                  + "It is missing <[[1, 2], [3, 4]]> and has unexpected items <[1, 2, 3, 4]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(asList(1, 2, 3, 4))
+        .containsExactly(asList(1, 2), asList(3, 4));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2], [3, 4]]>. "
+                + "It is missing <[[1, 2], [3, 4]]> and has unexpected items <[1, 2, 3, 4]>");
   }
 
   @Test
   public void iterableContainsExactlyWithOneNonIterableDoesNotGiveWarning() {
-    try {
-      assertThat(asList(1, 2, 3, 4)).containsExactly(1);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, 2, 3, 4]> contains exactly <[1]>. "
-                  + "It has unexpected items <[2, 3, 4]>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 3, 4)).containsExactly(1);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3, 4]> contains exactly <[1]>. "
+                + "It has unexpected items <[2, 3, 4]>");
   }
 
   @Test
@@ -1036,16 +849,12 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableContainsExactlyInOrderWithFailure() {
-    try {
-      assertThat(asList(1, null, 3)).containsExactly(null, 1, 3).inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[1, null, 3]> contains exactly these elements in order "
-                  + "<[null, 1, 3]>");
-    }
+    expectFailure.whenTesting().that(asList(1, null, 3)).containsExactly(null, 1, 3).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, null, 3]> contains exactly these elements in order "
+                + "<[null, 1, 3]>");
   }
 
   @Test
@@ -1077,16 +886,12 @@ public class IterableSubjectTest {
           }
         };
 
-    try {
-      assertThat(iterable).containsExactly(1, 3, null).inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <BadIterable> contains exactly "
-                  + "these elements in order <[1, 3, null]>");
-    }
+    expectFailure.whenTesting().that(iterable).containsExactly(1, 3, null).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <BadIterable> contains exactly "
+                + "these elements in order <[1, 3, null]>");
   }
 
   @Test
@@ -1096,12 +901,10 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableIsEmptyWithFailure() {
-    try {
-      assertThat(asList(1, null, 3)).isEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <[1, null, 3]> is empty");
-    }
+    expectFailure.whenTesting().that(asList(1, null, 3)).isEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[1, null, 3]> is empty");
   }
 
   @Test
@@ -1111,12 +914,10 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableIsNotEmptyWithFailure() {
-    try {
-      assertThat(asList()).isNotEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
-    }
+    expectFailure.whenTesting().that(asList()).isNotEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[]> is not empty");
   }
 
   @Test
@@ -1128,13 +929,9 @@ public class IterableSubjectTest {
 
   @Test
   public void isStrictlyOrderedFailure() {
-    try {
-      assertThat(asList(1, 2, 2, 4)).isStrictlyOrdered();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("is strictly ordered");
-      assertThat(e).hasMessageThat().contains("<2> <2>");
-    }
+    expectFailure.whenTesting().that(asList(1, 2, 2, 4)).isStrictlyOrdered();
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is strictly ordered");
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<2> <2>");
   }
 
   @Test
@@ -1155,13 +952,9 @@ public class IterableSubjectTest {
 
   @Test
   public void isOrderedFailure() {
-    try {
-      assertThat(asList(1, 3, 2, 4)).isOrdered();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("is ordered");
-      assertThat(e).hasMessageThat().contains("<3> <2>");
-    }
+    expectFailure.whenTesting().that(asList(1, 3, 2, 4)).isOrdered();
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is ordered");
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<3> <2>");
   }
 
   @Test
@@ -1184,13 +977,12 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableIsStrictlyOrderedWithComparatorFailure() {
-    try {
-      assertThat(asList("1", "2", "2", "10")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("is strictly ordered");
-      assertThat(e).hasMessageThat().contains("<2> <2>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(asList("1", "2", "2", "10"))
+        .isStrictlyOrdered(COMPARE_AS_DECIMAL);
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is strictly ordered");
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<2> <2>");
   }
 
   @Test
@@ -1203,13 +995,9 @@ public class IterableSubjectTest {
 
   @Test
   public void iterableIsOrderedWithComparatorFailure() {
-    try {
-      assertThat(asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("is ordered");
-      assertThat(e).hasMessageThat().contains("<10> <2>");
-    }
+    expectFailure.whenTesting().that(asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is ordered");
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<10> <2>");
   }
 
   private static final Comparator<String> COMPARE_AS_DECIMAL =
@@ -1286,18 +1074,16 @@ public class IterableSubjectTest {
   @Test
   public void comparingElementsUsing_contains_failure() {
     ImmutableList<String> actual = ImmutableList.of("not a number", "+123", "+456", "+789");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .contains(2345);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[not a number, +123, +456, +789]> contains at least one element that"
-                  + " parses to <2345>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .contains(2345);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[not a number, +123, +456, +789]> contains at least one element that"
+                + " parses to <2345>");
   }
 
   @Test
@@ -1331,18 +1117,16 @@ public class IterableSubjectTest {
   @Test
   public void comparingElementsUsing_doesNotContains_failure() {
     ImmutableList<String> actual = ImmutableList.of("not a number", "+123", "+456", "+789");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .doesNotContain(456);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "<[not a number, +123, +456, +789]> should not have contained an element that "
-                  + "parses to <456>. It contained the following such elements: <[+456]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContain(456);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "<[not a number, +123, +456, +789]> should not have contained an element that "
+                + "parses to <456>. It contained the following such elements: <[+456]>");
   }
 
   @Test
@@ -1387,19 +1171,17 @@ public class IterableSubjectTest {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+64", "+128", "0x40", "0x80");
     // Actual list has candidate matches for 64, 128, and the other 128, but is missing 256.
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+64, +128, 0x40, 0x80]> contains exactly one element that "
-                  + "parses to each element of <[64, 128, 256, 128]>. "
-                  + "It is missing an element that parses to <256>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+64, +128, 0x40, 0x80]> contains exactly one element that "
+                + "parses to each element of <[64, 128, 256, 128]>. "
+                + "It is missing an element that parses to <256>");
   }
 
   @Test
@@ -1416,14 +1198,14 @@ public class IterableSubjectTest {
   public void comparingElementsUsing_containsExactlyElementsIn_failsExpectedIsEmpty() {
     ImmutableList<Integer> expected = ImmutableList.of();
     ImmutableList<String> actual = ImmutableList.of("+64", "+128", "0x40", "0x80");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <[+64, +128, 0x40, 0x80]> is empty");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[+64, +128, 0x40, 0x80]> is empty");
   }
 
   @Test
@@ -1431,19 +1213,17 @@ public class IterableSubjectTest {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+64", "+64", "0x40", "0x40");
     // Actual list has candidate matches for 64 only, and is missing 128, 256, and the other 128.
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+64, +64, 0x40, 0x40]> contains exactly one element that "
-                  + "parses to each element of <[64, 128, 256, 128]>. "
-                  + "It is missing an element that parses to each of <[128, 256, 128]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+64, +64, 0x40, 0x40]> contains exactly one element that "
+                + "parses to each element of <[64, 128, 256, 128]>. "
+                + "It is missing an element that parses to each of <[128, 256, 128]>");
   }
 
   @Test
@@ -1451,19 +1231,17 @@ public class IterableSubjectTest {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 512);
     ImmutableList<String> actual = ImmutableList.of("+64", "+128", "+256");
     // Actual list has in-order candidate matches for 64, 128, and 256, but is missing 512.
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+64, +128, +256]> contains exactly one element that "
-                  + "parses to each element of <[64, 128, 256, 512]>. "
-                  + "It is missing an element that parses to <512>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+64, +128, +256]> contains exactly one element that "
+                + "parses to each element of <[64, 128, 256, 512]>. "
+                + "It is missing an element that parses to <512>");
   }
 
   @Test
@@ -1471,19 +1249,17 @@ public class IterableSubjectTest {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+64", "+128", "+256", "cheese");
     // Actual list has candidate matches for all the expected, but has extra cheese.
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+64, +128, +256, cheese]> contains exactly one element that "
-                  + "parses to each element of <[64, 128, 256, 128]>. "
-                  + "It has unexpected elements <[cheese]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+64, +128, +256, cheese]> contains exactly one element that "
+                + "parses to each element of <[64, 128, 256, 128]>. "
+                + "It has unexpected elements <[cheese]>");
   }
 
   @Test
@@ -1491,19 +1267,17 @@ public class IterableSubjectTest {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+64", "+128", "+256", "0x80", "cheese");
     // Actual list has in-order candidate matches for all the expected, but has extra cheese.
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+64, +128, +256, 0x80, cheese]> contains exactly one element that "
-                  + "parses to each element of <[64, 128, 256, 128]>. "
-                  + "It has unexpected elements <[cheese]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+64, +128, +256, 0x80, cheese]> contains exactly one element that "
+                + "parses to each element of <[64, 128, 256, 128]>. "
+                + "It has unexpected elements <[cheese]>");
   }
 
   @Test
@@ -1512,105 +1286,99 @@ public class IterableSubjectTest {
     ImmutableList<String> actual = ImmutableList.of("+64", "+128", "jalapenos", "cheese");
     // Actual list has candidate matches for 64, 128, and the other 128, but is missing 256 and has
     // extra jalapenos and cheese.
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+64, +128, jalapenos, cheese]> contains exactly one element that "
-                  + "parses to each element of <[64, 128, 256, 128]>. "
-                  + "It is missing an element that parses to <256> "
-                  + "and has unexpected elements <[jalapenos, cheese]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+64, +128, jalapenos, cheese]> contains exactly one element that "
+                + "parses to each element of <[64, 128, 256, 128]>. "
+                + "It is missing an element that parses to <256> "
+                + "and has unexpected elements <[jalapenos, cheese]>");
   }
 
   @Test
   public void comparingElementsUsing_containsExactlyElementsIn_failsMissingElementInOneToOne() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+128, +64, +256]> contains exactly one element that parses "
-                  + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
-                  + "that matches each expected element, and every element it contains matches at "
-                  + "least one expected element, but there was no 1:1 mapping between all the "
-                  + "actual and expected elements. Using the most complete 1:1 mapping (or one "
-                  + "such mapping, if there is a tie), it is missing an element that parses to "
-                  + "<128>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, +256]> contains exactly one element that parses "
+                + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
+                + "that matches each expected element, and every element it contains matches at "
+                + "least one expected element, but there was no 1:1 mapping between all the "
+                + "actual and expected elements. Using the most complete 1:1 mapping (or one "
+                + "such mapping, if there is a tie), it is missing an element that parses to "
+                + "<128>");
   }
 
   @Test
   public void comparingElementsUsing_containsExactlyElementsIn_failsExtraElementInOneToOne() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x80", "0x40");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-    } catch (AssertionError e) {
-      String expectedPreamble =
-          "Not true that <[+128, +64, +256, 0x80, 0x40]> contains exactly one element that parses "
-              + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
-              + "that matches each expected element, and every element it contains matches at "
-              + "least one expected element, but there was no 1:1 mapping between all the "
-              + "actual and expected elements. Using the most complete 1:1 mapping (or one "
-              + "such mapping, if there is a tie), it has unexpected elements ";
-      assertThat(e)
-          .hasMessageThat()
-          .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    String expectedPreamble =
+        "Not true that <[+128, +64, +256, 0x80, 0x40]> contains exactly one element that parses "
+            + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
+            + "that matches each expected element, and every element it contains matches at "
+            + "least one expected element, but there was no 1:1 mapping between all the "
+            + "actual and expected elements. Using the most complete 1:1 mapping (or one "
+            + "such mapping, if there is a tie), it has unexpected elements ";
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
   }
 
   @Test
   public void comparingElementsUsing_containsExactlyElementsIn_failsMissingAndExtraInOneToOne() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected);
-    } catch (AssertionError e) {
-      String expectedPreamble =
-          "Not true that <[+128, +64, +256, 0x40]> contains exactly one element that parses "
-              + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
-              + "that matches each expected element, and every element it contains matches at "
-              + "least one expected element, but there was no 1:1 mapping between all the "
-              + "actual and expected elements. Using the most complete 1:1 mapping (or one "
-              + "such mapping, if there is a tie), it is missing an element that parses to "
-              + "<128> and has unexpected elements ";
-      assertThat(e)
-          .hasMessageThat()
-          .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    String expectedPreamble =
+        "Not true that <[+128, +64, +256, 0x40]> contains exactly one element that parses "
+            + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
+            + "that matches each expected element, and every element it contains matches at "
+            + "least one expected element, but there was no 1:1 mapping between all the "
+            + "actual and expected elements. Using the most complete 1:1 mapping (or one "
+            + "such mapping, if there is a tie), it is missing an element that parses to "
+            + "<128> and has unexpected elements ";
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
   }
 
   @Test
   public void comparingElementsUsing_containsExactlyElementsIn_inOrder_failsOutOfOrder() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "0x80", "+256");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyElementsIn(expected)
-          .inOrder();
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+128, +64, 0x80, +256]> contains, in order, exactly one element "
-                  + "that parses to each element of <[64, 128, 256, 128]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, 0x80, +256]> contains, in order, exactly one element "
+                + "that parses to each element of <[64, 128, 256, 128]>");
   }
 
   @Test
@@ -1642,23 +1410,22 @@ public class IterableSubjectTest {
   @Test
   public void comparingElementsUsing_containsExactly_failsMissingAndExtraInOneToOne() {
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly(64, 128, 256, 128);
-    } catch (AssertionError e) {
-      String expectedPreamble =
-          "Not true that <[+128, +64, +256, 0x40]> contains exactly one element that parses "
-              + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
-              + "that matches each expected element, and every element it contains matches at "
-              + "least one expected element, but there was no 1:1 mapping between all the "
-              + "actual and expected elements. Using the most complete 1:1 mapping (or one "
-              + "such mapping, if there is a tie), it is missing an element that parses to "
-              + "<128> and has unexpected elements ";
-      assertThat(e)
-          .hasMessageThat()
-          .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly(64, 128, 256, 128);
+    String expectedPreamble =
+        "Not true that <[+128, +64, +256, 0x40]> contains exactly one element that parses "
+            + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
+            + "that matches each expected element, and every element it contains matches at "
+            + "least one expected element, but there was no 1:1 mapping between all the "
+            + "actual and expected elements. Using the most complete 1:1 mapping (or one "
+            + "such mapping, if there is a tie), it is missing an element that parses to "
+            + "<128> and has unexpected elements ";
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
   }
 
   @Test
@@ -1722,19 +1489,17 @@ public class IterableSubjectTest {
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+64", "+128", "fi", "fo", "0x40", "0x80", "fum");
     // Actual list has candidate matches for 64, 128, and the other 128, but is missing 256.
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsAllIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[fee, +64, +128, fi, fo, 0x40, 0x80, fum]> contains at least one "
-                  + "element that parses to each element of <[64, 128, 256, 128]>. "
-                  + "It is missing an element that parses to <256>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[fee, +64, +128, fi, fo, 0x40, 0x80, fum]> contains at least one "
+                + "element that parses to each element of <[64, 128, 256, 128]>. "
+                + "It is missing an element that parses to <256>");
   }
 
   @Test
@@ -1743,19 +1508,17 @@ public class IterableSubjectTest {
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+64", "+64", "fi", "fo", "0x40", "0x40", "fum");
     // Actual list has candidate matches for 64 only, and is missing 128, 256, and the other 128.
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsAllIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[fee, +64, +64, fi, fo, 0x40, 0x40, fum]> contains at least one "
-                  + "element that parses to each element of <[64, 128, 256, 128]>. "
-                  + "It is missing an element that parses to each of <[128, 256, 128]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[fee, +64, +64, fi, fo, 0x40, 0x40, fum]> contains at least one "
+                + "element that parses to each element of <[64, 128, 256, 128]>. "
+                + "It is missing an element that parses to each of <[128, 256, 128]>");
   }
 
   @Test
@@ -1764,19 +1527,17 @@ public class IterableSubjectTest {
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+64", "fi", "fo", "+128", "+256", "fum");
     // Actual list has in-order candidate matches for 64, 128, and 256, but is missing 512.
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsAllIn(expected);
-      fail("Expected failure");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[fee, +64, fi, fo, +128, +256, fum]> contains at least one "
-                  + "element that parses to each element of <[64, 128, 256, 512]>. "
-                  + "It is missing an element that parses to <512>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[fee, +64, fi, fo, +128, +256, fum]> contains at least one "
+                + "element that parses to each element of <[64, 128, 256, 512]>. "
+                + "It is missing an element that parses to <512>");
   }
 
   @Test
@@ -1784,21 +1545,20 @@ public class IterableSubjectTest {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+128", "fi", "fo", "+64", "+256", "fum");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsAllIn(expected);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
-                  + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
-                  + "one element that matches each expected element, but there was no 1:1 mapping "
-                  + "between all the expected elements and any subset of the actual elements. "
-                  + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
-                  + "it is missing an element that parses to <128>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
+                + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
+                + "one element that matches each expected element, but there was no 1:1 mapping "
+                + "between all the expected elements and any subset of the actual elements. "
+                + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
+                + "it is missing an element that parses to <128>");
   }
 
   @Test
@@ -1806,18 +1566,17 @@ public class IterableSubjectTest {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+128", "+64", "fi", "fo", "0x80", "+256", "fum");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsAllIn(expected)
-          .inOrder();
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[fee, +128, +64, fi, fo, 0x80, +256, fum]> contains, in order, "
-                  + "at least one element that parses to each element of <[64, 128, 256, 128]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllIn(expected)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[fee, +128, +64, fi, fo, 0x80, +256, fum]> contains, in order, "
+                + "at least one element that parses to each element of <[64, 128, 256, 128]>");
   }
 
   @Test
@@ -1852,21 +1611,20 @@ public class IterableSubjectTest {
   public void comparingElementsUsing_containsAllOf_failsMissingElementInOneToOne() {
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+128", "fi", "fo", "+64", "+256", "fum");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsAllOf(64, 128, 256, 128);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
-                  + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
-                  + "one element that matches each expected element, but there was no 1:1 mapping "
-                  + "between all the expected elements and any subset of the actual elements. "
-                  + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
-                  + "it is missing an element that parses to <128>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAllOf(64, 128, 256, 128);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
+                + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
+                + "one element that matches each expected element, but there was no 1:1 mapping "
+                + "between all the expected elements and any subset of the actual elements. "
+                + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
+                + "it is missing an element that parses to <128>");
   }
 
   @Test
@@ -1889,17 +1647,16 @@ public class IterableSubjectTest {
   public void comparingElementsUsing_containsAnyOf_failure() {
     ImmutableList<String> actual =
         ImmutableList.of("+128", "+64", "This is not the string you're looking for", "0x40");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsAnyOf(255, 256, 257);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
-                  + "contains at least one element that parses to any of <[255, 256, 257]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAnyOf(255, 256, 257);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
+                + "contains at least one element that parses to any of <[255, 256, 257]>");
   }
 
   @Test
@@ -1924,18 +1681,17 @@ public class IterableSubjectTest {
     ImmutableList<String> actual =
         ImmutableList.of("+128", "+64", "This is not the string you're looking for", "0x40");
     ImmutableList<Integer> expected = ImmutableList.of(255, 256, 257);
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsAnyIn(expected);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
-                  + "contains at least one element that parses to any element in "
-                  + "<[255, 256, 257]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAnyIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
+                + "contains at least one element that parses to any element in "
+                + "<[255, 256, 257]>");
   }
 
   @Test
@@ -1959,35 +1715,33 @@ public class IterableSubjectTest {
   @Test
   public void comparingElementsUsing_containsNoneOf_failure() {
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsNoneOf(255, 256, 257);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to any of "
-                  + "<[255, 256, 257]>. It contains at least one element that parses to each of "
-                  + "<[256]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsNoneOf(255, 256, 257);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to any of "
+                + "<[255, 256, 257]>. It contains at least one element that parses to each of "
+                + "<[256]>");
   }
 
   @Test
   public void comparingElementsUsing_containsNoneOf_null() {
     List<String> actual = asList("+128", "+64", null, "0x40");
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsNoneOf(255, null, 257);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+128, +64, null, 0x40]> contains no element that parses to any of "
-                  + "<[255, null, 257]>. It contains at least one element that parses to each of "
-                  + "<[null]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsNoneOf(255, null, 257);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, null, 0x40]> contains no element that parses to any of "
+                + "<[255, null, 257]>. It contains at least one element that parses to each of "
+                + "<[null]>");
   }
 
   @Test
@@ -2004,35 +1758,33 @@ public class IterableSubjectTest {
   public void comparingElementsUsing_containsNoneIn_failure() {
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
     ImmutableList<Integer> excluded = ImmutableList.of(255, 256, 257);
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsNoneIn(excluded);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to "
-                  + "any element in <[255, 256, 257]>. It contains at least one element that "
-                  + "parses to each of <[256]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsNoneIn(excluded);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to "
+                + "any element in <[255, 256, 257]>. It contains at least one element that "
+                + "parses to each of <[256]>");
   }
 
   @Test
   public void comparingElementsUsing_containsNoneIn_null() {
     List<String> actual = asList("+128", "+64", null, "0x40");
     List<Integer> excluded = asList(255, null, 257);
-    try {
-      assertThat(actual)
-          .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsNoneIn(excluded);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[+128, +64, null, 0x40]> contains no element that parses to "
-                  + "any element in <[255, null, 257]>. It contains at least one element that "
-                  + "parses to each of <[null]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsNoneIn(excluded);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, null, 0x40]> contains no element that parses to "
+                + "any element in <[255, null, 257]>. It contains at least one element that "
+                + "parses to each of <[null]>");
   }
 }

@@ -41,7 +41,6 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class MultimapSubjectTest {
-
   @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
   @Test
@@ -73,17 +72,13 @@ public class MultimapSubjectTest {
 
     assertThat(multimapA.equals(multimapB)).isFalse();
 
-    try {
-      assertThat(multimapA).isEqualTo(multimapB);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{kurt=[kluever, russell, cobain]}> contains exactly "
-                  + "<{kurt=[kluever, cobain, russell]}> in order. "
-                  + "The values for keys <[kurt]> are not in order");
-    }
+    expectFailure.whenTesting().that(multimapA).isEqualTo(multimapB);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{kurt=[kluever, russell, cobain]}> contains exactly "
+                + "<{kurt=[kluever, cobain, russell]}> in order. "
+                + "The values for keys <[kurt]> are not in order");
   }
 
   @Test
@@ -113,34 +108,29 @@ public class MultimapSubjectTest {
 
     assertThat(multimapA.equals(multimapB)).isFalse();
 
-    try {
-      assertThat(multimapA).isEqualTo(multimapB);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{kurt=[kluever, russell, cobain]}> contains exactly "
-                  + "<{kurt=[kluever, russell]}>. It has unexpected items <{kurt=[cobain]}>");
-    }
+    expectFailure.whenTesting().that(multimapA).isEqualTo(multimapB);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{kurt=[kluever, russell, cobain]}> contains exactly "
+                + "<{kurt=[kluever, russell]}>. It has unexpected items <{kurt=[cobain]}>");
   }
 
   @Test
   public void isEqualTo_failsWithSameToString() {
-    try {
-      assertThat(ImmutableMultimap.of(1, "a", 1, "b", 2, "c"))
-          .isEqualTo(ImmutableMultimap.of(1L, "a", 1L, "b", 2L, "c"));
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertWithMessage("Full message: %s", e.getMessage())
-          .that(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{1=[a, b], 2=[c]}> contains exactly <{1=[a, b], 2=[c]}>. It is "
-                  + "missing <[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long, java.lang.String>)> and "
-                  + "has unexpected items "
-                  + "<[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer, java.lang.String>)>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMultimap.of(1, "a", 1, "b", 2, "c"))
+        .isEqualTo(ImmutableMultimap.of(1L, "a", 1L, "b", 2L, "c"));
+    AssertionError e = expectFailure.getFailure();
+    assertWithMessage("Full message: %s", e.getMessage())
+        .that(e)
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=[a, b], 2=[c]}> contains exactly <{1=[a, b], 2=[c]}>. It is "
+                + "missing <[1=a, 1=b, 2=c] (Map.Entry<java.lang.Long, java.lang.String>)> and "
+                + "has unexpected items "
+                + "<[1=a, 1=b, 2=c] (Map.Entry<java.lang.Integer, java.lang.String>)>");
   }
 
   @Test
@@ -152,12 +142,10 @@ public class MultimapSubjectTest {
   @Test
   public void multimapIsEmptyWithFailure() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
-    try {
-      assertThat(multimap).isEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{1=[5]}> is empty");
-    }
+    expectFailure.whenTesting().that(multimap).isEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{1=[5]}> is empty");
   }
 
   @Test
@@ -169,44 +157,34 @@ public class MultimapSubjectTest {
   @Test
   public void multimapIsNotEmptyWithFailure() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of();
-    try {
-      assertThat(multimap).isNotEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{}> is not empty");
-    }
+    expectFailure.whenTesting().that(multimap).isNotEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{}> is not empty");
   }
 
   @Test
   public void multimapNamedValuesForKey() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
-    try {
-      assertThat(multimap).named("multymap").valuesForKey(1).containsExactly(4);
-      fail("Should have thrown.");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that "
-                  + "<Values for key <1> (<[5]>) in multymap (<{1=[5]}>)> contains exactly <[4]>. "
-                  + "It is missing <[4]> and has unexpected items <[5]>");
-    }
+    expectFailure.whenTesting().that(multimap).named("multymap").valuesForKey(1).containsExactly(4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that "
+                + "<Values for key <1> (<[5]>) in multymap (<{1=[5]}>)> contains exactly <[4]>. "
+                + "It is missing <[4]> and has unexpected items <[5]>");
   }
 
   @Test
   public void valuesForKeyNamed() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
-    try {
-      assertThat(multimap).valuesForKey(1).named("valuez").containsExactly(4);
-      fail("Should have thrown.");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that "
-                  + "valuez (<Values for key <1> (<[5]>) in <{1=[5]}>>) contains exactly <[4]>. "
-                  + "It is missing <[4]> and has unexpected items <[5]>");
-    }
+    expectFailure.whenTesting().that(multimap).valuesForKey(1).named("valuez").containsExactly(4);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that "
+                + "valuez (<Values for key <1> (<[5]>) in <{1=[5]}>>) contains exactly <[4]>. "
+                + "It is missing <[4]> and has unexpected items <[5]>");
   }
 
   @Test
@@ -237,14 +215,10 @@ public class MultimapSubjectTest {
   @Test
   public void containsKeyFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
-    try {
-      assertThat(multimap).containsKey("daniel");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=[kluever]}> contains key <daniel>");
-    }
+    expectFailure.whenTesting().that(multimap).containsKey("daniel");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=[kluever]}> contains key <daniel>");
   }
 
   @Test
@@ -257,14 +231,10 @@ public class MultimapSubjectTest {
   @Test
   public void containsKeyNullFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
-    try {
-      assertThat(multimap).containsKey(null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=[kluever]}> contains key <null>");
-    }
+    expectFailure.whenTesting().that(multimap).containsKey(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=[kluever]}> contains key <null>");
   }
 
   @Test
@@ -291,28 +261,20 @@ public class MultimapSubjectTest {
   @Test
   public void doesNotContainKeyFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
-    try {
-      assertThat(multimap).doesNotContainKey("kurt");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=[kluever]}> does not contain key <kurt>");
-    }
+    expectFailure.whenTesting().that(multimap).doesNotContainKey("kurt");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=[kluever]}> does not contain key <kurt>");
   }
 
   @Test
   public void doesNotContainNullKeyFailure() {
     Multimap<String, String> multimap = HashMultimap.create();
     multimap.put(null, "null");
-    try {
-      assertThat(multimap).doesNotContainKey(null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{null=[null]}> does not contain key <null>");
-    }
+    expectFailure.whenTesting().that(multimap).doesNotContainKey(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{null=[null]}> does not contain key <null>");
   }
 
   @Test
@@ -324,14 +286,10 @@ public class MultimapSubjectTest {
   @Test
   public void containsEntryFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
-    try {
-      assertThat(multimap).containsEntry("daniel", "ploch");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=[kluever]}> contains entry <daniel=ploch>");
-    }
+    expectFailure.whenTesting().that(multimap).containsEntry("daniel", "ploch");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=[kluever]}> contains entry <daniel=ploch>");
   }
 
   @Test
@@ -344,47 +302,35 @@ public class MultimapSubjectTest {
   @Test
   public void failContainsEntry() {
     ImmutableMultimap<String, String> actual = ImmutableMultimap.of("a", "A");
-    try {
-      assertThat(actual).containsEntry("a", "a");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{a=[A]}> contains entry <a=a>. "
-                  + "However, it has a mapping from <a> to <[A]>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("a", "a");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{a=[A]}> contains entry <a=a>. "
+                + "However, it has a mapping from <a> to <[A]>");
   }
 
   @Test
   public void failContainsEntryWithNullValuePresentExpected() {
     ListMultimap<String, String> actual = ArrayListMultimap.create();
     actual.put("a", null);
-    try {
-      assertThat(actual).containsEntry("a", "A");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{a=[null]}> contains entry <a=A>. "
-                  + "However, it has a mapping from <a> to <[null]>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("a", "A");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{a=[null]}> contains entry <a=A>. "
+                + "However, it has a mapping from <a> to <[null]>");
   }
 
   @Test
   public void failContainsEntryWithPresentValueNullExpected() {
     ImmutableMultimap<String, String> actual = ImmutableMultimap.of("a", "A");
-    try {
-      assertThat(actual).containsEntry("a", null);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{a=[A]}> contains entry <a=null>. "
-                  + "However, it has a mapping from <a> to <[A]>");
-    }
+    expectFailure.whenTesting().that(actual).containsEntry("a", null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{a=[A]}> contains entry <a=null>. "
+                + "However, it has a mapping from <a> to <[A]>");
   }
 
   @Test
@@ -412,14 +358,10 @@ public class MultimapSubjectTest {
   @Test
   public void doesNotContainEntryFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
-    try {
-      assertThat(multimap).doesNotContainEntry("kurt", "kluever");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{kurt=[kluever]}> does not contain entry <kurt=kluever>");
-    }
+    expectFailure.whenTesting().that(multimap).doesNotContainEntry("kurt", "kluever");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{kurt=[kluever]}> does not contain entry <kurt=kluever>");
   }
 
   @Test
@@ -487,18 +429,14 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of(3, "one", 3, "two", 3, "one", 4, "five", 4, "five");
     ImmutableSetMultimap<Integer, String> expected = ImmutableSetMultimap.copyOf(actual);
 
-    try {
-      assertThat(actual).containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s>. "
-                      + "It has unexpected items <{3=[one], 4=[five]}>",
-                  actual, expected));
-    }
+    expectFailure.whenTesting().that(actual).containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s>. "
+                    + "It has unexpected items <{3=[one], 4=[five]}>",
+                actual, expected));
   }
 
   @Test
@@ -509,18 +447,14 @@ public class MultimapSubjectTest {
     actual.remove(3, "six");
     actual.remove(4, "five");
 
-    try {
-      assertThat(actual).containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s>. "
-                      + "It is missing <{3=[six], 4=[five]}>",
-                  actual, expected));
-    }
+    expectFailure.whenTesting().that(actual).containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s>. "
+                    + "It is missing <{3=[six], 4=[five]}>",
+                actual, expected));
   }
 
   @Test
@@ -531,18 +465,14 @@ public class MultimapSubjectTest {
     actual.put(4, "nine");
     actual.put(5, "eight");
 
-    try {
-      assertThat(actual).containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s>. "
-                      + "It has unexpected items <{4=[nine], 5=[eight]}>",
-                  actual, expected));
-    }
+    expectFailure.whenTesting().that(actual).containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s>. "
+                    + "It has unexpected items <{4=[nine], 5=[eight]}>",
+                actual, expected));
   }
 
   @Test
@@ -555,19 +485,15 @@ public class MultimapSubjectTest {
     actual.put(4, "nine");
     actual.put(5, "eight");
 
-    try {
-      assertThat(actual).containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s>. "
-                      + "It is missing <{3=[six], 4=[five]}> "
-                      + "and has unexpected items <{4=[nine], 5=[eight]}>",
-                  actual, expected));
-    }
+    expectFailure.whenTesting().that(actual).containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s>. "
+                    + "It is missing <{3=[six], 4=[five]}> "
+                    + "and has unexpected items <{4=[nine], 5=[eight]}>",
+                actual, expected));
   }
 
   @Test
@@ -631,16 +557,11 @@ public class MultimapSubjectTest {
         ImmutableMultimap.of(4, "four", 3, "six", 4, "five", 3, "two", 3, "one");
 
     assertThat(actual).containsExactlyEntriesIn(expected);
-    try {
-      assertThat(actual).containsExactlyEntriesIn(expected).inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .startsWith(
-              String.format(
-                  "Not true that <%s> contains exactly <%s> in order. ", actual, expected));
-    }
+    expectFailure.whenTesting().that(actual).containsExactlyEntriesIn(expected).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .startsWith(
+            String.format("Not true that <%s> contains exactly <%s> in order. ", actual, expected));
   }
 
   @Test
@@ -651,18 +572,14 @@ public class MultimapSubjectTest {
         ImmutableMultimap.of(3, "six", 3, "two", 3, "one", 4, "five", 4, "four");
 
     assertThat(actual).containsExactlyEntriesIn(expected);
-    try {
-      assertThat(actual).containsExactlyEntriesIn(expected).inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s> in order. "
-                      + "The values for keys <[3]> are not in order",
-                  actual, expected));
-    }
+    expectFailure.whenTesting().that(actual).containsExactlyEntriesIn(expected).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s> in order. "
+                    + "The values for keys <[3]> are not in order",
+                actual, expected));
   }
 
   @Test
@@ -690,18 +607,17 @@ public class MultimapSubjectTest {
     actual.remove(3, "six");
     actual.remove(4, "five");
 
-    try {
-      assertThat(actual).containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s>. "
-                      + "It is missing <{3=[six], 4=[five]}>",
-                  actual, expected));
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s>. "
+                    + "It is missing <{3=[six], 4=[five]}>",
+                actual, expected));
   }
 
   @Test
@@ -712,18 +628,17 @@ public class MultimapSubjectTest {
     actual.put(4, "nine");
     actual.put(5, "eight");
 
-    try {
-      assertThat(actual).containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s>. "
-                      + "It has unexpected items <{4=[nine], 5=[eight]}>",
-                  actual, expected));
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s>. "
+                    + "It has unexpected items <{4=[nine], 5=[eight]}>",
+                actual, expected));
   }
 
   @Test
@@ -736,19 +651,18 @@ public class MultimapSubjectTest {
     actual.put(4, "nine");
     actual.put(5, "eight");
 
-    try {
-      assertThat(actual).containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s>. "
-                      + "It is missing <{3=[six], 4=[five]}> "
-                      + "and has unexpected items <{4=[nine], 5=[eight]}>",
-                  actual, expected));
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .containsExactly(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s>. "
+                    + "It is missing <{3=[six], 4=[five]}> "
+                    + "and has unexpected items <{4=[nine], 5=[eight]}>",
+                actual, expected));
   }
 
   @Test
@@ -765,18 +679,14 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of(3, "one", 3, "two", 3, "one", 4, "five", 4, "five");
     ImmutableSetMultimap<Integer, String> expected = ImmutableSetMultimap.copyOf(actual);
 
-    try {
-      assertThat(actual).containsExactly(3, "one", 3, "two", 4, "five");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s>. "
-                      + "It has unexpected items <{3=[one], 4=[five]}>",
-                  actual, expected));
-    }
+    expectFailure.whenTesting().that(actual).containsExactly(3, "one", 3, "two", 4, "five");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s>. "
+                    + "It has unexpected items <{3=[one], 4=[five]}>",
+                actual, expected));
   }
 
   @Test
@@ -797,18 +707,15 @@ public class MultimapSubjectTest {
         ImmutableMultimap.of(4, "four", 3, "six", 4, "five", 3, "two", 3, "one");
 
     assertThat(actual).containsExactly(4, "four", 3, "six", 4, "five", 3, "two", 3, "one");
-    try {
-      assertThat(actual)
-          .containsExactly(4, "four", 3, "six", 4, "five", 3, "two", 3, "one")
-          .inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .startsWith(
-              String.format(
-                  "Not true that <%s> contains exactly <%s> in order. ", actual, expected));
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .containsExactly(4, "four", 3, "six", 4, "five", 3, "two", 3, "one")
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .startsWith(
+            String.format("Not true that <%s> contains exactly <%s> in order. ", actual, expected));
   }
 
   @Test
@@ -819,20 +726,18 @@ public class MultimapSubjectTest {
         ImmutableMultimap.of(3, "six", 3, "two", 3, "one", 4, "five", 4, "four");
 
     assertThat(actual).containsExactly(3, "six", 3, "two", 3, "one", 4, "five", 4, "four");
-    try {
-      assertThat(actual)
-          .containsExactly(3, "six", 3, "two", 3, "one", 4, "five", 4, "four")
-          .inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> contains exactly <%s> in order. "
-                      + "The values for keys <[3]> are not in order",
-                  actual, expected));
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .containsExactly(3, "six", 3, "two", 3, "one", 4, "five", 4, "four")
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> contains exactly <%s> in order. "
+                    + "The values for keys <[3]> are not in order",
+                actual, expected));
   }
 
   @Test
@@ -887,56 +792,50 @@ public class MultimapSubjectTest {
   public void comparingValuesUsing_containsEntry_failsExpectedKeyHasWrongValues() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsEntry("def", 123);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
-                  + "key <def> and a value that parses to <123>. "
-                  + "However, it has a mapping from that key to <[+456, +789]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsEntry("def", 123);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
+                + "key <def> and a value that parses to <123>. "
+                + "However, it has a mapping from that key to <[+456, +789]>");
   }
 
   @Test
   public void comparingValuesUsing_containsEntry_failsWrongKeyHasExpectedValue() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsEntry("xyz", 789);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
-                  + "key <xyz> and a value that parses to <789>. "
-                  + "However, the following keys are mapped to such values: <[def]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsEntry("xyz", 789);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
+                + "key <xyz> and a value that parses to <789>. "
+                + "However, the following keys are mapped to such values: <[def]>");
   }
 
   @Test
   public void comparingValuesUsing_containsEntry_failsMissingExpectedKeyAndValue() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsEntry("xyz", 321);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
-                  + "key <xyz> and a value that parses to <321>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsEntry("xyz", 321);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+456, +789]}> contains at least one entry with "
+                + "key <xyz> and a value that parses to <321>");
   }
 
   @Test
@@ -983,19 +882,17 @@ public class MultimapSubjectTest {
   public void comparingValuesUsing_doesNotContainEntry_failure() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .doesNotContainEntry("def", 789);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+456, +789]}> did not contain an entry with "
-                  + "key <def> and a value that parses to <789>. "
-                  + "It maps that key to the following such values: <[+789]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContainEntry("def", 789);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+456, +789]}> did not contain an entry with "
+                + "key <def> and a value that parses to <789>. "
+                + "It maps that key to the following such values: <[+789]>");
   }
 
   @Test
@@ -1028,21 +925,19 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of("def", "+64", "def", "0x40", "def", "+128");
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 128, "def", 64, "abc", 123);
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{def=[+64, 0x40, +128]}> contains exactly one element that has a "
-                  + "key that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=64, def=128, def=64, abc=123]>. It is missing an element "
-                  + "that has a key that is equal to and a value that parses to the key and value "
-                  + "of <abc=123>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{def=[+64, 0x40, +128]}> contains exactly one element that has a "
+                + "key that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=64, def=128, def=64, abc=123]>. It is missing an element "
+                + "that has a key that is equal to and a value that parses to the key and value "
+                + "of <abc=123>");
   }
 
   @Test
@@ -1051,20 +946,18 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 128, "def", 64);
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element "
-                  + "that has a key that is equal to and a value that parses to the key and value "
-                  + "of each element of <[def=64, def=128, def=64]>. It has unexpected elements "
-                  + "<[abc=+123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element "
+                + "that has a key that is equal to and a value that parses to the key and value "
+                + "of each element of <[def=64, def=128, def=64]>. It has unexpected elements "
+                + "<[abc=+123]>");
   }
 
   @Test
@@ -1073,26 +966,24 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 128, "def", 128, "abc", 123);
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      String expectedPreamble =
-          "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element that "
-              + "has a key that is equal to and a value that parses to the key and value of each "
-              + "element of <[def=64, def=128, def=128, abc=123]>. It contains at least one "
-              + "element that matches each expected element, and every element it contains matches "
-              + "at least one expected element, but there was no 1:1 mapping between all the "
-              + "actual and expected elements. Using the most complete 1:1 mapping (or one such "
-              + "mapping, if there is a tie), it is missing an element that has a key that is "
-              + "equal to and a value that parses to the key and value of <def=128> and has "
-              + "unexpected elements ";
-      assertThat(e)
-          .hasMessageThat()
-          .isAnyOf(expectedPreamble + "<[def=+64]>", expectedPreamble + "<[def=0x40]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    String expectedPreamble =
+        "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element that "
+            + "has a key that is equal to and a value that parses to the key and value of each "
+            + "element of <[def=64, def=128, def=128, abc=123]>. It contains at least one "
+            + "element that matches each expected element, and every element it contains matches "
+            + "at least one expected element, but there was no 1:1 mapping between all the "
+            + "actual and expected elements. Using the most complete 1:1 mapping (or one such "
+            + "mapping, if there is a tie), it is missing an element that has a key that is "
+            + "equal to and a value that parses to the key and value of <def=128> and has "
+            + "unexpected elements ";
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isAnyOf(expectedPreamble + "<[def=+64]>", expectedPreamble + "<[def=0x40]>");
   }
 
   @Test
@@ -1128,20 +1019,18 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 64, "def", 128, "abc", 123);
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected)
-          .inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
-                  + "element that has a key that is equal to and a value that parses to the key "
-                  + "and value of each element of <[def=64, def=64, def=128, abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
+                + "element that has a key that is equal to and a value that parses to the key "
+                + "and value of each element of <[def=64, def=64, def=128, abc=123]>");
   }
 
   @Test
@@ -1150,20 +1039,18 @@ public class MultimapSubjectTest {
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("abc", 123, "def", 64, "def", 128, "def", 64);
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected)
-          .inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
-                  + "element that has a key that is equal to and a value that parses to the key "
-                  + "and value of each element of <[abc=123, def=64, def=128, def=64]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
+                + "element that has a key that is equal to and a value that parses to the key "
+                + "and value of each element of <[abc=123, def=64, def=128, def=64]>");
   }
 
   @Test
@@ -1171,21 +1058,19 @@ public class MultimapSubjectTest {
     ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("abc", 123, "def", 456);
-    try {
-      assertThat(actual)
-          .named("multymap")
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each element "
-                  + "of <[abc=123, def=456]>. It is missing an element that has a key that is "
-                  + "equal to and a value that parses to the key and value of <def=456>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .named("multymap")
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each element "
+                + "of <[abc=123, def=456]>. It is missing an element that has a key that is "
+                + "equal to and a value that parses to the key and value of <def=456>");
   }
 
   @Test
@@ -1201,67 +1086,61 @@ public class MultimapSubjectTest {
   public void comparingValuesUsing_containsExactly_missingKey() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("def", "+64", "def", "0x40", "def", "+128");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 64, "def", 128, "def", 64, "abc", 123);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{def=[+64, 0x40, +128]}> contains exactly one element that has a "
-                  + "key that is equal to and a value that parses to the key and value of each "
-                  + "element of <[def=64, def=128, def=64, abc=123]>. It is missing an element "
-                  + "that has a key that is equal to and a value that parses to the key and value "
-                  + "of <abc=123>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 64, "def", 128, "def", 64, "abc", 123);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{def=[+64, 0x40, +128]}> contains exactly one element that has a "
+                + "key that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=64, def=128, def=64, abc=123]>. It is missing an element "
+                + "that has a key that is equal to and a value that parses to the key and value "
+                + "of <abc=123>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactly_extraKey() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 64, "def", 128, "def", 64);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element "
-                  + "that has a key that is equal to and a value that parses to the key and value "
-                  + "of each element of <[def=64, def=128, def=64]>. It has unexpected elements "
-                  + "<[abc=+123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 64, "def", 128, "def", 64);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element "
+                + "that has a key that is equal to and a value that parses to the key and value "
+                + "of each element of <[def=64, def=128, def=64]>. It has unexpected elements "
+                + "<[abc=+123]>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactly_wrongValueForKey() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 64, "def", 128, "def", 128, "abc", 123);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      String expectedPreamble =
-          "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element that "
-              + "has a key that is equal to and a value that parses to the key and value of each "
-              + "element of <[def=64, def=128, def=128, abc=123]>. It contains at least one "
-              + "element that matches each expected element, and every element it contains matches "
-              + "at least one expected element, but there was no 1:1 mapping between all the "
-              + "actual and expected elements. Using the most complete 1:1 mapping (or one such "
-              + "mapping, if there is a tie), it is missing an element that has a key that is "
-              + "equal to and a value that parses to the key and value of <def=128> and has "
-              + "unexpected elements ";
-      assertThat(e)
-          .hasMessageThat()
-          .isAnyOf(expectedPreamble + "<[def=+64]>", expectedPreamble + "<[def=0x40]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 64, "def", 128, "def", 128, "abc", 123);
+    String expectedPreamble =
+        "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains exactly one element that "
+            + "has a key that is equal to and a value that parses to the key and value of each "
+            + "element of <[def=64, def=128, def=128, abc=123]>. It contains at least one "
+            + "element that matches each expected element, and every element it contains matches "
+            + "at least one expected element, but there was no 1:1 mapping between all the "
+            + "actual and expected elements. Using the most complete 1:1 mapping (or one such "
+            + "mapping, if there is a tie), it is missing an element that has a key that is "
+            + "equal to and a value that parses to the key and value of <def=128> and has "
+            + "unexpected elements ";
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isAnyOf(expectedPreamble + "<[def=+64]>", expectedPreamble + "<[def=0x40]>");
   }
 
   @Test
@@ -1291,59 +1170,53 @@ public class MultimapSubjectTest {
   public void comparingValuesUsing_containsExactly_inOrder_wrongKeyOrder() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 64, "def", 64, "def", 128, "abc", 123)
-          .inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
-                  + "element that has a key that is equal to and a value that parses to the key "
-                  + "and value of each element of <[def=64, def=64, def=128, abc=123]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 64, "def", 64, "def", 128, "abc", 123)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
+                + "element that has a key that is equal to and a value that parses to the key "
+                + "and value of each element of <[def=64, def=64, def=128, abc=123]>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactly_inOrder_wrongValueOrder() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("abc", 123, "def", 64, "def", 128, "def", 64)
-          .inOrder();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
-                  + "element that has a key that is equal to and a value that parses to the key "
-                  + "and value of each element of <[abc=123, def=64, def=128, def=64]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("abc", 123, "def", 64, "def", 128, "def", 64)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
+                + "element that has a key that is equal to and a value that parses to the key "
+                + "and value of each element of <[abc=123, def=64, def=128, def=64]>");
   }
 
   @Test
   public void comparingValuesUsing_containsExactly_failsWithNamed() {
     ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
-    try {
-      assertThat(actual)
-          .named("multymap")
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("abc", 123, "def", 456);
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a key "
-                  + "that is equal to and a value that parses to the key and value of each element "
-                  + "of <[abc=123, def=456]>. It is missing an element that has a key that is "
-                  + "equal to and a value that parses to the key and value of <def=456>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .named("multymap")
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("abc", 123, "def", 456);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a key "
+                + "that is equal to and a value that parses to the key and value of each element "
+                + "of <[abc=123, def=456]>. It is missing an element that has a key that is "
+                + "equal to and a value that parses to the key and value of <def=456>");
   }
 }
