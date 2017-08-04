@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
 
 import java.net.CookieStore;
 import java.util.AbstractCollection;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -35,6 +35,7 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class PlatformTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
   // isInstance checking
 
@@ -46,12 +47,11 @@ public class PlatformTest {
 
   @Test
   public void testIsInstanceOfType_Java_Fail() {
-    try {
-      assertThat(Platform.isInstanceOfTypeJava(new ArrayList<String>(), Set.class)).isTrue();
-      assert_().fail("Should have thrown.");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().contains("expected to be true");
-    }
+    expectFailure
+        .whenTesting()
+        .that(Platform.isInstanceOfTypeJava(new ArrayList<String>(), Set.class))
+        .isTrue();
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("expected to be true");
   }
 
   @Test
@@ -74,12 +74,11 @@ public class PlatformTest {
 
   @Test
   public void testIsInstanceOfType_GWT_Fail() {
-    try {
-      assertThat(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), Set.class)).isTrue();
-      assert_().fail("Should have thrown.");
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().contains("expected to be true");
-    }
+    expectFailure
+        .whenTesting()
+        .that(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), Set.class))
+        .isTrue();
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("expected to be true");
   }
 
   @Test

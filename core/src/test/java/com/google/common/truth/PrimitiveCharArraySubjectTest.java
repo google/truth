@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -28,6 +29,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class PrimitiveCharArraySubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void isEqualTo() {
     assertThat(array('a', 'q')).isEqualTo(array('a', 'q'));
@@ -47,26 +50,18 @@ public class PrimitiveCharArraySubjectTest {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    try {
-      assertThat(array('a', 'q')).isEqualTo(array('q', 'a'));
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <(char[]) [a, q]> is equal to <[q, a]>");
-    }
+    expectFailure.whenTesting().that(array('a', 'q')).isEqualTo(array('q', 'a'));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <(char[]) [a, q]> is equal to <[q, a]>");
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    try {
-      assertThat(array('a', 'q')).isEqualTo(new int[] {});
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .contains("Incompatible types compared. expected: int[], actual: char[]");
-    }
+    expectFailure.whenTesting().that(array('a', 'q')).isEqualTo(new int[] {});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Incompatible types compared. expected: int[], actual: char[]");
   }
 
   @Test
@@ -86,24 +81,20 @@ public class PrimitiveCharArraySubjectTest {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    try {
-      assertThat(array('a', 'q')).isNotEqualTo(array('a', 'q'));
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<(char[]) [a, q]> unexpectedly equal to [a, q].");
-    }
+    expectFailure.whenTesting().that(array('a', 'q')).isNotEqualTo(array('a', 'q'));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(char[]) [a, q]> unexpectedly equal to [a, q].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
-    try {
-      char[] same = array('a', 'q');
-      assertThat(same).isNotEqualTo(same);
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<(char[]) [a, q]> unexpectedly equal to [a, q].");
-    }
+    char[] same = array('a', 'q');
+    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(char[]) [a, q]> unexpectedly equal to [a, q].");
   }
 
   private static char[] array(char... ts) {
