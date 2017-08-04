@@ -210,7 +210,7 @@ public class Subject<S extends Subject<S, T>, T> {
       }
       return false;
     }
-    return Objects.equal(other, subject);
+    return Objects.equal(subject, other);
   }
 
   /** Fails if the subject is not the same instance as the given object. */
