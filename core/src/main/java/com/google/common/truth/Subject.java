@@ -131,7 +131,7 @@ public class Subject<S extends Subject<S, T>, T> {
       subject = rawSubject;
       other = rawOther;
     }
-    if (doCheckEquals(subject, other) != expectEqual) {
+    if (Objects.equal(subject, other) != expectEqual) {
       failComparingToStrings(
           expectEqual ? "is equal to" : "is not equal to", subject, other, rawOther, expectEqual);
     }
@@ -153,64 +153,6 @@ public class Subject<S extends Subject<S, T>, T> {
     } else {
       throw new AssertionError(o + " must be either a Character or a Number.");
     }
-  }
-  
-  private static boolean doCheckEquals(Object subject, Object other) {
-    if (subject instanceof boolean[]) {
-      if (other instanceof boolean[]) {
-        return Arrays.equals((boolean[]) subject, (boolean[]) other);
-      }
-      return false;
-    }
-    if (subject instanceof int[]) {
-      if (other instanceof int[]) {
-        return Arrays.equals((int[]) subject, (int[]) other);
-      }
-      return false;
-    } 
-    if (subject instanceof long[]) {
-      if (other instanceof long[]) {
-        return Arrays.equals((long[]) subject, (long[]) other);
-      }
-      return false;
-    } 
-    if (subject instanceof short[]) {
-      if (other instanceof short[]) {
-        return Arrays.equals((short[]) subject, (short[]) other);
-      }
-      return false;
-    } 
-    if (subject instanceof byte[]) {
-      if (other instanceof byte[]) {
-        return Arrays.equals((byte[]) subject, (byte[]) other);
-      }
-      return false;
-    } 
-    if (subject instanceof double[]) {
-      if (other instanceof double[]) {
-        return Arrays.equals((double[]) subject, (double[]) other);
-      }
-      return false;
-    } 
-    if (subject instanceof float[]) {
-      if (other instanceof float[]) {
-        return Arrays.equals((float[]) subject, (float[]) other);
-      }
-      return false;
-    } 
-    if (subject instanceof char[]) {
-      if (other instanceof char[]) {
-        return Arrays.equals((char[]) subject, (char[]) other);
-      }
-      return false;
-    } 
-    if (subject instanceof Object[]) {
-      if (other instanceof Object[]) {
-        return Arrays.equals((Object[]) subject, (Object[]) other);
-      }
-      return false;
-    }
-    return Objects.equal(subject, other);
   }
 
   /** Fails if the subject is not the same instance as the given object. */
