@@ -21,6 +21,7 @@ import static org.junit.Assert.fail;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table.Cell;
 import com.google.common.collect.Tables;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -32,6 +33,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class TableSubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void tableIsEmpty() {
     ImmutableTable<String, String, String> table = ImmutableTable.of();
@@ -41,12 +44,10 @@ public class TableSubjectTest {
   @Test
   public void tableIsEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of(1, 5, 7);
-    try {
-      assertThat(table).isEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{1={5=7}}> is empty");
-    }
+    expectFailure.whenTesting().that(table).isEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{1={5=7}}> is empty");
   }
 
   @Test
@@ -58,12 +59,10 @@ public class TableSubjectTest {
   @Test
   public void tableIsNotEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of();
-    try {
-      assertThat(table).isNotEmpty();
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <{}> is not empty");
-    }
+    expectFailure.whenTesting().that(table).isNotEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{}> is not empty");
   }
 
   @Test
@@ -94,14 +93,10 @@ public class TableSubjectTest {
   @Test
   public void containsFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
-    try {
-      assertThat(table).contains("row", "row");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{row={col=val}}> contains mapping for row/column <row> <row>");
-    }
+    expectFailure.whenTesting().that(table).contains("row", "row");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{row={col=val}}> contains mapping for row/column <row> <row>");
   }
 
   @Test
@@ -116,16 +111,12 @@ public class TableSubjectTest {
   @Test
   public void doesNotContainFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
-    try {
-      assertThat(table).doesNotContain("row", "col");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <{row={col=val}}> does not contain mapping for "
-                  + "row/column <row> <col>");
-    }
+    expectFailure.whenTesting().that(table).doesNotContain("row", "col");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{row={col=val}}> does not contain mapping for "
+                + "row/column <row> <col>");
   }
 
   @Test
@@ -138,14 +129,10 @@ public class TableSubjectTest {
   @Test
   public void containsCellFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
-    try {
-      assertThat(table).containsCell("row", "row", "val");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{row={col=val}}> contains cell <(row,row)=val>");
-    }
+    expectFailure.whenTesting().that(table).containsCell("row", "row", "val");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{row={col=val}}> contains cell <(row,row)=val>");
   }
 
   @Test
@@ -164,14 +151,10 @@ public class TableSubjectTest {
   @Test
   public void doesNotContainCellFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
-    try {
-      assertThat(table).doesNotContainCell("row", "col", "val");
-      fail("Should have thrown.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <{row={col=val}}> does not contain cell <(row,col)=val>");
-    }
+    expectFailure.whenTesting().that(table).doesNotContainCell("row", "col", "val");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{row={col=val}}> does not contain cell <(row,col)=val>");
   }
 
   private static <R, C, V> Cell<R, C, V> cell(R row, C col, V val) {

@@ -48,6 +48,7 @@ public final class SortedSetSubject extends IterableSubject {
   public void hasFirstElement(@Nullable Object element) {
     if (actualAsNavigableSet().isEmpty()) {
       fail("has first element", element);
+      return;
     }
 
     if (!Objects.equal(actualAsNavigableSet().first(), element)) {
@@ -56,6 +57,7 @@ public final class SortedSetSubject extends IterableSubject {
             "Not true that %s has first element <%s>. "
                 + "It does contain this element, but the first element is <%s>",
             actualAsString(), element, actualAsNavigableSet().first());
+        return;
       }
       failWithRawMessage(
           "Not true that %s has first element <%s>. "
@@ -68,6 +70,7 @@ public final class SortedSetSubject extends IterableSubject {
   public void hasLastElement(@Nullable Object element) {
     if (actualAsNavigableSet().isEmpty()) {
       fail("has last element", element);
+      return;
     }
 
     if (!Objects.equal(actualAsNavigableSet().last(), element)) {
@@ -76,6 +79,7 @@ public final class SortedSetSubject extends IterableSubject {
             "Not true that %s has last element <%s>. "
                 + "It does contain this element, but the last element is <%s>",
             actualAsString(), element, actualAsNavigableSet().last());
+        return;
       }
       failWithRawMessage(
           "Not true that %s has last element <%s>. "
