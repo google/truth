@@ -30,7 +30,15 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 @GwtIncompatible("JUnit4")
-public class Expect extends TestVerb implements TestRule {
+public final class Expect extends TestVerb implements TestRule {
+  /**
+   * @deprecated To provide your own failure handling, use {@code new TestVerb(new
+   *     AbstractFailureStrategy() { ... })} instead of {@code Expect.create(new
+   *     ExpectationGatherer() { ... })}. Or, if you're testing that assertions on a custom {@code
+   *     Subject} fail (using {@code ExpectationGatherer} to capture the failures), use {@link
+   *     ExpectFailure}.
+   */
+  @Deprecated
   public static class ExpectationGatherer extends AbstractFailureStrategy {
     private final List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
     private final boolean showStackTrace;
@@ -131,6 +139,12 @@ public class Expect extends TestVerb implements TestRule {
     return create(new ExpectationGatherer());
   }
 
+  /**
+   * @deprecated To provide your own failure handling, use {@code new TestVerb(new
+   *     AbstractFailureStrategy() { ... })} instead of {@code Expect.create(new
+   *     ExpectationGatherer() { ... })}.
+   */
+  @Deprecated
   public static Expect create(ExpectationGatherer gatherer) {
     return new Expect(gatherer);
   }
