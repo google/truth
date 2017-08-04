@@ -105,8 +105,11 @@ public class OptionalLongSubjectTest {
   @Test
   public void hasValueThat_FailingWithEmpty() {
     AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(OptionalLong.empty()).hasValueThat());
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
+        expectFailure(
+            whenTesting -> {
+              LongSubject unused = whenTesting.that(OptionalLong.empty()).hasValueThat();
+            });
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
   }
 
   @Test
