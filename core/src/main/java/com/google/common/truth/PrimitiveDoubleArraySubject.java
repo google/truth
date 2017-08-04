@@ -118,6 +118,7 @@ public final class PrimitiveDoubleArraySubject
         failWithRawMessage(
             "Arrays are of different lengths. expected: %s, actual %s",
             Doubles.asList(expectedArray), Doubles.asList(actual));
+        return;
       }
       List<Integer> unequalIndices = new ArrayList<Integer>();
       for (int i = 0; i < expectedArray.length; i++) {
@@ -128,6 +129,7 @@ public final class PrimitiveDoubleArraySubject
 
       if (!unequalIndices.isEmpty()) {
         fail("is equal to", Doubles.asList(expectedArray));
+        return;
       }
     } catch (ClassCastException e) {
       failWithBadType(expected);
@@ -184,6 +186,7 @@ public final class PrimitiveDoubleArraySubject
       if (actual == expected) {
         failWithRawMessage(
             "%s unexpectedly equal to %s.", actualAsString(), Doubles.asList(expected));
+        return;
       }
       if (expected.length != actual.length) {
         return; // Unequal-lengthed arrays are not equal.
@@ -197,6 +200,7 @@ public final class PrimitiveDoubleArraySubject
       if (unequalIndices.isEmpty()) {
         failWithRawMessage(
             "%s unexpectedly equal to %s.", actualAsString(), Doubles.asList(expected));
+        return;
       }
     } catch (ClassCastException ignored) {
       // Unequal since they are of different types.
@@ -299,6 +303,7 @@ public final class PrimitiveDoubleArraySubject
               Iterables.toString(expected),
               expectedCount,
               actual.length);
+          return;
         }
         if (!mismatches.isEmpty()) {
           failWithBadResults(
@@ -306,6 +311,7 @@ public final class PrimitiveDoubleArraySubject
               Iterables.toString(expected),
               "differs at indexes",
               mismatches);
+          return;
         }
       }
     };

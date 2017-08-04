@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -28,6 +29,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class PrimitiveLongArraySubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void isEqualTo() {
     assertThat(array(2L, 5)).isEqualTo(array(2L, 5));
@@ -47,24 +50,18 @@ public class PrimitiveLongArraySubjectTest {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    try {
-      assertThat(array(2, 3)).isEqualTo(array(3, 2));
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <(long[]) [2, 3]> is equal to <[3, 2]>");
-    }
+    expectFailure.whenTesting().that(array(2, 3)).isEqualTo(array(3, 2));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <(long[]) [2, 3]> is equal to <[3, 2]>");
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    try {
-      assertThat(array(2, 3, 4)).isEqualTo(new int[] {});
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .contains("Incompatible types compared. expected: int[], actual: long[]");
-    }
+    expectFailure.whenTesting().that(array(2, 3, 4)).isEqualTo(new int[] {});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Incompatible types compared. expected: int[], actual: long[]");
   }
 
   @Test
@@ -84,22 +81,20 @@ public class PrimitiveLongArraySubjectTest {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    try {
-      assertThat(array(2, 3)).isNotEqualTo(array(2, 3));
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
-    }
+    expectFailure.whenTesting().that(array(2, 3)).isNotEqualTo(array(2, 3));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
-    try {
-      long[] same = array(2, 3);
-      assertThat(same).isNotEqualTo(same);
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
-    }
+    long[] same = array(2, 3);
+    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
   }
 
   private static long[] array(long... ts) {

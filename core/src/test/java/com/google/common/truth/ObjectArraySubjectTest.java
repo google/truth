@@ -19,6 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,6 +31,7 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class ObjectArraySubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
   private static final Object[] EMPTY = new Object[0];
 
   @Test
@@ -59,31 +61,24 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void hasLengthFail() {
-    try {
-      assertThat(objectArray("A", 5L)).hasLength(1);
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <(Object[]) [A, 5]> has length <1>");
-    }
+    expectFailure.whenTesting().that(objectArray("A", 5L)).hasLength(1);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <(Object[]) [A, 5]> has length <1>");
   }
 
   @Test
   public void hasLengthMultiFail() {
-    try {
-      assertThat(new Object[][] {{"A"}, {5L}}).hasLength(1);
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("Not true that <(Object[][]) [[A], [5]]> has length <1>");
-    }
+    expectFailure.whenTesting().that(new Object[][] {{"A"}, {5L}}).hasLength(1);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <(Object[][]) [[A], [5]]> has length <1>");
   }
 
   @Test
   public void hasLengthNegative() {
     try {
       assertThat(objectArray(2, 5)).hasLength(-1);
-      throw new Error("Expected to throw.");
     } catch (IllegalArgumentException expected) {
     }
   }
@@ -96,12 +91,10 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void isEmptyFail() {
-    try {
-      assertThat(objectArray("A", 5L)).isEmpty();
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <(Object[]) [A, 5]> is empty");
-    }
+    expectFailure.whenTesting().that(objectArray("A", 5L)).isEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <(Object[]) [A, 5]> is empty");
   }
 
   @Test
@@ -112,73 +105,68 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void isNotEmptyFail() {
-    try {
-      assertThat(EMPTY).isNotEmpty();
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <(Object[]) []> is not empty");
-    }
+    expectFailure.whenTesting().that(EMPTY).isNotEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <(Object[]) []> is not empty");
   }
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    try {
-      assertThat(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <(Object[]) [A, 5]> is equal to <[5, A]>. It differs at index <[0]>");
-    }
+    expectFailure.whenTesting().that(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(Object[]) [A, 5]> is equal to <[5, A]>. It differs at index <[0]>");
   }
 
   @Test
-  public void isEqualTo_Fail_UnequalOrderingMultiDimensional() {
-    try {
-      assertThat(new Object[][] {{"A"}, {5L}}).isEqualTo(new Object[][] {{5L}, {"A"}});
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <(Object[][]) [[A], [5]]> is equal to <[[5], [A]]>."
-                  + " It differs at index <[0][0]>");
-    }
+  public void isEqualTo_Fail_UnequalOrderingMultiDimensional_00() {
+    expectFailure
+        .whenTesting()
+        .that(new Object[][] {{"A"}, {5L}})
+        .isEqualTo(new Object[][] {{5L}, {"A"}});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(Object[][]) [[A], [5]]> is equal to <[[5], [A]]>."
+                + " It differs at index <[0][0]>");
+  }
 
-    try {
-      assertThat(new Object[][] {{"A", "B"}, {5L}}).isEqualTo(new Object[][] {{"A"}, {5L}});
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <(Object[][]) [[A, B], [5]]> is equal to <[[A], [5]]>."
-                  + " It differs at index <[0][1]>");
-    }
+  @Test
+  public void isEqualTo_Fail_UnequalOrderingMultiDimensional_01() {
 
-    try {
-      assertThat(new Object[][] {{"A"}, {5L}}).isEqualTo(new Object[][] {{"A"}, {5L, 6L}});
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <(Object[][]) [[A], [5]]> is equal to <[[A], [5, 6]]>."
-                  + " It differs at index <[1][1]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(new Object[][] {{"A", "B"}, {5L}})
+        .isEqualTo(new Object[][] {{"A"}, {5L}});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(Object[][]) [[A, B], [5]]> is equal to <[[A], [5]]>."
+                + " It differs at index <[0][1]>");
+  }
+
+  @Test
+  public void isEqualTo_Fail_UnequalOrderingMultiDimensional_11() {
+    expectFailure
+        .whenTesting()
+        .that(new Object[][] {{"A"}, {5L}})
+        .isEqualTo(new Object[][] {{"A"}, {5L, 6L}});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(Object[][]) [[A], [5]]> is equal to <[[A], [5, 6]]>."
+                + " It differs at index <[1][1]>");
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    try {
-      assertThat(objectArray("A", 5L)).isEqualTo(new Object());
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().contains("Incompatible types compared.");
-      assertThat(e).hasMessageThat().contains("expected: Object");
-      assertThat(e).hasMessageThat().contains("actual: Object[]");
-    }
+    expectFailure.whenTesting().that(objectArray("A", 5L)).isEqualTo(new Object());
+    AssertionError e = expectFailure.getFailure();
+    assertThat(e).hasMessageThat().contains("Incompatible types compared.");
+    assertThat(e).hasMessageThat().contains("expected: Object");
+    assertThat(e).hasMessageThat().contains("actual: Object[]");
   }
 
   @Test
@@ -201,50 +189,41 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    try {
-      assertThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
-    }
+    expectFailure.whenTesting().that(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
   }
 
   @Test
   public void isNotEqualTo_FailEqualsMultiDimensional() {
-    try {
-      assertThat(new Object[][] {{"A"}, {5L}}).isNotEqualTo(new Object[][] {{"A"}, {5L}});
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<(Object[][]) [[A], [5]]> unexpectedly equal to [[A], [5]].");
-    }
+    expectFailure
+        .whenTesting()
+        .that(new Object[][] {{"A"}, {5L}})
+        .isNotEqualTo(new Object[][] {{"A"}, {5L}});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(Object[][]) [[A], [5]]> unexpectedly equal to [[A], [5]].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
-    try {
-      Object[] same = objectArray("A", 5L);
-      assertThat(same).isNotEqualTo(same);
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
-    }
+    Object[] same = objectArray("A", 5L);
+    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSameMultiDimensional() {
-    try {
-      Object[][] same = new Object[][] {{"A"}, {5L}};
-      assertThat(same).isNotEqualTo(same);
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<(Object[][]) [[A], [5]]> unexpectedly equal to [[A], [5]].");
-    }
+    Object[][] same = new Object[][] {{"A"}, {5L}};
+    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(Object[][]) [[A], [5]]> unexpectedly equal to [[A], [5]].");
   }
 
   private static Object[] objectArray(Object... ts) {
@@ -270,53 +249,43 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void stringArrayIsEqualTo_Fail_UnequalLength() {
-    try {
-      assertThat(objectArray("A", "B")).isEqualTo(objectArray("B"));
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<(String[]) [A, B]> has length 2. Expected length is 1");
-    }
+    expectFailure.whenTesting().that(objectArray("A", "B")).isEqualTo(objectArray("B"));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(String[]) [A, B]> has length 2. Expected length is 1");
   }
 
   @Test
   public void stringArrayIsEqualTo_Fail_UnequalLengthMultiDimensional() {
-    try {
-      assertThat(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"A"}});
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<(String[][]) [[A], [B]]> has length 2. Expected length is 1");
-    }
+    expectFailure
+        .whenTesting()
+        .that(new String[][] {{"A"}, {"B"}})
+        .isEqualTo(new String[][] {{"A"}});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(String[][]) [[A], [B]]> has length 2. Expected length is 1");
   }
 
   @Test
   public void stringArrayIsEqualTo_Fail_UnequalOrdering() {
-    try {
-      assertThat(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <(String[]) [A, B]> is equal to <[B, A]>. It differs at index <[0]>");
-    }
+    expectFailure.whenTesting().that(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(String[]) [A, B]> is equal to <[B, A]>. It differs at index <[0]>");
   }
 
   @Test
   public void stringArrayIsEqualTo_Fail_UnequalOrderingMultiDimensional() {
-    try {
-      assertThat(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"B"}, {"A"}});
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <(String[][]) [[A], [B]]> is equal to <[[B], [A]]>."
-                  + " It differs at index <[0][0]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(new String[][] {{"A"}, {"B"}})
+        .isEqualTo(new String[][] {{"B"}, {"A"}});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(String[][]) [[A], [B]]> is equal to <[[B], [A]]>."
+                + " It differs at index <[0][0]>");
   }
 
   private static String[] objectArray(String... ts) {
@@ -325,19 +294,17 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void SetArrayIsEqualTo_Fail_UnequalOrdering() {
-    try {
-      assertThat(objectArray(ImmutableSet.of("A"), ImmutableSet.of("B")))
-          .isEqualTo(objectArray(ImmutableSet.of("B"), ImmutableSet.of("A")));
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <(Set[]) [[A], [B]]> is equal to <[[B], [A]]>. "
-                  + "It differs at index <[0]>");
-      // Maybe one day:
-      // .hasMessage("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(objectArray(ImmutableSet.of("A"), ImmutableSet.of("B")))
+        .isEqualTo(objectArray(ImmutableSet.of("B"), ImmutableSet.of("A")));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(Set[]) [[A], [B]]> is equal to <[[B], [A]]>. "
+                + "It differs at index <[0]>");
+    // Maybe one day:
+    // .hasMessage("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
   }
 
   @Test
@@ -348,17 +315,15 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void primitiveMultiDimensionalArrayIsEqualTo_Fail_UnequalOrdering() {
-    try {
-      assertThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
-          .isEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6, 7}});
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <(int[][]) [[1, 2], [3], [4, 5, 6]]> "
-                  + "is equal to <[[1, 2], [3], [4, 5, 6, 7]]>. It differs at index <[2][3]>");
-    }
+    expectFailure
+        .whenTesting()
+        .that(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+        .isEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6, 7}});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(int[][]) [[1, 2], [3], [4, 5, 6]]> "
+                + "is equal to <[[1, 2], [3], [4, 5, 6, 7]]>. It differs at index <[2][3]>");
   }
 
   @Test
@@ -369,17 +334,15 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void primitiveMultiDimensionalArrayIsNotEqualTo_Fail_Equal() {
-    try {
-      assertThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
-          .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}});
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "<(int[][]) [[1, 2], [3], [4, 5, 6]]> unexpectedly "
-                  + "equal to [[1, 2], [3], [4, 5, 6]].");
-    }
+    expectFailure
+        .whenTesting()
+        .that(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+        .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}});
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "<(int[][]) [[1, 2], [3], [4, 5, 6]]> unexpectedly "
+                + "equal to [[1, 2], [3], [4, 5, 6]].");
   }
 
   private static Set[] objectArray(Set... ts) {

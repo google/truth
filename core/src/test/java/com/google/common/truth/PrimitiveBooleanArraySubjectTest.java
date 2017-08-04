@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -28,6 +29,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class PrimitiveBooleanArraySubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
   @Test
   public void isEqualTo() {
     assertThat(array(true, false, true)).isEqualTo(array(true, false, true));
@@ -47,27 +50,19 @@ public class PrimitiveBooleanArraySubjectTest {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    try {
-      assertThat(array(true, false, true)).isEqualTo(array(false, true, true));
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <(boolean[]) [true, false, true]> is equal to <[false, true, true]>");
-    }
+    expectFailure.whenTesting().that(array(true, false, true)).isEqualTo(array(false, true, true));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(boolean[]) [true, false, true]> is equal to <[false, true, true]>");
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    try {
-      assertThat(array(true, false, true)).isEqualTo(new Object());
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .contains("Incompatible types compared. expected: Object, actual: boolean[]");
-    }
+    expectFailure.whenTesting().that(array(true, false, true)).isEqualTo(new Object());
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("Incompatible types compared. expected: Object, actual: boolean[]");
   }
 
   @Test
@@ -87,28 +82,20 @@ public class PrimitiveBooleanArraySubjectTest {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    try {
-      assertThat(array(true, false)).isNotEqualTo(array(true, false));
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
-    }
+    expectFailure.whenTesting().that(array(true, false)).isNotEqualTo(array(true, false));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isNotEqualTo_FailSame() {
-    try {
-      boolean[] same = array(true, false);
-      assertThat(same).isNotEqualTo(same);
-      throw new Error("Expected to throw.");
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
-    }
+    boolean[] same = array(true, false);
+    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
   }
 
   private static boolean[] array(boolean... ts) {
