@@ -17,9 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.truth.Expect.ExpectationGatherer;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,25 +30,21 @@ import org.junit.runners.model.Statement;
 public class ExpectFailureWithStackTraceTest {
   private static final String METHOD_NAME = "ExpectFailureWithStackTraceTest.expectTwoFailures";
 
-  @Rule
-  public final Expect failToExpect =
-      new FailingExpect(new ExpectationGatherer(true /* showStackTrace */));
+  @Rule public final FailingExpect failToExpect = new FailingExpect();
 
   @Test
   public void expectTwoFailures() {
-    failToExpect.that(4).isNotEqualTo(4);
-    failToExpect.that("abc").contains("x");
+    failToExpect.delegate.that(4).isNotEqualTo(4);
+    failToExpect.delegate.that("abc").contains("x");
   }
 
   /** Expect class that can examine the error message */
-  public static class FailingExpect extends Expect {
-    protected FailingExpect(ExpectationGatherer gatherer) {
-      super(gatherer);
-    }
+  public static class FailingExpect implements TestRule {
+    final Expect delegate = Expect.createAndEnableStackTrace();
 
     @Override
     public Statement apply(Statement base, Description description) {
-      final Statement s = super.apply(base, description);
+      final Statement s = delegate.apply(base, description);
       return new Statement() {
         @Override
         public void evaluate() throws Throwable {
