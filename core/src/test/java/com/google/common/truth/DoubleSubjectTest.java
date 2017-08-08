@@ -19,6 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import javax.annotation.Nullable;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,6 +31,24 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class DoubleSubjectTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
+  private static final SubjectFactory<DoubleSubject, Double> DOUBLE_SUBJECT_FACTORY =
+      new SubjectFactory<DoubleSubject, Double>() {
+        @Override
+        public DoubleSubject getSubject(FailureStrategy fs, Double that) {
+          return new DoubleSubject(fs, that);
+        }
+      };
+
+  private static void expectFailureWithMessage(
+      ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback,
+      String failureMessage) {
+    AssertionError assertionError =
+        ExpectFailure.expectFailureAbout(DOUBLE_SUBJECT_FACTORY, callback);
+    assertThat(assertionError).hasMessageThat().isEqualTo(failureMessage);
+  }
+
   @Test
   public void isWithinOf() {
     assertThat(2.0).isWithin(0.0).of(2.0);
@@ -44,20 +63,21 @@ public class DoubleSubjectTest {
     assertThatIsWithinFails(Double.NaN, 1000.0, 2.0);
   }
 
-  private static void assertThatIsWithinFails(double actual, double tolerance, double expected) {
-    try {
-      assertThat(actual).named("testValue").isWithin(tolerance).of(expected);
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "testValue (<%s>) and <%s> should have been finite values within"
-                      + " <%s> of each other",
-                  actual, expected, tolerance));
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  private static void assertThatIsWithinFails(
+      final double actual, final double tolerance, final double expected) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(actual).named("testValue").isWithin(tolerance).of(expected);
+          }
+        };
+    expectFailureWithMessage(
+        callback,
+        String.format(
+            "testValue (<%s>) and <%s> should have been finite values within"
+                + " <%s> of each other",
+            actual, expected, tolerance));
   }
 
   @Test
@@ -74,20 +94,21 @@ public class DoubleSubjectTest {
     assertThatIsNotWithinFails(Double.NaN, 1000.0, 2.0);
   }
 
-  private static void assertThatIsNotWithinFails(double actual, double tolerance, double expected) {
-    try {
-      assertThat(actual).named("testValue").isNotWithin(tolerance).of(expected);
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "testValue (<%s>) and <%s> should have been finite values not within"
-                      + " <%s> of each other",
-                  actual, expected, tolerance));
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  private static void assertThatIsNotWithinFails(
+      final double actual, final double tolerance, final double expected) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(actual).named("testValue").isNotWithin(tolerance).of(expected);
+          }
+        };
+    expectFailureWithMessage(
+        callback,
+        String.format(
+            "testValue (<%s>) and <%s> should have been finite values not within"
+                + " <%s> of each other",
+            actual, expected, tolerance));
   }
 
   @Test
@@ -321,26 +342,26 @@ public class DoubleSubjectTest {
     assertThat(Double.NaN).isEqualTo(Double.NaN);
     assertThatIsEqualToFails(-0.0, 0.0);
     assertThat((Double) null).isEqualTo(null);
-    try {
-      assertThat(1.23).isEqualTo(1.23f);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(
-              String.format(
-                  "Not true that <%s> (java.lang.Double) is equal to <%s> (java.lang.Float)",
-                  1.23, 1.23f));
-    }
+
+    expectFailure.whenTesting().that(1.23).isEqualTo(1.23f);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            String.format(
+                "Not true that <%s> (java.lang.Double) is equal to <%s> (java.lang.Float)",
+                1.23, 1.23f));
   }
 
-  private static void assertThatIsEqualToFails(double actual, double expected) {
-    try {
-      assertThat(actual).isEqualTo(expected);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(String.format("Not true that <%s> is equal to <%s>", actual, expected));
-    }
+  private static void assertThatIsEqualToFails(final double actual, final double expected) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(actual).isEqualTo(expected);
+          }
+        };
+    expectFailureWithMessage(
+        callback, String.format("Not true that <%s> is equal to <%s>", actual, expected));
   }
 
   @Test
@@ -354,14 +375,16 @@ public class DoubleSubjectTest {
     assertThat(1.23).isNotEqualTo(1.23f);
   }
 
-  private static void assertThatIsNotEqualToFails(@Nullable Double value) {
-    try {
-      assertThat(value).isNotEqualTo(value);
-    } catch (AssertionError e) {
-      assertThat(e)
-          .hasMessageThat()
-          .isEqualTo(String.format("Not true that <%s> is not equal to <%s>", value, value));
-    }
+  private static void assertThatIsNotEqualToFails(@Nullable final Double value) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(value).isNotEqualTo(value);
+          }
+        };
+    expectFailureWithMessage(
+        callback, String.format("Not true that <%s> is not equal to <%s>", value, value));
   }
 
   @Test
@@ -375,16 +398,15 @@ public class DoubleSubjectTest {
     assertThatIsZeroFails(null);
   }
 
-  private static void assertThatIsZeroFails(@Nullable Double value) {
-    try {
-      assertThat(value).named("testValue").isZero();
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError)
-          .hasMessageThat()
-          .isEqualTo("Not true that testValue (<" + value + ">) is zero");
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  private static void assertThatIsZeroFails(@Nullable final Double value) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(value).named("testValue").isZero();
+          }
+        };
+    expectFailureWithMessage(callback, "Not true that testValue (<" + value + ">) is zero");
   }
 
   @Test
@@ -398,16 +420,15 @@ public class DoubleSubjectTest {
     assertThatIsNonZeroFails(null);
   }
 
-  private static void assertThatIsNonZeroFails(@Nullable Double value) {
-    try {
-      assertThat(value).named("testValue").isNonZero();
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError)
-          .hasMessageThat()
-          .isEqualTo("Not true that testValue (<" + value + ">) is non-zero");
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  private static void assertThatIsNonZeroFails(@Nullable final Double value) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(value).named("testValue").isNonZero();
+          }
+        };
+    expectFailureWithMessage(callback, "Not true that testValue (<" + value + ">) is non-zero");
   }
 
   @Test
@@ -419,21 +440,17 @@ public class DoubleSubjectTest {
     assertThatIsPositiveInfinityFails(null);
   }
 
-  private static void assertThatIsPositiveInfinityFails(@Nullable Double value) {
-    try {
-      assertThat(value).named("testValue").isPositiveInfinity();
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that testValue (<"
-                  + value
-                  + ">) is equal to <"
-                  + Double.POSITIVE_INFINITY
-                  + ">");
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  private static void assertThatIsPositiveInfinityFails(@Nullable final Double value) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(value).named("testValue").isPositiveInfinity();
+          }
+        };
+    expectFailureWithMessage(
+        callback,
+        "Not true that testValue (<" + value + ">) is equal to <" + Double.POSITIVE_INFINITY + ">");
   }
 
   @Test
@@ -445,21 +462,17 @@ public class DoubleSubjectTest {
     assertThatIsNegativeInfinityFails(null);
   }
 
-  private static void assertThatIsNegativeInfinityFails(@Nullable Double value) {
-    try {
-      assertThat(value).named("testValue").isNegativeInfinity();
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that testValue (<"
-                  + value
-                  + ">) is equal to <"
-                  + Double.NEGATIVE_INFINITY
-                  + ">");
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  private static void assertThatIsNegativeInfinityFails(@Nullable final Double value) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(value).named("testValue").isNegativeInfinity();
+          }
+        };
+    expectFailureWithMessage(
+        callback,
+        "Not true that testValue (<" + value + ">) is equal to <" + Double.NEGATIVE_INFINITY + ">");
   }
 
   @Test
@@ -471,16 +484,15 @@ public class DoubleSubjectTest {
     assertThatIsNaNFails(null);
   }
 
-  private static void assertThatIsNaNFails(@Nullable Double value) {
-    try {
-      assertThat(value).named("testValue").isNaN();
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError)
-          .hasMessageThat()
-          .isEqualTo("Not true that testValue (<" + value + ">) is NaN");
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  private static void assertThatIsNaNFails(@Nullable final Double value) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(value).named("testValue").isNaN();
+          }
+        };
+    expectFailureWithMessage(callback, "Not true that testValue (<" + value + ">) is NaN");
   }
 
   @Test
@@ -494,16 +506,15 @@ public class DoubleSubjectTest {
     assertThatIsFiniteFails(null);
   }
 
-  private static void assertThatIsFiniteFails(@Nullable Double value) {
-    try {
-      assertThat(value).named("testValue").isFinite();
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError)
-          .hasMessageThat()
-          .isEqualTo("testValue (<" + value + ">) should have been finite");
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  private static void assertThatIsFiniteFails(@Nullable final Double value) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(value).named("testValue").isFinite();
+          }
+        };
+    expectFailureWithMessage(callback, "testValue (<" + value + ">) should have been finite");
   }
 
   @Test
@@ -517,15 +528,14 @@ public class DoubleSubjectTest {
     assertThatIsNotNaNFails(null);
   }
 
-  private static void assertThatIsNotNaNFails(@Nullable Double value) {
-    try {
-      assertThat(value).named("testValue").isNotNaN();
-    } catch (AssertionError assertionError) {
-      assertThat(assertionError)
-          .hasMessageThat()
-          .isEqualTo("testValue (<" + value + ">) should not have been NaN");
-      return;
-    }
-    fail("Expected AssertionError to be thrown but wasn't");
+  private static void assertThatIsNotNaNFails(@Nullable final Double value) {
+    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+          @Override
+          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+            expect.that(value).named("testValue").isNotNaN();
+          }
+        };
+    expectFailureWithMessage(callback, "testValue (<" + value + ">) should not have been NaN");
   }
 }
