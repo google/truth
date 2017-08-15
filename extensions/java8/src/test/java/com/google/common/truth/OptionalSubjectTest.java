@@ -26,12 +26,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests for Java 8 {@link Optional} Subjects.
+ * Tests for Java 8 {@link Optional} Subject.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class OptionalTest {
+public class OptionalSubjectTest {
   @Test
   public void namedOptional() {
     Optional<String> optional = Optional.of("actual");
