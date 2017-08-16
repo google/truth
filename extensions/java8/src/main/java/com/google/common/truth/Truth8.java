@@ -23,6 +23,8 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
@@ -54,6 +56,16 @@ public final class Truth8 {
   public static StreamSubject assertThat(@Nullable Stream<?> target) {
     return assertAbout(StreamSubject.streams()).that(target);
   }
+
+  public static IntStreamSubject assertThat(@Nullable IntStream target) {
+    return assertAbout(IntStreamSubject.intStreams()).that(target);
+  }
+
+  public static LongStreamSubject assertThat(@Nullable LongStream target) {
+    return assertAbout(LongStreamSubject.longStreams()).that(target);
+  }
+
+  // TODO(b/64757353): Add support for DoubleStream?
 
   // Not actually a Java 8 feature, but for now this is the best option since core Truth still has
   // to support Java environments without java.nio.file such as Android and J2CL.
