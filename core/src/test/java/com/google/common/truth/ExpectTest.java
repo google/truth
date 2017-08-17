@@ -64,6 +64,65 @@ public class ExpectTest {
   }
 
   @Test
+  public void expectFailWithExceptionNoMessage() {
+    thrown.expectMessage("All failed expectations:");
+    thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
+    thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
+    thrown.expectMessage(
+        "3. Failures occurred before an exception was thrown while the test was running: "
+            + "java.lang.IllegalStateException");
+    EXPECT.that("abc").contains("x");
+    EXPECT.that("abc").contains("y");
+    throw new IllegalStateException();
+  }
+
+  @Test
+  public void expectFailWithExceptionWithMessage() {
+    thrown.expectMessage("All failed expectations:");
+    thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
+    thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
+    thrown.expectMessage(
+        "3. Failures occurred before an exception was thrown while the test was running: "
+            + "java.lang.IllegalStateException: testing");
+    EXPECT.that("abc").contains("x");
+    EXPECT.that("abc").contains("y");
+    throw new IllegalStateException("testing");
+  }
+
+  @Test
+  public void expectFailWithExceptionBeforeExpectFailures() {
+    thrown.expect(IllegalStateException.class);
+    thrown.expectMessage("testing");
+    throwException();
+    EXPECT.that("abc").contains("x");
+    EXPECT.that("abc").contains("y");
+  }
+
+  private void throwException() {
+    throw new IllegalStateException("testing");
+  }
+
+  @Test
+  public void expectFailWithFailuresBeforeAssume() {
+    thrown.expectMessage("All failed expectations:");
+    thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
+    thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
+    thrown.expectMessage(
+        "3. Failures occurred before an assumption was violated: "
+            + "com.google.common.truth.TruthJUnit$ThrowableAssumptionViolatedException: testing");
+    EXPECT.that("abc").contains("x");
+    EXPECT.that("abc").contains("y");
+    TruthJUnit.assume().fail("testing"); // assumeFalse("testing", true);
+  }
+
+  @Test
+  public void expectSuccessWithFailuresAfterAssume() {
+    TruthJUnit.assume().fail("testing"); // assumeFalse("testing", true);
+    EXPECT.that("abc").contains("x");
+    EXPECT.that("abc").contains("y");
+  }
+
+  @Test
   public void warnWhenExpectIsNotRule() {
     String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
     thrown.expectMessage(message);
