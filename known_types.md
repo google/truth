@@ -29,8 +29,9 @@ Truth has built in support for the following types:
 
 *   Java 8 types (see go/truth/faq#java8)
 
-    *   [`Optional`] - and `OptionalDouble`, `OptionalLong`, `OptionalInt`
-    *   [`Stream`]
+    *   [`Optional`] - and `OptionalInt`, `OptionalLong`, and `OptionalDouble`
+    *   [`Stream`] - and `IntStream`, `LongStream` (and maybe someday,
+        `DoubleStream`)
 
 *   Other JDK types
 
