@@ -1379,10 +1379,9 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
                 + TOLERABLE_2POINT2
                 + ", 3.3]> contains no element that is a finite number within "
                 + DEFAULT_TOLERANCE
-                + " of any element in <[99.99, 2.2]>. It contains at least one element that is a "
-                + "finite number within "
-                + DEFAULT_TOLERANCE
-                + " of each of <[2.2]>");
+                + " of any element in <[99.99, 2.2]>. It contains <["
+                + TOLERABLE_2POINT2
+                + " which corresponds to 2.2]>");
   }
 
   @Test
@@ -1606,8 +1605,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1.1, 2.2, 3.3]> contains no element that is exactly equal to any "
-                + "element in <[99.99, 2.2]>. It contains at least one element that is exactly "
-                + "equal to each of <[2.2]>");
+                + "element in <[99.99, 2.2]>. It contains <[2.2 which corresponds to 2.2]>");
   }
 
   @Test

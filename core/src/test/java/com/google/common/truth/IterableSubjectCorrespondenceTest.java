@@ -766,8 +766,23 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to any of "
-                + "<[255, 256, 257]>. It contains at least one element that parses to each of "
-                + "<[256]>");
+                + "<[255, 256, 257]>. It contains <[+256 which corresponds to 256]>");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsNoneOf_multipleFailures() {
+    ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsNoneOf(64, 128);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to any of "
+                + "<[64, 128]>. It contains <[[+64, 0x40] which all correspond to 64, "
+                + "+128 which corresponds to 128]>");
   }
 
   @Test
@@ -782,8 +797,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[+128, +64, null, 0x40]> contains no element that parses to any of "
-                + "<[255, null, 257]>. It contains at least one element that parses to each of "
-                + "<[null]>");
+                + "<[255, null, 257]>. It contains <[null which corresponds to null]>");
   }
 
   @Test
@@ -809,8 +823,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to "
-                + "any element in <[255, 256, 257]>. It contains at least one element that "
-                + "parses to each of <[256]>");
+                + "any element in <[255, 256, 257]>. It contains "
+                + "<[+256 which corresponds to 256]>");
   }
 
   @Test
@@ -826,8 +840,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[+128, +64, null, 0x40]> contains no element that parses to "
-                + "any element in <[255, null, 257]>. It contains at least one element that "
-                + "parses to each of <[null]>");
+                + "any element in <[255, null, 257]>. It contains "
+                + "<[null which corresponds to null]>");
   }
 
   @Test
@@ -850,6 +864,6 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .isEqualTo(
             "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
                 + "contains no element that parses to any element in <[127, 128, 129]>. "
-                + "It contains at least one element that parses to each of <[128]>");
+                + "It contains <[+128 which corresponds to 128]>");
   }
 }
