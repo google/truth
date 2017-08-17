@@ -28,7 +28,8 @@ import org.junit.runners.model.Statement;
 /** Test that stack traces are included in the error message created by Expect. */
 @RunWith(JUnit4.class)
 public class ExpectFailureWithStackTraceTest {
-  private static final String METHOD_NAME = "ExpectFailureWithStackTraceTest.expectTwoFailures";
+  private static final String METHOD_NAME =
+      "ExpectFailureWithStackTraceTest$FailingExpect$1.evaluate";
 
   @Rule public final FailingExpect failToExpect = new FailingExpect();
 
