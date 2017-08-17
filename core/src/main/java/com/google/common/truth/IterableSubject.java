@@ -39,6 +39,8 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.LinkedHashMultiset;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
@@ -1195,19 +1197,36 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     private void containsNone(String excludedPrefix, Iterable<? extends E> excluded) {
       Collection<A> actual = iterableToCollection(getCastActual());
-      Collection<E> present = new ArrayList<>();
+      ListMultimap<E, A> present = LinkedListMultimap.create();
       for (E excludedItem : Sets.newLinkedHashSet(excluded)) {
         for (A actualItem : actual) {
           if (correspondence.compare(actualItem, excludedItem)) {
-            present.add(excludedItem);
+            present.put(excludedItem, actualItem);
           }
         }
       }
       if (!present.isEmpty()) {
+        StringBuilder presentDescription = new StringBuilder();
+        for (E excludedItem : present.keySet()) {
+          if (presentDescription.length() > 0) {
+            presentDescription.append(", ");
+          }
+          List<A> actualItems = present.get(excludedItem);
+          if (actualItems.size() == 1) {
+            presentDescription
+                .append(actualItems.get(0))
+                .append(" which corresponds to ")
+                .append(excludedItem);
+          } else {
+            presentDescription
+                .append(actualItems)
+                .append(" which all correspond to ")
+                .append(excludedItem);
+          }
+        }
         failWithRawMessage(
-            "Not true that %s contains no element that %s %s <%s>. "
-                + "It contains at least one element that %s each of <%s>",
-            actualAsString(), correspondence, excludedPrefix, excluded, correspondence, present);
+            "Not true that %s contains no element that %s %s <%s>. It contains <[%s]>",
+            actualAsString(), correspondence, excludedPrefix, excluded, presentDescription);
       }
     }
 

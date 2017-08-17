@@ -1300,10 +1300,9 @@ public class PrimitiveFloatArraySubjectTest {
                 + justOverTwoPlusTolerance
                 + ", 3.0]> contains no element that is a finite number within "
                 + (double) DEFAULT_TOLERANCE
-                + " of any element in <[99.99, 2.0]>. It contains at least one element that is a "
-                + "finite number within "
-                + (double) DEFAULT_TOLERANCE
-                + " of each of <[2.0]>");
+                + " of any element in <[99.99, 2.0]>. It contains <["
+                + justOverTwoPlusTolerance
+                + " which corresponds to 2.0]>");
   }
 
   @Test
@@ -1547,8 +1546,7 @@ public class PrimitiveFloatArraySubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1.0, 2.0, 3.0]> contains no element that is exactly equal to any "
-                + "element in <[99.99, 2.0]>. It contains at least one element that is exactly "
-                + "equal to each of <[2.0]>");
+                + "element in <[99.99, 2.0]>. It contains <[2.0 which corresponds to 2.0]>");
   }
 
   private static float[] array(float... primitives) {
