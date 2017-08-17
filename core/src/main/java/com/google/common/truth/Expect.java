@@ -25,6 +25,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -60,7 +61,7 @@ public final class Expect extends TestVerb implements TestRule {
     @Override
     public void fail(String message, Throwable cause) {
       messages.add(
-          ExpectationFailure.create(message, cause != null ? cause : new Throwable(message)));
+          ExpectationFailure.create(message, cause != null ? cause : new AssertionError(message)));
     }
 
     public List<ExpectationFailure> getMessages() {
@@ -85,7 +86,7 @@ public final class Expect extends TestVerb implements TestRule {
         if (showStackTrace && failure.cause() != null) {
           // Append stack trace to the failure message
           StringWriter stackTraceWriter = new StringWriter();
-          failure.cause().printStackTrace(new PrintWriter(stackTraceWriter));
+          stripTruthStackFrames(failure.cause()).printStackTrace(new PrintWriter(stackTraceWriter));
           message.append(stackTraceWriter + "\n");
         }
       }
@@ -179,13 +180,22 @@ public final class Expect extends TestVerb implements TestRule {
       @Override
       public void evaluate() throws Throwable {
         inRuleContext = true;
-        base.evaluate();
+        try {
+          base.evaluate();
+        } catch (Throwable t) {
+          if (!gatherer.getMessages().isEmpty()) {
+            String message =
+                t instanceof AssumptionViolatedException
+                    ? "Failures occurred before an assumption was violated"
+                    : "Failures occurred before an exception was thrown while the test was running";
+            gatherer.fail(message + ": " + t, t);
+          } else {
+            throw t;
+          }
+        }
         inRuleContext = false;
-        Throwable earliestCause = null;
         if (!gatherer.getMessages().isEmpty()) {
-          AssertionError error = new AssertionError(gatherer.toString());
-          error.initCause(earliestCause);
-          throw error;
+          throw new AssertionError(gatherer.toString());
         }
       }
     };
