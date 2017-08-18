@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.TruthJUnit.assume;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -112,12 +114,12 @@ public class ExpectTest {
             + "com.google.common.truth.TruthJUnit$ThrowableAssumptionViolatedException: testing");
     EXPECT.that("abc").contains("x");
     EXPECT.that("abc").contains("y");
-    TruthJUnit.assume().fail("testing"); // assumeFalse("testing", true);
+    assume().fail("testing");
   }
 
   @Test
   public void expectSuccessWithFailuresAfterAssume() {
-    TruthJUnit.assume().fail("testing"); // assumeFalse("testing", true);
+    assume().fail("testing");
     EXPECT.that("abc").contains("x");
     EXPECT.that("abc").contains("y");
   }

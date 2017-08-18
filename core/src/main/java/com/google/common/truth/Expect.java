@@ -16,12 +16,11 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Throwables.getStackTraceAsString;
 import static com.google.common.truth.StringUtil.messageFor;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Objects;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -61,33 +60,28 @@ public final class Expect extends TestVerb implements TestRule {
     @Override
     public void fail(String message, Throwable cause) {
       messages.add(
-          ExpectationFailure.create(message, cause != null ? cause : new AssertionError(message)));
+          new ExpectationFailure(
+              message, cause != null ? new AssertionError(cause) : new AssertionError()));
     }
 
+    // TODO(cpovirk): Rename this to "getFailures" or something.
     public List<ExpectationFailure> getMessages() {
       return messages;
     }
 
     @Override
     public String toString() {
-      Throwable earliestCause = null;
       StringBuilder message = new StringBuilder("All failed expectations:\n");
       int count = 0;
       for (ExpectationFailure failure : getMessages()) {
-        if (earliestCause == null && failure.cause() != null) {
-          earliestCause = failure.cause();
-        }
-        message
-            .append("  ")
-            .append((count++) + 1)
-            .append(". ")
-            .append(failure.message())
-            .append("\n");
-        if (showStackTrace && failure.cause() != null) {
-          // Append stack trace to the failure message
-          StringWriter stackTraceWriter = new StringWriter();
-          stripTruthStackFrames(failure.cause()).printStackTrace(new PrintWriter(stackTraceWriter));
-          message.append(stackTraceWriter + "\n");
+        message.append("  ");
+        message.append(++count);
+        message.append(". ");
+        message.append(failure.message());
+        message.append("\n");
+        if (showStackTrace) {
+          message.append(getStackTraceAsString(stripTruthStackFrames(failure.cause())));
+          message.append("\n");
         }
       }
 
@@ -95,15 +89,12 @@ public final class Expect extends TestVerb implements TestRule {
     }
   }
 
+  // TODO(cpovirk): Eliminate this in favor of just storing an AssertionError.
   private static final class ExpectationFailure {
     private final String message;
-    @Nullable private final Throwable cause;
+    private final Throwable cause;
 
-    static ExpectationFailure create(String message, @Nullable Throwable cause) {
-      return new ExpectationFailure(message, cause);
-    }
-
-    private ExpectationFailure(String message, @Nullable Throwable cause) {
+    ExpectationFailure(String message, Throwable cause) {
       this.message = checkNotNull(message);
       this.cause = cause;
     }
@@ -112,7 +103,6 @@ public final class Expect extends TestVerb implements TestRule {
       return message;
     }
 
-    @Nullable
     Throwable cause() {
       return cause;
     }
