@@ -160,8 +160,11 @@ public final class ExpectFailure implements TestRule {
       @Override
       public void evaluate() throws Throwable {
         inRuleContext = true;
-        base.evaluate();
-        inRuleContext = false;
+        try {
+          base.evaluate();
+        } finally {
+          inRuleContext = false;
+        }
         if (failureExpected && failure == null) {
           throw new AssertionError(
               "ExpectFailure.whenTesting() invoked, but no failure was caught.");
