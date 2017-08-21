@@ -74,8 +74,9 @@ public final class Expect extends TestVerb implements TestRule {
       StringBuilder message = new StringBuilder("All failed expectations:\n");
       int count = 0;
       for (ExpectationFailure failure : getMessages()) {
+        count++;
         message.append("  ");
-        message.append(++count);
+        message.append(count);
         message.append(". ");
         message.append(failure.message());
         message.append("\n");
@@ -182,8 +183,9 @@ public final class Expect extends TestVerb implements TestRule {
           } else {
             throw t;
           }
+        } finally {
+          inRuleContext = false;
         }
-        inRuleContext = false;
         if (!gatherer.getMessages().isEmpty()) {
           throw new AssertionError(gatherer.toString());
         }
