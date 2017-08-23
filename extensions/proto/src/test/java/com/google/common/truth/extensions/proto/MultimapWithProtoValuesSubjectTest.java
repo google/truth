@@ -159,6 +159,19 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testPlain_containsExactlyNoArgs() {
+    expectThat(ImmutableMultimap.of()).containsExactly();
+    expectThat(ImmutableMultimap.of()).containsExactly().inOrder();
+
+    try {
+      assertThat(multimapOf(1, message1)).containsExactly();
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+  }
+
+  @Test
   public void testPlain_containsExactly() {
     expectThat(multimapOf(1, message1, 1, message2, 2, message1))
         .containsExactly(1, eqMessage2, 2, eqMessage1, 1, eqMessage1);
@@ -265,6 +278,22 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
           .ignoringFieldsForValues(ignoreFieldNumber)
           .containsExactlyEntriesIn(multimapOf(2, eqIgnoredMessage2, 1, eqIgnoredMessage1))
           .inOrder();
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+  }
+
+  @Test
+  public void testFluent_containsExactly_noArgs() {
+    expectThat(ImmutableMultimap.of()).ignoringRepeatedFieldOrderForValues().containsExactly();
+    expectThat(ImmutableMultimap.of())
+        .ignoringRepeatedFieldOrderForValues()
+        .containsExactly()
+        .inOrder();
+
+    try {
+      assertThat(multimapOf(1, message1)).ignoringRepeatedFieldOrderForValues().containsExactly();
       expectedFailure();
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);

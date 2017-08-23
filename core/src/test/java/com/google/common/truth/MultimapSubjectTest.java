@@ -393,6 +393,19 @@ public class MultimapSubjectTest {
   }
 
   @Test
+  public void containsExactlyNoArg() {
+    ImmutableMultimap<Integer, String> actual = ImmutableMultimap.of();
+
+    assertThat(actual).containsExactly(ImmutableMultimap.of());
+    assertThat(actual).containsExactly(ImmutableMultimap.of()).inOrder();
+
+    expectFailure.whenTesting().that(ImmutableMultimap.of(42, "Answer")).containsExactly();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[42=Answer]> is empty");
+  }
+
+  @Test
   public void containsExactlyEmpty() {
     ImmutableListMultimap<Integer, String> actual = ImmutableListMultimap.of();
     ImmutableSetMultimap<Integer, String> expected = ImmutableSetMultimap.of();
@@ -1071,6 +1084,28 @@ public class MultimapSubjectTest {
                 + "that is equal to and a value that parses to the key and value of each element "
                 + "of <[abc=123, def=456]>. It is missing an element that has a key that is "
                 + "equal to and a value that parses to the key and value of <def=456>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyNoArgs() {
+    ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of();
+
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly();
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly()
+        .inOrder();
+
+    expectFailure
+        .whenTesting()
+        .that(ImmutableListMultimap.of("abc", "+123"))
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[abc=+123]> is empty");
   }
 
   @Test

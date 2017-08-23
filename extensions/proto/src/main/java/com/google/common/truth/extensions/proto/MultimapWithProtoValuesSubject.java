@@ -185,6 +185,12 @@ public class MultimapWithProtoValuesSubject<
     return delegate().containsExactly(k0, v0, rest);
   }
 
+  /** Fails if the multimap is not empty. */
+  @CanIgnoreReturnValue
+  public Ordered containsExactly() {
+    return delegate().containsExactly();
+  }
+
   /**
    * Starts a method chain for a test proposition in which the actual values (i.e. the values of the
    * {@link Multimap} under test) are compared to expected values using the given {@link
@@ -500,6 +506,12 @@ public class MultimapWithProtoValuesSubject<
     @CanIgnoreReturnValue
     public Ordered containsExactlyEntriesIn(Multimap<?, ? extends M> expectedMap) {
       return usingCorrespondence().containsExactlyEntriesIn(expectedMap);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsExactly() {
+      return usingCorrespondence().containsExactly();
     }
 
     @Override

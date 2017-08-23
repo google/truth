@@ -245,6 +245,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     return new MultimapInOrder(expectedMultimap);
   }
 
+  /** Fails if the multimap is not empty. */
+  @CanIgnoreReturnValue
+  public Ordered containsExactly() {
+    return check().that(actual().entries()).containsExactly();
+  }
+
   /**
    * Fails if the multimap does not contain exactly the given set of key/value pairs.
    *
@@ -566,6 +572,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       @SuppressWarnings("unchecked")
       Multimap<K, V> expectedMultimap = (Multimap<K, V>) accumulateMultimap(k0, v0, rest);
       return containsExactlyEntriesIn(expectedMultimap);
+    }
+
+    /** Fails if the multimap is not empty. */
+    @CanIgnoreReturnValue
+    public <K, V extends E> Ordered containsExactly() {
+      return MultimapSubject.this.containsExactly();
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
