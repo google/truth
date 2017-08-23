@@ -233,6 +233,10 @@ public interface MultimapWithProtoValuesFluentAssertion<M extends Message> {
   @CanIgnoreReturnValue
   Ordered containsExactlyEntriesIn(Multimap<?, ? extends M> expectedMultimap);
 
+  /** Fails if the multimap is not empty. */
+  @CanIgnoreReturnValue
+  public Ordered containsExactly();
+
   /**
    * Fails if the multimap does not contain exactly the given set of key/value pairs.
    *
