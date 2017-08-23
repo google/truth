@@ -37,8 +37,8 @@ import javax.annotation.Nullable;
  * should have any of the other properties of an equivalence relation (reflexivity, symmetry, or
  * transitivity).
  *
- * <p>Instances of this are typically used via {@link IterableSubject#comparingElementsUsing}.
- * (TODO(b/29966314): Mention MapSubject and MultimapSubject methods when they're added.)
+ * <p>Instances of this are typically used via {@link IterableSubject#comparingElementsUsing},
+ * {@link MapSubject#comparingValuesUsing}, or {@link MultimapSubject#comparingValuesUsing}.
  *
  * @author Pete Gillin
  */
