@@ -32,7 +32,10 @@ package com.google.common.truth;
  * {@link AbstractDelegatedVerb}.
  *
  * <p>For an example implementation and usage, see {@link DelegatedVerbFactoryTest}.
+ *
+ * @deprecated This class is being renamed to {@link CustomSubjectBuilder}.
  */
+@Deprecated
 public abstract class AbstractDelegatedVerb {
   protected AbstractDelegatedVerb() {}
 

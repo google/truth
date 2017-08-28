@@ -22,7 +22,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
-import com.google.common.truth.AbstractVerb.DelegatedVerb;
 import com.google.common.util.concurrent.AtomicLongMap;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -31,21 +30,19 @@ import java.util.SortedSet;
 import javax.annotation.Nullable;
 
 /**
- * Truth - a proposition framework for tests, supporting JUnit style assertion and assumption
- * semantics in a fluent style.
+ * The primary entry point for Truth, a fluent framework for test assertions.
  *
- * <p>Truth is the simplest entry point class. A developer can statically import the assertThat()
- * method to get easy access to the library's capabilities. Then, instead of writing:
+ * <p>Compare these example JUnit assertions...
  *
  * <pre>{@code
- * Assert.assertEquals(a, b);
- * Assert.assertTrue(c);
- * Assert.assertTrue(d.contains(a));
- * Assert.assertTrue(d.contains(a) && d.contains(b));
- * Assert.assertTrue(d.contains(a) || d.contains(b) || d.contains(c));
+ * assertEquals(b, a);
+ * assertTrue(c);
+ * assertTrue(d.contains(a));
+ * assertTrue(d.contains(a) && d.contains(b));
+ * assertTrue(d.contains(a) || d.contains(b) || d.contains(c));
  * }</pre>
  *
- * one would write:
+ * ...to their Truth equivalents...
  *
  * <pre>{@code
  * assertThat(a).isEqualTo(b);
@@ -55,23 +52,27 @@ import javax.annotation.Nullable;
  * assertThat(d).containsAnyOf(a, b, c);
  * }</pre>
  *
- * <p>Tests should be easier to read, and flow more clearly.
+ * <p>Advantages of Truth:
  *
- * <p>Often, tests assert a relationship between a value produced by the test (the "actual" value)
- * and some reference value (the "expected" value). It is strongly recommended that the actual value
- * is made the subject of the assertion. For example:
+ * <ul>
+ *   <li>aligns all the "actual" values on the left
+ *   <li>produces more detailed failure messages
+ *   <li>provides richer operations (like {@link IterableSubject#containsExactly})
+ * </ul>
  *
- * <pre>{@code
- * assertThat(actual).isEqualTo(expected);  // recommended
- * assertThat(expected).isEqualTo(actual);  // not recommended
- * assertThat(actual).isIn(expectedPossibilities);  // recommended
- * assertThat(expectedPossibilities).contains(actual);  // not recommended
- * }</pre>
+ * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
+ *
+ * <h2>For people extending Truth</h2>
+ *
+ * <p>TODO(cpovirk): Link to a doc about custom subjects.
+ *
+ * <p>TODO(cpovirk): Also talk about {@link FailureStrategy}.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public final class Truth {
+// TODO(cpovirk): remove superclass TruthBridgeMethodInjector
+public final class Truth extends TruthBridgeMethodInjector {
   private Truth() {}
 
   public static final FailureStrategy THROW_ASSERTION_ERROR =
@@ -104,9 +105,14 @@ public final class Truth {
         }
       };
 
-  private static final TestVerb ASSERT = new TestVerb(THROW_ASSERTION_ERROR);
+  private static final StandardSubjectBuilder ASSERT =
+      StandardSubjectBuilder.forCustomFailureStrategy(THROW_ASSERTION_ERROR);
 
-  public static TestVerb assert_() {
+  /**
+   * Begins a call chain with the fluent Truth API. If the check made by the chain fails, it will
+   * throw {@link AssertionError}.
+   */
+  public static StandardSubjectBuilder assert_() {
     return ASSERT;
   }
 
@@ -114,7 +120,7 @@ public final class Truth {
    * Returns a {@link TestVerb} that will prepend the given message to the failure message in the
    * event of a test failure.
    */
-  public static TestVerb assertWithMessage(String messageToPrepend) {
+  public static StandardSubjectBuilder assertWithMessage(String messageToPrepend) {
     return assert_().withMessage(messageToPrepend);
   }
 
@@ -128,7 +134,7 @@ public final class Truth {
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
    */
-  public static TestVerb assertWithMessage(String format, Object... args) {
+  public static StandardSubjectBuilder assertWithMessage(String format, Object... args) {
     return assert_().withMessage(format, args);
   }
 
@@ -139,8 +145,18 @@ public final class Truth {
    * @param factory a SubjectFactory<S, T> implementation
    * @return A custom verb for the type returned by the SubjectFactory
    */
-  public static <S extends Subject<S, T>, T> DelegatedVerb<S, T> assertAbout(
+  public static <S extends Subject<S, T>, T> SimpleSubjectBuilder<S, T> assertAbout(
       SubjectFactory<S, T> factory) {
+    return assert_().about(factory);
+  }
+
+  /**
+   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
+   * CustomSubjectBuilder}. Extension creators should prefer {@link SubjectFactory} if possible.
+   */
+  public static <CustomSubjectBuilderT extends CustomSubjectBuilder>
+      CustomSubjectBuilderT assertAbout(
+          CustomSubjectBuilderFactory<CustomSubjectBuilderT> factory) {
     return assert_().about(factory);
   }
 
@@ -151,7 +167,12 @@ public final class Truth {
    * @param <V> the type of {@link AbstractDelegatedVerb} to return
    * @param factory a {@code DelegatedVerbFactory<V>} implementation
    * @return A custom verb of type {@code <V>}
+   * @deprecated When you switch from implementing {@link DelegatedVerbFactory} to implementing
+   *     {@link CustomSubjectBuilderFactory}, you'll switch from this overload to {@linkplain
+   *     #assertAbout(CustomSubjectBuilderFactory) the overload} that accepts a {@code
+   *     CustomSubjectBuilderFactory}.
    */
+  @Deprecated
   public static <V extends AbstractDelegatedVerb> V assertAbout(DelegatedVerbFactory<V> factory) {
     return assert_().about(factory);
   }

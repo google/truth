@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Google, Inc.
+ * Copyright (c) 2016 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.google.common.truth;
 
 /**
- * In a fluent assertion chain, the argument to the common overload of {@link
- * StandardSubjectBuilder#about(SubjectFactory) about}, the method that specifies what kind of
- * {@link Subject} to create.
+ * In a fluent assertion chain, the argument to the "custom" overload of {@link
+ * StandardSubjectBuilder#about(CustomSubjectBuilderFactory) about}, the method that specifies what
+ * kind of {@link Subject} to create.
  *
  * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
  *
@@ -27,8 +28,7 @@ package com.google.common.truth;
  * <p>TODO(cpovirk): Link to a doc about custom subjects.
  */
 // TODO(cpovirk): Convert to a nested type when changing FailureStrategy parameter to another type.
-public abstract class SubjectFactory<SubjectT extends Subject<SubjectT, ActualT>, ActualT> {
-  // TODO(cpovirk): Rename to "createSubject" when changing to a nested type.
-  /** Creates a new {@link Subject}. */
-  public abstract SubjectT getSubject(FailureStrategy failureStrategy, ActualT actual);
+public interface CustomSubjectBuilderFactory<CustomSubjectBuilderT extends CustomSubjectBuilder> {
+  /** Creates a new {@link CustomSubjectBuilder} of the appropriate type. */
+  CustomSubjectBuilderT createSubjectBuilder(FailureStrategy failureStrategy);
 }

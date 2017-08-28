@@ -27,20 +27,22 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * A {@code Subject} in {@code Truth} fits into the assertion fluent chain, taking the place of the
- * "subject of the test". For instance, in {@code assertThat("foo").isNotNull()}, {@code
- * Truth#assertThat(String)} returns a StringSubject which wraps the actual value itself, providing
- * a hook for methods which test propositions about the actual value.
+ * An object that lets you perform checks on the value under test. For example, {@code Subject}
+ * contains {@link #isEqualTo(Object)} and {@link #isInstanceOf(Class)}, and {@link StringSubject}
+ * contains {@link StringSubject#startsWith startsWith(String)}.
  *
- * <p>Custom sub-types of Subject provide type-appropriate methods which can then provide more
- * suitable error messages than the traditional assertions may provide.
+ * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
+ *
+ * <h2>For people extending Truth</h2>
+ *
+ * <p>TODO(cpovirk): Link to a doc about custom subjects.
  *
  * @param <S> the self-type, allowing {@code this}-returning methods to avoid needing subclassing
  * @param <T> the type of the object being tested by this {@code Subject}
  * @author David Saff
  * @author Christian Gruber
  */
-public class Subject<S extends Subject<S, T>, T> {
+public class Subject<S extends Subject<S, T>, T> extends SubjectBridgeMethodInjector {
   private static final FailureStrategy IGNORE_STRATEGY =
       new AbstractFailureStrategy() {
         @Override
@@ -300,8 +302,9 @@ public class Subject<S extends Subject<S, T>, T> {
    * wrappers within their own propositional logic.
    */
   // TODO(diamondm) this should be final, can we do that safely?
-  protected TestVerb check() {
-    return new TestVerb(failureStrategy);
+  @Override // temporarily
+  protected StandardSubjectBuilder check() {
+    return StandardSubjectBuilder.forCustomFailureStrategy(failureStrategy);
   }
 
   /**
@@ -311,8 +314,9 @@ public class Subject<S extends Subject<S, T>, T> {
    * may still be necessary to return a {@code Subject} instance even though any subsequent
    * assertions are meaningless. Use this method to return subjects that will never report failures.
    */
-  protected final TestVerb ignoreCheck() {
-    return new TestVerb(IGNORE_STRATEGY);
+  @Override // temporarily
+  protected final StandardSubjectBuilder ignoreCheck() {
+    return StandardSubjectBuilder.forCustomFailureStrategy(IGNORE_STRATEGY);
   }
 
   /**

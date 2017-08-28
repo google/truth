@@ -15,21 +15,20 @@
  */
 package com.google.common.truth;
 
-/**
- * Returned by calls like {@link IterableSubject#containsExactly}, {@code Ordered} lets the caller
- * additionally check that the expected elements were present in the order they were passed to the
- * previous calls.
- *
- * <pre>{@code
- * assertThat(supportedCharsets).containsExactly("UTF-8", "US-ASCII"); // does not check order
- * assertThat(supportedCharsets).containsExactly("UTF-8", "US-ASCII").inOrder(); // does check order
- * }</pre>
- */
-public interface Ordered {
+import com.google.common.annotations.GwtIncompatible;
 
+/**
+ * Superclass of {@link TruthJUnit} that declares a method with its old signature to preserve binary
+ * compatibility.
+ */
+@GwtIncompatible("JUnit4")
+abstract class TruthJUnitBridgeMethodInjector {
   /**
-   * An additional assertion, implemented by some containment subjects which allows for a further
-   * constraint of orderedness.
+   * @deprecated When you recompile your code, you will automatically migrate to the new version of
+   *     this method.
    */
-  void inOrder();
+  @Deprecated
+  public static TestVerb assume() {
+    return TruthJUnit.assume();
+  }
 }

@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Throwables.getStackTraceAsString;
 import static com.google.common.truth.StringUtil.messageFor;
 
@@ -29,14 +30,32 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+/**
+ * A {@link TestRule} that batches up all failures encountered during a test, and reports them all
+ * together at the end.
+ *
+ * <p>Usage:
+ *
+ * <pre>
+ * {@code @Rule public final Expect expect = Expect.create();}
+ *
+ * {@code ...}
+ *
+ * {@code   expect.that(results).containsExactly(...);}
+ * {@code   expect.that(errors).isEmpty();}
+ * </pre>
+ *
+ * If both of the assertions above fail, the test will fail with an exception that contains
+ * information about both.
+ */
 @GwtIncompatible("JUnit4")
-public final class Expect extends TestVerb implements TestRule {
+public final class Expect extends StandardSubjectBuilder implements TestRule {
   /**
-   * @deprecated To provide your own failure handling, use {@code new TestVerb(new
-   *     AbstractFailureStrategy() { ... })} instead of {@code Expect.create(new
-   *     ExpectationGatherer() { ... })}. Or, if you're testing that assertions on a custom {@code
-   *     Subject} fail (using {@code ExpectationGatherer} to capture the failures), use {@link
-   *     ExpectFailure}.
+   * @deprecated To provide your own failure handling, use {@code
+   *     StandardSubjectBuilder.forCustomFailureStrategy(new AbstractFailureStrategy() { ... })}
+   *     instead of {@code Expect.create(new ExpectationGatherer() { ... })}. Or, if you're testing
+   *     that assertions on a custom {@code Subject} fail (using {@code ExpectationGatherer} to
+   *     capture the failures), use {@link ExpectFailure}.
    */
   @Deprecated
   public static class ExpectationGatherer extends AbstractFailureStrategy {
@@ -132,9 +151,9 @@ public final class Expect extends TestVerb implements TestRule {
   }
 
   /**
-   * @deprecated To provide your own failure handling, use {@code new TestVerb(new
-   *     AbstractFailureStrategy() { ... })} instead of {@code Expect.create(new
-   *     ExpectationGatherer() { ... })}.
+   * @deprecated To provide your own failure handling, use {@code
+   *     StandardSubjectBuilder.forCustomFailureStrategy(new AbstractFailureStrategy() { ... })}
+   *     instead of {@code Expect.create(new ExpectationGatherer() { ... })}.
    */
   @Deprecated
   public static Expect create(ExpectationGatherer gatherer) {
@@ -155,12 +174,9 @@ public final class Expect extends TestVerb implements TestRule {
   }
 
   @Override
-  protected FailureStrategy getFailureStrategy() {
-    if (!inRuleContext) {
-      String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
-      throw new IllegalStateException(message);
-    }
-    return super.getFailureStrategy();
+  void checkStatePreconditions() {
+    checkState(
+        inRuleContext, "assertion made on Expect instance, but it's not enabled as a @Rule.");
   }
 
   @Override

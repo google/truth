@@ -21,17 +21,12 @@ import com.google.common.annotations.GwtIncompatible;
 import org.junit.internal.AssumptionViolatedException;
 
 /**
- * Truth - a proposition framework for tests, supporting JUnit style assertion and assumption
- * semantics in a fluent style.
+ * Provides a way to use Truth to perform JUnit "assumptions." An assumption is a check that, if
+ * false, aborts (skips) the test. This is especially useful in JUnit theories, parameterized tests,
+ * or other combinatorial tests where some subset of the combinations are simply not applicable for
+ * testing.
  *
- * <p>TruthJUnit contains a junit-specific "failure strategy" known as an assumption. An assumption
- * is a proposition that, if the proposition is false, aborts (skips) the test. This is especially
- * useful in JUnit theories or parameterized tests, or other combinatorial tests where some subset
- * of the combinations are simply not applicable for testing.
- *
- * <p>TruthJUnit is the entry point for assumptions, via the {@link #assume()} method.
- *
- * <p>eg:
+ * <p>For example:
  *
  * <pre>{@code
  * import static com.google.common.truth.Truth.assertThat;
@@ -48,8 +43,7 @@ import org.junit.internal.AssumptionViolatedException;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @GwtIncompatible("JUnit4")
-public final class TruthJUnit {
-  @GwtIncompatible("JUnit4")
+public final class TruthJUnit extends TruthJUnitBridgeMethodInjector {
   private static final FailureStrategy THROW_ASSUMPTION_ERROR =
       new AbstractFailureStrategy() {
         @Override
@@ -64,21 +58,22 @@ public final class TruthJUnit {
         }
       };
 
-  @GwtIncompatible("JUnit4")
   public static final FailureStrategy throwAssumptionError() {
     return THROW_ASSUMPTION_ERROR;
   }
 
-  @GwtIncompatible("JUnit4")
-  private static final TestVerb ASSUME = new TestVerb(THROW_ASSUMPTION_ERROR);
+  private static final StandardSubjectBuilder ASSUME =
+      StandardSubjectBuilder.forCustomFailureStrategy(THROW_ASSUMPTION_ERROR);
 
-  @GwtIncompatible("JUnit4")
-  public static final TestVerb assume() {
+  /**
+   * Begins a call chain with the fluent Truth API. If the check made by the chain fails, it will
+   * throw {@link AssumptionViolatedException}.
+   */
+  public static final StandardSubjectBuilder assume() {
     return ASSUME;
   }
 
   // TODO(diamondm): remove this and use org.junit.AssumptionViolatedException once we're on v4.12
-  @GwtIncompatible("JUnit4")
   private static class ThrowableAssumptionViolatedException extends AssumptionViolatedException {
     public ThrowableAssumptionViolatedException(String message, Throwable throwable) {
       super(message);

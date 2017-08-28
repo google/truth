@@ -16,20 +16,21 @@
 package com.google.common.truth;
 
 /**
- * Returned by calls like {@link IterableSubject#containsExactly}, {@code Ordered} lets the caller
- * additionally check that the expected elements were present in the order they were passed to the
- * previous calls.
- *
- * <pre>{@code
- * assertThat(supportedCharsets).containsExactly("UTF-8", "US-ASCII"); // does not check order
- * assertThat(supportedCharsets).containsExactly("UTF-8", "US-ASCII").inOrder(); // does check order
- * }</pre>
+ * Superclass of {@link Subject} that declares methods with their old signatures to preserve binary
+ * compatibility.
  */
-public interface Ordered {
+abstract class SubjectBridgeMethodInjector {
+  /**
+   * @deprecated When you recompile your code, you will automatically migrate to the new version of
+   *     this method.
+   */
+  @Deprecated
+  protected abstract TestVerb check();
 
   /**
-   * An additional assertion, implemented by some containment subjects which allows for a further
-   * constraint of orderedness.
+   * @deprecated When you recompile your code, you will automatically migrate to the new version of
+   *     this method.
    */
-  void inOrder();
+  @Deprecated
+  protected abstract TestVerb ignoreCheck();
 }

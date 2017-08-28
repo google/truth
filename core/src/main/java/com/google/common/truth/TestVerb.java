@@ -32,6 +32,12 @@ import java.util.SortedSet;
 import javax.annotation.Nullable;
 
 /*>>>import org.checkerframework.checker.nullness.compatqual.NullableType;*/
+/**
+ * @deprecated Instead of subclassing {@code TestVerb}, subclass {@link CustomSubjectBuilder}.
+ *     {@code CustomSubjectBuilder} is the new way of defining custom {@code that()} methods, and it
+ *     doesn't require you to write boilerplate to store and propagate the failure message.
+ */
+@Deprecated
 public class TestVerb extends AbstractVerb<TestVerb> {
   public TestVerb(FailureStrategy failureStrategy) {
     this(failureStrategy, null);

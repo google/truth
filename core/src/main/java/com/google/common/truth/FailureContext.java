@@ -24,9 +24,14 @@ import javax.annotation.Nullable;
  *
  * <p>{@code FailureMessageHolder} is a parent to those Verb types which will need to be modified
  * with failure message state.
+ *
+ * @deprecated If you are using this class to store and propagate the failure message as part of
+ *     subclassing {@link AbstractVerb} or {@link TestVerb}, you will no longer need it when you
+ *     migrate away from those classes, as described in their deprecation text.
  */
 // TODO(cgruber) Extract supplementary message state from the Verb hierarchy entirely.
 //     Requres lots of client fixes.
+@Deprecated
 public class FailureContext {
   private static final String PLACEHOLDER_ERR =
       "Incorrect number of args (%s) for the given placeholders (%s) in string template:\"%s\"";

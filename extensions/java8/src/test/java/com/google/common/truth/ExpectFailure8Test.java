@@ -19,6 +19,7 @@ import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.ExpectFailure.expectFailureAbout;
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -40,7 +41,10 @@ public final class ExpectFailure8Test {
   @Test
   public void testExpectFailureAbout() {
     AssertionError expected =
-        expectFailureAbout(STRINGS, whenTesting -> whenTesting.that("foo").contains("bar"));
+        expectFailureAbout(
+            STRINGS,
+            (SimpleSubjectBuilderCallback<StringSubject, String>)
+                whenTesting -> whenTesting.that("foo").contains("bar"));
     assertThat(expected).hasMessageThat().contains("<\"foo\"> contains <\"bar\">");
   }
 

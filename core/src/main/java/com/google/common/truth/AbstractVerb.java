@@ -21,8 +21,15 @@ import static com.google.common.truth.StringUtil.format;
 import javax.annotation.Nullable;
 
 /*>>>import org.checkerframework.checker.nullness.compatqual.NullableType;*/
-/** A parent type for some infrastructure used in the Verb. */
+/**
+ * A parent type for some infrastructure used in the Verb.
+ *
+ * @deprecated Instead of subclassing {@code AbstractVerb}, subclass {@link CustomSubjectBuilder}.
+ *     {@code CustomSubjectBuilder} is the new way of defining custom {@code that()} methods, and it
+ *     doesn't require you to write boilerplate to store and propagate the failure message.
+ */
 // TODO(cgruber) Remove the FailureMessageHolder inheritance and restructure to simplify verbs.
+@Deprecated
 public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureContext {
   private final FailureStrategy failureStrategy;
 
@@ -48,12 +55,12 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
   }
 
   /** Triggers the failure strategy with an empty failure message */
-  public final void fail() {
+  public void fail() {
     getFailureStrategy().fail("");
   }
 
   /** Triggers the failure strategy with the given failure message */
-  public final void fail(@Nullable String format, Object /*@NullableType*/... args) {
+  public void fail(@Nullable String format, Object /*@NullableType*/... args) {
     getFailureStrategy().fail(format(format, args));
   }
 
@@ -87,8 +94,8 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
    * @param factory a {@code SubjectFactory<S, D>} implementation
    * @return A custom verb for the type returned by the SubjectFactory
    */
-  public final <S extends Subject<S, D>, D, SF extends SubjectFactory<S, D>>
-      DelegatedVerb<S, D> about(SF factory) {
+  public <S extends Subject<S, D>, D, SF extends SubjectFactory<S, D>> DelegatedVerb<S, D> about(
+      SF factory) {
     return new DelegatedVerb<S, D>(getFailureStrategy(), factory);
   }
 
@@ -99,14 +106,23 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
    * @param <V> the type of {@link AbstractDelegatedVerb} to return
    * @param factory a {@code DelegatedVerbFactory<V>} implementation
    * @return A custom verb of type {@code <V>}
+   * @deprecated When you switch from implementing {@link DelegatedVerbFactory} to implementing
+   *     {@link CustomSubjectBuilderFactory}, you'll switch from this overload to {@linkplain
+   *     #about(CustomSubjectBuilderFactory) the overload} that accepts a {@code
+   *     CustomSubjectBuilderFactory}.
    */
+  @Deprecated
   public final <V extends AbstractDelegatedVerb> V about(DelegatedVerbFactory<V> factory) {
     return factory.createVerb(getFailureStrategy());
   }
 
-  /** A special Verb implementation which wraps a SubjectFactory */
-  public static final class DelegatedVerb<S extends Subject<S, T>, T>
-      extends AbstractDelegatedVerb {
+  /**
+   * A special Verb implementation which wraps a SubjectFactory.
+   *
+   * @deprecated This class is being renamed to {@link SimpleSubjectBuilder}.
+   */
+  @Deprecated
+  public static class DelegatedVerb<S extends Subject<S, T>, T> extends AbstractDelegatedVerb {
     private final FailureStrategy failureStrategy;
     private final SubjectFactory<S, T> subjectFactory;
 
@@ -134,6 +150,13 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
     }
   }
 
+  /**
+   * @deprecated To prepend a message, use {@link StandardSubjectBuilder#withMessage}. If you are
+   *     using {@code MessagePrependingFailureStrategy} to store and propagate the failure message
+   *     as part of subclassing {@link AbstractVerb} or {@link TestVerb}, you will no longer need it
+   *     when you migrate off those classes, as described in their deprecation text.
+   */
+  @Deprecated
   protected static final class MessagePrependingFailureStrategy extends FailureStrategy {
     private final FailureStrategy delegate;
     private final FailureContext messageHolder;

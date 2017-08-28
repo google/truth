@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.THROW_ASSERTION_ERROR;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assert_;
@@ -35,9 +36,10 @@ public class CustomFailureMessageTest {
 
   @Test
   public void hasFailureMessage() {
-    assertThat(assert_().hasFailureMessage()).isFalse();
-    assertThat(assertWithMessage("foo").hasFailureMessage()).isTrue();
-    assertThat(assertWithMessage("foo %s", "foo").hasFailureMessage()).isTrue();
+    assertThat(new TestVerb(THROW_ASSERTION_ERROR).hasFailureMessage()).isFalse();
+    assertThat(new TestVerb(THROW_ASSERTION_ERROR).withMessage("foo").hasFailureMessage()).isTrue();
+    assertThat(new TestVerb(THROW_ASSERTION_ERROR).withMessage("foo %s", "foo").hasFailureMessage())
+        .isTrue();
   }
 
   @Test

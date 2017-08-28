@@ -25,26 +25,36 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 /**
- * An assertion strategy that expects the given assertion to fail, and captures the failure rather
- * than throwing it. It should be used as a JUnit {@code @Rule}, so that unexpectedly-passing
- * assertions will cause your test to fail. In Java 8 you can use {@link #expectFailure
- * expectFailure()} to instead capture failures directly.
+ * A utility for testing that assertions against a custom {@link Subject} fail when they should.
  *
- * <p>By design this class expects exactly one failure per instance, meaning you should create
- * separate tests for each failure case you intend to assert on, rather than trying to capture
- * multiple failures in a single test. With {@code expectFailure()} you can safely capture multiple
- * failures in the same test method, but creating separate tests is still encouraged. (Currently,
- * calling {@code whenTesting()} more than once on the same instance fails. However, you should not
- * rely on this behaviour.)
+ * <p>Usage:
  *
- * <p><b>Note:</b> this class is not intended for general use; it exists primarily to write tests of
- * {@link Subject} implementations and other Truth internals. If you are writing your own custom
- * subject you are encouraged to use this class rather than define a custom {@link FailureStrategy}
- * or directly catch {@link AssertionError}. Use {@code
- * expectFailure.whenTesting().about(subjectFactory()).that(...)} to make assertions about custom
- * subjects.
+ * <pre>{@code
+ *   AssertionError failure =
+ *       expectFailure(whenTesting -> whenTesting.that(cancelButton).isVisible());
+ *   assertThat(failure).hasMessageThat().contains("visible");
+ *
+ * ...
+ *
+ * private static AssertionError expectFailure(
+ *     ExpectFailure.SimpleSubjectBuilderCallback<UiElementSubject, UiElement> assertionCallback) {
+ *   return ExpectFailure.expectFailureAbout(uiElements(), assertionCallback);
+ * }
+ * }</pre>
+ *
+ * Or, if you can't use lambdas:
+ *
+ * <pre>
+ * {@code @Rule public final ExpectFailure expectFailure = new ExpectFailure();}
+ *
+ * {@code ...
+ *
+ *     expectFailure.whenTesting().about(uiElements()).that(cancelButton).isVisible();
+ *     assertThat(expectFailure.getFailure()).hasMessageThat().contains("visible");
+ * }</pre>
  */
-public final class ExpectFailure implements TestRule {
+// TODO(cpovirk): remove superclass ExpectFailureBridgeMethodInjector
+public final class ExpectFailure implements TestRule, ExpectFailureBridgeMethodInjector {
   private final FailureStrategy strategy =
       new AbstractFailureStrategy() {
         @Override
@@ -78,8 +88,12 @@ public final class ExpectFailure implements TestRule {
   /**
    * Returns a test verb that expects the chained assertion to fail, and makes the failure available
    * via {@link #getFailure}.
+   *
+   * <p>An instance of {@code ExpectFailure} supports only one {@code whenTesting} call per test
+   * method. The static {@link #expectFailure} method, by contrast, does not have this limitation.
    */
-  public TestVerb whenTesting() {
+  @Override // temporarily
+  public StandardSubjectBuilder whenTesting() {
     checkState(inRuleContext, "ExpectFailure must be used as a JUnit @Rule");
     if (failure != null) {
       AssertionError error = new AssertionError("ExpectFailure already captured a failure");
@@ -91,7 +105,7 @@ public final class ExpectFailure implements TestRule {
           "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
     }
     failureExpected = true;
-    return new TestVerb(strategy);
+    return StandardSubjectBuilder.forCustomFailureStrategy(strategy);
   }
 
   /** Returns the captured failure, if one occurred. */
@@ -124,8 +138,26 @@ public final class ExpectFailure implements TestRule {
    *
    * <p>{@code AssertionError failure = expectFailure(whenTesting ->
    * whenTesting.that(4).isNotEqualTo(4));}
+   *
+   * @deprecated Switch to {@linkplain #expectFailure(StandardSubjectBuilderCallback) the overload}
+   *     of this method that accepts a {@link StandardSubjectBuilderCallback}.
    */
+  @Deprecated
   public static AssertionError expectFailure(AssertionCallback assertionCallback) {
+    ExpectFailure expectFailure = new ExpectFailure();
+    expectFailure.inRuleContext = true; // safe since this instance doesn't leave this method
+    assertionCallback.invokeAssertion(expectFailure.whenTesting());
+    return expectFailure.getFailure();
+  }
+
+  /**
+   * Static alternative that directly returns the triggered failure. This is intended to be used in
+   * Java 8 tests similar to {@code expectThrows()}:
+   *
+   * <p>{@code AssertionError failure = expectFailure(whenTesting ->
+   * whenTesting.that(4).isNotEqualTo(4));}
+   */
+  public static AssertionError expectFailure(StandardSubjectBuilderCallback assertionCallback) {
     ExpectFailure expectFailure = new ExpectFailure();
     expectFailure.inRuleContext = true; // safe since this instance doesn't leave this method
     assertionCallback.invokeAssertion(expectFailure.whenTesting());
@@ -138,7 +170,11 @@ public final class ExpectFailure implements TestRule {
    *
    * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
    * whenTesting.that(myType).hasProperty());}
+   *
+   * @deprecated Switch to {@linkplain #expectFailure(StandardSubjectBuilderCallback) the overload}
+   *     of this method that accepts a {@link SimpleSubjectBuilderCallback}.
    */
+  @Deprecated
   public static <S extends Subject<S, D>, D> AssertionError expectFailureAbout(
       final SubjectFactory<S, D> factory,
       final DelegatedAssertionCallback<S, D> assertionCallback) {
@@ -147,6 +183,26 @@ public final class ExpectFailure implements TestRule {
         new AssertionCallback() {
           @Override
           public void invokeAssertion(TestVerb whenTesting) {
+            assertionCallback.invokeAssertion(whenTesting.about(factory));
+          }
+        });
+  }
+
+  /**
+   * Static alternative that directly returns the triggered failure. This is intended to be used in
+   * Java 8 tests similar to {@code expectThrows()}:
+   *
+   * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
+   * whenTesting.that(myType).hasProperty());}
+   */
+  public static <S extends Subject<S, A>, A> AssertionError expectFailureAbout(
+      final SubjectFactory<S, A> factory,
+      final SimpleSubjectBuilderCallback<S, A> assertionCallback) {
+    // whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory))
+    return expectFailure(
+        new StandardSubjectBuilderCallback() {
+          @Override
+          public void invokeAssertion(StandardSubjectBuilder whenTesting) {
             assertionCallback.invokeAssertion(whenTesting.about(factory));
           }
         });
@@ -174,6 +230,23 @@ public final class ExpectFailure implements TestRule {
   }
 
   /**
+   * A "functional interface" for {@link #expectFailure(AssertionCallback)} expectFailure()} to
+   * invoke and capture failures.
+   *
+   * <p>Java 8 users should pass a lambda to {@code .expectFailure()} rather than directly implement
+   * this interface. Java 7 users can define an {@code @Rule ExpectFailure} instance instead;
+   * however, if you prefer the {@code .expectFailure()} pattern you can use this interface to pass
+   * in an anonymous class.
+   *
+   * @deprecated Implement {@link StandardSubjectBuilderCallback}, which is identical except that
+   *     its parameter is a {@link StandardSubjectBuilder}, the new name of {@link TestVerb}.
+   */
+  @Deprecated
+  public interface AssertionCallback<B extends TestVerb> {
+    void invokeAssertion(B whenTesting);
+  }
+
+  /**
    * A "functional interface" for {@link #expectFailure expectFailure()} to invoke and capture
    * failures.
    *
@@ -182,8 +255,29 @@ public final class ExpectFailure implements TestRule {
    * however if you prefer the {@code .expectFailure()} pattern you can use this interface to pass
    * in an anonymous class.
    */
-  public interface AssertionCallback {
-    void invokeAssertion(TestVerb expect);
+  // TODO(cpovirk): remove superclass AssertionCallback
+  public interface StandardSubjectBuilderCallback
+      extends AssertionCallback<StandardSubjectBuilder> {
+    @Override // temporarily
+    void invokeAssertion(StandardSubjectBuilder whenTesting);
+  }
+
+  /**
+   * A "functional interface" for {@link #expectFailureAbout expectFailureAbout()} to invoke and
+   * capture failures.
+   *
+   * <p>Java 8 users should pass a lambda to {@code .expectFailureAbout()} rather than directly
+   * implement this interface. Java 7 users can define an {@code @Rule ExpectFailure} instance
+   * instead, however if you prefer the {@code .expectFailureAbout()} pattern you can use this
+   * interface to pass in an anonymous class.
+   *
+   * @deprecated Implement {@link SimpleSubjectBuilderCallback}, which is identical except that its
+   *     parameter is of {@link SimpleSubjectBuilder}, the new name of {@link
+   *     AbstractVerb.DelegatedVerb}.
+   */
+  @Deprecated
+  public interface DelegatedAssertionCallback<S extends Subject<S, D>, D> {
+    void invokeAssertion(AbstractVerb.DelegatedVerb<S, D> whenTesting);
   }
 
   /**
@@ -195,7 +289,7 @@ public final class ExpectFailure implements TestRule {
    * instead, however if you prefer the {@code .expectFailureAbout()} pattern you can use this
    * interface to pass in an anonymous class.
    */
-  public interface DelegatedAssertionCallback<S extends Subject<S, D>, D> {
-    void invokeAssertion(AbstractVerb.DelegatedVerb<S, D> expect);
+  public interface SimpleSubjectBuilderCallback<S extends Subject<S, A>, A> {
+    void invokeAssertion(SimpleSubjectBuilder<S, A> whenTesting);
   }
 }

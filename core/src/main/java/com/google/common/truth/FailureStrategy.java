@@ -18,24 +18,32 @@ package com.google.common.truth;
 import java.util.Arrays;
 
 /**
- * A {@code FailureStrategy} defines how assertion failures are handled. In {@link Truth}, failures
- * {@linkplain Truth#THROW_ASSERTION_ERROR throw AssertionErrors}; other assertion entry-points like
- * {@link Expect} and {@link TruthJUnit#assume} have different failure behavior.
+ * Defines what to do when a check fails.
  *
- * <p>It should generally be unnecessary for Truth SPI developers to define their own {@code
- * FailureStrategy} implementations. When you really do need to create your own strategy prefer to
- * extend {@link AbstractFailureStrategy} rather than this class directly.
+ * <p>This type does not appear directly in a fluent assertion chain, but you choose a {@code
+ * FailureStrategy} by choosing which {@code StandardSubjectBuilder}-returning method to call.
  *
- * <p>Alternatives to creating a custom {@code FailureStrategy} implementation:
+ * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
+ *
+ * <h2>For people extending Truth</h2>
+ *
+ * <p>Custom {@code FailureStrategy} implementations are unusual. If you think you need one,
+ * consider these alternatives:
  *
  * <ul>
- *   <li>For unit tests of a custom subject and assert on the failure behavior use {@link
- *       ExpectFailure}
- *   <li>To create subjects of other types within your own subject (e.g. for chained assertions) use
- *       {@link Subject#check}
- *   <li>To return a no-op subject after a previous assertion has failed (e.g. for chained
- *       assertions) use {@link Subject#ignoreCheck}
+ *   <li>To test a custom subject, use {@link ExpectFailure}.
+ *   <li>To create subjects for other objects related to your actual value (for chained assertions),
+ *       use {@link Subject#check}, which preserves the existing {@code FailureStrategy} and other
+ *       context.
+ *   <li>To return a no-op subject after a previous assertion has failed (for chained assertions),
+ *       use {@link Subject#ignoreCheck}
  * </ul>
+ *
+ * <p>When you really do need to create your own strategy, prefer to extend {@link
+ * AbstractFailureStrategy} rather than this class directly. And rather than expose your {@code
+ * FailureStrategy} instance to users, expose a {@link StandardSubjectBuilder} instance using {@link
+ * StandardSubjectBuilder#forCustomFailureStrategy
+ * StandardSubjectBuilder.forCustomFailureStrategy(STRATEGY)}.
  */
 public abstract class FailureStrategy {
   /**

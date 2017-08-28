@@ -27,7 +27,10 @@ package com.google.common.truth;
  * are too strict - for example, if your custom {@link Subject} is parameterized, and you want to
  * infer the parameter type from the test object. See {@link DelegatedVerbFactoryTest} for an
  * example implementation.
+ *
+ * @deprecated This class is being renamed to {@link CustomSubjectBuilderFactory}.
  */
+@Deprecated
 public interface DelegatedVerbFactory<V extends AbstractDelegatedVerb> {
   /** Instantiates a new V with {@code failureStrategy} and itself. */
   V createVerb(FailureStrategy failureStrategy);
