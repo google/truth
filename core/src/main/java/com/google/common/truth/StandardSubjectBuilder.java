@@ -255,9 +255,8 @@ public class StandardSubjectBuilder extends TestVerb {
    * strategy and any previously set failure message.
    */
   @Override // temporarily
-  // TODO(cpovirk): Remove SF type parameter. Change `SF factory` to `SubjectFactory<S, A> factory`
-  public final <S extends Subject<S, A>, A, SF extends SubjectFactory<S, A>>
-      SimpleSubjectBuilder<S, A> about(SF factory) {
+  public final <S extends Subject<S, A>, A> SimpleSubjectBuilder<S, A> about(
+      SubjectFactory<S, A> factory) {
     return new SimpleSubjectBuilder<S, A>(failureStrategy(), factory);
   }
 

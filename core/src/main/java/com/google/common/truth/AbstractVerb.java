@@ -94,8 +94,7 @@ public abstract class AbstractVerb<T extends AbstractVerb<T>> extends FailureCon
    * @param factory a {@code SubjectFactory<S, D>} implementation
    * @return A custom verb for the type returned by the SubjectFactory
    */
-  public <S extends Subject<S, D>, D, SF extends SubjectFactory<S, D>> DelegatedVerb<S, D> about(
-      SF factory) {
+  public <S extends Subject<S, D>, D> DelegatedVerb<S, D> about(SubjectFactory<S, D> factory) {
     return new DelegatedVerb<S, D>(getFailureStrategy(), factory);
   }
 
