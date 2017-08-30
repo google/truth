@@ -185,7 +185,7 @@ public final class Truth extends TruthBridgeMethodInjector {
     return assert_().that(target);
   }
 
-  public static Subject<DefaultSubject, Object> assertThat(@Nullable Object target) {
+  public static Subject<?, ?> assertThat(@Nullable Object target) {
     return assert_().that(target);
   }
 

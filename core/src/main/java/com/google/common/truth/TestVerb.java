@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
@@ -26,6 +27,7 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.util.concurrent.AtomicLongMap;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -64,8 +66,8 @@ public class TestVerb extends AbstractVerb<TestVerb> {
     return new BigDecimalSubject(getFailureStrategy(), target);
   }
 
-  public Subject<DefaultSubject, Object> that(@Nullable Object target) {
-    return new DefaultSubject(getFailureStrategy(), target);
+  public Subject<? extends Subject<?, ?>, ?> that(@Nullable Object target) {
+    return getSubject(target);
   }
 
   @GwtIncompatible("ClassSubject.java")
@@ -199,5 +201,37 @@ public class TestVerb extends AbstractVerb<TestVerb> {
   @Override
   public TestVerb withMessage(@Nullable String format, Object /* @NullableType */... args) {
     return new TestVerb(getFailureStrategy(), format, args); // Must be a new instance.
+  }
+  
+  private Subject<?, ?> getSubject(Object subject) {
+    FailureStrategy failureStrategy = getFailureStrategy();
+    if (subject instanceof boolean[]) {
+      return new PrimitiveBooleanArraySubject(failureStrategy, (boolean[]) subject);
+    }
+    if (subject instanceof int[]) {
+      return new PrimitiveIntArraySubject(failureStrategy, (int[]) subject);
+    } 
+    if (subject instanceof long[]) {
+      return new PrimitiveLongArraySubject(failureStrategy, (long[]) subject);
+    } 
+    if (subject instanceof short[]) {
+      return new PrimitiveShortArraySubject(failureStrategy, (short[]) subject);
+    } 
+    if (subject instanceof byte[]) {
+      return new PrimitiveByteArraySubject(failureStrategy, (byte[]) subject);
+    } 
+    if (subject instanceof double[]) {
+      return new PrimitiveDoubleArraySubject(failureStrategy, (double[]) subject);
+    } 
+    if (subject instanceof float[]) {
+      return new PrimitiveFloatArraySubject(failureStrategy, (float[]) subject);
+    } 
+    if (subject instanceof char[]) {
+      return new PrimitiveCharArraySubject(failureStrategy, (char[]) subject);
+    } 
+    if (subject instanceof Object[]) {
+      return new ObjectArraySubject(failureStrategy, (Object[]) subject);
+    }
+    return new DefaultSubject(getFailureStrategy(), subject);
   }
 }
