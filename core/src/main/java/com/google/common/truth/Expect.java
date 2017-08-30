@@ -47,6 +47,9 @@ import org.junit.runners.model.Statement;
  *
  * If both of the assertions above fail, the test will fail with an exception that contains
  * information about both.
+ *
+ * <p>To record failures for the purpose of testing that an assertion fails when it should, see
+ * {@link ExpectFailure}.
  */
 @GwtIncompatible("JUnit4")
 public final class Expect extends StandardSubjectBuilder implements TestRule {
