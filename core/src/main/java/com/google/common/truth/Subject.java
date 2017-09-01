@@ -49,7 +49,15 @@ public class Subject<S extends Subject<S, T>, T> extends SubjectBridgeMethodInje
         public void fail(String message, Throwable cause) {}
       };
 
-  protected final FailureStrategy failureStrategy;
+  /**
+   * @deprecated If you are calling {@code failureStrategy.fail*} directly, instead call {@link
+   *     #failWithRawMessage}, {@link #failWithRawMessageAndCause}, or {@link #failComparing}. If
+   *     you are passing {@code failureStrategy} to a {@code Subject} constructor, instead call
+   *     {@link #check()}{@code .that(...)} or {@code check().about(...).that(...)}. (You might need
+   *     to create the {@link SubjectFactory} that is the argument to {@code about}.)
+   */
+  @Deprecated protected final FailureStrategy failureStrategy;
+
   private final T actual;
   private String customName = null;
 
@@ -450,6 +458,28 @@ public class Subject<S extends Subject<S, T>, T> extends SubjectBridgeMethodInje
   // TODO(cgruber) final
   protected void failWithRawMessage(String message, Object... parameters) {
     failureStrategy.fail(format(message, parameters));
+  }
+
+  /** Passes through a failure message verbatim, along with a cause. */
+  protected final void failWithRawMessageAndCause(String message, Throwable cause) {
+    failureStrategy.fail(message, cause);
+  }
+
+  /**
+   * Passes through a failure message verbatim, along with the expected and actual values that the
+   * {@link FailureStrategy} may use to construct a {@code ComparisonFailure}.
+   */
+  protected final void failComparing(String message, CharSequence expected, CharSequence actual) {
+    failureStrategy.failComparing(message, expected, actual);
+  }
+
+  /**
+   * Passes through a failure message verbatim, along with a cause and the expected and actual
+   * values that the {@link FailureStrategy} may use to construct a {@code ComparisonFailure}.
+   */
+  protected final void failComparing(
+      String message, CharSequence expected, CharSequence actual, Throwable cause) {
+    failureStrategy.failComparing(message, expected, actual, cause);
   }
 
   /**

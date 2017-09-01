@@ -55,7 +55,7 @@ public final class PrimitiveByteArraySubject
     try {
       byte[] expectedArray = (byte[]) expected;
       if (!Arrays.equals(actual, expectedArray)) {
-        failureStrategy.failComparing(
+        failComparing(
             "Not true that "
                 + getDisplaySubject()
                 + " is equal to <"
