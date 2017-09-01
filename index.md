@@ -1,6 +1,6 @@
 ---
 layout: default
-subtitle: We've made failure a strategy
+subtitle: Fluent assertions for Java
 url: /truth
 ---
 
