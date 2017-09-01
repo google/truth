@@ -81,7 +81,7 @@ information can be found here:
 <!-- References -->
 
 [github]: https://github.com/google/truth
-[source]: https://github.com/google/truth
+[source]: https://github.com/google/truth/tree/master/core/src/main/java/com/google/common/truth
 [fluent]: http://en.wikipedia.org/wiki/Fluent_interface
 [Github issues]: https://github.com/google/truth/issues
 [Stack Overflow]: http://stackoverflow.com/questions/tagged/google-truth
