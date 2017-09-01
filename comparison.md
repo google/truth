@@ -177,8 +177,8 @@ though your test is probably buggy. Under AssertJ, it doesn't compile.
 
 AssertJ supports Hamcrest-style ["conditions."][conditions]
 
-Truth does not. We encourage people to instead write custom `Subject`
-implementations, which IDEs can better surface during autocompletion.
+Truth does not. We encourage people to instead write [custom `Subject`
+implementations](extension), which IDEs can better surface during autocompletion.
 
 ### And more
 
