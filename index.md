@@ -41,7 +41,7 @@ dependencies {
 ```
 
 
-## 2. Add static imports for Truth’s entry point(s):
+## 2. Add static imports for Truth’s entry points:
 
 ```java
 import static com.google.common.truth.Truth.assertThat;
