@@ -75,6 +75,14 @@ import javax.annotation.Nullable;
 public final class Truth extends TruthBridgeMethodInjector {
   private Truth() {}
 
+  /**
+   * @deprecated If you are passing this to a {@link Subject} constructor, instead call {@link
+   *     #assertAbout(SubjectFactory)}{@code .that(...)}, passing its associated {@link
+   *     SubjectFactory} (which you might need to create). If you are calling {@code fail} on this
+   *     object directly, instead use {@link #assert_()}{@code .fail()}, or {@code throw new
+   *     AssertionError()} directly.
+   */
+  @Deprecated
   public static final FailureStrategy THROW_ASSERTION_ERROR =
       new AbstractFailureStrategy() {
         @Override

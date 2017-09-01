@@ -115,9 +115,9 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
         String ourString = getTrimmedToString(actual());
         String theirString = getTrimmedToString((MessageLite) expected);
         if (!ourString.equals(theirString)) {
-          failureStrategy.failComparing("Not true that protos are equal:", theirString, ourString);
+          failComparing("Not true that protos are equal:", theirString, ourString);
         } else if (actual().getClass() != expected.getClass()) {
-          failureStrategy.failComparing(
+          failComparing(
               "Not true that protos are equal:",
               String.format("(%s) %s", expected.getClass().getName(), theirString),
               String.format("(%s) %s", actual().getClass().getName(), ourString));

@@ -63,10 +63,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
             actualAsString(), expected.getClass().getName(), expected);
       } else if (!actual().equals(expected)) {
         if (internalCustomName() != null) {
-          failureStrategy.failComparing(
-              "\"" + internalCustomName() + "\":", (String) expected, actual());
+          failComparing("\"" + internalCustomName() + "\":", (String) expected, actual());
         } else {
-          failureStrategy.failComparing("", (String) expected, actual());
+          failComparing("", (String) expected, actual());
         }
       }
     }
