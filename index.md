@@ -26,6 +26,7 @@ You can also [read Truth's source directly][source], view its [API docs], and
   <groupId>com.google.truth</groupId>
   <artifactId>truth</artifactId>
   <version>{{ site.version }}</version>
+  <scope>test</scope>
 </dependency>
 ```
 
