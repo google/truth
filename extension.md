@@ -22,6 +22,49 @@ Other extensions that are not part of the Truth project itself include:
 *   [Compile Testing] for testing annotation processors and compilation jobs
 
 
+## Using Truth extensions
+
+The steps are nearly the same as [for using the core Truth assertions](index):
+
+## 1. Add the appropriate dependency to your build file:
+
+For example, for Protocol Buffers, `com.google.truth.extensions:truth-proto-extension:{{ site.version }}`. Of course, you can skip this step if you define the `Subject` in the same project as the tests that use it.
+
+
+## 2. Add a static import:
+
+```java
+import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
+```
+
+## 3. Write a test assertion:
+
+```java
+assertThat(myBuilder).hasAllRequiredFields();
+```
+
+If you need to set a failure message or use a custom [`FailureStrategy`], you'll
+instead need to find the extension's `SubjectFactory`. For an extension named
+`FooSubject`, the factory is usually `FooSubject.foos()`. In the case of the
+Protocol Buffers extension, it's `ProtoTruth.protos()`. So, to use the
+[`expect`] `FailureStrategy` and a custom message in a check about Protocol
+Buffers, you would write:
+
+```java
+import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
+…
+expect
+    .withMessage("fields not copied from input %s", input)
+    .about(protos())
+    .that(myBuilder)
+    .hasAllRequiredFields();
+```
+
+But in most cases you'll use shortcuts, either `assertThat(...)` or
+`assertWithMessage(...).about(...).that(...)`. If you're interested in the
+details of how the shortcuts work and why the API is designed the way it is,
+check back here for a doc we'll be publishing soon.
+
 ## Writing your own Truth extension
 
 For an example of how to support custom types in Truth, please see the [employee
@@ -234,4 +277,5 @@ There are three parts to the example:
 [`Subject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
 [`SubjectFactory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/SubjectFactory.java
 [`FailureStrategy`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
+[`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
 

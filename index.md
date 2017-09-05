@@ -41,6 +41,9 @@ dependencies {
 }
 ```
 
+To use the Java 8 extensions, also include
+`com.google.truth.extensions:truth-java8-extension:{{ site.version }}`.
+
 
 ## 2. Add static imports for Truth’s entry points:
 
