@@ -139,6 +139,8 @@ Most users are satisfied with the defaults: no failure message, a `FailureStrate
 
 <!-- References -->
 
+[`Subject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
+[`IterableSubject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/IterableSubject.java
 [`IterableOfProtosSubject`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/IterableOfProtosSubject.java
 [`ProtoTruth`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoTruth.java
 [`CustomSubjectBuilder`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/CustomSubjectBuilder.java
