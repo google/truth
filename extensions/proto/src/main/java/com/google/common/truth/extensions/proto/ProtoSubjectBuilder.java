@@ -16,13 +16,11 @@
 
 package com.google.common.truth.extensions.proto;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
-import com.google.common.truth.AbstractDelegatedVerb;
-import com.google.common.truth.DelegatedVerbFactory;
+import com.google.common.truth.CustomSubjectBuilder;
+import com.google.common.truth.CustomSubjectBuilderFactory;
 import com.google.common.truth.FailureStrategy;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
@@ -30,68 +28,66 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
- * Custom {@link AbstractDelegatedVerb} which aggregates all Proto-related {@link
+ * {@link CustomSubjectBuilder} which aggregates all Proto-related {@link
  * com.google.common.truth.Subject} classes into a single place.
  *
  * <p>To obtain an instance, call {@code assertAbout(ProtoTruth.protos())}.
  */
-public final class ProtoTruthDelegatedVerb extends AbstractDelegatedVerb {
+public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
 
-  /** Factory for ProtoTruthDelegatedVerb. */
-  private static class Factory implements DelegatedVerbFactory<ProtoTruthDelegatedVerb> {
+  /** Factory for ProtoSubjectBuilder. */
+  private static class Factory implements CustomSubjectBuilderFactory<ProtoSubjectBuilder> {
     private static final Factory INSTANCE = new Factory();
 
     @Override
-    public ProtoTruthDelegatedVerb createVerb(FailureStrategy failureStrategy) {
-      return new ProtoTruthDelegatedVerb(failureStrategy);
+    public ProtoSubjectBuilder createSubjectBuilder(FailureStrategy failureStrategy) {
+      return new ProtoSubjectBuilder(failureStrategy);
     }
   }
 
-  static DelegatedVerbFactory<ProtoTruthDelegatedVerb> factory() {
+  static CustomSubjectBuilderFactory<ProtoSubjectBuilder> factory() {
     return Factory.INSTANCE;
   }
 
-  private final FailureStrategy failureStrategy;
-
-  private ProtoTruthDelegatedVerb(FailureStrategy failureStrategy) {
-    this.failureStrategy = checkNotNull(failureStrategy);
+  private ProtoSubjectBuilder(FailureStrategy failureStrategy) {
+    super(failureStrategy);
   }
 
   public LiteProtoSubject<?, MessageLite> that(@Nullable MessageLite messageLite) {
-    return new LiteProtoSubject.MessageLiteSubject(failureStrategy, messageLite);
+    return new LiteProtoSubject.MessageLiteSubject(failureStrategy(), messageLite);
   }
 
   public ProtoSubject<?, Message> that(@Nullable Message message) {
-    return new ProtoSubject.MessageSubject(failureStrategy, message);
+    return new ProtoSubject.MessageSubject(failureStrategy(), message);
   }
 
   public <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> that(
       @Nullable Iterable<M> messages) {
-    return new IterableOfProtosSubject.IterableOfMessagesSubject<M>(failureStrategy, messages);
+    return new IterableOfProtosSubject.IterableOfMessagesSubject<M>(failureStrategy(), messages);
   }
 
   public <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> that(
       @Nullable Map<K, M> map) {
-    return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<K, M>(failureStrategy, map);
+    return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<K, M>(failureStrategy(), map);
   }
 
   public <K, M extends Message> MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> that(
       @Nullable Multimap<K, M> map) {
     return new MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject<K, M>(
-        failureStrategy, map);
+        failureStrategy(), map);
   }
 
   public <K, M extends Message>
       ListMultimapWithProtoValuesSubject<?, K, M, ListMultimap<K, M>> that(
           @Nullable ListMultimap<K, M> map) {
     return new ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject<K, M>(
-        failureStrategy, map);
+        failureStrategy(), map);
   }
 
   public <K, M extends Message> SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> that(
       @Nullable SetMultimap<K, M> map) {
     return new SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject<K, M>(
-        failureStrategy, map);
+        failureStrategy(), map);
   }
 
 }
