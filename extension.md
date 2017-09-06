@@ -63,7 +63,7 @@ expect
 But in most cases you'll use shortcuts, either `assertThat(...)` or
 `assertWithMessage(...).about(...).that(...)`. If you're interested in the
 details of how the shortcuts work and why the API is designed the way it is,
-check back here for a doc we'll be publishing soon.
+see [this design doc](subject_builder_design).
 
 ## Writing your own Truth extension
 
