@@ -21,12 +21,10 @@ import static com.google.common.truth.Truth.assertAbout;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
-import com.google.common.truth.AbstractVerb;
-import com.google.common.truth.DelegatedVerbFactory;
+import com.google.common.truth.CustomSubjectBuilderFactory;
 import com.google.common.truth.IterableSubject;
 import com.google.common.truth.MapSubject;
 import com.google.common.truth.MultimapSubject;
-import com.google.common.truth.SubjectFactory;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
@@ -36,18 +34,18 @@ import javax.annotation.Nullable;
  * A set of static methods to begin a Truth assertion chain for protocol buffers.
  *
  * <p>Note: Usage of different failure strategies such as <em>assume</em> and <em>expect</em> should
- * rely on {@link AbstractVerb#about(SubjectFactory)} to begin a chain with those alternative
- * behaviors.
+ * rely on {@link CustomSubjectBuilderFactory#about(CustomSubjectBuilderFactory)} to begin a chain
+ * with those alternative behaviors.
  */
 public final class ProtoTruth {
 
   /**
-   * Returns a {@link DelegatedVerbFactory}, akin to a {@link
+   * Returns a {@link CustomSubjectBuilderFactory}, akin to a {@link
    * com.google.common.truth.SubjectFactory}, which can be used to assert on multiple types of
    * Protos and collections containing them.
    */
-  public static DelegatedVerbFactory<ProtoTruthDelegatedVerb> protos() {
-    return ProtoTruthDelegatedVerb.factory();
+  public static CustomSubjectBuilderFactory<ProtoSubjectBuilder> protos() {
+    return ProtoSubjectBuilder.factory();
   }
 
   /** Assert on a single {@link MessageLite} instance. */
