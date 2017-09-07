@@ -197,7 +197,7 @@
 <text text-anchor="start" x="274.266" y="-167.614" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000"> </text>
 </a>
 </g>
-<g id="a_edge4_9"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/StandardSubjectBuilder.html#about-SF-" xlink:title=" " target="_parent">
+<g id="a_edge4_9"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/StandardSubjectBuilder.html#about-com.google.common.truth.SubjectFactory-" xlink:title=" " target="_parent">
 <text text-anchor="start" x="281.766" y="-167.614" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000">about(...)</text>
 </a>
 </g>
