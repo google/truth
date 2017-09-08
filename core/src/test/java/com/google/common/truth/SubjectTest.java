@@ -640,7 +640,8 @@ public class SubjectTest {
   @Test
   public void checkPersistsStrategy() {
     try {
-      new DefaultSubject(Truth.THROW_ASSERTION_ERROR, null).check().that("foo").isNull();
+      assertThat((Object) null).check().that("foo").isNull();
+      fail();
     } catch (AssertionError e) {
       assertThat(e).hasMessageThat().isEqualTo("Not true that <\"foo\"> is null");
     }
@@ -648,7 +649,7 @@ public class SubjectTest {
 
   @Test
   public void ignoreCheckDiscardsFailures() {
-    new DefaultSubject(Truth.THROW_ASSERTION_ERROR, null).ignoreCheck().that("foo").isNull();
+    assertThat((Object) null).ignoreCheck().that("foo").isNull();
   }
 
   @SafeVarargs
