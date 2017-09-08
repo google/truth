@@ -91,7 +91,9 @@ public class TruthAssertThatTest {
       Truth.THROW_ASSERTION_ERROR.fail("test");
     } catch (AssertionError expected) {
       for (StackTraceElement stackTraceElement : expected.getStackTrace()) {
-        assertThat(stackTraceElement.getClassName()).doesNotContain("com.google.common.truth");
+        if (!stackTraceElement.getClassName().contains("TruthAssertThatTest")) {
+          assertThat(stackTraceElement.getClassName()).doesNotContain("com.google.common.truth");
+        }
       }
       return;
     }

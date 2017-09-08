@@ -76,14 +76,16 @@ public abstract class FailureStrategy {
       String message, CharSequence expected, CharSequence actual, Throwable cause);
 
   /**
-   * Strips stack frames from the throwable that have a class starting with com.google.common.truth.
+   * Strips stack frames from the throwable that have a class starting with com.google.common.truth
+   * (but that aren't Truth's own test classes).
    */
   static <T extends Throwable> T stripTruthStackFrames(T throwable) {
     StackTraceElement[] stackTrace = throwable.getStackTrace();
 
     int i = 0;
     while (i < stackTrace.length
-        && stackTrace[i].getClassName().startsWith("com.google.common.truth")) {
+        && stackTrace[i].getClassName().startsWith("com.google.common.truth")
+        && !stackTrace[i].getClassName().endsWith("Test")) {
       i++;
     }
     throwable.setStackTrace(Arrays.copyOfRange(stackTrace, i, stackTrace.length));
