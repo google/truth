@@ -1,7 +1,5 @@
 # Truth
 
-***We've made failure a strategy***
-
 [![Main Site][gh-pages-shield]][gh-pages-link]
 [![Build Status][travis-shield]][travis-link]
 [![Maven Release][maven-shield]][maven-link]
