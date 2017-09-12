@@ -113,19 +113,19 @@ public class CustomFailureMessageTest {
 
   @Test
   public void countPlaceholders() {
-    assertThat(TestVerb.countPlaceholders(null)).isEqualTo(0);
-    assertThat(TestVerb.countPlaceholders("")).isEqualTo(0);
-    assertThat(TestVerb.countPlaceholders("%s")).isEqualTo(1);
-    assertThat(TestVerb.countPlaceholders("%s%s")).isEqualTo(2);
-    assertThat(TestVerb.countPlaceholders("%s%%s")).isEqualTo(2);
-    assertThat(TestVerb.countPlaceholders("hello")).isEqualTo(0);
-    assertThat(TestVerb.countPlaceholders("%shello")).isEqualTo(1);
-    assertThat(TestVerb.countPlaceholders("hello%s")).isEqualTo(1);
-    assertThat(TestVerb.countPlaceholders("hel%slo")).isEqualTo(1);
-    assertThat(TestVerb.countPlaceholders("hel%%slo")).isEqualTo(1);
-    assertThat(TestVerb.countPlaceholders("hel%s%slo")).isEqualTo(2);
-    assertThat(TestVerb.countPlaceholders("%shel%s%slo")).isEqualTo(3);
-    assertThat(TestVerb.countPlaceholders("hel%s%slo%s")).isEqualTo(3);
+    assertThat(StandardSubjectBuilder.countPlaceholders(null)).isEqualTo(0);
+    assertThat(StandardSubjectBuilder.countPlaceholders("")).isEqualTo(0);
+    assertThat(StandardSubjectBuilder.countPlaceholders("%s")).isEqualTo(1);
+    assertThat(StandardSubjectBuilder.countPlaceholders("%s%s")).isEqualTo(2);
+    assertThat(StandardSubjectBuilder.countPlaceholders("%s%%s")).isEqualTo(2);
+    assertThat(StandardSubjectBuilder.countPlaceholders("hello")).isEqualTo(0);
+    assertThat(StandardSubjectBuilder.countPlaceholders("%shello")).isEqualTo(1);
+    assertThat(StandardSubjectBuilder.countPlaceholders("hello%s")).isEqualTo(1);
+    assertThat(StandardSubjectBuilder.countPlaceholders("hel%slo")).isEqualTo(1);
+    assertThat(StandardSubjectBuilder.countPlaceholders("hel%%slo")).isEqualTo(1);
+    assertThat(StandardSubjectBuilder.countPlaceholders("hel%s%slo")).isEqualTo(2);
+    assertThat(StandardSubjectBuilder.countPlaceholders("%shel%s%slo")).isEqualTo(3);
+    assertThat(StandardSubjectBuilder.countPlaceholders("hel%s%slo%s")).isEqualTo(3);
   }
 
   @Test

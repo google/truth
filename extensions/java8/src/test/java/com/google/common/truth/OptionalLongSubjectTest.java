@@ -126,7 +126,7 @@ public class OptionalLongSubjectTest {
   }
 
   private static AssertionError expectFailure(
-      ExpectFailure.DelegatedAssertionCallback<OptionalLongSubject, OptionalLong>
+      ExpectFailure.SimpleSubjectBuilderCallback<OptionalLongSubject, OptionalLong>
           assertionCallback) {
     return ExpectFailure.expectFailureAbout(optionalLongs(), assertionCallback);
   }

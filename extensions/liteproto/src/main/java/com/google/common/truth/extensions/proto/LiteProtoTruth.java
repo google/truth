@@ -18,7 +18,6 @@ package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.Truth.assertAbout;
 
-import com.google.common.truth.AbstractVerb;
 import com.google.common.truth.SubjectFactory;
 import com.google.protobuf.MessageLite;
 import javax.annotation.CheckReturnValue;
@@ -34,8 +33,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * useful if you cannot depend on {@link ProtoTruth} for dependency management reasons.
  *
  * <p>Note: Usage of different failure strategies such as <em>assume</em> and <em>expect</em> should
- * rely on {@link AbstractVerb#about(SubjectFactory)} to begin a chain with those alternative
- * behaviors.
+ * rely on {@linkplain com.google.common.truth.StandardSubjectBuilder#about(SubjectFactory)
+ * about(liteProtos())} to begin a chain with those alternative behaviors.
  */
 @CheckReturnValue
 @ParametersAreNonnullByDefault

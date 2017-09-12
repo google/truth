@@ -36,9 +36,9 @@ public class OptionalDoubleSubjectTest {
     OptionalDouble optional = OptionalDouble.of(1337.0);
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(optional).named("name").hasValue(42.0));
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that name (<OptionalDouble[1337.0]>) has value <42.0>");
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that name (<OptionalDouble[1337.0]>) has value <42.0>");
   }
 
   @Test
@@ -56,7 +56,7 @@ public class OptionalDoubleSubjectTest {
   public void isPresentFailing() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalDouble.empty()).isPresent());
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
   }
 
   @Test
@@ -64,7 +64,7 @@ public class OptionalDoubleSubjectTest {
     AssertionError expected =
         expectFailure(
             whenTesting -> whenTesting.that(OptionalDouble.empty()).named("name").isPresent());
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
   }
 
   @Test
@@ -76,9 +76,9 @@ public class OptionalDoubleSubjectTest {
   public void isEmptyFailing() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalDouble.of(1337.0)).isEmpty());
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <OptionalDouble[1337.0]> is empty");
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that <OptionalDouble[1337.0]> is empty");
   }
 
   @Test
@@ -90,18 +90,18 @@ public class OptionalDoubleSubjectTest {
   public void hasValue_FailingWithEmpty() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalDouble.empty()).hasValue(1337.0));
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <OptionalDouble.empty> has value <1337.0>");
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that <OptionalDouble.empty> has value <1337.0>");
   }
 
   @Test
   public void hasValue_FailingWithWrongValue() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalDouble.of(1337.0)).hasValue(42.0));
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <OptionalDouble[1337.0]> has value <42.0>");
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that <OptionalDouble[1337.0]> has value <42.0>");
   }
 
   @Test
@@ -111,7 +111,7 @@ public class OptionalDoubleSubjectTest {
             whenTesting -> {
               DoubleSubject ignored = whenTesting.that(OptionalDouble.empty()).hasValueThat();
             });
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
   }
 
   @Test
@@ -120,7 +120,7 @@ public class OptionalDoubleSubjectTest {
         expectFailure(
             whenTesting ->
                 whenTesting.that(OptionalDouble.of(1337.0)).hasValueThat().isLessThan(42.0));
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <1337.0> is less than <42.0>");
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <1337.0> is less than <42.0>");
   }
 
   @Test
@@ -129,7 +129,7 @@ public class OptionalDoubleSubjectTest {
   }
 
   private static AssertionError expectFailure(
-      ExpectFailure.DelegatedAssertionCallback<OptionalDoubleSubject, OptionalDouble>
+      ExpectFailure.SimpleSubjectBuilderCallback<OptionalDoubleSubject, OptionalDouble>
           assertionCallback) {
     return ExpectFailure.expectFailureAbout(optionalDoubles(), assertionCallback);
   }

@@ -49,9 +49,9 @@ public class TruthAssertThatTest {
       };
 
   @Test
-  public void staticAssertThatMethodsMatchTestVerbInstanceMethods() {
+  public void staticAssertThatMethodsMatchStandardSubjectBuilderInstanceMethods() {
     ImmutableSortedSet<TypeToken<?>> verbTypes =
-        FluentIterable.from(asList(TestVerb.class.getMethods()))
+        FluentIterable.from(asList(StandardSubjectBuilder.class.getMethods()))
             .filter(
                 new Predicate<Method>() {
                   @Override

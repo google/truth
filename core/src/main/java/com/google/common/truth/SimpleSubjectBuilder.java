@@ -31,20 +31,16 @@ import javax.annotation.Nullable;
  *
  * <p>TODO(cpovirk): Link to a doc about custom subjects.
  */
-// TODO(cpovirk): remove DelegatedVerb superclass
-public final class SimpleSubjectBuilder<SubjectT extends Subject<SubjectT, ActualT>, ActualT>
-    extends AbstractVerb.DelegatedVerb<SubjectT, ActualT> {
+public final class SimpleSubjectBuilder<SubjectT extends Subject<SubjectT, ActualT>, ActualT> {
   private final FailureStrategy failureStrategy;
   private final SubjectFactory<SubjectT, ActualT> subjectFactory;
 
   SimpleSubjectBuilder(
       FailureStrategy failureStrategy, SubjectFactory<SubjectT, ActualT> subjectFactory) {
-    super(failureStrategy, subjectFactory);
     this.failureStrategy = checkNotNull(failureStrategy);
     this.subjectFactory = checkNotNull(subjectFactory);
   }
 
-  @Override // temporarily
   public SubjectT that(@Nullable ActualT actual) {
     return subjectFactory.getSubject(failureStrategy, actual);
   }

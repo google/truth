@@ -52,8 +52,7 @@ import javax.annotation.Nullable;
  *
  * <p>TODO(cpovirk): Link to a doc about custom subjects.
  */
-// TODO(cpovirk): remove TestVerb superclass
-public class StandardSubjectBuilder extends TestVerb {
+public class StandardSubjectBuilder {
   /**
    * Returns a new instance that invokes the given {@code FailureStrategy} when a check fails. Most
    * users should not need this. If you think you do, see the documentation on {@link
@@ -66,169 +65,136 @@ public class StandardSubjectBuilder extends TestVerb {
   private final FailureStrategy failureStrategyDoNotReferenceDirectly;
 
   StandardSubjectBuilder(FailureStrategy failureStrategy) {
-    super(failureStrategy);
     this.failureStrategyDoNotReferenceDirectly = checkNotNull(failureStrategy);
   }
 
-  @Override // temporarily
   @SuppressWarnings({"unchecked", "rawtypes"})
   public final <ComparableT extends Comparable<?>> ComparableSubject<?, ComparableT> that(
       @Nullable ComparableT actual) {
     return new ComparableSubject(failureStrategy(), actual) {};
   }
 
-  @Override // temporarily
   public final BigDecimalSubject that(@Nullable BigDecimal actual) {
     return new BigDecimalSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final Subject<DefaultSubject, Object> that(@Nullable Object actual) {
     return new DefaultSubject(failureStrategy(), actual);
   }
 
   @GwtIncompatible("ClassSubject.java")
-  @Override // temporarily
   public final ClassSubject that(@Nullable Class<?> actual) {
     return new ClassSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final ThrowableSubject that(@Nullable Throwable actual) {
     return ThrowableSubject.create(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final LongSubject that(@Nullable Long actual) {
     return new LongSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final DoubleSubject that(@Nullable Double actual) {
     return new DoubleSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final FloatSubject that(@Nullable Float actual) {
     return new FloatSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final IntegerSubject that(@Nullable Integer actual) {
     return new IntegerSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final BooleanSubject that(@Nullable Boolean actual) {
     return new BooleanSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final StringSubject that(@Nullable String actual) {
     return new StringSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final IterableSubject that(@Nullable Iterable<?> actual) {
     return new IterableSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final SortedSetSubject that(@Nullable SortedSet<?> actual) {
     return new SortedSetSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final <T> ObjectArraySubject<T> that(@Nullable T[] actual) {
     return new ObjectArraySubject<T>(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final PrimitiveBooleanArraySubject that(@Nullable boolean[] actual) {
     return new PrimitiveBooleanArraySubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final PrimitiveShortArraySubject that(@Nullable short[] actual) {
     return new PrimitiveShortArraySubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final PrimitiveIntArraySubject that(@Nullable int[] actual) {
     return new PrimitiveIntArraySubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final PrimitiveLongArraySubject that(@Nullable long[] actual) {
     return new PrimitiveLongArraySubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final PrimitiveCharArraySubject that(@Nullable char[] actual) {
     return new PrimitiveCharArraySubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final PrimitiveByteArraySubject that(@Nullable byte[] actual) {
     return new PrimitiveByteArraySubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final PrimitiveFloatArraySubject that(@Nullable float[] actual) {
     return new PrimitiveFloatArraySubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final PrimitiveDoubleArraySubject that(@Nullable double[] actual) {
     return new PrimitiveDoubleArraySubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final GuavaOptionalSubject that(@Nullable Optional<?> actual) {
     return new GuavaOptionalSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final MapSubject that(@Nullable Map<?, ?> actual) {
     return new MapSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final SortedMapSubject that(@Nullable SortedMap<?, ?> actual) {
     return new SortedMapSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final MultimapSubject that(@Nullable Multimap<?, ?> actual) {
     return new MultimapSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final ListMultimapSubject that(@Nullable ListMultimap<?, ?> actual) {
     return new ListMultimapSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final SetMultimapSubject that(@Nullable SetMultimap<?, ?> actual) {
     return new SetMultimapSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final MultisetSubject that(@Nullable Multiset<?> actual) {
     return new MultisetSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final TableSubject that(@Nullable Table<?, ?, ?> actual) {
     return new TableSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final AtomicLongMapSubject that(@Nullable AtomicLongMap<?> actual) {
     return new AtomicLongMapSubject(failureStrategy(), actual);
   }
 
-  @Override // temporarily
   public final StandardSubjectBuilder withMessage(@Nullable String messageToPrepend) {
     return withMessage("%s", messageToPrepend);
   }
@@ -243,7 +209,6 @@ public class StandardSubjectBuilder extends TestVerb {
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
    */
-  @Override // temporarily
   public final StandardSubjectBuilder withMessage(
       @Nullable String format, Object /* @NullableType */... args) {
     return new StandardSubjectBuilder(
@@ -255,7 +220,6 @@ public class StandardSubjectBuilder extends TestVerb {
    * method creates instances of that class. Created subjects use the previously set failure
    * strategy and any previously set failure message.
    */
-  @Override // temporarily
   public final <S extends Subject<S, A>, A> SimpleSubjectBuilder<S, A> about(
       SubjectFactory<S, A> factory) {
     return new SimpleSubjectBuilder<S, A>(failureStrategy(), factory);
@@ -271,13 +235,11 @@ public class StandardSubjectBuilder extends TestVerb {
   }
 
   /** Triggers the failure strategy with an empty failure message */
-  @Override // temporarily
   public final void fail() {
     failureStrategy().fail("");
   }
 
   /** Triggers the failure strategy with the given failure message */
-  @Override // temporarily
   public final void fail(@Nullable String format, Object /*@NullableType*/... args) {
     failureStrategy().fail(format(format, args));
   }

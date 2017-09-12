@@ -126,7 +126,8 @@ public class OptionalIntSubjectTest {
   }
 
   private static AssertionError expectFailure(
-      ExpectFailure.DelegatedAssertionCallback<OptionalIntSubject, OptionalInt> assertionCallback) {
+      ExpectFailure.SimpleSubjectBuilderCallback<OptionalIntSubject, OptionalInt>
+          assertionCallback) {
     return ExpectFailure.expectFailureAbout(optionalInts(), assertionCallback);
   }
 }

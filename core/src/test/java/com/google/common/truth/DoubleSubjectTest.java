@@ -42,7 +42,7 @@ public class DoubleSubjectTest {
       };
 
   private static void expectFailureWithMessage(
-      ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback,
+      ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback,
       String failureMessage) {
     AssertionError assertionError =
         ExpectFailure.expectFailureAbout(DOUBLE_SUBJECT_FACTORY, callback);
@@ -65,10 +65,10 @@ public class DoubleSubjectTest {
 
   private static void assertThatIsWithinFails(
       final double actual, final double tolerance, final double expected) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(actual).named("testValue").isWithin(tolerance).of(expected);
           }
         };
@@ -96,10 +96,10 @@ public class DoubleSubjectTest {
 
   private static void assertThatIsNotWithinFails(
       final double actual, final double tolerance, final double expected) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(actual).named("testValue").isNotWithin(tolerance).of(expected);
           }
         };
@@ -353,10 +353,10 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsEqualToFails(final double actual, final double expected) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(actual).isEqualTo(expected);
           }
         };
@@ -376,10 +376,10 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsNotEqualToFails(@Nullable final Double value) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(value).isNotEqualTo(value);
           }
         };
@@ -399,10 +399,10 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsZeroFails(@Nullable final Double value) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(value).named("testValue").isZero();
           }
         };
@@ -421,10 +421,10 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsNonZeroFails(@Nullable final Double value) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(value).named("testValue").isNonZero();
           }
         };
@@ -441,10 +441,10 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsPositiveInfinityFails(@Nullable final Double value) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(value).named("testValue").isPositiveInfinity();
           }
         };
@@ -463,10 +463,10 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsNegativeInfinityFails(@Nullable final Double value) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(value).named("testValue").isNegativeInfinity();
           }
         };
@@ -485,10 +485,10 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsNaNFails(@Nullable final Double value) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(value).named("testValue").isNaN();
           }
         };
@@ -507,10 +507,10 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsFiniteFails(@Nullable final Double value) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(value).named("testValue").isFinite();
           }
         };
@@ -529,10 +529,10 @@ public class DoubleSubjectTest {
   }
 
   private static void assertThatIsNotNaNFails(@Nullable final Double value) {
-    ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double> callback =
-        new ExpectFailure.DelegatedAssertionCallback<DoubleSubject, Double>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<DoubleSubject, Double> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<DoubleSubject, Double> expect) {
             expect.that(value).named("testValue").isNotNaN();
           }
         };

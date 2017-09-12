@@ -522,7 +522,7 @@ public class IntegerSubjectTest {
       };
 
   private static void expectFailureWithMessage(
-      ExpectFailure.DelegatedAssertionCallback<DefaultSubject, Object> callback,
+      ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object> callback,
       String failureMessage) {
     AssertionError assertionError =
         ExpectFailure.expectFailureAbout(DEFAULT_SUBJECT_FACTORY, callback);
@@ -548,19 +548,17 @@ public class IntegerSubjectTest {
     ImmutableSet<Object> fortyTwosNoChar = ImmutableSet.<Object>of(byte42, short42, int42, long42);
     for (final Object actual : fortyTwosNoChar) {
       for (final Object expected : fortyTwosNoChar) {
-        ExpectFailure.DelegatedAssertionCallback<DefaultSubject, Object> actualFirst =
-            new ExpectFailure.DelegatedAssertionCallback<DefaultSubject, Object>() {
+        ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object> actualFirst =
+            new ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object>() {
               @Override
-              public void invokeAssertion(
-                  AbstractVerb.DelegatedVerb<DefaultSubject, Object> expect) {
+              public void invokeAssertion(SimpleSubjectBuilder<DefaultSubject, Object> expect) {
                 expect.that(actual).isNotEqualTo(expected);
               }
             };
-        ExpectFailure.DelegatedAssertionCallback<DefaultSubject, Object> expectedFirst =
-            new ExpectFailure.DelegatedAssertionCallback<DefaultSubject, Object>() {
+        ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object> expectedFirst =
+            new ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object>() {
               @Override
-              public void invokeAssertion(
-                  AbstractVerb.DelegatedVerb<DefaultSubject, Object> expect) {
+              public void invokeAssertion(SimpleSubjectBuilder<DefaultSubject, Object> expect) {
                 expect.that(expected).isNotEqualTo(actual);
               }
             };

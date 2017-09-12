@@ -42,7 +42,7 @@ public class FloatSubjectTest {
       };
 
   private static void expectFailureWithMessage(
-      ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback,
+      ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback,
       String failureMessage) {
     AssertionError assertionError =
         ExpectFailure.expectFailureAbout(FLOAT_SUBJECT_FACTORY, callback);
@@ -65,10 +65,10 @@ public class FloatSubjectTest {
 
   private static void assertThatIsWithinFails(
       final float actual, final float tolerance, final float expected) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(actual).named("testValue").isWithin(tolerance).of(expected);
           }
         };
@@ -96,10 +96,10 @@ public class FloatSubjectTest {
 
   private static void assertThatIsNotWithinFails(
       final float actual, final float tolerance, final float expected) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(actual).named("testValue").isNotWithin(tolerance).of(expected);
           }
         };
@@ -352,10 +352,10 @@ public class FloatSubjectTest {
   }
 
   private static void assertThatIsEqualToFails(final float actual, final float expected) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(actual).isEqualTo(expected);
           }
         };
@@ -375,10 +375,10 @@ public class FloatSubjectTest {
   }
 
   private static void assertThatIsNotEqualToFails(@Nullable final Float value) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(value).isNotEqualTo(value);
           }
         };
@@ -398,10 +398,10 @@ public class FloatSubjectTest {
   }
 
   private static void assertThatIsZeroFails(@Nullable final Float value) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(value).named("testValue").isZero();
           }
         };
@@ -420,10 +420,10 @@ public class FloatSubjectTest {
   }
 
   private static void assertThatIsNonZeroFails(@Nullable final Float value) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(value).named("testValue").isNonZero();
           }
         };
@@ -440,10 +440,10 @@ public class FloatSubjectTest {
   }
 
   private static void assertThatIsPositiveInfinityFails(@Nullable final Float value) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(value).named("testValue").isPositiveInfinity();
           }
         };
@@ -462,10 +462,10 @@ public class FloatSubjectTest {
   }
 
   private static void assertThatIsNegativeInfinityFails(@Nullable final Float value) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(value).named("testValue").isNegativeInfinity();
           }
         };
@@ -484,10 +484,10 @@ public class FloatSubjectTest {
   }
 
   private static void assertThatIsNaNFails(@Nullable final Float value) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(value).named("testValue").isNaN();
           }
         };
@@ -507,10 +507,10 @@ public class FloatSubjectTest {
   }
 
   private static void assertThatIsFiniteFails(@Nullable final Float value) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(value).named("testValue").isFinite();
           }
         };
@@ -529,10 +529,10 @@ public class FloatSubjectTest {
   }
 
   private static void assertThatIsNotNaNFails(@Nullable final Float value) {
-    ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float> callback =
-        new ExpectFailure.DelegatedAssertionCallback<FloatSubject, Float>() {
+    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
+        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
-          public void invokeAssertion(AbstractVerb.DelegatedVerb<FloatSubject, Float> expect) {
+          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
             expect.that(value).named("testValue").isNotNaN();
           }
         };

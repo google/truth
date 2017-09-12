@@ -15,7 +15,6 @@
  */
 package com.google.common.truth.gwt;
 
-import com.google.common.truth.AbstractVerb;
 import com.google.common.truth.BigDecimalSubject;
 import com.google.common.truth.BooleanSubject;
 import com.google.common.truth.ClassSubject;
@@ -48,7 +47,6 @@ import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
 import com.google.common.truth.SubjectFactory;
 import com.google.common.truth.TableSubject;
-import com.google.common.truth.TestVerb;
 import com.google.common.truth.ThrowableSubject;
 import com.google.common.truth.Truth;
 import com.google.common.truth.TruthJUnit;
@@ -57,7 +55,6 @@ import com.google.common.truth.TruthJUnit;
  * Static references to a variety of classes to force their loading during the {@link TruthGwtTest}.
  */
 public class Inventory {
-  AbstractVerb abstractVerb;
   BigDecimalSubject bigDecimalSubject;
   BooleanSubject booleanSubject;
   ClassSubject classSubject;
@@ -90,7 +87,6 @@ public class Inventory {
   SubjectFactory subjectFactory;
   Subject subject;
   TableSubject tableSubject;
-  TestVerb testVerb;
   ThrowableSubject throwableSubject;
   Truth truth;
   TruthJUnit truthJUnit;

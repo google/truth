@@ -71,8 +71,7 @@ import javax.annotation.Nullable;
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
  */
-// TODO(cpovirk): remove superclass TruthBridgeMethodInjector
-public final class Truth extends TruthBridgeMethodInjector {
+public final class Truth {
   private Truth() {}
 
   /**
@@ -125,16 +124,16 @@ public final class Truth extends TruthBridgeMethodInjector {
   }
 
   /**
-   * Returns a {@link TestVerb} that will prepend the given message to the failure message in the
-   * event of a test failure.
+   * Returns a {@link StandardSubjectBuilder} that will prepend the given message to the failure
+   * message in the event of a test failure.
    */
   public static StandardSubjectBuilder assertWithMessage(String messageToPrepend) {
     return assert_().withMessage(messageToPrepend);
   }
 
   /**
-   * Returns a {@link TestVerb} that will prepend the formatted message using the specified
-   * arguments to the failure message in the event of a test failure.
+   * Returns a {@link StandardSubjectBuilder} that will prepend the formatted message using the
+   * specified arguments to the failure message in the event of a test failure.
    *
    * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
    * not the full range of {@link java.util.Formatter} specifiers.
@@ -165,23 +164,6 @@ public final class Truth extends TruthBridgeMethodInjector {
   public static <CustomSubjectBuilderT extends CustomSubjectBuilder>
       CustomSubjectBuilderT assertAbout(
           CustomSubjectBuilderFactory<CustomSubjectBuilderT> factory) {
-    return assert_().about(factory);
-  }
-
-  /**
-   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
-   * DelegatedVerbFactory}. Extension creators should prefer {@link SubjectFactory} if possible.
-   *
-   * @param <V> the type of {@link AbstractDelegatedVerb} to return
-   * @param factory a {@code DelegatedVerbFactory<V>} implementation
-   * @return A custom verb of type {@code <V>}
-   * @deprecated When you switch from implementing {@link DelegatedVerbFactory} to implementing
-   *     {@link CustomSubjectBuilderFactory}, you'll switch from this overload to {@linkplain
-   *     #assertAbout(CustomSubjectBuilderFactory) the overload} that accepts a {@code
-   *     CustomSubjectBuilderFactory}.
-   */
-  @Deprecated
-  public static <V extends AbstractDelegatedVerb> V assertAbout(DelegatedVerbFactory<V> factory) {
     return assert_().about(factory);
   }
 

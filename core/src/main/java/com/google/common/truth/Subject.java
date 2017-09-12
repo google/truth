@@ -42,7 +42,7 @@ import javax.annotation.Nullable;
  * @author David Saff
  * @author Christian Gruber
  */
-public class Subject<S extends Subject<S, T>, T> extends SubjectBridgeMethodInjector {
+public class Subject<S extends Subject<S, T>, T> {
   private static final FailureStrategy IGNORE_STRATEGY =
       new AbstractFailureStrategy() {
         @Override
@@ -310,7 +310,6 @@ public class Subject<S extends Subject<S, T>, T> extends SubjectBridgeMethodInje
    * wrappers within their own propositional logic.
    */
   // TODO(diamondm) this should be final, can we do that safely?
-  @Override // temporarily
   protected StandardSubjectBuilder check() {
     return StandardSubjectBuilder.forCustomFailureStrategy(failureStrategy);
   }
@@ -322,7 +321,6 @@ public class Subject<S extends Subject<S, T>, T> extends SubjectBridgeMethodInje
    * may still be necessary to return a {@code Subject} instance even though any subsequent
    * assertions are meaningless. Use this method to return subjects that will never report failures.
    */
-  @Override // temporarily
   protected final StandardSubjectBuilder ignoreCheck() {
     return StandardSubjectBuilder.forCustomFailureStrategy(IGNORE_STRATEGY);
   }
