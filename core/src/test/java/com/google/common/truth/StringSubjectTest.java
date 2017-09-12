@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import java.util.regex.Pattern;
 import org.junit.ComparisonFailure;
@@ -57,7 +57,7 @@ public class StringSubjectTest {
   public void hasLengthNegative() {
     try {
       assertThat("kurt").hasLength(-1);
-      fail();
+      assert_().fail();
     } catch (IllegalArgumentException expected) {
     }
   }

@@ -15,8 +15,8 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.extensions.proto.LiteProtoTruth.assertThat;
-import static org.junit.Assert.fail;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
@@ -175,7 +175,7 @@ public class LiteProtoSubjectTest {
   public void testIsEqualTo_failure() {
     try {
       assertThat(config.nonEmptyMessage()).isEqualTo(config.nonEmptyMessageOfOtherValue());
-      fail("Should have failed.");
+      assert_().fail("Should have failed.");
     } catch (AssertionError e) {
       expectRegex(e, ".*expected:.*\"foo\".*");
       expectNoRegex(e, ".*but was:.*\"foo\".*");
@@ -183,7 +183,7 @@ public class LiteProtoSubjectTest {
 
     try {
       assertThat(config.nonEmptyMessage()).isEqualTo(config.nonEmptyMessageOfOtherType());
-      fail("Should have failed.");
+      assert_().fail("Should have failed.");
     } catch (AssertionError e) {
       expectRegex(
           e,
@@ -193,7 +193,7 @@ public class LiteProtoSubjectTest {
 
     try {
       assertThat(config.nonEmptyMessage()).isNotEqualTo(config.equivalentNonEmptyMessage());
-      fail("Should have failed.");
+      assert_().fail("Should have failed.");
     } catch (AssertionError e) {
       expectRegex(
           e,
@@ -216,7 +216,7 @@ public class LiteProtoSubjectTest {
 
     try {
       assertThat(config.messageWithoutRequiredFields().get()).hasAllRequiredFields();
-      fail("Should have failed.");
+      assert_().fail("Should have failed.");
     } catch (AssertionError e) {
       expectRegex(
           e,
@@ -239,7 +239,7 @@ public class LiteProtoSubjectTest {
   public void testDefaultInstance_failure() {
     try {
       assertThat(config.nonEmptyMessage()).isEqualToDefaultInstance();
-      fail("Should have failed.");
+      assert_().fail("Should have failed.");
     } catch (AssertionError e) {
       expectRegex(
           e,
@@ -249,7 +249,7 @@ public class LiteProtoSubjectTest {
 
     try {
       assertThat(config.defaultInstance()).isNotEqualToDefaultInstance();
-      fail("Should have failed.");
+      assert_().fail("Should have failed.");
     } catch (AssertionError e) {
       expectRegex(
           e,
@@ -273,7 +273,7 @@ public class LiteProtoSubjectTest {
 
     try {
       assertThat(config.nonEmptyMessage()).serializedSize().isGreaterThan(size);
-      fail("Should have failed.");
+      assert_().fail("Should have failed.");
     } catch (AssertionError e) {
       expectRegex(
           e,
@@ -282,7 +282,7 @@ public class LiteProtoSubjectTest {
 
     try {
       assertThat(config.defaultInstance()).serializedSize().isGreaterThan(0);
-      fail("Should have failed.");
+      assert_().fail("Should have failed.");
     } catch (AssertionError e) {
       expectRegex(
           e,

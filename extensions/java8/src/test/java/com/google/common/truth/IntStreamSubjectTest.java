@@ -16,9 +16,9 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.Truth8.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -46,7 +46,7 @@ public final class IntStreamSubjectTest {
     List<Integer> list = asList(42);
     try {
       assertThat(stream).isEqualTo(list);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -61,7 +61,7 @@ public final class IntStreamSubjectTest {
     IntStream nullStream = null;
     try {
       assertThat(nullStream).isEmpty();
-      fail();
+      assert_().fail();
     } catch (NullPointerException expected) {
     }
   }
@@ -87,7 +87,7 @@ public final class IntStreamSubjectTest {
   public void testIsEmpty_fails() throws Exception {
     try {
       assertThat(IntStream.of(42)).isEmpty();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected).hasMessageThat().isEqualTo("Not true that <[42]> is empty");
     }
@@ -102,7 +102,7 @@ public final class IntStreamSubjectTest {
   public void testIsNotEmpty_fails() throws Exception {
     try {
       assertThat(IntStream.of()).isNotEmpty();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
     }
@@ -117,7 +117,7 @@ public final class IntStreamSubjectTest {
   public void testHasSize_fails() throws Exception {
     try {
       assertThat(IntStream.of(42)).hasSize(2);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -134,7 +134,7 @@ public final class IntStreamSubjectTest {
   public void testContainsNoDuplicates_fails() throws Exception {
     try {
       assertThat(IntStream.of(42, 42)).containsNoDuplicates();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -151,7 +151,7 @@ public final class IntStreamSubjectTest {
   public void testContains_fails() throws Exception {
     try {
       assertThat(IntStream.of(42)).contains(100);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected).hasMessageThat().isEqualTo("<[42]> should have contained <100>");
     }
@@ -166,7 +166,7 @@ public final class IntStreamSubjectTest {
   public void testContainsAnyOf_fails() throws Exception {
     try {
       assertThat(IntStream.of(42)).containsAnyOf(43, 44);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -183,7 +183,7 @@ public final class IntStreamSubjectTest {
   public void testContainsAnyIn_fails() throws Exception {
     try {
       assertThat(IntStream.of(42)).containsAnyIn(asList(43, 44));
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -200,7 +200,7 @@ public final class IntStreamSubjectTest {
   public void testDoesNotContain_fails() throws Exception {
     try {
       assertThat(IntStream.of(42)).doesNotContain(42);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected).hasMessageThat().isEqualTo("<[42]> should not have contained <42>");
     }
@@ -215,7 +215,7 @@ public final class IntStreamSubjectTest {
   public void testContainsNoneOf_fails() throws Exception {
     try {
       assertThat(IntStream.of(42)).containsNoneOf(42, 43);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -232,7 +232,7 @@ public final class IntStreamSubjectTest {
   public void testContainsNoneIn_fails() throws Exception {
     try {
       assertThat(IntStream.of(42)).containsNoneIn(asList(42, 43));
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -249,7 +249,7 @@ public final class IntStreamSubjectTest {
   public void testContainsAllOf_fails() throws Exception {
     try {
       assertThat(IntStream.of(42, 43)).containsAllOf(42, 43, 44);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -267,7 +267,7 @@ public final class IntStreamSubjectTest {
   public void testContainsAllOf_inOrder_fails() throws Exception {
     try {
       assertThat(IntStream.of(42, 43)).containsAllOf(43, 42).inOrder();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -284,7 +284,7 @@ public final class IntStreamSubjectTest {
   public void testContainsAllIn_fails() throws Exception {
     try {
       assertThat(IntStream.of(42, 43)).containsAllIn(asList(42, 43, 44));
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -303,7 +303,7 @@ public final class IntStreamSubjectTest {
   public void testContainsAllIn_inOrder_fails() throws Exception {
     try {
       assertThat(IntStream.of(42, 43)).containsAllIn(asList(43, 42)).inOrder();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -320,7 +320,7 @@ public final class IntStreamSubjectTest {
   public void testContainsExactly_fails() throws Exception {
     try {
       assertThat(IntStream.of(42, 43)).containsExactly(42);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -339,7 +339,7 @@ public final class IntStreamSubjectTest {
   public void testContainsExactly_inOrder_fails() throws Exception {
     try {
       assertThat(IntStream.of(42, 43)).containsExactly(43, 42).inOrder();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -358,7 +358,7 @@ public final class IntStreamSubjectTest {
   public void testContainsExactlyElementsIn_fails() throws Exception {
     try {
       assertThat(IntStream.of(42, 43)).containsExactlyElementsIn(asList(42));
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -377,7 +377,7 @@ public final class IntStreamSubjectTest {
   public void testContainsExactlyElementsIn_inOrder_fails() throws Exception {
     try {
       assertThat(IntStream.of(42, 43)).containsExactlyElementsIn(asList(43, 42)).inOrder();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()

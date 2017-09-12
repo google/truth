@@ -16,11 +16,11 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Math.nextAfter;
-import static org.junit.Assert.fail;
 
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
@@ -505,7 +505,7 @@ public class PrimitiveDoubleArraySubjectTest {
     double[] nullArray = null;
     try {
       assertThat(nullArray).hasValuesWithin(DEFAULT_TOLERANCE).of(3.3d, 2.2d);
-      fail("Expected NullPointerException to be thrown");
+      assert_().fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -515,7 +515,7 @@ public class PrimitiveDoubleArraySubjectTest {
     double[] nullArray = null;
     try {
       assertThat(array(3.3d, 2.2d)).hasValuesWithin(DEFAULT_TOLERANCE).of(nullArray);
-      fail("Expected NullPointerException to be thrown");
+      assert_().fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -524,7 +524,7 @@ public class PrimitiveDoubleArraySubjectTest {
   public void hasValuesWithinOf_NegativeTolerance() {
     try {
       assertThat(array(3.3d, 2.2d)).hasValuesWithin(-0.001d).of(3.3d, 2.2d);
-      fail("Expected IllegalArgumentException to be thrown");
+      assert_().fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
@@ -679,7 +679,7 @@ public class PrimitiveDoubleArraySubjectTest {
       assertThat(nullArray)
           .hasValuesWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Doubles.asList(3.3d, 2.2d));
-      fail("Expected NullPointerException to be thrown");
+      assert_().fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -689,7 +689,7 @@ public class PrimitiveDoubleArraySubjectTest {
     Iterable<Number> nullIterable = null;
     try {
       assertThat(array(3.3d, 2.2d)).hasValuesWithin(DEFAULT_TOLERANCE).ofElementsIn(nullIterable);
-      fail("Expected NullPointerException to be thrown");
+      assert_().fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -700,7 +700,7 @@ public class PrimitiveDoubleArraySubjectTest {
       assertThat(array(3.3d, 2.2d))
           .hasValuesWithin(-0.001d)
           .ofElementsIn(Doubles.asList(3.3d, 2.2d));
-      fail("Expected IllegalArgumentException to be thrown");
+      assert_().fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
@@ -831,7 +831,7 @@ public class PrimitiveDoubleArraySubjectTest {
     double[] nullArray = null;
     try {
       assertThat(nullArray).hasValuesNotWithin(DEFAULT_TOLERANCE).of(3.3d, 2.2d);
-      fail("Expected NullPointerException to be thrown");
+      assert_().fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -842,7 +842,7 @@ public class PrimitiveDoubleArraySubjectTest {
     double[] nullArray = null;
     try {
       assertThat(array(3.3d, 2.2d)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(nullArray);
-      fail("Expected NullPointerException to be thrown");
+      assert_().fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -852,7 +852,7 @@ public class PrimitiveDoubleArraySubjectTest {
   public void hasValuesNotWithinOf_NegativeTolerance() {
     try {
       assertThat(array(3.3d, 2.2d)).hasValuesNotWithin(-0.001d).of(3.3d, 2.2d);
-      fail("Expected IllegalArgumentException to be thrown");
+      assert_().fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
@@ -988,7 +988,7 @@ public class PrimitiveDoubleArraySubjectTest {
       assertThat(nullArray)
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(Doubles.asList(3.3d, 2.2d));
-      fail("Expected NullPointerException to be thrown");
+      assert_().fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -1001,7 +1001,7 @@ public class PrimitiveDoubleArraySubjectTest {
       assertThat(array(3.3d, 2.2d))
           .hasValuesNotWithin(DEFAULT_TOLERANCE)
           .ofElementsIn(nullIterable);
-      fail("Expected NullPointerException to be thrown");
+      assert_().fail("Expected NullPointerException to be thrown");
     } catch (NullPointerException expected) {
     }
   }
@@ -1013,7 +1013,7 @@ public class PrimitiveDoubleArraySubjectTest {
       assertThat(array(3.3d, 2.2d))
           .hasValuesNotWithin(-0.001d)
           .ofElementsIn(Doubles.asList(3.3d, 2.2d));
-      fail("Expected IllegalArgumentException to be thrown");
+      assert_().fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessageThat().isEqualTo("tolerance (-0.001) cannot be negative");
     }
@@ -1127,7 +1127,7 @@ public class PrimitiveDoubleArraySubjectTest {
   public void usingTolerance_contains_nullExpected() {
     try {
       assertThat(array(1.0, 2.0, 3.0)).usingTolerance(DEFAULT_TOLERANCE).contains(null);
-      fail("Expected NullPointerException to be thrown but wasn't");
+      assert_().fail("Expected NullPointerException to be thrown but wasn't");
     } catch (NullPointerException expected) {
     }
   }
@@ -1136,7 +1136,7 @@ public class PrimitiveDoubleArraySubjectTest {
   public void usingTolerance_contains_negativeTolerance() {
     try {
       assertThat(array(1.0, 2.0, 3.0)).usingTolerance(-1.0 * DEFAULT_TOLERANCE).contains(2.0f);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
+      assert_().fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1340,7 +1340,7 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(array(1.0, 1L << 53, 3.0)).usingExactEquality().contains(1L << 53);
     try {
       assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains((1L << 53) + 1L);
-      fail("Expected IllegalArgumentException to be thrown");
+      assert_().fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1352,7 +1352,7 @@ public class PrimitiveDoubleArraySubjectTest {
     // Expected value is BigInteger - not supported
     try {
       assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(BigInteger.valueOf(2));
-      fail("Expected IllegalArgumentException to be thrown");
+      assert_().fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1364,7 +1364,7 @@ public class PrimitiveDoubleArraySubjectTest {
     // Expected value is BigDecimal - not supported
     try {
       assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(BigDecimal.valueOf(2.0));
-      fail("Expected IllegalArgumentException to be thrown");
+      assert_().fail("Expected IllegalArgumentException to be thrown");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -1399,7 +1399,7 @@ public class PrimitiveDoubleArraySubjectTest {
   public void usingExactEquality_contains_nullExpected() {
     try {
       assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(null);
-      fail("Expected NullPointerException to be thrown but wasn't");
+      assert_().fail("Expected NullPointerException to be thrown but wasn't");
     } catch (NullPointerException expected) {
     }
   }

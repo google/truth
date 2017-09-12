@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.GraphMatching.maximumCardinalityBipartiteMatching;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
@@ -113,7 +113,7 @@ public final class GraphMatchingTest {
     edges.put(null, "R1");
     try {
       BiMap<String, String> unused = maximumCardinalityBipartiteMatching(edges);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (NullPointerException expected) {
     }
   }
@@ -124,7 +124,7 @@ public final class GraphMatchingTest {
     edges.put("L1", null);
     try {
       BiMap<String, String> unused = maximumCardinalityBipartiteMatching(edges);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (NullPointerException expected) {
     }
   }

@@ -18,7 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.IterableSubjectTest.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultimap;
@@ -201,7 +201,7 @@ public class MultimapSubjectTest {
   public void hasSizeNegative() {
     try {
       assertThat(ImmutableMultimap.of(1, 2)).hasSize(-1);
-      fail();
+      assert_().fail();
     } catch (IllegalArgumentException expected) {
     }
   }
@@ -421,7 +421,7 @@ public class MultimapSubjectTest {
 
     try {
       assertThat(multimap).containsExactlyEntriesIn(null);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (NullPointerException expected) {
     }
   }
@@ -859,7 +859,7 @@ public class MultimapSubjectTest {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
           .containsEntry("def", 123);
-      fail("Should have thrown.");
+      assert_(). fail("Should have thrown.");
     } catch (ClassCastException expected) {
     }
   }
@@ -916,7 +916,7 @@ public class MultimapSubjectTest {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
           .doesNotContainEntry("def", 789);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (ClassCastException expected) {
     }
   }
@@ -1009,7 +1009,7 @@ public class MultimapSubjectTest {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
           .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (ClassCastException e) {
       // expected
     }
@@ -1186,7 +1186,7 @@ public class MultimapSubjectTest {
       assertThat(actual)
           .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
           .containsExactly("def", 64, "def", 123, "def", 64, "abc", 123);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (ClassCastException e) {
       // expected
     }

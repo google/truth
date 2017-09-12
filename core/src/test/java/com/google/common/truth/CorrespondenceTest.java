@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.Rule;
@@ -55,7 +55,7 @@ public final class CorrespondenceTest {
   public void testEquals_throws() {
     try {
       INSTANCE.equals(new Object());
-      fail("Expected UnsupportedOperationException from Correspondence.equals");
+      assert_().fail("Expected UnsupportedOperationException from Correspondence.equals");
     } catch (UnsupportedOperationException expected) {
     }
   }
@@ -65,7 +65,7 @@ public final class CorrespondenceTest {
   public void testHashCode_throws() {
     try {
       INSTANCE.hashCode();
-      fail("Expected UnsupportedOperationException from Correspondence.hashCode");
+      assert_().fail("Expected UnsupportedOperationException from Correspondence.hashCode");
     } catch (UnsupportedOperationException expected) {
     }
   }
@@ -116,7 +116,7 @@ public final class CorrespondenceTest {
   public void testTolerance_compare_negativeTolerance() {
     try {
       tolerance(-0.05).compare(1.0, 2.0);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
+      assert_().fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException expected) {
       assertThat(expected).hasMessageThat().isEqualTo("tolerance (-0.05) cannot be negative");
     }
@@ -126,12 +126,12 @@ public final class CorrespondenceTest {
   public void testTolerance_compare_null() {
     try {
       tolerance(0.05).compare(1.0, null);
-      fail("Expected NullPointerException to be thrown but wasn't");
+      assert_().fail("Expected NullPointerException to be thrown but wasn't");
     } catch (NullPointerException expected) {
     }
     try {
       tolerance(0.05).compare(null, 2.0);
-      fail("Expected NullPointerException to be thrown but wasn't");
+      assert_().fail("Expected NullPointerException to be thrown but wasn't");
     } catch (NullPointerException expected) {
     }
   }

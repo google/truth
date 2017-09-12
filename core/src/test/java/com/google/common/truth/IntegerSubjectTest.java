@@ -16,8 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.TruthJUnit.assume;
-import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableSet;
 import org.junit.Assert;
@@ -83,7 +83,7 @@ public class IntegerSubjectTest {
   public void additionAssumptionFail() {
     try {
       assume().that(2 + 2).isEqualTo(5);
-      fail("Should have thrown");
+      assert_().fail("Should have thrown");
     } catch (AssumptionViolatedException expected) {
     }
   }
@@ -227,7 +227,7 @@ public class IntegerSubjectTest {
     // JUnit says boxed primitives are not .equals()
     try {
       Assert.assertEquals(new Integer(4), new Long(4L)); // this throws!
-      fail("Should have thrown");
+      assert_().fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -235,7 +235,7 @@ public class IntegerSubjectTest {
     }
     try {
       Assert.assertEquals(new Long(4L), new Integer(4)); // this throws!
-      fail("Should have thrown");
+      assert_().fail("Should have thrown");
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
