@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import com.google.common.util.concurrent.AtomicLongMap;
 import org.junit.Rule;
@@ -96,7 +96,7 @@ public final class AtomicLongMapSubjectTest {
   public void hasSizeNegative() {
     try {
       assertThat(AtomicLongMap.create()).hasSize(-1);
-      fail();
+      assert_().fail();
     } catch (IllegalArgumentException expected) {
     }
   }
@@ -180,7 +180,7 @@ public final class AtomicLongMapSubjectTest {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     try {
       assertThat(actual).doesNotContainKey(null);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (NullPointerException expected) {
       assertThat(expected).hasMessageThat().isEqualTo("AtomicLongMap does not support null keys");
     }

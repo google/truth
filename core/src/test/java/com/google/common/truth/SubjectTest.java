@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
@@ -96,7 +96,7 @@ public class SubjectTest {
         subject.isNull();
         try {
           subject.isNotNull(); // should throw
-          fail("assertThat(null).isNotNull() should throw an exception!");
+          assert_().fail("assertThat(null).isNotNull() should throw an exception!");
         } catch (AssertionError expected) {
           assertThat(expected)
               .hasMessageThat()
@@ -122,7 +122,7 @@ public class SubjectTest {
         subject.isEqualTo(null);
         try {
           subject.isEqualTo(new Object()); // should throw
-          fail("assertThat(null).isEqualTo(<non-null>) should throw an exception!");
+          assert_().fail("assertThat(null).isEqualTo(<non-null>) should throw an exception!");
         } catch (AssertionError expected) {
           assertThat(expected).hasMessageThat().contains("Not true that ");
           assertThat(expected).hasMessageThat().contains(" is equal to ");
@@ -623,7 +623,7 @@ public class SubjectTest {
           .isEqualTo("If you meant to test object equality, use .isEqualTo(other) instead.");
       return;
     }
-    fail("Should have thrown.");
+    assert_().fail("Should have thrown.");
   }
 
   @Test
@@ -634,14 +634,14 @@ public class SubjectTest {
       assertThat(expected).hasMessageThat().isEqualTo("Subject.hashCode() is not supported.");
       return;
     }
-    fail("Should have thrown.");
+    assert_().fail("Should have thrown.");
   }
 
   @Test
   public void checkPersistsStrategy() {
     try {
       assertThat((Object) null).check().that("foo").isNull();
-      fail();
+      assert_().fail();
     } catch (AssertionError e) {
       assertThat(e).hasMessageThat().isEqualTo("Not true that <\"foo\"> is null");
     }

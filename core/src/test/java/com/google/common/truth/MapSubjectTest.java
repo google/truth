@@ -18,7 +18,7 @@ package com.google.common.truth;
 import static com.google.common.truth.IterableSubjectTest.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -97,7 +97,7 @@ public class MapSubjectTest {
 
     try {
       assertThat(actual).containsExactly("jan", 1, "jan", 2, "jan", 3);
-      fail("Expected IllegalArgumentException");
+      assert_().fail("Expected IllegalArgumentException");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -111,7 +111,7 @@ public class MapSubjectTest {
 
     try {
       assertThat(actual).containsExactly("jan", 1, "jan", 1, "feb", 2, "feb", 2);
-      fail("Expected IllegalArgumentException");
+      assert_().fail("Expected IllegalArgumentException");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -177,7 +177,7 @@ public class MapSubjectTest {
     try {
       assertThat(actual)
           .containsExactly("jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5, "june", 6, "july");
-      fail("Expected IllegalArgumentException");
+      assert_().fail("Expected IllegalArgumentException");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -347,7 +347,7 @@ public class MapSubjectTest {
   public void hasSizeNegative() {
     try {
       assertThat(ImmutableMap.of(1, 2)).hasSize(-1);
-      fail();
+      assert_().fail();
     } catch (IllegalArgumentException expected) {
     }
   }
@@ -449,7 +449,7 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo("Not true that <{kurt=kluever}> contains entry <greg=kick>");
   }
-  
+
   @Test
   public void containsEntry_failsWithSameToStringOfKey() {
     expectFailure
@@ -832,7 +832,7 @@ public class MapSubjectTest {
         assertThat(actual).comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
     try {
       intermediate.containsExactly("def", 456, "abc", 123);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (ClassCastException expected) {
     }
   }
@@ -844,7 +844,7 @@ public class MapSubjectTest {
         assertThat(actual).comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
     try {
       intermediate.containsExactly("def", 456, "abc", 123L);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (ClassCastException expected) {
     }
   }
@@ -968,7 +968,7 @@ public class MapSubjectTest {
         assertThat(actual).comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
     try {
       intermediate.containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (ClassCastException e) {
       // expected
     }

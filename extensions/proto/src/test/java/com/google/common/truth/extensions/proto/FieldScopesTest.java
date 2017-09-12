@@ -15,8 +15,8 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
-import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -782,7 +782,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(listOf(message1, message2))
           .withPartialScope(FieldScopes.fromSetFields(messages))
           .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
-      fail("Expected failure.");
+      assert_().fail("Expected failure.");
     } catch (AssertionError expected) {
       expectSubstr(
           expected,
@@ -800,7 +800,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
               FieldScopes.fromSetFields(
                   parse("o_int: -1"), nullMessage, parse("r_string: \"NaN\"")))
           .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
-      fail("Expected failure.");
+      assert_().fail("Expected failure.");
     } catch (AssertionError expected) {
       expectSubstr(
           expected,
@@ -835,7 +835,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(listOf(message1, message2))
           .withPartialScope(FieldScopes.fromSetFields(listOf()))
           .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2);
-      fail("Expected failure.");
+      assert_().fail("Expected failure.");
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);
     }
@@ -844,7 +844,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       assertThat(listOf(message1, message2))
           .withPartialScope(FieldScopes.fromSetFields(messages))
           .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2);
-      fail("Expected failure.");
+      assert_().fail("Expected failure.");
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);
     }
@@ -861,7 +861,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       FieldScopes.fromSetFields(
           TestMessage2.newBuilder().setOInt(2).build(),
           TestMessage3.newBuilder().setOInt(2).build());
-      fail("Expected failure.");
+      assert_().fail("Expected failure.");
     } catch (RuntimeException expected) {
       expectSubstr(expected, "Cannot create scope from messages with different descriptors");
       expectSubstr(expected, TestMessage2.getDescriptor().getFullName());
@@ -888,7 +888,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                   TestMessage3.newBuilder().setOInt(2).build(),
                   TestMessage3.newBuilder().addRString("foo").build()))
           .isEqualTo(eqMessage);
-      fail("Expected failure.");
+      assert_().fail("Expected failure.");
     } catch (RuntimeException expected) {
       expectSubstr(
           expected,

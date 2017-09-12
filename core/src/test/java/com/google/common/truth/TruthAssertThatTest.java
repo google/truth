@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -88,7 +87,7 @@ public class TruthAssertThatTest {
   @Test
   public void testTruthFramesAreStrippedFromStackTrace() throws Exception {
     try {
-      Truth.assert_().fail("test");
+      assert_().fail("test");
     } catch (AssertionError expected) {
       for (StackTraceElement stackTraceElement : expected.getStackTrace()) {
         if (!stackTraceElement.getClassName().contains("TruthAssertThatTest")) {
@@ -97,6 +96,6 @@ public class TruthAssertThatTest {
       }
       return;
     }
-    fail("Expected assert_().fail() to throw...");
+    assert_().fail("Expected assert_().fail() to throw...");
   }
 }

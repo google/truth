@@ -16,8 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.TruthJUnit.assume;
-import static org.junit.Assert.fail;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -83,7 +83,7 @@ public class LongSubjectTest {
   public void additionAssumptionFail() {
     try {
       assume().that(2L + 2).isEqualTo(5L);
-      fail("Should have thrown");
+      assert_().fail("Should have thrown");
     } catch (AssumptionViolatedException expected) {
     }
   }

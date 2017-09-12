@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import javax.annotation.Nullable;
 import org.junit.Rule;
@@ -151,7 +151,7 @@ public class DoubleSubjectTest {
       double actual, double tolerance, double expected) {
     try {
       assertThat(actual).isWithin(tolerance).of(expected);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
+      assert_().fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
       assertThat(iae)
           .hasMessageThat()
@@ -163,7 +163,7 @@ public class DoubleSubjectTest {
       double actual, double tolerance, double expected) {
     try {
       assertThat(actual).isNotWithin(tolerance).of(expected);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
+      assert_().fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
       assertThat(iae)
           .hasMessageThat()
@@ -175,13 +175,13 @@ public class DoubleSubjectTest {
   public void nanTolerances() {
     try {
       assertThat(1.0).isWithin(Double.NaN).of(1.0);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
+      assert_().fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
       assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be NaN");
     }
     try {
       assertThat(1.0).isNotWithin(Double.NaN).of(2.0);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
+      assert_().fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
       assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be NaN");
     }
@@ -191,13 +191,13 @@ public class DoubleSubjectTest {
   public void infiniteTolerances() {
     try {
       assertThat(1.0).isWithin(Double.POSITIVE_INFINITY).of(1.0);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
+      assert_().fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
       assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be POSITIVE_INFINITY");
     }
     try {
       assertThat(1.0).isNotWithin(Double.POSITIVE_INFINITY).of(2.0);
-      fail("Expected IllegalArgumentException to be thrown but wasn't");
+      assert_().fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException iae) {
       assertThat(iae).hasMessageThat().isEqualTo("tolerance cannot be POSITIVE_INFINITY");
     }

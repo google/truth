@@ -16,9 +16,9 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static com.google.common.truth.Truth8.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -46,7 +46,7 @@ public final class StreamSubjectTest {
     List<String> list = asList("hello");
     try {
       assertThat(stream).isEqualTo(list);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -61,7 +61,7 @@ public final class StreamSubjectTest {
     Stream<String> nullStream = null;
     try {
       assertThat(nullStream).isEmpty();
-      fail();
+      assert_().fail();
     } catch (NullPointerException expected) {
     }
   }
@@ -87,7 +87,7 @@ public final class StreamSubjectTest {
   public void testIsEmpty_fails() throws Exception {
     try {
       assertThat(Stream.of("hello")).isEmpty();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected).hasMessageThat().isEqualTo("Not true that <[hello]> is empty");
     }
@@ -102,7 +102,7 @@ public final class StreamSubjectTest {
   public void testIsNotEmpty_fails() throws Exception {
     try {
       assertThat(Stream.of()).isNotEmpty();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
     }
@@ -117,7 +117,7 @@ public final class StreamSubjectTest {
   public void testHasSize_fails() throws Exception {
     try {
       assertThat(Stream.of("hello")).hasSize(2);
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -134,7 +134,7 @@ public final class StreamSubjectTest {
   public void testContainsNoDuplicates_fails() throws Exception {
     try {
       assertThat(Stream.of("hello", "hello")).containsNoDuplicates();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -151,7 +151,7 @@ public final class StreamSubjectTest {
   public void testContains_fails() throws Exception {
     try {
       assertThat(Stream.of("hello")).contains("goodbye");
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected).hasMessageThat().isEqualTo("<[hello]> should have contained <goodbye>");
     }
@@ -166,7 +166,7 @@ public final class StreamSubjectTest {
   public void testContainsAnyOf_fails() throws Exception {
     try {
       assertThat(Stream.of("hello")).containsAnyOf("goodbye", "good");
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -183,7 +183,7 @@ public final class StreamSubjectTest {
   public void testContainsAnyIn_fails() throws Exception {
     try {
       assertThat(Stream.of("hello")).containsAnyIn(asList("goodbye", "good"));
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -200,7 +200,7 @@ public final class StreamSubjectTest {
   public void testDoesNotContain_fails() throws Exception {
     try {
       assertThat(Stream.of("hello")).doesNotContain("hello");
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -217,7 +217,7 @@ public final class StreamSubjectTest {
   public void testContainsNoneOf_fails() throws Exception {
     try {
       assertThat(Stream.of("hello")).containsNoneOf("hello", "hell");
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -235,7 +235,7 @@ public final class StreamSubjectTest {
   public void testContainsNoneIn_fails() throws Exception {
     try {
       assertThat(Stream.of("hello")).containsNoneIn(asList("hello", "hell"));
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -254,7 +254,7 @@ public final class StreamSubjectTest {
   public void testContainsAllOf_fails() throws Exception {
     try {
       assertThat(Stream.of("hell", "hello")).containsAllOf("hell", "hello", "goodbye");
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -273,7 +273,7 @@ public final class StreamSubjectTest {
   public void testContainsAllOf_inOrder_fails() throws Exception {
     try {
       assertThat(Stream.of("hell", "hello")).containsAllOf("hello", "hell").inOrder();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -291,7 +291,7 @@ public final class StreamSubjectTest {
   public void testContainsAllIn_fails() throws Exception {
     try {
       assertThat(Stream.of("hell", "hello")).containsAllIn(asList("hell", "hello", "goodbye"));
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -310,7 +310,7 @@ public final class StreamSubjectTest {
   public void testContainsAllIn_inOrder_fails() throws Exception {
     try {
       assertThat(Stream.of("hell", "hello")).containsAllIn(asList("hello", "hell")).inOrder();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -329,7 +329,7 @@ public final class StreamSubjectTest {
   public void testContainsExactly_fails() throws Exception {
     try {
       assertThat(Stream.of("hell", "hello")).containsExactly("hell");
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -348,7 +348,7 @@ public final class StreamSubjectTest {
   public void testContainsExactly_inOrder_fails() throws Exception {
     try {
       assertThat(Stream.of("hell", "hello")).containsExactly("hello", "hell").inOrder();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -368,7 +368,7 @@ public final class StreamSubjectTest {
   public void testContainsExactlyElementsIn_fails() throws Exception {
     try {
       assertThat(Stream.of("hell", "hello")).containsExactlyElementsIn(asList("hell"));
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
@@ -391,7 +391,7 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hell", "hello"))
           .containsExactlyElementsIn(asList("hello", "hell"))
           .inOrder();
-      fail();
+      assert_().fail();
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()

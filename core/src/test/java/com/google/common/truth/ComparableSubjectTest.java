@@ -17,8 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
-import static org.junit.Assert.fail;
 
 import com.google.common.collect.Range;
 import com.google.testing.compile.JavaFileObjects;
@@ -42,27 +42,27 @@ public class ComparableSubjectTest {
   public void testNulls() {
     try {
       assertThat(6).isEquivalentAccordingToCompareTo(null);
-      fail();
+      assert_().fail();
     } catch (NullPointerException expected) {
     }
     try {
       assertThat(6).isGreaterThan(null);
-      fail();
+      assert_().fail();
     } catch (NullPointerException expected) {
     }
     try {
       assertThat(6).isLessThan(null);
-      fail();
+      assert_().fail();
     } catch (NullPointerException expected) {
     }
     try {
       assertThat(6).isAtMost(null);
-      fail();
+      assert_().fail();
     } catch (NullPointerException expected) {
     }
     try {
       assertThat(6).isAtLeast(null);
-      fail();
+      assert_().fail();
     } catch (NullPointerException expected) {
     }
   }

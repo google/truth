@@ -18,8 +18,8 @@ package com.google.common.truth;
 import static com.google.common.collect.Collections2.permutations;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assert_;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -65,7 +65,7 @@ public class IterableSubjectTest {
   public void hasSizeNegative() {
     try {
       assertThat(ImmutableList.of(1, 2, 3)).hasSize(-1);
-      fail();
+      assert_().fail();
     } catch (IllegalArgumentException expected) {
     }
   }
@@ -938,7 +938,7 @@ public class IterableSubjectTest {
   public void isStrictlyOrderedWithNonComparableElementsFailure() {
     try {
       assertThat(asList((Object) 1, "2", 3, "4")).isStrictlyOrdered();
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (ClassCastException expected) {
     }
   }
@@ -961,7 +961,7 @@ public class IterableSubjectTest {
   public void isOrderedWithNonComparableElementsFailure() {
     try {
       assertThat(asList((Object) 1, "2", 2, "3")).isOrdered();
-      fail("Should have thrown.");
+      assert_().fail("Should have thrown.");
     } catch (ClassCastException expected) {
     }
   }
@@ -1101,7 +1101,7 @@ public class IterableSubjectTest {
         assertThat(actual).comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
     try {
       intermediate.contains(456);
-      fail("Expected ClassCastException as actual Iterable contains a non-String");
+      assert_().fail("Expected ClassCastException as actual Iterable contains a non-String");
     } catch (ClassCastException expected) {
     }
   }

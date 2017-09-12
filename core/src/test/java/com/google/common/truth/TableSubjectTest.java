@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table.Cell;
@@ -79,7 +79,7 @@ public class TableSubjectTest {
   public void hasSizeNegative() {
     try {
       assertThat(ImmutableTable.of(1, 2, 3)).hasSize(-1);
-      fail();
+      assert_().fail();
     } catch (IllegalArgumentException expected) {
     }
   }

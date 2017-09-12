@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.common.truth.Truth.assert_;
 
 import com.google.common.base.Optional;
 import org.junit.Rule;
@@ -107,7 +107,7 @@ public class GuavaOptionalSubjectTest {
       assertThat(expected).hasMessageThat().contains("Optional");
       return;
     }
-    fail("Should have thrown");
+    assert_().fail("Should have thrown");
   }
 
   @Test
