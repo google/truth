@@ -53,23 +53,11 @@ import org.junit.runners.model.Statement;
  */
 @GwtIncompatible("JUnit4")
 public final class Expect extends StandardSubjectBuilder implements TestRule {
-  /**
-   * @deprecated To provide your own failure handling, use {@code
-   *     StandardSubjectBuilder.forCustomFailureStrategy(new AbstractFailureStrategy() { ... })}
-   *     instead of {@code Expect.create(new ExpectationGatherer() { ... })}. Or, if you're testing
-   *     that assertions on a custom {@code Subject} fail (using {@code ExpectationGatherer} to
-   *     capture the failures), use {@link ExpectFailure}.
-   */
-  @Deprecated
-  public static class ExpectationGatherer extends AbstractFailureStrategy {
+  private static final class ExpectationGatherer extends AbstractFailureStrategy {
     private final List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
     private final boolean showStackTrace;
 
-    public ExpectationGatherer() {
-      this.showStackTrace = false;
-    }
-
-    public ExpectationGatherer(boolean showStackTrace) {
+    ExpectationGatherer(boolean showStackTrace) {
       this.showStackTrace = showStackTrace;
     }
 
@@ -86,8 +74,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
               message, cause != null ? new AssertionError(cause) : new AssertionError()));
     }
 
-    // TODO(cpovirk): Rename this to "getFailures" or something.
-    public List<ExpectationFailure> getMessages() {
+    List<ExpectationFailure> getFailures() {
       return messages;
     }
 
@@ -95,7 +82,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     public String toString() {
       StringBuilder message = new StringBuilder("All failed expectations:\n");
       int count = 0;
-      for (ExpectationFailure failure : getMessages()) {
+      for (ExpectationFailure failure : getFailures()) {
         count++;
         message.append("  ");
         message.append(count);
@@ -150,30 +137,20 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
   private boolean inRuleContext = false;
 
   public static Expect create() {
-    return create(new ExpectationGatherer());
-  }
-
-  /**
-   * @deprecated To provide your own failure handling, use {@code
-   *     StandardSubjectBuilder.forCustomFailureStrategy(new AbstractFailureStrategy() { ... })}
-   *     instead of {@code Expect.create(new ExpectationGatherer() { ... })}.
-   */
-  @Deprecated
-  public static Expect create(ExpectationGatherer gatherer) {
-    return new Expect(gatherer);
+    return new Expect(new ExpectationGatherer(false /* showStackTrace */));
   }
 
   public static Expect createAndEnableStackTrace() {
     return new Expect(new ExpectationGatherer(true /* showStackTrace */));
   }
 
-  Expect(ExpectationGatherer gatherer) {
+  private Expect(ExpectationGatherer gatherer) {
     super(gatherer);
     this.gatherer = checkNotNull(gatherer);
   }
 
   public boolean hasFailures() {
-    return !gatherer.getMessages().isEmpty();
+    return !gatherer.getFailures().isEmpty();
   }
 
   @Override
@@ -193,7 +170,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
         try {
           base.evaluate();
         } catch (Throwable t) {
-          if (!gatherer.getMessages().isEmpty()) {
+          if (!gatherer.getFailures().isEmpty()) {
             String message =
                 t instanceof AssumptionViolatedException
                     ? "Failures occurred before an assumption was violated"
@@ -205,7 +182,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
         } finally {
           inRuleContext = false;
         }
-        if (!gatherer.getMessages().isEmpty()) {
+        if (!gatherer.getFailures().isEmpty()) {
           throw new AssertionError(gatherer.toString());
         }
       }
