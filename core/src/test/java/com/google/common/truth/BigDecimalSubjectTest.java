@@ -33,6 +33,7 @@ import org.junit.runners.JUnit4;
 public class BigDecimalSubjectTest {
   @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo() {
     // make sure this still works

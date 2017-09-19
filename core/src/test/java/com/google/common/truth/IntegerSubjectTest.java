@@ -308,6 +308,7 @@ public class IntegerSubjectTest {
         .isEqualTo("Not true that <2147483647> is equal to <9223372036854775807>");
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void testPrimitivesVsBoxedPrimitivesVsObject_int() {
     int int42 = 42;
@@ -327,6 +328,7 @@ public class IntegerSubjectTest {
     assertThat(object42).isEqualTo(object42);
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void testPrimitivesVsBoxedPrimitivesVsObject_long() {
     long longPrim42 = 42;
