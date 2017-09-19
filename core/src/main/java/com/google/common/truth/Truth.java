@@ -104,8 +104,8 @@ public final class Truth {
               failure.initCause(cause);
             } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
               // https://code.google.com/p/android/issues/detail?id=29378
-              // No message, but it's the best we can do without awful hacks.
-              throw stripTruthStackFrames(new AssertionError(cause));
+              // Skip initCause. That's sad, but it's the best we can do without awful hacks.
+              // TODO(cpovirk): Actually, maybe we can override getCause(). Try that someday.
             }
           }
           return stripTruthStackFrames(failure);
