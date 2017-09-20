@@ -156,7 +156,7 @@ Third, we'd need to avoid some of the other problems with `Subject.named`. It
 currently mutates the `Subject`, supports only a single name (rather than the
 multiple messages supported by `withMessage`), and is ignored by ~25% of
 assertion implementations. This may be fixable, probably by passing a
-`SubjectFactory` parameter to the `Subject` constructor, but it would further
+`Subject.Factory` parameter to the `Subject` constructor, but it would further
 complicate things.
 
 ### Kind of `Subject` to create
@@ -181,9 +181,9 @@ That leaves the actual value to come last.
 This is easiest to consider in reverse.
 
 The actual value is passed to the `Subject` constructor through the
-`SubjectFactory`. It doesn't need to be stored anywhere.
+`Subject.Factory`. It doesn't need to be stored anywhere.
 
-The `SubjectFactory` is stored in the `SimpleSubjectBuilder` returned by
+The `Subject.Factory` is stored in the `SimpleSubjectBuilder` returned by
 `about`. Once it's invoked by `that`, it's never needed again.
 
 The message and `FailureStrategy` are the interesting part. Currently, we store
@@ -208,6 +208,6 @@ and other `assertThat` methods. For this reason, we provide various shortcuts:
 [`IterableOfProtosSubject`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/IterableOfProtosSubject.java
 [`ProtoTruth`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoTruth.java
 [`CustomSubjectBuilder`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/CustomSubjectBuilder.java
-[`CustomSubjectBuilderFactory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/CustomSubjectBuilderFactory.java
+[`CustomSubjectBuilder.Factory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/CustomSubjectBuilder.java
 [`StandardSubjectBuilder`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/StandardSubjectBuilder.java
 [`SimpleSubjectBuilder`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/SimpleSubjectBuilder.java

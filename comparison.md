@@ -115,9 +115,10 @@ Both support this. A few notes on differences:
 
 -   The two are verbose in different places: AssertJ requires (at least by
     convention) `return this;` at the end of each method; Truth requires a
-    `SubjectFactory` anonymous class. Both require some verbose generics (and
-    even an additional abstract class if you want to properly support
-    subclassing), though we have plans to improve things in Truth.
+    method that returns a `Subject.Factory` (generally implemented as a method
+    reference). Both require some verbose generics (and even an additional
+    abstract class if you want to properly support subclassing), though we have
+    plans to improve things in Truth.
 -   Truth's `Subject` class provides some convenience methods that build a
     failure message for you. (But we need to improve the format of that message,
     so the methods will change soon.)

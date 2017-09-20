@@ -26,7 +26,7 @@ IterableOfProtosSubject<M …> that(M message)`. But [`SimpleSubjectBuilder`]'s
 
 Another case addresses a problem that's less severe but more common: what to do
 when your library defines multiple `Subject` classes. The usual solution is to
-declare a `SubjectFactory` for each:
+declare a `Subject.Factory` for each:
 
 ```java
 import static com.google.common.truth.extension.EmployeeSubject.employees;
@@ -45,8 +45,8 @@ assertWithMessage("query result should include skip-level employees")
 
 But this forces some users to import multiple factories. And it adds noise to
 the assertion calls: Why draw readers' attention to the fact that the first
-assertion is about an `Employee` and the second is about a `Person`? We'd like
-to be able to write:
+assertion is about an `Employee` and the second is about a `Team`? We'd like to
+be able to write:
 
 ```java
 import static com.google.common.truth.extension.HumanResourcesTruth.humanResources;
@@ -66,7 +66,7 @@ assertWithMessage("query result should include skip-level employees")
 
 ## Solution: How to declare custom `that` methods
 
-Rather than create a `SubjectFactory` as described in steps 2-3 of [the simple
+Rather than create a `Subject.Factory` as described in step 2 of [the simple
 pattern](extension), do the following:
 
 1.  Declare a subclass of `CustomSubjectBuilder`:
@@ -84,23 +84,23 @@ pattern](extension), do the following:
     <!-- TODO(cpovirk): Would we recommend nesting this class inside a Subject
          if it built only one kind of Subject? -->
 
-2.  Declare a constructor that takes a `FailureStrategy`:
+1.  Declare a constructor that takes a `FailureMetadata`:
 
     ```java
-      ProtoSubjectBuilder(FailureStrategy failureStrategy) {
-        super(failureStrategy);
+      ProtoSubjectBuilder(FailureMetadata metadata) {
+        super(metadata);
       }
     ```
 
     The constructor need not be visible to users. They will create instances
     through a factory you'll create.
 
-3.  Declare one or more `that` methods:
+1.  Declare one or more `that` methods:
 
     ```java
       public <M extends Message> IterableOfProtosSubject<..., M, ...> that(
           @Nullable Iterable<M> actual) {
-        return new IterableOfProtosSubject<M>(failureStrategy(), actual);
+        return new IterableOfProtosSubject<M>(metadata(), actual);
       }
     ```
 
@@ -110,18 +110,18 @@ pattern](extension), do the following:
     (You may need to make your `Subject` constructor package-private so that it
     is accessible from the builder.)
 
-4.  Declare a static factory method that returns a
-    [`CustomSubjectBuilderFactory`].
+1.  Declare a static factory method that returns a
+    [`CustomSubjectBuilder.Factory`].
 
     ```java
-    public static CustomSubjectBuilderFactory<ProtoSubjectBuilder> iterablesOfProtos() {
+    public static CustomSubjectBuilder.Factory<ProtoSubjectBuilder> iterablesOfProtos() {
       return ProtoSubjectBuilder::new;
     }
     ```
 
-    The `CustomSubjectBuilderFactory` should usually be implemented with a
+    The `CustomSubjectBuilder.Factory` should usually be implemented with a
     method reference, as shown above. Even if it's not, your method should
-    declare a return type of `CustomSubjectBuilderFactory<YourType>`, not your
+    declare a return type of `CustomSubjectBuilder.Factory<YourType>`, not your
     implementation class.
 
     The static factory method must be accessible to the tests that will use
@@ -138,8 +138,8 @@ pattern](extension), do the following:
     all the types. (And you'll use this same class to define all your
     `assertThat` methods.)
 
-    Now users can treat your `CustomSubjectBuilderFactory` just like a
-    `SubjectFactory`:
+    Now users can treat your `CustomSubjectBuilder.Factory` just like a
+    `Subject.Factory`:
 
     ```java
     import static com.google.common.truth.extension.proto.ProtoTruth.protos;
@@ -150,14 +150,14 @@ pattern](extension), do the following:
         .isEqualTo(expected);
     ```
 
-    (But, as with the `SubjectFactory` approach, most users will use your
+    (But, as with the `Subject.Factory` approach, most users will use your
     `assertThat` shortcut instead.)
 
 <!-- References -->
 
-[`IterableOfProtosSubject`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/IterableOfProtosSubject.java
-[`ProtoTruth`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoTruth.java
-[`CustomSubjectBuilder`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/CustomSubjectBuilder.java
-[`CustomSubjectBuilderFactory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/CustomSubjectBuilderFactory.java
-[`SimpleSubjectBuilder`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/SimpleSubjectBuilder.java
+[`IterableOfProtosSubject`]:         https://google.github.io/truth/api/latest/com/google/common/truth/extensions/proto/IterableOfProtosSubject.html
+[`ProtoTruth`]:         https://google.github.io/truth/api/latest/com/google/common/truth/extensions/proto/ProtoTruth.html
+[`CustomSubjectBuilder`]:    https://google.github.io/truth/api/latest/com/google/common/truth/CustomSubjectBuilder.html
+[`CustomSubjectBuilder.Factory`]:    https://google.github.io/truth/api/latest/com/google/common/truth/CustomSubjectBuilder.Factory.html
+[`SimpleSubjectBuilder`]:    https://google.github.io/truth/api/latest/com/google/common/truth/SimpleSubjectBuilder.html
 

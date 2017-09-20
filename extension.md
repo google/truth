@@ -44,7 +44,7 @@ assertThat(myBuilder).hasAllRequiredFields();
 ```
 
 If you need to set a failure message or use a custom [`FailureStrategy`], you'll
-instead need to find the extension's `SubjectFactory`. For an extension named
+instead need to find the extension's `Subject.Factory`. For an extension named
 `FooSubject`, the factory is usually `FooSubject.foos()`. In the case of the
 Protocol Buffers extension, it's `ProtoTruth.protos()`. So, to use the
 [`expect`] `FailureStrategy` and a custom message in a check about Protocol
@@ -99,36 +99,17 @@ There are three parts to the example:
         subclass a `Subject`, you will likely run into problems with generics.
         We hope to make `Subject` class hierarchies work better in the future.
 
-    2.  A subject also needs to define a [`SubjectFactory`]. The definition is
-        usually boilerplate:
+        Tip: What if your `Subject` class has a type parameter, like
+        [`ComparableSubject`]? Follow our instructions for
+        [`CustomSubjectBuilder`](custom_subject_builder) instead of step 2
+        below, and then return to the instructions at step 3.
+
+    2.  A subject also needs to define a [`Subject.Factory`], exposed through a
+        static method. The definition is usually boilerplate:
 
         ```java
-        private static final SubjectFactory<EmployeeSubject, Employee> FACTORY =
-            new SubjectFactory<EmployeeSubject, Employee>() {
-              @Override
-              public EmployeeSubject getSubject(
-                  FailureStrategy failureStrategy, @Nullable Employee actual) {
-                return new EmployeeSubject(failureStrategy, actual);
-              }
-            };
-        ```
-
-        <!-- TODO(cpovirk): Recommend using a method reference once that's possible. -->
-
-        The `SubjectFactory` should usually be an anonymous class, as shown
-        above. In particular, you should *not* expose the *type* to users.
-        Instead, you'll expose an *instance* through a static factory method, as
-        described below.
-
-        (What if your `Subject` class has a type parameter, like
-        [`ComparableSubject`]? Then use
-        [`CustomSubjectBuilder`](custom_subject_builder) instead.)
-
-    3.  Expose a static method that returns the `SubjectFactory` constant:
-
-        ```java
-        public static SubjectFactory<EmployeeSubject, Employee> employees() {
-          return FACTORY;
+        public static Subject.Factory<EmployeeSubject, Employee> employees() {
+          return EmployeeSubject::new;
         }
         ```
 
@@ -140,7 +121,11 @@ There are three parts to the example:
 
         We recommend putting this method on your `Subject` class itself.
 
-        By passing your `SubjectFactory` to an `about()` method, users can
+        The `Subject.Factory` should usually be a method reference, as shown
+        above. In particular, you should *not* expose the *type* to users.
+        Instead, you expose only an *instance* through a static factory method.
+
+        By passing your `Subject.Factory` to an `about()` method, users can
         perform all the operations that they expect of a built-in `Subject`
         type. For example, they can set a failure message:
 
@@ -156,7 +141,7 @@ There are three parts to the example:
         But users won't need those operations most of the time, so offer them a
         shortcut:
 
-    4.  For users' convenience, define a static `assertThat(Employee)` shortcut
+    3.  For users' convenience, define a static `assertThat(Employee)` shortcut
         method:
 
         ```java
@@ -180,26 +165,26 @@ There are three parts to the example:
         coexist unless in a file unless it makes a call that's ambiguous.
 
         (If your users do end up with an ambiguous reference, they can instead
-        use the `SubjectFactory` (`assertAbout(employees()).that(...)`) or use
+        use the `Subject.Factory` (`assertAbout(employees()).that(...)`) or use
         the `assertThat` method without static imports
         (`EmployeeSubject.assertThat(...)`).)
 
-    5.  Your custom `Subject` class must have a constructor that accepts a
-        [`FailureStrategy`] and a reference to the *instance under test*. Pass
+    4.  Your custom `Subject` class must have a constructor that accepts a
+        [`FailureMetadata`] and a reference to the *instance under test*. Pass
         both to the superclass constructor:
 
         ```java
-        private EmployeeSubject(FailureStrategy failureStrategy, @Nullable Employee actual) {
-          super(failureStrategy, actual);
+        private EmployeeSubject(FailureMetadata metadata, @Nullable Employee actual) {
+          super(metadata, actual);
         }
         ```
 
         If your `Subject` is `final`, the constructor can be `private`. But even
         if you want users to extend the type, there's no reason for the
         constructor to be `public`: No one should call the constructor directly
-        except the `SubjectFactory` and subclasses.
+        except the `Subject.Factory` and subclasses.
 
-    6.  Finally, you define your test assertion API on the custom Subject. Since
+    5.  Finally, you define your test assertion API on the custom Subject. Since
         you're defining the API, you can write it however you'd like. However,
         we recommend method names that will make the assertions read *as close
         to English as possible*. For some advice on naming assertion methods,
@@ -275,7 +260,7 @@ There are three parts to the example:
 [`EmployeeSubject.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubject.java
 [`ComparableSubject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/ComparableSubject.java
 [`Subject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
-[`SubjectFactory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/SubjectFactory.java
+[`Subject.Factory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
 [`FailureStrategy`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
 [`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
 
