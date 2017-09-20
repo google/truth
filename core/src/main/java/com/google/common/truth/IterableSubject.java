@@ -75,8 +75,19 @@ import javax.annotation.Nullable;
 public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   // TODO(kak): Make this package-protected?
+  /**
+   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
+   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
+   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
+   *     constructor instead.
+   */
+  @Deprecated
   protected IterableSubject(FailureStrategy failureStrategy, @Nullable Iterable<?> list) {
     super(failureStrategy, list);
+  }
+
+  protected IterableSubject(FailureMetadata metadata, @Nullable Iterable<?> list) {
+    super(metadata, list);
   }
 
   /** Fails if the subject is not empty. */

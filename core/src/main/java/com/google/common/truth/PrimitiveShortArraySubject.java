@@ -27,8 +27,8 @@ import javax.annotation.Nullable;
  */
 public final class PrimitiveShortArraySubject
     extends AbstractArraySubject<PrimitiveShortArraySubject, short[]> {
-  PrimitiveShortArraySubject(FailureStrategy failureStrategy, @Nullable short[] o) {
-    super(failureStrategy, o);
+  PrimitiveShortArraySubject(FailureMetadata metadata, @Nullable short[] o) {
+    super(metadata, o);
   }
 
   @Override

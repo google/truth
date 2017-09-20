@@ -20,7 +20,18 @@ import javax.annotation.Nullable;
 // TODO(kak): Make this final?
 public class DefaultSubject extends Subject<DefaultSubject, Object> {
   // TODO(kak): Make this package-protected?
+  /**
+   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
+   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
+   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
+   *     constructor instead.
+   */
+  @Deprecated
   public DefaultSubject(FailureStrategy failureStrategy, @Nullable Object o) {
     super(failureStrategy, o);
+  }
+
+  public DefaultSubject(FailureMetadata metadata, @Nullable Object o) {
+    super(metadata, o);
   }
 }

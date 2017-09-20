@@ -27,21 +27,21 @@ import javax.annotation.Nullable;
  *
  * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
  *
- * <h2>For people extending Truth</h2>
+ * <h3>For people extending Truth</h3>
  *
  * <p>TODO(cpovirk): Link to a doc about custom subjects.
  */
 public final class SimpleSubjectBuilder<SubjectT extends Subject<SubjectT, ActualT>, ActualT> {
-  private final FailureStrategy failureStrategy;
-  private final SubjectFactory<SubjectT, ActualT> subjectFactory;
+  private final FailureMetadata metadata;
+  private final Subject.Factory<SubjectT, ActualT> subjectFactory;
 
   SimpleSubjectBuilder(
-      FailureStrategy failureStrategy, SubjectFactory<SubjectT, ActualT> subjectFactory) {
-    this.failureStrategy = checkNotNull(failureStrategy);
+      FailureMetadata metadata, Subject.Factory<SubjectT, ActualT> subjectFactory) {
+    this.metadata = checkNotNull(metadata);
     this.subjectFactory = checkNotNull(subjectFactory);
   }
 
   public SubjectT that(@Nullable ActualT actual) {
-    return subjectFactory.getSubject(failureStrategy, actual);
+    return subjectFactory.createSubject(metadata, actual);
   }
 }

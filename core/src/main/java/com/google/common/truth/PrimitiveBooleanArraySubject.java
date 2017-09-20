@@ -27,8 +27,8 @@ import javax.annotation.Nullable;
  */
 public final class PrimitiveBooleanArraySubject
     extends AbstractArraySubject<PrimitiveBooleanArraySubject, boolean[]> {
-  PrimitiveBooleanArraySubject(FailureStrategy failureStrategy, @Nullable boolean[] o) {
-    super(failureStrategy, o);
+  PrimitiveBooleanArraySubject(FailureMetadata metadata, @Nullable boolean[] o) {
+    super(metadata, o);
   }
 
   @Override

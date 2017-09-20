@@ -33,8 +33,8 @@ import javax.annotation.Nullable;
 public final class SortedSetSubject extends IterableSubject {
   private final NavigableSet<?> actualAsNavigableSet;
 
-  SortedSetSubject(FailureStrategy failureStrategy, SortedSet<?> set) {
-    super(failureStrategy, set);
+  SortedSetSubject(FailureMetadata metadata, SortedSet<?> set) {
+    super(metadata, set);
     actualAsNavigableSet = set == null ? null : SortedSetAsNavigableSet.wrapIfNecessary(set);
   }
 

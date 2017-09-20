@@ -27,8 +27,8 @@ import javax.annotation.Nullable;
  * @author Daniel Ploch
  */
 public final class ListMultimapSubject extends MultimapSubject {
-  ListMultimapSubject(FailureStrategy failureStrategy, @Nullable ListMultimap<?, ?> multimap) {
-    super(failureStrategy, multimap);
+  ListMultimapSubject(FailureMetadata metadata, @Nullable ListMultimap<?, ?> multimap) {
+    super(metadata, multimap);
   }
 
   @Override

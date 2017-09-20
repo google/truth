@@ -33,11 +33,11 @@ import org.junit.runners.JUnit4;
 public class DoubleSubjectTest {
   @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
-  private static final SubjectFactory<DoubleSubject, Double> DOUBLE_SUBJECT_FACTORY =
-      new SubjectFactory<DoubleSubject, Double>() {
+  private static final Subject.Factory<DoubleSubject, Double> DOUBLE_SUBJECT_FACTORY =
+      new Subject.Factory<DoubleSubject, Double>() {
         @Override
-        public DoubleSubject getSubject(FailureStrategy fs, Double that) {
-          return new DoubleSubject(fs, that);
+        public DoubleSubject createSubject(FailureMetadata metadata, Double that) {
+          return new DoubleSubject(metadata, that);
         }
       };
 

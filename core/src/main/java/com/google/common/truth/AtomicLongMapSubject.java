@@ -28,8 +28,8 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, AtomicLongMap<?>> {
-  AtomicLongMapSubject(FailureStrategy failureStrategy, @Nullable AtomicLongMap<?> map) {
-    super(failureStrategy, map);
+  AtomicLongMapSubject(FailureMetadata metadata, @Nullable AtomicLongMap<?> map) {
+    super(metadata, map);
   }
 
   /**

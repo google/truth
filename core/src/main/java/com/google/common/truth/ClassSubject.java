@@ -25,8 +25,8 @@ import javax.annotation.Nullable;
  */
 @GwtIncompatible("reflection")
 public final class ClassSubject extends Subject<ClassSubject, Class<?>> {
-  ClassSubject(FailureStrategy failureStrategy, @Nullable Class<?> o) {
-    super(failureStrategy, o);
+  ClassSubject(FailureMetadata metadata, @Nullable Class<?> o) {
+    super(metadata, o);
   }
 
   /**

@@ -44,8 +44,8 @@ import javax.annotation.Nullable;
  */
 // Can't be final since SortedMapSubject extends it
 public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
-  MapSubject(FailureStrategy failureStrategy, @Nullable Map<?, ?> map) {
-    super(failureStrategy, map);
+  MapSubject(FailureMetadata metadata, @Nullable Map<?, ?> map) {
+    super(metadata, map);
   }
 
   /** Fails if the subject is not equal to the given object. */

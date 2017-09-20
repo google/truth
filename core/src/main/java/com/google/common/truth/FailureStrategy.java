@@ -25,7 +25,7 @@ import java.util.Arrays;
  *
  * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
  *
- * <h2>For people extending Truth</h2>
+ * <h3>For people extending Truth</h3>
  *
  * <p>Custom {@code FailureStrategy} implementations are unusual. If you think you need one,
  * consider these alternatives:

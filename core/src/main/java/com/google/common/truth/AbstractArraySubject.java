@@ -26,8 +26,8 @@ import javax.annotation.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> extends Subject<S, T> {
-  AbstractArraySubject(FailureStrategy failureStrategy, @Nullable T actual) {
-    super(failureStrategy, actual);
+  AbstractArraySubject(FailureMetadata metadata, @Nullable T actual) {
+    super(metadata, actual);
   }
 
   /** Fails if the array is not empty (i.e. {@code array.length != 0}). */

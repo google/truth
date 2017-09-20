@@ -23,11 +23,17 @@ package com.google.common.truth;
  *
  * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
  *
- * <h2>For people extending Truth</h2>
+ * <h3>For people extending Truth</h3>
  *
  * <p>TODO(cpovirk): Link to a doc about custom subjects.
+ *
+ * @deprecated When you switch your {@link Subject} implementations from accepting a {@link
+ *     FailureStrategy} to accepting a {@link FailureMetadata}, you'll switch their {@link
+ *     CustomSubjectBuilder} to start using {@link FailureMetadata}, too, and so you'll switch to
+ *     creating it with {@link CustomSubjectBuilder.Factory} instead of {@link
+ *     CustomSubjectBuilderFactory}.
  */
-// TODO(cpovirk): Convert to a nested type when changing FailureStrategy parameter to another type.
+@Deprecated
 public interface CustomSubjectBuilderFactory<CustomSubjectBuilderT extends CustomSubjectBuilder> {
   /** Creates a new {@link CustomSubjectBuilder} of the appropriate type. */
   CustomSubjectBuilderT createSubjectBuilder(FailureStrategy failureStrategy);

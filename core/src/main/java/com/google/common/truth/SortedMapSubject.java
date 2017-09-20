@@ -40,8 +40,8 @@ import javax.annotation.Nullable;
 public final class SortedMapSubject extends MapSubject {
   private final NavigableMap<?, ?> actualAsNavigableMap;
 
-  SortedMapSubject(FailureStrategy failureStrategy, SortedMap<?, ?> map) {
-    super(failureStrategy, map);
+  SortedMapSubject(FailureMetadata metadata, SortedMap<?, ?> map) {
+    super(metadata, map);
     actualAsNavigableMap = map == null ? null : SortedMapAsNavigableMap.wrapIfNecessary(map);
   }
 

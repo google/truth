@@ -15,12 +15,10 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.format;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
@@ -48,7 +46,7 @@ import javax.annotation.Nullable;
  *
  * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
  *
- * <h2>For people extending Truth</h2>
+ * <h3>For people extending Truth</h3>
  *
  * <p>TODO(cpovirk): Link to a doc about custom subjects.
  */
@@ -59,140 +57,140 @@ public class StandardSubjectBuilder {
    * FailureStrategy}.
    */
   public static StandardSubjectBuilder forCustomFailureStrategy(FailureStrategy failureStrategy) {
-    return new StandardSubjectBuilder(failureStrategy);
+    return new StandardSubjectBuilder(FailureMetadata.forFailureStrategy(failureStrategy));
   }
 
-  private final FailureStrategy failureStrategyDoNotReferenceDirectly;
+  private final FailureMetadata metadataDoNotReferenceDirectly;
 
-  StandardSubjectBuilder(FailureStrategy failureStrategy) {
-    this.failureStrategyDoNotReferenceDirectly = checkNotNull(failureStrategy);
+  StandardSubjectBuilder(FailureMetadata metadata) {
+    this.metadataDoNotReferenceDirectly = checkNotNull(metadata);
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   public final <ComparableT extends Comparable<?>> ComparableSubject<?, ComparableT> that(
       @Nullable ComparableT actual) {
-    return new ComparableSubject(failureStrategy(), actual) {};
+    return new ComparableSubject(metadata(), actual) {};
   }
 
   public final BigDecimalSubject that(@Nullable BigDecimal actual) {
-    return new BigDecimalSubject(failureStrategy(), actual);
+    return new BigDecimalSubject(metadata(), actual);
   }
 
   public final Subject<DefaultSubject, Object> that(@Nullable Object actual) {
-    return new DefaultSubject(failureStrategy(), actual);
+    return new DefaultSubject(metadata(), actual);
   }
 
   @GwtIncompatible("ClassSubject.java")
   public final ClassSubject that(@Nullable Class<?> actual) {
-    return new ClassSubject(failureStrategy(), actual);
+    return new ClassSubject(metadata(), actual);
   }
 
   public final ThrowableSubject that(@Nullable Throwable actual) {
-    return ThrowableSubject.create(failureStrategy(), actual);
+    return new ThrowableSubject(metadata(), actual);
   }
 
   public final LongSubject that(@Nullable Long actual) {
-    return new LongSubject(failureStrategy(), actual);
+    return new LongSubject(metadata(), actual);
   }
 
   public final DoubleSubject that(@Nullable Double actual) {
-    return new DoubleSubject(failureStrategy(), actual);
+    return new DoubleSubject(metadata(), actual);
   }
 
   public final FloatSubject that(@Nullable Float actual) {
-    return new FloatSubject(failureStrategy(), actual);
+    return new FloatSubject(metadata(), actual);
   }
 
   public final IntegerSubject that(@Nullable Integer actual) {
-    return new IntegerSubject(failureStrategy(), actual);
+    return new IntegerSubject(metadata(), actual);
   }
 
   public final BooleanSubject that(@Nullable Boolean actual) {
-    return new BooleanSubject(failureStrategy(), actual);
+    return new BooleanSubject(metadata(), actual);
   }
 
   public final StringSubject that(@Nullable String actual) {
-    return new StringSubject(failureStrategy(), actual);
+    return new StringSubject(metadata(), actual);
   }
 
   public final IterableSubject that(@Nullable Iterable<?> actual) {
-    return new IterableSubject(failureStrategy(), actual);
+    return new IterableSubject(metadata(), actual);
   }
 
   public final SortedSetSubject that(@Nullable SortedSet<?> actual) {
-    return new SortedSetSubject(failureStrategy(), actual);
+    return new SortedSetSubject(metadata(), actual);
   }
 
   public final <T> ObjectArraySubject<T> that(@Nullable T[] actual) {
-    return new ObjectArraySubject<T>(failureStrategy(), actual);
+    return new ObjectArraySubject<T>(metadata(), actual);
   }
 
   public final PrimitiveBooleanArraySubject that(@Nullable boolean[] actual) {
-    return new PrimitiveBooleanArraySubject(failureStrategy(), actual);
+    return new PrimitiveBooleanArraySubject(metadata(), actual);
   }
 
   public final PrimitiveShortArraySubject that(@Nullable short[] actual) {
-    return new PrimitiveShortArraySubject(failureStrategy(), actual);
+    return new PrimitiveShortArraySubject(metadata(), actual);
   }
 
   public final PrimitiveIntArraySubject that(@Nullable int[] actual) {
-    return new PrimitiveIntArraySubject(failureStrategy(), actual);
+    return new PrimitiveIntArraySubject(metadata(), actual);
   }
 
   public final PrimitiveLongArraySubject that(@Nullable long[] actual) {
-    return new PrimitiveLongArraySubject(failureStrategy(), actual);
+    return new PrimitiveLongArraySubject(metadata(), actual);
   }
 
   public final PrimitiveCharArraySubject that(@Nullable char[] actual) {
-    return new PrimitiveCharArraySubject(failureStrategy(), actual);
+    return new PrimitiveCharArraySubject(metadata(), actual);
   }
 
   public final PrimitiveByteArraySubject that(@Nullable byte[] actual) {
-    return new PrimitiveByteArraySubject(failureStrategy(), actual);
+    return new PrimitiveByteArraySubject(metadata(), actual);
   }
 
   public final PrimitiveFloatArraySubject that(@Nullable float[] actual) {
-    return new PrimitiveFloatArraySubject(failureStrategy(), actual);
+    return new PrimitiveFloatArraySubject(metadata(), actual);
   }
 
   public final PrimitiveDoubleArraySubject that(@Nullable double[] actual) {
-    return new PrimitiveDoubleArraySubject(failureStrategy(), actual);
+    return new PrimitiveDoubleArraySubject(metadata(), actual);
   }
 
   public final GuavaOptionalSubject that(@Nullable Optional<?> actual) {
-    return new GuavaOptionalSubject(failureStrategy(), actual);
+    return new GuavaOptionalSubject(metadata(), actual);
   }
 
   public final MapSubject that(@Nullable Map<?, ?> actual) {
-    return new MapSubject(failureStrategy(), actual);
+    return new MapSubject(metadata(), actual);
   }
 
   public final SortedMapSubject that(@Nullable SortedMap<?, ?> actual) {
-    return new SortedMapSubject(failureStrategy(), actual);
+    return new SortedMapSubject(metadata(), actual);
   }
 
   public final MultimapSubject that(@Nullable Multimap<?, ?> actual) {
-    return new MultimapSubject(failureStrategy(), actual);
+    return new MultimapSubject(metadata(), actual);
   }
 
   public final ListMultimapSubject that(@Nullable ListMultimap<?, ?> actual) {
-    return new ListMultimapSubject(failureStrategy(), actual);
+    return new ListMultimapSubject(metadata(), actual);
   }
 
   public final SetMultimapSubject that(@Nullable SetMultimap<?, ?> actual) {
-    return new SetMultimapSubject(failureStrategy(), actual);
+    return new SetMultimapSubject(metadata(), actual);
   }
 
   public final MultisetSubject that(@Nullable Multiset<?> actual) {
-    return new MultisetSubject(failureStrategy(), actual);
+    return new MultisetSubject(metadata(), actual);
   }
 
   public final TableSubject that(@Nullable Table<?, ?, ?> actual) {
-    return new TableSubject(failureStrategy(), actual);
+    return new TableSubject(metadata(), actual);
   }
 
   public final AtomicLongMapSubject that(@Nullable AtomicLongMap<?> actual) {
-    return new AtomicLongMapSubject(failureStrategy(), actual);
+    return new AtomicLongMapSubject(metadata(), actual);
   }
 
   public final StandardSubjectBuilder withMessage(@Nullable String messageToPrepend) {
@@ -211,8 +209,21 @@ public class StandardSubjectBuilder {
    */
   public final StandardSubjectBuilder withMessage(
       @Nullable String format, Object /* @NullableType */... args) {
-    return new StandardSubjectBuilder(
-        new MessagePrependingFailureStrategy(failureStrategy(), format, args));
+    return new StandardSubjectBuilder(metadata().withMessage(format, args));
+  }
+
+  /**
+   * Given a factory for some {@code Subject} class, returns a builder whose {@code that(actual)}
+   * method creates instances of that class. Created subjects use the previously set failure
+   * strategy and any previously set failure message.
+   *
+   * @deprecated When you switch from {@link SubjectFactory} to {@link Subject.Factory}, you'll
+   *     switch from this overload to the {@code Subject.Factory} overload.
+   */
+  @Deprecated
+  public final <S extends Subject<S, A>, A> SimpleSubjectBuilder<S, A> about(
+      SubjectFactory<S, A> factory) {
+    return new SimpleSubjectBuilder<S, A>(metadata(), adapt(factory));
   }
 
   /**
@@ -221,32 +232,42 @@ public class StandardSubjectBuilder {
    * strategy and any previously set failure message.
    */
   public final <S extends Subject<S, A>, A> SimpleSubjectBuilder<S, A> about(
-      SubjectFactory<S, A> factory) {
-    return new SimpleSubjectBuilder<S, A>(failureStrategy(), factory);
+      Subject.Factory<S, A> factory) {
+    return new SimpleSubjectBuilder<S, A>(metadata(), factory);
   }
 
   /**
    * A generic, advanced method of extension of Truth to new types, which is documented on {@link
-   * CustomSubjectBuilder}. Extension creators should prefer {@link SubjectFactory} if possible.
+   * CustomSubjectBuilder}. Extension creators should prefer {@link Subject.Factory} if possible.
+   *
+   * @deprecated When you switch from {@link CustomSubjectBuilderFactory} to {@link
+   *     CustomSubjectBuilder.Factory}, you'll switch from this overload to the {@code
+   *     CustomSubjectBuilder.Factory} overload.
    */
+  @Deprecated
   public final <CustomSubjectBuilderT extends CustomSubjectBuilder> CustomSubjectBuilderT about(
       CustomSubjectBuilderFactory<CustomSubjectBuilderT> factory) {
-    return factory.createSubjectBuilder(failureStrategy());
+    return factory.createSubjectBuilder(metadata().legacyStrategy());
+  }
+
+  public final <CustomSubjectBuilderT extends CustomSubjectBuilder> CustomSubjectBuilderT about(
+      CustomSubjectBuilder.Factory<CustomSubjectBuilderT> factory) {
+    return factory.createSubjectBuilder(metadata());
   }
 
   /** Triggers the failure strategy with an empty failure message */
   public final void fail() {
-    failureStrategy().fail("");
+    metadata().legacyStrategy().fail("");
   }
 
   /** Triggers the failure strategy with the given failure message */
   public final void fail(@Nullable String format, Object /*@NullableType*/... args) {
-    failureStrategy().fail(format(format, args));
+    metadata().legacyStrategy().fail(format(format, args));
   }
 
-  private FailureStrategy failureStrategy() {
+  private FailureMetadata metadata() {
     checkStatePreconditions();
-    return failureStrategyDoNotReferenceDirectly;
+    return metadataDoNotReferenceDirectly;
   }
 
   /**
@@ -255,65 +276,14 @@ public class StandardSubjectBuilder {
    */
   void checkStatePreconditions() {}
 
-  private static final class MessagePrependingFailureStrategy extends FailureStrategy {
-    private static final String PLACEHOLDER_ERR =
-        "Incorrect number of args (%s) for the given placeholders (%s) in string template:\"%s\"";
-
-    private final FailureStrategy delegate;
-    private final String format;
-    private final Object[] args;
-
-    MessagePrependingFailureStrategy(
-        FailureStrategy delegate, @Nullable String format, @Nullable Object... args) {
-      this.delegate = checkNotNull(delegate);
-      this.format = format;
-      this.args = args;
-      int placeholders = countPlaceholders(format);
-      checkArgument(
-          placeholders == args.length, PLACEHOLDER_ERR, args.length, placeholders, format);
-    }
-
-    @Override
-    public void fail(String message) {
-      delegate.fail(prependFailureMessageIfAny(message));
-    }
-
-    @Override
-    public void fail(String message, Throwable cause) {
-      delegate.fail(prependFailureMessageIfAny(message), cause);
-    }
-
-    @Override
-    public void failComparing(String message, CharSequence expected, CharSequence actual) {
-      delegate.failComparing(prependFailureMessageIfAny(message), expected, actual);
-    }
-
-    @Override
-    public void failComparing(
-        String message, CharSequence expected, CharSequence actual, Throwable cause) {
-      delegate.failComparing(prependFailureMessageIfAny(message), expected, actual, cause);
-    }
-
-    private String prependFailureMessageIfAny(String message) {
-      return format == null ? message : StringUtil.format(format, args) + ": " + message;
-    }
-  }
-
-  @VisibleForTesting
-  static int countPlaceholders(@Nullable String template) {
-    if (template == null) {
-      return 0;
-    }
-    int index = 0;
-    int count = 0;
-    while (true) {
-      index = template.indexOf("%s", index);
-      if (index == -1) {
-        break;
+  private static <SubjectT extends Subject<SubjectT, ActualT>, ActualT>
+      Subject.Factory<SubjectT, ActualT> adapt(
+          final SubjectFactory<SubjectT, ActualT> subjectFactory) {
+    return new Subject.Factory<SubjectT, ActualT>() {
+      @Override
+      public SubjectT createSubject(FailureMetadata metadata, ActualT actual) {
+        return subjectFactory.getSubject(metadata.legacyStrategy(), actual);
       }
-      index++;
-      count++;
-    }
-    return count;
+    };
   }
 }

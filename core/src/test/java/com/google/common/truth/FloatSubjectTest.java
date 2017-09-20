@@ -33,11 +33,11 @@ import org.junit.runners.JUnit4;
 public class FloatSubjectTest {
   @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
-  private static final SubjectFactory<FloatSubject, Float> FLOAT_SUBJECT_FACTORY =
-      new SubjectFactory<FloatSubject, Float>() {
+  private static final Subject.Factory<FloatSubject, Float> FLOAT_SUBJECT_FACTORY =
+      new Subject.Factory<FloatSubject, Float>() {
         @Override
-        public FloatSubject getSubject(FailureStrategy fs, Float that) {
-          return new FloatSubject(fs, that);
+        public FloatSubject createSubject(FailureMetadata metadata, Float that) {
+          return new FloatSubject(metadata, that);
         }
       };
 

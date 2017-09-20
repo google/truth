@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
  *
  * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
  *
- * <h2>For people extending Truth</h2>
+ * <h3>For people extending Truth</h3>
  *
  * <p>TODO(cpovirk): Link to a doc about custom subjects.
  *
@@ -43,6 +43,22 @@ import javax.annotation.Nullable;
  * @author Christian Gruber
  */
 public class Subject<S extends Subject<S, T>, T> {
+  /**
+   * In a fluent assertion chain, the argument to the common overload of {@link
+   * StandardSubjectBuilder#about(Subject.Factory) about}, the method that specifies what kind of
+   * {@link Subject} to create.
+   *
+   * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
+   *
+   * <h3>For people extending Truth</h3>
+   *
+   * <p>TODO(cpovirk): Link to a doc about custom subjects.
+   */
+  public interface Factory<SubjectT extends Subject<SubjectT, ActualT>, ActualT> {
+    /** Creates a new {@link Subject}. */
+    SubjectT createSubject(FailureMetadata metadata, ActualT actual);
+  }
+
   private static final FailureStrategy IGNORE_STRATEGY =
       new AbstractFailureStrategy() {
         @Override
@@ -50,19 +66,35 @@ public class Subject<S extends Subject<S, T>, T> {
       };
 
   /**
-   * @deprecated If you are calling {@code failureStrategy.fail*} directly, instead call {@link
+   * @deprecated If you are calling {@code metadata.fail*} directly, instead call {@link
    *     #failWithRawMessage}, {@link #failWithRawMessageAndCause}, or {@link #failComparing}. If
-   *     you are passing {@code failureStrategy} to a {@code Subject} constructor, instead call
-   *     {@link #check()}{@code .that(...)} or {@code check().about(...).that(...)}. (You might need
-   *     to create the {@link SubjectFactory} that is the argument to {@code about}.)
+   *     you are passing {@code metadata} to a {@code Subject} constructor, instead call {@link
+   *     #check()}{@code .that(...)} or {@code check().about(...).that(...)}. (You might need to
+   *     create the {@link SubjectFactory} that is the argument to {@code about}.)
    */
   @Deprecated protected final FailureStrategy failureStrategy;
+  // TODO(cpovirk): Make private after MultimapSubject no longer needs it.
+  final FailureMetadata metadata;
 
   private final T actual;
   private String customName = null;
 
+  /**
+   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
+   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
+   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
+   *     constructor instead.
+   */
+  @Deprecated
   public Subject(FailureStrategy failureStrategy, @Nullable T actual) {
-    this.failureStrategy = checkNotNull(failureStrategy);
+    this(FailureMetadata.forFailureStrategy(failureStrategy), actual);
+  }
+
+  // TODO(cpovirk): Make this protected.
+  public Subject(FailureMetadata metadata, @Nullable T actual) {
+    this.metadata =
+        actual instanceof Throwable ? metadata.offerRootCause((Throwable) actual) : metadata;
+    this.failureStrategy = this.metadata.legacyStrategy();
     this.actual = actual;
   }
 
@@ -311,7 +343,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   // TODO(diamondm) this should be final, can we do that safely?
   protected StandardSubjectBuilder check() {
-    return StandardSubjectBuilder.forCustomFailureStrategy(failureStrategy);
+    return new StandardSubjectBuilder(metadata);
   }
 
   /**
@@ -331,7 +363,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param proposition the proposition being asserted
    */
   protected final void fail(String proposition) {
-    failureStrategy.fail("Not true that " + actualAsString() + " " + proposition);
+    metadata.legacyStrategy().fail("Not true that " + actualAsString() + " " + proposition);
   }
 
   /**
@@ -365,7 +397,7 @@ public class Subject<S extends Subject<S, T>, T> {
     if (!needsClassDisambiguation && sameToStrings && compareToStrings) {
       message.append(" (although their toString() representations are the same)");
     }
-    failureStrategy.fail(message.toString());
+    metadata.legacyStrategy().fail(message.toString());
   }
 
   /**
@@ -386,7 +418,7 @@ public class Subject<S extends Subject<S, T>, T> {
       for (Object part : messageParts) {
         message.append(" <").append(part).append(">");
       }
-      failureStrategy.fail(message.toString());
+      metadata.legacyStrategy().fail(message.toString());
     }
   }
 
@@ -408,7 +440,7 @@ public class Subject<S extends Subject<S, T>, T> {
             expected,
             failVerb,
             (actual == null) ? "null reference" : actual);
-    failureStrategy.fail(message);
+    metadata.legacyStrategy().fail(message);
   }
 
   /**
@@ -424,14 +456,14 @@ public class Subject<S extends Subject<S, T>, T> {
         format(
             "Not true that <%s> %s <%s>",
             (actual == null) ? "null reference" : actual, verb, expected);
-    failureStrategy.fail(message);
+    metadata.legacyStrategy().fail(message);
   }
 
   /** @deprecated Use {@link #failWithoutActual(String)} */
   @Deprecated
   protected final void failWithoutSubject(String proposition) {
     String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    failureStrategy.fail(format("Not true that %s %s", strSubject, proposition));
+    metadata.legacyStrategy().fail(format("Not true that %s %s", strSubject, proposition));
   }
 
   /**
@@ -455,12 +487,12 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   // TODO(cgruber) final
   protected void failWithRawMessage(String message, Object... parameters) {
-    failureStrategy.fail(format(message, parameters));
+    metadata.legacyStrategy().fail(format(message, parameters));
   }
 
   /** Passes through a failure message verbatim, along with a cause. */
   protected final void failWithRawMessageAndCause(String message, Throwable cause) {
-    failureStrategy.fail(message, cause);
+    metadata.legacyStrategy().fail(message, cause);
   }
 
   /**
@@ -468,7 +500,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * {@link FailureStrategy} may use to construct a {@code ComparisonFailure}.
    */
   protected final void failComparing(String message, CharSequence expected, CharSequence actual) {
-    failureStrategy.failComparing(message, expected, actual);
+    metadata.legacyStrategy().failComparing(message, expected, actual);
   }
 
   /**
@@ -477,7 +509,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   protected final void failComparing(
       String message, CharSequence expected, CharSequence actual, Throwable cause) {
-    failureStrategy.failComparing(message, expected, actual, cause);
+    metadata.legacyStrategy().failComparing(message, expected, actual, cause);
   }
 
   /**

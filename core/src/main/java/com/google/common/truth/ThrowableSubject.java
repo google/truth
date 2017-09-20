@@ -23,12 +23,8 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
-  static ThrowableSubject create(FailureStrategy failureStrategy, @Nullable Throwable throwable) {
-    return new ThrowableSubject(causeInsertingStrategy(failureStrategy, throwable), throwable);
-  }
-
-  private ThrowableSubject(FailureStrategy failureStrategy, @Nullable Throwable throwable) {
-    super(failureStrategy, throwable);
+  ThrowableSubject(FailureMetadata metadata, @Nullable Throwable throwable) {
+    super(metadata, throwable);
   }
 
   /*
@@ -50,7 +46,11 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
 
   /** Returns a {@code StringSubject} to make assertions about the throwable's message. */
   public StringSubject hasMessageThat() {
-    return new StringSubject(badMessageStrategy(failureStrategy), actual().getMessage());
+    String name = actual().getClass().getName();
+    if (internalCustomName() != null) {
+      name = internalCustomName() + "(" + name + ")";
+    }
+    return check().withMessage("Unexpected message for %s", name).that(actual().getMessage());
   }
 
   /**
@@ -74,100 +74,10 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
                 }
               });
     }
-    return new ThrowableSubject(badCauseStrategy(failureStrategy), actual().getCause());
-  }
-
-  private static FailureStrategy causeInsertingStrategy(
-      final FailureStrategy delegate, final Throwable defaultCause) {
-    return new FailureStrategy() {
-      @Override
-      public void fail(String message) {
-        delegate.fail(message, defaultCause);
-      }
-
-      @Override
-      public void fail(String message, Throwable cause) {
-        delegate.fail(message, cause);
-        // TODO(cpovirk): add defaultCause as a suppressed exception? If fail() throws...
-      }
-
-      @Override
-      public void failComparing(String message, CharSequence expected, CharSequence actual) {
-        delegate.failComparing(message, expected, actual, defaultCause);
-      }
-
-      @Override
-      public void failComparing(
-          String message, CharSequence expected, CharSequence actual, Throwable cause) {
-        delegate.failComparing(message, expected, actual, cause);
-        // TODO(cpovirk): add defaultCause as a suppressed exception? If failComparing() throws...
-      }
-    };
-  }
-
-  private FailureStrategy badMessageStrategy(final FailureStrategy delegate) {
-    return new FailureStrategy() {
-      private String prependMessage(String message) {
-        String name = actual().getClass().getName();
-        if (internalCustomName() != null) {
-          name = internalCustomName() + "(" + name + ")";
-        }
-        return "Unexpected message for " + name + ":" + (message.isEmpty() ? "" : " " + message);
-      }
-
-      @Override
-      public void fail(String message) {
-        delegate.fail(prependMessage(message));
-      }
-
-      @Override
-      public void fail(String message, Throwable cause) {
-        delegate.fail(prependMessage(message), cause);
-      }
-
-      @Override
-      public void failComparing(String message, CharSequence expected, CharSequence actual) {
-        delegate.failComparing(prependMessage(message), expected, actual);
-      }
-
-      @Override
-      public void failComparing(
-          String message, CharSequence expected, CharSequence actual, Throwable cause) {
-        delegate.failComparing(prependMessage(message), expected, actual, cause);
-      }
-    };
-  }
-
-  private FailureStrategy badCauseStrategy(final FailureStrategy delegate) {
-    return new FailureStrategy() {
-      private String prependMessage(String message) {
-        String name = actual().getClass().getName();
-        if (internalCustomName() != null) {
-          name = internalCustomName() + "(" + name + ")";
-        }
-        return "Unexpected cause for " + name + ":" + (message.isEmpty() ? "" : " " + message);
-      }
-
-      @Override
-      public void fail(String message) {
-        delegate.fail(prependMessage(message));
-      }
-
-      @Override
-      public void fail(String message, Throwable cause) {
-        delegate.fail(prependMessage(message), cause);
-      }
-
-      @Override
-      public void failComparing(String message, CharSequence expected, CharSequence actual) {
-        delegate.failComparing(prependMessage(message), expected, actual);
-      }
-
-      @Override
-      public void failComparing(
-          String message, CharSequence expected, CharSequence actual, Throwable cause) {
-        delegate.failComparing(prependMessage(message), expected, actual, cause);
-      }
-    };
+    String name = actual().getClass().getName();
+    if (internalCustomName() != null) {
+      name = internalCustomName() + "(" + name + ")";
+    }
+    return check().withMessage("Unexpected cause for %s", name).that(actual().getCause());
   }
 }

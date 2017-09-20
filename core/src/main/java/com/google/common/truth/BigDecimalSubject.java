@@ -24,8 +24,8 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject, BigDecimal> {
-  BigDecimalSubject(FailureStrategy failureStrategy, @Nullable BigDecimal actual) {
-    super(failureStrategy, actual);
+  BigDecimalSubject(FailureMetadata metadata, @Nullable BigDecimal actual) {
+    super(metadata, actual);
   }
 
   /**

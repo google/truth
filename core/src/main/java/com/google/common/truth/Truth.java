@@ -62,7 +62,7 @@ import javax.annotation.Nullable;
  *
  * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
  *
- * <h2>For people extending Truth</h2>
+ * <h3>For people extending Truth</h3>
  *
  * <p>TODO(cpovirk): Link to a doc about custom subjects.
  *
@@ -151,19 +151,46 @@ public final class Truth {
    *
    * @param factory a SubjectFactory<S, T> implementation
    * @return A custom verb for the type returned by the SubjectFactory
+   * @deprecated When you switch from {@link SubjectFactory} to {@link Subject.Factory}, you'll
+   *     switch from this overload to the {@code Subject.Factory} overload.
    */
+  @Deprecated
   public static <S extends Subject<S, T>, T> SimpleSubjectBuilder<S, T> assertAbout(
       SubjectFactory<S, T> factory) {
     return assert_().about(factory);
   }
 
   /**
-   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
-   * CustomSubjectBuilder}. Extension creators should prefer {@link SubjectFactory} if possible.
+   * Given a factory for some {@code Subject} class, returns a builder whose {@code that(actual)}
+   * method creates instances of that class.
    */
+  public static <S extends Subject<S, T>, T> SimpleSubjectBuilder<S, T> assertAbout(
+      Subject.Factory<S, T> factory) {
+    return assert_().about(factory);
+  }
+
+  /**
+   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
+   * CustomSubjectBuilder}. Extension creators should prefer {@link Subject.Factory} if possible.
+   *
+   * @deprecated When you switch from {@link CustomSubjectBuilderFactory} to {@link
+   *     CustomSubjectBuilder.Factory}, you'll switch from this overload to the {@code
+   *     CustomSubjectBuilder.Factory} overload.
+   */
+  @Deprecated
   public static <CustomSubjectBuilderT extends CustomSubjectBuilder>
       CustomSubjectBuilderT assertAbout(
           CustomSubjectBuilderFactory<CustomSubjectBuilderT> factory) {
+    return assert_().about(factory);
+  }
+
+  /**
+   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
+   * CustomSubjectBuilder}. Extension creators should prefer {@link Subject.Factory} if possible.
+   */
+  public static <CustomSubjectBuilderT extends CustomSubjectBuilder>
+      CustomSubjectBuilderT assertAbout(
+          CustomSubjectBuilder.Factory<CustomSubjectBuilderT> factory) {
     return assert_().about(factory);
   }
 

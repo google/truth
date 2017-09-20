@@ -27,8 +27,8 @@ import javax.annotation.Nullable;
  */
 public final class MultisetSubject extends IterableSubject {
 
-  MultisetSubject(FailureStrategy failureStrategy, @Nullable Multiset<?> multiset) {
-    super(failureStrategy, multiset);
+  MultisetSubject(FailureMetadata metadata, @Nullable Multiset<?> multiset) {
+    super(metadata, multiset);
   }
 
   @Override

@@ -26,8 +26,19 @@ import javax.annotation.Nullable;
  */
 public class LongSubject extends ComparableSubject<LongSubject, Long> {
   // TODO(kak): Make this package-protected?
+  /**
+   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
+   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
+   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
+   *     constructor instead.
+   */
+  @Deprecated
   public LongSubject(FailureStrategy failureStrategy, @Nullable Long actual) {
     super(failureStrategy, actual);
+  }
+
+  public LongSubject(FailureMetadata metadata, @Nullable Long actual) {
+    super(metadata, actual);
   }
 
   /** @deprecated Use {@link #isEqualTo} instead. Long comparison is consistent with equality. */
