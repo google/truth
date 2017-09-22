@@ -82,12 +82,28 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    *     constructor instead.
    */
   @Deprecated
-  protected IterableSubject(FailureStrategy failureStrategy, @Nullable Iterable<?> list) {
-    super(failureStrategy, list);
+  protected IterableSubject(FailureStrategy failureStrategy, @Nullable Iterable<?> iterable) {
+    super(failureStrategy, iterable);
   }
 
-  protected IterableSubject(FailureMetadata metadata, @Nullable Iterable<?> list) {
-    super(metadata, list);
+  protected IterableSubject(FailureMetadata metadata, @Nullable Iterable<?> iterable) {
+    super(metadata, iterable);
+  }
+
+  @Override
+  protected String actualCustomStringRepresentation() {
+    if (actual() != null) {
+      // Check the value of iterable.toString() against the default Object.toString() implementation
+      // so we can avoid things like "com.google.common.graph.Traverser$GraphTraverser$1@5e316c74"
+      String objectToString =
+          actual().getClass().getName()
+              + '@'
+              + Integer.toHexString(System.identityHashCode(actual()));
+      if (actual().toString().equals(objectToString)) {
+        return Iterables.toString(actual());
+      }
+    }
+    return super.actualCustomStringRepresentation();
   }
 
   /** Fails if the subject is not empty. */

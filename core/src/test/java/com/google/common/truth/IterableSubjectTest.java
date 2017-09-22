@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -892,6 +893,23 @@ public class IterableSubjectTest {
         .isEqualTo(
             "Not true that <BadIterable> contains exactly "
                 + "these elements in order <[1, 3, null]>");
+  }
+
+  @Test
+  public void iterableWithNoToStringOverride() {
+    Iterable<Integer> iterable =
+        new Iterable<Integer>() {
+          @Override
+          public Iterator<Integer> iterator() {
+            return Iterators.forArray(1, 2, 3);
+          }
+        };
+
+    expectFailure.whenTesting().that(iterable).containsExactly(1, 2).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, 2, 3]> contains exactly <[1, 2]>. It has unexpected items <[3]>");
   }
 
   @Test
