@@ -58,18 +58,6 @@ public final class TruthJUnit {
         }
       };
 
-  /**
-   * @deprecated If you are passing this to a {@link Subject} constructor, instead call {@link
-   *     #assume()}{@code .about(...).that(...)}, passing its associated {@link SubjectFactory}
-   *     (which you might need to create). If you are calling {@code fail} on this object directly,
-   *     instead use {@link #assume()}{@code .fail()}, or {@code throw new
-   *     AssumptionViolatedException()} directly.
-   */
-  @Deprecated
-  public static final FailureStrategy throwAssumptionError() {
-    return THROW_ASSUMPTION_ERROR;
-  }
-
   private static final StandardSubjectBuilder ASSUME =
       StandardSubjectBuilder.forCustomFailureStrategy(THROW_ASSUMPTION_ERROR);
 
