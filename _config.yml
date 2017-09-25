@@ -5,8 +5,7 @@ markdown: kramdown
 version: "0.36"
 url: http://google.github.io/truth
 title: Truth
-tagline: We've made failure a strategy
-description: "A proposition/assertion framework for testing in Java"
+description: "Fluent assertions for Java"
 
 # Navigation
 navigation:

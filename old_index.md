@@ -14,12 +14,12 @@ Truth is a testing framework designed to make your tests and their error
 messages more readable and discoverable, while being extensible to new types of
 objects.
 
-Truth adopts a fluent style for test propositions, is extensible in several
-ways, supports IDE completion/discovery of available propositions, and supports
-different responses to un-true propositions. Truth can be used to declare
-JUnit-style assumptions (which skip the test on failure), assertions (interrupt
-the test on failure), and expectations (continue the test, but collect errors
-and report failure at the end).
+Truth adopts a fluent style for test checks, is extensible in several ways,
+supports IDE completion/discovery of available checks, and supports different
+responses to failing checks. Truth can be used to declare JUnit-style
+assumptions (which skip the test on failure), assertions (interrupt the test on
+failure), and expectations (continue the test, but collect errors and report
+failure at the end).
 
 Truth is open-source software licensed under Apache 2.0 license. As such, you
 are free to use it or modify it subject only to the terms in that license.
@@ -59,9 +59,9 @@ org.truth0.FailureStrategy$ThrowableAssertionError: Not true that <[a]> is empty
     ...
 ```
 
-Truth's propositions are intended to read (more or less) like English, and
-thereby be more obvious in their intent, as well as report meaningful errors
-about the information.
+Truth's checks are intended to read (more or less) like English, and thereby be
+more obvious in their intent, as well as report meaningful errors about the
+information.
 
 ## Acknowledgements
 

@@ -53,18 +53,18 @@ on the value under test.
     assert_().that(thisSubject)...
 
 Once Truth has a subject, it has a known type, and can therefore reason at
-compile time about what propositions are known about that subject. For instance,
+compile time about what checks are supported for that subject. For instance,
 integers, longs, booleans, strings, and various flavours of collections all have
 different kinds of things you want to know about them. Because Truth knows about
 these types at compile time, it returns a "Subject" wrapper around your value,
-which declares proposition methods such as "contains" or "isMoreThan" or
-"isEmpty" etc. These allow your IDE to suggest available completions.
+which declares methods such as "contains" or "isGreaterThan" or "isEmpty" etc.
+These allow your IDE to suggest available completions.
 
 ### Failure Strategy
 
-Truth treats failure as data - a proposition was not true... so now what? Well,
-that depends on the failure strategy. Truth supports a few different strategies
-for handling failure. The standard strategies are:
+Truth treats failure as data - a check failed... so now what? Well, that depends
+on the failure strategy. Truth supports a few different strategies for handling
+failure. The standard strategies are:
 
 <table>
   <tr>
@@ -97,11 +97,11 @@ for handling failure. The standard strategies are:
   </tr>
 </table>
 
-*Note:* These different styles can let a developer build more supple tests,
-though the Truth team recommends mostly using assert_() in unit tests, and very
-careful consideration of assume() and Expect. These can make one's tests quite
-expressive and clear, but assume() can cause tests to not be run (unexpectedly),
-and Expect can encourage the developer to test propositions about way too many
+*Note:* These different styles can let a developer build more flexible tests,
+though the Truth team recommends mostly using assertThat() in unit tests, and
+very careful consideration of assume() and Expect. These can make one's tests
+quite expressive and clear, but assume() can cause tests to not be run
+(unexpectedly), and Expect can encourage the developer to check way too many
 things, causing big heavy tests, rather than lots of small, clear tests.
 
 ### Extensibility
@@ -109,19 +109,19 @@ things, causing big heavy tests, rather than lots of small, clear tests.
 Truth is extensible in a couple of ways - new assertions, and alternative
 behaviors on failure.
 
-#### Supporting new types or alternative proposition for known types.
+#### Supporting new types or alternative check for known types.
 
-One can add additional (or alternative) sets of propositions via subtypes of
-Subject and Subject.Factory and the about() method. An example of this can be
-found in [this test of about()
+One can add additional (or alternative) sets of checks via subtypes of Subject
+and Subject.Factory and the about() method. An example of this can be found in
+[this test of about()
 delegation](https://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/delegation/DelegationTest.java).
 
 One could add a new Subject for one's custom type, or treat a type as if it were
 another, say, to treat strings as if they were URIs, etc. Subject.Factory
 provides a means by which one can link a type to a given Subject which contains
-propositions about that type.
+checks about that type.
 
-#### Interpretations of proposition failure
+#### Interpretations of check failure
 
 Additional or alternative strategies for failure can be created by implementing
 a FailureStrategy and providing a hook for it. Examples of different failure
