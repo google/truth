@@ -262,11 +262,10 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Starts a method chain for a test proposition in which the actual elements (i.e. the elements of
-   * the {@link Iterable} under test) are compared to expected elements using the given {@link
-   * Correspondence}. The actual elements must be of type {@code A}, the expected elements must be
-   * of type {@code E}. The proposition is actually executed by continuing the method chain. For
-   * example:
+   * Starts a method chain for a check in which the actual elements (i.e. the elements of the {@link
+   * Iterable} under test) are compared to expected elements using the given {@link Correspondence}.
+   * The actual elements must be of type {@code A}, the expected elements must be of type {@code E}.
+   * The check is actually executed by continuing the method chain. For example:
    *
    * <pre>{@code
    * assertThat(actualIterable).comparingElementsUsing(correspondence).contains(expected);

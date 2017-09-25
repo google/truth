@@ -33,7 +33,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * A Subject to handle testing propositions for {@code Object[]} and more generically {@code T[]}.
+ * A Subject for {@code Object[]} and more generically {@code T[]}.
  *
  * @author Christian Gruber
  */
@@ -135,7 +135,7 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
   }
 
   /**
-   * A proposition that the provided Object[] is an array of the same length and type, and contains
+   * A check that the provided Object[] is an array of the same length and type, and contains
    * elements such that each element in {@code expected} is equal to each element in the subject,
    * and in the same position.
    */

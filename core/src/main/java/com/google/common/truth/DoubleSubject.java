@@ -37,8 +37,8 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
   }
 
   /**
-   * A partially specified proposition about an approximate relationship to a {@code double} subject
-   * using a tolerance.
+   * A partially specified check about an approximate relationship to a {@code double} subject using
+   * a tolerance.
    */
   public abstract static class TolerantDoubleComparison {
 

@@ -21,7 +21,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * A Subject to handle testing propositions for {@code boolean[]}.
+ * A Subject for {@code boolean[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -42,9 +42,9 @@ public final class PrimitiveBooleanArraySubject
   }
 
   /**
-   * A proposition that the actual array and {@code expected} are arrays of the same length and
-   * type, containing elements such that each element in {@code expected} is equal to each element
-   * in the actual array, and in the same position.
+   * A check that the actual array and {@code expected} are arrays of the same length and type,
+   * containing elements such that each element in {@code expected} is equal to each element in the
+   * actual array, and in the same position.
    */
   @Override
   public void isEqualTo(Object expected) {
@@ -63,9 +63,9 @@ public final class PrimitiveBooleanArraySubject
   }
 
   /**
-   * A proposition that the actual array and {@code expected} are not arrays of the same length and
-   * type, containing elements such that each element in {@code expected} is equal to each element
-   * in the actual array, and in the same position.
+   * A check that the actual array and {@code expected} are not arrays of the same length and type,
+   * containing elements such that each element in {@code expected} is equal to each element in the
+   * actual array, and in the same position.
    */
   @Override
   public void isNotEqualTo(Object expected) {

@@ -32,7 +32,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * A Subject to handle testing propositions for {@code double[]}.
+ * A Subject for {@code double[]}.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
@@ -53,7 +53,7 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A proposition that the actual array and {@code expected} are arrays of the same length and
+   * A check that the actual array and {@code expected} are arrays of the same length and
    * type, containing elements such that each element in {@code expected} is equal to each element
    * in the actual array, and in the same position, with element equality defined the same way that
    * {@link Arrays.equals(double[], double[])} and {@link Double#equals(Object)} define it (which is
@@ -93,9 +93,9 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A proposition that the actual array and {@code expected} are arrays of the same length and
-   * type, containing elements such that each element in {@code expected} is within {@link
-   * tolerance} of each element in the subject, and in the same position.
+   * A check that the actual array and {@code expected} are arrays of the same length and type,
+   * containing elements such that each element in {@code expected} is within {@link tolerance} of
+   * each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Double#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
    * Double#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Double#NaN NaN}) is as follows: If the
@@ -137,10 +137,10 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A proposition that the actual array and {@code expected} are not arrays of the same length and
-   * type, containing elements such that each element in {@code expected} is equal to each element
-   * in the actual array, and in the same position, with element equality defined the same way that
-   * {@link Arrays.equals(double[], double[])} and {@link Double#equals(Object)} define it (which is
+   * A check that the actual array and {@code expected} are not arrays of the same length and type,
+   * containing elements such that each element in {@code expected} is equal to each element in the
+   * actual array, and in the same position, with element equality defined the same way that {@link
+   * Arrays.equals(double[], double[])} and {@link Double#equals(Object)} define it (which is
    * different to the way that the {@code ==} operator on primitive {@code double} defines it). See
    * {@link #isEqualTo(Object)} for advice on when exact equality is recommended.
    *
@@ -165,9 +165,9 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A proposition that the actual array and {@code expected} are not arrays of the same length and
-   * type, containing elements such that each element in {@code expected} is within {@link
-   * tolerance} of each element in the subject, and in the same position.
+   * A check that the actual array and {@code expected} are not arrays of the same length and type,
+   * containing elements such that each element in {@code expected} is within {@link tolerance} of
+   * each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Double#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
    * Double#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Double#NaN NaN}) is as follows: If the
@@ -208,8 +208,8 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A partially specified proposition about an approximate relationship to a {@code double[]}
-   * subject using a tolerance.
+   * A partially specified check about an approximate relationship to a {@code double[]} subject
+   * using a tolerance.
    */
   public abstract static class TolerantPrimitiveDoubleArrayComparison {
 
@@ -365,10 +365,10 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * Starts a method chain for a test proposition in which the actual values (i.e. the elements of
-   * the array under test) are compared to expected elements using a {@link Correspondence} which
-   * considers values to correspond if they are finite values within {@code tolerance} of each
-   * other. The proposition is actually executed by continuing the method chain. For example:
+   * Starts a method chain for a check in which the actual values (i.e. the elements of the array
+   * under test) are compared to expected elements using a {@link Correspondence} which considers
+   * values to correspond if they are finite values within {@code tolerance} of each other. The
+   * check is actually executed by continuing the method chain. For example:
    *
    * <pre>{@code
    * assertThat(actualDoubleArray).usingTolerance(1.0e-5).contains(3.14159);
@@ -427,7 +427,7 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * Starts a method chain for a test proposition in which the actual values (i.e. the elements of
+   * Starts a method chain for a check in which the actual values (i.e. the elements of
    * the array under test) are compared to expected elements using a {@link Correspondence} which
    * considers values to correspond if they are exactly equal, with equality defined by {@link
    * Double#equals}. This method is <i>not</i> recommended when the code under test is doing any
@@ -437,7 +437,7 @@ public final class PrimitiveDoubleArraySubject
    * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
    * of precision for the intermediate result.) This method is recommended when the code under test
    * is specified as either copying a value without modification from its input or returning a
-   * well-defined literal or constant value. The proposition is actually executed by continuing the
+   * well-defined literal or constant value. The check is actually executed by continuing the
    * method chain. For example:
    * <pre>   {@code
    * assertThat(actualDoubleArray).usingExactEquality().contains(3.14159);}</pre>
@@ -463,11 +463,11 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A partially specified proposition for doing assertions on the array similar to the assertions
+   * A partially specified check for doing assertions on the array similar to the assertions
    * supported for {@link Iterable} subjects, in which the elements of the array under test are
    * compared to expected elements using either exact or tolerant double equality: see {@link
    * #usingExactEquality} and {@link #usingTolerance}. Call methods on this object to actually
-   * execute the proposition.
+   * execute the check.
    *
    * <p>In the exact equality case, the methods on this class which take {@link Number} arguments
    * only accept certain instances: again, see {@link #usingExactEquality} for details.

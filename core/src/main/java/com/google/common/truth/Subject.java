@@ -338,8 +338,10 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * A convenience for implementers of {@link Subject} subclasses to use other truth {@code Subject}
-   * wrappers within their own propositional logic.
+   * Begins a new call chain based on the {@link FailureMetadata} of the current subject. By calling
+   * this method, subject implementations can delegate to other subjects. For example, {@link
+   * ThrowableSubject#hasMessageThat} is implemented with {@code
+   * check().that(actual().getMessage()}, which returns a {@link StringSubject}.
    */
   // TODO(diamondm) this should be final, can we do that safely?
   protected StandardSubjectBuilder check() {
@@ -347,11 +349,12 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * A convenience for implementers of {@link Subject} subclasses that use other truth {@code
-   * Subject} wrappers within their own propositional logic <i>and</i> sometimes need to
-   * short-circuit those subjects because the assertion chain has already failed. In such cases it
-   * may still be necessary to return a {@code Subject} instance even though any subsequent
-   * assertions are meaningless. Use this method to return subjects that will never report failures.
+   * Begins a new call chain that ignores any failures. This is useful for subjects that normally
+   * delegate with to other subjects by using {@link #check} but have already reported a failure. In
+   * such cases it may still be necessary to return a {@code Subject} instance even though any
+   * subsequent assertions are meaningless. For example, if a user chains together more {@link
+   * ThrowableSubject#hasCauseThat} calls than the actual exception has causes, {@code hasCauseThat}
+   * returns {@code ignoreCheck().that(... a dummy exception ...)}.
    */
   protected final StandardSubjectBuilder ignoreCheck() {
     return StandardSubjectBuilder.forCustomFailureStrategy(IGNORE_STRATEGY);
@@ -360,17 +363,17 @@ public class Subject<S extends Subject<S, T>, T> {
   /**
    * Reports a failure constructing a message from a simple verb.
    *
-   * @param proposition the proposition being asserted
+   * @param check the check being asserted
    */
-  protected final void fail(String proposition) {
-    metadata.legacyStrategy().fail("Not true that " + actualAsString() + " " + proposition);
+  protected final void fail(String check) {
+    metadata.legacyStrategy().fail("Not true that " + actualAsString() + " " + check);
   }
 
   /**
    * Assembles a failure message and passes such to the FailureStrategy. Also performs
    * disambiguation if the subject and {@code other} have the same toString()'s.
    *
-   * @param verb the proposition being asserted
+   * @param verb the check being asserted
    * @param other the value against which the subject is compared
    */
   protected final void fail(String verb, Object other) {
@@ -403,7 +406,7 @@ public class Subject<S extends Subject<S, T>, T> {
   /**
    * Assembles a failure message and passes such to the FailureStrategy
    *
-   * @param verb the proposition being asserted
+   * @param verb the check being asserted
    * @param messageParts the expectations against which the subject is compared
    */
   protected final void fail(String verb, Object... messageParts) {
@@ -425,9 +428,9 @@ public class Subject<S extends Subject<S, T>, T> {
   /**
    * Assembles a failure message and passes it to the FailureStrategy
    *
-   * @param verb the proposition being asserted
+   * @param verb the check being asserted
    * @param expected the expectations against which the subject is compared
-   * @param failVerb the failure of the proposition being asserted
+   * @param failVerb the failure of the check being asserted
    * @param actual the actual value the subject was compared against
    */
   protected final void failWithBadResults(
@@ -447,8 +450,8 @@ public class Subject<S extends Subject<S, T>, T> {
    * Assembles a failure message with an alternative representation of the wrapped subject and
    * passes it to the FailureStrategy
    *
-   * @param verb the proposition being asserted
-   * @param expected the expected value of the proposition
+   * @param verb the check being asserted
+   * @param expected the expected value of the check
    * @param actual the custom representation of the subject to be reported in the failure.
    */
   protected final void failWithCustomSubject(String verb, Object expected, Object actual) {
@@ -461,18 +464,18 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** @deprecated Use {@link #failWithoutActual(String)} */
   @Deprecated
-  protected final void failWithoutSubject(String proposition) {
+  protected final void failWithoutSubject(String check) {
     String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    metadata.legacyStrategy().fail(format("Not true that %s %s", strSubject, proposition));
+    metadata.legacyStrategy().fail(format("Not true that %s %s", strSubject, check));
   }
 
   /**
    * Assembles a failure message without a given subject and passes it to the FailureStrategy
    *
-   * @param proposition the proposition being asserted
+   * @param check the check being asserted
    */
-  protected final void failWithoutActual(String proposition) {
-    failWithoutSubject(proposition);
+  protected final void failWithoutActual(String check) {
+    failWithoutSubject(check);
   }
 
   /**

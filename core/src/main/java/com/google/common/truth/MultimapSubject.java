@@ -432,11 +432,10 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   }
 
   /**
-   * Starts a method chain for a test proposition in which the actual values (i.e. the values of the
-   * {@link Multimap} under test) are compared to expected values using the given {@link
-   * Correspondence}. The actual values must be of type {@code A}, and the expected values must be
-   * of type {@code E}. The proposition is actually executed by continuing the method chain. For
-   * example:
+   * Starts a method chain for a check in which the actual values (i.e. the values of the {@link
+   * Multimap} under test) are compared to expected values using the given {@link Correspondence}.
+   * The actual values must be of type {@code A}, and the expected values must be of type {@code E}.
+   * The check is actually executed by continuing the method chain. For example:
    *
    * <pre>{@code
    * assertThat(actualMultimap)
@@ -459,10 +458,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   }
 
   /**
-   * A partially specified proposition in which the actual values (i.e. the values of the {@link
-   * Multimap} under test) are compared to expected values using a {@link Correspondence}. The
-   * expected values are of type {@code E}. Call methods on this object to actually execute the
-   * proposition.
+   * A partially specified check in which the actual values (i.e. the values of the {@link Multimap}
+   * under test) are compared to expected values using a {@link Correspondence}. The expected values
+   * are of type {@code E}. Call methods on this object to actually execute the check.
    *
    * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
    */

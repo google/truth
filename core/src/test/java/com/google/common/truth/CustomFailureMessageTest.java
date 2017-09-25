@@ -26,7 +26,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests (and effectively sample code) for custom error message for propositions.
+ * Tests (and effectively sample code) for custom error message for checks.
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */

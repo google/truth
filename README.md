@@ -7,7 +7,7 @@
 
 ## What is Truth?
 
-Truth is an assertion/proposition framework appropriate for testing, inspired by
+Truth is an assertion framework for Java tests, inspired by
 FEST, and driven by some extensibility needs, written nearly entirely by Google
 employees in their spare time or contributing in their capacity as Java core
 librarians.

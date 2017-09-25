@@ -15,7 +15,7 @@
   <packaging>pom</packaging>
   <name>Truth (Parent)</name>
   <description>
-    Parent metdata for Truth, a pure-java, strongly typed testing proposition framework.
+    Parent metdata for Truth, a Java assertion framework.
   </description>
   <modules>
     <module>core</module>
