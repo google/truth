@@ -108,12 +108,12 @@
 </g>
 <!-- Start&#45;&gt;FinalSubjectBuilder -->
 <g id="edge7" class="edge"><title>Start&#45;&gt;FinalSubjectBuilder</title>
-<g id="a_edge7"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/Truth.html#assertAbout-com.google.common.truth.SubjectFactory-" xlink:title=" " target="_parent">
+<g id="a_edge7"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/Truth.html#assertAbout-com.google.common.truth.Subject.Factory-" xlink:title=" " target="_parent">
 <path fill="none" stroke="#595959" stroke-width="0.5" d="M295.032,-406.426C364.307,-399.21 544.969,-376.223 578.966,-330 649.044,-234.721 465.167,-167.81 350.984,-136.702"/>
 <polygon fill="#595959" stroke="#595959" stroke-width="0.5" points="341.185,-134.073 352.01,-132.318 346.015,-135.369 350.844,-136.664 350.844,-136.664 350.844,-136.664 346.015,-135.369 349.678,-141.011 341.185,-134.073 341.185,-134.073"/>
 </a>
 </g>
-<g id="a_edge7&#45;label"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/Truth.html#assertAbout-com.google.common.truth.SubjectFactory-" xlink:title=" " target="_parent">
+<g id="a_edge7&#45;label"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/Truth.html#assertAbout-com.google.common.truth.Subject.Factory-" xlink:title=" " target="_parent">
 <text text-anchor="middle" x="641.466" y="-260.6" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#595959">assertAbout(...)</text>
 </a>
 </g>
@@ -168,7 +168,7 @@
 <g id="a_edge3&#45;headlabel"><a xlink:title=" " target="_parent">
 </a>
 </g>
-<g id="a_edge3_7"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/StandardSubjectBuilder.html#about-com.google.common.truth.CustomSubjectBuilderFactory-" xlink:title=" " target="_parent">
+<g id="a_edge3_7"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/StandardSubjectBuilder.html#about-com.google.common.truth.CustomSubjectBuilder.Factory-" xlink:title=" " target="_parent">
 <text text-anchor="start" x="189.167" y="-167.614" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000">about(...)</text>
 </a>
 </g>
@@ -176,13 +176,13 @@
 <text text-anchor="start" x="250.167" y="-167.614" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000"> &#160;</text>
 </a>
 </g>
-<g id="a_edge3_8"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/CustomSubjectBuilderFactory.html" xlink:title=" " target="_parent">
-<text text-anchor="start" x="69.1667" y="-155.114" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000">(CustomSubjectBuilderFactory) </text>
+<g id="a_edge3_8"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/CustomSubjectBuilder.Factory.html" xlink:title=" " target="_parent">
+<text text-anchor="start" x="63.1667" y="-155.114" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000">(CustomSubjectBuilder.Factory) </text>
 </a>
 </g>
 <g><a xlink:title=" " target="_parent">
 <text text-anchor="start" x="250.167" y="-155.114" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000"> &#160;</text>
-<text text-anchor="start" x="160.667" y="-138.714" font-family="DejaVu Sans Mono,monospace" font-size="16.00" fill="#000000"> </text>
+<text text-anchor="start" x="157.667" y="-138.714" font-family="DejaVu Sans Mono,monospace" font-size="16.00" fill="#000000"> </text>
 </a>
 </g>
 </g>
@@ -197,7 +197,7 @@
 <text text-anchor="start" x="274.266" y="-167.614" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000"> </text>
 </a>
 </g>
-<g id="a_edge4_9"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/StandardSubjectBuilder.html#about-com.google.common.truth.SubjectFactory-" xlink:title=" " target="_parent">
+<g id="a_edge4_9"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/StandardSubjectBuilder.html#about-com.google.common.truth.Subject.Factory-" xlink:title=" " target="_parent">
 <text text-anchor="start" x="281.766" y="-167.614" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000">about(...)</text>
 </a>
 </g>
@@ -205,12 +205,12 @@
 <text text-anchor="start" x="274.266" y="-155.114" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000"> </text>
 </a>
 </g>
-<g id="a_edge4_10"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/SubjectFactory.html" xlink:title=" " target="_parent">
-<text text-anchor="start" x="281.766" y="-155.114" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000">(SubjectFactory)</text>
+<g id="a_edge4_10"><a xlink:href="https://google.github.io/truth/api/latest/com/google/common/truth/Subject.Factory.html" xlink:title=" " target="_parent">
+<text text-anchor="start" x="281.766" y="-155.114" font-family="DejaVu Sans Mono,monospace" font-size="10.50" fill="#000000">(Subject.Factory)</text>
 </a>
 </g>
 <g><a xlink:title=" " target="_parent">
-<text text-anchor="start" x="321.266" y="-138.714" font-family="DejaVu Sans Mono,monospace" font-size="16.00" fill="#000000"> </text>
+<text text-anchor="start" x="324.266" y="-138.714" font-family="DejaVu Sans Mono,monospace" font-size="16.00" fill="#000000"> </text>
 </a>
 </g>
 </g>
