@@ -52,6 +52,12 @@ import org.junit.runners.model.Statement;
  *     expectFailure.whenTesting().about(uiElements()).that(cancelButton).isVisible();
  *     assertThat(expectFailure.getFailure()).hasMessageThat().contains("visible");
  * }</pre>
+ *
+ * <p>{@code ExpectFailure} is similar to JUnit 5's <a
+ * href="http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html#assertThrows-java.lang.Class-org.junit.jupiter.api.function.Executable-">{@code
+ * assertThrows}</a>. We recommend it over {@code assertThrows} when you're testing a Truth subject
+ * because it also checks that the assertion you're testing correctly calls {@link
+ * FailureStrategy#fail} only once.
  */
 public final class ExpectFailure implements TestRule {
   private final FailureStrategy strategy =
