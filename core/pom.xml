@@ -90,11 +90,13 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
           <excludes>
             <exclude>**/super/**/*.java</exclude>
           </excludes>
+          <testExcludes>
+            <!-- Requires Java 8. -->
+            <testExclude>**/EmployeeSubjectTest.java</testExclude>
+          </testExcludes>
         </configuration>
       </plugin>
       <plugin>
