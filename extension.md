@@ -71,7 +71,7 @@ For an example of how to support custom types in Truth, please see the [employee
 example]. The rest of this doc will walk through each of the files, step by
 step.
 
-There are three parts to the example:
+There are four parts to the example:
 
 1.  [`Employee.java`]
 
@@ -220,29 +220,70 @@ There are three parts to the example:
         assertThat(kak).name().matches("Kurt .*Kluever");
         ```
 
-        <!-- TODO(cpovirk): Describe how to test your subject. -->
-
 3.  [`EmployeeSubjectTest.java`]
 
-    This is an example of how you unit tests will look using your custom Truth
-    subject (described in the previous section). The important thing to note, is
-    that both `Truth.assertThat` and `EmployeeSubject.assertThat` are statically
-    imported:
+    This is a test of the subject, which tests that its assertions pass when
+    they should and fail when they should:
+
+    ```java
+    import static com.google.common.truth.ExpectFailure.expectFailureAbout;
+    import static com.google.common.truth.extension.EmployeeSubject.assertThat;
+    import static com.google.common.truth.extension.EmployeeSubject.employees;
+
+    import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
+
+    @RunWith(JUnit4.class)
+    public final class EmployeeSubjectTest {
+      private static final Employee KURT =
+          Employee.create("kak", 37802, "Kurt Alfred Kluever", Location.NYC, false);
+
+      @Test
+      public void id() {
+        assertThat(KURT).hasId(37802);
+        expectFailure(whenTesting -> whenTesting.that(KURT).hasId(12345));
+      }
+      …
+      private static AssertionError expectFailure(
+          SimpleSubjectBuilderCallback<EmployeeSubject, Employee> callback) {
+        return expectFailureAbout(employees(), callback);
+      }
+    }
+    ```
+
+    Testing that assertions pass is easy: Just make assertions with your
+    `assertThat` method.
+
+    Testing that assertions fail is fairly easy, too, with Truth's
+    [`ExpectFailure`] utility. The example above shows how to define a helper
+    method to make your `ExpectFailure` calls even shorter.
+
+    For people who want to test more thoroughly, `expectFailure` returns an
+    `AssertionError`, enabling tests of failure messages like
+    `assertThat(failure).hasMessageThat().contains("ID")`.
+
+    `ExpectFailure` also provides an API for users who can't use lambdas. See
+    its docs for details.
+
+4.  [`HrDatabaseTest.java`]
+
+    This is an example of how your unit tests will look using your custom Truth
+    subject. The important thing to note is that you import both
+    `Truth.assertThat` and `EmployeeSubject.assertThat`:
 
     ```java
     import static com.google.common.truth.Truth.assertThat;
     import static com.google.common.truth.extension.EmployeeSubject.assertThat;
     ```
 
-    The `EmployeeSubject` can be used right along side "normal" Truth:
+    You can use your subject alongside the core Truth subjects:
 
     ```java
     // "normal" Truth
-    assertThat("kurt alfred kluever").contains("alfred");
+    assertThat(db.get(SUNDAR.id())).isNull();
 
     // uses the custom EmployeeSubject
-    assertThat(KURT).hasUsername("kak");
-    assertThat(KURT).hasName("Kurt Alfred Kluever");
+    db.relocate(KURT.id(), MTV);
+    assertThat(db.get(KURT.id())).hasLocation(MTV);
     ```
 
 <!-- References -->
@@ -258,9 +299,11 @@ There are three parts to the example:
 [`Employee.java`]:        http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/Employee.java
 [`EmployeeSubjectTest.java`]:    http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubjectTest.java
 [`EmployeeSubject.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubject.java
+[`HrDatabaseTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/HrDatabaseTest.java
 [`ComparableSubject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/ComparableSubject.java
 [`Subject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
 [`Subject.Factory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
 [`FailureStrategy`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
 [`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
+[`ExpectFailure`]:               https://google.github.io/truth/api/latest/com/google/common/truth/ExpectFailure.html
 
