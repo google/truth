@@ -155,15 +155,6 @@ and other frameworks to AssertJ.
 Truth has one, but it's only for JUnit, and it's currently only available inside
 Google.
 
-### Documentation
-
-It's hard for me to compare the documentation of a library I already understand
-well with one that's new to me. So I'll just say:
-
-Both libraries are easy to use in the simple case.
-
-Truth still needs more documentation for some of the complex cases.
-
 ### Bug-proneness
 
 Both libraries have some sharp edges:
