@@ -264,7 +264,7 @@ There are four parts to the example:
     `ExpectFailure` also provides an API for users who can't use lambdas. See
     its docs for details.
 
-4.  [`HrDatabaseTest.java`]
+4.  [`FakeHrDatabaseTest.java`]
 
     This is an example of how your unit tests will look using your custom Truth
     subject. The important thing to note is that you import both
@@ -299,7 +299,7 @@ There are four parts to the example:
 [`Employee.java`]:        http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/Employee.java
 [`EmployeeSubjectTest.java`]:    http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubjectTest.java
 [`EmployeeSubject.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubject.java
-[`HrDatabaseTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/HrDatabaseTest.java
+[`FakeHrDatabaseTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/FakeHrDatabaseTest.java
 [`ComparableSubject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/ComparableSubject.java
 [`Subject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
 [`Subject.Factory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
