@@ -107,7 +107,9 @@ AssertJ supports Android (though I had to use 2.x because the dexer rejected
 Truth supports Android in all its versions. The downside is that it requires you
 to look in a separate class for Java 8 assertions.
 
-Truth also supports [GWT].
+Truth also supports [GWT], but we haven't made the necessary artifacts available
+outside Google. If you'd be interested in using open-source Truth under GWT,
+[let us know][bug].
 
 ### Writing your own assertion methods
 
@@ -287,4 +289,5 @@ JUnit     | n/a
 [AssertJ-generator]: http://joel-costigliola.github.io/assertj/assertj-assertions-generator.html
 [conditions]: http://joel-costigliola.github.io/assertj/assertj-core-conditions.html
 [reflective field comparisons]: http://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#field-by-field-comparison
+[bug]: https://github.com/google/truth/issues/new
 
