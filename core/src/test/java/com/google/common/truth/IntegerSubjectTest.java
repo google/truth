@@ -16,14 +16,12 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.TruthJUnit.assume;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableSet;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.AssumptionViolatedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -77,15 +75,6 @@ public class IntegerSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("Not true that <4> is not equal to <4>");
-  }
-
-  @Test
-  public void additionAssumptionFail() {
-    try {
-      assume().that(2 + 2).isEqualTo(5);
-      fail("Should have thrown");
-    } catch (AssumptionViolatedException expected) {
-    }
   }
 
   @Test
