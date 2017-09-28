@@ -5,6 +5,7 @@ markdown: kramdown
 version: "0.36"
 url: http://google.github.io/truth
 title: Truth
+tagline: Fluent assertions for Java
 description: "Fluent assertions for Java"
 
 # Navigation
