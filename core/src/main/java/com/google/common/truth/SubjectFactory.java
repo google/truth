@@ -20,7 +20,8 @@ package com.google.common.truth;
  * StandardSubjectBuilder#about(SubjectFactory) about}, the method that specifies what kind of
  * {@link Subject} to create.
  *
- * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
+ * <p>For more information about the fluent chain, see <a href="https://google.github.io/truth/faq#full-chain">this
+ * FAQ entry</a>.
  *
  * <h3>For people extending Truth</h3>
  *

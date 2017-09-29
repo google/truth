@@ -21,9 +21,19 @@ import java.util.Arrays;
  * Defines what to do when a check fails.
  *
  * <p>This type does not appear directly in a fluent assertion chain, but you choose a {@code
- * FailureStrategy} by choosing which {@code StandardSubjectBuilder}-returning method to call.
+ * FailureStrategy} by choosing which method to call at the beginning of the chain.
  *
- * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
+ * <p>Built-in strategies include:
+ *
+ * <ul>
+ *   <li>{@linkplain Truth#assert_ assertions}
+ *   <li>{@linkplain Expect expectations}
+ *   <li>{@linkplain TruthJUnit#assume assumptions}
+ *   <li>(and some useful only to people who implement custom subjects, described below)
+ * </ul>
+ *
+ * <p>For more information about the fluent chain, see <a href="https://google.github.io/truth/faq#full-chain">this
+ * FAQ entry</a>.
  *
  * <h3>For people extending Truth</h3>
  *

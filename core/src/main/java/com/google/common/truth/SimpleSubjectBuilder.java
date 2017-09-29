@@ -25,7 +25,8 @@ import javax.annotation.Nullable;
  * In a fluent assertion chain, exposes the most common {@code that} method, which accepts a value
  * under test and returns a {@link Subject}.
  *
- * <p>TODO(cpovirk): Link to a doc about the full assertion chain.
+ * <p>For more information about the methods in this class, see <a
+ * href="https://google.github.io/truth/faq#full-chain">this FAQ entry</a>.
  *
  * <h3>For people extending Truth</h3>
  *
