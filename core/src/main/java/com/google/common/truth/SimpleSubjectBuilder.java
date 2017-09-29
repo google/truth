@@ -29,7 +29,8 @@ import javax.annotation.Nullable;
  *
  * <h3>For people extending Truth</h3>
  *
- * <p>TODO(cpovirk): Link to a doc about custom subjects.
+ * <p>You won't extend this type. When you write a custom subject, see <a
+ * href="https://google.github.io/truth/extension">our doc on extensions</a>.
  */
 public final class SimpleSubjectBuilder<SubjectT extends Subject<SubjectT, ActualT>, ActualT> {
   private final FailureMetadata metadata;

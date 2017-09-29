@@ -29,7 +29,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * <h3>For people extending Truth</h3>
  *
- * <p>TODO(cpovirk): Link to a doc about custom subjects.
+ * <p>When you write a custom subject, see <a href="https://google.github.io/truth/extension">our doc on
+ * extensions</a>. It explains the cases in which {@code CustomSubjectBuilder} is necessary.
  */
 public abstract class CustomSubjectBuilder {
   /**
@@ -41,7 +42,9 @@ public abstract class CustomSubjectBuilder {
    *
    * <h3>For people extending Truth</h3>
    *
-   * <p>TODO(cpovirk): Link to a doc about custom subjects.
+   * <p>When you write a custom subject, see <a href="https://google.github.io/truth/extension">our doc on
+   * extensions</a>. It explains the cases in which {@code CustomSubjectBuilder.Factory} is
+   * necessary.
    */
   public interface Factory<CustomSubjectBuilderT extends CustomSubjectBuilder> {
     /** Creates a new {@link CustomSubjectBuilder} of the appropriate type. */

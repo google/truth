@@ -25,7 +25,9 @@ package com.google.common.truth;
  *
  * <h3>For people extending Truth</h3>
  *
- * <p>TODO(cpovirk): Link to a doc about custom subjects.
+ * <p>When you write a custom subject, see <a href="https://google.github.io/truth/extension">our doc on
+ * extensions</a>. It explains the cases in which {@code CustomSubjectBuilderFactory} (or rather, it
+ * successor {@code CustomSubjectBuilder.Factory}) is necessary.
  *
  * @deprecated When you switch your {@link Subject} implementations from accepting a {@link
  *     FailureStrategy} to accepting a {@link FailureMetadata}, you'll switch their {@link

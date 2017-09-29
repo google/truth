@@ -64,9 +64,9 @@ import javax.annotation.Nullable;
  *
  * <h3>For people extending Truth</h3>
  *
- * <p>TODO(cpovirk): Link to a doc about custom subjects.
- *
- * <p>TODO(cpovirk): Also talk about {@link FailureStrategy}.
+ * <p>The most common way to extend Truth is to write a custom {@link Subject}. (The other, much
+ * less common way is to write a custom {@link FailureStrategy}.) For more information, visit those
+ * types' docs.
  *
  * @author David Saff
  * @author Christian Gruber (cgruber@israfil.net)
