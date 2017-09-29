@@ -61,9 +61,8 @@ expect
 ```
 
 But in most cases you'll use shortcuts, either `assertThat(...)` or
-`assertWithMessage(...).about(...).that(...)`. If you're interested in the
-details of how the shortcuts work and why the API is designed the way it is,
-see [this design doc](subject_builder_design).
+`assertWithMessage(...).about(...).that(...)`. For more information about the
+available shortcuts, see [this FAQ entry][shortcuts].
 
 ## Writing your own Truth extension
 
@@ -306,4 +305,5 @@ There are four parts to the example:
 [`FailureStrategy`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
 [`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
 [`ExpectFailure`]:               https://google.github.io/truth/api/latest/com/google/common/truth/ExpectFailure.html
+[shortcuts]: faq#how-do-i-specify-a-custom-messagefailurestrategysubject-type
 
