@@ -222,6 +222,73 @@ See the [comparison](comparison) page.
 
 See the [extension](extension) page.
 
+## How do I specify a custom message/failure behavior/`Subject` type? {#full-chain}
+
+While you can usually call `assertThat`, advanced features require you to write
+a longer chain of calls. We'll cover the most common shortcuts first, then the
+general case, and finally the less common shortcuts.
+
+**No custom parameters:** The simplest case is an assertion with no message on a type that Truth supports
+natively. There, you can use `assertThat`:
+
+```java
+import static com.google.common.truth.Truth.assertThat;
+...
+assertThat(usernames).containsExactly("kak");
+```
+
+**Custom `Subject` only:** Even with [a custom `Subject` type](extension), you can generally use
+`assertThat`. (If the subject doesn't expose an `assertThat` method, read on—or
+[add one](extension#writing-your-own-truth-extension)!)
+
+```java
+import static com.google.common.truth.extension.EmployeeSubject.assertThat;
+...
+assertThat(kurt).hasLocation(NYC);
+```
+
+**Custom message only:** Use `assertWithMessage`. As you'll see later, `assertWithMessage` is the entry
+point to use almost any time you want a custom message.
+
+```java
+import static com.google.common.truth.Truth.assertWithMessage;
+...
+assertWithMessage("findClosestMatch should have found user with given username")
+    .that(db.findClosestMatch("kak"))
+    .isEqualTo(kurt);
+```
+
+**The general case:** Once you've learned the common cases above, the easiest way to learn the rest is
+to learn the full call chain. Even shortcuts like `assertThat` are implemented
+using that chain. It looks like this:
+
+```java
+import static com.google.common.truth.extension.EmployeeSubject.employees;
+…
+expect // set what to do upon failure (that is, the FailureStrategy)
+    .withMessage("findClosestMatch should have found user with given username") // set message
+    .about(employees()) // set the type of value to test. The parameter is a Subject.Factory
+    .that(db.findClosestMatch("kak")) // set the actual value under test
+    .hasUsername("kak");
+```
+
+If you're curious why we chose that order, you can read [this design
+doc](subject_builder_design). But most users will just be interested in the
+shortcuts:
+
+**Custom message and custom `Subject`:** `assertWithMessage(...).about(...).that(...)`
+
+**Custom failure behavior:** `expect.that(...)`
+
+For a list of built-in behaviors, see the docs on [`FailureStrategy`].
+
+**Custom failure behavior and custom message:** `expect.withMessage(...).that(...)`
+
+**Custom failure behavior and custom `Subject`:** `expect.about(...).that(...)`
+
+**Custom `Subject` that doesn't expose an `assertThat` shortcut:** `assertAbout(...).that(...)`
+
+
 ## Any other questions?
 
 Please [contact us](index#more-information) or [ask a question]
@@ -229,4 +296,5 @@ Please [contact us](index#more-information) or [ask a question]
 <!-- References -->
 
 [ask a question]: http://stackoverflow.com/questions/ask?tags=google-truth
+[`FailureStrategy`]: https://google.github.io/truth/api/latest/com/google/common/truth/FailureStrategy.html
 

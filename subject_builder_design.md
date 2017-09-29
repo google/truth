@@ -7,7 +7,8 @@ url: /subject_builder_design
 
 This doc is intended for Truth developers (or curious users) who have experience
 with the API and are interested in the internals that back it. New users should
-refer to [the main usage docs](index) and [the extension docs](extension).
+refer to [the main usage docs](index), [the FAQ](faq) (including [this question
+about the call chain][shortcuts]) and [the extension docs](extension).
 
 ## `assertThat`
 
@@ -213,3 +214,4 @@ and other `assertThat` methods. For this reason, we provide various shortcuts:
 [`assert_`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Truth.java
 [`expect`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Expect.java
 [`assume`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/TruthJUnit.java
+[shortcuts]: faq#how-do-i-specify-a-custom-messagefailurestrategysubject-type
