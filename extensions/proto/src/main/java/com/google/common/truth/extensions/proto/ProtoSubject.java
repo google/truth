@@ -22,7 +22,9 @@ import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.Subject;
 import com.google.common.truth.extensions.proto.MessageDifferencer.ReportType;
 import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
 import com.google.common.truth.extensions.proto.MessageDifferencer.StreamReporter;
@@ -56,17 +58,29 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   // IterableOfProtosSubject and there is use for such typing.
   private final FluentEqualityConfig config;
 
-  protected ProtoSubject(FailureStrategy failureStrategy, @Nullable M message) {
-    this(failureStrategy, FluentEqualityConfig.defaultInstance(), message);
+  protected ProtoSubject(FailureMetadata failureMetadata, @Nullable M message) {
+    this(failureMetadata, FluentEqualityConfig.defaultInstance(), message);
   }
 
-  ProtoSubject(FailureStrategy failureStrategy, FluentEqualityConfig config, @Nullable M message) {
+  /**
+   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
+   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
+   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
+   *     constructor instead.
+   */
+  @Deprecated
+  protected ProtoSubject(FailureStrategy failureStrategy, @Nullable M message) {
     super(failureStrategy, message);
+    this.config = FluentEqualityConfig.defaultInstance();
+  }
+
+  ProtoSubject(FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable M message) {
+    super(failureMetadata, message);
     this.config = config;
   }
 
   ProtoSubject<?, Message> usingConfig(FluentEqualityConfig newConfig) {
-    MessageSubject newSubject = new MessageSubject(failureStrategy, newConfig, getSubject());
+    MessageSubject newSubject = check().about(MessageSubject.messages(newConfig)).that(actual());
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
@@ -294,13 +308,22 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   static final class MessageSubject extends ProtoSubject<MessageSubject, Message> {
-    MessageSubject(FailureStrategy failureStrategy, @Nullable Message message) {
-      super(failureStrategy, message);
+    static Subject.Factory<MessageSubject, Message> messages(final FluentEqualityConfig config) {
+      return new Subject.Factory<MessageSubject, Message>() {
+        @Override
+        public MessageSubject createSubject(FailureMetadata failureMetadata, Message actual) {
+          return new MessageSubject(failureMetadata, config, actual);
+        }
+      };
+    }
+
+    MessageSubject(FailureMetadata failureMetadata, @Nullable Message message) {
+      super(failureMetadata, message);
     }
 
     private MessageSubject(
-        FailureStrategy failureStrategy, FluentEqualityConfig config, @Nullable Message message) {
-      super(failureStrategy, config, message);
+        FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable Message message) {
+      super(failureMetadata, config, message);
     }
   }
 }

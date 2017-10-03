@@ -21,7 +21,7 @@ import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.common.truth.Correspondence;
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IterableSubject;
 import com.google.common.truth.Ordered;
 import com.google.common.truth.Subject;
@@ -78,25 +78,37 @@ public class IterableOfProtosSubject<
     // The work around would be annoyingly verbose for users, so we expose IterableOfMessagesSubject
     // explicitly so that there are no wildcards to have conflicting bounds.
 
-    IterableOfMessagesSubject(FailureStrategy failureStrategy, @Nullable Iterable<M> messages) {
-      super(failureStrategy, messages);
+    IterableOfMessagesSubject(FailureMetadata failureMetadata, @Nullable Iterable<M> messages) {
+      super(failureMetadata, messages);
     }
 
     private IterableOfMessagesSubject(
-        FailureStrategy failureStrategy,
+        FailureMetadata failureMetadata,
         FluentEqualityConfig config,
         @Nullable Iterable<M> messages) {
-      super(failureStrategy, config, messages);
+      super(failureMetadata, config, messages);
     }
   }
 
-  protected IterableOfProtosSubject(FailureStrategy failureStrategy, @Nullable C messages) {
-    this(failureStrategy, FluentEqualityConfig.defaultInstance(), messages);
+  static <M extends Message>
+      Subject.Factory<IterableOfMessagesSubject<M>, Iterable<M>> iterableOfMessages(
+          final FluentEqualityConfig config) {
+    return new Subject.Factory<IterableOfMessagesSubject<M>, Iterable<M>>() {
+      @Override
+      public IterableOfMessagesSubject<M> createSubject(
+          FailureMetadata metadata, Iterable<M> actual) {
+        return new IterableOfMessagesSubject<M>(metadata, config, actual);
+      }
+    };
+  }
+
+  protected IterableOfProtosSubject(FailureMetadata failureMetadata, @Nullable C messages) {
+    this(failureMetadata, FluentEqualityConfig.defaultInstance(), messages);
   }
 
   IterableOfProtosSubject(
-      FailureStrategy failureStrategy, FluentEqualityConfig config, @Nullable C messages) {
-    super(failureStrategy, messages);
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable C messages) {
+    super(failureMetadata, messages);
     this.config = config;
   }
 
@@ -293,8 +305,9 @@ public class IterableOfProtosSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   IterableOfProtosFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
-    IterableOfMessagesSubject<M> newSubject =
-        new IterableOfMessagesSubject<M>(failureStrategy, newConfig, actual());
+    Subject.Factory<IterableOfMessagesSubject<M>, Iterable<M>> factory =
+        iterableOfMessages(newConfig);
+    IterableOfMessagesSubject<M> newSubject = check().about(factory).that(actual());
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
