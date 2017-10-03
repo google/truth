@@ -17,11 +17,10 @@
 package com.google.common.truth.extensions.proto;
 
 import com.google.common.base.Objects;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.Subject;
-import com.google.common.truth.SubjectFactory;
-import com.google.common.truth.Truth;
 import com.google.protobuf.MessageLite;
 import java.util.regex.Pattern;
 import javax.annotation.CheckReturnValue;
@@ -44,14 +43,14 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     extends Subject<S, M> {
 
   /**
-   * Typed extension of {@link SubjectFactory}.
+   * Typed extension of {@link Subject.Factory}.
    *
    * <p>The existence of this class is necessary in order to satisfy the generic constraints of
-   * {@link Truth#assertAbout(SubjectFactory)}, whilst also hiding the Untyped classes which are not
-   * meant to be exposed.
+   * {@link Truth#assertAbout(Subject.Factory)}, whilst also hiding the Untyped classes which are
+   * not meant to be exposed.
    */
   public abstract static class Factory<S extends LiteProtoSubject<S, M>, M extends MessageLite>
-      extends SubjectFactory<S, M> {}
+      implements Subject.Factory<S, M> {}
 
   /**
    * Returns a SubjectFactory for {@link MessageLite} subjects which you can use to assert things
@@ -61,8 +60,19 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     return MessageLiteSubjectFactory.INSTANCE;
   }
 
+  /**
+   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
+   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
+   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
+   *     constructor instead.
+   */
+  @Deprecated
   protected LiteProtoSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
     super(failureStrategy, messageLite);
+  }
+
+  protected LiteProtoSubject(FailureMetadata failureMetadata, @Nullable M messageLite) {
+    super(failureMetadata, messageLite);
   }
 
   // It is wrong to compare protos using their string representations. The MessageLite runtime
@@ -208,8 +218,8 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   }
 
   static final class MessageLiteSubject extends LiteProtoSubject<MessageLiteSubject, MessageLite> {
-    MessageLiteSubject(FailureStrategy failureStrategy, @Nullable MessageLite messageLite) {
-      super(failureStrategy, messageLite);
+    MessageLiteSubject(FailureMetadata failureMetadata, @Nullable MessageLite messageLite) {
+      super(failureMetadata, messageLite);
     }
   }
 
@@ -218,9 +228,9 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     private static final MessageLiteSubjectFactory INSTANCE = new MessageLiteSubjectFactory();
 
     @Override
-    public MessageLiteSubject getSubject(
-        FailureStrategy failureStrategy, @Nullable MessageLite messageLite) {
-      return new MessageLiteSubject(failureStrategy, messageLite);
+    public MessageLiteSubject createSubject(
+        FailureMetadata failureMetadata, @Nullable MessageLite messageLite) {
+      return new MessageLiteSubject(failureMetadata, messageLite);
     }
   }
 }

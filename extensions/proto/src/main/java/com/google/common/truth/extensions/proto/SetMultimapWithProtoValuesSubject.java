@@ -18,7 +18,7 @@ package com.google.common.truth.extensions.proto;
 
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.SetMultimap;
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.MultimapSubject;
 import com.google.protobuf.Message;
 import javax.annotation.Nullable;
@@ -41,13 +41,13 @@ public class SetMultimapWithProtoValuesSubject<
     // See IterableOfProtosSubject.IterableOfMessagesSubject for why this class is exposed.
 
     SetMultimapWithMessageValuesSubject(
-        FailureStrategy failureStrategy, @Nullable SetMultimap<K, M> multimap) {
-      super(failureStrategy, multimap);
+        FailureMetadata failureMetadata, @Nullable SetMultimap<K, M> multimap) {
+      super(failureMetadata, multimap);
     }
   }
 
-  protected SetMultimapWithProtoValuesSubject(FailureStrategy failureStrategy, C multimap) {
-    super(failureStrategy, multimap);
+  protected SetMultimapWithProtoValuesSubject(FailureMetadata failureMetadata, C multimap) {
+    super(failureMetadata, multimap);
   }
 
   /**

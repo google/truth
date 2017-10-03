@@ -21,7 +21,7 @@ import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.common.truth.Correspondence;
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.MapSubject;
 import com.google.common.truth.Ordered;
 import com.google.common.truth.Subject;
@@ -55,24 +55,36 @@ public class MapWithProtoValuesSubject<
       extends MapWithProtoValuesSubject<MapWithMessageValuesSubject<K, M>, K, M, Map<K, M>> {
     // See IterableOfProtosSubject.IterableOfMessagesSubject for why this class is exposed.
 
-    MapWithMessageValuesSubject(FailureStrategy failureStrategy, @Nullable Map<K, M> map) {
-      super(failureStrategy, map);
+    MapWithMessageValuesSubject(FailureMetadata failureMetadata, @Nullable Map<K, M> map) {
+      super(failureMetadata, map);
     }
 
     private MapWithMessageValuesSubject(
-        FailureStrategy failureStrategy, FluentEqualityConfig config, @Nullable Map<K, M> map) {
-      super(failureStrategy, config, map);
+        FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable Map<K, M> map) {
+      super(failureMetadata, config, map);
     }
   }
 
-  protected MapWithProtoValuesSubject(FailureStrategy failureStrategy, @Nullable C map) {
-    this(failureStrategy, FluentEqualityConfig.defaultInstance(), map);
+  protected MapWithProtoValuesSubject(FailureMetadata failureMetadata, @Nullable C map) {
+    this(failureMetadata, FluentEqualityConfig.defaultInstance(), map);
   }
 
   MapWithProtoValuesSubject(
-      FailureStrategy failureStrategy, FluentEqualityConfig config, @Nullable C map) {
-    super(failureStrategy, map);
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable C map) {
+    super(failureMetadata, map);
     this.config = config;
+  }
+
+  private static <M extends Message, K>
+      Subject.Factory<MapWithMessageValuesSubject<K, M>, Map<K, M>> mapWithProtoValues(
+          final FluentEqualityConfig config) {
+    return new Subject.Factory<MapWithMessageValuesSubject<K, M>, Map<K, M>>() {
+      @Override
+      public MapWithMessageValuesSubject<K, M> createSubject(
+          FailureMetadata metadata, Map<K, M> actual) {
+        return new MapWithMessageValuesSubject<K, M>(metadata, config, actual);
+      }
+    };
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,8 +200,9 @@ public class MapWithProtoValuesSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   MapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
-    MapWithMessageValuesSubject<K, M> newSubject =
-        new MapWithMessageValuesSubject<K, M>(failureStrategy, newConfig, actual());
+    Subject.Factory<MapWithMessageValuesSubject<K, M>, Map<K, M>> factory =
+        mapWithProtoValues(newConfig);
+    MapWithMessageValuesSubject<K, M> newSubject = check().about(factory).that(actual());
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }

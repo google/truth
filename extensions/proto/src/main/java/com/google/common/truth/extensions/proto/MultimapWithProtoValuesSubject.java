@@ -22,7 +22,7 @@ import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.common.collect.Multimap;
 import com.google.common.truth.Correspondence;
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.MultimapSubject;
 import com.google.common.truth.Ordered;
 import com.google.common.truth.Subject;
@@ -60,25 +60,37 @@ public class MultimapWithProtoValuesSubject<
     // See IterableOfProtosSubject.IterableOfMessagesSubject for why this class is exposed.
 
     MultimapWithMessageValuesSubject(
-        FailureStrategy failureStrategy, @Nullable Multimap<K, M> multimap) {
-      super(failureStrategy, multimap);
+        FailureMetadata failureMetadata, @Nullable Multimap<K, M> multimap) {
+      super(failureMetadata, multimap);
     }
 
     private MultimapWithMessageValuesSubject(
-        FailureStrategy failureStrategy,
+        FailureMetadata failureMetadata,
         FluentEqualityConfig config,
         @Nullable Multimap<K, M> multimap) {
-      super(failureStrategy, config, multimap);
+      super(failureMetadata, config, multimap);
     }
   }
 
-  protected MultimapWithProtoValuesSubject(FailureStrategy failureStrategy, @Nullable C multimap) {
-    this(failureStrategy, FluentEqualityConfig.defaultInstance(), multimap);
+  private static <K, M extends Message>
+      Subject.Factory<MultimapWithMessageValuesSubject<K, M>, Multimap<K, M>>
+          multimapWithMessageValues(final FluentEqualityConfig config) {
+    return new Subject.Factory<MultimapWithMessageValuesSubject<K, M>, Multimap<K, M>>() {
+      @Override
+      public MultimapWithMessageValuesSubject<K, M> createSubject(
+          FailureMetadata metadata, Multimap<K, M> actual) {
+        return new MultimapWithMessageValuesSubject<K, M>(metadata, config, actual);
+      }
+    };
+  }
+
+  protected MultimapWithProtoValuesSubject(FailureMetadata failureMetadata, @Nullable C multimap) {
+    this(failureMetadata, FluentEqualityConfig.defaultInstance(), multimap);
   }
 
   MultimapWithProtoValuesSubject(
-      FailureStrategy failureStrategy, FluentEqualityConfig config, @Nullable C multimap) {
-    super(failureStrategy, multimap);
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable C multimap) {
+    super(failureMetadata, multimap);
     this.config = config;
   }
 
@@ -131,23 +143,29 @@ public class MultimapWithProtoValuesSubject<
 
   private static class IterableValuesForKey<M extends Message>
       extends IterableOfProtosSubject<IterableValuesForKey<M>, M, Iterable<M>> {
-    @Nullable private final Object key;
     private final String stringRepresentation;
 
     @SuppressWarnings({"unchecked"})
     IterableValuesForKey(
-        FailureStrategy failureStrategy,
-        MultimapWithProtoValuesSubject<?, ?, M, ?> multimapSubject,
-        @Nullable Object key) {
-      super(failureStrategy, ((Multimap<Object, M>) multimapSubject.actual()).get(key));
-      this.key = key;
-      this.stringRepresentation = multimapSubject.actualAsString();
+        FailureMetadata failureMetadata, Iterable<M> actual, String stringRepresentation) {
+      super(failureMetadata, actual);
+      this.stringRepresentation = stringRepresentation;
     }
 
     @Override
     protected String actualCustomStringRepresentation() {
-      return "Values for key <" + key + "> (<" + actual() + ">) in " + stringRepresentation;
+      return stringRepresentation;
     }
+  }
+
+  static <M extends Message> Subject.Factory<IterableValuesForKey<M>, Iterable<M>> iterableOfProtos(
+      final String stringRepresentation) {
+    return new Subject.Factory<IterableValuesForKey<M>, Iterable<M>>() {
+      @Override
+      public IterableValuesForKey<M> createSubject(FailureMetadata metadata, Iterable<M> actual) {
+        return new IterableValuesForKey<M>(metadata, actual, stringRepresentation);
+      }
+    };
   }
 
   /**
@@ -158,7 +176,10 @@ public class MultimapWithProtoValuesSubject<
    * assertions must be chained onto this method call to test properties of the {@link Multimap}.
    */
   public IterableOfProtosSubject<?, M, Iterable<M>> valuesForKey(@Nullable Object key) {
-    return new IterableValuesForKey<M>(failureStrategy, this, key);
+    Subject.Factory<IterableValuesForKey<M>, Iterable<M>> factory =
+        iterableOfProtos(
+            "Values for key <" + key + "> (<" + actual() + ">) in " + actualAsString());
+    return check().about(factory).that(((Multimap<Object, M>) actual()).get(key));
   }
 
   /**
@@ -222,8 +243,9 @@ public class MultimapWithProtoValuesSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   MultimapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
-    MultimapWithMessageValuesSubject<K, M> newSubject =
-        new MultimapWithMessageValuesSubject<K, M>(failureStrategy, newConfig, actual());
+    Subject.Factory<MultimapWithMessageValuesSubject<K, M>, Multimap<K, M>> factory =
+        multimapWithMessageValues(newConfig);
+    MultimapWithMessageValuesSubject<K, M> newSubject = check().about(factory).that(actual());
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }

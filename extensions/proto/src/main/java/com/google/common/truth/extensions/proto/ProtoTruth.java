@@ -21,7 +21,7 @@ import static com.google.common.truth.Truth.assertAbout;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
-import com.google.common.truth.CustomSubjectBuilderFactory;
+import com.google.common.truth.CustomSubjectBuilder;
 import com.google.common.truth.IterableSubject;
 import com.google.common.truth.MapSubject;
 import com.google.common.truth.MultimapSubject;
@@ -40,11 +40,11 @@ import javax.annotation.Nullable;
 public final class ProtoTruth {
 
   /**
-   * Returns a {@link CustomSubjectBuilderFactory}, akin to a {@link
-   * com.google.common.truth.SubjectFactory}, which can be used to assert on multiple types of
+   * Returns a {@link CustomSubjectBuilder.Factory}, akin to a {@link
+   * com.google.common.truth.Subject.Factory}, which can be used to assert on multiple types of
    * Protos and collections containing them.
    */
-  public static CustomSubjectBuilderFactory<ProtoSubjectBuilder> protos() {
+  public static CustomSubjectBuilder.Factory<ProtoSubjectBuilder> protos() {
     return ProtoSubjectBuilder.factory();
   }
 

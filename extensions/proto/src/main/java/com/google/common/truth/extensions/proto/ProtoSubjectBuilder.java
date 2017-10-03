@@ -20,8 +20,7 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.truth.CustomSubjectBuilder;
-import com.google.common.truth.CustomSubjectBuilderFactory;
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
@@ -36,58 +35,58 @@ import javax.annotation.Nullable;
 public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
 
   /** Factory for ProtoSubjectBuilder. */
-  private static class Factory implements CustomSubjectBuilderFactory<ProtoSubjectBuilder> {
+  private static class Factory implements CustomSubjectBuilder.Factory<ProtoSubjectBuilder> {
     private static final Factory INSTANCE = new Factory();
 
     @Override
-    public ProtoSubjectBuilder createSubjectBuilder(FailureStrategy failureStrategy) {
-      return new ProtoSubjectBuilder(failureStrategy);
+    public ProtoSubjectBuilder createSubjectBuilder(FailureMetadata failureMetadata) {
+      return new ProtoSubjectBuilder(failureMetadata);
     }
   }
 
-  static CustomSubjectBuilderFactory<ProtoSubjectBuilder> factory() {
+  static CustomSubjectBuilder.Factory<ProtoSubjectBuilder> factory() {
     return Factory.INSTANCE;
   }
 
-  private ProtoSubjectBuilder(FailureStrategy failureStrategy) {
-    super(failureStrategy);
+  private ProtoSubjectBuilder(FailureMetadata failureMetadata) {
+    super(failureMetadata);
   }
 
   public LiteProtoSubject<?, MessageLite> that(@Nullable MessageLite messageLite) {
-    return new LiteProtoSubject.MessageLiteSubject(failureStrategy(), messageLite);
+    return new LiteProtoSubject.MessageLiteSubject(metadata(), messageLite);
   }
 
   public ProtoSubject<?, Message> that(@Nullable Message message) {
-    return new ProtoSubject.MessageSubject(failureStrategy(), message);
+    return new ProtoSubject.MessageSubject(metadata(), message);
   }
 
   public <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> that(
       @Nullable Iterable<M> messages) {
-    return new IterableOfProtosSubject.IterableOfMessagesSubject<M>(failureStrategy(), messages);
+    return new IterableOfProtosSubject.IterableOfMessagesSubject<M>(metadata(), messages);
   }
 
   public <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> that(
       @Nullable Map<K, M> map) {
-    return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<K, M>(failureStrategy(), map);
+    return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<K, M>(metadata(), map);
   }
 
   public <K, M extends Message> MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> that(
       @Nullable Multimap<K, M> map) {
     return new MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject<K, M>(
-        failureStrategy(), map);
+        metadata(), map);
   }
 
   public <K, M extends Message>
       ListMultimapWithProtoValuesSubject<?, K, M, ListMultimap<K, M>> that(
           @Nullable ListMultimap<K, M> map) {
     return new ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject<K, M>(
-        failureStrategy(), map);
+        metadata(), map);
   }
 
   public <K, M extends Message> SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> that(
       @Nullable SetMultimap<K, M> map) {
     return new SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject<K, M>(
-        failureStrategy(), map);
+        metadata(), map);
   }
 
 }
