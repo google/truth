@@ -652,7 +652,6 @@ public class SubjectTest {
     assertThat((Object) null).ignoreCheck().that("foo").isNull();
   }
 
-  @SafeVarargs
   private static <T> Iterable<T> oneShotIterable(final T... values) {
     final Iterator<T> iterator = Iterators.forArray(values);
     return new Iterable<T>() {
