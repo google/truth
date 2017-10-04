@@ -40,14 +40,14 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
     super(metadata, actual);
   }
 
-  /** Asserts that the subject is in {@code range}. */
+  /** Checks that the subject is in {@code range}. */
   public final void isIn(Range<T> range) {
     if (!range.contains(actual())) {
       fail("is in", range);
     }
   }
 
-  /** Asserts that the subject is <i>not</i> in {@code range}. */
+  /** Checks that the subject is <i>not</i> in {@code range}. */
   public final void isNotIn(Range<T> range) {
     if (range.contains(actual())) {
       fail("is not in", range);
@@ -55,8 +55,8 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
   }
 
   /**
-   * Asserts that the subject is equivalent to {@code other} according to {@link
-   * Comparable#compareTo}, (i.e., asserts that {@code a.comparesTo(b) == 0}).
+   * Checks that the subject is equivalent to {@code other} according to {@link
+   * Comparable#compareTo}, (i.e., checks that {@code a.comparesTo(b) == 0}).
    *
    * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
    * #isEqualTo(Object)}.
@@ -70,8 +70,8 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
   }
 
   /**
-   * Asserts that the subject is equivalent to {@code other} according to {@link
-   * Comparable#compareTo}, (i.e., asserts that {@code a.comparesTo(b) == 0}).
+   * Checks that the subject is equivalent to {@code other} according to {@link
+   * Comparable#compareTo}, (i.e., checks that {@code a.comparesTo(b) == 0}).
    *
    * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
    * #isEqualTo(Object)}.
@@ -84,9 +84,9 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
   }
 
   /**
-   * Asserts that the subject is greater than {@code other}.
+   * Checks that the subject is greater than {@code other}.
    *
-   * <p>Use {@link #isAtLeast} to assert that the subject is greater than <i>or equal to</i> {@code
+   * <p>Use {@link #isAtLeast} to check that the subject is greater than <i>or equal to</i> {@code
    * other}.
    */
   public final void isGreaterThan(T other) {
@@ -96,9 +96,9 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
   }
 
   /**
-   * Asserts that the subject is less than {@code other}.
+   * Checks that the subject is less than {@code other}.
    *
-   * <p>Use {@link #isAtMost} to assert that the subject is less than <i>or equal to</i> {@code
+   * <p>Use {@link #isAtMost} to check that the subject is less than <i>or equal to</i> {@code
    * other}.
    */
   public final void isLessThan(T other) {
@@ -108,9 +108,9 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
   }
 
   /**
-   * Asserts that the subject is less than or equal to {@code other}.
+   * Checks that the subject is less than or equal to {@code other}.
    *
-   * <p>Use {@link #isLessThan} to assert that the subject is less than {@code other}.
+   * <p>Use {@link #isLessThan} to check that the subject is less than {@code other}.
    */
   public final void isAtMost(T other) {
     if (actual().compareTo(other) > 0) {
@@ -119,9 +119,9 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
   }
 
   /**
-   * Asserts that the subject is greater than or equal to {@code other}.
+   * Checks that the subject is greater than or equal to {@code other}.
    *
-   * <p>Use {@link #isGreaterThan} to assert that the subject is greater than {@code other}.
+   * <p>Use {@link #isGreaterThan} to check that the subject is greater than {@code other}.
    */
   public final void isAtLeast(T other) {
     if (actual().compareTo(other) < 0) {
