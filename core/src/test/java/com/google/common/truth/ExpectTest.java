@@ -56,7 +56,7 @@ public class ExpectTest {
 
   @Test
   public void expectFail() {
-    thrown.expectMessage("All failed expectations:");
+    thrown.expectMessage("3 expectations failed:");
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
     thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
     thrown.expectMessage("3. Not true that <\"abc\"> contains <\"z\">");
@@ -67,7 +67,7 @@ public class ExpectTest {
 
   @Test
   public void expectFailWithExceptionNoMessage() {
-    thrown.expectMessage("All failed expectations:");
+    thrown.expectMessage("3 expectations failed:");
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
     thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
     thrown.expectMessage(
@@ -80,7 +80,7 @@ public class ExpectTest {
 
   @Test
   public void expectFailWithExceptionWithMessage() {
-    thrown.expectMessage("All failed expectations:");
+    thrown.expectMessage("3 expectations failed:");
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
     thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
     thrown.expectMessage(
@@ -106,7 +106,7 @@ public class ExpectTest {
 
   @Test
   public void expectFailWithFailuresBeforeAssume() {
-    thrown.expectMessage("All failed expectations:");
+    thrown.expectMessage("3 expectations failed:");
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
     thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
     thrown.expectMessage(
