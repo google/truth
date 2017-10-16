@@ -80,9 +80,10 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
 
     @Override
     public String toString() {
-      StringBuilder message = new StringBuilder("All failed expectations:\n");
+      List<ExpectationFailure> failures = getFailures();
+      StringBuilder message = new StringBuilder(failures.size() + " expectations failed:\n");
       int count = 0;
-      for (ExpectationFailure failure : getFailures()) {
+      for (ExpectationFailure failure : failures) {
         count++;
         message.append("  ");
         message.append(count);
