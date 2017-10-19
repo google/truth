@@ -40,6 +40,11 @@ import javax.annotation.Nullable;
  * can be changed with the configuration methods on this subject, e.g. {@code
  * ProtoTruth.assertThat(actual).ignoringRepeatedFieldOrder().containsExactly(expected)}.
  *
+ * <p>Floating-point fields are compared using exact equality, which is <a
+ * href="http://google.github.io/truth/floating_point">probably not what you want</a> if the values
+ * are the results of some arithmetic. Support for approximate equality may be added in a later
+ * version.
+ *
  * <p>Equality tests, and other methods, may yield slightly different behavior for versions 2 and 3
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
