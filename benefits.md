@@ -9,12 +9,12 @@ url: /benefits
 Truth's fluent API allows users to write more readable test assertions. For
 example:
 
-```java
+```java {.good}
 Optional<String> middleName = user.getMiddleName();
 assertThat(middleName).isAbsent();
 ```
 
-With JUnit, you'd have to negate the assertion:
+With JUnit, you have to negate the assertion:
 
 ```java
 Optional<String> middleName = user.getMiddleName();
