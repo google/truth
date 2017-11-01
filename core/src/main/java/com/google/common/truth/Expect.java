@@ -53,6 +53,7 @@ import org.junit.runners.model.Statement;
  */
 @GwtIncompatible("JUnit4")
 public final class Expect extends StandardSubjectBuilder implements TestRule {
+
   private static final class ExpectationGatherer extends AbstractFailureStrategy {
     private final List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
     private final boolean showStackTrace;
@@ -91,7 +92,9 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
         message.append(failure.message());
         message.append("\n");
         if (showStackTrace) {
-          message.append(getStackTraceAsString(stripTruthStackFrames(failure.cause())));
+          Throwable cause = failure.cause();
+          StackTraceCleaner.cleanStackTrace(cause);
+          message.append(getStackTraceAsString(cause));
           message.append("\n");
         }
       }

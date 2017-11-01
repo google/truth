@@ -126,6 +126,19 @@ final class Platform {
     }
   }
 
+  /**
+   * Returns an array containing all of the exceptions that were suppressed to deliver the given
+   * exception. Delegates to the getSuppressed() method on Throwable that is available in Java 1.7+
+   */
+  static Throwable[] getSuppressed(Throwable throwable) {
+    return throwable.getSuppressed();
+  }
+
+  /** Always returns false. Stack traces will be cleaned by default. */
+  static boolean isStackTraceCleaningDisabled() {
+    return false;
+  }
+
   // TODO(user): Move this logic to a common location.
   private static NativeRegExp compile(String pattern) {
     return new NativeRegExp(pattern);

@@ -109,7 +109,8 @@ public final class Truth {
               // TODO(cpovirk): Actually, maybe we can override getCause(). Try that someday.
             }
           }
-          return stripTruthStackFrames(failure);
+          StackTraceCleaner.cleanStackTrace(failure);
+          return failure;
         }
       };
 
