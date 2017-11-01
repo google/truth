@@ -15,8 +15,9 @@
  */
 package com.google.common.truth;
 
-import com.google.common.annotations.GwtIncompatible;
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -40,7 +41,6 @@ final class Platform {
   /**
    * Returns true if the instance is assignable to the type Clazz (suitable for a JVM environment).
    */
-  @GwtIncompatible("Reflection")
   static boolean isInstanceOfTypeJava(Object instance, Class<?> clazz) {
     return clazz.isInstance(instance);
   }
@@ -134,5 +134,33 @@ final class Platform {
   /** Returns the item in the array at index i. */
   static Object getFromArray(Object array, int i) {
     return Array.get(array, i);
+  }
+
+  /**
+   * Returns an array containing all of the exceptions that were suppressed to deliver the given
+   * exception. If suppressed exceptions are not supported (pre-Java 1.7), an empty array will be
+   * returned.
+   */
+  static Throwable[] getSuppressed(Throwable throwable) {
+    try {
+      Method getSuppressed = throwable.getClass().getMethod("getSuppressed");
+      return (Throwable[]) getSuppressed.invoke(throwable);
+    } catch (NoSuchMethodException e) {
+      return new Throwable[0];
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    } catch (InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * Returns true if stack trace cleaning is explicitly disabled in a system property. This switch
+   * os intended to be used when attempting to debug the frameworks which are collapsed or filtered
+   * out of stack traces by the cleaner.
+   */
+  static boolean isStackTraceCleaningDisabled() {
+    return Boolean.parseBoolean(
+        System.getProperty("com.google.common.truth.disable_stack_trace_cleaning"));
   }
 }
