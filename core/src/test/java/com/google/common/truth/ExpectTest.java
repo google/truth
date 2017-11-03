@@ -55,6 +55,13 @@ public class ExpectTest {
   }
 
   @Test
+  public void singleExpectationFails() {
+    thrown.expectMessage("1 expectation failed:");
+    thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
+    EXPECT.that("abc").contains("x");
+  }
+
+  @Test
   public void expectFail() {
     thrown.expectMessage("3 expectations failed:");
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
