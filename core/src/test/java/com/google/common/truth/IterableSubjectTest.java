@@ -1055,6 +1055,44 @@ public class IterableSubjectTest {
     assertThat(targetList).isStrictlyOrdered(FOO_COMPARATOR);
   }
 
+  @Test
+  public void isIn() {
+    ImmutableList<String> actual = ImmutableList.of("a");
+    ImmutableList<String> expectedA = ImmutableList.of("a");
+    ImmutableList<String> expectedB = ImmutableList.of("b");
+    ImmutableList<ImmutableList<String>> expected = ImmutableList.of(expectedA, expectedB);
+
+    assertThat(actual).isIn(expected);
+  }
+
+  @Test
+  public void isNotIn() {
+    ImmutableList<String> actual = ImmutableList.of("a");
+    ImmutableList<String> expectedB = ImmutableList.of("b");
+    ImmutableList<String> expectedC = ImmutableList.of("c");
+    ImmutableList<ImmutableList<String>> expected = ImmutableList.of(expectedB, expectedC);
+
+    assertThat(actual).isNotIn(expected);
+  }
+
+  @Test
+  public void isAnyOf() {
+    ImmutableList<String> actual = ImmutableList.of("a");
+    ImmutableList<String> expectedA = ImmutableList.of("a");
+    ImmutableList<String> expectedB = ImmutableList.of("b");
+
+    assertThat(actual).isAnyOf(expectedA, expectedB);
+  }
+
+  @Test
+  public void isNoneOf() {
+    ImmutableList<String> actual = ImmutableList.of("a");
+    ImmutableList<String> expectedB = ImmutableList.of("b");
+    ImmutableList<String> expectedC = ImmutableList.of("c");
+
+    assertThat(actual).isNoneOf(expectedB, expectedC);
+  }
+
   /**
    * A correspondence between strings and integers which tests whether the string parses as the
    * integer. Parsing is as specified by {@link Integer#decode(String)}. It considers null to
