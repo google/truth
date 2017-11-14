@@ -29,6 +29,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.truth.extensions.proto.MessageDifferencer.IgnoreCriteria;
 import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
+import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.FieldDescriptorOrUnknown;
+import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.ShouldIgnore;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -52,6 +54,18 @@ import javax.annotation.Nullable;
 abstract class FieldScopeLogic {
 
   private final Set<Descriptor> validatedDescriptors = Sets.newConcurrentHashSet();
+
+  /** Returns whether comparison should be ignored for the specified field. */
+  ShouldIgnore shouldIgnore(
+      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+    throw new UnsupportedOperationException("TODO(dploch): Implement.");
+  }
+
+  /** Returns a {@code FieldScopeLogic} to handle the message pointed to by this descriptor. */
+  FieldScopeLogic subLogic(
+      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+    throw new UnsupportedOperationException("TODO(dploch): Implement.");
+  }
 
   final IgnoreCriteria toIgnoreCriteria(final Descriptor descriptor) {
     if (!validatedDescriptors.contains(descriptor)) {
