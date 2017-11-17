@@ -21,19 +21,11 @@ import java.nio.file.Path;
 /** Assertions for {@link Path} instances. */
 @GwtIncompatible
 public final class PathSubject extends Subject<PathSubject, Path> {
-  private PathSubject(FailureStrategy failureStrategy, Path actual) {
-    super(failureStrategy, actual);
+  private PathSubject(FailureMetadata failureMetadata, Path actual) {
+    super(failureMetadata, actual);
   }
 
-  private static final SubjectFactory<PathSubject, Path> FACTORY =
-      new SubjectFactory<PathSubject, Path>() {
-        @Override
-        public PathSubject getSubject(FailureStrategy failureStrategy, Path path) {
-          return new PathSubject(failureStrategy, path);
-        }
-      };
-
-  public static SubjectFactory<PathSubject, Path> paths() {
-    return FACTORY;
+  public static Subject.Factory<PathSubject, Path> paths() {
+    return PathSubject::new;
   }
 }

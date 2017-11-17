@@ -25,8 +25,8 @@ import javax.annotation.Nullable;
  */
 public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, OptionalDouble> {
 
-  OptionalDoubleSubject(FailureStrategy failureStrategy, @Nullable OptionalDouble subject) {
-    super(failureStrategy, subject);
+  OptionalDoubleSubject(FailureMetadata failureMetadata, @Nullable OptionalDouble subject) {
+    super(failureMetadata, subject);
   }
 
   /** Fails if the {@link OptionalDouble} is empty or the subject is null. */
@@ -75,15 +75,7 @@ public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, 
     }
   }
 
-  private static final SubjectFactory<OptionalDoubleSubject, OptionalDouble> FACTORY =
-      new SubjectFactory<OptionalDoubleSubject, OptionalDouble>() {
-        @Override
-        public OptionalDoubleSubject getSubject(FailureStrategy fs, OptionalDouble target) {
-          return new OptionalDoubleSubject(fs, target);
-        }
-      };
-
-  public static SubjectFactory<OptionalDoubleSubject, OptionalDouble> optionalDoubles() {
-    return FACTORY;
+  public static Subject.Factory<OptionalDoubleSubject, OptionalDouble> optionalDoubles() {
+    return OptionalDoubleSubject::new;
   }
 }

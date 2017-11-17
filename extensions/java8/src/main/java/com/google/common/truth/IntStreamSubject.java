@@ -44,8 +44,8 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
 
   private final List<?> actualList;
 
-  private IntStreamSubject(FailureStrategy failureStrategy, @Nullable IntStream stream) {
-    super(failureStrategy, stream);
+  private IntStreamSubject(FailureMetadata failureMetadata, @Nullable IntStream stream) {
+    super(failureMetadata, stream);
     this.actualList =
         (stream == null) ? null : stream.boxed().collect(toCollection(ArrayList::new));
   }
@@ -55,16 +55,8 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
     return String.valueOf(actualList);
   }
 
-  private static final SubjectFactory<IntStreamSubject, IntStream> FACTORY =
-      new SubjectFactory<IntStreamSubject, IntStream>() {
-        @Override
-        public IntStreamSubject getSubject(FailureStrategy failureStrategy, IntStream stream) {
-          return new IntStreamSubject(failureStrategy, stream);
-        }
-      };
-
-  public static SubjectFactory<IntStreamSubject, IntStream> intStreams() {
-    return FACTORY;
+  public static Factory<IntStreamSubject, IntStream> intStreams() {
+    return IntStreamSubject::new;
   }
 
   /** Fails if the subject is not empty. */

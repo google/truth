@@ -17,9 +17,8 @@ package com.google.common.truth.extension;
 
 import static com.google.common.truth.Truth.assertAbout;
 
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
-import com.google.common.truth.SubjectFactory;
 import javax.annotation.Nullable;
 
 /**
@@ -35,22 +34,22 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
   }
 
   // Static method for getting the subject factory (for use with assertAbout())
-  public static SubjectFactory<EmployeeSubject, Employee> employees() {
+  public static Subject.Factory<EmployeeSubject, Employee> employees() {
     return EMPLOYEE_SUBJECT_FACTORY;
   }
 
-  // Boiler-plate SubjectFactory for EmployeeSubject
-  private static final SubjectFactory<EmployeeSubject, Employee> EMPLOYEE_SUBJECT_FACTORY =
-      new SubjectFactory<EmployeeSubject, Employee>() {
+  // Boiler-plate Subject.Factory for EmployeeSubject
+  private static final Subject.Factory<EmployeeSubject, Employee> EMPLOYEE_SUBJECT_FACTORY =
+      new Subject.Factory<EmployeeSubject, Employee>() {
         @Override
-        public EmployeeSubject getSubject(
-            FailureStrategy failureStrategy, @Nullable Employee target) {
-          return new EmployeeSubject(failureStrategy, target);
+        public EmployeeSubject createSubject(
+            FailureMetadata failureMetadata, @Nullable Employee target) {
+          return new EmployeeSubject(failureMetadata, target);
         }
       };
 
-  private EmployeeSubject(FailureStrategy failureStrategy, @Nullable Employee subject) {
-    super(failureStrategy, subject);
+  private EmployeeSubject(FailureMetadata failureMetadata, @Nullable Employee subject) {
+    super(failureMetadata, subject);
   }
 
   // User-defined test assertion SPI below this point
