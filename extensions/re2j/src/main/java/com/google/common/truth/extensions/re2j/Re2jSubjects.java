@@ -16,9 +16,8 @@
 package com.google.common.truth.extensions.re2j;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.truth.FailureStrategy;
+import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
-import com.google.common.truth.SubjectFactory;
 import com.google.re2j.Pattern;
 
 /**
@@ -38,7 +37,7 @@ public final class Re2jSubjects {
    *
    * @see com.google.common.truth.StringSubject
    */
-  public static SubjectFactory<Re2jStringSubject, String> re2jString() {
+  public static Subject.Factory<Re2jStringSubject, String> re2jString() {
     return Re2jStringSubject.FACTORY;
   }
 
@@ -49,16 +48,16 @@ public final class Re2jSubjects {
    * @see #re2jString
    */
   public static final class Re2jStringSubject extends Subject<Re2jStringSubject, String> {
-    private static final SubjectFactory<Re2jStringSubject, String> FACTORY =
-        new SubjectFactory<Re2jStringSubject, String>() {
+    private static final Subject.Factory<Re2jStringSubject, String> FACTORY =
+        new Subject.Factory<Re2jStringSubject, String>() {
           @Override
-          public Re2jStringSubject getSubject(FailureStrategy fs, String target) {
-            return new Re2jStringSubject(fs, target);
+          public Re2jStringSubject createSubject(FailureMetadata failureMetadata, String target) {
+            return new Re2jStringSubject(failureMetadata, target);
           }
         };
 
-    private Re2jStringSubject(FailureStrategy failureStrategy, String subject) {
-      super(failureStrategy, subject);
+    private Re2jStringSubject(FailureMetadata failureMetadata, String subject) {
+      super(failureMetadata, subject);
     }
 
     @Override

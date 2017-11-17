@@ -33,8 +33,8 @@ import javax.annotation.Nullable;
  *
  * <p>Note: Usage of different failure strategies such as <em>assume</em> and <em>expect</em> should
  * rely on {@link
- * com.google.common.truth.AbstractVerb#about(com.google.common.truth.SubjectFactory)} to begin a
- * chain with those alternative behaviors.
+ * com.google.common.truth.StandardSubjectBuilder#about(com.google.common.truth.Subject.Factory)} to
+ * begin a chain with those alternative behaviors.
  */
 public final class Truth8 {
   public static OptionalSubject assertThat(@Nullable Optional<?> target) {
