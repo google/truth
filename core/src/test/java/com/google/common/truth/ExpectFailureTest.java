@@ -96,18 +96,18 @@ public class ExpectFailureTest {
     thrown.expectMessage("ExpectFailure.whenTesting() invoked, but no failure was caught.");
   }
 
-  private static SubjectFactory<StringSubject, String> strings() {
-    return new SubjectFactory<StringSubject, String>() {
+  private static Subject.Factory<StringSubject, String> strings() {
+    return new Subject.Factory<StringSubject, String>() {
       @Override
-      public StringSubject getSubject(FailureStrategy fs, String that) {
-        return new StringSubject(fs, that);
+      public StringSubject createSubject(FailureMetadata fm, String that) {
+        return new StringSubject(fm, that);
       }
     };
   }
 
   private static class BadSubject extends Subject<BadSubject, Integer> {
-    BadSubject(FailureStrategy failureStrategy, Integer actual) {
-      super(failureStrategy, actual);
+    BadSubject(FailureMetadata failureMetadat, Integer actual) {
+      super(failureMetadat, actual);
     }
 
     @Override
@@ -118,11 +118,11 @@ public class ExpectFailureTest {
       }
     }
 
-    private static SubjectFactory<BadSubject, Integer> badSubject() {
-      return new SubjectFactory<BadSubject, Integer>() {
+    private static Subject.Factory<BadSubject, Integer> badSubject() {
+      return new Subject.Factory<BadSubject, Integer>() {
         @Override
-        public BadSubject getSubject(FailureStrategy fs, Integer that) {
-          return new BadSubject(fs, that);
+        public BadSubject createSubject(FailureMetadata fm, Integer that) {
+          return new BadSubject(fm, that);
         }
       };
     }

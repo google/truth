@@ -48,11 +48,5 @@ public final class ExpectFailure8Test {
     assertThat(expected).hasMessageThat().contains("<\"foo\"> contains <\"bar\">");
   }
 
-  private static final SubjectFactory<StringSubject, String> STRINGS =
-      new SubjectFactory<StringSubject, String>() {
-        @Override
-        public StringSubject getSubject(FailureStrategy fs, String target) {
-          return new StringSubject(fs, target);
-        }
-      };
+  private static final Subject.Factory<StringSubject, String> STRINGS = StringSubject::new;
 }
