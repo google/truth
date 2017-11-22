@@ -96,6 +96,11 @@ public final class FieldScopes {
    * Returns a {@link FieldScope} which matches everything except the provided field numbers for the
    * top level message type.
    *
+   * <p>The field numbers are ignored recursively on this type. That is, if {@code YourMessage}
+   * contains another {@code YourMessage} somewhere within its subtree, field number {@code X} will
+   * be ignored for all submessages of type {@code YourMessage}, as well as for the top-level
+   * message.
+   *
    * @see FieldScope#ignoringFields(int, int...)
    */
   public static FieldScope ignoringFields(int firstFieldNumber, int... rest) {
@@ -105,6 +110,11 @@ public final class FieldScopes {
   /**
    * Returns a {@link FieldScope} which matches everything except the provided field numbers for the
    * top level message type.
+   *
+   * <p>The field numbers are ignored recursively on this type. That is, if {@code YourMessage}
+   * contains another {@code YourMessage} somewhere within its subtree, field number {@code X} will
+   * be ignored for all submessages of type {@code YourMessage}, as well as for the top-level
+   * message.
    *
    * @see FieldScope#ignoringFields(Iterable)
    */

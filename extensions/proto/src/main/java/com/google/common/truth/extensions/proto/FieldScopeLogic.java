@@ -33,6 +33,7 @@ import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.Fie
 import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.ShouldIgnore;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
 import com.google.protobuf.Message;
 import java.util.List;
 import java.util.Map;
@@ -56,15 +57,28 @@ abstract class FieldScopeLogic {
   private final Set<Descriptor> validatedDescriptors = Sets.newConcurrentHashSet();
 
   /** Returns whether comparison should be ignored for the specified field. */
-  ShouldIgnore shouldIgnore(
-      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    throw new UnsupportedOperationException("TODO(dploch): Implement.");
-  }
+  abstract ShouldIgnore shouldIgnore(
+      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown);
 
-  /** Returns a {@code FieldScopeLogic} to handle the message pointed to by this descriptor. */
+  /**
+   * Returns a {@code FieldScopeLogic} to handle the message pointed to by this descriptor.
+   *
+   * <p>Returns {@code this} by default. Subclasses with different behavior must override this
+   * method to return something else and {@code isRecursive} to return false.
+   */
   FieldScopeLogic subLogic(
       Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    throw new UnsupportedOperationException("TODO(dploch): Implement.");
+    return this;
+  }
+
+  /**
+   * Returns whether or {@code subLogic} always returns the invoking instance, or an instance with
+   * equivalent behavior.
+   *
+   * <p>Set to return true by default. Used for optimizing compound logics.
+   */
+  boolean isRecursive() {
+    return true;
   }
 
   final IgnoreCriteria toIgnoreCriteria(final Descriptor descriptor) {
@@ -302,6 +316,12 @@ abstract class FieldScopeLogic {
         public String toString() {
           return "FieldScopes.all()";
         }
+
+        @Override
+        final ShouldIgnore shouldIgnore(
+            Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+          return ShouldIgnore.NO;
+        }
       };
 
   private static final FieldScopeLogic NONE =
@@ -315,6 +335,12 @@ abstract class FieldScopeLogic {
         public String toString() {
           return "FieldScopes.none()";
         }
+
+        @Override
+        final ShouldIgnore shouldIgnore(
+            Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+          return ShouldIgnore.YES;
+        }
       };
 
   static FieldScopeLogic all() {
@@ -325,14 +351,56 @@ abstract class FieldScopeLogic {
     return NONE;
   }
 
-  private static final class PartialScopeLogic extends FieldScopeLogic {
-    private final Message message;
+  private static class PartialScopeLogic extends FieldScopeLogic {
+    private static final PartialScopeLogic EMPTY = new PartialScopeLogic(FieldNumberTree.empty());
+
     private final FieldNumberTree fieldNumberTree;
+
+    PartialScopeLogic(FieldNumberTree fieldNumberTree) {
+      this.fieldNumberTree = fieldNumberTree;
+    }
+
+    @Override
+    boolean doMatchesFieldPath(Context context, Cache cache) {
+      return fieldNumberTree.matches(context.fieldPath(), context.field());
+    }
+
+    @Override
+    public String toString() {
+      return String.format("PartialScopeLogic(%s)", fieldNumberTree);
+    }
+
+    @Override
+    final ShouldIgnore shouldIgnore(
+        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+      return fieldNumberTree.hasChild(fieldDescriptorOrUnknown)
+          ? ShouldIgnore.NO
+          : ShouldIgnore.YES;
+    }
+
+    @Override
+    final FieldScopeLogic subLogic(
+        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+      return newPartialScopeLogic(fieldNumberTree.child(fieldDescriptorOrUnknown));
+    }
+
+    @Override
+    boolean isRecursive() {
+      return fieldNumberTree.isEmpty();
+    }
+
+    private static PartialScopeLogic newPartialScopeLogic(FieldNumberTree fieldNumberTree) {
+      return fieldNumberTree.isEmpty() ? EMPTY : new PartialScopeLogic(fieldNumberTree);
+    }
+  }
+
+  private static final class RootPartialScopeLogic extends PartialScopeLogic {
+    private final Message message;
     private final Descriptor expectedDescriptor;
 
-    PartialScopeLogic(Message message) {
+    RootPartialScopeLogic(Message message) {
+      super(FieldNumberTree.fromMessage(message));
       this.message = message;
-      this.fieldNumberTree = FieldNumberTree.fromMessage(message);
       this.expectedDescriptor = message.getDescriptorForType();
     }
 
@@ -347,18 +415,13 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    boolean doMatchesFieldPath(Context context, Cache cache) {
-      return fieldNumberTree.matches(context.fieldPath(), context.field());
-    }
-
-    @Override
     public String toString() {
       return String.format("FieldScopes.fromSetFields(%s)", message);
     }
   }
 
   static FieldScopeLogic partialScope(Message message) {
-    return new PartialScopeLogic(message);
+    return new RootPartialScopeLogic(message);
   }
 
   // TODO(user): Performance: Optimize FieldNumbersLogic and FieldDescriptorsLogic for
@@ -442,6 +505,47 @@ abstract class FieldScopeLogic {
       messagesWithMatchingField.put(message, result);
       return result;
     }
+
+    @Override
+    final ShouldIgnore shouldIgnore(
+        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+      if (fieldDescriptorOrUnknown.unknownFieldDescriptor().isPresent()) {
+        return ShouldIgnore.YES;
+      }
+
+      FieldDescriptor fieldDescriptor = fieldDescriptorOrUnknown.fieldDescriptor().get();
+      if (matchesFieldDescriptor(rootDescriptor, fieldDescriptor)) {
+        return ShouldIgnore.NO;
+      }
+
+      // We return 'MAYBE' for both field descriptor scopes and field number scopes.
+      // In the former case, the field descriptors are arbitrary, so it's always possible we find a
+      // hit on a sub-message somewhere.  In the latter case, the message definition may be cyclic,
+      // so we need to return 'MAYBE' even if the top level field number doesn't match.
+      return fieldDescriptor.getJavaType() == JavaType.MESSAGE
+          ? ShouldIgnore.MAYBE
+          : ShouldIgnore.YES;
+    }
+
+    @Override
+    final boolean isRecursive() {
+      return false;
+    }
+
+    @Override
+    final FieldScopeLogic subLogic(
+        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+      ShouldIgnore shouldIgnore = shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown);
+      switch (shouldIgnore) {
+        case YES:
+          return none();
+        case NO:
+          return all();
+        case MAYBE:
+          return this;
+      }
+      throw new AssertionError("Unexpected enum: " + shouldIgnore);
+    }
   }
 
   // Matches any specific fields which fall under a sub-message field (or root) matching the root
@@ -500,15 +604,28 @@ abstract class FieldScopeLogic {
   // COMPOUND SUBTYPES
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  private abstract static class CompoundFieldScopeLogic extends FieldScopeLogic {
+  private abstract static class CompoundFieldScopeLogic<T extends CompoundFieldScopeLogic<T>>
+      extends FieldScopeLogic {
     final ImmutableList<FieldScopeLogic> elements;
+    final boolean isRecursive;
 
     CompoundFieldScopeLogic(FieldScopeLogic singleElem) {
-      elements = ImmutableList.of(singleElem);
+      this.elements = ImmutableList.of(singleElem);
+      this.isRecursive = areAllRecursive(elements);
     }
 
     CompoundFieldScopeLogic(FieldScopeLogic firstElem, FieldScopeLogic secondElem) {
-      elements = ImmutableList.of(firstElem, secondElem);
+      this.elements = ImmutableList.of(firstElem, secondElem);
+      this.isRecursive = areAllRecursive(elements);
+    }
+
+    private static boolean areAllRecursive(ImmutableList<FieldScopeLogic> elements) {
+      for (FieldScopeLogic elem : elements) {
+        if (!elem.isRecursive()) {
+          return false;
+        }
+      }
+      return true;
     }
 
     @Override
@@ -517,9 +634,33 @@ abstract class FieldScopeLogic {
         elem.validate(descriptor);
       }
     }
+
+    /** Helper to produce a new {@code CompoundFieldScopeLogic} of the same type as the subclass. */
+    abstract T newLogicOfSameType(List<FieldScopeLogic> newElements);
+
+    @Override
+    final FieldScopeLogic subLogic(
+        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+      if (isRecursive()) {
+        return this;
+      }
+
+      ImmutableList.Builder<FieldScopeLogic> builder =
+          ImmutableList.builderWithExpectedSize(elements.size());
+      for (FieldScopeLogic elem : elements) {
+        builder.add(elem.subLogic(rootDescriptor, fieldDescriptorOrUnknown));
+      }
+      return newLogicOfSameType(builder.build());
+    }
+
+    @Override
+    final boolean isRecursive() {
+      return isRecursive;
+    }
   }
 
-  private static final class IntersectionFieldScopeLogic extends CompoundFieldScopeLogic {
+  private static final class IntersectionFieldScopeLogic
+      extends CompoundFieldScopeLogic<IntersectionFieldScopeLogic> {
     IntersectionFieldScopeLogic(FieldScopeLogic subject1, FieldScopeLogic subject2) {
       super(subject1, subject2);
     }
@@ -549,12 +690,39 @@ abstract class FieldScopeLogic {
     }
 
     @Override
+    IntersectionFieldScopeLogic newLogicOfSameType(List<FieldScopeLogic> newElements) {
+      checkArgument(newElements.size() == 2, "Expected 2 elements: %s", newElements);
+      return new IntersectionFieldScopeLogic(newElements.get(0), newElements.get(1));
+    }
+
+    @Override
+    ShouldIgnore shouldIgnore(
+        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+      // The intersection of two scopes is ignorable if either scope is itself ignorable.
+      return or(
+          elements.get(0).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown),
+          elements.get(1).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown));
+    }
+
+    // Tri-state-boolean 'OR', where YES = true, NO = false, and MAYBE = unknown.
+    private static ShouldIgnore or(ShouldIgnore op1, ShouldIgnore op2) {
+      if (op1 == ShouldIgnore.YES || op2 == ShouldIgnore.YES) {
+        return ShouldIgnore.YES;
+      } else if (op1 == ShouldIgnore.NO && op2 == ShouldIgnore.NO) {
+        return ShouldIgnore.NO;
+      } else {
+        return ShouldIgnore.MAYBE;
+      }
+    }
+
+    @Override
     public String toString() {
       return String.format("(%s && %s)", elements.get(0), elements.get(1));
     }
   }
 
-  private static final class UnionFieldScopeLogic extends CompoundFieldScopeLogic {
+  private static final class UnionFieldScopeLogic
+      extends CompoundFieldScopeLogic<UnionFieldScopeLogic> {
     UnionFieldScopeLogic(FieldScopeLogic subject1, FieldScopeLogic subject2) {
       super(subject1, subject2);
     }
@@ -584,12 +752,39 @@ abstract class FieldScopeLogic {
     }
 
     @Override
+    UnionFieldScopeLogic newLogicOfSameType(List<FieldScopeLogic> newElements) {
+      checkArgument(newElements.size() == 2, "Expected 2 elements: %s", newElements);
+      return new UnionFieldScopeLogic(newElements.get(0), newElements.get(1));
+    }
+
+    @Override
+    ShouldIgnore shouldIgnore(
+        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+      // The union of two scopes is ignorable only if both scopes are themselves ignorable.
+      return and(
+          elements.get(0).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown),
+          elements.get(1).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown));
+    }
+
+    // Tri-state-boolean 'AND', where YES = true, NO = false, and MAYBE = unknown.
+    private static ShouldIgnore and(ShouldIgnore op1, ShouldIgnore op2) {
+      if (op1 == ShouldIgnore.NO || op2 == ShouldIgnore.NO) {
+        return ShouldIgnore.NO;
+      } else if (op1 == ShouldIgnore.YES && op2 == ShouldIgnore.YES) {
+        return ShouldIgnore.YES;
+      } else {
+        return ShouldIgnore.MAYBE;
+      }
+    }
+
+    @Override
     public String toString() {
       return String.format("(%s || %s)", elements.get(0), elements.get(1));
     }
   }
 
-  private static final class NegationFieldScopeLogic extends CompoundFieldScopeLogic {
+  private static final class NegationFieldScopeLogic
+      extends CompoundFieldScopeLogic<NegationFieldScopeLogic> {
     NegationFieldScopeLogic(FieldScopeLogic subject) {
       super(subject);
     }
@@ -603,6 +798,27 @@ abstract class FieldScopeLogic {
     @Override
     boolean doMatchesFieldPath(Context context, Cache cache) {
       return !elements.get(0).matchesFieldPath(context, cache);
+    }
+
+    @Override
+    NegationFieldScopeLogic newLogicOfSameType(List<FieldScopeLogic> newElements) {
+      checkArgument(newElements.size() == 1, "Expected 1 element: %s", newElements);
+      return new NegationFieldScopeLogic(newElements.get(0));
+    }
+
+    @Override
+    ShouldIgnore shouldIgnore(
+        Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+      ShouldIgnore op = elements.get(0).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown);
+      switch (op) {
+        case YES:
+          return ShouldIgnore.NO;
+        case NO:
+          return ShouldIgnore.YES;
+        case MAYBE:
+          return ShouldIgnore.MAYBE;
+      }
+      throw new AssertionError("Impossible: " + op);
     }
 
     @Override
