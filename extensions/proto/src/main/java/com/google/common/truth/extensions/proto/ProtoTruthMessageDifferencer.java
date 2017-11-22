@@ -62,6 +62,34 @@ final class ProtoTruthMessageDifferencer {
      * Indicates that this field is a {@code Message} which may or may not contain sub-fields that
      * should not be ignored. The {@code Message} should be ignored iff no descendant (that is,
      * child, child-of-child, etc.) reports {@code SubResult.NO}.
+     *
+     * <p>This enables {@link FieldScopeLogic}s and the {@code ProtoTruthMessageDifferencer} to work
+     * together on traversing a message, instead of either class doing redundant work. The need for
+     * {@code MAYBE} arises from sub-messages. For example:
+     *
+     * <p><code>
+     *   message Foo {
+     *     optional Bar bar = 1;
+     *   }
+     *
+     *   message Bar {
+     *     optional Baz baz = 1;
+     *   }
+     *
+     *   message Baz {
+     *     optional string name = 1;
+     *     optional int64 id = 2;
+     *   }
+     * </code>
+     *
+     * <p>A {@link FieldScopeLogic} which ignores everything except 'Baz.name', when asked if
+     * 'Foo.bar' should be ignored, cannot know whether it should be ignored or not without scanning
+     * all of 'Foo.bar' for Baz submessages, and whether they have the name field set. We could scan
+     * the entire message to make this decision, but the message differencer will be scanning anyway
+     * if we choose not to ignore it, which creates redundant work. {@code MAYBE} is the solution to
+     * this problem: The logic defers the decision back to the message differencer, which proceeds
+     * with the complete scan of 'Foo.bar', and ignores the entire submessage if and only if nothing
+     * in 'Foo.bar' was determined to be un-ignorable.
      */
     MAYBE,
 
