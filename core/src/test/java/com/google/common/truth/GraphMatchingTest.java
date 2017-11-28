@@ -50,7 +50,17 @@ public final class GraphMatchingTest {
   }
 
   @Test
+  public void maximumCardinalityBipartiteMatching_exhaustive3x4() {
+    for (int edgeCombination = 1; edgeCombination < (1L << (3 * 4)); edgeCombination++) {
+      TestInstance.fromBits(3, 4, intBits(edgeCombination)).testAgainstBruteForce();
+    }
+  }
+
+  @Test
   public void maximumCardinalityBipartiteMatching_exhaustive4x4() {
+    if (isAndroid()) {
+      return; // slow
+    }
     for (int edgeCombination = 1; edgeCombination < (1L << (4 * 4)); edgeCombination++) {
       TestInstance.fromBits(4, 4, intBits(edgeCombination)).testAgainstBruteForce();
     }
@@ -58,6 +68,9 @@ public final class GraphMatchingTest {
 
   @Test
   public void maximumCardinalityBipartiteMatching_exhaustive3x5() {
+    if (isAndroid()) {
+      return; // slow
+    }
     for (int edgeCombination = 1; edgeCombination < (1L << (3 * 5)); edgeCombination++) {
       TestInstance.fromBits(3, 5, intBits(edgeCombination)).testAgainstBruteForce();
     }
@@ -65,6 +78,9 @@ public final class GraphMatchingTest {
 
   @Test
   public void maximumCardinalityBipartiteMatching_exhaustive5x3() {
+    if (isAndroid()) {
+      return; // slow
+    }
     for (int edgeCombination = 1; edgeCombination < (1L << (5 * 3)); edgeCombination++) {
       TestInstance.fromBits(5, 3, intBits(edgeCombination)).testAgainstBruteForce();
     }
@@ -98,6 +114,9 @@ public final class GraphMatchingTest {
 
   @Test
   public void maximumCardinalityBipartiteMatching_randomDense8x8() {
+    if (isAndroid()) {
+      return; // slow
+    }
     Random rng = new Random(0x5add1e5);
     for (int i = 0; i < 100; i++) {
       // Set each bit with probability 0.5, giving an average of 4 of the possible 8 edges per
@@ -431,5 +450,9 @@ public final class GraphMatchingTest {
       bits.set(bitIndex, rng.nextDouble() < bitProbability);
     }
     return bits;
+  }
+
+  private static boolean isAndroid() {
+    return System.getProperties().getProperty("java.runtime.name").contains("Android");
   }
 }
