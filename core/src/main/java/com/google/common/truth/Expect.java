@@ -18,13 +18,13 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Throwables.getStackTraceAsString;
-import static com.google.common.truth.StringUtil.messageFor;
+import static com.google.common.truth.Platform.comparisonFailure;
+import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Objects;
+import com.google.common.truth.Truth.AssertionErrorWithCause;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -55,7 +55,7 @@ import org.junit.runners.model.Statement;
 public final class Expect extends StandardSubjectBuilder implements TestRule {
 
   private static final class ExpectationGatherer extends AbstractFailureStrategy {
-    private final List<ExpectationFailure> messages = new ArrayList<ExpectationFailure>();
+    private final List<AssertionError> failures = new ArrayList<AssertionError>();
     private final boolean showStackTrace;
 
     ExpectationGatherer(boolean showStackTrace) {
@@ -65,78 +65,41 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     @Override
     public void failComparing(
         String message, CharSequence expected, CharSequence actual, Throwable cause) {
-      fail(messageFor(message, expected, actual), cause);
+      cleanAndRecord(comparisonFailure(message, expected.toString(), actual.toString(), cause));
     }
 
     @Override
     public void fail(String message, Throwable cause) {
-      messages.add(
-          new ExpectationFailure(
-              message, cause != null ? new AssertionError(cause) : new AssertionError()));
+      cleanAndRecord(new AssertionErrorWithCause(message, cause));
     }
 
-    List<ExpectationFailure> getFailures() {
-      return messages;
+    void cleanAndRecord(AssertionError failure) {
+      cleanStackTrace(failure);
+      failures.add(failure);
+    }
+
+    List<AssertionError> getFailures() {
+      return failures;
     }
 
     @Override
     public String toString() {
-      List<ExpectationFailure> failures = getFailures();
+      List<AssertionError> failures = getFailures();
       int numFailures = failures.size();
       StringBuilder message =
           new StringBuilder(
               numFailures + (numFailures > 1 ? " expectations" : " expectation") + " failed:\n");
       int count = 0;
-      for (ExpectationFailure failure : failures) {
+      for (AssertionError failure : failures) {
         count++;
         message.append("  ");
         message.append(count);
         message.append(". ");
-        message.append(failure.message());
+        message.append(showStackTrace ? getStackTraceAsString(failure) : failure.getMessage());
         message.append("\n");
-        if (showStackTrace) {
-          Throwable cause = failure.cause();
-          StackTraceCleaner.cleanStackTrace(cause);
-          message.append(getStackTraceAsString(cause));
-          message.append("\n");
-        }
       }
 
       return message.toString();
-    }
-  }
-
-  // TODO(cpovirk): Eliminate this in favor of just storing an AssertionError.
-  private static final class ExpectationFailure {
-    private final String message;
-    private final Throwable cause;
-
-    ExpectationFailure(String message, Throwable cause) {
-      this.message = checkNotNull(message);
-      this.cause = cause;
-    }
-
-    String message() {
-      return message;
-    }
-
-    Throwable cause() {
-      return cause;
-    }
-
-    @Override
-    public boolean equals(@Nullable Object other) {
-      if (other instanceof ExpectationFailure) {
-        ExpectationFailure that = (ExpectationFailure) other;
-        return this.message.equals(that.message) && Objects.equal(this.cause, that.cause);
-      } else {
-        return false;
-      }
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(message, cause);
     }
   }
 
@@ -182,7 +145,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
                 t instanceof AssumptionViolatedException
                     ? "Failures occurred before an assumption was violated"
                     : "Failures occurred before an exception was thrown while the test was running";
-            gatherer.fail(message + ": " + t, t);
+            gatherer.cleanAndRecord(new AssertionErrorWithCause(message + ": " + t, t));
           } else {
             throw t;
           }
