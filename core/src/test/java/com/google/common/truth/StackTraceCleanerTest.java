@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -24,6 +25,7 @@ import org.junit.runners.JUnit4;
 /** Unit tests for {@link StackTraceCleaner}. */
 @RunWith(JUnit4.class)
 public class StackTraceCleanerTest {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
 
   @Test
   public void emptyTrace() {
@@ -55,6 +57,20 @@ public class StackTraceCleanerTest {
               createCollapsedStackTraceElement("Testing framework", 5),
               createStackTraceElement("com.example.Gar"),
             });
+  }
+
+  @Test
+  public void assertionsActuallyUseCleaner() {
+    expectFailure.whenTesting().that(1).isEqualTo(2);
+    assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
+        .isEqualTo(getClass().getName());
+  }
+
+  @Test
+  public void assertionsActuallyUseCleaner_ComparisonFailure() {
+    expectFailure.whenTesting().that("1").isEqualTo("2");
+    assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
+        .isEqualTo(getClass().getName());
   }
 
   @Test

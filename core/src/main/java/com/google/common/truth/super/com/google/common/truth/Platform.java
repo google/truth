@@ -59,8 +59,12 @@ final class Platform {
     return type;
   }
 
-  static AssertionError comparisonFailure(String message, String expected, String actual) {
-    return new AssertionError(format("%s: expected: %s actual: %s", message, expected, actual));
+  static AssertionError comparisonFailure(
+      String message, String expected, String actual, Throwable cause) {
+    AssertionError failure =
+        new AssertionError(format("%s: expected: %s actual: %s", message, expected, actual));
+    failure.initCause(cause); // Not affected by Android bug
+    return failure;
   }
 
   /** Determines if the given subject contains a match for the given regex. */
