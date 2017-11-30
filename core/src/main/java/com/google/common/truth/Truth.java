@@ -15,6 +15,9 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Platform.comparisonFailure;
+import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
 import com.google.common.collect.ListMultimap;
@@ -87,30 +90,18 @@ public final class Truth {
       new AbstractFailureStrategy() {
         @Override
         public void fail(String message, Throwable cause) {
-          throw stripFramesAndTryToAddCause(new AssertionError(message), cause);
+          AssertionError failure = new AssertionErrorWithCause(message, cause);
+          cleanStackTrace(failure);
+          throw failure;
         }
 
         @Override
         public void failComparing(
             String message, CharSequence expected, CharSequence actual, @Nullable Throwable cause) {
-          AssertionError e =
-              Platform.comparisonFailure(message, expected.toString(), actual.toString());
-          throw stripFramesAndTryToAddCause(e, cause);
-        }
-
-        private AssertionError stripFramesAndTryToAddCause(
-            AssertionError failure, @Nullable Throwable cause) {
-          if (cause != null) {
-            try {
-              failure.initCause(cause);
-            } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-              // https://code.google.com/p/android/issues/detail?id=29378
-              // Skip initCause. That's sad, but it's the best we can do without awful hacks.
-              // TODO(cpovirk): Actually, maybe we can override getCause(). Try that someday.
-            }
-          }
-          StackTraceCleaner.cleanStackTrace(failure);
-          return failure;
+          AssertionError failure =
+              comparisonFailure(message, expected.toString(), actual.toString(), cause);
+          cleanStackTrace(failure);
+          throw failure;
         }
       };
 
@@ -319,5 +310,37 @@ public final class Truth {
 
   public static AtomicLongMapSubject assertThat(@Nullable AtomicLongMap<?> actual) {
     return assert_().that(actual);
+  }
+
+  static final class AssertionErrorWithCause extends AssertionError {
+    /** Separate cause field, in case initCause() fails. */
+    private final Throwable cause;
+
+    AssertionErrorWithCause(String message, Throwable cause) {
+      super(message);
+      this.cause = cause;
+
+      try {
+        initCause(cause);
+      } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
+        // https://code.google.com/p/android/issues/detail?id=29378
+        // We fall back to overriding getCause(). Well, we *always* override getCause(), so even
+        // when initCause() works, it isn't doing much for us here other than forcing future
+        // initCause() attempts to fail loudly rather than be silently ignored.
+      }
+    }
+
+    @Override
+    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
+    public Throwable getCause() {
+      return cause;
+    }
+
+    @Override
+    public String toString() {
+      String clazz = "java.lang.AssertionError";
+      String message = getLocalizedMessage();
+      return message == null ? clazz : clazz + ": " + message;
+    }
   }
 }

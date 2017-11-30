@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import com.google.common.base.Throwables;
+import com.google.common.truth.Truth.AssertionErrorWithCause;
 import javax.annotation.Nullable;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -100,9 +101,7 @@ public final class ExpectFailure implements TestRule {
   public StandardSubjectBuilder whenTesting() {
     checkState(inRuleContext, "ExpectFailure must be used as a JUnit @Rule");
     if (failure != null) {
-      AssertionError error = new AssertionError("ExpectFailure already captured a failure");
-      error.initCause(failure);
-      throw error;
+      throw new AssertionErrorWithCause("ExpectFailure already captured a failure", failure);
     }
     if (failureExpected) {
       throw new AssertionError(

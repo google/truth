@@ -117,8 +117,9 @@ final class Platform {
     return type;
   }
 
-  static AssertionError comparisonFailure(String message, String expected, String actual) {
-    return new ComparisonFailure(message, expected, actual);
+  static AssertionError comparisonFailure(
+      String message, String expected, String actual, Throwable cause) {
+    return new ComparisonFailureWithCause(message, expected, actual, cause);
   }
 
   /** Determines if the given subject contains a match for the given regex. */
@@ -162,5 +163,34 @@ final class Platform {
   static boolean isStackTraceCleaningDisabled() {
     return Boolean.parseBoolean(
         System.getProperty("com.google.common.truth.disable_stack_trace_cleaning"));
+  }
+
+  private static final class ComparisonFailureWithCause extends ComparisonFailure {
+    /** Separate cause field, in case initCause() fails. */
+    private final Throwable cause;
+
+    ComparisonFailureWithCause(String message, String expected, String actual, Throwable cause) {
+      super(message, expected, actual);
+      this.cause = cause;
+
+      try {
+        initCause(cause);
+      } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
+        // See Truth.AssertionErrorWithCause.
+      }
+    }
+
+    @Override
+    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
+    public Throwable getCause() {
+      return cause;
+    }
+
+    @Override
+    public String toString() {
+      String clazz = "org.junit.ComparisonFailure";
+      String message = getLocalizedMessage();
+      return message == null ? clazz : clazz + ": " + message;
+    }
   }
 }
