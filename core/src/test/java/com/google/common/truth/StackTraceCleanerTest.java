@@ -202,6 +202,9 @@ public class StackTraceCleanerTest {
 
   @Test
   public void suppressedThrowablesAreAlsoCleaned() {
+    if (isAndroid()) {
+      return; // suppressed exceptions aren't supported under Ice Cream Sandwich, where we test
+    }
     Throwable throwable = createThrowableWithStackTrace("com.example.Foo", "org.junit.FilterMe");
     Throwable suppressed1 = createThrowableWithStackTrace("com.example.Bar", "org.junit.FilterMe");
     Throwable suppressed2 = createThrowableWithStackTrace("com.example.Car", "org.junit.FilterMe");
@@ -217,6 +220,9 @@ public class StackTraceCleanerTest {
 
   @Test
   public void mixedCausingAndSuppressThrowablesAreCleaned() {
+    if (isAndroid()) {
+      return; // suppressed exceptions aren't supported under Ice Cream Sandwich, where we test
+    }
     Throwable suppressed1 = createThrowableWithStackTrace("com.example.Foo", "org.junit.FilterMe");
     Throwable cause2 = createThrowableWithStackTrace("com.example.Bar", "org.junit.FilterMe");
     Throwable cause1 =
@@ -305,5 +311,9 @@ public class StackTraceCleanerTest {
     public synchronized Throwable getCause() {
       return this;
     }
+  }
+
+  private static boolean isAndroid() {
+    return System.getProperties().getProperty("java.runtime.name").contains("Android");
   }
 }
