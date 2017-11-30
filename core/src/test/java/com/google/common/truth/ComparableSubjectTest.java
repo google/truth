@@ -15,15 +15,11 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.Range;
-import com.google.testing.compile.JavaFileObjects;
 import java.math.BigDecimal;
-import javax.tools.JavaFileObject;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -237,65 +233,5 @@ public class ComparableSubjectTest {
     public String toString() {
       return Integer.toString(wrapped);
     }
-  }
-
-  @Test
-  public void comparableMixedTypesDontCompile() {
-    JavaFileObject file =
-        JavaFileObjects.forSourceLines(
-            "test.MyTest",
-            "package test;",
-            "import static com.google.common.truth.Truth.assertThat;",
-            "class MyTest {",
-            "  public void testFoo() {",
-            "    assertThat(new ComparableType(3)).isLessThan(\"kak\");",
-            "  }",
-            "  private static final class ComparableType implements Comparable<ComparableType> {",
-            "    private final int wrapped;",
-            "    private ComparableType(int toWrap) {",
-            "      this.wrapped = toWrap;",
-            "    }",
-            "    @Override public int compareTo(ComparableType other) {",
-            "      return wrapped - ((ComparableType) other).wrapped;",
-            "    }",
-            "  }",
-            "}");
-
-    assertAbout(javaSource())
-        .that(file)
-        .failsToCompile()
-        .withErrorContaining("java.lang.String cannot be converted to test.MyTest.ComparableType")
-        .in(file)
-        .onLine(5);
-  }
-
-  @Test
-  public void rawComparableTypeMixedTypes() {
-    JavaFileObject file =
-        JavaFileObjects.forSourceLines(
-            "test.MyTest",
-            "package test;",
-            "import static com.google.common.truth.Truth.assertThat;",
-            "class MyTest {",
-            "  public void testFoo() {",
-            "    assertThat(new RawComparableType(3)).isLessThan(\"kak\");",
-            "  }",
-            "  private static final class RawComparableType implements Comparable {",
-            "    private final int wrapped;",
-            "    private RawComparableType(int toWrap) {",
-            "      this.wrapped = toWrap;",
-            "    }",
-            "    @Override public int compareTo(Object other) {",
-            "      return wrapped - ((RawComparableType) other).wrapped;",
-            "    }",
-            "  }",
-            "}");
-    assertAbout(javaSource())
-        .that(file)
-        .failsToCompile()
-        .withErrorContaining(
-            "java.lang.String cannot be converted to test.MyTest.RawComparableType")
-        .in(file)
-        .onLine(5);
   }
 }
