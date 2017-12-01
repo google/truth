@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.collect.Collections2.permutations;
 import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
@@ -28,7 +29,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import javax.annotation.Nullable;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -1092,32 +1092,6 @@ public class IterableSubjectTest {
 
     assertThat(actual).isNoneOf(expectedB, expectedC);
   }
-
-  /**
-   * A correspondence between strings and integers which tests whether the string parses as the
-   * integer. Parsing is as specified by {@link Integer#decode(String)}. It considers null to
-   * correspond to null only.
-   */
-  static final Correspondence<String, Integer> STRING_PARSES_TO_INTEGER_CORRESPONDENCE =
-      new Correspondence<String, Integer>() {
-
-        @Override
-        public boolean compare(@Nullable String actual, @Nullable Integer expected) {
-          if (actual == null) {
-            return expected == null;
-          }
-          try {
-            return Integer.decode(actual).equals(expected);
-          } catch (NumberFormatException e) {
-            return false;
-          }
-        }
-
-        @Override
-        public String toString() {
-          return "parses to";
-        }
-      };
 
   @Test
   public void comparingElementsUsing_contains_success() {
