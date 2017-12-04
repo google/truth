@@ -22,12 +22,16 @@ import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference;
+import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -53,25 +57,13 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   public void isEqualTo(@Nullable Object other) {
     if (!Objects.equal(actual(), other)) {
       if (other instanceof Map) {
-        MapDifference<?, ?> diff = Maps.difference((Map<?, ?>) other, (Map<?, ?>) actual());
-        String errorMsg = "The subject";
-        if (!diff.entriesOnlyOnLeft().isEmpty()) {
-          errorMsg += " is missing the following entries: " + diff.entriesOnlyOnLeft();
-          if (!diff.entriesOnlyOnRight().isEmpty() || !diff.entriesDiffering().isEmpty()) {
-            errorMsg += " and";
-          }
+        boolean mapEquals = containsExactlyEntriesInAnyOrder((Map<?, ?>) other, "is equal to");
+        if (mapEquals) {
+          failWithRawMessage(
+              "Not true that %s is equal to <%s>. It is equal according to the contract of "
+                  + "Map.equals(Object), but this implementation returned false",
+              actualAsString(), other);
         }
-        if (!diff.entriesOnlyOnRight().isEmpty()) {
-          errorMsg += " has the following extra entries: " + diff.entriesOnlyOnRight();
-          if (!diff.entriesDiffering().isEmpty()) {
-            errorMsg += " and";
-          }
-        }
-        if (!diff.entriesDiffering().isEmpty()) {
-          errorMsg += " has the following different entries: " + diff.entriesDiffering();
-        }
-        failWithRawMessage(
-            "Not true that %s is equal to <%s>. " + errorMsg, actualAsString(), other);
       } else {
         fail("is equal to", other);
       }
@@ -180,7 +172,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map is not empty. */
   @CanIgnoreReturnValue
   public Ordered containsExactly() {
-    return check().that(actual().entrySet()).containsExactly();
+    return containsExactlyEntriesIn(ImmutableMap.of());
   }
 
   /**
@@ -188,6 +180,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    *
    * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+   *
+   * <p>The arguments must not contain duplicate keys.
    */
   @CanIgnoreReturnValue
   public Ordered containsExactly(@Nullable Object k0, @Nullable Object v0, Object... rest) {
@@ -221,8 +215,135 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map does not contain exactly the given set of entries in the given map. */
   @CanIgnoreReturnValue
   public Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
-    return check().that(actual().entrySet()).containsExactlyElementsIn(expectedMap.entrySet());
+    boolean containsAnyOrder = containsExactlyEntriesInAnyOrder(expectedMap, "contains exactly");
+    if (containsAnyOrder) {
+      return new MapInOrder(expectedMap);
+    } else {
+      return ALREADY_FAILED;
+    }
   }
+
+  @CanIgnoreReturnValue
+  private boolean containsExactlyEntriesInAnyOrder(Map<?, ?> expectedMap, String failVerb) {
+    MapDifference<?, ?> diff = Maps.difference(expectedMap, actual());
+    if (diff.areEqual()) {
+      return true;
+    }
+    boolean includeKeyTypes = includeKeyTypes(diff);
+    Map<?, ?> missing = diff.entriesOnlyOnLeft();
+    Map<?, ?> unexpected = diff.entriesOnlyOnRight();
+    Map<?, ? extends ValueDifference<?>> wrongValues = diff.entriesDiffering();
+    StringBuilder errorMsg = new StringBuilder();
+    if (!missing.isEmpty()) {
+      errorMsg
+          .append("is missing keys for the following entries: ")
+          .append(includeKeyTypes ? addKeyTypes(missing) : missing);
+    }
+    if (!unexpected.isEmpty()) {
+      if (errorMsg.length() > 0) {
+        errorMsg.append(" and ");
+      }
+      errorMsg
+          .append("has the following entries with unexpected keys: ")
+          .append(includeKeyTypes ? addKeyTypes(unexpected) : unexpected);
+    }
+    if (!wrongValues.isEmpty()) {
+      if (errorMsg.length() > 0) {
+        errorMsg.append(" and ");
+      }
+      Map<?, String> wrongValuesFormatted =
+          Maps.transformValues(wrongValues, VALUE_DIFFERENCE_FORMATTER);
+      errorMsg
+          .append("has the following entries with matching keys but different values: ")
+          .append(includeKeyTypes ? addKeyTypes(wrongValuesFormatted) : wrongValuesFormatted);
+    }
+    failWithRawMessage(
+        "Not true that %s %s <%s>. It %s", actualAsString(), failVerb, expectedMap, errorMsg);
+    return false;
+  }
+
+  private static boolean includeKeyTypes(MapDifference<?, ?> diff) {
+    // We will annotate all the keys in the diff with their types if any of the keys involved have
+    // the same toString() without being equal.
+    Set<Object> keys = Sets.newHashSet();
+    keys.addAll(diff.entriesOnlyOnLeft().keySet());
+    keys.addAll(diff.entriesOnlyOnRight().keySet());
+    keys.addAll(diff.entriesDiffering().keySet());
+    return hasMatchingToStringPair(keys, keys);
+  }
+
+  private static final Map<Object, Object> addKeyTypes(Map<?, ?> in) {
+    Map<Object, Object> out = Maps.newLinkedHashMap();
+    for (Map.Entry<?, ?> entry : in.entrySet()) {
+      out.put(new TypedToStringWrapper(entry.getKey()), entry.getValue());
+    }
+    return out;
+  }
+
+  private static final Function<ValueDifference<?>, String> VALUE_DIFFERENCE_FORMATTER =
+      new Function<ValueDifference<?>, String>() {
+        @Override
+        public String apply(ValueDifference<?> diff) {
+          Object left = diff.leftValue();
+          Object right = diff.rightValue();
+          boolean includeTypes = left.toString().equals(right.toString());
+          return StringUtil.format(
+              "(expected %s but got %s)",
+              includeTypes ? new TypedToStringWrapper(left) : left,
+              includeTypes ? new TypedToStringWrapper(right) : right);
+        }
+      };
+
+  private static class TypedToStringWrapper {
+
+    private final Object delegate;
+
+    TypedToStringWrapper(Object delegate) {
+      this.delegate = delegate;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+      return Objects.equal(delegate, other);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(delegate);
+    }
+
+    @Override
+    public String toString() {
+      return StringUtil.format("%s (%s)", delegate, objectToTypeName(delegate));
+    }
+  }
+
+  private class MapInOrder implements Ordered {
+
+    private final Map<?, ?> expectedMap;
+
+    MapInOrder(Map<?, ?> expectedMap) {
+      this.expectedMap = expectedMap;
+    }
+
+    @Override
+    public void inOrder() {
+      List<?> expectedKeyOrder = Lists.newArrayList(expectedMap.keySet());
+      List<?> actualKeyOrder = Lists.newArrayList(actual().keySet());
+      if (!actualKeyOrder.equals(expectedKeyOrder)) {
+        failWithRawMessage(
+            "Not true that %s contains exactly these entries in order <%s>",
+            actualAsString(), expectedMap);
+      }
+    }
+  }
+
+  /** Ordered implementation that does nothing because an earlier check already caused a failure. */
+  private static final Ordered ALREADY_FAILED =
+      new Ordered() {
+        @Override
+        public void inOrder() {}
+      };
 
   /**
    * Starts a method chain for a check in which the actual values (i.e. the values of the {@link
@@ -347,6 +468,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
      */
     @CanIgnoreReturnValue
     public <K, V extends E> Ordered containsExactlyEntriesIn(Map<K, V> expectedMap) {
+      // TODO(b/69728070): Show missing keys, unexpected keys, and matching keys with wrong values,
+      // like we do for the vanilla containsExactlyEntriesIn.
       return check()
           .that(actual().entrySet())
           .comparingElementsUsing(new EntryCorrespondence<K, A, V>(correspondence))
