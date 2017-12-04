@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
+import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class MapSubjectTest {
   public void containsExactlyMultipleEntries() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
-    assertThat(actual).containsExactly("jan", 1, "feb", 2, "march", 3);
+    assertThat(actual).containsExactly("march", 3, "jan", 1, "feb", 2);
     assertThat(actual).containsExactly("jan", 1, "feb", 2, "march", 3).inOrder();
     assertThat(actual).containsExactlyEntriesIn(actual);
     assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
@@ -120,31 +121,111 @@ public class MapSubjectTest {
   }
 
   @Test
-  public void containsExactlyMissingEntry() {
+  public void containsExactlyExtraKey() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
-    assertThat(actual).containsExactlyEntriesIn(actual);
-    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
-
-    expectFailure.whenTesting().that(actual).containsExactly("jan", 1, "feb", 2);
+    expectFailure.whenTesting().that(actual).containsExactly("feb", 2, "jan", 1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[jan=1, feb=2, march=3]> contains exactly <[jan=1, feb=2]>. "
-                + "It has unexpected items <[march=3]>");
+            "Not true that <{jan=1, feb=2, march=3}> contains exactly <{feb=2, jan=1}>. "
+                + "It has the following entries with unexpected keys: {march=3}");
   }
 
   @Test
-  public void containsExactlyMissingEntryInOrder() {
+  public void containsExactlyExtraKeyInOrder() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
-    assertThat(actual).containsExactlyEntriesIn(actual);
-    assertThat(actual).containsExactlyEntriesIn(actual).inOrder();
-
     expectFailure.whenTesting().that(actual).containsExactly("feb", 2, "jan", 1).inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[jan=1, feb=2, march=3]> contains exactly <[feb=2, jan=1]>. "
-                + "It has unexpected items <[march=3]>");
+            "Not true that <{jan=1, feb=2, march=3}> contains exactly <{feb=2, jan=1}>. "
+                + "It has the following entries with unexpected keys: {march=3}");
+  }
+
+  @Test
+  public void namedMapContainsExactlyExtraKey() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    expectFailure.whenTesting().that(actual).named("foo").containsExactly("feb", 2, "jan", 1);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that foo (<{jan=1, feb=2, march=3}>) contains exactly <{feb=2, jan=1}>. "
+                + "It has the following entries with unexpected keys: {march=3}");
+  }
+
+  @Test
+  public void containsExactlyMissingKey() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
+    expectFailure.whenTesting().that(actual).containsExactly("jan", 1, "march", 3, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2}> contains exactly <{jan=1, march=3, feb=2}>. "
+                + "It is missing keys for the following entries: {march=3}");
+  }
+
+  @Test
+  public void containsExactlyWrongValue() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    expectFailure.whenTesting().that(actual).containsExactly("jan", 1, "march", 33, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> contains exactly <{jan=1, march=33, feb=2}>. "
+                + "It has the following entries with matching keys but different values: "
+                + "{march=(expected 33 but got 3)}");
+  }
+
+  @Test
+  public void containsExactlyExtraKeyAndMissingKey() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "march", 3);
+    expectFailure.whenTesting().that(actual).containsExactly("jan", 1, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, march=3}> contains exactly <{jan=1, feb=2}>. "
+                + "It is missing keys for the following entries: {feb=2} "
+                + "and has the following entries with unexpected keys: {march=3}");
+  }
+
+  @Test
+  public void containsExactlyExtraKeyAndWrongValue() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    expectFailure.whenTesting().that(actual).containsExactly("jan", 1, "march", 33);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> contains exactly <{jan=1, march=33}>. "
+                + "It has the following entries with unexpected keys: {feb=2} "
+                + "and has the following entries with matching keys but different values: "
+                + "{march=(expected 33 but got 3)}");
+  }
+
+  @Test
+  public void containsExactlyMissingKeyAndWrongValue() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "march", 3);
+    expectFailure.whenTesting().that(actual).containsExactly("jan", 1, "march", 33, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, march=3}> contains exactly <{jan=1, march=33, feb=2}>. "
+                + "It is missing keys for the following entries: {feb=2} "
+                + "and has the following entries with matching keys but different values: "
+                + "{march=(expected 33 but got 3)}");
+  }
+
+  @Test
+  public void containsExactlyExtraKeyAndMissingKeyAndWrongValue() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "march", 3);
+    expectFailure.whenTesting().that(actual).containsExactly("march", 33, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, march=3}> contains exactly <{march=33, feb=2}>. "
+                + "It is missing keys for the following entries: {feb=2} "
+                + "and has the following entries with unexpected keys: {jan=1} "
+                + "and has the following entries with matching keys but different values: "
+                + "{march=(expected 33 but got 3)}");
   }
 
   @Test
@@ -162,8 +243,8 @@ public class MapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[jan=1, feb=2, march=3]> contains exactly these elements in order "
-                + "<[jan=1, march=3, feb=2]>");
+            "Not true that <{jan=1, feb=2, march=3}> contains exactly these entries in order "
+                + "<{jan=1, march=3, feb=2}>");
   }
 
   @Test
@@ -188,7 +269,7 @@ public class MapSubjectTest {
   }
 
   @Test
-  public void containsExactly_failsWithSameToString() {
+  public void containsExactlyWrongValue_sameToStringForValues() {
     expectFailure
         .whenTesting()
         .that(ImmutableMap.of("jan", 1L, "feb", 2L))
@@ -196,10 +277,39 @@ public class MapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[jan=1, feb=2]> contains exactly <[jan=1, feb=2]>. It is missing "
-                + "<[jan=1, feb=2] (Map.Entry<java.lang.String, java.lang.Integer>)> and has "
-                + "unexpected items "
-                + "<[jan=1, feb=2] (Map.Entry<java.lang.String, java.lang.Long>)>");
+            "Not true that <{jan=1, feb=2}> contains exactly <{jan=1, feb=2}>. "
+                + "It has the following entries with matching keys but different values: "
+                + "{jan=(expected 1 (java.lang.Integer) but got 1 (java.lang.Long)), "
+                + "feb=(expected 2 (java.lang.Integer) but got 2 (java.lang.Long))}");
+  }
+
+  @Test
+  public void containsExactlyWrongValue_sameToStringForKeys() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMap.of(1L, "jan", 1, "feb"))
+        .containsExactly(1, "jan", 1L, "feb");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=jan, 1=feb}> contains exactly <{1=jan, 1=feb}>. "
+                + "It has the following entries with matching keys but different values: "
+                + "{1 (java.lang.Integer)=(expected jan but got feb), "
+                + "1 (java.lang.Long)=(expected feb but got jan)}");
+  }
+
+  @Test
+  public void containsExactlyExtraKeyAndMissingKey_failsWithSameToStringForKeys() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMap.of(1L, "jan", 2, "feb"))
+        .containsExactly(1, "jan", 2, "feb");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=jan, 2=feb}> contains exactly <{1=jan, 2=feb}>. "
+                + "It is missing keys for the following entries: {1 (java.lang.Integer)=jan} "
+                + "and has the following entries with unexpected keys: {1 (java.lang.Long)=jan}");
   }
 
   @Test
@@ -220,9 +330,10 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, april=4, march=5}>. "
-                + "The subject is missing the following entries: {april=4} and "
-                + "has the following extra entries: {feb=2} and "
-                + "has the following different entries: {march=(5, 3)}");
+                + "It is missing keys for the following entries: {april=4} and "
+                + "has the following entries with unexpected keys: {feb=2} and "
+                + "has the following entries with matching keys but different values: "
+                + "{march=(expected 5 but got 3)}");
   }
 
   @Test
@@ -235,7 +346,8 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=4}>. "
-                + "The subject has the following different entries: {march=(4, 3)}");
+                + "It has the following entries with matching keys but different values: "
+                + "{march=(expected 4 but got 3)}");
   }
 
   @Test
@@ -248,7 +360,8 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to <{jan=1, feb=2, march=4}>."
-                + " The subject has the following different entries: {march=(4, 3)}");
+                + " It has the following entries with matching keys but different values: "
+                + "{march=(expected 4 but got 3)}");
   }
 
   @Test
@@ -261,7 +374,7 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2}>. "
-                + "The subject has the following extra entries: {march=3}");
+                + "It has the following entries with unexpected keys: {march=3}");
   }
 
   @Test
@@ -274,7 +387,7 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <{jan=1, feb=2}> is equal to <{jan=1, feb=2, march=3}>. "
-                + "The subject is missing the following entries: {march=3}");
+                + "It is missing keys for the following entries: {march=3}");
   }
 
   @Test
@@ -287,8 +400,89 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, mar=3}>. "
-                + "The subject is missing the following entries: {mar=3} "
-                + "and has the following extra entries: {march=3}");
+                + "It is missing keys for the following entries: {mar=3} "
+                + "and has the following entries with unexpected keys: {march=3}");
+  }
+
+  @Test
+  public void isEqualToFailureDiffering_sameToString() {
+    ImmutableMap<String, Number> actual =
+        ImmutableMap.<String, Number>of("jan", 1, "feb", 2, "march", 3L);
+    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    expectFailure.whenTesting().that(actual).isEqualTo(expectedMap);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=3}>. "
+                + "It has the following entries with matching keys but different values: "
+                + "{march=(expected 3 (java.lang.Integer) but got 3 (java.lang.Long))}");
+  }
+
+  @Test
+  public void isEqualToNonMap() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    expectFailure.whenTesting().that(actual).isEqualTo("something else");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{jan=1, feb=2, march=3}> is equal to <something else>");
+  }
+
+  /**
+   * A broken implementation of {@link Map} whose {@link #equals} method does not implement the
+   * contract. Users sometimes write tests using broken implementations, and we should test that
+   * {@code isEqualTo} is consistent with their implementation.
+   */
+  private static class BrokenMap<K, V> extends ForwardingMap<K, V> {
+
+    static <K, V> Map<K, V> wrapWithAlwaysTrueEquals(Map<K, V> delegate) {
+      return new BrokenMap<K, V>(delegate, true);
+    }
+
+    static <K, V> Map<K, V> wrapWithAlwaysFalseEquals(Map<K, V> delegate) {
+      return new BrokenMap<K, V>(delegate, false);
+    }
+
+    private final Map<K, V> delegate;
+    private final boolean equalsStub;
+
+    private BrokenMap(Map<K, V> delegate, boolean equalsStub) {
+      this.delegate = delegate;
+      this.equalsStub = equalsStub;
+    }
+
+    @Override
+    public Map<K, V> delegate() {
+      return delegate;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+      return equalsStub;
+    }
+  }
+
+  @Test
+  public void isEqualTo_brokenMapEqualsImplementation_trueWhenItShouldBeFalse() {
+    // These maps are not equal according to the contract of Map.equals, but have a broken equals()
+    // implementation that always returns true. So the isEqualTo assertion should pass.
+    Map<String, Integer> map1 = BrokenMap.wrapWithAlwaysTrueEquals(ImmutableMap.of("jan", 1));
+    Map<String, Integer> map2 = BrokenMap.wrapWithAlwaysTrueEquals(ImmutableMap.of("feb", 2));
+    assertThat(map1).isEqualTo(map2);
+  }
+
+  @Test
+  public void isEqualTo_brokenMapEqualsImplementation_falseWhenItShouldBeTrue() {
+    // These maps are equal according to the contract of Map.equals, but have a broken equals()
+    // implementation that always returns false. So the isEqualTo assertion should fail.
+    Map<String, Integer> map1 = BrokenMap.wrapWithAlwaysFalseEquals(ImmutableMap.of("jan", 1));
+    Map<String, Integer> map1clone = BrokenMap.wrapWithAlwaysFalseEquals(ImmutableMap.of("jan", 1));
+    expectFailure.whenTesting().that(map1).isEqualTo(map1clone);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1}> is equal to <{jan=1}>. It is equal according to the contract "
+                + "of Map.equals(Object), but this implementation returned false");
   }
 
   @Test
@@ -449,7 +643,7 @@ public class MapSubjectTest {
         .hasMessageThat()
         .isEqualTo("Not true that <{kurt=kluever}> contains entry <greg=kick>");
   }
-  
+
   @Test
   public void containsEntry_failsWithSameToStringOfKey() {
     expectFailure
