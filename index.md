@@ -15,7 +15,6 @@ See all of the known types [here](known_types).
 You can also [read Truth's source directly][source], view its [API docs], and
 [compare it to common alternatives](comparison).
 
-**All new code is encouraged to use Truth instead of JUnit assertions.**
 
 # How to use Truth
 
