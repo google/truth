@@ -20,7 +20,6 @@ import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableSet;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -33,8 +32,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class IntegerSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void simpleEquality() {

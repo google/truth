@@ -19,6 +19,7 @@ import static com.google.common.truth.GraphMatching.maximumCardinalityBipartiteM
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -57,8 +58,9 @@ public final class GraphMatchingTest {
   }
 
   @Test
+  @GwtIncompatible("slow")
   public void maximumCardinalityBipartiteMatching_exhaustive4x4() {
-    if (isAndroid()) {
+    if (Platform.isAndroid()) {
       return; // slow
     }
     for (int edgeCombination = 1; edgeCombination < (1L << (4 * 4)); edgeCombination++) {
@@ -67,8 +69,9 @@ public final class GraphMatchingTest {
   }
 
   @Test
+  @GwtIncompatible("slow")
   public void maximumCardinalityBipartiteMatching_exhaustive3x5() {
-    if (isAndroid()) {
+    if (Platform.isAndroid()) {
       return; // slow
     }
     for (int edgeCombination = 1; edgeCombination < (1L << (3 * 5)); edgeCombination++) {
@@ -77,8 +80,9 @@ public final class GraphMatchingTest {
   }
 
   @Test
+  @GwtIncompatible("slow")
   public void maximumCardinalityBipartiteMatching_exhaustive5x3() {
-    if (isAndroid()) {
+    if (Platform.isAndroid()) {
       return; // slow
     }
     for (int edgeCombination = 1; edgeCombination < (1L << (5 * 3)); edgeCombination++) {
@@ -113,8 +117,9 @@ public final class GraphMatchingTest {
   }
 
   @Test
+  @GwtIncompatible("slow")
   public void maximumCardinalityBipartiteMatching_randomDense8x8() {
-    if (isAndroid()) {
+    if (Platform.isAndroid()) {
       return; // slow
     }
     Random rng = new Random(0x5add1e5);
@@ -450,9 +455,5 @@ public final class GraphMatchingTest {
       bits.set(bitIndex, rng.nextDouble() < bitProbability);
     }
     return bits;
-  }
-
-  private static boolean isAndroid() {
-    return System.getProperties().getProperty("java.runtime.name").contains("Android");
   }
 }

@@ -18,9 +18,9 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.annotations.GwtIncompatible;
 import java.util.regex.Pattern;
 import org.junit.ComparisonFailure;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -32,8 +32,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class StringSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasLength() {
@@ -141,6 +140,7 @@ public class StringSubjectTest {
   }
 
   @Test
+  @GwtIncompatible("ComparisonFailure")
   public void stringEqualityFail() {
     try {
       assertThat("abc").isEqualTo("abd");
@@ -152,6 +152,7 @@ public class StringSubjectTest {
   }
 
   @Test
+  @GwtIncompatible("ComparisonFailure")
   public void stringNamedEqualityFail() {
     try {
       assertThat("abc").named("foo").isEqualTo("abd");
@@ -218,11 +219,13 @@ public class StringSubjectTest {
   }
 
   @Test
+  @GwtIncompatible("Pattern")
   public void stringMatchesPattern() {
     assertThat("abcaqadev").doesNotMatch(Pattern.compile(".*aaa.*"));
   }
 
   @Test
+  @GwtIncompatible("Pattern")
   public void stringMatchesPatternWithFail() {
     expectFailure.whenTesting().that("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*"));
     assertThat(expectFailure.getFailure())
@@ -231,6 +234,7 @@ public class StringSubjectTest {
   }
 
   @Test
+  @GwtIncompatible("Pattern")
   public void stringContainsMatchStringUsesFind() {
     assertThat("aba").containsMatch("[b]");
     assertThat("aba").containsMatch(Pattern.compile("[b]"));
@@ -247,6 +251,7 @@ public class StringSubjectTest {
   }
 
   @Test
+  @GwtIncompatible("Pattern")
   public void stringContainsMatchPattern() {
     assertThat("aba").containsMatch(Pattern.compile(".*b.*"));
 
@@ -275,6 +280,7 @@ public class StringSubjectTest {
   }
 
   @Test
+  @GwtIncompatible("Pattern")
   public void stringDoesNotContainMatchPattern() {
     assertThat("aaa").doesNotContainMatch(Pattern.compile(".*b.*"));
 

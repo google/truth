@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -28,8 +27,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class BooleanSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class BooleanSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isTrue() {

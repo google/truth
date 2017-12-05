@@ -20,7 +20,6 @@ import static org.junit.Assert.fail;
 
 import com.google.common.collect.Range;
 import java.math.BigDecimal;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -31,8 +30,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class ComparableSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class ComparableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void testNulls() {

@@ -21,7 +21,6 @@ import static org.junit.Assert.fail;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -32,8 +31,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class MultisetSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class MultisetSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void multisetIsEmpty() {

@@ -17,15 +17,14 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Rule;
+import com.google.common.annotations.GwtIncompatible;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Unit tests for {@link StackTraceCleaner}. */
 @RunWith(JUnit4.class)
-public class StackTraceCleanerTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class StackTraceCleanerTest extends BaseSubjectTestCase {
 
   @Test
   public void emptyTrace() {
@@ -60,6 +59,7 @@ public class StackTraceCleanerTest {
   }
 
   @Test
+  @GwtIncompatible("getClass()")
   public void assertionsActuallyUseCleaner() {
     expectFailure.whenTesting().that(1).isEqualTo(2);
     assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
@@ -67,6 +67,7 @@ public class StackTraceCleanerTest {
   }
 
   @Test
+  @GwtIncompatible("getClass()")
   public void assertionsActuallyUseCleaner_ComparisonFailure() {
     expectFailure.whenTesting().that("1").isEqualTo("2");
     assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
@@ -202,7 +203,7 @@ public class StackTraceCleanerTest {
 
   @Test
   public void suppressedThrowablesAreAlsoCleaned() {
-    if (isAndroid()) {
+    if (Platform.isAndroid()) {
       return; // suppressed exceptions aren't supported under Ice Cream Sandwich, where we test
     }
     Throwable throwable = createThrowableWithStackTrace("com.example.Foo", "org.junit.FilterMe");
@@ -220,7 +221,7 @@ public class StackTraceCleanerTest {
 
   @Test
   public void mixedCausingAndSuppressThrowablesAreCleaned() {
-    if (isAndroid()) {
+    if (Platform.isAndroid()) {
       return; // suppressed exceptions aren't supported under Ice Cream Sandwich, where we test
     }
     Throwable suppressed1 = createThrowableWithStackTrace("com.example.Foo", "org.junit.FilterMe");
@@ -311,9 +312,5 @@ public class StackTraceCleanerTest {
     public synchronized Throwable getCause() {
       return this;
     }
-  }
-
-  private static boolean isAndroid() {
-    return System.getProperties().getProperty("java.runtime.name").contains("Android");
   }
 }

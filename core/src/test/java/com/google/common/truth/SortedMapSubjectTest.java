@@ -24,15 +24,13 @@ import com.google.common.collect.Ordering;
 import java.util.NavigableMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Tests for {@link SortedMapSubject}. */
 @RunWith(JUnit4.class)
-public class SortedMapSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class SortedMapSubjectTest extends BaseSubjectTestCase {
   private static final SortedMap<String, Object> NULL_MAP;
 
   static {

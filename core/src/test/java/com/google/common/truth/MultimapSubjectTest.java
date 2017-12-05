@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -28,7 +29,6 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -40,8 +40,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class MultimapSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class MultimapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void listMultimapIsEqualTo_passes() {
@@ -446,7 +445,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s>. "
                     + "It has unexpected items <{3=[one], 4=[five]}>",
                 actual, expected));
@@ -464,7 +463,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s>. "
                     + "It is missing <{3=[six], 4=[five]}>",
                 actual, expected));
@@ -482,7 +481,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s>. "
                     + "It has unexpected items <{4=[nine], 5=[eight]}>",
                 actual, expected));
@@ -502,7 +501,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s>. "
                     + "It is missing <{3=[six], 4=[five]}> "
                     + "and has unexpected items <{4=[nine], 5=[eight]}>",
@@ -574,7 +573,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .startsWith(
-            String.format("Not true that <%s> contains exactly <%s> in order. ", actual, expected));
+            format("Not true that <%s> contains exactly <%s> in order. ", actual, expected));
   }
 
   @Test
@@ -589,7 +588,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s> in order. "
                     + "The values for keys <[3]> are not in order",
                 actual, expected));
@@ -627,7 +626,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s>. "
                     + "It is missing <{3=[six], 4=[five]}>",
                 actual, expected));
@@ -648,7 +647,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s>. "
                     + "It has unexpected items <{4=[nine], 5=[eight]}>",
                 actual, expected));
@@ -671,7 +670,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s>. "
                     + "It is missing <{3=[six], 4=[five]}> "
                     + "and has unexpected items <{4=[nine], 5=[eight]}>",
@@ -696,7 +695,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s>. "
                     + "It has unexpected items <{3=[one], 4=[five]}>",
                 actual, expected));
@@ -728,7 +727,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .startsWith(
-            String.format("Not true that <%s> contains exactly <%s> in order. ", actual, expected));
+            format("Not true that <%s> contains exactly <%s> in order. ", actual, expected));
   }
 
   @Test
@@ -747,7 +746,7 @@ public class MultimapSubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            String.format(
+            format(
                 "Not true that <%s> contains exactly <%s> in order. "
                     + "The values for keys <[3]> are not in order",
                 actual, expected));

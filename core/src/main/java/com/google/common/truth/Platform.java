@@ -201,6 +201,11 @@ final class Platform {
     return Throwables.getStackTraceAsString(throwable);
   }
 
+  /** Tests if current platform is Android. */
+  static boolean isAndroid() {
+    return System.getProperties().getProperty("java.runtime.name").contains("Android");
+  }
+
   /**
    * Wrapping interface of {@link TestRule} to be used within truth.
    *

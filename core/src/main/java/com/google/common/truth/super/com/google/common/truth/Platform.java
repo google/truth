@@ -62,7 +62,7 @@ final class Platform {
   static AssertionError comparisonFailure(
       String message, String expected, String actual, Throwable cause) {
     AssertionError failure =
-        new AssertionError(format("%s: expected: %s actual: %s", message, expected, actual));
+        new AssertionError(format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual));
     failure.initCause(cause); // Not affected by Android bug
     return failure;
   }
@@ -140,6 +140,11 @@ final class Platform {
 
   /** Always returns false. Stack traces will be cleaned by default. */
   static boolean isStackTraceCleaningDisabled() {
+    return false;
+  }
+
+  /** Tests if current platform is Android which is always false. */
+  static boolean isAndroid() {
     return false;
   }
 
