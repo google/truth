@@ -143,6 +143,18 @@ final class Platform {
     return false;
   }
 
+  /** Returns a human readable string representation of the throwable's stack trace. */
+  static String getStackTraceAsString(Throwable throwable) {
+    // TODO(cpovirk): Write a naive implementation that at least dumps the main exception's stack.
+    return throwable.toString();
+  }
+
+  /**
+   * A GWT-swapped version of test rule interface that does nothing. All methods extended from
+   * {@link org.junit.rules.TestRule} needs to be stripped.
+   */
+  interface JUnitTestRule {}
+
   // TODO(user): Move this logic to a common location.
   private static NativeRegExp compile(String pattern) {
     return new NativeRegExp(pattern);

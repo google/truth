@@ -19,7 +19,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.util.concurrent.AtomicLongMap;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,9 +29,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public final class AtomicLongMapSubjectTest {
-
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public final class AtomicLongMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualToFail() {

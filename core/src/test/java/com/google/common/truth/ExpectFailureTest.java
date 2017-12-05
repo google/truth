@@ -17,17 +17,20 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Tests for {@link ExpectFailure} */
 @RunWith(JUnit4.class)
 public class ExpectFailureTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
-  @Rule public final ExpectedException thrown = ExpectedException.none();
+  private final ExpectFailure expectFailure = new ExpectFailure();
+
+  @Before
+  public void setupExpectFailure() {
+    expectFailure.enterRuleContext();
+  }
 
   @Test
   public void expectFail_notEquals() {
@@ -51,7 +54,7 @@ public class ExpectFailureTest {
   @Test
   public void expectFail_about() {
     expectFailure.whenTesting().about(strings()).that("foo").isEqualTo("bar");
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<[foo]>");
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("foo");
   }
 
   @Test
@@ -62,38 +65,74 @@ public class ExpectFailureTest {
   @Test
   public void expectFail_failsOnSuccess() {
     expectFailure.whenTesting().that(4).isEqualTo(4);
-    thrown.expectMessage("ExpectFailure did not capture a failure.");
-    @SuppressWarnings("unused")
-    AssertionError unused = expectFailure.getFailure();
+    try {
+      @SuppressWarnings("unused")
+      AssertionError unused = expectFailure.getFailure();
+      throw new Error("Expected to fail");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessageThat().contains("ExpectFailure did not capture a failure.");
+    }
   }
 
   @Test
   public void expectFail_failsOnMultipleFailures() {
-    thrown.expectMessage("caught multiple failures");
-    thrown.expectMessage("<4> is equal to <5>");
-    thrown.expectMessage("<5> is equal to <4>");
-    expectFailure.whenTesting().about(BadSubject.badSubject()).that(5).isEqualTo(4);
+    try {
+      expectFailure.whenTesting().about(BadSubject.badSubject()).that(5).isEqualTo(4);
+      throw new Error("Expected to fail");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessageThat().contains("caught multiple failures");
+      assertThat(expected).hasMessageThat().contains("<4> is equal to <5>");
+      assertThat(expected).hasMessageThat().contains("<5> is equal to <4>");
+    }
   }
 
   @Test
   public void expectFail_failsOnMultiplewhenTestings() {
-    expectFailure.whenTesting().that(4).isEqualTo(4);
-    thrown.expectMessage(
-        "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
-    expectFailure.whenTesting();
+    try {
+      expectFailure.whenTesting().that(4).isEqualTo(4);
+      StandardSubjectBuilder unused = expectFailure.whenTesting();
+      throw new Error("Expected to fail");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .contains(
+              "ExpectFailure.whenTesting() called previously, but did not capture a failure.");
+    }
   }
 
   @Test
   public void expectFail_failsOnMultiplewhenTestings_thatFail() {
     expectFailure.whenTesting().that(5).isEqualTo(4);
-    thrown.expectMessage("ExpectFailure already captured a failure");
-    expectFailure.whenTesting();
+    try {
+      StandardSubjectBuilder unused = expectFailure.whenTesting();
+      throw new Error("Expected to fail");
+    } catch (AssertionError expected) {
+      assertThat(expected).hasMessageThat().contains("ExpectFailure already captured a failure");
+    }
   }
 
   @Test
   public void expectFail_failsAfterTest() {
-    expectFailure.whenTesting().that(4).isEqualTo(4);
-    thrown.expectMessage("ExpectFailure.whenTesting() invoked, but no failure was caught.");
+    try {
+      expectFailure.whenTesting().that(4).isEqualTo(4);
+      expectFailure.ensureFailureCaught();
+      throw new Error("Expected to fail");
+    } catch (AssertionError expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .contains("ExpectFailure.whenTesting() invoked, but no failure was caught.");
+    }
+  }
+
+  @Test
+  public void expectFail_whenTestingWithoutInContext_shouldFail() {
+    ExpectFailure expectFailure = new ExpectFailure();
+    try {
+      expectFailure.whenTesting().that(4).isEqualTo(4);
+      throw new Error("Expected to fail");
+    } catch (IllegalStateException expected) {
+      assertThat(expected).hasMessageThat().contains("ExpectFailure must be used as a JUnit @Rule");
+    }
   }
 
   private static Subject.Factory<StringSubject, String> strings() {
