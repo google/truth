@@ -17,11 +17,11 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.truth.StringUtil.format;
 
-import com.google.common.base.Throwables;
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.Truth.AssertionErrorWithCause;
 import javax.annotation.Nullable;
-import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
@@ -60,7 +60,7 @@ import org.junit.runners.model.Statement;
  * because it also checks that the assertion you're testing correctly calls {@link
  * FailureStrategy#fail} only once.
  */
-public final class ExpectFailure implements TestRule {
+public final class ExpectFailure implements Platform.JUnitTestRule {
   private final FailureStrategy strategy =
       new AbstractFailureStrategy() {
         @Override
@@ -111,6 +111,31 @@ public final class ExpectFailure implements TestRule {
     return StandardSubjectBuilder.forCustomFailureStrategy(strategy);
   }
 
+  /**
+   * Enters rule context to be ready to capture failures.
+   *
+   * <p>This should be rarely used directly, except if this class is as a long living object but not
+   * as a JUnit rule, like truth subject tests where for GWT compatible reasons.
+   */
+  void enterRuleContext() {
+    this.inRuleContext = true;
+  }
+
+  /** Leaves rule context and verify if a failure has been caught if it's expected. */
+  void leaveRuleContext() {
+    this.inRuleContext = false;
+  }
+
+  /**
+   * Ensures a failure is caught if it's expected (i.e., {@link #whenTesting} is called) and throws
+   * error if not.
+   */
+  void ensureFailureCaught() {
+    if (failureExpected && failure == null) {
+      throw new AssertionError("ExpectFailure.whenTesting() invoked, but no failure was caught.");
+    }
+  }
+
   /** Returns the captured failure, if one occurred. */
   public AssertionError getFailure() {
     if (failure == null) {
@@ -127,10 +152,9 @@ public final class ExpectFailure implements TestRule {
     if (failure != null) {
       // TODO(diamondm) is it worthwhile to add the failures as suppressed exceptions?
       throw new AssertionError(
-          String.format(
+          format(
               "ExpectFailure.whenTesting() caught multiple failures:\n\n%s\n\n%s\n",
-              Throwables.getStackTraceAsString(failure),
-              Throwables.getStackTraceAsString(captured)));
+              Platform.getStackTraceAsString(failure), Platform.getStackTraceAsString(captured)));
     }
     failure = captured;
   }
@@ -144,7 +168,7 @@ public final class ExpectFailure implements TestRule {
    */
   public static AssertionError expectFailure(StandardSubjectBuilderCallback assertionCallback) {
     ExpectFailure expectFailure = new ExpectFailure();
-    expectFailure.inRuleContext = true; // safe since this instance doesn't leave this method
+    expectFailure.enterRuleContext(); // safe since this instance doesn't leave this method
     assertionCallback.invokeAssertion(expectFailure.whenTesting());
     return expectFailure.getFailure();
   }
@@ -194,22 +218,20 @@ public final class ExpectFailure implements TestRule {
   }
 
   @Override
+  @GwtIncompatible("org.junit.rules.TestRule")
   public Statement apply(final Statement base, Description description) {
     checkNotNull(base);
     checkNotNull(description);
     return new Statement() {
       @Override
       public void evaluate() throws Throwable {
-        inRuleContext = true;
+        enterRuleContext();
         try {
           base.evaluate();
         } finally {
-          inRuleContext = false;
+          leaveRuleContext();
         }
-        if (failureExpected && failure == null) {
-          throw new AssertionError(
-              "ExpectFailure.whenTesting() invoked, but no failure was caught.");
-        }
+        ensureFailureCaught();
       }
     };
   }

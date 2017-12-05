@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import com.google.common.base.Throwables;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,6 +24,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.ComparisonFailure;
+import org.junit.rules.TestRule;
 
 /**
  * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the
@@ -193,4 +195,17 @@ final class Platform {
       return message == null ? clazz : clazz + ": " + message;
     }
   }
+
+  /** Returns a human readable string representation of the throwable's stack trace. */
+  static String getStackTraceAsString(Throwable throwable) {
+    return Throwables.getStackTraceAsString(throwable);
+  }
+
+  /**
+   * Wrapping interface of {@link TestRule} to be used within truth.
+   *
+   * <p>Note that the sole purpose of this interface is to allow it to be swapped in GWT
+   * implementation.
+   */
+  interface JUnitTestRule extends TestRule {}
 }
