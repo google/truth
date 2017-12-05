@@ -17,8 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.annotations.GwtIncompatible;
 import java.util.Arrays;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,8 +30,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class RelabeledSubjectsTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class RelabeledSubjectsTest extends BaseSubjectTestCase {
 
   @Test
   public void namedIncludesActualStringValue() {
@@ -86,6 +85,7 @@ public class RelabeledSubjectsTest {
   }
 
   @Test
+  @GwtIncompatible("float precision lost")
   public void relabelledPrimitiveFloatArrays() {
     float[] actual = {1.3f, 1.1f};
     expectFailure

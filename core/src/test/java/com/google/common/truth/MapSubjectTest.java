@@ -24,7 +24,6 @@ import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import java.util.Map;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -36,9 +35,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class MapSubjectTest {
-
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class MapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void containsExactlyWithNullKey() {

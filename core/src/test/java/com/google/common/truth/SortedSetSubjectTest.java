@@ -24,15 +24,13 @@ import com.google.common.collect.Sets;
 import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /** Tests for {@link SortedSetSubject}. */
 @RunWith(JUnit4.class)
-public class SortedSetSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class SortedSetSubjectTest extends BaseSubjectTestCase {
   private static final SortedSet<String> NULL_SET;
 
   static {

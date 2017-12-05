@@ -20,7 +20,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -31,9 +30,7 @@ import org.junit.runners.JUnit4;
  * @author Pete Gillin
  */
 @RunWith(JUnit4.class)
-public final class CorrespondenceTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
-
+public final class CorrespondenceTest extends BaseSubjectTestCase {
   // Tests of the abstract base class (just assert that equals and hashCode throw).
 
   private static final Correspondence<Object, Object> INSTANCE =
@@ -149,11 +146,11 @@ public final class CorrespondenceTest {
         .whenTesting()
         .that(ImmutableList.of(1.02, 2.04, 3.08))
         .comparingElementsUsing(tolerance(0.05))
-        .contains(3.0);
+        .contains(3.01);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1.02, 2.04, 3.08]> contains at least one element that "
-                + "is a finite number within 0.05 of <3.0>");
+                + "is a finite number within 0.05 of <3.01>");
   }
 }

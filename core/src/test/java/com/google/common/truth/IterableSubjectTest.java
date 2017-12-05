@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -41,8 +40,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class IterableSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasSize() {

@@ -19,7 +19,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.base.Optional;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,8 +29,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class GuavaOptionalSubjectTest {
-  @Rule public ExpectFailure expectFailure = new ExpectFailure();
+public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void namedOptional() {
