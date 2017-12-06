@@ -16,7 +16,6 @@
 package com.google.common.truth;
 
 import com.google.common.base.Throwables;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
@@ -127,16 +126,6 @@ final class Platform {
   /** Determines if the given subject contains a match for the given regex. */
   static boolean containsMatch(String actual, String regex) {
     return Pattern.compile(regex).matcher(actual).find();
-  }
-
-  /** Returns the length of an array. */
-  static int getArrayLength(Object array) {
-    return Array.getLength(array);
-  }
-
-  /** Returns the item in the array at index i. */
-  static Object getFromArray(Object array, int i) {
-    return Array.get(array, i);
   }
 
   /**

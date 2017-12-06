@@ -28,6 +28,7 @@ import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.common.primitives.Shorts;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -170,13 +171,13 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
   @Nullable
   private String checkArrayEqualsRecursive(
       Object expectedArray, Object actualArray, String lastIndex) {
-    int actualLength = Platform.getArrayLength(actualArray);
-    int expectedLength = Platform.getArrayLength(expectedArray);
+    int actualLength = Array.getLength(actualArray);
+    int expectedLength = Array.getLength(expectedArray);
     for (int i = 0; i < actualLength || i < expectedLength; i++) {
       String index = lastIndex + "[" + i + "]";
       if (i < expectedLength && i < actualLength) {
-        Object expected = Platform.getFromArray(expectedArray, i);
-        Object actual = Platform.getFromArray(actualArray, i);
+        Object expected = Array.get(expectedArray, i);
+        Object actual = Array.get(actualArray, i);
         if (actual != null
             && actual.getClass().isArray()
             && expected != null
