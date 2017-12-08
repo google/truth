@@ -336,12 +336,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     Iterator<?> requiredIter = required.iterator();
 
     if (!requiredIter.hasNext()) {
-      // If the expected iterator is empty, and the actual iterator is not empty, fail
       if (actualIter.hasNext()) {
         fail("is empty");
+        return ALREADY_FAILED;
+      } else {
+        return IN_ORDER;
       }
-      // If the previous branch doesn't throw, then the subject was empty, so return IN_ORDER
-      return IN_ORDER;
     }
 
     // Step through both iterators comparing elements pairwise.
@@ -716,6 +716,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     public Ordered containsExactlyElementsIn(Iterable<? extends E> expected) {
       List<A> actualList = iterableToList(getCastActual());
       List<? extends E> expectedList = iterableToList(expected);
+
+      if (expectedList.isEmpty()) {
+        if (actualList.isEmpty()) {
+          return IN_ORDER;
+        } else {
+          fail("is empty");
+          return ALREADY_FAILED;
+        }
+      }
+
       // Check if the elements correspond in order. This allows the common case of a passing test
       // using inOrder() to complete in linear time.
       if (correspondInOrderExactly(actualList.iterator(), expectedList.iterator())) {
@@ -750,16 +760,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     private boolean correspondInOrderExactly(
         Iterator<? extends A> actual, Iterator<? extends E> expected) {
-
-      if (!expected.hasNext()) {
-        // If the expected iterator is empty, and the actual iterator is not empty, fail
-        if (actual.hasNext()) {
-          fail("is empty");
-        }
-        // If the previous branch doesn't throw, then the subject was empty, so return true
-        return true;
-      }
-
       while (actual.hasNext() && expected.hasNext()) {
         A actualElement = actual.next();
         E expectedElement = expected.next();
