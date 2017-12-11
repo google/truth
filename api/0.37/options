@@ -1,0 +1,24 @@
+-classpath
+'/tmp/tmp.PqMj3ZgV6r/truth_release/core/target/classes:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/target/classes:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/re2j/target/classes:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/liteproto/target/classes:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/proto/target/classes:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/java8/target/classes:/usr/local/google/home/cpovirk/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/re2j/re2j/1.1/re2j-1.1.jar:/usr/local/google/home/cpovirk/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/usr/local/google/home/cpovirk/.m2/repository/org/codehaus/mojo/animal-sniffer-annotations/1.14/animal-sniffer-annotations-1.14.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/jsinterop/jsinterop-annotations/1.0.2/jsinterop-annotations-1.0.2-sources.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/errorprone/error_prone_annotations/2.0.19/error_prone_annotations-2.0.19.jar:/usr/local/google/home/cpovirk/.m2/repository/org/w3c/css/sac/1.3/sac-1.3.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/auto/value/auto-value/1.4.1/auto-value-1.4.1.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/protobuf/protobuf-java/3.3.1/protobuf-java-3.3.1.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/gwt/gwt-user/2.8.2/gwt-user-2.8.2.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/usr/local/google/home/cpovirk/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/usr/local/google/home/cpovirk/.m2/repository/junit/junit/4.12/junit-4.12.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/jsinterop/jsinterop-annotations/1.0.2/jsinterop-annotations-1.0.2.jar:/usr/local/google/home/cpovirk/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar:/usr/local/buildtools/java/jdk8-google-v7-64/jre/../lib/tools.jar:/usr/local/google/home/cpovirk/.m2/repository/com/google/guava/guava/23.4-android/guava-23.4-android.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/tmp/tmp.PqMj3ZgV6r/truth_release/core/src/main/java:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/re2j/src/main/java:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/liteproto/src/main/java:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/proto/src/main/java:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/java8/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2017. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/tmp/tmp.PqMj3ZgV6r/truth_release/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Truth 0.37'
+-linkoffline
+'https://docs.oracle.com/javase/6/docs/api' '/tmp/tmp.PqMj3ZgV6r/truth_release/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Truth 0.37'
