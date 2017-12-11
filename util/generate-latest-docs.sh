@@ -12,6 +12,8 @@
 # use the script this way must have a .ssh key which they have declared on github.com
 # per the instructions here: https://help.github.com/articles/generating-ssh-keys/
 #
+set -euE
+
 readonly GH_PROJECT=truth
 readonly ORG=google
 readonly EXPECTED_REPO_SLUG="${ORG}/${GH_PROJECT}"
@@ -38,6 +40,7 @@ if [[ -n "$RELEASE_VERSION" || \
   mvn javadoc:aggregate
   target_dir="$(pwd)/target"
   cd ${target_dir}
+  rm -rf gh-pages
   git clone --quiet --branch=gh-pages ${github_url} gh-pages > /dev/null
   cd gh-pages
 
