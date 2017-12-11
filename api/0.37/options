@@ -5,6 +5,7 @@
 -protected
 -sourcepath
 '/tmp/tmp.PqMj3ZgV6r/truth_release/core/src/main/java:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/re2j/src/main/java:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/liteproto/src/main/java:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/proto/src/main/java:/tmp/tmp.PqMj3ZgV6r/truth_release/extensions/java8/src/main/java'
+-Xdoclint:none
 -author
 -bottom
 'Copyright &#169; 2017. All rights reserved.'
