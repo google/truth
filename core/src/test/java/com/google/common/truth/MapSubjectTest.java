@@ -70,6 +70,26 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void containsExactlyEmpty_fails() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1);
+
+    expectFailure.whenTesting().that(actual).containsExactly();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{jan=1}> is empty");
+  }
+
+  @Test
+  public void containsExactlyEntriesInEmpty_fails() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1);
+
+    expectFailure.whenTesting().that(actual).containsExactlyEntriesIn(ImmutableMap.of());
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{jan=1}> is empty");
+  }
+
+  @Test
   public void containsExactlyOneEntry() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1);
 
@@ -940,9 +960,9 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each "
-                + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
+            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456}>. It has the following entries with unexpected keys: {abc=123}");
   }
 
   @Test
@@ -956,11 +976,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each "
-                + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
-                + "key that is equal to and a value that parses to the key and value of "
-                + "<xyz=999>");
+            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456, xyz=999, abc=123}>. It is missing keys for the following entries: "
+                + "{xyz=999}");
   }
 
   @Test
@@ -974,11 +993,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each "
-                + "element of <[def=456, cab=123]>. It is missing an element that has a "
-                + "key that is equal to and a value that parses to the key and value of "
-                + "<cab=123> and has unexpected elements <[abc=123]>");
+            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456, cab=123}>. It is missing keys for the following entries: {cab=123} "
+                + "and has the following entries with unexpected keys: {abc=123}");
   }
 
   @Test
@@ -992,11 +1010,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each "
-                + "element of <[def=456, abc=321]>. It is missing an element that has a "
-                + "key that is equal to and a value that parses to the key and value of "
-                + "<abc=321> and has unexpected elements <[abc=123]>");
+            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456, abc=321}>. It has the following entries with matching keys but "
+                + "different values: {abc=(expected 321 but got 123)}");
   }
 
   @Test
@@ -1011,9 +1028,9 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
+            "Not true that <{abc=123, def=456}> contains, in order, exactly one entry that has"
                 + " a key that is equal to and a value that parses to the key and value of each"
-                + " element of <[def=456, abc=123]>");
+                + " entry of <{def=456, abc=123}>");
   }
 
   @Test
@@ -1071,9 +1088,9 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each "
-                + "element of <[def=456]>. It has unexpected elements <[abc=123]>");
+            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456}>. It has the following entries with unexpected keys: {abc=123}");
   }
 
   @Test
@@ -1088,11 +1105,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each "
-                + "element of <[def=456, xyz=999, abc=123]>. It is missing an element that has a "
-                + "key that is equal to and a value that parses to the key and value of "
-                + "<xyz=999>");
+            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456, xyz=999, abc=123}>. It is missing keys for the following entries: "
+                + "{xyz=999}");
   }
 
   @Test
@@ -1107,11 +1123,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each "
-                + "element of <[def=456, cab=123]>. It is missing an element that has a "
-                + "key that is equal to and a value that parses to the key and value of "
-                + "<cab=123> and has unexpected elements <[abc=123]>");
+            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456, cab=123}>. It is missing keys for the following entries: {cab=123} "
+                + "and has the following entries with unexpected keys: {abc=123}");
   }
 
   @Test
@@ -1126,11 +1141,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each "
-                + "element of <[def=456, abc=321]>. It is missing an element that has a "
-                + "key that is equal to and a value that parses to the key and value of "
-                + "<abc=321> and has unexpected elements <[abc=123]>");
+            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456, abc=321}>. It has the following entries with matching keys but "
+                + "different values: {abc=(expected 321 but got 123)}");
   }
 
   @Test
@@ -1146,9 +1160,32 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[abc=123, def=456]> contains, in order, exactly one element that has"
+            "Not true that <{abc=123, def=456}> contains, in order, exactly one entry that has"
                 + " a key that is equal to and a value that parses to the key and value of each"
-                + " element of <[def=456, abc=123]>");
+                + " entry of <{def=456, abc=123}>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_empty() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of();
+    ImmutableMap<String, String> actual = ImmutableMap.of();
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_failsEmpty() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of();
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <{abc=123}> is empty");
   }
 
   @Test
