@@ -17,11 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.net.CookieStore;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import org.junit.Rule;
 import org.junit.Test;
@@ -93,37 +91,4 @@ public class PlatformTest {
     assertThat(Platform.isInstanceOfTypeGWT(new ArrayList<String>(), List.class)).isTrue();
   }
 
-  // Type shortening.
-
-  @Test
-  public void compressType_JavaLang() {
-    assertThat(Platform.compressType(String.class.toString())).isEqualTo("String");
-  }
-
-  @Test
-  public void compressType_JavaUtil() {
-    assertThat(Platform.compressType(Random.class.toString())).isEqualTo("Random");
-  }
-
-  @Test
-  public void compressType_Generic() {
-    assertThat(Platform.compressType("java.util.Set<java.lang.Integer>")).isEqualTo("Set<Integer>");
-  }
-
-  @Test
-  public void compressType_Uncompressed() {
-    assertThat(Platform.compressType(CookieStore.class.toString()))
-        .isEqualTo("java.net.CookieStore");
-  }
-
-  @Test
-  public void compressType_GenericWithPartialUncompress() {
-    assertThat(Platform.compressType("java.util.Set<java.net.CookieStore>"))
-        .isEqualTo("Set<java.net.CookieStore>");
-  }
-
-  @Test
-  public void compressType_Primitive() {
-    assertThat(Platform.compressType(int.class.toString())).isEqualTo("int");
-  }
 }

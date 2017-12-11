@@ -79,7 +79,7 @@ abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> ext
     String expectedTypeString = expectedType.getName() + expectedBrackets;
     failWithRawMessage(
         "Incompatible types compared. expected: %s, actual: %s%s",
-        Platform.compressType(expectedTypeString), underlyingType(), brackets());
+        StringUtil.compressType(expectedTypeString), underlyingType(), brackets());
   }
 
   /**

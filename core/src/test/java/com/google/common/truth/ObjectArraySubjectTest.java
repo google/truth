@@ -16,10 +16,10 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,8 +30,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class ObjectArraySubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   private static final Object[] EMPTY = new Object[0];
 
   @Test
@@ -79,6 +78,7 @@ public class ObjectArraySubjectTest {
   public void hasLengthNegative() {
     try {
       assertThat(objectArray(2, 5)).hasLength(-1);
+      fail("Should have failed");
     } catch (IllegalArgumentException expected) {
     }
   }
@@ -135,7 +135,6 @@ public class ObjectArraySubjectTest {
 
   @Test
   public void isEqualTo_Fail_UnequalOrderingMultiDimensional_01() {
-
     expectFailure
         .whenTesting()
         .that(new Object[][] {{"A", "B"}, {5L}})

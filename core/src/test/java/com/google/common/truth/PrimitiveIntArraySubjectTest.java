@@ -16,8 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -28,8 +28,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class PrimitiveIntArraySubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
   private static final int[] EMPTY = new int[0];
 
   @Test
@@ -67,6 +66,7 @@ public class PrimitiveIntArraySubjectTest {
   public void hasLengthNegative() {
     try {
       assertThat(array(2, 5)).hasLength(-1);
+      fail("Should have failed.");
     } catch (IllegalArgumentException expected) {
     }
   }

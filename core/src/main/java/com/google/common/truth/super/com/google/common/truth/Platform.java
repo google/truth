@@ -54,11 +54,6 @@ final class Platform {
     }
   }
 
-  /** This is a no-op in GWT as it relies on matching. */
-  static String compressType(String type) {
-    return type;
-  }
-
   static AssertionError comparisonFailure(
       String message, String expected, String actual, Throwable cause) {
     AssertionError failure =

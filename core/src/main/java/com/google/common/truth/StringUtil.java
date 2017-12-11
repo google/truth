@@ -84,4 +84,26 @@ final class StringUtil {
 
     return builder.toString();
   }
+
+  /**
+   * Compresses a type's string format by stripping boring prefix.
+   *
+   * <p>Inspired by JavaWriter, but without using {@link java.util.regex.Pattern} which is not
+   * available under GWT.
+   */
+  static String compressType(String type) {
+    type = typeOnly(type);
+    return type.replaceAll("java\\.lang\\.|java\\.util\\.", "");
+  }
+
+  private static String typeOnly(String type) {
+    // TODO(cpovirk): Always pass getName() rather than toString(), then eliminate this.
+    type = stripIfPrefixed(type, "class ");
+    type = stripIfPrefixed(type, "interface ");
+    return type;
+  }
+
+  private static String stripIfPrefixed(String string, String prefix) {
+    return string.startsWith(prefix) ? string.substring(prefix.length()) : string;
+  }
 }

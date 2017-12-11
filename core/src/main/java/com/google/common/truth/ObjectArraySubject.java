@@ -118,7 +118,7 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
       // TODO(cgruber): Improve the compression of arrays with generic types like Set<Foo>[]
       //     That will need extracting of all of the type information, or a string representation
       //     that compressType can handle.
-      return Platform.compressType(type.toString());
+      return StringUtil.compressType(type.toString());
     }
   }
 

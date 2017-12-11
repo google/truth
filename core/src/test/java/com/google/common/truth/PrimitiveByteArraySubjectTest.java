@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Rule;
+import com.google.common.annotations.GwtIncompatible;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -28,8 +28,7 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class PrimitiveByteArraySubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
   private static final byte BYTE_0 = (byte) 0;
   private static final byte BYTE_1 = (byte) 1;
   private static final byte BYTE_2 = (byte) 2;
@@ -52,6 +51,19 @@ public class PrimitiveByteArraySubjectTest {
   }
 
   @Test
+  public void isEqualTo_Fail_shortVersion() {
+    byte[] actual = new byte[] {124, 112, 12, 11, 10};
+    byte[] expect = new byte[] {24, 12, 2, 1, 0};
+    expectFailure.whenTesting().that(actual).isEqualTo(expect);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <(byte[]) [124, 112, 12, 11, 10]> is equal to <[24, 12, 2, 1, 0]>; "
+                + "expected:<[180C020100]> but was:<[7C700C0B0A]>");
+  }
+
+  @Test
+  @GwtIncompatible("Platform.comparisionFailure")
   public void isEqualTo_Fail() {
     byte[] actual =
         new byte[] {
@@ -77,12 +89,15 @@ public class PrimitiveByteArraySubjectTest {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailure.whenTesting().that(array(BYTE_0, BYTE_1)).isEqualTo(array(BYTE_1, BYTE_0));
+    expectFailure
+        .whenTesting()
+        .that(array(BYTE_0, (byte) 123))
+        .isEqualTo(array((byte) 123, BYTE_0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(byte[]) [0, 1]> is equal to <[1, 0]>; "
-                + "expected:<0[100]> but was:<0[001]>");
+            "Not true that <(byte[]) [0, 123]> is equal to <[123, 0]>; "
+                + "expected:<[7B00]> but was:<[007B]>");
   }
 
   @Test

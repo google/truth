@@ -20,7 +20,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.ComparisonFailure;
 import org.junit.rules.TestRule;
@@ -69,53 +68,6 @@ final class Platform {
       types.add(current.getName());
       addInterfaceNames(current.getInterfaces(), types);
     }
-  }
-
-  private static final Pattern TYPE_PATTERN = Pattern.compile("(?:[\\w$]+\\.)*([\\w\\.*$]+)");
-
-  /** Inspired by JavaWriter. */
-  static String compressType(String type) {
-    type = typeOnly(type);
-    StringBuilder sb = new StringBuilder();
-    Matcher m = TYPE_PATTERN.matcher(type);
-    int pos = 0;
-
-    while (true) {
-      boolean found = m.find(pos);
-      // Copy non-matching characters like "<".
-      int typeStart = found ? m.start() : type.length();
-      sb.append(type, pos, typeStart);
-      if (!found) {
-        break;
-      }
-      // Copy a single class name, shortening it if possible.
-      String name = m.group(0);
-      name = stripIfInPackage(name, "java.lang.");
-      name = stripIfInPackage(name, "java.util.");
-      sb.append(name);
-
-      pos = m.end();
-    }
-    return sb.toString();
-  }
-
-  private static String typeOnly(String type) {
-    type = stripIfPrefixed(type, "class ");
-    type = stripIfPrefixed(type, "interface ");
-    return type;
-  }
-
-  private static String stripIfPrefixed(String string, String prefix) {
-    return string.startsWith(prefix) ? string.substring(prefix.length()) : string;
-  }
-
-  private static String stripIfInPackage(String type, String packagePrefix) {
-    if (type.startsWith(packagePrefix)
-        && (type.indexOf('.', packagePrefix.length()) == -1)
-        && Character.isUpperCase(type.charAt(packagePrefix.length()))) {
-      return type.substring(packagePrefix.length());
-    }
-    return type;
   }
 
   static AssertionError comparisonFailure(
