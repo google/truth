@@ -2,7 +2,7 @@
 markdown: kramdown
 
 # Site settings
-version: "0.36"
+version: "0.37"
 url: http://google.github.io/truth
 title: Truth
 tagline: Fluent assertions for Java
@@ -13,7 +13,7 @@ navigation:
 - text: Compare
   url: /truth/comparison
 - text: Javadoc
-  url: /truth/api/0.36/
+  url: /truth/api/0.37/
 - text: FAQ
   url: /truth/faq
 - text: Benefits
