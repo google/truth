@@ -554,7 +554,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       // order. We don't bother with that here. It would be nice, but it would be a lot of added
       // complexity for little gain.
       return new IterableEntries(metadata, MultimapSubject.this)
-          .comparingElementsUsing(new MapSubject.EntryCorrespondence<K, A, V>(correspondence))
+          .comparingElementsUsing(new EntryCorrespondence<K, A, V>(correspondence))
           .containsExactlyElementsIn(expectedMultimap.entries());
     }
 
@@ -581,6 +581,29 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Multimap<?, A> getCastActual() {
       return (Multimap<?, A>) actual();
+    }
+  }
+
+  private static final class EntryCorrespondence<K, A, E>
+      extends Correspondence<Entry<K, A>, Entry<K, E>> {
+
+    private final Correspondence<A, ? super E> valueCorrespondence;
+
+    EntryCorrespondence(Correspondence<A, ? super E> valueCorrespondence) {
+      this.valueCorrespondence = valueCorrespondence;
+    }
+
+    @Override
+    public boolean compare(Entry<K, A> actual, Entry<K, E> expected) {
+      return actual.getKey().equals(expected.getKey())
+          && valueCorrespondence.compare(actual.getValue(), expected.getValue());
+    }
+
+    @Override
+    public String toString() {
+      return StringUtil.format(
+          "has a key that is equal to and a value that %s the key and value of",
+          valueCorrespondence);
     }
   }
 }
