@@ -39,9 +39,9 @@ public final class SetMultimapSubject extends MultimapSubject {
   // TODO(user):  Add a valuesForKey override for SetSubject if we make SetSubject
 
   /**
-   * @deprecated {@code #isEqualTo} A ListMultimap can never compare equal with a SetMultimap if
-   *     either Multimap is non-empty, because {@link java.util.List} and {@link java.util.Set} can
-   *     never compare equal. Prefer {@link
+   * @deprecated A ListMultimap can never compare equal with a SetMultimap if either Multimap is
+   *     non-empty, because {@link java.util.List} and {@link java.util.Set} can never compare
+   *     equal. Prefer {@link
    *     MultimapSubject#containsExactlyEntriesIn(com.google.common.collect.Multimap)} instead.
    *     Consult {@link com.google.common.collect.Multimap#equals} for more information.
    */
