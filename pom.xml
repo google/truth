@@ -100,6 +100,28 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.0.0</version>
+          <configuration>
+            <!-- Disable doclint in java8 where problems are errors -->
+            <additionalOptions>
+              <!-- TODO(cpovirk): Once we fix errors, just -Xdoclint:-html. -->
+              <additionalOption>-Xdoclint:none</additionalOption>
+            </additionalOptions>
+            <doctitle>Truth ${project.version}</doctitle>
+            <windowtitle>Truth ${project.version}</windowtitle>
+            <quiet>true</quiet>
+            <notimestamp>true</notimestamp>
+            <encoding>UTF-8</encoding>
+            <docencoding>UTF-8</docencoding>
+            <charset>UTF-8</charset>
+            <links>
+              <!-- TODO(cpovirk): Link to the version that we depend on? -->
+              <link>https://google.github.io/guava/releases/snapshot-jre/api/docs</link>
+            </links>
+          </configuration>
+        </plugin>
+        <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>2.5</version> <!-- work around ubuntu bug -->
         </plugin>
@@ -126,33 +148,21 @@
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
           <configuration>
             <source>1.6</source>
             <target>1.6</target>
           </configuration>
         </plugin>
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.0.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.12.4</version>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
-  <profiles>
-    <profile>
-      <id>disable-java8-doclint</id>
-      <activation>
-        <jdk>[1.8,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <!-- Disable doclint in java8 where problems are errors -->
-              <additionalparam>-Xdoclint:none</additionalparam>
-              <doctitle>Truth ${project.version}</doctitle>
-              <windowtitle>Truth ${project.version}</windowtitle>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

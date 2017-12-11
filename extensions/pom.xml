@@ -22,15 +22,4 @@
     <module>liteproto</module>
     <module>proto</module>
   </modules>
-  <profiles>
-    <profile>
-      <id>disable-java8-doclint</id>
-      <activation>
-        <jdk>[1.8,)</jdk>
-      </activation>
-      <modules>
-        <module>java8</module>
-      </modules>
-    </profile>
-  </profiles>
 </project>
