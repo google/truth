@@ -78,15 +78,8 @@ import javax.annotation.Nullable;
 public final class Truth {
   private Truth() {}
 
-  /**
-   * @deprecated If you are passing this to a {@link Subject} constructor, instead call {@link
-   *     #assertAbout(SubjectFactory)}{@code .that(...)}, passing its associated {@link
-   *     SubjectFactory} (which you might need to create). If you are calling {@code fail} on this
-   *     object directly, instead use {@link #assert_()}{@code .fail()}, or {@code throw new
-   *     AssertionError()} directly.
-   */
-  @Deprecated
-  public static final FailureStrategy THROW_ASSERTION_ERROR =
+  // TODO(cpovirk): `private` once FailureStrategy is no longer responsible for formatting+stripping
+  static final FailureStrategy THROW_ASSERTION_ERROR =
       new AbstractFailureStrategy() {
         @Override
         public void fail(String message, Throwable cause) {
@@ -139,41 +132,11 @@ public final class Truth {
   }
 
   /**
-   * The recommended method of extension of Truth to new types, which is documented in {@link
-   * com.google.common.truth.delegation.DelegationTest}.
-   *
-   * @param factory a SubjectFactory<S, T> implementation
-   * @return A custom verb for the type returned by the SubjectFactory
-   * @deprecated When you switch from {@link SubjectFactory} to {@link Subject.Factory}, you'll
-   *     switch from this overload to the {@code Subject.Factory} overload.
-   */
-  @Deprecated
-  public static <S extends Subject<S, T>, T> SimpleSubjectBuilder<S, T> assertAbout(
-      SubjectFactory<S, T> factory) {
-    return assert_().about(factory);
-  }
-
-  /**
    * Given a factory for some {@code Subject} class, returns a builder whose {@code that(actual)}
    * method creates instances of that class.
    */
   public static <S extends Subject<S, T>, T> SimpleSubjectBuilder<S, T> assertAbout(
       Subject.Factory<S, T> factory) {
-    return assert_().about(factory);
-  }
-
-  /**
-   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
-   * CustomSubjectBuilder}. Extension creators should prefer {@link Subject.Factory} if possible.
-   *
-   * @deprecated When you switch from {@link CustomSubjectBuilderFactory} to {@link
-   *     CustomSubjectBuilder.Factory}, you'll switch from this overload to the {@code
-   *     CustomSubjectBuilder.Factory} overload.
-   */
-  @Deprecated
-  public static <CustomSubjectBuilderT extends CustomSubjectBuilder>
-      CustomSubjectBuilderT assertAbout(
-          CustomSubjectBuilderFactory<CustomSubjectBuilderT> factory) {
     return assert_().about(factory);
   }
 

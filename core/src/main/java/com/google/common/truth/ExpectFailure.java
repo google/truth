@@ -179,30 +179,6 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    *
    * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
    * whenTesting.that(myType).hasProperty());}
-   *
-   * @deprecated When you switch from {@link SubjectFactory} to {@link Subject.Factory}, you'll
-   *     switch from this overload to the {@code Subject.Factory} overload.
-   */
-  @Deprecated
-  public static <S extends Subject<S, A>, A> AssertionError expectFailureAbout(
-      final SubjectFactory<S, A> factory,
-      final SimpleSubjectBuilderCallback<S, A> assertionCallback) {
-    // whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory))
-    return expectFailure(
-        new StandardSubjectBuilderCallback() {
-          @Override
-          public void invokeAssertion(StandardSubjectBuilder whenTesting) {
-            assertionCallback.invokeAssertion(whenTesting.about(factory));
-          }
-        });
-  }
-
-  /**
-   * Static alternative that directly returns the triggered failure. This is intended to be used in
-   * Java 8 tests similar to {@code expectThrows()}:
-   *
-   * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
-   * whenTesting.that(myType).hasProperty());}
    */
   public static <S extends Subject<S, A>, A> AssertionError expectFailureAbout(
       final Subject.Factory<S, A> factory,

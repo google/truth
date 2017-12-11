@@ -76,16 +76,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   // TODO(kak): Make this package-protected?
   /**
-   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
-   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
-   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
-   *     constructor instead.
+   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
+   * {@link Subject#check}{@code .that(actual)}.
    */
-  @Deprecated
-  protected IterableSubject(FailureStrategy failureStrategy, @Nullable Iterable<?> iterable) {
-    super(failureStrategy, iterable);
-  }
-
   protected IterableSubject(FailureMetadata metadata, @Nullable Iterable<?> iterable) {
     super(metadata, iterable);
   }

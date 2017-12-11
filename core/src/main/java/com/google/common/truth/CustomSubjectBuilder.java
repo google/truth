@@ -55,26 +55,6 @@ public abstract class CustomSubjectBuilder {
 
   private final FailureMetadata metadata;
 
-  /**
-   * @deprecated When you switch from {@link CustomSubjectBuilderFactory} to {@link
-   *     CustomSubjectBuilder.Factory}, you'll switch to using the other constructor, which accepts
-   *     a {@link FailureMetadata} instead of a {@link FailureStrategy}.
-   */
-  @Deprecated
-  protected CustomSubjectBuilder(FailureStrategy failureStrategy) {
-    this.metadata = FailureMetadata.forFailureStrategy(failureStrategy);
-  }
-
-  /**
-   * @deprecated When you switch your {@link Subject} implementations from accepting a {@link
-   *     FailureStrategy} to accepting a {@link FailureMetadata}, you'll switch from calling this
-   *     method to calling {@link #metadata}.
-   */
-  @Deprecated
-  protected final FailureStrategy failureStrategy() {
-    return metadata.legacyStrategy();
-  }
-
   /** Constructor for use by subclasses. */
   protected CustomSubjectBuilder(FailureMetadata metadata) {
     this.metadata = checkNotNull(metadata);

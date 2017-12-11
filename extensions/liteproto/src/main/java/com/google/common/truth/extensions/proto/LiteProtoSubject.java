@@ -18,7 +18,6 @@ package com.google.common.truth.extensions.proto;
 
 import com.google.common.base.Objects;
 import com.google.common.truth.FailureMetadata;
-import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.Subject;
 import com.google.protobuf.MessageLite;
@@ -58,17 +57,6 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    */
   static Factory<?, MessageLite> liteProtos() {
     return MessageLiteSubjectFactory.INSTANCE;
-  }
-
-  /**
-   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
-   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
-   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
-   *     constructor instead.
-   */
-  @Deprecated
-  protected LiteProtoSubject(FailureStrategy failureStrategy, @Nullable M messageLite) {
-    super(failureStrategy, messageLite);
   }
 
   protected LiteProtoSubject(FailureMetadata failureMetadata, @Nullable M messageLite) {

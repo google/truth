@@ -26,16 +26,9 @@ import javax.annotation.Nullable;
 public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T extends Comparable>
     extends Subject<S, T> {
   /**
-   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
-   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
-   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
-   *     constructor instead.
+   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
+   * {@link Subject#check}{@code .that(actual)}.
    */
-  @Deprecated
-  protected ComparableSubject(FailureStrategy failureStrategy, @Nullable T actual) {
-    super(failureStrategy, actual);
-  }
-
   protected ComparableSubject(FailureMetadata metadata, @Nullable T actual) {
     super(metadata, actual);
   }

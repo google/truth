@@ -30,19 +30,12 @@ import javax.annotation.Nullable;
  */
 // TODO(kak): Make this final
 public class StringSubject extends ComparableSubject<StringSubject, String> {
-  // TODO(kak): Make this package-private
+  // TODO(kak): Make this package-private?
   /**
-   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
-   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
-   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
-   *     constructor instead.
+   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
+   * {@link Subject#check}{@code .that(actual)}.
    */
-  @Deprecated
-  public StringSubject(FailureStrategy failureStrategy, @Nullable String string) {
-    super(failureStrategy, string);
-  }
-
-  public StringSubject(FailureMetadata metadata, @Nullable String string) {
+  protected StringSubject(FailureMetadata metadata, @Nullable String string) {
     super(metadata, string);
   }
 

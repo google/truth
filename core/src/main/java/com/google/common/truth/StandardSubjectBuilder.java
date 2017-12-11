@@ -39,7 +39,7 @@ import javax.annotation.Nullable;
  *
  * <ul>
  *   <li>Set an optional message with {@link #withMessage}.
- *   <li>Specify the type of {@code Subject} to create with {@link #about(SubjectFactory)}.
+ *   <li>Specify the type of {@code Subject} to create with {@link #about(Subject.Factory)}.
  *   <li>For the types of {@code Subject} built into Truth, directly specify the value under test
  *       with {@link #that(Object)}.
  * </ul>
@@ -218,38 +218,10 @@ public class StandardSubjectBuilder {
    * Given a factory for some {@code Subject} class, returns a builder whose {@code that(actual)}
    * method creates instances of that class. Created subjects use the previously set failure
    * strategy and any previously set failure message.
-   *
-   * @deprecated When you switch from {@link SubjectFactory} to {@link Subject.Factory}, you'll
-   *     switch from this overload to the {@code Subject.Factory} overload.
-   */
-  @Deprecated
-  public final <S extends Subject<S, A>, A> SimpleSubjectBuilder<S, A> about(
-      SubjectFactory<S, A> factory) {
-    return new SimpleSubjectBuilder<S, A>(metadata(), adapt(factory));
-  }
-
-  /**
-   * Given a factory for some {@code Subject} class, returns a builder whose {@code that(actual)}
-   * method creates instances of that class. Created subjects use the previously set failure
-   * strategy and any previously set failure message.
    */
   public final <S extends Subject<S, A>, A> SimpleSubjectBuilder<S, A> about(
       Subject.Factory<S, A> factory) {
     return new SimpleSubjectBuilder<S, A>(metadata(), factory);
-  }
-
-  /**
-   * A generic, advanced method of extension of Truth to new types, which is documented on {@link
-   * CustomSubjectBuilder}. Extension creators should prefer {@link Subject.Factory} if possible.
-   *
-   * @deprecated When you switch from {@link CustomSubjectBuilderFactory} to {@link
-   *     CustomSubjectBuilder.Factory}, you'll switch from this overload to the {@code
-   *     CustomSubjectBuilder.Factory} overload.
-   */
-  @Deprecated
-  public final <CustomSubjectBuilderT extends CustomSubjectBuilder> CustomSubjectBuilderT about(
-      CustomSubjectBuilderFactory<CustomSubjectBuilderT> factory) {
-    return factory.createSubjectBuilder(metadata().legacyStrategy());
   }
 
   public final <CustomSubjectBuilderT extends CustomSubjectBuilder> CustomSubjectBuilderT about(
@@ -277,15 +249,4 @@ public class StandardSubjectBuilder {
    * been set up properly as a {@code TestRule}.
    */
   void checkStatePreconditions() {}
-
-  private static <SubjectT extends Subject<SubjectT, ActualT>, ActualT>
-      Subject.Factory<SubjectT, ActualT> adapt(
-          final SubjectFactory<SubjectT, ActualT> subjectFactory) {
-    return new Subject.Factory<SubjectT, ActualT>() {
-      @Override
-      public SubjectT createSubject(FailureMetadata metadata, ActualT actual) {
-        return subjectFactory.getSubject(metadata.legacyStrategy(), actual);
-      }
-    };
-  }
 }

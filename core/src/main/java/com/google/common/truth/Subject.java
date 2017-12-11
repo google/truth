@@ -70,14 +70,6 @@ public class Subject<S extends Subject<S, T>, T> {
         public void fail(String message, Throwable cause) {}
       };
 
-  /**
-   * @deprecated If you are calling {@code metadata.fail*} directly, instead call {@link
-   *     #failWithRawMessage}, {@link #failWithRawMessageAndCause}, or {@link #failComparing}. If
-   *     you are passing {@code metadata} to a {@code Subject} constructor, instead call {@link
-   *     #check()}{@code .that(...)} or {@code check().about(...).that(...)}. (You might need to
-   *     create the {@link SubjectFactory} that is the argument to {@code about}.)
-   */
-  @Deprecated protected final FailureStrategy failureStrategy;
   // TODO(cpovirk): Make private after MultimapSubject no longer needs it.
   final FailureMetadata metadata;
 
@@ -85,21 +77,12 @@ public class Subject<S extends Subject<S, T>, T> {
   private String customName = null;
 
   /**
-   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
-   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
-   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
-   *     constructor instead.
+   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
+   * {@link Subject#check}{@code .that(actual)}.
    */
-  @Deprecated
-  public Subject(FailureStrategy failureStrategy, @Nullable T actual) {
-    this(FailureMetadata.forFailureStrategy(failureStrategy), actual);
-  }
-
-  // TODO(cpovirk): Make this protected.
-  public Subject(FailureMetadata metadata, @Nullable T actual) {
+  protected Subject(FailureMetadata metadata, @Nullable T actual) {
     this.metadata =
         actual instanceof Throwable ? metadata.offerRootCause((Throwable) actual) : metadata;
-    this.failureStrategy = this.metadata.legacyStrategy();
     this.actual = actual;
   }
 

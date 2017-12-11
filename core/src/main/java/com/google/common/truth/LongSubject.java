@@ -27,17 +27,10 @@ import javax.annotation.Nullable;
 public class LongSubject extends ComparableSubject<LongSubject, Long> {
   // TODO(kak): Make this package-protected?
   /**
-   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
-   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
-   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
-   *     constructor instead.
+   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
+   * {@link Subject#check}{@code .that(actual)}.
    */
-  @Deprecated
-  public LongSubject(FailureStrategy failureStrategy, @Nullable Long actual) {
-    super(failureStrategy, actual);
-  }
-
-  public LongSubject(FailureMetadata metadata, @Nullable Long actual) {
+  protected LongSubject(FailureMetadata metadata, @Nullable Long actual) {
     super(metadata, actual);
   }
 

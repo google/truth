@@ -17,21 +17,13 @@ package com.google.common.truth;
 
 import javax.annotation.Nullable;
 
-// TODO(kak): Make this final?
-public class DefaultSubject extends Subject<DefaultSubject, Object> {
-  // TODO(kak): Make this package-protected?
+// TODO(cpovirk): Make this package-private, and later remove it?
+public final class DefaultSubject extends Subject<DefaultSubject, Object> {
   /**
-   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
-   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
-   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
-   *     constructor instead.
+   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
+   * {@link Subject#check}{@code .that(actual)}.
    */
-  @Deprecated
-  public DefaultSubject(FailureStrategy failureStrategy, @Nullable Object o) {
-    super(failureStrategy, o);
-  }
-
-  public DefaultSubject(FailureMetadata metadata, @Nullable Object o) {
+  DefaultSubject(FailureMetadata metadata, @Nullable Object o) {
     super(metadata, o);
   }
 }

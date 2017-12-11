@@ -23,7 +23,6 @@ import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.FailureMetadata;
-import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 import com.google.common.truth.extensions.proto.MessageDifferencer.ReportType;
 import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
@@ -65,18 +64,6 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
 
   protected ProtoSubject(FailureMetadata failureMetadata, @Nullable M message) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), message);
-  }
-
-  /**
-   * @deprecated Switch your {@code Subject} from accepting {@link FailureStrategy} (and exposing a
-   *     {@link SubjectFactory}) to accepting a {@link FailureMetadata} (and exposing a {@link
-   *     Subject.Factory}), at which point you'll call the {@code FailureMetadata} overload of this
-   *     constructor instead.
-   */
-  @Deprecated
-  protected ProtoSubject(FailureStrategy failureStrategy, @Nullable M message) {
-    super(failureStrategy, message);
-    this.config = FluentEqualityConfig.defaultInstance();
   }
 
   ProtoSubject(FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable M message) {

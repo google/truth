@@ -45,7 +45,6 @@ import com.google.common.truth.PrimitiveShortArraySubject;
 import com.google.common.truth.SetMultimapSubject;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
-import com.google.common.truth.SubjectFactory;
 import com.google.common.truth.TableSubject;
 import com.google.common.truth.ThrowableSubject;
 import com.google.common.truth.Truth;
@@ -84,7 +83,7 @@ public class Inventory {
   PrimitiveShortArraySubject primitiveShortArraySubject;
   SetMultimapSubject setMultimapSubject;
   StringSubject stringSubject;
-  SubjectFactory subjectFactory;
+  Subject.Factory subjectFactory;
   Subject subject;
   TableSubject tableSubject;
   ThrowableSubject throwableSubject;
