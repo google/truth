@@ -18,14 +18,14 @@ readonly GH_PROJECT=truth
 readonly ORG=google
 readonly EXPECTED_REPO_SLUG="${ORG}/${GH_PROJECT}"
 
-if [[ -n "$RELEASE_VERSION" || \
-    "$TRAVIS_REPO_SLUG" == "$EXPECTED_REPO_SLUG" && \
-    "$TRAVIS_JDK_VERSION" == "$JDK_FOR_PUBLISHING" && \
-    "$TRAVIS_PULL_REQUEST" == "false" && \
-    "$TRAVIS_BRANCH" == "master" ]]; then
+if [[ -n "${RELEASE_VERSION:-}" ||
+    "${TRAVIS_REPO_SLUG:-}" == "$EXPECTED_REPO_SLUG" &&
+    "${TRAVIS_JDK_VERSION:-}" == "$JDK_FOR_PUBLISHING" &&
+    "${TRAVIS_PULL_REQUEST:-}" == false &&
+    "${TRAVIS_BRANCH:-}" == master ]]; then
   echo -e "Publishing javadoc...\n"
 
-  if [ -n "$RELEASE_VERSION" ]; then
+  if [ -n "${RELEASE_VERSION:-}" ]; then
     # Release
     version_subdir=api/${RELEASE_VERSION}
     github_url="git@github.com:${EXPECTED_REPO_SLUG}.git"
@@ -44,7 +44,7 @@ if [[ -n "$RELEASE_VERSION" || \
   git clone --quiet --branch=gh-pages ${github_url} gh-pages > /dev/null
   cd gh-pages
 
-  if [[ -z "$RELEASE_VERSION" ]]; then
+  if [[ -z "${RELEASE_VERSION:-}" ]]; then
     git config --global user.email "travis@travis-ci.org"
     git config --global user.name "travis-ci"
   fi
