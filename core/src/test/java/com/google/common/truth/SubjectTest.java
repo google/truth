@@ -601,18 +601,6 @@ public class SubjectTest {
   }
 
   @Test
-  public void throwableHasInitedCause() {
-    NullPointerException cause = new NullPointerException();
-    String msg = "foo";
-    try {
-      Truth.THROW_ASSERTION_ERROR.fail(msg, cause);
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo(msg);
-      assertThat(expected).hasCauseThat().isSameAs(cause);
-    }
-  }
-
-  @Test
   @SuppressWarnings("EqualsIncompatibleType")
   public void equalsThrowsUSOE() {
     try {
