@@ -178,6 +178,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     containsAny("contains any element in", expected);
   }
 
+  /**
+   * Attests that the subject contains at least one of the objects contained in the provided array
+   * or fails.
+   */
+  public final void containsAnyIn(Object[] expected) {
+    containsAnyIn(asList(expected));
+  }
+
   private void containsAny(String failVerb, Iterable<?> expected) {
     Collection<?> actual = iterableToCollection(actual());
     for (Object item : expected) {
@@ -228,6 +236,20 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   @CanIgnoreReturnValue
   public final Ordered containsAllIn(Iterable<?> expected) {
     return containsAll("contains all elements in", expected);
+  }
+
+  /**
+   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements then it must appear at least that
+   * number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public final Ordered containsAllIn(Object[] expected) {
+    return containsAllIn(asList(expected));
   }
 
   private Ordered containsAll(String failVerb, Iterable<?> expectedIterable) {
@@ -295,6 +317,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method.
+   *
+   * <p>To test that the iterable contains the same elements as an array, prefer {@link
+   * #containsExactlyElementsIn(Object[])}. It makes clear that the given array is a list of
+   * elements, not an element itself. This helps human readers and avoids a compiler warning.
    */
   @CanIgnoreReturnValue
   public final Ordered containsExactly(@Nullable Object... varargs) {
@@ -316,6 +342,20 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   @CanIgnoreReturnValue
   public final Ordered containsExactlyElementsIn(Iterable<?> expected) {
     return containsExactlyElementsIn(expected, false);
+  }
+
+  /**
+   * Attests that a subject contains exactly the provided objects or fails.
+   *
+   * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the array
+   * parameter asserts that the object must likewise be duplicated exactly 3 times in the subject.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method.
+   */
+  @CanIgnoreReturnValue
+  public final Ordered containsExactlyElementsIn(Object[] expected) {
+    return containsExactlyElementsIn(asList(expected));
   }
 
   private Ordered containsExactlyElementsIn(Iterable<?> required, boolean addElementsInWarning) {
@@ -472,12 +512,21 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that a actual iterable contains none of the elements contained in the excluded iterable
-   * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
-   * equal any of the excluded.)
+   * Attests that the actual iterable contains none of the elements contained in the excluded
+   * iterable or fails. (Duplicates are irrelevant to this test, which fails if any of the actual
+   * elements equal any of the excluded.)
    */
   public final void containsNoneIn(Iterable<?> excluded) {
     containsNone("contains no elements in", excluded);
+  }
+
+  /**
+   * Attests that the actual iterable contains none of the elements contained in the excluded array
+   * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
+   * equal any of the excluded.)
+   */
+  public final void containsNoneIn(Object[] excluded) {
+    containsNoneIn(asList(excluded));
   }
 
   private void containsNone(String failVerb, Iterable<?> excluded) {
@@ -689,6 +738,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method.
+     *
+     * <p>To test that the iterable contains the elements corresponding to those in an array, prefer
+     * {@link #containsExactlyElementsIn(Object[])}. It makes clear that the given array is a list
+     * of elements, not an element itself. This helps human readers and avoids a compiler warning.
      */
     @SafeVarargs
     @CanIgnoreReturnValue
@@ -745,6 +798,19 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return new NotInOrder(
           "contains, in order, exactly one element that " + correspondence + " each element of",
           expected);
+    }
+
+    /**
+     * Attests that subject contains exactly elements that correspond to the expected elements, i.e.
+     * that there is a 1:1 mapping between the actual elements and the expected elements where each
+     * pair of elements correspond.
+     *
+     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+     * on the object returned by this method.
+     */
+    @CanIgnoreReturnValue
+    public Ordered containsExactlyElementsIn(E[] expected) {
+      return containsExactlyElementsIn(asList(expected));
     }
 
     /**
@@ -967,6 +1033,20 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
+     * Attests that the subject contains elements that corresponds to all of the expected elements,
+     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+     * elements where each pair of elements correspond.
+     *
+     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+     * on the object returned by this method. The elements must appear in the given order within the
+     * subject, but they are not required to be consecutive.
+     */
+    @CanIgnoreReturnValue
+    public Ordered containsAllIn(E[] expected) {
+      return containsAllIn(asList(expected));
+    }
+
+    /**
      * Returns whether all the elements of the expected iterator and any subset of the elements of
      * the actual iterator can be paired up in order, such that every pair of actual and expected
      * elements satisfies the correspondence.
@@ -1064,6 +1144,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           expected);
     }
 
+    /**
+     * Attests that the subject contains at least one element that corresponds to at least one of
+     * the expected elements.
+     */
+    public void containsAnyIn(E[] expected) {
+      containsAnyIn(asList(expected));
+    }
+
     private void containsAny(String failVerb, Iterable<? extends E> expected) {
       Collection<A> actual = iterableToCollection(getCastActual());
       for (E expectedItem : expected) {
@@ -1094,6 +1182,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     public void containsNoneIn(Iterable<? extends E> excluded) {
       containsNone("any element in", excluded);
+    }
+
+    /**
+     * Attests that the subject contains no elements that correspond to any of the given elements.
+     * (Duplicates are irrelevant to this test, which fails if any of the subject elements
+     * correspond to any of the given elements.)
+     */
+    public void containsNoneIn(E[] excluded) {
+      containsNoneIn(asList(excluded));
     }
 
     private void containsNone(String excludedPrefix, Iterable<? extends E> excluded) {
