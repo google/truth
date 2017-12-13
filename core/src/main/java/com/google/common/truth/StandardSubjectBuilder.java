@@ -231,12 +231,12 @@ public class StandardSubjectBuilder {
 
   /** Triggers the failure strategy with an empty failure message */
   public final void fail() {
-    metadata().legacyStrategy().fail("");
+    metadata().fail("");
   }
 
   /** Triggers the failure strategy with the given failure message */
   public final void fail(@Nullable String format, Object /*@NullableType*/... args) {
-    metadata().legacyStrategy().fail(format(format, args));
+    metadata().fail(format(format, args));
   }
 
   private FailureMetadata metadata() {

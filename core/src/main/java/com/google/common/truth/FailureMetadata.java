@@ -59,10 +59,6 @@ public final class FailureMetadata {
     this.rootCause = rootCause;
   }
 
-  FailureStrategy legacyStrategy() {
-    return new MessageAddingFailureStrategy();
-  }
-
   /**
    * Returns a new instance whose "root cause" (used as the cause of the {@code AssertionError}) is
    * set to the given value, or returns {@code this} if a root cause has already been set. Truth
@@ -104,61 +100,46 @@ public final class FailureMetadata {
     }
   }
 
-  private final class MessageAddingFailureStrategy extends FailureStrategy {
-    @Override
-    public void fail(String message) {
-      strategy.fail(addToMessage(message), rootCause);
-    }
+  void fail(String message) {
+    strategy.fail(addToMessage(message), rootCause);
+  }
 
-    @Override
-    public void fail(String message, Throwable cause) {
-      strategy.fail(addToMessage(message), cause);
-      // TODO(cpovirk): add defaultCause as a suppressed exception? If fail() throws...
-    }
+  void fail(String message, Throwable cause) {
+    strategy.fail(addToMessage(message), cause);
+    // TODO(cpovirk): add defaultCause as a suppressed exception? If fail() throws...
+  }
 
-    @Override
-    public void failComparing(String message, CharSequence expected, CharSequence actual) {
-      strategy.failComparing(addToMessage(message), expected, actual, rootCause);
-    }
+  void failComparing(String message, CharSequence expected, CharSequence actual) {
+    strategy.failComparing(addToMessage(message), expected, actual, rootCause);
+  }
 
-    @Override
-    public void failComparing(
-        String message, CharSequence expected, CharSequence actual, Throwable cause) {
-      strategy.failComparing(addToMessage(message), expected, actual, cause);
-      // TODO(cpovirk): add defaultCause as a suppressed exception? If failComparing() throws...
-    }
+  void failComparing(String message, CharSequence expected, CharSequence actual, Throwable cause) {
+    strategy.failComparing(addToMessage(message), expected, actual, cause);
+    // TODO(cpovirk): add defaultCause as a suppressed exception? If failComparing() throws...
+  }
 
-    private String addToMessage(String body) {
-      StringBuilder result = new StringBuilder(body.length());
-      Joiner.on(": ").appendTo(result, messages);
-      if (!messages.isEmpty()) {
-        if (body.isEmpty()) {
-          /*
-           * The only likely case of an empty body is with failComparing(). In that case, we still
-           * want a colon because ComparisonFailure will construct a message of the form
-           * "<ourString> <theirString>." For consistency with the normal behavior of withMessage,
-           * we want a colon between the parts.
-           *
-           * That actually makes it sound like we'd want to *always* include the trailing colon in
-           * the case of failComparing(), but I don't want to bite that off now in case it requires
-           * updating more existing Subjects' tests.
-           *
-           * Note that this doesn't necessarily even work completely yet: It assumes that the whole
-           * assertion chain uses FailureMetadata. If at any point we switch back to
-           * FailureStrategy, we lose the ability to append the colon only once because each
-           * FailureStrategy wrapper has no knowledge of the rest. Or maybe there's some way to make
-           * it work, but I have sunk too much time into this as it is :( Anyway, the problem will
-           * go away once we standardize on FailureMetadata. And the entire "problem" consists of an
-           * extra space in the failure messages, anyway.
-           */
-          result.append(":");
-        } else {
-          result.append(": ");
-        }
+  private String addToMessage(String body) {
+    StringBuilder result = new StringBuilder(body.length());
+    Joiner.on(": ").appendTo(result, messages);
+    if (!messages.isEmpty()) {
+      if (body.isEmpty()) {
+        /*
+         * The only likely case of an empty body is with failComparing(). In that case, we still
+         * want a colon because ComparisonFailure will construct a message of the form
+         * "<ourString> <theirString>." For consistency with the normal behavior of withMessage,
+         * we want a colon between the parts.
+         *
+         * That actually makes it sound like we'd want to *always* include the trailing colon in
+         * the case of failComparing(), but I don't want to bite that off now in case it requires
+         * updating more existing Subjects' tests.
+         */
+        result.append(":");
+      } else {
+        result.append(": ");
       }
-      result.append(body);
-      return result.toString();
     }
+    result.append(body);
+    return result.toString();
   }
 
   @VisibleForTesting
