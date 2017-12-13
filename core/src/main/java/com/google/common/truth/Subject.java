@@ -354,7 +354,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param check the check being asserted
    */
   protected final void fail(String check) {
-    metadata.legacyStrategy().fail("Not true that " + actualAsString() + " " + check);
+    metadata.fail("Not true that " + actualAsString() + " " + check);
   }
 
   /**
@@ -388,7 +388,7 @@ public class Subject<S extends Subject<S, T>, T> {
     if (!needsClassDisambiguation && sameToStrings && compareToStrings) {
       message.append(" (although their toString() representations are the same)");
     }
-    metadata.legacyStrategy().fail(message.toString());
+    metadata.fail(message.toString());
   }
 
   /**
@@ -409,7 +409,7 @@ public class Subject<S extends Subject<S, T>, T> {
       for (Object part : messageParts) {
         message.append(" <").append(part).append(">");
       }
-      metadata.legacyStrategy().fail(message.toString());
+      metadata.fail(message.toString());
     }
   }
 
@@ -431,7 +431,7 @@ public class Subject<S extends Subject<S, T>, T> {
             expected,
             failVerb,
             (actual == null) ? "null reference" : actual);
-    metadata.legacyStrategy().fail(message);
+    metadata.fail(message);
   }
 
   /**
@@ -447,14 +447,14 @@ public class Subject<S extends Subject<S, T>, T> {
         format(
             "Not true that <%s> %s <%s>",
             (actual == null) ? "null reference" : actual, verb, expected);
-    metadata.legacyStrategy().fail(message);
+    metadata.fail(message);
   }
 
   /** @deprecated Use {@link #failWithoutActual(String)} */
   @Deprecated
   protected final void failWithoutSubject(String check) {
     String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    metadata.legacyStrategy().fail(format("Not true that %s %s", strSubject, check));
+    metadata.fail(format("Not true that %s %s", strSubject, check));
   }
 
   /**
@@ -478,12 +478,12 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   // TODO(cgruber) final
   protected void failWithRawMessage(String message, Object... parameters) {
-    metadata.legacyStrategy().fail(format(message, parameters));
+    metadata.fail(format(message, parameters));
   }
 
   /** Passes through a failure message verbatim, along with a cause. */
   protected final void failWithRawMessageAndCause(String message, Throwable cause) {
-    metadata.legacyStrategy().fail(message, cause);
+    metadata.fail(message, cause);
   }
 
   /**
@@ -491,7 +491,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * {@link FailureStrategy} may use to construct a {@code ComparisonFailure}.
    */
   protected final void failComparing(String message, CharSequence expected, CharSequence actual) {
-    metadata.legacyStrategy().failComparing(message, expected, actual);
+    metadata.failComparing(message, expected, actual);
   }
 
   /**
@@ -500,7 +500,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   protected final void failComparing(
       String message, CharSequence expected, CharSequence actual, Throwable cause) {
-    metadata.legacyStrategy().failComparing(message, expected, actual, cause);
+    metadata.failComparing(message, expected, actual, cause);
   }
 
   /**
