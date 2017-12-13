@@ -125,6 +125,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   public void testPlain_containsAny() {
     expectThat(listOf(message1, message2)).containsAnyOf(eqIgnoredMessage1, eqMessage2);
     expectThat(listOf(message1, message2)).containsAnyIn(listOf(eqIgnoredMessage1, eqMessage2));
+    expectThat(listOf(message1, message2)).containsAnyIn(arrayOf(eqIgnoredMessage1, eqMessage2));
 
     try {
       assertThat(listOf(message1, message2)).containsAnyOf(eqIgnoredMessage1, eqIgnoredMessage2);
@@ -140,6 +141,14 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);
     }
+
+    try {
+      assertThat(listOf(message1, message2))
+          .containsAnyIn(arrayOf(eqIgnoredMessage1, eqIgnoredMessage2));
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
   }
 
   @Test
@@ -147,6 +156,8 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     expectThat(listOf(message1, message2, eqIgnoredMessage1)).containsAllOf(eqMessage1, eqMessage2);
     expectThat(listOf(message1, message2, eqIgnoredMessage1))
         .containsAllIn(listOf(eqMessage1, eqMessage2));
+    expectThat(listOf(message1, message2, eqIgnoredMessage1))
+        .containsAllIn(arrayOf(eqMessage1, eqMessage2));
 
     try {
       assertThat(listOf(message1)).containsAllOf(eqMessage1, eqMessage2);
@@ -161,6 +172,13 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);
     }
+
+    try {
+      assertThat(listOf(message1)).containsAllIn(arrayOf(eqMessage1, eqMessage2));
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
   }
 
   @Test
@@ -171,6 +189,11 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .containsExactlyElementsIn(listOf(eqMessage2, eqMessage1));
     expectThat(listOf(message1, message2))
         .containsExactlyElementsIn(listOf(eqMessage1, eqMessage2))
+        .inOrder();
+    expectThat(listOf(message1, message2))
+        .containsExactlyElementsIn(arrayOf(eqMessage2, eqMessage1));
+    expectThat(listOf(message1, message2))
+        .containsExactlyElementsIn(arrayOf(eqMessage1, eqMessage2))
         .inOrder();
 
     try {
@@ -202,12 +225,29 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);
     }
+
+    try {
+      assertThat(listOf(message1)).containsExactlyElementsIn(arrayOf(eqMessage1, eqMessage2));
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+
+    try {
+      assertThat(listOf(message1, message2))
+          .containsExactlyElementsIn(arrayOf(eqMessage2, eqMessage1))
+          .inOrder();
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
   }
 
   @Test
   public void testPlain_containsNone() {
     expectThat(listOf(message1)).containsNoneOf(eqMessage2, eqIgnoredMessage1);
     expectThat(listOf(message1)).containsNoneIn(listOf(eqMessage2, eqIgnoredMessage1));
+    expectThat(listOf(message1)).containsNoneIn(arrayOf(eqMessage2, eqIgnoredMessage1));
 
     try {
       assertThat(listOf(message1, message2)).containsNoneOf(eqMessage2, eqIgnoredMessage1);
@@ -218,6 +258,13 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
 
     try {
       assertThat(listOf(message1, message2)).containsNoneIn(listOf(eqMessage2, eqIgnoredMessage1));
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectFailureNotMissing(expected);
+    }
+
+    try {
+      assertThat(listOf(message1, message2)).containsNoneIn(arrayOf(eqMessage2, eqIgnoredMessage1));
       expectedFailure();
     } catch (AssertionError expected) {
       expectFailureNotMissing(expected);

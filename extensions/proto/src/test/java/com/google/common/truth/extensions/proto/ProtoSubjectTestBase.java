@@ -221,6 +221,10 @@ public class ProtoSubjectTestBase {
     return ImmutableList.copyOf(elements);
   }
 
+  protected static final <T> T[] arrayOf(T... elements) {
+    return elements;
+  }
+
   @SuppressWarnings("unchecked")
   protected static final <K, V> ImmutableMap<K, V> mapOf(K k0, V v0, Object... rest) {
     Preconditions.checkArgument(rest.length % 2 == 0, "Uneven args: %s", rest.length);

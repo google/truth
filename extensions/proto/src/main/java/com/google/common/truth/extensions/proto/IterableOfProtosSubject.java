@@ -174,6 +174,14 @@ public class IterableOfProtosSubject<
   }
 
   /**
+   * Attests that the subject contains at least one of the objects contained in the provided array
+   * or fails.
+   */
+  public void containsAnyIn(Object[] expected) {
+    delegate().containsAnyIn(expected);
+  }
+
+  /**
    * Attests that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements to this call then it must appear at
    * least that number of times in the actual elements.
@@ -205,6 +213,20 @@ public class IterableOfProtosSubject<
   }
 
   /**
+   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements then it must appear at least that
+   * number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsAllIn(Object[] expected) {
+    return delegate().containsAllIn(expected);
+  }
+
+  /**
    * Attests that a subject contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
@@ -212,6 +234,10 @@ public class IterableOfProtosSubject<
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method.
+   *
+   * <p>To test that the iterable contains the same elements as an array, prefer {@link
+   * #containsExactlyElementsIn(Object[])}. It makes clear that the given array is a list of
+   * elements, not an element itself. This helps human readers and avoids a compiler warning.
    */
   @CanIgnoreReturnValue
   public Ordered containsExactly(@Nullable Object... varargs) {
@@ -234,6 +260,21 @@ public class IterableOfProtosSubject<
   }
 
   /**
+   * Attests that a subject contains exactly the provided objects or fails.
+   *
+   * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the {@code
+   * Iterable} parameter asserts that the object must likewise be duplicated exactly 3 times in the
+   * subject.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method.
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsExactlyElementsIn(Object[] expected) {
+    return delegate().containsExactlyElementsIn(expected);
+  }
+
+  /**
    * Attests that a actual iterable contains none of the excluded objects or fails. (Duplicates are
    * irrelevant to this test, which fails if any of the actual elements equal any of the excluded.)
    */
@@ -250,6 +291,15 @@ public class IterableOfProtosSubject<
    * equal any of the excluded.)
    */
   public void containsNoneIn(Iterable<?> excluded) {
+    delegate().containsNoneIn(excluded);
+  }
+
+  /**
+   * Attests that a actual iterable contains none of the elements contained in the excluded iterable
+   * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
+   * equal any of the excluded.)
+   */
+  public void containsNoneIn(Object[] excluded) {
     delegate().containsNoneIn(excluded);
   }
 
@@ -593,12 +643,22 @@ public class IterableOfProtosSubject<
     }
 
     @Override
+    public Ordered containsExactlyElementsIn(M[] expected) {
+      return usingCorrespondence().containsExactlyElementsIn(expected);
+    }
+
+    @Override
     public Ordered containsAllOf(@Nullable M first, @Nullable M second, @Nullable M... rest) {
       return usingCorrespondence().containsAllOf(first, second, rest);
     }
 
     @Override
     public Ordered containsAllIn(Iterable<? extends M> expected) {
+      return usingCorrespondence().containsAllIn(expected);
+    }
+
+    @Override
+    public Ordered containsAllIn(M[] expected) {
       return usingCorrespondence().containsAllIn(expected);
     }
 
@@ -613,6 +673,11 @@ public class IterableOfProtosSubject<
     }
 
     @Override
+    public void containsAnyIn(M[] expected) {
+      usingCorrespondence().containsAnyIn(expected);
+    }
+
+    @Override
     public void containsNoneOf(
         @Nullable M firstExcluded, @Nullable M secondExcluded, @Nullable M... restOfExcluded) {
       usingCorrespondence().containsNoneOf(firstExcluded, secondExcluded, restOfExcluded);
@@ -620,6 +685,11 @@ public class IterableOfProtosSubject<
 
     @Override
     public void containsNoneIn(Iterable<? extends M> excluded) {
+      usingCorrespondence().containsNoneIn(excluded);
+    }
+
+    @Override
+    public void containsNoneIn(M[] excluded) {
       usingCorrespondence().containsNoneIn(excluded);
     }
 
