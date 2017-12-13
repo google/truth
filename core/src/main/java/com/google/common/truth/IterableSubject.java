@@ -126,7 +126,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
-  /** Attests (with a side-effect failure) that the subject contains the supplied item. */
+  /** Checks (with a side-effect failure) that the subject contains the supplied item. */
   public final void contains(@Nullable Object element) {
     if (!Iterables.contains(actual(), element)) {
       List<Object> elementList = Lists.newArrayList(element);
@@ -144,14 +144,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
-  /** Attests (with a side-effect failure) that the subject does not contain the supplied item. */
+  /** Checks (with a side-effect failure) that the subject does not contain the supplied item. */
   public final void doesNotContain(@Nullable Object element) {
     if (Iterables.contains(actual(), element)) {
       failWithRawMessage("%s should not have contained <%s>", actualAsString(), element);
     }
   }
 
-  /** Attests that the subject does not contain duplicate elements. */
+  /** Checks that the subject does not contain duplicate elements. */
   public final void containsNoDuplicates() {
     List<Entry<?>> duplicates = Lists.newArrayList();
     for (Multiset.Entry<?> entry : LinkedHashMultiset.create(actual()).entrySet()) {
@@ -164,14 +164,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
-  /** Attests that the subject contains at least one of the provided objects or fails. */
+  /** Checks that the subject contains at least one of the provided objects or fails. */
   public final void containsAnyOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     containsAny("contains any of", accumulate(first, second, rest));
   }
 
   /**
-   * Attests that the subject contains at least one of the objects contained in the provided
+   * Checks that the subject contains at least one of the objects contained in the provided
    * collection or fails.
    */
   public final void containsAnyIn(Iterable<?> expected) {
@@ -179,8 +179,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that the subject contains at least one of the objects contained in the provided array
-   * or fails.
+   * Checks that the subject contains at least one of the objects contained in the provided array or
+   * fails.
    */
   public final void containsAnyIn(Object[] expected) {
     containsAnyIn(asList(expected));
@@ -207,7 +207,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements to this call then it must appear at
    * least that number of times in the actual elements.
    *
@@ -225,7 +225,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
@@ -239,7 +239,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
@@ -310,7 +310,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that a subject contains exactly the provided objects or fails.
+   * Checks that a subject contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
    * parameters asserts that the object must likewise be duplicated exactly 3 times in the subject.
@@ -330,7 +330,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that a subject contains exactly the provided objects or fails.
+   * Checks that a subject contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the {@code
    * Iterable} parameter asserts that the object must likewise be duplicated exactly 3 times in the
@@ -345,7 +345,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that a subject contains exactly the provided objects or fails.
+   * Checks that a subject contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the array
    * parameter asserts that the object must likewise be duplicated exactly 3 times in the subject.
@@ -501,7 +501,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that a actual iterable contains none of the excluded objects or fails. (Duplicates are
+   * Checks that a actual iterable contains none of the excluded objects or fails. (Duplicates are
    * irrelevant to this test, which fails if any of the actual elements equal any of the excluded.)
    */
   public final void containsNoneOf(
@@ -512,7 +512,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that the actual iterable contains none of the elements contained in the excluded
+   * Checks that the actual iterable contains none of the elements contained in the excluded
    * iterable or fails. (Duplicates are irrelevant to this test, which fails if any of the actual
    * elements equal any of the excluded.)
    */
@@ -521,7 +521,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Attests that the actual iterable contains none of the elements contained in the excluded array
+   * Checks that the actual iterable contains none of the elements contained in the excluded array
    * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
    * equal any of the excluded.)
    */
@@ -703,7 +703,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains at least one element that corresponds to the given expected
+     * Checks that the subject contains at least one element that corresponds to the given expected
      * element.
      */
     public void contains(@Nullable E expected) {
@@ -715,7 +715,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       fail("contains at least one element that " + correspondence, expected);
     }
 
-    /** Attests that none of the actual elements correspond to the given element. */
+    /** Checks that none of the actual elements correspond to the given element. */
     public void doesNotContain(@Nullable E excluded) {
       List<A> matchingElements = new ArrayList<A>();
       for (A actual : getCastActual()) {
@@ -732,7 +732,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that subject contains exactly elements that correspond to the expected elements, i.e.
+     * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
      * that there is a 1:1 mapping between the actual elements and the expected elements where each
      * pair of elements correspond.
      *
@@ -751,7 +751,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that subject contains exactly elements that correspond to the expected elements, i.e.
+     * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
      * that there is a 1:1 mapping between the actual elements and the expected elements where each
      * pair of elements correspond.
      *
@@ -801,7 +801,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that subject contains exactly elements that correspond to the expected elements, i.e.
+     * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
      * that there is a 1:1 mapping between the actual elements and the expected elements where each
      * pair of elements correspond.
      *
@@ -978,7 +978,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains elements that corresponds to all of the expected elements,
+     * Checks that the subject contains elements that corresponds to all of the expected elements,
      * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
@@ -993,7 +993,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains elements that corresponds to all of the expected elements,
+     * Checks that the subject contains elements that corresponds to all of the expected elements,
      * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
@@ -1033,7 +1033,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains elements that corresponds to all of the expected elements,
+     * Checks that the subject contains elements that corresponds to all of the expected elements,
      * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
      *
@@ -1124,8 +1124,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains at least one element that corresponds to at least one of
-     * the expected elements.
+     * Checks that the subject contains at least one element that corresponds to at least one of the
+     * expected elements.
      */
     @SafeVarargs
     public final void containsAnyOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
@@ -1135,8 +1135,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains at least one element that corresponds to at least one of
-     * the expected elements.
+     * Checks that the subject contains at least one element that corresponds to at least one of the
+     * expected elements.
      */
     public void containsAnyIn(Iterable<? extends E> expected) {
       containsAny(
@@ -1145,8 +1145,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains at least one element that corresponds to at least one of
-     * the expected elements.
+     * Checks that the subject contains at least one element that corresponds to at least one of the
+     * expected elements.
      */
     public void containsAnyIn(E[] expected) {
       containsAnyIn(asList(expected));
@@ -1165,7 +1165,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains no elements that correspond to any of the given elements.
+     * Checks that the subject contains no elements that correspond to any of the given elements.
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */
@@ -1176,7 +1176,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains no elements that correspond to any of the given elements.
+     * Checks that the subject contains no elements that correspond to any of the given elements.
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */
@@ -1185,7 +1185,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Attests that the subject contains no elements that correspond to any of the given elements.
+     * Checks that the subject contains no elements that correspond to any of the given elements.
      * (Duplicates are irrelevant to this test, which fails if any of the subject elements
      * correspond to any of the given elements.)
      */

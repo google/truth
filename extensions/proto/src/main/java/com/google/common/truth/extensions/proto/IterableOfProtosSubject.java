@@ -144,29 +144,29 @@ public class IterableOfProtosSubject<
     delegate().hasSize(expectedSize);
   }
 
-  /** Attests (with a side-effect failure) that the subject contains the supplied item. */
+  /** Checks (with a side-effect failure) that the subject contains the supplied item. */
   public void contains(@Nullable Object element) {
     delegate().contains(element);
   }
 
-  /** Attests (with a side-effect failure) that the subject does not contain the supplied item. */
+  /** Checks (with a side-effect failure) that the subject does not contain the supplied item. */
   public void doesNotContain(@Nullable Object element) {
     delegate().doesNotContain(element);
   }
 
-  /** Attests that the subject does not contain duplicate elements. */
+  /** Checks that the subject does not contain duplicate elements. */
   public void containsNoDuplicates() {
     delegate().containsNoDuplicates();
   }
 
-  /** Attests that the subject contains at least one of the provided objects or fails. */
+  /** Checks that the subject contains at least one of the provided objects or fails. */
   public void containsAnyOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
     delegate().containsAnyOf(first, second, rest);
   }
 
   /**
-   * Attests that the subject contains at least one of the objects contained in the provided
+   * Checks that the subject contains at least one of the objects contained in the provided
    * collection or fails.
    */
   public void containsAnyIn(Iterable<?> expected) {
@@ -174,15 +174,15 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Attests that the subject contains at least one of the objects contained in the provided array
-   * or fails.
+   * Checks that the subject contains at least one of the objects contained in the provided array or
+   * fails.
    */
   public void containsAnyIn(Object[] expected) {
     delegate().containsAnyIn(expected);
   }
 
   /**
-   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements to this call then it must appear at
    * least that number of times in the actual elements.
    *
@@ -199,7 +199,7 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
@@ -213,7 +213,7 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Attests that the actual iterable contains at least all of the expected elements or fails. If an
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
@@ -227,7 +227,7 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Attests that a subject contains exactly the provided objects or fails.
+   * Checks that a subject contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
    * parameters asserts that the object must likewise be duplicated exactly 3 times in the subject.
@@ -245,7 +245,7 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Attests that a subject contains exactly the provided objects or fails.
+   * Checks that a subject contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the {@code
    * Iterable} parameter asserts that the object must likewise be duplicated exactly 3 times in the
@@ -260,7 +260,7 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Attests that a subject contains exactly the provided objects or fails.
+   * Checks that a subject contains exactly the provided objects or fails.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the {@code
    * Iterable} parameter asserts that the object must likewise be duplicated exactly 3 times in the
@@ -275,7 +275,7 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Attests that a actual iterable contains none of the excluded objects or fails. (Duplicates are
+   * Checks that a actual iterable contains none of the excluded objects or fails. (Duplicates are
    * irrelevant to this test, which fails if any of the actual elements equal any of the excluded.)
    */
   public void containsNoneOf(
@@ -286,7 +286,7 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Attests that a actual iterable contains none of the elements contained in the excluded iterable
+   * Checks that a actual iterable contains none of the elements contained in the excluded iterable
    * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
    * equal any of the excluded.)
    */
@@ -295,7 +295,7 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Attests that a actual iterable contains none of the elements contained in the excluded iterable
+   * Checks that a actual iterable contains none of the elements contained in the excluded iterable
    * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
    * equal any of the excluded.)
    */
