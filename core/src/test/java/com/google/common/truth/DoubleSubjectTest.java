@@ -15,11 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.annotations.GwtIncompatible;
 import javax.annotation.Nullable;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,8 +31,14 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class DoubleSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class DoubleSubjectTest extends BaseSubjectTestCase {
+
+  private static final double NEARLY_MAX = 1.7976931348623155E308;
+  private static final double NEGATIVE_NEARLY_MAX = -1.7976931348623155E308;
+  private static final double OVER_MIN = 1.0E-323;
+  private static final double UNDER_NEGATIVE_MIN = -1.0E-323;
+  private static final double GOLDEN = 1.23;
+  private static final double OVER_GOLDEN = 1.2300000000000002;
 
   private static final Subject.Factory<DoubleSubject, Double> DOUBLE_SUBJECT_FACTORY =
       new Subject.Factory<DoubleSubject, Double>() {
@@ -47,6 +54,38 @@ public class DoubleSubjectTest {
     AssertionError assertionError =
         ExpectFailure.expectFailureAbout(DOUBLE_SUBJECT_FACTORY, callback);
     assertThat(assertionError).hasMessageThat().isEqualTo(failureMessage);
+  }
+
+  @Test
+  @GwtIncompatible("Math.nextAfter")
+  public void testDoubleConstants_matchNextAfter() {
+    assertThat(Math.nextAfter(Double.MIN_VALUE, 1.0)).isEqualTo(OVER_MIN);
+    assertThat(Math.nextAfter(1.23, Double.POSITIVE_INFINITY)).isEqualTo(OVER_GOLDEN);
+    assertThat(Math.nextAfter(Double.MAX_VALUE, 0.0)).isEqualTo(NEARLY_MAX);
+    assertThat(Math.nextAfter(-1.0 * Double.MAX_VALUE, 0.0)).isEqualTo(NEGATIVE_NEARLY_MAX);
+    assertThat(Math.nextAfter(-1.0 * Double.MIN_VALUE, -1.0)).isEqualTo(UNDER_NEGATIVE_MIN);
+  }
+
+  @Test
+  @GwtIncompatible("GWT behavior difference")
+  public void testJ2clCornerCases() {
+    // From Double#equals(Object), though Double.NaN != Double.NaN, Double.NaN.equals(Double.NaN)
+    // should be true, yet it's not under GWT
+    assertThat(Double.NaN).isEqualTo(Double.NaN);
+    assertThatIsNotEqualToFails(Double.NaN);
+
+    // 0.0 and -0.0 should be different
+    assertThatIsEqualToFails(-0.0, 0.0);
+    assertThat(-0.0).isNotEqualTo(0.0);
+
+    // Under GWT, 1.23f.toString() is different than 1.23d.toString(), so the message omits types.
+    expectFailure.whenTesting().that(1.23).isEqualTo(1.23f);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            format(
+                "Not true that <%s> (java.lang.Double) is equal to <%s> (java.lang.Float)",
+                1.23, 1.23f));
   }
 
   @Test
@@ -74,7 +113,7 @@ public class DoubleSubjectTest {
         };
     expectFailureWithMessage(
         callback,
-        String.format(
+        format(
             "testValue (<%s>) and <%s> should have been finite values within"
                 + " <%s> of each other",
             actual, expected, tolerance));
@@ -105,7 +144,7 @@ public class DoubleSubjectTest {
         };
     expectFailureWithMessage(
         callback,
-        String.format(
+        format(
             "testValue (<%s>) and <%s> should have been finite values not within"
                 + " <%s> of each other",
             actual, expected, tolerance));
@@ -239,28 +278,28 @@ public class DoubleSubjectTest {
   @Test
   public void isWithinZeroTolerance() {
     double max = Double.MAX_VALUE;
-    double nearlyMax = Math.nextAfter(Double.MAX_VALUE, 0.0);
+    double nearlyMax = NEARLY_MAX;
     assertThat(max).isWithin(0.0).of(max);
     assertThat(nearlyMax).isWithin(0.0).of(nearlyMax);
     assertThatIsWithinFails(max, 0.0, nearlyMax);
     assertThatIsWithinFails(nearlyMax, 0.0, max);
 
     double negativeMax = -1.0 * Double.MAX_VALUE;
-    double negativeNearlyMax = Math.nextAfter(-1.0 * Double.MAX_VALUE, 0.0);
+    double negativeNearlyMax = NEGATIVE_NEARLY_MAX;
     assertThat(negativeMax).isWithin(0.0).of(negativeMax);
     assertThat(negativeNearlyMax).isWithin(0.0).of(negativeNearlyMax);
     assertThatIsWithinFails(negativeMax, 0.0, negativeNearlyMax);
     assertThatIsWithinFails(negativeNearlyMax, 0.0, negativeMax);
 
     double min = Double.MIN_VALUE;
-    double justOverMin = Math.nextAfter(Double.MIN_VALUE, 1.0);
+    double justOverMin = OVER_MIN;
     assertThat(min).isWithin(0.0).of(min);
     assertThat(justOverMin).isWithin(0.0).of(justOverMin);
     assertThatIsWithinFails(min, 0.0, justOverMin);
     assertThatIsWithinFails(justOverMin, 0.0, min);
 
     double negativeMin = -1.0 * Double.MIN_VALUE;
-    double justUnderNegativeMin = Math.nextAfter(-1.0 * Double.MIN_VALUE, -1.0);
+    double justUnderNegativeMin = UNDER_NEGATIVE_MIN;
     assertThat(negativeMin).isWithin(0.0).of(negativeMin);
     assertThat(justUnderNegativeMin).isWithin(0.0).of(justUnderNegativeMin);
     assertThatIsWithinFails(negativeMin, 0.0, justUnderNegativeMin);
@@ -270,14 +309,14 @@ public class DoubleSubjectTest {
   @Test
   public void isNotWithinZeroTolerance() {
     double max = Double.MAX_VALUE;
-    double nearlyMax = Math.nextAfter(Double.MAX_VALUE, 0.0);
+    double nearlyMax = NEARLY_MAX;
     assertThatIsNotWithinFails(max, 0.0, max);
     assertThatIsNotWithinFails(nearlyMax, 0.0, nearlyMax);
     assertThat(max).isNotWithin(0.0).of(nearlyMax);
     assertThat(nearlyMax).isNotWithin(0.0).of(max);
 
     double min = Double.MIN_VALUE;
-    double justOverMin = Math.nextAfter(Double.MIN_VALUE, 1.0);
+    double justOverMin = OVER_MIN;
     assertThatIsNotWithinFails(min, 0.0, min);
     assertThatIsNotWithinFails(justOverMin, 0.0, justOverMin);
     assertThat(min).isNotWithin(0.0).of(justOverMin);
@@ -337,19 +376,9 @@ public class DoubleSubjectTest {
   @Test
   public void isEqualTo() {
     assertThat(1.23).isEqualTo(1.23);
-    assertThatIsEqualToFails(1.23, Math.nextAfter(1.23, Double.POSITIVE_INFINITY));
+    assertThatIsEqualToFails(GOLDEN, OVER_GOLDEN);
     assertThat(Double.POSITIVE_INFINITY).isEqualTo(Double.POSITIVE_INFINITY);
-    assertThat(Double.NaN).isEqualTo(Double.NaN);
-    assertThatIsEqualToFails(-0.0, 0.0);
     assertThat((Double) null).isEqualTo(null);
-
-    expectFailure.whenTesting().that(1.23).isEqualTo(1.23f);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            String.format(
-                "Not true that <%s> (java.lang.Double) is equal to <%s> (java.lang.Float)",
-                1.23, 1.23f));
   }
 
   private static void assertThatIsEqualToFails(final double actual, final double expected) {
@@ -361,16 +390,14 @@ public class DoubleSubjectTest {
           }
         };
     expectFailureWithMessage(
-        callback, String.format("Not true that <%s> is equal to <%s>", actual, expected));
+        callback, format("Not true that <%s> is equal to <%s>", actual, expected));
   }
 
   @Test
   public void isNotEqualTo() {
     assertThatIsNotEqualToFails(1.23);
-    assertThat(1.23).isNotEqualTo(Math.nextAfter(1.23, Double.POSITIVE_INFINITY));
+    assertThat(GOLDEN).isNotEqualTo(OVER_GOLDEN);
     assertThatIsNotEqualToFails(Double.POSITIVE_INFINITY);
-    assertThatIsNotEqualToFails(Double.NaN);
-    assertThat(-0.0).isNotEqualTo(0.0);
     assertThatIsNotEqualToFails(null);
     assertThat(1.23).isNotEqualTo(1.23f);
   }
@@ -384,7 +411,7 @@ public class DoubleSubjectTest {
           }
         };
     expectFailureWithMessage(
-        callback, String.format("Not true that <%s> is not equal to <%s>", value, value));
+        callback, format("Not true that <%s> is not equal to <%s>", value, value));
   }
 
   @Test
