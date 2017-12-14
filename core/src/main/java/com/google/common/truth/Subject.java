@@ -153,14 +153,23 @@ public class Subject<S extends Subject<S, T>, T> {
       @Nullable Object rawActual, @Nullable Object rawOther, boolean expectEqual) {
     Object actual;
     Object other;
+    boolean actualEqual;
     if (isIntegralBoxedPrimitive(rawActual) && isIntegralBoxedPrimitive(rawOther)) {
       actual = integralValue(rawActual);
       other = integralValue(rawOther);
+      actualEqual = Objects.equal(actual, other);
     } else {
       actual = rawActual;
       other = rawOther;
+      if (rawActual instanceof Double && rawOther instanceof Double) {
+        actualEqual = Double.compare((Double) rawActual, (Double) rawOther) == 0;
+      } else if (rawActual instanceof Float && rawOther instanceof Float) {
+        actualEqual = Float.compare((Float) rawActual, (Float) rawOther) == 0;
+      } else {
+        actualEqual = Objects.equal(actual, other);
+      }
     }
-    if (Objects.equal(actual, other) != expectEqual) {
+    if (actualEqual != expectEqual) {
       failComparingToStrings(
           expectEqual ? "is equal to" : "is not equal to", actual, other, rawOther, expectEqual);
     }

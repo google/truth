@@ -235,7 +235,9 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
 
   /** Asserts that the subject is {@link Float#NaN}. */
   public final void isNaN() {
-    isEqualTo(Float.NaN);
+    if (actual() == null || !actual().isNaN()) {
+      fail("is NaN");
+    }
   }
 
   /**

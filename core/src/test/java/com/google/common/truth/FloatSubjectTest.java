@@ -73,15 +73,9 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
   @Test
   @GwtIncompatible("GWT behavior difference")
   public void j2clCornerCases() {
-    // From Float#equals(Object), though Float.NaN != Float.NaN, Float.NaN.equals(Float.NaN) should
-    // be true, yet it's not under GWT
-    assertThat(Float.NaN).isEqualTo(Float.NaN);
-    assertThat(Float.NaN).isNaN();
-
-    // 0.0f and -0.0f should be different
-    assertThat(-0.0f).isNotEqualTo(0.0f);
+    // Under GWT, -0.0f and 0.0f has same toString, so message will have extra
+    // "although their toString() representations are the same"
     assertThatIsEqualToFails(-0.0f, 0.0f);
-
     // Under GWT, 1.23f.toString() is different than 1.23d.toString(), so the message omits types.
     expectFailure.whenTesting().that(1.23f).isEqualTo(1.23);
     assertThat(expectFailure.getFailure())
@@ -384,6 +378,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThat(golden).isEqualTo(golden);
     assertThatIsEqualToFails(golden, justOverGolden);
     assertThat(Float.POSITIVE_INFINITY).isEqualTo(Float.POSITIVE_INFINITY);
+    assertThat(Float.NaN).isEqualTo(Float.NaN);
     assertThat((Float) null).isEqualTo(null);
   }
 
@@ -407,6 +402,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThat(golden).isNotEqualTo(justOverGolden);
     assertThatIsNotEqualToFails(Float.POSITIVE_INFINITY);
     assertThatIsNotEqualToFails(Float.NaN);
+    assertThat(-0.0f).isNotEqualTo(0.0f);
     assertThatIsNotEqualToFails(null);
     assertThat(1.23f).isNotEqualTo(1.23);
   }
@@ -513,6 +509,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNaN() {
+    assertThat(Float.NaN).isNaN();
     assertThatIsNaNFails(1.23f);
     assertThatIsNaNFails(Float.POSITIVE_INFINITY);
     assertThatIsNaNFails(Float.NEGATIVE_INFINITY);
@@ -527,8 +524,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
             expect.that(value).named("testValue").isNaN();
           }
         };
-    expectFailureWithMessage(
-        callback, "Not true that testValue (<" + value + ">) is equal to <" + Float.NaN + ">");
+    expectFailureWithMessage(callback, "Not true that testValue (<" + value + ">) is NaN");
   }
 
   @Test

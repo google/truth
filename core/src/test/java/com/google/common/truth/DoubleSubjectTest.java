@@ -69,15 +69,9 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
   @Test
   @GwtIncompatible("GWT behavior difference")
   public void testJ2clCornerCases() {
-    // From Double#equals(Object), though Double.NaN != Double.NaN, Double.NaN.equals(Double.NaN)
-    // should be true, yet it's not under GWT
-    assertThat(Double.NaN).isEqualTo(Double.NaN);
-    assertThatIsNotEqualToFails(Double.NaN);
-
-    // 0.0 and -0.0 should be different
+    // Under GWT, -0.0 and 0.0 has same toString, so message will have extra
+    // "although their toString() representations are the same"
     assertThatIsEqualToFails(-0.0, 0.0);
-    assertThat(-0.0).isNotEqualTo(0.0);
-
     // Under GWT, 1.23f.toString() is different than 1.23d.toString(), so the message omits types.
     expectFailure.whenTesting().that(1.23).isEqualTo(1.23f);
     assertThat(expectFailure.getFailure())
@@ -378,6 +372,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThat(1.23).isEqualTo(1.23);
     assertThatIsEqualToFails(GOLDEN, OVER_GOLDEN);
     assertThat(Double.POSITIVE_INFINITY).isEqualTo(Double.POSITIVE_INFINITY);
+    assertThat(Double.NaN).isEqualTo(Double.NaN);
     assertThat((Double) null).isEqualTo(null);
   }
 
@@ -398,6 +393,8 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsNotEqualToFails(1.23);
     assertThat(GOLDEN).isNotEqualTo(OVER_GOLDEN);
     assertThatIsNotEqualToFails(Double.POSITIVE_INFINITY);
+    assertThatIsNotEqualToFails(Double.NaN);
+    assertThat(-0.0).isNotEqualTo(0.0);
     assertThatIsNotEqualToFails(null);
     assertThat(1.23).isNotEqualTo(1.23f);
   }
