@@ -375,20 +375,20 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#contains-M-">contains(M)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one element that corresponds to the given expected
+<div class="block">Checks that the subject contains at least one element that corresponds to the given expected
  element.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#contains-java.lang.Object-">contains(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests (with a side-effect failure) that the subject contains the supplied item.</div>
+<div class="block">Checks (with a side-effect failure) that the subject contains the supplied item.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#contains-java.lang.Object-">contains(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests (with a side-effect failure) that the subject contains the supplied item.</div>
+<div class="block">Checks (with a side-effect failure) that the subject contains the supplied item.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#contains-E-">contains(E)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one element that corresponds to the given expected
+<div class="block">Checks that the subject contains at least one element that corresponds to the given expected
  element.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#contains-java.lang.CharSequence-">contains(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
@@ -401,38 +401,56 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAllIn-java.lang.Iterable-">containsAllIn(Iterable&lt;? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that the subject contains elements that corresponds to all of the expected elements,
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
+ i.e.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAllIn-M:A-">containsAllIn(M[])</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
+<dd>
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllIn-java.lang.Iterable-">containsAllIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests that the actual iterable contains at least all of the expected elements or fails.</div>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllIn-java.lang.Object:A-">containsAllIn(Object[])</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsAllIn-java.lang.Iterable-">containsAllIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests that the actual iterable contains at least all of the expected elements or fails.</div>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsAllIn-java.lang.Object:A-">containsAllIn(Object[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-java.lang.Iterable-">containsAllIn(Iterable&lt;? extends E&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that the subject contains elements that corresponds to all of the expected elements,
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
+ i.e.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-E:A-">containsAllIn(E[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
+<dd>
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAllOf-M-M-M...-">containsAllOf(M, M, M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that the subject contains elements that corresponds to all of the expected elements,
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAllOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests that the actual iterable contains at least all of the expected elements or fails.</div>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsAllOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAllOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests that the actual iterable contains at least all of the expected elements or fails.</div>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllOf-E-E-E...-">containsAllOf(E, E, E...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that the subject contains elements that corresponds to all of the expected elements,
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html#containsAllOf-double:A-">containsAllOf(double[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject.DoubleArrayAsIterable</a></dt>
@@ -445,41 +463,61 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAnyIn-java.lang.Iterable-">containsAnyIn(Iterable&lt;? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one element that corresponds to at least one of the
+<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
+ expected elements.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAnyIn-M:A-">containsAnyIn(M[])</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
+<dd>
+<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
  expected elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAnyIn-java.lang.Iterable-">containsAnyIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one of the objects contained in the provided
+<div class="block">Checks that the subject contains at least one of the objects contained in the provided
  collection or fails.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAnyIn-java.lang.Object:A-">containsAnyIn(Object[])</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
+<dd>
+<div class="block">Checks that the subject contains at least one of the objects contained in the provided array or
+ fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsAnyIn-java.lang.Iterable-">containsAnyIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one of the objects contained in the provided
+<div class="block">Checks that the subject contains at least one of the objects contained in the provided
  collection or fails.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsAnyIn-java.lang.Object:A-">containsAnyIn(Object[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
+<dd>
+<div class="block">Checks that the subject contains at least one of the objects contained in the provided array or
+ fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyIn-java.lang.Iterable-">containsAnyIn(Iterable&lt;? extends E&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one element that corresponds to at least one of
- the expected elements.</div>
+<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
+ expected elements.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyIn-E:A-">containsAnyIn(E[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
+<dd>
+<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
+ expected elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAnyOf-M-M-M...-">containsAnyOf(M, M, M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one element that corresponds to at least one of the
+<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
  expected elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAnyOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one of the provided objects or fails.</div>
+<div class="block">Checks that the subject contains at least one of the provided objects or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAnyOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one of the provided objects or fails.</div>
+<div class="block">Checks that the subject contains at least one of the provided objects or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyOf-E-E-E...-">containsAnyOf(E, E, E...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that the subject contains at least one element that corresponds to at least one of
- the expected elements.</div>
+<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
+ expected elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html#containsAnyOf-double:A-">containsAnyOf(double[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject.DoubleArrayAsIterable</a></dt>
 <dd>
@@ -543,11 +581,11 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsExactly-M...-">containsExactly(M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that subject contains exactly elements that correspond to the expected elements, i.e.</div>
+<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsExactly-java.lang.Object...-">containsExactly(Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests that a subject contains exactly the provided objects or fails.</div>
+<div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#containsExactly-java.lang.Object-M-java.lang.Object...-">containsExactly(Object, M, Object...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
@@ -580,11 +618,11 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsExactly-java.lang.Object...-">containsExactly(Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests that a subject contains exactly the provided objects or fails.</div>
+<div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactly-E...-">containsExactly(E...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that subject contains exactly elements that correspond to the expected elements, i.e.</div>
+<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#containsExactly--">containsExactly()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
@@ -631,19 +669,35 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn(Iterable&lt;? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that subject contains exactly elements that correspond to the expected elements, i.e.</div>
+<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsExactlyElementsIn-M:A-">containsExactlyElementsIn(M[])</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
+<dd>
+<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests that a subject contains exactly the provided objects or fails.</div>
+<div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsExactlyElementsIn-java.lang.Object:A-">containsExactlyElementsIn(Object[])</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
+<dd>
+<div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests that a subject contains exactly the provided objects or fails.</div>
+<div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsExactlyElementsIn-java.lang.Object:A-">containsExactlyElementsIn(Object[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
+<dd>
+<div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn(Iterable&lt;? extends E&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that subject contains exactly elements that correspond to the expected elements, i.e.</div>
+<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn-E:A-">containsExactlyElementsIn(E[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
+<dd>
+<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#containsExactlyEntriesIn-java.util.Map-">containsExactlyEntriesIn(Map&lt;?, ? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
@@ -721,45 +775,63 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoDuplicates--">containsNoDuplicates()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests that the subject does not contain duplicate elements.</div>
+<div class="block">Checks that the subject does not contain duplicate elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsNoDuplicates--">containsNoDuplicates()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests that the subject does not contain duplicate elements.</div>
+<div class="block">Checks that the subject does not contain duplicate elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsNoneIn-java.lang.Iterable-">containsNoneIn(Iterable&lt;? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that the subject contains no elements that correspond to any of the given elements.</div>
+<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsNoneIn-M:A-">containsNoneIn(M[])</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
+<dd>
+<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoneIn-java.lang.Iterable-">containsNoneIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests that a actual iterable contains none of the elements contained in the excluded iterable
+<div class="block">Checks that a actual iterable contains none of the elements contained in the excluded iterable
+ or fails.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoneIn-java.lang.Object:A-">containsNoneIn(Object[])</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
+<dd>
+<div class="block">Checks that a actual iterable contains none of the elements contained in the excluded iterable
  or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsNoneIn-java.lang.Iterable-">containsNoneIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests that a actual iterable contains none of the elements contained in the excluded iterable
+<div class="block">Checks that the actual iterable contains none of the elements contained in the excluded
+ iterable or fails.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsNoneIn-java.lang.Object:A-">containsNoneIn(Object[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
+<dd>
+<div class="block">Checks that the actual iterable contains none of the elements contained in the excluded array
  or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneIn-java.lang.Iterable-">containsNoneIn(Iterable&lt;? extends E&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that the subject contains no elements that correspond to any of the given elements.</div>
+<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneIn-E:A-">containsNoneIn(E[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
+<dd>
+<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsNoneOf-M-M-M...-">containsNoneOf(M, M, M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that the subject contains no elements that correspond to any of the given elements.</div>
+<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsNoneOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests that a actual iterable contains none of the excluded objects or fails.</div>
+<div class="block">Checks that a actual iterable contains none of the excluded objects or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#containsNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsNoneOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests that a actual iterable contains none of the excluded objects or fails.</div>
+<div class="block">Checks that a actual iterable contains none of the excluded objects or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneOf-E-E-E...-">containsNoneOf(E, E, E...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that the subject contains no elements that correspond to any of the given elements.</div>
+<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html#containsNoneOf-double:A-">containsNoneOf(double[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject.DoubleArrayAsIterable</a></dt>
 <dd>
@@ -820,19 +892,19 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#doesNotContain-M-">doesNotContain(M)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
-<div class="block">Attests that none of the actual elements correspond to the given element.</div>
+<div class="block">Checks that none of the actual elements correspond to the given element.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#doesNotContain-java.lang.Object-">doesNotContain(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Attests (with a side-effect failure) that the subject does not contain the supplied item.</div>
+<div class="block">Checks (with a side-effect failure) that the subject does not contain the supplied item.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#doesNotContain-java.lang.Object-">doesNotContain(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
-<div class="block">Attests (with a side-effect failure) that the subject does not contain the supplied item.</div>
+<div class="block">Checks (with a side-effect failure) that the subject does not contain the supplied item.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#doesNotContain-E-">doesNotContain(E)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
-<div class="block">Attests that none of the actual elements correspond to the given element.</div>
+<div class="block">Checks that none of the actual elements correspond to the given element.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#doesNotContain-java.lang.CharSequence-">doesNotContain(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
 <dd>
