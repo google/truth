@@ -15,11 +15,12 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
+import com.google.common.annotations.GwtIncompatible;
 import javax.annotation.Nullable;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,8 +31,15 @@ import org.junit.runners.JUnit4;
  * @author Kurt Alfred Kluever
  */
 @RunWith(JUnit4.class)
-public class FloatSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class FloatSubjectTest extends BaseSubjectTestCase {
+  private static final float NEARLY_MAX = 3.4028233E38f;
+  private static final float NEGATIVE_MAX = -3.4028235E38f;
+  private static final float NEGATIVE_NEARLY_MAX = -3.4028233E38f;
+  private static final float JUST_OVER_MIN = 2.8E-45f;
+  private static final float NEGATIVE_MIN = -1.4E-45f;
+  private static final float JUST_UNDER_NEGATIVE_MIN = -2.8E-45f;
+  private static final float GOLDEN = 1.23f;
+  private static final float JUST_OVER_GOLDEN = 1.2300001f;
 
   private static final Subject.Factory<FloatSubject, Float> FLOAT_SUBJECT_FACTORY =
       new Subject.Factory<FloatSubject, Float>() {
@@ -47,6 +55,41 @@ public class FloatSubjectTest {
     AssertionError assertionError =
         ExpectFailure.expectFailureAbout(FLOAT_SUBJECT_FACTORY, callback);
     assertThat(assertionError).hasMessageThat().isEqualTo(failureMessage);
+  }
+
+  @Test
+  @GwtIncompatible("Math.nextAfter")
+  public void testFloatConstants_matchNextAfter() {
+    assertThat(Math.nextAfter(Float.MAX_VALUE, 0.0f)).isEqualTo(NEARLY_MAX);
+    assertThat(-1.0f * Float.MAX_VALUE).isEqualTo(NEGATIVE_MAX);
+    assertThat(Math.nextAfter(-1.0f * Float.MAX_VALUE, 0.0f)).isEqualTo(NEGATIVE_NEARLY_MAX);
+    assertThat(Math.nextAfter(Float.MIN_VALUE, 1.0f)).isEqualTo(JUST_OVER_MIN);
+    assertThat(-1.0f * Float.MIN_VALUE).isEqualTo(NEGATIVE_MIN);
+    assertThat(Math.nextAfter(-1.0f * Float.MIN_VALUE, -1.0f)).isEqualTo(JUST_UNDER_NEGATIVE_MIN);
+    assertThat(1.23f).isEqualTo(GOLDEN);
+    assertThat(Math.nextAfter(1.23f, Float.POSITIVE_INFINITY)).isEqualTo(JUST_OVER_GOLDEN);
+  }
+
+  @Test
+  @GwtIncompatible("GWT behavior difference")
+  public void j2clCornerCases() {
+    // From Float#equals(Object), though Float.NaN != Float.NaN, Float.NaN.equals(Float.NaN) should
+    // be true, yet it's not under GWT
+    assertThat(Float.NaN).isEqualTo(Float.NaN);
+    assertThat(Float.NaN).isNaN();
+
+    // 0.0f and -0.0f should be different
+    assertThat(-0.0f).isNotEqualTo(0.0f);
+    assertThatIsEqualToFails(-0.0f, 0.0f);
+
+    // Under GWT, 1.23f.toString() is different than 1.23d.toString(), so the message omits types.
+    expectFailure.whenTesting().that(1.23f).isEqualTo(1.23);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            format(
+                "Not true that <%s> (java.lang.Float) is equal to <%s> (java.lang.Double)",
+                1.23f, 1.23));
   }
 
   @Test
@@ -74,7 +117,7 @@ public class FloatSubjectTest {
         };
     expectFailureWithMessage(
         callback,
-        String.format(
+        format(
             "testValue (<%s>) and <%s> should have been finite values within"
                 + " <%s> of each other",
             actual, expected, tolerance));
@@ -105,7 +148,7 @@ public class FloatSubjectTest {
         };
     expectFailureWithMessage(
         callback,
-        String.format(
+        format(
             "testValue (<%s>) and <%s> should have been finite values not within"
                 + " <%s> of each other",
             actual, expected, tolerance));
@@ -239,28 +282,28 @@ public class FloatSubjectTest {
   @Test
   public void isWithinZeroTolerance() {
     float max = Float.MAX_VALUE;
-    float nearlyMax = Math.nextAfter(Float.MAX_VALUE, 0.0f);
+    float nearlyMax = NEARLY_MAX;
     assertThat(max).isWithin(0.0f).of(max);
     assertThat(nearlyMax).isWithin(0.0f).of(nearlyMax);
     assertThatIsWithinFails(max, 0.0f, nearlyMax);
     assertThatIsWithinFails(nearlyMax, 0.0f, max);
 
     float negativeMax = -1.0f * Float.MAX_VALUE;
-    float negativeNearlyMax = Math.nextAfter(-1.0f * Float.MAX_VALUE, 0.0f);
+    float negativeNearlyMax = NEGATIVE_NEARLY_MAX;
     assertThat(negativeMax).isWithin(0.0f).of(negativeMax);
     assertThat(negativeNearlyMax).isWithin(0.0f).of(negativeNearlyMax);
     assertThatIsWithinFails(negativeMax, 0.0f, negativeNearlyMax);
     assertThatIsWithinFails(negativeNearlyMax, 0.0f, negativeMax);
 
     float min = Float.MIN_VALUE;
-    float justOverMin = Math.nextAfter(Float.MIN_VALUE, 1.0f);
+    float justOverMin = JUST_OVER_MIN;
     assertThat(min).isWithin(0.0f).of(min);
     assertThat(justOverMin).isWithin(0.0f).of(justOverMin);
     assertThatIsWithinFails(min, 0.0f, justOverMin);
     assertThatIsWithinFails(justOverMin, 0.0f, min);
 
     float negativeMin = -1.0f * Float.MIN_VALUE;
-    float justUnderNegativeMin = Math.nextAfter(-1.0f * Float.MIN_VALUE, -1.0f);
+    float justUnderNegativeMin = JUST_UNDER_NEGATIVE_MIN;
     assertThat(negativeMin).isWithin(0.0f).of(negativeMin);
     assertThat(justUnderNegativeMin).isWithin(0.0f).of(justUnderNegativeMin);
     assertThatIsWithinFails(negativeMin, 0.0f, justUnderNegativeMin);
@@ -270,14 +313,14 @@ public class FloatSubjectTest {
   @Test
   public void isNotWithinZeroTolerance() {
     float max = Float.MAX_VALUE;
-    float nearlyMax = Math.nextAfter(Float.MAX_VALUE, 0.0f);
+    float nearlyMax = NEARLY_MAX;
     assertThatIsNotWithinFails(max, 0.0f, max);
     assertThatIsNotWithinFails(nearlyMax, 0.0f, nearlyMax);
     assertThat(max).isNotWithin(0.0f).of(nearlyMax);
     assertThat(nearlyMax).isNotWithin(0.0f).of(max);
 
     float min = Float.MIN_VALUE;
-    float justOverMin = Math.nextAfter(Float.MIN_VALUE, 1.0f);
+    float justOverMin = JUST_OVER_MIN;
     assertThatIsNotWithinFails(min, 0.0f, min);
     assertThatIsNotWithinFails(justOverMin, 0.0f, justOverMin);
     assertThat(min).isNotWithin(0.0f).of(justOverMin);
@@ -336,19 +379,12 @@ public class FloatSubjectTest {
 
   @Test
   public void isEqualTo() {
-    assertThat(1.23f).isEqualTo(1.23f);
-    assertThatIsEqualToFails(1.23f, Math.nextAfter(1.23f, Float.POSITIVE_INFINITY));
+    float golden = GOLDEN;
+    float justOverGolden = JUST_OVER_GOLDEN;
+    assertThat(golden).isEqualTo(golden);
+    assertThatIsEqualToFails(golden, justOverGolden);
     assertThat(Float.POSITIVE_INFINITY).isEqualTo(Float.POSITIVE_INFINITY);
-    assertThat(Float.NaN).isEqualTo(Float.NaN);
-    assertThatIsEqualToFails(-0.0f, 0.0f);
     assertThat((Float) null).isEqualTo(null);
-    expectFailure.whenTesting().that(1.23f).isEqualTo(1.23);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            String.format(
-                "Not true that <%s> (java.lang.Float) is equal to <%s> (java.lang.Double)",
-                1.23f, 1.23));
   }
 
   private static void assertThatIsEqualToFails(final float actual, final float expected) {
@@ -360,16 +396,17 @@ public class FloatSubjectTest {
           }
         };
     expectFailureWithMessage(
-        callback, String.format("Not true that <%s> is equal to <%s>", actual, expected));
+        callback, format("Not true that <%s> is equal to <%s>", actual, expected));
   }
 
   @Test
   public void isNotEqualTo() {
-    assertThatIsNotEqualToFails(1.23f);
-    assertThat(1.23).isNotEqualTo(Math.nextAfter(1.23f, Float.POSITIVE_INFINITY));
+    float golden = GOLDEN;
+    float justOverGolden = JUST_OVER_GOLDEN;
+    assertThatIsNotEqualToFails(golden);
+    assertThat(golden).isNotEqualTo(justOverGolden);
     assertThatIsNotEqualToFails(Float.POSITIVE_INFINITY);
     assertThatIsNotEqualToFails(Float.NaN);
-    assertThat(-0.0f).isNotEqualTo(0.0f);
     assertThatIsNotEqualToFails(null);
     assertThat(1.23f).isNotEqualTo(1.23);
   }
@@ -383,7 +420,7 @@ public class FloatSubjectTest {
           }
         };
     expectFailureWithMessage(
-        callback, String.format("Not true that <%s> is not equal to <%s>", value, value));
+        callback, format("Not true that <%s> is not equal to <%s>", value, value));
   }
 
   @Test
@@ -476,7 +513,6 @@ public class FloatSubjectTest {
 
   @Test
   public void isNaN() {
-    assertThat(Float.NaN).isNaN();
     assertThatIsNaNFails(1.23f);
     assertThatIsNaNFails(Float.POSITIVE_INFINITY);
     assertThatIsNaNFails(Float.NEGATIVE_INFINITY);
