@@ -36,7 +36,7 @@ import org.junit.runners.model.Statement;
 public class ExpectTest {
   private final Expect oopsNotARule = Expect.create();
 
-  private final Expect EXPECT = Expect.create();
+  private final Expect expect = Expect.create();
   private final ExpectedException thrown = ExpectedException.none();
 
   @Rule
@@ -44,21 +44,21 @@ public class ExpectTest {
       new TestRule() {
         @Override
         public Statement apply(Statement base, Description description) {
-          Statement expected = EXPECT.apply(base, description);
+          Statement expected = expect.apply(base, description);
           return thrown.apply(expected, description);
         }
       };
 
   @Test
   public void expectTrue() {
-    EXPECT.that(4).isEqualTo(4);
+    expect.that(4).isEqualTo(4);
   }
 
   @Test
   public void singleExpectationFails() {
     thrown.expectMessage("1 expectation failed:");
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
-    EXPECT.that("abc").contains("x");
+    expect.that("abc").contains("x");
   }
 
   @Test
@@ -67,9 +67,9 @@ public class ExpectTest {
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
     thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
     thrown.expectMessage("3. Not true that <\"abc\"> contains <\"z\">");
-    EXPECT.that("abc").contains("x");
-    EXPECT.that("abc").contains("y");
-    EXPECT.that("abc").contains("z");
+    expect.that("abc").contains("x");
+    expect.that("abc").contains("y");
+    expect.that("abc").contains("z");
   }
 
   @Test
@@ -80,8 +80,8 @@ public class ExpectTest {
     thrown.expectMessage(
         "3. Failures occurred before an exception was thrown while the test was running: "
             + "java.lang.IllegalStateException");
-    EXPECT.that("abc").contains("x");
-    EXPECT.that("abc").contains("y");
+    expect.that("abc").contains("x");
+    expect.that("abc").contains("y");
     throw new IllegalStateException();
   }
 
@@ -93,8 +93,8 @@ public class ExpectTest {
     thrown.expectMessage(
         "3. Failures occurred before an exception was thrown while the test was running: "
             + "java.lang.IllegalStateException: testing");
-    EXPECT.that("abc").contains("x");
-    EXPECT.that("abc").contains("y");
+    expect.that("abc").contains("x");
+    expect.that("abc").contains("y");
     throw new IllegalStateException("testing");
   }
 
@@ -103,8 +103,8 @@ public class ExpectTest {
     thrown.expect(IllegalStateException.class);
     thrown.expectMessage("testing");
     throwException();
-    EXPECT.that("abc").contains("x");
-    EXPECT.that("abc").contains("y");
+    expect.that("abc").contains("x");
+    expect.that("abc").contains("y");
   }
 
   private void throwException() {
@@ -119,16 +119,16 @@ public class ExpectTest {
     thrown.expectMessage(
         "3. Failures occurred before an assumption was violated: "
             + "com.google.common.truth.TruthJUnit$ThrowableAssumptionViolatedException: testing");
-    EXPECT.that("abc").contains("x");
-    EXPECT.that("abc").contains("y");
+    expect.that("abc").contains("x");
+    expect.that("abc").contains("y");
     assume().fail("testing");
   }
 
   @Test
   public void expectSuccessWithFailuresAfterAssume() {
     assume().fail("testing");
-    EXPECT.that("abc").contains("x");
-    EXPECT.that("abc").contains("y");
+    expect.that("abc").contains("x");
+    expect.that("abc").contains("y");
   }
 
   @Test
