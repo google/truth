@@ -1,11 +1,11 @@
 /*
  * Copyright (c) 2014 Google, Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.2 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.2
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,12 +22,12 @@ import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Math.nextAfter;
 import static org.junit.Assert.fail;
 
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import com.google.common.primitives.Longs;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -38,23 +38,50 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class PrimitiveDoubleArraySubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   private static final double DEFAULT_TOLERANCE = 0.000005d;
+
+  private static final double OVER_2POINT2 = 2.2000000000000006d;
+  private static final double TOLERABLE_2 = 2.0000049999999994d;
+  private static final double TOLERABLE_2POINT2 = 2.2000049999999995d;
+  private static final double INTOLERABLE_2POINT2 = 2.2000050000000004d;
+  private static final double TOLERABLE_3POINT3 = 3.300004999999999d;
+  private static final double INTOLERABLE_3POINT3 = 3.300005d;
+  private static final double UNDER_MIN_OF_LONG = -9.223372036854778E18d;
+
+  @Test
+  @GwtIncompatible("Math.nextAfter")
+  public void testDoubleConstants_matchNextAfter() {
+    assertThat(nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)).isEqualTo(TOLERABLE_2);
+    assertThat(nextAfter(2.2 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)).isEqualTo(TOLERABLE_2POINT2);
+    assertThat(nextAfter(2.2 + DEFAULT_TOLERANCE, POSITIVE_INFINITY))
+        .isEqualTo(INTOLERABLE_2POINT2);
+    assertThat(nextAfter(2.2, POSITIVE_INFINITY)).isEqualTo(OVER_2POINT2);
+    assertThat(nextAfter(3.3 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)).isEqualTo(TOLERABLE_3POINT3);
+    assertThat(nextAfter(3.3 + DEFAULT_TOLERANCE, POSITIVE_INFINITY))
+        .isEqualTo(INTOLERABLE_3POINT3);
+    assertThat(nextAfter((double) Long.MIN_VALUE, NEGATIVE_INFINITY)).isEqualTo(UNDER_MIN_OF_LONG);
+  }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Success() {
+    assertThat(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, 0.0, -0.0))
+        .isEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, 0.0, -0.0));
+  }
+
+  @Test
+  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
+  public void isEqualTo_WithoutToleranceParameter_NaN_Success() {
     assertThat(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
         .isEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0));
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_NotEqual() {
-    double justOverTwoPointTwo = nextAfter(2.2d, POSITIVE_INFINITY);
-    expectFailure.whenTesting().that(array(2.2d)).isEqualTo(array(justOverTwoPointTwo));
+    expectFailure.whenTesting().that(array(2.2d)).isEqualTo(array(OVER_2POINT2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [2.2]> is equal to <[" + justOverTwoPointTwo + "]>");
+        .isEqualTo("Not true that <(double[]) [2.2]> is equal to <[" + OVER_2POINT2 + "]>");
   }
 
   @Test
@@ -82,6 +109,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
   public void isEqualTo_WithoutToleranceParameter_Fail_PlusMinusZero() {
     expectFailure.whenTesting().that(array(0.0d)).isEqualTo(array(-0.0d));
     assertThat(expectFailure.getFailure())
@@ -106,23 +134,22 @@ public class PrimitiveDoubleArraySubjectTest {
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_WithToleranceParameter_ApproximatelyEquals() {
-    assertThat(array(2.2d, 3.3d))
-        .isEqualTo(
-            array(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)), DEFAULT_TOLERANCE);
+    assertThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d, TOLERABLE_3POINT3), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isEqualTo_WithToleranceParameter_FailNotQuiteApproximatelyEquals() {
-    double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
     expectFailure
         .whenTesting()
         .that(array(2.2d, 3.3d))
-        .isEqualTo(array(2.2d, roughly3point3), DEFAULT_TOLERANCE);
+        .isEqualTo(array(2.2d, INTOLERABLE_3POINT3), DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> is equal to <[2.2, " + roughly3point3 + "]>");
+            "Not true that <(double[]) [2.2, 3.3]> is equal to <[2.2, "
+                + INTOLERABLE_3POINT3
+                + "]>");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -228,6 +255,20 @@ public class PrimitiveDoubleArraySubjectTest {
   public void isNotEqualTo_WithoutToleranceParameter_FailEquals() {
     expectFailure
         .whenTesting()
+        .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY))
+        .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "<(double[]) [2.2, 5.4, Infinity, -Infinity]> unexpectedly equal to "
+                + "[2.2, 5.4, Infinity, -Infinity].");
+  }
+
+  @Test
+  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
+  public void isNotEqualTo_WithoutToleranceParameter_NaN_plusZero_FailEquals() {
+    expectFailure
+        .whenTesting()
         .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
         .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0));
     assertThat(expectFailure.getFailure())
@@ -239,7 +280,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void isNotEqualTo_WithoutToleranceParameter_Success_NotEqual() {
-    assertThat(array(2.2d)).isNotEqualTo(array(nextAfter(2.2d, POSITIVE_INFINITY)));
+    assertThat(array(2.2d)).isNotEqualTo(array(OVER_2POINT2));
   }
 
   @Test
@@ -258,6 +299,7 @@ public class PrimitiveDoubleArraySubjectTest {
   }
 
   @Test
+  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
   public void isNotEqualTo_WithoutToleranceParameter_Success_PlusMinusZero() {
     assertThat(array(0.0d)).isNotEqualTo(array(-0.0d));
   }
@@ -306,22 +348,20 @@ public class PrimitiveDoubleArraySubjectTest {
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_WithToleranceParameter_FailApproximatelyEquals() {
-    double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     expectFailure
         .whenTesting()
         .that(array(2.2d, 3.3d))
-        .isNotEqualTo(array(2.2d, roughly3point3), DEFAULT_TOLERANCE);
+        .isNotEqualTo(array(2.2d, TOLERABLE_3POINT3), DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(double[]) [2.2, 3.3]> unexpectedly equal to [2.2, " + roughly3point3 + "].");
+        .isEqualTo(
+            "<(double[]) [2.2, 3.3]> unexpectedly equal to [2.2, " + TOLERABLE_3POINT3 + "].");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
   @Test
   public void isNotEqualTo_WithToleranceParameter_NotQuiteApproximatelyEquals() {
-    assertThat(array(2.2d, 3.3d))
-        .isNotEqualTo(
-            array(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY)), DEFAULT_TOLERANCE);
+    assertThat(array(2.2d, 3.3d)).isNotEqualTo(array(2.2d, INTOLERABLE_3POINT3), DEFAULT_TOLERANCE);
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -378,24 +418,23 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void hasValuesWithinOf_ApproximatelyEquals() {
-    assertThat(array(2.2d, 3.3d))
-        .hasValuesWithin(DEFAULT_TOLERANCE)
-        .of(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY));
+    assertThat(array(2.2d, 3.3d)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2d, TOLERABLE_3POINT3);
   }
 
   @Test
   public void hasValuesWithinOf_FailNotQuiteApproximatelyEquals() {
-    double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
     expectFailure
         .whenTesting()
         .that(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
-        .of(2.2d, roughly3point3);
+        .of(2.2d, INTOLERABLE_3POINT3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, "
-                + roughly3point3
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, "
+                + INTOLERABLE_3POINT3
                 + "]>. It differs at indexes <[1]>");
   }
 
@@ -409,7 +448,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[3.3, 2.2]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[3.3, 2.2]>."
                 + " It differs at indexes <[0, 1]>");
   }
 
@@ -423,7 +464,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, 3.3, 1.1]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, 3.3, 1.1]>."
                 + " Expected length <3> but got <2>");
   }
 
@@ -433,7 +476,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2]>."
                 + " Expected length <1> but got <2>");
   }
 
@@ -447,7 +492,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values within 5.0E-6 of"
+            "Not true that <(double[]) [2.2, Infinity]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of"
                 + " <[2.2, Infinity]>. It differs at indexes <[1]>");
   }
 
@@ -458,7 +505,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values within 5.0E-6 of"
+            "Not true that <(double[]) [2.2, Infinity]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of"
                 + " <[2.2, Infinity]>. It differs at indexes <[1]>");
   }
 
@@ -472,7 +521,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, Infinity]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, Infinity]>."
                 + " It differs at indexes <[1]>");
   }
 
@@ -486,7 +537,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[Infinity]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[Infinity]>."
                 + " Expected length <1> but got <2>");
   }
 
@@ -496,7 +549,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [NaN]> has values within 5.0E-6 of <[NaN]>."
+            "Not true that <(double[]) [NaN]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[NaN]>."
                 + " It differs at indexes <[0]>");
   }
 
@@ -555,22 +610,23 @@ public class PrimitiveDoubleArraySubjectTest {
   public void hasValuesWithinOfElementsIn_ApproximatelyEquals() {
     assertThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
-        .ofElementsIn(Doubles.asList(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY)));
+        .ofElementsIn(Doubles.asList(2.2d, TOLERABLE_3POINT3));
   }
 
   @Test
   public void hasValuesWithinOfElementsIn_FailNotQuiteApproximatelyEquals() {
-    double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
     expectFailure
         .whenTesting()
         .that(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
-        .ofElementsIn(Doubles.asList(2.2d, roughly3point3));
+        .ofElementsIn(Doubles.asList(2.2d, INTOLERABLE_3POINT3));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, "
-                + roughly3point3
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, "
+                + INTOLERABLE_3POINT3
                 + "]>. It differs at indexes <[1]>");
   }
 
@@ -584,7 +640,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[3.3, 2.2]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[3.3, 2.2]>."
                 + " It differs at indexes <[0, 1]>");
   }
 
@@ -598,7 +656,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, 3.3, 1.1]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, 3.3, 1.1]>."
                 + " Expected length <3> but got <2>");
   }
 
@@ -612,7 +672,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2]>."
                 + " Expected length <1> but got <2>");
   }
 
@@ -626,7 +688,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values within 5.0E-6 of"
+            "Not true that <(double[]) [2.2, Infinity]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of"
                 + " <[2.2, Infinity]>. It differs at indexes <[1]>");
   }
 
@@ -640,7 +704,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[2.2, Infinity]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, Infinity]>."
                 + " It differs at indexes <[1]>");
   }
 
@@ -654,7 +720,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within 5.0E-6 of <[Infinity]>."
+            "Not true that <(double[]) [2.2, 3.3]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[Infinity]>."
                 + " Expected length <1> but got <2>");
   }
 
@@ -668,7 +736,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [NaN]> has values within 5.0E-6 of <[NaN]>."
+            "Not true that <(double[]) [NaN]> has values within "
+                + DEFAULT_TOLERANCE
+                + " of <[NaN]>."
                 + " It differs at indexes <[0]>");
   }
 
@@ -729,23 +799,26 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, 3.3]>");
+            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, 3.3]>");
   }
 
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailApproximatelyEquals() {
-    double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     expectFailure
         .whenTesting()
         .that(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
-        .of(2.2d, roughly3point3);
+        .of(2.2d, TOLERABLE_3POINT3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, "
-                + roughly3point3
+            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, "
+                + TOLERABLE_3POINT3
                 + "]>");
   }
 
@@ -754,7 +827,7 @@ public class PrimitiveDoubleArraySubjectTest {
   public void hasValuesNotWithinOf_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
-        .of(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY));
+        .of(2.2d, INTOLERABLE_3POINT3);
   }
 
   @Test
@@ -765,7 +838,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, 3.3]>");
+            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, 3.3]>");
   }
 
   @Test
@@ -779,7 +854,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values not within 5.0E-6 of"
+            "Not true that <(double[]) [2.2, Infinity]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of"
                 + " <[2.2, Infinity]>");
   }
 
@@ -791,7 +868,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values not within 5.0E-6 of"
+            "Not true that <(double[]) [2.2, Infinity]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of"
                 + " <[2.2, Infinity]>");
   }
 
@@ -806,7 +885,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within 5.0E-6 of"
+            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of"
                 + " <[2.2, Infinity]>");
   }
 
@@ -822,7 +903,10 @@ public class PrimitiveDoubleArraySubjectTest {
     expectFailure.whenTesting().that(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(NaN);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [NaN]> has values not within 5.0E-6 of <[NaN]>");
+        .isEqualTo(
+            "Not true that <(double[]) [NaN]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of <[NaN]>");
   }
 
   @Test
@@ -901,23 +985,26 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, 3.3]>");
+            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, 3.3]>");
   }
 
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_FailApproximatelyEquals() {
-    double roughly3point3 = nextAfter(3.3d + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     expectFailure
         .whenTesting()
         .that(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
-        .ofElementsIn(Doubles.asList(2.2d, roughly3point3));
+        .ofElementsIn(Doubles.asList(2.2d, TOLERABLE_3POINT3));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within 5.0E-6 of <[2.2, "
-                + roughly3point3
+            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of <[2.2, "
+                + TOLERABLE_3POINT3
                 + "]>");
   }
 
@@ -926,7 +1013,7 @@ public class PrimitiveDoubleArraySubjectTest {
   public void hasValuesNotWithinOfElementsIn_NotQuiteApproximatelyEquals() {
     assertThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
-        .ofElementsIn(Doubles.asList(2.2d, nextAfter(3.3d + DEFAULT_TOLERANCE, POSITIVE_INFINITY)));
+        .ofElementsIn(Doubles.asList(2.2d, INTOLERABLE_3POINT3));
   }
 
   @Test
@@ -940,7 +1027,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values not within 5.0E-6 of"
+            "Not true that <(double[]) [2.2, Infinity]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of"
                 + " <[2.2, Infinity]>");
   }
 
@@ -955,7 +1044,9 @@ public class PrimitiveDoubleArraySubjectTest {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within 5.0E-6 of"
+            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of"
                 + " <[2.2, Infinity]>");
   }
 
@@ -977,7 +1068,10 @@ public class PrimitiveDoubleArraySubjectTest {
         .ofElementsIn(Doubles.asList(NaN));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [NaN]> has values not within 5.0E-6 of <[NaN]>");
+        .isEqualTo(
+            "Not true that <(double[]) [NaN]> has values not within "
+                + DEFAULT_TOLERANCE
+                + " of <[NaN]>");
   }
 
   @Test
@@ -1021,47 +1115,42 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void usingTolerance_contains_success() {
-    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .contains(2.0);
+    assertThat(array(1.1, TOLERABLE_2POINT2, 3.3)).usingTolerance(DEFAULT_TOLERANCE).contains(2.2);
   }
 
   @Test
   public void usingTolerance_contains_successWithExpectedLong() {
-    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .contains(2L);
+    assertThat(array(1.0, TOLERABLE_2, 3.0)).usingTolerance(DEFAULT_TOLERANCE).contains(2L);
   }
 
   @Test
   public void usingTolerance_contains_failure() {
-    double justOverTwoPlusTolerance = nextAfter(2.0 + DEFAULT_TOLERANCE, POSITIVE_INFINITY);
     expectFailure
         .whenTesting()
-        .that(array(1.0, justOverTwoPlusTolerance, 3.0))
+        .that(array(1.1, INTOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .contains(2.0);
+        .contains(2.2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, "
-                + justOverTwoPlusTolerance
-                + ", 3.0]> contains at least one element that is a finite number within "
+            "Not true that <[1.1, "
+                + INTOLERABLE_2POINT2
+                + ", 3.3]> contains at least one element that is a finite number within "
                 + DEFAULT_TOLERANCE
-                + " of <2.0>");
+                + " of <2.2>");
   }
 
   @Test
   public void usingTolerance_contains_failureWithInfinity() {
     expectFailure
         .whenTesting()
-        .that(array(1.0, POSITIVE_INFINITY, 3.0))
+        .that(array(1.1, POSITIVE_INFINITY, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(POSITIVE_INFINITY);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, Infinity, 3.0]> contains at least one element that is "
+            "Not true that <[1.1, Infinity, 3.3]> contains at least one element that is "
                 + "a finite number within "
                 + DEFAULT_TOLERANCE
                 + " of <Infinity>");
@@ -1071,13 +1160,13 @@ public class PrimitiveDoubleArraySubjectTest {
   public void usingTolerance_contains_failureWithNaN() {
     expectFailure
         .whenTesting()
-        .that(array(1.0, NaN, 3.0))
+        .that(array(1.1, NaN, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(NaN);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, NaN, 3.0]> contains at least one element that is "
+            "Not true that <[1.1, NaN, 3.3]> contains at least one element that is "
                 + "a finite number within "
                 + DEFAULT_TOLERANCE
                 + " of <NaN>");
@@ -1085,7 +1174,7 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void usingTolerance_contains_successWithNegativeZero() {
-    assertThat(array(1.0, -0.0, 3.0)).usingTolerance(0.0).contains(0.0);
+    assertThat(array(1.1, -0.0, 3.3)).usingTolerance(0.0).contains(0.0);
   }
 
   @Test
@@ -1110,9 +1199,7 @@ public class PrimitiveDoubleArraySubjectTest {
     // For the actual value we use the next value down, which is is 2^11 smaller (because the
     // resolution of doubles with absolute values between 2^63 and 2^64 is 2^11). So we'll make the
     // assertion with a tolerance of 2^12.
-    assertThat(array(1.0, nextAfter((double) Long.MIN_VALUE, NEGATIVE_INFINITY), 3.0))
-        .usingTolerance(1 << 12)
-        .contains(Long.MIN_VALUE);
+    assertThat(array(1.0, UNDER_MIN_OF_LONG, 3.0)).usingTolerance(1 << 12).contains(Long.MIN_VALUE);
     // Expected value is BigInteger
     assertThat(array(1.0, 2.0 + 0.5 * DEFAULT_TOLERANCE, 3.0))
         .usingTolerance(DEFAULT_TOLERANCE)
@@ -1126,7 +1213,7 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_contains_nullExpected() {
     try {
-      assertThat(array(1.0, 2.0, 3.0)).usingTolerance(DEFAULT_TOLERANCE).contains(null);
+      assertThat(array(1.1, 2.2, 3.3)).usingTolerance(DEFAULT_TOLERANCE).contains(null);
       fail("Expected NullPointerException to be thrown but wasn't");
     } catch (NullPointerException expected) {
     }
@@ -1135,39 +1222,38 @@ public class PrimitiveDoubleArraySubjectTest {
   @Test
   public void usingTolerance_contains_negativeTolerance() {
     try {
-      assertThat(array(1.0, 2.0, 3.0)).usingTolerance(-1.0 * DEFAULT_TOLERANCE).contains(2.0f);
+      assertThat(array(1.1, 2.2, 3.3)).usingTolerance(-1.1 * DEFAULT_TOLERANCE).contains(2.0f);
       fail("Expected IllegalArgumentException to be thrown but wasn't");
     } catch (IllegalArgumentException expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("tolerance (" + -1.0 * DEFAULT_TOLERANCE + ") cannot be negative");
+          .isEqualTo("tolerance (" + -1.1 * DEFAULT_TOLERANCE + ") cannot be negative");
     }
   }
 
   @Test
   public void usingTolerance_containsAllOf_primitiveDoubleArray_success() {
-    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
+    assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(2.0, 1.0));
+        .containsAllOf(array(2.2, 1.1));
   }
 
   @Test
   public void usingTolerance_containsAllOf_primitiveDoubleArray_failure() {
-    double justOverTwoPlusTolerance = nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     expectFailure
         .whenTesting()
-        .that(array(1.0, justOverTwoPlusTolerance, 3.0))
+        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(2.0, 99.99));
+        .containsAllOf(array(2.2, 99.99));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, "
-                + justOverTwoPlusTolerance
-                + ", 3.0]> contains at least one element that is a finite number "
+            "Not true that <[1.1, "
+                + TOLERABLE_2POINT2
+                + ", 3.3]> contains at least one element that is a finite number "
                 + "within "
                 + DEFAULT_TOLERANCE
-                + " of each element of <[2.0, 99.99]>. It is missing an element that is a finite "
+                + " of each element of <[2.2, 99.99]>. It is missing an element that is a finite "
                 + "number within "
                 + DEFAULT_TOLERANCE
                 + " of <99.99>");
@@ -1175,157 +1261,151 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void usingTolerance_containsAllOf_primitiveDoubleArray_inOrder_success() {
-    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
+    assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(1.0, 2.0))
+        .containsAllOf(array(1.1, 2.2))
         .inOrder();
   }
 
   @Test
   public void usingTolerance_containsAllOf_primitiveDoubleArray_inOrder_failure() {
-    double justOverTwoPlusTolerance = nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     expectFailure
         .whenTesting()
-        .that(array(1.0, justOverTwoPlusTolerance, 3.0))
+        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(2.0, 1.0))
+        .containsAllOf(array(2.2, 1.1))
         .inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, "
-                + justOverTwoPlusTolerance
-                + ", 3.0]> contains, in order, at least one element that is a finite number "
+            "Not true that <[1.1, "
+                + TOLERABLE_2POINT2
+                + ", 3.3]> contains, in order, at least one element that is a finite number "
                 + "within "
                 + DEFAULT_TOLERANCE
-                + " of each element of <[2.0, 1.0]>");
+                + " of each element of <[2.2, 1.1]>");
   }
 
   @Test
   public void usingTolerance_containsAnyOf_primitiveDoubleArray_success() {
-    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
+    assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAnyOf(array(99.99, 2.0));
+        .containsAnyOf(array(99.99, 2.2));
   }
 
   @Test
   public void usingTolerance_containsAnyOf_primitiveDoubleArray_failure() {
-    double justOverTwoPlusTolerance = nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     expectFailure
         .whenTesting()
-        .that(array(1.0, justOverTwoPlusTolerance, 3.0))
+        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAnyOf(array(99.99, 999.999));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, "
-                + justOverTwoPlusTolerance
-                + ", 3.0]> contains at least one element that is a finite number within "
+            "Not true that <[1.1, "
+                + TOLERABLE_2POINT2
+                + ", 3.3]> contains at least one element that is a finite number within "
                 + DEFAULT_TOLERANCE
                 + " of any element in <[99.99, 999.999]>");
   }
 
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_success() {
-    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
+    assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsExactly(array(2.0, 1.0, 3.0));
+        .containsExactly(array(2.2, 1.1, 3.3));
   }
 
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_failure() {
-    double justOverTwoPlusTolerance = nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     expectFailure
         .whenTesting()
-        .that(array(1.0, justOverTwoPlusTolerance, 3.0))
+        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsExactly(array(2.0, 1.0));
+        .containsExactly(array(2.2, 1.1));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, "
-                + justOverTwoPlusTolerance
-                + ", 3.0]> contains exactly one element that is a finite number within "
+            "Not true that <[1.1, "
+                + TOLERABLE_2POINT2
+                + ", 3.3]> contains exactly one element that is a finite number within "
                 + DEFAULT_TOLERANCE
-                + " of each element of <[2.0, 1.0]>. It has unexpected elements <[3.0]>");
+                + " of each element of <[2.2, 1.1]>. It has unexpected elements <[3.3]>");
   }
 
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_inOrder_success() {
-    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
+    assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsExactly(array(1.0, 2.0, 3.0))
+        .containsExactly(array(1.1, 2.2, 3.3))
         .inOrder();
   }
 
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_inOrder_failure() {
-    double justOverTwoPlusTolerance = nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     expectFailure
         .whenTesting()
-        .that(array(1.0, justOverTwoPlusTolerance, 3.0))
+        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsExactly(array(2.0, 1.0, 3.0))
+        .containsExactly(array(2.2, 1.1, 3.3))
         .inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, "
-                + justOverTwoPlusTolerance
-                + ", 3.0]> contains, in order, exactly one element that is a finite number "
+            "Not true that <[1.1, "
+                + TOLERABLE_2POINT2
+                + ", 3.3]> contains, in order, exactly one element that is a finite number "
                 + "within "
                 + DEFAULT_TOLERANCE
-                + " of each element of <[2.0, 1.0, 3.0]>");
+                + " of each element of <[2.2, 1.1, 3.3]>");
   }
 
   @Test
   public void usingTolerance_containsNoneOf_primitiveDoubleArray_success() {
-    assertThat(array(1.0, nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY), 3.0))
+    assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsNoneOf(array(99.99, 999.999));
   }
 
   @Test
   public void usingTolerance_containsNoneOf_primitiveDoubleArray_failure() {
-    double justOverTwoPlusTolerance = nextAfter(2.0 + DEFAULT_TOLERANCE, NEGATIVE_INFINITY);
     expectFailure
         .whenTesting()
-        .that(array(1.0, justOverTwoPlusTolerance, 3.0))
+        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsNoneOf(array(99.99, 2.0));
+        .containsNoneOf(array(99.99, 2.2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, "
-                + justOverTwoPlusTolerance
-                + ", 3.0]> contains no element that is a finite number within "
+            "Not true that <[1.1, "
+                + TOLERABLE_2POINT2
+                + ", 3.3]> contains no element that is a finite number within "
                 + DEFAULT_TOLERANCE
-                + " of any element in <[99.99, 2.0]>. It contains at least one element that is a "
+                + " of any element in <[99.99, 2.2]>. It contains at least one element that is a "
                 + "finite number within "
                 + DEFAULT_TOLERANCE
-                + " of each of <[2.0]>");
+                + " of each of <[2.2]>");
   }
 
   @Test
   public void usingExactEquality_contains_success() {
-    assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(2.0);
+    assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(2.2);
   }
 
   @Test
   public void usingExactEquality_contains_failure() {
-    double justOverTwo = nextAfter(2.0, POSITIVE_INFINITY);
     expectFailure
         .whenTesting()
-        .that(array(1.0, justOverTwo, 3.0))
+        .that(array(1.1, OVER_2POINT2, 3.3))
         .usingExactEquality()
-        .contains(2.0);
+        .contains(2.2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, "
-                + justOverTwo
-                + ", 3.0]> contains at least one element that is exactly equal to <2.0>");
+            "Not true that <[1.1, "
+                + OVER_2POINT2
+                + ", 3.3]> contains at least one element that is exactly equal to <2.2>");
   }
 
   @Test
@@ -1377,28 +1457,30 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void usingExactEquality_contains_successWithInfinity() {
-    assertThat(array(1.0, POSITIVE_INFINITY, 3.0)).usingExactEquality().contains(POSITIVE_INFINITY);
+    assertThat(array(1.1, POSITIVE_INFINITY, 3.3)).usingExactEquality().contains(POSITIVE_INFINITY);
   }
 
   @Test
+  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
   public void usingExactEquality_contains_successWithNaN() {
-    assertThat(array(1.0, NaN, 3.0)).usingExactEquality().contains(NaN);
+    assertThat(array(1.1, NaN, 3.3)).usingExactEquality().contains(NaN);
   }
 
   @Test
+  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
   public void usingExactEquality_contains_failureWithNegativeZero() {
-    expectFailure.whenTesting().that(array(1.0, -0.0, 3.0)).usingExactEquality().contains(0.0);
+    expectFailure.whenTesting().that(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, -0.0, 3.0]> contains at least one element that is "
+            "Not true that <[1.1, -0.0, 3.3]> contains at least one element that is "
                 + "exactly equal to <0.0>");
   }
 
   @Test
   public void usingExactEquality_contains_nullExpected() {
     try {
-      assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(null);
+      assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(null);
       fail("Expected NullPointerException to be thrown but wasn't");
     } catch (NullPointerException expected) {
     }
@@ -1406,87 +1488,87 @@ public class PrimitiveDoubleArraySubjectTest {
 
   @Test
   public void usingExactEquality_containsAllOf_primitiveDoubleArray_success() {
-    assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().containsAllOf(array(2.0, 1.0));
+    assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().containsAllOf(array(2.2, 1.1));
   }
 
   @Test
   public void usingExactEquality_containsAllOf_primitiveDoubleArray_failure() {
     expectFailure
         .whenTesting()
-        .that(array(1.0, 2.0, 3.0))
+        .that(array(1.1, 2.2, 3.3))
         .usingExactEquality()
-        .containsAllOf(array(2.0, 99.99));
+        .containsAllOf(array(2.2, 99.99));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, 2.0, 3.0]> contains at least one element that is exactly equal "
-                + "to each element of <[2.0, 99.99]>. It is missing an element that is exactly "
+            "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal "
+                + "to each element of <[2.2, 99.99]>. It is missing an element that is exactly "
                 + "equal to <99.99>");
   }
 
   @Test
   public void usingExactEquality_containsAllOf_primitiveDoubleArray_inOrder_success() {
-    assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().containsAllOf(array(1.0, 2.0)).inOrder();
+    assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().containsAllOf(array(1.1, 2.2)).inOrder();
   }
 
   @Test
   public void usingExactEquality_containsAllOf_primitiveDoubleArray_inOrder_failure() {
     expectFailure
         .whenTesting()
-        .that(array(1.0, 2.0, 3.0))
+        .that(array(1.1, 2.2, 3.3))
         .usingExactEquality()
-        .containsAllOf(array(2.0, 1.0))
+        .containsAllOf(array(2.2, 1.1))
         .inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, 2.0, 3.0]> contains, in order, at least one element that is "
-                + "exactly equal to each element of <[2.0, 1.0]>");
+            "Not true that <[1.1, 2.2, 3.3]> contains, in order, at least one element that is "
+                + "exactly equal to each element of <[2.2, 1.1]>");
   }
 
   @Test
   public void usingExactEquality_containsAnyOf_primitiveDoubleArray_success() {
-    assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().containsAnyOf(array(99.99, 2.0));
+    assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().containsAnyOf(array(99.99, 2.2));
   }
 
   @Test
   public void usingExactEquality_containsAnyOf_primitiveDoubleArray_failure() {
     expectFailure
         .whenTesting()
-        .that(array(1.0, 2.0, 3.0))
+        .that(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsAnyOf(array(99.99, 999.999));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, 2.0, 3.0]> contains at least one element that is exactly equal "
+            "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal "
                 + "to any element in <[99.99, 999.999]>");
   }
 
   @Test
   public void usingExactEquality_containsExactly_primitiveDoubleArray_success() {
-    assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().containsExactly(array(2.0, 1.0, 3.0));
+    assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().containsExactly(array(2.2, 1.1, 3.3));
   }
 
   @Test
   public void usingExactEquality_containsExactly_primitiveDoubleArray_failure() {
     expectFailure
         .whenTesting()
-        .that(array(1.0, 2.0, 3.0))
+        .that(array(1.1, 2.2, 3.3))
         .usingExactEquality()
-        .containsExactly(array(2.0, 1.0));
+        .containsExactly(array(2.2, 1.1));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, 2.0, 3.0]> contains exactly one element that is exactly equal "
-                + "to each element of <[2.0, 1.0]>. It has unexpected elements <[3.0]>");
+            "Not true that <[1.1, 2.2, 3.3]> contains exactly one element that is exactly equal "
+                + "to each element of <[2.2, 1.1]>. It has unexpected elements <[3.3]>");
   }
 
   @Test
   public void usingExactEquality_containsExactly_primitiveDoubleArray_inOrder_success() {
-    assertThat(array(1.0, 2.0, 3.0))
+    assertThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
-        .containsExactly(array(1.0, 2.0, 3.0))
+        .containsExactly(array(1.1, 2.2, 3.3))
         .inOrder();
   }
 
@@ -1494,35 +1576,35 @@ public class PrimitiveDoubleArraySubjectTest {
   public void usingExactEquality_containsExactly_primitiveDoubleArray_inOrder_failure() {
     expectFailure
         .whenTesting()
-        .that(array(1.0, 2.0, 3.0))
+        .that(array(1.1, 2.2, 3.3))
         .usingExactEquality()
-        .containsExactly(array(2.0, 1.0, 3.0))
+        .containsExactly(array(2.2, 1.1, 3.3))
         .inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, 2.0, 3.0]> contains, in order, exactly one element that is "
-                + "exactly equal to each element of <[2.0, 1.0, 3.0]>");
+            "Not true that <[1.1, 2.2, 3.3]> contains, in order, exactly one element that is "
+                + "exactly equal to each element of <[2.2, 1.1, 3.3]>");
   }
 
   @Test
   public void usingExactEquality_containsNoneOf_primitiveDoubleArray_success() {
-    assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().containsNoneOf(array(99.99, 999.999));
+    assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().containsNoneOf(array(99.99, 999.999));
   }
 
   @Test
   public void usingExactEquality_containsNoneOf_primitiveDoubleArray_failure() {
     expectFailure
         .whenTesting()
-        .that(array(1.0, 2.0, 3.0))
+        .that(array(1.1, 2.2, 3.3))
         .usingExactEquality()
-        .containsNoneOf(array(99.99, 2.0));
+        .containsNoneOf(array(99.99, 2.2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1.0, 2.0, 3.0]> contains no element that is exactly equal to any "
-                + "element in <[99.99, 2.0]>. It contains at least one element that is exactly "
-                + "equal to each of <[2.0]>");
+            "Not true that <[1.1, 2.2, 3.3]> contains no element that is exactly equal to any "
+                + "element in <[99.99, 2.2]>. It contains at least one element that is exactly "
+                + "equal to each of <[2.2]>");
   }
 
   private static double[] array(double... primitives) {
