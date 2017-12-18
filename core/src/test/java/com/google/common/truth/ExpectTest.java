@@ -15,8 +15,19 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.TruthJUnit.assume;
+import static com.google.common.util.concurrent.Futures.immediateFuture;
+import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
+import static java.util.concurrent.Executors.newFixedThreadPool;
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -39,13 +50,37 @@ public class ExpectTest {
   private final Expect expect = Expect.create();
   private final ExpectedException thrown = ExpectedException.none();
 
+  private final TestRule postTestWait =
+      new TestRule() {
+        @Override
+        public Statement apply(final Statement base, Description description) {
+          return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+              base.evaluate();
+              testMethodComplete.countDown();
+              taskToAwait.get();
+            }
+          };
+        }
+      };
+
+  private final CountDownLatch testMethodComplete = new CountDownLatch(1);
+
+  /**
+   * A task that the main thread will await, to be provided by tests that do work in other threads.
+   */
+  private Future<?> taskToAwait = immediateFuture(null);
+
   @Rule
   public final TestRule wrapper =
       new TestRule() {
         @Override
-        public Statement apply(Statement base, Description description) {
-          Statement expected = expect.apply(base, description);
-          return thrown.apply(expected, description);
+        public Statement apply(Statement statement, Description description) {
+          statement = expect.apply(statement, description);
+          statement = postTestWait.apply(statement, description);
+          statement = thrown.apply(statement, description);
+          return statement;
         }
       };
 
@@ -136,5 +171,71 @@ public class ExpectTest {
     String message = "assertion made on Expect instance, but it's not enabled as a @Rule.";
     thrown.expectMessage(message);
     oopsNotARule.that(true).isEqualTo(true);
+  }
+
+  @Test
+  public void bash() throws Exception {
+    Runnable task =
+        new Runnable() {
+          @Override
+          public void run() {
+            expect.that(3).isEqualTo(4);
+          }
+        };
+    List<Future<?>> results = new ArrayList<Future<?>>();
+    ExecutorService executor = newFixedThreadPool(10);
+    for (int i = 0; i < 1000; i++) {
+      results.add(executor.submit(task));
+    }
+    executor.shutdown();
+    for (Future<?> result : results) {
+      result.get();
+    }
+    thrown.expectMessage("1000 expectations failed:");
+  }
+
+  @Test
+  public void failWhenCallingThatAfterTest() {
+    ExecutorService executor = newSingleThreadExecutor();
+    taskToAwait =
+        executor.submit(
+            new Runnable() {
+              @Override
+              public void run() {
+                awaitUninterruptibly(testMethodComplete);
+                try {
+                  expect.that(3);
+                  fail();
+                } catch (IllegalStateException expected) {
+                }
+              }
+            });
+    executor.shutdown();
+  }
+
+  @Test
+  public void failWhenCallingFailingAssertionMethodAfterTest() {
+    ExecutorService executor = newSingleThreadExecutor();
+    /*
+     * We wouldn't expect people to do this exactly. The point is that, if someone were to call
+     * expect.that(3).isEqualTo(4), we would always either fail the test or throw an
+     * IllegalStateException, not record a "failure" that we never read.
+     */
+    final IntegerSubject expectThat3 = expect.that(3);
+    taskToAwait =
+        executor.submit(
+            new Runnable() {
+              @Override
+              public void run() {
+                awaitUninterruptibly(testMethodComplete);
+                try {
+                  expectThat3.isEqualTo(4);
+                  fail();
+                } catch (IllegalStateException expected) {
+                  assertThat(expected).hasCauseThat().isInstanceOf(AssertionError.class);
+                }
+              }
+            });
+    executor.shutdown();
   }
 }
