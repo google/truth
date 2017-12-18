@@ -232,11 +232,12 @@ extends <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>containsExactly</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                               <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;k0,
-                               <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                               <a href="../../../../com/google/common/truth/MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
-                               <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                     <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;k0,
+                                                     <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                     <a href="../../../../com/google/common/truth/MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
+                                                     <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails if the map does not contain exactly the given set of keys mapping to values that
  correspond to the given values.
 
@@ -253,7 +254,8 @@ extends <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html
 <ul class="blockListLast">
 <li class="blockList">
 <h4>containsExactlyEntriesIn</h4>
-<pre>public&nbsp;&lt;K,V extends <a href="../../../../com/google/common/truth/MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&gt;&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyEntriesIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;K,V&gt;&nbsp;expectedMap)</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;&lt;K,V extends <a href="../../../../com/google/common/truth/MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&gt;&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyEntriesIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;K,V&gt;&nbsp;expectedMap)</pre>
 <div class="block">Fails if the map does not contain exactly the keys in the given map, mapping to values that
  correspond to the values of the given map.</div>
 </li>

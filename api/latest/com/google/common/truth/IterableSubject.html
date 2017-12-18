@@ -564,12 +564,13 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAllOf</h4>
-<pre>public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllOf(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                   <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;firstExpected,
-                                   <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                   <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;secondExpected,
-                                   <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                   <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;restOfExpected)</pre>
+<pre>@CanIgnoreReturnValue
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllOf(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                         <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;firstExpected,
+                                                         <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                         <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;secondExpected,
+                                                         <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                         <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;restOfExpected)</pre>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements to this call then it must appear at
  least that number of times in the actual elements.
@@ -585,7 +586,8 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAllIn</h4>
-<pre>public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</pre>
+<pre>@CanIgnoreReturnValue
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</pre>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements then it must appear at least that
  number of times in the actual elements.
@@ -601,7 +603,8 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAllIn</h4>
-<pre>public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;expected)</pre>
+<pre>@CanIgnoreReturnValue
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;expected)</pre>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements then it must appear at least that
  number of times in the actual elements.
@@ -617,8 +620,9 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsExactly</h4>
-<pre>public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                     <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;varargs)</pre>
+<pre>@CanIgnoreReturnValue
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                           <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;varargs)</pre>
 <div class="block">Checks that a subject contains exactly the provided objects or fails.
 
  <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
@@ -637,7 +641,8 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsExactlyElementsIn</h4>
-<pre>public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</pre>
+<pre>@CanIgnoreReturnValue
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</pre>
 <div class="block">Checks that a subject contains exactly the provided objects or fails.
 
  <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the <code>Iterable</code> parameter asserts that the object must likewise be duplicated exactly 3 times in the
@@ -653,7 +658,8 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsExactlyElementsIn</h4>
-<pre>public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;expected)</pre>
+<pre>@CanIgnoreReturnValue
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;expected)</pre>
 <div class="block">Checks that a subject contains exactly the provided objects or fails.
 
  <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the array

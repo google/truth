@@ -295,8 +295,9 @@ extends <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html
 <li class="blockList">
 <h4>containsExactly</h4>
 <pre><a href="https://docs.oracle.com/javase/6/docs/api/java/lang/SafeVarargs.html?is-external=true" title="class or interface in java.lang">@SafeVarargs</a>
+ @CanIgnoreReturnValue
 public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                  <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;expected)</pre>
+                                                                         <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;expected)</pre>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
  that there is a 1:1 mapping between the actual elements and the expected elements where each
  pair of elements correspond.
@@ -315,7 +316,8 @@ public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" tit
 <ul class="blockList">
 <li class="blockList">
 <h4>containsExactlyElementsIn</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</pre>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
  that there is a 1:1 mapping between the actual elements and the expected elements where each
  pair of elements correspond.
@@ -332,7 +334,8 @@ public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" tit
 <ul class="blockList">
 <li class="blockList">
 <h4>containsExactlyElementsIn</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</pre>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
  that there is a 1:1 mapping between the actual elements and the expected elements where each
  pair of elements correspond.
@@ -350,12 +353,13 @@ public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" tit
 <li class="blockList">
 <h4>containsAllOf</h4>
 <pre><a href="https://docs.oracle.com/javase/6/docs/api/java/lang/SafeVarargs.html?is-external=true" title="class or interface in java.lang">@SafeVarargs</a>
+ @CanIgnoreReturnValue
 public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllOf(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
-                                                <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
-                                                <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                                <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;rest)</pre>
+                                                                       <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
+                                                                       <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                       <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
+                                                                       <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                       <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;rest)</pre>
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
@@ -371,7 +375,8 @@ public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" tit
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAllIn</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</pre>
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
@@ -389,7 +394,8 @@ public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" tit
 <ul class="blockList">
 <li class="blockList">
 <h4>containsAllIn</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</pre>
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.

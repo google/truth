@@ -496,8 +496,9 @@ extends <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>named</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">S</a>&nbsp;named(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;format,
-               <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;args)</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">S</a>&nbsp;named(<a href="https://docs.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;format,
+                                     <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;args)</pre>
 <div class="block">Adds a prefix to the subject, when it is displayed in error messages. This is especially useful
  in the context of types that have no helpful <code>toString()</code> representation, e.g. boolean.
  Writing <code>assertThat(foo).named("foo").isTrue();</code> then results in a more reasonable error

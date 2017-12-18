@@ -375,7 +375,8 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsExactly</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly()</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly()</pre>
 <div class="block">Fails if the map is not empty.</div>
 </li>
 </ul>
@@ -385,11 +386,12 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsExactly</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                               <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;k0,
-                               <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                               <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;v0,
-                               <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                     <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;k0,
+                                                     <a href="https://docs.oracle.com/javase/6/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                     <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;v0,
+                                                     <a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails if the map does not contain exactly the given set of key/value pairs.
 
  <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
@@ -404,7 +406,8 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsExactlyEntriesIn</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyEntriesIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;?,?&gt;&nbsp;expectedMap)</pre>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyEntriesIn(<a href="https://docs.oracle.com/javase/6/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;?,?&gt;&nbsp;expectedMap)</pre>
 <div class="block">Fails if the map does not contain exactly the given set of entries in the given map.</div>
 </li>
 </ul>
