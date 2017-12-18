@@ -182,7 +182,7 @@ public class ExpectTest {
             expect.that(3).isEqualTo(4);
           }
         };
-    List<Future<?>> results = new ArrayList<Future<?>>();
+    List<Future<?>> results = new ArrayList<>();
     ExecutorService executor = newFixedThreadPool(10);
     for (int i = 0; i < 1000; i++) {
       results.add(executor.submit(task));

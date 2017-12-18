@@ -25,7 +25,7 @@ import java.util.Map;
 
 /** In-memory implementation of {@link HrDatabase}, suitable for testing. */
 public final class FakeHrDatabase implements HrDatabase {
-  private final Map<Long, Employee> employees = new HashMap<Long, Employee>();
+  private final Map<Long, Employee> employees = new HashMap<>();
 
   public void put(Employee employee) {
     employees.put(employee.id(), employee);

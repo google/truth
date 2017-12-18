@@ -67,25 +67,24 @@ public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
 
   public <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> that(
       @Nullable Map<K, M> map) {
-    return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<K, M>(metadata(), map);
+    return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<>(metadata(), map);
   }
 
   public <K, M extends Message> MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> that(
       @Nullable Multimap<K, M> map) {
-    return new MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject<K, M>(
-        metadata(), map);
+    return new MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject<>(metadata(), map);
   }
 
   public <K, M extends Message>
       ListMultimapWithProtoValuesSubject<?, K, M, ListMultimap<K, M>> that(
           @Nullable ListMultimap<K, M> map) {
-    return new ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject<K, M>(
+    return new ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject<>(
         metadata(), map);
   }
 
   public <K, M extends Message> SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> that(
       @Nullable SetMultimap<K, M> map) {
-    return new SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject<K, M>(
+    return new SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject<>(
         metadata(), map);
   }
 

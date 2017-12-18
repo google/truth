@@ -27,13 +27,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
+import com.google.common.truth.extensions.proto.MessageDifferencer.FieldComparator.ComparisonResult;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
 import com.google.protobuf.UnknownFieldSet;
 import com.google.protobuf.WireFormat;
-import com.google.common.truth.extensions.proto.MessageDifferencer.FieldComparator.ComparisonResult;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -101,7 +101,7 @@ import javax.annotation.concurrent.Immutable;
     }
 
     public MultipleFieldsMapKeyComparator(FieldDescriptor fieldDescriptor) {
-      keyFields = new LinkedList<FieldDescriptor>();
+      keyFields = new LinkedList<>();
       keyFields.add(fieldDescriptor);
     }
 

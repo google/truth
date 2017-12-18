@@ -531,7 +531,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   private void containsNone(String failVerb, Iterable<?> excluded) {
     Collection<?> actual = iterableToCollection(actual());
-    Collection<Object> present = new ArrayList<Object>();
+    Collection<Object> present = new ArrayList<>();
     for (Object item : Sets.newLinkedHashSet(excluded)) {
       if (actual.contains(item)) {
         present.add(item);
@@ -685,7 +685,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   public <A, E> UsingCorrespondence<A, E> comparingElementsUsing(
       Correspondence<A, E> correspondence) {
-    return new UsingCorrespondence<A, E>(correspondence);
+    return new UsingCorrespondence<>(correspondence);
   }
 
   /**
@@ -717,7 +717,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     /** Checks that none of the actual elements correspond to the given element. */
     public void doesNotContain(@Nullable E excluded) {
-      List<A> matchingElements = new ArrayList<A>();
+      List<A> matchingElements = new ArrayList<>();
       for (A actual : getCastActual()) {
         if (correspondence.compare(actual, excluded)) {
           matchingElements.add(actual);
@@ -1195,7 +1195,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     private void containsNone(String excludedPrefix, Iterable<? extends E> excluded) {
       Collection<A> actual = iterableToCollection(getCastActual());
-      Collection<E> present = new ArrayList<E>();
+      Collection<E> present = new ArrayList<>();
       for (E excludedItem : Sets.newLinkedHashSet(excluded)) {
         for (A actualItem : actual) {
           if (correspondence.compare(actualItem, excludedItem)) {

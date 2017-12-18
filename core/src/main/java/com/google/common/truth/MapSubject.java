@@ -144,7 +144,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
             "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
             actualAsString(), entry, key, actual().get(key));
       } else if (actual().containsValue(value)) {
-        Set<Object> keys = new LinkedHashSet<Object>();
+        Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, ?> actualEntry : actual().entrySet()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
@@ -266,22 +266,22 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         Map<? extends K, ? extends A> actual,
         Map<? extends K, ? extends E> expected,
         ValueTester<? super A, ? super E> valueTester) {
-      Map<K, A> unexpected = new LinkedHashMap<K, A>(actual);
-      Map<K, E> missing = new LinkedHashMap<K, E>();
-      Map<K, ValueDifference<A, E>> wrongValues = new LinkedHashMap<K, ValueDifference<A, E>>();
+      Map<K, A> unexpected = new LinkedHashMap<>(actual);
+      Map<K, E> missing = new LinkedHashMap<>();
+      Map<K, ValueDifference<A, E>> wrongValues = new LinkedHashMap<>();
       for (Entry<? extends K, ? extends E> expectedEntry : expected.entrySet()) {
         K expectedKey = expectedEntry.getKey();
         E expectedValue = expectedEntry.getValue();
         if (actual.containsKey(expectedKey)) {
           A actualValue = unexpected.remove(expectedKey);
           if (!valueTester.test(actualValue, expectedValue)) {
-            wrongValues.put(expectedKey, new ValueDifference<A, E>(actualValue, expectedValue));
+            wrongValues.put(expectedKey, new ValueDifference<>(actualValue, expectedValue));
           }
         } else {
           missing.put(expectedKey, expectedValue);
         }
       }
-      return new MapDifference<K, A, E>(missing, unexpected, wrongValues);
+      return new MapDifference<>(missing, unexpected, wrongValues);
     }
 
     private MapDifference(
@@ -450,7 +450,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    */
   public <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
       Correspondence<A, E> correspondence) {
-    return new UsingCorrespondence<A, E>(correspondence);
+    return new UsingCorrespondence<>(correspondence);
   }
 
   /**
@@ -487,7 +487,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
             actualAsString(), expectedKey, correspondence, expectedValue, actualValue);
       } else {
         // Did not find matching key.
-        Set<Object> keys = new LinkedHashSet<Object>();
+        Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, A> actualEntry : getCastSubject().entrySet()) {
           if (correspondence.compare(actualEntry.getValue(), expectedValue)) {
             keys.add(actualEntry.getKey());

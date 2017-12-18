@@ -453,11 +453,11 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   private static class BrokenMap<K, V> extends ForwardingMap<K, V> {
 
     static <K, V> Map<K, V> wrapWithAlwaysTrueEquals(Map<K, V> delegate) {
-      return new BrokenMap<K, V>(delegate, true);
+      return new BrokenMap<>(delegate, true);
     }
 
     static <K, V> Map<K, V> wrapWithAlwaysFalseEquals(Map<K, V> delegate) {
-      return new BrokenMap<K, V>(delegate, false);
+      return new BrokenMap<>(delegate, false);
     }
 
     private final Map<K, V> delegate;
