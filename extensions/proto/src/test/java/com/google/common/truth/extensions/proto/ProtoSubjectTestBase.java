@@ -229,7 +229,7 @@ public class ProtoSubjectTestBase {
   protected static final <K, V> ImmutableMap<K, V> mapOf(K k0, V v0, Object... rest) {
     Preconditions.checkArgument(rest.length % 2 == 0, "Uneven args: %s", rest.length);
 
-    ImmutableMap.Builder<K, V> builder = new ImmutableMap.Builder<K, V>();
+    ImmutableMap.Builder<K, V> builder = new ImmutableMap.Builder<>();
     builder.put(k0, v0);
     for (int i = 0; i < rest.length; i += 2) {
       builder.put((K) rest[i], (V) rest[i + 1]);
@@ -241,7 +241,7 @@ public class ProtoSubjectTestBase {
   protected static final <K, V> ImmutableMultimap<K, V> multimapOf(K k0, V v0, Object... rest) {
     Preconditions.checkArgument(rest.length % 2 == 0, "Uneven args: %s", rest.length);
 
-    ImmutableMultimap.Builder<K, V> builder = new ImmutableMultimap.Builder<K, V>();
+    ImmutableMultimap.Builder<K, V> builder = new ImmutableMultimap.Builder<>();
     builder.put(k0, v0);
     for (int i = 0; i < rest.length; i += 2) {
       builder.put((K) rest[i], (V) rest[i + 1]);

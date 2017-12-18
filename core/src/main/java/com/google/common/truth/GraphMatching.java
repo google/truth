@@ -75,7 +75,7 @@ final class GraphMatching {
      * graph described by the given multimap.
      */
     static <U, V> HopcroftKarp<U, V> overBipartiteGraph(Multimap<U, V> graph) {
-      return new HopcroftKarp<U, V>(graph);
+      return new HopcroftKarp<>(graph);
     }
 
     private HopcroftKarp(Multimap<U, V> graph) {
@@ -88,7 +88,7 @@ final class GraphMatching {
       while (true) {
         // Perform the BFS as described below. This finds the length of the shortest augmenting path
         // and a guide which locates all the augmenting paths of that length.
-        Map<U, Integer> layers = new HashMap<U, Integer>();
+        Map<U, Integer> layers = new HashMap<>();
         Optional<Integer> freeRhsVertexLayer = breadthFirstSearch(matching, layers);
         if (!freeRhsVertexLayer.isPresent()) {
           // The BFS failed, i.e. we found no augmenting paths. So we're done.
@@ -128,7 +128,7 @@ final class GraphMatching {
      *     absent value if the BFS was exhausted without finding any free RHS vertex
      */
     private Optional<Integer> breadthFirstSearch(BiMap<U, V> matching, Map<U, Integer> layers) {
-      Queue<U> queue = new ArrayDeque<U>();
+      Queue<U> queue = new ArrayDeque<>();
       Optional<Integer> freeRhsVertexLayer = Optional.absent();
 
       // Enqueue all free LHS vertices and assign them to layer 1.

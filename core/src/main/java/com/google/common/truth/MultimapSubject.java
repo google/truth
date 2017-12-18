@@ -131,7 +131,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
             "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
             actualAsString(), entry, key, actual().asMap().get(key));
       } else if (actual().containsValue(value)) {
-        Set<Object> keys = new LinkedHashSet<Object>();
+        Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, ?> actualEntry : actual().entries()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
@@ -398,7 +398,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   }
 
   private static <K, V> String countDuplicatesMultimap(Multimap<K, V> multimap) {
-    List<String> entries = new ArrayList<String>();
+    List<String> entries = new ArrayList<>();
     for (K key : multimap.keySet()) {
       entries.add(key + "=" + SubjectUtils.countDuplicates(multimap.get(key)));
     }
@@ -454,7 +454,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
    */
   public <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
       Correspondence<A, E> correspondence) {
-    return new UsingCorrespondence<A, E>(correspondence);
+    return new UsingCorrespondence<>(correspondence);
   }
 
   /**
@@ -493,7 +493,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
             actualAsString(), expectedKey, correspondence, expectedValue, actualValues);
       } else {
         // Did not find matching key.
-        Set<Object> keys = new LinkedHashSet<Object>();
+        Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, A> actualEntry : getCastActual().entries()) {
           if (correspondence.compare(actualEntry.getValue(), expectedValue)) {
             keys.add(actualEntry.getKey());
@@ -521,7 +521,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable E excludedValue) {
       if (actual().containsKey(excludedKey)) {
         Collection<A> actualValues = getCastActual().asMap().get(excludedKey);
-        List<A> matchingValues = new ArrayList<A>();
+        List<A> matchingValues = new ArrayList<>();
         for (A actualValue : actualValues) {
           if (correspondence.compare(actualValue, excludedValue)) {
             matchingValues.add(actualValue);

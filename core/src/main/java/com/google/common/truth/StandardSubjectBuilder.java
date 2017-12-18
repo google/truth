@@ -124,7 +124,7 @@ public class StandardSubjectBuilder {
   }
 
   public final <T> ObjectArraySubject<T> that(@Nullable T[] actual) {
-    return new ObjectArraySubject<T>(metadata(), actual);
+    return new ObjectArraySubject<>(metadata(), actual);
   }
 
   public final PrimitiveBooleanArraySubject that(@Nullable boolean[] actual) {
@@ -221,7 +221,7 @@ public class StandardSubjectBuilder {
    */
   public final <S extends Subject<S, A>, A> SimpleSubjectBuilder<S, A> about(
       Subject.Factory<S, A> factory) {
-    return new SimpleSubjectBuilder<S, A>(metadata(), factory);
+    return new SimpleSubjectBuilder<>(metadata(), factory);
   }
 
   public final <CustomSubjectBuilderT extends CustomSubjectBuilder> CustomSubjectBuilderT about(

@@ -87,7 +87,7 @@ public class MapWithProtoValuesSubject<
       @Override
       public MapWithMessageValuesSubject<K, M> createSubject(
           FailureMetadata metadata, Map<K, M> actual) {
-        return new MapWithMessageValuesSubject<K, M>(metadata, config, actual);
+        return new MapWithMessageValuesSubject<>(metadata, config, actual);
       }
     };
   }
@@ -211,7 +211,7 @@ public class MapWithProtoValuesSubject<
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
-    return new MapWithProtoValuesFluentAssertionImpl<M>(newSubject);
+    return new MapWithProtoValuesFluentAssertionImpl<>(newSubject);
   }
 
   /**

@@ -84,7 +84,7 @@ public class MultimapWithProtoValuesSubject<
       @Override
       public MultimapWithMessageValuesSubject<K, M> createSubject(
           FailureMetadata metadata, Multimap<K, M> actual) {
-        return new MultimapWithMessageValuesSubject<K, M>(metadata, config, actual);
+        return new MultimapWithMessageValuesSubject<>(metadata, config, actual);
       }
     };
   }
@@ -168,7 +168,7 @@ public class MultimapWithProtoValuesSubject<
     return new Subject.Factory<IterableValuesForKey<M>, Iterable<M>>() {
       @Override
       public IterableValuesForKey<M> createSubject(FailureMetadata metadata, Iterable<M> actual) {
-        return new IterableValuesForKey<M>(metadata, actual, stringRepresentation);
+        return new IterableValuesForKey<>(metadata, actual, stringRepresentation);
       }
     };
   }
@@ -254,7 +254,7 @@ public class MultimapWithProtoValuesSubject<
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
-    return new MultimapWithProtoValuesFluentAssertionImpl<M>(newSubject);
+    return new MultimapWithProtoValuesFluentAssertionImpl<>(newSubject);
   }
 
   /**

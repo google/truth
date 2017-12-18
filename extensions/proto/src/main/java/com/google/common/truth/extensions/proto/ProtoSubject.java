@@ -185,7 +185,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
    * #isEqualTo(Object)}.
    */
   private class Reporter implements MessageDifferencer.Reporter {
-    private final List<ReporterRecord> records = new ArrayList<ReporterRecord>();
+    private final List<ReporterRecord> records = new ArrayList<>();
     private boolean anyFailures = false;
     private boolean anyNotices = false;
 

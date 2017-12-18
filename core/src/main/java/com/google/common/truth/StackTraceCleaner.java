@@ -39,8 +39,7 @@ final class StackTraceCleaner {
   }
 
   private final Throwable throwable;
-  private final List<StackTraceElementWrapper> cleanedStackTrace =
-      new ArrayList<StackTraceElementWrapper>();
+  private final List<StackTraceElementWrapper> cleanedStackTrace = new ArrayList<>();
   private StackTraceElementWrapper lastStackFrameElementWrapper = null;
   private StackFrameType currentStreakType = null;
   private int currentStreakLength = 0;

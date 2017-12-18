@@ -50,7 +50,7 @@ final class Platform {
    */
   static boolean isInstanceOfTypeGWT(Object instance, Class<?> clazz) {
     String className = clazz.getName();
-    Set<String> types = new LinkedHashSet<String>();
+    Set<String> types = new LinkedHashSet<>();
     types.add(instance.getClass().getCanonicalName());
     addTypeNames(instance.getClass(), types);
     return types.contains(className);

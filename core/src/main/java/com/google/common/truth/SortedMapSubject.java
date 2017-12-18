@@ -103,7 +103,7 @@ public final class SortedMapSubject extends MapSubject {
                 + "but the key is mapped to <%s>, and the first entry is <%s>",
             actualAsString(), expectedEntry, actualAsNavigableMap().get(key), actualFirstEntry);
       } else if (actualAsNavigableMap().containsValue(value)) {
-        Set<Object> keys = new LinkedHashSet<Object>();
+        Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, ?> actualEntry : actualAsNavigableMap().entrySet()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
@@ -174,7 +174,7 @@ public final class SortedMapSubject extends MapSubject {
                 + "but the key is mapped to <%s>, and the last entry is <%s>",
             actualAsString(), expectedEntry, actualAsNavigableMap().get(key), actualLastEntry);
       } else if (actualAsNavigableMap().containsValue(value)) {
-        Set<Object> keys = new LinkedHashSet<Object>();
+        Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, ?> actualEntry : actualAsNavigableMap().entrySet()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
@@ -220,7 +220,7 @@ public final class SortedMapSubject extends MapSubject {
       if (map instanceof NavigableMap) {
         return (NavigableMap<K, V>) map;
       }
-      return new SortedMapAsNavigableMap<K, V>(map);
+      return new SortedMapAsNavigableMap<>(map);
     }
 
     SortedMapAsNavigableMap(SortedMap<K, V> delegate) {

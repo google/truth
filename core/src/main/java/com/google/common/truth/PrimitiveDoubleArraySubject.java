@@ -120,7 +120,7 @@ public final class PrimitiveDoubleArraySubject
             Doubles.asList(expectedArray), Doubles.asList(actual));
         return;
       }
-      List<Integer> unequalIndices = new ArrayList<Integer>();
+      List<Integer> unequalIndices = new ArrayList<>();
       for (int i = 0; i < expectedArray.length; i++) {
         if (!equalWithinTolerance(actual[i], expectedArray[i], tolerance)) {
           unequalIndices.add(i);
@@ -191,7 +191,7 @@ public final class PrimitiveDoubleArraySubject
       if (expected.length != actual.length) {
         return; // Unequal-lengthed arrays are not equal.
       }
-      List<Integer> unequalIndices = new ArrayList<Integer>();
+      List<Integer> unequalIndices = new ArrayList<>();
       for (int i = 0; i < expected.length; i++) {
         if (!equalWithinTolerance(actual[i], expected[i], tolerance)) {
           unequalIndices.add(i);
@@ -283,7 +283,7 @@ public final class PrimitiveDoubleArraySubject
       public void ofElementsIn(Iterable<? extends Number> expected) {
         checkTolerance(tolerance);
         double[] actual = checkNotNull(actual());
-        List<Integer> mismatches = new ArrayList<Integer>();
+        List<Integer> mismatches = new ArrayList<>();
         int expectedCount = 0;
         for (Number expectedValue : expected) {
           // if expected is longer than actual, we can skip the excess values: this case is covered

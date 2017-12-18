@@ -273,7 +273,7 @@ public final class GraphMatchingTest {
 
       /** Constructs the first non-empty matching in the sequence. */
       Matching() {
-        this.edgeStack = new ArrayDeque<Edge>();
+        this.edgeStack = new ArrayDeque<>();
         this.selectedEdges = HashBiMap.create();
         if (!edges.isEmpty()) {
           Edge firstEdge = new Edge();
