@@ -161,8 +161,11 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
    * <p>This method performs no checks on its own and cannot cause test failures. Subsequent
    * assertions must be chained onto this method call to test properties of the {@link Multimap}.
    */
+  @SuppressWarnings("unchecked") // safe because we only read, not write
   public IterableSubject valuesForKey(@Nullable Object key) {
-    return new IterableValuesForKey(metadata, this, key);
+    return check()
+        .about(valuesForKeyFactory(key))
+        .that(((Multimap<Object, Object>) actual()).get(key));
   }
 
   @Override
@@ -285,29 +288,49 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     return containsExactlyEntriesIn(expectedMultimap);
   }
 
+  private Factory<IterableSubject, Iterable<?>> valuesForKeyFactory(final Object key) {
+    return new Factory<IterableSubject, Iterable<?>>() {
+      @Override
+      public IterableSubject createSubject(FailureMetadata metadata, Iterable<?> actual) {
+        return new IterableValuesForKey(metadata, actualAsString(), key, actual);
+      }
+    };
+  }
+
   private static class IterableValuesForKey extends IterableSubject {
     @Nullable private final Object key;
-    private final String stringRepresentation;
+    private final String multimapStringRepresentation;
 
-    @SuppressWarnings({"unchecked"})
     IterableValuesForKey(
-        FailureMetadata metadata, MultimapSubject multimapSubject, @Nullable Object key) {
-      super(metadata, ((Multimap<Object, Object>) multimapSubject.actual()).get(key));
+        FailureMetadata metadata,
+        String multimapStringRepresentation,
+        @Nullable Object key,
+        Iterable<?> actual) {
+      super(metadata, actual);
       this.key = key;
-      this.stringRepresentation = multimapSubject.actualAsString();
+      this.multimapStringRepresentation = multimapStringRepresentation;
     }
 
     @Override
     protected String actualCustomStringRepresentation() {
-      return "Values for key <" + key + "> (<" + actual() + ">) in " + stringRepresentation;
+      return "Values for key <" + key + "> (<" + actual() + ">) in " + multimapStringRepresentation;
     }
+  }
+
+  private Factory<IterableSubject, Iterable<?>> iterableEntries() {
+    return new Factory<IterableSubject, Iterable<?>>() {
+      @Override
+      public IterableSubject createSubject(FailureMetadata metadata, Iterable<?> actual) {
+        return new IterableEntries(metadata, MultimapSubject.this, actual);
+      }
+    };
   }
 
   private static class IterableEntries extends IterableSubject {
     private final String stringRepresentation;
 
-    IterableEntries(FailureMetadata metadata, MultimapSubject multimapSubject) {
-      super(metadata, multimapSubject.actual().entries());
+    IterableEntries(FailureMetadata metadata, MultimapSubject multimapSubject, Iterable<?> actual) {
+      super(metadata, actual);
       // We want to use the multimap's toString() instead of the iterable of entries' toString():
       this.stringRepresentation = multimapSubject.actual().toString();
       // If the multimap subject is named() then this should be, too:
@@ -553,7 +576,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       // the case where inOrder() fails it says the keys and/or the values for some keys are out of
       // order. We don't bother with that here. It would be nice, but it would be a lot of added
       // complexity for little gain.
-      return new IterableEntries(metadata, MultimapSubject.this)
+      return check()
+          .about(iterableEntries())
+          .that(actual().entries())
           .comparingElementsUsing(new EntryCorrespondence<K, A, V>(correspondence))
           .containsExactlyElementsIn(expectedMultimap.entries());
     }

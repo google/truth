@@ -71,9 +71,7 @@ public class Subject<S extends Subject<S, T>, T> {
         public void fail(String message, Throwable cause) {}
       };
 
-  // TODO(cpovirk): Make private after MultimapSubject no longer needs it.
-  final FailureMetadata metadata;
-
+  private final FailureMetadata metadata;
   private final T actual;
   private String customName = null;
 
