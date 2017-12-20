@@ -92,6 +92,12 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   private @Nullable AssertionError failure = null;
 
   /**
+   * Creates a new instance for use as a {@code @Rule}. See the class documentation for details, and
+   * consider using {@linkplain #expectFailure the lambda version} instead.
+   */
+  public ExpectFailure() {}
+
+  /**
    * Returns a test verb that expects the chained assertion to fail, and makes the failure available
    * via {@link #getFailure}.
    *
