@@ -80,13 +80,13 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     }
 
     @Override
-    public void failComparing(
+    public synchronized void failComparing(
         String message, CharSequence expected, CharSequence actual, Throwable cause) {
       cleanAndRecord(comparisonFailure(message, expected.toString(), actual.toString(), cause));
     }
 
     @Override
-    public void fail(String message, Throwable cause) {
+    public synchronized void fail(String message, Throwable cause) {
       cleanAndRecord(new AssertionErrorWithCause(message, cause));
     }
 
@@ -115,12 +115,6 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
 
     synchronized void checkInRuleContext() {
       doCheckInRuleContext(null);
-    }
-
-    private synchronized void cleanAndRecord(AssertionError failure) {
-      cleanStackTrace(failure);
-      doCheckInRuleContext(failure);
-      failures.add(failure);
     }
 
     synchronized boolean hasFailures() {
@@ -187,6 +181,13 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       } else {
         throw caught;
       }
+    }
+
+    @GuardedBy("this")
+    private void cleanAndRecord(AssertionError failure) {
+      cleanStackTrace(failure);
+      doCheckInRuleContext(failure);
+      failures.add(failure);
     }
   }
 

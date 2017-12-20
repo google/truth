@@ -28,7 +28,8 @@ import javax.annotation.Nullable;
  * chain. It appears primarily as a parameter to {@link Subject} constructors (and {@link
  * Subject.Factory} methods), which should pass it to the superclass constructor and not otherwise
  * use or store it. In particular, users should not attempt to call {@code Subject} constructors or
- * {@code Subject.Factory} methods directly. Instead, they should use the appopriate factory method:
+ * {@code Subject.Factory} methods directly. Instead, they should use the appropriate factory
+ * method:
  *
  * <ul>
  *   <li>If you're writing a test: {@link Truth#assertAbout(Subject.Factory)}{@code .that(...)}
