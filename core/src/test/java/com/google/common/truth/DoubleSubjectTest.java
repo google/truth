@@ -272,49 +272,43 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isWithinZeroTolerance() {
     double max = Double.MAX_VALUE;
-    double nearlyMax = NEARLY_MAX;
     assertThat(max).isWithin(0.0).of(max);
-    assertThat(nearlyMax).isWithin(0.0).of(nearlyMax);
-    assertThatIsWithinFails(max, 0.0, nearlyMax);
-    assertThatIsWithinFails(nearlyMax, 0.0, max);
+    assertThat(NEARLY_MAX).isWithin(0.0).of(NEARLY_MAX);
+    assertThatIsWithinFails(max, 0.0, NEARLY_MAX);
+    assertThatIsWithinFails(NEARLY_MAX, 0.0, max);
 
     double negativeMax = -1.0 * Double.MAX_VALUE;
-    double negativeNearlyMax = NEGATIVE_NEARLY_MAX;
     assertThat(negativeMax).isWithin(0.0).of(negativeMax);
-    assertThat(negativeNearlyMax).isWithin(0.0).of(negativeNearlyMax);
-    assertThatIsWithinFails(negativeMax, 0.0, negativeNearlyMax);
-    assertThatIsWithinFails(negativeNearlyMax, 0.0, negativeMax);
+    assertThat(NEGATIVE_NEARLY_MAX).isWithin(0.0).of(NEGATIVE_NEARLY_MAX);
+    assertThatIsWithinFails(negativeMax, 0.0, NEGATIVE_NEARLY_MAX);
+    assertThatIsWithinFails(NEGATIVE_NEARLY_MAX, 0.0, negativeMax);
 
     double min = Double.MIN_VALUE;
-    double justOverMin = OVER_MIN;
     assertThat(min).isWithin(0.0).of(min);
-    assertThat(justOverMin).isWithin(0.0).of(justOverMin);
-    assertThatIsWithinFails(min, 0.0, justOverMin);
-    assertThatIsWithinFails(justOverMin, 0.0, min);
+    assertThat(OVER_MIN).isWithin(0.0).of(OVER_MIN);
+    assertThatIsWithinFails(min, 0.0, OVER_MIN);
+    assertThatIsWithinFails(OVER_MIN, 0.0, min);
 
     double negativeMin = -1.0 * Double.MIN_VALUE;
-    double justUnderNegativeMin = UNDER_NEGATIVE_MIN;
     assertThat(negativeMin).isWithin(0.0).of(negativeMin);
-    assertThat(justUnderNegativeMin).isWithin(0.0).of(justUnderNegativeMin);
-    assertThatIsWithinFails(negativeMin, 0.0, justUnderNegativeMin);
-    assertThatIsWithinFails(justUnderNegativeMin, 0.0, negativeMin);
+    assertThat(UNDER_NEGATIVE_MIN).isWithin(0.0).of(UNDER_NEGATIVE_MIN);
+    assertThatIsWithinFails(negativeMin, 0.0, UNDER_NEGATIVE_MIN);
+    assertThatIsWithinFails(UNDER_NEGATIVE_MIN, 0.0, negativeMin);
   }
 
   @Test
   public void isNotWithinZeroTolerance() {
     double max = Double.MAX_VALUE;
-    double nearlyMax = NEARLY_MAX;
     assertThatIsNotWithinFails(max, 0.0, max);
-    assertThatIsNotWithinFails(nearlyMax, 0.0, nearlyMax);
-    assertThat(max).isNotWithin(0.0).of(nearlyMax);
-    assertThat(nearlyMax).isNotWithin(0.0).of(max);
+    assertThatIsNotWithinFails(NEARLY_MAX, 0.0, NEARLY_MAX);
+    assertThat(max).isNotWithin(0.0).of(NEARLY_MAX);
+    assertThat(NEARLY_MAX).isNotWithin(0.0).of(max);
 
     double min = Double.MIN_VALUE;
-    double justOverMin = OVER_MIN;
     assertThatIsNotWithinFails(min, 0.0, min);
-    assertThatIsNotWithinFails(justOverMin, 0.0, justOverMin);
-    assertThat(min).isNotWithin(0.0).of(justOverMin);
-    assertThat(justOverMin).isNotWithin(0.0).of(min);
+    assertThatIsNotWithinFails(OVER_MIN, 0.0, OVER_MIN);
+    assertThat(min).isNotWithin(0.0).of(OVER_MIN);
+    assertThat(OVER_MIN).isNotWithin(0.0).of(min);
   }
 
   @Test

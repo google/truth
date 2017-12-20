@@ -33,10 +33,8 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class FloatSubjectTest extends BaseSubjectTestCase {
   private static final float NEARLY_MAX = 3.4028233E38f;
-  private static final float NEGATIVE_MAX = -3.4028235E38f;
   private static final float NEGATIVE_NEARLY_MAX = -3.4028233E38f;
   private static final float JUST_OVER_MIN = 2.8E-45f;
-  private static final float NEGATIVE_MIN = -1.4E-45f;
   private static final float JUST_UNDER_NEGATIVE_MIN = -2.8E-45f;
   private static final float GOLDEN = 1.23f;
   private static final float JUST_OVER_GOLDEN = 1.2300001f;
@@ -61,10 +59,8 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
   @GwtIncompatible("Math.nextAfter")
   public void testFloatConstants_matchNextAfter() {
     assertThat(Math.nextAfter(Float.MAX_VALUE, 0.0f)).isEqualTo(NEARLY_MAX);
-    assertThat(-1.0f * Float.MAX_VALUE).isEqualTo(NEGATIVE_MAX);
     assertThat(Math.nextAfter(-1.0f * Float.MAX_VALUE, 0.0f)).isEqualTo(NEGATIVE_NEARLY_MAX);
     assertThat(Math.nextAfter(Float.MIN_VALUE, 1.0f)).isEqualTo(JUST_OVER_MIN);
-    assertThat(-1.0f * Float.MIN_VALUE).isEqualTo(NEGATIVE_MIN);
     assertThat(Math.nextAfter(-1.0f * Float.MIN_VALUE, -1.0f)).isEqualTo(JUST_UNDER_NEGATIVE_MIN);
     assertThat(1.23f).isEqualTo(GOLDEN);
     assertThat(Math.nextAfter(1.23f, Float.POSITIVE_INFINITY)).isEqualTo(JUST_OVER_GOLDEN);
@@ -276,49 +272,43 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isWithinZeroTolerance() {
     float max = Float.MAX_VALUE;
-    float nearlyMax = NEARLY_MAX;
     assertThat(max).isWithin(0.0f).of(max);
-    assertThat(nearlyMax).isWithin(0.0f).of(nearlyMax);
-    assertThatIsWithinFails(max, 0.0f, nearlyMax);
-    assertThatIsWithinFails(nearlyMax, 0.0f, max);
+    assertThat(NEARLY_MAX).isWithin(0.0f).of(NEARLY_MAX);
+    assertThatIsWithinFails(max, 0.0f, NEARLY_MAX);
+    assertThatIsWithinFails(NEARLY_MAX, 0.0f, max);
 
     float negativeMax = -1.0f * Float.MAX_VALUE;
-    float negativeNearlyMax = NEGATIVE_NEARLY_MAX;
     assertThat(negativeMax).isWithin(0.0f).of(negativeMax);
-    assertThat(negativeNearlyMax).isWithin(0.0f).of(negativeNearlyMax);
-    assertThatIsWithinFails(negativeMax, 0.0f, negativeNearlyMax);
-    assertThatIsWithinFails(negativeNearlyMax, 0.0f, negativeMax);
+    assertThat(NEGATIVE_NEARLY_MAX).isWithin(0.0f).of(NEGATIVE_NEARLY_MAX);
+    assertThatIsWithinFails(negativeMax, 0.0f, NEGATIVE_NEARLY_MAX);
+    assertThatIsWithinFails(NEGATIVE_NEARLY_MAX, 0.0f, negativeMax);
 
     float min = Float.MIN_VALUE;
-    float justOverMin = JUST_OVER_MIN;
     assertThat(min).isWithin(0.0f).of(min);
-    assertThat(justOverMin).isWithin(0.0f).of(justOverMin);
-    assertThatIsWithinFails(min, 0.0f, justOverMin);
-    assertThatIsWithinFails(justOverMin, 0.0f, min);
+    assertThat(JUST_OVER_MIN).isWithin(0.0f).of(JUST_OVER_MIN);
+    assertThatIsWithinFails(min, 0.0f, JUST_OVER_MIN);
+    assertThatIsWithinFails(JUST_OVER_MIN, 0.0f, min);
 
     float negativeMin = -1.0f * Float.MIN_VALUE;
-    float justUnderNegativeMin = JUST_UNDER_NEGATIVE_MIN;
     assertThat(negativeMin).isWithin(0.0f).of(negativeMin);
-    assertThat(justUnderNegativeMin).isWithin(0.0f).of(justUnderNegativeMin);
-    assertThatIsWithinFails(negativeMin, 0.0f, justUnderNegativeMin);
-    assertThatIsWithinFails(justUnderNegativeMin, 0.0f, negativeMin);
+    assertThat(JUST_UNDER_NEGATIVE_MIN).isWithin(0.0f).of(JUST_UNDER_NEGATIVE_MIN);
+    assertThatIsWithinFails(negativeMin, 0.0f, JUST_UNDER_NEGATIVE_MIN);
+    assertThatIsWithinFails(JUST_UNDER_NEGATIVE_MIN, 0.0f, negativeMin);
   }
 
   @Test
   public void isNotWithinZeroTolerance() {
     float max = Float.MAX_VALUE;
-    float nearlyMax = NEARLY_MAX;
     assertThatIsNotWithinFails(max, 0.0f, max);
-    assertThatIsNotWithinFails(nearlyMax, 0.0f, nearlyMax);
-    assertThat(max).isNotWithin(0.0f).of(nearlyMax);
-    assertThat(nearlyMax).isNotWithin(0.0f).of(max);
+    assertThatIsNotWithinFails(NEARLY_MAX, 0.0f, NEARLY_MAX);
+    assertThat(max).isNotWithin(0.0f).of(NEARLY_MAX);
+    assertThat(NEARLY_MAX).isNotWithin(0.0f).of(max);
 
     float min = Float.MIN_VALUE;
-    float justOverMin = JUST_OVER_MIN;
     assertThatIsNotWithinFails(min, 0.0f, min);
-    assertThatIsNotWithinFails(justOverMin, 0.0f, justOverMin);
-    assertThat(min).isNotWithin(0.0f).of(justOverMin);
-    assertThat(justOverMin).isNotWithin(0.0f).of(min);
+    assertThatIsNotWithinFails(JUST_OVER_MIN, 0.0f, JUST_OVER_MIN);
+    assertThat(min).isNotWithin(0.0f).of(JUST_OVER_MIN);
+    assertThat(JUST_OVER_MIN).isNotWithin(0.0f).of(min);
   }
 
   @Test
@@ -373,10 +363,8 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo() {
-    float golden = GOLDEN;
-    float justOverGolden = JUST_OVER_GOLDEN;
-    assertThat(golden).isEqualTo(golden);
-    assertThatIsEqualToFails(golden, justOverGolden);
+    assertThat(GOLDEN).isEqualTo(GOLDEN);
+    assertThatIsEqualToFails(GOLDEN, JUST_OVER_GOLDEN);
     assertThat(Float.POSITIVE_INFINITY).isEqualTo(Float.POSITIVE_INFINITY);
     assertThat(Float.NaN).isEqualTo(Float.NaN);
     assertThat((Float) null).isEqualTo(null);
@@ -396,10 +384,8 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo() {
-    float golden = GOLDEN;
-    float justOverGolden = JUST_OVER_GOLDEN;
-    assertThatIsNotEqualToFails(golden);
-    assertThat(golden).isNotEqualTo(justOverGolden);
+    assertThatIsNotEqualToFails(GOLDEN);
+    assertThat(GOLDEN).isNotEqualTo(JUST_OVER_GOLDEN);
     assertThatIsNotEqualToFails(Float.POSITIVE_INFINITY);
     assertThatIsNotEqualToFails(Float.NaN);
     assertThat(-0.0f).isNotEqualTo(0.0f);
