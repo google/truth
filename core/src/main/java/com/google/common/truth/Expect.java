@@ -31,15 +31,16 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 import org.junit.internal.AssumptionViolatedException;
+import org.junit.rules.ErrorCollector;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 /**
  * A {@link TestRule} that batches up all failures encountered during a test, and reports them all
- * together at the end. It is also useful for making assertions from other threads or from within
- * callbacks whose exceptions would be swallowed or logged, rather than propagated out to fail the
- * test.
+ * together at the end (similar to {@link ErrorCollector}). It is also useful for making assertions
+ * from other threads or from within callbacks whose exceptions would be swallowed or logged, rather
+ * than propagated out to fail the test.
  *
  * <p>Usage:
  *
