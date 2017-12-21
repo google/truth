@@ -302,6 +302,7 @@ There are four parts to the example:
 [`ComparableSubject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/ComparableSubject.java
 [`Subject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
 [`Subject.Factory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
+[`FailureMetadata`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureMetadata.java
 [`FailureStrategy`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
 [`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
 [`ExpectFailure`]:               https://google.github.io/truth/api/latest/com/google/common/truth/ExpectFailure.html
