@@ -26,18 +26,18 @@ Other extensions that are not part of the Truth project itself include:
 
 The steps are nearly the same as [for using the core Truth assertions](index):
 
-## 1. Add the appropriate dependency to your build file:
+### 1. Add the appropriate dependency to your build file:
 
 For example, for Protocol Buffers, `com.google.truth.extensions:truth-proto-extension:{{ site.version }}`. Of course, you can skip this step if you define the `Subject` in the same project as the tests that use it.
 
 
-## 2. Add a static import:
+### 2. Add a static import:
 
 ```java
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 ```
 
-## 3. Write a test assertion:
+### 3. Write a test assertion:
 
 ```java
 assertThat(myBuilder).hasAllRequiredFields();
