@@ -179,9 +179,10 @@ There are four parts to the example:
         ```
 
         If your `Subject` is `final`, the constructor can be `private`. But even
-        if you want users to extend the type, there's no reason for the
-        constructor to be `public`: No one should call the constructor directly
-        except the `Subject.Factory` and subclasses.
+        if you want an extensible `Subject`, there's no reason for the
+        constructor to be `public`, only package-private or `protected`: No one
+        should call the constructor directly except the `Subject.Factory` and
+        subclasses.
 
     5.  Finally, you define your test assertion API on the custom Subject. Since
         you're defining the API, you can write it however you'd like. However,
