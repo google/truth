@@ -108,7 +108,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <div class="block">An opaque, immutable object containing state from the previous calls in the fluent assertion
  chain. It appears primarily as a parameter to <a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> constructors (and <a href="../../../../com/google/common/truth/Subject.Factory.html" title="interface in com.google.common.truth"><code>Subject.Factory</code></a> methods), which should pass it to the superclass constructor and not otherwise
  use or store it. In particular, users should not attempt to call <code>Subject</code> constructors or
- <code>Subject.Factory</code> methods directly. Instead, they should use the appopriate factory method:
+ <code>Subject.Factory</code> methods directly. Instead, they should use the appropriate factory
+ method:
 
  <ul>
    <li>If you're writing a test: <a href="../../../../com/google/common/truth/Truth.html#assertAbout-com.google.common.truth.Subject.Factory-"><code>Truth.assertAbout(Subject.Factory)</code></a><code>.that(...)</code>

@@ -123,9 +123,9 @@ public final class <span class="typeNameLabel">Expect</span>
 extends <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a>
 implements org.junit.rules.TestRule</pre>
 <div class="block">A <code>TestRule</code> that batches up all failures encountered during a test, and reports them all
- together at the end. It is also useful for making assertions from other threads or from within
- callbacks whose exceptions would be swallowed or logged, rather than propagated out to fail the
- test.
+ together at the end (similar to <code>ErrorCollector</code>). It is also useful for making assertions
+ from other threads or from within callbacks whose exceptions would be swallowed or logged, rather
+ than propagated out to fail the test.
 
  <p>Usage:
 
