@@ -305,5 +305,5 @@ There are four parts to the example:
 [`FailureStrategy`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
 [`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
 [`ExpectFailure`]:               https://google.github.io/truth/api/latest/com/google/common/truth/ExpectFailure.html
-[shortcuts]: faq#how-do-i-specify-a-custom-messagefailurestrategysubject-type
+[shortcuts]: faq#full-chain
 
