@@ -339,8 +339,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * ThrowableSubject#hasMessageThat} is implemented with {@code
    * check().that(actual().getMessage()}, which returns a {@link StringSubject}.
    */
-  // TODO(diamondm) this should be final, can we do that safely?
-  protected StandardSubjectBuilder check() {
+  protected final StandardSubjectBuilder check() {
     return new StandardSubjectBuilder(metadata);
   }
 
