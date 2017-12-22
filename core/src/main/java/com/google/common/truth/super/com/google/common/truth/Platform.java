@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.StringUtil.format;
 
+import com.google.common.truth.Truth.AssertionErrorWithCause;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import jsinterop.annotations.JsPackage;
@@ -56,10 +57,8 @@ final class Platform {
 
   static AssertionError comparisonFailure(
       String message, String expected, String actual, Throwable cause) {
-    AssertionError failure =
-        new AssertionError(format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual));
-    failure.initCause(cause); // Not affected by Android bug
-    return failure;
+    throw new AssertionErrorWithCause(
+        format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual), cause);
   }
 
   /** Determines if the given subject contains a match for the given regex. */
