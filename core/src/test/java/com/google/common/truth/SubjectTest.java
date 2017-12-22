@@ -626,16 +626,6 @@ public class SubjectTest {
   }
 
   @Test
-  public void checkPersistsStrategy() {
-    try {
-      assertThat((Object) null).check().that("foo").isNull();
-      fail();
-    } catch (AssertionError e) {
-      assertThat(e).hasMessageThat().isEqualTo("Not true that <\"foo\"> is null");
-    }
-  }
-
-  @Test
   public void ignoreCheckDiscardsFailures() {
     assertThat((Object) null).ignoreCheck().that("foo").isNull();
   }
