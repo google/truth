@@ -16,11 +16,15 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.StringUtil.format;
+import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.POSITIVE_INFINITY;
+import static java.lang.Double.parseDouble;
+import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.google.common.truth.Truth.AssertionErrorWithCause;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import jsinterop.annotations.JsPackage;
+import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
 /**
@@ -79,6 +83,22 @@ final class Platform {
     return false;
   }
 
+  static String doubleToString(double value) {
+    // This probably doesn't match Java perfectly, but we do our best.
+    if (value == POSITIVE_INFINITY) {
+      return "Infinity";
+    } else if (value == NEGATIVE_INFINITY) {
+      return "-Infinity";
+    } else if (value == 0 && 1 / value < 0) {
+      return "-0.0";
+    } else {
+      // TODO(cpovirk): Would it make more sense to pass `undefined` for the locale? But how?
+      // Then again, we're already hardcoding "Infinity," an English word, above....
+      String result = ((Number) (Object) value).toLocaleString("en-US", JavaLikeOptions.INSTANCE);
+      return (parseDouble(result) == value) ? result : Double.toString(value);
+    }
+  }
+
   /** Tests if current platform is Android which is always false. */
   static boolean isAndroid() {
     return false;
@@ -101,10 +121,46 @@ final class Platform {
     return new NativeRegExp(pattern);
   }
 
-  @JsType(isNative = true, name = "RegExp", namespace = JsPackage.GLOBAL)
+  @JsType(isNative = true, name = "RegExp", namespace = GLOBAL)
   private static class NativeRegExp {
     public NativeRegExp(String pattern) {}
 
     public native boolean test(String input);
+  }
+
+  @JsType(isNative = true, name = "Number", namespace = GLOBAL)
+  private interface Number {
+    String toLocaleString(Object locales, ToLocaleStringOptions options);
+  }
+
+  @JsType(isNative = true, name = "?", namespace = GLOBAL) // "structural type"; see JsType Javadoc
+  private interface ToLocaleStringOptions {
+    @JsProperty
+    int getMinimumFractionDigits();
+
+    @JsProperty
+    int getMaximumFractionDigits();
+
+    @JsProperty
+    boolean getUseGrouping();
+  }
+
+  private static final class JavaLikeOptions implements ToLocaleStringOptions {
+    private static final ToLocaleStringOptions INSTANCE = new JavaLikeOptions();
+
+    @Override
+    public int getMinimumFractionDigits() {
+      return 1;
+    }
+
+    @Override
+    public int getMaximumFractionDigits() {
+      return 20;
+    }
+
+    @Override
+    public boolean getUseGrouping() {
+      return false;
+    }
   }
 }

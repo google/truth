@@ -109,7 +109,6 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
   public void isEqualTo_WithoutToleranceParameter_Fail_PlusMinusZero() {
     expectFailure.whenTesting().that(array(0.0d)).isEqualTo(array(-0.0d));
     assertThat(expectFailure.getFailure())
@@ -265,7 +264,6 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
   public void isNotEqualTo_WithoutToleranceParameter_NaN_plusZero_FailEquals() {
     expectFailure
         .whenTesting()
@@ -299,7 +297,6 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
   public void isNotEqualTo_WithoutToleranceParameter_Success_PlusMinusZero() {
     assertThat(array(0.0d)).isNotEqualTo(array(-0.0d));
   }
@@ -1461,20 +1458,26 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
   public void usingExactEquality_contains_successWithNaN() {
     assertThat(array(1.1, NaN, 3.3)).usingExactEquality().contains(NaN);
   }
 
   @Test
-  @GwtIncompatible("gwt Arrays.equals(double[], double[])")
   public void usingExactEquality_contains_failureWithNegativeZero() {
     expectFailure.whenTesting().that(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0);
+    /*
+     * TODO(cpovirk): Find a way to print "0.0" rather than 0 in the error, even under GWT. One
+     * easy(?) hack would be to make UsingCorrespondence use Platform.doubleToString() when
+     * applicable. Or maybe Correspondence implementations should be able to provide custom string
+     * conversions, similar to how we plan to let them render their own diffs.
+     */
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1.1, -0.0, 3.3]> contains at least one element that is "
-                + "exactly equal to <0.0>");
+                + "exactly equal to <"
+                + 0.0
+                + ">");
   }
 
   @Test
@@ -1605,6 +1608,23 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
             "Not true that <[1.1, 2.2, 3.3]> contains no element that is exactly equal to any "
                 + "element in <[99.99, 2.2]>. It contains at least one element that is exactly "
                 + "equal to each of <[2.2]>");
+  }
+
+  @Test
+  public void smallDifferenceInLongRepresentation() {
+    expectFailure
+        .whenTesting()
+        .that(array(-4.4501477170144023E-308))
+        .isEqualTo(array(-4.450147717014402E-308));
+  }
+
+  @Test
+  public void noCommas() {
+    // Maybe we should include commas, but we don't yet, so make sure we don't under GWT, either.
+    expectFailure.whenTesting().that(array(10000.0)).isEqualTo(array(20000.0));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <(double[]) [10000.0]> is equal to <[20000.0]>");
   }
 
   private static double[] array(double... primitives) {

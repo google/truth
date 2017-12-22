@@ -22,12 +22,12 @@ import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
+import static com.google.common.truth.Platform.doubleToString;
 
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Doubles;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -48,8 +48,8 @@ public final class PrimitiveDoubleArraySubject
   }
 
   @Override
-  protected List<Double> listRepresentation() {
-    return Doubles.asList(actual());
+  protected List<String> listRepresentation() {
+    return doubleArrayAsString(actual());
   }
 
   /**
@@ -84,8 +84,8 @@ public final class PrimitiveDoubleArraySubject
     }
     try {
       double[] expectedArray = (double[]) expected;
-      if (!Arrays.equals(actual, expectedArray)) {
-        fail("is equal to", Doubles.asList(expectedArray));
+      if (!arrayEquals(actual, expectedArray)) {
+        fail("is equal to", doubleArrayAsString(expectedArray));
       }
     } catch (ClassCastException e) {
       failWithBadType(expected);
@@ -117,7 +117,7 @@ public final class PrimitiveDoubleArraySubject
       if (expectedArray.length != actual.length) {
         failWithRawMessage(
             "Arrays are of different lengths. expected: %s, actual %s",
-            Doubles.asList(expectedArray), Doubles.asList(actual));
+            doubleArrayAsString(expectedArray), doubleArrayAsString(actual));
         return;
       }
       List<Integer> unequalIndices = new ArrayList<>();
@@ -128,7 +128,7 @@ public final class PrimitiveDoubleArraySubject
       }
 
       if (!unequalIndices.isEmpty()) {
-        fail("is equal to", Doubles.asList(expectedArray));
+        fail("is equal to", doubleArrayAsString(expectedArray));
         return;
       }
     } catch (ClassCastException e) {
@@ -155,9 +155,9 @@ public final class PrimitiveDoubleArraySubject
     double[] actual = actual();
     try {
       double[] expectedArray = (double[]) expected;
-      if (actual == expected || Arrays.equals(actual, expectedArray)) {
+      if (actual == expected || arrayEquals(actual, expectedArray)) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), Doubles.asList(expectedArray));
+            "%s unexpectedly equal to %s.", actualAsString(), doubleArrayAsString(expectedArray));
       }
     } catch (ClassCastException ignored) {
       // If it's not double[] then it's not equal and the test passes.
@@ -185,7 +185,7 @@ public final class PrimitiveDoubleArraySubject
       double[] expected = (double[]) expectedArray;
       if (actual == expected) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), Doubles.asList(expected));
+            "%s unexpectedly equal to %s.", actualAsString(), doubleArrayAsString(expected));
         return;
       }
       if (expected.length != actual.length) {
@@ -199,7 +199,7 @@ public final class PrimitiveDoubleArraySubject
       }
       if (unequalIndices.isEmpty()) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), Doubles.asList(expected));
+            "%s unexpectedly equal to %s.", actualAsString(), doubleArrayAsString(expected));
         return;
       }
     } catch (ClassCastException ignored) {
@@ -397,7 +397,8 @@ public final class PrimitiveDoubleArraySubject
 
         @Override
         public boolean compare(Double actual, Number expected) {
-          return actual.equals(checkedToDouble(expected));
+          return Double.doubleToLongBits(actual)
+              == Double.doubleToLongBits(checkedToDouble(expected));
         }
 
         @Override
@@ -506,8 +507,62 @@ public final class PrimitiveDoubleArraySubject
   }
 
   private IterableSubject iterableSubject() {
-    return internalCustomName() != null
-        ? check().that(listRepresentation()).named(internalCustomName())
-        : check().that(listRepresentation());
+    IterableSubject result =
+        check().about(iterablesWithCustomDoubleToString()).that(Doubles.asList(actual()));
+    return internalCustomName() != null ? result.named(internalCustomName()) : result;
+  }
+
+  /*
+   * TODO(cpovirk): Should we make Doubles.asList().toString() smarter rather than do all this?
+   *
+   * TODO(cpovirk): Or find a general solution for this and MultimapSubject.IterableEntries. But
+   * note that here we don't use _exactly_ PrimitiveDoubleArraySubject.this.toString(), as that
+   * contains "double[]." Or maybe we should stop including that in
+   * PrimitiveDoubleArraySubject.this.toString(), too, someday?
+   */
+  private Factory<IterableSubject, Iterable<?>> iterablesWithCustomDoubleToString() {
+    return new Factory<IterableSubject, Iterable<?>>() {
+      @Override
+      public IterableSubject createSubject(FailureMetadata metadata, Iterable<?> actual) {
+        return new IterableSubjectWithInheritedToString(metadata, actual);
+      }
+    };
+  }
+
+  private final class IterableSubjectWithInheritedToString extends IterableSubject {
+    IterableSubjectWithInheritedToString(FailureMetadata metadata, Iterable<?> actual) {
+      super(metadata, actual);
+    }
+
+    @Override
+    protected String actualCustomStringRepresentation() {
+      return doubleArrayAsString(PrimitiveDoubleArraySubject.this.actual()).toString();
+    }
+  }
+
+  private static boolean arrayEquals(double[] left, double[] right) {
+    if (left == right) {
+      return true;
+    }
+    if (left == null || right == null) {
+      return false;
+    }
+    if (left.length != right.length) {
+      return false;
+    }
+    for (int i = 0; i < left.length; i++) {
+      if (Double.doubleToLongBits(left[i]) != Double.doubleToLongBits(right[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  static List<String> doubleArrayAsString(double[] items) {
+    List<String> itemAsStrings = new ArrayList<String>(items.length);
+    for (double item : items) {
+      itemAsStrings.add(doubleToString(item));
+    }
+    return itemAsStrings;
   }
 }

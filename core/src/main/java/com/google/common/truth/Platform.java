@@ -137,6 +137,10 @@ final class Platform {
     }
   }
 
+  static String doubleToString(double value) {
+    return Double.toString(value);
+  }
+
   /** Returns a human readable string representation of the throwable's stack trace. */
   static String getStackTraceAsString(Throwable throwable) {
     return Throwables.getStackTraceAsString(throwable);
