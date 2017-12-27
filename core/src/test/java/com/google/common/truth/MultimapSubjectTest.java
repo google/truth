@@ -398,10 +398,13 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     assertThat(actual).containsExactly(ImmutableMultimap.of());
     assertThat(actual).containsExactly(ImmutableMultimap.of()).inOrder();
 
-    expectFailure.whenTesting().that(ImmutableMultimap.of(42, "Answer")).containsExactly();
+    expectFailure
+        .whenTesting()
+        .that(ImmutableMultimap.of(42, "Answer", 42, "6x7"))
+        .containsExactly();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[42=Answer]> is empty");
+        .isEqualTo("Not true that <{42=[Answer, 6x7]}> is empty");
   }
 
   @Test
@@ -1104,7 +1107,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
         .containsExactly();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[abc=+123]> is empty");
+        .isEqualTo("Not true that <{abc=[+123]}> is empty");
   }
 
   @Test
