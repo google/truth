@@ -80,8 +80,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * {@link Subject#check}{@code .that(actual)}.
    */
   protected Subject(FailureMetadata metadata, @Nullable T actual) {
-    this.metadata =
-        actual instanceof Throwable ? metadata.offerRootCause((Throwable) actual) : metadata;
+    this.metadata = metadata.updateForSubject(this);
     this.actual = actual;
   }
 
@@ -314,6 +313,15 @@ public class Subject<S extends Subject<S, T>, T> {
   /**
    * Returns a string representation of the actual value. This will either be the toString() of the
    * value or a prefixed "name" along with the string representation.
+   */
+  /*
+   * TODO(cpovirk): Consider whether this API pulls its weight. If users want to format the actual
+   * value, maybe they should do so themselves? Of course, they won't have a chance to use a custom
+   * format for inherited implementations like isEqualTo(). But if they want to format the actual
+   * value specially, then it seems likely that they'll want to format the expected value specially,
+   * too. And that applies just as well to APIs like isIn(). Maybe we'll want an API that supports
+   * formatting those values, too? See also the related b/70930431. But note that we are likely to
+   * use this from FailureMetadata, at least in the short term, for better or for worse.
    */
   protected final String actualAsString() {
     return getDisplaySubject();

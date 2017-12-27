@@ -45,30 +45,51 @@ import javax.annotation.Nullable;
  */
 public final class FailureMetadata {
   static FailureMetadata forFailureStrategy(FailureStrategy failureStrategy) {
-    return new FailureMetadata(failureStrategy, ImmutableList.<Message>of(), null);
+    return new FailureMetadata(
+        failureStrategy, ImmutableList.<Message>of(), ImmutableList.<Subject<?, ?>>of());
   }
 
   private final FailureStrategy strategy;
+
+  /*
+   * TODO(cpovirk): This implementation is wasteful. Probably it doesn't matter, since the APIs that
+   * construct ImmutableLists are used primarily by APIs that are likely to allocate a lot, anyway.
+   * Specifically, `messages` is used by the withMessage() varargs method, and `chain` is used by
+   * chaining assertions like those for throwables and multimaps. But if it ever does matter, we
+   * could use an immutable cactus stack -- or probably even avoid storing most of the chain
+   * entirely (unless we end up wanting more of the chain to show "telescoping context," as in "the
+   * int value of this optional in this list in this multimap").
+   */
+
   private final ImmutableList<Message> messages;
-  // TODO(cpovirk): Maybe store a root *object*, too, or even a full chain of objects.
-  @Nullable private final Throwable rootCause;
+
+  /*
+   * We store Subject, rather than the actual value itself, so that we can call actualAsString().
+   * Why not call the method immediately? First, it might be expensive, and second, the Subject
+   * isn't initialized at the time we receive it. We *might* be able to make it safe to call if it
+   * looks only at actual(), but it might try to look at fields initialized by a subclass, which
+   * aren't ready yet.
+   */
+  private final ImmutableList<Subject<?, ?>> chain;
 
   FailureMetadata(
-      FailureStrategy strategy, ImmutableList<Message> messages, @Nullable Throwable rootCause) {
+      FailureStrategy strategy,
+      ImmutableList<Message> messages,
+      ImmutableList<Subject<?, ?>> chain) {
     this.strategy = checkNotNull(strategy);
     this.messages = checkNotNull(messages);
-    this.rootCause = rootCause;
+    this.chain = checkNotNull(chain);
   }
 
   /**
-   * Returns a new instance whose "root cause" (used as the cause of the {@code AssertionError}) is
-   * set to the given value, or returns {@code this} if a root cause has already been set. Truth
-   * users do not need to call this method directly; Truth automatically sets the first {@code
-   * Throwable} it sees as the root cause.
+   * Returns a new instance that includes the given subject in its chain of values. Truth users do
+   * not need to call this method directly; Truth automatically accumulates context, starting from
+   * the initial that(...) call and continuing into any chained calls, like {@link
+   * ThrowableSubject#hasMessageThat}.
    */
-  FailureMetadata offerRootCause(Throwable rootCause) {
-    checkNotNull(rootCause);
-    return this.rootCause == null ? new FailureMetadata(strategy, messages, rootCause) : this;
+  FailureMetadata updateForSubject(Subject<?, ?> subject) {
+    ImmutableList<Subject<?, ?>> chain = append(this.chain, subject);
+    return derive(messages, chain);
   }
 
   /**
@@ -77,7 +98,8 @@ public final class FailureMetadata {
    * Subject}) or {@link Truth#assertWithMessage} (for most other calls).
    */
   FailureMetadata withMessage(String format, Object[] args) {
-    return new FailureMetadata(strategy, prepend(messages, new Message(format, args)), rootCause);
+    ImmutableList<Message> messages = prepend(this.messages, new Message(format, args));
+    return derive(messages, chain);
   }
 
   private static final class Message {
@@ -102,21 +124,21 @@ public final class FailureMetadata {
   }
 
   void fail(String message) {
-    strategy.fail(addToMessage(message), rootCause);
+    strategy.fail(addToMessage(message), rootCause());
   }
 
   void fail(String message, Throwable cause) {
     strategy.fail(addToMessage(message), cause);
-    // TODO(cpovirk): add defaultCause as a suppressed exception? If fail() throws...
+    // TODO(cpovirk): add rootCause() as a suppressed exception? If fail() throws...
   }
 
   void failComparing(String message, CharSequence expected, CharSequence actual) {
-    strategy.failComparing(addToMessage(message), expected, actual, rootCause);
+    strategy.failComparing(addToMessage(message), expected, actual, rootCause());
   }
 
   void failComparing(String message, CharSequence expected, CharSequence actual, Throwable cause) {
     strategy.failComparing(addToMessage(message), expected, actual, cause);
-    // TODO(cpovirk): add defaultCause as a suppressed exception? If failComparing() throws...
+    // TODO(cpovirk): add rootCause() as a suppressed exception? If failComparing() throws...
   }
 
   private String addToMessage(String body) {
@@ -143,6 +165,25 @@ public final class FailureMetadata {
     return result.toString();
   }
 
+  private FailureMetadata derive(
+      ImmutableList<Message> messages, ImmutableList<Subject<?, ?>> chain) {
+    return new FailureMetadata(strategy, messages, chain);
+  }
+
+  /**
+   * Returns the first {@link Throwable} in the chain of actual values or {@code null} if none are
+   * present. Typically, we'll have a root cause only if the assertion chain contains a {@link
+   * ThrowableSubject}.
+   */
+  private Throwable rootCause() {
+    for (Subject<?, ?> subject : chain) {
+      if (subject.actual() instanceof Throwable) {
+        return (Throwable) subject.actual();
+      }
+    }
+    return null;
+  }
+
   @VisibleForTesting
   static int countPlaceholders(@Nullable String template) {
     if (template == null) {
@@ -163,5 +204,10 @@ public final class FailureMetadata {
 
   private static ImmutableList<Message> prepend(ImmutableList<Message> messages, Message message) {
     return ImmutableList.<Message>builder().addAll(messages).add(message).build();
+  }
+
+  private static ImmutableList<Subject<?, ?>> append(
+      ImmutableList<Subject<?, ?>> subjects, Subject<?, ?> subject) {
+    return ImmutableList.<Subject<?, ?>>builder().addAll(subjects).add(subject).build();
   }
 }
