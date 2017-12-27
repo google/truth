@@ -195,7 +195,7 @@ Someday, we're likely to replace the `FailureStrategy` with a richer
 
 Most users are satisfied with the defaults: no failure message, a
 `FailureStrategy` of "assert," and the `Subject` types supported by core Truth
-and other `assertThat` methods. For this reason, we provide various shortcuts:
+and other `assertThat` methods. For this reason, we provide various [shortcuts]:
 
 <object data="images/truthassertionflowchart.svg" type="image/svg+xml"></object>
 
