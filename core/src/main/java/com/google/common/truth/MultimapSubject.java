@@ -251,7 +251,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   /** Fails if the multimap is not empty. */
   @CanIgnoreReturnValue
   public Ordered containsExactly() {
-    return check().that(actual().entries()).containsExactly();
+    return check().about(iterableEntries()).that(actual().entries()).containsExactly();
   }
 
   /**
