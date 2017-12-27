@@ -301,9 +301,7 @@ public final class Truth {
 
     @Override
     public String toString() {
-      String clazz = "java.lang.AssertionError";
-      String message = getLocalizedMessage();
-      return message == null ? clazz : clazz + ": " + message;
+      return getLocalizedMessage();
     }
   }
 }

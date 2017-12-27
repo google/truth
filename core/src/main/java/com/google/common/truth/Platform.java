@@ -131,9 +131,7 @@ final class Platform {
 
     @Override
     public String toString() {
-      String clazz = "org.junit.ComparisonFailure";
-      String message = getLocalizedMessage();
-      return message == null ? clazz : clazz + ": " + message;
+      return getLocalizedMessage();
     }
   }
 
