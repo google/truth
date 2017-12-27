@@ -214,4 +214,4 @@ and other `assertThat` methods. For this reason, we provide various shortcuts:
 [`assert_`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Truth.java
 [`expect`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Expect.java
 [`assume`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/TruthJUnit.java
-[shortcuts]: faq#how-do-i-specify-a-custom-messagefailurestrategysubject-type
+[shortcuts]: faq#full-chain
