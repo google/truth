@@ -18,6 +18,7 @@
     the Truth assertion framework.
   </description>
   <modules>
+    <module>java8</module>
     <module>re2j</module>
     <module>liteproto</module>
     <module>proto</module>
