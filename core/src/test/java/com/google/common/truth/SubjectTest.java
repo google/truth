@@ -109,6 +109,13 @@ public class SubjectTest {
         subject.isNotIn(ImmutableList.<Object>of());
         subject.isNoneOf(new Object(), new Object());
 
+        try {
+          subject.isIn(ImmutableList.of());
+          fail();
+        } catch (AssertionError expected) {
+          assertThat(expected).hasMessageThat().contains("is equal to any element in");
+        }
+
         // This is a hack...but we have to skip DoubleSubject (requires a tolerance)
         // and array-based subjects (they require a primitive array for the actual value).
         if (subject instanceof DoubleSubject || subject instanceof AbstractArraySubject) {
