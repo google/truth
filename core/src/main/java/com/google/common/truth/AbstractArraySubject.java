@@ -64,8 +64,9 @@ abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> ext
   // TODO(cgruber): Kill once displayedAs() exists, since this attempts to make .named() do that.
   @Override
   protected String actualCustomStringRepresentation() {
+    Object listRepresentation = actual() == null ? "null" : listRepresentation();
     return (internalCustomName() == null)
-        ? "(" + underlyingType() + brackets() + ") " + listRepresentation() + ""
+        ? "(" + underlyingType() + brackets() + ") " + listRepresentation + ""
         : "";
   }
 
