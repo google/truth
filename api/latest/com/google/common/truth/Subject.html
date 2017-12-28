@@ -720,7 +720,7 @@ protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Stri
 <ul class="blockList">
 <li class="blockList">
 <h4>check</h4>
-<pre>protected&nbsp;<a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a>&nbsp;check()</pre>
+<pre>protected final&nbsp;<a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a>&nbsp;check()</pre>
 <div class="block">Begins a new call chain based on the <a href="../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth"><code>FailureMetadata</code></a> of the current subject. By calling
  this method, subject implementations can delegate to other subjects. For example, <a href="../../../../com/google/common/truth/ThrowableSubject.html#hasMessageThat--"><code>ThrowableSubject.hasMessageThat()</code></a> is implemented with <code>check().that(actual().getMessage()</code>, which returns a <a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a>.</div>
 </li>
