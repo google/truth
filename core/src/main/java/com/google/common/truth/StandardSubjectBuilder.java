@@ -200,8 +200,9 @@ public class StandardSubjectBuilder {
   }
 
   /**
-   * Returns a {@link StandardSubjectBuilder} that will prepend the formatted message using the
-   * specified arguments to the failure message in the event of a test failure.
+   * Returns a new instance that will output the given message before the main failure message. If
+   * this method is called multiple times, the messages will appear in the order that they were
+   * specified.
    *
    * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
    * not the full range of {@link java.util.Formatter} specifiers.

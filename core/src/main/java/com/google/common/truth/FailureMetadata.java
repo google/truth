@@ -98,7 +98,7 @@ public final class FailureMetadata {
    * Subject}) or {@link Truth#assertWithMessage} (for most other calls).
    */
   FailureMetadata withMessage(String format, Object[] args) {
-    ImmutableList<Message> messages = prepend(this.messages, new Message(format, args));
+    ImmutableList<Message> messages = append(this.messages, new Message(format, args));
     return derive(messages, chain);
   }
 
@@ -202,12 +202,7 @@ public final class FailureMetadata {
     return count;
   }
 
-  private static ImmutableList<Message> prepend(ImmutableList<Message> messages, Message message) {
-    return ImmutableList.<Message>builder().addAll(messages).add(message).build();
-  }
-
-  private static ImmutableList<Subject<?, ?>> append(
-      ImmutableList<Subject<?, ?>> subjects, Subject<?, ?> subject) {
-    return ImmutableList.<Subject<?, ?>>builder().addAll(subjects).add(subject).build();
+  private static <E> ImmutableList<E> append(ImmutableList<? extends E> list, E object) {
+    return ImmutableList.<E>builder().addAll(list).add(object).build();
   }
 }
