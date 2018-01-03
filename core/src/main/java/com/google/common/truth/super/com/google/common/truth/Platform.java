@@ -61,7 +61,7 @@ final class Platform {
 
   static AssertionError comparisonFailure(
       String message, String expected, String actual, Throwable cause) {
-    throw new AssertionErrorWithCause(
+    return new AssertionErrorWithCause(
         format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual), cause);
   }
 
