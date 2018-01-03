@@ -16,7 +16,7 @@
     <junit.version>4.12</junit.version>
     <jsr305.version>3.0.2</jsr305.version>
     <auto-value.version>1.5.3</auto-value.version>
-    <compile-testing.version>0.13</compile-testing.version>
+    <compile-testing.version>0.15</compile-testing.version>
     <error-prone.annotations.version>2.1.3</error-prone.annotations.version>
   </properties>
   <dependencies>
