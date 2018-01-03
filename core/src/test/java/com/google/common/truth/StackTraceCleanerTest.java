@@ -59,7 +59,22 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("getClass()")
+  @GwtIncompatible
+  /*
+   * Stripping doesn't actually work under j2cl (and presumably GWT):
+   * StackTraceElement.getClassName() doesn't have real data. Some data is available in toString(),
+   * albeit along the lines of
+   * "AssertionErrorWithCause.m_createError__java_lang_String_$pp_java_lang." StackTraceCleaner
+   * could maybe look through the toString() representations to count how many frames to strip, but
+   * that's a bigger project. (While we're at it, we could strip the j2cl-specific boilerplate from
+   * the _bottom_ of the stack, too.) And sadly, it's not necessarily as simple as looking at just
+   * _class_ names: The stripping is applied to causes, too, and it's possible for a cause to
+   * legitimately contain an exception created inside a class like Throwable -- e.g., x.initCause(x)
+   * will throw an exception, and it would be weird (though maybe tolerable) for us to strip that.
+   *
+   * Also note that j2cl includes some extra frames at the _top_, even beyond the ones that we try
+   * to strip: b/71355096
+   */
   public void assertionsActuallyUseCleaner() {
     expectFailure.whenTesting().that(1).isEqualTo(2);
     assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
@@ -67,7 +82,7 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("getClass()")
+  @GwtIncompatible
   public void assertionsActuallyUseCleaner_ComparisonFailure() {
     expectFailure.whenTesting().that("1").isEqualTo("2");
     assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
