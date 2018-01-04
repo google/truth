@@ -17,10 +17,13 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Platform.comparisonFailure;
+import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.Truth.AssertionErrorWithCause;
 import javax.annotation.Nullable;
 
 /**
@@ -124,21 +127,28 @@ public final class FailureMetadata {
   }
 
   void fail(String message) {
-    strategy.fail(addToMessage(message), rootCause());
+    doFail(new AssertionErrorWithCause(addToMessage(message), rootCause()));
   }
 
   void fail(String message, Throwable cause) {
-    strategy.fail(addToMessage(message), cause);
-    // TODO(cpovirk): add rootCause() as a suppressed exception? If fail() throws...
+    doFail(new AssertionErrorWithCause(addToMessage(message), cause));
+    // TODO(cpovirk): add rootCause() as a suppressed exception?
   }
 
   void failComparing(String message, CharSequence expected, CharSequence actual) {
-    strategy.failComparing(addToMessage(message), expected, actual, rootCause());
+    doFail(
+        comparisonFailure(
+            addToMessage(message), expected.toString(), actual.toString(), rootCause()));
   }
 
   void failComparing(String message, CharSequence expected, CharSequence actual, Throwable cause) {
-    strategy.failComparing(addToMessage(message), expected, actual, cause);
-    // TODO(cpovirk): add rootCause() as a suppressed exception? If failComparing() throws...
+    doFail(comparisonFailure(addToMessage(message), expected.toString(), actual.toString(), cause));
+    // TODO(cpovirk): add rootCause() as a suppressed exception?
+  }
+
+  private void doFail(AssertionError failure) {
+    cleanStackTrace(failure);
+    strategy.fail(failure);
   }
 
   private String addToMessage(String body) {

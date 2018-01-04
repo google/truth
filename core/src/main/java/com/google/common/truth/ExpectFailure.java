@@ -62,28 +62,10 @@ import org.junit.runners.model.Statement;
  */
 public final class ExpectFailure implements Platform.JUnitTestRule {
   private final FailureStrategy strategy =
-      new AbstractFailureStrategy() {
+      new FailureStrategy() {
         @Override
-        public void fail(String message, Throwable cause) {
-          try {
-            Truth.THROW_ASSERTION_ERROR.fail(message, cause);
-          } catch (AssertionError e) {
-            captureFailure(e);
-            return;
-          }
-          throw new AssertionError("fail() unexpectedly succeeded.");
-        }
-
-        @Override
-        public void failComparing(
-            String message, CharSequence expected, CharSequence actual, Throwable cause) {
-          try {
-            Truth.THROW_ASSERTION_ERROR.failComparing(message, expected, actual, cause);
-          } catch (AssertionError e) {
-            captureFailure(e);
-            return;
-          }
-          throw new AssertionError("fail() unexpectedly succeeded.");
+        public void fail(AssertionError failure) {
+          captureFailure(failure);
         }
       };
 

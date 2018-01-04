@@ -47,39 +47,28 @@ package com.google.common.truth;
  *       use {@link Subject#ignoreCheck}
  * </ul>
  *
- * <p>When you really do need to create your own strategy, prefer to extend {@link
- * AbstractFailureStrategy} rather than this class directly. And rather than expose your {@code
+ * <p>When you really do need to create your own strategy, rather than expose your {@code
  * FailureStrategy} instance to users, expose a {@link StandardSubjectBuilder} instance using {@link
  * StandardSubjectBuilder#forCustomFailureStrategy
  * StandardSubjectBuilder.forCustomFailureStrategy(STRATEGY)}.
  */
-public abstract class FailureStrategy {
+public interface FailureStrategy {
   /**
-   * Report an assertion failure with a text message. This method should generally delegate to
-   * {@link #fail(String, Throwable)}.
+   * Handles a failure. The parameter is an {@code AssertionError} or subclass thereof, and it
+   * contains information about the failure, which may include:
+   *
+   * <ul>
+   *   <li>message: {@link Throwable#getMessage getMessage()}
+   *   <li>cause: {@link Throwable#getCause getCause()}
+   *   <li>actual and expected values: {@link org.junit.ComparisonFailure#getActual}, {@link
+   *       org.junit.ComparisonFailure#getExpected}
+   *   <li>stack trace: {@link Throwable#getStackTrace}
+   * </ul>
+   *
+   * <!-- TODO(cpovirk): suppressed exceptions someday? -->
+   *
+   * <p>We encourage implementations to record as much of this information as practical in the
+   * exceptions they may throw or the other records they may make.
    */
-  public abstract void fail(String message);
-
-  /**
-   * Report an assertion failure with a text message and a throwable that indicates the cause of the
-   * failure. This will be reported as the cause of the exception raised by this method (if one is
-   * thrown) or otherwise recorded by the strategy as the underlying cause of the failure.
-   */
-  public abstract void fail(String message, Throwable cause);
-
-  /**
-   * Convenience method to report string-comparison failures with more detail (e.g. character
-   * differences). This method should generally delegate to {@link #failComparing(String,
-   * CharSequence, CharSequence, Throwable)}.
-   */
-  public abstract void failComparing(String message, CharSequence expected, CharSequence actual);
-
-  /**
-   * Convenience method to report string-comparison failures with more detail (e.g. character
-   * differences), along with a throwable that indicates the cause of the failure. This will be
-   * reported as the cause of the exception raised by this method (if one is thrown) or otherwise
-   * recorded by the strategy as the underlying cause of the failure.
-   */
-  public abstract void failComparing(
-      String message, CharSequence expected, CharSequence actual, Throwable cause);
+  void fail(AssertionError failure);
 }
