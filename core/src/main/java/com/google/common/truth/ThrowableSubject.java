@@ -70,6 +70,7 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
               new Throwable() {
                 @Override
                 public Throwable fillInStackTrace() {
+                  setStackTrace(new StackTraceElement[0]); // for old versions of Android
                   return this;
                 }
               });

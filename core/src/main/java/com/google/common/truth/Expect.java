@@ -21,8 +21,6 @@ import static com.google.common.base.Throwables.getStackTraceAsString;
 import static com.google.common.truth.Expect.TestPhase.AFTER;
 import static com.google.common.truth.Expect.TestPhase.BEFORE;
 import static com.google.common.truth.Expect.TestPhase.DURING;
-import static com.google.common.truth.Platform.comparisonFailure;
-import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.Truth.AssertionErrorWithCause;
@@ -67,7 +65,7 @@ import org.junit.runners.model.Statement;
 @GwtIncompatible("JUnit4")
 public final class Expect extends StandardSubjectBuilder implements TestRule {
 
-  private static final class ExpectationGatherer extends AbstractFailureStrategy {
+  private static final class ExpectationGatherer implements FailureStrategy {
     @GuardedBy("this")
     private final List<AssertionError> failures = new ArrayList<AssertionError>();
 
@@ -81,14 +79,8 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     }
 
     @Override
-    public synchronized void failComparing(
-        String message, CharSequence expected, CharSequence actual, Throwable cause) {
-      cleanAndRecord(comparisonFailure(message, expected.toString(), actual.toString(), cause));
-    }
-
-    @Override
-    public synchronized void fail(String message, Throwable cause) {
-      cleanAndRecord(new AssertionErrorWithCause(message, cause));
+    public synchronized void fail(AssertionError failure) {
+      record(failure);
     }
 
     synchronized void enterRuleContext() {
@@ -177,7 +169,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
             caught instanceof AssumptionViolatedException
                 ? "Failures occurred before an assumption was violated"
                 : "Failures occurred before an exception was thrown while the test was running";
-        cleanAndRecord(new AssertionErrorWithCause(message + ": " + caught, caught));
+        record(new AssertionErrorWithCause(message + ": " + caught, caught));
         throw new AssertionError(this);
       } else {
         throw caught;
@@ -185,8 +177,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     }
 
     @GuardedBy("this")
-    private void cleanAndRecord(AssertionError failure) {
-      cleanStackTrace(failure);
+    private void record(AssertionError failure) {
       doCheckInRuleContext(failure);
       failures.add(failure);
     }
