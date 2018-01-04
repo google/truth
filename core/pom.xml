@@ -176,37 +176,6 @@
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>2.0.1</version>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>2.5.2</version>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.5.1</version>
-        <configuration>
-          <formats>
-            <format>html</format>
-            <format>xml</format>
-          </formats>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.9.1</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>2.7.1</version>
-        <configuration>
-          <linkXref>true</linkXref>
-          <sourceEncoding>utf-8</sourceEncoding>
-          <targetJdk>1.6</targetJdk>
-        </configuration>
-      </plugin>
     </plugins>
   </reporting>
   <profiles>
