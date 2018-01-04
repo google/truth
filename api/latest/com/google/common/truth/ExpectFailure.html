@@ -141,7 +141,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 
  <p><code>ExpectFailure</code> is similar to JUnit 5's <a
  href="http://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html#assertThrows-java.lang.Class-org.junit.jupiter.api.function.Executable-"><code>assertThrows</code></a>. We recommend it over <code>assertThrows</code> when you're testing a Truth subject
- because it also checks that the assertion you're testing correctly calls <a href="../../../../com/google/common/truth/FailureStrategy.html#fail-java.lang.String-"><code>FailureStrategy.fail(java.lang.String)</code></a> only once.</div>
+ because it also checks that the assertion you're testing correctly calls <a href="../../../../com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-"><code>FailureStrategy.fail(java.lang.AssertionError)</code></a> only once.</div>
 </li>
 </ul>
 </div>

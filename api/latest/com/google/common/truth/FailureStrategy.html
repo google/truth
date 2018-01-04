@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":6,"i3":6};
+var methods = {"i0":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -76,13 +76,13 @@ var activeTableTab = "activeTableTab";
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
@@ -93,28 +93,15 @@ var activeTableTab = "activeTableTab";
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="subTitle">com.google.common.truth</div>
-<h2 title="Class FailureStrategy" class="title">Class FailureStrategy</h2>
+<h2 title="Interface FailureStrategy" class="title">Interface FailureStrategy</h2>
 </div>
 <div class="contentContainer">
-<ul class="inheritance">
-<li><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
-<li>
-<ul class="inheritance">
-<li>com.google.common.truth.FailureStrategy</li>
-</ul>
-</li>
-</ul>
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
-<dl>
-<dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../../com/google/common/truth/AbstractFailureStrategy.html" title="class in com.google.common.truth">AbstractFailureStrategy</a></dd>
-</dl>
 <hr>
 <br>
-<pre>public abstract class <span class="typeNameLabel">FailureStrategy</span>
-extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
+<pre>public interface <span class="typeNameLabel">FailureStrategy</span></pre>
 <div class="block">Defines what to do when a check fails.
 
  <p>This type does not appear directly in a fluent assertion chain, but you choose a <code>FailureStrategy</code> by choosing which method to call at the beginning of the chain.
@@ -145,30 +132,13 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
        use <a href="../../../../com/google/common/truth/Subject.html#ignoreCheck--"><code>Subject.ignoreCheck()</code></a>
  </ul>
 
- <p>When you really do need to create your own strategy, prefer to extend <a href="../../../../com/google/common/truth/AbstractFailureStrategy.html" title="class in com.google.common.truth"><code>AbstractFailureStrategy</code></a> rather than this class directly. And rather than expose your <code>FailureStrategy</code> instance to users, expose a <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth"><code>StandardSubjectBuilder</code></a> instance using <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html#forCustomFailureStrategy-com.google.common.truth.FailureStrategy-"><code>StandardSubjectBuilder.forCustomFailureStrategy(STRATEGY)</code></a>.</div>
+ <p>When you really do need to create your own strategy, rather than expose your <code>FailureStrategy</code> instance to users, expose a <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth"><code>StandardSubjectBuilder</code></a> instance using <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html#forCustomFailureStrategy-com.google.common.truth.FailureStrategy-"><code>StandardSubjectBuilder.forCustomFailureStrategy(STRATEGY)</code></a>.</div>
 </li>
 </ul>
 </div>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.summary">
-<!--   -->
-</a>
-<h3>Constructor Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
-<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colOne" scope="col">Constructor and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/FailureStrategy.html#FailureStrategy--">FailureStrategy</a></span>()</code>&nbsp;</td>
-</tr>
-</table>
-</li>
-</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
@@ -182,44 +152,12 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>abstract void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/FailureStrategy.html#fail-java.lang.String-">fail</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</code>
-<div class="block">Report an assertion failure with a text message.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>abstract void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/FailureStrategy.html#fail-java.lang.String-java.lang.Throwable-">fail</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
-    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</code>
-<div class="block">Report an assertion failure with a text message and a throwable that indicates the cause of the
- failure.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>abstract void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/FailureStrategy.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">failComparing</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
-             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
-             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual)</code>
-<div class="block">Convenience method to report string-comparison failures with more detail (e.g.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>abstract void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/FailureStrategy.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-java.lang.Throwable-">failComparing</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
-             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
-             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual,
-             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</code>
-<div class="block">Convenience method to report string-comparison failures with more detail (e.g.</div>
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-">fail</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang">AssertionError</a>&nbsp;failure)</code>
+<div class="block">Handles a failure.</div>
 </td>
 </tr>
 </table>
-<ul class="blockList">
-<li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone--" title="class or interface in java.lang">clone</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize--" title="class or interface in java.lang">finalize</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass--" title="class or interface in java.lang">getClass</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang">hashCode</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify--" title="class or interface in java.lang">notify</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll--" title="class or interface in java.lang">notifyAll</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#toString--" title="class or interface in java.lang">toString</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait--" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait-long-" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait-long-int-" title="class or interface in java.lang">wait</a></code></li>
-</ul>
 </li>
 </ul>
 </li>
@@ -228,81 +166,33 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.detail">
-<!--   -->
-</a>
-<h3>Constructor Detail</h3>
-<a name="FailureStrategy--">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>FailureStrategy</h4>
-<pre>public&nbsp;FailureStrategy()</pre>
-</li>
-</ul>
-</li>
-</ul>
 <!-- ============ METHOD DETAIL ========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.detail">
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="fail-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>fail</h4>
-<pre>public abstract&nbsp;void&nbsp;fail(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
-<div class="block">Report an assertion failure with a text message. This method should generally delegate to
- <a href="../../../../com/google/common/truth/FailureStrategy.html#fail-java.lang.String-java.lang.Throwable-"><code>fail(String, Throwable)</code></a>.</div>
-</li>
-</ul>
-<a name="fail-java.lang.String-java.lang.Throwable-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>fail</h4>
-<pre>public abstract&nbsp;void&nbsp;fail(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
-                          <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</pre>
-<div class="block">Report an assertion failure with a text message and a throwable that indicates the cause of the
- failure. This will be reported as the cause of the exception raised by this method (if one is
- thrown) or otherwise recorded by the strategy as the underlying cause of the failure.</div>
-</li>
-</ul>
-<a name="failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>failComparing</h4>
-<pre>public abstract&nbsp;void&nbsp;failComparing(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual)</pre>
-<div class="block">Convenience method to report string-comparison failures with more detail (e.g. character
- differences). This method should generally delegate to <a href="../../../../com/google/common/truth/FailureStrategy.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-java.lang.Throwable-"><code>failComparing(String,
- CharSequence, CharSequence, Throwable)</code></a>.</div>
-</li>
-</ul>
-<a name="failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-java.lang.Throwable-">
+<a name="fail-java.lang.AssertionError-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>failComparing</h4>
-<pre>public abstract&nbsp;void&nbsp;failComparing(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</pre>
-<div class="block">Convenience method to report string-comparison failures with more detail (e.g. character
- differences), along with a throwable that indicates the cause of the failure. This will be
- reported as the cause of the exception raised by this method (if one is thrown) or otherwise
- recorded by the strategy as the underlying cause of the failure.</div>
+<h4>fail</h4>
+<pre>void&nbsp;fail(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang">AssertionError</a>&nbsp;failure)</pre>
+<div class="block">Handles a failure. The parameter is an <code>AssertionError</code> or subclass thereof, and it
+ contains information about the failure, which may include:
+
+ <ul>
+   <li>message: <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true#getMessage--" title="class or interface in java.lang"><code>getMessage()</code></a>
+   <li>cause: <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true#getCause--" title="class or interface in java.lang"><code>getCause()</code></a>
+   <li>actual and expected values: <code>ComparisonFailure.getActual()</code>, <code>ComparisonFailure.getExpected()</code>
+   <li>stack trace: <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true#getStackTrace--" title="class or interface in java.lang"><code>Throwable.getStackTrace()</code></a>
+ </ul>
+
+ <!-- TODO(cpovirk): suppressed exceptions someday? -->
+
+ <p>We encourage implementations to record as much of this information as practical in the
+ exceptions they may throw or the other records they may make.</div>
 </li>
 </ul>
 </li>
@@ -360,13 +250,13 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
