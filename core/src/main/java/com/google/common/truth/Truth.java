@@ -15,6 +15,9 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Platform.comparisonFailure;
+import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
 import com.google.common.collect.ListMultimap;
@@ -75,10 +78,22 @@ import javax.annotation.Nullable;
 public final class Truth {
   private Truth() {}
 
-  private static final FailureStrategy THROW_ASSERTION_ERROR =
-      new FailureStrategy() {
+  // TODO(cpovirk): `private` once FailureStrategy is no longer responsible for formatting+stripping
+  static final FailureStrategy THROW_ASSERTION_ERROR =
+      new AbstractFailureStrategy() {
         @Override
-        public void fail(AssertionError failure) {
+        public void fail(String message, Throwable cause) {
+          AssertionError failure = new AssertionErrorWithCause(message, cause);
+          cleanStackTrace(failure);
+          throw failure;
+        }
+
+        @Override
+        public void failComparing(
+            String message, CharSequence expected, CharSequence actual, @Nullable Throwable cause) {
+          AssertionError failure =
+              comparisonFailure(message, expected.toString(), actual.toString(), cause);
+          cleanStackTrace(failure);
           throw failure;
         }
       };

@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.StringUtil.messageFor;
+
 import com.google.common.annotations.GwtIncompatible;
 import org.junit.internal.AssumptionViolatedException;
 
@@ -43,13 +45,16 @@ import org.junit.internal.AssumptionViolatedException;
 @GwtIncompatible("JUnit4")
 public final class TruthJUnit {
   private static final FailureStrategy THROW_ASSUMPTION_ERROR =
-      new FailureStrategy() {
+      new AbstractFailureStrategy() {
         @Override
-        public void fail(AssertionError failure) {
-          ThrowableAssumptionViolatedException assumptionViolated =
-              new ThrowableAssumptionViolatedException(failure.getMessage(), failure.getCause());
-          assumptionViolated.setStackTrace(failure.getStackTrace());
-          throw assumptionViolated;
+        public void failComparing(
+            String message, CharSequence expected, CharSequence actual, Throwable cause) {
+          fail(messageFor(message, expected, actual), cause);
+        }
+
+        @Override
+        public void fail(String message, Throwable cause) {
+          throw new ThrowableAssumptionViolatedException(message, cause);
         }
       };
 

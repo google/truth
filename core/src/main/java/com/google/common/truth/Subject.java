@@ -66,9 +66,9 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   private static final FailureStrategy IGNORE_STRATEGY =
-      new FailureStrategy() {
+      new AbstractFailureStrategy() {
         @Override
-        public void fail(AssertionError failure) {}
+        public void fail(String message, Throwable cause) {}
       };
 
   private final FailureMetadata metadata;
