@@ -254,14 +254,14 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <h4>tolerance</h4>
 <pre>public static&nbsp;<a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Number.html?is-external=true" title="class or interface in java.lang">Number</a>,<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Number.html?is-external=true" title="class or interface in java.lang">Number</a>&gt;&nbsp;tolerance(double&nbsp;tolerance)</pre>
 <div class="block">Returns a <a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> between <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Number.html?is-external=true" title="class or interface in java.lang"><code>Number</code></a> instances that considers instances to
- correspond (i.e. <code>Correspondence#compare(Number, Number)</code> returns <code>true</code>) if the
+ correspond (i.e. <a href="../../../../com/google/common/truth/Correspondence.html#compare-A-E-"><code>compare(Object, Object)</code></a> returns <code>true</code>) if the
  double values of each instance (i.e. the result of calling <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Number.html?is-external=true#doubleValue--" title="class or interface in java.lang"><code>Number.doubleValue()</code></a> on
  them) are finite values within <code>tolerance</code> of each other.
 
  <ul>
    <li>It does not consider instances to correspond if either value is infinite or NaN.
    <li>The conversion to double may result in a loss of precision for some numeric types.
-   <li>The <code>Correspondence#compare(Number, Number)</code> method throws a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang"><code>NullPointerException</code></a> if either <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Number.html?is-external=true" title="class or interface in java.lang"><code>Number</code></a> instance is null.
+   <li>The <a href="../../../../com/google/common/truth/Correspondence.html#compare-A-E-"><code>compare(Object, Object)</code></a> method throws a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang"><code>NullPointerException</code></a> if either <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Number.html?is-external=true" title="class or interface in java.lang"><code>Number</code></a> instance is null.
  </ul></div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

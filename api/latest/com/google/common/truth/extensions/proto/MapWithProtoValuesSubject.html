@@ -547,8 +547,8 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
  type <code>E</code>.
 
  <p>Note that the <code>MapWithProtoValuesSubject</code> is designed to save you from having to write
- your own <a href="../../../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>. The configuration methods, such as <code>#ignoringRepeatedFieldOrder()</code> will construct a <a href="../../../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> under the hood which
- performs protobuf comparisons with <code>#ignoringRepeatedFieldOrder()</code>.</div>
+ your own <a href="../../../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>. The configuration methods, such as <a href="../../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderForValues--"><code>ignoringRepeatedFieldOrderForValues()</code></a> will construct a <a href="../../../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> under the hood
+ which performs protobuf comparisons with <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrder--"><code>ProtoSubject.ignoringRepeatedFieldOrder()</code></a>.</div>
 </li>
 </ul>
 <a name="ignoringFieldAbsenceForValues--">
@@ -583,8 +583,9 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
  for equality.
 
  <p>This setting applies to all repeated fields recursively, but it does not ignore structure.
- For example, with <code>#ignoringRepeatedFieldOrder()</code>, a repeated <code>int32</code> field <code>bar</code>, set inside a repeated message field <code>foo</code>, the following protos will all compare
- equal:
+ For example, with <a href="../../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderForValues--"><code>ignoringRepeatedFieldOrderForValues()</code></a>, a repeated <code>int32</code>
+ field <code>bar</code>, set inside a repeated message field <code>foo</code>, the following protos will
+ all compare equal:
 
  <pre><code>
  message1: {

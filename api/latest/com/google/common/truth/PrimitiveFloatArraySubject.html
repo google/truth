@@ -215,11 +215,10 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.html#isEqualTo-java.lang.Object-">isEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
-<div class="block">A check that the actual array and <code>expected</code> are arrays of the same length and
- type, containing elements such that each element in <code>expected</code> is equal to each element
- in the actual array, and in the same position, with element equality defined the same way that
- <code>Arrays.equals(float[], float[])</code> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(Object)</code></a> define it (which is
- different to the way that the <code>==</code> operator on primitive <code>float</code> defines it).</div>
+<div class="block">A check that the actual array and <code>expected</code> are arrays of the same length and type,
+ containing elements such that each element in <code>expected</code> is equal to each element in the
+ actual array, and in the same position, with element equality defined the same way that <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals-float:A-float:A-" title="class or interface in java.util"><code>Arrays.equals(float[], float[])</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(Object)</code></a> define it (which is different
+ to the way that the <code>==</code> operator on primitive <code>float</code> defines it).</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
@@ -243,7 +242,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
 <div class="block">A check that the actual array and <code>expected</code> are not arrays of the same length and type,
  containing elements such that each element in <code>expected</code> is equal to each element in the
- actual array, and in the same position, with element equality defined the same way that <code>Arrays.equals(float[], float[])</code> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(Object)</code></a> define it (which is different
+ actual array, and in the same position, with element equality defined the same way that <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals-float:A-float:A-" title="class or interface in java.util"><code>Arrays.equals(float[], float[])</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(Object)</code></a> define it (which is different
  to the way that the <code>==</code> operator on primitive <code>float</code> defines it).</div>
 </td>
 </tr>
@@ -334,13 +333,11 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <li class="blockList">
 <h4>isEqualTo</h4>
 <pre>public&nbsp;void&nbsp;isEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
-<div class="block">A check that the actual array and <code>expected</code> are arrays of the same length and
- type, containing elements such that each element in <code>expected</code> is equal to each element
- in the actual array, and in the same position, with element equality defined the same way that
- <code>Arrays.equals(float[], float[])</code> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(Object)</code></a> define it (which is
- different to the way that the <code>==</code> operator on primitive <code>float</code> defines it). This
- method is <i>not</i> recommended when the code under test is doing any kind of arithmetic: use
- <a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.html#usingTolerance-double-"><code>usingTolerance(double)</code></a> with a suitable tolerance in that case, e.g. <code>assertThat(actualArray).usingTolerance(1.0e-5).containsExactly(expectedArray).inOrder()</code>.
+<div class="block">A check that the actual array and <code>expected</code> are arrays of the same length and type,
+ containing elements such that each element in <code>expected</code> is equal to each element in the
+ actual array, and in the same position, with element equality defined the same way that <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals-float:A-float:A-" title="class or interface in java.util"><code>Arrays.equals(float[], float[])</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(Object)</code></a> define it (which is different
+ to the way that the <code>==</code> operator on primitive <code>float</code> defines it). This method is
+ <i>not</i> recommended when the code under test is doing any kind of arithmetic: use <a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.html#usingTolerance-double-"><code>usingTolerance(double)</code></a> with a suitable tolerance in that case, e.g. <code>assertThat(actualArray).usingTolerance(1.0e-5).containsExactly(expectedArray).inOrder()</code>.
  (Remember that the exact result of floating point arithmetic is sensitive to apparently trivial
  changes such as replacing <code>(a + b) + c</code> with <code>a + (b + c)</code>, and that unless <code>strictfp</code> is in force even the result of <code>(a + b) + c</code> is sensitive to the JVM's choice
  of precision for the intermediate result.) This method is recommended when the code under test
@@ -348,11 +345,10 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
  well-defined literal or constant values.
 
  <ul>
-   <li>It considers <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#POSITIVE_INFINITY" title="class or interface in java.lang"><code>Float.POSITIVE_INFINITY</code></a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#NEGATIVE_INFINITY" title="class or interface in java.lang"><code>Float.NEGATIVE_INFINITY</code></a>, and
-       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#NaN" title="class or interface in java.lang"><code>Float.NaN</code></a> to be equal to themselves (contrast with #usingTolerance(0.0)
-       which does not).
-   <li>It does <i>not</i> consider {@code -0.0f} to be equal to {@code 0.0f} (contrast with
-       {@code #usingTolerance(0.0) which does).
+   <li>It considers <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#POSITIVE_INFINITY" title="class or interface in java.lang"><code>Float.POSITIVE_INFINITY</code></a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#NEGATIVE_INFINITY" title="class or interface in java.lang"><code>Float.NEGATIVE_INFINITY</code></a>, and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#NaN" title="class or interface in java.lang"><code>Float.NaN</code></a> to be equal to themselves (contrast with <code>usingTolerance(0.0)</code> which
+       does not).
+   <li>It does <i>not</i> consider <code>-0.0f</code> to be equal to <code>0.0f</code> (contrast with
+       <code>usingTolerance(0.0)</code> which does).
  </ul></div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -390,7 +386,7 @@ public&nbsp;void&nbsp;isEqualTo(<a href="https://docs.oracle.com/javase/7/docs/a
 <pre>public&nbsp;void&nbsp;isNotEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
 <div class="block">A check that the actual array and <code>expected</code> are not arrays of the same length and type,
  containing elements such that each element in <code>expected</code> is equal to each element in the
- actual array, and in the same position, with element equality defined the same way that <code>Arrays.equals(float[], float[])</code> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(Object)</code></a> define it (which is different
+ actual array, and in the same position, with element equality defined the same way that <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals-float:A-float:A-" title="class or interface in java.util"><code>Arrays.equals(float[], float[])</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(Object)</code></a> define it (which is different
  to the way that the <code>==</code> operator on primitive <code>float</code> defines it). See <a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.html#isEqualTo-java.lang.Object-"><code>isEqualTo(Object)</code></a> for advice on when exact equality is recommended.
 
  <ul>
@@ -509,18 +505,21 @@ public&nbsp;<a href="../../../../com/google/common/truth/PrimitiveFloatArraySubj
 <li class="blockList">
 <h4>usingExactEquality</h4>
 <pre>public&nbsp;<a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html" title="class in com.google.common.truth">PrimitiveFloatArraySubject.FloatArrayAsIterable</a>&nbsp;usingExactEquality()</pre>
-<div class="block">Starts a method chain for a check in which the actual values (i.e. the elements of
- the array under test) are compared to expected elements using a <a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> which
- considers values to correspond if they are exactly equal, with equality defined by <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(java.lang.Object)</code></a>. This method is <i>not</i> recommended when the code under test is doing any kind
- of arithmetic: use <a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.html#usingTolerance-double-"><code>usingTolerance(double)</code></a> with a suitable tolerance in that case. (Remember
- that the exact result of floating point arithmetic is sensitive to apparently trivial changes
- such as replacing <code>(a + b) + c</code> with <code>a + (b + c)</code>, and that unless <code>strictfp</code> is in force even the result of <code>(a + b) + c</code> is sensitive to the JVM's choice
- of precision for the intermediate result.) This method is recommended when the code under test
- is specified as either copying a value without modification from its input or returning a
- well-defined literal or constant value. The check is actually executed by continuing the
- method chain. For example:
- <pre>   <code>
- assertThat(actualFloatArray).usingExactEquality().contains(3.14159f);</code></pre>
+<div class="block">Starts a method chain for a check in which the actual values (i.e. the elements of the array
+ under test) are compared to expected elements using a <a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> which considers
+ values to correspond if they are exactly equal, with equality defined by <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(java.lang.Object)</code></a>.
+ This method is <i>not</i> recommended when the code under test is doing any kind of arithmetic:
+ use <a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.html#usingTolerance-double-"><code>usingTolerance(double)</code></a> with a suitable tolerance in that case. (Remember that the exact
+ result of floating point arithmetic is sensitive to apparently trivial changes such as
+ replacing <code>(a + b) + c</code> with <code>a + (b + c)</code>, and that unless <code>strictfp</code> is in
+ force even the result of <code>(a + b) + c</code> is sensitive to the JVM's choice of precision for
+ the intermediate result.) This method is recommended when the code under test is specified as
+ either copying a value without modification from its input or returning a well-defined literal
+ or constant value. The check is actually executed by continuing the method chain. For example:
+
+ <pre><code>
+ assertThat(actualFloatArray).usingExactEquality().contains(3.14159f);
+ </code></pre>
 
  <p>For convenience, some subsequent methods accept expected values as <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Number.html?is-external=true" title="class or interface in java.lang"><code>Number</code></a> instances.
  These numbers must be either of type <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true" title="class or interface in java.lang"><code>Float</code></a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang"><code>Integer</code></a>, or <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Long.html?is-external=true" title="class or interface in java.lang"><code>Long</code></a>, and if
@@ -529,12 +528,12 @@ public&nbsp;<a href="../../../../com/google/common/truth/PrimitiveFloatArraySubj
  representations: using exact equality makes no sense if they do not.)
 
  <ul>
-   <li>It considers <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#POSITIVE_INFINITY" title="class or interface in java.lang"><code>Float.POSITIVE_INFINITY</code></a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#NEGATIVE_INFINITY" title="class or interface in java.lang"><code>Float.NEGATIVE_INFINITY</code></a>, and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#NaN" title="class or interface in java.lang"><code>Float.NaN</code></a> to be equal to themselves (contrast with #usingTolerance(0.0)
-       which does not).
-   <li>It does <i>not</i> consider {@code -0.0f} to be equal to {@code 0.0f} (contrast with
-       {@code #usingTolerance(0.0) which does).
-   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
-       expected {@link Float} instance is null.
+   <li>It considers <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#POSITIVE_INFINITY" title="class or interface in java.lang"><code>Float.POSITIVE_INFINITY</code></a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#NEGATIVE_INFINITY" title="class or interface in java.lang"><code>Float.NEGATIVE_INFINITY</code></a>, and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#NaN" title="class or interface in java.lang"><code>Float.NaN</code></a> to be equal to themselves (contrast with <code>usingTolerance(0.0)</code> which
+       does not).
+   <li>It does <i>not</i> consider <code>-0.0f</code> to be equal to <code>0.0f</code> (contrast with
+       <code>usingTolerance(0.0)</code> which does).
+   <li>The subsequent methods in the chain may throw a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang"><code>NullPointerException</code></a> if any
+       expected <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true" title="class or interface in java.lang"><code>Float</code></a> instance is null.
  </ul></div>
 </li>
 </ul>
