@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * compared.
  *
  * <p>The <b>keys</b> of these maps are treated as ordinary objects, and keys which happen to be
- * protocol buffers are not given special treatment. They are compared with {@link Object#equals()}
+ * protocol buffers are not given special treatment. They are compared with {@link Object#equals}
  * and {@link Object#hashCode()} as documented by the {@link java.util.Map} interface.
  *
  * <p>Methods may be chained in any order, but the chain should terminate with a method that doesn't
@@ -62,9 +62,9 @@ public interface MapWithProtoValuesFluentAssertion<M extends Message> {
    * for equality.
    *
    * <p>This setting applies to all repeated fields recursively, but it does not ignore structure.
-   * For example, with {@link #ignoringRepeatedFieldOrder()}, a repeated {@code int32} field {@code
-   * bar}, set inside a repeated message field {@code foo}, the following protos will all compare
-   * equal:
+   * For example, with {@link #ignoringRepeatedFieldOrderForValues()}, a repeated {@code int32}
+   * field {@code bar}, set inside a repeated message field {@code foo}, the following protos will
+   * all compare equal:
    *
    * <pre>{@code
    * message1: {

@@ -28,6 +28,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.primitives.Doubles;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -53,10 +54,10 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A check that the actual array and {@code expected} are arrays of the same length and
-   * type, containing elements such that each element in {@code expected} is equal to each element
-   * in the actual array, and in the same position, with element equality defined the same way that
-   * {@link Arrays.equals(double[], double[])} and {@link Double#equals(Object)} define it (which is
+   * A check that the actual array and {@code expected} are arrays of the same length and type,
+   * containing elements such that each element in {@code expected} is equal to each element in the
+   * actual array, and in the same position, with element equality defined the same way that {@link
+   * Arrays#equals(double[], double[])} and {@link Double#equals(Object)} define it (which is
    * different to the way that the {@code ==} operator on primitive {@code double} defines it). This
    * method is <i>not</i> recommended when the code under test is doing any kind of arithmetic: use
    * {@link #usingTolerance} with a suitable tolerance in that case, e.g. {@code
@@ -70,10 +71,10 @@ public final class PrimitiveDoubleArraySubject
    *
    * <ul>
    *   <li>It considers {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, and
-   *       {@link Double#NaN} to be equal to themselves (contrast with {@code #usingTolerance(0.0)
+   *       {@link Double#NaN} to be equal to themselves (contrast with {@code usingTolerance(0.0)}
    *       which does not).
-   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0} (contrast with
-   *       {@code #usingTolerance(0.0) which does).
+   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0} (contrast with {@code
+   *       usingTolerance(0.0)} which does).
    * </ul>
    */
   @Override
@@ -94,7 +95,7 @@ public final class PrimitiveDoubleArraySubject
 
   /**
    * A check that the actual array and {@code expected} are arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is within {@link tolerance} of
+   * containing elements such that each element in {@code expected} is within {@code tolerance} of
    * each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Double#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
@@ -140,7 +141,7 @@ public final class PrimitiveDoubleArraySubject
    * A check that the actual array and {@code expected} are not arrays of the same length and type,
    * containing elements such that each element in {@code expected} is equal to each element in the
    * actual array, and in the same position, with element equality defined the same way that {@link
-   * Arrays.equals(double[], double[])} and {@link Double#equals(Object)} define it (which is
+   * Arrays#equals(double[], double[])} and {@link Double#equals(Object)} define it (which is
    * different to the way that the {@code ==} operator on primitive {@code double} defines it). See
    * {@link #isEqualTo(Object)} for advice on when exact equality is recommended.
    *
@@ -166,7 +167,7 @@ public final class PrimitiveDoubleArraySubject
 
   /**
    * A check that the actual array and {@code expected} are not arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is within {@link tolerance} of
+   * containing elements such that each element in {@code expected} is within {@code tolerance} of
    * each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Double#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
@@ -428,20 +429,21 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * Starts a method chain for a check in which the actual values (i.e. the elements of
-   * the array under test) are compared to expected elements using a {@link Correspondence} which
-   * considers values to correspond if they are exactly equal, with equality defined by {@link
-   * Double#equals}. This method is <i>not</i> recommended when the code under test is doing any
-   * kind of arithmetic: use {@link #usingTolerance} with a suitable tolerance in that case.
-   * (Remember that the exact result of floating point arithmetic is sensitive to apparently trivial
-   * changes such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
-   * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
-   * of precision for the intermediate result.) This method is recommended when the code under test
-   * is specified as either copying a value without modification from its input or returning a
-   * well-defined literal or constant value. The check is actually executed by continuing the
-   * method chain. For example:
-   * <pre>   {@code
-   * assertThat(actualDoubleArray).usingExactEquality().contains(3.14159);}</pre>
+   * Starts a method chain for a check in which the actual values (i.e. the elements of the array
+   * under test) are compared to expected elements using a {@link Correspondence} which considers
+   * values to correspond if they are exactly equal, with equality defined by {@link Double#equals}.
+   * This method is <i>not</i> recommended when the code under test is doing any kind of arithmetic:
+   * use {@link #usingTolerance} with a suitable tolerance in that case. (Remember that the exact
+   * result of floating point arithmetic is sensitive to apparently trivial changes such as
+   * replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code strictfp} is in
+   * force even the result of {@code (a + b) + c} is sensitive to the JVM's choice of precision for
+   * the intermediate result.) This method is recommended when the code under test is specified as
+   * either copying a value without modification from its input or returning a well-defined literal
+   * or constant value. The check is actually executed by continuing the method chain. For example:
+   *
+   * <pre>{@code
+   * assertThat(actualDoubleArray).usingExactEquality().contains(3.14159);
+   * }</pre>
    *
    * <p>For convenience, some subsequent methods accept expected values as {@link Number} instances.
    * These numbers must be either of type {@link Double}, {@link Float}, {@link Integer}, or {@link
@@ -451,10 +453,10 @@ public final class PrimitiveDoubleArraySubject
    *
    * <ul>
    *   <li>It considers {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, and
-   *       {@link Double#NaN} to be equal to themselves (contrast with {@code #usingTolerance(0.0)
+   *       {@link Double#NaN} to be equal to themselves (contrast with {@code usingTolerance(0.0)}
    *       which does not).
-   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0} (contrast with
-   *       {@code #usingTolerance(0.0) which does not).
+   *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0} (contrast with {@code
+   *       usingTolerance(0.0)} which does not).
    *   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
    *       expected {@link Double} instance is null.
    * </ul>
@@ -481,25 +483,25 @@ public final class PrimitiveDoubleArraySubject
       subject.super(correspondence);
     }
 
-    /** As {@link #containsAllOf(Number, Number, Number...)} but taking a primitive double array. */
+    /** As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive double array. */
     @CanIgnoreReturnValue
     public Ordered containsAllOf(double[] expected) {
       return containsAllIn(Doubles.asList(expected));
     }
 
-    /** As {@link #containsAnyOf(Number, Number, Number...)} but taking a primitive double array. */
+    /** As {@link #containsAnyOf(Object, Object, Object...)} but taking a primitive double array. */
     public void containsAnyOf(double[] expected) {
       containsAnyIn(Doubles.asList(expected));
     }
 
-    /** As {@link #containsExactly(Number...)} but taking a primitive double array. */
+    /** As {@link #containsExactly(Object...)} but taking a primitive double array. */
     @CanIgnoreReturnValue
     public Ordered containsExactly(double[] expected) {
       return containsExactlyElementsIn(Doubles.asList(expected));
     }
 
     /**
-     * As {@link #containsNoneOf(Number, Number, Number...)} but taking a primitive double array.
+     * As {@link #containsNoneOf(Object, Object, Object...)} but taking a primitive double array.
      */
     public void containsNoneOf(double[] excluded) {
       containsNoneIn(Doubles.asList(excluded));

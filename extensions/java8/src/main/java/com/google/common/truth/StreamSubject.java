@@ -70,7 +70,7 @@ public final class StreamSubject extends Subject<StreamSubject, Stream<?>> {
   /**
    * Fails if the subject does not have the given size.
    *
-   * <p>If you'd like to check that your stream contains more than {@link Integer.MAX_VALUE}
+   * <p>If you'd like to check that your stream contains more than {@link Integer#MAX_VALUE}
    * elements, use {@code assertThat(stream.count()).isEqualTo(...)}.
    */
   public void hasSize(int expectedSize) {

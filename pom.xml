@@ -112,10 +112,8 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>${maven-javadoc-plugin.version}</version>
           <configuration>
-            <!-- Disable doclint in java8 where problems are errors -->
             <additionalOptions>
-              <!-- TODO(cpovirk): Once we fix errors, just -Xdoclint:-html. -->
-              <additionalOption>-Xdoclint:none</additionalOption>
+              <additionalOption>-Xdoclint:-html</additionalOption>
             </additionalOptions>
             <doctitle>Truth ${project.version}</doctitle>
             <windowtitle>Truth ${project.version}</windowtitle>

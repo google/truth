@@ -46,14 +46,14 @@ public abstract class Correspondence<A, E> {
 
   /**
    * Returns a {@link Correspondence} between {@link Number} instances that considers instances to
-   * correspond (i.e. {@link Correspondence#compare(Number, Number)} returns {@code true}) if the
+   * correspond (i.e. {@link Correspondence#compare(Object, Object)} returns {@code true}) if the
    * double values of each instance (i.e. the result of calling {@link Number#doubleValue()} on
    * them) are finite values within {@code tolerance} of each other.
    *
    * <ul>
    *   <li>It does not consider instances to correspond if either value is infinite or NaN.
    *   <li>The conversion to double may result in a loss of precision for some numeric types.
-   *   <li>The {@link Correspondence#compare(Number, Number)} method throws a {@link
+   *   <li>The {@link Correspondence#compare(Object, Object)} method throws a {@link
    *       NullPointerException} if either {@link Number} instance is null.
    * </ul>
    *

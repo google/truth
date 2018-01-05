@@ -280,9 +280,9 @@ public class MultimapWithProtoValuesSubject<
    * for equality.
    *
    * <p>This setting applies to all repeated fields recursively, but it does not ignore structure.
-   * For example, with {@link #ignoringRepeatedFieldOrder()}, a repeated {@code int32} field {@code
-   * bar}, set inside a repeated message field {@code foo}, the following protos will all compare
-   * equal:
+   * For example, with {@link #ignoringRepeatedFieldOrderForValues()}, a repeated {@code int32}
+   * field {@code bar}, set inside a repeated message field {@code foo}, the following protos will
+   * all compare equal:
    *
    * <pre>{@code
    * message1: {

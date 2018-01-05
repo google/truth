@@ -20,6 +20,8 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.truth.FailureMetadata;
 import com.google.protobuf.Message;
+import java.util.List;
+import java.util.Set;
 import javax.annotation.Nullable;
 
 /**
@@ -51,8 +53,8 @@ public class ListMultimapWithProtoValuesSubject<
 
   /**
    * @deprecated {@code #isEqualTo} A SetMultimap can never compare equal with a ListMultimap if
-   *     either Multimap is non-empty, because {@link java.util.Set} and {@link List} can never
-   *     compare equal. Prefer {@link MultimapWithProtoValuesSubject#containsExactlyEntriesIn(
+   *     either Multimap is non-empty, because {@link Set} and {@link List} can never compare equal.
+   *     Prefer {@link MultimapWithProtoValuesSubject#containsExactlyEntriesIn(
    *     com.google.common.collect.Multimap)} instead. Consult {@link
    *     com.google.common.collect.Multimap#equals} for more information.
    */

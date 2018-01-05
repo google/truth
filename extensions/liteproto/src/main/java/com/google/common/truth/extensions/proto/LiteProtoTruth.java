@@ -27,9 +27,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * A set of static methods to begin a Truth assertion chain for the lite version of protocol
  * buffers.
  *
- * <p>This class implements a subset of what {@link ProtoTruth} provides, so if you are already
- * using {@link ProtoTruth}, you should not import this class. {@code LiteProtoTruth} is only useful
- * if you cannot depend on {@link ProtoTruth} for dependency management reasons.
+ * <p>This class implements a subset of what {@code ProtoTruth} provides, so if you are already
+ * using {@code ProtoTruth}, you should not import this class. {@code LiteProtoTruth} is only useful
+ * if you cannot depend on {@code ProtoTruth} for dependency management reasons.
  *
  * <p>Note: Usage of different failure strategies such as <em>assume</em> and <em>expect</em> should
  * rely on {@linkplain com.google.common.truth.StandardSubjectBuilder#about(Subject.Factory)

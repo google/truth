@@ -53,13 +53,13 @@ public final class PrimitiveFloatArraySubject
   }
 
   /**
-   * A check that the actual array and {@code expected} are arrays of the same length and
-   * type, containing elements such that each element in {@code expected} is equal to each element
-   * in the actual array, and in the same position, with element equality defined the same way that
-   * {@link Arrays.equals(float[], float[])} and {@link Float#equals(Object)} define it (which is
-   * different to the way that the {@code ==} operator on primitive {@code float} defines it). This
-   * method is <i>not</i> recommended when the code under test is doing any kind of arithmetic: use
-   * {@link #usingTolerance} with a suitable tolerance in that case, e.g. {@code
+   * A check that the actual array and {@code expected} are arrays of the same length and type,
+   * containing elements such that each element in {@code expected} is equal to each element in the
+   * actual array, and in the same position, with element equality defined the same way that {@link
+   * Arrays#equals(float[], float[])} and {@link Float#equals(Object)} define it (which is different
+   * to the way that the {@code ==} operator on primitive {@code float} defines it). This method is
+   * <i>not</i> recommended when the code under test is doing any kind of arithmetic: use {@link
+   * #usingTolerance} with a suitable tolerance in that case, e.g. {@code
    * assertThat(actualArray).usingTolerance(1.0e-5).containsExactly(expectedArray).inOrder()}.
    * (Remember that the exact result of floating point arithmetic is sensitive to apparently trivial
    * changes such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
@@ -69,11 +69,11 @@ public final class PrimitiveFloatArraySubject
    * well-defined literal or constant values.
    *
    * <ul>
-   *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and
-   *       {@link Float#NaN} to be equal to themselves (contrast with {@code #usingTolerance(0.0)
-   *       which does not).
+   *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and {@link
+   *       Float#NaN} to be equal to themselves (contrast with {@code usingTolerance(0.0)} which
+   *       does not).
    *   <li>It does <i>not</i> consider {@code -0.0f} to be equal to {@code 0.0f} (contrast with
-   *       {@code #usingTolerance(0.0) which does).
+   *       {@code usingTolerance(0.0)} which does).
    * </ul>
    */
   @Override
@@ -94,7 +94,7 @@ public final class PrimitiveFloatArraySubject
 
   /**
    * A check that the actual array and {@code expected} are arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is within {@link tolerance} of
+   * containing elements such that each element in {@code expected} is within {@code tolerance} of
    * each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Float#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
@@ -140,7 +140,7 @@ public final class PrimitiveFloatArraySubject
    * A check that the actual array and {@code expected} are not arrays of the same length and type,
    * containing elements such that each element in {@code expected} is equal to each element in the
    * actual array, and in the same position, with element equality defined the same way that {@link
-   * Arrays.equals(float[], float[])} and {@link Float#equals(Object)} define it (which is different
+   * Arrays#equals(float[], float[])} and {@link Float#equals(Object)} define it (which is different
    * to the way that the {@code ==} operator on primitive {@code float} defines it). See {@link
    * #isEqualTo(Object)} for advice on when exact equality is recommended.
    *
@@ -166,7 +166,7 @@ public final class PrimitiveFloatArraySubject
 
   /**
    * A check that the actual array and {@code expected} are not arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is within {@link tolerance} of
+   * containing elements such that each element in {@code expected} is within {@code tolerance} of
    * each element in the subject, and in the same position.
    *
    * <p>Behaviour for non-finite values ({@link Float#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
@@ -435,20 +435,21 @@ public final class PrimitiveFloatArraySubject
   }
 
   /**
-   * Starts a method chain for a check in which the actual values (i.e. the elements of
-   * the array under test) are compared to expected elements using a {@link Correspondence} which
-   * considers values to correspond if they are exactly equal, with equality defined by {@link
-   * Float#equals}. This method is <i>not</i> recommended when the code under test is doing any kind
-   * of arithmetic: use {@link #usingTolerance} with a suitable tolerance in that case. (Remember
-   * that the exact result of floating point arithmetic is sensitive to apparently trivial changes
-   * such as replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code
-   * strictfp} is in force even the result of {@code (a + b) + c} is sensitive to the JVM's choice
-   * of precision for the intermediate result.) This method is recommended when the code under test
-   * is specified as either copying a value without modification from its input or returning a
-   * well-defined literal or constant value. The check is actually executed by continuing the
-   * method chain. For example:
-   * <pre>   {@code
-   * assertThat(actualFloatArray).usingExactEquality().contains(3.14159f);}</pre>
+   * Starts a method chain for a check in which the actual values (i.e. the elements of the array
+   * under test) are compared to expected elements using a {@link Correspondence} which considers
+   * values to correspond if they are exactly equal, with equality defined by {@link Float#equals}.
+   * This method is <i>not</i> recommended when the code under test is doing any kind of arithmetic:
+   * use {@link #usingTolerance} with a suitable tolerance in that case. (Remember that the exact
+   * result of floating point arithmetic is sensitive to apparently trivial changes such as
+   * replacing {@code (a + b) + c} with {@code a + (b + c)}, and that unless {@code strictfp} is in
+   * force even the result of {@code (a + b) + c} is sensitive to the JVM's choice of precision for
+   * the intermediate result.) This method is recommended when the code under test is specified as
+   * either copying a value without modification from its input or returning a well-defined literal
+   * or constant value. The check is actually executed by continuing the method chain. For example:
+   *
+   * <pre>{@code
+   * assertThat(actualFloatArray).usingExactEquality().contains(3.14159f);
+   * }</pre>
    *
    * <p>For convenience, some subsequent methods accept expected values as {@link Number} instances.
    * These numbers must be either of type {@link Float}, {@link Integer}, or {@link Long}, and if
@@ -458,10 +459,10 @@ public final class PrimitiveFloatArraySubject
    *
    * <ul>
    *   <li>It considers {@link Float#POSITIVE_INFINITY}, {@link Float#NEGATIVE_INFINITY}, and {@link
-   *       Float#NaN} to be equal to themselves (contrast with {@code #usingTolerance(0.0)
-   *       which does not).
+   *       Float#NaN} to be equal to themselves (contrast with {@code usingTolerance(0.0)} which
+   *       does not).
    *   <li>It does <i>not</i> consider {@code -0.0f} to be equal to {@code 0.0f} (contrast with
-   *       {@code #usingTolerance(0.0) which does).
+   *       {@code usingTolerance(0.0)} which does).
    *   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
    *       expected {@link Float} instance is null.
    * </ul>
@@ -488,24 +489,24 @@ public final class PrimitiveFloatArraySubject
       subject.super(correspondence);
     }
 
-    /** As {@link #containsAllOf(Number, Number, Number...)} but taking a primitive float array. */
+    /** As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive float array. */
     @CanIgnoreReturnValue
     public Ordered containsAllOf(float[] expected) {
       return containsAllIn(Floats.asList(expected));
     }
 
-    /** As {@link #containsAnyOf(Number, Number, Number...)} but taking a primitive float array. */
+    /** As {@link #containsAnyOf(Object, Object, Object...)} but taking a primitive float array. */
     public void containsAnyOf(float[] expected) {
       containsAnyIn(Floats.asList(expected));
     }
 
-    /** As {@link #containsExactly(Number...)} but taking a primitive float array. */
+    /** As {@link #containsExactly(Object...)} but taking a primitive float array. */
     @CanIgnoreReturnValue
     public Ordered containsExactly(float[] expected) {
       return containsExactlyElementsIn(Floats.asList(expected));
     }
 
-    /** As {@link #containsNoneOf(Number, Number, Number...)} but taking a primitive float array. */
+    /** As {@link #containsNoneOf(Object, Object, Object...)} but taking a primitive float array. */
     public void containsNoneOf(float[] excluded) {
       containsNoneIn(Floats.asList(excluded));
     }

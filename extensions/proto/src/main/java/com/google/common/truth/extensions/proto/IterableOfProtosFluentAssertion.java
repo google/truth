@@ -221,7 +221,7 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    * on the object returned by this method.
    *
    * <p>To test that the iterable contains the same elements as an array, prefer {@link
-   * #containsExactlyElementsIn(Object[])}. It makes clear that the given array is a list of
+   * #containsExactlyElementsIn(Message[])}. It makes clear that the given array is a list of
    * elements, not an element itself.
    */
   @CanIgnoreReturnValue

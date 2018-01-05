@@ -192,8 +192,8 @@ public class MapWithProtoValuesSubject<
    *
    * <p>Note that the {@code MapWithProtoValuesSubject} is designed to save you from having to write
    * your own {@link Correspondence}. The configuration methods, such as {@link
-   * #ignoringRepeatedFieldOrder()} will construct a {@link Correspondence} under the hood which
-   * performs protobuf comparisons with {@link #ignoringRepeatedFieldOrder()}.
+   * #ignoringRepeatedFieldOrderForValues()} will construct a {@link Correspondence} under the hood
+   * which performs protobuf comparisons with {@link ProtoSubject#ignoringRepeatedFieldOrder()}.
    */
   public <A, E> MapSubject.UsingCorrespondence<A, E> comparingValuesUsing(
       Correspondence<A, E> correspondence) {
@@ -237,9 +237,9 @@ public class MapWithProtoValuesSubject<
    * for equality.
    *
    * <p>This setting applies to all repeated fields recursively, but it does not ignore structure.
-   * For example, with {@link #ignoringRepeatedFieldOrder()}, a repeated {@code int32} field {@code
-   * bar}, set inside a repeated message field {@code foo}, the following protos will all compare
-   * equal:
+   * For example, with {@link #ignoringRepeatedFieldOrderForValues()}, a repeated {@code int32}
+   * field {@code bar}, set inside a repeated message field {@code foo}, the following protos will
+   * all compare equal:
    *
    * <pre>{@code
    * message1: {

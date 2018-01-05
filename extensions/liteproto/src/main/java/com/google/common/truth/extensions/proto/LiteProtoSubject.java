@@ -20,6 +20,7 @@ import com.google.common.base.Objects;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.Subject;
+import com.google.common.truth.Truth;
 import com.google.protobuf.MessageLite;
 import java.util.regex.Pattern;
 import javax.annotation.CheckReturnValue;

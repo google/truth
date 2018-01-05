@@ -25,6 +25,7 @@ import com.google.common.truth.CustomSubjectBuilder;
 import com.google.common.truth.IterableSubject;
 import com.google.common.truth.MapSubject;
 import com.google.common.truth.MultimapSubject;
+import com.google.common.truth.StandardSubjectBuilder;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
@@ -34,8 +35,8 @@ import javax.annotation.Nullable;
  * A set of static methods to begin a Truth assertion chain for protocol buffers.
  *
  * <p>Note: Usage of different failure strategies such as <em>assume</em> and <em>expect</em> should
- * rely on {@link CustomSubjectBuilderFactory#about(CustomSubjectBuilderFactory)} to begin a chain
- * with those alternative behaviors.
+ * rely on {@link StandardSubjectBuilder#about(CustomSubjectBuilder.Factory)} to begin a chain with
+ * those alternative behaviors.
  */
 public final class ProtoTruth {
 
@@ -62,7 +63,7 @@ public final class ProtoTruth {
    * Assert on a sequence of {@link Message}s.
    *
    * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
-   * comparison tests available on {@link IterableSubject#UsingCorrespondence}.
+   * comparison tests available on {@link IterableSubject.UsingCorrespondence}.
    */
   // Note: We must specify M explicitly here. The presence of the type parameter makes this method
   // signature distinct from Truth.assertThat(Iterable<?>), and allows users to import both static
@@ -78,7 +79,7 @@ public final class ProtoTruth {
    * Assert on a map with {@link Message} values.
    *
    * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
-   * comparison tests available on {@link MapSubject#UsingCorrespondence}.
+   * comparison tests available on {@link MapSubject.UsingCorrespondence}.
    */
   public static <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> assertThat(
       @Nullable Map<K, M> map) {
@@ -89,7 +90,7 @@ public final class ProtoTruth {
    * Assert on a {@link Multimap} with {@link Message} values.
    *
    * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
-   * comparison tests available on {@link MultimapSubject#UsingCorrespondence}.
+   * comparison tests available on {@link MultimapSubject.UsingCorrespondence}.
    */
   public static <K, M extends Message>
       MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> assertThat(
@@ -101,7 +102,7 @@ public final class ProtoTruth {
    * Assert on a {@link ListMultimap} with {@link Message} values.
    *
    * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
-   * comparison tests available on {@link MultimapSubject#UsingCorrespondence}.
+   * comparison tests available on {@link MultimapSubject.UsingCorrespondence}.
    */
   public static <K, M extends Message>
       ListMultimapWithProtoValuesSubject<?, K, M, ListMultimap<K, M>> assertThat(
@@ -113,7 +114,7 @@ public final class ProtoTruth {
    * Assert on a {@link Multimap} with {@link Message} values.
    *
    * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
-   * comparison tests available on {@link MultimapSubject#UsingCorrespondence}.
+   * comparison tests available on {@link MultimapSubject.UsingCorrespondence}.
    */
   public static <K, M extends Message>
       SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> assertThat(
