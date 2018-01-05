@@ -49,8 +49,8 @@ if [[ -n "${RELEASE_VERSION:-}" ||
     git config --global user.name "travis-ci"
   fi
   api_version_dir="${target_dir}/gh-pages/${version_subdir}"
-  git rm -rf ${api_version_dir}
-  mv ${target_dir}/site/apidocs ${api_version_dir}
+  git rm -rf ${api_version_dir} || true
+  cp -ar ${target_dir}/site/apidocs ${api_version_dir}
   git add -A -f ${api_version_dir}
   git commit -m "${commit_message}"
   git push -fq origin gh-pages > /dev/null
