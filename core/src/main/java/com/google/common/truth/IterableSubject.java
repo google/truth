@@ -298,7 +298,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             countDuplicates(annotateEmptyStrings(missing)));
       }
     }
-    return ordered ? IN_ORDER : new NotInOrder("contains all elements in order", expected);
+    return ordered ? IN_ORDER : new NotInOrder(this, "contains all elements in order", expected);
   }
 
   /**
@@ -451,7 +451,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         }
 
         // Since we know the iterables were not in the same order, inOrder() can just fail.
-        return new NotInOrder("contains exactly these elements in order", required);
+        return new NotInOrder(this, "contains exactly these elements in order", required);
       }
     }
 
@@ -546,18 +546,20 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /** Ordered implementation that always fails. */
-  private class NotInOrder implements Ordered {
+  private static final class NotInOrder implements Ordered {
+    private final IterableSubject subject;
     private final String check;
     private final Iterable<?> required;
 
-    NotInOrder(String check, Iterable<?> required) {
+    NotInOrder(IterableSubject subject, String check, Iterable<?> required) {
+      this.subject = subject;
       this.check = check;
       this.required = required;
     }
 
     @Override
     public void inOrder() {
-      fail(check, required);
+      subject.fail(check, required);
     }
   }
 
@@ -687,7 +689,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   public <A, E> UsingCorrespondence<A, E> comparingElementsUsing(
       Correspondence<A, E> correspondence) {
-    return new UsingCorrespondence<>(correspondence);
+    return new UsingCorrespondence<>(this, correspondence);
   }
 
   /**
@@ -696,11 +698,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * expected elements are of type {@code E}. Call methods on this object to actually execute the
    * check.
    */
-  public class UsingCorrespondence<A, E> {
+  public static class UsingCorrespondence<A, E> {
 
+    private final IterableSubject subject;
     private final Correspondence<? super A, ? super E> correspondence;
 
-    UsingCorrespondence(Correspondence<? super A, ? super E> correspondence) {
+    UsingCorrespondence(
+        IterableSubject subject, Correspondence<? super A, ? super E> correspondence) {
+      this.subject = checkNotNull(subject);
       this.correspondence = checkNotNull(correspondence);
     }
 
@@ -714,7 +719,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           return;
         }
       }
-      fail("contains at least one element that " + correspondence, expected);
+      subject.fail("contains at least one element that " + correspondence, expected);
     }
 
     /** Checks that none of the actual elements correspond to the given element. */
@@ -726,10 +731,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         }
       }
       if (!matchingElements.isEmpty()) {
-        failWithRawMessage(
+        subject.failWithRawMessage(
             "%s should not have contained an element that %s <%s>. "
                 + "It contained the following such elements: <%s>",
-            actualAsString(), correspondence, excluded, matchingElements);
+            subject.actualAsString(), correspondence, excluded, matchingElements);
       }
     }
 
@@ -769,7 +774,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         if (actualList.isEmpty()) {
           return IN_ORDER;
         } else {
-          fail("is empty");
+          subject.fail("is empty");
           return ALREADY_FAILED;
         }
       }
@@ -798,6 +803,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // The 1:1 mapping is complete, so the test succeeds (but we know from above that the mapping
       // is not in order).
       return new NotInOrder(
+          subject,
           "contains, in order, exactly one element that " + correspondence + " each element of",
           expected);
     }
@@ -864,9 +870,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
       if (missingOrExtraMessage.isPresent()) {
-        failWithRawMessage(
+        subject.failWithRawMessage(
             "Not true that %s contains exactly one element that %s each element of <%s>. It %s",
-            actualAsString(), correspondence, expected, missingOrExtraMessage.get());
+            subject.actualAsString(), correspondence, expected, missingOrExtraMessage.get());
         return true;
       }
       return false;
@@ -966,14 +972,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
       if (missingOrExtraMessage.isPresent()) {
-        failWithRawMessage(
+        subject.failWithRawMessage(
             "Not true that %s contains exactly one element that %s each element of <%s>. "
                 + "It contains at least one element that matches each expected element, "
                 + "and every element it contains matches at least one expected element, "
                 + "but there was no 1:1 mapping between all the actual and expected elements. "
                 + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
                 + "it %s",
-            actualAsString(), correspondence, expected, missingOrExtraMessage.get());
+            subject.actualAsString(), correspondence, expected, missingOrExtraMessage.get());
         return true;
       }
       return false;
@@ -1030,6 +1036,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
       // above that the mapping is not in order).
       return new NotInOrder(
+          subject,
           "contains, in order, at least one element that " + correspondence + " each element of",
           expected);
     }
@@ -1094,10 +1101,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends E> expected, ImmutableMultimap<Integer, Integer> mapping) {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty()) {
-        failWithRawMessage(
+        subject.failWithRawMessage(
             "Not true that %s contains at least one element that %s each element of <%s>. "
                 + "It is missing an element that %s %s",
-            actualAsString(), correspondence, expected, correspondence, formatMissing(missing));
+            subject.actualAsString(),
+            correspondence,
+            expected,
+            correspondence,
+            formatMissing(missing));
         return true;
       }
       return false;
@@ -1113,13 +1124,17 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends E> expected, BiMap<Integer, Integer> mapping) {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty()) {
-        failWithRawMessage(
+        subject.failWithRawMessage(
             "Not true that %s contains at least one element that %s each element of <%s>. "
                 + "It contains at least one element that matches each expected element, "
                 + "but there was no 1:1 mapping between all the expected elements and any subset "
                 + "of the actual elements. Using the most complete 1:1 mapping (or one such "
                 + "mapping, if there is a tie), it is missing an element that %s %s",
-            actualAsString(), correspondence, expected, correspondence, formatMissing(missing));
+            subject.actualAsString(),
+            correspondence,
+            expected,
+            correspondence,
+            formatMissing(missing));
         return true;
       }
       return false;
@@ -1163,7 +1178,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           }
         }
       }
-      fail(failVerb, expected);
+      subject.fail(failVerb, expected);
     }
 
     /**
@@ -1224,15 +1239,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 .append(excludedItem);
           }
         }
-        failWithRawMessage(
+        subject.failWithRawMessage(
             "Not true that %s contains no element that %s %s <%s>. It contains <[%s]>",
-            actualAsString(), correspondence, excludedPrefix, excluded, presentDescription);
+            subject.actualAsString(), correspondence, excludedPrefix, excluded, presentDescription);
       }
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Iterable<A> getCastActual() {
-      return (Iterable<A>) actual();
+      return (Iterable<A>) subject.actual();
     }
   }
 }

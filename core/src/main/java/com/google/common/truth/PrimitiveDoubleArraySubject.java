@@ -480,7 +480,7 @@ public final class PrimitiveDoubleArraySubject
 
     DoubleArrayAsIterable(
         Correspondence<? super Double, Number> correspondence, IterableSubject subject) {
-      subject.super(correspondence);
+      super(subject, correspondence);
     }
 
     /** As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive double array. */

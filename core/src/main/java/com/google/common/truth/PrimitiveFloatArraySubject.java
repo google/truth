@@ -486,7 +486,7 @@ public final class PrimitiveFloatArraySubject
 
     FloatArrayAsIterable(
         Correspondence<? super Float, Number> correspondence, IterableSubject subject) {
-      subject.super(correspondence);
+      super(subject, correspondence);
     }
 
     /** As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive float array. */
