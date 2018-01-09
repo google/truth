@@ -32,7 +32,7 @@ meaningful assertions.
 
 In Truth, you would tend to extract all of these:
 
-    assert_().that(blah).isMoreThan(5);
+    assert_().that(blah).isGreaterThan(5);
 
 And where one might write:
 
@@ -41,6 +41,9 @@ And where one might write:
 Truth would have you write:
 
     assert_().that(blah).isEmpty();
+
+Note: It's recommended to use the equivalent `assertThat(foo)` method instead of
+`assert_().that(foo)`.
 
 ## The Guts
 
@@ -98,11 +101,12 @@ failure. The standard strategies are:
 </table>
 
 *Note:* These different styles can let a developer build more flexible tests,
-though the Truth team recommends mostly using assertThat() in unit tests, and
-very careful consideration of assume() and Expect. These can make one's tests
-quite expressive and clear, but assume() can cause tests to not be run
-(unexpectedly), and Expect can encourage the developer to check way too many
-things, causing big heavy tests, rather than lots of small, clear tests.
+though the Truth team recommends mostly using `assertThat()` (which is
+equivalent to `assert_().that()`) in unit tests, and very careful consideration
+of assume() and Expect. These can make one's tests quite expressive and clear,
+but assume() can cause tests to not be run (unexpectedly), and Expect can
+encourage the developer to check way too many things, causing big heavy tests,
+rather than lots of small, clear tests.
 
 ### Extensibility
 
