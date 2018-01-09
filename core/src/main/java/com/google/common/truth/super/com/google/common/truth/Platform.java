@@ -16,9 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.StringUtil.format;
-import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Double.parseDouble;
+import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.google.common.truth.Truth.AssertionErrorWithCause;
@@ -85,9 +84,9 @@ final class Platform {
 
   static String doubleToString(double value) {
     // This probably doesn't match Java perfectly, but we do our best.
-    if (value == POSITIVE_INFINITY) {
+    if (value == Double.POSITIVE_INFINITY) {
       return "Infinity";
-    } else if (value == NEGATIVE_INFINITY) {
+    } else if (value == Double.NEGATIVE_INFINITY) {
       return "-Infinity";
     } else if (value == 0 && 1 / value < 0) {
       return "-0.0";
@@ -96,6 +95,24 @@ final class Platform {
       // Then again, we're already hardcoding "Infinity," an English word, above....
       String result = ((Number) (Object) value).toLocaleString("en-US", JavaLikeOptions.INSTANCE);
       return (parseDouble(result) == value) ? result : Double.toString(value);
+    }
+  }
+
+  static String floatToString(float value) {
+    // This probably doesn't match Java perfectly, but we do our best.
+    if (value == Float.POSITIVE_INFINITY) {
+      return "Infinity";
+    } else if (value == Float.NEGATIVE_INFINITY) {
+      return "-Infinity";
+    } else if (value == 0 && 1 / value < 0) {
+      return "-0.0";
+    } else if (value == 0) {
+      return "0.0";
+    } else {
+      // TODO(cpovirk): Would it make more sense to pass `undefined` for the locale? But how?
+      // Then again, we're already hardcoding "Infinity," an English word, above....
+      String result = ((Number) (Object) value).toLocaleString("en-US", JavaLikeOptions.INSTANCE);
+      return (parseFloat(result) == value) ? result : Float.toString(value);
     }
   }
 
