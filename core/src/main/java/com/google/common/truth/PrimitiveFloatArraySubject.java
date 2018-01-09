@@ -22,6 +22,7 @@ import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.FloatSubject.checkTolerance;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
+import static com.google.common.truth.Platform.floatToString;
 
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Floats;
@@ -48,8 +49,8 @@ public final class PrimitiveFloatArraySubject
   }
 
   @Override
-  protected List<Float> listRepresentation() {
-    return Floats.asList(actual());
+  protected List<String> listRepresentation() {
+    return floatArrayAsString(actual());
   }
 
   /**
@@ -84,8 +85,8 @@ public final class PrimitiveFloatArraySubject
     }
     try {
       float[] expectedArray = (float[]) expected;
-      if (!Arrays.equals(actual, expectedArray)) {
-        fail("is equal to", Floats.asList(expectedArray));
+      if (!arrayEquals(actual, expectedArray)) {
+        fail("is equal to", floatArrayAsString(expectedArray));
       }
     } catch (ClassCastException e) {
       failWithBadType(expected);
@@ -117,7 +118,7 @@ public final class PrimitiveFloatArraySubject
       if (expectedArray.length != actual.length) {
         failWithRawMessage(
             "Arrays are of different lengths. expected: %s, actual %s",
-            Floats.asList(expectedArray), Floats.asList(actual));
+            floatArrayAsString(expectedArray), floatArrayAsString(actual));
         return;
       }
       List<Integer> unequalIndices = new ArrayList<>();
@@ -128,7 +129,7 @@ public final class PrimitiveFloatArraySubject
       }
 
       if (!unequalIndices.isEmpty()) {
-        fail("is equal to", Floats.asList(expectedArray));
+        fail("is equal to", floatArrayAsString(expectedArray));
         return;
       }
     } catch (ClassCastException e) {
@@ -155,9 +156,9 @@ public final class PrimitiveFloatArraySubject
     float[] actual = actual();
     try {
       float[] expectedArray = (float[]) expected;
-      if (actual == expected || Arrays.equals(actual, expectedArray)) {
+      if (actual == expected || arrayEquals(actual, expectedArray)) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), Floats.asList(expectedArray));
+            "%s unexpectedly equal to %s.", actualAsString(), floatArrayAsString(expectedArray));
       }
     } catch (ClassCastException ignored) {
       // If it's not float[] then it's not equal and the test passes.
@@ -185,7 +186,7 @@ public final class PrimitiveFloatArraySubject
       float[] expected = (float[]) expectedArray;
       if (actual == expected) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), Floats.asList(expected));
+            "%s unexpectedly equal to %s.", actualAsString(), floatArrayAsString(expected));
         return;
       }
       if (expected.length != actual.length) {
@@ -199,7 +200,7 @@ public final class PrimitiveFloatArraySubject
       }
       if (unequalIndices.isEmpty()) {
         failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), Floats.asList(expected));
+            "%s unexpectedly equal to %s.", actualAsString(), floatArrayAsString(expected));
         return;
       }
     } catch (ClassCastException ignored) {
@@ -397,7 +398,7 @@ public final class PrimitiveFloatArraySubject
 
         @Override
         public boolean compare(Float actual, Number expected) {
-          return actual.equals(checkedToFloat(expected));
+          return Float.floatToIntBits(actual) == Float.floatToIntBits(checkedToFloat(expected));
         }
 
         @Override
@@ -513,8 +514,62 @@ public final class PrimitiveFloatArraySubject
   }
 
   private IterableSubject iterableSubject() {
-    return internalCustomName() != null
-        ? check().that(listRepresentation()).named(internalCustomName())
-        : check().that(listRepresentation());
+    IterableSubject result =
+        check().about(iterablesWithCustomFloatToString()).that(Floats.asList(actual()));
+    return internalCustomName() != null ? result.named(internalCustomName()) : result;
+  }
+
+  /*
+   * TODO(cpovirk): Should we make Floats.asList().toString() smarter rather than do all this?
+   *
+   * TODO(cpovirk): Or find a general solution for this and MultimapSubject.IterableEntries. But
+   * note that here we don't use _exactly_ PrimitiveFloatArraySubject.this.toString(), as that
+   * contains "float[]." Or maybe we should stop including that in
+   * PrimitiveFloatArraySubject.this.toString(), too, someday?
+   */
+  private Factory<IterableSubject, Iterable<?>> iterablesWithCustomFloatToString() {
+    return new Factory<IterableSubject, Iterable<?>>() {
+      @Override
+      public IterableSubject createSubject(FailureMetadata metadata, Iterable<?> actual) {
+        return new IterableSubjectWithInheritedToString(metadata, actual);
+      }
+    };
+  }
+
+  private final class IterableSubjectWithInheritedToString extends IterableSubject {
+    IterableSubjectWithInheritedToString(FailureMetadata metadata, Iterable<?> actual) {
+      super(metadata, actual);
+    }
+
+    @Override
+    protected String actualCustomStringRepresentation() {
+      return floatArrayAsString(PrimitiveFloatArraySubject.this.actual()).toString();
+    }
+  }
+
+  private static boolean arrayEquals(float[] left, float[] right) {
+    if (left == right) {
+      return true;
+    }
+    if (left == null || right == null) {
+      return false;
+    }
+    if (left.length != right.length) {
+      return false;
+    }
+    for (int i = 0; i < left.length; i++) {
+      if (Float.floatToIntBits(left[i]) != Float.floatToIntBits(right[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  static List<String> floatArrayAsString(float[] items) {
+    List<String> itemAsStrings = new ArrayList<String>(items.length);
+    for (float item : items) {
+      itemAsStrings.add(floatToString(item));
+    }
+    return itemAsStrings;
   }
 }
