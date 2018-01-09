@@ -14,12 +14,6 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Truth (Parent)</name>
-  <!--
-    For some reason, we need to set this explicitly in child poms, even when
-    they declare the plugin. Otherwise, at least during release builds,
-    maven-javadoc-plugin kicks off version 2.7 for child poms (at least as of
-    this writing).
-    -->
   <properties>
     <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
   </properties>
@@ -171,5 +165,16 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <!--
+      Force a version >2.7 for this parent project. If we use the current
+      default of 2.7, Maven ignores this parent project's configuration when
+      running maven-javadoc-plugin in children during releases.
+      -->
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin.version}</version>
+      </plugin>
+    </plugins>
   </build>
 </project>
