@@ -34,7 +34,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven-javadoc-plugin.version}</version>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
