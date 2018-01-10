@@ -19,6 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
@@ -31,6 +32,7 @@ import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterators;
+import com.google.common.primitives.UnsignedInteger;
 import com.google.common.testing.NullPointerTester;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -38,7 +40,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -50,10 +51,10 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber
  */
 @RunWith(JUnit4.class)
-public class SubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+public class SubjectTest extends BaseSubjectTestCase {
 
   @Test
+  @GwtIncompatible("NullPointerTester")
   public void nullPointerTester() {
     NullPointerTester npTester = new NullPointerTester();
 
@@ -84,6 +85,7 @@ public class SubjectTest {
   }
 
   @Test
+  @GwtIncompatible("NullPointerTester")
   public void allAssertThatOverloadsAcceptNull() throws Exception {
     NullPointerTester npTester = new NullPointerTester();
     for (Method method : Truth.class.getDeclaredMethods()) {
@@ -96,7 +98,7 @@ public class SubjectTest {
         subject.isNull();
         try {
           subject.isNotNull(); // should throw
-          fail("assertThat(null).isNotNull() should throw an exception!");
+          throw new Error("assertThat(null).isNotNull() should throw an exception!");
         } catch (AssertionError expected) {
           assertThat(expected)
               .hasMessageThat()
@@ -111,7 +113,7 @@ public class SubjectTest {
 
         try {
           subject.isIn(ImmutableList.of());
-          fail();
+          throw new Error("Expected to fail");
         } catch (AssertionError expected) {
           assertThat(expected).hasMessageThat().contains("is equal to any element in");
         }
@@ -129,7 +131,7 @@ public class SubjectTest {
         subject.isEqualTo(null);
         try {
           subject.isEqualTo(new Object()); // should throw
-          fail("assertThat(null).isEqualTo(<non-null>) should throw an exception!");
+          throw new Error("assertThat(null).isEqualTo(<non-null>) should throw an exception!");
         } catch (AssertionError expected) {
           assertThat(expected).hasMessageThat().contains("Not true that ");
           assertThat(expected).hasMessageThat().contains(" is equal to ");
@@ -207,6 +209,19 @@ public class SubjectTest {
   }
 
   @Test
+  public void isSameAsFailureWithComparableObjects_nonString() {
+    Object a = UnsignedInteger.valueOf(42);
+    Object b = UnsignedInteger.fromIntBits(42);
+    expectFailure.whenTesting().that(a).isSameAs(b);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <42> is the same instance as <42> "
+                + "(although their toString() representations are the same)");
+  }
+
+  @Test
+  @GwtIncompatible("String equality under JS")
   public void isSameAsFailureWithComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder("ab").toString();
@@ -263,6 +278,14 @@ public class SubjectTest {
   }
 
   @Test
+  public void isNotSameAsWithComparableObjects_nonString() {
+    Object a = UnsignedInteger.valueOf(42);
+    Object b = UnsignedInteger.fromIntBits(42);
+    assertThat(a).isNotSameAs(b);
+  }
+
+  @Test
+  @GwtIncompatible("String equality under JS")
   public void isNotSameAsWithComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder("ab").toString();
