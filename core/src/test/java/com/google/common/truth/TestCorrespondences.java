@@ -51,5 +51,29 @@ final class TestCorrespondences {
         }
       };
 
+  /**
+   * A correspondence between integers which tests whether they are within 10 of each other. Smart
+   * diffing is enabled, with a formatted diff showing the actual value less the expected value.
+   * Does not support null values.
+   */
+  static final Correspondence<Integer, Integer> WITHIN_10_OF =
+      new Correspondence<Integer, Integer>() {
+
+        @Override
+        public boolean compare(Integer actual, Integer expected) {
+          return Math.abs(actual - expected) <= 10;
+        }
+
+        @Override
+        public String formatDiff(Integer actual, Integer expected) {
+          return Integer.toString(actual - expected);
+        }
+
+        @Override
+        public String toString() {
+          return "is within 10 of";
+        }
+      };
+
   private TestCorrespondences() {}
 }
