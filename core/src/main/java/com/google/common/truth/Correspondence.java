@@ -37,6 +37,9 @@ import javax.annotation.Nullable;
  * should have any of the other properties of an equivalence relation (reflexivity, symmetry, or
  * transitivity).
  *
+ * <p>Subclasses may optionally override {@link #formatDiff}. This results in failure messages
+ * including formatted diffs between expected and actual elements, where possible.
+ *
  * <p>Instances of this are typically used via {@link IterableSubject#comparingElementsUsing},
  * {@link MapSubject#comparingValuesUsing}, or {@link MultimapSubject#comparingValuesUsing}.
  *
@@ -92,6 +95,26 @@ public abstract class Correspondence<A, E> {
    * value for the purposes of this test.
    */
   public abstract boolean compare(@Nullable A actual, @Nullable E expected);
+
+  /**
+   * Returns a {@link String} describing the difference between the {@code actual} and {@code
+   * expected} values, if possible, or {@code null} if not.
+   *
+   * <p>The implementation on the {@link Correspondence} base class always returns {@code null}. To
+   * enable diffing, subclasses should override this method.
+   *
+   * <p>N.B. Implementing this method is currently of limited value as not all the assertions which
+   * could make use of this do so. However, instances that implement it now will get those
+   * improvements for free when they are made. TODO(b/32960783): Implement the rest of the planned
+   * changes.
+   *
+   * <p>Assertions should only invoke this with parameters for which {@link #compare} returns {@code
+   * false}.
+   */
+  @Nullable
+  public String formatDiff(@Nullable A actual, @Nullable E expected) {
+    return null;
+  }
 
   /**
    * Returns a description of the correspondence, suitable to fill the gap in a failure message of

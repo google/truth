@@ -885,6 +885,17 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     private Optional<String> describeMissingOrExtra(
         List<? extends A> extra, List<? extends E> missing) {
+      if (missing.size() == 1 && extra.size() == 1) {
+        @Nullable String diff = correspondence.formatDiff(extra.get(0), missing.get(0));
+        if (diff != null) {
+          return Optional.of(
+              StringUtil.format(
+                  "is missing an element that %s <%s> "
+                      + "and has unexpected elements <[%s (diff: %s)]>",
+                  correspondence, missing.get(0), extra.get(0), diff));
+        }
+        // fall through to regular case if there is no formatted diff
+      }
       if (!missing.isEmpty() && !extra.isEmpty()) {
         return Optional.of(
             StringUtil.format(

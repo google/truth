@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.collect.Collections2.permutations;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
+import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
@@ -32,8 +33,7 @@ import org.junit.runners.JUnit4;
 /**
  * Tests for {@link IterableSubject} APIs that use {@link Correspondence}.
  *
- * @author David Saff
- * @author Christian Gruber (cgruber@israfil.net)
+ * @author Pete Gillin
  */
 @RunWith(JUnit4.class)
 public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
@@ -276,6 +276,23 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_diffOneMissingAndExtraCandidate() {
+    ImmutableList<Integer> expected = ImmutableList.of(30, 60, 90);
+    ImmutableList<Integer> actual = ImmutableList.of(101, 65, 35);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(WITHIN_10_OF)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[101, 65, 35]> contains exactly one element that is within 10 of "
+                + "each element of <[30, 60, 90]>. It is missing an element that is within 10 of "
+                + "<90> and has unexpected elements <[101 (diff: 11)]>");
+  }
+
+  @Test
   public void comparingElementsUsing_containsExactlyElementsIn_failsMissingElementInOneToOne() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256");
@@ -337,6 +354,27 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_diffOneMissingAndExtraInOneToOne() {
+    ImmutableList<Integer> expected = ImmutableList.of(30, 30, 60);
+    ImmutableList<Integer> actual = ImmutableList.of(25, 55, 65);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(WITHIN_10_OF)
+        .containsExactlyElementsIn(expected);
+    String expectedPreamble =
+        "Not true that <[25, 55, 65]> contains exactly one element that is within 10 of "
+            + "each element of <[30, 30, 60]>. It contains at least one element that matches each "
+            + "expected element, and every element it contains matches at least one expected "
+            + "element, but there was no 1:1 mapping between all the actual and expected elements. "
+            + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), it is "
+            + "missing an element that is within 10 of <30> and has unexpected elements ";
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isAnyOf(expectedPreamble + "<[55 (diff: 25)]>", expectedPreamble + "<[65 (diff: 35)]>");
   }
 
   @Test
