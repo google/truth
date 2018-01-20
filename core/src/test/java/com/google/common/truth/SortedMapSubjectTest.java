@@ -21,7 +21,8 @@ import static java.util.Collections.unmodifiableSortedMap;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
-import java.util.NavigableMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import org.junit.Test;
@@ -39,10 +40,17 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
     NULL_MAP = unmodifiableSortedMap(nullMap);
   }
 
+  /*
+   * Even if we wrap a Map/SortedMap in a NavigableMap wrapper, the main operations (isInstanceOf,
+   * etc.) should operate on the original Map.
+   */
+  @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void verifyHierarchy() {
-    assertThat(Maps.newHashMap()).isNotInstanceOf(SortedMap.class);
-    assertThat(unmodifiableSortedMap(Maps.newTreeMap())).isNotInstanceOf(NavigableMap.class);
+  public void verifyWrappingIsInternalOnly() {
+    Map<?, ?> map = new HashMap<>();
+    assertThat(map).isSameAs(map);
+    SortedMap<?, ?> sortedMap = unmodifiableSortedMap(new TreeMap<>());
+    assertThat(sortedMap).isSameAs(sortedMap);
   }
 
   @Test

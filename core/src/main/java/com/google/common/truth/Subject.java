@@ -210,25 +210,22 @@ public class Subject<S extends Subject<S, T>, T> {
     if (clazz == null) {
       throw new NullPointerException("clazz");
     }
+    if (actual() == null) {
+      fail("is an instance of", clazz.getName());
+      return;
+    }
     if (!Platform.isInstanceOfType(actual(), clazz)) {
-      if (actual() != null) {
-        if (classMetadataUnsupported()) {
-          throw new UnsupportedOperationException(
-              actualAsString()
-                  + ", an instance of "
-                  + actual().getClass().getName()
-                  + ", may or may not be an instance of "
-                  + clazz.getName()
-                  + ". Under -XdisableClassMetadata, we do not have enough information to tell.");
-        }
-        failWithBadResults(
-            "is an instance of",
-            clazz.getName(),
-            "is an instance of",
-            actual().getClass().getName());
-      } else {
-        fail("is an instance of", clazz.getName());
+      if (classMetadataUnsupported()) {
+        throw new UnsupportedOperationException(
+            actualAsString()
+                + ", an instance of "
+                + actual().getClass().getName()
+                + ", may or may not be an instance of "
+                + clazz.getName()
+                + ". Under -XdisableClassMetadata, we do not have enough information to tell.");
       }
+      failWithBadResults(
+          "is an instance of", clazz.getName(), "is an instance of", actual().getClass().getName());
     }
   }
 
