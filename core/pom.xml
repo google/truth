@@ -97,6 +97,7 @@
             <exclude>**/super/**/*.java</exclude>
           </excludes>
           <testExcludes>
+            <testExclude>**/super/**/*.java</testExclude>
             <!-- Requires Java 8. -->
             <testExclude>**/EmployeeSubjectTest.java</testExclude>
           </testExcludes>

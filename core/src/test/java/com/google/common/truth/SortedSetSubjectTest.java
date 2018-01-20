@@ -21,7 +21,8 @@ import static java.util.Collections.unmodifiableSortedSet;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
-import java.util.NavigableSet;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import org.junit.Test;
@@ -39,10 +40,17 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
     NULL_SET = unmodifiableSortedSet(nullSet);
   }
 
+  /*
+   * Even if we wrap a Set/SortedSet in a NavigableSet wrapper, the main operations (isInstanceOf,
+   * etc.) should operate on the original Set.
+   */
+  @SuppressWarnings("TruthSelfEquals")
   @Test
-  public void verifyHierarchy() {
-    assertThat(Sets.newHashSet()).isNotInstanceOf(SortedSet.class);
-    assertThat(unmodifiableSortedSet(Sets.newTreeSet())).isNotInstanceOf(NavigableSet.class);
+  public void verifyWrappingIsInternalOnly() {
+    Set<?> map = new HashSet<>();
+    assertThat(map).isSameAs(map);
+    SortedSet<?> sortedSet = unmodifiableSortedSet(new TreeSet<>());
+    assertThat(sortedSet).isSameAs(sortedSet);
   }
 
   @Test

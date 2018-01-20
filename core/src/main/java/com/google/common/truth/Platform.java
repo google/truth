@@ -18,8 +18,6 @@ package com.google.common.truth;
 import com.google.common.base.Throwables;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.regex.Pattern;
 import org.junit.ComparisonFailure;
 import org.junit.rules.TestRule;
@@ -35,39 +33,7 @@ final class Platform {
 
   /** Returns true if the instance is assignable to the type Clazz. */
   static boolean isInstanceOfType(Object instance, Class<?> clazz) {
-    return isInstanceOfTypeJava(instance, clazz);
-  }
-
-  /**
-   * Returns true if the instance is assignable to the type Clazz (suitable for a JVM environment).
-   */
-  static boolean isInstanceOfTypeJava(Object instance, Class<?> clazz) {
     return clazz.isInstance(instance);
-  }
-
-  /**
-   * Returns true if the instance is assignable to the type Clazz (suitable for a GWT environment).
-   */
-  static boolean isInstanceOfTypeGWT(Object instance, Class<?> clazz) {
-    String className = clazz.getName();
-    Set<String> types = new LinkedHashSet<>();
-    types.add(instance.getClass().getCanonicalName());
-    addTypeNames(instance.getClass(), types);
-    return types.contains(className);
-  }
-
-  private static void addInterfaceNames(Class<?>[] interfaces, Set<String> types) {
-    for (Class<?> interfaze : interfaces) {
-      types.add(interfaze.getName());
-      addInterfaceNames(interfaze.getInterfaces(), types);
-    }
-  }
-
-  private static void addTypeNames(Class<?> clazz, Set<String> types) {
-    for (Class<?> current = clazz; current != null; current = current.getSuperclass()) {
-      types.add(current.getName());
-      addInterfaceNames(current.getInterfaces(), types);
-    }
   }
 
   static AssertionError comparisonFailure(

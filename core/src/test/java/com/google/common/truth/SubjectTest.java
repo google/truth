@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.TestPlatform.isGwt;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -463,12 +464,31 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isInstanceOf() {
+  public void isInstanceOfExactType() {
     assertThat("a").isInstanceOf(String.class);
   }
 
   @Test
-  public void isInstanceOfFail() {
+  public void isInstanceOfSuperclass() {
+    assertThat(3).isInstanceOf(Number.class);
+  }
+
+  @Test
+  public void isInstanceOfImplementedInterface() {
+    if (isGwt()) {
+      try {
+        assertThat("a").isInstanceOf(CharSequence.class);
+        fail();
+      } catch (UnsupportedOperationException expected) {
+      }
+      return;
+    }
+
+    assertThat("a").isInstanceOf(CharSequence.class);
+  }
+
+  @Test
+  public void isInstanceOfUnrelatedClass() {
     expectFailure.whenTesting().that(4.5).isInstanceOf(Long.class);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -478,16 +498,90 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isNotInstanceOf() {
+  public void isInstanceOfUnrelatedInterface() {
+    if (isGwt()) {
+      try {
+        assertThat(4.5).isInstanceOf(CharSequence.class);
+        fail();
+      } catch (UnsupportedOperationException expected) {
+      }
+      return;
+    }
+
+    expectFailure.whenTesting().that(4.5).isInstanceOf(CharSequence.class);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <4.5> is an instance of <java.lang.CharSequence>."
+                + " It is an instance of <java.lang.Double>");
+  }
+
+  @Test
+  public void isInstanceOfClassForNull() {
+    expectFailure.whenTesting().that((Object) null).isInstanceOf(Long.class);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <null> is an instance of <java.lang.Long>");
+  }
+
+  @Test
+  public void isInstanceOfInterfaceForNull() {
+    expectFailure.whenTesting().that((Object) null).isInstanceOf(CharSequence.class);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <null> is an instance of <java.lang.CharSequence>");
+  }
+
+  @Test
+  public void isNotInstanceOfUnrelatedClass() {
     assertThat("a").isNotInstanceOf(Long.class);
   }
 
   @Test
-  public void isNotInstanceOfFail() {
+  public void isNotInstanceOfUnrelatedInterface() {
+    if (isGwt()) {
+      try {
+        assertThat(5).isNotInstanceOf(CharSequence.class);
+        fail();
+      } catch (UnsupportedOperationException expected) {
+      }
+      return;
+    }
+
+    assertThat(5).isNotInstanceOf(CharSequence.class);
+  }
+
+  @Test
+  public void isNotInstanceOfExactType() {
+    expectFailure.whenTesting().that(5).isNotInstanceOf(Integer.class);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<5> expected not to be an instance of java.lang.Integer, but was.");
+  }
+
+  @Test
+  public void isNotInstanceOfSuperclass() {
     expectFailure.whenTesting().that(5).isNotInstanceOf(Number.class);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<5> expected not to be an instance of java.lang.Number, but was.");
+  }
+
+  @Test
+  public void isNotInstanceOfImplementedInterface() {
+    if (isGwt()) {
+      try {
+        assertThat("a").isNotInstanceOf(CharSequence.class);
+        fail();
+      } catch (UnsupportedOperationException expected) {
+      }
+      return;
+    }
+
+    expectFailure.whenTesting().that("a").isNotInstanceOf(CharSequence.class);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("<\"a\"> expected not to be an instance of java.lang.CharSequence, but was.");
   }
 
   @Test

@@ -21,8 +21,6 @@ import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.google.common.truth.Truth.AssertionErrorWithCause;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
@@ -37,25 +35,19 @@ final class Platform {
 
   /** Returns true if the instance is assignable to the type Clazz. */
   static boolean isInstanceOfType(Object instance, Class<?> clazz) {
-    return isInstanceOfTypeGWT(instance, clazz);
-  }
-
-  /**
-   * Returns true if the instance is assignable to the type Clazz (though in GWT clazz can only be a
-   * concrete class that is an ancestor class of the instance or the direct type of the instance.
-   */
-  static boolean isInstanceOfTypeGWT(Object instance, Class<?> clazz) {
-    String className = clazz.getName();
-    Set<String> types = new LinkedHashSet<String>();
-    addTypeNames(instance.getClass(), types);
-    return types.contains(className);
-  }
-
-  private static void addTypeNames(Class<?> clazz, Set<String> types) {
-    for (Class<?> current = clazz; current != null; current = current.getSuperclass()) {
-      types.add(current.getName());
-      // addInterfaceNames(current.getInterfaces(), types);
+    if (clazz.isInterface()) {
+      throw new UnsupportedOperationException(
+          "Under GWT, we can't determine whether an object is an instance of an interface Class");
     }
+
+    for (Class<?> current = instance.getClass();
+        current != null;
+        current = current.getSuperclass()) {
+      if (current.equals(clazz)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   static AssertionError comparisonFailure(
