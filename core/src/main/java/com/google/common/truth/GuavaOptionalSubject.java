@@ -21,6 +21,9 @@ import javax.annotation.Nullable;
 /**
  * Propositions for Guava {@link Optional} subjects.
  *
+ * <p>If you are looking a {@code java.util.Optional} subject, please read
+ * <a href="http://google.github.io/truth/faq#java8">faq#java8</a>
+ *
  * @author Christian Gruber
  */
 public final class GuavaOptionalSubject extends Subject<GuavaOptionalSubject, Optional<?>> {
