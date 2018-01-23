@@ -23,6 +23,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.CompatibleWith;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -192,14 +193,14 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /** Fails if the subject is not the same instance as the given object. */
-  public void isSameAs(@Nullable Object other) {
+  public void isSameAs(@Nullable @CompatibleWith("T") Object other) {
     if (actual() != other) {
       failComparingToStrings("is the same instance as", actual(), other, other, true);
     }
   }
 
   /** Fails if the subject is the same instance as the given object. */
-  public void isNotSameAs(@Nullable Object other) {
+  public void isNotSameAs(@Nullable @CompatibleWith("T") Object other) {
     if (actual() == other) {
       fail("is not the same instance as", other);
     }
@@ -255,7 +256,10 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /** Fails unless the subject is equal to any of the given elements. */
-  public void isAnyOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
+  public void isAnyOf(
+      @Nullable @CompatibleWith("T") Object first,
+      @Nullable @CompatibleWith("T") Object second,
+      @Nullable Object... rest) {
     List<Object> list = accumulate(first, second, rest);
     if (!list.contains(actual())) {
       fail("is equal to any of", list);
@@ -273,7 +277,10 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /** Fails if the subject is equal to any of the given elements. */
-  public void isNoneOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
+  public void isNoneOf(
+      @Nullable @CompatibleWith("T") Object first,
+      @Nullable @CompatibleWith("T") Object second,
+      @Nullable Object... rest) {
     isNotIn(accumulate(first, second, rest));
   }
 
