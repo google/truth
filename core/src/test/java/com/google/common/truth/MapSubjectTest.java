@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
+import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
@@ -847,7 +848,7 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void comparingValuesUsing_containsEntry_failsExpectedKeyHasWrongValues() {
+  public void comparingValuesUsing_containsEntry_failsExpectedKeyHasWrongValue() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
     expectFailure
         .whenTesting()
@@ -891,6 +892,21 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .isEqualTo(
             "Not true that <{abc=+123, def=+456}> contains an entry with "
                 + "key <xyz> and a value that parses to <321>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_diffExpectedKeyHasWrongValue() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("abc", 35, "def", 71);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(WITHIN_10_OF)
+        .containsEntry("def", 60);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=35, def=71}> contains an entry with key <def> and a value that is "
+                + "within 10 of <60>. However, it has a mapping from that key to <71> (diff: 11)");
   }
 
   @Test
@@ -1145,6 +1161,26 @@ public class MapSubjectTest extends BaseSubjectTestCase {
                 + "equal to and a value that parses to the key and value of each entry of "
                 + "<{def=456, abc=321}>. It has the following entries with matching keys but "
                 + "different values: {abc=(expected 321 but got 123)}");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_diffMissingAndExtraAndWrongValue() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 30, "def", 60, "ghi", 90);
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("abc", 35, "fed", 60, "ghi", 101);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingValuesUsing(WITHIN_10_OF)
+        .containsExactlyEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=35, fed=60, ghi=101}> contains exactly one entry that has a key "
+                + "that is equal to and a value that is within 10 of the key and value of each "
+                + "entry of <{abc=30, def=60, ghi=90}>. It is missing keys for the following "
+                + "entries: {def=60} and has the following entries with unexpected keys: {fed=60} "
+                + "and has the following entries with matching keys but different values: "
+                + "{ghi=(expected 90 but got 101, diff: 11)}");
   }
 
   @Test
