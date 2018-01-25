@@ -232,13 +232,14 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
   @CanIgnoreReturnValue
   private boolean containsExactlyEntriesInAnyOrder(Map<?, ?> expectedMap, String failVerb) {
-    MapDifference<?, ?, ?> diff = MapDifference.create(actual(), expectedMap, EQUALITY);
+    MapDifference<Object, Object, Object> diff =
+        MapDifference.create(actual(), expectedMap, EQUALITY);
     if (diff.isEmpty()) {
       return true;
     }
     failWithRawMessage(
         "Not true that %s %s <%s>. It %s",
-        actualAsString(), failVerb, expectedMap, diff.describe());
+        actualAsString(), failVerb, expectedMap, diff.describe(VALUE_DIFFERENCE_FORMAT));
     return false;
   }
 
@@ -295,7 +296,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       return missing.isEmpty() && unexpected.isEmpty() && wrongValues.isEmpty();
     }
 
-    String describe() {
+    String describe(Function<ValueDifference<A, E>, String> valueDiffFormat) {
       boolean includeKeyTypes = includeKeyTypes();
       StringBuilder description = new StringBuilder();
       if (!missing.isEmpty()) {
@@ -315,15 +316,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         if (description.length() > 0) {
           description.append(" and ");
         }
-        Map<K, String> wrongValuesFormatted =
-            Maps.transformValues(
-                wrongValues,
-                new Function<ValueDifference<A, E>, String>() {
-                  @Override
-                  public String apply(ValueDifference<A, E> diff) {
-                    return diff.describe();
-                  }
-                });
+        Map<K, String> wrongValuesFormatted = Maps.transformValues(wrongValues, valueDiffFormat);
         description
             .append("has the following entries with matching keys but different values: ")
             .append(includeKeyTypes ? addKeyTypes(wrongValuesFormatted) : wrongValuesFormatted);
@@ -350,15 +343,20 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       this.actual = actual;
       this.expected = expected;
     }
-
-    String describe() {
-      boolean includeTypes = actual.toString().equals(expected.toString());
-      return StringUtil.format(
-          "(expected %s but got %s)",
-          includeTypes ? new TypedToStringWrapper(expected) : expected,
-          includeTypes ? new TypedToStringWrapper(actual) : actual);
-    }
   }
+
+  /** A formatting function for value differences when compared for equality. */
+  private static final Function<ValueDifference<Object, Object>, String> VALUE_DIFFERENCE_FORMAT =
+      new Function<ValueDifference<Object, Object>, String>() {
+        @Override
+        public String apply(ValueDifference<Object, Object> values) {
+          boolean includeTypes = values.actual.toString().equals(values.expected.toString());
+          return StringUtil.format(
+              "(expected %s but got %s)",
+              includeTypes ? new TypedToStringWrapper(values.expected) : values.expected,
+              includeTypes ? new TypedToStringWrapper(values.actual) : values.actual);
+        }
+      };
 
   private static final Map<Object, Object> addKeyTypes(Map<?, ?> in) {
     Map<Object, Object> out = Maps.newLinkedHashMap();
@@ -481,10 +479,18 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           return;
         }
         // Found matching key with non-matching value.
-        failWithRawMessage(
-            "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
-                + "However, it has a mapping from that key to <%s>",
-            actualAsString(), expectedKey, correspondence, expectedValue, actualValue);
+        @Nullable String diff = correspondence.formatDiff(actualValue, expectedValue);
+        if (diff != null) {
+          failWithRawMessage(
+              "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
+                  + "However, it has a mapping from that key to <%s> (diff: %s)",
+              actualAsString(), expectedKey, correspondence, expectedValue, actualValue, diff);
+        } else {
+          failWithRawMessage(
+              "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
+                  + "However, it has a mapping from that key to <%s>",
+              actualAsString(), expectedKey, correspondence, expectedValue, actualValue);
+        }
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<>();
@@ -578,8 +584,27 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       failWithRawMessage(
           "Not true that %s contains exactly one entry that has a key that is equal to and a value "
               + "that %s the key and value of each entry of <%s>. It %s",
-          actualAsString(), correspondence, expectedMap, diff.describe());
+          actualAsString(), correspondence, expectedMap, diff.describe(this.<V>valueDiffFormat()));
       return ALREADY_FAILED;
+    }
+
+    /**
+     * Returns a formatting function for value differences when compared using the current
+     * correspondence.
+     */
+    private final <V extends E> Function<ValueDifference<A, V>, String> valueDiffFormat() {
+      return new Function<ValueDifference<A, V>, String>() {
+        @Override
+        public String apply(ValueDifference<A, V> values) {
+          @Nullable String diffString = correspondence.formatDiff(values.actual, values.expected);
+          if (diffString != null) {
+            return StringUtil.format(
+                "(expected %s but got %s, diff: %s)", values.expected, values.actual, diffString);
+          } else {
+            return StringUtil.format("(expected %s but got %s)", values.expected, values.actual);
+          }
+        }
+      };
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
