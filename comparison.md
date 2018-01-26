@@ -7,12 +7,12 @@ url: /comparison
 
 ## Overview
 
-Truth is a fluent assertion framework, which has a lot of similarities to
-[AssertJ], which was forked from [FEST]. Truth is significantly different from
-[Hamcrest], which uses [Polish prefix notation] to compose assertions.
+As a [fluent] assertion library, Truth is similar to [AssertJ], which was forked
+from [FEST]. Truth is significantly different from [Hamcrest], which uses
+[Polish prefix notation] to compose assertions.
 
 
-### Why create Truth when AssertJ already exists?
+## Why create Truth when AssertJ already exists?
 
 In other words: Maybe Truth is better for some use cases, but why not just
 improve AssertJ instead? The reason is historical: AssertJ didn't exist when we
@@ -20,7 +20,20 @@ started Truth. By the time it was created, we'd begun using Truth widely
 internally, and we'd added some features that would be difficult to retrofit
 onto AssertJ.
 
-## Feature Comparison vs. AssertJ
+## Comparison vs. Hamcrest
+
+Because Truth and Hamcrest differ so significantly, I'll cover only the main
+points:
+
+*   Truth assertions are made with chained method calls, so IDEs can suggest the
+    appropriate assertions for a given object.
+*   Hamcrest assertions are made with nested method calls, so users can compose
+    assertions in arbitrary ways.
+*   Hamcrest's APIs are also usable with mocking frameworks.
+*   But by supporting nesting and mocking frameworks, Hamcrest has the hard
+    (perhaps impossible) job of bending Java's generics system to its needs.
+
+## Comparison vs. AssertJ
 
 Truth and AssertJ are very similar. If you're happy with one, you probably
 wouldn't benefit from switching to the other. So I provide this comparison
@@ -102,7 +115,8 @@ the overall size of each ecosystem.
 ### Platform support (Android, GWT)
 
 AssertJ supports Android (though I had to use 2.x because the dexer rejected
-3.x, even when I used only `Java6Assertions`).
+3.x, even when I used only `Java6Assertions`). Possibly this was an issue with
+my build setup.
 
 Truth supports Android in all its versions. The downside is that it requires you
 to look in a separate class for Java 8 assertions.
@@ -267,27 +281,28 @@ JUnit     | n/a
 
 <!-- References -->
 
-[AssertJ]: http://joel-costigliola.github.io/assertj/
+[fluent]: https://en.wikipedia.org/wiki/Fluent_interface
+[AssertJ]: https://joel-costigliola.github.io/assertj/
 [FEST]: https://github.com/alexruiz/fest-assert-2.x
-[Hamcrest]: https://code.google.com/p/hamcrest/
-[Polish prefix notation]: http://en.wikipedia.org/wiki/Polish_notation
+[Hamcrest]: http://hamcrest.org/JavaHamcrest/
+[Polish prefix notation]: https://en.wikipedia.org/wiki/Polish_notation
 [`Expect`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Expect.java
-["soft" assertions]: http://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#soft-assertions
+["soft" assertions]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#soft-assertions
 [assumptions]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/TruthJUnit.java
 [`FailureStrategy`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
 [`ExpectFailure`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/ExpectFailure.java
-[AssertJ-classes]: http://joel-costigliola.github.io/assertj/core-8/api/org/assertj/core/api/Assertions.html
-[Truth-classes]: http://google.github.io/truth/api/0.34/com/google/common/truth/Truth.html
-[AssertJ-Iterable]: http://joel-costigliola.github.io/assertj/core-8/api/org/assertj/core/api/AbstractIterableAssert.html
-[Truth-Iterable]: http://google.github.io/truth/api/0.34/com/google/common/truth/IterableSubject.html
+[AssertJ-classes]: https://joel-costigliola.github.io/assertj/core-8/api/org/assertj/core/api/Assertions.html
+[Truth-classes]: https://google.github.io/truth/api/0.34/com/google/common/truth/Truth.html
+[AssertJ-Iterable]: https://joel-costigliola.github.io/assertj/core-8/api/org/assertj/core/api/AbstractIterableAssert.html
+[Truth-Iterable]: https://google.github.io/truth/api/0.34/com/google/common/truth/IterableSubject.html
 [Guava]: https://github.com/google/guava
 [Protocol Buffers]: https://developers.google.com/protocol-buffers/
 [GWT]: http://www.gwtproject.org/
-[AssertJ-Android]: http://square.github.io/assertj-android/
+[AssertJ-Android]: https://square.github.io/assertj-android/
 [Truth-Android]: https://pkware.github.io/truth-android/
-[AssertJ-migrator]: http://joel-costigliola.github.io/assertj/assertj-core-converting-junit-assertions-to-assertj.html
-[AssertJ-generator]: http://joel-costigliola.github.io/assertj/assertj-assertions-generator.html
-[conditions]: http://joel-costigliola.github.io/assertj/assertj-core-conditions.html
-[reflective field comparisons]: http://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#field-by-field-comparison
+[AssertJ-migrator]: https://joel-costigliola.github.io/assertj/assertj-core-converting-junit-assertions-to-assertj.html
+[AssertJ-generator]: https://joel-costigliola.github.io/assertj/assertj-assertions-generator.html
+[conditions]: https://joel-costigliola.github.io/assertj/assertj-core-conditions.html
+[reflective field comparisons]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#field-by-field-comparison
 [bug]: https://github.com/google/truth/issues/new
 
