@@ -5,15 +5,25 @@ url: /extension
 ---
 
 
-## Known extensions
+## Extension points
 
+Truth is configurable in two ways: custom failure behaviors and custom assertion
+methods.
 
-Projects which are not part of core to limit Truth's dependency graph or for
-other grouping reasons, but are considered part of the overall truth effort are
-found in the /extensions folder, including:
+Configurable [failure behaviors][`FailureStrategy`] can be useful, particularly
+[the alternative built-in behaviors][`FailureStrategy`]. Or you can [write your
+own][`FailureStrategy.fail`].
 
-*   [Java8] for java8 types such as `java.util.Optional`
-*   [`Re2jSubjects`] for `com.google.re2j.Pattern`
+But when people talk about Truth extensions, they're usually referring to custom
+assertion methods, implemented on a custom [`Subject`] subclass. That's what
+we'll cover in the rest of this page.
+
+## Some commonly used custom subjects
+
+Some subjects aren't part of core Truth but can be found in other parts of the
+project. They include:
+
+*   [`Truth8`] for java8 types such as `java.util.Optional`
 *   [`ProtoSubject`] for `Message` style protocol buffers
     *   A [`LiteProtoSubject`] with only lite dependencies is also provided.
 
@@ -22,7 +32,7 @@ Other extensions that are not part of the Truth project itself include:
 *   [Compile Testing] for testing annotation processors and compilation jobs
 
 
-## Using Truth extensions
+## Using custom subjects
 
 The steps are nearly the same as [for using the core Truth assertions](index):
 
@@ -64,7 +74,7 @@ But in most cases you'll use shortcuts, either `assertThat(...)` or
 `assertWithMessage(...).about(...).that(...)`. For more information about the
 available shortcuts, see [this FAQ entry][shortcuts].
 
-## Writing your own Truth extension
+## Writing your own subject
 
 For an example of how to support custom types in Truth, please see the [employee
 example]. The rest of this doc will walk through each of the files, step by
@@ -289,7 +299,7 @@ There are four parts to the example:
 <!-- References -->
 
 [`@AutoValue`]:           http://github.com/google/auto/tree/master/value
-[Java8]:                  http://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/Truth8.java
+[`Truth8`]:                  http://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/Truth8.java
 [`Re2jSubjects`]:         http://github.com/google/truth/blob/master/extensions/re2j/src/main/java/com/google/common/truth/extensions/re2j/Re2jSubjects.java
 [`LiteProtoSubject`]:     http://github.com/google/truth/blob/master/extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java
 [`ProtoSubject`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoSubject.java
@@ -308,4 +318,5 @@ There are four parts to the example:
 [`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
 [`ExpectFailure`]:               https://google.github.io/truth/api/latest/com/google/common/truth/ExpectFailure.html
 [shortcuts]: faq#full-chain
+[`FailureStrategy.fail`]:    https://google.github.io/truth/api/latest/com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-
 
