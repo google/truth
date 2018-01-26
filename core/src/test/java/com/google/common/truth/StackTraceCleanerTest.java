@@ -119,9 +119,12 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @GwtIncompatible("Class.forName")
   public void mixedStreaks() {
     Throwable throwable =
         createThrowableWithStackTrace(
+            "com.google.common.truth.IterableSubject",
+            "com.google.common.truth.MapSubject",
             "com.example.MyTest",
             "junit.Foo",
             "org.junit.Bar",
@@ -129,8 +132,6 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
             "sun.reflect.Dar",
             "com.google.testing.testsize.Dar",
             "com.google.testing.util.Far",
-            "com.google.common.truth.Gar",
-            "com.google.common.truth.Har",
             "com.example.Jar");
 
     StackTraceCleaner.cleanStackTrace(throwable);
@@ -142,22 +143,7 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
               createCollapsedStackTraceElement("Testing framework", 2),
               createCollapsedStackTraceElement("Reflective call", 2),
               createCollapsedStackTraceElement("Testing framework", 2),
-              createCollapsedStackTraceElement("Truth framework", 2),
               createStackTraceElement("com.example.Jar"),
-            });
-  }
-
-  @Test
-  public void removesTruthFramesOnTop() {
-    Throwable throwable =
-        createThrowableWithStackTrace("com.google.common.truth.Foo", "com.example.Bar");
-
-    StackTraceCleaner.cleanStackTrace(throwable);
-
-    assertThat(throwable.getStackTrace())
-        .isEqualTo(
-            new StackTraceElement[] {
-              createStackTraceElement("com.example.Bar"),
             });
   }
 
@@ -190,14 +176,80 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   public void packagesAreIgnoredForTestClasses() {
     Throwable throwable =
         createThrowableWithStackTrace(
-            "com.google.common.truth.Foo", "com.google.common.truth.MyTest");
+            "com.google.testing.util.ShouldStrip1",
+            "com.google.testing.util.ShouldStrip2",
+            "com.google.testing.util.ShouldNotStripTest");
 
     StackTraceCleaner.cleanStackTrace(throwable);
 
     assertThat(throwable.getStackTrace())
         .isEqualTo(
             new StackTraceElement[] {
-              createStackTraceElement("com.google.common.truth.MyTest"),
+              createCollapsedStackTraceElement("Testing framework", 2),
+              createStackTraceElement("com.google.testing.util.ShouldNotStripTest"),
+            });
+  }
+
+  @Test
+  @GwtIncompatible("Class.forName")
+  public void allFramesAboveStandardSubjectBuilderCleaned() {
+    Throwable throwable =
+        createThrowableWithStackTrace(
+            "com.google.random.Package",
+            "com.google.common.base.collection.ImmutableMap",
+            "com.google.common.truth.StandardSubjectBuilder",
+            "com.google.example.SomeClass");
+
+    StackTraceCleaner.cleanStackTrace(throwable);
+
+    assertThat(throwable.getStackTrace())
+        .isEqualTo(
+            new StackTraceElement[] {
+              createStackTraceElement("com.google.example.SomeClass"),
+            });
+  }
+
+  @Test
+  @GwtIncompatible("Class.forName")
+  public void allFramesAboveSubjectCleaned() {
+    Throwable throwable =
+        createThrowableWithStackTrace(
+            "com.google.random.Package",
+            "com.google.common.base.collection.ImmutableMap",
+            "com.google.common.truth.StringSubject",
+            "com.google.example.SomeClass");
+
+    StackTraceCleaner.cleanStackTrace(throwable);
+
+    assertThat(throwable.getStackTrace())
+        .isEqualTo(
+            new StackTraceElement[] {
+              createStackTraceElement("com.google.example.SomeClass"),
+            });
+  }
+
+  /**
+   * This scenario where truth class is called directly without any subject's subclass or {@link
+   * StandardSubjectBuilder} in the call stack should not happen in practical, testing anyway to
+   * make sure even if it does, the behavior should match expectation.
+   */
+  @Test
+  public void truthFrameWithOutSubject_shouldNotCleaned() {
+    Throwable throwable =
+        createThrowableWithStackTrace(
+            "com.google.random.Package",
+            // two or more truth frame will trigger string matching mechenism to got it collapsed
+            "com.google.common.truth.FailureMetadata",
+            "com.google.example.SomeClass");
+
+    StackTraceCleaner.cleanStackTrace(throwable);
+
+    assertThat(throwable.getStackTrace())
+        .isEqualTo(
+            new StackTraceElement[] {
+              createStackTraceElement("com.google.random.Package"),
+              createStackTraceElement("com.google.common.truth.FailureMetadata"),
+              createStackTraceElement("com.google.example.SomeClass"),
             });
   }
 

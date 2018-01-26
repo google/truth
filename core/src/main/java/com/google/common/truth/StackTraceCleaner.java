@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,21 +68,21 @@ final class StackTraceCleaner {
     }
     seenThrowables.add(throwable);
 
-    for (StackTraceElement stackTraceElement : throwable.getStackTrace()) {
-      StackTraceElementWrapper stackTraceElementWrapper =
-          new StackTraceElementWrapper(
-              stackTraceElement, StackFrameType.forClassName(stackTraceElement.getClassName()));
+    StackTraceElement[] stackFrames = throwable.getStackTrace();
 
+    int stackIndex = stackFrames.length - 1;
+    for (; stackIndex >= 0 && !isTruthEntrance(stackFrames[stackIndex]); stackIndex--) {
+      // Find first frame that enters Truth's world and strips all above
+    }
+    stackIndex += 1;
+
+    for (; stackIndex < stackFrames.length; stackIndex++) {
+      StackTraceElementWrapper stackTraceElementWrapper =
+          new StackTraceElementWrapper(stackFrames[stackIndex]);
       // Always keep frames that might be useful.
       if (stackTraceElementWrapper.getStackFrameType() == StackFrameType.NEVER_REMOVE) {
         endStreak();
         cleanedStackTrace.add(stackTraceElementWrapper);
-        continue;
-      }
-
-      // Filter out Truth framework frames from the top of the stack.
-      if (stackTraceElementWrapper.getStackFrameType() == StackFrameType.TRUTH_FRAMEWORK
-          && cleanedStackTrace.isEmpty()) {
         continue;
       }
 
@@ -160,6 +161,22 @@ final class StackTraceCleaner {
     currentStreakLength = 0;
   }
 
+  private static final ImmutableSet<Class<?>> TRUTH_ENTRANCE_CLASSES =
+      ImmutableSet.<Class<?>>of(Subject.class, StandardSubjectBuilder.class);
+
+  private static boolean isTruthEntrance(StackTraceElement stackTraceElement) {
+    Class<?> stackClass = Platform.classForName(stackTraceElement.getClassName());
+    if (stackClass == null) {
+      return false;
+    }
+    for (Class<?> knownEntranceClass : TRUTH_ENTRANCE_CLASSES) {
+      if (Platform.isAssignableFrom(knownEntranceClass, stackClass)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /**
    * Wrapper around a {@link StackTraceElement} for calculating and holding the metadata used to
    * clean the stack trace.
@@ -168,6 +185,11 @@ final class StackTraceCleaner {
 
     private final StackTraceElement stackTraceElement;
     private final StackFrameType stackFrameType;
+
+    /** Creates a wrapper with the given frame with frame type inferred from frame's class name. */
+    StackTraceElementWrapper(StackTraceElement stackTraceElement) {
+      this(stackTraceElement, StackFrameType.forClassName(stackTraceElement.getClassName()));
+    }
 
     /** Creates a wrapper with the given frame and the given frame type. */
     StackTraceElementWrapper(StackTraceElement stackTraceElement, StackFrameType stackFrameType) {
@@ -209,7 +231,6 @@ final class StackTraceCleaner {
    */
   private enum StackFrameType {
     NEVER_REMOVE("N/A"),
-    TRUTH_FRAMEWORK("Truth framework", "com.google.common.truth."),
     TEST_FRAMEWORK(
         "Testing framework",
         "junit.",

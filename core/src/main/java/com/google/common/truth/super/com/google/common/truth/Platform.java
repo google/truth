@@ -69,6 +69,22 @@ final class Platform {
     return throwable.getSuppressed();
   }
 
+  /*
+   * TODO(cpovirk): Instead of having StackTraceCleaner call into multiple Platform methods, create
+   * Platform.cleanStackTrace(), and make it a no-op under GWT, where stack-trace cleaning already
+   * doesn't work.
+   */
+
+  /** Returns the class object for the class name, always returning {@code null} under gwt. */
+  static Class<?> classForName(String fullyQualifiedClassName) {
+    return null;
+  }
+
+  /** Tests if the former class is assignable from the latter one, always return false under gwt. */
+  static boolean isAssignableFrom(Class<?> superClass, Class<?> subClass) {
+    return false;
+  }
+
   /** Always returns false. Stack traces will be cleaned by default. */
   static boolean isStackTraceCleaningDisabled() {
     return false;
