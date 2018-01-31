@@ -64,7 +64,7 @@ assertThat(googleColors)
     .inOrder();
 ```
 
-If you’re using an IDE with autocompletion, it will suggest list of assertions
+If you’re using an IDE with autocompletion, it will suggest a list of assertions
 you can make about the given type. If not, consult the [API docs]. For example,
 if you’re looking for assertions about a `Map`, look at the documentation for
 [`MapSubject`].
