@@ -622,12 +622,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     isOrdered(Ordering.natural());
   }
 
-  /** @deprecated Use {@link #isOrdered} instead. */
-  @Deprecated
-  public final void isPartiallyOrdered() {
-    isOrdered();
-  }
-
   /**
    * Fails if the iterable is not ordered, according to the given comparator. Ordered means that
    * each element in the iterable is greater than or equal to the element that preceded it.
@@ -646,6 +640,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             }
           }
         });
+  }
+
+  /** @deprecated Use {@link #isOrdered} instead. */
+  @Deprecated
+  public final void isPartiallyOrdered() {
+    isOrdered();
   }
 
   /** @deprecated Use {@link #isOrdered(Comparator)} instead. */
