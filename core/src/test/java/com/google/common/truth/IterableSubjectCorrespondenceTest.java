@@ -15,8 +15,13 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Functions.identity;
 import static com.google.common.collect.Collections2.permutations;
 import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.TestCorrespondences.PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
+import static com.google.common.truth.TestCorrespondences.PARSED_RECORD_ID;
+import static com.google.common.truth.TestCorrespondences.RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
+import static com.google.common.truth.TestCorrespondences.RECORD_ID;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
@@ -24,6 +29,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.truth.TestCorrespondences.Record;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
@@ -290,6 +296,113 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
             "Not true that <[101, 65, 35]> contains exactly one element that is within 10 of "
                 + "each element of <[30, 60, 90]>. It is missing an element that is within 10 of "
                 + "<90> and has unexpected elements <[101 (diff: 11)]>");
+  }
+
+  @Test
+  public void comparingElementsUsing_displayingDiffsPairedBy_1arg_containsExactlyElementsIn() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 200),
+            Record.create(3, 300),
+            Record.createWithoutId(900));
+    ImmutableList<Record> actual =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 211),
+            Record.create(4, 400),
+            Record.createWithoutId(999));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that has "
+                + "the same id as and a score is within 10 of each element of "
+                + "<[1/100, 2/200, 3/300, none/900]>. It is missing an element that has the same "
+                + "id as and a score is within 10 of each of <[2/200, 3/300, none/900]> and has "
+                + "unexpected elements <[2/211, 4/400, none/999]>");
+    // TODO(b/32960783): Update expected message to show the diff between the records with key=2.
+  }
+
+  @Test
+  public void comparingElementsUsing_displayingDiffsPairedBy_2arg_containsExactlyElementsIn() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 200),
+            Record.create(3, 300),
+            Record.createWithoutId(900));
+    ImmutableList<String> actual = ImmutableList.of("1/100", "2/211", "4/400", "none/999");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(PARSED_RECORD_ID, RECORD_ID)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that "
+                + "parses to a record that has the same id as and a score is within 10 of each "
+                + "element of <[1/100, 2/200, 3/300, none/900]>. It is missing an element that "
+                + "parses to a record that has the same id as and a score is within 10 of each of "
+                + "<[2/200, 3/300, none/900]> and has unexpected elements "
+                + "<[2/211, 4/400, none/999]>");
+    // TODO(b/32960783): Update expected message to show the diff between the records with key=2.
+  }
+
+  @Test
+  public void comparingElementsUsing_displayingDiffsPairedBy_containsExactlyElementsIn_passing() {
+    // The contract on displayingDiffsPairedBy requires that it should not affect whether the test
+    // passes or fails. This test asserts that a test which would pass on the basis of its
+    // correspondence still passes even if the user specifies a key function such that none of the
+    // elements match by key. (We advise against assertions where key function equality is stricter
+    // than correspondence, but we should still do the thing we promised we'd do in that case.)
+    ImmutableList<Double> expected = ImmutableList.of(1.0, 1.1, 1.2);
+    ImmutableList<Double> actual = ImmutableList.of(1.05, 1.15, 0.95);
+    assertThat(actual)
+        .comparingElementsUsing(tolerance(0.1))
+        .displayingDiffsPairedBy(identity())
+        .containsExactlyElementsIn(expected);
+  }
+
+  @Test
+  public void comparingElementsUsing_displayingDiffsPairedBy_containsExactlyElementsIn_notUnique() {
+    // The missing elements here are not uniquely keyed by the key function, so the key function
+    // should be ignored, but a warning about this should be appended to the failure message.
+    ImmutableList<Record> expected =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 200),
+            Record.create(3, 300),
+            Record.create(3, 301),
+            Record.createWithoutId(900));
+    ImmutableList<Record> actual =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 211),
+            Record.create(4, 400),
+            Record.createWithoutId(999));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that has "
+                + "the same id as and a score is within 10 of each element of "
+                + "<[1/100, 2/200, 3/300, 3/301, none/900]>. It is missing an element that has the "
+                + "same id as and a score is within 10 of each of <[2/200, 3/300, 3/301, none/900]>"
+                + " and has unexpected elements <[2/211, 4/400, none/999]>");
+    // TODO(b/32960783): Update expected message to show the warning about non-uniqueness.
   }
 
   @Test
