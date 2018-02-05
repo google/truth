@@ -29,6 +29,7 @@ import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 import static java.util.Arrays.asList;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
@@ -702,11 +703,108 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     private final IterableSubject subject;
     private final Correspondence<? super A, ? super E> correspondence;
+    private final Optional<Pairer> pairer;
 
     UsingCorrespondence(
         IterableSubject subject, Correspondence<? super A, ? super E> correspondence) {
       this.subject = checkNotNull(subject);
       this.correspondence = checkNotNull(correspondence);
+      this.pairer = Optional.absent();
+    }
+
+    UsingCorrespondence(
+        IterableSubject subject,
+        Correspondence<? super A, ? super E> correspondence,
+        Pairer pairer) {
+      this.subject = checkNotNull(subject);
+      this.correspondence = checkNotNull(correspondence);
+      this.pairer = Optional.of(pairer);
+    }
+
+    /**
+     * Specifies a way to pair up unexpected and missing elements in the message when an assertion
+     * fails. For example:
+     *
+     * <pre>{@code
+     * assertThat(actualRecords)
+     *     .comparingElementsUsing(RECORD_CORRESPONDENCE)
+     *     .displayingDiffsPairedBy(Record::getId)
+     *     .containsExactlyElementsIn(expectedRecords);
+     * }</pre>
+     *
+     * <p><b>Important</b>: The {code keyFunction} function must be able to accept both the actual
+     * and the unexpected elements, i.e. it must satisfy {@code Function<? super A, ? extends
+     * Object>} as well as {@code Function<? super E, ? extends Object>}. If that constraint is not
+     * met then a subsequent method may throw {@link ClassCastException}. Use the two-parameter
+     * overload if you need to specify different key functions for the actual and expected elements.
+     *
+     * <p>On assertions where it makes sense to do so, the elements are paired as follows: they are
+     * keyed by {@code keyFunction}, and if an unexpected element and a missing element have the
+     * same non-null key then the they are paired up. (Elements with null keys are not paired.) The
+     * failure message will show paired elements together, and a diff will be shown if the {@link
+     * Correspondence#formatDiff} method returns non-null.
+     *
+     * <p>The expected elements given in the assertion should be uniquely keyed by {@link
+     * keyFunction}. If multiple missing elements have the same key then the pairing will be
+     * skipped.
+     *
+     * <p>Useful key functions will have the property that key equality is less strict than the
+     * correspondence, i.e. given {@code actual} and {@code expected} values with keys {@code
+     * actualKey} and {@code expectedKey}, if {@code correspondence.compare(actual, expected)} is
+     * true then it is guaranteed that {@code actualKey} is equal to {@code expectedKey}, but there
+     * are cases where {@code actualKey} is equal to {@code expectedKey} but {@code
+     * correspondence.compare(actual, expected)} is false.
+     *
+     * <p>Note that calling this method makes no difference to whether a test passes or fails, it
+     * just improves the message if it fails.
+     */
+    // TODO(b/32960783): Make this actually do something, and make it public.
+    /* public */ UsingCorrespondence<A, E> displayingDiffsPairedBy(
+        Function<? super E, ? extends Object> keyFunction) {
+      @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
+      Function<? super A, ? extends Object> actualKeyFunction =
+          (Function<? super A, ? extends Object>) keyFunction;
+      return displayingDiffsPairedBy(actualKeyFunction, keyFunction);
+    }
+
+    /**
+     * Specifies a way to pair up unexpected and missing elements in the message when an assertion
+     * fails. For example:
+     *
+     * <pre>{@code
+     * assertThat(actualFoos)
+     *     .comparingElementsUsing(FOO_BAR_CORRESPONDENCE)
+     *     .displayingDiffsPairedBy(Foo::getId, Bar::getFooId)
+     *     .containsExactlyElementsIn(expectedBar);
+     * }</pre>
+     *
+     * <p>On assertions where it makes sense to do so, the elements are paired as follows: the
+     * unexpected elements are keyed by {@code actualKeyFunction}, the missing elements are keyed by
+     * {@code expectedKeyFunction}, and if an unexpected element and a missing element have the same
+     * non-null key then the they are paired up. (Elements with null keys are not paired.) The
+     * failure message will show paired elements together, and a diff will be shown if the {@link
+     * Correspondence#formatDiff} method returns non-null.
+     *
+     * <p>The expected elements given in the assertion should be uniquely keyed by {@link
+     * expectedKeyFunction}. If multiple missing elements have the same key then the pairing will be
+     * skipped.
+     *
+     * <p>Useful key functions will have the property that key equality is less strict than the
+     * correspondence, i.e. given {@code actual} and {@code expected} values with keys {@code
+     * actualKey} and {@code expectedKey}, if {@code correspondence.compare(actual, expected)} is
+     * true then it is guaranteed that {@code actualKey} is equal to {@code expectedKey}, but there
+     * are cases where {@code actualKey} is equal to {@code expectedKey} but {@code
+     * correspondence.compare(actual, expected)} is false.
+     *
+     * <p>Note that calling this method makes no difference to whether a test passes or fails, it
+     * just improves the message if it fails.
+     */
+    // TODO(b/32960783): Make this actually do something, and make it public.
+    /* public */ UsingCorrespondence<A, E> displayingDiffsPairedBy(
+        Function<? super A, ? extends Object> actualKeyFunction,
+        Function<? super E, ? extends Object> expectedKeyFunction) {
+      return new UsingCorrespondence<>(
+          subject, correspondence, new Pairer(actualKeyFunction, expectedKeyFunction));
     }
 
     /**
@@ -885,6 +983,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     private Optional<String> describeMissingOrExtra(
         List<? extends A> extra, List<? extends E> missing) {
+      // TODO(b/32960783): Use the pairer here, if present.
       if (missing.size() == 1 && extra.size() == 1) {
         @Nullable String diff = correspondence.formatDiff(extra.get(0), missing.get(0));
         if (diff != null) {
@@ -1259,6 +1358,21 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Iterable<A> getCastActual() {
       return (Iterable<A>) subject.actual();
+    }
+
+    /**
+     * A class which knows how to pair the actual and expected elements (see {@link
+     * #displayingDiffsPairedBy}).
+     */
+    private final class Pairer {
+
+      private final Function<? super A, ?> actualKeyFunction;
+      private final Function<? super E, ?> expectedKeyFunction;
+
+      Pairer(Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
+        this.actualKeyFunction = actualKeyFunction;
+        this.expectedKeyFunction = expectedKeyFunction;
+      }
     }
   }
 }
