@@ -23,7 +23,8 @@ import static com.google.common.truth.Expect.TestPhase.BEFORE;
 import static com.google.common.truth.Expect.TestPhase.DURING;
 
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.truth.Truth.AssertionErrorWithCause;
+import com.google.common.base.Throwables;
+import com.google.common.truth.Truth.SimpleAssertionError;
 import com.google.errorprone.annotations.concurrent.GuardedBy;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +117,9 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
 
     @Override
     public synchronized String toString() {
+      if (failures.isEmpty()) {
+        return "No expectation failed.";
+      }
       int numFailures = failures.size();
       StringBuilder message =
           new StringBuilder(
@@ -126,11 +130,27 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
         message.append("  ");
         message.append(count);
         message.append(". ");
-        message.append(showStackTrace ? getStackTraceAsString(failure) : failure.getMessage());
+        if (count == 1) {
+          message.append(showStackTrace ? getStackTraceAsString(failure) : failure.getMessage());
+        } else {
+          message.append(
+              showStackTrace
+                  ? printSubsequentFailure(failures.get(0).getStackTrace(), failure)
+                  : failure.getMessage());
+        }
         message.append("\n");
       }
 
       return message.toString();
+    }
+
+    private String printSubsequentFailure(
+        StackTraceElement[] baseTraceFrames, AssertionError toPrint) {
+      Exception e = new RuntimeException("__EXCEPTION_MARKER__", toPrint);
+      e.setStackTrace(baseTraceFrames);
+      String s = Throwables.getStackTraceAsString(e);
+      // Force single line reluctant matching
+      return s.replaceFirst("(?s)^.*?__EXCEPTION_MARKER__.*?Caused by:\\s+", "");
     }
 
     @GuardedBy("this")
@@ -158,7 +178,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     @GuardedBy("this")
     private void doLeaveRuleContext() {
       if (hasFailures()) {
-        throw new AssertionError(this);
+        throw SimpleAssertionError.createWithNoStack(this.toString());
       }
     }
 
@@ -169,8 +189,8 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
             caught instanceof AssumptionViolatedException
                 ? "Failures occurred before an assumption was violated"
                 : "Failures occurred before an exception was thrown while the test was running";
-        record(new AssertionErrorWithCause(message + ": " + caught, caught));
-        throw new AssertionError(this);
+        record(SimpleAssertionError.createWithNoStack(message + ": " + caught, caught));
+        throw SimpleAssertionError.createWithNoStack(this.toString());
       } else {
         throw caught;
       }

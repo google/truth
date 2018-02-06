@@ -23,7 +23,7 @@ import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import com.google.common.truth.Truth.AssertionErrorWithCause;
+import com.google.common.truth.Truth.SimpleAssertionError;
 import javax.annotation.Nullable;
 
 /**
@@ -127,11 +127,11 @@ public final class FailureMetadata {
   }
 
   void fail(String message) {
-    doFail(new AssertionErrorWithCause(addToMessage(message), rootCause()));
+    doFail(SimpleAssertionError.create(addToMessage(message), rootCause()));
   }
 
   void fail(String message, Throwable cause) {
-    doFail(new AssertionErrorWithCause(addToMessage(message), cause));
+    doFail(SimpleAssertionError.create(addToMessage(message), cause));
     // TODO(cpovirk): add rootCause() as a suppressed exception?
   }
 

@@ -99,7 +99,7 @@ final class Platform {
       try {
         initCause(cause);
       } catch (IllegalStateException alreadyInitializedBecauseOfHarmonyBug) {
-        // See Truth.AssertionErrorWithCause.
+        // See Truth.SimpleAssertionError.
       }
     }
 

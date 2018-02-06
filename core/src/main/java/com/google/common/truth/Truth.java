@@ -260,11 +260,15 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  static final class AssertionErrorWithCause extends AssertionError {
+  /**
+   * An {@code AssertionError} that (a) always supports a cause, even under old versions of Android
+   * and (b) omits "java.lang.AssertionError:" from the beginning of its toString() representation.
+   */
+  static final class SimpleAssertionError extends AssertionError {
     /** Separate cause field, in case initCause() fails. */
-    private final Throwable cause;
+    @Nullable private final Throwable cause;
 
-    AssertionErrorWithCause(String message, Throwable cause) {
+    private SimpleAssertionError(String message, @Nullable Throwable cause) {
       super(message);
       this.cause = cause;
 
@@ -276,6 +280,20 @@ public final class Truth {
         // when initCause() works, it isn't doing much for us here other than forcing future
         // initCause() attempts to fail loudly rather than be silently ignored.
       }
+    }
+
+    static SimpleAssertionError create(String message, Throwable cause) {
+      return new SimpleAssertionError(message, cause);
+    }
+
+    static SimpleAssertionError createWithNoStack(String message, Throwable cause) {
+      SimpleAssertionError error = new SimpleAssertionError(message, cause);
+      error.setStackTrace(new StackTraceElement[0]);
+      return error;
+    }
+
+    static SimpleAssertionError createWithNoStack(String message) {
+      return createWithNoStack(message, null);
     }
 
     @Override
