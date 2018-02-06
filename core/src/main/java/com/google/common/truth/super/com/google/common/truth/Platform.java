@@ -20,7 +20,7 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
-import com.google.common.truth.Truth.AssertionErrorWithCause;
+import com.google.common.truth.Truth.SimpleAssertionError;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
@@ -52,7 +52,7 @@ final class Platform {
 
   static AssertionError comparisonFailure(
       String message, String expected, String actual, Throwable cause) {
-    return new AssertionErrorWithCause(
+    return SimpleAssertionError.create(
         format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual), cause);
   }
 

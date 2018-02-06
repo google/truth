@@ -64,7 +64,7 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
    * Stripping doesn't actually work under j2cl (and presumably GWT):
    * StackTraceElement.getClassName() doesn't have real data. Some data is available in toString(),
    * albeit along the lines of
-   * "AssertionErrorWithCause.m_createError__java_lang_String_$pp_java_lang." StackTraceCleaner
+   * "SimpleAssertionError.m_createError__java_lang_String_$pp_java_lang." StackTraceCleaner
    * could maybe look through the toString() representations to count how many frames to strip, but
    * that's a bigger project. (While we're at it, we could strip the j2cl-specific boilerplate from
    * the _bottom_ of the stack, too.) And sadly, it's not necessarily as simple as looking at just
