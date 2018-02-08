@@ -106,7 +106,7 @@ public final class Re2jSubjects {
 
     /** Fails if the string does not contain a match on the given regex. */
     public void containsMatch(String regex) {
-      if (!containsMatch(actual(), regex)) {
+      if (!doContainsMatch(actual(), regex)) {
         failWithRawMessage("%s should have contained a match for <%s>", actualAsString(), regex);
       }
     }
@@ -122,7 +122,7 @@ public final class Re2jSubjects {
 
     /** Fails if the string contains a match on the given regex. */
     public void doesNotContainMatch(String regex) {
-      if (containsMatch(actual(), regex)) {
+      if (doContainsMatch(actual(), regex)) {
         failWithRawMessage(
             "%s should not have contained a match for <%s>", actualAsString(), regex);
       }
@@ -132,7 +132,7 @@ public final class Re2jSubjects {
       return "\"" + toBeWrapped + "\"";
     }
 
-    private static boolean containsMatch(String subject, String regex) {
+    private static boolean doContainsMatch(String subject, String regex) {
       return Pattern.compile(regex).matcher(subject).find();
     }
   }

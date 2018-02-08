@@ -143,11 +143,6 @@ public class ProtoSubjectTestBase {
     return expect.about(ProtoTruth.protos()).that(message);
   }
 
-  protected final ProtoSubject<?, Message> expectThatWithMessage(
-      String msg, @Nullable Message message) {
-    return expect.withMessage(msg).about(ProtoTruth.protos()).that(message);
-  }
-
   protected final <M extends Message> IterableOfProtosSubject<?, M, ?> expectThat(
       Iterable<M> messages) {
     return expect.about(ProtoTruth.protos()).that(messages);
@@ -161,6 +156,11 @@ public class ProtoSubjectTestBase {
   protected final <M extends Message> MultimapWithProtoValuesSubject<?, ?, M, ?> expectThat(
       Multimap<?, M> multimap) {
     return expect.about(ProtoTruth.protos()).that(multimap);
+  }
+
+  protected final ProtoSubject<?, Message> expectThatWithMessage(
+      String msg, @Nullable Message message) {
+    return expect.withMessage(msg).about(ProtoTruth.protos()).that(message);
   }
 
   /**

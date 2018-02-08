@@ -225,10 +225,6 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo("<(Object[][]) [[A], [5]]> unexpectedly equal to [[A], [5]].");
   }
 
-  private static Object[] objectArray(Object... ts) {
-    return ts;
-  }
-
   @Test
   public void stringArrayIsEqualTo() {
     assertThat(objectArray("A", "B")).isEqualTo(objectArray("A", "B"));
@@ -287,10 +283,6 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
                 + " It differs at index <[0][0]>");
   }
 
-  private static String[] objectArray(String... ts) {
-    return ts;
-  }
-
   @Test
   public void SetArrayIsEqualTo_Fail_UnequalOrdering() {
     expectFailure
@@ -342,6 +334,14 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(
             "<(int[][]) [[1, 2], [3], [4, 5, 6]]> unexpectedly "
                 + "equal to [[1, 2], [3], [4, 5, 6]].");
+  }
+
+  private static Object[] objectArray(Object... ts) {
+    return ts;
+  }
+
+  private static String[] objectArray(String... ts) {
+    return ts;
   }
 
   private static Set[] objectArray(Set... ts) {
