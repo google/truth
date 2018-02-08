@@ -793,6 +793,26 @@ import javax.annotation.concurrent.Immutable;
     return compare(message1, message2, reporter, stack);
   }
 
+  private boolean compare(
+      Message message1, Message message2, @Nullable Reporter reporter, List<SpecificField> stack) {
+    checkSameDescriptor(message1, message2);
+    if (message1 == message2 && (reporter == null || !reportMatches)) {
+      return true;
+    }
+    boolean unknownCompareResult = true;
+    if (!compareUnknownFields(message1, message2, reporter, stack)) {
+      if (reporter == null) {
+        return false;
+      }
+      unknownCompareResult = false;
+    }
+    Set<FieldDescriptor> message1Fields = message1.getAllFields().keySet();
+    Set<FieldDescriptor> message2Fields = message2.getAllFields().keySet();
+    return compareRequestedFields(
+            message1, message2, message1Fields, message2Fields, reporter, stack)
+        && unknownCompareResult;
+  }
+
   /**
    * Same as above, except comparing only the given sets of field descriptors,
    * using only the given message fields.
@@ -821,25 +841,6 @@ import javax.annotation.concurrent.Immutable;
     List<SpecificField> stack = Lists.newArrayList();
     return compareRequestedFields(message1, message2, message1Fields, message2Fields, reporter,
         stack);
-  }
-
-  private boolean compare(Message message1, Message message2, @Nullable Reporter reporter,
-      List<SpecificField> stack) {
-    checkSameDescriptor(message1, message2);
-    if (message1 == message2 && (reporter == null || !reportMatches)) {
-      return true;
-    }
-    boolean unknownCompareResult = true;
-    if (!compareUnknownFields(message1, message2, reporter, stack)) {
-      if (reporter == null) {
-        return false;
-      }
-      unknownCompareResult = false;
-    }
-    Set<FieldDescriptor> message1Fields = message1.getAllFields().keySet();
-    Set<FieldDescriptor> message2Fields = message2.getAllFields().keySet();
-    return compareRequestedFields(message1, message2, message1Fields, message2Fields, reporter,
-        stack) && unknownCompareResult;
   }
 
   private void checkSameDescriptor(Message message1, Message message2) {

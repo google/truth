@@ -36,7 +36,7 @@ final class StackTraceCleaner {
    * the bottom. Collapses the frames for various frameworks in the middle of the trace as well.
    */
   static void cleanStackTrace(Throwable throwable) {
-    new StackTraceCleaner(throwable).cleanStackTrace(Sets.<Throwable>newIdentityHashSet());
+    new StackTraceCleaner(throwable).clean(Sets.<Throwable>newIdentityHashSet());
   }
 
   private final Throwable throwable;
@@ -56,7 +56,7 @@ final class StackTraceCleaner {
   // TODO(user): Add this to the test runners so that we clean all stack traces, not just
   // those of exceptions originating in Truth.
   /** Cleans the stack trace on {@code throwable}, replacing the trace that was originally on it. */
-  private void cleanStackTrace(Set<Throwable> seenThrowables) {
+  private void clean(Set<Throwable> seenThrowables) {
     // Stack trace cleaning can be disabled using a system property.
     if (Platform.isStackTraceCleaningDisabled()) {
       return;
@@ -117,10 +117,10 @@ final class StackTraceCleaner {
 
     // Recurse on any related Throwables that are attached to this one
     if (throwable.getCause() != null) {
-      new StackTraceCleaner(throwable.getCause()).cleanStackTrace(seenThrowables);
+      new StackTraceCleaner(throwable.getCause()).clean(seenThrowables);
     }
     for (Throwable suppressed : Platform.getSuppressed(throwable)) {
-      new StackTraceCleaner(suppressed).cleanStackTrace(seenThrowables);
+      new StackTraceCleaner(suppressed).clean(seenThrowables);
     }
   }
 

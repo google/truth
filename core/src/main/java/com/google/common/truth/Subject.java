@@ -387,6 +387,28 @@ public class Subject<S extends Subject<S, T>, T> {
     failComparingToStrings(verb, actual(), other, other, false);
   }
 
+  /**
+   * Assembles a failure message and passes such to the FailureStrategy
+   *
+   * @param verb the check being asserted
+   * @param messageParts the expectations against which the subject is compared
+   */
+  protected final void fail(String verb, Object... messageParts) {
+    // For backwards binary compatibility
+    if (messageParts.length == 0) {
+      fail(verb);
+    } else if (messageParts.length == 1) {
+      fail(verb, messageParts[0]);
+    } else {
+      StringBuilder message = new StringBuilder("Not true that ");
+      message.append(actualAsString()).append(" ").append(verb);
+      for (Object part : messageParts) {
+        message.append(" <").append(part).append(">");
+      }
+      metadata.fail(message.toString());
+    }
+  }
+
   private void failComparingToStrings(
       String verb, Object actual, Object other, Object displayOther, boolean compareToStrings) {
     StringBuilder message =
@@ -408,28 +430,6 @@ public class Subject<S extends Subject<S, T>, T> {
       message.append(" (although their toString() representations are the same)");
     }
     metadata.fail(message.toString());
-  }
-
-  /**
-   * Assembles a failure message and passes such to the FailureStrategy
-   *
-   * @param verb the check being asserted
-   * @param messageParts the expectations against which the subject is compared
-   */
-  protected final void fail(String verb, Object... messageParts) {
-    // For backwards binary compatibility
-    if (messageParts.length == 0) {
-      fail(verb);
-    } else if (messageParts.length == 1) {
-      fail(verb, messageParts[0]);
-    } else {
-      StringBuilder message = new StringBuilder("Not true that ");
-      message.append(actualAsString()).append(" ").append(verb);
-      for (Object part : messageParts) {
-        message.append(" <").append(part).append(">");
-      }
-      metadata.fail(message.toString());
-    }
   }
 
   /**
