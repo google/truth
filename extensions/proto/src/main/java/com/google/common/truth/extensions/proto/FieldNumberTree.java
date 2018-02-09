@@ -20,8 +20,6 @@ import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
-import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.FieldDescriptorOrUnknown;
-import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.UnknownFieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;

@@ -29,7 +29,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.truth.extensions.proto.MessageDifferencer.IgnoreCriteria;
 import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
-import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.FieldDescriptorOrUnknown;
 import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.ShouldIgnore;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
