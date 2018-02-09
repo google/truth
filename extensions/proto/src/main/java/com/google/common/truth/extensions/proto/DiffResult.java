@@ -27,6 +27,7 @@ import com.google.common.collect.Sets;
 import com.google.common.truth.extensions.proto.RecursableDiffEntity.WithResultCode.Result;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.ForOverride;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
 import java.util.Set;
@@ -52,7 +53,10 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
    */
   @AutoValue
   abstract static class SingularField extends RecursableDiffEntity.WithResultCode {
-    /** The human-readable name of the field compared. */
+    /** The type information for this field. May be absent if result code is {@code IGNORED}. */
+    abstract Optional<FieldDescriptorOrUnknown> fieldDescriptorOrUnknown();
+
+    /** The display name for this field. May include an array-index specifier. */
     abstract String fieldName();
 
     /** The field under test. */
@@ -99,6 +103,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     abstract static class Builder {
       abstract Builder setResult(Result result);
 
+      abstract Builder setFieldDescriptorOrUnknown(
+          FieldDescriptorOrUnknown fieldDescriptorOrUnknown);
+
       abstract Builder setFieldName(String fieldName);
 
       abstract Builder setActual(Object actual);
@@ -132,6 +139,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
      */
     @AutoValue
     abstract static class PairResult extends RecursableDiffEntity.WithResultCode {
+      /** The {@link FieldDescriptor} describing the repeated field for this pair. */
+      abstract FieldDescriptor fieldDescriptor();
+
       /** The index of the element in the {@code actual()} list that was matched. */
       abstract Optional<Integer> actualFieldIndex();
 
@@ -165,6 +175,8 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
       abstract static class Builder {
         abstract Builder setResult(Result result);
 
+        abstract Builder setFieldDescriptor(FieldDescriptor fieldDescriptor);
+
         abstract Builder setActualFieldIndex(int actualFieldIndex);
 
         abstract Builder setExpectedFieldIndex(int expectedFieldIndex);
@@ -179,8 +191,8 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
       }
     }
 
-    /** The human-readable name of the field compared. */
-    abstract String fieldName();
+    /** The {@link FieldDescriptor} for this repeated field. */
+    abstract FieldDescriptor fieldDescriptor();
 
     /** The elements under test. */
     abstract ImmutableList<Object> actual();
@@ -207,7 +219,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     @CanIgnoreReturnValue
     @AutoValue.Builder
     abstract static class Builder {
-      abstract Builder setFieldName(String fieldName);
+      abstract Builder setFieldDescriptor(FieldDescriptor fieldDescriptor);
 
       abstract Builder setActual(Iterable<?> actual);
 

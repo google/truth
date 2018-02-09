@@ -21,9 +21,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import com.google.auto.value.AutoValue;
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -118,88 +116,6 @@ final class ProtoTruthMessageDifferencer {
     }
   }
 
-  @AutoValue
-  abstract static class UnknownFieldDescriptor {
-
-    enum Type {
-      VARINT {
-        @Override
-        public List<?> getValues(UnknownFieldSet.Field field) {
-          return field.getVarintList();
-        }
-      },
-      FIXED32 {
-        @Override
-        public List<?> getValues(UnknownFieldSet.Field field) {
-          return field.getFixed32List();
-        }
-      },
-      FIXED64 {
-        @Override
-        public List<?> getValues(UnknownFieldSet.Field field) {
-          return field.getFixed64List();
-        }
-      },
-      LENGTH_DELIMITED {
-        @Override
-        public List<?> getValues(UnknownFieldSet.Field field) {
-          return field.getLengthDelimitedList();
-        }
-      },
-      GROUP {
-        @Override
-        public List<?> getValues(UnknownFieldSet.Field field) {
-          return field.getGroupList();
-        }
-      };
-
-      private static final ImmutableList<Type> TYPES = ImmutableList.copyOf(values());
-
-      static ImmutableList<Type> all() {
-        return TYPES;
-      }
-
-      /** Returns the corresponding values from the given field. */
-      abstract List<?> getValues(UnknownFieldSet.Field field);
-    }
-
-    abstract int fieldNumber();
-
-    abstract Type type();
-
-    static UnknownFieldDescriptor create(int fieldNumber, Type type) {
-      return new AutoValue_ProtoTruthMessageDifferencer_UnknownFieldDescriptor(fieldNumber, type);
-    }
-
-    static ImmutableList<UnknownFieldDescriptor> descriptors(
-        int fieldNumber, UnknownFieldSet.Field field) {
-      ImmutableList.Builder<UnknownFieldDescriptor> builder = ImmutableList.builder();
-      for (Type type : Type.all()) {
-        if (!type.getValues(field).isEmpty()) {
-          builder.add(create(fieldNumber, type));
-        }
-      }
-      return builder.build();
-    }
-  }
-
-  @AutoValue
-  abstract static class FieldDescriptorOrUnknown {
-    abstract Optional<FieldDescriptor> fieldDescriptor();
-
-    abstract Optional<UnknownFieldDescriptor> unknownFieldDescriptor();
-
-    static FieldDescriptorOrUnknown fieldDescriptor(FieldDescriptor fieldDescriptor) {
-      return new AutoValue_ProtoTruthMessageDifferencer_FieldDescriptorOrUnknown(
-          Optional.of(fieldDescriptor), Optional.<UnknownFieldDescriptor>absent());
-    }
-
-    static FieldDescriptorOrUnknown unknown(UnknownFieldDescriptor unknownFieldDescriptor) {
-      return new AutoValue_ProtoTruthMessageDifferencer_FieldDescriptorOrUnknown(
-          Optional.<FieldDescriptor>absent(), Optional.of(unknownFieldDescriptor));
-    }
-  }
-
   private final FluentEqualityConfig config;
   private final Descriptor rootDescriptor;
 
@@ -242,7 +158,7 @@ final class ProtoTruthMessageDifferencer {
       // the sub-DiffResult winds up empty). This allows us support FieldScopeLogic disjunctions
       // without repeating recursive work.
       FieldDescriptorOrUnknown fieldDescriptorOrUnknown =
-          FieldDescriptorOrUnknown.fieldDescriptor(fieldDescriptor);
+          FieldDescriptorOrUnknown.fromFieldDescriptor(fieldDescriptor);
       ShouldIgnore shouldIgnore =
           fieldScopeLogic.shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown);
       if (shouldIgnore == ShouldIgnore.YES) {
@@ -294,8 +210,8 @@ final class ProtoTruthMessageDifferencer {
                 expectedFields.get(fieldDescriptor),
                 actual.getDefaultInstanceForType().getField(fieldDescriptor),
                 shouldIgnore.shouldMaybeIgnore(),
-                name(fieldDescriptor),
                 fieldDescriptor,
+                name(fieldDescriptor),
                 fieldScopeLogic.subLogic(rootDescriptor, fieldDescriptorOrUnknown)));
       }
     }
@@ -347,7 +263,7 @@ final class ProtoTruthMessageDifferencer {
       FieldScopeLogic mapFieldScopeLogic) {
     FieldDescriptor valueFieldDescriptor = mapFieldDescriptor.getMessageType().findFieldByNumber(2);
     FieldDescriptorOrUnknown valueFieldDescriptorOrUnknown =
-        FieldDescriptorOrUnknown.fieldDescriptor(valueFieldDescriptor);
+        FieldDescriptorOrUnknown.fromFieldDescriptor(valueFieldDescriptor);
     FieldScopeLogic valueFieldScopeLogic =
         mapFieldScopeLogic.subLogic(rootDescriptor, valueFieldDescriptorOrUnknown);
 
@@ -369,8 +285,8 @@ final class ProtoTruthMessageDifferencer {
               expectedValue,
               /*defaultValue=*/ null,
               shouldIgnoreValue.shouldMaybeIgnore(),
-              indexedName(mapFieldDescriptor, key),
               valueFieldDescriptor,
+              indexedName(mapFieldDescriptor, key),
               valueFieldScopeLogic));
     }
 
@@ -385,7 +301,7 @@ final class ProtoTruthMessageDifferencer {
       FieldScopeLogic fieldScopeLogic) {
     RepeatedField.Builder builder =
         RepeatedField.newBuilder()
-            .setFieldName(name(fieldDescriptor))
+            .setFieldDescriptor(fieldDescriptor)
             .setActual(actualList)
             .setExpected(expectedList);
 
@@ -450,12 +366,14 @@ final class ProtoTruthMessageDifferencer {
             expected,
             /*defaultValue=*/ null,
             shouldMaybeIgnore,
-            "<no field path>",
             fieldDescriptor,
+            "<no field path>",
             fieldScopeLogic);
 
     RepeatedField.PairResult.Builder pairResultBuilder =
-        RepeatedField.PairResult.newBuilder().setResult(comparison.result());
+        RepeatedField.PairResult.newBuilder()
+            .setResult(comparison.result())
+            .setFieldDescriptor(fieldDescriptor);
     if (actual != null) {
       pairResultBuilder.setActual(actual).setActualFieldIndex(actualFieldIndex);
     }
@@ -501,8 +419,8 @@ final class ProtoTruthMessageDifferencer {
               expected,
               /*defaultValue=*/ null,
               shouldMaybeIgnore,
-              indexedName(fieldDescriptor, i),
               fieldDescriptor,
+              indexedName(fieldDescriptor, i),
               fieldScopeLogic));
     }
 
@@ -514,8 +432,8 @@ final class ProtoTruthMessageDifferencer {
       @Nullable Object expected,
       @Nullable Object defaultValue,
       boolean shouldMaybeIgnore,
-      String fieldName,
       FieldDescriptor fieldDescriptor,
+      String fieldName,
       FieldScopeLogic fieldScopeLogic) {
     if (fieldDescriptor.getJavaType() == JavaType.MESSAGE) {
       return compareSingularMessage(
@@ -523,11 +441,12 @@ final class ProtoTruthMessageDifferencer {
           (Message) expected,
           (Message) defaultValue,
           shouldMaybeIgnore,
+          fieldDescriptor,
           fieldName,
           fieldScopeLogic);
     } else {
       checkState(!shouldMaybeIgnore, "MAYBE is not a valid ShouldIgnore for primitives.");
-      return compareSingularPrimitive(actual, expected, defaultValue, fieldName);
+      return compareSingularPrimitive(actual, expected, defaultValue, fieldDescriptor, fieldName);
     }
   }
 
@@ -548,6 +467,7 @@ final class ProtoTruthMessageDifferencer {
       @Nullable Message expected,
       @Nullable Message defaultValue,
       boolean shouldMaybeIgnore,
+      FieldDescriptor fieldDescriptor,
       String fieldName,
       FieldScopeLogic fieldScopeLogic) {
     Result.Builder result = Result.builder();
@@ -577,7 +497,11 @@ final class ProtoTruthMessageDifferencer {
 
     // Report the full breakdown.
     SingularField.Builder singularFieldBuilder =
-        SingularField.newBuilder().setFieldName(fieldName).setResult(result.build());
+        SingularField.newBuilder()
+            .setFieldDescriptorOrUnknown(
+                FieldDescriptorOrUnknown.fromFieldDescriptor(fieldDescriptor))
+            .setFieldName(fieldName)
+            .setResult(result.build());
     if (actual != null) {
       singularFieldBuilder.setActual(actual);
     }
@@ -594,6 +518,7 @@ final class ProtoTruthMessageDifferencer {
       @Nullable Object actual,
       @Nullable Object expected,
       @Nullable Object defaultValue,
+      FieldDescriptor fieldDescriptor,
       String fieldName) {
     Result.Builder result = Result.builder();
 
@@ -609,7 +534,11 @@ final class ProtoTruthMessageDifferencer {
     result.markModifiedIf(!Objects.equal(actual, expected));
 
     SingularField.Builder singularFieldBuilder =
-        SingularField.newBuilder().setFieldName(fieldName).setResult(result.build());
+        SingularField.newBuilder()
+            .setFieldDescriptorOrUnknown(
+                FieldDescriptorOrUnknown.fromFieldDescriptor(fieldDescriptor))
+            .setFieldName(fieldName)
+            .setResult(result.build());
     if (actual != null) {
       singularFieldBuilder.setActual(actual);
     }
@@ -640,7 +569,7 @@ final class ProtoTruthMessageDifferencer {
         UnknownFieldDescriptor unknownFieldDescriptor =
             UnknownFieldDescriptor.create(fieldNumber, type);
         FieldDescriptorOrUnknown fieldDescriptorOrUnknown =
-            FieldDescriptorOrUnknown.unknown(unknownFieldDescriptor);
+            FieldDescriptorOrUnknown.fromUnknown(unknownFieldDescriptor);
         ShouldIgnore shouldIgnore =
             fieldScopeLogic.shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown);
         if (shouldIgnore == ShouldIgnore.YES) {
@@ -679,8 +608,8 @@ final class ProtoTruthMessageDifferencer {
               actual,
               expected,
               shouldMaybeIgnore,
-              indexedName(unknownFieldDescriptor, i),
               unknownFieldDescriptor,
+              indexedName(unknownFieldDescriptor, i),
               fieldScopeLogic));
     }
 
@@ -691,19 +620,20 @@ final class ProtoTruthMessageDifferencer {
       @Nullable Object actual,
       @Nullable Object expected,
       boolean shouldMaybeIgnore,
-      String fieldName,
       UnknownFieldDescriptor unknownFieldDescriptor,
+      String fieldName,
       FieldScopeLogic fieldScopeLogic) {
     if (unknownFieldDescriptor.type() == UnknownFieldDescriptor.Type.GROUP) {
       return compareUnknownFieldSet(
           (UnknownFieldSet) actual,
           (UnknownFieldSet) expected,
           shouldMaybeIgnore,
+          unknownFieldDescriptor,
           fieldName,
           fieldScopeLogic);
     } else {
       checkState(!shouldMaybeIgnore, "MAYBE is not a valid ShouldIgnore for primitives.");
-      return compareUnknownPrimitive(actual, expected, fieldName);
+      return compareUnknownPrimitive(actual, expected, unknownFieldDescriptor, fieldName);
     }
   }
 
@@ -711,6 +641,7 @@ final class ProtoTruthMessageDifferencer {
       @Nullable UnknownFieldSet actual,
       @Nullable UnknownFieldSet expected,
       boolean shouldMaybeIgnore,
+      UnknownFieldDescriptor unknownFieldDescriptor,
       String fieldName,
       FieldScopeLogic fieldScopeLogic) {
     Result.Builder result = Result.builder();
@@ -735,7 +666,11 @@ final class ProtoTruthMessageDifferencer {
 
     // Report the full breakdown.
     SingularField.Builder singularFieldBuilder =
-        SingularField.newBuilder().setFieldName(fieldName).setResult(result.build());
+        SingularField.newBuilder()
+            .setFieldDescriptorOrUnknown(
+                FieldDescriptorOrUnknown.fromUnknown(unknownFieldDescriptor))
+            .setFieldName(fieldName)
+            .setResult(result.build());
     if (actual != null) {
       singularFieldBuilder.setActual(actual);
     }
@@ -749,7 +684,10 @@ final class ProtoTruthMessageDifferencer {
   }
 
   private SingularField compareUnknownPrimitive(
-      @Nullable Object actual, @Nullable Object expected, String fieldName) {
+      @Nullable Object actual,
+      @Nullable Object expected,
+      UnknownFieldDescriptor unknownFieldDescriptor,
+      String fieldName) {
     Result.Builder result = Result.builder();
 
     result.markRemovedIf(actual == null);
@@ -757,7 +695,11 @@ final class ProtoTruthMessageDifferencer {
     result.markModifiedIf(!Objects.equal(actual, expected));
 
     SingularField.Builder singularFieldBuilder =
-        SingularField.newBuilder().setFieldName(fieldName).setResult(result.build());
+        SingularField.newBuilder()
+            .setFieldDescriptorOrUnknown(
+                FieldDescriptorOrUnknown.fromUnknown(unknownFieldDescriptor))
+            .setFieldName(fieldName)
+            .setResult(result.build());
     if (actual != null) {
       singularFieldBuilder.setActual(actual);
     }
@@ -771,12 +713,12 @@ final class ProtoTruthMessageDifferencer {
     return fieldDescriptor.isExtension() ? "[" + fieldDescriptor + "]" : fieldDescriptor.getName();
   }
 
-  private static String indexedName(FieldDescriptor fieldDescriptor, Object key) {
-    return name(fieldDescriptor) + "[" + key + "]";
-  }
-
   private static String name(UnknownFieldDescriptor unknownFieldDescriptor) {
     return String.valueOf(unknownFieldDescriptor.fieldNumber());
+  }
+
+  private static String indexedName(FieldDescriptor fieldDescriptor, Object key) {
+    return name(fieldDescriptor) + "[" + key + "]";
   }
 
   private static String indexedName(UnknownFieldDescriptor unknownFieldDescriptor, int index) {
