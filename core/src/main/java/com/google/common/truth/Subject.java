@@ -136,41 +136,31 @@ public class Subject<S extends Subject<S, T>, T> {
    *       Integer}, or {@code Long}) and they are numerically equal when converted to {@code Long}.
    * </ul>
    */
-  public void isEqualTo(@Nullable Object other) {
-    doEqualCheck(actual(), other, true);
+  public void isEqualTo(@Nullable Object expected) {
+    if (!actualEquals(expected)) {
+      failEqualityCheck("is equal to", expected);
+    }
   }
 
   /**
    * Fails if the subject is equal to the given object. The meaning of equality is the same as for
    * the {@link #isEqualTo} method.
    */
-  public void isNotEqualTo(@Nullable Object other) {
-    doEqualCheck(actual(), other, false);
+  public void isNotEqualTo(@Nullable Object unexpected) {
+    if (actualEquals(unexpected)) {
+      fail("is not equal to", unexpected);
+    }
   }
 
-  private void doEqualCheck(
-      @Nullable Object rawActual, @Nullable Object rawOther, boolean expectEqual) {
-    Object actual;
-    Object other;
-    boolean actualEqual;
-    if (isIntegralBoxedPrimitive(rawActual) && isIntegralBoxedPrimitive(rawOther)) {
-      actual = integralValue(rawActual);
-      other = integralValue(rawOther);
-      actualEqual = Objects.equal(actual, other);
+  private boolean actualEquals(@Nullable Object expected) {
+    if (isIntegralBoxedPrimitive(actual()) && isIntegralBoxedPrimitive(expected)) {
+      return Objects.equal(integralValue(actual()), integralValue(expected));
+    } else if (actual() instanceof Double && expected instanceof Double) {
+      return Double.compare((Double) actual(), (Double) expected) == 0;
+    } else if (actual() instanceof Float && expected instanceof Float) {
+      return Float.compare((Float) actual(), (Float) expected) == 0;
     } else {
-      actual = rawActual;
-      other = rawOther;
-      if (rawActual instanceof Double && rawOther instanceof Double) {
-        actualEqual = Double.compare((Double) rawActual, (Double) rawOther) == 0;
-      } else if (rawActual instanceof Float && rawOther instanceof Float) {
-        actualEqual = Float.compare((Float) rawActual, (Float) rawOther) == 0;
-      } else {
-        actualEqual = Objects.equal(actual, other);
-      }
-    }
-    if (actualEqual != expectEqual) {
-      failComparingToStrings(
-          expectEqual ? "is equal to" : "is not equal to", actual, other, rawOther, expectEqual);
+      return Objects.equal(actual(), expected);
     }
   }
 
@@ -195,7 +185,7 @@ public class Subject<S extends Subject<S, T>, T> {
   /** Fails if the subject is not the same instance as the given object. */
   public void isSameAs(@Nullable @CompatibleWith("T") Object other) {
     if (actual() != other) {
-      failComparingToStrings("is the same instance as", actual(), other, other, true);
+      failEqualityCheck("is the same instance as", other);
     }
   }
 
@@ -373,18 +363,17 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param check the check being asserted
    */
   protected final void fail(String check) {
-    metadata.fail("Not true that " + actualAsString() + " " + check);
+    fail(check, new Object[0]);
   }
 
   /**
-   * Assembles a failure message and passes such to the FailureStrategy. Also performs
-   * disambiguation if the subject and {@code other} have the same toString()'s.
+   * Assembles a failure message and passes such to the FailureStrategy
    *
    * @param verb the check being asserted
    * @param other the value against which the subject is compared
    */
   protected final void fail(String verb, Object other) {
-    failComparingToStrings(verb, actual(), other, other, false);
+    fail(verb, new Object[] {other});
   }
 
   /**
@@ -394,39 +383,31 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param messageParts the expectations against which the subject is compared
    */
   protected final void fail(String verb, Object... messageParts) {
-    // For backwards binary compatibility
-    if (messageParts.length == 0) {
-      fail(verb);
-    } else if (messageParts.length == 1) {
-      fail(verb, messageParts[0]);
-    } else {
-      StringBuilder message = new StringBuilder("Not true that ");
-      message.append(actualAsString()).append(" ").append(verb);
-      for (Object part : messageParts) {
-        message.append(" <").append(part).append(">");
-      }
-      metadata.fail(message.toString());
+    StringBuilder message = new StringBuilder("Not true that ");
+    message.append(actualAsString()).append(" ").append(verb);
+    for (Object part : messageParts) {
+      message.append(" <").append(part).append(">");
     }
+    metadata.fail(message.toString());
   }
 
-  private void failComparingToStrings(
-      String verb, Object actual, Object other, Object displayOther, boolean compareToStrings) {
+  private void failEqualityCheck(String verb, Object expected) {
     StringBuilder message =
         new StringBuilder("Not true that ").append(actualAsString()).append(" ");
     // If the actual and parts aren't null, and they have equal toString()'s but different
     // classes, we need to disambiguate them.
-    boolean neitherNull = (other != null) && (actual != null);
-    boolean sameToStrings = actualCustomStringRepresentation().equals(String.valueOf(other));
+    boolean neitherNull = (expected != null) && (actual() != null);
+    boolean sameToStrings = actualCustomStringRepresentation().equals(String.valueOf(expected));
     boolean needsClassDisambiguation =
-        neitherNull && sameToStrings && !actual.getClass().equals(other.getClass());
+        neitherNull && sameToStrings && !actual().getClass().equals(expected.getClass());
     if (needsClassDisambiguation) {
-      message.append("(").append(actual.getClass().getName()).append(") ");
+      message.append("(").append(actual().getClass().getName()).append(") ");
     }
-    message.append(verb).append(" <").append(displayOther).append(">");
+    message.append(verb).append(" <").append(expected).append(">");
     if (needsClassDisambiguation) {
-      message.append(" (").append(other.getClass().getName()).append(")");
+      message.append(" (").append(expected.getClass().getName()).append(")");
     }
-    if (!needsClassDisambiguation && sameToStrings && compareToStrings) {
+    if (!needsClassDisambiguation && sameToStrings) {
       message.append(" (although their toString() representations are the same)");
     }
     metadata.fail(message.toString());
