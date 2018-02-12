@@ -15,15 +15,14 @@ from [FEST]. Truth is significantly different from [Hamcrest], which uses
 ## Why create Truth when AssertJ already exists?
 
 In other words: Maybe Truth is better for some use cases, but why not just
-improve AssertJ instead? The reason is historical: AssertJ didn't exist when we
-started Truth. By the time it was created, we'd begun using Truth widely
-internally, and we'd added some features that would be difficult to retrofit
+improve AssertJ instead? The reason is historical: AssertJ didn't exist when
+Truth was started. By the time it was created, Truth was already widely used
+internally, and some features were added that would be difficult to retrofit
 onto AssertJ.
 
 ## Comparison vs. Hamcrest
 
-Because Truth and Hamcrest differ so significantly, I'll cover only the main
-points:
+Truth and Hamcrest differ significantly, but here are the main differences:
 
 *   Truth assertions are made with chained method calls, so IDEs can suggest the
     appropriate assertions for a given object.
@@ -36,18 +35,17 @@ points:
 ## Comparison vs. AssertJ
 
 Truth and AssertJ are very similar. If you're happy with one, you probably
-wouldn't benefit from switching to the other. So I provide this comparison
-mostly for people who don't currently use either. I'll try to be objective, but
-I acknolwedge that I'm in a better position to explain our own decisions than
-AssertJ's. If you identify something wrong, missing, or misleading, please let
-us know.
+wouldn't benefit from switching to the other. So this comparison is mostly
+useful for people who don't currently use either. It aims to be objective,
+but may be better explaining Truth's decisions than AssertJ's.
+If you identify something wrong, missing, or misleading, please let us know.
 
 ### Stability
 
 AssertJ, while it continues to add APIs, rarely removes them anymore.
 
-Truth has not reached 1.0. We're still making changes, particularly in removing
-and reworking our extensibility APIs.
+Truth has not reached 1.0 and is still undergoing changes, particularly in
+removing and reworking the extensibility APIs.
 
 ### Number of assertion methods
 
@@ -65,9 +63,9 @@ also mean more convenience and power.
 
 ### Failure messages
 
-I think that AssertJ generally does this better at the moment. It follows an
+Probably AssertJ is generally doing this better at the moment. It follows an
 "expected: ... but was: ..." model, while Truth follows a "Not true that ... was
-..." model. We plan to improve this, but AssertJ is better today.
+..." model. There are plans to improve this, but AssertJ is better today.
 
 ### Chaining
 
@@ -98,8 +96,7 @@ assertThat(multimap).valuesForKey(x).containsExactly(y, z);
 ```
 
 Our philosophy has been that it's clearer to support only one kind of chaining,
-but I suspect that the AssertJ style is generally clear, too, and it can be
-convenient.
+but the AssertJ style is supposedly generally clear and can be convenient.
 
 ### Assertion methods for other libraries' types
 
@@ -109,19 +106,19 @@ AssertJ provides assertions for several libraries' types. As of this writing,
 Truth includes assertions for [Guava] and [Protocol Buffers].
 
 Both have third-party extensions, such as for Android types
-([AssertJ][AssertJ-Android], [Truth][Truth-Android]). I don't have a feel for
-the overall size of each ecosystem.
+([AssertJ][AssertJ-Android], [Truth][Truth-Android]).
+It's unclear how large each ecosystem is overall.
 
 ### Platform support (Android, GWT)
 
 AssertJ supports Android (though I had to use 2.x because the dexer rejected
-3.x, even when I used only `Java6Assertions`). Possibly this was an issue with
-my build setup.
+3.x, even when using only `Java6Assertions`). Possibly this was an issue with
+the build setup.
 
 Truth supports Android in all its versions. The downside is that it requires you
 to look in a separate class for Java 8 assertions.
 
-Truth also supports [GWT], but we haven't made the necessary artifacts available
+Truth also supports [GWT], but the necessary artifacts haven't been made available
 outside Google. If you'd be interested in using open-source Truth under GWT,
 [let us know][bug].
 
@@ -133,10 +130,10 @@ Both support this. A few notes on differences:
     convention) `return this;` at the end of each method; Truth requires a
     method that returns a `Subject.Factory` (generally implemented as a method
     reference). Both require some verbose generics (and even an additional
-    abstract class if you want to properly support subclassing), though we have
-    plans to improve things in Truth.
+    abstract class if you want to properly support subclassing), though there
+    are plans to improve things in Truth.
 -   Truth's `Subject` class provides some convenience methods that build a
-    failure message for you. (But we need to improve the format of that message,
+    failure message for you. (But the format of that message needs to be improved,
     so the methods will change soon.)
 -   AssertJ offers [a tool][AssertJ-generator] to generate the methods for you.
 
@@ -153,7 +150,7 @@ AssertJ does. It additionally supports [assumptions] and custom
 [`FailureStrategy`] implementations. This support also underlies its [utility
 for testing user-defined assertion methods][`ExpectFailure`].
 
-I had some problems with AssertJ's soft assertions:
+There are some problems with AssertJ's soft assertions:
 
 -   They don't work with chained assertions like `last()`. Specifically, they
     fall back to behaving as fail-fast assertions.
@@ -185,7 +182,7 @@ though your test is probably buggy. Under AssertJ, it doesn't compile.
 
 AssertJ supports Hamcrest-style ["conditions."][conditions]
 
-Truth does not. We encourage people to instead write [custom `Subject`
+Truth does not. It's encouraged to instead write [custom `Subject`
 implementations](extension), which IDEs can better surface during autocompletion.
 
 ### And more
@@ -305,4 +302,3 @@ JUnit     | n/a
 [conditions]: https://joel-costigliola.github.io/assertj/assertj-core-conditions.html
 [reflective field comparisons]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#field-by-field-comparison
 [bug]: https://github.com/google/truth/issues/new
-
