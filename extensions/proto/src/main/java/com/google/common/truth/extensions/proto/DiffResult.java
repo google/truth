@@ -29,7 +29,9 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.ForOverride;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import com.google.protobuf.TextFormat;
 import com.google.protobuf.UnknownFieldSet;
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -82,11 +84,72 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
      */
     abstract Optional<UnknownFieldSetDiff> unknownsBreakdown();
 
+    /** Returns {@code actual().get()}, or {@code expected().get()}, whichever is available. */
+    @Memoized
+    Object actualOrExpected() {
+      return actual().or(expected()).get();
+    }
+
     @Memoized
     @Override
     Iterable<? extends RecursableDiffEntity> childEntities() {
       return ImmutableList.copyOf(
           Iterables.concat(breakdown().asSet(), unknownsBreakdown().asSet()));
+    }
+
+    @Override
+    final void printContents(boolean includeMatches, String fieldPrefix, StringBuilder sb) {
+      if (!includeMatches && isMatched()) {
+        return;
+      }
+
+      fieldPrefix = newFieldPrefix(fieldPrefix, fieldName());
+      switch (result()) {
+        case ADDED:
+          sb.append("added: ").append(fieldPrefix).append(": ");
+          if (actual().get() instanceof Message) {
+            sb.append("\n").append(actual().get());
+          } else {
+            sb.append(valueString(fieldDescriptorOrUnknown().get(), actual().get())).append("\n");
+          }
+          return;
+        case IGNORED:
+          sb.append("ignored: ").append(fieldPrefix).append("\n");
+          return;
+        case MATCHED:
+          sb.append("matched: ").append(fieldPrefix);
+          if (actualOrExpected() instanceof Message) {
+            sb.append("\n");
+            printChildContents(includeMatches, fieldPrefix, sb);
+          } else {
+            sb.append(": ")
+                .append(valueString(fieldDescriptorOrUnknown().get(), actualOrExpected()))
+                .append("\n");
+          }
+          return;
+        case MODIFIED:
+          sb.append("modified: ").append(fieldPrefix);
+          if (actualOrExpected() instanceof Message) {
+            sb.append("\n");
+            printChildContents(includeMatches, fieldPrefix, sb);
+          } else {
+            sb.append(": ")
+                .append(valueString(fieldDescriptorOrUnknown().get(), expected().get()))
+                .append(" -> ")
+                .append(valueString(fieldDescriptorOrUnknown().get(), actual().get()))
+                .append("\n");
+          }
+          return;
+        case REMOVED:
+          sb.append("deleted: ").append(fieldPrefix).append(": ");
+          if (expected().get() instanceof Message) {
+            sb.append("\n").append(expected().get());
+          } else {
+            sb.append(valueString(fieldDescriptorOrUnknown().get(), expected().get())).append("\n");
+          }
+          return;
+      }
+      throw new AssertionError("Impossible: " + result());
     }
 
     static SingularField ignored(String fieldName) {
@@ -166,6 +229,101 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
         return breakdown().asSet();
       }
 
+      /** Returns true if actual() and expected() contain Message types. */
+      @Memoized
+      boolean isMessage() {
+        return actual().orNull() instanceof Message || expected().orNull() instanceof Message;
+      }
+
+      private static String indexed(String fieldPrefix, Optional<Integer> fieldIndex) {
+        String index = fieldIndex.isPresent() ? fieldIndex.get().toString() : "?";
+        return fieldPrefix + "[" + index + "]";
+      }
+
+      @Override
+      final void printContents(boolean includeMatches, String fieldPrefix, StringBuilder sb) {
+        printContentsForRepeatedField(
+            /* includeSelfAlways = */ false, includeMatches, fieldPrefix, sb);
+      }
+
+      // When printing results for a repeated field, we want to print matches even if
+      // !includeMatches if there's a mismatch on the repeated field itself, but not recursively.
+      // So we define a second printing method for use by the parent.
+      final void printContentsForRepeatedField(
+          boolean includeSelfAlways, boolean includeMatches, String fieldPrefix, StringBuilder sb) {
+        if (!includeSelfAlways && !includeMatches && isMatched()) {
+          return;
+        }
+
+        switch (result()) {
+          case ADDED:
+            sb.append("added: ").append(indexed(fieldPrefix, actualFieldIndex())).append(": ");
+            if (isMessage()) {
+              sb.append("\n").append(actual().get());
+            } else {
+              sb.append(valueString(fieldDescriptor(), actual().get())).append("\n");
+            }
+            return;
+          case IGNORED:
+            sb.append("ignored: ");
+            if (actualFieldIndex().equals(expectedFieldIndex())) {
+              sb.append(indexed(fieldPrefix, actualFieldIndex()));
+            } else {
+              sb.append(indexed(fieldPrefix, expectedFieldIndex()))
+                  .append(" -> ")
+                  .append(indexed(fieldPrefix, actualFieldIndex()));
+            }
+            sb.append("\n");
+            return;
+          case MATCHED:
+            if (actualFieldIndex().get().equals(expectedFieldIndex().get())) {
+              sb.append("matched: ").append(indexed(fieldPrefix, actualFieldIndex()));
+            } else {
+              sb.append("moved: ")
+                  .append(indexed(fieldPrefix, expectedFieldIndex()))
+                  .append(" -> ")
+                  .append(indexed(fieldPrefix, actualFieldIndex()));
+            }
+            sb.append(":");
+            if (isMessage()) {
+              sb.append("\n");
+              printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
+            } else {
+              sb.append(" ").append(valueString(fieldDescriptor(), actual().get())).append("\n");
+            }
+            return;
+          case MODIFIED:
+            sb.append("modified: ");
+            if (actualFieldIndex().get().equals(expectedFieldIndex().get())) {
+              sb.append(indexed(fieldPrefix, actualFieldIndex()));
+            } else {
+              sb.append(indexed(fieldPrefix, expectedFieldIndex()))
+                  .append(" -> ")
+                  .append(indexed(fieldPrefix, actualFieldIndex()));
+            }
+            sb.append(":");
+            if (isMessage()) {
+              sb.append("\n");
+              printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
+            } else {
+              sb.append(" ")
+                  .append(valueString(fieldDescriptor(), expected().get()))
+                  .append(" -> ")
+                  .append(valueString(fieldDescriptor(), actual().get()));
+            }
+            return;
+          case REMOVED:
+            sb.append("deleted: ").append(indexed(fieldPrefix, expectedFieldIndex())).append(": ");
+            if (isMessage()) {
+              sb.append("\n").append(expected().get());
+            } else {
+              sb.append(valueString(fieldDescriptor(), expected().get())).append("\n");
+            }
+            return;
+        }
+        throw new AssertionError("Impossible: " + result());
+      }
+
       static Builder newBuilder() {
         return new AutoValue_DiffResult_RepeatedField_PairResult.Builder();
       }
@@ -210,6 +368,15 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     @Override
     Iterable<? extends RecursableDiffEntity> childEntities() {
       return pairResults();
+    }
+
+    @Override
+    final void printContents(boolean includeMatches, String fieldPrefix, StringBuilder sb) {
+      fieldPrefix = newFieldPrefix(fieldPrefix, fieldDescriptor().getName());
+      for (PairResult pairResult : pairResults()) {
+        pairResult.printContentsForRepeatedField(
+            /* includeSelfAlways = */ !isMatched(), includeMatches, fieldPrefix, sb);
+      }
     }
 
     static Builder newBuilder() {
@@ -259,6 +426,19 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     @Override
     Iterable<? extends RecursableDiffEntity> childEntities() {
       return singularFields().values();
+    }
+
+    @Override
+    final void printContents(boolean includeMatches, String fieldPrefix, StringBuilder sb) {
+      if (!includeMatches && isMatched()) {
+        return;
+      }
+
+      for (int fieldNumber : singularFields().keySet()) {
+        for (SingularField singularField : singularFields().get(fieldNumber)) {
+          singularField.printContents(includeMatches, fieldPrefix, sb);
+        }
+      }
     }
 
     static Builder newBuilder() {
@@ -328,8 +508,74 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     return builder.build();
   }
 
+  /** Prints the full {@link DiffResult} to a human-readable string, for use in test outputs. */
+  final String printToString(boolean reportMismatchesOnly) {
+    StringBuilder sb = new StringBuilder();
+
+    if (!isMatched()) {
+      sb.append("Differences were found:\n");
+      printContents(/* includeMatches = */ false, /* fieldPrefix = */ "", sb);
+
+      if (!reportMismatchesOnly && isAnyChildMatched()) {
+        sb.append("\nFull diff report:\n");
+        printContents(/* includeMatches = */ true, /* fieldPrefix = */ "", sb);
+      }
+    } else {
+      sb.append("No differences were found.");
+      if (!reportMismatchesOnly) {
+        if (isAnyChildIgnored()) {
+          sb.append("\nSome fields were ignored for comparison, however.\n");
+        } else {
+          sb.append("\nFull diff report:\n");
+        }
+        printContents(/* includeMatches = */ true, /* fieldPrefix = */ "", sb);
+      }
+    }
+
+    return sb.toString();
+  }
+
+  @Override
+  final void printContents(boolean includeMatches, String fieldPrefix, StringBuilder sb) {
+    for (RecursableDiffEntity child : childEntities()) {
+      child.printContents(includeMatches, fieldPrefix, sb);
+    }
+  }
+
   static Builder newBuilder() {
     return new AutoValue_DiffResult.Builder();
+  }
+
+  private static String newFieldPrefix(String rootFieldPrefix, String toAdd) {
+    return rootFieldPrefix.isEmpty() ? toAdd : (rootFieldPrefix + "." + toAdd);
+  }
+
+  private static String valueString(FieldDescriptorOrUnknown fieldDescriptorOrUnknown, Object o) {
+    if (fieldDescriptorOrUnknown.fieldDescriptor().isPresent()) {
+      return valueString(fieldDescriptorOrUnknown.fieldDescriptor().get(), o);
+    } else {
+      return valueString(fieldDescriptorOrUnknown.unknownFieldDescriptor().get(), o);
+    }
+  }
+
+  private static String valueString(FieldDescriptor fieldDescriptor, Object o) {
+    StringBuilder sb = new StringBuilder();
+    try {
+      TextFormat.printFieldValue(fieldDescriptor, o, sb);
+      return sb.toString();
+    } catch (IOException impossible) {
+      throw new AssertionError(impossible);
+    }
+  }
+
+  private static String valueString(UnknownFieldDescriptor unknownFieldDescriptor, Object o) {
+    StringBuilder sb = new StringBuilder();
+    try {
+      TextFormat.printUnknownFieldValue(unknownFieldDescriptor.type().wireType(), o, sb);
+      return sb.toString();
+    } catch (IOException impossible) {
+      throw new AssertionError(impossible);
+    }
   }
 
   @CanIgnoreReturnValue

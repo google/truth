@@ -20,18 +20,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
-import com.google.auto.value.AutoValue;
-import com.google.common.collect.ImmutableList;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
-import com.google.common.truth.extensions.proto.MessageDifferencer.ReportType;
-import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
-import com.google.common.truth.extensions.proto.MessageDifferencer.StreamReporter;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import com.google.protobuf.TextFormat;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.Nullable;
 
 /**
@@ -127,14 +119,15 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
 
   @Override
   public void isEqualTo(@Nullable Object expected) {
-    if (getSubject() == null
-        || expected == null
-        || getSubject().getClass() != expected.getClass()) {
+    if (actual() == null || expected == null || actual().getClass() != expected.getClass()) {
       super.isEqualTo(expected);
     } else {
-      Reporter reporter = new Reporter();
-      if (!makeDifferencer().compare((Message) expected, getSubject(), reporter)) {
-        reporter.failEqual((Message) expected);
+      DiffResult diffResult = makeDifferencer().diffMessages(actual(), (Message) expected);
+      if (!diffResult.isMatched()) {
+        failWithRawMessage(
+            failureMessage(/* expectedEqual = */ true)
+                + "\n"
+                + diffResult.printToString(config.reportMismatchesOnly()));
       }
     }
   }
@@ -144,159 +137,57 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
    * without throwing any exceptions.
    */
   boolean testIsEqualTo(@Nullable Object expected) {
-    if (getSubject() == null || expected == null) {
-      return getSubject() == expected; // Only true if both null.
-    } else if (getSubject().getClass() != expected.getClass()) {
+    if (actual() == null || expected == null) {
+      return actual() == expected; // Only true if both null.
+    } else if (actual().getClass() != expected.getClass()) {
       return false;
     } else {
-      return makeDifferencer().compare((Message) expected, getSubject(), null);
+      return makeDifferencer().diffMessages(actual(), (Message) expected).isMatched();
     }
   }
 
   @Override
   public void isNotEqualTo(@Nullable Object expected) {
-    if (getSubject() == null
-        || expected == null
-        || getSubject().getClass() != expected.getClass()) {
+    if (actual() == null || expected == null || actual().getClass() != expected.getClass()) {
       super.isNotEqualTo(expected);
     } else {
-      Reporter reporter = new Reporter();
-      if (makeDifferencer().compare((Message) expected, getSubject(), reporter)) {
-        reporter.failNotEqual((Message) expected);
+      DiffResult diffResult = makeDifferencer().diffMessages(actual(), (Message) expected);
+      if (diffResult.isMatched()) {
+        failWithRawMessage(
+            failureMessage(/* expectedEqual = */ false)
+                + "\n"
+                + diffResult.printToString(config.reportMismatchesOnly()));
       }
     }
   }
 
   @Override
   public void hasAllRequiredFields() {
-    if (!getSubject().isInitialized()) {
+    if (!actual().isInitialized()) {
       failWithRawMessage(
           "Not true that %s has all required fields set. Missing: %s",
-          getTrimmedDisplaySubject(), getSubject().findInitializationErrors());
+          getTrimmedDisplaySubject(), actual().findInitializationErrors());
     }
   }
 
-  private MessageDifferencer makeDifferencer() {
-    return config.toMessageDifferencer(getSubject().getDescriptorForType());
+  private ProtoTruthMessageDifferencer makeDifferencer() {
+    return config.toMessageDifferencer(actual().getDescriptorForType());
   }
 
-  /**
-   * {@link MessageDifferencer.Reporter} implementation for reporting the results of {@link
-   * #isEqualTo(Object)}.
-   */
-  private class Reporter implements MessageDifferencer.Reporter {
-    private final List<ReporterRecord> records = new ArrayList<>();
-    private boolean anyFailures = false;
-    private boolean anyNotices = false;
-
-    @Override
-    public void report(
-        ReportType type, Message message1, Message message2, ImmutableList<SpecificField> path) {
-      ReporterRecord record = ReporterRecord.of(type, message1, message2, path);
-      anyFailures |= record.isFailure();
-      anyNotices |= !record.isFailure();
-      records.add(record);
+  private String failureMessage(boolean expectedEqual) {
+    StringBuilder rawMessage = new StringBuilder();
+    rawMessage.append("Not true that ");
+    if (internalCustomName() != null) {
+      rawMessage
+          .append(internalCustomName())
+          .append(" compares ")
+          .append(expectedEqual ? "" : "not ")
+          .append("equal. ");
+    } else {
+      rawMessage.append("messages compare ").append(expectedEqual ? "" : "not ").append("equal. ");
     }
 
-    void failEqual(Message expected) {
-      StringBuilder rawMessage = new StringBuilder();
-      rawMessage.append("Not true that ");
-      if (ProtoSubject.this.internalCustomName() != null) {
-        rawMessage.append(ProtoSubject.this.internalCustomName()).append(" compares equal. ");
-      } else {
-        rawMessage.append("messages compare equal. ");
-      }
-
-      StreamReporter streamReporter = new StreamReporter(rawMessage);
-      if (anyFailures) {
-        rawMessage.append("Differences were found:\n");
-        for (ReporterRecord record : records) {
-          if (record.isFailure()) {
-            streamReporter.report(
-                record.type(), record.message1(), record.message2(), record.path());
-          }
-        }
-
-        if (anyNotices && !ProtoSubject.this.config.reportMismatchesOnly()) {
-          // Append the full report.
-          rawMessage.append("\nFull diff:\n");
-          for (ReporterRecord record : records) {
-            streamReporter.report(
-                record.type(), record.message1(), record.message2(), record.path());
-          }
-        }
-      } else {
-        rawMessage.append("No differences were reported.");
-        if (!ProtoSubject.this.config.reportMismatchesOnly()) {
-          if (anyNotices) {
-            rawMessage.append("\nFull diff:\n");
-            for (ReporterRecord record : records) {
-              streamReporter.report(
-                  record.type(), record.message1(), record.message2(), record.path());
-            }
-          } else {
-            // Shouldn't really happen, but it's better to print something than nothing if it does.
-            rawMessage.append("\nActual:\n");
-            rawMessage.append(TextFormat.printToString(getSubject()));
-            rawMessage.append("Expected:\n");
-            rawMessage.append(TextFormat.printToString(expected));
-          }
-        }
-      }
-
-      ProtoSubject.this.failWithRawMessage(rawMessage.toString());
-    }
-
-    void failNotEqual(Message expected) {
-      StringBuilder rawMessage = new StringBuilder();
-      rawMessage.append("Not true that ");
-      if (ProtoSubject.this.internalCustomName() != null) {
-        rawMessage.append(ProtoSubject.this.internalCustomName()).append(" compares not equal. ");
-      } else {
-        rawMessage.append("messages compare not equal. ");
-      }
-
-      if (!records.isEmpty() && !ProtoSubject.this.config.reportMismatchesOnly()) {
-        rawMessage.append("Only ignorable differences were found:\n");
-        StreamReporter streamReporter = new StreamReporter(rawMessage);
-        for (ReporterRecord record : records) {
-          streamReporter.report(record.type(), record.message1(), record.message2(), record.path());
-        }
-      } else {
-        rawMessage.append("No differences were found.");
-        if (!ProtoSubject.this.config.reportMismatchesOnly()) {
-          rawMessage.append("\nActual:\n");
-          rawMessage.append(TextFormat.printToString(getSubject()));
-          rawMessage.append("Expected:\n");
-          rawMessage.append(TextFormat.printToString(expected));
-        }
-      }
-
-      ProtoSubject.this.failWithRawMessage(rawMessage.toString());
-    }
-  }
-
-  @AutoValue
-  abstract static class ReporterRecord {
-    abstract ReportType type();
-
-    abstract Message message1();
-
-    abstract Message message2();
-
-    abstract ImmutableList<SpecificField> path();
-
-    // Whether this ReporterRecord indicates an actionable message difference.
-    final boolean isFailure() {
-      return type() == ReportType.ADDED
-          || type() == ReportType.DELETED
-          || type() == ReportType.MODIFIED;
-    }
-
-    static ReporterRecord of(
-        ReportType type, Message message1, Message message2, ImmutableList<SpecificField> path) {
-      return new AutoValue_ProtoSubject_ReporterRecord(type, message1, message2, path);
-    }
+    return rawMessage.toString();
   }
 
   static final class MessageSubject extends ProtoSubject<MessageSubject, Message> {
