@@ -248,7 +248,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</code>
-<div class="block">Assembles a failure message and passes such to the FailureStrategy.</div>
+<div class="block">Assembles a failure message and passes such to the FailureStrategy</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
@@ -362,7 +362,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
 <div class="block">Fails if the subject is not equal to the given object.</div>
 </td>
 </tr>
@@ -388,7 +388,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</code>
 <div class="block">Fails if the subject is equal to the given object.</div>
 </td>
 </tr>
@@ -538,7 +538,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <li class="blockList">
 <h4>isEqualTo</h4>
 <pre>public&nbsp;void&nbsp;isEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</pre>
+                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
  objects are equal if any of the following is true:
 
@@ -557,7 +557,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <li class="blockList">
 <h4>isNotEqualTo</h4>
 <pre>public&nbsp;void&nbsp;isNotEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</pre>
+                         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</pre>
 <div class="block">Fails if the subject is equal to the given object. The meaning of equality is the same as for
  the <a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>isEqualTo(java.lang.Object)</code></a> method.</div>
 </li>
@@ -761,8 +761,7 @@ protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Stri
 <h4>fail</h4>
 <pre>protected final&nbsp;void&nbsp;fail(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</pre>
-<div class="block">Assembles a failure message and passes such to the FailureStrategy. Also performs
- disambiguation if the subject and <code>other</code> have the same toString()'s.</div>
+<div class="block">Assembles a failure message and passes such to the FailureStrategy</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>verb</code> - the check being asserted</dd>
