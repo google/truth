@@ -561,6 +561,25 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testFormatDiff() {
+    try {
+      assertThat(listOf(message1)).ignoringRepeatedFieldOrder().containsExactly(message2);
+      expectedFailure();
+    } catch (AssertionError expected) {
+      expectSubstr(
+          expected,
+          "(diff: Differences were found:\n"
+              + "modified: o_int: 3 -> 1\n"
+              + "added: r_string[0]: \"foo\"\n"
+              + "added: r_string[1]: \"bar\"\n"
+              + "deleted: r_string[0]: \"baz\"\n"
+              + "deleted: r_string[1]: \"qux\"\n"
+              + "\n"
+              + "Full diff report:\n");
+    }
+  }
+
+  @Test
   public void testCompareMultipleMessageTypes() {
     // Don't run this test twice.
     if (!testIsRunOnce()) {

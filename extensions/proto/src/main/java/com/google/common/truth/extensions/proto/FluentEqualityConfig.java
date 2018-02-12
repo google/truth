@@ -156,6 +156,18 @@ abstract class FluentEqualityConfig {
       }
 
       @Override
+      public final String formatDiff(@Nullable M actual, @Nullable M expected) {
+        if (actual == null || expected == null) {
+          return "";
+        }
+
+        return FluentEqualityConfig.this
+            .toMessageDifferencer(actual.getDescriptorForType())
+            .diffMessages(actual, expected)
+            .printToString(FluentEqualityConfig.this.reportMismatchesOnly());
+      }
+
+      @Override
       public final String toString() {
         return "is equivalent according to assertThat(proto)"
             + usingCorrespondenceString(optDescriptor)
