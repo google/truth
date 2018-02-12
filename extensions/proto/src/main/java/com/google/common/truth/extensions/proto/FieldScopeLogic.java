@@ -20,24 +20,16 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.join;
 
-import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.common.truth.extensions.proto.MessageDifferencer.IgnoreCriteria;
-import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
 import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.ShouldIgnore;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
 import com.google.protobuf.Message;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.annotation.Nullable;
 
 /**
  * Implementations of all variations of {@link FieldScope} logic.
@@ -52,8 +44,6 @@ import javax.annotation.Nullable;
  * </ul>
  */
 abstract class FieldScopeLogic {
-
-  private final Set<Descriptor> validatedDescriptors = Sets.newConcurrentHashSet();
 
   /** Returns whether comparison should be ignored for the specified field. */
   abstract ShouldIgnore shouldIgnore(
@@ -77,170 +67,6 @@ abstract class FieldScopeLogic {
    * <p>Set to return true by default. Used for optimizing compound logics.
    */
   boolean isRecursive() {
-    return true;
-  }
-
-  final IgnoreCriteria toIgnoreCriteria(final Descriptor descriptor) {
-    if (!validatedDescriptors.contains(descriptor)) {
-      validate(descriptor);
-      validatedDescriptors.add(descriptor);
-    }
-
-    final Cache cache = new Cache();
-    return new IgnoreCriteria() {
-      @Override
-      public boolean isIgnored(
-          Message message1,
-          Message message2,
-          @Nullable FieldDescriptor fieldDescriptor,
-          List<SpecificField> fieldPath) {
-        ImmutableList.Builder<Message> subMessages = ImmutableList.builder();
-        if (fieldDescriptor != null) {
-          addSubMessages(fieldDescriptor, message1, subMessages);
-          addSubMessages(fieldDescriptor, message2, subMessages);
-        }
-
-        Context context = Context.create(descriptor, fieldPath, fieldDescriptor, subMessages);
-        cache.clearMethodCaches();
-        return !matchesFieldPath(context, cache) && matchStateAppliesForAllSubPaths(context, cache);
-      }
-    };
-  }
-
-  private static void addSubMessages(
-      FieldDescriptor fieldDescriptor, Message message, ImmutableList.Builder<Message> builder) {
-    if (fieldDescriptor.getJavaType() != FieldDescriptor.JavaType.MESSAGE) {
-      return;
-    }
-
-    if (fieldDescriptor.isRepeated()) {
-      for (int i = 0; i < message.getRepeatedFieldCount(fieldDescriptor); i++) {
-        builder.add((Message) message.getRepeatedField(fieldDescriptor, i));
-      }
-    } else {
-      builder.add((Message) message.getField(fieldDescriptor));
-    }
-  }
-
-  // A temporary cache for repeat processing of messages in a single MessageDifferencer run.
-  // Cache data must be temporary because messages may be mutable, and change between
-  // MessageDifferencer runs, which invalidates them as keys and invalidates the results.
-  private static final class Cache {
-    // Messages do not change between context changes, so this map is scoped to the life of the
-    // difference operation, which is the life of the Cache object.
-    private final Map<FieldMatcherLogicBase, Map<Message, Boolean>> messagesWithMatchingField =
-        Maps.newHashMap();
-
-    // These are scoped to the life of the Context object, and must be cleared periodically.
-    private final Map<FieldScopeLogic, Boolean> matchesFieldPath = Maps.newHashMap();
-    private final Map<FieldScopeLogic, Boolean> matchStateAppliesForAllSubPaths = Maps.newHashMap();
-
-    public Map<Message, Boolean> getMessagesWithMatchingField(FieldMatcherLogicBase key) {
-      Map<Message, Boolean> map = messagesWithMatchingField.get(key);
-      if (map == null) {
-        map = Maps.newHashMap();
-        messagesWithMatchingField.put(key, map);
-      }
-      return map;
-    }
-
-    public boolean matchesFieldPath(FieldScopeLogic logic, Context context) {
-      @Nullable Boolean match = matchesFieldPath.get(logic);
-      if (match == null) {
-        match = logic.doMatchesFieldPath(context, this);
-        matchesFieldPath.put(logic, match);
-      }
-      return match;
-    }
-
-    public boolean matchStateAppliesForAllSubPaths(FieldScopeLogic logic, Context context) {
-      @Nullable Boolean matchAppliesForAll = matchStateAppliesForAllSubPaths.get(logic);
-      if (matchAppliesForAll == null) {
-        matchAppliesForAll = logic.doMatchStateAppliesForAllSubPaths(context, this);
-        matchStateAppliesForAllSubPaths.put(logic, matchAppliesForAll);
-      }
-      return matchAppliesForAll;
-    }
-
-    public void clearMethodCaches() {
-      matchesFieldPath.clear();
-      matchStateAppliesForAllSubPaths.clear();
-    }
-  }
-
-  @AutoValue
-  abstract static class Context {
-
-    /** The Message Descriptor for the message being tested. */
-    abstract Descriptor descriptor();
-
-    /**
-     * The specific field path leading up to the message containing {@code field()}. If {@code
-     * field()} is absent, the last element of fieldPath() will describe an unknown field instead.
-     */
-    abstract List<SpecificField> fieldPath();
-
-    /**
-     * The field on the message being inspected, for which we must now determine if it should be
-     * inspected deeply or not.
-     */
-    abstract Optional<FieldDescriptor> field();
-
-    /**
-     * The message objects at the end of the field path and field descriptor, or empty if there are
-     * none. MessageDifferencer will omit entire sections of the proto tree if told to ignore root
-     * messages, so we may need to inspect the contents of the message first to decide if it should
-     * be ignored.
-     */
-    abstract ImmutableList<Message> messageFields();
-
-    static Context create(
-        Descriptor descriptor,
-        List<SpecificField> fieldPath,
-        @Nullable FieldDescriptor field,
-        ImmutableList.Builder<Message> messageFields) {
-      return new AutoValue_FieldScopeLogic_Context(
-          descriptor, fieldPath, Optional.fromNullable(field), messageFields.build());
-    }
-  }
-
-  /**
-   * Whether or not this implementation includes the specified specific field path.
-   *
-   * <p>Unlike {@link #doMatchesFieldPath}, this method does caching, and so is performant to call
-   * repeatedly. Clients should call this method, but override the do method.
-   */
-  final boolean matchesFieldPath(Context context, Cache cache) {
-    return cache.matchesFieldPath(this, context);
-  }
-
-  /**
-   * Whether or not this implementation's answer to {@code matchesFieldPath} is fixed for all sub
-   * paths of the current specific field path. If fixed, it may be possible to ignore entire
-   * sub-trees of the protocol buffer for diff inspection.
-   *
-   * <p>Returns true by default, since most {@code FieldScopeLogics} include from the root and don't
-   * exclude subtrees.
-   *
-   * <p>Unlike {@link #doMatchStateAppliesForAllSubPaths}, this method does caching, and so is
-   * performant to call repeatedly. Clients should call this method, but override the do method.
-   */
-  final boolean matchStateAppliesForAllSubPaths(Context context, Cache cache) {
-    return cache.matchStateAppliesForAllSubPaths(this, context);
-  }
-
-  /** Whether or not this implementation includes the specified specific field path. */
-  abstract boolean doMatchesFieldPath(Context context, Cache cache);
-
-  /**
-   * Whether or not this implementation's answer to {@code matchesFieldPath} is fixed for all sub
-   * paths of the current specific field path. If fixed, it may be possible to ignore entire
-   * sub-trees of the protocol buffer for diff inspection.
-   *
-   * <p>Returns true by default, since most {@code FieldScopeLogic}s include from the root and don't
-   * exclude subtrees.
-   */
-  boolean doMatchStateAppliesForAllSubPaths(Context context, Cache cache) {
     return true;
   }
 
@@ -307,11 +133,6 @@ abstract class FieldScopeLogic {
   private static final FieldScopeLogic ALL =
       new FieldScopeLogic() {
         @Override
-        boolean doMatchesFieldPath(Context context, Cache cache) {
-          return true;
-        }
-
-        @Override
         public String toString() {
           return "FieldScopes.all()";
         }
@@ -325,11 +146,6 @@ abstract class FieldScopeLogic {
 
   private static final FieldScopeLogic NONE =
       new FieldScopeLogic() {
-        @Override
-        boolean doMatchesFieldPath(Context context, Cache cache) {
-          return false;
-        }
-
         @Override
         public String toString() {
           return "FieldScopes.none()";
@@ -357,11 +173,6 @@ abstract class FieldScopeLogic {
 
     PartialScopeLogic(FieldNumberTree fieldNumberTree) {
       this.fieldNumberTree = fieldNumberTree;
-    }
-
-    @Override
-    boolean doMatchesFieldPath(Context context, Cache cache) {
-      return fieldNumberTree.matches(context.fieldPath(), context.field());
     }
 
     @Override
@@ -439,71 +250,6 @@ abstract class FieldScopeLogic {
      *     definition.
      */
     abstract boolean matchesFieldDescriptor(Descriptor descriptor, FieldDescriptor fieldDescriptor);
-
-    @Override
-    final boolean doMatchesFieldPath(Context context, Cache cache) {
-      if (context.field().isPresent()
-          && matchesFieldDescriptor(context.descriptor(), context.field().get())) {
-        return true;
-      }
-
-      for (SpecificField field : context.fieldPath()) {
-        FieldDescriptor specificFieldDescriptor = field.getField();
-        if (specificFieldDescriptor != null
-            && matchesFieldDescriptor(context.descriptor(), specificFieldDescriptor)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    @Override
-    final boolean doMatchStateAppliesForAllSubPaths(Context context, Cache cache) {
-      // Match is fixed if we match currently, or no sub paths can match.
-      if (!matchesFieldPath(context, cache)) {
-        for (Message message : context.messageFields()) {
-          if (messageHasMatchingField(context, cache, message)) {
-            return false;
-          }
-        }
-      }
-      return true;
-    }
-
-    private boolean messageHasMatchingField(Context context, Cache cache, Message message) {
-      Map<Message, Boolean> messagesWithMatchingField = cache.getMessagesWithMatchingField(this);
-      if (messagesWithMatchingField.containsKey(message)) {
-        return messagesWithMatchingField.get(message);
-      }
-
-      boolean result = false;
-      Map<FieldDescriptor, Object> fields = message.getAllFields();
-      for (FieldDescriptor key : fields.keySet()) {
-        if (matchesFieldDescriptor(context.descriptor(), key)) {
-          result = true;
-        } else if (key.getJavaType() == FieldDescriptor.JavaType.MESSAGE) {
-          if (key.isRepeated()) {
-            for (int i = 0; i < message.getRepeatedFieldCount(key); i++) {
-              if (messageHasMatchingField(
-                  context, cache, (Message) message.getRepeatedField(key, i))) {
-                result = true;
-                break;
-              }
-            }
-          } else if (messageHasMatchingField(context, cache, (Message) message.getField(key))) {
-            result = true;
-          }
-        }
-
-        if (result) {
-          break;
-        }
-      }
-
-      messagesWithMatchingField.put(message, result);
-      return result;
-    }
 
     @Override
     final ShouldIgnore shouldIgnore(
@@ -665,30 +411,6 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    boolean doMatchStateAppliesForAllSubPaths(Context context, Cache cache) {
-      if (matchesFieldPath(context, cache)) {
-        // We are fixed as true only if both operands are fixed.
-        return elements.get(0).matchStateAppliesForAllSubPaths(context, cache)
-            && elements.get(1).matchStateAppliesForAllSubPaths(context, cache);
-      } else {
-        // We are fixed as false only if at least one operand is fixed false.
-        boolean firstFixedFalse =
-            !elements.get(0).matchesFieldPath(context, cache)
-                && elements.get(0).matchStateAppliesForAllSubPaths(context, cache);
-        boolean secondFixedFalse =
-            !elements.get(1).matchesFieldPath(context, cache)
-                && elements.get(1).matchStateAppliesForAllSubPaths(context, cache);
-        return firstFixedFalse || secondFixedFalse;
-      }
-    }
-
-    @Override
-    boolean doMatchesFieldPath(Context context, Cache cache) {
-      return elements.get(0).matchesFieldPath(context, cache)
-          && elements.get(1).matchesFieldPath(context, cache);
-    }
-
-    @Override
     IntersectionFieldScopeLogic newLogicOfSameType(List<FieldScopeLogic> newElements) {
       checkArgument(newElements.size() == 2, "Expected 2 elements: %s", newElements);
       return new IntersectionFieldScopeLogic(newElements.get(0), newElements.get(1));
@@ -727,30 +449,6 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    boolean doMatchStateAppliesForAllSubPaths(Context context, Cache cache) {
-      if (matchesFieldPath(context, cache)) {
-        // We are fixed as true only if either field is fixed true.
-        boolean firstFixedTrue =
-            elements.get(0).matchesFieldPath(context, cache)
-                && elements.get(0).matchStateAppliesForAllSubPaths(context, cache);
-        boolean secondFixedTrue =
-            elements.get(1).matchesFieldPath(context, cache)
-                && elements.get(1).matchStateAppliesForAllSubPaths(context, cache);
-        return firstFixedTrue || secondFixedTrue;
-      } else {
-        // We are fixed false only if both operands are fixed false.
-        return elements.get(0).matchStateAppliesForAllSubPaths(context, cache)
-            && elements.get(1).matchStateAppliesForAllSubPaths(context, cache);
-      }
-    }
-
-    @Override
-    boolean doMatchesFieldPath(Context context, Cache cache) {
-      return elements.get(0).matchesFieldPath(context, cache)
-          || elements.get(1).matchesFieldPath(context, cache);
-    }
-
-    @Override
     UnionFieldScopeLogic newLogicOfSameType(List<FieldScopeLogic> newElements) {
       checkArgument(newElements.size() == 2, "Expected 2 elements: %s", newElements);
       return new UnionFieldScopeLogic(newElements.get(0), newElements.get(1));
@@ -786,17 +484,6 @@ abstract class FieldScopeLogic {
       extends CompoundFieldScopeLogic<NegationFieldScopeLogic> {
     NegationFieldScopeLogic(FieldScopeLogic subject) {
       super(subject);
-    }
-
-    @Override
-    boolean doMatchStateAppliesForAllSubPaths(Context context, Cache cache) {
-      // We are fixed only if the operand is fixed.
-      return elements.get(0).matchStateAppliesForAllSubPaths(context, cache);
-    }
-
-    @Override
-    boolean doMatchesFieldPath(Context context, Cache cache) {
-      return !elements.get(0).matchesFieldPath(context, cache);
     }
 
     @Override
