@@ -20,12 +20,10 @@ import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CompatibleWith;
 import java.util.Arrays;
-import java.util.List;
 import javax.annotation.Nullable;
 
 /**
@@ -250,19 +248,13 @@ public class Subject<S extends Subject<S, T>, T> {
       @Nullable @CompatibleWith("T") Object first,
       @Nullable @CompatibleWith("T") Object second,
       @Nullable Object... rest) {
-    List<Object> list = accumulate(first, second, rest);
-    if (!list.contains(actual())) {
-      fail("is equal to any of", list);
-    }
+    isIn(accumulate(first, second, rest));
   }
 
   /** Fails if the subject is equal to any element in the given iterable. */
   public void isNotIn(Iterable<?> iterable) {
-    int index = Iterables.indexOf(iterable, Predicates.<Object>equalTo(actual()));
-    if (index != -1) {
-      failWithRawMessage(
-          "Not true that %s is not in %s. It was found at index %s",
-          actualAsString(), iterable, index);
+    if (Iterables.contains(iterable, actual())) {
+      failWithRawMessage("Not true that %s is not in %s.", actualAsString(), iterable);
     }
   }
 

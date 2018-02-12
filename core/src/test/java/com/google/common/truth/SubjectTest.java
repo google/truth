@@ -643,7 +643,7 @@ public class SubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that("x").isAnyOf("a", "b", "c");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <\"x\"> is equal to any of <[a, b, c]>");
+        .isEqualTo("Not true that <\"x\"> is equal to any element in <[a, b, c]>");
   }
 
   @Test
@@ -661,7 +661,7 @@ public class SubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that((String) null).isAnyOf("a", "b", "c");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <null> is equal to any of <[a, b, c]>");
+        .isEqualTo("Not true that <null> is equal to any element in <[a, b, c]>");
   }
 
   @Test
@@ -674,7 +674,7 @@ public class SubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that("b").isNotIn(oneShotIterable("a", "b", "c"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <\"b\"> is not in [a, b, c]. It was found at index 1");
+        .isEqualTo("Not true that <\"b\"> is not in [a, b, c].");
   }
 
   @Test
@@ -690,7 +690,7 @@ public class SubjectTest extends BaseSubjectTestCase {
         .isNotIn(oneShotIterable("a", "b", (String) null));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <null> is not in [a, b, null]. It was found at index 2");
+        .isEqualTo("Not true that <null> is not in [a, b, null].");
   }
 
   @Test
@@ -708,7 +708,7 @@ public class SubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that("b").isNoneOf("a", "b", "c");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <\"b\"> is not in [a, b, c]. It was found at index 1");
+        .isEqualTo("Not true that <\"b\"> is not in [a, b, c].");
   }
 
   @Test
@@ -721,7 +721,7 @@ public class SubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that((String) null).isNoneOf("a", "b", (String) null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <null> is not in [a, b, null]. It was found at index 2");
+        .isEqualTo("Not true that <null> is not in [a, b, null].");
   }
 
   @Test
