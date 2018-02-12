@@ -19,7 +19,6 @@ package com.google.common.truth.extensions.proto;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.google.common.truth.extensions.proto.MessageDifferencer.SpecificField;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
@@ -148,37 +147,6 @@ final class FieldNumberTree {
       } else {
         this.children.get(key).merge(value);
       }
-    }
-  }
-
-  /**
-   * Whether the field path described by {@code fieldPath} + {@code fieldDescriptor} was set by any
-   * matching instance on the message used to instantiate this {@code FieldNumberTree}.
-   */
-  boolean matches(List<SpecificField> fieldPath, Optional<FieldDescriptor> fieldDescriptor) {
-    return matchesInternal(0, fieldPath, fieldDescriptor);
-  }
-
-  private boolean matchesInternal(
-      int fieldPathIndex,
-      List<SpecificField> fieldPath,
-      Optional<FieldDescriptor> fieldDescriptor) {
-    if (fieldPathIndex < fieldPath.size()) {
-      SpecificField field = fieldPath.get(fieldPathIndex);
-      Key key;
-      if (field.getField() != null) {
-        key = Key.known(field.getField().getNumber());
-      } else {
-        UnknownFieldDescriptor.Type type =
-            UnknownFieldDescriptor.Type.all().get(field.getUnknown().getFieldType().ordinal());
-        key = Key.unknown(UnknownFieldDescriptor.create(field.getUnknown().getFieldNumber(), type));
-      }
-
-      FieldNumberTree child = children.get(key);
-      return child != null && child.matchesInternal(fieldPathIndex + 1, fieldPath, fieldDescriptor);
-    } else {
-      return !fieldDescriptor.isPresent()
-          || children.containsKey(Key.known(fieldDescriptor.get().getNumber()));
     }
   }
 }
