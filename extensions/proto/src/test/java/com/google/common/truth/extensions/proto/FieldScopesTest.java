@@ -85,12 +85,13 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).ignoringFieldScope(FieldScopes.all()).isEqualTo(message);
 
     try {
+      // TODO(user): Switch ProtoTruth tests to use ExpectFailure.
       assertThat(diffMessage).ignoringFieldScope(FieldScopes.all()).isNotEqualTo(message);
       expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: o_int");
-      expectSubstr(e, "ignored: r_string[0]");
+      expectSubstr(e, "ignored: r_string");
     }
   }
 
@@ -108,7 +109,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
       expectSubstr(e, "ignored: o_int");
-      expectSubstr(e, "ignored: r_string[0]");
+      expectSubstr(e, "ignored: r_string");
     }
   }
 
@@ -138,7 +139,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
-      expectSubstr(e, "ignored: r_string[0]");
+      expectSubstr(e, "ignored: r_string");
     }
   }
 
@@ -327,7 +328,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
-      expectSubstr(e, "ignored: o_sub_test_message.r_string[0]");
+      expectSubstr(e, "ignored: o_sub_test_message.r_string");
     }
   }
 
@@ -401,9 +402,9 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
-      expectSubstr(e, "ignored: o_test_message.r_string[0]");
+      expectSubstr(e, "ignored: o_test_message.r_string");
       expectSubstr(e, "ignored: o_sub_test_message.o_int");
-      expectSubstr(e, "ignored: o_sub_test_message.o_test_message.r_string[0]");
+      expectSubstr(e, "ignored: o_sub_test_message.o_test_message.r_string");
     }
   }
 
@@ -621,7 +622,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
       expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
-      expectSubstr(e, "ignored: r_test_message[0].r_string[0]");
+      expectSubstr(e, "ignored: r_test_message[0].r_string");
     }
   }
 

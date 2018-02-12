@@ -53,13 +53,13 @@ abstract class FluentEqualityConfig {
     return DEFAULT_INSTANCE;
   }
 
-  private final LoadingCache<Descriptor, MessageDifferencer> messageDifferencers =
+  private final LoadingCache<Descriptor, ProtoTruthMessageDifferencer> messageDifferencers =
       CacheBuilder.newBuilder()
           .build(
-              new CacheLoader<Descriptor, MessageDifferencer>() {
+              new CacheLoader<Descriptor, ProtoTruthMessageDifferencer>() {
                 @Override
-                public MessageDifferencer load(Descriptor descriptor) {
-                  return makeMessageDifferencer(descriptor);
+                public ProtoTruthMessageDifferencer load(Descriptor descriptor) {
+                  return ProtoTruthMessageDifferencer.create(FluentEqualityConfig.this, descriptor);
                 }
               });
 
@@ -141,22 +141,7 @@ abstract class FluentEqualityConfig {
   // Converters into comparison utilities.
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  private MessageDifferencer makeMessageDifferencer(Descriptor descriptor) {
-    return MessageDifferencer.newBuilder()
-        .setMessageFieldComparison(
-            ignoreFieldAbsence()
-                ? MessageDifferencer.MessageFieldComparison.EQUIVALENT
-                : MessageDifferencer.MessageFieldComparison.EQUAL)
-        .setRepeatedFieldComparison(
-            ignoreRepeatedFieldOrder()
-                ? MessageDifferencer.RepeatedFieldComparison.AS_SET
-                : MessageDifferencer.RepeatedFieldComparison.AS_LIST)
-        .setReportMatches(!reportMismatchesOnly())
-        .addIgnoreCriteria(fieldScopeLogic().toIgnoreCriteria(descriptor))
-        .build();
-  }
-
-  final MessageDifferencer toMessageDifferencer(Descriptor descriptor) {
+  final ProtoTruthMessageDifferencer toMessageDifferencer(Descriptor descriptor) {
     return messageDifferencers.getUnchecked(descriptor);
   }
 

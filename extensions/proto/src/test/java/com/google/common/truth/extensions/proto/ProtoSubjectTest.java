@@ -44,12 +44,16 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     Message message = parse("o_int: 3");
     Message diffMessage = parse("o_int: 3 o_enum: DEFAULT");
 
+    // Make sure the implementation is reflexive.
     if (isProto3()) {
       expectThat(diffMessage).isEqualTo(message);
+      expectThat(message).isEqualTo(diffMessage);
     } else {
       expectThat(diffMessage).isNotEqualTo(message);
+      expectThat(message).isNotEqualTo(diffMessage);
     }
     expectThat(diffMessage).ignoringFieldAbsence().isEqualTo(message);
+    expectThat(message).ignoringFieldAbsence().isEqualTo(diffMessage);
 
     if (!isProto3()) {
       Message customDefaultMessage = parse("o_int: 3");
@@ -57,6 +61,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
 
       expectThat(diffCustomDefaultMessage).isNotEqualTo(customDefaultMessage);
       expectThat(diffCustomDefaultMessage).ignoringFieldAbsence().isEqualTo(customDefaultMessage);
+      expectThat(customDefaultMessage).isNotEqualTo(diffCustomDefaultMessage);
+      expectThat(customDefaultMessage).ignoringFieldAbsence().isEqualTo(diffCustomDefaultMessage);
     }
 
     if (!isProto3()) {
@@ -74,10 +80,10 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
       expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
-      expectSubstr(e, "matched: o_int : 3");
+      expectSubstr(e, "matched: o_int: 3");
       if (!isProto3()) {
         // Proto 3 doesn't cover the field at all when it's not set.
-        expectSubstr(e, "matched: o_enum : DEFAULT");
+        expectSubstr(e, "matched: o_enum: DEFAULT");
       }
     }
   }
@@ -170,8 +176,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
       expectedFailure();
     } catch (AssertionError e) {
       expectIsNotEqualToFailed(e);
-      expectSubstr(e, "moved: r_string[0] -> r_string[1] : \"foo\"");
-      expectSubstr(e, "moved: r_string[1] -> r_string[0] : \"bar\"");
+      expectSubstr(e, "moved: r_string[0] -> r_string[1]: \"foo\"");
+      expectSubstr(e, "moved: r_string[1] -> r_string[0]: \"bar\"");
     }
 
     try {
@@ -179,8 +185,8 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
       expectedFailure();
     } catch (AssertionError e) {
       expectIsEqualToFailed(e);
-      expectSubstr(e, "matched: r_string[0] : \"foo\"");
-      expectSubstr(e, "moved: r_string[1] -> r_string[2] : \"bar\"");
+      expectSubstr(e, "matched: r_string[0]: \"foo\"");
+      expectSubstr(e, "moved: r_string[1] -> r_string[2]: \"bar\"");
       expectSubstr(e, "added: r_string[1]: \"foo\"");
     }
   }

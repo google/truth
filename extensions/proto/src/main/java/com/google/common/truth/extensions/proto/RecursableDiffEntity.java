@@ -98,6 +98,22 @@ abstract class RecursableDiffEntity {
   }
 
   /**
+   * Prints the contents of this diff entity to {@code sb}.
+   *
+   * @param includeMatches Whether to include reports for fields which matched.
+   * @param fieldPrefix The human-readable field path leading to this entity. Empty if this is the
+   *     root entity.
+   * @param sb Builder to print the text to.
+   */
+  abstract void printContents(boolean includeMatches, String fieldPrefix, StringBuilder sb);
+
+  final void printChildContents(boolean includeMatches, String fieldPrefix, StringBuilder sb) {
+    for (RecursableDiffEntity entity : childEntities()) {
+      entity.printContents(includeMatches, fieldPrefix, sb);
+    }
+  }
+
+  /**
    * A generic entity in the {@link DiffResult} tree without a result code.
    *
    * <p>This entity derives its {@code isMatched()} and {@code isIgnored()} state purely from its
