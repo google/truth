@@ -57,7 +57,7 @@ public final class PrimitiveByteArraySubject
       if (!Arrays.equals(actual, expectedArray)) {
         failComparing(
             "Not true that "
-                + getDisplaySubject()
+                + actualAsString()
                 + " is equal to <"
                 + Arrays.toString(expectedArray)
                 + ">;",
