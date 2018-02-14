@@ -23,6 +23,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CompatibleWith;
+import com.google.errorprone.annotations.ForOverride;
 import java.util.Arrays;
 import javax.annotation.Nullable;
 
@@ -323,6 +324,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *
    * <p>By default, this returns {@code String.ValueOf(getActualValue())}.
    */
+  @ForOverride
   protected String actualCustomStringRepresentation() {
     return String.valueOf(actual());
   }
