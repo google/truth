@@ -279,24 +279,6 @@ public class Subject<S extends Subject<S, T>, T> {
     return getSubject();
   }
 
-  /** @deprecated Prefer {@code #actualAsString()} for display-formatted access to the subject. */
-  @Deprecated
-  protected String getDisplaySubject() {
-    // TODO(cgruber) migrate people from this method once no one is subclassing it.
-    String formatted = actualCustomStringRepresentation();
-    if (customName != null) {
-      // Covers some rare cases where a type might return "" from their custom formatter.
-      // This is actually pretty terrible, as it comes from subjects overriding (formerly)
-      // getDisplaySubject() in cases of .named() to make it not prefixing but replacing.
-      // That goes against the stated contract of .named().  Once displayedAs() is in place,
-      // we can rip this out and callers can use that instead.
-      // TODO(cgruber)
-      return customName + (formatted.isEmpty() ? "" : " (<" + formatted + ">)");
-    } else {
-      return "<" + formatted + ">";
-    }
-  }
-
   /**
    * Returns a string representation of the actual value. This will either be the toString() of the
    * value or a prefixed "name" along with the string representation.
@@ -311,7 +293,18 @@ public class Subject<S extends Subject<S, T>, T> {
    * use this from FailureMetadata, at least in the short term, for better or for worse.
    */
   protected final String actualAsString() {
-    return getDisplaySubject();
+    String formatted = actualCustomStringRepresentation();
+    if (customName != null) {
+      // Covers some rare cases where a type might return "" from their custom formatter.
+      // This is actually pretty terrible, as it comes from subjects overriding (formerly)
+      // getDisplaySubject() in cases of .named() to make it not prefixing but replacing.
+      // That goes against the stated contract of .named().  Once displayedAs() is in place,
+      // we can rip this out and callers can use that instead.
+      // TODO(cgruber)
+      return customName + (formatted.isEmpty() ? "" : " (<" + formatted + ">)");
+    } else {
+      return "<" + formatted + ">";
+    }
   }
 
   /**
