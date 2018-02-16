@@ -15,8 +15,6 @@
  */
 package com.google.common.truth.extensions.proto;
 
-import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
-
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
@@ -66,25 +64,17 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     }
 
     if (!isProto3()) {
-      try {
-        assertThat(diffMessage).isEqualTo(message);
-        expectedFailure();
-      } catch (AssertionError e) {
-        expectIsEqualToFailed(e);
-        expectSubstr(e, "added: o_enum: DEFAULT");
-      }
+      expectFailureWhenTesting().that(diffMessage).isEqualTo(message);
+      expectIsEqualToFailed();
+      expectThatFailure().hasMessageThat().contains("added: o_enum: DEFAULT");
     }
 
-    try {
-      assertThat(diffMessage).ignoringFieldAbsence().isNotEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsNotEqualToFailed(e);
-      expectSubstr(e, "matched: o_int: 3");
-      if (!isProto3()) {
-        // Proto 3 doesn't cover the field at all when it's not set.
-        expectSubstr(e, "matched: o_enum: DEFAULT");
-      }
+    expectFailureWhenTesting().that(diffMessage).ignoringFieldAbsence().isNotEqualTo(message);
+    expectIsNotEqualToFailed();
+    expectThatFailure().hasMessageThat().contains("matched: o_int: 3");
+    if (!isProto3()) {
+      // Proto 3 doesn't cover the field at all when it's not set.
+      expectThatFailure().hasMessageThat().contains("matched: o_enum: DEFAULT");
     }
   }
 
@@ -110,21 +100,13 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).isNotEqualTo(message);
     expectThat(diffMessage).ignoringFieldAbsence().isEqualTo(message);
 
-    try {
-      assertThat(diffMessage).isEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsEqualToFailed(e);
-      expectSubstr(e, "added: 93[0]: 42");
-      expectSubstr(e, "deleted: 99[0]: 42");
-    }
+    expectFailureWhenTesting().that(diffMessage).isEqualTo(message);
+    expectIsEqualToFailed();
+    expectThatFailure().hasMessageThat().contains("added: 93[0]: 42");
+    expectThatFailure().hasMessageThat().contains("deleted: 99[0]: 42");
 
-    try {
-      assertThat(diffMessage).ignoringFieldAbsence().isNotEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsNotEqualToFailed(e);
-    }
+    expectFailureWhenTesting().that(diffMessage).ignoringFieldAbsence().isNotEqualTo(message);
+    expectIsNotEqualToFailed();
   }
 
   @Test
@@ -162,33 +144,21 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(eqNestedMessage).isNotEqualTo(nestedMessage);
     expectThat(eqNestedMessage).ignoringRepeatedFieldOrder().isEqualTo(nestedMessage);
 
-    try {
-      assertThat(eqMessage).isEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsEqualToFailed(e);
-      expectSubstr(e, "modified: r_string[0]: \"foo\" -> \"bar\"");
-      expectSubstr(e, "modified: r_string[1]: \"bar\" -> \"foo\"");
-    }
+    expectFailureWhenTesting().that(eqMessage).isEqualTo(message);
+    expectIsEqualToFailed();
+    expectThatFailure().hasMessageThat().contains("modified: r_string[0]: \"foo\" -> \"bar\"");
+    expectThatFailure().hasMessageThat().contains("modified: r_string[1]: \"bar\" -> \"foo\"");
 
-    try {
-      assertThat(eqMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsNotEqualToFailed(e);
-      expectSubstr(e, "moved: r_string[0] -> r_string[1]: \"foo\"");
-      expectSubstr(e, "moved: r_string[1] -> r_string[0]: \"bar\"");
-    }
+    expectFailureWhenTesting().that(eqMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message);
+    expectIsNotEqualToFailed();
+    expectThatFailure().hasMessageThat().contains("moved: r_string[0] -> r_string[1]: \"foo\"");
+    expectThatFailure().hasMessageThat().contains("moved: r_string[1] -> r_string[0]: \"bar\"");
 
-    try {
-      assertThat(diffMessage).ignoringRepeatedFieldOrder().isEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsEqualToFailed(e);
-      expectSubstr(e, "matched: r_string[0]: \"foo\"");
-      expectSubstr(e, "moved: r_string[1] -> r_string[2]: \"bar\"");
-      expectSubstr(e, "added: r_string[1]: \"foo\"");
-    }
+    expectFailureWhenTesting().that(diffMessage).ignoringRepeatedFieldOrder().isEqualTo(message);
+    expectIsEqualToFailed();
+    expectThatFailure().hasMessageThat().contains("matched: r_string[0]: \"foo\"");
+    expectThatFailure().hasMessageThat().contains("moved: r_string[1] -> r_string[2]: \"bar\"");
+    expectThatFailure().hasMessageThat().contains("added: r_string[1]: \"foo\"");
   }
 
   @Test
@@ -196,25 +166,17 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     Message message = parse("r_string: \"foo\" r_string: \"bar\"");
     Message diffMessage = parse("r_string: \"foo\" r_string: \"not_bar\"");
 
-    try {
-      assertThat(diffMessage).isEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsEqualToFailed(e);
-      expectSubstr(e, "foo");
-      expectSubstr(e, "bar");
-      expectSubstr(e, "not_bar");
-    }
+    expectFailureWhenTesting().that(diffMessage).isEqualTo(message);
+    expectIsEqualToFailed();
+    expectThatFailure().hasMessageThat().contains("foo");
+    expectThatFailure().hasMessageThat().contains("bar");
+    expectThatFailure().hasMessageThat().contains("not_bar");
 
-    try {
-      assertThat(diffMessage).reportingMismatchesOnly().isEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsEqualToFailed(e);
-      expectNoSubstr(e, "foo");
-      expectSubstr(e, "bar");
-      expectSubstr(e, "not_bar");
-    }
+    expectFailureWhenTesting().that(diffMessage).reportingMismatchesOnly().isEqualTo(message);
+    expectIsEqualToFailed();
+    expectThatFailure().hasMessageThat().doesNotContain("foo");
+    expectThatFailure().hasMessageThat().contains("bar");
+    expectThatFailure().hasMessageThat().contains("not_bar");
   }
 
   @Test
@@ -222,28 +184,21 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     Message message = parse("o_int: 33 r_string: \"foo\" r_string: \"bar\"");
     Message diffMessage = parse("o_int: 33 r_string: \"bar\" r_string: \"foo\"");
 
-    try {
-      assertThat(diffMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsNotEqualToFailed(e);
-      expectSubstr(e, "33");
-      expectSubstr(e, "foo");
-      expectSubstr(e, "bar");
-    }
+    expectFailureWhenTesting().that(diffMessage).ignoringRepeatedFieldOrder().isNotEqualTo(message);
+    expectIsNotEqualToFailed();
+    expectThatFailure().hasMessageThat().contains("33");
+    expectThatFailure().hasMessageThat().contains("foo");
+    expectThatFailure().hasMessageThat().contains("bar");
 
-    try {
-      assertThat(diffMessage)
-          .ignoringRepeatedFieldOrder()
-          .reportingMismatchesOnly()
-          .isNotEqualTo(message);
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectIsNotEqualToFailed(e);
-      expectNoSubstr(e, "33");
-      expectNoSubstr(e, "foo");
-      expectNoSubstr(e, "bar");
-    }
+    expectFailureWhenTesting()
+        .that(diffMessage)
+        .ignoringRepeatedFieldOrder()
+        .reportingMismatchesOnly()
+        .isNotEqualTo(message);
+    expectIsNotEqualToFailed();
+    expectThatFailure().hasMessageThat().doesNotContain("33");
+    expectThatFailure().hasMessageThat().doesNotContain("foo");
+    expectThatFailure().hasMessageThat().doesNotContain("bar");
   }
 
   @Test
@@ -257,22 +212,19 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(parsePartial("o_required_string_message: { required_string: \"foo\" }"))
         .hasAllRequiredFields();
 
-    try {
-      assertThat(parsePartial("o_required_string_message: {}")).hasAllRequiredFields();
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectRegex(e, "Not true that <.*> has all required fields set\\.\\s*Missing: \\[.*\\].*");
-      expectSubstr(e, "[o_required_string_message.required_string]");
-    }
+    expectFailureWhenTesting()
+        .that(parsePartial("o_required_string_message: {}"))
+        .hasAllRequiredFields();
+    expectFailureMatches(
+        "Not true that <.*> has all required fields set\\.\\s*Missing: \\[.*\\].*");
+    expectThatFailure().hasMessageThat().contains("[o_required_string_message.required_string]");
 
-    try {
-      assertThat(parsePartial("r_required_string_message: {} r_required_string_message: {}"))
-          .hasAllRequiredFields();
-      expectedFailure();
-    } catch (AssertionError e) {
-      expectRegex(e, "Not true that <.*> has all required fields set\\.\\s*Missing: \\[.*\\].*");
-      expectSubstr(e, "r_required_string_message[0].required_string");
-      expectSubstr(e, "r_required_string_message[1].required_string");
-    }
+    expectFailureWhenTesting()
+        .that(parsePartial("r_required_string_message: {} r_required_string_message: {}"))
+        .hasAllRequiredFields();
+    expectFailureMatches(
+        "Not true that <.*> has all required fields set\\.\\s*Missing: \\[.*\\].*");
+    expectThatFailure().hasMessageThat().contains("r_required_string_message[0].required_string");
+    expectThatFailure().hasMessageThat().contains("r_required_string_message[1].required_string");
   }
 }

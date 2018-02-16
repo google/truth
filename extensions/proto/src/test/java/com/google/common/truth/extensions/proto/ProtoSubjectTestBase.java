@@ -16,7 +16,6 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static org.junit.Assert.fail;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -24,6 +23,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.truth.Expect;
+import com.google.common.truth.ExpectFailure;
+import com.google.common.truth.ThrowableSubject;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
@@ -76,6 +77,14 @@ public class ProtoSubjectTestBase {
   }
 
   @Rule public final Expect expect = Expect.create();
+
+  // Hackhackhack: 'ExpectFailure' does not support more than one call per test, but we have many
+  // tests which require it.  So, we create an arbitrary number of these rules, and dole them out
+  // in order on demand.
+  // TODO(user): See if 'expectFailure.enterRuleContext()' could be made public, or a '.reset()'
+  // function could be added to mitigate the need for this.  Alternatively, if & when Truth moves
+  // to Java 8, we can use the static API with lambdas instead.
+  @Rule public final MultiExpectFailure multiExpectFailure = new MultiExpectFailure(/* size= */ 20);
 
   private final Message defaultInstance;
   private final boolean isProto3;
@@ -139,6 +148,14 @@ public class ProtoSubjectTestBase {
     return isProto3;
   }
 
+  protected final ProtoSubjectBuilder expectFailureWhenTesting() {
+    return multiExpectFailure.whenTesting().about(ProtoTruth.protos());
+  }
+
+  protected final ThrowableSubject expectThatFailure() {
+    return expect.that(multiExpectFailure.getFailure());
+  }
+
   protected final ProtoSubject<?, Message> expectThat(@Nullable Message message) {
     return expect.about(ProtoTruth.protos()).that(message);
   }
@@ -163,58 +180,33 @@ public class ProtoSubjectTestBase {
     return expect.withMessage(msg).about(ProtoTruth.protos()).that(message);
   }
 
-  /**
-   * Assert than an AssertionError was expected before we got to this line.
-   *
-   * <p>Intended for try-catch blocks, where the previous line is meant to throw an AssertionError
-   * and it's a test failure if we reach the next line in the try block. The catch block should
-   * inspect the message, possibly with 'expectFailureNotMissing' to ensure that the expected
-   * AssertionError was thrown.
-   */
-  protected final void expectedFailure() {
-    fail("Expected failure.");
-  }
-
-  protected final void expectFailureNotMissing(AssertionError expected) {
-    expectNoSubstr(expected, "Expected failure.");
-  }
-
-  protected final void expectIsEqualToFailed(AssertionError e) {
-    expectRegex(
-        e,
+  protected final void expectIsEqualToFailed() {
+    expectFailureMatches(
         "Not true that messages compare equal\\.\\s*"
             + "(Differences were found:\\n.*|No differences were reported\\..*)");
   }
 
-  protected final void expectIsNotEqualToFailed(AssertionError e) {
-    expectRegex(
-        e,
+  protected final void expectIsNotEqualToFailed() {
+    expectFailureMatches(
         "Not true that messages compare not equal\\.\\s*"
             + "(Only ignorable differences were found:\\n.*|"
             + "No differences were found\\..*)");
   }
 
-  // TODO(cgruber): These probably belong in ThrowableSubject.
-  protected final void expectRegex(Throwable t, String regex) {
-    expect
-        .withMessage(String.format("Expected <%s> to match '%s'.", regex, t.getMessage()))
-        .that(Pattern.compile(regex, Pattern.DOTALL).matcher(t.getMessage()).matches())
-        .isTrue();
+  /**
+   * Expects the current {@link ExpectFailure} failure message to match the provided regex, using
+   * {@code Pattern.DOTALL} to match newlines.
+   */
+  protected final void expectFailureMatches(String regex) {
+    expectThatFailure().hasMessageThat().matches(Pattern.compile(regex, Pattern.DOTALL));
   }
 
+  /**
+   * Expects the current {@link ExpectFailure} failure message to NOT match the provided regex,
+   * using {@code Pattern.DOTALL} to match newlines.
+   */
   protected final void expectNoRegex(Throwable t, String regex) {
-    expect
-        .withMessage(String.format("Expected <%s> to match '%s'.", regex, t.getMessage()))
-        .that(Pattern.compile(regex, Pattern.DOTALL).matcher(t.getMessage()).matches())
-        .isFalse();
-  }
-
-  protected final void expectSubstr(Throwable t, String substr) {
-    expect.that(t.getMessage()).contains(substr);
-  }
-
-  protected final void expectNoSubstr(Throwable t, String substr) {
-    expect.that(t.getMessage()).doesNotContain(substr);
+    expectThatFailure().hasMessageThat().doesNotMatch(Pattern.compile(regex, Pattern.DOTALL));
   }
 
   protected static final <T> ImmutableList<T> listOf(T... elements) {
