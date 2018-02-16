@@ -513,6 +513,11 @@ public class Subject<S extends Subject<S, T>, T> {
     throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
   }
 
+  @Override
+  public String toString() {
+    return getClass().getName() + "(" + actualCustomStringRepresentation() + ")";
+  }
+
   private static boolean classMetadataUnsupported() {
     // https://github.com/google/truth/issues/198
     // TODO(cpovirk): Consider whether to remove instanceof tests under GWT entirely.
