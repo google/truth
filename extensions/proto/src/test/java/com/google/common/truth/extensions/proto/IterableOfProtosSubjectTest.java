@@ -16,8 +16,6 @@
 
 package com.google.common.truth.extensions.proto;
 
-import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
-
 import com.google.protobuf.Message;
 import java.util.Collection;
 import java.util.Comparator;
@@ -62,43 +60,27 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     expectThat(listOf()).isEmpty();
     expectThat(listOf(message1)).isNotEmpty();
 
-    try {
-      assertThat(listOf(message1)).isEmpty();
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf(message1)).isEmpty();
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf()).isNotEmpty();
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf()).isNotEmpty();
+    expectThatFailure().isNotNull();
   }
 
   @Test
   public void testPlain_hasSize() {
     expectThat(listOf(message1, message2)).hasSize(2);
 
-    try {
-      assertThat(listOf(message1)).hasSize(3);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf(message1)).hasSize(3);
+    expectThatFailure().isNotNull();
   }
 
   @Test
   public void testPlain_containsNoDuplicates() {
     expectThat(listOf(message1, message2)).containsNoDuplicates();
 
-    try {
-      assertThat(listOf(message1, eqMessage1)).containsNoDuplicates();
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf(message1, eqMessage1)).containsNoDuplicates();
+    expectThatFailure().isNotNull();
   }
 
   @Test
@@ -106,19 +88,11 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     expectThat(listOf(message1, message2)).contains(eqMessage2);
     expectThat(listOf(message1, message2)).doesNotContain(eqIgnoredMessage1);
 
-    try {
-      assertThat(listOf(message1, message2)).contains(eqIgnoredMessage1);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf(message1, message2)).contains(eqIgnoredMessage1);
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2)).doesNotContain(eqMessage1);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf(message1, message2)).doesNotContain(eqMessage1);
+    expectThatFailure().isNotNull();
   }
 
   @Test
@@ -127,28 +101,20 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     expectThat(listOf(message1, message2)).containsAnyIn(listOf(eqIgnoredMessage1, eqMessage2));
     expectThat(listOf(message1, message2)).containsAnyIn(arrayOf(eqIgnoredMessage1, eqMessage2));
 
-    try {
-      assertThat(listOf(message1, message2)).containsAnyOf(eqIgnoredMessage1, eqIgnoredMessage2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .containsAnyOf(eqIgnoredMessage1, eqIgnoredMessage2);
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2))
-          .containsAnyIn(listOf(eqIgnoredMessage1, eqIgnoredMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .containsAnyIn(listOf(eqIgnoredMessage1, eqIgnoredMessage2));
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2))
-          .containsAnyIn(arrayOf(eqIgnoredMessage1, eqIgnoredMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .containsAnyIn(arrayOf(eqIgnoredMessage1, eqIgnoredMessage2));
+    expectThatFailure().isNotNull();
   }
 
   @Test
@@ -159,26 +125,16 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     expectThat(listOf(message1, message2, eqIgnoredMessage1))
         .containsAllIn(arrayOf(eqMessage1, eqMessage2));
 
-    try {
-      assertThat(listOf(message1)).containsAllOf(eqMessage1, eqMessage2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf(message1)).containsAllOf(eqMessage1, eqMessage2);
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1)).containsAllIn(listOf(eqMessage1, eqMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf(message1)).containsAllIn(listOf(eqMessage1, eqMessage2));
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1)).containsAllIn(arrayOf(eqMessage1, eqMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .containsAllIn(arrayOf(eqMessage1, eqMessage2));
+    expectThatFailure().isNotNull();
   }
 
   @Test
@@ -196,51 +152,36 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .containsExactlyElementsIn(arrayOf(eqMessage1, eqMessage2))
         .inOrder();
 
-    try {
-      assertThat(listOf(message1)).containsExactly(eqMessage1, eqMessage2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf(message1)).containsExactly(eqMessage1, eqMessage2);
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2)).containsExactly(eqMessage2, eqMessage1).inOrder();
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .containsExactly(eqMessage2, eqMessage1)
+        .inOrder();
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1)).containsExactlyElementsIn(listOf(eqMessage1, eqMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .containsExactlyElementsIn(listOf(eqMessage1, eqMessage2));
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2))
-          .containsExactlyElementsIn(listOf(eqMessage2, eqMessage1))
-          .inOrder();
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .containsExactlyElementsIn(listOf(eqMessage2, eqMessage1))
+        .inOrder();
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1)).containsExactlyElementsIn(arrayOf(eqMessage1, eqMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .containsExactlyElementsIn(arrayOf(eqMessage1, eqMessage2));
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2))
-          .containsExactlyElementsIn(arrayOf(eqMessage2, eqMessage1))
-          .inOrder();
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .containsExactlyElementsIn(arrayOf(eqMessage2, eqMessage1))
+        .inOrder();
+    expectThatFailure().isNotNull();
   }
 
   @Test
@@ -249,26 +190,20 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     expectThat(listOf(message1)).containsNoneIn(listOf(eqMessage2, eqIgnoredMessage1));
     expectThat(listOf(message1)).containsNoneIn(arrayOf(eqMessage2, eqIgnoredMessage1));
 
-    try {
-      assertThat(listOf(message1, message2)).containsNoneOf(eqMessage2, eqIgnoredMessage1);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .containsNoneOf(eqMessage2, eqIgnoredMessage1);
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2)).containsNoneIn(listOf(eqMessage2, eqIgnoredMessage1));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .containsNoneIn(listOf(eqMessage2, eqIgnoredMessage1));
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2)).containsNoneIn(arrayOf(eqMessage2, eqIgnoredMessage1));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .containsNoneIn(arrayOf(eqMessage2, eqIgnoredMessage1));
+    expectThatFailure().isNotNull();
   }
 
   @Test
@@ -276,20 +211,13 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     expectThat(listOf(message1, eqMessage1, message2)).isOrdered(compareByOIntAscending());
     expectThat(listOf(message1, message2)).isStrictlyOrdered(compareByOIntAscending());
 
-    try {
-      assertThat(listOf(message2, message1)).isOrdered(compareByOIntAscending());
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting().that(listOf(message2, message1)).isOrdered(compareByOIntAscending());
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, eqMessage1, message2))
-          .isStrictlyOrdered(compareByOIntAscending());
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, eqMessage1, message2))
+        .isStrictlyOrdered(compareByOIntAscending());
+    expectThatFailure().isNotNull();
   }
 
   @Test
@@ -301,33 +229,29 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .doesNotContain(eqIgnoredMessage1);
 
-    try {
-      assertThat(listOf(message1, message2))
-          .ignoringFields(ignoreFieldNumber)
-          .contains(eqRepeatedMessage1);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "is equivalent according to "
-              + "assertThat(proto)"
-              + ".ignoringFields("
-              + fullMessageName()
-              + ".o_int)"
-              + ".isEqualTo(target)");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .ignoringFields(ignoreFieldNumber)
+        .contains(eqRepeatedMessage1);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "is equivalent according to "
+                + "assertThat(proto)"
+                + ".ignoringFields("
+                + fullMessageName()
+                + ".o_int)"
+                + ".isEqualTo(target)");
 
-    try {
-      assertThat(listOf(message1, message2))
-          .ignoringRepeatedFieldOrder()
-          .doesNotContain(eqRepeatedMessage1);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "is equivalent according to "
-              + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .ignoringRepeatedFieldOrder()
+        .doesNotContain(eqRepeatedMessage1);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "is equivalent according to "
+                + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
   }
 
   @Test
@@ -339,33 +263,29 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .containsAnyIn(listOf(eqIgnoredMessage1, eqRepeatedMessage2));
 
-    try {
-      assertThat(listOf(message1, message2))
-          .ignoringFields(ignoreFieldNumber)
-          .containsAnyOf(eqRepeatedMessage1, eqRepeatedMessage2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "is equivalent according to "
-              + "assertThat(proto)"
-              + ".ignoringFields("
-              + fullMessageName()
-              + ".o_int)"
-              + ".isEqualTo(target)");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .ignoringFields(ignoreFieldNumber)
+        .containsAnyOf(eqRepeatedMessage1, eqRepeatedMessage2);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "is equivalent according to "
+                + "assertThat(proto)"
+                + ".ignoringFields("
+                + fullMessageName()
+                + ".o_int)"
+                + ".isEqualTo(target)");
 
-    try {
-      assertThat(listOf(message1, message2))
-          .ignoringRepeatedFieldOrder()
-          .containsAnyIn(listOf(eqIgnoredMessage1, eqIgnoredMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "is equivalent according to "
-              + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .ignoringRepeatedFieldOrder()
+        .containsAnyIn(listOf(eqIgnoredMessage1, eqIgnoredMessage2));
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "is equivalent according to "
+                + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
   }
 
   @Test
@@ -380,23 +300,17 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .containsAllIn(listOf(eqRepeatedMessage1, eqRepeatedMessage2));
 
-    try {
-      assertThat(listOf(message1))
-          .ignoringRepeatedFieldOrder()
-          .containsAllOf(eqMessage1, eqMessage2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .ignoringRepeatedFieldOrder()
+        .containsAllOf(eqMessage1, eqMessage2);
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1))
-          .ignoringRepeatedFieldOrder()
-          .containsAllIn(listOf(eqMessage1, eqMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .ignoringRepeatedFieldOrder()
+        .containsAllIn(listOf(eqMessage1, eqMessage2));
+    expectThatFailure().isNotNull();
   }
 
   @Test
@@ -416,43 +330,31 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .containsExactlyElementsIn(listOf(eqRepeatedMessage1, eqRepeatedMessage2))
         .inOrder();
 
-    try {
-      assertThat(listOf(message1))
-          .ignoringRepeatedFieldOrder()
-          .containsExactly(eqMessage1, eqMessage2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .ignoringRepeatedFieldOrder()
+        .containsExactly(eqMessage1, eqMessage2);
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2))
-          .ignoringRepeatedFieldOrder()
-          .containsExactly(eqMessage2, eqMessage1)
-          .inOrder();
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .ignoringRepeatedFieldOrder()
+        .containsExactly(eqMessage2, eqMessage1)
+        .inOrder();
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1))
-          .ignoringRepeatedFieldOrder()
-          .containsExactlyElementsIn(listOf(eqMessage1, eqMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .ignoringRepeatedFieldOrder()
+        .containsExactlyElementsIn(listOf(eqMessage1, eqMessage2));
+    expectThatFailure().isNotNull();
 
-    try {
-      assertThat(listOf(message1, message2))
-          .ignoringRepeatedFieldOrder()
-          .containsExactlyElementsIn(listOf(eqMessage2, eqMessage1))
-          .inOrder();
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectFailureNotMissing(expected);
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .ignoringRepeatedFieldOrder()
+        .containsExactlyElementsIn(listOf(eqMessage2, eqMessage1))
+        .inOrder();
+    expectThatFailure().isNotNull();
   }
 
   @Test
@@ -464,33 +366,29 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .containsNoneIn(listOf(eqMessage2, eqIgnoredMessage1));
 
-    try {
-      assertThat(listOf(message1, message2))
-          .ignoringFields(ignoreFieldNumber)
-          .containsNoneOf(eqRepeatedMessage1, eqIgnoredMessage2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "is equivalent according to "
-              + "assertThat(proto)"
-              + ".ignoringFields("
-              + fullMessageName()
-              + ".o_int)"
-              + ".isEqualTo(target)");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .ignoringFields(ignoreFieldNumber)
+        .containsNoneOf(eqRepeatedMessage1, eqIgnoredMessage2);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "is equivalent according to "
+                + "assertThat(proto)"
+                + ".ignoringFields("
+                + fullMessageName()
+                + ".o_int)"
+                + ".isEqualTo(target)");
 
-    try {
-      assertThat(listOf(message1, message2))
-          .ignoringRepeatedFieldOrder()
-          .containsNoneIn(listOf(eqIgnoredMessage1, eqRepeatedMessage2));
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "is equivalent according to "
-              + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1, message2))
+        .ignoringRepeatedFieldOrder()
+        .containsNoneIn(listOf(eqIgnoredMessage1, eqRepeatedMessage2));
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "is equivalent according to "
+                + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
   }
 
   @Test
@@ -502,81 +400,75 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
     // error messages look prettier. Might require some thought to avoid eating too much vertical
     // space, also indentation adds complexity.
 
-    try {
-      assertThat(listOf(message1))
-          .withPartialScope(FieldScopes.fromSetFields(message2))
-          .ignoringRepeatedFieldOrder()
-          .contains(message2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "assertThat(proto).withPartialScope(FieldScopes.fromSetFields({o_int: 3\n"
-              + "r_string: \"baz\"\n"
-              + "r_string: \"qux\"\n"
-              + "})).ignoringRepeatedFieldOrder().isEqualTo(target)");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .withPartialScope(FieldScopes.fromSetFields(message2))
+        .ignoringRepeatedFieldOrder()
+        .contains(message2);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "assertThat(proto).withPartialScope(FieldScopes.fromSetFields({o_int: 3\n"
+                + "r_string: \"baz\"\n"
+                + "r_string: \"qux\"\n"
+                + "})).ignoringRepeatedFieldOrder().isEqualTo(target)");
 
-    try {
-      assertThat(listOf(message1))
-          .ignoringRepeatedFieldOrder()
-          .ignoringFieldScope(
-              FieldScopes.ignoringFields(getFieldNumber("o_int"), getFieldNumber("r_string")))
-          .ignoringFieldAbsence()
-          .contains(message2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "assertThat(proto)"
-              + ".ignoringRepeatedFieldOrder()"
-              + ".ignoringFieldScope("
-              + "FieldScopes.ignoringFields("
-              + fullMessageName()
-              + ".o_int, "
-              + fullMessageName()
-              + ".r_string))"
-              + ".ignoringFieldAbsence()"
-              + ".isEqualTo(target)");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .ignoringRepeatedFieldOrder()
+        .ignoringFieldScope(
+            FieldScopes.ignoringFields(getFieldNumber("o_int"), getFieldNumber("r_string")))
+        .ignoringFieldAbsence()
+        .contains(message2);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "assertThat(proto)"
+                + ".ignoringRepeatedFieldOrder()"
+                + ".ignoringFieldScope("
+                + "FieldScopes.ignoringFields("
+                + fullMessageName()
+                + ".o_int, "
+                + fullMessageName()
+                + ".r_string))"
+                + ".ignoringFieldAbsence()"
+                + ".isEqualTo(target)");
 
-    try {
-      assertThat(listOf(message1))
-          .ignoringFields(4, 7)
-          .reportingMismatchesOnly()
-          .contains(message2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "assertThat(proto)"
-              + ".ignoringFields("
-              + fullMessageName()
-              + ".o_enum, "
-              + fullMessageName()
-              + ".o_test_message)"
-              + ".reportingMismatchesOnly()"
-              + ".isEqualTo(target)");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .ignoringFields(4, 7)
+        .reportingMismatchesOnly()
+        .contains(message2);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "assertThat(proto)"
+                + ".ignoringFields("
+                + fullMessageName()
+                + ".o_enum, "
+                + fullMessageName()
+                + ".o_test_message)"
+                + ".reportingMismatchesOnly()"
+                + ".isEqualTo(target)");
   }
 
   @Test
   public void testFormatDiff() {
-    try {
-      assertThat(listOf(message1)).ignoringRepeatedFieldOrder().containsExactly(message2);
-      expectedFailure();
-    } catch (AssertionError expected) {
-      expectSubstr(
-          expected,
-          "(diff: Differences were found:\n"
-              + "modified: o_int: 3 -> 1\n"
-              + "added: r_string[0]: \"foo\"\n"
-              + "added: r_string[1]: \"bar\"\n"
-              + "deleted: r_string[0]: \"baz\"\n"
-              + "deleted: r_string[1]: \"qux\"\n"
-              + "\n"
-              + "Full diff report:\n");
-    }
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .ignoringRepeatedFieldOrder()
+        .containsExactly(message2);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "(diff: Differences were found:\n"
+                + "modified: o_int: 3 -> 1\n"
+                + "added: r_string[0]: \"foo\"\n"
+                + "added: r_string[1]: \"bar\"\n"
+                + "deleted: r_string[0]: \"baz\"\n"
+                + "deleted: r_string[1]: \"qux\"\n"
+                + "\n"
+                + "Full diff report:\n");
   }
 
   @Test
