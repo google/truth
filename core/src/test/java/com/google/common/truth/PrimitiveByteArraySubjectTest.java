@@ -58,7 +58,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(byte[]) [124, 112, 12, 11, 10]> is equal to <[24, 12, 2, 1, 0]>; "
+            "Not true that <[124, 112, 12, 11, 10]> is equal to <[24, 12, 2, 1, 0]>; "
                 + "expected:<[180C020100]> but was:<[7C700C0B0A]>");
   }
 
@@ -79,7 +79,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(byte[]) [124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, "
+            "Not true that <[124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, "
                 + "109, 112, 108, 101, 3, 99, 111, 109, 0, 0, 1, 0, 0]> is equal to "
                 + "<[124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, "
                 + "101, 3, 99, 111, 109, 0, 0, 1, 0, 1]>; "
@@ -96,7 +96,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(byte[]) [0, 123]> is equal to <[123, 0]>; "
+            "Not true that <[0, 123]> is equal to <[123, 0]>; "
                 + "expected:<[7B00]> but was:<[007B]>");
   }
 
@@ -128,7 +128,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
+        .isEqualTo("<[0, 1]> unexpectedly equal to [0, 1].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -138,7 +138,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(byte[]) [0, 1]> unexpectedly equal to [0, 1].");
+        .isEqualTo("<[0, 1]> unexpectedly equal to [0, 1].");
   }
 
   private static byte[] array(byte... ts) {

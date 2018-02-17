@@ -51,8 +51,7 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(true, false, true)).isEqualTo(array(false, true, true));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <(boolean[]) [true, false, true]> is equal to <[false, true, true]>");
+        .isEqualTo("Not true that <[true, false, true]> is equal to <[false, true, true]>");
   }
 
   @Test
@@ -83,7 +82,7 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(true, false)).isNotEqualTo(array(true, false));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
+        .isEqualTo("<[true, false]> unexpectedly equal to [true, false].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -93,7 +92,7 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(boolean[]) [true, false]> unexpectedly equal to [true, false].");
+        .isEqualTo("<[true, false]> unexpectedly equal to [true, false].");
   }
 
   private static boolean[] array(boolean... ts) {

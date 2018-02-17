@@ -59,7 +59,7 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2, 5)).hasLength(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(int[]) [2, 5]> has length <1>");
+        .isEqualTo("Not true that <[2, 5]> has length <1>");
   }
 
   @Test
@@ -81,7 +81,7 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2, 5)).isEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(int[]) [2, 5]> is empty");
+        .isEqualTo("Not true that <[2, 5]> is empty");
   }
 
   @Test
@@ -94,7 +94,7 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(EMPTY).isNotEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(int[]) []> is not empty");
+        .isEqualTo("Not true that <[]> is not empty");
   }
 
   @Test
@@ -102,7 +102,7 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2, 3)).isEqualTo(array(3, 2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(int[]) [2, 3]> is equal to <[3, 2]>");
+        .isEqualTo("Not true that <[2, 3]> is equal to <[3, 2]>");
   }
 
   @Test
@@ -133,7 +133,7 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2, 3)).isNotEqualTo(array(2, 3));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
+        .isEqualTo("<[2, 3]> unexpectedly equal to [2, 3].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -143,7 +143,7 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(int[]) [2, 3]> unexpectedly equal to [2, 3].");
+        .isEqualTo("<[2, 3]> unexpectedly equal to [2, 3].");
   }
 
   private static int[] array(int... ts) {

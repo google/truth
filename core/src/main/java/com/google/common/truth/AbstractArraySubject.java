@@ -61,13 +61,9 @@ abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> ext
   /** Returns a List representation suitable for displaying in a string. */
   abstract List<?> listRepresentation();
 
-  // TODO(cgruber): Kill once displayedAs() exists, since this attempts to make .named() do that.
   @Override
   protected String actualCustomStringRepresentation() {
-    Object listRepresentation = actual() == null ? "null" : listRepresentation();
-    return (internalCustomName() == null)
-        ? "(" + underlyingType() + brackets() + ") " + listRepresentation + ""
-        : "";
+    return actual() == null ? "null" : listRepresentation().toString();
   }
 
   void failWithBadType(Object expected) {

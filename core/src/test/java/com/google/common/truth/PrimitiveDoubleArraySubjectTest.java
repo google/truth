@@ -81,7 +81,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2d)).isEqualTo(array(OVER_2POINT2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [2.2]> is equal to <[" + OVER_2POINT2 + "]>");
+        .isEqualTo("Not true that <[2.2]> is equal to <[" + OVER_2POINT2 + "]>");
   }
 
   @Test
@@ -89,7 +89,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
+        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[3.3, 2.2]>");
   }
 
   @Test
@@ -97,7 +97,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 4.4d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [2.2, 3.3]> is equal to <[2.2, 3.3, 4.4]>");
+        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[2.2, 3.3, 4.4]>");
   }
 
   @Test
@@ -105,7 +105,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2d, 3.3d)).isEqualTo(array(2.2d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [2.2, 3.3]> is equal to <[2.2]>");
+        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[2.2]>");
   }
 
   @Test
@@ -113,7 +113,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(0.0d)).isEqualTo(array(-0.0d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [0.0]> is equal to <[-0.0]>");
+        .isEqualTo("Not true that <[0.0]> is equal to <[-0.0]>");
   }
 
   @Test
@@ -145,10 +145,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(array(2.2d, INTOLERABLE_3POINT3), DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> is equal to <[2.2, "
-                + INTOLERABLE_3POINT3
-                + "]>");
+        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[2.2, " + INTOLERABLE_3POINT3 + "]>");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -160,7 +157,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(array(3.3d, 2.2d), DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [2.2, 3.3]> is equal to <[3.3, 2.2]>");
+        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[3.3, 2.2]>");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -205,7 +202,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(array(2.2d, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [2.2, Infinity]> is equal to <[2.2, Infinity]>");
+        .isEqualTo("Not true that <[2.2, Infinity]> is equal to <[2.2, Infinity]>");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -226,7 +223,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(array(2.2d, POSITIVE_INFINITY), DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [2.2, 3.3]> is equal to <[2.2, Infinity]>");
+        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[2.2, Infinity]>");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -247,7 +244,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(NaN)).isEqualTo(array(NaN), DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [NaN]> is equal to <[NaN]>");
+        .isEqualTo("Not true that <[NaN]> is equal to <[NaN]>");
   }
 
   @Test
@@ -259,7 +256,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "<(double[]) [2.2, 5.4, Infinity, -Infinity]> unexpectedly equal to "
+            "<[2.2, 5.4, Infinity, -Infinity]> unexpectedly equal to "
                 + "[2.2, 5.4, Infinity, -Infinity].");
   }
 
@@ -272,7 +269,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "<(double[]) [2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0]> unexpectedly equal to "
+            "<[2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0]> unexpectedly equal to "
                 + "[2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0].");
   }
 
@@ -339,7 +336,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .isNotEqualTo(array(2.2d, 3.3d), DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(double[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
+        .isEqualTo("<[2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -351,8 +348,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .isNotEqualTo(array(2.2d, TOLERABLE_3POINT3), DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "<(double[]) [2.2, 3.3]> unexpectedly equal to [2.2, " + TOLERABLE_3POINT3 + "].");
+        .isEqualTo("<[2.2, 3.3]> unexpectedly equal to [2.2, " + TOLERABLE_3POINT3 + "].");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -368,7 +364,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(double[]) [2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
+        .isEqualTo("<[2.2, 3.3]> unexpectedly equal to [2.2, 3.3].");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -387,7 +383,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same, DEFAULT_TOLERANCE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(double[]) [2.2, Infinity]> unexpectedly equal to [2.2, Infinity].");
+        .isEqualTo("<[2.2, Infinity]> unexpectedly equal to [2.2, Infinity].");
   }
 
   @SuppressWarnings("deprecation") // testing deprecated method
@@ -428,7 +424,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, "
                 + INTOLERABLE_3POINT3
@@ -445,7 +441,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[3.3, 2.2]>."
                 + " It differs at indexes <[0, 1]>");
@@ -461,7 +457,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, 3.3, 1.1]>."
                 + " Expected length <3> but got <2>");
@@ -473,7 +469,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2]>."
                 + " Expected length <1> but got <2>");
@@ -489,7 +485,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values within "
+            "Not true that <[2.2, Infinity]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of"
                 + " <[2.2, Infinity]>. It differs at indexes <[1]>");
@@ -502,7 +498,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values within "
+            "Not true that <[2.2, Infinity]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of"
                 + " <[2.2, Infinity]>. It differs at indexes <[1]>");
@@ -518,7 +514,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, Infinity]>."
                 + " It differs at indexes <[1]>");
@@ -534,7 +530,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[Infinity]>."
                 + " Expected length <1> but got <2>");
@@ -546,7 +542,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [NaN]> has values within "
+            "Not true that <[NaN]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[NaN]>."
                 + " It differs at indexes <[0]>");
@@ -620,7 +616,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, "
                 + INTOLERABLE_3POINT3
@@ -637,7 +633,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[3.3, 2.2]>."
                 + " It differs at indexes <[0, 1]>");
@@ -653,7 +649,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, 3.3, 1.1]>."
                 + " Expected length <3> but got <2>");
@@ -669,7 +665,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2]>."
                 + " Expected length <1> but got <2>");
@@ -685,7 +681,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values within "
+            "Not true that <[2.2, Infinity]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of"
                 + " <[2.2, Infinity]>. It differs at indexes <[1]>");
@@ -701,7 +697,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, Infinity]>."
                 + " It differs at indexes <[1]>");
@@ -717,7 +713,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values within "
+            "Not true that <[2.2, 3.3]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[Infinity]>."
                 + " Expected length <1> but got <2>");
@@ -733,7 +729,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [NaN]> has values within "
+            "Not true that <[NaN]> has values within "
                 + DEFAULT_TOLERANCE
                 + " of <[NaN]>."
                 + " It differs at indexes <[0]>");
@@ -796,7 +792,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+            "Not true that <[2.2, 3.3]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, 3.3]>");
   }
@@ -812,7 +808,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+            "Not true that <[2.2, 3.3]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, "
                 + TOLERABLE_3POINT3
@@ -835,7 +831,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+            "Not true that <[2.2, 3.3]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, 3.3]>");
   }
@@ -851,7 +847,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values not within "
+            "Not true that <[2.2, Infinity]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of"
                 + " <[2.2, Infinity]>");
@@ -865,7 +861,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values not within "
+            "Not true that <[2.2, Infinity]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of"
                 + " <[2.2, Infinity]>");
@@ -882,7 +878,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+            "Not true that <[2.2, 3.3]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of"
                 + " <[2.2, Infinity]>");
@@ -901,9 +897,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [NaN]> has values not within "
-                + DEFAULT_TOLERANCE
-                + " of <[NaN]>");
+            "Not true that <[NaN]> has values not within " + DEFAULT_TOLERANCE + " of <[NaN]>");
   }
 
   @Test
@@ -982,7 +976,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+            "Not true that <[2.2, 3.3]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, 3.3]>");
   }
@@ -998,7 +992,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+            "Not true that <[2.2, 3.3]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of <[2.2, "
                 + TOLERABLE_3POINT3
@@ -1024,7 +1018,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, Infinity]> has values not within "
+            "Not true that <[2.2, Infinity]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of"
                 + " <[2.2, Infinity]>");
@@ -1041,7 +1035,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [2.2, 3.3]> has values not within "
+            "Not true that <[2.2, 3.3]> has values not within "
                 + DEFAULT_TOLERANCE
                 + " of"
                 + " <[2.2, Infinity]>");
@@ -1066,9 +1060,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(double[]) [NaN]> has values not within "
-                + DEFAULT_TOLERANCE
-                + " of <[NaN]>");
+            "Not true that <[NaN]> has values not within " + DEFAULT_TOLERANCE + " of <[NaN]>");
   }
 
   @Test
@@ -1622,7 +1614,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(10000.0)).isEqualTo(array(20000.0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(double[]) [10000.0]> is equal to <[20000.0]>");
+        .isEqualTo("Not true that <[10000.0]> is equal to <[20000.0]>");
   }
 
   private static double[] array(double... primitives) {
