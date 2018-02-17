@@ -454,6 +454,26 @@ public class IterableOfProtosSubject<
   }
 
   /**
+   * Compares double fields as equal if they are both finite and their absolute difference is less
+   * than or equal to {@code tolerance}.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingDoubleTolerance(double tolerance) {
+    return usingConfig(config.usingDoubleTolerance(tolerance));
+  }
+
+  /**
+   * Compares float fields as equal if they are both finite and their absolute difference is less
+   * than or equal to {@code tolerance}.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingFloatTolerance(float tolerance) {
+    return usingConfig(config.usingFloatTolerance(tolerance));
+  }
+
+  /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
@@ -583,6 +603,16 @@ public class IterableOfProtosSubject<
     @Override
     public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrder() {
       return subject.ignoringRepeatedFieldOrder();
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> usingDoubleTolerance(double tolerance) {
+      return subject.usingDoubleTolerance(tolerance);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> usingFloatTolerance(float tolerance) {
+      return subject.usingFloatTolerance(tolerance);
     }
 
     @Override

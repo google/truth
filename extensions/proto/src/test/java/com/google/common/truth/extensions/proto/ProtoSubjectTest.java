@@ -173,6 +173,30 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testDoubleTolerance() {
+    Message message = parse("o_double: 1.0");
+    Message diffMessage = parse("o_double: 1.1");
+
+    expectThat(diffMessage).isNotEqualTo(message);
+    expectThat(diffMessage).usingDoubleTolerance(0.2).isEqualTo(message);
+    expectThat(diffMessage).usingDoubleTolerance(0.05).isNotEqualTo(message);
+    expectThat(diffMessage).usingFloatTolerance(0.2f).isNotEqualTo(message);
+
+  }
+
+  @Test
+  public void testFloatTolerance() {
+    Message message = parse("o_float: 1.0");
+    Message diffMessage = parse("o_float: 1.1");
+
+    expectThat(diffMessage).isNotEqualTo(message);
+    expectThat(diffMessage).usingFloatTolerance(0.2f).isEqualTo(message);
+    expectThat(diffMessage).usingFloatTolerance(0.05f).isNotEqualTo(message);
+    expectThat(diffMessage).usingDoubleTolerance(0.2).isNotEqualTo(message);
+
+  }
+
+  @Test
   public void testReportingMismatchesOnly_isEqualTo() {
     Message message = parse("r_string: \"foo\" r_string: \"bar\"");
     Message diffMessage = parse("r_string: \"foo\" r_string: \"not_bar\"");

@@ -436,7 +436,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
 
     expectFailureWhenTesting()
         .that(listOf(message1))
-        .ignoringFields(4, 7)
+        .ignoringFields(getFieldNumber("o_enum"), getFieldNumber("o_test_message"))
         .reportingMismatchesOnly()
         .contains(message2);
     expectThatFailure()

@@ -83,6 +83,16 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
+  public ProtoFluentAssertion usingDoubleTolerance(double tolerance) {
+    return usingConfig(config.usingDoubleTolerance(tolerance));
+  }
+
+  @Override
+  public ProtoFluentAssertion usingFloatTolerance(float tolerance) {
+    return usingConfig(config.usingFloatTolerance(tolerance));
+  }
+
+  @Override
   public ProtoFluentAssertion withPartialScope(FieldScope fieldScope) {
     return usingConfig(config.withPartialScope(checkNotNull(fieldScope, "fieldScope")));
   }
