@@ -62,7 +62,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(1, 0, 1)).isEqualTo(array(0, 1, 1));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(short[]) [1, 0, 1]> is equal to <[0, 1, 1]>");
+        .isEqualTo("Not true that <[1, 0, 1]> is equal to <[0, 1, 1]>");
   }
 
   @Test
@@ -93,7 +93,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(1, 0)).isNotEqualTo(array(1, 0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(short[]) [1, 0]> unexpectedly equal to [1, 0].");
+        .isEqualTo("<[1, 0]> unexpectedly equal to [1, 0].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -103,7 +103,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(short[]) [1, 0]> unexpectedly equal to [1, 0].");
+        .isEqualTo("<[1, 0]> unexpectedly equal to [1, 0].");
   }
 
   private static short[] array(int a, int b, int c) {

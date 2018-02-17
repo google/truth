@@ -63,7 +63,15 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", 5L)).hasLength(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(Object[]) [A, 5]> has length <1>");
+        .isEqualTo("Not true that <[A, 5]> has length <1>");
+  }
+
+  @Test
+  public void hasLengthFailNamed() {
+    expectFailure.whenTesting().that(objectArray("A", 5L)).named("foo").hasLength(1);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that foo (<[A, 5]>) has length <1>");
   }
 
   @Test
@@ -71,7 +79,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(new Object[][] {{"A"}, {5L}}).hasLength(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(Object[][]) [[A], [5]]> has length <1>");
+        .isEqualTo("Not true that <[[A], [5]]> has length <1>");
   }
 
   @Test
@@ -94,7 +102,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", 5L)).isEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(Object[]) [A, 5]> is empty");
+        .isEqualTo("Not true that <[A, 5]> is empty");
   }
 
   @Test
@@ -108,7 +116,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(EMPTY).isNotEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(Object[]) []> is not empty");
+        .isEqualTo("Not true that <[]> is not empty");
   }
 
   @Test
@@ -116,8 +124,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <(Object[]) [A, 5]> is equal to <[5, A]>. It differs at index <[0]>");
+        .isEqualTo("Not true that <[A, 5]> is equal to <[5, A]>. It differs at index <[0]>");
   }
 
   @Test
@@ -129,7 +136,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(Object[][]) [[A], [5]]> is equal to <[[5], [A]]>."
+            "Not true that <[[A], [5]]> is equal to <[[5], [A]]>."
                 + " It differs at index <[0][0]>");
   }
 
@@ -142,7 +149,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(Object[][]) [[A, B], [5]]> is equal to <[[A], [5]]>."
+            "Not true that <[[A, B], [5]]> is equal to <[[A], [5]]>."
                 + " It differs at index <[0][1]>");
   }
 
@@ -155,7 +162,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(Object[][]) [[A], [5]]> is equal to <[[A], [5, 6]]>."
+            "Not true that <[[A], [5]]> is equal to <[[A], [5, 6]]>."
                 + " It differs at index <[1][1]>");
   }
 
@@ -191,7 +198,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
+        .isEqualTo("<[A, 5]> unexpectedly equal to [A, 5].");
   }
 
   @Test
@@ -202,7 +209,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isNotEqualTo(new Object[][] {{"A"}, {5L}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(Object[][]) [[A], [5]]> unexpectedly equal to [[A], [5]].");
+        .isEqualTo("<[[A], [5]]> unexpectedly equal to [[A], [5]].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -212,7 +219,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(Object[]) [A, 5]> unexpectedly equal to [A, 5].");
+        .isEqualTo("<[A, 5]> unexpectedly equal to [A, 5].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -222,7 +229,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(Object[][]) [[A], [5]]> unexpectedly equal to [[A], [5]].");
+        .isEqualTo("<[[A], [5]]> unexpectedly equal to [[A], [5]].");
   }
 
   @Test
@@ -247,7 +254,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", "B")).isEqualTo(objectArray("B"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(String[]) [A, B]> has length 2. Expected length is 1");
+        .isEqualTo("<[A, B]> has length 2. Expected length is 1");
   }
 
   @Test
@@ -258,7 +265,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(new String[][] {{"A"}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(String[][]) [[A], [B]]> has length 2. Expected length is 1");
+        .isEqualTo("<[[A], [B]]> has length 2. Expected length is 1");
   }
 
   @Test
@@ -266,8 +273,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <(String[]) [A, B]> is equal to <[B, A]>. It differs at index <[0]>");
+        .isEqualTo("Not true that <[A, B]> is equal to <[B, A]>. It differs at index <[0]>");
   }
 
   @Test
@@ -279,7 +285,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(String[][]) [[A], [B]]> is equal to <[[B], [A]]>."
+            "Not true that <[[A], [B]]> is equal to <[[B], [A]]>."
                 + " It differs at index <[0][0]>");
   }
 
@@ -292,8 +298,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(Set[]) [[A], [B]]> is equal to <[[B], [A]]>. "
-                + "It differs at index <[0]>");
+            "Not true that <[[A], [B]]> is equal to <[[B], [A]]>. It differs at index <[0]>");
     // Maybe one day:
     // .hasMessage("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
   }
@@ -313,7 +318,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <(int[][]) [[1, 2], [3], [4, 5, 6]]> "
+            "Not true that <[[1, 2], [3], [4, 5, 6]]> "
                 + "is equal to <[[1, 2], [3], [4, 5, 6, 7]]>. It differs at index <[2][3]>");
   }
 
@@ -331,9 +336,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "<(int[][]) [[1, 2], [3], [4, 5, 6]]> unexpectedly "
-                + "equal to [[1, 2], [3], [4, 5, 6]].");
+        .isEqualTo("<[[1, 2], [3], [4, 5, 6]]> unexpectedly equal to [[1, 2], [3], [4, 5, 6]].");
   }
 
   private static Object[] objectArray(Object... ts) {

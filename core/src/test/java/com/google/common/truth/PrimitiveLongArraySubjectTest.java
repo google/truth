@@ -51,7 +51,7 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2, 3)).isEqualTo(array(3, 2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <(long[]) [2, 3]> is equal to <[3, 2]>");
+        .isEqualTo("Not true that <[2, 3]> is equal to <[3, 2]>");
   }
 
   @Test
@@ -82,7 +82,7 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2, 3)).isNotEqualTo(array(2, 3));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+        .isEqualTo("<[2, 3]> unexpectedly equal to [2, 3].");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -92,7 +92,7 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<(long[]) [2, 3]> unexpectedly equal to [2, 3].");
+        .isEqualTo("<[2, 3]> unexpectedly equal to [2, 3].");
   }
 
   private static long[] array(long... ts) {
