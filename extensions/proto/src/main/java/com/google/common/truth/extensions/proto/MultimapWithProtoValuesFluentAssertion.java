@@ -122,6 +122,22 @@ public interface MultimapWithProtoValuesFluentAssertion<M extends Message> {
   MultimapWithProtoValuesFluentAssertion<M> ignoringRepeatedFieldOrderForValues();
 
   /**
+   * Compares double fields as equal if they are both finite and their absolute difference is less
+   * than or equal to {@code tolerance}.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  MultimapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForValues(double tolerance);
+
+  /**
+   * Compares float fields as equal if they are both finite and their absolute difference is less
+   * than or equal to {@code tolerance}.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  MultimapWithProtoValuesFluentAssertion<M> usingFloatToleranceForValues(float tolerance);
+
+  /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link

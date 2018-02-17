@@ -530,8 +530,15 @@ final class ProtoTruthMessageDifferencer {
     result.markRemovedIf(actual == null);
     result.markAddedIf(expected == null);
 
-    // TODO(user): Implement approximate equality testing for floats/doubles.
-    result.markModifiedIf(!Objects.equal(actual, expected));
+    if (actual != null && expected != null) {
+      if (actual instanceof Double) {
+        result.markModifiedIf(!doublesEqual((double) actual, (double) expected));
+      } else if (actual instanceof Float) {
+        result.markModifiedIf(!floatsEqual((float) actual, (float) expected));
+      } else {
+        result.markModifiedIf(!Objects.equal(actual, expected));
+      }
+    }
 
     SingularField.Builder singularFieldBuilder =
         SingularField.newBuilder()
@@ -546,6 +553,22 @@ final class ProtoTruthMessageDifferencer {
       singularFieldBuilder.setExpected(expected);
     }
     return singularFieldBuilder.build();
+  }
+
+  private boolean doublesEqual(double x, double y) {
+    if (config.doubleCorrespondence().isPresent()) {
+      return config.doubleCorrespondence().get().compare(x, y);
+    } else {
+      return Double.compare(x, y) == 0;
+    }
+  }
+
+  private boolean floatsEqual(float x, float y) {
+    if (config.floatCorrespondence().isPresent()) {
+      return config.floatCorrespondence().get().compare(x, y);
+    } else {
+      return Float.compare(x, y) == 0;
+    }
   }
 
   private UnknownFieldSetDiff diffUnknowns(

@@ -299,6 +299,26 @@ public class MapWithProtoValuesSubject<
   }
 
   /**
+   * Compares double fields as equal if they are both finite and their absolute difference is less
+   * than or equal to {@code tolerance}.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForValues(double tolerance) {
+    return usingConfig(config.usingDoubleTolerance(tolerance));
+  }
+
+  /**
+   * Compares float fields as equal if they are both finite and their absolute difference is less
+   * than or equal to {@code tolerance}.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MapWithProtoValuesFluentAssertion<M> usingFloatToleranceForValues(float tolerance) {
+    return usingConfig(config.usingFloatTolerance(tolerance));
+  }
+
+  /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
@@ -430,6 +450,16 @@ public class MapWithProtoValuesSubject<
     @Override
     public MapWithProtoValuesFluentAssertion<M> ignoringRepeatedFieldOrderForValues() {
       return subject.ignoringRepeatedFieldOrderForValues();
+    }
+
+    @Override
+    public MapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForValues(double tolerance) {
+      return subject.usingDoubleToleranceForValues(tolerance);
+    }
+
+    @Override
+    public MapWithProtoValuesFluentAssertion<M> usingFloatToleranceForValues(float tolerance) {
+      return subject.usingFloatToleranceForValues(tolerance);
     }
 
     @Override

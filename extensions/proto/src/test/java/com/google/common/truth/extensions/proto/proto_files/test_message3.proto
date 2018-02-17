@@ -23,13 +23,15 @@ message TestMessage3 {
   repeated string r_string = 2;
   // optional int64 o_long_defaults_to_42 = 3 [default = 42];
   TestEnum3 o_enum = 4;
+  float o_float = 5;
+  double o_double = 6;
 
-  // optional RequiredStringMessage3 o_required_string_message = 5;
-  // repeated RequiredStringMessage3 r_required_string_message = 6;
-  TestMessage3 o_test_message = 7;
-  repeated TestMessage3 r_test_message = 8;
-  SubTestMessage3 o_sub_test_message = 9;
-  repeated SubTestMessage3 r_sub_test_message = 10;
+  // optional RequiredStringMessage3 o_required_string_message = 7;
+  // repeated RequiredStringMessage3 r_required_string_message = 8;
+  TestMessage3 o_test_message = 9;
+  repeated TestMessage3 r_test_message = 10;
+  SubTestMessage3 o_sub_test_message = 11;
+  repeated SubTestMessage3 r_sub_test_message = 12;
 }
 
 // message RequiredStringMessage3 {

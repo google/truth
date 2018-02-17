@@ -44,8 +44,8 @@ abstract class FluentEqualityConfig {
       new AutoValue_FluentEqualityConfig.Builder()
           .setIgnoreFieldAbsence(false)
           .setIgnoreRepeatedFieldOrder(false)
-          .setReportMismatchesOnly(false)
           .setFieldScopeLogic(FieldScopeLogic.all())
+          .setReportMismatchesOnly(false)
           .setUsingCorrespondenceStringFunction(Functions.constant(""))
           .build();
 
@@ -72,6 +72,10 @@ abstract class FluentEqualityConfig {
   abstract boolean ignoreRepeatedFieldOrder();
 
   abstract boolean reportMismatchesOnly();
+
+  abstract Optional<Correspondence<Number, Number>> doubleCorrespondence();
+
+  abstract Optional<Correspondence<Number, Number>> floatCorrespondence();
 
   abstract FieldScopeLogic fieldScopeLogic();
 
@@ -104,6 +108,20 @@ abstract class FluentEqualityConfig {
     return toBuilder()
         .setReportMismatchesOnly(true)
         .addUsingCorrespondenceString(".reportingMismatchesOnly()")
+        .build();
+  }
+
+  final FluentEqualityConfig usingDoubleTolerance(double tolerance) {
+    return toBuilder()
+        .setDoubleCorrespondence(Correspondence.tolerance(tolerance))
+        .addUsingCorrespondenceString(".usingDoubleTolerance(" + tolerance + ")")
+        .build();
+  }
+
+  final FluentEqualityConfig usingFloatTolerance(float tolerance) {
+    return toBuilder()
+        .setFloatCorrespondence(Correspondence.tolerance(tolerance))
+        .addUsingCorrespondenceString(".usingFloatTolerance(" + tolerance + ")")
         .build();
   }
 
@@ -189,6 +207,10 @@ abstract class FluentEqualityConfig {
     abstract Builder setIgnoreRepeatedFieldOrder(boolean ignoringRepeatedFieldOrder);
 
     abstract Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
+
+    abstract Builder setDoubleCorrespondence(Correspondence<Number, Number> doubleCorrespondence);
+
+    abstract Builder setFloatCorrespondence(Correspondence<Number, Number> floatCorrespondence);
 
     abstract Builder setFieldScopeLogic(FieldScopeLogic fieldScopeLogic);
 
