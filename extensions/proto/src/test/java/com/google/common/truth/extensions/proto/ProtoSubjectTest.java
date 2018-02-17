@@ -15,6 +15,7 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import com.google.protobuf.DynamicMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
@@ -35,6 +36,16 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
 
   public ProtoSubjectTest(TestType testType) {
     super(testType);
+  }
+
+  @Test
+  public void testDifferentClasses() throws InvalidProtocolBufferException {
+    Message message = parse("o_int: 3");
+    DynamicMessage dynamicMessage =
+        DynamicMessage.parseFrom(message.getDescriptorForType(), message.toByteString());
+
+    expectThat(message).isEqualTo(dynamicMessage);
+    expectThat(dynamicMessage).isEqualTo(message);
   }
 
   @Test

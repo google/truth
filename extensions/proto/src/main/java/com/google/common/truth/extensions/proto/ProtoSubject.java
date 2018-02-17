@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
+import com.google.common.base.Objects;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 import com.google.protobuf.Descriptors.FieldDescriptor;
@@ -117,9 +118,17 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     return usingConfig(config.reportingMismatchesOnly());
   }
 
+  private static boolean notMessagesWithSameDescriptor(
+      @Nullable Message actual, @Nullable Object expected) {
+    if (actual != null && expected instanceof Message) {
+      return actual.getDescriptorForType() != ((Message) expected).getDescriptorForType();
+    }
+    return true;
+  }
+
   @Override
   public void isEqualTo(@Nullable Object expected) {
-    if (actual() == null || expected == null || actual().getClass() != expected.getClass()) {
+    if (notMessagesWithSameDescriptor(actual(), expected)) {
       super.isEqualTo(expected);
     } else {
       DiffResult diffResult = makeDifferencer().diffMessages(actual(), (Message) expected);
@@ -137,10 +146,8 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
    * without throwing any exceptions.
    */
   boolean testIsEqualTo(@Nullable Object expected) {
-    if (actual() == null || expected == null) {
-      return actual() == expected; // Only true if both null.
-    } else if (actual().getClass() != expected.getClass()) {
-      return false;
+    if (notMessagesWithSameDescriptor(actual(), expected)) {
+      return Objects.equal(actual(), expected);
     } else {
       return makeDifferencer().diffMessages(actual(), (Message) expected).isMatched();
     }
@@ -148,13 +155,13 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
 
   @Override
   public void isNotEqualTo(@Nullable Object expected) {
-    if (actual() == null || expected == null || actual().getClass() != expected.getClass()) {
+    if (notMessagesWithSameDescriptor(actual(), expected)) {
       super.isNotEqualTo(expected);
     } else {
       DiffResult diffResult = makeDifferencer().diffMessages(actual(), (Message) expected);
       if (diffResult.isMatched()) {
         failWithRawMessage(
-            failureMessage(/* expectedEqual = */ false)
+            failureMessage(/* expectedEqual= */ false)
                 + "\n"
                 + diffResult.printToString(config.reportMismatchesOnly()));
       }
