@@ -106,6 +106,16 @@ public class SubjectTest extends BaseSubjectTestCase {
               .isEqualTo("Not true that the subject is a non-null reference");
         }
 
+        subject.isEqualTo(null);
+        // TODO(cpovirk): Enable this test after fixing this and other null bugs in array subjects.
+        if (!(subject instanceof AbstractArraySubject)) {
+          try {
+            subject.isNotEqualTo(null); // should throw
+            throw new Error("assertThat(null).isNotEqualTo(null) should throw an exception!");
+          } catch (AssertionError expected) {
+          }
+        }
+
         subject.isSameAs(null);
         subject.isNotSameAs(new Object());
 
@@ -354,6 +364,40 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void isEqualToStringWithNullVsNull() {
+    expectFailure.whenTesting().that("null").isEqualTo(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <\"null\"> is null");
+  }
+
+  @Test
+  public void isEqualToObjectWhoseToStringSaysNullVsNull() {
+    expectFailure.whenTesting().that(new ObjectWhoseToStringSaysNull()).isEqualTo(null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <null> is equal to <null> (although their toString() representations are the same)");
+  }
+
+  private static final class ObjectWhoseToStringSaysNull {
+    @Override
+    public String toString() {
+      return "null";
+    }
+  }
+
+  @Test
+  public void isEqualToNullVsStringWithNull() {
+    Object o = null;
+    expectFailure.whenTesting().that(o).isEqualTo("null");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <null> is equal to <null> (although their toString() representations are the same)");
+  }
+
+  @Test
   public void isEqualToWithSameObject() {
     Object a = new Object();
     Object b = a;
@@ -422,11 +466,11 @@ public class SubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualToFailureWithObjects() {
-    Object o = null;
-    expectFailure.whenTesting().that(o).isNotEqualTo(null);
+    Object o = new Integer(1);
+    expectFailure.whenTesting().that(o).isNotEqualTo(new Integer(1));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <null> is not equal to <null>");
+        .isEqualTo("Not true that <1> is not equal to <1>");
   }
 
   @Test
