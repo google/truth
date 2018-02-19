@@ -339,6 +339,16 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo("<[[1, 2], [3], [4, 5, 6]]> unexpectedly equal to [[1, 2], [3], [4, 5, 6]].");
   }
 
+  @Test
+  public void boxedAndUnboxed() {
+    /*
+     * TODO(cpovirk): This seems wrong: Either we should *always* treat int[] and Integer[]
+     * equivalently (as we do inside an Object[]), or we should always treat them differently (as we
+     * do with top-level arrays). Probably "differently" is what we want.
+     */
+    assertThat(new Object[] {new int[] {0}}).isEqualTo(new Object[] {new Integer[] {0}});
+  }
+
   private static Object[] objectArray(Object... ts) {
     return ts;
   }
