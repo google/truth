@@ -20,7 +20,6 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
-import com.google.common.truth.Truth.SimpleAssertionError;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
@@ -50,10 +49,33 @@ final class Platform {
     return false;
   }
 
-  static AssertionError comparisonFailure(
-      String message, String expected, String actual, Throwable cause) {
-    return SimpleAssertionError.create(
-        format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual), cause);
+  abstract static class PlatformComparisonFailure extends AssertionError {
+    private final String message;
+    private final String expected;
+    private final String actual;
+
+    PlatformComparisonFailure(String message, String expected, String actual, Throwable cause) {
+      super(message, cause);
+      this.message = message;
+      this.expected = expected;
+      this.actual = actual;
+    }
+
+    @Override
+    public abstract String getMessage();
+
+    final String getMessageComputedByComparisonFailure() {
+      return format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual);
+    }
+
+    final String getMessagePassedToConstructor() {
+      return message;
+    }
+
+    @Override
+    public final String toString() {
+      return getLocalizedMessage();
+    }
   }
 
   /** Determines if the given subject contains a match for the given regex. */

@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.Platform.comparisonFailure;
 import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -137,12 +136,14 @@ public final class FailureMetadata {
 
   void failComparing(String message, CharSequence expected, CharSequence actual) {
     doFail(
-        comparisonFailure(
+        new JUnitComparisonFailure(
             addToMessage(message), expected.toString(), actual.toString(), rootCause()));
   }
 
   void failComparing(String message, CharSequence expected, CharSequence actual, Throwable cause) {
-    doFail(comparisonFailure(addToMessage(message), expected.toString(), actual.toString(), cause));
+    doFail(
+        new JUnitComparisonFailure(
+            addToMessage(message), expected.toString(), actual.toString(), cause));
     // TODO(cpovirk): add rootCause() as a suppressed exception?
   }
 

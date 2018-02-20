@@ -36,11 +36,6 @@ final class Platform {
     return clazz.isInstance(instance);
   }
 
-  static AssertionError comparisonFailure(
-      String message, String expected, String actual, Throwable cause) {
-    return new ComparisonFailureWithCause(message, expected, actual, cause);
-  }
-
   /** Determines if the given subject contains a match for the given regex. */
   static boolean containsMatch(String actual, String regex) {
     return Pattern.compile(regex).matcher(actual).find();
@@ -88,12 +83,16 @@ final class Platform {
         System.getProperty("com.google.common.truth.disable_stack_trace_cleaning"));
   }
 
-  private static final class ComparisonFailureWithCause extends ComparisonFailure {
+  // TODO(cpovirk): Figure out which parameters can be null (and whether we want them to be).
+  abstract static class PlatformComparisonFailure extends ComparisonFailure {
+    private final String message;
+
     /** Separate cause field, in case initCause() fails. */
     private final Throwable cause;
 
-    ComparisonFailureWithCause(String message, String expected, String actual, Throwable cause) {
+    PlatformComparisonFailure(String message, String expected, String actual, Throwable cause) {
       super(message, expected, actual);
+      this.message = message;
       this.cause = cause;
 
       try {
@@ -103,14 +102,31 @@ final class Platform {
       }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Implementors should override to call either {@link #getMessageComputedByComparisonFailure}
+     * or {@link #getMessagePassedToConstructor}.
+     */
+    @Override
+    public abstract String getMessage();
+
+    final String getMessageComputedByComparisonFailure() {
+      return super.getMessage();
+    }
+
+    final String getMessagePassedToConstructor() {
+      return message;
+    }
+
     @Override
     @SuppressWarnings("UnsynchronizedOverridesSynchronized")
-    public Throwable getCause() {
+    public final Throwable getCause() {
       return cause;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
       return getLocalizedMessage();
     }
   }
