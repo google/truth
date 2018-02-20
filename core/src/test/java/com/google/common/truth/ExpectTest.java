@@ -113,7 +113,7 @@ public class ExpectTest {
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
     thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
     thrown.expectMessage(
-        "3. Failures occurred before an exception was thrown while the test was running: "
+        "3. Also, after those failures, an exception was thrown: "
             + "java.lang.IllegalStateException");
     expect.that("abc").contains("x");
     expect.that("abc").contains("y");
@@ -126,7 +126,7 @@ public class ExpectTest {
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
     thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
     thrown.expectMessage(
-        "3. Failures occurred before an exception was thrown while the test was running: "
+        "3. Also, after those failures, an exception was thrown: "
             + "java.lang.IllegalStateException: testing");
     expect.that("abc").contains("x");
     expect.that("abc").contains("y");
@@ -152,7 +152,7 @@ public class ExpectTest {
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
     thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
     thrown.expectMessage(
-        "3. Failures occurred before an assumption was violated: "
+        "3. Also, after those failures, an assumption was violated: "
             + "com.google.common.truth.TruthJUnit$ThrowableAssumptionViolatedException: testing");
     expect.that("abc").contains("x");
     expect.that("abc").contains("y");
