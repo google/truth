@@ -120,7 +120,9 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    */
   void ensureFailureCaught() {
     if (failureExpected && failure == null) {
-      throw new AssertionError("ExpectFailure.whenTesting() invoked, but no failure was caught.");
+      throw new AssertionError(
+          "ExpectFailure.whenTesting() invoked, but no failure was caught."
+              + Platform.EXPECT_FAILURE_WARNING_IF_GWT);
     }
   }
 

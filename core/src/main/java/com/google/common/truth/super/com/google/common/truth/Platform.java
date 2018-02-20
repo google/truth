@@ -141,6 +141,16 @@ final class Platform {
    */
   interface JUnitTestRule {}
 
+  static final String EXPECT_FAILURE_WARNING_IF_GWT =
+      " Note: One possible reason for a failure not to be caught is for the test to throw some "
+          + "other exception before the failure would have happened. Under GWT, such an exception "
+          + "is hidden by this message. The non-GWT tests do not have this problem, so you may "
+          + "wish to debug them first. If you're still having this problem, consider temporarily "
+          + "modifying the GWT copy of BaseSubjectTestCase to remove the call to "
+          + "ensureFailureCaught(). Removing that call will let any other exception fall through. "
+          + "(But of course it will also prevent the test from verifying that the expected failure "
+          + "occurred.)";
+
   // TODO(user): Move this logic to a common location.
   private static NativeRegExp compile(String pattern) {
     return new NativeRegExp(pattern);

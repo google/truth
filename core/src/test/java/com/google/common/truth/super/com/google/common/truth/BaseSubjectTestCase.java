@@ -15,9 +15,21 @@
  */
 package com.google.common.truth;
 
-import org.junit.Rule;
+import org.junit.After;
+import org.junit.Before;
 
-/** Base class for truth subject tests to extend. */
 public abstract class BaseSubjectTestCase {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+
+  final ExpectFailure expectFailure = new ExpectFailure();
+
+  @Before
+  public void setupExpectFailure() {
+    expectFailure.enterRuleContext(); // safe since @After forces leaving the context
+  }
+
+  @After
+  public void ensureExpectedFailureCaught() {
+    expectFailure.leaveRuleContext();
+    expectFailure.ensureFailureCaught();
+  }
 }
