@@ -26,8 +26,11 @@ import javax.annotation.Nullable;
  * @author Daniel Ploch
  */
 public final class SetMultimapSubject extends MultimapSubject {
-  SetMultimapSubject(FailureMetadata metadata, @Nullable SetMultimap<?, ?> multimap) {
-    super(metadata, multimap);
+  SetMultimapSubject(
+      FailureMetadata metadata,
+      @Nullable SetMultimap<?, ?> multimap,
+      @Nullable String typeDescription) {
+    super(metadata, multimap, typeDescription);
   }
 
   @Override

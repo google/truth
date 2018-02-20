@@ -268,8 +268,10 @@ public final class Truth {
     /** Separate cause field, in case initCause() fails. */
     @Nullable private final Throwable cause;
 
-    private SimpleAssertionError(String message, @Nullable Throwable cause) {
-      super(message);
+    // TODO(cpovirk): Figure out if we ever pass a null message to this.
+    private SimpleAssertionError(
+        String message, @Nullable String suffix, @Nullable Throwable cause) {
+      super(appendSuffixIfNotNull(message, suffix));
       this.cause = cause;
 
       try {
@@ -282,12 +284,13 @@ public final class Truth {
       }
     }
 
-    static SimpleAssertionError create(String message, Throwable cause) {
-      return new SimpleAssertionError(message, cause);
+    static SimpleAssertionError create(
+        String message, @Nullable String suffix, @Nullable Throwable cause) {
+      return new SimpleAssertionError(message, suffix, cause);
     }
 
-    static SimpleAssertionError createWithNoStack(String message, Throwable cause) {
-      SimpleAssertionError error = new SimpleAssertionError(message, cause);
+    static SimpleAssertionError createWithNoStack(String message, @Nullable Throwable cause) {
+      SimpleAssertionError error = new SimpleAssertionError(message, /* suffix= */ null, cause);
       error.setStackTrace(new StackTraceElement[0]);
       return error;
     }
@@ -306,5 +309,13 @@ public final class Truth {
     public String toString() {
       return getLocalizedMessage();
     }
+  }
+
+  @Nullable
+  static String appendSuffixIfNotNull(String message, String suffix) {
+    if (suffix != null) {
+      message += ": " + suffix;
+    }
+    return message;
   }
 }

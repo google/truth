@@ -54,9 +54,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     NullPointerException actual = new NullPointerException("message");
     expectFailure.whenTesting().that(actual).hasMessageThat().isEqualTo("foobar");
     assertThat(expectFailure.getFailure().getMessage())
-        .isEqualTo(
-            "Unexpected message for java.lang.NullPointerException: "
-                + "expected:<[foobar]> but was:<[message]>");
+        .isEqualTo("value of: throwable.getMessage(): expected:<[foobar]> but was:<[message]>");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }
 
@@ -64,9 +62,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
   public void hasMessageThat_MessageHasNullMessage_failure() {
     expectFailure.whenTesting().that(new NullPointerException("message")).hasMessageThat().isNull();
     assertThat(expectFailure.getFailure().getMessage())
-        .isEqualTo(
-            "Unexpected message for java.lang.NullPointerException: "
-                + "Not true that <\"message\"> is null");
+        .isEqualTo("value of: throwable.getMessage(): Not true that <\"message\"> is null");
   }
 
   @Test
@@ -74,9 +70,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     NullPointerException npe = new NullPointerException("message");
     expectFailure.whenTesting().that(npe).named("NPE").hasMessageThat().isEqualTo("foobar");
     assertThat(expectFailure.getFailure().getMessage())
-        .isEqualTo(
-            "Unexpected message for NPE(java.lang.NullPointerException): "
-                + "expected:<[foobar]> but was:<[message]>");
+        .isEqualTo("value of: NPE.getMessage(): expected:<[foobar]> but was:<[message]>");
   }
 
   @Test
@@ -85,8 +79,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(npe).hasMessageThat().isEqualTo("message");
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "Unexpected message for java.lang.NullPointerException: "
-                + "Not true that <null> is equal to <\"message\">");
+            "value of: throwable.getMessage(): Not true that <null> is equal to <\"message\">");
   }
 
   @Test
@@ -115,8 +108,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(actual).hasCauseThat().hasMessageThat().isEqualTo("message");
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "Unexpected cause for java.lang.Exception: Unexpected message for "
-                + "java.io.IOException: expected:<[message]> but was:<[barfoo]>");
+            "value of: throwable.getCause().getMessage(): expected:<[message]> but was:<[barfoo]>");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }
 
@@ -126,7 +118,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(actual).hasCauseThat().isInstanceOf(RuntimeException.class);
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "Unexpected cause for java.lang.Exception: Not true that <java.io.IOException: "
+            "value of: throwable.getCause(): Not true that <java.io.IOException: "
                 + "barfoo> is an instance of <java.lang.RuntimeException>. "
                 + "It is an instance of <java.io.IOException>");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
@@ -136,9 +128,14 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
   public void hasCauseThat_tooDeep_failure() {
     Exception actual = new Exception("foobar");
     expectFailure.whenTesting().that(actual).hasCauseThat().hasCauseThat().isNull();
+    /*
+     * TODO(cpovirk): This message might suggest that actual.getCause() is the part that's failing.
+     * But that part is fine. It's only when we try to call getCause() again (on the null result of
+     * the previous call) that we have a problem.
+     */
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "Unexpected cause for java.lang.Exception: "
+            "value of: throwable.getCause(): "
                 + "Causal chain is not deep enough - add a .isNotNull() check?");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }
@@ -156,8 +153,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
         .isEqualTo("message");
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "Unexpected cause for java.lang.Exception: Unexpected cause for "
-                + "java.lang.RuntimeException: Unexpected message for java.io.IOException: "
+            "value of: throwable.getCause().getCause().getMessage(): "
                 + "expected:<[message]> but was:<[buzz]>");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }

@@ -60,8 +60,11 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         public void inOrder() {}
       };
 
-  MultimapSubject(FailureMetadata metadata, @Nullable Multimap<?, ?> multimap) {
-    super(metadata, multimap);
+  MultimapSubject(
+      FailureMetadata metadata,
+      @Nullable Multimap<?, ?> multimap,
+      @Nullable String typeDescription) {
+    super(metadata, multimap, typeDescription);
   }
 
   /** Fails if the multimap is not empty. */
@@ -163,9 +166,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
    */
   @SuppressWarnings("unchecked") // safe because we only read, not write
   public IterableSubject valuesForKey(@Nullable Object key) {
-    return check()
-        .about(valuesForKeyFactory(key))
-        .that(((Multimap<Object, Object>) actual()).get(key));
+    return check("valuesForKey(%s)", key).that(((Multimap<Object, Object>) actual()).get(key));
   }
 
   @Override
@@ -286,35 +287,6 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       expectedMultimap.put(rest[i], rest[i + 1]);
     }
     return expectedMultimap;
-  }
-
-  private Factory<IterableSubject, Iterable<?>> valuesForKeyFactory(final Object key) {
-    return new Factory<IterableSubject, Iterable<?>>() {
-      @Override
-      public IterableSubject createSubject(FailureMetadata metadata, Iterable<?> actual) {
-        return new IterableValuesForKey(metadata, actualAsString(), key, actual);
-      }
-    };
-  }
-
-  private static class IterableValuesForKey extends IterableSubject {
-    @Nullable private final Object key;
-    private final String multimapStringRepresentation;
-
-    IterableValuesForKey(
-        FailureMetadata metadata,
-        String multimapStringRepresentation,
-        @Nullable Object key,
-        Iterable<?> actual) {
-      super(metadata, actual);
-      this.key = key;
-      this.multimapStringRepresentation = multimapStringRepresentation;
-    }
-
-    @Override
-    protected String actualCustomStringRepresentation() {
-      return "Values for key <" + key + "> (<" + actual() + ">) in " + multimapStringRepresentation;
-    }
   }
 
   private Factory<IterableSubject, Iterable<?>> iterableEntries() {

@@ -15,11 +15,14 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Verify.verifyNotNull;
 import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
+import static com.google.common.truth.StringUtil.format;
 
-import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Truth.SimpleAssertionError;
@@ -48,39 +51,63 @@ import javax.annotation.Nullable;
 public final class FailureMetadata {
   static FailureMetadata forFailureStrategy(FailureStrategy failureStrategy) {
     return new FailureMetadata(
-        failureStrategy, ImmutableList.<Message>of(), ImmutableList.<Subject<?, ?>>of());
+        failureStrategy, ImmutableList.<LazyMessage>of(), ImmutableList.<Step>of());
   }
 
   private final FailureStrategy strategy;
 
+  /**
+   * The data from a call to either (a) a {@link Subject} constructor or (b) {@link Subject#check}.
+   */
+  private static final class Step {
+    static Step subjectCreation(Subject<?, ?> subject) {
+      return new Step(checkNotNull(subject), null);
+    }
+
+    static Step checkCall(@Nullable Function<String, String> descriptionUpdate) {
+      return new Step(null, descriptionUpdate);
+    }
+
+    /*
+     * We store Subject, rather than the actual value itself, so that we can call actualAsString(),
+     * which lets subjects customize display through actualCustomStringRepresentation(). Why not
+     * call actualAsString() immediately? First, it might be expensive, and second, the Subject
+     * isn't initialized at the time we receive it. We *might* be able to make it safe to call if it
+     * looks only at actual(), but it might try to look at fields initialized by a subclass, which
+     * aren't ready yet.
+     */
+    @Nullable final Subject<?, ?> subject;
+
+    @Nullable final Function<String, String> descriptionUpdate;
+
+    private Step(
+        @Nullable Subject<?, ?> subject, @Nullable Function<String, String> descriptionUpdate) {
+      this.subject = subject;
+      this.descriptionUpdate = descriptionUpdate;
+    }
+
+    boolean isCheckCall() {
+      return subject == null;
+    }
+  }
+
   /*
-   * TODO(cpovirk): This implementation is wasteful. Probably it doesn't matter, since the APIs that
-   * construct ImmutableLists are used primarily by APIs that are likely to allocate a lot, anyway.
-   * Specifically, `messages` is used by the withMessage() varargs method, and `chain` is used by
-   * chaining assertions like those for throwables and multimaps. But if it ever does matter, we
-   * could use an immutable cactus stack -- or probably even avoid storing most of the chain
-   * entirely (unless we end up wanting more of the chain to show "telescoping context," as in "the
-   * int value of this optional in this list in this multimap").
+   * TODO(cpovirk): This implementation is wasteful, especially because `steps` is used even by
+   * non-chaining assertions. If it ever does matter, we could use an immutable cactus stack -- or
+   * probably even avoid storing most of the chain entirely (unless we end up wanting more of the
+   * chain to show "telescoping context," as in "the int value of this optional in this list in this
+   * multimap").
    */
 
-  private final ImmutableList<Message> messages;
+  private final ImmutableList<LazyMessage> messages;
 
-  /*
-   * We store Subject, rather than the actual value itself, so that we can call actualAsString().
-   * Why not call the method immediately? First, it might be expensive, and second, the Subject
-   * isn't initialized at the time we receive it. We *might* be able to make it safe to call if it
-   * looks only at actual(), but it might try to look at fields initialized by a subclass, which
-   * aren't ready yet.
-   */
-  private final ImmutableList<Subject<?, ?>> chain;
+  private final ImmutableList<Step> steps;
 
   FailureMetadata(
-      FailureStrategy strategy,
-      ImmutableList<Message> messages,
-      ImmutableList<Subject<?, ?>> chain) {
+      FailureStrategy strategy, ImmutableList<LazyMessage> messages, ImmutableList<Step> steps) {
     this.strategy = checkNotNull(strategy);
     this.messages = checkNotNull(messages);
-    this.chain = checkNotNull(chain);
+    this.steps = checkNotNull(steps);
   }
 
   /**
@@ -90,8 +117,19 @@ public final class FailureMetadata {
    * ThrowableSubject#hasMessageThat}.
    */
   FailureMetadata updateForSubject(Subject<?, ?> subject) {
-    ImmutableList<Subject<?, ?>> chain = append(this.chain, subject);
-    return derive(messages, chain);
+    ImmutableList<Step> steps = append(this.steps, Step.subjectCreation(subject));
+    return derive(messages, steps);
+  }
+
+  FailureMetadata updateForCheckCall() {
+    ImmutableList<Step> steps = append(this.steps, Step.checkCall(null));
+    return derive(messages, steps);
+  }
+
+  FailureMetadata updateForCheckCall(Function<String, String> descriptionUpdate) {
+    checkNotNull(descriptionUpdate);
+    ImmutableList<Step> steps = append(this.steps, Step.checkCall(descriptionUpdate));
+    return derive(messages, steps);
   }
 
   /**
@@ -100,50 +138,37 @@ public final class FailureMetadata {
    * Subject}) or {@link Truth#assertWithMessage} (for most other calls).
    */
   FailureMetadata withMessage(String format, Object[] args) {
-    ImmutableList<Message> messages = append(this.messages, new Message(format, args));
-    return derive(messages, chain);
-  }
-
-  private static final class Message {
-    private static final String PLACEHOLDER_ERR =
-        "Incorrect number of args (%s) for the given placeholders (%s) in string template:\"%s\"";
-
-    private final String format;
-    private final Object[] args;
-
-    Message(@Nullable String format, @Nullable Object... args) {
-      this.format = format;
-      this.args = args;
-      int placeholders = countPlaceholders(format);
-      checkArgument(
-          placeholders == args.length, PLACEHOLDER_ERR, args.length, placeholders, format);
-    }
-
-    @Override
-    public String toString() {
-      return StringUtil.format(format, args);
-    }
+    ImmutableList<LazyMessage> messages = append(this.messages, new LazyMessage(format, args));
+    return derive(messages, steps);
   }
 
   void fail(String message) {
-    doFail(SimpleAssertionError.create(addToMessage(message), rootCause()));
+    doFail(SimpleAssertionError.create(addToMessage(message), rootUnlessThrowable(), rootCause()));
   }
 
   void fail(String message, Throwable cause) {
-    doFail(SimpleAssertionError.create(addToMessage(message), cause));
+    doFail(SimpleAssertionError.create(addToMessage(message), rootUnlessThrowable(), cause));
     // TODO(cpovirk): add rootCause() as a suppressed exception?
   }
 
   void failComparing(String message, CharSequence expected, CharSequence actual) {
     doFail(
         new JUnitComparisonFailure(
-            addToMessage(message), expected.toString(), actual.toString(), rootCause()));
+            addToMessage(message),
+            expected.toString(),
+            actual.toString(),
+            rootUnlessThrowable(),
+            rootCause()));
   }
 
   void failComparing(String message, CharSequence expected, CharSequence actual, Throwable cause) {
     doFail(
         new JUnitComparisonFailure(
-            addToMessage(message), expected.toString(), actual.toString(), cause));
+            addToMessage(message),
+            expected.toString(),
+            actual.toString(),
+            rootUnlessThrowable(),
+            cause));
     // TODO(cpovirk): add rootCause() as a suppressed exception?
   }
 
@@ -153,9 +178,10 @@ public final class FailureMetadata {
   }
 
   private String addToMessage(String body) {
+    Iterable<?> messages = allPrefixMessages();
     StringBuilder result = new StringBuilder(body.length());
     Joiner.on(": ").appendTo(result, messages);
-    if (!messages.isEmpty()) {
+    if (messages.iterator().hasNext()) {
       if (body.isEmpty()) {
         /*
          * The only likely case of an empty body is with failComparing(). In that case, we still
@@ -176,9 +202,111 @@ public final class FailureMetadata {
     return result.toString();
   }
 
-  private FailureMetadata derive(
-      ImmutableList<Message> messages, ImmutableList<Subject<?, ?>> chain) {
-    return new FailureMetadata(strategy, messages, chain);
+  private Iterable<?> allPrefixMessages() {
+    String description = description();
+    return (description == null) ? messages : append(messages, "value of: " + description);
+  }
+
+  private FailureMetadata derive(ImmutableList<LazyMessage> messages, ImmutableList<Step> steps) {
+    return new FailureMetadata(strategy, messages, steps);
+  }
+
+  /**
+   * Returns a description of how the final actual value was derived from earlier actual values in
+   * the chain, if the chain ends with at least one derivation that we have a name for.
+   *
+   * <p>We don't want to say: "value of string: expected [foo] but was [bar]" (OK, we might still
+   * decide to say this, but for now, we don't.)
+   *
+   * <p>We do want to say: "value of throwable.getMessage(): expected [foo] but was [bar]"
+   *
+   * <p>To support that, {@code descriptionWasDerived} tracks whether we've been given context
+   * through {@code check} calls <i>that include names</i>.
+   *
+   * <p>If we're missing a naming function halfway through, we have to reset: We don't want to claim
+   * that the value is "foo.bar.baz" when it's "foo.bar.somethingelse.baz." We have to go back to
+   * "object.baz." (But note that {@link #rootUnlessThrowable} will still provide the value of the
+   * root foo to the user as long as we had at least one naming function: We might not know the
+   * root's exact relationship to the final object, but we know it's some object "different enough"
+   * to be worth displaying.)
+   */
+  @Nullable
+  private String description() {
+    String description = null;
+    boolean descriptionWasDerived = false;
+    for (Step step : steps) {
+      if (step.isCheckCall()) {
+        checkState(description != null);
+        if (step.descriptionUpdate == null) {
+          description = null;
+          descriptionWasDerived = false;
+        } else {
+          description = verifyNotNull(step.descriptionUpdate.apply(description));
+          descriptionWasDerived = true;
+        }
+        continue;
+      }
+
+      if (description == null) {
+        description =
+            firstNonNull(step.subject.internalCustomName(), step.subject.typeDescription());
+      }
+    }
+    return descriptionWasDerived ? description : null;
+  }
+
+  /**
+   * Returns the root actual value, if we know it's "different enough" from the final actual value.
+   *
+   * <p>We don't want to say: "expected [foo] but was [bar]. string: [bar]"
+   *
+   * <p>We do want to say: "expected [foo] but was [bar]. myObject: MyObject[string=bar, i=0]"
+   *
+   * <p>To support that, {@code seenDerivation} tracks whether we've seen multiple actual values,
+   * which is equivalent to whether we've seen multiple Subject instances or, more informally,
+   * whether the user is making a chained assertion.
+   *
+   * <p>There's one wrinkle: Sometimes chaining doesn't add information. This is often true with
+   * "internal" chaining, like when StreamSubject internally creates an IterableSubject to delegate
+   * to. The two subjects' string representations will be identical (or, in some cases, _almost_
+   * identical), so there is no value in showing both. In such cases, implementations can call the
+   * no-arg {@code check()}, which instructs this method that that particular chain link "doesn't
+   * count." (Note that plenty code calls the no-arg {@code check} even for "real" chaining, since
+   * the {@code check} overload that accepts a name didn't use to exist. Note also that there are
+   * some edge cases that we're not sure how to handle yet, for which we might introduce additional
+   * {@code check}-like methods someday.)
+   */
+  @Nullable
+  private String rootUnlessThrowable() {
+    Step rootSubject = null;
+    boolean seenDerivation = false;
+    for (Step step : steps) {
+      if (step.isCheckCall()) {
+        seenDerivation |= step.descriptionUpdate != null;
+        continue;
+      }
+
+      if (rootSubject == null) {
+        if (step.subject.actual() instanceof Throwable) {
+          /*
+           * We'll already include the Throwable as a cause of the AssertionError (see rootCause()),
+           * so we don't need to include it again in the message.
+           */
+          return null;
+        }
+        rootSubject = step;
+      }
+    }
+    /*
+     * TODO(cpovirk): Maybe say "root foo: ..." instead of just "foo: ..." if there's more than one
+     * foo in the chain, if the description string doesn't start with "foo," and/or if the name we
+     * have is just "object?"
+     */
+    return seenDerivation
+        ? format(
+            "%s was: %s",
+            rootSubject.subject.typeDescription(), rootSubject.subject.actualAsString())
+        : null;
   }
 
   /**
@@ -186,31 +314,14 @@ public final class FailureMetadata {
    * present. Typically, we'll have a root cause only if the assertion chain contains a {@link
    * ThrowableSubject}.
    */
+  @Nullable
   private Throwable rootCause() {
-    for (Subject<?, ?> subject : chain) {
-      if (subject.actual() instanceof Throwable) {
-        return (Throwable) subject.actual();
+    for (Step step : steps) {
+      if (!step.isCheckCall() && step.subject.actual() instanceof Throwable) {
+        return (Throwable) step.subject.actual();
       }
     }
     return null;
-  }
-
-  @VisibleForTesting
-  static int countPlaceholders(@Nullable String template) {
-    if (template == null) {
-      return 0;
-    }
-    int index = 0;
-    int count = 0;
-    while (true) {
-      index = template.indexOf("%s", index);
-      if (index == -1) {
-        break;
-      }
-      index++;
-      count++;
-    }
-    return count;
   }
 
   private static <E> ImmutableList<E> append(ImmutableList<? extends E> list, E object) {

@@ -119,19 +119,19 @@ public class CustomFailureMessageTest {
 
   @Test
   public void countPlaceholders() {
-    assertThat(FailureMetadata.countPlaceholders(null)).isEqualTo(0);
-    assertThat(FailureMetadata.countPlaceholders("")).isEqualTo(0);
-    assertThat(FailureMetadata.countPlaceholders("%s")).isEqualTo(1);
-    assertThat(FailureMetadata.countPlaceholders("%s%s")).isEqualTo(2);
-    assertThat(FailureMetadata.countPlaceholders("%s%%s")).isEqualTo(2);
-    assertThat(FailureMetadata.countPlaceholders("hello")).isEqualTo(0);
-    assertThat(FailureMetadata.countPlaceholders("%shello")).isEqualTo(1);
-    assertThat(FailureMetadata.countPlaceholders("hello%s")).isEqualTo(1);
-    assertThat(FailureMetadata.countPlaceholders("hel%slo")).isEqualTo(1);
-    assertThat(FailureMetadata.countPlaceholders("hel%%slo")).isEqualTo(1);
-    assertThat(FailureMetadata.countPlaceholders("hel%s%slo")).isEqualTo(2);
-    assertThat(FailureMetadata.countPlaceholders("%shel%s%slo")).isEqualTo(3);
-    assertThat(FailureMetadata.countPlaceholders("hel%s%slo%s")).isEqualTo(3);
+    assertThat(LazyMessage.countPlaceholders(null)).isEqualTo(0);
+    assertThat(LazyMessage.countPlaceholders("")).isEqualTo(0);
+    assertThat(LazyMessage.countPlaceholders("%s")).isEqualTo(1);
+    assertThat(LazyMessage.countPlaceholders("%s%s")).isEqualTo(2);
+    assertThat(LazyMessage.countPlaceholders("%s%%s")).isEqualTo(2);
+    assertThat(LazyMessage.countPlaceholders("hello")).isEqualTo(0);
+    assertThat(LazyMessage.countPlaceholders("%shello")).isEqualTo(1);
+    assertThat(LazyMessage.countPlaceholders("hello%s")).isEqualTo(1);
+    assertThat(LazyMessage.countPlaceholders("hel%slo")).isEqualTo(1);
+    assertThat(LazyMessage.countPlaceholders("hel%%slo")).isEqualTo(1);
+    assertThat(LazyMessage.countPlaceholders("hel%s%slo")).isEqualTo(2);
+    assertThat(LazyMessage.countPlaceholders("%shel%s%slo")).isEqualTo(3);
+    assertThat(LazyMessage.countPlaceholders("hel%s%slo%s")).isEqualTo(3);
   }
 
   @Test

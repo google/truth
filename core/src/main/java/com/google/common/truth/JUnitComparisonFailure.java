@@ -16,15 +16,13 @@
 
 package com.google.common.truth;
 
+import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
+
 import com.google.common.truth.Platform.PlatformComparisonFailure;
 
 final class JUnitComparisonFailure extends PlatformComparisonFailure {
-  JUnitComparisonFailure(String message, String expected, String actual, Throwable cause) {
-    super(message, expected, actual, cause);
-  }
-
-  @Override
-  public String getMessage() {
-    return getMessageComputedByComparisonFailure();
+  JUnitComparisonFailure(
+      String message, String expected, String actual, String suffix, Throwable cause) {
+    super(message, expected, actual, suffix, cause, INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE);
   }
 }

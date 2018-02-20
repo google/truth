@@ -15,10 +15,14 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
+import static com.google.common.truth.Truth.appendSuffixIfNotNull;
+
 import com.google.common.base.Throwables;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import org.junit.ComparisonFailure;
 import org.junit.rules.TestRule;
 
@@ -83,17 +87,35 @@ final class Platform {
         System.getProperty("com.google.common.truth.disable_stack_trace_cleaning"));
   }
 
+  enum ComparisonFailureMessageStrategy {
+    OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE,
+    INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
+  }
+
   // TODO(cpovirk): Figure out which parameters can be null (and whether we want them to be).
   abstract static class PlatformComparisonFailure extends ComparisonFailure {
     private final String message;
 
     /** Separate cause field, in case initCause() fails. */
-    private final Throwable cause;
+    @Nullable private final Throwable cause;
 
-    PlatformComparisonFailure(String message, String expected, String actual, Throwable cause) {
+    @Nullable private final String suffix;
+
+    private final ComparisonFailureMessageStrategy messageStrategy;
+
+    // TODO(cpovirk): Do we ever pass null for message, expected, or actual?
+    PlatformComparisonFailure(
+        @Nullable String message,
+        @Nullable String expected,
+        @Nullable String actual,
+        @Nullable String suffix,
+        @Nullable Throwable cause,
+        ComparisonFailureMessageStrategy messageStrategy) {
       super(message, expected, actual);
       this.message = message;
+      this.suffix = suffix;
       this.cause = cause;
+      this.messageStrategy = messageStrategy;
 
       try {
         initCause(cause);
@@ -102,21 +124,13 @@ final class Platform {
       }
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>Implementors should override to call either {@link #getMessageComputedByComparisonFailure}
-     * or {@link #getMessagePassedToConstructor}.
-     */
     @Override
-    public abstract String getMessage();
-
-    final String getMessageComputedByComparisonFailure() {
-      return super.getMessage();
-    }
-
-    final String getMessagePassedToConstructor() {
-      return message;
+    public final String getMessage() {
+      String body =
+          messageStrategy == INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE
+              ? super.getMessage()
+              : message;
+      return appendSuffixIfNotNull(body, suffix);
     }
 
     @Override
