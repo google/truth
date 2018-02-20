@@ -233,16 +233,16 @@ final class StackTraceCleaner {
     NEVER_REMOVE("N/A"),
     TEST_FRAMEWORK(
         "Testing framework",
-        "junit.",
-        "org.junit.",
-        "com.google.testing.junit.",
-        "com.google.testing.testsize.",
-        "com.google.testing.util."),
-    REFLECTION("Reflective call", "java.lang.reflect.", "sun.reflect."),
+        "junit",
+        "org.junit",
+        "com.google.testing.junit",
+        "com.google.testing.testsize",
+        "com.google.testing.util"),
+    REFLECTION("Reflective call", "java.lang.reflect", "sun.reflect"),
     CONCURRENT_FRAMEWORK(
         "Concurrent framework",
         "com.google.tracing.CurrentContext",
-        "com.google.common.util.concurrent.",
+        "com.google.common.util.concurrent",
         "java.util.concurrent.ForkJoin");
 
     /** Helper method to determine the frame type from the fully qualified class name. */
@@ -287,7 +287,9 @@ final class StackTraceCleaner {
      */
     boolean belongsToType(String fullyQualifiedClassName) {
       for (String prefix : prefixes) {
-        if (fullyQualifiedClassName.startsWith(prefix)) {
+        // TODO(cpovirk): Should we also check prefix + "$"?
+        if (fullyQualifiedClassName.equals(prefix)
+            || fullyQualifiedClassName.startsWith(prefix + ".")) {
           return true;
         }
       }
