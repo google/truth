@@ -140,4 +140,6 @@ final class Platform {
    * implementation.
    */
   interface JUnitTestRule extends TestRule {}
+
+  static final String EXPECT_FAILURE_WARNING_IF_GWT = "";
 }
