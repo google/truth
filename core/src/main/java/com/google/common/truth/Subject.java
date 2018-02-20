@@ -15,10 +15,13 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.CaseFormat.LOWER_CAMEL;
+import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -74,14 +77,31 @@ public class Subject<S extends Subject<S, T>, T> {
   private final FailureMetadata metadata;
   private final T actual;
   private String customName = null;
+  @Nullable private final String typeDescriptionOverride;
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
   protected Subject(FailureMetadata metadata, @Nullable T actual) {
+    this(metadata, actual, /*typeDescriptionOverride=*/ null);
+  }
+
+  /**
+   * Special constructor that lets subclasses provide a description of the type they're testing. For
+   * example, {@link ThrowableSubject} passes the description "throwable." Normally, Truth is able
+   * to infer this name from the class name. However, if we lack runtime type information (notably,
+   * under j2cl with class metadata off), we might not have access to the original class name.
+   *
+   * <p>We don't expect to make this a public API: Class names are nearly always available. It's
+   * just that we want to be able to run Truth's own tests run with class metadata off, and it's
+   * easier to tweak the subjects to know their own names rather than generalize the tests to accept
+   * obfuscated names.
+   */
+  Subject(FailureMetadata metadata, @Nullable T actual, @Nullable String typeDescriptionOverride) {
     this.metadata = metadata.updateForSubject(this);
     this.actual = actual;
+    this.typeDescriptionOverride = typeDescriptionOverride;
   }
 
   /** An internal method used to obtain the value set by {@link #named(String, Object...)}. */
@@ -323,13 +343,57 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Begins a new call chain based on the {@link FailureMetadata} of the current subject. By calling
-   * this method, subject implementations can delegate to other subjects. For example, {@link
-   * ThrowableSubject#hasMessageThat} is implemented with {@code
-   * check().that(actual().getMessage()}, which returns a {@link StringSubject}.
+   * Returns a builder for creating a derived subject but without providing information about how
+   * the derived subject will relate to the current subject. In most cases, you should provide such
+   * information by using {@linkplain #check(String, Object...) the other overload}.
    */
   protected final StandardSubjectBuilder check() {
-    return new StandardSubjectBuilder(metadata);
+    return new StandardSubjectBuilder(metadata.updateForCheckCall());
+  }
+
+  /**
+   * Returns a builder for creating a derived subject.
+   *
+   * <p>Derived subjects retain the {@link FailureStrategy} and {@linkplain
+   * StandardSubjectBuilder#withMessage messages} of the current subject, and in some cases, they
+   * automatically supplement their failure message with information about the original subject.
+   *
+   * <p>For example, {@link ThrowableSubject#hasMessageThat}, which returns a {@link StringSubject},
+   * is implemented with {@code check("getMessage()").that(actual().getMessage()}.
+   *
+   * <p>The arguments to {@code check} describe how the new subject was derived from the old,
+   * formatted like a chained method call. This allows Truth to include that information in its
+   * failure messages. For example, the {@code assertThat(caught).hasCauseThat().hasMessageThat()}
+   * will produce a failure message that includes {@code throwable.getCause().getMessage()}, thanks
+   * to {@code check} calls that supplied "getCause()" and "getMessage()" as arguments.
+   *
+   * <p>If the method you're delegating to accepts parameters, you can pass {@code check} a format
+   * string. For example, {@link MultimapSubject#valuesForKey} calls {@code
+   * check("valuesForKey(%s)", key)}.
+   *
+   * <p>If you aren't really delegating to an instance method on the actual value -- maybe you're
+   * calling a static method, or you're calling a chain of several methods -- you can supply
+   * whatever string will be most useful to users. For example, if you're delegating to {@code
+   * getOnlyElement(actual().colors())}, you might call {@check "onlyColor()"}.
+   *
+   * @param format a template with {@code %s} placeholders
+   * @param args the arguments to be inserted into those placeholders
+   */
+  protected final StandardSubjectBuilder check(String format, Object... args) {
+    checkNotNull(format); // Probably LazyMessage itself should be this strict, but it isn't yet.
+    final LazyMessage message = new LazyMessage(format, args);
+    return check(
+        new Function<String, String>() {
+          @Override
+          public String apply(String input) {
+            return input + "." + message;
+          }
+        });
+  }
+
+  // We could consider exposing this someday for people with advanced needs.
+  private final StandardSubjectBuilder check(Function<String, String> descriptionUpdate) {
+    return new StandardSubjectBuilder(metadata.updateForCheckCall(descriptionUpdate));
   }
 
   /**
@@ -516,6 +580,34 @@ public class Subject<S extends Subject<S, T>, T> {
   @Override
   public String toString() {
     return getClass().getName() + "(" + actualCustomStringRepresentation() + ")";
+  }
+
+  /*
+   * Computed lazily so that we're not doing expensive string operations during every assertion,
+   * only during every failure.
+   */
+  final String typeDescription() {
+    return typeDescriptionOrGuess(getClass(), typeDescriptionOverride);
+  }
+
+  @SuppressWarnings("unchecked") // unavoidable for Class<? extends Foo> AFAIK
+  private static String typeDescriptionOrGuess(
+      Class<? extends Subject> clazz, @Nullable String typeDescriptionOverride) {
+    if (typeDescriptionOverride != null) {
+      return typeDescriptionOverride;
+    }
+    /*
+     * j2cl doesn't store enough metadata to know whether "Foo$BarSubject" is a nested class, so it
+     * can't tell whether the simple name is "Foo$BarSubject" or just "BarSubject": b/71808768. It
+     * returns "Foo$BarSubject" to err on the side of preserving information. We want just
+     * "BarSubject," so we strip any likely enclosing type ourselves.
+     */
+    String subjectClass = clazz.getSimpleName().replaceFirst(".*[$]", "");
+    String actualClass =
+        (subjectClass.endsWith("Subject") && !subjectClass.equals("Subject"))
+            ? subjectClass.substring(0, subjectClass.length() - "Subject".length())
+            : "Object";
+    return UPPER_CAMEL.to(LOWER_CAMEL, actualClass);
   }
 
   private static boolean classMetadataUnsupported() {

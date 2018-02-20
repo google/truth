@@ -23,8 +23,9 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
-  ThrowableSubject(FailureMetadata metadata, @Nullable Throwable throwable) {
-    super(metadata, throwable);
+  ThrowableSubject(
+      FailureMetadata metadata, @Nullable Throwable throwable, @Nullable String typeDescription) {
+    super(metadata, throwable, typeDescription);
   }
 
   /*
@@ -46,11 +47,7 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
 
   /** Returns a {@code StringSubject} to make assertions about the throwable's message. */
   public StringSubject hasMessageThat() {
-    String name = actual().getClass().getName();
-    if (internalCustomName() != null) {
-      name = internalCustomName() + "(" + name + ")";
-    }
-    return check().withMessage("Unexpected message for %s", name).that(actual().getMessage());
+    return check("getMessage()").that(actual().getMessage());
   }
 
   /**
@@ -75,10 +72,6 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
                 }
               });
     }
-    String name = actual().getClass().getName();
-    if (internalCustomName() != null) {
-      name = internalCustomName() + "(" + name + ")";
-    }
-    return check().withMessage("Unexpected cause for %s", name).that(actual().getCause());
+    return check("getCause()").that(actual().getCause());
   }
 }

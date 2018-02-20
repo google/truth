@@ -15,7 +15,9 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
 import static com.google.common.truth.StringUtil.format;
+import static com.google.common.truth.Truth.appendSuffixIfNotNull;
 import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
@@ -49,27 +51,34 @@ final class Platform {
     return false;
   }
 
+  enum ComparisonFailureMessageStrategy {
+    OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE,
+    INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
+  }
+
   abstract static class PlatformComparisonFailure extends AssertionError {
-    private final String message;
-    private final String expected;
-    private final String actual;
-
-    PlatformComparisonFailure(String message, String expected, String actual, Throwable cause) {
-      super(message, cause);
-      this.message = message;
-      this.expected = expected;
-      this.actual = actual;
+    PlatformComparisonFailure(
+        String message,
+        String expected,
+        String actual,
+        String suffix,
+        Throwable cause,
+        ComparisonFailureMessageStrategy messageStrategy) {
+      // Give super() the full message because j2cl would ignore a getMessage() override: b/62038327
+      super(makeMessage(message, expected, actual, suffix, messageStrategy), cause);
     }
 
-    @Override
-    public abstract String getMessage();
-
-    final String getMessageComputedByComparisonFailure() {
-      return format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual);
-    }
-
-    final String getMessagePassedToConstructor() {
-      return message;
+    private static String makeMessage(
+        String message,
+        String expected,
+        String actual,
+        String suffix,
+        ComparisonFailureMessageStrategy messageStrategy) {
+      String body =
+          messageStrategy == INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE
+              ? format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual)
+              : message;
+      return appendSuffixIfNotNull(body, suffix);
     }
 
     @Override

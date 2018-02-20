@@ -16,15 +16,13 @@
 
 package com.google.common.truth;
 
+import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE;
+
 import com.google.common.truth.Platform.PlatformComparisonFailure;
 
 final class ComparisonFailureWithFields extends PlatformComparisonFailure {
-  ComparisonFailureWithFields(String message, String expected, String actual, Throwable cause) {
-    super(message, expected, actual, cause);
-  }
-
-  @Override
-  public String getMessage() {
-    return getMessagePassedToConstructor();
+  ComparisonFailureWithFields(
+      String message, String expected, String actual, String suffix, Throwable cause) {
+    super(message, expected, actual, suffix, cause, OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE);
   }
 }

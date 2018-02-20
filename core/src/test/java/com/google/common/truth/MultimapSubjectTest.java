@@ -166,12 +166,22 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void multimapNamedValuesForKey() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     expectFailure.whenTesting().that(multimap).named("multymap").valuesForKey(1).containsExactly(4);
+    /*
+     * TODO(cpovirk): It's silly that we display "multymap" twice in the failure, once for "value
+     * of" and once for "root." The problem is that we need to include it in "value of" in case it's
+     * a Throwable (since we don't include a "root" for Throwables), but it also comes along
+     * automatically with "root" because we call actualAsString(). We'll probably fix this
+     * incidentally as part of reducing the number of ways to set string representations, possibly
+     * including eliminating named() itself. Or we could just special-case our logic to skip the
+     * name for non-throwables. For now, I'm not too worried about this.
+     */
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that "
-                + "<Values for key <1> (<[5]>) in multymap (<{1=[5]}>)> contains exactly <[4]>. "
-                + "It is missing <[4]> and has unexpected items <[5]>");
+            "value of: multymap.valuesForKey(1): "
+                + "Not true that <[5]> contains exactly <[4]>. "
+                + "It is missing <[4]> and has unexpected items <[5]>: "
+                + "multimap was: multymap (<{1=[5]}>)");
   }
 
   @Test
@@ -181,9 +191,10 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that "
-                + "valuez (<Values for key <1> (<[5]>) in <{1=[5]}>>) contains exactly <[4]>. "
-                + "It is missing <[4]> and has unexpected items <[5]>");
+            "value of: multimap.valuesForKey(1): "
+                + "Not true that valuez (<[5]>) contains exactly <[4]>. "
+                + "It is missing <[4]> and has unexpected items <[5]>: "
+                + "multimap was: <{1=[5]}>");
   }
 
   @Test

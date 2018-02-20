@@ -88,7 +88,7 @@ public class StandardSubjectBuilder {
   }
 
   public final ThrowableSubject that(@Nullable Throwable actual) {
-    return new ThrowableSubject(metadata(), actual);
+    return new ThrowableSubject(metadata(), actual, "throwable");
   }
 
   public final LongSubject that(@Nullable Long actual) {
@@ -172,15 +172,15 @@ public class StandardSubjectBuilder {
   }
 
   public final MultimapSubject that(@Nullable Multimap<?, ?> actual) {
-    return new MultimapSubject(metadata(), actual);
+    return new MultimapSubject(metadata(), actual, "multimap");
   }
 
   public final ListMultimapSubject that(@Nullable ListMultimap<?, ?> actual) {
-    return new ListMultimapSubject(metadata(), actual);
+    return new ListMultimapSubject(metadata(), actual, "multimap");
   }
 
   public final SetMultimapSubject that(@Nullable SetMultimap<?, ?> actual) {
-    return new SetMultimapSubject(metadata(), actual);
+    return new SetMultimapSubject(metadata(), actual, "multimap");
   }
 
   public final MultisetSubject that(@Nullable Multiset<?> actual) {
