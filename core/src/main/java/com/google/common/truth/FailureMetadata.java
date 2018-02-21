@@ -15,17 +15,21 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Functions.toStringFunction;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.truth.Field.field;
 import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
-import static com.google.common.truth.StringUtil.format;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Truth.SimpleAssertionError;
+import java.util.Set;
 import javax.annotation.Nullable;
 
 /**
@@ -143,11 +147,14 @@ public final class FailureMetadata {
   }
 
   void fail(String message) {
-    doFail(SimpleAssertionError.create(addToMessage(message), rootUnlessThrowable(), rootCause()));
+    doFail(
+        SimpleAssertionError.create(
+            addToMessage(message), rootUnlessThrowableAsString(), rootCause().orNull()));
   }
 
   void fail(String message, Throwable cause) {
-    doFail(SimpleAssertionError.create(addToMessage(message), rootUnlessThrowable(), cause));
+    doFail(
+        SimpleAssertionError.create(addToMessage(message), rootUnlessThrowableAsString(), cause));
     // TODO(cpovirk): add rootCause() as a suppressed exception?
   }
 
@@ -157,8 +164,8 @@ public final class FailureMetadata {
             addToMessage(message),
             expected.toString(),
             actual.toString(),
-            rootUnlessThrowable(),
-            rootCause()));
+            rootUnlessThrowableAsString(),
+            rootCause().orNull()));
   }
 
   void failComparing(String message, CharSequence expected, CharSequence actual, Throwable cause) {
@@ -167,7 +174,7 @@ public final class FailureMetadata {
             addToMessage(message),
             expected.toString(),
             actual.toString(),
-            rootUnlessThrowable(),
+            rootUnlessThrowableAsString(),
             cause));
     // TODO(cpovirk): add rootCause() as a suppressed exception?
   }
@@ -203,8 +210,7 @@ public final class FailureMetadata {
   }
 
   private Iterable<?> allPrefixMessages() {
-    String description = description();
-    return (description == null) ? messages : append(messages, "value of: " + description);
+    return concat(messages, descriptionAsStrings());
   }
 
   private FailureMetadata derive(ImmutableList<LazyMessage> messages, ImmutableList<Step> steps) {
@@ -230,8 +236,7 @@ public final class FailureMetadata {
    * root's exact relationship to the final object, but we know it's some object "different enough"
    * to be worth displaying.)
    */
-  @Nullable
-  private String description() {
+  private Optional<Field> description() {
     String description = null;
     boolean descriptionWasDerived = false;
     for (Step step : steps) {
@@ -252,7 +257,13 @@ public final class FailureMetadata {
             firstNonNull(step.subject.internalCustomName(), step.subject.typeDescription());
       }
     }
-    return descriptionWasDerived ? description : null;
+    return descriptionWasDerived
+        ? Optional.of(field("value of", description))
+        : Optional.<Field>absent();
+  }
+
+  private Set<String> descriptionAsStrings() {
+    return description().transform(toStringFunction()).asSet();
   }
 
   /**
@@ -276,8 +287,7 @@ public final class FailureMetadata {
    * some edge cases that we're not sure how to handle yet, for which we might introduce additional
    * {@code check}-like methods someday.)
    */
-  @Nullable
-  private String rootUnlessThrowable() {
+  private Optional<Field> rootUnlessThrowable() {
     Step rootSubject = null;
     boolean seenDerivation = false;
     for (Step step : steps) {
@@ -292,7 +302,7 @@ public final class FailureMetadata {
            * We'll already include the Throwable as a cause of the AssertionError (see rootCause()),
            * so we don't need to include it again in the message.
            */
-          return null;
+          return Optional.absent();
         }
         rootSubject = step;
       }
@@ -303,25 +313,29 @@ public final class FailureMetadata {
      * have is just "object?"
      */
     return seenDerivation
-        ? format(
-            "%s was: %s",
-            rootSubject.subject.typeDescription(), rootSubject.subject.actualAsString())
-        : null;
+        ? Optional.of(
+            field(
+                rootSubject.subject.typeDescription() + " was",
+                rootSubject.subject.actualAsString()))
+        : Optional.<Field>absent();
+  }
+
+  @Nullable
+  private String rootUnlessThrowableAsString() {
+    return rootUnlessThrowable().transform(toStringFunction()).orNull();
   }
 
   /**
-   * Returns the first {@link Throwable} in the chain of actual values or {@code null} if none are
-   * present. Typically, we'll have a root cause only if the assertion chain contains a {@link
-   * ThrowableSubject}.
+   * Returns the first {@link Throwable} in the chain of actual values. Typically, we'll have a root
+   * cause only if the assertion chain contains a {@link ThrowableSubject}.
    */
-  @Nullable
-  private Throwable rootCause() {
+  private Optional<Throwable> rootCause() {
     for (Step step : steps) {
       if (!step.isCheckCall() && step.subject.actual() instanceof Throwable) {
-        return (Throwable) step.subject.actual();
+        return Optional.of((Throwable) step.subject.actual());
       }
     }
-    return null;
+    return Optional.absent();
   }
 
   private static <E> ImmutableList<E> append(ImmutableList<? extends E> list, E object) {
