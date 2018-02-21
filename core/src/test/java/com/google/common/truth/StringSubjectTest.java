@@ -144,6 +144,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   public void stringEqualityFail() {
     try {
       assertThat("abc").isEqualTo("abd");
+      fail();
     } catch (ComparisonFailure expected) {
       assertThat(expected).hasMessageThat().isEqualTo("expected:<ab[d]> but was:<ab[c]>");
       // truth used to create a synthetic cause, make sure that isn't happening anymore.
@@ -153,9 +154,21 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   @GwtIncompatible("ComparisonFailure")
+  public void stringEqualityCompleteFail() {
+    try {
+      assertThat("abc").isEqualTo("xyz");
+      fail();
+    } catch (ComparisonFailure expected) {
+      assertThat(expected).hasMessageThat().isEqualTo("expected:<[xyz]> but was:<[abc]>");
+    }
+  }
+
+  @Test
+  @GwtIncompatible("ComparisonFailure")
   public void stringNamedEqualityFail() {
     try {
       assertThat("abc").named("foo").isEqualTo("abd");
+      fail();
     } catch (ComparisonFailure expected) {
       assertThat(expected).hasMessageThat().isEqualTo("\"foo\": expected:<ab[d]> but was:<ab[c]>");
     }
