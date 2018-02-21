@@ -27,7 +27,7 @@ Truth has built in support for the following types:
     *   [`long[]`][LongArray]
     *   [`short[]`][ShortArray]
 
-*   Java 8 types (see go/truth/faq#java8)
+*   [Java 8 types]
 
     *   [`Optional`] - and `OptionalInt`, `OptionalLong`, and `OptionalDouble`
     *   [`Stream`] - and `IntStream`, `LongStream` (and maybe someday,
@@ -88,3 +88,5 @@ Truth has built in support for the following types:
 [`String`]: http://google.github.io/truth/api/latest/com/google/common/truth/StringSubject
 [`Table`]: http://google.github.io/truth/api/latest/com/google/common/truth/TableSubject
 [`Throwable`]: http://google.github.io/truth/api/latest/com/google/common/truth/ThrowableSubject
+[Java 8 types]: https://google.github.io/truth/faq#java8
+
