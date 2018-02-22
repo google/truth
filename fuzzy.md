@@ -78,6 +78,8 @@ assertThat(actual)
     .containsEntry("def", 789);
 ```
 
+<!-- TODO(b/32960783): Document pairing & diffing support. -->
+
 
 [protocol buffers]: https://developers.google.com/protocol-buffers/
 [correspondence-tostring]: http://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html#toString()
