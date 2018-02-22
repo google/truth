@@ -323,10 +323,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .isEqualTo(
             "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that has "
                 + "the same id as and a score is within 10 of each element of "
-                + "<[1/100, 2/200, 3/300, none/900]>. It is missing an element that has the same "
-                + "id as and a score is within 10 of each of <[2/200, 3/300, none/900]> and has "
-                + "unexpected elements <[2/211, 4/400, none/999]>");
-    // TODO(b/32960783): Update expected message to show the diff between the records with key=2.
+                + "<[1/100, 2/200, 3/300, none/900]>. It is missing an element that corresponds to "
+                + "<2/200> and has unexpected elements <[2/211 (diff: score:11)]> with key 2, and "
+                + "is missing an element that corresponds to each of <[3/300, none/900]> and has "
+                + "unexpected elements <[4/400, none/999]> without matching keys");
   }
 
   @Test
@@ -350,10 +350,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
             "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that "
                 + "parses to a record that has the same id as and a score is within 10 of each "
                 + "element of <[1/100, 2/200, 3/300, none/900]>. It is missing an element that "
-                + "parses to a record that has the same id as and a score is within 10 of each of "
-                + "<[2/200, 3/300, none/900]> and has unexpected elements "
-                + "<[2/211, 4/400, none/999]>");
-    // TODO(b/32960783): Update expected message to show the diff between the records with key=2.
+                + "corresponds to <2/200> and has unexpected elements <[2/211 (diff: score:11)]> "
+                + "with key 2, and is missing an element that corresponds to each of "
+                + "<[3/300, none/900]> and has unexpected elements <[4/400, none/999]> without "
+                + "matching keys");
   }
 
   @Test
@@ -401,8 +401,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
                 + "the same id as and a score is within 10 of each element of "
                 + "<[1/100, 2/200, 3/300, 3/301, none/900]>. It is missing an element that has the "
                 + "same id as and a score is within 10 of each of <[2/200, 3/300, 3/301, none/900]>"
-                + " and has unexpected elements <[2/211, 4/400, none/999]>");
-    // TODO(b/32960783): Update expected message to show the warning about non-uniqueness.
+                + " and has unexpected elements <[2/211, 4/400, none/999]>. (N.B. A key function "
+                + "which does not uniquely key the expected elements was provided and has "
+                + "consequently been ignored.)");
   }
 
   @Test
