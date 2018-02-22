@@ -30,6 +30,7 @@ import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 import static java.util.Arrays.asList;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
@@ -52,7 +53,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -758,8 +761,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * <p>Note that calling this method makes no difference to whether a test passes or fails, it
      * just improves the message if it fails.
      */
-    // TODO(b/32960783): Make this actually do something, and make it public.
-    /* public */ UsingCorrespondence<A, E> displayingDiffsPairedBy(
+    public UsingCorrespondence<A, E> displayingDiffsPairedBy(
         Function<? super E, ? extends Object> keyFunction) {
       @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
       Function<? super A, ? extends Object> actualKeyFunction =
@@ -799,8 +801,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * <p>Note that calling this method makes no difference to whether a test passes or fails, it
      * just improves the message if it fails.
      */
-    // TODO(b/32960783): Make this actually do something, and make it public.
-    /* public */ UsingCorrespondence<A, E> displayingDiffsPairedBy(
+    public UsingCorrespondence<A, E> displayingDiffsPairedBy(
         Function<? super A, ? extends Object> actualKeyFunction,
         Function<? super E, ? extends Object> expectedKeyFunction) {
       return new UsingCorrespondence<>(
@@ -812,6 +813,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * element.
      */
     public void contains(@Nullable E expected) {
+      // TODO(b/32960783): Implement smart diffs here.
       for (A actual : getCastActual()) {
         if (correspondence.compare(actual, expected)) {
           return;
@@ -958,7 +960,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * Given a list of actual elements, a list of expected elements, and a many:many mapping between
      * actual and expected elements specified as a multimap of indexes into the actual list to
      * indexes into the expected list, checks that every actual element maps to at least one
-     * expected element and vice versa, and fails if this is not the case.
+     * expected element and vice versa, and fails if this is not the case. Returns whether the
+     * assertion failed.
      */
     boolean failIfCandidateMappingHasMissingOrExtra(
         List<? extends A> actual,
@@ -966,49 +969,93 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         ImmutableMultimap<Integer, Integer> mapping) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
-      Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
-      if (missingOrExtraMessage.isPresent()) {
+      if (!missing.isEmpty() || !extra.isEmpty()) {
         subject.failWithRawMessage(
             "Not true that %s contains exactly one element that %s each element of <%s>. It %s",
-            subject.actualAsString(), correspondence, expected, missingOrExtraMessage.get());
+            subject.actualAsString(),
+            correspondence,
+            expected,
+            describeMissingOrExtra(missing, extra));
         return true;
       }
       return false;
     }
 
     /**
-     * Given a list of extra elements and a list of missing elements, returns an absent value if
-     * both are empty, and otherwise returns a verb phrase (suitable for appearing after the subject
-     * of the verb) describing them.
+     * Given a list of extra elements and a list of missing elements, at least one of which must be
+     * non-empty, returns a verb phrase (suitable for appearing after the subject of the verb)
+     * describing them.
      */
-    private Optional<String> describeMissingOrExtra(
-        List<? extends A> extra, List<? extends E> missing) {
-      // TODO(b/32960783): Use the pairer here, if present.
-      if (missing.size() == 1 && extra.size() == 1) {
-        @Nullable String diff = correspondence.formatDiff(extra.get(0), missing.get(0));
-        if (diff != null) {
-          return Optional.of(
-              StringUtil.format(
-                  "is missing an element that %s <%s> "
-                      + "and has unexpected elements <[%s (diff: %s)]>",
-                  correspondence, missing.get(0), extra.get(0), diff));
+    private String describeMissingOrExtra(List<? extends E> missing, List<? extends A> extra) {
+      if (pairer.isPresent()) {
+        @Nullable Pairing pairing = pairer.get().pair(missing, extra);
+        if (pairing != null) {
+          return describeMissingOrExtraWithPairing(pairing);
+        } else {
+          return describeMissingOrExtraWithoutPairing(correspondence.toString(), missing, extra)
+              + ". (N.B. A key function which does not uniquely key the expected elements was "
+              + "provided and has consequently been ignored.)";
         }
-        // fall through to regular case if there is no formatted diff
-      }
-      if (!missing.isEmpty() && !extra.isEmpty()) {
-        return Optional.of(
-            StringUtil.format(
-                "is missing an element that %s %s and has unexpected elements <%s>",
-                correspondence, formatMissing(missing), extra));
-      } else if (!missing.isEmpty()) {
-        return Optional.of(
-            StringUtil.format(
-                "is missing an element that %s %s", correspondence, formatMissing(missing)));
-      } else if (!extra.isEmpty()) {
-        return Optional.of(StringUtil.format("has unexpected elements <%s>", extra));
+      } else if (missing.size() == 1 && extra.size() == 1) {
+        // TODO(b/32960783): Consider changing the extra.size() == 1 check to >= 1. This is what was
+        // agreed in the API review, but the 'one missing, any number extra' variant was left as
+        // 'to be considered', and with this implementation it's trivial to do it if we want.
+        return describeSingleMissingWithExtras(correspondence.toString(), missing.get(0), extra);
       } else {
-        return Optional.absent();
+        return describeMissingOrExtraWithoutPairing(correspondence.toString(), missing, extra);
       }
+    }
+
+    private String describeMissingOrExtraWithoutPairing(
+        String verb, List<? extends E> missing, List<? extends A> extra) {
+      List<String> messages = Lists.newArrayList();
+      if (!missing.isEmpty()) {
+        messages.add(
+            StringUtil.format("is missing an element that %s %s", verb, formatMissing(missing)));
+      }
+      if (!extra.isEmpty()) {
+        messages.add(StringUtil.format("has unexpected elements <%s>", extra));
+      }
+      return Joiner.on(" and ").join(messages);
+    }
+
+    private String describeMissingOrExtraWithPairing(Pairing pairing) {
+      List<String> messages = Lists.newArrayList();
+      for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
+        messages.add(
+            describeSingleMissingWithExtras(
+                    "corresponds to", // don't repeat correspondence.toString() every time
+                    pairing.pairedKeysToExpectedValues.get(key),
+                    pairing.pairedKeysToActualValues.get(key))
+                + " with key "
+                + key);
+      }
+      if (!pairing.unpairedActualValues.isEmpty() || !pairing.unpairedExpectedValues.isEmpty()) {
+        messages.add(
+            describeMissingOrExtraWithoutPairing(
+                    "corresponds to", pairing.unpairedExpectedValues, pairing.unpairedActualValues)
+                + " without matching keys");
+      }
+      if (messages.size() > 1) {
+        messages.set(messages.size() - 1, "and " + messages.get(messages.size() - 1));
+      }
+      return Joiner.on(", ").join(messages);
+    }
+
+    private String describeSingleMissingWithExtras(
+        String verb, final E missing, List<? extends A> extras) {
+      List<String> extrasFormatted = new ArrayList<>();
+      for (A extra : extras) {
+        @Nullable String diff = correspondence.formatDiff(extra, missing);
+        if (diff != null) {
+          extrasFormatted.add(StringUtil.format("%s (diff: %s)", extra, diff));
+        } else {
+          extrasFormatted.add(extra.toString());
+        }
+      }
+      return StringUtil.format(
+          "is missing an element that %s <%s> and has unexpected elements <%s>",
+          verb, missing, extrasFormatted);
     }
 
     /**
@@ -1074,14 +1121,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * Given a list of actual elements, a list of expected elements, and a 1:1 mapping between
      * actual and expected elements specified as a bimap of indexes into the actual list to indexes
      * into the expected list, checks that every actual element maps to an expected element and vice
-     * versa, and fails if this is not the case.
+     * versa, and fails if this is not the case. Returns whether the assertion failed.
      */
     boolean failIfOneToOneMappingHasMissingOrExtra(
         List<? extends A> actual, List<? extends E> expected, BiMap<Integer, Integer> mapping) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
-      Optional<String> missingOrExtraMessage = describeMissingOrExtra(extra, missing);
-      if (missingOrExtraMessage.isPresent()) {
+      if (!missing.isEmpty() || !extra.isEmpty()) {
         subject.failWithRawMessage(
             "Not true that %s contains exactly one element that %s each element of <%s>. "
                 + "It contains at least one element that matches each expected element, "
@@ -1089,7 +1135,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 + "but there was no 1:1 mapping between all the actual and expected elements. "
                 + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
                 + "it %s",
-            subject.actualAsString(), correspondence, expected, missingOrExtraMessage.get());
+            subject.actualAsString(),
+            correspondence,
+            expected,
+            describeMissingOrExtra(missing, extra));
         return true;
       }
       return false;
@@ -1121,6 +1170,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     @CanIgnoreReturnValue
     public Ordered containsAllIn(Iterable<? extends E> expected) {
+      // TODO(b/32960783): Implement smart diffs here.
       List<A> actualList = iterableToList(getCastActual());
       List<? extends E> expectedList = iterableToList(expected);
       // Check if the expected elements correspond in order to any subset of the actual elements.
@@ -1280,6 +1330,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     private void containsAny(String failVerb, Iterable<? extends E> expected) {
+      // TODO(b/32960783): Implement smart diffs here.
       Collection<A> actual = iterableToCollection(getCastActual());
       for (E expectedItem : expected) {
         for (A actualItem : actual) {
@@ -1360,6 +1411,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return (Iterable<A>) subject.actual();
     }
 
+    // TODO(b/69154276): Consider commoning up some of the logic between IterableSubject.Pairer,
+    // MapSubject.MapDifference, and MultimapSubject.difference(). We are likely to need something
+    // similar again when we do the work to improve the failure messages from
+    // MultimapSubject.UsingCorrespondence (because it won't be able to delegate to
+    // IterableSubject.UsingCorrespondence like it does now). So it makes sense to do the
+    // refactoring as part of that. Right now, we don't even know what Multimap is going to need.
+
     /**
      * A class which knows how to pair the actual and expected elements (see {@link
      * #displayingDiffsPairedBy}).
@@ -1373,6 +1431,78 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         this.actualKeyFunction = actualKeyFunction;
         this.expectedKeyFunction = expectedKeyFunction;
       }
+
+      /**
+       * Returns a {@link Pairing} of the given actual and expected values, or {@code null} if the
+       * expected values are not uniquely keyed.
+       */
+      @Nullable
+      Pairing pair(List<? extends E> expectedValues, List<? extends A> actualValues) {
+        Pairing pairing = new Pairing();
+
+        // Populate pairedKeysToExpectedValues with *all* the expected values with non-null keys.
+        // We will remove the unpaired keys later. Return null if we find a duplicate key.
+        for (E expected : expectedValues) {
+          @Nullable Object key = expectedKeyFunction.apply(expected);
+          if (key != null) {
+            if (pairing.pairedKeysToExpectedValues.containsKey(key)) {
+              return null;
+            } else {
+              pairing.pairedKeysToExpectedValues.put(key, expected);
+            }
+          }
+        }
+
+        // Populate pairedKeysToActualValues and unpairedActualValues.
+        for (A actual : actualValues) {
+          @Nullable Object key = actualKeyFunction.apply(actual);
+          if (pairing.pairedKeysToExpectedValues.containsKey(key)) {
+            pairing.pairedKeysToActualValues.put(key, actual);
+          } else {
+            pairing.unpairedActualValues.add(actual);
+          }
+        }
+
+        // Populate unpairedExpectedValues and remove unpaired keys from pairedKeysToExpectedValues.
+        for (E expected : expectedValues) {
+          @Nullable Object key = expectedKeyFunction.apply(expected);
+          if (!pairing.pairedKeysToActualValues.containsKey(key)) {
+            pairing.unpairedExpectedValues.add(expected);
+            pairing.pairedKeysToExpectedValues.remove(key);
+          }
+        }
+
+        return pairing;
+      }
+    }
+
+    /** An description of a pairing between expected and actual values. N.B. This is mutable. */
+    private final class Pairing {
+
+      /**
+       * Map from keys used in the pairing to the expected value with that key. Iterates in the
+       * order the expected values appear in the input. Will never contain null keys.
+       */
+      private final Map<Object, E> pairedKeysToExpectedValues = new LinkedHashMap<Object, E>();
+
+      /**
+       * Multimap from keys used in the pairing to the actual values with that key. Keys iterate in
+       * the order they first appear in the actual values in the input, and values for each key
+       * iterate in the order they appear too. Will never contain null keys.
+       */
+      private final ListMultimap<Object, A> pairedKeysToActualValues = LinkedListMultimap.create();
+
+      /**
+       * List of the expected values not used in the pairing. Iterates in the order they appear in
+       * the input.
+       */
+      private final List<E> unpairedExpectedValues = Lists.newArrayList();
+
+      /**
+       * List of the actual values not used in the pairing. Iterates in the order they appear in the
+       * input.
+       */
+      private final List<A> unpairedActualValues = Lists.newArrayList();
     }
   }
 }
