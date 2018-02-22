@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -232,6 +232,21 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </td>
 </tr>
 <tr id="i13" class="rowColor">
+<td class="colFirst"><code><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-com.google.common.base.Function-">displayingDiffsPairedBy</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;actualKeyFunction,
+                       <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;expectedKeyFunction)</code>
+<div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
+ fails.</div>
+</td>
+</tr>
+<tr id="i14" class="altColor">
+<td class="colFirst"><code><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-">displayingDiffsPairedBy</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;keyFunction)</code>
+<div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
+ fails.</div>
+</td>
+</tr>
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#doesNotContain-E-">doesNotContain</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;excluded)</code>
 <div class="block">Checks that none of the actual elements correspond to the given element.</div>
@@ -259,6 +274,82 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a name="displayingDiffsPairedBy-com.google.common.base.Function-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>displayingDiffsPairedBy</h4>
+<pre>public&nbsp;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;displayingDiffsPairedBy(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;keyFunction)</pre>
+<div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
+ fails. For example:
+
+ <pre><code>
+ assertThat(actualRecords)
+     .comparingElementsUsing(RECORD_CORRESPONDENCE)
+     .displayingDiffsPairedBy(Record::getId)
+     .containsExactlyElementsIn(expectedRecords);
+ </code></pre>
+
+ <p><b>Important</b>: The {code keyFunction} function must be able to accept both the actual
+ and the unexpected elements, i.e. it must satisfy <code>Function&lt;? super A, ? extends
+ Object&gt;</code> as well as <code>Function&lt;? super E, ? extends Object&gt;</code>. If that constraint is not
+ met then a subsequent method may throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang"><code>ClassCastException</code></a>. Use the two-parameter
+ overload if you need to specify different key functions for the actual and expected elements.
+
+ <p>On assertions where it makes sense to do so, the elements are paired as follows: they are
+ keyed by <code>keyFunction</code>, and if an unexpected element and a missing element have the
+ same non-null key then the they are paired up. (Elements with null keys are not paired.) The
+ failure message will show paired elements together, and a diff will be shown if the <a href="../../../../com/google/common/truth/Correspondence.html#formatDiff-A-E-"><code>Correspondence.formatDiff(A, E)</code></a> method returns non-null.
+
+ <p>The expected elements given in the assertion should be uniquely keyed by <code>keyFunction</code>. If multiple missing elements have the same key then the pairing will be
+ skipped.
+
+ <p>Useful key functions will have the property that key equality is less strict than the
+ correspondence, i.e. given <code>actual</code> and <code>expected</code> values with keys <code>actualKey</code> and <code>expectedKey</code>, if <code>correspondence.compare(actual, expected)</code> is
+ true then it is guaranteed that <code>actualKey</code> is equal to <code>expectedKey</code>, but there
+ are cases where <code>actualKey</code> is equal to <code>expectedKey</code> but <code>correspondence.compare(actual, expected)</code> is false.
+
+ <p>Note that calling this method makes no difference to whether a test passes or fails, it
+ just improves the message if it fails.</div>
+</li>
+</ul>
+<a name="displayingDiffsPairedBy-com.google.common.base.Function-com.google.common.base.Function-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>displayingDiffsPairedBy</h4>
+<pre>public&nbsp;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;displayingDiffsPairedBy(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;actualKeyFunction,
+                                                                        <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;expectedKeyFunction)</pre>
+<div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
+ fails. For example:
+
+ <pre><code>
+ assertThat(actualFoos)
+     .comparingElementsUsing(FOO_BAR_CORRESPONDENCE)
+     .displayingDiffsPairedBy(Foo::getId, Bar::getFooId)
+     .containsExactlyElementsIn(expectedBar);
+ </code></pre>
+
+ <p>On assertions where it makes sense to do so, the elements are paired as follows: the
+ unexpected elements are keyed by <code>actualKeyFunction</code>, the missing elements are keyed by
+ <code>expectedKeyFunction</code>, and if an unexpected element and a missing element have the same
+ non-null key then the they are paired up. (Elements with null keys are not paired.) The
+ failure message will show paired elements together, and a diff will be shown if the <a href="../../../../com/google/common/truth/Correspondence.html#formatDiff-A-E-"><code>Correspondence.formatDiff(A, E)</code></a> method returns non-null.
+
+ <p>The expected elements given in the assertion should be uniquely keyed by <code>expectedKeyFunction</code>. If multiple missing elements have the same key then the pairing will be
+ skipped.
+
+ <p>Useful key functions will have the property that key equality is less strict than the
+ correspondence, i.e. given <code>actual</code> and <code>expected</code> values with keys <code>actualKey</code> and <code>expectedKey</code>, if <code>correspondence.compare(actual, expected)</code> is
+ true then it is guaranteed that <code>actualKey</code> is equal to <code>expectedKey</code>, but there
+ are cases where <code>actualKey</code> is equal to <code>expectedKey</code> but <code>correspondence.compare(actual, expected)</code> is false.
+
+ <p>Note that calling this method makes no difference to whether a test passes or fails, it
+ just improves the message if it fails.</div>
+</li>
+</ul>
 <a name="contains-java.lang.Object-">
 <!--   -->
 </a><a name="contains-E-">
