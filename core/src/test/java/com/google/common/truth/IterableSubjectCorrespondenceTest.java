@@ -282,9 +282,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void comparingElementsUsing_containsExactlyElementsIn_diffOneMissingAndExtraCandidate() {
+  public void comparingElementsUsing_containsExactlyElementsIn_diffOneMissingSomeExtraCandidate() {
     ImmutableList<Integer> expected = ImmutableList.of(30, 60, 90);
-    ImmutableList<Integer> actual = ImmutableList.of(101, 65, 35);
+    ImmutableList<Integer> actual = ImmutableList.of(101, 65, 35, 190);
     expectFailure
         .whenTesting()
         .that(actual)
@@ -293,9 +293,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[101, 65, 35]> contains exactly one element that is within 10 of "
+            "Not true that <[101, 65, 35, 190]> contains exactly one element that is within 10 of "
                 + "each element of <[30, 60, 90]>. It is missing an element that is within 10 of "
-                + "<90> and has unexpected elements <[101 (diff: 11)]>");
+                + "<90> and has unexpected elements <[101 (diff: 11), 190 (diff: 100)]>");
   }
 
   @Test
