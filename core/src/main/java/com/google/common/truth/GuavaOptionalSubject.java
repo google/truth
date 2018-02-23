@@ -27,8 +27,9 @@ import javax.annotation.Nullable;
  * @author Christian Gruber
  */
 public final class GuavaOptionalSubject extends Subject<GuavaOptionalSubject, Optional<?>> {
-  GuavaOptionalSubject(FailureMetadata metadata, @Nullable Optional<?> actual) {
-    super(metadata, actual);
+  GuavaOptionalSubject(
+      FailureMetadata metadata, @Nullable Optional<?> actual, @Nullable String typeDescription) {
+    super(metadata, actual, typeDescription);
   }
 
   /** Fails if the {@link Optional}{@code <T>} is absent or the subject is null. */

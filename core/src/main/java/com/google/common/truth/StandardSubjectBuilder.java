@@ -160,7 +160,7 @@ public class StandardSubjectBuilder {
   }
 
   public final GuavaOptionalSubject that(@Nullable Optional<?> actual) {
-    return new GuavaOptionalSubject(metadata(), actual);
+    return new GuavaOptionalSubject(metadata(), actual, "optional");
   }
 
   public final MapSubject that(@Nullable Map<?, ?> actual) {
