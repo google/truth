@@ -304,13 +304,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * value or a prefixed "name" along with the string representation.
    */
   /*
-   * TODO(cpovirk): Consider whether this API pulls its weight. If users want to format the actual
-   * value, maybe they should do so themselves? Of course, they won't have a chance to use a custom
-   * format for inherited implementations like isEqualTo(). But if they want to format the actual
-   * value specially, then it seems likely that they'll want to format the expected value specially,
-   * too. And that applies just as well to APIs like isIn(). Maybe we'll want an API that supports
-   * formatting those values, too? See also the related b/70930431. But note that we are likely to
-   * use this from FailureMetadata, at least in the short term, for better or for worse.
+   * TODO(cpovirk): If we delete named(), this method will be a thin wrapper around
+   * actualCustomStringRepresentation(), one that merely adds angle brackets (which we might not
+   * want it to do). But if we delete actualCustomStringRepresentation() in favor of a "format
+   * actual or expected" method, as described in a comment on that method, then it becomes useful
+   * again (though there's still a question of what to do with the angle brackets).
    */
   protected final String actualAsString() {
     String formatted = actualCustomStringRepresentation();
@@ -327,6 +325,16 @@ public class Subject<S extends Subject<S, T>, T> {
     }
   }
 
+  /** Like {@link #actualAsString()} but without angle brackets around the value. */
+  final String actualAsStringNoBrackets() {
+    String formatted = actualCustomStringRepresentation();
+    if (customName != null) {
+      return customName + (formatted.isEmpty() ? "" : " (" + formatted + ")");
+    } else {
+      return formatted;
+    }
+  }
+
   /**
    * Supplies the direct string representation of the actual value to other methods which may prefix
    * or otherwise position it in an error message. This should only be overridden to provide an
@@ -336,6 +344,15 @@ public class Subject<S extends Subject<S, T>, T> {
    * <p>Subjects should override this with care.
    *
    * <p>By default, this returns {@code String.ValueOf(getActualValue())}.
+   */
+  /*
+   * TODO(cpovirk): Consider whether this API pulls its weight. If users want to format the actual
+   * value, maybe they should do so themselves? Of course, they won't have a chance to use a custom
+   * format for inherited implementations like isEqualTo(). But if they want to format the actual
+   * value specially, then it seems likely that they'll want to format the expected value specially,
+   * too. And that applies just as well to APIs like isIn(). Maybe we'll want an API that supports
+   * formatting those values, too? See also the related b/70930431. But note that we are likely to
+   * use this from FailureMetadata, at least in the short term, for better or for worse.
    */
   @ForOverride
   protected String actualCustomStringRepresentation() {
