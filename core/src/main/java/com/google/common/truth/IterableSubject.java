@@ -996,10 +996,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
               + ". (N.B. A key function which does not uniquely key the expected elements was "
               + "provided and has consequently been ignored.)";
         }
-      } else if (missing.size() == 1 && extra.size() == 1) {
-        // TODO(b/32960783): Consider changing the extra.size() == 1 check to >= 1. This is what was
-        // agreed in the API review, but the 'one missing, any number extra' variant was left as
-        // 'to be considered', and with this implementation it's trivial to do it if we want.
+      } else if (missing.size() == 1 && extra.size() >= 1) {
         return describeSingleMissingWithExtras(correspondence.toString(), missing.get(0), extra);
       } else {
         return describeMissingOrExtraWithoutPairing(correspondence.toString(), missing, extra);
