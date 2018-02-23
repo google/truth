@@ -43,12 +43,6 @@ public class OptionalSubjectTest {
   }
 
   @Test
-  public void failOnNullSubject() {
-    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is empty");
-  }
-
-  @Test
   public void isPresent() {
     assertThat(Optional.of("foo")).isPresent();
   }
@@ -68,6 +62,12 @@ public class OptionalSubjectTest {
   }
 
   @Test
+  public void isPresentFailingNull() {
+    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isPresent());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
+  }
+
+  @Test
   public void isEmpty() {
     assertThat(Optional.empty()).isEmpty();
   }
@@ -77,6 +77,12 @@ public class OptionalSubjectTest {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).isEmpty());
     assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[foo]> is empty");
+  }
+
+  @Test
+  public void isEmptyFailingNull() {
+    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is empty");
   }
 
   @Test
