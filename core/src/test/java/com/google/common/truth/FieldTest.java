@@ -17,6 +17,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Field.field;
+import static com.google.common.truth.Field.fieldWithoutValue;
 import static com.google.common.truth.Field.makeMessage;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -31,6 +32,11 @@ public class FieldTest {
   @Test
   public void string() {
     assertThat(field("foo", "bar").toString()).isEqualTo("foo: bar");
+  }
+
+  @Test
+  public void stringWithoutValue() {
+    assertThat(fieldWithoutValue("foo").toString()).isEqualTo("foo");
   }
 
   @Test
@@ -49,9 +55,33 @@ public class FieldTest {
   }
 
   @Test
+  public void oneFieldWithoutValue() {
+    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(fieldWithoutValue("foo"))))
+        .isEqualTo("foo");
+  }
+
+  @Test
+  public void twoFieldsOneWithoutValue() {
+    assertThat(
+            makeMessage(
+                ImmutableList.<String>of(),
+                ImmutableList.of(field("foo", "bar"), fieldWithoutValue("hello"))))
+        .isEqualTo("foo: bar\nhello");
+  }
+
+  @Test
   public void newline() {
     assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(field("foo", "bar\nbaz"))))
         .isEqualTo("foo:\n    bar\n    baz");
+  }
+
+  @Test
+  public void newlineWithoutValue() {
+    assertThat(
+            makeMessage(
+                ImmutableList.<String>of(),
+                ImmutableList.of(field("foo", "bar\nbaz"), fieldWithoutValue("xyz"))))
+        .isEqualTo("foo:\n    bar\n    baz\nxyz");
   }
 
   @Test
