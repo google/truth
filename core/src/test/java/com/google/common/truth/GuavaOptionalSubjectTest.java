@@ -42,15 +42,6 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void failOnNullSubject() {
-      Optional<String> nullOptional = null;
-    expectFailure.whenTesting().that(nullOptional).isAbsent();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is absent");
-  }
-
-  @Test
   public void isPresent() {
     assertThat(Optional.of("foo")).isPresent();
   }
@@ -72,6 +63,14 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void isPresentFailingNull() {
+    expectFailure.whenTesting().that((Optional<?>) null).isPresent();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that the subject is present");
+  }
+
+  @Test
   public void isAbsent() {
     assertThat(Optional.absent()).isAbsent();
   }
@@ -82,6 +81,15 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <Optional.of(foo)> is absent");
+  }
+
+  @Test
+  public void isAbsentFailingNull() {
+    Optional<String> nullOptional = null;
+    expectFailure.whenTesting().that(nullOptional).isAbsent();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <null> is absent");
   }
 
   @Test
