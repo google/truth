@@ -181,7 +181,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
             "value of: multymap.valuesForKey(1): "
                 + "Not true that <[5]> contains exactly <[4]>. "
                 + "It is missing <[4]> and has unexpected items <[5]>: "
-                + "multimap was: multymap (<{1=[5]}>)");
+                + "multimap was: multymap ({1=[5]})");
   }
 
   @Test
@@ -194,7 +194,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
             "value of: multimap.valuesForKey(1): "
                 + "Not true that valuez (<[5]>) contains exactly <[4]>. "
                 + "It is missing <[4]> and has unexpected items <[5]>: "
-                + "multimap was: <{1=[5]}>");
+                + "multimap was: {1=[5]}");
   }
 
   @Test

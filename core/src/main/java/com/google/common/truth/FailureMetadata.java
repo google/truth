@@ -308,15 +308,15 @@ public final class FailureMetadata {
       }
     }
     /*
-     * TODO(cpovirk): Maybe say "root foo: ..." instead of just "foo: ..." if there's more than one
-     * foo in the chain, if the description string doesn't start with "foo," and/or if the name we
-     * have is just "object?"
+     * TODO(cpovirk): Maybe say "root foo was: ..." instead of just "foo was: ..." if there's more
+     * than one foo in the chain, if the description string doesn't start with "foo," and/or if the
+     * name we have is just "object?"
      */
     return seenDerivation
         ? Optional.of(
             field(
                 rootSubject.subject.typeDescription() + " was",
-                rootSubject.subject.actualAsString()))
+                rootSubject.subject.actualAsStringNoBrackets()))
         : Optional.<Field>absent();
   }
 
