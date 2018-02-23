@@ -21,6 +21,7 @@ import static com.google.common.base.Strings.padEnd;
 import static java.lang.Math.max;
 
 import com.google.common.collect.ImmutableList;
+import javax.annotation.Nullable;
 
 /** A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz." */
 final class Field {
@@ -28,12 +29,16 @@ final class Field {
     return new Field(key, String.valueOf(value));
   }
 
-  final String key;
-  final String value;
+  static Field fieldWithoutValue(String key) {
+    return new Field(key, null);
+  }
 
-  private Field(String key, String value) {
+  final String key;
+  @Nullable final String value;
+
+  private Field(String key, @Nullable String value) {
     this.key = checkNotNull(key);
-    this.value = checkNotNull(value);
+    this.value = value;
   }
 
   /**
@@ -43,7 +48,7 @@ final class Field {
    */
   @Override
   public String toString() {
-    return key + ": " + value;
+    return value == null ? key : key + ": " + value;
   }
 
   /**
@@ -54,9 +59,11 @@ final class Field {
     int longestKeyLength = 0;
     boolean seenNewlineInValue = false;
     for (Field field : fields) {
-      longestKeyLength = max(longestKeyLength, field.key.length());
-      // TODO(cpovirk): Look for other kinds of newlines.
-      seenNewlineInValue |= field.value.contains("\n");
+      if (field.value != null) {
+        longestKeyLength = max(longestKeyLength, field.key.length());
+        // TODO(cpovirk): Look for other kinds of newlines.
+        seenNewlineInValue |= field.value.contains("\n");
+      }
     }
 
     StringBuilder builder = new StringBuilder();
@@ -78,12 +85,16 @@ final class Field {
     for (Field field : fields) {
       if (seenNewlineInValue) {
         builder.append(field.key);
-        builder.append(":\n");
-        builder.append(indent(field.value));
+        if (field.value != null) {
+          builder.append(":\n");
+          builder.append(indent(field.value));
+        }
       } else {
         builder.append(padEnd(field.key, longestKeyLength, ' '));
-        builder.append(": ");
-        builder.append(field.value);
+        if (field.value != null) {
+          builder.append(": ");
+          builder.append(field.value);
+        }
       }
       builder.append('\n');
     }
