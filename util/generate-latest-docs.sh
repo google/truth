@@ -34,7 +34,7 @@ if [[ -n "${RELEASE_VERSION:-}" ||
     # Travis
     version_subdir=api/latest
     github_url="https://${GH_TOKEN}@github.com/${EXPECTED_REPO_SLUG}"
-    commit_message="Lastest javadoc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages."
+    commit_message="Latest javadoc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages."
   fi
 
   mvn javadoc:aggregate
