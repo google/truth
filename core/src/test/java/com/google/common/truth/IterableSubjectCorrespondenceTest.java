@@ -68,6 +68,31 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingElementsUsing_displayingDiffsPairedBy_1arg_contains() {
+    Record expected = Record.create(2, 200);
+    ImmutableList<Record> actual =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 211),
+            Record.create(4, 400),
+            Record.create(2, 189),
+            Record.createWithoutId(999));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .contains(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1/100, 2/211, 4/400, 2/189, none/999]> contains exactly one element "
+                + "that has the same id as and a score is within 10 of <2/200>. It did contain the "
+                + "following elements with the correct key: "
+                + "<[2/211 (diff: score:11), 2/189 (diff: score:-11)]>");
+  }
+
+  @Test
   public void comparingElementsUsing_contains_null() {
     List<String> actual = Arrays.asList("+123", null, "+789");
     assertThat(actual)
