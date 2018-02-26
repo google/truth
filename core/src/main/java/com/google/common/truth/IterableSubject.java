@@ -813,9 +813,21 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * element.
      */
     public void contains(@Nullable E expected) {
-      // TODO(b/32960783): Implement smart diffs here.
       for (A actual : getCastActual()) {
         if (correspondence.compare(actual, expected)) {
+          return;
+        }
+      }
+      if (pairer.isPresent()) {
+        List<A> keyMatches = pairer.get().pairOne(expected, getCastActual());
+        if (!keyMatches.isEmpty()) {
+          subject.failWithRawMessage(
+              "Not true that %s contains exactly one element that %s <%s>. It did contain the "
+                  + "following elements with the correct key: <%s>",
+              subject.actualAsString(),
+              correspondence,
+              expected,
+              formatExtras(expected, keyMatches));
           return;
         }
       }
@@ -997,7 +1009,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
               + "provided and has consequently been ignored.)";
         }
       } else if (missing.size() == 1 && extra.size() >= 1) {
-        return describeSingleMissingWithExtras(correspondence.toString(), missing.get(0), extra);
+        return StringUtil.format(
+            "is missing an element that %s <%s> and has unexpected elements <%s>",
+            correspondence, missing.get(0), formatExtras(missing.get(0), extra));
       } else {
         return describeMissingOrExtraWithoutPairing(correspondence.toString(), missing, extra);
       }
@@ -1019,13 +1033,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     private String describeMissingOrExtraWithPairing(Pairing pairing) {
       List<String> messages = Lists.newArrayList();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
+        E missing = pairing.pairedKeysToExpectedValues.get(key);
+        List<A> extras = pairing.pairedKeysToActualValues.get(key);
         messages.add(
-            describeSingleMissingWithExtras(
-                    "corresponds to", // don't repeat correspondence.toString() every time
-                    pairing.pairedKeysToExpectedValues.get(key),
-                    pairing.pairedKeysToActualValues.get(key))
-                + " with key "
-                + key);
+            StringUtil.format(
+                "is missing an element that corresponds to <%s> and has unexpected elements <%s> "
+                    + "with key %s",
+                missing, formatExtras(missing, extras), key));
       }
       if (!pairing.unpairedActualValues.isEmpty() || !pairing.unpairedExpectedValues.isEmpty()) {
         messages.add(
@@ -1039,8 +1053,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return Joiner.on(", ").join(messages);
     }
 
-    private String describeSingleMissingWithExtras(
-        String verb, final E missing, List<? extends A> extras) {
+    private List<String> formatExtras(E missing, List<? extends A> extras) {
       List<String> extrasFormatted = new ArrayList<>();
       for (A extra : extras) {
         @Nullable String diff = correspondence.formatDiff(extra, missing);
@@ -1050,9 +1063,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           extrasFormatted.add(extra.toString());
         }
       }
-      return StringUtil.format(
-          "is missing an element that %s <%s> and has unexpected elements <%s>",
-          verb, missing, extrasFormatted);
+      return extrasFormatted;
     }
 
     /**
@@ -1470,6 +1481,19 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         }
 
         return pairing;
+      }
+
+      List<A> pairOne(E expectedValue, Iterable<? extends A> actualValues) {
+        @Nullable Object key = expectedKeyFunction.apply(expectedValue);
+        List<A> matches = new ArrayList<>();
+        if (key != null) {
+          for (A actual : actualValues) {
+            if (key.equals(actualKeyFunction.apply(actual))) {
+              matches.add(actual);
+            }
+          }
+        }
+        return matches;
       }
     }
 
