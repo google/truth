@@ -15,6 +15,8 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import com.google.common.base.Function;
+import com.google.common.truth.IterableSubject;
 import com.google.common.truth.Ordered;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
@@ -218,6 +220,40 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    * <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.
    */
   IterableOfProtosFluentAssertion<M> reportingMismatchesOnly();
+
+  /**
+   * Specifies a way to pair up unexpected and missing elements in the message when an assertion
+   * fails. For example:
+   *
+   * <pre>{@code
+   * assertThat(actualFoos)
+   *     .ignoringRepeatedFieldOrder()
+   *     .ignoringFields(Foo.BAR_FIELD_NUMBER)
+   *     .displayingDiffsPairedBy(Foo::getId)
+   *     .containsExactlyElementsIn(expectedFoos);
+   * }</pre>
+   *
+   * <p>On assertions where it makes sense to do so, the elements are paired as follows: they are
+   * keyed by {@code keyFunction}, and if an unexpected element and a missing element have the same
+   * non-null key then the they are paired up. (Elements with null keys are not paired.) The failure
+   * message will show paired elements together, and a diff will be shown.
+   *
+   * <p>The expected elements given in the assertion should be uniquely keyed by {@link
+   * keyFunction}. If multiple missing elements have the same key then the pairing will be skipped.
+   *
+   * <p>Useful key functions will have the property that key equality is less strict than the
+   * already specified equality rules; i.e. given {@code actual} and {@code expected} values with
+   * keys {@code actualKey} and {@code expectedKey}, if {@code actual} and {@code expected} compare
+   * equal given the rest of the directives such as {@code ignoringRepeatedFieldOrder} and {@code
+   * ignoringFields}, then it is guaranteed that {@code actualKey} is equal to {@code expectedKey},
+   * but there are cases where {@code actualKey} is equal to {@code expectedKey} but the direct
+   * comparison fails.
+   *
+   * <p>Note that calling this method makes no difference to whether a test passes or fails, it just
+   * improves the message if it fails.
+   */
+  IterableSubject.UsingCorrespondence<M, M> displayingDiffsPairedBy(
+      Function<? super M, ?> keyFunction);
 
   /**
    * Checks that the subject contains at least one element that corresponds to the given expected

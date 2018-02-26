@@ -16,6 +16,7 @@
 
 package com.google.common.truth.extensions.proto;
 
+import com.google.common.base.Function;
 import com.google.protobuf.Message;
 import java.util.Collection;
 import java.util.Comparator;
@@ -469,6 +470,29 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
                 + "deleted: r_string[1]: \"qux\"\n"
                 + "\n"
                 + "Full diff report:\n");
+  }
+
+  @Test
+  public void testDisplayingDiffsPairedBy() {
+    Message actualInt3 = parse("o_int: 3 r_string: 'foo'");
+    Message actualInt4 = parse("o_int: 4 r_string: 'bar'");
+    Message expectedInt3 = parse("o_int: 3 r_string: 'baz'");
+    Message expectedInt4 = parse("o_int: 4 r_string: 'qux'");
+
+    Function<Message, Integer> getInt =
+        new Function<Message, Integer>() {
+          @Override
+          public Integer apply(Message message) {
+            return (Integer) message.getField(getFieldDescriptor("o_int"));
+          }
+        };
+
+    expectFailureWhenTesting()
+        .that(listOf(actualInt3, actualInt4))
+        .displayingDiffsPairedBy(getInt)
+        .containsExactly(expectedInt3, expectedInt4);
+    expectThatFailure().hasMessageThat().contains("modified: r_string[0]: \"baz\" -> \"foo\"");
+    expectThatFailure().hasMessageThat().contains("modified: r_string[0]: \"qux\" -> \"bar\"");
   }
 
   @Test
