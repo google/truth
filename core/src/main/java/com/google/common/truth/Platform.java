@@ -15,12 +15,23 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Objects.equal;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.reverse;
+import static com.google.common.collect.Lists.transform;
+import static com.google.common.truth.Field.field;
 import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
 import static com.google.common.truth.Truth.appendSuffixIfNotNull;
+import static java.util.Collections.unmodifiableList;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableList;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import org.junit.ComparisonFailure;
@@ -86,6 +97,100 @@ final class Platform {
     return Boolean.parseBoolean(
         System.getProperty("com.google.common.truth.disable_stack_trace_cleaning"));
   }
+
+  @Nullable
+  static ImmutableList<Field> makeDiff(String expected, String actual) {
+    // For now, we just hide a common prefix or suffix. TODO(cpovirk): Add real diffing.
+
+    List<String> expectedLines = splitLines(expected);
+    List<String> actualLines = splitLines(actual);
+
+    int prefix = commonPrefix(expectedLines, actualLines);
+    if (prefix <= CONTEXT + 1) {
+      // If the common prefix is short, then we might as well just show it.
+      prefix = 0;
+    }
+
+    int suffix = commonSuffix(expectedLines, actualLines);
+    if (suffix <= CONTEXT + 1) {
+      // If the common suffix is short, then we might as well just show it.
+      suffix = 0;
+    }
+
+    if (prefix == 0 && suffix == 0) {
+      return null;
+    }
+
+    return ImmutableList.of(field("diff", hideLines(expectedLines, actualLines, prefix, suffix)));
+  }
+
+  private static String hideLines(
+      List<String> expectedLines, List<String> actualLines, int prefix, int suffix) {
+    StringBuilder builder = new StringBuilder();
+
+    if (prefix > CONTEXT) {
+      builder.append(" ⋮\n");
+    }
+    if (prefix > 0) {
+      appendSubListPrefixed(builder, ' ', expectedLines, prefix - CONTEXT, prefix);
+    }
+
+    appendSubListPrefixed(builder, '-', expectedLines, prefix, expectedLines.size() - suffix);
+    appendSubListPrefixed(builder, '+', actualLines, prefix, actualLines.size() - suffix);
+
+    if (suffix > 0) {
+      appendSubListPrefixed(
+          builder,
+          ' ',
+          expectedLines,
+          expectedLines.size() - suffix,
+          expectedLines.size() - suffix + CONTEXT);
+    }
+    if (suffix > CONTEXT) {
+      builder.append(" ⋮\n");
+    }
+    builder.setLength(builder.length() - 1); // remove trailing newline
+
+    return builder.toString();
+  }
+
+  private static void appendSubListPrefixed(
+      StringBuilder builder, char prefix, List<String> lines, int start, int end) {
+    List<String> subLines = lines.subList(start, end);
+    List<String> prefixed = prefixAll(prefix, subLines);
+    Joiner.on('\n').appendTo(builder, prefixed);
+    if (start < end) {
+      builder.append('\n');
+    }
+  }
+
+  private static List<String> prefixAll(final char prefix, List<String> strings) {
+    return transform(
+        strings,
+        new Function<String, String>() {
+          @Override
+          public String apply(String input) {
+            return prefix + input;
+          }
+        });
+  }
+
+  private static List<String> splitLines(String s) {
+    // splitToList is @Beta, so we avoid it.
+    return unmodifiableList(newArrayList(Splitter.onPattern("\r?\n").split(s)));
+  }
+
+  private static int commonPrefix(List<?> a, List<?> b) {
+    int i;
+    for (i = 0; i < a.size() && i < b.size() && equal(a.get(i), b.get(i)); i++) {}
+    return i;
+  }
+
+  private static int commonSuffix(List<?> a, List<?> b) {
+    return commonPrefix(reverse(a), reverse(b));
+  }
+
+  private static final int CONTEXT = 3;
 
   enum ComparisonFailureMessageStrategy {
     OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE,

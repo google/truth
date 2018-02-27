@@ -83,29 +83,26 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
    * Returns one or more fields describing the difference between the given expected and actual
    * values.
    *
-   * <p>Currently, this method always returns 2 fields, one each for expected and actual. Someday,
-   * it may return a single diff-style field.
+   * <p>Currently, that means either 2 fields (one each for expected and actual) or 1 field with a
+   * diff-like (but much simpler) view.
    *
-   * <p>The 2 fields contain either the full expected and actual values or, if the values have a
-   * long prefix or suffix in common, abbreviated values with "..." at the beginning or end.
+   * <p>In the case of 2 fields, the fields contain either the full expected and actual values or,
+   * if the values have a long prefix or suffix in common, abbreviated values with "…" at the
+   * beginning or end.
    */
   @VisibleForTesting
   static ImmutableList<Field> formatExpectedAndActual(String expected, String actual) {
     ImmutableList<Field> result;
 
-    result = removeCommonPrefixAndSuffix(expected, actual);
+    result = Platform.makeDiff(expected, actual);
     if (result != null) {
       return result;
     }
 
-    /*
-     * TODO(cpovirk): Add other strategies, like diff-style output, possibly preferring it over
-     * removeCommonPrefixAndSuffix when the values contain a newline.
-     *
-     * (For GWT, we probably won't offer diff-style: We'd need to make the diff library work there,
-     * and even once we do, I think we'd lose the newlines. Hopefully no one under GWT has long,
-     * nearly identical messages. In any case, they've always been stuck like this.
-     */
+    result = removeCommonPrefixAndSuffix(expected, actual);
+    if (result != null) {
+      return result;
+    }
 
     return ImmutableList.of(field("expected", expected), field("but was", actual));
   }
@@ -113,6 +110,13 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
   @Nullable
   private static ImmutableList<Field> removeCommonPrefixAndSuffix(String expected, String actual) {
     // TODO(cpovirk): Use something like BreakIterator where available.
+    /*
+     * TODO(cpovirk): If the abbreviated values contain newlines, maybe expand them to contain a
+     * newline on each end so that we don't start mid-line? That way, horizontally aligned text will
+     * remain horizontally aligned. But of course, for many multi-line strings, we won't enter this
+     * method at all because we'll generate diff-style output instead. So we might not need to worry
+     * too much about newlines here.
+     */
     int prefix = commonPrefix(expected, actual).length();
     prefix = max(0, prefix - CONTEXT);
     while (prefix > 0 && validSurrogatePairAt(expected, prefix - 1)) {
