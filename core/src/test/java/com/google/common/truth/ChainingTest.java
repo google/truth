@@ -132,6 +132,59 @@ public final class ChainingTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void oneLevelNamedNoNeedToDisplayBoth() {
+    expectFailureWhenTestingThat("root")
+        .delegatingToNamedNoNeedToDisplayBoth("child", "child")
+        .isThePresentKingOfFrance();
+    assertNoCause("value of: myObject.child: message");
+  }
+
+  @Test
+  public void twoLevelsNamedNoNeedToDisplayBoth() {
+    expectFailureWhenTestingThat("root")
+        .delegatingToNamedNoNeedToDisplayBoth("child", "child")
+        .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
+        .isThePresentKingOfFrance();
+    assertNoCause("value of: myObject.child.grandchild: message");
+  }
+
+  @Test
+  public void twoLevelsOnlyFirstNamedNoNeedToDisplayBoth() {
+    expectFailureWhenTestingThat("root")
+        .delegatingToNamedNoNeedToDisplayBoth("child", "child")
+        .delegatingTo("grandchild")
+        .isThePresentKingOfFrance();
+    assertNoCause("message");
+  }
+
+  @Test
+  public void twoLevelsOnlySecondNamedNoNeedToDisplayBoth() {
+    expectFailureWhenTestingThat("root")
+        .delegatingTo("child")
+        .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
+        .isThePresentKingOfFrance();
+    assertNoCause("value of: myObject.grandchild: message");
+  }
+
+  @Test
+  public void twoLevelsNamedOnlyFirstNoNeedToDisplayBoth() {
+    expectFailureWhenTestingThat("root")
+        .delegatingToNamedNoNeedToDisplayBoth("child", "child")
+        .delegatingToNamed("grandchild", "grandchild")
+        .isThePresentKingOfFrance();
+    assertNoCause("value of: myObject.child.grandchild: message: myObject was: root");
+  }
+
+  @Test
+  public void twoLevelsNamedOnlySecondNoNeedToDisplayBoth() {
+    expectFailureWhenTestingThat("root")
+        .delegatingToNamed("child", "child")
+        .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
+        .isThePresentKingOfFrance();
+    assertNoCause("value of: myObject.child.grandchild: message: myObject was: root");
+  }
+
+  @Test
   public void namedAndComparisonFailure() {
     expectFailureWhenTestingThat("root").delegatingToNamed("child", "child").isEqualToString("z");
     assertNoCause(
@@ -227,6 +280,10 @@ public final class ChainingTest extends BaseSubjectTestCase {
      */
     MyObjectSubject delegatingToNamed(Object actual, String name) {
       return check(name).about(myObjects()).that(actual);
+    }
+
+    MyObjectSubject delegatingToNamedNoNeedToDisplayBoth(Object actual, String name) {
+      return checkNoNeedToDisplayBothValues(name).about(myObjects()).that(actual);
     }
   }
 
