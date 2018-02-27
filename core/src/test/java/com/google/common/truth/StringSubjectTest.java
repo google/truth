@@ -75,6 +75,15 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void stringIsEmptyFailNull() {
+    String s = null;
+    expectFailure.whenTesting().that(s).isEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that null reference is empty");
+  }
+
+  @Test
   public void stringIsNotEmpty() {
     assertThat("abc").isNotEmpty();
   }
@@ -85,6 +94,15 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <\"\"> is not empty");
+  }
+
+  @Test
+  public void stringIsNotEmptyFailNull() {
+    String s = null;
+    expectFailure.whenTesting().that(s).isNotEmpty();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that null reference is not empty");
   }
 
   @Test
