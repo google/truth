@@ -211,8 +211,6 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
   }
 
   public IterableSubject asList() {
-    return internalCustomName() != null
-        ? check().that(Arrays.asList(actual())).named(internalCustomName())
-        : check().that(Arrays.asList(actual()));
+    return checkNoNeedToDisplayBothValues("asList()").that(Arrays.asList(actual()));
   }
 }

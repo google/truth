@@ -83,8 +83,6 @@ public final class PrimitiveLongArraySubject
   }
 
   public IterableSubject asList() {
-    return internalCustomName() != null
-        ? check().that(listRepresentation()).named(internalCustomName())
-        : check().that(listRepresentation());
+    return checkNoNeedToDisplayBothValues("asList()").that(listRepresentation());
   }
 }

@@ -510,9 +510,9 @@ public final class PrimitiveDoubleArraySubject
   }
 
   private IterableSubject iterableSubject() {
-    IterableSubject result =
-        check().about(iterablesWithCustomDoubleToString()).that(Doubles.asList(actual()));
-    return internalCustomName() != null ? result.named(internalCustomName()) : result;
+    return checkNoNeedToDisplayBothValues("asList()")
+        .about(iterablesWithCustomDoubleToString())
+        .that(Doubles.asList(actual()));
   }
 
   /*

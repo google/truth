@@ -65,11 +65,13 @@ public final class FailureMetadata {
    */
   private static final class Step {
     static Step subjectCreation(Subject<?, ?> subject) {
-      return new Step(checkNotNull(subject), null);
+      return new Step(checkNotNull(subject), null, null);
     }
 
-    static Step checkCall(@Nullable Function<String, String> descriptionUpdate) {
-      return new Step(null, descriptionUpdate);
+    static Step checkCall(
+        OldAndNewValuesAreSimilar valuesAreSimilar,
+        @Nullable Function<String, String> descriptionUpdate) {
+      return new Step(null, descriptionUpdate, valuesAreSimilar);
     }
 
     /*
@@ -84,10 +86,16 @@ public final class FailureMetadata {
 
     @Nullable final Function<String, String> descriptionUpdate;
 
+    // Present only when descriptionUpdate is.
+    @Nullable final OldAndNewValuesAreSimilar valuesAreSimilar;
+
     private Step(
-        @Nullable Subject<?, ?> subject, @Nullable Function<String, String> descriptionUpdate) {
+        @Nullable Subject<?, ?> subject,
+        @Nullable Function<String, String> descriptionUpdate,
+        @Nullable OldAndNewValuesAreSimilar valuesAreSimilar) {
       this.subject = subject;
       this.descriptionUpdate = descriptionUpdate;
+      this.valuesAreSimilar = valuesAreSimilar;
     }
 
     boolean isCheckCall() {
@@ -126,14 +134,28 @@ public final class FailureMetadata {
   }
 
   FailureMetadata updateForCheckCall() {
-    ImmutableList<Step> steps = append(this.steps, Step.checkCall(null));
+    ImmutableList<Step> steps = append(this.steps, Step.checkCall(null, null));
     return derive(messages, steps);
   }
 
-  FailureMetadata updateForCheckCall(Function<String, String> descriptionUpdate) {
+  FailureMetadata updateForCheckCall(
+      OldAndNewValuesAreSimilar valuesAreSimilar, Function<String, String> descriptionUpdate) {
     checkNotNull(descriptionUpdate);
-    ImmutableList<Step> steps = append(this.steps, Step.checkCall(descriptionUpdate));
+    ImmutableList<Step> steps =
+        append(this.steps, Step.checkCall(valuesAreSimilar, descriptionUpdate));
     return derive(messages, steps);
+  }
+
+  /**
+   * Whether the value of the original subject and the value of the derived subject are "similar
+   * enough" that we don't need to display both. For example, if we're printing a message about the
+   * value of optional.get(), there's no need to print the optional itself because it adds no
+   * information. Similarly, if we're printing a message about the asList() view of an array,
+   * there's no need to also print the array.
+   */
+  enum OldAndNewValuesAreSimilar {
+    SIMILAR,
+    DIFFERENT;
   }
 
   /**
@@ -281,18 +303,27 @@ public final class FailureMetadata {
    * "internal" chaining, like when StreamSubject internally creates an IterableSubject to delegate
    * to. The two subjects' string representations will be identical (or, in some cases, _almost_
    * identical), so there is no value in showing both. In such cases, implementations can call the
-   * no-arg {@code check()}, which instructs this method that that particular chain link "doesn't
-   * count." (Note that plenty code calls the no-arg {@code check} even for "real" chaining, since
-   * the {@code check} overload that accepts a name didn't use to exist. Note also that there are
-   * some edge cases that we're not sure how to handle yet, for which we might introduce additional
-   * {@code check}-like methods someday.)
+   * no-arg {@code checkNoNeedToDisplayBothValues()}, which sets {@code valuesAreSimilar},
+   * instructing this method that that particular chain link "doesn't count." (Note also that there
+   * are some edge cases that we're not sure how to handle yet, for which we might introduce
+   * additional {@code check}-like methods someday.)
    */
   private Optional<Field> rootUnlessThrowable() {
     Step rootSubject = null;
     boolean seenDerivation = false;
     for (Step step : steps) {
       if (step.isCheckCall()) {
-        seenDerivation |= step.descriptionUpdate != null;
+        /*
+         * If we don't have a description update, don't trigger display of a root object. (If we
+         * did, we'd change the messages of a bunch of existing subjects, and we don't want to bite
+         * that off yet.)
+         *
+         * If we do have a description update, then trigger display of a root object but only if the
+         * old and new values are "different enough" to be worth both displaying.
+         */
+        seenDerivation |=
+            step.descriptionUpdate != null
+                && step.valuesAreSimilar == OldAndNewValuesAreSimilar.DIFFERENT;
         continue;
       }
 

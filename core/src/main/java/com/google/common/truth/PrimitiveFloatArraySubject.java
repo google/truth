@@ -515,9 +515,9 @@ public final class PrimitiveFloatArraySubject
   }
 
   private IterableSubject iterableSubject() {
-    IterableSubject result =
-        check().about(iterablesWithCustomFloatToString()).that(Floats.asList(actual()));
-    return internalCustomName() != null ? result.named(internalCustomName()) : result;
+    return checkNoNeedToDisplayBothValues("asList()")
+        .about(iterablesWithCustomFloatToString())
+        .that(Floats.asList(actual()));
   }
 
   /*

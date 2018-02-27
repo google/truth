@@ -24,6 +24,7 @@ import static com.google.common.truth.SubjectUtils.accumulate;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
+import com.google.common.truth.FailureMetadata.OldAndNewValuesAreSimilar;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CompatibleWith;
 import com.google.errorprone.annotations.ForOverride;
@@ -402,20 +403,28 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param args the arguments to be inserted into those placeholders
    */
   protected final StandardSubjectBuilder check(String format, Object... args) {
+    return doCheck(OldAndNewValuesAreSimilar.DIFFERENT, format, args);
+  }
+
+  // TODO(cpovirk): Figure out a public API for this.
+
+  final StandardSubjectBuilder checkNoNeedToDisplayBothValues(String format, Object... args) {
+    return doCheck(OldAndNewValuesAreSimilar.SIMILAR, format, args);
+  }
+
+  private StandardSubjectBuilder doCheck(
+      OldAndNewValuesAreSimilar valuesAreSimilar, String format, Object[] args) {
     checkNotNull(format); // Probably LazyMessage itself should be this strict, but it isn't yet.
     final LazyMessage message = new LazyMessage(format, args);
-    return check(
+    Function<String, String> descriptionUpdate =
         new Function<String, String>() {
           @Override
           public String apply(String input) {
             return input + "." + message;
           }
-        });
-  }
-
-  // We could consider exposing this someday for people with advanced needs.
-  private final StandardSubjectBuilder check(Function<String, String> descriptionUpdate) {
-    return new StandardSubjectBuilder(metadata.updateForCheckCall(descriptionUpdate));
+        };
+    return new StandardSubjectBuilder(
+        metadata.updateForCheckCall(valuesAreSimilar, descriptionUpdate));
   }
 
   /**

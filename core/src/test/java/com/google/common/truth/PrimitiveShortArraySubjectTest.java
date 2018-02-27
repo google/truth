@@ -52,7 +52,8 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1, 1, 0]> contains all of <[1, 0]>. It is missing "
+            "value of: array.asList(): Not true that <[1, 1, 0]> "
+                + "contains all of <[1, 0]>. It is missing "
                 + "<[1, 0] (java.lang.Integer)>. However, it does contain "
                 + "<[1 [2 copies], 0] (java.lang.Short)>.");
   }
