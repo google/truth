@@ -454,6 +454,18 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void isEqualToNullBadEqualsImplementation() {
+    expectFailure.whenTesting().that(new ThrowsOnEqualsNull()).isEqualTo(null);
+  }
+
+  @SuppressWarnings("TruthSelfEquals")
+  @Test
+  public void isEqualToSameInstanceBadEqualsImplementation() {
+    Object o = new ThrowsOnEquals();
+    assertThat(o).isEqualTo(o);
+  }
+
+  @Test
   public void isNotEqualToWithNulls() {
     Object o = null;
     assertThat(o).isNotEqualTo("a");
@@ -516,6 +528,18 @@ public class SubjectTest extends BaseSubjectTestCase {
     Object a = "true";
     Object b = true;
     assertThat(a).isNotEqualTo(b);
+  }
+
+  @Test
+  public void isNotEqualToNullBadEqualsImplementation() {
+    assertThat(new ThrowsOnEqualsNull()).isNotEqualTo(null);
+  }
+
+  @SuppressWarnings("TruthSelfEquals")
+  @Test
+  public void isNotEqualToSameInstanceBadEqualsImplementation() {
+    Object o = new ThrowsOnEquals();
+    expectFailure.whenTesting().that(o).isNotEqualTo(o);
   }
 
   @Test
@@ -864,6 +888,14 @@ public class SubjectTest extends BaseSubjectTestCase {
     public boolean equals(Object obj) {
       checkNotNull(obj); // buggy implementation but one that we're working around, at least for now
       return super.equals(obj);
+    }
+  }
+
+  private static final class ThrowsOnEquals {
+    @Override
+    public boolean equals(Object obj) {
+      throw new UnsupportedOperationException();
+      // buggy implementation but one that we're working around, at least for now
     }
   }
 }

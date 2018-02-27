@@ -172,14 +172,19 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   private boolean actualEquals(@Nullable Object expected) {
-    if (isIntegralBoxedPrimitive(actual()) && isIntegralBoxedPrimitive(expected)) {
-      return Objects.equal(integralValue(actual()), integralValue(expected));
+    // TODO(cpovirk): Move array handling from subclasses into this method.
+    if (actual() == null && expected == null) {
+      return true;
+    } else if (actual() == null || expected == null) {
+      return false;
+    } else if (isIntegralBoxedPrimitive(actual()) && isIntegralBoxedPrimitive(expected)) {
+      return integralValue(actual()) == integralValue(expected);
     } else if (actual() instanceof Double && expected instanceof Double) {
       return Double.compare((Double) actual(), (Double) expected) == 0;
     } else if (actual() instanceof Float && expected instanceof Float) {
       return Float.compare((Float) actual(), (Float) expected) == 0;
     } else {
-      return Objects.equal(actual(), expected);
+      return actual() == expected || actual().equals(expected);
     }
   }
 
@@ -191,7 +196,7 @@ public class Subject<S extends Subject<S, T>, T> {
         || o instanceof Long;
   }
 
-  private static Long integralValue(Object o) {
+  private static long integralValue(Object o) {
     if (o instanceof Character) {
       return (long) ((Character) o).charValue();
     } else if (o instanceof Number) {
