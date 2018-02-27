@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.TestPlatform.isGwt;
+import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -36,12 +37,14 @@ import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterators;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.testing.NullPointerTester;
+import com.google.common.truth.Subject.Factory;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import javax.annotation.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -327,6 +330,16 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void isNullWhenSubjectForbidsIsEqualTo() {
+    assertAbout(objectsForbiddingEqualityCheck()).that(null).isNull();
+  }
+
+  @Test
+  public void isNullWhenSubjectForbidsIsEqualToFail() {
+    expectFailure.whenTesting().about(objectsForbiddingEqualityCheck()).that(new Object()).isNull();
+  }
+
+  @Test
   public void stringIsNullFail() {
     expectFailure.whenTesting().that("foo").isNull();
     assertThat(expectFailure.getFailure())
@@ -357,6 +370,16 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotNullBadEqualsImplementation() {
     assertThat(new ThrowsOnEqualsNull()).isNotNull();
+  }
+
+  @Test
+  public void isNotNullWhenSubjectForbidsIsEqualTo() {
+    assertAbout(objectsForbiddingEqualityCheck()).that(new Object()).isNotNull();
+  }
+
+  @Test
+  public void isNotNullWhenSubjectForbidsIsEqualToFail() {
+    expectFailure.whenTesting().about(objectsForbiddingEqualityCheck()).that(null).isNotNull();
   }
 
   @Test
@@ -897,5 +920,34 @@ public class SubjectTest extends BaseSubjectTestCase {
       throw new UnsupportedOperationException();
       // buggy implementation but one that we're working around, at least for now
     }
+  }
+
+  private static final class ForbidsEqualityChecksSubject
+      extends Subject<ForbidsEqualityChecksSubject, Object> {
+    ForbidsEqualityChecksSubject(FailureMetadata metadata, @Nullable Object actual) {
+      super(metadata, actual);
+    }
+
+    // Not sure how to feel about this, but people do it:
+
+    @Override
+    public void isEqualTo(@Nullable Object expected) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void isNotEqualTo(@Nullable Object unexpected) {
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  private static Subject.Factory<ForbidsEqualityChecksSubject, Object>
+      objectsForbiddingEqualityCheck() {
+    return new Factory<ForbidsEqualityChecksSubject, Object>() {
+      @Override
+      public ForbidsEqualityChecksSubject createSubject(FailureMetadata metadata, Object actual) {
+        return new ForbidsEqualityChecksSubject(metadata, actual);
+      }
+    };
   }
 }
