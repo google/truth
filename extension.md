@@ -220,7 +220,7 @@ There are four parts to the example:
 
         ```java
         public StringSubject name() {
-          return check().that(actual.name());
+          return check().that(actual().name());
         }
         ```
 
