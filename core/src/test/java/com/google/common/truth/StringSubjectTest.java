@@ -182,6 +182,15 @@ public class StringSubjectTest extends BaseSubjectTestCase {
         .isEqualTo("Not true that foo (<null>) is equal to <\"abd\">");
   }
 
+  @GwtIncompatible // ComparisonFailure-style message
+  @Test
+  public void stringEqualityFailMultiline() {
+    expectFailure.whenTesting().that("abc\ndef\nxyz").isEqualTo("aaa\nqqq\nzzz");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("expected:<a[aa\nqqq\nzz]z> but was:<a[bc\ndef\nxy]z>");
+  }
+
   @Test
   public void stringStartsWith() {
     assertThat("abc").startsWith("ab");
