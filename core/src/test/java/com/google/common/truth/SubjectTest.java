@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.TestPlatform.isGwt;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
@@ -334,6 +335,11 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void isNullBadEqualsImplementation() {
+    expectFailure.whenTesting().that(new ThrowsOnEqualsNull()).isNull();
+  }
+
+  @Test
   public void isNotNull() {
     Object o = new Object();
     assertThat(o).isNotNull();
@@ -346,6 +352,11 @@ public class SubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that the subject is a non-null reference");
+  }
+
+  @Test
+  public void isNotNullBadEqualsImplementation() {
+    assertThat(new ThrowsOnEqualsNull()).isNotNull();
   }
 
   @Test
@@ -846,5 +857,13 @@ public class SubjectTest extends BaseSubjectTestCase {
         .isEqualTo(
             "Not true that <[1, 2, 3]> is equal to <[1, 2, 3]> "
                 + "(although their toString() representations are the same)");
+  }
+
+  private static final class ThrowsOnEqualsNull {
+    @Override
+    public boolean equals(Object obj) {
+      checkNotNull(obj); // buggy implementation but one that we're working around, at least for now
+      return super.equals(obj);
+    }
   }
 }
