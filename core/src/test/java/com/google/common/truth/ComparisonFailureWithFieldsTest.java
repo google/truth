@@ -20,6 +20,8 @@ import static com.google.common.base.Strings.repeat;
 import static com.google.common.truth.ComparisonFailureWithFields.formatExpectedAndActual;
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.annotations.GwtIncompatible;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,6 +82,15 @@ public class ComparisonFailureWithFieldsTest {
   }
 
   @Test
+  public void formatLongOverlapBothDifferentLength() {
+    runFormatTest(
+        repeat("r", 40) + "aaaaa" + repeat("g", 40),
+        repeat("r", 40) + "u" + repeat("g", 40),
+        "…rrrrraaaaaggggg…",
+        "…rrrrruggggg…");
+  }
+
+  @Test
   public void formatNoSplitSurrogateStart() {
     runFormatTest(
         repeat("b", 100) + "\uD8AB\uDCABbbbbaa",
@@ -97,6 +108,57 @@ public class ComparisonFailureWithFieldsTest {
         "furrrr\uD8AB\uDCAB…");
   }
 
+  @GwtIncompatible
+  @Test
+  public void formatDiffOmitStart() {
+    runFormatTest(
+        repeat("a\n", 100) + "b",
+        repeat("a\n", 100) + "c",
+        Joiner.on('\n').join(" ⋮", " a", " a", " a", "-b", "+c"));
+  }
+
+  @GwtIncompatible
+  @Test
+  public void formatDiffOmitEnd() {
+    runFormatTest(
+        "a" + repeat("\nz", 100),
+        "b" + repeat("\nz", 100),
+        Joiner.on('\n').join("-a", "+b", " z", " z", " z", " ⋮"));
+  }
+
+  @GwtIncompatible
+  @Test
+  public void formatDiffOmitBoth() {
+    runFormatTest(
+        repeat("a\n", 100) + "m" + repeat("\nz", 100),
+        repeat("a\n", 100) + "n" + repeat("\nz", 100),
+        Joiner.on('\n').join(" ⋮", " a", " a", " a", "-m", "+n", " z", " z", " z", " ⋮"));
+  }
+
+  @GwtIncompatible
+  @Test
+  public void formatDiffOmitBothMultipleDifferingLines() {
+    runFormatTest(
+        repeat("a\n", 100) + "m\nn\no\np" + repeat("\nz", 100),
+        repeat("a\n", 100) + "q\nr\ns\nt" + repeat("\nz", 100),
+        Joiner.on('\n')
+            .join(
+                " ⋮", " a", " a", " a", "-m", "-n", "-o", "-p", "+q", "+r", "+s", "+t", " z", " z",
+                " z", " ⋮"));
+  }
+
+  @GwtIncompatible
+  @Test
+  public void formatDiffOmitBothMultipleDifferingLinesDifferentLength() {
+    runFormatTest(
+        repeat("a\n", 100) + "m\nn\no\np" + repeat("\nz", 100),
+        repeat("a\n", 100) + "q\nr\ns\nt\nu\nv" + repeat("\nz", 100),
+        Joiner.on('\n')
+            .join(
+                " ⋮", " a", " a", " a", "-m", "-n", "-o", "-p", "+q", "+r", "+s", "+t", "+u", "+v",
+                " z", " z", " z", " ⋮"));
+  }
+
   private static void runFormatTest(
       String expected, String actual, String expectedExpected, String expectedActual) {
     ImmutableList<Field> fields = formatExpectedAndActual(expected, actual);
@@ -105,5 +167,13 @@ public class ComparisonFailureWithFieldsTest {
     assertThat(fields.get(1).key).isEqualTo("but was");
     assertThat(fields.get(0).value).isEqualTo(expectedExpected);
     assertThat(fields.get(1).value).isEqualTo(expectedActual);
+  }
+
+  @GwtIncompatible
+  private static void runFormatTest(String expected, String actual, String expectedDiff) {
+    ImmutableList<Field> fields = formatExpectedAndActual(expected, actual);
+    assertThat(fields).hasSize(1);
+    assertThat(fields.get(0).key).isEqualTo("diff");
+    assertThat(fields.get(0).value).isEqualTo(expectedDiff);
   }
 }

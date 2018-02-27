@@ -22,6 +22,8 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
+import com.google.common.collect.ImmutableList;
+import javax.annotation.Nullable;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
@@ -119,6 +121,18 @@ final class Platform {
   /** Always returns false. Stack traces will be cleaned by default. */
   static boolean isStackTraceCleaningDisabled() {
     return false;
+  }
+
+  @Nullable
+  static ImmutableList<Field> makeDiff(String expected, String actual) {
+    /*
+     * IIUC, GWT messages lose their newlines by the time users see them. Given that, users are
+     * likely better served by showing the expected and actual values with mangled newlines than by
+     * showing a diff with mangled newlines (which would look similar but with + and - inserted into
+     * it). Hopefully no one under GWT has long, nearly identical messages. In any case, they've
+     * always been stuck like this.
+     */
+    return null;
   }
 
   static String doubleToString(double value) {
