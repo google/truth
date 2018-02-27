@@ -27,8 +27,9 @@ import javax.annotation.Nullable;
  */
 public final class PrimitiveByteArraySubject
     extends AbstractArraySubject<PrimitiveByteArraySubject, byte[]> {
-  PrimitiveByteArraySubject(FailureMetadata metadata, @Nullable byte[] o) {
-    super(metadata, o);
+  PrimitiveByteArraySubject(
+      FailureMetadata metadata, @Nullable byte[] o, @Nullable String typeDescription) {
+    super(metadata, o, typeDescription);
   }
 
   @Override

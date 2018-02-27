@@ -24,8 +24,11 @@ import javax.annotation.Nullable;
  * @author Ben Douglass
  */
 public final class OptionalLongSubject extends Subject<OptionalLongSubject, OptionalLong> {
-  OptionalLongSubject(FailureMetadata failureMetadata, @Nullable OptionalLong subject) {
-    super(failureMetadata, subject);
+  OptionalLongSubject(
+      FailureMetadata failureMetadata,
+      @Nullable OptionalLong subject,
+      @Nullable String typeDescription) {
+    super(failureMetadata, subject, typeDescription);
   }
 
   /** Fails if the {@link OptionalLong} is empty or the subject is null. */
@@ -71,6 +74,6 @@ public final class OptionalLongSubject extends Subject<OptionalLongSubject, Opti
   }
 
   public static Subject.Factory<OptionalLongSubject, OptionalLong> optionalLongs() {
-    return OptionalLongSubject::new;
+    return (metadata, subject) -> new OptionalLongSubject(metadata, subject, "optionalLong");
   }
 }

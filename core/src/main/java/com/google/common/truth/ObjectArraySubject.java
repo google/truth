@@ -42,8 +42,8 @@ public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArra
   private final String typeName;
   private final int numberOfDimensions;
 
-  ObjectArraySubject(FailureMetadata metadata, @Nullable T[] o) {
-    super(metadata, o);
+  ObjectArraySubject(FailureMetadata metadata, @Nullable T[] o, @Nullable String typeDescription) {
+    super(metadata, o, typeDescription);
     typeName = typeNameFromInstance(o);
     numberOfDimensions = numberOfDimensions(o);
   }
