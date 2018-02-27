@@ -24,8 +24,11 @@ import javax.annotation.Nullable;
  * @author Ben Douglass
  */
 public final class OptionalIntSubject extends Subject<OptionalIntSubject, OptionalInt> {
-  OptionalIntSubject(FailureMetadata failureMetadata, @Nullable OptionalInt subject) {
-    super(failureMetadata, subject);
+  OptionalIntSubject(
+      FailureMetadata failureMetadata,
+      @Nullable OptionalInt subject,
+      @Nullable String typeDescription) {
+    super(failureMetadata, subject, typeDescription);
   }
 
   /** Fails if the {@link OptionalInt} is empty or the subject is null. */
@@ -71,6 +74,6 @@ public final class OptionalIntSubject extends Subject<OptionalIntSubject, Option
   }
 
   public static Subject.Factory<OptionalIntSubject, OptionalInt> optionalInts() {
-    return OptionalIntSubject::new;
+    return (metadata, subject) -> new OptionalIntSubject(metadata, subject, "optionalInt");
   }
 }

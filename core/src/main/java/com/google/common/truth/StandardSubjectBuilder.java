@@ -124,39 +124,39 @@ public class StandardSubjectBuilder {
   }
 
   public final <T> ObjectArraySubject<T> that(@Nullable T[] actual) {
-    return new ObjectArraySubject<>(metadata(), actual);
+    return new ObjectArraySubject<>(metadata(), actual, "array");
   }
 
   public final PrimitiveBooleanArraySubject that(@Nullable boolean[] actual) {
-    return new PrimitiveBooleanArraySubject(metadata(), actual);
+    return new PrimitiveBooleanArraySubject(metadata(), actual, "array");
   }
 
   public final PrimitiveShortArraySubject that(@Nullable short[] actual) {
-    return new PrimitiveShortArraySubject(metadata(), actual);
+    return new PrimitiveShortArraySubject(metadata(), actual, "array");
   }
 
   public final PrimitiveIntArraySubject that(@Nullable int[] actual) {
-    return new PrimitiveIntArraySubject(metadata(), actual);
+    return new PrimitiveIntArraySubject(metadata(), actual, "array");
   }
 
   public final PrimitiveLongArraySubject that(@Nullable long[] actual) {
-    return new PrimitiveLongArraySubject(metadata(), actual);
+    return new PrimitiveLongArraySubject(metadata(), actual, "array");
   }
 
   public final PrimitiveCharArraySubject that(@Nullable char[] actual) {
-    return new PrimitiveCharArraySubject(metadata(), actual);
+    return new PrimitiveCharArraySubject(metadata(), actual, "array");
   }
 
   public final PrimitiveByteArraySubject that(@Nullable byte[] actual) {
-    return new PrimitiveByteArraySubject(metadata(), actual);
+    return new PrimitiveByteArraySubject(metadata(), actual, "array");
   }
 
   public final PrimitiveFloatArraySubject that(@Nullable float[] actual) {
-    return new PrimitiveFloatArraySubject(metadata(), actual);
+    return new PrimitiveFloatArraySubject(metadata(), actual, "array");
   }
 
   public final PrimitiveDoubleArraySubject that(@Nullable double[] actual) {
-    return new PrimitiveDoubleArraySubject(metadata(), actual);
+    return new PrimitiveDoubleArraySubject(metadata(), actual, "array");
   }
 
   public final GuavaOptionalSubject that(@Nullable Optional<?> actual) {
