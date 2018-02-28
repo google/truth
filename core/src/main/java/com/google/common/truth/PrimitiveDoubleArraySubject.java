@@ -95,50 +95,6 @@ public final class PrimitiveDoubleArraySubject
   }
 
   /**
-   * A check that the actual array and {@code expected} are arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is within {@code tolerance} of
-   * each element in the subject, and in the same position.
-   *
-   * <p>Behaviour for non-finite values ({@link Double#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
-   * Double#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Double#NaN NaN}) is as follows: If the
-   * subject and the object of the assertion are the same array, the test will pass. If not
-   * (including if one is a clone of the other) then non-finite values are considered not equal so
-   * the any non-finite value in either argument will cause the test to fail.
-   *
-   * @deprecated use {@code usingTolerance(someTolerance).containsExactly(someValues).inOrder()},
-   *     noting the different behaviour for non-finite values
-   */
-  @Deprecated
-  public void isEqualTo(Object expected, double tolerance) {
-    double[] actual = actual();
-    if (actual == expected) {
-      return; // short-cut.
-    }
-    try {
-      double[] expectedArray = (double[]) expected;
-      if (expectedArray.length != actual.length) {
-        failWithRawMessage(
-            "Arrays are of different lengths. expected: %s, actual %s",
-            doubleArrayAsString(expectedArray), doubleArrayAsString(actual));
-        return;
-      }
-      List<Integer> unequalIndices = new ArrayList<>();
-      for (int i = 0; i < expectedArray.length; i++) {
-        if (!equalWithinTolerance(actual[i], expectedArray[i], tolerance)) {
-          unequalIndices.add(i);
-        }
-      }
-
-      if (!unequalIndices.isEmpty()) {
-        fail("is equal to", doubleArrayAsString(expectedArray));
-        return;
-      }
-    } catch (ClassCastException e) {
-      failWithBadType(expected);
-    }
-  }
-
-  /**
    * A check that the actual array and {@code expected} are not arrays of the same length and type,
    * containing elements such that each element in {@code expected} is equal to each element in the
    * actual array, and in the same position, with element equality defined the same way that {@link
@@ -163,49 +119,6 @@ public final class PrimitiveDoubleArraySubject
       }
     } catch (ClassCastException ignored) {
       // If it's not double[] then it's not equal and the test passes.
-    }
-  }
-
-  /**
-   * A check that the actual array and {@code expected} are not arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is within {@code tolerance} of
-   * each element in the subject, and in the same position.
-   *
-   * <p>Behaviour for non-finite values ({@link Double#POSITIVE_INFINITY POSITIVE_INFINITY}, {@link
-   * Double#NEGATIVE_INFINITY NEGATIVE_INFINITY}, and {@link Double#NaN NaN}) is as follows: If the
-   * subject and the object of the assertion are the same array, the test will fail. If not
-   * (including if one is a clone of the other) then non-finite values are considered not equal so
-   * the any non-finite value in either argument will cause the test to pass.
-   *
-   * @deprecated Write a for loop over the values looking for mismatches (see this implementation
-   *     for an example)
-   */
-  @Deprecated
-  public void isNotEqualTo(Object expectedArray, double tolerance) {
-    double[] actual = actual();
-    try {
-      double[] expected = (double[]) expectedArray;
-      if (actual == expected) {
-        failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), doubleArrayAsString(expected));
-        return;
-      }
-      if (expected.length != actual.length) {
-        return; // Unequal-lengthed arrays are not equal.
-      }
-      List<Integer> unequalIndices = new ArrayList<>();
-      for (int i = 0; i < expected.length; i++) {
-        if (!equalWithinTolerance(actual[i], expected[i], tolerance)) {
-          unequalIndices.add(i);
-        }
-      }
-      if (unequalIndices.isEmpty()) {
-        failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), doubleArrayAsString(expected));
-        return;
-      }
-    } catch (ClassCastException ignored) {
-      // Unequal since they are of different types.
     }
   }
 
