@@ -148,7 +148,7 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
     return ImmutableList.of(field("expected", expected), field("but was", actual));
   }
 
-  private static final int CONTEXT = 5;
+  private static final int CONTEXT = 20;
   private static final int WORTH_HIDING = 60;
 
   // From c.g.c.base.Strings.
