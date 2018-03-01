@@ -109,6 +109,8 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
 
   @Nullable
   private static ImmutableList<Field> removeCommonPrefixAndSuffix(String expected, String actual) {
+    int originalExpectedLength = expected.length();
+
     // TODO(cpovirk): Use something like BreakIterator where available.
     /*
      * TODO(cpovirk): If the abbreviated values contain newlines, maybe expand them to contain a
@@ -122,9 +124,10 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
     while (prefix > 0 && validSurrogatePairAt(expected, prefix - 1)) {
       prefix--;
     }
-    if (prefix <= 3) {
-      // If the common prefix is short, then we might as well just show it.
-      prefix = 0;
+    // No need to hide the prefix unless it's long.
+    if (prefix > 3) {
+      expected = "…" + expected.substring(prefix);
+      actual = "…" + actual.substring(prefix);
     }
 
     int suffix = commonSuffix(expected, actual).length();
@@ -132,30 +135,21 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
     while (suffix > 0 && validSurrogatePairAt(expected, expected.length() - suffix - 1)) {
       suffix--;
     }
-    if (suffix <= 3) {
-      // If the common suffix is short, then we might as well just show it.
-      suffix = 0;
+    // No need to hide the suffix unless it's long.
+    if (suffix > 3) {
+      expected = expected.substring(0, expected.length() - suffix) + "…";
+      actual = actual.substring(0, actual.length() - suffix) + "…";
     }
 
-    if (prefix + suffix < WORTH_HIDING) {
+    if (originalExpectedLength - expected.length() < WORTH_HIDING) {
       return null;
     }
 
-    return ImmutableList.of(
-        field("expected", hidePrefixAndSuffix(expected, prefix, suffix)),
-        field("but was", hidePrefixAndSuffix(actual, prefix, suffix)));
+    return ImmutableList.of(field("expected", expected), field("but was", actual));
   }
 
   private static final int CONTEXT = 5;
   private static final int WORTH_HIDING = 60;
-
-  private static String hidePrefixAndSuffix(String s, int prefix, int suffix) {
-    return maybeDots(prefix) + s.substring(prefix, s.length() - suffix) + maybeDots(suffix);
-  }
-
-  private static String maybeDots(int prefixOrSuffix) {
-    return prefixOrSuffix > 0 ? "…" : "";
-  }
 
   // From c.g.c.base.Strings.
   private static boolean validSurrogatePairAt(CharSequence string, int index) {
