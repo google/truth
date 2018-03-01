@@ -46,12 +46,20 @@ public class ComparisonFailureWithFieldsTest {
 
   @Test
   public void formatLongOverlapStart() {
-    runFormatTest(repeat("b", 100) + "aa", repeat("b", 100) + "oo", "…bbbbbaa", "…bbbbboo");
+    runFormatTest(
+        repeat("b", 100) + "aa",
+        repeat("b", 100) + "oo",
+        "…" + repeat("b", 20) + "aa",
+        "…" + repeat("b", 20) + "oo");
   }
 
   @Test
   public void formatLongOverlapEnd() {
-    runFormatTest("ba" + repeat("r", 100), "fu" + repeat("r", 100), "barrrrr…", "furrrrr…");
+    runFormatTest(
+        "ba" + repeat("r", 100),
+        "fu" + repeat("r", 100),
+        "ba" + repeat("r", 20) + "…",
+        "fu" + repeat("r", 20) + "…");
   }
 
   @Test
@@ -59,8 +67,8 @@ public class ComparisonFailureWithFieldsTest {
     runFormatTest(
         repeat("b", 100) + "aa" + repeat("t", 7),
         repeat("b", 100) + "oo" + repeat("t", 7),
-        "…bbbbbaattttttt",
-        "…bbbbboottttttt");
+        "…" + repeat("b", 20) + "aattttttt",
+        "…" + repeat("b", 20) + "oottttttt");
   }
 
   @Test
@@ -68,26 +76,26 @@ public class ComparisonFailureWithFieldsTest {
     runFormatTest(
         repeat("a", 7) + "ba" + repeat("r", 100),
         repeat("a", 7) + "fu" + repeat("r", 100),
-        "aaaaaaabarrrrr…",
-        "aaaaaaafurrrrr…");
+        "aaaaaaaba" + repeat("r", 20) + "…",
+        "aaaaaaafu" + repeat("r", 20) + "…");
   }
 
   @Test
   public void formatLongOverlapBoth() {
     runFormatTest(
-        repeat("r", 40) + "a" + repeat("g", 40),
-        repeat("r", 40) + "u" + repeat("g", 40),
-        "…rrrrraggggg…",
-        "…rrrrruggggg…");
+        repeat("r", 60) + "a" + repeat("g", 60),
+        repeat("r", 60) + "u" + repeat("g", 60),
+        "…" + repeat("r", 20) + "a" + repeat("g", 20) + "…",
+        "…" + repeat("r", 20) + "u" + repeat("g", 20) + "…");
   }
 
   @Test
   public void formatLongOverlapBothDifferentLength() {
     runFormatTest(
-        repeat("r", 40) + "aaaaa" + repeat("g", 40),
-        repeat("r", 40) + "u" + repeat("g", 40),
-        "…rrrrraaaaaggggg…",
-        "…rrrrruggggg…");
+        repeat("r", 60) + "aaaaa" + repeat("g", 60),
+        repeat("r", 60) + "u" + repeat("g", 60),
+        "…" + repeat("r", 20) + "aaaaa" + repeat("g", 20) + "…",
+        "…" + repeat("r", 20) + "u" + repeat("g", 20) + "…");
   }
 
   @Test
@@ -95,31 +103,31 @@ public class ComparisonFailureWithFieldsTest {
     runFormatTest(
         repeat("a", 40) + "lmnopqrstuv" + repeat("a", 40),
         repeat("a", 40) + "lmnopqrstuvlmnopqrstuv" + repeat("a", 40),
-        "…rstuv…",
-        "…rstuvlmnopqrstuv…");
+        "…aaaaaaaaalmnopqrstuvaaaaaaaaa…",
+        "…aaaaaaaaalmnopqrstuvlmnopqrstuvaaaaaaaaa…");
   }
 
   @Test
   public void prefixAndSuffixWouldOverlapAllSame() {
-    runFormatTest(repeat("a", 80), repeat("a", 82), "…aaaaa", "…aaaaaaa");
+    runFormatTest(repeat("a", 100), repeat("a", 102), "…" + repeat("a", 20), "…" + repeat("a", 22));
   }
 
   @Test
   public void formatNoSplitSurrogateStart() {
     runFormatTest(
-        repeat("b", 100) + "\uD8AB\uDCABbbbbaa",
-        repeat("b", 100) + "\uD8AB\uDCABbbbboo",
-        "…\uD8AB\uDCABbbbbaa",
-        "…\uD8AB\uDCABbbbboo");
+        repeat("b", 100) + "\uD8AB\uDCAB" + repeat("b", 19) + "aa",
+        repeat("b", 100) + "\uD8AB\uDCAB" + repeat("b", 19) + "oo",
+        "…\uD8AB\uDCAB" + repeat("b", 19) + "aa",
+        "…\uD8AB\uDCAB" + repeat("b", 19) + "oo");
   }
 
   @Test
   public void formatNoSplitSurrogateEnd() {
     runFormatTest(
-        "barrrr\uD8AB\uDCAB" + repeat("r", 100),
-        "furrrr\uD8AB\uDCAB" + repeat("r", 100),
-        "barrrr\uD8AB\uDCAB…",
-        "furrrr\uD8AB\uDCAB…");
+        "ba" + repeat("r", 19) + "\uD8AB\uDCAB" + repeat("r", 100),
+        "fu" + repeat("r", 19) + "\uD8AB\uDCAB" + repeat("r", 100),
+        "ba" + repeat("r", 19) + "\uD8AB\uDCAB…",
+        "fu" + repeat("r", 19) + "\uD8AB\uDCAB…");
   }
 
   @GwtIncompatible
