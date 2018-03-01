@@ -16,13 +16,11 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Objects.equal;
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.reverse;
 import static com.google.common.collect.Lists.transform;
 import static com.google.common.truth.Field.field;
 import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
 import static com.google.common.truth.Truth.appendSuffixIfNotNull;
-import static java.util.Collections.unmodifiableList;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -102,18 +100,26 @@ final class Platform {
   static ImmutableList<Field> makeDiff(String expected, String actual) {
     // For now, we just hide a common prefix or suffix. TODO(cpovirk): Add real diffing.
 
-    List<String> expectedLines = splitLines(expected);
-    List<String> actualLines = splitLines(actual);
+    ImmutableList<String> expectedLines = splitLines(expected);
+    ImmutableList<String> actualLines = splitLines(actual);
+    ImmutableList<String> originalExpectedLines = expectedLines;
+    ImmutableList<String> originalActualLines = actualLines;
 
     int prefix = commonPrefix(expectedLines, actualLines);
-    if (prefix <= CONTEXT + 1) {
-      // If the common prefix is short, then we might as well just show it.
+    // No need to hide the prefix unless it's long.
+    if (prefix > CONTEXT + 1) {
+      // Truncate expectedLines and actualLines so that the suffix doesn't extend into them.
+      expectedLines = expectedLines.subList(prefix, expectedLines.size());
+      actualLines = actualLines.subList(prefix, actualLines.size());
+    } else {
       prefix = 0;
     }
 
     int suffix = commonSuffix(expectedLines, actualLines);
-    if (suffix <= CONTEXT + 1) {
-      // If the common suffix is short, then we might as well just show it.
+    // No need to hide the suffix unless it's long.
+    if (suffix > CONTEXT + 1) {
+      // No need to update expectedLines and actualLines further; we don't read them again.
+    } else {
       suffix = 0;
     }
 
@@ -121,7 +127,8 @@ final class Platform {
       return null;
     }
 
-    return ImmutableList.of(field("diff", hideLines(expectedLines, actualLines, prefix, suffix)));
+    return ImmutableList.of(
+        field("diff", hideLines(originalExpectedLines, originalActualLines, prefix, suffix)));
   }
 
   private static String hideLines(
@@ -175,9 +182,9 @@ final class Platform {
         });
   }
 
-  private static List<String> splitLines(String s) {
+  private static ImmutableList<String> splitLines(String s) {
     // splitToList is @Beta, so we avoid it.
-    return unmodifiableList(newArrayList(Splitter.onPattern("\r?\n").split(s)));
+    return ImmutableList.copyOf(Splitter.onPattern("\r?\n").split(s));
   }
 
   private static int commonPrefix(List<?> a, List<?> b) {
