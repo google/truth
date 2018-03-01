@@ -173,6 +173,25 @@ public class ComparisonFailureWithFieldsTest {
                 " z", " z", " z", " ⋮"));
   }
 
+  @GwtIncompatible
+  @Test
+  public void formatDiffPrefixAndSuffixWouldOverlapSimple() {
+    runFormatTest(
+        repeat("a\n", 40) + "l\nm\nn\no\np\n" + repeat("a\n", 40),
+        repeat("a\n", 40) + "l\nm\nn\no\np\nl\nm\nn\no\np\n" + repeat("a\n", 40),
+        Joiner.on('\n')
+            .join(" ⋮", " n", " o", " p", "+l", "+m", "+n", "+o", "+p", " a", " a", " a", " ⋮"));
+  }
+
+  @GwtIncompatible
+  @Test
+  public void formatDiffPrefixAndSuffixWouldOverlapAllSame() {
+    runFormatTest(
+        repeat("a\n", 80),
+        repeat("a\n", 82),
+        Joiner.on('\n').join(" ⋮", " a", " a", " a", "-", "+a", "+a", "+"));
+  }
+
   private static void runFormatTest(
       String expected, String actual, String expectedExpected, String expectedActual) {
     ImmutableList<Field> fields = formatExpectedAndActual(expected, actual);
