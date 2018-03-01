@@ -91,6 +91,20 @@ public class ComparisonFailureWithFieldsTest {
   }
 
   @Test
+  public void prefixAndSuffixWouldOverlapSimple() {
+    runFormatTest(
+        repeat("a", 40) + "lmnopqrstuv" + repeat("a", 40),
+        repeat("a", 40) + "lmnopqrstuvlmnopqrstuv" + repeat("a", 40),
+        "…rstuv…",
+        "…rstuvlmnopqrstuv…");
+  }
+
+  @Test
+  public void prefixAndSuffixWouldOverlapAllSame() {
+    runFormatTest(repeat("a", 80), repeat("a", 82), "…aaaaa", "…aaaaaaa");
+  }
+
+  @Test
   public void formatNoSplitSurrogateStart() {
     runFormatTest(
         repeat("b", 100) + "\uD8AB\uDCABbbbbaa",
