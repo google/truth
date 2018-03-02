@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.Float.NEGATIVE_INFINITY;
@@ -74,7 +75,10 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2f)).isEqualTo(array(JUST_OVER_2POINT2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(format("Not true that <[%s]> is equal to <[%s]>", 2.2f, JUST_OVER_2POINT2));
+        .isEqualTo(
+            "Not true that <["
+                + floatToString(2.2f)
+                + "]> is equal to <[2.2000003]>. differs at index: [0]");
   }
 
   @Test
@@ -83,7 +87,15 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format("Not true that <[%s, %s]> is equal to <[%s, %s]>", 2.2f, 3.3f, 3.3f, 2.2f));
+            "Not true that <["
+                + floatToString(2.2f)
+                + ", "
+                + floatToString(3.3f)
+                + "]> is equal to <["
+                + floatToString(3.3f)
+                + ", "
+                + floatToString(2.2f)
+                + "]>. differs at index: [0]");
   }
 
   @Test
@@ -92,9 +104,17 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
-                "Not true that <[%s, %s]> is equal to <[%s, %s, %s]>",
-                2.2f, 3.3f, 2.2f, 3.3f, 4.4f));
+            "Not true that <["
+                + floatToString(2.2f)
+                + ", "
+                + floatToString(3.3f)
+                + "]> is equal to <["
+                + floatToString(2.2f)
+                + ", "
+                + floatToString(3.3f)
+                + ", "
+                + floatToString(4.4f)
+                + "]>. wrong length; expected: 3; but was: 2");
   }
 
   @Test
@@ -102,7 +122,14 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2f, 3.3f)).isEqualTo(array(2.2f));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(format("Not true that <[%s, %s]> is equal to <[%s]>", 2.2f, 3.3f, 2.2f));
+        .isEqualTo(
+            "Not true that <["
+                + floatToString(2.2f)
+                + ", "
+                + floatToString(3.3f)
+                + "]> is equal to <["
+                + floatToString(2.2f)
+                + "]>. wrong length; expected: 1; but was: 2");
   }
 
   @Test
@@ -110,15 +137,12 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(0.0f)).isEqualTo(array(-0.0f));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[0.0]> is equal to <[-0.0]>");
+        .isEqualTo("Not true that <[0.0]> is equal to <[-0.0]>. differs at index: [0]");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_NotAnArray() {
     expectFailure.whenTesting().that(array(2.2f, 3.3f, 4.4f)).isEqualTo(new Object());
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Incompatible types compared. expected: Object, actual: float[]");
   }
 
   @Test
@@ -130,10 +154,15 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
-                "<[%s, %s, Infinity, -Infinity, NaN, 0.0, -0.0]> unexpectedly equal to "
-                    + "[%s, %s, Infinity, -Infinity, NaN, 0.0, -0.0].",
-                2.2f, 5.4f, 2.2f, 5.4f));
+            "Not true that <["
+                + floatToString(2.2f)
+                + ", "
+                + floatToString(5.4f)
+                + ", Infinity, -Infinity, NaN, 0.0, -0.0]> is not equal to <["
+                + floatToString(2.2f)
+                + ", "
+                + floatToString(5.4f)
+                + ", Infinity, -Infinity, NaN, 0.0, -0.0]>");
   }
 
   @Test

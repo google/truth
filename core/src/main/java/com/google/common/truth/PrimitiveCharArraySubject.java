@@ -16,8 +16,6 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Chars;
-import java.util.Arrays;
-import java.util.List;
 import javax.annotation.Nullable;
 
 /**
@@ -32,57 +30,7 @@ public final class PrimitiveCharArraySubject
     super(metadata, o, typeDescription);
   }
 
-  @Override
-  protected String underlyingType() {
-    return "char";
-  }
-
-  @Override
-  protected List<Character> listRepresentation() {
-    return Chars.asList(actual());
-  }
-
-  /**
-   * A check that the actual array and {@code expected} are arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is equal to each element in the
-   * actual array, and in the same position.
-   */
-  @Override
-  public void isEqualTo(Object expected) {
-    char[] actual = actual();
-    if (actual == expected) {
-      return; // short-cut.
-    }
-    try {
-      char[] expectedArray = (char[]) expected;
-      if (!Arrays.equals(actual, expectedArray)) {
-        fail("is equal to", Chars.asList(expectedArray));
-      }
-    } catch (ClassCastException e) {
-      failWithBadType(expected);
-    }
-  }
-
-  /**
-   * A check that the actual array and {@code expected} are not arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is equal to each element in the
-   * actual array, and in the same position.
-   */
-  @Override
-  public void isNotEqualTo(Object expected) {
-    char[] actual = actual();
-    try {
-      char[] expectedArray = (char[]) expected;
-      if (actual == expected || Arrays.equals(actual, expectedArray)) {
-        failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), Chars.asList(expectedArray));
-      }
-    } catch (ClassCastException ignored) {
-      // If it's not char[] then it's not equal and the test passes.
-    }
-  }
-
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(listRepresentation());
+    return checkNoNeedToDisplayBothValues("asList()").that(Chars.asList(actual()));
   }
 }

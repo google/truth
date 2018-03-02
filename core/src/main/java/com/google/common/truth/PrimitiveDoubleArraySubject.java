@@ -22,7 +22,6 @@ import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
-import static com.google.common.truth.Platform.doubleToString;
 
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Doubles;
@@ -42,16 +41,6 @@ public final class PrimitiveDoubleArraySubject
   PrimitiveDoubleArraySubject(
       FailureMetadata metadata, @Nullable double[] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
-  }
-
-  @Override
-  protected String underlyingType() {
-    return "double";
-  }
-
-  @Override
-  protected List<String> listRepresentation() {
-    return doubleArrayAsString(actual());
   }
 
   /**
@@ -78,20 +67,10 @@ public final class PrimitiveDoubleArraySubject
    *       usingTolerance(0.0)} which does).
    * </ul>
    */
+  // TODO(cpovirk): Move some or all of this Javadoc to the supertype, maybe deleting this override?
   @Override
   public void isEqualTo(Object expected) {
-    double[] actual = actual();
-    if (actual == expected) {
-      return; // short-cut.
-    }
-    try {
-      double[] expectedArray = (double[]) expected;
-      if (!arrayEquals(actual, expectedArray)) {
-        fail("is equal to", doubleArrayAsString(expectedArray));
-      }
-    } catch (ClassCastException e) {
-      failWithBadType(expected);
-    }
+    super.isEqualTo(expected);
   }
 
   /**
@@ -110,16 +89,7 @@ public final class PrimitiveDoubleArraySubject
    */
   @Override
   public void isNotEqualTo(Object expected) {
-    double[] actual = actual();
-    try {
-      double[] expectedArray = (double[]) expected;
-      if (actual == expected || arrayEquals(actual, expectedArray)) {
-        failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), doubleArrayAsString(expectedArray));
-      }
-    } catch (ClassCastException ignored) {
-      // If it's not double[] then it's not equal and the test passes.
-    }
+    super.isNotEqualTo(expected);
   }
 
   /**
@@ -452,33 +422,8 @@ public final class PrimitiveDoubleArraySubject
 
     @Override
     protected String actualCustomStringRepresentation() {
-      return doubleArrayAsString(PrimitiveDoubleArraySubject.this.actual()).toString();
+      return PrimitiveDoubleArraySubject.this
+          .actualCustomStringRepresentationForPackageMembersToCall();
     }
-  }
-
-  private static boolean arrayEquals(double[] left, double[] right) {
-    if (left == right) {
-      return true;
-    }
-    if (left == null || right == null) {
-      return false;
-    }
-    if (left.length != right.length) {
-      return false;
-    }
-    for (int i = 0; i < left.length; i++) {
-      if (Double.doubleToLongBits(left[i]) != Double.doubleToLongBits(right[i])) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  static List<String> doubleArrayAsString(double[] items) {
-    List<String> itemAsStrings = new ArrayList<String>(items.length);
-    for (double item : items) {
-      itemAsStrings.add(doubleToString(item));
-    }
-    return itemAsStrings;
   }
 }

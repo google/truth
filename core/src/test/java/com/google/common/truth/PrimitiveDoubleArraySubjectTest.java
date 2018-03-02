@@ -81,7 +81,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2d)).isEqualTo(array(OVER_2POINT2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[2.2]> is equal to <[" + OVER_2POINT2 + "]>");
+        .isEqualTo(
+            "Not true that <[2.2]> is equal to <[2.2000000000000006]>. differs at index: [0]");
   }
 
   @Test
@@ -89,7 +90,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[3.3, 2.2]>");
+        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[3.3, 2.2]>. differs at index: [0]");
   }
 
   @Test
@@ -97,7 +98,9 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 4.4d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[2.2, 3.3, 4.4]>");
+        .isEqualTo(
+            "Not true that <[2.2, 3.3]> is equal to <[2.2, 3.3, 4.4]>. wrong length; expected: 3; "
+                + "but was: 2");
   }
 
   @Test
@@ -105,7 +108,9 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(2.2d, 3.3d)).isEqualTo(array(2.2d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[2.2]>");
+        .isEqualTo(
+            "Not true that <[2.2, 3.3]> is equal to <[2.2]>. wrong length; expected: 1; but was: "
+                + "2");
   }
 
   @Test
@@ -113,15 +118,12 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(0.0d)).isEqualTo(array(-0.0d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[0.0]> is equal to <[-0.0]>");
+        .isEqualTo("Not true that <[0.0]> is equal to <[-0.0]>. differs at index: [0]");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_NotAnArray() {
     expectFailure.whenTesting().that(array(2.2d, 3.3d, 4.4d)).isEqualTo(new Object());
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Incompatible types compared. expected: Object, actual: double[]");
   }
 
   @Test
@@ -133,8 +135,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "<[2.2, 5.4, Infinity, -Infinity]> unexpectedly equal to "
-                + "[2.2, 5.4, Infinity, -Infinity].");
+            "Not true that <[2.2, 5.4, Infinity, -Infinity]> is not equal to <[2.2, 5.4, Infinity, "
+                + "-Infinity]>");
   }
 
   @Test
@@ -146,8 +148,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "<[2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0]> unexpectedly equal to "
-                + "[2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0].");
+            "Not true that <[2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0]> is not equal to "
+                + "<[2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0]>");
   }
 
   @Test
@@ -1399,7 +1401,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(10000.0)).isEqualTo(array(20000.0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[10000.0]> is equal to <[20000.0]>");
+        .isEqualTo("Not true that <[10000.0]> is equal to <[20000.0]>. differs at index: [0]");
   }
 
   private static double[] array(double... primitives) {

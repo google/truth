@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import java.util.List;
+import java.lang.reflect.Array;
 import javax.annotation.Nullable;
 
 /**
@@ -32,15 +32,15 @@ abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> ext
   }
 
   /** Fails if the array is not empty (i.e. {@code array.length != 0}). */
-  public void isEmpty() {
-    if (!listRepresentation().isEmpty()) {
+  public final void isEmpty() {
+    if (length() > 0) {
       fail("is empty");
     }
   }
 
   /** Fails if the array is empty (i.e. {@code array.length == 0}). */
-  public void isNotEmpty() {
-    if (listRepresentation().isEmpty()) {
+  public final void isNotEmpty() {
+    if (length() == 0) {
       fail("is not empty");
     }
   }
@@ -50,41 +50,14 @@ abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> ext
    *
    * @throws IllegalArgumentException if {@code length < 0}
    */
-  public void hasLength(int length) {
+  public final void hasLength(int length) {
     checkArgument(length >= 0, "length (%s) must be >= 0");
-    if (listRepresentation().size() != length) {
+    if (length() != length) {
       fail("has length", length);
     }
   }
 
-  abstract String underlyingType();
-
-  /** Returns a List representation suitable for displaying in a string. */
-  abstract List<?> listRepresentation();
-
-  @Override
-  protected String actualCustomStringRepresentation() {
-    return actual() == null ? "null" : listRepresentation().toString();
-  }
-
-  void failWithBadType(Object expected) {
-    String expectedBrackets = "";
-    Class<?> expectedType = expected.getClass();
-    while (expectedType.isArray()) {
-      expectedBrackets += "[]";
-      expectedType = expectedType.getComponentType();
-    }
-    String expectedTypeString = expectedType.getName() + expectedBrackets;
-    failWithRawMessage(
-        "Incompatible types compared. expected: %s, actual: %s%s",
-        StringUtil.compressType(expectedTypeString), underlyingType(), brackets());
-  }
-
-  /**
-   * Returns the brackets to put after the underlying type. Multi-dimensional array subjects should
-   * override this to return the correct number of brackets.
-   */
-  String brackets() {
-    return "[]";
+  private int length() {
+    return Array.getLength(actual());
   }
 }

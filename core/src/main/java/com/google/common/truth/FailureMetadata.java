@@ -20,7 +20,6 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
-import static com.google.common.collect.Iterables.concat;
 import static com.google.common.truth.Field.field;
 import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
 
@@ -28,6 +27,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.truth.Truth.SimpleAssertionError;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -207,10 +207,10 @@ public final class FailureMetadata {
   }
 
   private String addToMessage(String body) {
-    Iterable<?> messages = allPrefixMessages();
+    ImmutableList<?> messages = allPrefixMessages();
     StringBuilder result = new StringBuilder(body.length());
     Joiner.on(": ").appendTo(result, messages);
-    if (messages.iterator().hasNext()) {
+    if (!messages.isEmpty()) {
       if (body.isEmpty()) {
         /*
          * The only likely case of an empty body is with failComparing(). In that case, we still
@@ -231,8 +231,12 @@ public final class FailureMetadata {
     return result.toString();
   }
 
-  private Iterable<?> allPrefixMessages() {
+  private ImmutableList<?> allPrefixMessages() {
     return concat(messages, descriptionAsStrings());
+  }
+
+  private static <E> ImmutableList<E> concat(Iterable<? extends E>... inputs) {
+    return ImmutableList.copyOf(Iterables.concat(inputs));
   }
 
   private FailureMetadata derive(ImmutableList<LazyMessage> messages, ImmutableList<Step> steps) {

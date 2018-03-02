@@ -63,15 +63,12 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(1, 0, 1)).isEqualTo(array(0, 1, 1));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[1, 0, 1]> is equal to <[0, 1, 1]>");
+        .isEqualTo("Not true that <[1, 0, 1]> is equal to <[0, 1, 1]>. differs at index: [0]");
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
     expectFailure.whenTesting().that(array(1, 0, 1)).isEqualTo(new Object());
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Incompatible types compared. expected: Object, actual: short[]");
   }
 
   @Test
@@ -94,7 +91,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(1, 0)).isNotEqualTo(array(1, 0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[1, 0]> unexpectedly equal to [1, 0].");
+        .isEqualTo("Not true that <[1, 0]> is not equal to <[1, 0]>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -104,7 +101,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[1, 0]> unexpectedly equal to [1, 0].");
+        .isEqualTo("Not true that <[1, 0]> is not equal to <[1, 0]>");
   }
 
   private static short[] array(int a, int b, int c) {

@@ -17,18 +17,35 @@ package com.google.common.truth;
 
 import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Field.field;
+import static com.google.common.truth.Field.fieldWithoutValue;
+import static com.google.common.truth.Platform.doubleToString;
+import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
+import static java.util.Arrays.asList;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.primitives.Booleans;
+import com.google.common.primitives.Bytes;
+import com.google.common.primitives.Chars;
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
+import com.google.common.primitives.Shorts;
 import com.google.common.truth.FailureMetadata.OldAndNewValuesAreSimilar;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CompatibleWith;
 import com.google.errorprone.annotations.ForOverride;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.annotation.Nullable;
 
 /**
@@ -157,8 +174,9 @@ public class Subject<S extends Subject<S, T>, T> {
    * </ul>
    */
   public void isEqualTo(@Nullable Object expected) {
-    if (!actualEquals(expected)) {
-      failEqualityCheck("is equal to", expected);
+    ComparisonResult difference = describeDifference(expected);
+    if (!difference.valuesAreEqual()) {
+      failEqualityCheck("is equal to", expected, difference);
     }
   }
 
@@ -167,25 +185,47 @@ public class Subject<S extends Subject<S, T>, T> {
    * the {@link #isEqualTo} method.
    */
   public void isNotEqualTo(@Nullable Object unexpected) {
-    if (actualEquals(unexpected)) {
-      fail("is not equal to", unexpected);
+    ComparisonResult difference = describeDifference(unexpected);
+    if (difference.valuesAreEqual()) {
+      fail("is not equal to", formatActualOrExpected(unexpected));
     }
   }
 
-  private boolean actualEquals(@Nullable Object expected) {
-    // TODO(cpovirk): Move array handling from subclasses into this method.
+  /**
+   * Returns whether {@code actual} equals {@code expected} differ and, in some cases, a description
+   * of how they differ.
+   *
+   * <p>The equality check follows the rules described on {@link #isEqualTo}.
+   */
+  private ComparisonResult describeDifference(@Nullable Object expected) {
     if (actual() == null && expected == null) {
-      return true;
+      return ComparisonResult.equal();
     } else if (actual() == null || expected == null) {
-      return false;
+      return ComparisonResult.differentNoDescription();
+    } else if (actual() instanceof byte[] && expected instanceof byte[]) {
+      /*
+       * For a special error message and to use faster Arrays.equals to avoid at least one timeout.
+       *
+       * TODO(cpovirk): For performance, use Arrays.equals for other array types (here and/or in
+       * checkArrayEqualsRecursive)? Exception: double[] and float[], whose GWT implementations I
+       * think may have both false positives and false negatives (so we can't even use Arrays.equals
+       * as a fast path for them, nor deepEquals for an Object[] that might contain them). We would
+       * still fall back to the slower checkArrayEqualsRecursive to produce a nicer failure message
+       * -- but naturally only for tests that are about to fail, when performance matters less.
+       */
+      return checkByteArrayEquals((byte[]) expected, (byte[]) actual());
+    } else if (actual().getClass().isArray() && expected.getClass().isArray()) {
+      return checkArrayEqualsRecursive(expected, actual, "");
     } else if (isIntegralBoxedPrimitive(actual()) && isIntegralBoxedPrimitive(expected)) {
-      return integralValue(actual()) == integralValue(expected);
+      return ComparisonResult.fromEqualsResult(integralValue(actual()) == integralValue(expected));
     } else if (actual() instanceof Double && expected instanceof Double) {
-      return Double.compare((Double) actual(), (Double) expected) == 0;
+      return ComparisonResult.fromEqualsResult(
+          Double.compare((Double) actual(), (Double) expected) == 0);
     } else if (actual() instanceof Float && expected instanceof Float) {
-      return Float.compare((Float) actual(), (Float) expected) == 0;
+      return ComparisonResult.fromEqualsResult(
+          Float.compare((Float) actual(), (Float) expected) == 0);
     } else {
-      return actual() == expected || actual().equals(expected);
+      return ComparisonResult.fromEqualsResult(actual() == expected || actual().equals(expected));
     }
   }
 
@@ -210,14 +250,19 @@ public class Subject<S extends Subject<S, T>, T> {
   /** Fails if the subject is not the same instance as the given object. */
   public void isSameAs(@Nullable @CompatibleWith("T") Object other) {
     if (actual() != other) {
-      failEqualityCheck("is the same instance as", other);
+      failEqualityCheck(
+          "is the same instance as",
+          other,
+          ComparisonResult
+              .differentNoDescription() // or maybe equal; what we mean is "nothing to describe"
+          );
     }
   }
 
   /** Fails if the subject is the same instance as the given object. */
   public void isNotSameAs(@Nullable @CompatibleWith("T") Object other) {
     if (actual() == other) {
-      fail("is not the same instance as", other);
+      fail("is not the same instance as", formatActualOrExpected(other));
     }
   }
 
@@ -357,12 +402,241 @@ public class Subject<S extends Subject<S, T>, T> {
    * format for inherited implementations like isEqualTo(). But if they want to format the actual
    * value specially, then it seems likely that they'll want to format the expected value specially,
    * too. And that applies just as well to APIs like isIn(). Maybe we'll want an API that supports
-   * formatting those values, too? See also the related b/70930431. But note that we are likely to
-   * use this from FailureMetadata, at least in the short term, for better or for worse.
+   * formatting those values, too (like formatActualOrExpected below)? See also the related
+   * b/70930431. But note that we are likely to use this from FailureMetadata, at least in the short
+   * term, for better or for worse.
    */
   @ForOverride
   protected String actualCustomStringRepresentation() {
-    return String.valueOf(actual());
+    return formatActualOrExpected(actual());
+  }
+
+  final String actualCustomStringRepresentationForPackageMembersToCall() {
+    return actualCustomStringRepresentation();
+  }
+
+  private final String formatActualOrExpected(@Nullable Object o) {
+    if (o instanceof byte[]) {
+      return base16((byte[]) o);
+    } else if (o != null && o.getClass().isArray()) {
+      String wrapped = Iterables.toString(stringableIterable(new Object[] {o}));
+      return wrapped.substring(1, wrapped.length() - 1);
+    } else if (o instanceof Double) {
+      return doubleToString((Double) o);
+    } else if (o instanceof Float) {
+      return floatToString((Float) o);
+    } else {
+      return String.valueOf(o);
+    }
+  }
+
+  // We could add a dep on com.google.common.io, but that seems overkill for base16 encoding
+  private static String base16(byte[] bytes) {
+    StringBuilder sb = new StringBuilder(2 * bytes.length);
+    for (byte b : bytes) {
+      sb.append(hexDigits[(b >> 4) & 0xf]).append(hexDigits[b & 0xf]);
+    }
+    return sb.toString();
+  }
+
+  private static final char[] hexDigits = "0123456789ABCDEF".toCharArray();
+
+  private static Iterable<?> stringableIterable(Object[] array) {
+    return Iterables.transform(asList(array), STRINGIFY);
+  }
+
+  private static final Function<Object, Object> STRINGIFY =
+      new Function<Object, Object>() {
+        @Override
+        public Object apply(@Nullable Object input) {
+          if (input != null && input.getClass().isArray()) {
+            Iterable<?> iterable;
+            if (input.getClass() == boolean[].class) {
+              iterable = Booleans.asList((boolean[]) input);
+            } else if (input.getClass() == int[].class) {
+              iterable = Ints.asList((int[]) input);
+            } else if (input.getClass() == long[].class) {
+              iterable = Longs.asList((long[]) input);
+            } else if (input.getClass() == short[].class) {
+              iterable = Shorts.asList((short[]) input);
+            } else if (input.getClass() == byte[].class) {
+              iterable = Bytes.asList((byte[]) input);
+            } else if (input.getClass() == double[].class) {
+              iterable = doubleArrayAsString((double[]) input);
+            } else if (input.getClass() == float[].class) {
+              iterable = floatArrayAsString((float[]) input);
+            } else if (input.getClass() == char[].class) {
+              iterable = Chars.asList((char[]) input);
+            } else {
+              iterable = Arrays.asList((Object[]) input);
+            }
+            return Iterables.transform(iterable, STRINGIFY);
+          }
+          return input;
+        }
+      };
+
+  /**
+   * The result of comparing two objects for equality. This includes both the "equal"/"not-equal"
+   * bit and, in the case of "not equal," optional fields describing the difference.
+   */
+  private static final class ComparisonResult {
+    /**
+     * If {@code equal} is true, returns an equal result; if false, a non-equal result with no
+     * description.
+     */
+    static ComparisonResult fromEqualsResult(boolean equal) {
+      return equal ? EQUAL : DIFFERENT_NO_DESCRIPTION;
+    }
+
+    /** Returns a non-equal result with the given description. */
+    static ComparisonResult differentWithDescription(Field... fields) {
+      return new ComparisonResult(ImmutableList.copyOf(fields));
+    }
+
+    /** Returns an equal result. */
+    static ComparisonResult equal() {
+      return EQUAL;
+    }
+
+    /** Returns a non-equal result with no description. */
+    static ComparisonResult differentNoDescription() {
+      return DIFFERENT_NO_DESCRIPTION;
+    }
+
+    private static final ComparisonResult EQUAL = new ComparisonResult(null);
+    private static final ComparisonResult DIFFERENT_NO_DESCRIPTION =
+        new ComparisonResult(ImmutableList.<Field>of());
+
+    @Nullable private final ImmutableList<Field> fields;
+
+    private ComparisonResult(ImmutableList<Field> fields) {
+      this.fields = fields;
+    }
+
+    boolean valuesAreEqual() {
+      return fields == null;
+    }
+
+    ImmutableList<Field> fieldsOrEmpty() {
+      return firstNonNull(fields, ImmutableList.<Field>of());
+    }
+  }
+
+  /**
+   * Returns null if the arrays are equal. If not equal, returns a string comparing the two arrays,
+   * displaying them in the style "[1, 2, 3]" to supplement the main failure message, which uses the
+   * style "010203."
+   */
+  private static ComparisonResult checkByteArrayEquals(byte[] expected, byte[] actual) {
+    if (Arrays.equals(expected, actual)) {
+      return ComparisonResult.equal();
+    }
+    return ComparisonResult.differentWithDescription(
+        field("expected", Arrays.toString(expected)), field("but was", Arrays.toString(actual)));
+  }
+
+  /**
+   * Returns null if the arrays are equal, recursively. If not equal, returns the string of the
+   * index at which they're different.
+   */
+  /*
+   * TODO(cpovirk): Decide whether it's worthwhile to go to this trouble to display the index at
+   * which the arrays differ. If we were to stop doing that, we could mostly delegate to
+   * Arrays.equals() and our float/double arrayEquals methods. (We'd use deepEquals, but it doesn't
+   * have our special double/float handling for GWT.)
+   */
+  private ComparisonResult checkArrayEqualsRecursive(
+      Object expectedArray, Object actualArray, String lastIndex) {
+    String expectedType = arrayType(expectedArray);
+    String actualType = arrayType(actualArray);
+    if (!expectedType.equals(actualType)) {
+      Field indexField =
+          lastIndex.isEmpty()
+              ? fieldWithoutValue("wrong type")
+              : field("wrong type for index", lastIndex);
+      return ComparisonResult.differentWithDescription(
+          indexField, field("expected", expectedType), field("but was", actualType));
+    }
+    int actualLength = Array.getLength(actualArray);
+    int expectedLength = Array.getLength(expectedArray);
+    if (expectedLength != actualLength) {
+      Field indexField =
+          lastIndex.isEmpty()
+              ? fieldWithoutValue("wrong length")
+              : field("wrong length for index", lastIndex);
+      return ComparisonResult.differentWithDescription(
+          indexField, field("expected", expectedLength), field("but was", actualLength));
+    }
+    for (int i = 0; i < actualLength || i < expectedLength; i++) {
+      String index = lastIndex + "[" + i + "]";
+      if (i < expectedLength && i < actualLength) {
+        Object expected = Array.get(expectedArray, i);
+        Object actual = Array.get(actualArray, i);
+        if (actual != null
+            && actual.getClass().isArray()
+            && expected != null
+            && expected.getClass().isArray()) {
+          ComparisonResult result = checkArrayEqualsRecursive(expected, actual, index);
+          if (!result.valuesAreEqual()) {
+            return result;
+          }
+          continue;
+        } else if (gwtSafeObjectEquals(actual, expected)) {
+          continue;
+        }
+      }
+      return ComparisonResult.differentWithDescription(field("differs at index", index));
+    }
+    return ComparisonResult.equal();
+  }
+
+  private static String arrayType(Object array) {
+    if (array.getClass() == boolean[].class) {
+      return "boolean[]";
+    } else if (array.getClass() == int[].class) {
+      return "int[]";
+    } else if (array.getClass() == long[].class) {
+      return "long[]";
+    } else if (array.getClass() == short[].class) {
+      return "short[]";
+    } else if (array.getClass() == byte[].class) {
+      return "byte[]";
+    } else if (array.getClass() == double[].class) {
+      return "double[]";
+    } else if (array.getClass() == float[].class) {
+      return "float[]";
+    } else if (array.getClass() == char[].class) {
+      return "char[]";
+    } else {
+      return "Object[]";
+    }
+  }
+
+  private static boolean gwtSafeObjectEquals(Object actual, Object expected) {
+    if (actual instanceof Double && expected instanceof Double) {
+      return Double.doubleToLongBits((Double) actual) == Double.doubleToLongBits((Double) expected);
+    } else if (actual instanceof Float && expected instanceof Float) {
+      return Float.floatToIntBits((Float) actual) == Float.floatToIntBits((Float) expected);
+    } else {
+      return Objects.equal(actual, expected);
+    }
+  }
+
+  private static List<String> doubleArrayAsString(double[] items) {
+    List<String> itemAsStrings = new ArrayList<>(items.length);
+    for (double item : items) {
+      itemAsStrings.add(doubleToString(item));
+    }
+    return itemAsStrings;
+  }
+
+  private static List<String> floatArrayAsString(float[] items) {
+    List<String> itemAsStrings = new ArrayList<>(items.length);
+    for (float item : items) {
+      itemAsStrings.add(floatToString(item));
+    }
+    return itemAsStrings;
   }
 
   /**
@@ -473,24 +747,37 @@ public class Subject<S extends Subject<S, T>, T> {
     metadata.fail(message.toString());
   }
 
-  private void failEqualityCheck(String verb, Object expected) {
+  private void failEqualityCheck(String verb, Object expected, ComparisonResult difference) {
+    if (actual() instanceof byte[] && expected instanceof byte[]) {
+      // TODO(cpovirk): Expand this to cover more types.
+      failComparing(
+          Joiner.on("; ").join(difference.fieldsOrEmpty()),
+          formatActualOrExpected(expected),
+          formatActualOrExpected(actual()));
+      return;
+    }
     StringBuilder message =
         new StringBuilder("Not true that ").append(actualAsString()).append(" ");
     // If the actual and parts aren't null, and they have equal toString()'s but different
     // classes, we need to disambiguate them.
     boolean neitherNull = (expected != null) && (actual() != null);
-    boolean sameToStrings = actualCustomStringRepresentation().equals(String.valueOf(expected));
+    boolean sameToStrings =
+        actualCustomStringRepresentation().equals(formatActualOrExpected(expected));
     boolean needsClassDisambiguation =
         neitherNull && sameToStrings && !actual().getClass().equals(expected.getClass());
     if (needsClassDisambiguation) {
       message.append("(").append(actual().getClass().getName()).append(") ");
     }
-    message.append(verb).append(" <").append(expected).append(">");
+    message.append(verb).append(" <").append(formatActualOrExpected(expected)).append(">");
     if (needsClassDisambiguation) {
       message.append(" (").append(expected.getClass().getName()).append(")");
     }
     if (!needsClassDisambiguation && sameToStrings) {
       message.append(" (although their toString() representations are the same)");
+    }
+    if (!difference.fieldsOrEmpty().isEmpty()) {
+      message.append(". ");
+      Joiner.on("; ").appendTo(message, difference.fieldsOrEmpty());
     }
     metadata.fail(message.toString());
   }

@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
@@ -141,7 +142,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
         format(
             "testValue (<%s>) and <%s> should have been finite values not within"
                 + " <%s> of each other",
-            actual, expected, tolerance));
+            floatToString(actual), expected, tolerance));
   }
 
   @Test
@@ -446,7 +447,9 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
             expect.that(value).named("testValue").isNonZero();
           }
         };
-    expectFailureWithMessage(callback, "Not true that testValue (<" + value + ">) is non-zero");
+    String valueAsString = value == null ? "null" : floatToString(value);
+    expectFailureWithMessage(
+        callback, "Not true that testValue (<" + valueAsString + ">) is non-zero");
   }
 
   @Test
