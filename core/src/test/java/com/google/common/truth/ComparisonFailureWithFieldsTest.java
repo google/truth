@@ -136,7 +136,7 @@ public class ComparisonFailureWithFieldsTest {
     runFormatTest(
         repeat("a\n", 100) + "b",
         repeat("a\n", 100) + "c",
-        Joiner.on('\n').join(" ⋮", " a", " a", " a", "-b", "+c"));
+        Joiner.on('\n').join("@@ -98,4 +98,4 @@", " a", " a", " a", "-b", "+c"));
   }
 
   @GwtIncompatible
@@ -145,7 +145,7 @@ public class ComparisonFailureWithFieldsTest {
     runFormatTest(
         "a" + repeat("\nz", 100),
         "b" + repeat("\nz", 100),
-        Joiner.on('\n').join("-a", "+b", " z", " z", " z", " ⋮"));
+        Joiner.on('\n').join("@@ -1,4 +1,4 @@", "-a", "+b", " z", " z", " z"));
   }
 
   @GwtIncompatible
@@ -154,7 +154,7 @@ public class ComparisonFailureWithFieldsTest {
     runFormatTest(
         repeat("a\n", 100) + "m" + repeat("\nz", 100),
         repeat("a\n", 100) + "n" + repeat("\nz", 100),
-        Joiner.on('\n').join(" ⋮", " a", " a", " a", "-m", "+n", " z", " z", " z", " ⋮"));
+        Joiner.on('\n').join("@@ -98,7 +98,7 @@", " a", " a", " a", "-m", "+n", " z", " z", " z"));
   }
 
   @GwtIncompatible
@@ -165,8 +165,21 @@ public class ComparisonFailureWithFieldsTest {
         repeat("a\n", 100) + "q\nr\ns\nt" + repeat("\nz", 100),
         Joiner.on('\n')
             .join(
-                " ⋮", " a", " a", " a", "-m", "-n", "-o", "-p", "+q", "+r", "+s", "+t", " z", " z",
-                " z", " ⋮"));
+                "@@ -98,10 +98,10 @@",
+                " a",
+                " a",
+                " a",
+                "-m",
+                "-n",
+                "-o",
+                "-p",
+                "+q",
+                "+r",
+                "+s",
+                "+t",
+                " z",
+                " z",
+                " z"));
   }
 
   @GwtIncompatible
@@ -177,8 +190,23 @@ public class ComparisonFailureWithFieldsTest {
         repeat("a\n", 100) + "q\nr\ns\nt\nu\nv" + repeat("\nz", 100),
         Joiner.on('\n')
             .join(
-                " ⋮", " a", " a", " a", "-m", "-n", "-o", "-p", "+q", "+r", "+s", "+t", "+u", "+v",
-                " z", " z", " z", " ⋮"));
+                "@@ -98,10 +98,12 @@",
+                " a",
+                " a",
+                " a",
+                "-m",
+                "-n",
+                "-o",
+                "-p",
+                "+q",
+                "+r",
+                "+s",
+                "+t",
+                "+u",
+                "+v",
+                " z",
+                " z",
+                " z"));
   }
 
   @GwtIncompatible
@@ -188,7 +216,19 @@ public class ComparisonFailureWithFieldsTest {
         repeat("a\n", 40) + "l\nm\nn\no\np\n" + repeat("a\n", 40),
         repeat("a\n", 40) + "l\nm\nn\no\np\nl\nm\nn\no\np\n" + repeat("a\n", 40),
         Joiner.on('\n')
-            .join(" ⋮", " n", " o", " p", "+l", "+m", "+n", "+o", "+p", " a", " a", " a", " ⋮"));
+            .join(
+                "@@ -43,6 +43,11 @@",
+                " n",
+                " o",
+                " p",
+                "+l",
+                "+m",
+                "+n",
+                "+o",
+                "+p",
+                " a",
+                " a",
+                " a"));
   }
 
   @GwtIncompatible
@@ -197,7 +237,26 @@ public class ComparisonFailureWithFieldsTest {
     runFormatTest(
         repeat("a\n", 80),
         repeat("a\n", 82),
-        Joiner.on('\n').join(" ⋮", " a", " a", " a", "-", "+a", "+a", "+"));
+        Joiner.on('\n').join("@@ -78,4 +78,6 @@", " a", " a", " a", "+a", "+a", " "));
+    /*
+     * The final blank line here is odd, and it's different than what Unix diff produces. Maybe look
+     * into removing it if we can do so safely?
+     */
+  }
+
+  @GwtIncompatible
+  @Test
+  public void formatDiffSameExceptNewlineStyle() {
+    runFormatTest(repeat("a\n", 10), repeat("a\r\n", 10), "(empty -- differences in line breaks?)");
+  }
+
+  @GwtIncompatible
+  @Test
+  public void formatDiffSameExceptTrailingNewline() {
+    runFormatTest(
+        repeat("a\n", 19) + "a",
+        repeat("a\n", 19) + "a\n",
+        Joiner.on('\n').join("@@ -18,3 +18,4 @@", " a", " a", " a", "+"));
   }
 
   private static void runFormatTest(

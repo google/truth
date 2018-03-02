@@ -15,18 +15,17 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.collect.Lists.reverse;
-import static com.google.common.collect.Lists.transform;
 import static com.google.common.truth.Field.field;
 import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
 import static com.google.common.truth.Truth.appendSuffixIfNotNull;
+import static difflib.DiffUtils.diff;
+import static difflib.DiffUtils.generateUnifiedDiff;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
+import difflib.Patch;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -98,106 +97,25 @@ final class Platform {
 
   @Nullable
   static ImmutableList<Field> makeDiff(String expected, String actual) {
-    // For now, we just hide a common prefix or suffix. TODO(cpovirk): Add real diffing.
-
     ImmutableList<String> expectedLines = splitLines(expected);
     ImmutableList<String> actualLines = splitLines(actual);
-    ImmutableList<String> originalExpectedLines = expectedLines;
-    ImmutableList<String> originalActualLines = actualLines;
-
-    int prefix = commonPrefix(expectedLines, actualLines);
-    // No need to hide the prefix unless it's long.
-    if (prefix > CONTEXT + 1) {
-      // Truncate expectedLines and actualLines so that the suffix doesn't extend into them.
-      expectedLines = expectedLines.subList(prefix, expectedLines.size());
-      actualLines = actualLines.subList(prefix, actualLines.size());
-    } else {
-      prefix = 0;
+    Patch<String> diff = diff(expectedLines, actualLines);
+    List<String> unifiedDiff =
+        generateUnifiedDiff("expected", "actual", expectedLines, diff, /* contextSize= */ 3);
+    if (unifiedDiff.isEmpty()) {
+      return ImmutableList.of(field("diff", "(empty -- differences in line breaks?)"));
     }
-
-    int suffix = commonSuffix(expectedLines, actualLines);
-    // No need to hide the suffix unless it's long.
-    if (suffix > CONTEXT + 1) {
-      // No need to update expectedLines and actualLines further; we don't read them again.
-    } else {
-      suffix = 0;
-    }
-
-    if (prefix == 0 && suffix == 0) {
+    unifiedDiff = unifiedDiff.subList(2, unifiedDiff.size()); // remove "--- expected," "+++ actual"
+    String result = Joiner.on("\n").join(unifiedDiff);
+    if (result.length() > expected.length() && result.length() > actual.length()) {
       return null;
     }
-
-    return ImmutableList.of(
-        field("diff", hideLines(originalExpectedLines, originalActualLines, prefix, suffix)));
+    return ImmutableList.of(field("diff", result));
   }
-
-  private static String hideLines(
-      List<String> expectedLines, List<String> actualLines, int prefix, int suffix) {
-    StringBuilder builder = new StringBuilder();
-
-    if (prefix > CONTEXT) {
-      builder.append(" ⋮\n");
-    }
-    if (prefix > 0) {
-      appendSubListPrefixed(builder, ' ', expectedLines, prefix - CONTEXT, prefix);
-    }
-
-    appendSubListPrefixed(builder, '-', expectedLines, prefix, expectedLines.size() - suffix);
-    appendSubListPrefixed(builder, '+', actualLines, prefix, actualLines.size() - suffix);
-
-    if (suffix > 0) {
-      appendSubListPrefixed(
-          builder,
-          ' ',
-          expectedLines,
-          expectedLines.size() - suffix,
-          expectedLines.size() - suffix + CONTEXT);
-    }
-    if (suffix > CONTEXT) {
-      builder.append(" ⋮\n");
-    }
-    builder.setLength(builder.length() - 1); // remove trailing newline
-
-    return builder.toString();
-  }
-
-  private static void appendSubListPrefixed(
-      StringBuilder builder, char prefix, List<String> lines, int start, int end) {
-    List<String> subLines = lines.subList(start, end);
-    List<String> prefixed = prefixAll(prefix, subLines);
-    Joiner.on('\n').appendTo(builder, prefixed);
-    if (start < end) {
-      builder.append('\n');
-    }
-  }
-
-  private static List<String> prefixAll(final char prefix, List<String> strings) {
-    return transform(
-        strings,
-        new Function<String, String>() {
-          @Override
-          public String apply(String input) {
-            return prefix + input;
-          }
-        });
-  }
-
   private static ImmutableList<String> splitLines(String s) {
     // splitToList is @Beta, so we avoid it.
     return ImmutableList.copyOf(Splitter.onPattern("\r?\n").split(s));
   }
-
-  private static int commonPrefix(List<?> a, List<?> b) {
-    int i;
-    for (i = 0; i < a.size() && i < b.size() && equal(a.get(i), b.get(i)); i++) {}
-    return i;
-  }
-
-  private static int commonSuffix(List<?> a, List<?> b) {
-    return commonPrefix(reverse(a), reverse(b));
-  }
-
-  private static final int CONTEXT = 3;
 
   enum ComparisonFailureMessageStrategy {
     OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE,
