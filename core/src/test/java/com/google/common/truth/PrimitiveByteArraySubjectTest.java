@@ -58,8 +58,8 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[124, 112, 12, 11, 10]> is equal to <[24, 12, 2, 1, 0]>; "
-                + "expected:<[180C020100]> but was:<[7C700C0B0A]>");
+            "expected: [24, 12, 2, 1, 0]; but was: [124, 112, 12, 11, 10] expected:<[180C020100]> "
+                + "but was:<[7C700C0B0A]>");
   }
 
   @Test
@@ -79,12 +79,10 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, "
-                + "109, 112, 108, 101, 3, 99, 111, 109, 0, 0, 1, 0, 0]> is equal to "
-                + "<[124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, "
-                + "101, 3, 99, 111, 109, 0, 0, 1, 0, 1]>; "
-                + "expected:<...C6503636F6D000001000[1]>"
-                + " but was:<...C6503636F6D000001000[0]>");
+            "expected: [124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, "
+                + "101, 3, 99, 111, 109, 0, 0, 1, 0, 1]; but was: [124, 112, 1, 0, 0, 1, 0, 0, 0, "
+                + "0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111, 109, 0, 0, 1, 0, 0] "
+                + "expected:<...C6503636F6D000001000[1]> but was:<...C6503636F6D000001000[0]>");
   }
 
   @Test
@@ -95,9 +93,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(array((byte) 123, BYTE_0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[0, 123]> is equal to <[123, 0]>; "
-                + "expected:<[7B00]> but was:<[007B]>");
+        .isEqualTo("expected: [123, 0]; but was: [0, 123] expected:<[7B00]> but was:<[007B]>");
   }
 
   @Test
@@ -105,7 +101,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .contains("Incompatible types compared. expected: int[], actual: byte[]");
+        .contains("wrong type; expected: int[]; but was: byte[]");
   }
 
   @Test
@@ -128,7 +124,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[0, 1]> unexpectedly equal to [0, 1].");
+        .isEqualTo("Not true that <0001> is not equal to <0001>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -138,7 +134,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[0, 1]> unexpectedly equal to [0, 1].");
+        .isEqualTo("Not true that <0001> is not equal to <0001>");
   }
 
   private static byte[] array(byte... ts) {

@@ -124,7 +124,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[A, 5]> is equal to <[5, A]>. It differs at index <[0]>");
+        .isEqualTo("Not true that <[A, 5]> is equal to <[5, A]>. differs at index: [0]");
   }
 
   @Test
@@ -135,9 +135,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(new Object[][] {{5L}, {"A"}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[[A], [5]]> is equal to <[[5], [A]]>."
-                + " It differs at index <[0][0]>");
+        .isEqualTo("Not true that <[[A], [5]]> is equal to <[[5], [A]]>. differs at index: [0][0]");
   }
 
   @Test
@@ -149,8 +147,8 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[[A, B], [5]]> is equal to <[[A], [5]]>."
-                + " It differs at index <[0][1]>");
+            "Not true that <[[A, B], [5]]> is equal to <[[A], [5]]>. wrong length for index: [0]; "
+                + "expected: 1; but was: 2");
   }
 
   @Test
@@ -162,17 +160,16 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[[A], [5]]> is equal to <[[A], [5, 6]]>."
-                + " It differs at index <[1][1]>");
+            "Not true that <[[A], [5]]> is equal to <[[A], [5, 6]]>. wrong length for index: [1]; "
+                + "expected: 2; but was: 1");
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
     expectFailure.whenTesting().that(objectArray("A", 5L)).isEqualTo(new Object());
     AssertionError e = expectFailure.getFailure();
-    assertThat(e).hasMessageThat().contains("Incompatible types compared.");
-    assertThat(e).hasMessageThat().contains("expected: Object");
-    assertThat(e).hasMessageThat().contains("actual: Object[]");
+    assertThat(e).hasMessageThat().contains("is equal to");
+    assertThat(e).hasMessageThat().contains("java.lang.Object");
   }
 
   @Test
@@ -198,7 +195,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[A, 5]> unexpectedly equal to [A, 5].");
+        .isEqualTo("Not true that <[A, 5]> is not equal to <[A, 5]>");
   }
 
   @Test
@@ -209,7 +206,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isNotEqualTo(new Object[][] {{"A"}, {5L}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[[A], [5]]> unexpectedly equal to [[A], [5]].");
+        .isEqualTo("Not true that <[[A], [5]]> is not equal to <[[A], [5]]>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -219,7 +216,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[A, 5]> unexpectedly equal to [A, 5].");
+        .isEqualTo("Not true that <[A, 5]> is not equal to <[A, 5]>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -229,7 +226,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[[A], [5]]> unexpectedly equal to [[A], [5]].");
+        .isEqualTo("Not true that <[[A], [5]]> is not equal to <[[A], [5]]>");
   }
 
   @Test
@@ -254,7 +251,8 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", "B")).isEqualTo(objectArray("B"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[A, B]> has length 2. Expected length is 1");
+        .isEqualTo(
+            "Not true that <[A, B]> is equal to <[B]>. wrong length; expected: 1; but was: 2");
   }
 
   @Test
@@ -265,7 +263,9 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(new String[][] {{"A"}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[[A], [B]]> has length 2. Expected length is 1");
+        .isEqualTo(
+            "Not true that <[[A], [B]]> is equal to <[[A]]>. wrong length; expected: 1; but was: "
+                + "2");
   }
 
   @Test
@@ -273,7 +273,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[A, B]> is equal to <[B, A]>. It differs at index <[0]>");
+        .isEqualTo("Not true that <[A, B]> is equal to <[B, A]>. differs at index: [0]");
   }
 
   @Test
@@ -284,9 +284,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(new String[][] {{"B"}, {"A"}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[[A], [B]]> is equal to <[[B], [A]]>."
-                + " It differs at index <[0][0]>");
+        .isEqualTo("Not true that <[[A], [B]]> is equal to <[[B], [A]]>. differs at index: [0][0]");
   }
 
   @Test
@@ -297,8 +295,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isEqualTo(objectArray(ImmutableSet.of("B"), ImmutableSet.of("A")));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[[A], [B]]> is equal to <[[B], [A]]>. It differs at index <[0]>");
+        .isEqualTo("Not true that <[[A], [B]]> is equal to <[[B], [A]]>. differs at index: [0]");
     // Maybe one day:
     // .hasMessage("Not true that <(Set<String>[]) [[A], [B]]> is equal to <[[B], [A]]>");
   }
@@ -318,8 +315,8 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[[1, 2], [3], [4, 5, 6]]> "
-                + "is equal to <[[1, 2], [3], [4, 5, 6, 7]]>. It differs at index <[2][3]>");
+            "Not true that <[[1, 2], [3], [4, 5, 6]]> is equal to <[[1, 2], [3], [4, 5, 6, 7]]>. "
+                + "wrong length for index: [2]; expected: 4; but was: 3");
   }
 
   @Test
@@ -336,17 +333,20 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
         .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[[1, 2], [3], [4, 5, 6]]> unexpectedly equal to [[1, 2], [3], [4, 5, 6]].");
+        .isEqualTo(
+            "Not true that <[[1, 2], [3], [4, 5, 6]]> is not equal to <[[1, 2], [3], [4, 5, 6]]>");
   }
 
   @Test
   public void boxedAndUnboxed() {
-    /*
-     * TODO(cpovirk): This seems wrong: Either we should *always* treat int[] and Integer[]
-     * equivalently (as we do inside an Object[]), or we should always treat them differently (as we
-     * do with top-level arrays). Probably "differently" is what we want.
-     */
-    assertThat(new Object[] {new int[] {0}}).isEqualTo(new Object[] {new Integer[] {0}});
+    expectFailure
+        .whenTesting()
+        .that(new Object[] {new int[] {0}})
+        .isEqualTo(new Object[] {new Integer[] {0}});
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("toString");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .contains("wrong type for index: [0]; expected: Object[]; but was: int[]");
   }
 
   private static Object[] objectArray(Object... ts) {

@@ -22,7 +22,6 @@ import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.FloatSubject.checkTolerance;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
-import static com.google.common.truth.Platform.floatToString;
 
 import com.google.common.collect.Iterables;
 import com.google.common.primitives.Floats;
@@ -42,16 +41,6 @@ public final class PrimitiveFloatArraySubject
   PrimitiveFloatArraySubject(
       FailureMetadata metadata, @Nullable float[] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
-  }
-
-  @Override
-  protected String underlyingType() {
-    return "float";
-  }
-
-  @Override
-  protected List<String> listRepresentation() {
-    return floatArrayAsString(actual());
   }
 
   /**
@@ -80,18 +69,7 @@ public final class PrimitiveFloatArraySubject
    */
   @Override
   public void isEqualTo(Object expected) {
-    float[] actual = actual();
-    if (actual == expected) {
-      return; // short-cut.
-    }
-    try {
-      float[] expectedArray = (float[]) expected;
-      if (!arrayEquals(actual, expectedArray)) {
-        fail("is equal to", floatArrayAsString(expectedArray));
-      }
-    } catch (ClassCastException e) {
-      failWithBadType(expected);
-    }
+    super.isEqualTo(expected);
   }
 
   /**
@@ -110,16 +88,7 @@ public final class PrimitiveFloatArraySubject
    */
   @Override
   public void isNotEqualTo(Object expected) {
-    float[] actual = actual();
-    try {
-      float[] expectedArray = (float[]) expected;
-      if (actual == expected || arrayEquals(actual, expectedArray)) {
-        failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), floatArrayAsString(expectedArray));
-      }
-    } catch (ClassCastException ignored) {
-      // If it's not float[] then it's not equal and the test passes.
-    }
+    super.isNotEqualTo(expected);
   }
 
   /**
@@ -457,33 +426,8 @@ public final class PrimitiveFloatArraySubject
 
     @Override
     protected String actualCustomStringRepresentation() {
-      return floatArrayAsString(PrimitiveFloatArraySubject.this.actual()).toString();
+      return PrimitiveFloatArraySubject.this
+          .actualCustomStringRepresentationForPackageMembersToCall();
     }
-  }
-
-  private static boolean arrayEquals(float[] left, float[] right) {
-    if (left == right) {
-      return true;
-    }
-    if (left == null || right == null) {
-      return false;
-    }
-    if (left.length != right.length) {
-      return false;
-    }
-    for (int i = 0; i < left.length; i++) {
-      if (Float.floatToIntBits(left[i]) != Float.floatToIntBits(right[i])) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  static List<String> floatArrayAsString(float[] items) {
-    List<String> itemAsStrings = new ArrayList<String>(items.length);
-    for (float item : items) {
-      itemAsStrings.add(floatToString(item));
-    }
-    return itemAsStrings;
   }
 }

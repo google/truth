@@ -51,7 +51,7 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array('a', 'q')).isEqualTo(array('q', 'a'));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[a, q]> is equal to <[q, a]>");
+        .isEqualTo("Not true that <[a, q]> is equal to <[q, a]>. differs at index: [0]");
   }
 
   @Test
@@ -59,7 +59,7 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array('a', 'q')).isEqualTo(new int[] {});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .contains("Incompatible types compared. expected: int[], actual: char[]");
+        .contains("wrong type; expected: int[]; but was: char[]");
   }
 
   @Test
@@ -82,7 +82,7 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(array('a', 'q')).isNotEqualTo(array('a', 'q'));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[a, q]> unexpectedly equal to [a, q].");
+        .isEqualTo("Not true that <[a, q]> is not equal to <[a, q]>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -92,7 +92,7 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("<[a, q]> unexpectedly equal to [a, q].");
+        .isEqualTo("Not true that <[a, q]> is not equal to <[a, q]>");
   }
 
   private static char[] array(char... ts) {

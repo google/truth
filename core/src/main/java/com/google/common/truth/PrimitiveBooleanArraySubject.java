@@ -16,8 +16,6 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Booleans;
-import java.util.Arrays;
-import java.util.List;
 import javax.annotation.Nullable;
 
 /**
@@ -32,57 +30,7 @@ public final class PrimitiveBooleanArraySubject
     super(metadata, o, typeDescription);
   }
 
-  @Override
-  protected String underlyingType() {
-    return "boolean";
-  }
-
-  @Override
-  protected List<Boolean> listRepresentation() {
-    return Booleans.asList(actual());
-  }
-
-  /**
-   * A check that the actual array and {@code expected} are arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is equal to each element in the
-   * actual array, and in the same position.
-   */
-  @Override
-  public void isEqualTo(Object expected) {
-    boolean[] actual = actual();
-    if (actual == expected) {
-      return; // short-cut.
-    }
-    try {
-      boolean[] expectedArray = (boolean[]) expected;
-      if (!Arrays.equals(actual, expectedArray)) {
-        fail("is equal to", Booleans.asList(expectedArray));
-      }
-    } catch (ClassCastException e) {
-      failWithBadType(expected);
-    }
-  }
-
-  /**
-   * A check that the actual array and {@code expected} are not arrays of the same length and type,
-   * containing elements such that each element in {@code expected} is equal to each element in the
-   * actual array, and in the same position.
-   */
-  @Override
-  public void isNotEqualTo(Object expected) {
-    boolean[] actual = actual();
-    try {
-      boolean[] expectedArray = (boolean[]) expected;
-      if (actual == expected || Arrays.equals(actual, expectedArray)) {
-        failWithRawMessage(
-            "%s unexpectedly equal to %s.", actualAsString(), Booleans.asList(expectedArray));
-      }
-    } catch (ClassCastException ignored) {
-      // If it's not boolean[] then it's not equal and the test passes.
-    }
-  }
-
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(listRepresentation());
+    return checkNoNeedToDisplayBothValues("asList()").that(Booleans.asList(actual()));
   }
 }
