@@ -22,12 +22,12 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
 import static com.google.common.truth.Field.field;
 import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
+import static com.google.common.truth.SubjectUtils.concat;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.truth.Truth.SimpleAssertionError;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -233,10 +233,6 @@ public final class FailureMetadata {
 
   private ImmutableList<?> allPrefixMessages() {
     return concat(messages, descriptionAsStrings());
-  }
-
-  private static <E> ImmutableList<E> concat(Iterable<? extends E>... inputs) {
-    return ImmutableList.copyOf(Iterables.concat(inputs));
   }
 
   private FailureMetadata derive(ImmutableList<LazyMessage> messages, ImmutableList<Step> steps) {

@@ -18,6 +18,7 @@ package com.google.common.truth;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
@@ -234,5 +235,17 @@ final class SubjectUtils {
     } else {
       return items;
     }
+  }
+
+  static <E> ImmutableList<E> concat(Iterable<? extends E>... inputs) {
+    return ImmutableList.copyOf(Iterables.concat(inputs));
+  }
+
+  static <E> ImmutableList<E> append(E[] array, E object) {
+    return new ImmutableList.Builder<E>().add(array).add(object).build();
+  }
+
+  static <E> ImmutableList<E> append(ImmutableList<? extends E> list, E object) {
+    return new ImmutableList.Builder<E>().addAll(list).add(object).build();
   }
 }
