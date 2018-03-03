@@ -49,6 +49,19 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testFullDiffOnlyWhenRelevant() {
+    // There are no matches, so 'Full diff' should not be printed.
+    expectFailureWhenTesting().that(parse("o_int: 3")).isEqualTo(parse("o_int: 4"));
+    expectThatFailure().hasMessageThat().doesNotContain("Full diff");
+
+    // r_string is matched, so the 'Full diff' contains extra information.
+    expectFailureWhenTesting()
+        .that(parse("o_int: 3 r_string: 'abc'"))
+        .isEqualTo(parse("o_int: 4 r_string: 'abc'"));
+    expectThatFailure().hasMessageThat().contains("Full diff");
+  }
+
+  @Test
   public void testIgnoringFieldAbsence() {
     Message message = parse("o_int: 3");
     Message diffMessage = parse("o_int: 3 o_enum: DEFAULT");
