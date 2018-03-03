@@ -152,6 +152,11 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
       throw new AssertionError("Impossible: " + result());
     }
 
+    @Override
+    final boolean isContentEmpty() {
+      return false;
+    }
+
     static SingularField ignored(String fieldName) {
       return newBuilder().setFieldName(fieldName).setResult(Result.IGNORED).build();
     }
@@ -324,6 +329,11 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
         throw new AssertionError("Impossible: " + result());
       }
 
+      @Override
+      final boolean isContentEmpty() {
+        return false;
+      }
+
       static Builder newBuilder() {
         return new AutoValue_DiffResult_RepeatedField_PairResult.Builder();
       }
@@ -377,6 +387,11 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
         pairResult.printContentsForRepeatedField(
             /* includeSelfAlways = */ !isMatched(), includeMatches, fieldPrefix, sb);
       }
+    }
+
+    @Override
+    final boolean isContentEmpty() {
+      return pairResults().isEmpty();
     }
 
     static Builder newBuilder() {
@@ -439,6 +454,11 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
           singularField.printContents(includeMatches, fieldPrefix, sb);
         }
       }
+    }
+
+    @Override
+    final boolean isContentEmpty() {
+      return singularFields().isEmpty();
     }
 
     static Builder newBuilder() {
@@ -540,6 +560,11 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
     for (RecursableDiffEntity child : childEntities()) {
       child.printContents(includeMatches, fieldPrefix, sb);
     }
+  }
+
+  @Override
+  final boolean isContentEmpty() {
+    return Iterables.isEmpty(childEntities());
   }
 
   static Builder newBuilder() {

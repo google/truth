@@ -467,9 +467,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
                 + "added: r_string[0]: \"foo\"\n"
                 + "added: r_string[1]: \"bar\"\n"
                 + "deleted: r_string[0]: \"baz\"\n"
-                + "deleted: r_string[1]: \"qux\"\n"
-                + "\n"
-                + "Full diff report:\n");
+                + "deleted: r_string[1]: \"qux\"\n");
   }
 
   @Test

@@ -70,7 +70,7 @@ abstract class RecursableDiffEntity {
     if (isAnyChildMatched == null) {
       isAnyChildMatched = false;
       for (RecursableDiffEntity entity : childEntities()) {
-        if (entity.isMatched() || entity.isAnyChildMatched()) {
+        if ((entity.isMatched() && !entity.isContentEmpty()) || entity.isAnyChildMatched()) {
           isAnyChildMatched = true;
           break;
         }
@@ -88,7 +88,7 @@ abstract class RecursableDiffEntity {
     if (isAnyChildIgnored == null) {
       isAnyChildIgnored = false;
       for (RecursableDiffEntity entity : childEntities()) {
-        if (entity.isIgnored() || entity.isAnyChildIgnored()) {
+        if ((entity.isIgnored() && !entity.isContentEmpty()) || entity.isAnyChildIgnored()) {
           isAnyChildIgnored = true;
           break;
         }
@@ -106,6 +106,9 @@ abstract class RecursableDiffEntity {
    * @param sb Builder to print the text to.
    */
   abstract void printContents(boolean includeMatches, String fieldPrefix, StringBuilder sb);
+
+  /** Returns true if this entity has no contents to print, with or without includeMatches. */
+  abstract boolean isContentEmpty();
 
   final void printChildContents(boolean includeMatches, String fieldPrefix, StringBuilder sb) {
     for (RecursableDiffEntity entity : childEntities()) {
