@@ -22,6 +22,7 @@ import static com.google.common.base.Strings.commonSuffix;
 import static com.google.common.truth.Field.field;
 import static com.google.common.truth.Field.makeMessage;
 import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE;
+import static com.google.common.truth.SubjectUtils.concat;
 import static java.lang.Character.isHighSurrogate;
 import static java.lang.Character.isLowSurrogate;
 import static java.lang.Math.max;
@@ -72,11 +73,7 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
       ImmutableList<Field> tailFields,
       String expected,
       String actual) {
-    return new ImmutableList.Builder<Field>()
-        .addAll(headFields)
-        .addAll(formatExpectedAndActual(expected, actual))
-        .addAll(tailFields)
-        .build();
+    return concat(headFields, formatExpectedAndActual(expected, actual), tailFields);
   }
 
   /**

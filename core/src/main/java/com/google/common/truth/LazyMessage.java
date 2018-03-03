@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.truth.StringUtil.format;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import javax.annotation.Nullable;
 
 final class LazyMessage {
@@ -56,5 +57,13 @@ final class LazyMessage {
       count++;
     }
     return count;
+  }
+
+  static ImmutableList<String> evaluateAll(ImmutableList<LazyMessage> messages) {
+    ImmutableList.Builder<String> result = ImmutableList.builder();
+    for (LazyMessage message : messages) {
+      result.add(message.toString());
+    }
+    return result.build();
   }
 }
