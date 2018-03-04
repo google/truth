@@ -103,7 +103,9 @@ final class Platform {
     List<String> unifiedDiff =
         generateUnifiedDiff("expected", "actual", expectedLines, diff, /* contextSize= */ 3);
     if (unifiedDiff.isEmpty()) {
-      return ImmutableList.of(field("diff", "(empty -- differences in line breaks?)"));
+      return ImmutableList.of(
+          field("diff", "(line contents match, but line-break characters differ)"));
+      // TODO(cpovirk): Possibly include the expected/actual value, too?
     }
     unifiedDiff = unifiedDiff.subList(2, unifiedDiff.size()); // remove "--- expected," "+++ actual"
     String result = Joiner.on("\n").join(unifiedDiff);
