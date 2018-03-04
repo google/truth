@@ -91,6 +91,9 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
   static ImmutableList<Field> formatExpectedAndActual(String expected, String actual) {
     ImmutableList<Field> result;
 
+    // TODO(cpovirk): Call attention to differences in trailing whitespace.
+    // TODO(cpovirk): And changes in the *kind* of whitespace characters in the middle of the line.
+
     result = Platform.makeDiff(expected, actual);
     if (result != null) {
       return result;
@@ -116,6 +119,7 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
      * method at all because we'll generate diff-style output instead. So we might not need to worry
      * too much about newlines here.
      */
+    // TODO(cpovirk): Avoid splitting in the middle of "\r\n."
     int prefix = commonPrefix(expected, actual).length();
     prefix = max(0, prefix - CONTEXT);
     while (prefix > 0 && validSurrogatePairAt(expected, prefix - 1)) {
