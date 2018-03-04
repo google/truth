@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Strings.padStart;
+import static com.google.common.base.Strings.repeat;
 import static com.google.common.base.Throwables.getStackTraceAsString;
 import static com.google.common.truth.Expect.TestPhase.AFTER;
 import static com.google.common.truth.Expect.TestPhase.BEFORE;
@@ -124,16 +126,22 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       StringBuilder message =
           new StringBuilder(
               numFailures + (numFailures > 1 ? " expectations" : " expectation") + " failed:\n");
+      int countLength = String.valueOf(failures.size() + 1).length();
       int count = 0;
       for (AssertionError failure : failures) {
         count++;
         message.append("  ");
-        message.append(count);
+        message.append(padStart(String.valueOf(count), countLength, ' '));
         message.append(". ");
         if (count == 1) {
-          message.append(showStackTrace ? getStackTraceAsString(failure) : failure.getMessage());
+          appendIndented(
+              countLength,
+              message,
+              showStackTrace ? getStackTraceAsString(failure) : failure.getMessage());
         } else {
-          message.append(
+          appendIndented(
+              countLength,
+              message,
               showStackTrace
                   ? printSubsequentFailure(failures.get(0).getStackTrace(), failure)
                   : failure.getMessage());
@@ -142,6 +150,11 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       }
 
       return message.toString();
+    }
+
+    private static void appendIndented(int countLength, StringBuilder builder, String toAppend) {
+      int indent = countLength + 4; // "  " and ". "
+      builder.append(toAppend.replace("\n", "\n" + repeat(" ", indent)));
     }
 
     private String printSubsequentFailure(

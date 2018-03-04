@@ -108,6 +108,26 @@ public class ExpectTest {
   }
 
   @Test
+  public void expectFail10Aligned() {
+    thrown.expectMessage("10 expectations failed:");
+    thrown.expectMessage(" 1. Not true that <\"abc\"> contains <\"x\">");
+    thrown.expectMessage("10. Not true that <\"abc\"> contains <\"x\">");
+    for (int i = 0; i < 10; i++) {
+      expect.that("abc").contains("x");
+    }
+  }
+
+  @Test
+  public void expectFail10WrappedAligned() {
+    thrown.expectMessage("10 expectations failed:");
+    thrown.expectMessage(" 1. abc\n      xyz");
+    thrown.expectMessage("10. abc\n      xyz");
+    for (int i = 0; i < 10; i++) {
+      expect.fail("abc\nxyz");
+    }
+  }
+
+  @Test
   public void expectFailWithExceptionNoMessage() {
     thrown.expectMessage("3 expectations failed:");
     thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
