@@ -247,7 +247,10 @@ public class ComparisonFailureWithFieldsTest {
   @GwtIncompatible
   @Test
   public void formatDiffSameExceptNewlineStyle() {
-    runFormatTest(repeat("a\n", 10), repeat("a\r\n", 10), "(empty -- differences in line breaks?)");
+    runFormatTest(
+        repeat("a\n", 10),
+        repeat("a\r\n", 10),
+        "(line contents match, but line-break characters differ)");
   }
 
   @GwtIncompatible
