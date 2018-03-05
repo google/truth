@@ -128,14 +128,9 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
   public void hasCauseThat_tooDeep_failure() {
     Exception actual = new Exception("foobar");
     expectFailure.whenTesting().that(actual).hasCauseThat().hasCauseThat().isNull();
-    /*
-     * TODO(cpovirk): This message might suggest that actual.getCause() is the part that's failing.
-     * But that part is fine. It's only when we try to call getCause() again (on the null result of
-     * the previous call) that we have a problem.
-     */
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "value of: throwable.getCause(): "
+            "value of: throwable.getCause().getCause(): "
                 + "Causal chain is not deep enough - add a .isNotNull() check?");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }
