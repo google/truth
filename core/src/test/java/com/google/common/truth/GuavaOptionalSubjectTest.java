@@ -32,16 +32,6 @@ import org.junit.runners.JUnit4;
 public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
 
   @Test
-  public void namedOptional() {
-    Optional<String> optional = Optional.of("actual");
-
-    expectFailure.whenTesting().that(optional).named("name").hasValue("expected");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that name (<Optional.of(actual)>) has value <expected>");
-  }
-
-  @Test
   public void isPresent() {
     assertThat(Optional.of("foo")).isPresent();
   }
@@ -55,7 +45,7 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isPresentFailingWithNamed() {
+  public void isPresentFailing_named() {
     expectFailure.whenTesting().that(Optional.absent()).named("name").isPresent();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -98,7 +88,7 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasValue_FailingWithAbsent() {
+  public void hasValue_failingWithAbsent() {
     expectFailure.whenTesting().that(Optional.absent()).hasValue("foo");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -106,7 +96,7 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasValue_ErrorWithNullParameter() {
+  public void hasValue_errorWithNullParameter() {
     try {
       assertThat(Optional.of("foo")).hasValue(null);
     } catch (NullPointerException expected) {
@@ -117,7 +107,7 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasValue_FailingWithWrongValueForString() {
+  public void hasValue_failingWithWrongValueForString() {
     expectFailure.whenTesting().that(Optional.of("foo")).hasValue("boo");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -125,7 +115,15 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasValue_FailingWithWrongValueForOther() {
+  public void hasValue_failingWithWrongValueForString_named() {
+    expectFailure.whenTesting().that(Optional.of("foo")).named("bar").hasValue("boo");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that bar (<Optional.of(foo)>) has value <boo>");
+  }
+
+  @Test
+  public void hasValue_failingWithWrongValueForOther() {
     expectFailure.whenTesting().that(Optional.of(5)).hasValue(10);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -133,7 +131,7 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasValue_FailingWithSameToStrings() {
+  public void hasValue_failingWithSameToStrings() {
     expectFailure.whenTesting().that(Optional.of(10)).hasValue("10");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -143,15 +141,7 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasValue_Named_Failing() {
-    expectFailure.whenTesting().that(Optional.of("foo")).named("bar").hasValue("boo");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that bar (<Optional.of(foo)>) has value <boo>");
-  }
-
-  @Test
-  public void hasValue_Named_FailingWithSameToStrings() {
+  public void hasValue_failingWithSameToStrings_named() {
     expectFailure.whenTesting().that(Optional.of(10)).named("bar").hasValue("10");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
