@@ -48,7 +48,7 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailure.whenTesting().that(array(true, false, true)).isEqualTo(array(false, true, true));
+    expectFailureWhenTestingThat(array(true, false, true)).isEqualTo(array(false, true, true));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -58,7 +58,7 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    expectFailure.whenTesting().that(array(true, false, true)).isEqualTo(new Object());
+    expectFailureWhenTestingThat(array(true, false, true)).isEqualTo(new Object());
   }
 
   @Test
@@ -78,7 +78,7 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    expectFailure.whenTesting().that(array(true, false)).isNotEqualTo(array(true, false));
+    expectFailureWhenTestingThat(array(true, false)).isNotEqualTo(array(true, false));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[true, false]> is not equal to <[true, false]>");
@@ -88,7 +88,7 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailSame() {
     boolean[] same = array(true, false);
-    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    expectFailureWhenTestingThat(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[true, false]> is not equal to <[true, false]>");
@@ -96,5 +96,9 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
 
   private static boolean[] array(boolean... ts) {
     return ts;
+  }
+
+  private PrimitiveBooleanArraySubject expectFailureWhenTestingThat(boolean[] actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

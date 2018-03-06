@@ -33,26 +33,18 @@ public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void simpleEquality() {
-    assertThat(2L + 2).isEqualTo(4L);
-  }
-
-  @Test
-  public void longIsLong() {
     assertThat(4L).isEqualTo(4L);
   }
 
   @Test
   public void simpleInequality() {
-    assertThat(2L + 2).isNotEqualTo(5L);
+    assertThat(4L).isNotEqualTo(5L);
   }
 
   @Test
   public void equalityWithInts() {
-    long x = 0;
-
-    assertThat(x).isEqualTo(0);
-
-    expectFailure.whenTesting().that(x).isNotEqualTo(0);
+    assertThat(0L).isEqualTo(0);
+    expectFailureWhenTestingThat(0L).isNotEqualTo(0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <0> is not equal to <0>");
@@ -60,7 +52,7 @@ public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void equalityFail() {
-    expectFailure.whenTesting().that(2L + 2).isEqualTo(5L);
+    expectFailureWhenTestingThat(4L).isEqualTo(5L);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <4> is equal to <5>");
@@ -68,7 +60,7 @@ public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void inequalityFail() {
-    expectFailure.whenTesting().that(2L + 2).isNotEqualTo(4L);
+    expectFailureWhenTestingThat(4L).isNotEqualTo(4L);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <4> is not equal to <4>");
@@ -76,12 +68,12 @@ public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void equalityOfNulls() {
-    assertThat((Long) null).isEqualTo((Long) null);
+    assertThat((Long) null).isEqualTo(null);
   }
 
   @Test
   public void equalityOfNullsFail_nullActual() {
-    expectFailure.whenTesting().that((Long) null).isEqualTo(5L);
+    expectFailureWhenTestingThat(null).isEqualTo(5L);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <null> is equal to <5>");
@@ -89,7 +81,7 @@ public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void equalityOfNullsFail_nullExpected() {
-    expectFailure.whenTesting().that(5L).isEqualTo((Long) null);
+    expectFailureWhenTestingThat(5L).isEqualTo(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <5> is equal to <null>");
@@ -97,15 +89,35 @@ public class LongSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void inequalityOfNulls() {
-    assertThat((Long) null).isNotEqualTo(4L);
-    assertThat(4L).isNotEqualTo((Long) null);
+    assertThat(4L).isNotEqualTo(null);
+    assertThat((Integer) null).isNotEqualTo(4L);
   }
 
   @Test
   public void inequalityOfNullsFail() {
-    expectFailure.whenTesting().that((Long) null).isNotEqualTo((Long) null);
+    expectFailureWhenTestingThat(null).isNotEqualTo(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <null> is not equal to <null>");
+  }
+
+  @Test
+  public void testNumericTypeWithSameValue_shouldBeEqual_long_long() {
+    expectFailureWhenTestingThat(42L).isNotEqualTo(42L);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <42> is not equal to <42>");
+  }
+
+  @Test
+  public void testNumericTypeWithSameValue_shouldBeEqual_long_int() {
+    expectFailureWhenTestingThat(42L).isNotEqualTo(42);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <42> is not equal to <42>");
+  }
+
+  private LongSubject expectFailureWhenTestingThat(Long actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

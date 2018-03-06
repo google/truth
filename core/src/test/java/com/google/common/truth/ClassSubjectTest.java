@@ -44,7 +44,7 @@ public class ClassSubjectTest {
 
   @Test
   public void testIsAssignableTo_reversed() {
-    expectFailure.whenTesting().that(Object.class).isAssignableTo(String.class);
+    expectFailureWhenTestingThat(Object.class).isAssignableTo(String.class);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -54,11 +54,15 @@ public class ClassSubjectTest {
 
   @Test
   public void testIsAssignableTo_reversedDifferentTypes() {
-    expectFailure.whenTesting().that(String.class).isAssignableTo(Exception.class);
+    expectFailureWhenTestingThat(String.class).isAssignableTo(Exception.class);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
             "Not true that <class java.lang.String> "
                 + "is assignable to <class java.lang.Exception>");
+  }
+
+  private ClassSubject expectFailureWhenTestingThat(Class<?> actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

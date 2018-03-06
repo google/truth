@@ -60,7 +60,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasLengthFail() {
-    expectFailure.whenTesting().that(objectArray("A", 5L)).hasLength(1);
+    expectFailureWhenTestingThat(objectArray("A", 5L)).hasLength(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[A, 5]> has length <1>");
@@ -68,7 +68,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasLengthFailNamed() {
-    expectFailure.whenTesting().that(objectArray("A", 5L)).named("foo").hasLength(1);
+    expectFailureWhenTestingThat(objectArray("A", 5L)).named("foo").hasLength(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that foo (<[A, 5]>) has length <1>");
@@ -76,7 +76,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasLengthMultiFail() {
-    expectFailure.whenTesting().that(new Object[][] {{"A"}, {5L}}).hasLength(1);
+    expectFailureWhenTestingThat(new Object[][] {{"A"}, {5L}}).hasLength(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[[A], [5]]> has length <1>");
@@ -99,7 +99,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEmptyFail() {
-    expectFailure.whenTesting().that(objectArray("A", 5L)).isEmpty();
+    expectFailureWhenTestingThat(objectArray("A", 5L)).isEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[A, 5]> is empty");
@@ -113,7 +113,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEmptyFail() {
-    expectFailure.whenTesting().that(EMPTY).isNotEmpty();
+    expectFailureWhenTestingThat(EMPTY).isNotEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[]> is not empty");
@@ -121,7 +121,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailure.whenTesting().that(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
+    expectFailureWhenTestingThat(objectArray("A", 5L)).isEqualTo(objectArray(5L, "A"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[A, 5]> is equal to <[5, A]>. differs at index: [0]");
@@ -129,9 +129,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrderingMultiDimensional_00() {
-    expectFailure
-        .whenTesting()
-        .that(new Object[][] {{"A"}, {5L}})
+    expectFailureWhenTestingThat(new Object[][] {{"A"}, {5L}})
         .isEqualTo(new Object[][] {{5L}, {"A"}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -140,9 +138,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrderingMultiDimensional_01() {
-    expectFailure
-        .whenTesting()
-        .that(new Object[][] {{"A", "B"}, {5L}})
+    expectFailureWhenTestingThat(new Object[][] {{"A", "B"}, {5L}})
         .isEqualTo(new Object[][] {{"A"}, {5L}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -153,9 +149,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrderingMultiDimensional_11() {
-    expectFailure
-        .whenTesting()
-        .that(new Object[][] {{"A"}, {5L}})
+    expectFailureWhenTestingThat(new Object[][] {{"A"}, {5L}})
         .isEqualTo(new Object[][] {{"A"}, {5L, 6L}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -166,7 +160,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    expectFailure.whenTesting().that(objectArray("A", 5L)).isEqualTo(new Object());
+    expectFailureWhenTestingThat(objectArray("A", 5L)).isEqualTo(new Object());
     AssertionError e = expectFailure.getFailure();
     assertThat(e).hasMessageThat().contains("is equal to");
     assertThat(e).hasMessageThat().contains("java.lang.Object");
@@ -192,7 +186,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    expectFailure.whenTesting().that(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
+    expectFailureWhenTestingThat(objectArray("A", 5L)).isNotEqualTo(objectArray("A", 5L));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[A, 5]> is not equal to <[A, 5]>");
@@ -200,9 +194,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEqualsMultiDimensional() {
-    expectFailure
-        .whenTesting()
-        .that(new Object[][] {{"A"}, {5L}})
+    expectFailureWhenTestingThat(new Object[][] {{"A"}, {5L}})
         .isNotEqualTo(new Object[][] {{"A"}, {5L}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -213,7 +205,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailSame() {
     Object[] same = objectArray("A", 5L);
-    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    expectFailureWhenTestingThat(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[A, 5]> is not equal to <[A, 5]>");
@@ -223,7 +215,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailSameMultiDimensional() {
     Object[][] same = new Object[][] {{"A"}, {5L}};
-    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    expectFailureWhenTestingThat(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[[A], [5]]> is not equal to <[[A], [5]]>");
@@ -248,7 +240,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringArrayIsEqualTo_Fail_UnequalLength() {
-    expectFailure.whenTesting().that(objectArray("A", "B")).isEqualTo(objectArray("B"));
+    expectFailureWhenTestingThat(objectArray("A", "B")).isEqualTo(objectArray("B"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -257,10 +249,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringArrayIsEqualTo_Fail_UnequalLengthMultiDimensional() {
-    expectFailure
-        .whenTesting()
-        .that(new String[][] {{"A"}, {"B"}})
-        .isEqualTo(new String[][] {{"A"}});
+    expectFailureWhenTestingThat(new String[][] {{"A"}, {"B"}}).isEqualTo(new String[][] {{"A"}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -270,7 +259,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringArrayIsEqualTo_Fail_UnequalOrdering() {
-    expectFailure.whenTesting().that(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
+    expectFailureWhenTestingThat(objectArray("A", "B")).isEqualTo(objectArray("B", "A"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[A, B]> is equal to <[B, A]>. differs at index: [0]");
@@ -278,9 +267,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringArrayIsEqualTo_Fail_UnequalOrderingMultiDimensional() {
-    expectFailure
-        .whenTesting()
-        .that(new String[][] {{"A"}, {"B"}})
+    expectFailureWhenTestingThat(new String[][] {{"A"}, {"B"}})
         .isEqualTo(new String[][] {{"B"}, {"A"}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -289,9 +276,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void SetArrayIsEqualTo_Fail_UnequalOrdering() {
-    expectFailure
-        .whenTesting()
-        .that(objectArray(ImmutableSet.of("A"), ImmutableSet.of("B")))
+    expectFailureWhenTestingThat(objectArray(ImmutableSet.of("A"), ImmutableSet.of("B")))
         .isEqualTo(objectArray(ImmutableSet.of("B"), ImmutableSet.of("A")));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -308,9 +293,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void primitiveMultiDimensionalArrayIsEqualTo_Fail_UnequalOrdering() {
-    expectFailure
-        .whenTesting()
-        .that(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+    expectFailureWhenTestingThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
         .isEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6, 7}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -327,9 +310,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void primitiveMultiDimensionalArrayIsNotEqualTo_Fail_Equal() {
-    expectFailure
-        .whenTesting()
-        .that(new int[][] {{1, 2}, {3}, {4, 5, 6}})
+    expectFailureWhenTestingThat(new int[][] {{1, 2}, {3}, {4, 5, 6}})
         .isNotEqualTo(new int[][] {{1, 2}, {3}, {4, 5, 6}});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -339,9 +320,7 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void boxedAndUnboxed() {
-    expectFailure
-        .whenTesting()
-        .that(new Object[] {new int[] {0}})
+    expectFailureWhenTestingThat(new Object[] {new int[] {0}})
         .isEqualTo(new Object[] {new Integer[] {0}});
     assertThat(expectFailure.getFailure()).hasMessageThat().contains("toString");
     assertThat(expectFailure.getFailure())
@@ -359,5 +338,9 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
 
   private static Set[] objectArray(Set... ts) {
     return ts;
+  }
+
+  private ObjectArraySubject<?> expectFailureWhenTestingThat(Object[] actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

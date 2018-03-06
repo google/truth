@@ -69,7 +69,7 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastElement_empty() {
-    expectFailure.whenTesting().that(ImmutableSortedSet.of()).hasFirstElement(1);
+    expectFailureWhenTestingThat(ImmutableSortedSet.of()).hasFirstElement(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[]> has first element <1>");
@@ -77,7 +77,7 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastElement_empty_2() {
-    expectFailure.whenTesting().that(ImmutableSortedSet.of()).hasLastElement(1);
+    expectFailureWhenTestingThat(ImmutableSortedSet.of()).hasLastElement(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[]> has last element <1>");
@@ -85,7 +85,7 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastElement_empty_3() {
-    expectFailure.whenTesting().that(ImmutableSortedSet.of()).hasFirstElement(null);
+    expectFailureWhenTestingThat(ImmutableSortedSet.of()).hasFirstElement(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[]> has first element <null>");
@@ -93,7 +93,7 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastElement_empty_4() {
-    expectFailure.whenTesting().that(ImmutableSortedSet.of()).hasLastElement(null);
+    expectFailureWhenTestingThat(ImmutableSortedSet.of()).hasLastElement(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[]> has last element <null>");
@@ -101,7 +101,7 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastElement_wrongPosition() {
-    expectFailure.whenTesting().that(ImmutableSortedSet.of(0, 1, 2)).hasFirstElement(1);
+    expectFailureWhenTestingThat(ImmutableSortedSet.of(0, 1, 2)).hasFirstElement(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -111,7 +111,7 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastElement_wrongPosition_2() {
-    expectFailure.whenTesting().that(ImmutableSortedSet.of(0, 1, 2)).hasLastElement(1);
+    expectFailureWhenTestingThat(ImmutableSortedSet.of(0, 1, 2)).hasLastElement(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -121,7 +121,7 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastElement_absent() {
-    expectFailure.whenTesting().that(ImmutableSortedSet.of(0)).hasFirstElement(1);
+    expectFailureWhenTestingThat(ImmutableSortedSet.of(0)).hasFirstElement(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -131,11 +131,15 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastElement_absent_2() {
-    expectFailure.whenTesting().that(ImmutableSortedSet.of(0)).hasLastElement(1);
+    expectFailureWhenTestingThat(ImmutableSortedSet.of(0)).hasLastElement(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[0]> has last element <1>. "
                 + "It does not contain this element, and the last element is <0>");
+  }
+
+  private SortedSetSubject expectFailureWhenTestingThat(SortedSet<?> actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

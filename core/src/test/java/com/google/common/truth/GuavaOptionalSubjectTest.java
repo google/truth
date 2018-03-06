@@ -149,7 +149,7 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
                 + "has value <10> (class java.lang.String)");
   }
 
-  private GuavaOptionalSubject expectFailureWhenTestingThat(Optional<?> optional) {
-    return expectFailure.whenTesting().that(optional);
+  private GuavaOptionalSubject expectFailureWhenTestingThat(Optional<?> actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

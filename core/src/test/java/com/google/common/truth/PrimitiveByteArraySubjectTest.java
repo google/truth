@@ -54,7 +54,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
   public void isEqualTo_Fail_shortVersion() {
     byte[] actual = new byte[] {124, 112, 12, 11, 10};
     byte[] expect = new byte[] {24, 12, 2, 1, 0};
-    expectFailure.whenTesting().that(actual).isEqualTo(expect);
+    expectFailureWhenTestingThat(actual).isEqualTo(expect);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -75,7 +75,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
           124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111,
           109, 0, 0, 1, 0, 1
         };
-    expectFailure.whenTesting().that(actual).isEqualTo(expect);
+    expectFailureWhenTestingThat(actual).isEqualTo(expect);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -87,10 +87,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailure
-        .whenTesting()
-        .that(array(BYTE_0, (byte) 123))
-        .isEqualTo(array((byte) 123, BYTE_0));
+    expectFailureWhenTestingThat(array(BYTE_0, (byte) 123)).isEqualTo(array((byte) 123, BYTE_0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("expected: [123, 0]; but was: [0, 123] expected:<[7B00]> but was:<[007B]>");
@@ -98,7 +95,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    expectFailure.whenTesting().that(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {});
+    expectFailureWhenTestingThat(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("wrong type; expected: int[]; but was: byte[]");
@@ -121,7 +118,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    expectFailure.whenTesting().that(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
+    expectFailureWhenTestingThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <0001> is not equal to <0001>");
@@ -131,7 +128,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailSame() {
     byte[] same = array(BYTE_0, BYTE_1);
-    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    expectFailureWhenTestingThat(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <0001> is not equal to <0001>");
@@ -139,5 +136,9 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
 
   private static byte[] array(byte... ts) {
     return ts;
+  }
+
+  private PrimitiveByteArraySubject expectFailureWhenTestingThat(byte[] actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

@@ -16,10 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableSet;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -36,219 +34,72 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void simpleEquality() {
-    assertThat(2 + 2).isEqualTo(4);
+    assertThat(4).isEqualTo(4);
+  }
+
+  @Test
+  public void simpleInequality() {
+    assertThat(4).isNotEqualTo(5);
   }
 
   @Test
   public void equalityWithLongs() {
-    int x = 0;
-    assertThat(x).isEqualTo(0L);
-    expectFailure.whenTesting().that(x).isNotEqualTo(0L);
+    assertThat(0).isEqualTo(0L);
+    expectFailureWhenTestingThat(0).isNotEqualTo(0L);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <0> is not equal to <0>");
   }
 
   @Test
-  public void intIsInt() {
-    assertThat(4).isEqualTo(4);
-  }
-
-  @Test
-  public void simpleInequality() {
-    assertThat(2 + 2).isNotEqualTo(5);
-  }
-
-  @Test
   public void equalityFail() {
-    expectFailure.whenTesting().that(2 + 2).isEqualTo(5);
+    expectFailureWhenTestingThat(4).isEqualTo(5);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .contains("Not true that <4> is equal to <5>");
+        .isEqualTo("Not true that <4> is equal to <5>");
   }
 
   @Test
   public void inequalityFail() {
-    expectFailure.whenTesting().that(2 + 2).isNotEqualTo(4);
+    expectFailureWhenTestingThat(4).isNotEqualTo(4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .contains("Not true that <4> is not equal to <4>");
+        .isEqualTo("Not true that <4> is not equal to <4>");
   }
 
   @Test
-  public void assertThatIntegerNullIsEqualToNull() {
-    assertThat((Integer) null).isEqualTo((Integer) null);
-    assertThat((Integer) null).isEqualTo((Long) null);
-    assertThat((Integer) null).isEqualTo((Object) null);
+  public void equalityOfNulls() {
+    assertThat((Integer) null).isEqualTo(null);
   }
 
   @Test
-  public void assertThatLongNullIsEqualToNull() {
-    assertThat((Long) null).isEqualTo((Integer) null);
-    assertThat((Long) null).isEqualTo((Long) null);
-    assertThat((Long) null).isEqualTo((Object) null);
-  }
-
-  @Test
-  public void equalityOfNullsFail_actualNull() {
-    expectFailure.whenTesting().that((Long) null).isEqualTo(5);
+  public void equalityOfNullsFail_nullActual() {
+    expectFailureWhenTestingThat(null).isEqualTo(5);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .contains("Not true that <null> is equal to <5>");
+        .isEqualTo("Not true that <null> is equal to <5>");
   }
 
   @Test
-  public void equalityOfNullsFail_expectNull() {
-    expectFailure.whenTesting().that(5).isEqualTo((Integer) null);
+  public void equalityOfNullsFail_nullExpected() {
+    expectFailureWhenTestingThat(5).isEqualTo(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .contains("Not true that <5> is equal to <null>");
+        .isEqualTo("Not true that <5> is equal to <null>");
   }
 
   @Test
-  public void assertThatIntegerIsNotEqualToNull() {
-    assertThat(4).isNotEqualTo((Long) null);
-    assertThat(4).isNotEqualTo((Integer) null);
-    assertThat(4).isNotEqualTo((Object) null);
-  }
-
-  @Test
-  public void assertThatLongIsNotEqualToNull() {
-    assertThat(4L).isNotEqualTo((Long) null);
-    assertThat(4L).isNotEqualTo((Integer) null);
-    assertThat(4L).isNotEqualTo((Object) null);
-  }
-
-  @Test
-  public void assertThatLongNullIsNotEqualTo() {
-    assertThat((Long) null).isNotEqualTo(4);
-    assertThat((Long) null).isNotEqualTo(4L);
-  }
-
-  @Test
-  public void assertThatIntegerNullIsNotEqualTo() {
+  public void inequalityOfNulls() {
+    assertThat(4).isNotEqualTo(null);
     assertThat((Integer) null).isNotEqualTo(4);
-    assertThat((Integer) null).isNotEqualTo(4L);
   }
 
   @Test
-  public void assertThatIntegerIsEqualToLong() {
-    assertThat(4).isEqualTo(new Long(4L));
-    assertThat(new Integer(4)).isEqualTo(new Long(4L));
-    assertThat(new Integer(4)).isEqualTo(4L);
-  }
-
-  @Test
-  public void assertThatLongIsEqualToInteger() {
-    assertThat(4L).isEqualTo(new Integer(4));
-    assertThat(new Long(4L)).isEqualTo(new Integer(4));
-    assertThat(new Long(4L)).isEqualTo(4);
-  }
-
-  @Test
-  public void assertThatIntegerNullIsNotEqualToIntegerNull_shouldFail() {
-    expectFailure.whenTesting().that((Integer) null).isNotEqualTo((Integer) null);
+  public void inequalityOfNullsFail() {
+    expectFailureWhenTestingThat(null).isNotEqualTo(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <null> is not equal to <null>");
-  }
-
-  @Test
-  public void assertThatIntegerNullIsNotEqualToLongNull_shouldFail() {
-    expectFailure.whenTesting().that((Integer) null).isNotEqualTo((Long) null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not equal to <null>");
-  }
-
-  @Test
-  public void assertThatIntegerNullIsNotEqualToObjectNull_shouldFail() {
-    expectFailure.whenTesting().that((Integer) null).isNotEqualTo((Object) null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not equal to <null>");
-  }
-
-  @Test
-  public void assertThatLongNullIsNotEqualToIntegerNull_shouldFail() {
-    expectFailure.whenTesting().that((Long) null).isNotEqualTo((Integer) null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <null> is not equal to <null>");
-  }
-
-  @Test
-  public void assertThatLongNullIsNotEqualToLongNull_shouldFail() {
-    expectFailure.whenTesting().that((Long) null).isNotEqualTo((Long) null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not equal to <null>");
-  }
-
-  @Test
-  public void assertThatLongNullIsNotEqualToObjectNull_shouldFail() {
-    expectFailure.whenTesting().that((Long) null).isNotEqualTo((Object) null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not equal to <null>");
-  }
-
-  @Test
-  public void primitives() {
-    Assert.assertEquals(4, 4L);
-    Assert.assertEquals(4L, 4);
-    assertThat(4L).isEqualTo(4);
-    assertThat(new Long(4L)).isEqualTo(4);
-  }
-
-  @SuppressWarnings("EqualsIncompatibleType")
-  @Test
-  public void boxedPrimitives() {
-    // Java says boxed primitives are not .equals().
-    // Check the boolean expression with JUnit and Truth:
-    Assert.assertFalse(new Integer(4).equals(new Long(4L)));
-    Assert.assertFalse(new Long(4L).equals(new Integer(4)));
-    assertThat(new Integer(4).equals(new Long(4L))).isFalse();
-    assertThat(new Long(4L).equals(new Integer(4))).isFalse();
-
-    // JUnit says boxed primitives are not .equals()
-    try {
-      Assert.assertEquals(new Integer(4), new Long(4L)); // this throws!
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("expected: java.lang.Integer<4> but was: java.lang.Long<4>");
-    }
-    try {
-      Assert.assertEquals(new Long(4L), new Integer(4)); // this throws!
-      fail("Should have thrown");
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("expected: java.lang.Long<4> but was: java.lang.Integer<4>");
-    }
-  }
-
-  @SuppressWarnings("EqualsIncompatibleType")
-  @Test
-  public void mixedBoxedAndUnboxedPrimitives() {
-    // Java says boxed primitives are not .equals() to primitives.
-    Assert.assertFalse(new Integer(4).equals(4L));
-    Assert.assertFalse(new Integer(4).equals(new Long(4L)));
-    Assert.assertFalse(new Long(4L).equals(4));
-    Assert.assertFalse(new Long(4L).equals(new Integer(4)));
-    assertThat(new Integer(4).equals(4L)).isFalse();
-    assertThat(new Long(4L).equals(4)).isFalse();
-
-    // JUnit won't even let you do this comparison (compile error!)
-    // "reference to assertEquals is ambiguous"
-    // Assert.assertEquals(new Integer(4), 4L);
-    // Assert.assertEquals(4L, new Integer(4));
-    // Assert.assertEquals(new Long(4L), 4);
-    // Assert.assertEquals(4, new Long(4L));
-    // Assert.assertEquals(4, new Integer(4));
-    // Assert.assertEquals(new Long(4L), 4L);
   }
 
   @Test
@@ -265,7 +116,7 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void overflowOnPrimitives_shouldBeEqualAfterCast_min() {
-    expectFailure.whenTesting().that(Integer.MIN_VALUE).isNotEqualTo((long) Integer.MIN_VALUE);
+    expectFailureWhenTestingThat(Integer.MIN_VALUE).isNotEqualTo((long) Integer.MIN_VALUE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <-2147483648> is not equal to <-2147483648>");
@@ -273,7 +124,7 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void overflowOnPrimitives_shouldBeEqualAfterCast_max() {
-    expectFailure.whenTesting().that(Integer.MAX_VALUE).isNotEqualTo((long) Integer.MAX_VALUE);
+    expectFailureWhenTestingThat(Integer.MAX_VALUE).isNotEqualTo((long) Integer.MAX_VALUE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <2147483647> is not equal to <2147483647>");
@@ -281,7 +132,7 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void overflowBetweenIntegerAndLong_shouldBeDifferent_min() {
-    expectFailure.whenTesting().that(Integer.MIN_VALUE).isEqualTo(Long.MIN_VALUE);
+    expectFailureWhenTestingThat(Integer.MIN_VALUE).isEqualTo(Long.MIN_VALUE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <-2147483648> is equal to <-9223372036854775808>");
@@ -289,7 +140,7 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void overflowBetweenIntegerAndLong_shouldBeDifferent_max() {
-    expectFailure.whenTesting().that(Integer.MAX_VALUE).isEqualTo(Long.MAX_VALUE);
+    expectFailureWhenTestingThat(Integer.MAX_VALUE).isEqualTo(Long.MAX_VALUE);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <2147483647> is equal to <9223372036854775807>");
@@ -358,63 +209,7 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_int_long() {
-    expectFailure.whenTesting().that(42).isNotEqualTo(42L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_int_Long() {
-    expectFailure.whenTesting().that(42).isNotEqualTo(new Long(42L));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_Integer_long() {
-    expectFailure.whenTesting().that(new Integer(42)).isNotEqualTo(42L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_Integer_Long() {
-    expectFailure.whenTesting().that(new Integer(42)).isNotEqualTo(new Long(42L));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_long_int() {
-    expectFailure.whenTesting().that(42L).isNotEqualTo(42);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_long_Integer() {
-    expectFailure.whenTesting().that(42L).isNotEqualTo(new Integer(42));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_Long_int() {
-    expectFailure.whenTesting().that(new Long(42L)).isNotEqualTo(42);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_Long_Integer() {
-    expectFailure.whenTesting().that(new Long(42L)).isNotEqualTo(new Integer(42));
+    expectFailureWhenTestingThat(42).isNotEqualTo(42L);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <42> is not equal to <42>");
@@ -422,63 +217,7 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_int_int() {
-    expectFailure.whenTesting().that(42).isNotEqualTo(42);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_int_Integer() {
-    expectFailure.whenTesting().that(42).isNotEqualTo(new Integer(42));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_Integer_int() {
-    expectFailure.whenTesting().that(new Integer(42)).isNotEqualTo(42);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_Integer_Integer() {
-    expectFailure.whenTesting().that(new Integer(42)).isNotEqualTo(new Integer(42));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_long_long() {
-    expectFailure.whenTesting().that(42L).isNotEqualTo(42L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_long_Long() {
-    expectFailure.whenTesting().that(42L).isNotEqualTo(new Long(42L));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_Long_long() {
-    expectFailure.whenTesting().that(new Long(42L)).isNotEqualTo(42L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
-  }
-
-  @Test
-  public void testNumericTypeWithSameValue_shouldBeEqual_Long_Long() {
-    expectFailure.whenTesting().that(new Long(42L)).isNotEqualTo(new Long(42L));
+    expectFailureWhenTestingThat(42).isNotEqualTo(42);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <42> is not equal to <42>");
@@ -486,7 +225,7 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void testNumericPrimitiveTypes_isNotEqual_shouldFail_intToChar() {
-    expectFailure.whenTesting().that(42).isNotEqualTo((char) 42);
+    expectFailureWhenTestingThat(42).isNotEqualTo((char) 42);
     // 42 in ASCII is '*'
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -495,6 +234,7 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void testNumericPrimitiveTypes_isNotEqual_shouldFail_charToInt() {
+    // Uses Object overload rather than Integer.
     expectFailure.whenTesting().that((char) 42).isNotEqualTo(42);
     // 42 in ASCII is '*'
     assertThat(expectFailure.getFailure())
@@ -571,5 +311,9 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
         assertThat(expected).isNotEqualTo(actual);
       }
     }
+  }
+
+  private IntegerSubject expectFailureWhenTestingThat(Integer actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

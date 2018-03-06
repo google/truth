@@ -74,7 +74,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     // "although their toString() representations are the same"
     assertThatIsEqualToFails(-0.0, 0.0);
     // Under GWT, 1.23f.toString() is different than 1.23d.toString(), so the message omits types.
-    expectFailure.whenTesting().that(1.23).isEqualTo(1.23f);
+    expectFailureWhenTestingThat(1.23).isEqualTo(1.23f);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -558,5 +558,9 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
           }
         };
     expectFailureWithMessage(callback, "testValue (<" + value + ">) should not have been NaN");
+  }
+
+  private DoubleSubject expectFailureWhenTestingThat(Double actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

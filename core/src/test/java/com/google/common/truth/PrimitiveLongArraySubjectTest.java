@@ -48,7 +48,7 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailure.whenTesting().that(array(2, 3)).isEqualTo(array(3, 2));
+    expectFailureWhenTestingThat(array(2, 3)).isEqualTo(array(3, 2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[2, 3]> is equal to <[3, 2]>. differs at index: [0]");
@@ -56,7 +56,7 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    expectFailure.whenTesting().that(array(2, 3, 4)).isEqualTo(new int[] {});
+    expectFailureWhenTestingThat(array(2, 3, 4)).isEqualTo(new int[] {});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("wrong type; expected: int[]; but was: long[]");
@@ -79,7 +79,7 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    expectFailure.whenTesting().that(array(2, 3)).isNotEqualTo(array(2, 3));
+    expectFailureWhenTestingThat(array(2, 3)).isNotEqualTo(array(2, 3));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[2, 3]> is not equal to <[2, 3]>");
@@ -89,7 +89,7 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailSame() {
     long[] same = array(2, 3);
-    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    expectFailureWhenTestingThat(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[2, 3]> is not equal to <[2, 3]>");
@@ -97,5 +97,9 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
 
   private static long[] array(long... ts) {
     return ts;
+  }
+
+  private PrimitiveLongArraySubject expectFailureWhenTestingThat(long[] actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

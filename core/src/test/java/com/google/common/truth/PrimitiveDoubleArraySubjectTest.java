@@ -78,7 +78,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_NotEqual() {
-    expectFailure.whenTesting().that(array(2.2d)).isEqualTo(array(OVER_2POINT2));
+    expectFailureWhenTestingThat(array(2.2d)).isEqualTo(array(OVER_2POINT2));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -87,7 +87,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_DifferentOrder() {
-    expectFailure.whenTesting().that(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d));
+    expectFailureWhenTestingThat(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[3.3, 2.2]>. differs at index: [0]");
@@ -95,7 +95,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_Longer() {
-    expectFailure.whenTesting().that(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 4.4d));
+    expectFailureWhenTestingThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 4.4d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -105,7 +105,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_Shorter() {
-    expectFailure.whenTesting().that(array(2.2d, 3.3d)).isEqualTo(array(2.2d));
+    expectFailureWhenTestingThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -115,7 +115,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_PlusMinusZero() {
-    expectFailure.whenTesting().that(array(0.0d)).isEqualTo(array(-0.0d));
+    expectFailureWhenTestingThat(array(0.0d)).isEqualTo(array(-0.0d));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[0.0]> is equal to <[-0.0]>. differs at index: [0]");
@@ -123,14 +123,12 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_NotAnArray() {
-    expectFailure.whenTesting().that(array(2.2d, 3.3d, 4.4d)).isEqualTo(new Object());
+    expectFailureWhenTestingThat(array(2.2d, 3.3d, 4.4d)).isEqualTo(new Object());
   }
 
   @Test
   public void isNotEqualTo_WithoutToleranceParameter_FailEquals() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY))
+    expectFailureWhenTestingThat(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY))
         .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -141,9 +139,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_WithoutToleranceParameter_NaN_plusZero_FailEquals() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
+    expectFailureWhenTestingThat(
+            array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
         .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -194,9 +191,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOf_FailNotQuiteApproximatelyEquals() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .of(2.2d, INTOLERABLE_3POINT3);
     assertThat(expectFailure.getFailure())
@@ -211,9 +206,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOf_Fail_DifferentOrder() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .of(3.3d, 2.2d);
     assertThat(expectFailure.getFailure())
@@ -227,9 +220,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOf_Fail_Longer() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .of(2.2d, 3.3d, 1.1d);
     assertThat(expectFailure.getFailure())
@@ -243,7 +234,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOf_Fail_Shorter() {
-    expectFailure.whenTesting().that(array(2.2d, 3.3d)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2d);
+    expectFailureWhenTestingThat(array(2.2d, 3.3d)).hasValuesWithin(DEFAULT_TOLERANCE).of(2.2d);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -255,9 +246,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOf_Fail_Infinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, POSITIVE_INFINITY))
+    expectFailureWhenTestingThat(array(2.2d, POSITIVE_INFINITY))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .of(2.2d, POSITIVE_INFINITY);
     assertThat(expectFailure.getFailure())
@@ -272,7 +261,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void hasValuesWithinOf_Fail_SameInfinity() {
     double[] same = array(2.2d, POSITIVE_INFINITY);
-    expectFailure.whenTesting().that(same).hasValuesWithin(DEFAULT_TOLERANCE).of(same);
+    expectFailureWhenTestingThat(same).hasValuesWithin(DEFAULT_TOLERANCE).of(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -284,9 +273,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOf_Fail_OneInfinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .of(2.2d, POSITIVE_INFINITY);
     assertThat(expectFailure.getFailure())
@@ -300,9 +287,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOf_Fail_LongerOneInfinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .of(POSITIVE_INFINITY);
     assertThat(expectFailure.getFailure())
@@ -316,7 +301,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOf_Fail_NaN() {
-    expectFailure.whenTesting().that(array(NaN)).hasValuesWithin(DEFAULT_TOLERANCE).of(NaN);
+    expectFailureWhenTestingThat(array(NaN)).hasValuesWithin(DEFAULT_TOLERANCE).of(NaN);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -386,9 +371,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOfElementsIn_FailNotQuiteApproximatelyEquals() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(2.2d, INTOLERABLE_3POINT3));
     assertThat(expectFailure.getFailure())
@@ -403,9 +386,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOfElementsIn_Fail_DifferentOrder() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(3.3d, 2.2d));
     assertThat(expectFailure.getFailure())
@@ -419,9 +400,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOfElementsIn_Fail_Longer() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(2.2d, 3.3d, 1.1d));
     assertThat(expectFailure.getFailure())
@@ -435,9 +414,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOfElementsIn_Fail_Shorter() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(2.2d));
     assertThat(expectFailure.getFailure())
@@ -451,9 +428,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOfElementsIn_Fail_Infinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, POSITIVE_INFINITY))
+    expectFailureWhenTestingThat(array(2.2d, POSITIVE_INFINITY))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(2.2d, POSITIVE_INFINITY));
     assertThat(expectFailure.getFailure())
@@ -467,9 +442,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOfElementsIn_Fail_OneInfinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(2.2d, POSITIVE_INFINITY));
     assertThat(expectFailure.getFailure())
@@ -483,9 +456,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOfElementsIn_Fail_LongerOneInfinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(POSITIVE_INFINITY));
     assertThat(expectFailure.getFailure())
@@ -499,9 +470,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasValuesWithinOfElementsIn_Fail_NaN() {
-    expectFailure
-        .whenTesting()
-        .that(array(NaN))
+    expectFailureWhenTestingThat(array(NaN))
         .hasValuesWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(NaN));
     assertThat(expectFailure.getFailure())
@@ -562,9 +531,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailEquals() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
         .of(2.2d, 3.3d);
     assertThat(expectFailure.getFailure())
@@ -578,9 +545,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailApproximatelyEquals() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
         .of(2.2d, TOLERABLE_3POINT3);
     assertThat(expectFailure.getFailure())
@@ -605,7 +570,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_FailSame() {
     double[] same = array(2.2d, 3.3d);
-    expectFailure.whenTesting().that(same).hasValuesNotWithin(DEFAULT_TOLERANCE).of(same);
+    expectFailureWhenTestingThat(same).hasValuesNotWithin(DEFAULT_TOLERANCE).of(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -617,9 +582,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_Fail_Infinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, POSITIVE_INFINITY))
+    expectFailureWhenTestingThat(array(2.2d, POSITIVE_INFINITY))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
         .of(2.2d, POSITIVE_INFINITY);
     assertThat(expectFailure.getFailure())
@@ -635,7 +598,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_Fail_SameInfinity() {
     double[] same = array(2.2d, POSITIVE_INFINITY);
-    expectFailure.whenTesting().that(same).hasValuesNotWithin(DEFAULT_TOLERANCE).of(same);
+    expectFailureWhenTestingThat(same).hasValuesNotWithin(DEFAULT_TOLERANCE).of(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -648,9 +611,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_OneInfinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
         .of(2.2d, POSITIVE_INFINITY);
     assertThat(expectFailure.getFailure())
@@ -671,7 +632,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOf_Fail_NaN() {
-    expectFailure.whenTesting().that(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(NaN);
+    expectFailureWhenTestingThat(array(NaN)).hasValuesNotWithin(DEFAULT_TOLERANCE).of(NaN);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -746,9 +707,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_FailEquals() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(2.2d, 3.3d));
     assertThat(expectFailure.getFailure())
@@ -762,9 +721,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_FailApproximatelyEquals() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(2.2d, TOLERABLE_3POINT3));
     assertThat(expectFailure.getFailure())
@@ -788,9 +745,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_Fail_Infinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, POSITIVE_INFINITY))
+    expectFailureWhenTestingThat(array(2.2d, POSITIVE_INFINITY))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(2.2d, POSITIVE_INFINITY));
     assertThat(expectFailure.getFailure())
@@ -805,9 +760,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_OneInfinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(2.2d, 3.3d))
+    expectFailureWhenTestingThat(array(2.2d, 3.3d))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(2.2d, POSITIVE_INFINITY));
     assertThat(expectFailure.getFailure())
@@ -830,9 +783,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
   public void hasValuesNotWithinOfElementsIn_Fail_NaN() {
-    expectFailure
-        .whenTesting()
-        .that(array(NaN))
+    expectFailureWhenTestingThat(array(NaN))
         .hasValuesNotWithin(DEFAULT_TOLERANCE)
         .ofElementsIn(Doubles.asList(NaN));
     assertThat(expectFailure.getFailure())
@@ -892,9 +843,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_contains_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, INTOLERABLE_2POINT2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, INTOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(2.2);
     assertThat(expectFailure.getFailure())
@@ -909,9 +858,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_contains_failureWithInfinity() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, POSITIVE_INFINITY, 3.3))
+    expectFailureWhenTestingThat(array(1.1, POSITIVE_INFINITY, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(POSITIVE_INFINITY);
     assertThat(expectFailure.getFailure())
@@ -926,9 +873,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_contains_failureWithNaN() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, NaN, 3.3))
+    expectFailureWhenTestingThat(array(1.1, NaN, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(NaN);
     assertThat(expectFailure.getFailure())
@@ -1009,9 +954,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsAllOf_primitiveDoubleArray_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAllOf(array(2.2, 99.99));
     assertThat(expectFailure.getFailure())
@@ -1038,9 +981,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsAllOf_primitiveDoubleArray_inOrder_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAllOf(array(2.2, 1.1))
         .inOrder();
@@ -1064,9 +1005,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsAnyOf_primitiveDoubleArray_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAnyOf(array(99.99, 999.999));
     assertThat(expectFailure.getFailure())
@@ -1088,9 +1027,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsExactly(array(2.2, 1.1));
     assertThat(expectFailure.getFailure())
@@ -1113,9 +1050,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsExactly_primitiveDoubleArray_inOrder_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsExactly(array(2.2, 1.1, 3.3))
         .inOrder();
@@ -1139,9 +1074,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_containsNoneOf_primitiveDoubleArray_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, TOLERABLE_2POINT2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsNoneOf(array(99.99, 2.2));
     assertThat(expectFailure.getFailure())
@@ -1163,11 +1096,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_contains_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, OVER_2POINT2, 3.3))
-        .usingExactEquality()
-        .contains(2.2);
+    expectFailureWhenTestingThat(array(1.1, OVER_2POINT2, 3.3)).usingExactEquality().contains(2.2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -1235,7 +1164,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_contains_failureWithNegativeZero() {
-    expectFailure.whenTesting().that(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0);
+    expectFailureWhenTestingThat(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0);
     /*
      * TODO(cpovirk): Find a way to print "0.0" rather than 0 in the error, even under GWT. One
      * easy(?) hack would be to make UsingCorrespondence use Platform.doubleToString() when
@@ -1268,9 +1197,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsAllOf_primitiveDoubleArray_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, 2.2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsAllOf(array(2.2, 99.99));
     assertThat(expectFailure.getFailure())
@@ -1289,9 +1216,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsAllOf_primitiveDoubleArray_inOrder_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, 2.2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsAllOf(array(2.2, 1.1))
         .inOrder();
@@ -1310,9 +1235,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsAnyOf_primitiveDoubleArray_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, 2.2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsAnyOf(array(99.99, 999.999));
     assertThat(expectFailure.getFailure())
@@ -1330,9 +1253,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsExactly_primitiveDoubleArray_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, 2.2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsExactly(array(2.2, 1.1));
     assertThat(expectFailure.getFailure())
@@ -1353,9 +1274,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsExactly_primitiveDoubleArray_inOrder_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, 2.2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsExactly(array(2.2, 1.1, 3.3))
         .inOrder();
@@ -1374,9 +1293,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_containsNoneOf_primitiveDoubleArray_failure() {
-    expectFailure
-        .whenTesting()
-        .that(array(1.1, 2.2, 3.3))
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsNoneOf(array(99.99, 2.2));
     assertThat(expectFailure.getFailure())
@@ -1389,16 +1306,14 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void smallDifferenceInLongRepresentation() {
-    expectFailure
-        .whenTesting()
-        .that(array(-4.4501477170144023E-308))
+    expectFailureWhenTestingThat(array(-4.4501477170144023E-308))
         .isEqualTo(array(-4.450147717014402E-308));
   }
 
   @Test
   public void noCommas() {
     // Maybe we should include commas, but we don't yet, so make sure we don't under GWT, either.
-    expectFailure.whenTesting().that(array(10000.0)).isEqualTo(array(20000.0));
+    expectFailureWhenTestingThat(array(10000.0)).isEqualTo(array(20000.0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[10000.0]> is equal to <[20000.0]>. differs at index: [0]");
@@ -1406,5 +1321,9 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   private static double[] array(double... primitives) {
     return primitives;
+  }
+
+  private PrimitiveDoubleArraySubject expectFailureWhenTestingThat(double[] actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

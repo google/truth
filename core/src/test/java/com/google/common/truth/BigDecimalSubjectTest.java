@@ -47,7 +47,7 @@ public class BigDecimalSubjectTest extends BaseSubjectTestCase {
   public void isEqualToIgnoringScale_bigDecimal() {
     assertThat(TEN).isEqualToIgnoringScale(TEN);
     assertThat(TEN).isEqualToIgnoringScale(new BigDecimal(10));
-    expectFailure.whenTesting().that(TEN).isEqualToIgnoringScale(new BigDecimal(3));
+    expectFailureWhenTestingThat(TEN).isEqualToIgnoringScale(new BigDecimal(3));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
@@ -56,7 +56,7 @@ public class BigDecimalSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isEqualToIgnoringScale_int() {
     assertThat(TEN).isEqualToIgnoringScale(10);
-    expectFailure.whenTesting().that(TEN).isEqualToIgnoringScale(3);
+    expectFailureWhenTestingThat(TEN).isEqualToIgnoringScale(3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
@@ -65,7 +65,7 @@ public class BigDecimalSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isEqualToIgnoringScale_long() {
     assertThat(TEN).isEqualToIgnoringScale(10L);
-    expectFailure.whenTesting().that(TEN).isEqualToIgnoringScale(3L);
+    expectFailureWhenTestingThat(TEN).isEqualToIgnoringScale(3L);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
@@ -77,9 +77,13 @@ public class BigDecimalSubjectTest extends BaseSubjectTestCase {
     assertThat(TEN).isEqualToIgnoringScale("10.");
     assertThat(TEN).isEqualToIgnoringScale("10.0");
     assertThat(TEN).isEqualToIgnoringScale("10.00");
-    expectFailure.whenTesting().that(TEN).isEqualToIgnoringScale("3");
+    expectFailureWhenTestingThat(TEN).isEqualToIgnoringScale("3");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<10> should have had the same value as <3> (scale is ignored)");
+  }
+
+  private BigDecimalSubject expectFailureWhenTestingThat(BigDecimal actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

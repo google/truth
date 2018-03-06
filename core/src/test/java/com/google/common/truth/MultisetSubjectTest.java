@@ -42,7 +42,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   @Test
   public void multisetIsEmptyWithFailure() {
     ImmutableMultiset<Integer> multiset = ImmutableMultiset.of(1, 5);
-    expectFailure.whenTesting().that(multiset).isEmpty();
+    expectFailureWhenTestingThat(multiset).isEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 5]> is empty");
@@ -57,7 +57,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   @Test
   public void multisetIsNotEmptyWithFailure() {
     ImmutableMultiset<Integer> multiset = ImmutableMultiset.of();
-    expectFailure.whenTesting().that(multiset).isNotEmpty();
+    expectFailureWhenTestingThat(multiset).isNotEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[]> is not empty");
@@ -95,7 +95,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   @Test
   public void hasCountFail() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kurt", "kluever");
-    expectFailure.whenTesting().that(multiset).hasCount("kurt", 3);
+    expectFailureWhenTestingThat(multiset).hasCount("kurt", 3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[kurt x 2, kluever]> has a count for <kurt> of <3>. It is <2>");
@@ -110,7 +110,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   @Test
   public void containsFailure() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kluever");
-    expectFailure.whenTesting().that(multiset).contains("greg");
+    expectFailureWhenTestingThat(multiset).contains("greg");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<[kurt, kluever]> should have contained <greg>");
@@ -119,7 +119,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   @Test
   public void containsNullFailure() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kluever");
-    expectFailure.whenTesting().that(multiset).contains(null);
+    expectFailureWhenTestingThat(multiset).contains(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<[kurt, kluever]> should have contained <null>");
@@ -142,7 +142,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   @Test
   public void doesNotContainFailure() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kluever");
-    expectFailure.whenTesting().that(multiset).doesNotContain("kurt");
+    expectFailureWhenTestingThat(multiset).doesNotContain("kurt");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<[kurt, kluever]> should not have contained <kurt>");
@@ -152,9 +152,13 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   public void doesNotContainNull() {
     Multiset<String> multiset = HashMultiset.create();
     multiset.add(null);
-    expectFailure.whenTesting().that(multiset).doesNotContain(null);
+    expectFailureWhenTestingThat(multiset).doesNotContain(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<[null]> should not have contained <null>");
+  }
+
+  private MultisetSubject expectFailureWhenTestingThat(Multiset<?> actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

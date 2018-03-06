@@ -46,7 +46,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasLengthFails() {
-    expectFailure.whenTesting().that("kurt").hasLength(5);
+    expectFailureWhenTestingThat("kurt").hasLength(5);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <\"kurt\"> has a length of 5. It is 4.");
@@ -68,7 +68,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringIsEmptyFail() {
-    expectFailure.whenTesting().that("abc").isEmpty();
+    expectFailureWhenTestingThat("abc").isEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <\"abc\"> is empty");
@@ -76,8 +76,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringIsEmptyFailNull() {
-    String s = null;
-    expectFailure.whenTesting().that(s).isEmpty();
+    expectFailureWhenTestingThat(null).isEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that null reference is empty");
@@ -90,7 +89,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringIsNotEmptyFail() {
-    expectFailure.whenTesting().that("").isNotEmpty();
+    expectFailureWhenTestingThat("").isNotEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <\"\"> is not empty");
@@ -98,8 +97,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringIsNotEmptyFailNull() {
-    String s = null;
-    expectFailure.whenTesting().that(s).isNotEmpty();
+    expectFailureWhenTestingThat(null).isNotEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that null reference is not empty");
@@ -118,7 +116,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringContainsFail() {
-    expectFailure.whenTesting().that("abc").contains("d");
+    expectFailureWhenTestingThat("abc").contains("d");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("Not true that <\"abc\"> contains <\"d\">");
@@ -137,7 +135,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringDoesNotContainFail() {
-    expectFailure.whenTesting().that("abc").doesNotContain("b");
+    expectFailureWhenTestingThat("abc").doesNotContain("b");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("<\"abc\"> unexpectedly contains <\"b\">");
@@ -151,7 +149,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringEqualityToNull() {
-    expectFailure.whenTesting().that("abc").isEqualTo(null);
+    expectFailureWhenTestingThat("abc").isEqualTo(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("Not true that <\"abc\"> is null");
@@ -194,7 +192,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringNamedNullFail() {
-    expectFailure.whenTesting().that((String) null).named("foo").isEqualTo("abd");
+    expectFailureWhenTestingThat(null).named("foo").isEqualTo("abd");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that foo (<null>) is equal to <\"abd\">");
@@ -203,7 +201,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @GwtIncompatible // ComparisonFailure-style message
   @Test
   public void stringEqualityFailMultiline() {
-    expectFailure.whenTesting().that("abc\ndef\nxyz").isEqualTo("aaa\nqqq\nzzz");
+    expectFailureWhenTestingThat("abc\ndef\nxyz").isEqualTo("aaa\nqqq\nzzz");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("expected:<a[aa\nqqq\nzz]z> but was:<a[bc\ndef\nxy]z>");
@@ -216,7 +214,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringStartsWithFail() {
-    expectFailure.whenTesting().that("abc").startsWith("bc");
+    expectFailureWhenTestingThat("abc").startsWith("bc");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("Not true that <\"abc\"> starts with <\"bc\">");
@@ -229,7 +227,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringEndsWithFail() {
-    expectFailure.whenTesting().that("abc").endsWith("ab");
+    expectFailureWhenTestingThat("abc").endsWith("ab");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("Not true that <\"abc\"> ends with <\"ab\">");
@@ -252,7 +250,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringMatchesStringWithFail() {
-    expectFailure.whenTesting().that("abcaqadev").matches(".*aaa.*");
+    expectFailureWhenTestingThat("abcaqadev").matches(".*aaa.*");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <\"abcaqadev\"> matches <.*aaa.*>");
@@ -267,7 +265,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   @GwtIncompatible("Pattern")
   public void stringMatchesPatternWithFail() {
-    expectFailure.whenTesting().that("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*"));
+    expectFailureWhenTestingThat("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <\"abcaaadev\"> fails to match <.*aaa.*>");
@@ -284,7 +282,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   public void stringContainsMatchString() {
     assertThat("aba").containsMatch(".*b.*");
 
-    expectFailure.whenTesting().that("aaa").containsMatch(".*b.*");
+    expectFailureWhenTestingThat("aaa").containsMatch(".*b.*");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<\"aaa\"> should have contained a match for <.*b.*>");
@@ -295,7 +293,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   public void stringContainsMatchPattern() {
     assertThat("aba").containsMatch(Pattern.compile(".*b.*"));
 
-    expectFailure.whenTesting().that("aaa").containsMatch(Pattern.compile(".*b.*"));
+    expectFailureWhenTestingThat("aaa").containsMatch(Pattern.compile(".*b.*"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<\"aaa\"> should have contained a match for <.*b.*>");
@@ -305,7 +303,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   public void stringDoesNotContainMatchString() {
     assertThat("aaa").doesNotContainMatch(".*b.*");
 
-    expectFailure.whenTesting().that("aba").doesNotContainMatch(".*b.*");
+    expectFailureWhenTestingThat("aba").doesNotContainMatch(".*b.*");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<\"aba\"> should not have contained a match for <.*b.*>");
@@ -313,7 +311,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringDoesNotContainMatchStringUsesFind() {
-    expectFailure.whenTesting().that("aba").doesNotContainMatch("[b]");
+    expectFailureWhenTestingThat("aba").doesNotContainMatch("[b]");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<\"aba\"> should not have contained a match for <[b]>");
@@ -324,9 +322,13 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   public void stringDoesNotContainMatchPattern() {
     assertThat("aaa").doesNotContainMatch(Pattern.compile(".*b.*"));
 
-    expectFailure.whenTesting().that("aba").doesNotContainMatch(Pattern.compile(".*b.*"));
+    expectFailureWhenTestingThat("aba").doesNotContainMatch(Pattern.compile(".*b.*"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<\"aba\"> should not have contained a match for <.*b.*>");
+  }
+
+  private StringSubject expectFailureWhenTestingThat(String actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

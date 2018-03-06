@@ -48,7 +48,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void asListWithoutCastingFails() {
-    expectFailure.whenTesting().that(array(1, 1, 0)).asList().containsAllOf(1, 0);
+    expectFailureWhenTestingThat(array(1, 1, 0)).asList().containsAllOf(1, 0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -60,7 +60,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailure.whenTesting().that(array(1, 0, 1)).isEqualTo(array(0, 1, 1));
+    expectFailureWhenTestingThat(array(1, 0, 1)).isEqualTo(array(0, 1, 1));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 0, 1]> is equal to <[0, 1, 1]>. differs at index: [0]");
@@ -68,7 +68,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    expectFailure.whenTesting().that(array(1, 0, 1)).isEqualTo(new Object());
+    expectFailureWhenTestingThat(array(1, 0, 1)).isEqualTo(new Object());
   }
 
   @Test
@@ -88,7 +88,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    expectFailure.whenTesting().that(array(1, 0)).isNotEqualTo(array(1, 0));
+    expectFailureWhenTestingThat(array(1, 0)).isNotEqualTo(array(1, 0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 0]> is not equal to <[1, 0]>");
@@ -98,7 +98,7 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailSame() {
     short[] same = array(1, 0);
-    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    expectFailureWhenTestingThat(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 0]> is not equal to <[1, 0]>");
@@ -110,5 +110,9 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
 
   private static short[] array(int a, int b) {
     return new short[] {(short) a, (short) b};
+  }
+
+  private PrimitiveShortArraySubject expectFailureWhenTestingThat(short[] actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }
