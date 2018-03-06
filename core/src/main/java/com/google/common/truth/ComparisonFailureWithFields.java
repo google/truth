@@ -38,7 +38,8 @@ import javax.annotation.Nullable;
  *
  * <p>This class includes logic to format expected and actual values for easier reading.
  */
-final class ComparisonFailureWithFields extends PlatformComparisonFailure {
+final class ComparisonFailureWithFields extends PlatformComparisonFailure
+    implements ErrorWithFields {
   static ComparisonFailureWithFields create(
       ImmutableList<String> messages,
       ImmutableList<Field> headFields,
@@ -66,6 +67,11 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure {
         cause,
         OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE);
     this.fields = checkNotNull(fields);
+  }
+
+  @Override
+  public ImmutableList<Field> fields() {
+    return fields;
   }
 
   private static ImmutableList<Field> makeFields(

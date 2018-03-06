@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * An {@link AssertionError} composed of structured {@link Field} instances and other string
  * messages.
  */
-final class AssertionErrorWithFields extends AssertionError {
+final class AssertionErrorWithFields extends AssertionError implements ErrorWithFields {
   static AssertionErrorWithFields create(
       ImmutableList<String> messages, ImmutableList<Field> fields, @Nullable Throwable cause) {
     return new AssertionErrorWithFields(messages, fields, cause);
@@ -58,5 +58,10 @@ final class AssertionErrorWithFields extends AssertionError {
   @Override
   public String toString() {
     return getLocalizedMessage();
+  }
+
+  @Override
+  public ImmutableList<Field> fields() {
+    return fields;
   }
 }
