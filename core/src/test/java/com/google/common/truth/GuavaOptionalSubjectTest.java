@@ -95,14 +95,13 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasValue_errorWithNullParameter() {
+  public void hasValue_npeWithNullParameter() {
     try {
       assertThat(Optional.of("foo")).hasValue(null);
+      fail("Expected NPE");
     } catch (NullPointerException expected) {
       assertThat(expected).hasMessageThat().contains("Optional");
-      return;
     }
-    fail("Should have thrown");
   }
 
   @Test

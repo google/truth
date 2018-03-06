@@ -32,15 +32,6 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class OptionalSubjectTest {
-  @Test
-  public void namedOptional() {
-    Optional<String> optional = Optional.of("actual");
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(optional).named("name").hasValue("expected"));
-    assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo("Not true that name (<Optional[actual]>) has value <expected>");
-  }
 
   @Test
   public void isPresent() {
@@ -55,7 +46,7 @@ public class OptionalSubjectTest {
   }
 
   @Test
-  public void isPresentFailingWithNamed() {
+  public void isPresentFailing_named() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.empty()).named("name").isPresent());
     assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
@@ -91,7 +82,7 @@ public class OptionalSubjectTest {
   }
 
   @Test
-  public void hasValue_FailingWithEmpty() {
+  public void hasValue_failingWithEmpty() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.empty()).hasValue("foo"));
     assertThat(expected)
@@ -100,7 +91,7 @@ public class OptionalSubjectTest {
   }
 
   @Test
-  public void hasValue_NPEWithNullParameter() {
+  public void hasValue_npeWithNullParameter() {
     try {
       assertThat(Optional.of("foo")).hasValue(null);
       fail("Expected NPE");
@@ -110,7 +101,7 @@ public class OptionalSubjectTest {
   }
 
   @Test
-  public void hasValue_FailingWithWrongValueForString() {
+  public void hasValue_failingWithWrongValueForString() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).hasValue("boo"));
     assertThat(expected)
@@ -119,14 +110,7 @@ public class OptionalSubjectTest {
   }
 
   @Test
-  public void hasValue_FailingWithWrongValueForOther() {
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(Optional.of(5)).hasValue(10));
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[5]> has value <10>");
-  }
-
-  @Test
-  public void hasValue_Named_Failing() {
+  public void hasValue_failingWithWrongValueForString_named() {
     AssertionError expected =
         expectFailure(
             whenTesting -> whenTesting.that(Optional.of("foo")).named("bar").hasValue("boo"));
@@ -136,7 +120,25 @@ public class OptionalSubjectTest {
   }
 
   @Test
-  public void hasValue_Named_FailingWithSameToStrings() {
+  public void hasValue_failingWithWrongValueForOther() {
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Optional.of(5)).hasValue(10));
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[5]> has value <10>");
+  }
+
+  @Test
+  public void hasValue_failingWithSameToStrings() {
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Optional.of(10)).hasValue("10"));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <Optional[10]> (class java.lang.Integer) "
+                + "has value <10> (class java.lang.String)");
+  }
+
+  @Test
+  public void hasValue_failingWithSameToStrings_named() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.of(10)).named("bar").hasValue("10"));
     assertThat(expected)
