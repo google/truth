@@ -191,7 +191,7 @@ final class Platform {
           + "other exception before the failure would have happened. Under GWT, such an exception "
           + "is hidden by this message. The non-GWT tests do not have this problem, so you may "
           + "wish to debug them first. If you're still having this problem, consider temporarily "
-          + "modifying the GWT copy of BaseSubjectTestCase to remove the call to "
+          + "modifying the GWT copy of PlatformBaseSubjectTestCase to remove the call to "
           + "ensureFailureCaught(). Removing that call will let any other exception fall through. "
           + "(But of course it will also prevent the test from verifying that the expected failure "
           + "occurred.)";
