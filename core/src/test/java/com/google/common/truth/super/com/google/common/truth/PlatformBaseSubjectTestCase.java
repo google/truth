@@ -18,7 +18,7 @@ package com.google.common.truth;
 import org.junit.After;
 import org.junit.Before;
 
-public abstract class BaseSubjectTestCase {
+public abstract class PlatformBaseSubjectTestCase {
 
   final ExpectFailure expectFailure = new ExpectFailure();
 

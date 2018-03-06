@@ -15,5 +15,9 @@
  */
 package com.google.common.truth;
 
+import org.junit.Rule;
+
 /** Base class for truth subject tests to extend. */
-abstract class BaseSubjectTestCase extends PlatformBaseSubjectTestCase {}
+public abstract class PlatformBaseSubjectTestCase {
+  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
+}
