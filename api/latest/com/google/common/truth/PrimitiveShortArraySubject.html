@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -155,59 +155,26 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>protected <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a></span>()</code>
-<div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
- or otherwise position it in an error message.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html#asList--">asList</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html#hasLength-int-">hasLength</a></span>(int&nbsp;length)</code>
 <div class="block">Fails if the array does not have the given length.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html#isEmpty--">isEmpty</a></span>()</code>
 <div class="block">Fails if the array is not empty (i.e.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html#isEqualTo-java.lang.Object-">isEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
-<div class="block">A check that the actual array and <code>expected</code> are arrays of the same length and type,
- containing elements such that each element in <code>expected</code> is equal to each element in the
- actual array, and in the same position.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html#isNotEmpty--">isNotEmpty</a></span>()</code>
 <div class="block">Fails if the array is empty (i.e.</div>
 </td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
-<div class="block">A check that the actual array and <code>expected</code> are not arrays of the same length and type,
- containing elements such that each element in <code>expected</code> is equal to each element in the
- actual array, and in the same position.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>protected <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html#listRepresentation--">listRepresentation</a></span>()</code>
-<div class="block">Returns a List representation suitable for displaying in a string.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>protected <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html#underlyingType--">underlyingType</a></span>()</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -215,7 +182,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;com.google.common.truth.<a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></h3>
-<code><a href="../../../../com/google/common/truth/Subject.html#actual--">actual</a>, <a href="../../../../com/google/common/truth/Subject.html#actualAsString--">actualAsString</a>, <a href="../../../../com/google/common/truth/Subject.html#check--">check</a>, <a href="../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">failComparing</a>, <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-java.lang.Throwable-">failComparing</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessage-java.lang.String-java.lang.Object...-">failWithRawMessage</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessageAndCause-java.lang.String-java.lang.Throwable-">failWithRawMessageAndCause</a>, <a href="../../../../com/google/common/truth/Subject.html#getSubject--">getSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../com/google/common/truth/Subject.html#internalCustomName--">internalCustomName</a>, <a href="../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a>, <a href="../../../../com/google/common/truth/Subject.html#isNull--">isNull</a>, <a href="../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a>, <a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a>, <a href="../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
+<code><a href="../../../../com/google/common/truth/Subject.html#actual--">actual</a>, <a href="../../../../com/google/common/truth/Subject.html#actualAsString--">actualAsString</a>, <a href="../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a>, <a href="../../../../com/google/common/truth/Subject.html#check--">check</a>, <a href="../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">failComparing</a>, <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-java.lang.Throwable-">failComparing</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessage-java.lang.String-java.lang.Object...-">failWithRawMessage</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessageAndCause-java.lang.String-java.lang.Throwable-">failWithRawMessageAndCause</a>, <a href="../../../../com/google/common/truth/Subject.html#getSubject--">getSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../com/google/common/truth/Subject.html#internalCustomName--">internalCustomName</a>, <a href="../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a>, <a href="../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a>, <a href="../../../../com/google/common/truth/Subject.html#isNull--">isNull</a>, <a href="../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a>, <a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a>, <a href="../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -238,57 +205,6 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="underlyingType--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>underlyingType</h4>
-<pre>protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;underlyingType()</pre>
-</li>
-</ul>
-<a name="listRepresentation--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>listRepresentation</h4>
-<pre>protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Short.html?is-external=true" title="class or interface in java.lang">Short</a>&gt;&nbsp;listRepresentation()</pre>
-<div class="block">Returns a List representation suitable for displaying in a string.</div>
-</li>
-</ul>
-<a name="isEqualTo-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isEqualTo</h4>
-<pre>public&nbsp;void&nbsp;isEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
-<div class="block">A check that the actual array and <code>expected</code> are arrays of the same length and type,
- containing elements such that each element in <code>expected</code> is equal to each element in the
- actual array, and in the same position.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a></code>&nbsp;in class&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html" title="class in com.google.common.truth">PrimitiveShortArraySubject</a>,short[]&gt;</code></dd>
-</dl>
-</li>
-</ul>
-<a name="isNotEqualTo-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isNotEqualTo</h4>
-<pre>public&nbsp;void&nbsp;isNotEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
-<div class="block">A check that the actual array and <code>expected</code> are not arrays of the same length and type,
- containing elements such that each element in <code>expected</code> is equal to each element in the
- actual array, and in the same position.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></code>&nbsp;in class&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html" title="class in com.google.common.truth">PrimitiveShortArraySubject</a>,short[]&gt;</code></dd>
-</dl>
-</li>
-</ul>
 <a name="asList--">
 <!--   -->
 </a>
@@ -304,7 +220,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>isEmpty</h4>
-<pre>public&nbsp;void&nbsp;isEmpty()</pre>
+<pre>public final&nbsp;void&nbsp;isEmpty()</pre>
 <div class="block">Fails if the array is not empty (i.e. <code>array.length != 0</code>).</div>
 </li>
 </ul>
@@ -314,43 +230,21 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotEmpty</h4>
-<pre>public&nbsp;void&nbsp;isNotEmpty()</pre>
+<pre>public final&nbsp;void&nbsp;isNotEmpty()</pre>
 <div class="block">Fails if the array is empty (i.e. <code>array.length == 0</code>).</div>
 </li>
 </ul>
 <a name="hasLength-int-">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>hasLength</h4>
-<pre>public&nbsp;void&nbsp;hasLength(int&nbsp;length)</pre>
+<pre>public final&nbsp;void&nbsp;hasLength(int&nbsp;length)</pre>
 <div class="block">Fails if the array does not have the given length.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - if <code>length &lt; 0</code></dd>
-</dl>
-</li>
-</ul>
-<a name="actualCustomStringRepresentation--">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>actualCustomStringRepresentation</h4>
-<pre>protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;actualCustomStringRepresentation()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">Subject</a></code></span></div>
-<div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
- or otherwise position it in an error message. This should only be overridden to provide an
- improved string representation of the value under test, as it would appear in any given error
- message, and should not be used for additional prefixing.
-
- <p>Subjects should override this with care.
-
- <p>By default, this returns <code>String.ValueOf(getActualValue())</code>.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a></code>&nbsp;in class&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;S extends com.google.common.truth.AbstractArraySubject&lt;S,T&gt;,T&gt;</code></dd>
 </dl>
 </li>
 </ul>
