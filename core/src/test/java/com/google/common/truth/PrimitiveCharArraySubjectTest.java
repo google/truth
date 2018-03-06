@@ -48,7 +48,7 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
-    expectFailure.whenTesting().that(array('a', 'q')).isEqualTo(array('q', 'a'));
+    expectFailureWhenTestingThat(array('a', 'q')).isEqualTo(array('q', 'a'));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[a, q]> is equal to <[q, a]>. differs at index: [0]");
@@ -56,7 +56,7 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
-    expectFailure.whenTesting().that(array('a', 'q')).isEqualTo(new int[] {});
+    expectFailureWhenTestingThat(array('a', 'q')).isEqualTo(new int[] {});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("wrong type; expected: int[]; but was: char[]");
@@ -79,7 +79,7 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotEqualTo_FailEquals() {
-    expectFailure.whenTesting().that(array('a', 'q')).isNotEqualTo(array('a', 'q'));
+    expectFailureWhenTestingThat(array('a', 'q')).isNotEqualTo(array('a', 'q'));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[a, q]> is not equal to <[a, q]>");
@@ -89,7 +89,7 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailSame() {
     char[] same = array('a', 'q');
-    expectFailure.whenTesting().that(same).isNotEqualTo(same);
+    expectFailureWhenTestingThat(same).isNotEqualTo(same);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[a, q]> is not equal to <[a, q]>");
@@ -97,5 +97,9 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
 
   private static char[] array(char... ts) {
     return ts;
+  }
+
+  private PrimitiveCharArraySubject expectFailureWhenTestingThat(char[] actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

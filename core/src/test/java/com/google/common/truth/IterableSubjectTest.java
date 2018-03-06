@@ -51,7 +51,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasSizeFails() {
-    expectFailure.whenTesting().that(ImmutableList.of(1, 2, 3)).hasSize(4);
+    expectFailureWhenTestingThat(ImmutableList.of(1, 2, 3)).hasSize(4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 2, 3]> has a size of <4>. It is <3>");
@@ -78,7 +78,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsFailsWithSameToString() {
-    expectFailure.whenTesting().that(asList(1L, 2L, 3L, 2L)).contains(2);
+    expectFailureWhenTestingThat(asList(1L, 2L, 3L, 2L)).contains(2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -88,7 +88,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsFailsWithSameToStringAndNull() {
-    expectFailure.whenTesting().that(asList(1, "null")).contains(null);
+    expectFailureWhenTestingThat(asList(1, "null")).contains(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -98,7 +98,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).contains(5);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).contains(5);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<[1, 2, 3]> should have contained <5>");
@@ -106,7 +106,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void namedIterableContainsFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).named("numbers").contains(5);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).named("numbers").contains(5);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("numbers (<[1, 2, 3]>) should have contained <5>");
@@ -132,7 +132,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableDoesNotContainFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).doesNotContain(2);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).doesNotContain(2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<[1, 2, 3]> should not have contained <2>");
@@ -150,7 +150,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void doesNotContainDuplicatesFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 2, 3)).containsNoDuplicates();
+    expectFailureWhenTestingThat(asList(1, 2, 2, 3)).containsNoDuplicates();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("<[1, 2, 2, 3]> has the following duplicates: <[2 x 2]>");
@@ -173,7 +173,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAnyOfFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAnyOf(5, 6, 0);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAnyOf(5, 6, 0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
@@ -181,7 +181,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndHomogeneousList() {
-    expectFailure.whenTesting().that(asList(1L, 2L, 3L)).containsAnyOf(2, 3);
+    expectFailureWhenTestingThat(asList(1L, 2L, 3L)).containsAnyOf(2, 3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -191,7 +191,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndHomogeneousListWithDuplicates() {
-    expectFailure.whenTesting().that(asList(3L, 3L)).containsAnyOf(2, 3, 3);
+    expectFailureWhenTestingThat(asList(3L, 3L)).containsAnyOf(2, 3, 3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -201,7 +201,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndNullInSubject() {
-    expectFailure.whenTesting().that(asList(null, "abc")).containsAnyOf("def", "null");
+    expectFailureWhenTestingThat(asList(null, "abc")).containsAnyOf("def", "null");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -211,7 +211,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndNullInExpectation() {
-    expectFailure.whenTesting().that(asList("null", "abc")).containsAnyOf("def", null);
+    expectFailureWhenTestingThat(asList("null", "abc")).containsAnyOf("def", null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -238,7 +238,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void iterableContainsAnyInIterable() {
     assertThat(asList(1, 2, 3)).containsAnyIn(asList(1, 10, 100));
 
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAnyIn(asList(5, 6, 0));
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAnyIn(asList(5, 6, 0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 2, 3]> contains any element in <[5, 6, 0]>");
@@ -248,7 +248,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void iterableContainsAnyInArray() {
     assertThat(asList(1, 2, 3)).containsAnyIn(new Integer[] {1, 10, 100});
 
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAnyIn(new Integer[] {5, 6, 0});
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAnyIn(new Integer[] {5, 6, 0});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 2, 3]> contains any element in <[5, 6, 0]>");
@@ -276,7 +276,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAllOf(1, 2, 4);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllOf(1, 2, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
@@ -284,7 +284,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfWithExtras() {
-    expectFailure.whenTesting().that(asList("y", "x")).containsAllOf("x", "y", "z");
+    expectFailureWhenTestingThat(asList("y", "x")).containsAllOf("x", "y", "z");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[y, x]> contains all of <[x, y, z]>. It is missing <[z]>");
@@ -292,7 +292,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfWithExtraCopiesOfOutOfOrder() {
-    expectFailure.whenTesting().that(asList("y", "x")).containsAllOf("x", "y", "y");
+    expectFailureWhenTestingThat(asList("y", "x")).containsAllOf("x", "y", "y");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[y, x]> contains all of <[x, y, y]>. It is missing <[y]>");
@@ -300,7 +300,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfWithDuplicatesFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -314,7 +314,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
    */
   @Test
   public void iterableContainsAllOfWithDuplicateMissingElements() {
-    expectFailure.whenTesting().that(asList(1, 2)).containsAllOf(4, 4, 4);
+    expectFailureWhenTestingThat(asList(1, 2)).containsAllOf(4, 4, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -323,7 +323,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfWithNullFailure() {
-    expectFailure.whenTesting().that(asList(1, null, 3)).containsAllOf(1, null, null, 3);
+    expectFailureWhenTestingThat(asList(1, null, 3)).containsAllOf(1, null, null, 3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -333,7 +333,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousList() {
-    expectFailure.whenTesting().that(asList(1L, 2L)).containsAllOf(1, 2);
+    expectFailureWhenTestingThat(asList(1L, 2L)).containsAllOf(1, 2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -344,7 +344,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithDuplicates() {
-    expectFailure.whenTesting().that(asList(1L, 2L, 2L)).containsAllOf(1, 1, 2);
+    expectFailureWhenTestingThat(asList(1L, 2L, 2L)).containsAllOf(1, 1, 2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -355,7 +355,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithNull() {
-    expectFailure.whenTesting().that(asList("null", "abc")).containsAllOf("abc", null);
+    expectFailureWhenTestingThat(asList("null", "abc")).containsAllOf("abc", null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -365,7 +365,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
-    expectFailure.whenTesting().that(asList(1, 2, 2L, 3L, 3L)).containsAllOf(2L, 2L, 3, 3);
+    expectFailureWhenTestingThat(asList(1, 2, 2L, 3L, 3L)).containsAllOf(2L, 2L, 3, 3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -376,7 +376,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfFailsWithEmptyString() {
-    expectFailure.whenTesting().that(asList("a", null)).containsAllOf("", null);
+    expectFailureWhenTestingThat(asList("a", null)).containsAllOf("", null);
 
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -409,7 +409,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllOfInOrderWithFailure() {
-    expectFailure.whenTesting().that(asList(1, null, 3)).containsAllOf(null, 1, 3).inOrder();
+    expectFailureWhenTestingThat(asList(1, null, 3)).containsAllOf(null, 1, 3).inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, null, 3]> contains all elements in order <[null, 1, 3]>");
@@ -451,7 +451,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
           }
         };
 
-    expectFailure.whenTesting().that(iterable).containsAllOf(1, 3, (Object) null).inOrder();
+    expectFailureWhenTestingThat(iterable).containsAllOf(1, 3, (Object) null).inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <BadIterable> contains all elements in order <[1, 3, null]>");
@@ -461,7 +461,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void iterableContainsAllInIterable() {
     assertThat(asList(1, 2, 3)).containsAllIn(asList(1, 2));
 
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAllIn(asList(1, 2, 4));
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllIn(asList(1, 2, 4));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -472,7 +472,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void iterableContainsAllInArray() {
     assertThat(asList(1, 2, 3)).containsAllIn(new Integer[] {1, 2});
 
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsAllIn(new Integer[] {1, 2, 4});
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllIn(new Integer[] {1, 2, 4});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -486,7 +486,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsNoneOfFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsNoneOf(1, 2, 4);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneOf(1, 2, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
@@ -494,7 +494,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsNoneOfFailureWithDuplicateInSubject() {
-    expectFailure.whenTesting().that(asList(1, 2, 2, 3)).containsNoneOf(1, 2, 4);
+    expectFailureWhenTestingThat(asList(1, 2, 2, 3)).containsNoneOf(1, 2, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -503,7 +503,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsNoneOfFailureWithDuplicateInExpected() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsNoneOf(1, 2, 2, 4);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneOf(1, 2, 2, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -512,7 +512,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsNoneOfFailureWithEmptyString() {
-    expectFailure.whenTesting().that(asList("")).containsNoneOf("", null);
+    expectFailureWhenTestingThat(asList("")).containsNoneOf("", null);
 
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -524,7 +524,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsNoneInIterable() {
     assertThat(asList(1, 2, 3)).containsNoneIn(asList(4, 5, 6));
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsNoneIn(asList(1, 2, 4));
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneIn(asList(1, 2, 4));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -534,7 +534,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsNoneInArray() {
     assertThat(asList(1, 2, 3)).containsNoneIn(new Integer[] {4, 5, 6});
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsNoneIn(new Integer[] {1, 2, 4});
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneIn(new Integer[] {1, 2, 4});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -611,7 +611,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithEmptyString() {
-    expectFailure.whenTesting().that(asList()).containsExactly("");
+    expectFailureWhenTestingThat(asList()).containsExactly("");
 
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -622,7 +622,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithEmptyStringAndUnexpectedItem() {
-    expectFailure.whenTesting().that(asList("a", null)).containsExactly("");
+    expectFailureWhenTestingThat(asList("a", null)).containsExactly("");
 
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -633,7 +633,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithEmptyStringAndMissingItem() {
-    expectFailure.whenTesting().that(asList("")).containsExactly("a", null);
+    expectFailureWhenTestingThat(asList("")).containsExactly("a", null);
 
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -652,7 +652,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(one, two)).containsExactlyElementsIn(asList(two, one));
     assertThat(asList(one, two)).containsExactlyElementsIn(asList(one, two)).inOrder();
 
-    expectFailure.whenTesting().that(asList(one, two)).containsExactly(one);
+    expectFailureWhenTestingThat(asList(one, two)).containsExactly(one);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -684,7 +684,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyElementsInWithEmptyExpected() {
-    expectFailure.whenTesting().that(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
+    expectFailureWhenTestingThat(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[foo]> is empty");
@@ -692,9 +692,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyElementsInErrorMessageIsOrdered() {
-    expectFailure
-        .whenTesting()
-        .that(asList("foo OR bar"))
+    expectFailureWhenTestingThat(asList("foo OR bar"))
         .containsExactlyElementsIn(asList("foo", "bar"));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -705,7 +703,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyMissingItemFailure() {
-    expectFailure.whenTesting().that(asList(1, 2)).containsExactly(1, 2, 4);
+    expectFailureWhenTestingThat(asList(1, 2)).containsExactly(1, 2, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
@@ -713,7 +711,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyUnexpectedItemFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsExactly(1, 2);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsExactly(1, 2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -722,7 +720,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithDuplicatesNotEnoughItemsFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -732,7 +730,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithDuplicatesMissingItemFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3, 4);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -742,7 +740,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithDuplicatesUnexpectedItemFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 2, 2, 2, 3)).containsExactly(1, 2, 2, 3);
+    expectFailureWhenTestingThat(asList(1, 2, 2, 2, 2, 3)).containsExactly(1, 2, 2, 3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -756,7 +754,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
    */
   @Test
   public void iterableContainsExactlyWithDuplicateMissingElements() {
-    expectFailure.whenTesting().that(asList()).containsExactly(4, 4, 4);
+    expectFailureWhenTestingThat(asList()).containsExactly(4, 4, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -765,7 +763,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithNullFailure() {
-    expectFailure.whenTesting().that(asList(1, null, 3)).containsExactly(1, null, null, 3);
+    expectFailureWhenTestingThat(asList(1, null, 3)).containsExactly(1, null, null, 3);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -775,7 +773,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithMissingAndExtraElements() {
-    expectFailure.whenTesting().that(asList(1, 2, 3)).containsExactly(1, 2, 4);
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsExactly(1, 2, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -785,7 +783,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithDuplicateMissingAndExtraElements() {
-    expectFailure.whenTesting().that(asList(1, 2, 3, 3)).containsExactly(1, 2, 4, 4);
+    expectFailureWhenTestingThat(asList(1, 2, 3, 3)).containsExactly(1, 2, 4, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -795,7 +793,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousList() {
-    expectFailure.whenTesting().that(asList(1L, 2L)).containsExactly(1, 2);
+    expectFailureWhenTestingThat(asList(1L, 2L)).containsExactly(1, 2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -806,7 +804,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndListWithNull() {
-    expectFailure.whenTesting().that(asList(1L, 2L)).containsExactly(null, 1, 2);
+    expectFailureWhenTestingThat(asList(1L, 2L)).containsExactly(null, 1, 2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -817,7 +815,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHeterogeneousList() {
-    expectFailure.whenTesting().that(asList(1L, 2)).containsExactly(1, null, 2L);
+    expectFailureWhenTestingThat(asList(1L, 2)).containsExactly(1, null, 2L);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -828,7 +826,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousListWithDuplicates() {
-    expectFailure.whenTesting().that(asList(1L, 2L)).containsExactly(1, 2, 2);
+    expectFailureWhenTestingThat(asList(1L, 2L)).containsExactly(1, 2, 2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -839,7 +837,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
-    expectFailure.whenTesting().that(asList(1L, 2)).containsExactly(1, null, null, 2L, 2L);
+    expectFailureWhenTestingThat(asList(1L, 2)).containsExactly(1, null, null, 2L, 2L);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -851,7 +849,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithOneIterableGivesWarning() {
-    expectFailure.whenTesting().that(asList(1, 2, 3, 4)).containsExactly(asList(1, 2, 3, 4));
+    expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactly(asList(1, 2, 3, 4));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -864,7 +862,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyElementsInWithOneIterableDoesNotGiveWarning() {
-    expectFailure.whenTesting().that(asList(1, 2, 3, 4)).containsExactlyElementsIn(asList(1, 2, 3));
+    expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactlyElementsIn(asList(1, 2, 3));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -874,10 +872,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithTwoIterableDoesNotGivesWarning() {
-    expectFailure
-        .whenTesting()
-        .that(asList(1, 2, 3, 4))
-        .containsExactly(asList(1, 2), asList(3, 4));
+    expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactly(asList(1, 2), asList(3, 4));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -887,7 +882,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyWithOneNonIterableDoesNotGiveWarning() {
-    expectFailure.whenTesting().that(asList(1, 2, 3, 4)).containsExactly(1);
+    expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactly(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -907,7 +902,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsExactlyInOrderWithFailure() {
-    expectFailure.whenTesting().that(asList(1, null, 3)).containsExactly(null, 1, 3).inOrder();
+    expectFailureWhenTestingThat(asList(1, null, 3)).containsExactly(null, 1, 3).inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -944,7 +939,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
           }
         };
 
-    expectFailure.whenTesting().that(iterable).containsExactly(1, 3, null).inOrder();
+    expectFailureWhenTestingThat(iterable).containsExactly(1, 3, null).inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -962,7 +957,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
           }
         };
 
-    expectFailure.whenTesting().that(iterable).containsExactly(1, 2).inOrder();
+    expectFailureWhenTestingThat(iterable).containsExactly(1, 2).inOrder();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -973,7 +968,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void iterableContainsExactlyElementsInIterable() {
     assertThat(asList(1, 2)).containsExactlyElementsIn(asList(1, 2));
 
-    expectFailure.whenTesting().that(asList(1, 2)).containsExactlyElementsIn(asList(1, 2, 4));
+    expectFailureWhenTestingThat(asList(1, 2)).containsExactlyElementsIn(asList(1, 2, 4));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
@@ -983,10 +978,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void iterableContainsExactlyElementsInArray() {
     assertThat(asList(1, 2)).containsExactlyElementsIn(new Integer[] {1, 2});
 
-    expectFailure
-        .whenTesting()
-        .that(asList(1, 2))
-        .containsExactlyElementsIn(new Integer[] {1, 2, 4});
+    expectFailureWhenTestingThat(asList(1, 2)).containsExactlyElementsIn(new Integer[] {1, 2, 4});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
@@ -999,7 +991,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableIsEmptyWithFailure() {
-    expectFailure.whenTesting().that(asList(1, null, 3)).isEmpty();
+    expectFailureWhenTestingThat(asList(1, null, 3)).isEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[1, null, 3]> is empty");
@@ -1012,7 +1004,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableIsNotEmptyWithFailure() {
-    expectFailure.whenTesting().that(asList()).isNotEmpty();
+    expectFailureWhenTestingThat(asList()).isNotEmpty();
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <[]> is not empty");
@@ -1027,7 +1019,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isStrictlyOrderedFailure() {
-    expectFailure.whenTesting().that(asList(1, 2, 2, 4)).isStrictlyOrdered();
+    expectFailureWhenTestingThat(asList(1, 2, 2, 4)).isStrictlyOrdered();
     assertThat(expectFailure.getFailure()).hasMessageThat().contains("is strictly ordered");
     assertThat(expectFailure.getFailure()).hasMessageThat().contains("<2> <2>");
   }
@@ -1050,7 +1042,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isOrderedFailure() {
-    expectFailure.whenTesting().that(asList(1, 3, 2, 4)).isOrdered();
+    expectFailureWhenTestingThat(asList(1, 3, 2, 4)).isOrdered();
     assertThat(expectFailure.getFailure()).hasMessageThat().contains("is ordered");
     assertThat(expectFailure.getFailure()).hasMessageThat().contains("<3> <2>");
   }
@@ -1075,10 +1067,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableIsStrictlyOrderedWithComparatorFailure() {
-    expectFailure
-        .whenTesting()
-        .that(asList("1", "2", "2", "10"))
-        .isStrictlyOrdered(COMPARE_AS_DECIMAL);
+    expectFailureWhenTestingThat(asList("1", "2", "2", "10")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
     assertThat(expectFailure.getFailure()).hasMessageThat().contains("is strictly ordered");
     assertThat(expectFailure.getFailure()).hasMessageThat().contains("<2> <2>");
   }
@@ -1093,7 +1082,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableIsOrderedWithComparatorFailure() {
-    expectFailure.whenTesting().that(asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
+    expectFailureWhenTestingThat(asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
     assertThat(expectFailure.getFailure()).hasMessageThat().contains("is ordered");
     assertThat(expectFailure.getFailure()).hasMessageThat().contains("<10> <2>");
   }
@@ -1171,5 +1160,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     ImmutableList<String> expectedC = ImmutableList.of("c");
 
     assertThat(actual).isNoneOf(expectedB, expectedC);
+  }
+
+  private IterableSubject expectFailureWhenTestingThat(Iterable<?> actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }

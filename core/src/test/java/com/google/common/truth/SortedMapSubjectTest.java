@@ -69,7 +69,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastKey_empty_1() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of()).hasFirstKey(1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasFirstKey(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{}> has first key <1>");
@@ -77,7 +77,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastKey_empty_2() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of()).hasLastKey(1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasLastKey(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{}> has last key <1>");
@@ -85,7 +85,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastKey_empty_3() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of()).hasFirstKey(null);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasFirstKey(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{}> has first key <null>");
@@ -93,7 +93,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastKey_empty_4() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of()).hasLastKey(null);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasLastKey(null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{}> has last key <null>");
@@ -101,7 +101,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastKey_wrongPosition_1() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasFirstKey(1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasFirstKey(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -111,7 +111,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastKey_wrongPosition_2() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasLastKey(1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasLastKey(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -121,7 +121,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastKey_absent_1() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0)).hasFirstKey(1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0)).hasFirstKey(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -131,7 +131,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastKey_absent_2() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0)).hasLastKey(1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0)).hasLastKey(1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -155,7 +155,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_empty() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of()).hasFirstEntry(1, 0);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasFirstEntry(1, 0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{}> has first entry <1=0>");
@@ -164,7 +164,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
   @Test
   public void hasFirstLastEntry_empty_2() {
 
-    expectFailure.whenTesting().that(ImmutableSortedMap.of()).hasLastEntry(1, 0);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasLastEntry(1, 0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{}> has last entry <1=0>");
@@ -172,7 +172,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_empty_3() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of()).hasFirstEntry(null, null);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasFirstEntry(null, null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{}> has first entry <null=null>");
@@ -180,7 +180,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_empty_4() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of()).hasLastEntry(null, null);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasLastEntry(null, null);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{}> has last entry <null=null>");
@@ -188,7 +188,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_wrongPosition() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasFirstEntry(1, 0);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasFirstEntry(1, 0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -198,7 +198,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_wrongPosition_2() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasLastEntry(1, 0);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasLastEntry(1, 0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -208,7 +208,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_wrongKey() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(1, 0, 2, 0)).hasFirstEntry(0, 0);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(1, 0, 2, 0)).hasFirstEntry(0, 0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{1=0, 2=0}> has first entry <0=0>, the first key is <1>");
@@ -216,7 +216,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_wrongKey_2() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(1, 0, 2, 0)).hasLastEntry(0, 0);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(1, 0, 2, 0)).hasLastEntry(0, 0);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{1=0, 2=0}> has last entry <0=0>, the last key is <2>");
@@ -224,7 +224,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_wrongValue() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(1, 0, 2, 0)).hasFirstEntry(1, 1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(1, 0, 2, 0)).hasFirstEntry(1, 1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{1=0, 2=0}> has first entry <1=1>, the first value is <0>");
@@ -232,7 +232,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_wrongValue_2() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(1, 0, 2, 0)).hasLastEntry(2, 2);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(1, 0, 2, 0)).hasLastEntry(2, 2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo("Not true that <{1=0, 2=0}> has last entry <2=2>, the last value is <0>");
@@ -240,7 +240,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_keyWrongPosition() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasFirstEntry(1, 1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasFirstEntry(1, 1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -250,7 +250,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_keyWrongPosition_2() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasLastEntry(1, 1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 0, 2, 0)).hasLastEntry(1, 1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -260,7 +260,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_valueWrongPosition() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0, 1, 1, 2, 2)).hasFirstEntry(10, 1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 1, 2, 2)).hasFirstEntry(10, 1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -270,7 +270,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_valueWrongPosition_2() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(0, 0, 1, 1, 2, 2)).hasLastEntry(10, 1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 1, 2, 2)).hasLastEntry(10, 1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -280,9 +280,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_multipleValuesWrongPosition() {
-    expectFailure
-        .whenTesting()
-        .that(ImmutableSortedMap.of(0, 0, 1, 1, 2, 1, 3, 3))
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 1, 2, 1, 3, 3))
         .hasFirstEntry(10, 1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
@@ -294,10 +292,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_multipleValuesWrongPosition_2() {
-    expectFailure
-        .whenTesting()
-        .that(ImmutableSortedMap.of(0, 0, 1, 1, 2, 1, 3, 3))
-        .hasLastEntry(10, 1);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(0, 0, 1, 1, 2, 1, 3, 3)).hasLastEntry(10, 1);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -308,7 +303,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_absent() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(1, 0)).hasFirstEntry(2, 2);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(1, 0)).hasFirstEntry(2, 2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -318,11 +313,15 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void hasFirstLastEntry_absent_2() {
-    expectFailure.whenTesting().that(ImmutableSortedMap.of(1, 0)).hasLastEntry(2, 2);
+    expectFailureWhenTestingThat(ImmutableSortedMap.of(1, 0)).hasLastEntry(2, 2);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
             "Not true that <{1=0}> has last entry <2=2>. "
                 + "It does not contain this entry, and the last entry is <1=0>");
+  }
+
+  private SortedMapSubject expectFailureWhenTestingThat(SortedMap<?, ?> actual) {
+    return expectFailure.whenTesting().that(actual);
   }
 }
