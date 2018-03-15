@@ -166,6 +166,28 @@ final class TestCorrespondences {
     }
   }
 
+  private static class RecordCorrespondence extends Correspondence<Record, Record> {
+
+    @Override
+    public boolean compare(Record actual, Record expected) {
+      return actual.hasSameId(expected) && Math.abs(actual.getScore() - expected.getScore()) <= 10;
+    }
+
+    @Override
+    public String formatDiff(Record actual, Record expected) {
+      if (actual.hasId() && expected.hasId() && actual.getId() == expected.getId()) {
+        return "score:" + Integer.toString(actual.getScore() - expected.getScore());
+      } else {
+        return null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return "has the same id as and a score is within 10 of";
+    }
+  }
+
   /**
    * A correspondence between {@link Record} instances which tests whether their {@code id} values
    * are equal and their {@code score} values are within 10 of each other. Smart diffing is enabled
@@ -174,26 +196,15 @@ final class TestCorrespondences {
    * not support null records.
    */
   static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
-      new Correspondence<Record, Record>() {
+      new RecordCorrespondence();
 
-        @Override
-        public boolean compare(Record actual, Record expected) {
-          return actual.hasSameId(expected)
-              && Math.abs(actual.getScore() - expected.getScore()) <= 10;
-        }
+  /** Like {@link #RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10} but with no smart diffing. */
+  static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF =
+      new RecordCorrespondence() {
 
         @Override
         public String formatDiff(Record actual, Record expected) {
-          if (actual.hasId() && expected.hasId() && actual.getId() == expected.getId()) {
-            return "score:" + Integer.toString(actual.getScore() - expected.getScore());
-          } else {
-            return null;
-          }
-        }
-
-        @Override
-        public String toString() {
-          return "has the same id as and a score is within 10 of";
+          return null;
         }
       };
 
@@ -222,7 +233,7 @@ final class TestCorrespondences {
 
         @Override
         public String toString() {
-          return "parses to a record that " + RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10.toString();
+          return "parses to a record that " + RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
         }
       };
 
