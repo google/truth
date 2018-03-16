@@ -314,11 +314,6 @@ public&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.
  <p>The implementation on the <a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> base class always returns <code>null</code>. To
  enable diffing, subclasses should override this method.
 
- <p>N.B. Implementing this method is currently of limited value as not all the assertions which
- could make use of this do so. However, instances that implement it now will get those
- improvements for free when they are made. TODO(b/32960783): Implement the rest of the planned
- changes.
-
  <p>Assertions should only invoke this with parameters for which <a href="../../../../com/google/common/truth/Correspondence.html#compare-A-E-"><code>compare(A, E)</code></a> returns <code>false</code>.</div>
 </li>
 </ul>
