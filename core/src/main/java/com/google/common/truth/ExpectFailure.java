@@ -18,6 +18,8 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.StringUtil.format;
+import static com.google.common.truth.Truth.assertAbout;
+import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.Truth.SimpleAssertionError;
@@ -182,6 +184,15 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
             assertionCallback.invokeAssertion(whenTesting.about(factory));
           }
         });
+  }
+
+  // TODO(cpovirk): Expose this publicly once we finalize names.
+  /**
+   * Creates a subject for asserting about the given {@link AssertionError}, usually one produced by
+   * Truth.
+   */
+  static TruthFailureSubject assertThat(AssertionError actual) {
+    return (TruthFailureSubject) assertAbout(truthFailures()).that(actual);
   }
 
   @Override
