@@ -103,11 +103,6 @@ public abstract class Correspondence<A, E> {
    * <p>The implementation on the {@link Correspondence} base class always returns {@code null}. To
    * enable diffing, subclasses should override this method.
    *
-   * <p>N.B. Implementing this method is currently of limited value as not all the assertions which
-   * could make use of this do so. However, instances that implement it now will get those
-   * improvements for free when they are made. TODO(b/32960783): Implement the rest of the planned
-   * changes.
-   *
    * <p>Assertions should only invoke this with parameters for which {@link #compare} returns {@code
    * false}.
    */
