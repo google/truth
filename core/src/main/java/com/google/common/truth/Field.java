@@ -25,10 +25,18 @@ import javax.annotation.Nullable;
 
 /** A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz." */
 final class Field {
+  /**
+   * Creates a field with the given key and value, which will be printed in a format like "key:
+   * value." The value is converted to a string by calling {@code String.valueOf} on it.
+   */
   static Field field(String key, Object value) {
     return new Field(key, String.valueOf(value));
   }
 
+  /**
+   * Creates a field with no value, which will be printed in the format "key" (with no colon or
+   * value).
+   */
   static Field fieldWithoutValue(String key) {
     return new Field(key, null);
   }
@@ -43,8 +51,8 @@ final class Field {
 
   /**
    * Returns a simple string representation for the field. While this is used by the old-style
-   * messages, we're moving away from it and onto {@link #makeMessage}, which aligns fields
-   * horizontally and indents multiline values.
+   * messages and {@code TruthFailureSubject} output, we're moving away from the old-style messages
+   * and onto {@link #makeMessage}, which aligns fields horizontally and indents multiline values.
    */
   @Override
   public String toString() {

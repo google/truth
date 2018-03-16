@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
  *
  * @author Kurt Alfred Kluever
  */
-public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
+public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
   ThrowableSubject(
       FailureMetadata metadata, @Nullable Throwable throwable, @Nullable String typeDescription) {
     super(metadata, throwable, typeDescription);
@@ -41,12 +41,12 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
    *     for less brittle tests.
    */
   @Deprecated
-  public void hasMessage(@Nullable String expected) {
+  public final void hasMessage(@Nullable String expected) {
     hasMessageThat().isEqualTo(expected);
   }
 
   /** Returns a {@code StringSubject} to make assertions about the throwable's message. */
-  public StringSubject hasMessageThat() {
+  public final StringSubject hasMessageThat() {
     return check("getMessage()").that(actual().getMessage());
   }
 
@@ -55,7 +55,7 @@ public final class ThrowableSubject extends Subject<ThrowableSubject, Throwable>
    * cause. This method can be invoked repeatedly (e.g. {@code
    * assertThat(e).hasCauseThat().hasCauseThat()....} to assert on a particular indirect cause.
    */
-  public ThrowableSubject hasCauseThat() {
+  public final ThrowableSubject hasCauseThat() {
     // provides a more helpful error message if hasCauseThat() methods are chained too deep
     // e.g. assertThat(new Exception()).hCT().hCT()....
     // TODO(diamondm) in keeping with other subjects' behavior this should still NPE if the subject
