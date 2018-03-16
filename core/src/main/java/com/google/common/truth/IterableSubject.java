@@ -975,10 +975,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * expected element and vice versa, and fails if this is not the case. Returns whether the
      * assertion failed.
      */
-    boolean failIfCandidateMappingHasMissingOrExtra(
+    private boolean failIfCandidateMappingHasMissingOrExtra(
         List<? extends A> actual,
         List<? extends E> expected,
-        ImmutableMultimap<Integer, Integer> mapping) {
+        ImmutableSetMultimap<Integer, Integer> mapping) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty() || !extra.isEmpty()) {
@@ -994,7 +994,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Given a list of extra elements and a list of missing elements, at least one of which must be
+     * Given a list of missing elements and a list of extra elements, at least one of which must be
      * non-empty, returns a verb phrase (suitable for appearing after the subject of the verb)
      * describing them.
      */
@@ -1131,7 +1131,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * into the expected list, checks that every actual element maps to an expected element and vice
      * versa, and fails if this is not the case. Returns whether the assertion failed.
      */
-    boolean failIfOneToOneMappingHasMissingOrExtra(
+    private boolean failIfOneToOneMappingHasMissingOrExtra(
         List<? extends A> actual, List<? extends E> expected, BiMap<Integer, Integer> mapping) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
@@ -1178,7 +1178,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     @CanIgnoreReturnValue
     public Ordered containsAllIn(Iterable<? extends E> expected) {
-      // TODO(b/32960783): Implement smart diffs here.
       List<A> actualList = iterableToList(getCastActual());
       List<? extends E> expectedList = iterableToList(expected);
       // Check if the expected elements correspond in order to any subset of the actual elements.
@@ -1191,14 +1190,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // it for completeness.
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
           findCandidateMapping(actualList, expectedList);
-      if (failIfCandidateMappingHasMissing(expectedList, candidateMapping)) {
+      if (failIfCandidateMappingHasMissing(actualList, expectedList, candidateMapping)) {
         return ALREADY_FAILED;
       }
       // We know that every expected element maps to at least one actual element, and vice versa.
       // Find a maximal 1:1 mapping, and check it for completeness.
       ImmutableBiMap<Integer, Integer> maximalOneToOneMapping =
           findMaximalOneToOneMapping(candidateMapping);
-      if (failIfOneToOneMappingHasMissing(expectedList, maximalOneToOneMapping)) {
+      if (failIfOneToOneMappingHasMissing(actualList, expectedList, maximalOneToOneMapping)) {
         return ALREADY_FAILED;
       }
       // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
@@ -1260,26 +1259,75 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * Given a list of expected elements and a many:many mapping between actual and expected
-     * elements specified as a multimap of indexes into an actual list to indexes into the expected
-     * list, checks that every expected element maps to at least one actual element, and fails if
-     * this is not the case. Actual elements which do not map to any expected elements are ignored.
+     * Given a list of actual elements, a list of expected elements, and a many:many mapping between
+     * actual and expected elements specified as a multimap of indexes into an actual list to
+     * indexes into the expected list, checks that every expected element maps to at least one
+     * actual element, and fails if this is not the case. Actual elements which do not map to any
+     * expected elements are ignored.
      */
-    boolean failIfCandidateMappingHasMissing(
-        List<? extends E> expected, ImmutableMultimap<Integer, Integer> mapping) {
+    private boolean failIfCandidateMappingHasMissing(
+        List<? extends A> actual,
+        List<? extends E> expected,
+        ImmutableSetMultimap<Integer, Integer> mapping) {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty()) {
+        List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
         subject.failWithRawMessage(
-            "Not true that %s contains at least one element that %s each element of <%s>. "
-                + "It is missing an element that %s %s",
-            subject.actualAsString(),
-            correspondence,
-            expected,
-            correspondence,
-            formatMissing(missing));
+            "Not true that %s contains at least one element that %s each element of <%s>. It %s",
+            subject.actualAsString(), correspondence, expected, describeMissing(missing, extra));
         return true;
       }
       return false;
+    }
+
+    /**
+     * Given a list of missing elements, which must be non-empty, and a list of extra elements,
+     * returns a verb phrase (suitable for appearing after the subject of the verb) describing the
+     * missing elements, diffing against the extra ones where appropriate.
+     */
+    private String describeMissing(List<? extends E> missing, List<? extends A> extra) {
+      if (pairer.isPresent()) {
+        @Nullable Pairing pairing = pairer.get().pair(missing, extra);
+        if (pairing != null) {
+          return describeMissingWithPairing(pairing);
+        } else {
+          return describeMissingWithoutPairing(correspondence.toString(), missing)
+              + ". (N.B. A key function which does not uniquely key the expected elements was "
+              + "provided and has consequently been ignored.)";
+        }
+      } else {
+        // N.B. For containsAny, we do not treat having exactly one missing element as a special
+        // case (as we do for containsExactly). Showing extra elements has lower utility for
+        // containsAny (because they are allowed by the assertion) so we only show them if the user
+        // has explicitly opted in by specifying a pairing.
+        return describeMissingWithoutPairing(correspondence.toString(), missing);
+      }
+    }
+
+    private String describeMissingWithoutPairing(String verb, List<? extends E> missing) {
+      return StringUtil.format("is missing an element that %s %s", verb, formatMissing(missing));
+    }
+
+    private String describeMissingWithPairing(Pairing pairing) {
+      List<String> messages = Lists.newArrayList();
+      for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
+        E missing = pairing.pairedKeysToExpectedValues.get(key);
+        List<A> extras = pairing.pairedKeysToActualValues.get(key);
+        messages.add(
+            StringUtil.format(
+                "is missing an element that corresponds to <%s> (but did have elements <%s> with "
+                    + "matching key %s)",
+                missing, formatExtras(missing, extras), key));
+      }
+      if (!pairing.unpairedExpectedValues.isEmpty()) {
+        messages.add(
+            describeMissingWithoutPairing("corresponds to", pairing.unpairedExpectedValues)
+                + " (without matching keys)");
+      }
+      if (messages.size() > 1) {
+        messages.set(messages.size() - 1, "and " + messages.get(messages.size() - 1));
+      }
+      return Joiner.on(", ").join(messages);
     }
 
     /**
@@ -1288,21 +1336,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * that every expected element maps to an actual element. Actual elements which do not map to
      * any expected elements are ignored.
      */
-    boolean failIfOneToOneMappingHasMissing(
-        List<? extends E> expected, BiMap<Integer, Integer> mapping) {
+    private boolean failIfOneToOneMappingHasMissing(
+        List<? extends A> actual, List<? extends E> expected, BiMap<Integer, Integer> mapping) {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty()) {
+        List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
         subject.failWithRawMessage(
             "Not true that %s contains at least one element that %s each element of <%s>. "
                 + "It contains at least one element that matches each expected element, "
                 + "but there was no 1:1 mapping between all the expected elements and any subset "
                 + "of the actual elements. Using the most complete 1:1 mapping (or one such "
-                + "mapping, if there is a tie), it is missing an element that %s %s",
-            subject.actualAsString(),
-            correspondence,
-            expected,
-            correspondence,
-            formatMissing(missing));
+                + "mapping, if there is a tie), it %s",
+            subject.actualAsString(), correspondence, expected, describeMissing(missing, extra));
         return true;
       }
       return false;
@@ -1441,7 +1486,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
 
       /**
-       * Returns a {@link Pairing} of the given actual and expected values, or {@code null} if the
+       * Returns a {@link Pairing} of the given expected and actual values, or {@code null} if the
        * expected values are not uniquely keyed.
        */
       @Nullable

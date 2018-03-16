@@ -766,6 +766,61 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingElementsUsing_displayingElementsPairedBy_containsAllIn() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.createWithoutId(999));
+    ImmutableList<Record> actual =
+        ImmutableList.of(
+            Record.create(1, 101),
+            Record.create(2, 211),
+            Record.create(2, 222),
+            Record.create(3, 303),
+            Record.createWithoutId(888));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsAllIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1/101, 2/211, 2/222, 3/303, none/888]> contains at least one element "
+                + "that has the same id as and a score is within 10 of each element of "
+                + "<[1/100, 2/200, none/999]>. It is missing an element that corresponds to "
+                + "<2/200> (but did have elements <[2/211 (diff: score:11), "
+                + "2/222 (diff: score:22)]> with matching key 2), and is missing an element that "
+                + "corresponds to <none/999> (without matching keys)");
+  }
+
+  @Test
+  public void comparingElementsUsing_displayingElementsPairedBy_containsAllIn_notUnique() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 200),
+            Record.create(2, 201),
+            Record.createWithoutId(999));
+    ImmutableList<Record> actual =
+        ImmutableList.of(Record.create(1, 101), Record.create(3, 303), Record.createWithoutId(999));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsAllIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1/101, 3/303, none/999]> contains at least one element that has the "
+                + "same id as and a score is within 10 of each element of "
+                + "<[1/100, 2/200, 2/201, none/999]>. It is missing an element that has the same "
+                + "id as and a score is within 10 of each of <[2/200, 2/201]>. (N.B. A key "
+                + "function which does not uniquely key the expected elements was provided and has "
+                + "consequently been ignored.)");
+  }
+
+  @Test
   public void comparingElementsUsing_containsAllIn_failsMultipleMissingCandidates() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
