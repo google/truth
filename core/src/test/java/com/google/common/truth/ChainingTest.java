@@ -101,7 +101,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat("root")
         .delegatingToNamed("child", "child")
         .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.child: message: myObject was: root");
+    assertNoCause("value of: myObject.child\nmessage\nmyObject was: root");
   }
 
   @Test
@@ -110,7 +110,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
         .delegatingToNamed("child", "child")
         .delegatingToNamed("grandchild", "grandchild")
         .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.child.grandchild: message: myObject was: root");
+    assertNoCause("value of: myObject.child.grandchild\nmessage\nmyObject was: root");
   }
 
   @Test
@@ -119,7 +119,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
         .delegatingToNamed("child", "child")
         .delegatingTo("grandchild")
         .isThePresentKingOfFrance();
-    assertNoCause("message: myObject was: root");
+    assertNoCause("message\nmyObject was: root");
   }
 
   @Test
@@ -128,7 +128,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
         .delegatingTo("child")
         .delegatingToNamed("grandchild", "grandchild")
         .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.grandchild: message: myObject was: root");
+    assertNoCause("value of: myObject.grandchild\nmessage\nmyObject was: root");
   }
 
   @Test
@@ -136,7 +136,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat("root")
         .delegatingToNamedNoNeedToDisplayBoth("child", "child")
         .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.child: message");
+    assertNoCause("value of: myObject.child\nmessage");
   }
 
   @Test
@@ -145,7 +145,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
         .delegatingToNamedNoNeedToDisplayBoth("child", "child")
         .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
         .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.child.grandchild: message");
+    assertNoCause("value of: myObject.child.grandchild\nmessage");
   }
 
   @Test
@@ -163,7 +163,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
         .delegatingTo("child")
         .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
         .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.grandchild: message");
+    assertNoCause("value of: myObject.grandchild\nmessage");
   }
 
   @Test
@@ -172,7 +172,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
         .delegatingToNamedNoNeedToDisplayBoth("child", "child")
         .delegatingToNamed("grandchild", "grandchild")
         .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.child.grandchild: message: myObject was: root");
+    assertNoCause("value of: myObject.child.grandchild\nmessage\nmyObject was: root");
   }
 
   @Test
@@ -181,14 +181,14 @@ public final class ChainingTest extends BaseSubjectTestCase {
         .delegatingToNamed("child", "child")
         .delegatingToNamedNoNeedToDisplayBoth("grandchild", "grandchild")
         .isThePresentKingOfFrance();
-    assertNoCause("value of: myObject.child.grandchild: message: myObject was: root");
+    assertNoCause("value of: myObject.child.grandchild\nmessage\nmyObject was: root");
   }
 
   @Test
   public void namedAndComparisonFailure() {
     expectFailureWhenTestingThat("root").delegatingToNamed("child", "child").isEqualToString("z");
     assertNoCause(
-        "value of: myObject.child: message expected:<[child]> but was:<[z]>: myObject was: root");
+        "value of: myObject.child\nmessage expected:<[child]> but was:<[z]>\nmyObject was: root");
   }
 
   @Test
@@ -200,7 +200,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
         .that("root")
         .delegatingToNamed("child", "child")
         .isThePresentKingOfFrance();
-    assertNoCause("prefix: value of: myObject.child: message: myObject was: root");
+    assertNoCause("prefix\nvalue of: myObject.child\nmessage\nmyObject was: root");
   }
 
   @Test
@@ -212,7 +212,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
   @Test
   public void checkFailWithName() {
     expectFailureWhenTestingThat("root").doCheckFail("child");
-    assertNoCause("value of: myObject.child: message: myObject was: root");
+    assertNoCause("value of: myObject.child\nmessage\nmyObject was: root");
   }
 
   @Test

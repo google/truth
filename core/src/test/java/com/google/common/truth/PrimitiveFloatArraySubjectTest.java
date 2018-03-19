@@ -862,7 +862,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is a finite "
                     + "number within %s of <%s>",
                 1.0f, INTOLERABLE_TWO, 3.0f, (double) DEFAULT_TOLERANCE, 2.0f));
@@ -877,7 +877,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, Infinity, %s]> "
+                "value of: array.asList()\nNot true that <[%s, Infinity, %s]> "
                     + "contains at least one element that is "
                     + "a finite number within %s of <Infinity>",
                 1.0f, 3.0f, (double) DEFAULT_TOLERANCE));
@@ -892,7 +892,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, NaN, %s]> "
+                "value of: array.asList()\nNot true that <[%s, NaN, %s]> "
                     + "contains at least one element that is "
                     + "a finite number within %s of <NaN>",
                 1.0f, 3.0f, (double) DEFAULT_TOLERANCE));
@@ -976,7 +976,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is a "
                     + "finite number within %s of each element of <[%s, %s]>. "
                     + "It is missing an element that is a finite number within %s of <%s>",
@@ -1008,7 +1008,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains, in order, at least one element that"
                     + " is a finite number within %s of each element of <[%s, %s]>",
                 1.0f, TOLERABLE_TWO, 3.0f, (double) DEFAULT_TOLERANCE, 2.0f, 1.0f));
@@ -1030,7 +1030,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is "
                     + "a finite number within %s of any element in <[%s, %s]>",
                 1.0f, TOLERABLE_TWO, 3.0f, (double) DEFAULT_TOLERANCE, 99.99f, 999.999f));
@@ -1052,7 +1052,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains exactly one element that is a finite "
                     + "number within %s of each element of <[%s, %s]>. "
                     + "It has unexpected elements <[%s]>",
@@ -1077,7 +1077,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains, in order, exactly one element that is a "
                     + "finite number within %s of each element of <[%s, %s, %s]>",
                 1.0f, TOLERABLE_TWO, 3.0f, (double) DEFAULT_TOLERANCE, 2.0f, 1.0f, 3.0f));
@@ -1099,7 +1099,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains no element that is a finite number within %s"
                     + " of any element in <[%s, %s]>. It contains <[%s which corresponds to %s]>",
                 1.0f,
@@ -1126,7 +1126,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element "
                     + "that is exactly equal to <%s>",
                 1.0f, JUST_OVER_2POINT2, 3.0f, 2.2f));
@@ -1216,7 +1216,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, -0.0, %s]> "
+                "value of: array.asList()\nNot true that <[%s, -0.0, %s]> "
                     + "contains at least one element that is "
                     + "exactly equal to <%s>",
                 1.0f, 3.0f, 0.0f));
@@ -1245,7 +1245,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is exactly equal "
                     + "to each element of <[%s, %s]>. It is missing an element that is exactly "
                     + "equal to <%s>",
@@ -1270,7 +1270,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains, in order, at least one element that is "
                     + "exactly equal to each element of <[%s, %s]>",
                 1.0f, 2.0f, 3.0f, 2.0f, 1.0f));
@@ -1290,7 +1290,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is exactly equal "
                     + "to any element in <[%s, %s]>",
                 1.0f, 2.0f, 3.0f, 99.99f, 999.999f));
@@ -1312,7 +1312,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains exactly one element that is exactly equal "
                     + "to each element of <[%s, %s]>. It has unexpected elements <[%s]>",
                 1.0f, 2.0f, 3.0f, 2.0f, 1.0f, 3.0f));
@@ -1336,7 +1336,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains, in order, exactly one element that is "
                     + "exactly equal to each element of <[%s, %s, %s]>",
                 1.0f, 2.0f, 3.0f, 2.0f, 1.0f, 3.0f));
@@ -1358,7 +1358,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             format(
-                "value of: array.asList(): Not true that <[%s, %s, %s]> "
+                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains no element that is exactly equal to any "
                     + "element in <[%s, %s]>. It contains <[%s which corresponds to %s]>",
                 1.0f, 2.0f, 3.0f, 99.99f, 2.0f, 2.0f, 2.0f));

@@ -54,7 +54,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     NullPointerException actual = new NullPointerException("message");
     expectFailureWhenTestingThat(actual).hasMessageThat().isEqualTo("foobar");
     assertThat(expectFailure.getFailure().getMessage())
-        .isEqualTo("value of: throwable.getMessage(): expected:<[foobar]> but was:<[message]>");
+        .isEqualTo("value of: throwable.getMessage()\n expected:<[foobar]> but was:<[message]>");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }
 
@@ -62,7 +62,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
   public void hasMessageThat_MessageHasNullMessage_failure() {
     expectFailureWhenTestingThat(new NullPointerException("message")).hasMessageThat().isNull();
     assertThat(expectFailure.getFailure().getMessage())
-        .isEqualTo("value of: throwable.getMessage(): Not true that <\"message\"> is null");
+        .isEqualTo("value of: throwable.getMessage()\nNot true that <\"message\"> is null");
   }
 
   @Test
@@ -70,7 +70,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     NullPointerException npe = new NullPointerException("message");
     expectFailureWhenTestingThat(npe).named("NPE").hasMessageThat().isEqualTo("foobar");
     assertThat(expectFailure.getFailure().getMessage())
-        .isEqualTo("value of: NPE.getMessage(): expected:<[foobar]> but was:<[message]>");
+        .isEqualTo("value of: NPE.getMessage()\n expected:<[foobar]> but was:<[message]>");
   }
 
   @Test
@@ -79,7 +79,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(npe).hasMessageThat().isEqualTo("message");
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "value of: throwable.getMessage(): Not true that <null> is equal to <\"message\">");
+            "value of: throwable.getMessage()\nNot true that <null> is equal to <\"message\">");
   }
 
   @Test
@@ -108,7 +108,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).hasCauseThat().hasMessageThat().isEqualTo("message");
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "value of: throwable.getCause().getMessage(): expected:<[message]> but was:<[barfoo]>");
+            "value of: throwable.getCause().getMessage()\n expected:<[message]> but was:<[barfoo]>");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }
 
@@ -118,7 +118,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).hasCauseThat().isInstanceOf(RuntimeException.class);
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "value of: throwable.getCause(): Not true that <java.io.IOException: "
+            "value of: throwable.getCause()\nNot true that <java.io.IOException: "
                 + "barfoo> is an instance of <java.lang.RuntimeException>. "
                 + "It is an instance of <java.io.IOException>");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
@@ -130,7 +130,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).hasCauseThat().hasCauseThat().isNull();
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "value of: throwable.getCause().getCause(): "
+            "value of: throwable.getCause().getCause()\n"
                 + "Causal chain is not deep enough - add a .isNotNull() check?");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }
@@ -146,7 +146,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
         .isEqualTo("message");
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "value of: throwable.getCause().getCause().getMessage(): "
+            "value of: throwable.getCause().getCause().getMessage()\n "
                 + "expected:<[message]> but was:<[buzz]>");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }

@@ -209,25 +209,18 @@ public final class FailureMetadata {
   private String addToMessage(String body) {
     ImmutableList<?> messages = allPrefixMessages();
     StringBuilder result = new StringBuilder(body.length());
-    Joiner.on(": ").appendTo(result, messages);
+    Joiner.on("\n").appendTo(result, messages);
     if (!messages.isEmpty()) {
-      if (body.isEmpty()) {
-        /*
-         * The only likely case of an empty body is with failComparing(). In that case, we still
-         * want a colon because ComparisonFailure will construct a message of the form
-         * "<ourString> <theirString>." For consistency with the normal behavior of withMessage,
-         * we want a colon between the parts.
-         *
-         * That actually makes it sound like we'd want to *always* include the trailing colon in
-         * the case of failComparing(), but I don't want to bite that off now in case it requires
-         * updating more existing Subjects' tests.
-         */
-        result.append(":");
-      } else {
-        result.append(": ");
-      }
+      result.append("\n");
     }
     result.append(body);
+    /*
+     * JUnit's ComparisonFailure will append " expected: <...> but was: <...> to the end of this.
+     * Note the space at the beginning. That means that, if the body is empty, the "expected... but
+     * was" text will come at the beginning of a line... indented by one space :\ The right fix for
+     * this is to stop depending on JUnit's ComparisonFailure formatting. That's coming. For now,
+     * the space is an annoyance.
+     */
     return result.toString();
   }
 
