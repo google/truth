@@ -849,7 +849,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, "
+            "value of: array.asList()\nNot true that <[1.1, "
                 + INTOLERABLE_2POINT2
                 + ", 3.3]> contains at least one element that is a finite number within "
                 + DEFAULT_TOLERANCE
@@ -864,7 +864,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, Infinity, 3.3]> "
+            "value of: array.asList()\nNot true that <[1.1, Infinity, 3.3]> "
                 + "contains at least one element that is "
                 + "a finite number within "
                 + DEFAULT_TOLERANCE
@@ -879,7 +879,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, NaN, 3.3]> "
+            "value of: array.asList()\nNot true that <[1.1, NaN, 3.3]> "
                 + "contains at least one element that is "
                 + "a finite number within "
                 + DEFAULT_TOLERANCE
@@ -960,7 +960,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, "
+            "value of: array.asList()\nNot true that <[1.1, "
                 + TOLERABLE_2POINT2
                 + ", 3.3]> contains at least one element that is a finite number "
                 + "within "
@@ -988,7 +988,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, "
+            "value of: array.asList()\nNot true that <[1.1, "
                 + TOLERABLE_2POINT2
                 + ", 3.3]> contains, in order, at least one element that is a finite number "
                 + "within "
@@ -1011,7 +1011,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, "
+            "value of: array.asList()\nNot true that <[1.1, "
                 + TOLERABLE_2POINT2
                 + ", 3.3]> contains at least one element that is a finite number within "
                 + DEFAULT_TOLERANCE
@@ -1033,7 +1033,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, "
+            "value of: array.asList()\nNot true that <[1.1, "
                 + TOLERABLE_2POINT2
                 + ", 3.3]> contains exactly one element that is a finite number within "
                 + DEFAULT_TOLERANCE
@@ -1057,7 +1057,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, "
+            "value of: array.asList()\nNot true that <[1.1, "
                 + TOLERABLE_2POINT2
                 + ", 3.3]> contains, in order, exactly one element that is a finite number "
                 + "within "
@@ -1080,7 +1080,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, "
+            "value of: array.asList()\nNot true that <[1.1, "
                 + TOLERABLE_2POINT2
                 + ", 3.3]> contains no element that is a finite number within "
                 + DEFAULT_TOLERANCE
@@ -1100,7 +1100,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, "
+            "value of: array.asList()\nNot true that <[1.1, "
                 + OVER_2POINT2
                 + ", 3.3]> contains at least one element that is exactly equal to <2.2>");
   }
@@ -1174,7 +1174,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, -0.0, 3.3]> "
+            "value of: array.asList()\nNot true that <[1.1, -0.0, 3.3]> "
                 + "contains at least one element that is "
                 + "exactly equal to <"
                 + 0.0
@@ -1203,7 +1203,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, 2.2, 3.3]> "
+            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
                 + "contains at least one element that is exactly equal "
                 + "to each element of <[2.2, 99.99]>. It is missing an element that is exactly "
                 + "equal to <99.99>");
@@ -1223,7 +1223,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, 2.2, 3.3]> "
+            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
                 + "contains, in order, at least one element that is "
                 + "exactly equal to each element of <[2.2, 1.1]>");
   }
@@ -1241,7 +1241,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, 2.2, 3.3]> "
+            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
                 + "contains at least one element that is exactly equal "
                 + "to any element in <[99.99, 999.999]>");
   }
@@ -1259,7 +1259,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, 2.2, 3.3]> "
+            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
                 + "contains exactly one element that is exactly equal "
                 + "to each element of <[2.2, 1.1]>. It has unexpected elements <[3.3]>");
   }
@@ -1281,7 +1281,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, 2.2, 3.3]> "
+            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
                 + "contains, in order, exactly one element that is "
                 + "exactly equal to each element of <[2.2, 1.1, 3.3]>");
   }
@@ -1299,7 +1299,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: array.asList(): Not true that <[1.1, 2.2, 3.3]> "
+            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
                 + "contains no element that is exactly equal to any "
                 + "element in <[99.99, 2.2]>. It contains <[2.2 which corresponds to 2.2]>");
   }

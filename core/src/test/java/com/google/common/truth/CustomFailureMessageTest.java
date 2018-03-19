@@ -41,7 +41,7 @@ public class CustomFailureMessageTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Invalid month: Not true that <13> is in <" + range + ">");
+          .isEqualTo("Invalid month\nNot true that <13> is in <" + range + ">");
       return;
     }
     fail("Should have thrown");
@@ -55,7 +55,7 @@ public class CustomFailureMessageTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Invalid month: Not true that Septober (<13>) is in <" + range + ">");
+          .isEqualTo("Invalid month\nNot true that Septober (<13>) is in <" + range + ">");
       return;
     }
     fail("Should have thrown");
@@ -69,7 +69,7 @@ public class CustomFailureMessageTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "This is a custom message: The subject was expected to be true, but was false");
+              "This is a custom message\nThe subject was expected to be true, but was false");
       return;
     }
     fail("Should have thrown");
@@ -83,7 +83,7 @@ public class CustomFailureMessageTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Invalid month: Not true that <13> is in <" + range + ">");
+          .isEqualTo("Invalid month\nNot true that <13> is in <" + range + ">");
       return;
     }
     fail("Should have thrown");
@@ -97,7 +97,7 @@ public class CustomFailureMessageTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Invalid month: Not true that Septober (<13>) is in <" + range + ">");
+          .isEqualTo("Invalid month\nNot true that Septober (<13>) is in <" + range + ">");
       return;
     }
     fail("Should have thrown");
@@ -111,7 +111,7 @@ public class CustomFailureMessageTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "This is a custom message: The subject was expected to be true, but was false");
+              "This is a custom message\nThe subject was expected to be true, but was false");
       return;
     }
     fail("Should have thrown");
@@ -142,7 +142,7 @@ public class CustomFailureMessageTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Invalid month: Not true that <13> is in <" + range + ">");
+          .isEqualTo("Invalid month\nNot true that <13> is in <" + range + ">");
       return;
     }
     fail("Should have thrown");
@@ -156,7 +156,7 @@ public class CustomFailureMessageTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Invalid month: Not true that Septober (<13>) is in <" + range + ">");
+          .isEqualTo("Invalid month\nNot true that Septober (<13>) is in <" + range + ">");
       return;
     }
     fail("Should have thrown");
@@ -170,7 +170,7 @@ public class CustomFailureMessageTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "This is a custom message: The subject was expected to be true, but was false");
+              "This is a custom message\nThe subject was expected to be true, but was false");
       return;
     }
     fail("Should have thrown");
@@ -184,7 +184,7 @@ public class CustomFailureMessageTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Invalid month: Not true that <13> is in <" + range + ">");
+          .isEqualTo("Invalid month\nNot true that <13> is in <" + range + ">");
       return;
     }
     fail("Should have thrown");
@@ -198,7 +198,7 @@ public class CustomFailureMessageTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Invalid month: Not true that Septober (<13>) is in <" + range + ">");
+          .isEqualTo("Invalid month\nNot true that Septober (<13>) is in <" + range + ">");
       return;
     }
     fail("Should have thrown");
@@ -212,7 +212,7 @@ public class CustomFailureMessageTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "This is a custom message: The subject was expected to be true, but was false");
+              "This is a custom message\nThe subject was expected to be true, but was false");
       return;
     }
     fail("Should have thrown");

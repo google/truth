@@ -176,9 +176,9 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: multymap.valuesForKey(1): "
+            "value of: multymap.valuesForKey(1)\n"
                 + "Not true that <[5]> contains exactly <[4]>. "
-                + "It is missing <[4]> and has unexpected items <[5]>: "
+                + "It is missing <[4]> and has unexpected items <[5]>\n"
                 + "multimap was: multymap ({1=[5]})");
   }
 
@@ -189,9 +189,9 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: multimap.valuesForKey(1): "
+            "value of: multimap.valuesForKey(1)\n"
                 + "Not true that valuez (<[5]>) contains exactly <[4]>. "
-                + "It is missing <[4]> and has unexpected items <[5]>: "
+                + "It is missing <[4]> and has unexpected items <[5]>\n"
                 + "multimap was: {1=[5]}");
   }
 

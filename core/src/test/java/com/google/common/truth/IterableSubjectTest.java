@@ -117,7 +117,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().withMessage("custom msg").that(asList(1, 2, 3)).contains(5);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("custom msg: <[1, 2, 3]> should have contained <5>");
+        .isEqualTo("custom msg\n<[1, 2, 3]> should have contained <5>");
   }
 
   @Test

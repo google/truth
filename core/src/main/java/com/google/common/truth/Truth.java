@@ -314,7 +314,7 @@ public final class Truth {
   @Nullable
   static String appendSuffixIfNotNull(String message, String suffix) {
     if (suffix != null) {
-      message += ": " + suffix;
+      message += "\n" + suffix;
     }
     return message;
   }

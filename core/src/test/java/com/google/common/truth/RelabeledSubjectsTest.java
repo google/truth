@@ -97,7 +97,7 @@ public class RelabeledSubjectsTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: crazy list.asList(): Not true that <[1.3, 1.1]> "
+            "value of: crazy list.asList()\nNot true that <[1.3, 1.1]> "
                 + "contains exactly one element that is a "
                 + "finite number within 1.0E-7 of each element of <[1.3, 1.0]>. It is missing an "
                 + "element that is a finite number within 1.0E-7 of <1.0> and has unexpected "
@@ -110,7 +110,7 @@ public class RelabeledSubjectsTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(actual).named("crazy list").asList().contains(789L);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("value of: crazy list.asList(): <[123, 456]> should have contained <789>");
+        .isEqualTo("value of: crazy list.asList()\n<[123, 456]> should have contained <789>");
   }
 
   @Test
@@ -119,6 +119,6 @@ public class RelabeledSubjectsTest extends BaseSubjectTestCase {
     expectFailure.whenTesting().that(actual).named("crazy list").asList().contains("rabbit");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("value of: crazy list.asList(): <[cat, dog]> should have contained <rabbit>");
+        .isEqualTo("value of: crazy list.asList()\n<[cat, dog]> should have contained <rabbit>");
   }
 }
