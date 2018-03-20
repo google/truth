@@ -1383,7 +1383,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     private void containsAny(String failVerb, Iterable<? extends E> expected) {
-      // TODO(b/32960783): Implement smart diffs here.
       Collection<A> actual = iterableToCollection(getCastActual());
       for (E expectedItem : expected) {
         for (A actualItem : actual) {
@@ -1392,7 +1391,41 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           }
         }
       }
-      subject.fail(failVerb, expected);
+      if (pairer.isPresent()) {
+        @Nullable
+        Pairing pairing = pairer.get().pair(iterableToList(expected), iterableToList(actual));
+        if (pairing != null) {
+          if (!pairing.pairedKeysToExpectedValues.isEmpty()) {
+            subject.failWithRawMessage(
+                "Not true that %s %s <%s>. It contains the following values that match by key: %s",
+                subject.actualAsString(), failVerb, expected, describeAnyMatchesByKey(pairing));
+          } else {
+            subject.failWithRawMessage(
+                "Not true that %s %s <%s>. It does not contain any matches by key, either",
+                subject.actualAsString(), failVerb, expected);
+          }
+        } else {
+          subject.failWithRawMessage(
+              "Not true that %s %s <%s>. (N.B. A key function which does not uniquely key the "
+                  + "expected elements was provided and has consequently been ignored.)",
+              subject.actualAsString(), failVerb, expected);
+        }
+      } else {
+        subject.fail(failVerb, expected);
+      }
+    }
+
+    private String describeAnyMatchesByKey(Pairing pairing) {
+      List<String> messages = Lists.newArrayList();
+      for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
+        E expected = pairing.pairedKeysToExpectedValues.get(key);
+        List<A> got = pairing.pairedKeysToActualValues.get(key);
+        messages.add(
+            StringUtil.format(
+                "with key %s, would have accepted %s, but got %s",
+                key, expected, formatExtras(expected, got)));
+      }
+      return Joiner.on("; ").join(messages);
     }
 
     /**

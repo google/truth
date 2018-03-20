@@ -1036,6 +1036,83 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingElementsUsing_displayingDiffsPairedBy_containsAnyIn_withKeyMatches() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 200),
+            Record.create(3, 300),
+            Record.createWithoutId(999));
+    ImmutableList<Record> actual =
+        ImmutableList.of(
+            Record.create(3, 311),
+            Record.create(2, 211),
+            Record.create(2, 222),
+            Record.create(4, 404),
+            Record.createWithoutId(888));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsAnyIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[3/311, 2/211, 2/222, 4/404, none/888]> contains at least one element "
+                + "that has the same id as and a score is within 10 of any element in "
+                + "<[1/100, 2/200, 3/300, none/999]>. It contains the following values that match "
+                + "by key: with key 2, would have accepted 2/200, but got "
+                + "[2/211 (diff: score:11), 2/222 (diff: score:22)]; with key 3, would have "
+                + "accepted 3/300, but got [3/311 (diff: score:11)]");
+  }
+
+  @Test
+  public void comparingElementsUsing_displayingDiffsPairedBy_containsAnyIn_withoutKeyMatches() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.createWithoutId(999));
+    ImmutableList<Record> actual =
+        ImmutableList.of(Record.create(3, 300), Record.create(4, 411), Record.createWithoutId(888));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsAnyIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[3/300, 4/411, none/888]> contains at least one element that has the "
+                + "same id as and a score is within 10 of any element in "
+                + "<[1/100, 2/200, none/999]>. It does not contain any matches by key, either");
+  }
+
+  @Test
+  public void comparingElementsUsing_displayingDiffsPairedBy_containsAnyIn_notUnique() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 200),
+            Record.create(2, 250),
+            Record.createWithoutId(999));
+    ImmutableList<Record> actual =
+        ImmutableList.of(Record.create(3, 300), Record.create(2, 211), Record.createWithoutId(888));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsAnyIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[3/300, 2/211, none/888]> contains at least one element that has the "
+                + "same id as and a score is within 10 of any element in "
+                + "<[1/100, 2/200, 2/250, none/999]>. (N.B. A key function which does not uniquely "
+                + "key the expected elements was provided and has consequently been ignored.)");
+  }
+
+  @Test
   public void comparingElementsUsing_containsAnyIn_null() {
     List<String> actual = asList("+128", "+64", null, "0x40");
     List<Integer> expected = asList(255, null, 257);
