@@ -54,18 +54,23 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the subject is not equal to the given object. */
   @Override
   public void isEqualTo(@Nullable Object other) {
-    if (!Objects.equal(actual(), other)) {
-      if (other instanceof Map) {
-        boolean mapEquals = containsExactlyEntriesInAnyOrder((Map<?, ?>) other, "is equal to");
-        if (mapEquals) {
-          failWithRawMessage(
-              "Not true that %s is equal to <%s>. It is equal according to the contract of "
-                  + "Map.equals(Object), but this implementation returned false",
-              actualAsString(), other);
-        }
-      } else {
-        fail("is equal to", other);
-      }
+    if (Objects.equal(actual(), other)) {
+      return;
+    }
+
+    // Fail but with a more descriptive message:
+
+    if (!(other instanceof Map)) {
+      fail("is equal to", other);
+      return;
+    }
+
+    boolean mapEquals = containsExactlyEntriesInAnyOrder((Map<?, ?>) other, "is equal to");
+    if (mapEquals) {
+      failWithRawMessage(
+          "Not true that %s is equal to <%s>. It is equal according to the contract of "
+              + "Map.equals(Object), but this implementation returned false",
+          actualAsString(), other);
     }
   }
 
