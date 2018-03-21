@@ -171,27 +171,25 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   @Override
   public void isEqualTo(@Nullable Object other) {
-    if (!Objects.equal(actual(), other)) {
-      if ((actual() instanceof ListMultimap && other instanceof SetMultimap)
-          || (actual() instanceof SetMultimap && other instanceof ListMultimap)) {
-        String mapType1 = (actual() instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
-        String mapType2 = (other instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
-        failWithRawMessage(
-            "Not true that %s %s is equal to %s <%s>. "
-                + "A %s cannot equal a %s if either is non-empty.",
-            mapType1, actualAsString(), mapType2, other, mapType1, mapType2);
-      } else {
-        if (actual() instanceof ListMultimap) {
-          // If we're comparing ListMultimaps, check for order
-          containsExactlyEntriesIn((Multimap<?, ?>) other).inOrder();
-          return;
-        } else if (actual() instanceof SetMultimap) {
-          // If we're comparing SetMultimaps, don't check for order
-          containsExactlyEntriesIn((Multimap<?, ?>) other);
-          return;
-        }
-        fail("is equal to", other);
-      }
+    if (Objects.equal(actual(), other)) {
+      return;
+    }
+
+    // Fail but with a more descriptive message:
+    if ((actual() instanceof ListMultimap && other instanceof SetMultimap)
+        || (actual() instanceof SetMultimap && other instanceof ListMultimap)) {
+      String mapType1 = (actual() instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
+      String mapType2 = (other instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
+      failWithRawMessage(
+          "Not true that %s %s is equal to %s <%s>. "
+              + "A %s cannot equal a %s if either is non-empty.",
+          mapType1, actualAsString(), mapType2, other, mapType1, mapType2);
+    } else if (actual() instanceof ListMultimap) {
+      containsExactlyEntriesIn((Multimap<?, ?>) other).inOrder();
+    } else if (actual() instanceof SetMultimap) {
+      containsExactlyEntriesIn((Multimap<?, ?>) other);
+    } else {
+      fail("is equal to", other);
     }
   }
 
