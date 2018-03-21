@@ -15,7 +15,7 @@ def gen_j2cl_test_rules(name, test_files, deps, prefix="J2cl", **kwargs):
   _ignored = [name]
   for test in GetTestNames(test_files):
     java_class = package_from_path(
-        PACKAGE_NAME + "/" + strip_right(test, ".java"))
+        native.package_name() + "/" + strip_right(test, ".java"))
     j2cl_test(
         name = prefix + test,
         runtime_deps = deps,
