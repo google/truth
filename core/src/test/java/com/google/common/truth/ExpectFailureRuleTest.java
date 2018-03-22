@@ -33,8 +33,8 @@ public class ExpectFailureRuleTest {
 
   @Test
   public void expectFail_captureFailureAsExpected() {
-    expectFailure.whenTesting().that(4).isNotEqualTo(4);
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<4> is not equal to <4>");
+    expectFailure.whenTesting().fail("abc");
+    assertThat(expectFailure.getFailure()).hasMessageThat().isEqualTo("abc");
   }
 
   @Test

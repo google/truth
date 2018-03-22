@@ -92,28 +92,28 @@ public class ExpectTest {
   @Test
   public void singleExpectationFails() {
     thrown.expectMessage("1 expectation failed:");
-    thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
-    expect.that("abc").contains("x");
+    thrown.expectMessage("1. x");
+    expect.fail("x");
   }
 
   @Test
   public void expectFail() {
     thrown.expectMessage("3 expectations failed:");
-    thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
-    thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
-    thrown.expectMessage("3. Not true that <\"abc\"> contains <\"z\">");
-    expect.that("abc").contains("x");
-    expect.that("abc").contains("y");
-    expect.that("abc").contains("z");
+    thrown.expectMessage("1. x");
+    thrown.expectMessage("2. y");
+    thrown.expectMessage("3. z");
+    expect.fail("x");
+    expect.fail("y");
+    expect.fail("z");
   }
 
   @Test
   public void expectFail10Aligned() {
     thrown.expectMessage("10 expectations failed:");
-    thrown.expectMessage(" 1. Not true that <\"abc\"> contains <\"x\">");
-    thrown.expectMessage("10. Not true that <\"abc\"> contains <\"x\">");
+    thrown.expectMessage(" 1. x");
+    thrown.expectMessage("10. x");
     for (int i = 0; i < 10; i++) {
-      expect.that("abc").contains("x");
+      expect.fail("x");
     }
   }
 
@@ -130,26 +130,26 @@ public class ExpectTest {
   @Test
   public void expectFailWithExceptionNoMessage() {
     thrown.expectMessage("3 expectations failed:");
-    thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
-    thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
+    thrown.expectMessage("1. x");
+    thrown.expectMessage("2. y");
     thrown.expectMessage(
         "3. Also, after those failures, an exception was thrown: "
             + "java.lang.IllegalStateException");
-    expect.that("abc").contains("x");
-    expect.that("abc").contains("y");
+    expect.fail("x");
+    expect.fail("y");
     throw new IllegalStateException();
   }
 
   @Test
   public void expectFailWithExceptionWithMessage() {
     thrown.expectMessage("3 expectations failed:");
-    thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
-    thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
+    thrown.expectMessage("1. x");
+    thrown.expectMessage("2. y");
     thrown.expectMessage(
         "3. Also, after those failures, an exception was thrown: "
             + "java.lang.IllegalStateException: testing");
-    expect.that("abc").contains("x");
-    expect.that("abc").contains("y");
+    expect.fail("x");
+    expect.fail("y");
     throw new IllegalStateException("testing");
   }
 
@@ -158,8 +158,8 @@ public class ExpectTest {
     thrown.expect(IllegalStateException.class);
     thrown.expectMessage("testing");
     throwException();
-    expect.that("abc").contains("x");
-    expect.that("abc").contains("y");
+    expect.fail("x");
+    expect.fail("y");
   }
 
   private void throwException() {
@@ -169,21 +169,21 @@ public class ExpectTest {
   @Test
   public void expectFailWithFailuresBeforeAssume() {
     thrown.expectMessage("3 expectations failed:");
-    thrown.expectMessage("1. Not true that <\"abc\"> contains <\"x\">");
-    thrown.expectMessage("2. Not true that <\"abc\"> contains <\"y\">");
+    thrown.expectMessage("1. x");
+    thrown.expectMessage("2. y");
     thrown.expectMessage(
         "3. Also, after those failures, an assumption was violated: "
             + "com.google.common.truth.TruthJUnit$ThrowableAssumptionViolatedException: testing");
-    expect.that("abc").contains("x");
-    expect.that("abc").contains("y");
+    expect.fail("x");
+    expect.fail("y");
     assume().fail("testing");
   }
 
   @Test
   public void expectSuccessWithFailuresAfterAssume() {
     assume().fail("testing");
-    expect.that("abc").contains("x");
-    expect.that("abc").contains("y");
+    expect.fail("x");
+    expect.fail("y");
   }
 
   @Test

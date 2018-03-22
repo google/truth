@@ -33,15 +33,9 @@ public class ExpectFailureTest {
   }
 
   @Test
-  public void expectFail_notEquals() {
-    expectFailure.whenTesting().that(4).isNotEqualTo(4);
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<4> is not equal to <4>");
-  }
-
-  @Test
-  public void expectFail_stringContains() {
-    expectFailure.whenTesting().that("abc").contains("x");
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("contains <\"x\">");
+  public void expectFail() {
+    expectFailure.whenTesting().fail("abc");
+    assertThat(expectFailure.getFailure()).hasMessageThat().isEqualTo("abc");
   }
 
   @Test
