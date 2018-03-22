@@ -111,13 +111,10 @@ public class SubjectTest extends BaseSubjectTestCase {
         }
 
         subject.isEqualTo(null);
-        // TODO(cpovirk): Enable this test after fixing this and other null bugs in array subjects.
-        if (!(subject instanceof AbstractArraySubject)) {
-          try {
-            subject.isNotEqualTo(null); // should throw
-            throw new Error("assertThat(null).isNotEqualTo(null) should throw an exception!");
-          } catch (AssertionError expected) {
-          }
+        try {
+          subject.isNotEqualTo(null); // should throw
+          throw new Error("assertThat(null).isNotEqualTo(null) should throw an exception!");
+        } catch (AssertionError expected) {
         }
 
         subject.isSameAs(null);
@@ -133,14 +130,11 @@ public class SubjectTest extends BaseSubjectTestCase {
           assertThat(expected).hasMessageThat().contains("is equal to any element in");
         }
 
-        // This is a hack...but we have to skip DoubleSubject (requires a tolerance)
-        // and array-based subjects (they require a primitive array for the actual value).
-        if (subject instanceof DoubleSubject || subject instanceof AbstractArraySubject) {
-          continue;
+        // TODO(cpovirk): Fix bug.
+        if (!(subject instanceof AbstractArraySubject)) {
+          // check all public assertion methods for correct null handling
+          npTester.testAllPublicInstanceMethods(subject);
         }
-
-        // check all public assertion methods for correct null handling
-        npTester.testAllPublicInstanceMethods(subject);
 
         subject.isNotEqualTo(new Object());
         subject.isEqualTo(null);
