@@ -85,12 +85,9 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     return subjectString.isEmpty() ? "[empty proto]" : subjectString;
   }
 
-  protected String getTrimmedDisplaySubject() {
-    if (internalCustomName() != null) {
-      return internalCustomName() + " (<" + getTrimmedToString(actual()) + ">)";
-    } else {
-      return "<" + getTrimmedToString(actual()) + ">";
-    }
+  @Override
+  protected String actualCustomStringRepresentation() {
+    return getTrimmedToString(actual());
   }
 
   /**
@@ -163,11 +160,10 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   public void isEqualToDefaultInstance() {
     if (actual() == null) {
       failWithRawMessage(
-          "Not true that %s is a default proto instance. It is null.", getTrimmedDisplaySubject());
+          "Not true that %s is a default proto instance. It is null.", actualAsString());
     } else if (!actual().equals(actual().getDefaultInstanceForType())) {
       failWithRawMessage(
-          "Not true that %s is a default proto instance. It has set values.",
-          getTrimmedDisplaySubject());
+          "Not true that %s is a default proto instance. It has set values.", actualAsString());
     }
   }
 
@@ -176,7 +172,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     if (actual() != null && actual().equals(actual().getDefaultInstanceForType())) {
       failWithRawMessage(
           "Not true that (%s) %s is not a default proto instance. It has no set values.",
-          actual().getClass().getName(), getTrimmedDisplaySubject());
+          actual().getClass().getName(), actualAsString());
     }
   }
 
@@ -190,7 +186,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
       failWithRawMessage(
           "Not true that %s has all required fields set. "
               + "(Lite runtime could not determine which fields were missing.)",
-          getTrimmedDisplaySubject());
+          actualAsString());
     }
   }
 
@@ -201,9 +197,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * assertThat(myProto).serializedSize().isAtLeast(16)}, etc.
    */
   public IntegerSubject serializedSize() {
-    return check()
-        .that(actual().getSerializedSize())
-        .named("sizeOf(" + getTrimmedDisplaySubject() + ")");
+    return check().that(actual().getSerializedSize()).named("sizeOf(" + actualAsString() + ")");
   }
 
   static final class MessageLiteSubject extends LiteProtoSubject<MessageLiteSubject, MessageLite> {

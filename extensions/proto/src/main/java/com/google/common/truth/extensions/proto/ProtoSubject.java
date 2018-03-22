@@ -183,7 +183,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     if (!actual().isInitialized()) {
       failWithRawMessage(
           "Not true that %s has all required fields set. Missing: %s",
-          getTrimmedDisplaySubject(), actual().findInitializationErrors());
+          actualAsString(), actual().findInitializationErrors());
     }
   }
 
