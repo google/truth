@@ -245,6 +245,10 @@ final class SubjectUtils {
     return new ImmutableList.Builder<E>().add(array).add(object).build();
   }
 
+  static <E> ImmutableList<E> sandwich(E first, E[] array, E last) {
+    return new ImmutableList.Builder<E>().add(first).add(array).add(last).build();
+  }
+
   static <E> ImmutableList<E> append(ImmutableList<? extends E> list, E object) {
     return new ImmutableList.Builder<E>().addAll(list).add(object).build();
   }

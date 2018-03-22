@@ -15,5 +15,23 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
+
 /** Base class for truth subject tests to extend. */
-abstract class BaseSubjectTestCase extends PlatformBaseSubjectTestCase {}
+abstract class BaseSubjectTestCase extends PlatformBaseSubjectTestCase {
+  final void assertFailureKeys(String... keys) {
+    assertThatFailure().factKeys().containsExactlyElementsIn(keys).inOrder();
+  }
+
+  final void assertFailureValue(String key, String value) {
+    assertThatFailure().factValue(key).isEqualTo(value);
+  }
+
+  final void assertFailureValue(String key, int index, String value) {
+    assertThatFailure().factValue(key, index).isEqualTo(value);
+  }
+
+  private TruthFailureSubject assertThatFailure() {
+    return assertThat(expectFailure.getFailure());
+  }
+}
