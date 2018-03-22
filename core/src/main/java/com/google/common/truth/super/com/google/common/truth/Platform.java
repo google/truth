@@ -124,7 +124,7 @@ final class Platform {
   }
 
   @Nullable
-  static ImmutableList<Field> makeDiff(String expected, String actual) {
+  static ImmutableList<Fact> makeDiff(String expected, String actual) {
     /*
      * IIUC, GWT messages lose their newlines by the time users see them. Given that, users are
      * likely better served by showing the expected and actual values with mangled newlines than by

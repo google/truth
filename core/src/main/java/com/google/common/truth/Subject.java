@@ -19,8 +19,8 @@ import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.Field.field;
-import static com.google.common.truth.Field.fieldWithoutValue;
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.StringUtil.format;
@@ -478,7 +478,7 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /**
    * The result of comparing two objects for equality. This includes both the "equal"/"not-equal"
-   * bit and, in the case of "not equal," optional fields describing the difference.
+   * bit and, in the case of "not equal," optional facts describing the difference.
    */
   private static final class ComparisonResult {
     /**
@@ -490,8 +490,8 @@ public class Subject<S extends Subject<S, T>, T> {
     }
 
     /** Returns a non-equal result with the given description. */
-    static ComparisonResult differentWithDescription(Field... fields) {
-      return new ComparisonResult(ImmutableList.copyOf(fields));
+    static ComparisonResult differentWithDescription(Fact... facts) {
+      return new ComparisonResult(ImmutableList.copyOf(facts));
     }
 
     /** Returns an equal result. */
@@ -506,20 +506,20 @@ public class Subject<S extends Subject<S, T>, T> {
 
     private static final ComparisonResult EQUAL = new ComparisonResult(null);
     private static final ComparisonResult DIFFERENT_NO_DESCRIPTION =
-        new ComparisonResult(ImmutableList.<Field>of());
+        new ComparisonResult(ImmutableList.<Fact>of());
 
-    @Nullable private final ImmutableList<Field> fields;
+    @Nullable private final ImmutableList<Fact> facts;
 
-    private ComparisonResult(ImmutableList<Field> fields) {
-      this.fields = fields;
+    private ComparisonResult(ImmutableList<Fact> facts) {
+      this.facts = facts;
     }
 
     boolean valuesAreEqual() {
-      return fields == null;
+      return facts == null;
     }
 
-    ImmutableList<Field> fieldsOrEmpty() {
-      return firstNonNull(fields, ImmutableList.<Field>of());
+    ImmutableList<Fact> factsOrEmpty() {
+      return firstNonNull(facts, ImmutableList.<Fact>of());
     }
   }
 
@@ -533,7 +533,7 @@ public class Subject<S extends Subject<S, T>, T> {
       return ComparisonResult.equal();
     }
     return ComparisonResult.differentWithDescription(
-        field("expected", Arrays.toString(expected)), field("but was", Arrays.toString(actual)));
+        fact("expected", Arrays.toString(expected)), fact("but was", Arrays.toString(actual)));
   }
 
   /**
@@ -551,22 +551,22 @@ public class Subject<S extends Subject<S, T>, T> {
     String expectedType = arrayType(expectedArray);
     String actualType = arrayType(actualArray);
     if (!expectedType.equals(actualType)) {
-      Field indexField =
+      Fact indexFact =
           lastIndex.isEmpty()
-              ? fieldWithoutValue("wrong type")
-              : field("wrong type for index", lastIndex);
+              ? factWithoutValue("wrong type")
+              : fact("wrong type for index", lastIndex);
       return ComparisonResult.differentWithDescription(
-          indexField, field("expected", expectedType), field("but was", actualType));
+          indexFact, fact("expected", expectedType), fact("but was", actualType));
     }
     int actualLength = Array.getLength(actualArray);
     int expectedLength = Array.getLength(expectedArray);
     if (expectedLength != actualLength) {
-      Field indexField =
+      Fact indexFact =
           lastIndex.isEmpty()
-              ? fieldWithoutValue("wrong length")
-              : field("wrong length for index", lastIndex);
+              ? factWithoutValue("wrong length")
+              : fact("wrong length for index", lastIndex);
       return ComparisonResult.differentWithDescription(
-          indexField, field("expected", expectedLength), field("but was", actualLength));
+          indexFact, fact("expected", expectedLength), fact("but was", actualLength));
     }
     for (int i = 0; i < actualLength || i < expectedLength; i++) {
       String index = lastIndex + "[" + i + "]";
@@ -586,7 +586,7 @@ public class Subject<S extends Subject<S, T>, T> {
           continue;
         }
       }
-      return ComparisonResult.differentWithDescription(field("differs at index", index));
+      return ComparisonResult.differentWithDescription(fact("differs at index", index));
     }
     return ComparisonResult.equal();
   }
@@ -751,7 +751,7 @@ public class Subject<S extends Subject<S, T>, T> {
     if (actual() instanceof byte[] && expected instanceof byte[]) {
       // TODO(cpovirk): Expand this to cover more types.
       failComparing(
-          Joiner.on("; ").join(difference.fieldsOrEmpty()),
+          Joiner.on("; ").join(difference.factsOrEmpty()),
           formatActualOrExpected(expected),
           formatActualOrExpected(actual()));
       return;
@@ -775,9 +775,9 @@ public class Subject<S extends Subject<S, T>, T> {
     if (!needsClassDisambiguation && sameToStrings) {
       message.append(" (although their toString() representations are the same)");
     }
-    if (!difference.fieldsOrEmpty().isEmpty()) {
+    if (!difference.factsOrEmpty().isEmpty()) {
       message.append(". ");
-      Joiner.on("; ").appendTo(message, difference.fieldsOrEmpty());
+      Joiner.on("; ").appendTo(message, difference.factsOrEmpty());
     }
     metadata.fail(message.toString());
   }

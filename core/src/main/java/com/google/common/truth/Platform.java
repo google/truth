@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Field.field;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
 import static com.google.common.truth.Truth.appendSuffixIfNotNull;
 import static difflib.DiffUtils.diff;
@@ -96,7 +96,7 @@ final class Platform {
   }
 
   @Nullable
-  static ImmutableList<Field> makeDiff(String expected, String actual) {
+  static ImmutableList<Fact> makeDiff(String expected, String actual) {
     ImmutableList<String> expectedLines = splitLines(expected);
     ImmutableList<String> actualLines = splitLines(actual);
     Patch<String> diff = diff(expectedLines, actualLines);
@@ -104,7 +104,7 @@ final class Platform {
         generateUnifiedDiff("expected", "actual", expectedLines, diff, /* contextSize= */ 3);
     if (unifiedDiff.isEmpty()) {
       return ImmutableList.of(
-          field("diff", "(line contents match, but line-break characters differ)"));
+          fact("diff", "(line contents match, but line-break characters differ)"));
       // TODO(cpovirk): Possibly include the expected/actual value, too?
     }
     unifiedDiff = unifiedDiff.subList(2, unifiedDiff.size()); // remove "--- expected," "+++ actual"
@@ -112,7 +112,7 @@ final class Platform {
     if (result.length() > expected.length() && result.length() > actual.length()) {
       return null;
     }
-    return ImmutableList.of(field("diff", result));
+    return ImmutableList.of(fact("diff", result));
   }
   private static ImmutableList<String> splitLines(String s) {
     // splitToList is @Beta, so we avoid it.

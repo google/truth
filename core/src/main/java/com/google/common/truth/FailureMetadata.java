@@ -20,7 +20,7 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
-import static com.google.common.truth.Field.field;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
 import static com.google.common.truth.SubjectUtils.concat;
 
@@ -79,7 +79,7 @@ public final class FailureMetadata {
      * which lets subjects customize display through actualCustomStringRepresentation(). Why not
      * call actualAsString() immediately? First, it might be expensive, and second, the Subject
      * isn't initialized at the time we receive it. We *might* be able to make it safe to call if it
-     * looks only at actual(), but it might try to look at fields initialized by a subclass, which
+     * looks only at actual(), but it might try to look at facts initialized by a subclass, which
      * aren't ready yet.
      */
     @Nullable final Subject<?, ?> subject;
@@ -251,7 +251,7 @@ public final class FailureMetadata {
    * root's exact relationship to the final object, but we know it's some object "different enough"
    * to be worth displaying.)
    */
-  private Optional<Field> description() {
+  private Optional<Fact> description() {
     String description = null;
     boolean descriptionWasDerived = false;
     for (Step step : steps) {
@@ -273,8 +273,8 @@ public final class FailureMetadata {
       }
     }
     return descriptionWasDerived
-        ? Optional.of(field("value of", description))
-        : Optional.<Field>absent();
+        ? Optional.of(fact("value of", description))
+        : Optional.<Fact>absent();
   }
 
   private Set<String> descriptionAsStrings() {
@@ -301,7 +301,7 @@ public final class FailureMetadata {
    * are some edge cases that we're not sure how to handle yet, for which we might introduce
    * additional {@code check}-like methods someday.)
    */
-  private Optional<Field> rootUnlessThrowable() {
+  private Optional<Fact> rootUnlessThrowable() {
     Step rootSubject = null;
     boolean seenDerivation = false;
     for (Step step : steps) {
@@ -338,10 +338,10 @@ public final class FailureMetadata {
      */
     return seenDerivation
         ? Optional.of(
-            field(
+            fact(
                 rootSubject.subject.typeDescription() + " was",
                 rootSubject.subject.actualAsStringNoBrackets()))
-        : Optional.<Field>absent();
+        : Optional.<Fact>absent();
   }
 
   @Nullable

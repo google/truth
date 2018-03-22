@@ -16,7 +16,7 @@
 
 package com.google.common.truth;
 
-import static com.google.common.truth.Field.field;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 import static org.junit.Assert.fail;
 
@@ -28,126 +28,126 @@ import org.junit.runners.JUnit4;
 /** Tests for {@link TruthFailureSubject}. */
 @RunWith(JUnit4.class)
 public class TruthFailureSubjectTest extends BaseSubjectTestCase {
-  // TODO(cpovirk): Switch to using field-based assertions once Truth generates field-based errors.
+  // TODO(cpovirk): Switch to using fact-based assertions once Truth generates fact-based errors.
 
-  // fieldKeys()
+  // factKeys()
 
   @Test
-  public void fieldKeys() {
-    assertThat(field("foo", "the foo")).fieldKeys().containsExactly("foo");
+  public void factKeys() {
+    assertThat(fact("foo", "the foo")).factKeys().containsExactly("foo");
   }
 
   @Test
-  public void fieldKeysFail() {
-    expectFailureWhenTestingThat(field("foo", "the foo")).fieldKeys().containsExactly("bar");
+  public void factKeysFail() {
+    expectFailureWhenTestingThat(fact("foo", "the foo")).factKeys().containsExactly("bar");
     Truth.assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .contains("value of: failure.fieldKeys()");
+        .contains("value of: failure.factKeys()");
   }
 
-  // fieldValue(String)
+  // factValue(String)
 
   @Test
-  public void fieldValue() {
-    assertThat(field("foo", "the foo")).fieldValue("foo").isEqualTo("the foo");
+  public void factValue() {
+    assertThat(fact("foo", "the foo")).factValue("foo").isEqualTo("the foo");
   }
 
   @Test
-  public void fieldValueFailWrongValue() {
-    expectFailureWhenTestingThat(field("foo", "the foo")).fieldValue("foo").isEqualTo("the bar");
+  public void factValueFailWrongValue() {
+    expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("foo").isEqualTo("the bar");
     Truth.assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .contains("value of: failure.fieldValue(foo)");
+        .contains("value of: failure.factValue(foo)");
   }
 
   @Test
-  public void fieldValueFailNoSuchKey() {
-    Object unused = expectFailureWhenTestingThat(field("foo", "the foo")).fieldValue("bar");
-    assertMessage("expected to contain field: bar\nbut contained only: [foo]");
+  public void factValueFailNoSuchKey() {
+    Object unused = expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("bar");
+    assertMessage("expected to contain fact: bar\nbut contained only: [foo]");
   }
 
   @Test
-  public void fieldValueFailMultipleKeys() {
+  public void factValueFailMultipleKeys() {
     Object unused =
-        expectFailureWhenTestingThat(field("foo", "the foo"), field("foo", "the other foo"))
-            .fieldValue("foo");
+        expectFailureWhenTestingThat(fact("foo", "the foo"), fact("foo", "the other foo"))
+            .factValue("foo");
     assertMessage(
-        "expected to contain a single field with key: foo\n"
+        "expected to contain a single fact with key: foo\n"
             + "but contained multiple: [foo: the foo, foo: the other foo]");
   }
 
-  // fieldValue(String, int)
+  // factValue(String, int)
 
   @Test
-  public void fieldValueInt() {
-    assertThat(field("foo", "the foo")).fieldValue("foo", 0).isEqualTo("the foo");
+  public void factValueInt() {
+    assertThat(fact("foo", "the foo")).factValue("foo", 0).isEqualTo("the foo");
   }
 
   @Test
-  public void fieldValueIntMultipleKeys() {
-    assertThat(field("foo", "the foo"), field("foo", "the other foo"))
-        .fieldValue("foo", 1)
+  public void factValueIntMultipleKeys() {
+    assertThat(fact("foo", "the foo"), fact("foo", "the other foo"))
+        .factValue("foo", 1)
         .isEqualTo("the other foo");
   }
 
   @Test
-  public void fieldValueIntFailNegative() {
+  public void factValueIntFailNegative() {
     try {
-      assertThat(field("foo", "the foo")).fieldValue("foo", -1);
+      assertThat(fact("foo", "the foo")).factValue("foo", -1);
       fail();
     } catch (IllegalArgumentException expected) {
     }
   }
 
   @Test
-  public void fieldValueIntFailWrongValue() {
-    expectFailureWhenTestingThat(field("foo", "the foo")).fieldValue("foo", 0).isEqualTo("the bar");
+  public void factValueIntFailWrongValue() {
+    expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("foo", 0).isEqualTo("the bar");
     Truth.assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .contains("value of: failure.fieldValue(foo, 0)");
+        .contains("value of: failure.factValue(foo, 0)");
   }
 
   @Test
-  public void fieldValueIntFailNoSuchKey() {
-    Object unused = expectFailureWhenTestingThat(field("foo", "the foo")).fieldValue("bar", 0);
-    assertMessage("expected to contain field: bar\nbut contained only: [foo]");
+  public void factValueIntFailNoSuchKey() {
+    Object unused = expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("bar", 0);
+    assertMessage("expected to contain fact: bar\nbut contained only: [foo]");
   }
 
   @Test
-  public void fieldValueIntFailNotEnoughWithKey() {
-    Object unused = expectFailureWhenTestingThat(field("foo", "the foo")).fieldValue("foo", 5);
-    assertMessage("for key: foo\nindex too high: 5\nfield count was: 1");
+  public void factValueIntFailNotEnoughWithKey() {
+    Object unused = expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("foo", 5);
+    assertMessage("for key: foo\nindex too high: 5\nfact count was: 1");
   }
 
   // other tests
 
   @Test
-  public void nonTruthErrorFieldKeys() {
-    Object unused = expectFailureWhenTestingThat(new AssertionError()).fieldKeys();
+  public void nonTruthErrorFactKeys() {
+    Object unused = expectFailureWhenTestingThat(new AssertionError()).factKeys();
     assertMessage("expected a failure thrown by Truth's new failure API");
   }
 
   @Test
-  public void nonTruthErrorFieldValue() {
-    Object unused = expectFailureWhenTestingThat(new AssertionError()).fieldValue("foo");
+  public void nonTruthErrorFactValue() {
+    Object unused = expectFailureWhenTestingThat(new AssertionError()).factValue("foo");
     assertMessage("expected a failure thrown by Truth's new failure API");
   }
 
-  private TruthFailureSubject assertThat(Field... fields) {
-    return ExpectFailure.assertThat(failure(fields));
+  private TruthFailureSubject assertThat(Fact... facts) {
+    return ExpectFailure.assertThat(failure(facts));
   }
 
-  private TruthFailureSubject expectFailureWhenTestingThat(Field... fields) {
-    return expectFailureWhenTestingThat(failure(fields));
+  private TruthFailureSubject expectFailureWhenTestingThat(Fact... facts) {
+    return expectFailureWhenTestingThat(failure(facts));
   }
 
   private TruthFailureSubject expectFailureWhenTestingThat(AssertionError failure) {
     return (TruthFailureSubject) expectFailure.whenTesting().about(truthFailures()).that(failure);
   }
 
-  private AssertionErrorWithFields failure(Field... fields) {
-    return AssertionErrorWithFields.create(
-        ImmutableList.<String>of(), ImmutableList.copyOf(fields), /* cause= */ null);
+  private AssertionErrorWithFacts failure(Fact... facts) {
+    return AssertionErrorWithFacts.create(
+        ImmutableList.<String>of(), ImmutableList.copyOf(facts), /* cause= */ null);
   }
 
   private void assertMessage(String expected) {

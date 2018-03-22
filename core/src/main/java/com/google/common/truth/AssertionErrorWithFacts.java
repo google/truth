@@ -16,30 +16,30 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.Field.makeMessage;
+import static com.google.common.truth.Fact.makeMessage;
 
 import com.google.common.collect.ImmutableList;
 import javax.annotation.Nullable;
 
 /**
- * An {@link AssertionError} composed of structured {@link Field} instances and other string
+ * An {@link AssertionError} composed of structured {@link Fact} instances and other string
  * messages.
  */
-final class AssertionErrorWithFields extends AssertionError implements ErrorWithFields {
-  static AssertionErrorWithFields create(
-      ImmutableList<String> messages, ImmutableList<Field> fields, @Nullable Throwable cause) {
-    return new AssertionErrorWithFields(messages, fields, cause);
+final class AssertionErrorWithFacts extends AssertionError implements ErrorWithFacts {
+  static AssertionErrorWithFacts create(
+      ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
+    return new AssertionErrorWithFacts(messages, facts, cause);
   }
 
-  final ImmutableList<Field> fields;
+  final ImmutableList<Fact> facts;
 
   /** Separate cause field, in case initCause() fails. */
   @Nullable private final Throwable cause;
 
-  private AssertionErrorWithFields(
-      ImmutableList<String> messages, ImmutableList<Field> fields, @Nullable Throwable cause) {
-    super(makeMessage(messages, fields));
-    this.fields = checkNotNull(fields);
+  private AssertionErrorWithFacts(
+      ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
+    super(makeMessage(messages, facts));
+    this.facts = checkNotNull(facts);
 
     this.cause = cause;
     try {
@@ -61,7 +61,7 @@ final class AssertionErrorWithFields extends AssertionError implements ErrorWith
   }
 
   @Override
-  public ImmutableList<Field> fields() {
-    return fields;
+  public ImmutableList<Fact> facts() {
+    return facts;
   }
 }
