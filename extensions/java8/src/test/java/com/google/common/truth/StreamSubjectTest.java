@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.StreamSubject.streams;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
 import static java.util.Arrays.asList;
@@ -44,16 +45,13 @@ public final class StreamSubjectTest {
   public void testIsEqualToList() throws Exception {
     Stream<String> stream = Stream.of("hello");
     List<String> list = asList("hello");
-    try {
-      assertThat(stream).isEqualTo(list);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hello]> (java.util.stream.ReferencePipeline$Head) "
-                  + "is equal to <[hello]> (java.util.Arrays$ArrayList)");
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(stream).isEqualTo(list));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[hello]> (java.util.stream.ReferencePipeline$Head) "
+                + "is equal to <[hello]> (java.util.Arrays$ArrayList)");
   }
 
   @Test
@@ -85,12 +83,9 @@ public final class StreamSubjectTest {
 
   @Test
   public void testIsEmpty_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hello")).isEmpty();
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <[hello]> is empty");
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).isEmpty());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <[hello]> is empty");
   }
 
   @Test
@@ -100,12 +95,9 @@ public final class StreamSubjectTest {
 
   @Test
   public void testIsNotEmpty_fails() throws Exception {
-    try {
-      assertThat(Stream.of()).isNotEmpty();
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Stream.of()).isNotEmpty());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
   }
 
   @Test
@@ -115,14 +107,11 @@ public final class StreamSubjectTest {
 
   @Test
   public void testHasSize_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hello")).hasSize(2);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[hello]> has a size of <2>. It is <1>");
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).hasSize(2));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that <[hello]> has a size of <2>. It is <1>");
   }
 
   @Test
@@ -399,5 +388,10 @@ public final class StreamSubjectTest {
               "Not true that <[hell, hello]> contains exactly "
                   + "these elements in order <[hello, hell]>");
     }
+  }
+
+  private static AssertionError expectFailure(
+      ExpectFailure.SimpleSubjectBuilderCallback<StreamSubject, Stream<?>> assertionCallback) {
+    return ExpectFailure.expectFailureAbout(streams(), assertionCallback);
   }
 }

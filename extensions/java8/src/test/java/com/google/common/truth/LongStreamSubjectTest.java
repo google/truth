@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.LongStreamSubject.longStreams;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
 import static java.util.Arrays.asList;
@@ -44,16 +45,13 @@ public final class LongStreamSubjectTest {
   public void testIsEqualToList() throws Exception {
     LongStream stream = LongStream.of(42);
     List<Long> list = asList(42L);
-    try {
-      assertThat(stream).isEqualTo(list);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42]> (java.util.stream.LongPipeline$Head) "
-                  + "is equal to <[42]> (java.util.Arrays$ArrayList)");
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(stream).isEqualTo(list));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[42]> (java.util.stream.LongPipeline$Head) "
+                + "is equal to <[42]> (java.util.Arrays$ArrayList)");
   }
 
   @Test
@@ -85,12 +83,9 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testIsEmpty_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42)).isEmpty();
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <[42]> is empty");
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).isEmpty());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <[42]> is empty");
   }
 
   @Test
@@ -100,12 +95,9 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testIsNotEmpty_fails() throws Exception {
-    try {
-      assertThat(LongStream.of()).isNotEmpty();
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(LongStream.of()).isNotEmpty());
+    assertThat(expected).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
   }
 
   @Test
@@ -115,14 +107,11 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testHasSize_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42)).hasSize(2);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[42]> has a size of <2>. It is <1>");
-    }
+    AssertionError expected =
+        expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).hasSize(2));
+    assertThat(expected)
+        .hasMessageThat()
+        .isEqualTo("Not true that <[42]> has a size of <2>. It is <1>");
   }
 
   @Test
@@ -449,5 +438,10 @@ public final class LongStreamSubjectTest {
   @Test
   public void testContainsExactlyElementsIn_inOrder_LongStream() throws Exception {
     assertThat(LongStream.of(1, 2, 3, 4)).containsExactly(1, 2, 3, 4).inOrder();
+  }
+
+  private static AssertionError expectFailure(
+      ExpectFailure.SimpleSubjectBuilderCallback<LongStreamSubject, LongStream> assertionCallback) {
+    return ExpectFailure.expectFailureAbout(longStreams(), assertionCallback);
   }
 }
