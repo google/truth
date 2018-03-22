@@ -20,6 +20,7 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
 
 import com.google.common.collect.ImmutableList;
 import javax.annotation.Nullable;
@@ -70,7 +71,7 @@ final class TruthFailureSubject extends ThrowableSubject {
   /** Returns a subject for the list of fact keys. */
   public IterableSubject factKeys() {
     if (!(actual() instanceof ErrorWithFacts)) {
-      failWithRawMessage("expected a failure thrown by Truth's new failure API");
+      fail(factWithoutValue("expected a failure thrown by Truth's new failure API"));
       return ignoreCheck().that(ImmutableList.of());
     }
     ErrorWithFacts error = (ErrorWithFacts) actual();
@@ -116,7 +117,7 @@ final class TruthFailureSubject extends ThrowableSubject {
   private StringSubject doFactValue(String key, @Nullable Integer index) {
     checkNotNull(key);
     if (!(actual() instanceof ErrorWithFacts)) {
-      failWithRawMessage("expected a failure thrown by Truth's new failure API");
+      fail(factWithoutValue("expected a failure thrown by Truth's new failure API"));
       return ignoreCheck().that("");
     }
     ErrorWithFacts error = (ErrorWithFacts) actual();
@@ -127,26 +128,21 @@ final class TruthFailureSubject extends ThrowableSubject {
      */
     ImmutableList<Fact> factsWithName = factsWithName(error, key);
     if (factsWithName.isEmpty()) {
-      failWithRawMessage(
-          fact("expected to contain fact", key)
-              + "\n"
-              + fact("but contained only", getFactKeys(error)));
+      failWithoutActual(
+          fact("expected to contain fact", key), fact("but contained only", getFactKeys(error)));
       return ignoreCheck().that("");
     }
     if (index == null && factsWithName.size() > 1) {
-      failWithRawMessage(
-          fact("expected to contain a single fact with key", key)
-              + "\n"
-              + fact("but contained multiple", factsWithName));
+      failWithoutActual(
+          fact("expected to contain a single fact with key", key),
+          fact("but contained multiple", factsWithName));
       return ignoreCheck().that("");
     }
     if (index != null && index > factsWithName.size()) {
-      failWithRawMessage(
-          fact("for key", key)
-              + "\n"
-              + fact("index too high", index)
-              + "\n"
-              + fact("fact count was", factsWithName.size()));
+      failWithoutActual(
+          fact("for key", key),
+          fact("index too high", index),
+          fact("fact count was", factsWithName.size()));
       return ignoreCheck().that("");
     }
     StandardSubjectBuilder check =

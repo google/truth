@@ -28,8 +28,6 @@ import org.junit.runners.JUnit4;
 /** Tests for {@link TruthFailureSubject}. */
 @RunWith(JUnit4.class)
 public class TruthFailureSubjectTest extends BaseSubjectTestCase {
-  // TODO(cpovirk): Switch to using fact-based assertions once Truth generates fact-based errors.
-
   // factKeys()
 
   @Test
@@ -43,6 +41,7 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
     Truth.assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("value of: failure.factKeys()");
+    // TODO(cpovirk): Switch to using fact-based assertions once IterableSubject uses them.
   }
 
   // factValue(String)
@@ -58,12 +57,15 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
     Truth.assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("value of: failure.factValue(foo)");
+    // TODO(cpovirk): Switch to using fact-based assertions once Subject uses them.
   }
 
   @Test
   public void factValueFailNoSuchKey() {
     Object unused = expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("bar");
-    assertMessage("expected to contain fact: bar\nbut contained only: [foo]");
+    assertFailureKeys("expected to contain fact", "but contained only");
+    assertFailureValue("expected to contain fact", "bar");
+    assertFailureValue("but contained only", "[foo]");
   }
 
   @Test
@@ -71,9 +73,9 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
     Object unused =
         expectFailureWhenTestingThat(fact("foo", "the foo"), fact("foo", "the other foo"))
             .factValue("foo");
-    assertMessage(
-        "expected to contain a single fact with key: foo\n"
-            + "but contained multiple: [foo: the foo, foo: the other foo]");
+    assertFailureKeys("expected to contain a single fact with key", "but contained multiple");
+    assertFailureValue("expected to contain a single fact with key", "foo");
+    assertFailureValue("but contained multiple", "[foo: the foo, foo: the other foo]");
   }
 
   // factValue(String, int)
@@ -105,18 +107,24 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
     Truth.assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains("value of: failure.factValue(foo, 0)");
+    // TODO(cpovirk): Switch to using fact-based assertions once Subject uses them.
   }
 
   @Test
   public void factValueIntFailNoSuchKey() {
     Object unused = expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("bar", 0);
-    assertMessage("expected to contain fact: bar\nbut contained only: [foo]");
+    assertFailureKeys("expected to contain fact", "but contained only");
+    assertFailureValue("expected to contain fact", "bar");
+    assertFailureValue("but contained only", "[foo]");
   }
 
   @Test
   public void factValueIntFailNotEnoughWithKey() {
     Object unused = expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("foo", 5);
-    assertMessage("for key: foo\nindex too high: 5\nfact count was: 1");
+    assertFailureKeys("for key", "index too high", "fact count was");
+    assertFailureValue("for key", "foo");
+    assertFailureValue("index too high", "5");
+    assertFailureValue("fact count was", "1");
   }
 
   // other tests
@@ -124,13 +132,13 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
   @Test
   public void nonTruthErrorFactKeys() {
     Object unused = expectFailureWhenTestingThat(new AssertionError()).factKeys();
-    assertMessage("expected a failure thrown by Truth's new failure API");
+    assertFailureKeys("expected a failure thrown by Truth's new failure API", "but was");
   }
 
   @Test
   public void nonTruthErrorFactValue() {
     Object unused = expectFailureWhenTestingThat(new AssertionError()).factValue("foo");
-    assertMessage("expected a failure thrown by Truth's new failure API");
+    assertFailureKeys("expected a failure thrown by Truth's new failure API", "but was");
   }
 
   private TruthFailureSubject assertThat(Fact... facts) {
@@ -148,9 +156,5 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
   private AssertionErrorWithFacts failure(Fact... facts) {
     return AssertionErrorWithFacts.create(
         ImmutableList.<String>of(), ImmutableList.copyOf(facts), /* cause= */ null);
-  }
-
-  private void assertMessage(String expected) {
-    ExpectFailure.assertThat(expectFailure.getFailure()).hasMessageThat().isEqualTo(expected);
   }
 }

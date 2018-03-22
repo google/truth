@@ -21,7 +21,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.LazyMessage.evaluateAll;
 import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
+import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 
 import com.google.common.base.Function;
@@ -168,6 +170,14 @@ public final class FailureMetadata {
     return derive(messages, steps);
   }
 
+  void fail(ImmutableList<Fact> facts) {
+    doFail(
+        AssertionErrorWithFacts.create(
+            evaluateAll(messages),
+            concat(descriptionAsFacts(), facts, rootUnlessThrowableAsFacts()),
+            rootCause().orNull()));
+  }
+
   void fail(String message) {
     doFail(
         SimpleAssertionError.create(
@@ -277,6 +287,10 @@ public final class FailureMetadata {
         : Optional.<Fact>absent();
   }
 
+  private ImmutableList<Fact> descriptionAsFacts() {
+    return ImmutableList.copyOf(description().asSet());
+  }
+
   private Set<String> descriptionAsStrings() {
     return description().transform(toStringFunction()).asSet();
   }
@@ -300,6 +314,13 @@ public final class FailureMetadata {
    * instructing this method that that particular chain link "doesn't count." (Note also that there
    * are some edge cases that we're not sure how to handle yet, for which we might introduce
    * additional {@code check}-like methods someday.)
+   */
+  /*
+   * TODO(cpovirk): Consider returning multiple facts in some cases. For example, for
+   * assertThat(multimap).valuesForKey(key).hasSize(size), it might be useful for us to display the
+   * valuesForKey collection as well as the multimap it's part of. Probably displaying only 2
+   * objects -- first and last (well, last besides the one we're already displaying in the main
+   * message) would be enough.
    */
   private Optional<Fact> rootUnlessThrowable() {
     Step rootSubject = null;
@@ -344,6 +365,10 @@ public final class FailureMetadata {
         : Optional.<Fact>absent();
   }
 
+  private ImmutableList<Fact> rootUnlessThrowableAsFacts() {
+    return ImmutableList.copyOf(rootUnlessThrowable().asSet());
+  }
+
   @Nullable
   private String rootUnlessThrowableAsString() {
     return rootUnlessThrowable().transform(toStringFunction()).orNull();
@@ -360,9 +385,5 @@ public final class FailureMetadata {
       }
     }
     return Optional.absent();
-  }
-
-  private static <E> ImmutableList<E> append(ImmutableList<? extends E> list, E object) {
-    return ImmutableList.<E>builder().addAll(list).add(object).build();
   }
 }

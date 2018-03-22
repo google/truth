@@ -25,6 +25,8 @@ import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
+import static com.google.common.truth.SubjectUtils.concat;
+import static com.google.common.truth.SubjectUtils.sandwich;
 import static java.util.Arrays.asList;
 
 import com.google.common.base.Function;
@@ -32,6 +34,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Booleans;
 import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Chars;
@@ -713,6 +716,11 @@ public class Subject<S extends Subject<S, T>, T> {
     return StandardSubjectBuilder.forCustomFailureStrategy(IGNORE_STRATEGY);
   }
 
+  // TODO(cpovirk): Make this public once names are settled.
+  final void fail(Fact first, Fact... rest) {
+    doFail(sandwich(first, rest, butWas()));
+  }
+
   /**
    * Reports a failure constructing a message from a simple verb.
    *
@@ -745,6 +753,14 @@ public class Subject<S extends Subject<S, T>, T> {
       message.append(" <").append(part).append(">");
     }
     metadata.fail(message.toString());
+  }
+
+  /*
+   * TODO(cpovirk): Once the old `fail(String, ...)` methods are gone, rename this to `fail` and
+   * make it public, too.
+   */
+  final void failWithFact(String key, Object value) {
+    fail(fact(key, value));
   }
 
   private void failEqualityCheck(String verb, Object expected, ComparisonResult difference) {
@@ -826,6 +842,11 @@ public class Subject<S extends Subject<S, T>, T> {
     metadata.fail(format("Not true that %s %s", strSubject, check));
   }
 
+  // TODO(cpovirk): Make this public once names are settled.
+  final void failWithoutActual(Fact first, Fact... rest) {
+    doFail(ImmutableList.copyOf(Lists.asList(first, rest)));
+  }
+
   /**
    * Assembles a failure message without a given subject and passes it to the FailureStrategy
    *
@@ -900,6 +921,26 @@ public class Subject<S extends Subject<S, T>, T> {
     return getClass().getName() + "(" + actualCustomStringRepresentation() + ")";
   }
 
+  /**
+   * Returns a "but was: <actual value>" string. This method should be rarely needed, since Truth
+   * inserts a "but was" fact by default for assertions. However, it's occasionally useful for calls
+   * to {@code failWithoutActual} that want a "but was" fact but don't want it to come last, where
+   * Truth inserts it by default.
+   */
+  /*
+   * TODO(cpovirk): Consider giving this protected access.
+   *
+   * It is likely better than what users would otherwise do -- `fact("but was", actual())`, which
+   * ignores actualCustomStringRepresentation() (which is inaccessible outside the package).
+   *
+   * But I want to think more about this. In particular, if people use this to reimplement
+   * isEqualTo(), I would be sad that they're missing out on its normal special handling. That's
+   * probably not enough reason to avoid adding this, but we can hold it back for now.
+   */
+  final Fact butWas() {
+    return fact("but was", actualCustomStringRepresentation());
+  }
+
   /*
    * Computed lazily so that we're not doing expensive string operations during every assertion,
    * only during every failure.
@@ -933,5 +974,19 @@ public class Subject<S extends Subject<S, T>, T> {
     // TODO(cpovirk): Consider whether to remove instanceof tests under GWT entirely.
     // TODO(cpovirk): Run more Truth tests under GWT, and add tests for this.
     return String.class.getSuperclass() == null;
+  }
+
+  private void doFail(ImmutableList<Fact> facts) {
+    metadata.fail(prependNameIfAny(facts));
+  }
+
+  private ImmutableList<Fact> prependNameIfAny(ImmutableList<Fact> facts) {
+    return concat(nameAsFacts(), facts);
+  }
+
+  private ImmutableList<Fact> nameAsFacts() {
+    return customName == null
+        ? ImmutableList.<Fact>of()
+        : ImmutableList.of(fact("name", customName));
   }
 }
