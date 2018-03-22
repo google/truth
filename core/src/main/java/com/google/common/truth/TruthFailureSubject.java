@@ -19,7 +19,7 @@ package com.google.common.truth;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.Field.field;
+import static com.google.common.truth.Fact.fact;
 
 import com.google.common.collect.ImmutableList;
 import javax.annotation.Nullable;
@@ -28,15 +28,15 @@ import javax.annotation.Nullable;
 
 /**
  * Subject for {@link AssertionError} objects thrown by Truth. {@code TruthFailureSubject} contains
- * methods for asserting about the individual "fields" of those failures. This allows tests to avoid
- * asserting about the same field more often than necessary, including avoiding asserting about
- * fields that are set by other subjects that the main subject delegates to. This keeps tests
- * shorter and less fragile.
+ * methods for asserting about the individual "facts" of those failures. This allows tests to avoid
+ * asserting about the same fact more often than necessary, including avoiding asserting about facts
+ * that are set by other subjects that the main subject delegates to. This keeps tests shorter and
+ * less fragile.
  *
  * <p>To create an instance, call {@link ExpectFailure#assertThat}.
  *
  * <p>This class accepts any {@code AssertionError} value, but it will throw an exception if a
- * caller tries to access the fields of an error that wasn't produced by Truth.
+ * caller tries to access the facts of an error that wasn't produced by Truth.
  */
 final class TruthFailureSubject extends ThrowableSubject {
   /*
@@ -67,100 +67,100 @@ final class TruthFailureSubject extends ThrowableSubject {
     super(metadata, throwable, typeDescription);
   }
 
-  /** Returns a subject for the list of field keys. */
-  public IterableSubject fieldKeys() {
-    if (!(actual() instanceof ErrorWithFields)) {
+  /** Returns a subject for the list of fact keys. */
+  public IterableSubject factKeys() {
+    if (!(actual() instanceof ErrorWithFacts)) {
       failWithRawMessage("expected a failure thrown by Truth's new failure API");
       return ignoreCheck().that(ImmutableList.of());
     }
-    ErrorWithFields error = (ErrorWithFields) actual();
-    return check("fieldKeys()").that(getFieldKeys(error));
+    ErrorWithFacts error = (ErrorWithFacts) actual();
+    return check("factKeys()").that(getFactKeys(error));
   }
 
-  private static ImmutableList<String> getFieldKeys(ErrorWithFields error) {
-    ImmutableList.Builder<String> fields = ImmutableList.builder();
-    for (Field field : error.fields()) {
-      fields.add(field.key);
+  private static ImmutableList<String> getFactKeys(ErrorWithFacts error) {
+    ImmutableList.Builder<String> facts = ImmutableList.builder();
+    for (Fact fact : error.facts()) {
+      facts.add(fact.key);
     }
-    return fields.build();
+    return facts.build();
   }
 
   /**
    * Returns a subject for the value with the given name.
    *
    * <p>The value, if present, is always a string, the {@code String.valueOf} representation of the
-   * value passed to {@link Field#field}.
+   * value passed to {@link Fact#fact}.
    *
-   * <p>The value is null in the case of {@linkplain Field#fieldWithoutValue fields that have no
-   * value}. By contrast, fields that have a value that is rendered as "null" (such as those created
-   * with {@code field("key", null)}) are considered to have a value, the string "null."
+   * <p>The value is null in the case of {@linkplain Fact#factWithoutValue facts that have no
+   * value}. By contrast, facts that have a value that is rendered as "null" (such as those created
+   * with {@code fact("key", null)}) are considered to have a value, the string "null."
    *
-   * <p>If the failure under test contains more than one field with the given key, this method will
-   * fail the test. To assert about such a failure, use {@linkplain #fieldValue(String, int) the
-   * other overload} of {@code fieldValue}.
+   * <p>If the failure under test contains more than one fact with the given key, this method will
+   * fail the test. To assert about such a failure, use {@linkplain #factValue(String, int) the
+   * other overload} of {@code factValue}.
    */
-  public StringSubject fieldValue(String key) {
-    return doFieldValue(key, null);
+  public StringSubject factValue(String key) {
+    return doFactValue(key, null);
   }
 
   /**
-   * Returns a subject for the value of the {@code index}-th instance of the field with the given
-   * name. Most Truth failures do not contain multiple fields with the same key, so most tests
-   * should use {@linkplain #fieldValue(String) the other overload} of {@code fieldValue}.
+   * Returns a subject for the value of the {@code index}-th instance of the fact with the given
+   * name. Most Truth failures do not contain multiple facts with the same key, so most tests should
+   * use {@linkplain #factValue(String) the other overload} of {@code factValue}.
    */
-  public StringSubject fieldValue(String key, int index) {
+  public StringSubject factValue(String key, int index) {
     checkArgument(index >= 0, "index must be nonnegative: %s", index);
-    return doFieldValue(key, index);
+    return doFactValue(key, index);
   }
 
-  private StringSubject doFieldValue(String key, @Nullable Integer index) {
+  private StringSubject doFactValue(String key, @Nullable Integer index) {
     checkNotNull(key);
-    if (!(actual() instanceof ErrorWithFields)) {
+    if (!(actual() instanceof ErrorWithFacts)) {
       failWithRawMessage("expected a failure thrown by Truth's new failure API");
       return ignoreCheck().that("");
     }
-    ErrorWithFields error = (ErrorWithFields) actual();
+    ErrorWithFacts error = (ErrorWithFacts) actual();
 
     /*
-     * We don't care as much about including the actual Throwable and its fields in these because
+     * We don't care as much about including the actual Throwable and its facts in these because
      * the Throwable will be attached as a cause in nearly all cases.
      */
-    ImmutableList<Field> fieldsWithName = fieldsWithName(error, key);
-    if (fieldsWithName.isEmpty()) {
+    ImmutableList<Fact> factsWithName = factsWithName(error, key);
+    if (factsWithName.isEmpty()) {
       failWithRawMessage(
-          field("expected to contain field", key)
+          fact("expected to contain fact", key)
               + "\n"
-              + field("but contained only", getFieldKeys(error)));
+              + fact("but contained only", getFactKeys(error)));
       return ignoreCheck().that("");
     }
-    if (index == null && fieldsWithName.size() > 1) {
+    if (index == null && factsWithName.size() > 1) {
       failWithRawMessage(
-          field("expected to contain a single field with key", key)
+          fact("expected to contain a single fact with key", key)
               + "\n"
-              + field("but contained multiple", fieldsWithName));
+              + fact("but contained multiple", factsWithName));
       return ignoreCheck().that("");
     }
-    if (index != null && index > fieldsWithName.size()) {
+    if (index != null && index > factsWithName.size()) {
       failWithRawMessage(
-          field("for key", key)
+          fact("for key", key)
               + "\n"
-              + field("index too high", index)
+              + fact("index too high", index)
               + "\n"
-              + field("field count was", fieldsWithName.size()));
+              + fact("fact count was", factsWithName.size()));
       return ignoreCheck().that("");
     }
     StandardSubjectBuilder check =
-        index == null ? check("fieldValue(%s)", key) : check("fieldValue(%s, %s)", key, index);
-    return check.that(fieldsWithName.get(firstNonNull(index, 0)).value);
+        index == null ? check("factValue(%s)", key) : check("factValue(%s, %s)", key, index);
+    return check.that(factsWithName.get(firstNonNull(index, 0)).value);
   }
 
-  private static ImmutableList<Field> fieldsWithName(ErrorWithFields error, String key) {
-    ImmutableList.Builder<Field> fields = ImmutableList.builder();
-    for (Field field : error.fields()) {
-      if (field.key.equals(key)) {
-        fields.add(field);
+  private static ImmutableList<Fact> factsWithName(ErrorWithFacts error, String key) {
+    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    for (Fact fact : error.facts()) {
+      if (fact.key.equals(key)) {
+        facts.add(fact);
       }
     }
-    return fields.build();
+    return facts.build();
   }
 }

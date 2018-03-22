@@ -16,9 +16,9 @@
 
 package com.google.common.truth;
 
-import static com.google.common.truth.Field.field;
-import static com.google.common.truth.Field.fieldWithoutValue;
-import static com.google.common.truth.Field.makeMessage;
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.makeMessage;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableList;
@@ -26,52 +26,52 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Tests for {@link Field}. */
+/** Tests for {@link Fact}. */
 @RunWith(JUnit4.class)
-public class FieldTest {
+public class FactTest {
   @Test
   public void string() {
-    assertThat(field("foo", "bar").toString()).isEqualTo("foo: bar");
+    assertThat(fact("foo", "bar").toString()).isEqualTo("foo: bar");
   }
 
   @Test
   public void stringWithoutValue() {
-    assertThat(fieldWithoutValue("foo").toString()).isEqualTo("foo");
+    assertThat(factWithoutValue("foo").toString()).isEqualTo("foo");
   }
 
   @Test
-  public void oneFields() {
-    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(field("foo", "bar"))))
+  public void oneFacts() {
+    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(fact("foo", "bar"))))
         .isEqualTo("foo: bar");
   }
 
   @Test
-  public void twoFields() {
+  public void twoFacts() {
     assertThat(
             makeMessage(
                 ImmutableList.<String>of(),
-                ImmutableList.of(field("foo", "bar"), field("longer name", "other value"))))
+                ImmutableList.of(fact("foo", "bar"), fact("longer name", "other value"))))
         .isEqualTo("foo        : bar\nlonger name: other value");
   }
 
   @Test
-  public void oneFieldWithoutValue() {
-    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(fieldWithoutValue("foo"))))
+  public void oneFactWithoutValue() {
+    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(factWithoutValue("foo"))))
         .isEqualTo("foo");
   }
 
   @Test
-  public void twoFieldsOneWithoutValue() {
+  public void twoFactsOneWithoutValue() {
     assertThat(
             makeMessage(
                 ImmutableList.<String>of(),
-                ImmutableList.of(field("foo", "bar"), fieldWithoutValue("hello"))))
+                ImmutableList.of(fact("foo", "bar"), factWithoutValue("hello"))))
         .isEqualTo("foo: bar\nhello");
   }
 
   @Test
   public void newline() {
-    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(field("foo", "bar\nbaz"))))
+    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(fact("foo", "bar\nbaz"))))
         .isEqualTo("foo:\n    bar\n    baz");
   }
 
@@ -80,14 +80,13 @@ public class FieldTest {
     assertThat(
             makeMessage(
                 ImmutableList.<String>of(),
-                ImmutableList.of(field("foo", "bar\nbaz"), fieldWithoutValue("xyz"))))
+                ImmutableList.of(fact("foo", "bar\nbaz"), factWithoutValue("xyz"))))
         .isEqualTo("foo:\n    bar\n    baz\nxyz");
   }
 
   @Test
   public void withMessage() {
-    assertThat(
-            makeMessage(ImmutableList.<String>of("hello"), ImmutableList.of(field("foo", "bar"))))
+    assertThat(makeMessage(ImmutableList.<String>of("hello"), ImmutableList.of(fact("foo", "bar"))))
         .isEqualTo("hello\nfoo: bar");
   }
 }

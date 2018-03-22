@@ -24,35 +24,35 @@ import com.google.common.collect.ImmutableList;
 import javax.annotation.Nullable;
 
 /** A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz." */
-final class Field {
+final class Fact {
   /**
-   * Creates a field with the given key and value, which will be printed in a format like "key:
+   * Creates a fact with the given key and value, which will be printed in a format like "key:
    * value." The value is converted to a string by calling {@code String.valueOf} on it.
    */
-  static Field field(String key, Object value) {
-    return new Field(key, String.valueOf(value));
+  static Fact fact(String key, Object value) {
+    return new Fact(key, String.valueOf(value));
   }
 
   /**
-   * Creates a field with no value, which will be printed in the format "key" (with no colon or
+   * Creates a fact with no value, which will be printed in the format "key" (with no colon or
    * value).
    */
-  static Field fieldWithoutValue(String key) {
-    return new Field(key, null);
+  static Fact factWithoutValue(String key) {
+    return new Fact(key, null);
   }
 
   final String key;
   @Nullable final String value;
 
-  private Field(String key, @Nullable String value) {
+  private Fact(String key, @Nullable String value) {
     this.key = checkNotNull(key);
     this.value = value;
   }
 
   /**
-   * Returns a simple string representation for the field. While this is used by the old-style
+   * Returns a simple string representation for the fact. While this is used by the old-style
    * messages and {@code TruthFailureSubject} output, we're moving away from the old-style messages
-   * and onto {@link #makeMessage}, which aligns fields horizontally and indents multiline values.
+   * and onto {@link #makeMessage}, which aligns facts horizontally and indents multiline values.
    */
   @Override
   public String toString() {
@@ -60,17 +60,17 @@ final class Field {
   }
 
   /**
-   * Formats the given messages and fields into a string for use as the message of a test failure.
-   * In particular, this method horizontally aligns the beginning of field values.
+   * Formats the given messages and facts into a string for use as the message of a test failure. In
+   * particular, this method horizontally aligns the beginning of fact values.
    */
-  static String makeMessage(ImmutableList<String> messages, ImmutableList<Field> fields) {
+  static String makeMessage(ImmutableList<String> messages, ImmutableList<Fact> facts) {
     int longestKeyLength = 0;
     boolean seenNewlineInValue = false;
-    for (Field field : fields) {
-      if (field.value != null) {
-        longestKeyLength = max(longestKeyLength, field.key.length());
+    for (Fact fact : facts) {
+      if (fact.value != null) {
+        longestKeyLength = max(longestKeyLength, fact.key.length());
         // TODO(cpovirk): Look for other kinds of newlines.
-        seenNewlineInValue |= field.value.contains("\n");
+        seenNewlineInValue |= fact.value.contains("\n");
       }
     }
 
@@ -81,7 +81,7 @@ final class Field {
     }
 
     /*
-     * *Usually* the first field is printed at the beginning of a new line. However, when this
+     * *Usually* the first fact is printed at the beginning of a new line. However, when this
      * exception is the cause of another exception, that exception will print it starting after
      * "Caused by: " on the same line. The other exception sometimes also reuses this message as its
      * own message. In both of those scenarios, the first line doesn't start at column 0, so the
@@ -90,18 +90,18 @@ final class Field {
      * There's not much we can do about this, short of always starting with a newline (which would
      * leave a blank line at the beginning of the message in the normal case).
      */
-    for (Field field : fields) {
+    for (Fact fact : facts) {
       if (seenNewlineInValue) {
-        builder.append(field.key);
-        if (field.value != null) {
+        builder.append(fact.key);
+        if (fact.value != null) {
           builder.append(":\n");
-          builder.append(indent(field.value));
+          builder.append(indent(fact.value));
         }
       } else {
-        builder.append(padEnd(field.key, longestKeyLength, ' '));
-        if (field.value != null) {
+        builder.append(padEnd(fact.key, longestKeyLength, ' '));
+        if (fact.value != null) {
           builder.append(": ");
-          builder.append(field.value);
+          builder.append(fact.value);
         }
       }
       builder.append('\n');

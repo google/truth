@@ -17,7 +17,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Strings.repeat;
-import static com.google.common.truth.ComparisonFailureWithFields.formatExpectedAndActual;
+import static com.google.common.truth.ComparisonFailureWithFacts.formatExpectedAndActual;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -27,9 +27,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Test for {@link ComparisonFailureWithFields}. */
+/** Test for {@link ComparisonFailureWithFacts}. */
 @RunWith(JUnit4.class)
-public class ComparisonFailureWithFieldsTest {
+public class ComparisonFailureWithFactsTest {
   @Test
   public void formatAllDifferent() {
     runFormatTest(
@@ -264,19 +264,19 @@ public class ComparisonFailureWithFieldsTest {
 
   private static void runFormatTest(
       String expected, String actual, String expectedExpected, String expectedActual) {
-    ImmutableList<Field> fields = formatExpectedAndActual(expected, actual);
-    assertThat(fields).hasSize(2);
-    assertThat(fields.get(0).key).isEqualTo("expected");
-    assertThat(fields.get(1).key).isEqualTo("but was");
-    assertThat(fields.get(0).value).isEqualTo(expectedExpected);
-    assertThat(fields.get(1).value).isEqualTo(expectedActual);
+    ImmutableList<Fact> facts = formatExpectedAndActual(expected, actual);
+    assertThat(facts).hasSize(2);
+    assertThat(facts.get(0).key).isEqualTo("expected");
+    assertThat(facts.get(1).key).isEqualTo("but was");
+    assertThat(facts.get(0).value).isEqualTo(expectedExpected);
+    assertThat(facts.get(1).value).isEqualTo(expectedActual);
   }
 
   @GwtIncompatible
   private static void runFormatTest(String expected, String actual, String expectedDiff) {
-    ImmutableList<Field> fields = formatExpectedAndActual(expected, actual);
-    assertThat(fields).hasSize(1);
-    assertThat(fields.get(0).key).isEqualTo("diff");
-    assertThat(fields.get(0).value).isEqualTo(expectedDiff);
+    ImmutableList<Fact> facts = formatExpectedAndActual(expected, actual);
+    assertThat(facts).hasSize(1);
+    assertThat(facts.get(0).key).isEqualTo("diff");
+    assertThat(facts.get(0).value).isEqualTo(expectedDiff);
   }
 }

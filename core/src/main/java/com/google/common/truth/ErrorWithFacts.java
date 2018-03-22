@@ -20,8 +20,8 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Supertype of Truth's {@link AssertionError} subclasses that are created from a list of {@link
- * Field} instances.
+ * Fact} instances.
  */
-interface ErrorWithFields {
-  ImmutableList<Field> fields();
+interface ErrorWithFacts {
+  ImmutableList<Fact> facts();
 }

@@ -19,8 +19,8 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.commonPrefix;
 import static com.google.common.base.Strings.commonSuffix;
-import static com.google.common.truth.Field.field;
-import static com.google.common.truth.Field.makeMessage;
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.makeMessage;
 import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE;
 import static com.google.common.truth.SubjectUtils.concat;
 import static java.lang.Character.isHighSurrogate;
@@ -34,68 +34,67 @@ import javax.annotation.Nullable;
 
 /**
  * An {@link AssertionError} (usually a JUnit {@code ComparisonFailure}, but not under GWT) composed
- * of structured {@link Field} instances and other string messages.
+ * of structured {@link Fact} instances and other string messages.
  *
  * <p>This class includes logic to format expected and actual values for easier reading.
  */
-final class ComparisonFailureWithFields extends PlatformComparisonFailure
-    implements ErrorWithFields {
-  static ComparisonFailureWithFields create(
+final class ComparisonFailureWithFacts extends PlatformComparisonFailure implements ErrorWithFacts {
+  static ComparisonFailureWithFacts create(
       ImmutableList<String> messages,
-      ImmutableList<Field> headFields,
-      ImmutableList<Field> tailFields,
+      ImmutableList<Fact> headFacts,
+      ImmutableList<Fact> tailFacts,
       String expected,
       String actual,
       @Nullable Throwable cause) {
-    ImmutableList<Field> fields = makeFields(headFields, tailFields, expected, actual);
-    return new ComparisonFailureWithFields(messages, fields, expected, actual, cause);
+    ImmutableList<Fact> facts = makeFacts(headFacts, tailFacts, expected, actual);
+    return new ComparisonFailureWithFacts(messages, facts, expected, actual, cause);
   }
 
-  final ImmutableList<Field> fields;
+  final ImmutableList<Fact> facts;
 
-  private ComparisonFailureWithFields(
+  private ComparisonFailureWithFacts(
       ImmutableList<String> messages,
-      ImmutableList<Field> fields,
+      ImmutableList<Fact> facts,
       String expected,
       String actual,
       @Nullable Throwable cause) {
     super(
-        makeMessage(messages, fields),
+        makeMessage(messages, facts),
         checkNotNull(expected),
         checkNotNull(actual),
         /* suffix= */ null,
         cause,
         OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE);
-    this.fields = checkNotNull(fields);
+    this.facts = checkNotNull(facts);
   }
 
   @Override
-  public ImmutableList<Field> fields() {
-    return fields;
+  public ImmutableList<Fact> facts() {
+    return facts;
   }
 
-  private static ImmutableList<Field> makeFields(
-      ImmutableList<Field> headFields,
-      ImmutableList<Field> tailFields,
+  private static ImmutableList<Fact> makeFacts(
+      ImmutableList<Fact> headFacts,
+      ImmutableList<Fact> tailFacts,
       String expected,
       String actual) {
-    return concat(headFields, formatExpectedAndActual(expected, actual), tailFields);
+    return concat(headFacts, formatExpectedAndActual(expected, actual), tailFacts);
   }
 
   /**
-   * Returns one or more fields describing the difference between the given expected and actual
+   * Returns one or more facts describing the difference between the given expected and actual
    * values.
    *
-   * <p>Currently, that means either 2 fields (one each for expected and actual) or 1 field with a
+   * <p>Currently, that means either 2 facts (one each for expected and actual) or 1 fact with a
    * diff-like (but much simpler) view.
    *
-   * <p>In the case of 2 fields, the fields contain either the full expected and actual values or,
-   * if the values have a long prefix or suffix in common, abbreviated values with "…" at the
-   * beginning or end.
+   * <p>In the case of 2 facts, the facts contain either the full expected and actual values or, if
+   * the values have a long prefix or suffix in common, abbreviated values with "…" at the beginning
+   * or end.
    */
   @VisibleForTesting
-  static ImmutableList<Field> formatExpectedAndActual(String expected, String actual) {
-    ImmutableList<Field> result;
+  static ImmutableList<Fact> formatExpectedAndActual(String expected, String actual) {
+    ImmutableList<Fact> result;
 
     // TODO(cpovirk): Call attention to differences in trailing whitespace.
     // TODO(cpovirk): And changes in the *kind* of whitespace characters in the middle of the line.
@@ -110,11 +109,11 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure
       return result;
     }
 
-    return ImmutableList.of(field("expected", expected), field("but was", actual));
+    return ImmutableList.of(fact("expected", expected), fact("but was", actual));
   }
 
   @Nullable
-  private static ImmutableList<Field> removeCommonPrefixAndSuffix(String expected, String actual) {
+  private static ImmutableList<Fact> removeCommonPrefixAndSuffix(String expected, String actual) {
     int originalExpectedLength = expected.length();
 
     // TODO(cpovirk): Use something like BreakIterator where available.
@@ -152,7 +151,7 @@ final class ComparisonFailureWithFields extends PlatformComparisonFailure
       return null;
     }
 
-    return ImmutableList.of(field("expected", expected), field("but was", actual));
+    return ImmutableList.of(fact("expected", expected), fact("but was", actual));
   }
 
   private static final int CONTEXT = 20;
