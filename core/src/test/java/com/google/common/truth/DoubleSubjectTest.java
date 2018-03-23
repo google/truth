@@ -545,7 +545,15 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThat(-1.0 * Double.MIN_VALUE).isNotNaN();
     assertThat(Double.POSITIVE_INFINITY).isNotNaN();
     assertThat(Double.NEGATIVE_INFINITY).isNotNaN();
+  }
+
+  @Test
+  public void isNotNaNIsNaN() {
     assertThatIsNotNaNFails(Double.NaN);
+  }
+
+  @Test
+  public void isNotNaNIsNull() {
     assertThatIsNotNaNFails(null);
   }
 

@@ -545,7 +545,15 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThat(-1.0 * Float.MIN_VALUE).isNotNaN();
     assertThat(Float.POSITIVE_INFINITY).isNotNaN();
     assertThat(Float.NEGATIVE_INFINITY).isNotNaN();
+  }
+
+  @Test
+  public void isNotNaNIsNaN() {
     assertThatIsNotNaNFails(Float.NaN);
+  }
+
+  @Test
+  public void isNotNaNIsNull() {
     assertThatIsNotNaNFails(null);
   }
 
