@@ -80,6 +80,11 @@ public class OptionalLongSubjectTest {
   }
 
   @Test
+  public void isEmptyFailingNull() {
+    AssertionError unused = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+  }
+
+  @Test
   public void hasValue() {
     assertThat(OptionalLong.of(1337L)).hasValue(1337L);
   }
