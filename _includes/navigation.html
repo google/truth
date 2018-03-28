@@ -14,8 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.foobar2
 {% endcomment %}
 
-<footer class="c-footer">
-  <div class="u-container c-footer__container">
-    <p>&copy; {{ site.title }} {{ site.time | date: '%Y' }}</p>
+<nav class="c-navigation {% if site.fixedNav == 'true' %}is-fixed{% endif %}">
+  <div class="c-navigation__container u-container">
+
+    {% for i in site.nav %}
+    {% assign url = i.item.url %}
+    <a class="c-navigation__item {% if page.url == url %}is-active{% endif %}" href="{{ url | prepend: site.baseurl }}">{{i.item.name}}</a>
+    {% endfor %}
+
   </div>
-</footer>
+</nav>

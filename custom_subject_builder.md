@@ -1,7 +1,6 @@
 ---
-subtitle: Extensions: CustomSubjectBuilder
 layout: default
-url: /custom_subject_builder
+title: "Extensions: CustomSubjectBuilder"
 ---
 
 

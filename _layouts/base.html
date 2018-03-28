@@ -11,11 +11,17 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
-limitations under the License.foobar2
+limitations under the License.
 {% endcomment %}
 
-<footer class="c-footer">
-  <div class="u-container c-footer__container">
-    <p>&copy; {{ site.title }} {{ site.time | date: '%Y' }}</p>
-  </div>
-</footer>
+<!DOCTYPE html>
+<html class="t-{{ site.themeColor }}">
+  {% include head.html %}
+  <body>
+    {% include navigation.html %}
+
+    {{ content }}
+
+    {% include footer.html %}
+  </body>
+</html>

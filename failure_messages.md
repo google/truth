@@ -1,7 +1,6 @@
 ---
 layout: default
-subtitle: Failure Messages
-url: /failure_messages
+title: Failure Messages
 ---
 
 **Note: As of this writing, Truth does not yet use the new style of failure

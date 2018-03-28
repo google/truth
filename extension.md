@@ -1,7 +1,6 @@
 ---
-subtitle: Extension
 layout: default
-url: /extension
+title: Extension
 ---
 
 

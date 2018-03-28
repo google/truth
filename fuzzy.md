@@ -1,7 +1,6 @@
 ---
-subtitle: Fuzzy Truth
 layout: default
-url: /fuzzy
+title: Fuzzy Truth
 ---
 
 1. auto-gen TOC:

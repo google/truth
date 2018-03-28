@@ -1,7 +1,6 @@
 ---
-subtitle: SubjectBuilder design doc
 layout: default
-url: /subject_builder_design
+title: SubjectBuilder design doc
 ---
 
 

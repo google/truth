@@ -1,7 +1,6 @@
 ---
-subtitle: Known Types
 layout: default
-url: /known_types
+title: Known Types
 ---
 
 

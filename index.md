@@ -1,7 +1,6 @@
 ---
 layout: default
-subtitle: Fluent assertions for Java
-url: /truth
+title: Truth - Fluent assertions for Java
 ---
 
 Truth makes your [test assertions](benefits#readable-assertions) and [failure
@@ -48,7 +47,9 @@ To use the Java 8 extensions, also include
 ```java
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static com.google.common.truth.Truth8.assertThat; // for assertions on Java 8 types
+
+// for assertions on Java 8 types
+import static com.google.common.truth.Truth8.assertThat;
 ```
 
 ## 3. Write a test assertion:
