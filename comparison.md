@@ -1,7 +1,6 @@
 ---
-subtitle: Comparison
 layout: default
-url: /comparison
+title: Comparison
 ---
 
 
@@ -200,84 +199,99 @@ common assertions can be found below.
 
 ### Equality
 
-Framework | Code example
---------- | -----------------------------------------
-Truth     | `assertThat(actual).isEqualTo(expected);`
-AssertJ   | `assertThat(actual).isEqualTo(expected);`
-Hamcrest  | `assertThat(actual, equalTo(expected));`
-JUnit     | `assertEquals(expected, actual);`
+```java
+// Truth
+assertThat(actual).isEqualTo(expected);
 
-### Custom error messages
+// AssertJ
+assertThat(actual).isEqualTo(expected);
 
-Framework | Code example
---------- | --------------------------------------------------
-Truth     | `assertWithMessage("custom msg").that(actual).isEqualTo(expected);`
-AssertJ   | `assertThat(actual).overridingErrorMessage("custom msg").isEqualTo(expected);`
-Hamcrest  | `assertThat("custom msg", actual, equalTo(expected));`
-JUnit     | `assertEquals("custom msg", expected, actual);`
+// Hamcrest
+assertThat(actual, equalTo(expected));
 
-### Custom labeling
-
-Framework | Code example
---------- | ------------------------------------------------------
-Truth     | `assertThat(actual).named("foo").isEqualTo(expected);`
-AssertJ   | `assertThat(actual).as("foo").isEqualTo(expected);`
-Hamcrest  | n/a
-JUnit     | n/a
+// JUnit
+assertEquals(expected, actual);
+```
 
 ### Null checking
 
-Framework | Code example
---------- | ----------------------------------
-Truth     | `assertThat(actual).isNull();`
-AssertJ   | `assertThat(actual).isNull();`
-Hamcrest  | `assertThat(actual, nullValue());`
-JUnit     | `assertNull(actual);`
+```java
+// Truth
+assertThat(actual).isNull();
+
+// AssertJ
+assertThat(actual).isNull();
+
+// Hamcrest
+assertThat(actual, nullValue());
+
+// JUnit
+assertNull(actual);
+```
 
 ### Boolean checks
 
-Framework | Code example
---------- | -------------------------------
-Truth     | `assertThat(actual).isTrue();`
-AssertJ   | `assertThat(actual).isTrue();`
-Hamcrest  | `assertThat(actual, is(true));`
-JUnit     | `assertTrue(actual);`
+```java
+// Truth
+assertThat(actual).isTrue();
+
+// AssertJ
+assertThat(actual).isTrue();
+
+// Hamcrest
+assertThat(actual, is(true));
+
+// JUnit
+assertTrue(actual);
+```
 
 ### Double comparisons {#floating-point}
 
-Framework | Code example
---------- | ----------------------------------------------------------------------------
-Truth     | `assertThat(actualDouble).isWithin(tolerance).of(expectedDouble);`
-AssertJ   | `assertThat(actualDouble).isCloseTo(expectedDouble, Offset.offset(offset));`
-Hamcrest  | `assertThat(actualDouble, closeTo(expectedDouble, error));`
-JUnit     | `assertEquals(expectedDouble, actualDouble, delta);`
+```java
+// Truth
+assertThat(actualDouble).isWithin(tolerance).of(expectedDouble);
 
-### Float comparisons
+// AssertJ
+assertThat(actualDouble).isCloseTo(expectedDouble, Offset.offset(offset));
 
-Framework | Code example
---------- | ----------------------------------------------------------------------------
-Truth     | `assertThat(actualFloat).isWithin(tolerance).of(expectedFloat);`
-AssertJ   | `assertThat(actualFloat).isCloseTo(expectedFloat, Offset.offset(offset));`
-Hamcrest  | `assertThat(actualFloat, closeTo(expectedFloat, error));`
-JUnit     | `assertEquals(expectedFloat, actualFloat, delta);`
+// Hamcrest
+assertThat(actualDouble, closeTo(expectedDouble, error));
+
+// JUnit
+assertEquals(expectedDouble, actualDouble, delta);
+```
 
 ### Assume/Assumption (JUnit's skipping behavior)
 
-Framework | Code example
---------- | --------------------------------------------
-Truth     | `assume().that(actual).isEqualTo(expected);`
-AssertJ   | n/a
-Hamcrest  | `assumeThat(actual, equalTo(expected));`
-JUnit     | `assumeEquals(expected, actual);`
+```java
+// Truth
+assume().that(actual).isEqualTo(expected);
+
+// AssertJ
+// n/a
+
+// Hamcrest
+assumeThat(actual, equalTo(expected));
+
+// JUnit
+assumeEquals(expected, actual);
+```
 
 ### Expect (fail-at-end)
 
-Framework | Code example
---------- | ---------------------------------------------------------------
-Truth     | `expect.that(actual).isEqualTo(expected); // supplied by @Rule`
-AssertJ   | `softly.assertThat(actual).isEqualTo(expected); // @Rule with JUnitSoftAssertions`
-Hamcrest  | n/a
-JUnit     | n/a
+```java
+// Truth
+expect.that(actual).isEqualTo(expected); // supplied by @Rule
+
+// AssertJ
+softly.assertThat(actual).isEqualTo(expected); // @Rule with JUnitSoftAssertions
+
+// Hamcrest
+// n/a
+
+// JUnit
+// n/a
+```
 
 <!-- References -->
 

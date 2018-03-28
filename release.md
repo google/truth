@@ -1,7 +1,6 @@
 ---
-subtitle: Releasing Truth
 layout: default
-url: /release
+title: Releasing Truth
 ---
 
 * auto-gen TOC:

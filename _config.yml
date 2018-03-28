@@ -1,30 +1,48 @@
-# Jekyll Settings
+auto: true
+url: "https://google.github.io"
+baseurl: '/truth'
 markdown: kramdown
-
-# Site settings
+repository: google/truth
 version: "0.39"
-url: http://google.github.io/truth
+
 title: Truth
 tagline: Fluent assertions for Java
 description: "Fluent assertions for Java"
 
-# Navigation
-navigation:
-- text: Compare
-  url: /truth/comparison
-- text: Javadoc
-  url: /truth/api/0.39/
-- text: FAQ
-  url: /truth/faq
-- text: Benefits
-  url: /truth/benefits
-- text: Known Types
-  url: /truth/known_types
-- text: Floating Point
-  url: /truth/floating_point
-- text: Fuzzy Truth
-  url: /truth/fuzzy
-- text: Extensions
-  url: /truth/extension
-- text: Home
-  url: /truth
+themeColor: purple
+fixedNav: 'true' # true or false
+
+exclude: [_site, CHANGELOG.md, LICENSE, README.md, Gemfile, Gemfile.lock]
+sass:
+  style: compressed
+
+googleAnalyticsId: UA-43772875-10
+
+nav:
+  - item:
+      name: Home
+      url: /
+  - item:
+      name: Compare
+      url: /comparison
+  - item:
+      name: Javadoc
+      url: /api/0.39/
+  - item:
+      name: FAQ
+      url: /faq
+  - item:
+      name: Benefits
+      url: /benefits
+  - item:
+      name: Known Types
+      url: /known_types
+  - item:
+      name: Floating Point
+      url: /floating_point
+  - item:
+      name: Fuzzy Truth
+      url: /fuzzy
+  - item:
+      name: Extensions
+      url: /extension

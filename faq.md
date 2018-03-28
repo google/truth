@@ -1,7 +1,6 @@
 ---
-subtitle: Questions and Answers
 layout: default
-url: /faq
+title: Questions and Answers
 ---
 
 1. auto-gen TOC:
@@ -264,7 +263,7 @@ using that chain. It looks like this:
 
 ```java
 import static com.google.common.truth.extension.EmployeeSubject.employees;
-…
+...
 expect // set what to do upon failure (that is, the FailureStrategy)
     .withMessage("findClosestMatch should have found user with given username") // set message
     .about(employees()) // set the type of value to test. The parameter is a Subject.Factory

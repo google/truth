@@ -1,7 +1,6 @@
 ---
-subtitle: Stack Trace Cleaner
 layout: default
-url: /stack_trace_cleaner
+title: Stack Trace Cleaner
 ---
 
 1. auto-gen TOC:

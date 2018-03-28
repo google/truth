@@ -1,7 +1,6 @@
 ---
 layout: default
-subtitle: Benefits
-url: /benefits
+title: Benefits
 ---
 
 ## More readable test assertions {#readable-assertions}

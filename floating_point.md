@@ -1,7 +1,6 @@
 ---
-subtitle: Truth for floating point types
 layout: default
-url: /floating_point
+title: Truth for floating point types
 ---
 
 1. auto-gen TOC:
