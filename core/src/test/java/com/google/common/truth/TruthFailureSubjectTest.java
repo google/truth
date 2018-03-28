@@ -17,6 +17,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.TruthFailureSubject.HOW_TO_TEST_KEYS_WITHOUT_VALUES;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 import static org.junit.Assert.fail;
 
@@ -33,6 +35,11 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
   @Test
   public void factKeys() {
     assertThat(fact("foo", "the foo")).factKeys().containsExactly("foo");
+  }
+
+  @Test
+  public void factKeysNoValue() {
+    assertThat(factWithoutValue("foo")).factKeys().containsExactly("foo");
   }
 
   @Test
@@ -76,6 +83,17 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
     assertFailureKeys("expected to contain a single fact with key", "but contained multiple");
     assertFailureValue("expected to contain a single fact with key", "foo");
     assertFailureValue("but contained multiple", "[foo: the foo, foo: the other foo]");
+  }
+
+  @Test
+  public void factValueFailNoValue() {
+    Object unused = expectFailureWhenTestingThat(factWithoutValue("foo")).factValue("foo");
+    assertFailureKeys(
+        "expected to have a value",
+        "for key",
+        "but the key was present with no value",
+        HOW_TO_TEST_KEYS_WITHOUT_VALUES.key);
+    assertFailureValue("for key", "foo");
   }
 
   // factValue(String, int)
@@ -125,6 +143,19 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
     assertFailureValue("for key", "foo");
     assertFailureValue("index too high", "5");
     assertFailureValue("fact count was", "1");
+  }
+
+  @Test
+  public void factValueIntFailNoValue() {
+    Object unused = expectFailureWhenTestingThat(factWithoutValue("foo")).factValue("foo", 0);
+    assertFailureKeys(
+        "expected to have a value",
+        "for key",
+        "and index",
+        "but the key was present with no value",
+        HOW_TO_TEST_KEYS_WITHOUT_VALUES.key);
+    assertFailureValue("for key", "foo");
+    assertFailureValue("and index", "0");
   }
 
   // other tests
