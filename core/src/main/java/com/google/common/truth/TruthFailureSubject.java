@@ -40,6 +40,11 @@ import javax.annotation.Nullable;
  * caller tries to access the facts of an error that wasn't produced by Truth.
  */
 final class TruthFailureSubject extends ThrowableSubject {
+  static final Fact HOW_TO_TEST_KEYS_WITHOUT_VALUES =
+      factWithoutValue(
+          "To test that a key is present without a value, "
+              + "use factKeys().contains(...) or a similar method.");
+
   /*
    * TODO(cpovirk): Expose this publicly once it can have the right type. That can't happen until we
    * add type parameters to ThrowableSubject, make TruthFailureSubject not extend ThrowableSubject,
@@ -89,12 +94,19 @@ final class TruthFailureSubject extends ThrowableSubject {
   /**
    * Returns a subject for the value with the given name.
    *
-   * <p>The value, if present, is always a string, the {@code String.valueOf} representation of the
-   * value passed to {@link Fact#fact}.
+   * <p>The value is always a string, the {@code String.valueOf} representation of the value passed
+   * to {@link Fact#fact}.
    *
-   * <p>The value is null in the case of {@linkplain Fact#factWithoutValue facts that have no
-   * value}. By contrast, facts that have a value that is rendered as "null" (such as those created
-   * with {@code fact("key", null)}) are considered to have a value, the string "null."
+   * <p>The value is never null:
+   *
+   * <ul>
+   *   <li>In the case of {@linkplain Fact#factWithoutValue facts that have no value}, {@code
+   *       factValue} throws an exception. To test for such facts, use {@link #factKeys()}{@code
+   *       .contains(...)} or a similar method.
+   *   <li>In the case of facts that have a value that is rendered as "null" (such as those created
+   *       with {@code fact("key", null)}), {@code factValue} considers them have a string value,
+   *       the string "null."
+   * </ul>
    *
    * <p>If the failure under test contains more than one fact with the given key, this method will
    * fail the test. To assert about such a failure, use {@linkplain #factValue(String, int) the
@@ -145,9 +157,27 @@ final class TruthFailureSubject extends ThrowableSubject {
           fact("fact count was", factsWithName.size()));
       return ignoreCheck().that("");
     }
+    String value = factsWithName.get(firstNonNull(index, 0)).value;
+    if (value == null) {
+      if (index == null) {
+        failWithoutActual(
+            factWithoutValue("expected to have a value"),
+            fact("for key", key),
+            factWithoutValue("but the key was present with no value"),
+            HOW_TO_TEST_KEYS_WITHOUT_VALUES);
+      } else {
+        failWithoutActual(
+            factWithoutValue("expected to have a value"),
+            fact("for key", key),
+            fact("and index", index),
+            factWithoutValue("but the key was present with no value"),
+            HOW_TO_TEST_KEYS_WITHOUT_VALUES);
+      }
+      return ignoreCheck().that("");
+    }
     StandardSubjectBuilder check =
         index == null ? check("factValue(%s)", key) : check("factValue(%s, %s)", key, index);
-    return check.that(factsWithName.get(firstNonNull(index, 0)).value);
+    return check.that(value);
   }
 
   private static ImmutableList<Fact> factsWithName(ErrorWithFacts error, String key) {
