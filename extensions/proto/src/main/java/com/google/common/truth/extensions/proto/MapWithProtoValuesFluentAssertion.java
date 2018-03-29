@@ -138,6 +138,21 @@ public interface MapWithProtoValuesFluentAssertion<M extends Message> {
   MapWithProtoValuesFluentAssertion<M> usingFloatToleranceForValues(float tolerance);
 
   /**
+   * Limits the comparison of Protocol buffers to the fields set in the expected proto(s). When
+   * multiple protos are specified, the comparison is limited to the union of set fields in all the
+   * expected protos.
+   *
+   * <p>The "expected proto(s)" are those passed to the method at the end of the call chain, such as
+   * {@link #containsEntry} or {@link #containsExactlyEntriesIn}.
+   *
+   * <p>Fields not set in the expected proto(s) are ignored. In particular, proto3 fields which have
+   * their default values are ignored, as these are indistinguishable from unset fields. If you want
+   * to assert that a proto3 message has certain fields with default values, you cannot use this
+   * method.
+   */
+  MapWithProtoValuesFluentAssertion<M> comparingExpectedFieldsOnlyForValues();
+
+  /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link

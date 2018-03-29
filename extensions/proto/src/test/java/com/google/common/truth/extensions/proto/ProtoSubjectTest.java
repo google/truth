@@ -210,6 +210,21 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testComparingExpectedFieldsOnly() {
+    Message message = parse("o_int: 3 r_string: 'foo'");
+    Message narrowMessage = parse("o_int: 3");
+
+    expectThat(message).comparingExpectedFieldsOnly().isEqualTo(narrowMessage);
+    expectThat(narrowMessage).comparingExpectedFieldsOnly().isNotEqualTo(message);
+
+    expectFailureWhenTesting()
+        .that(message)
+        .comparingExpectedFieldsOnly()
+        .isNotEqualTo(narrowMessage);
+    expectThatFailure().hasMessageThat().contains("ignored: r_string");
+  }
+
+  @Test
   public void testReportingMismatchesOnly_isEqualTo() {
     Message message = parse("r_string: \"foo\" r_string: \"bar\"");
     Message diffMessage = parse("r_string: \"foo\" r_string: \"not_bar\"");

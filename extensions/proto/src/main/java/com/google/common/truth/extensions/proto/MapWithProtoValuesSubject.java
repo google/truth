@@ -28,6 +28,9 @@ import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
@@ -319,6 +322,23 @@ public class MapWithProtoValuesSubject<
   }
 
   /**
+   * Limits the comparison of Protocol buffers to the fields set in the expected proto(s). When
+   * multiple protos are specified, the comparison is limited to the union of set fields in all the
+   * expected protos.
+   *
+   * <p>The "expected proto(s)" are those passed to the method at the end of the call chain, such as
+   * {@link #containsEntry} or {@link #containsExactlyEntriesIn}.
+   *
+   * <p>Fields not set in the expected proto(s) are ignored. In particular, proto3 fields which have
+   * their default values are ignored, as these are indistinguishable from unset fields. If you want
+   * to assert that a proto3 message has certain fields with default values, you cannot use this
+   * method.
+   */
+  public MapWithProtoValuesFluentAssertion<M> comparingExpectedFieldsOnlyForValues() {
+    return usingConfig(config.comparingExpectedFieldsOnly());
+  }
+
+  /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
@@ -425,9 +445,12 @@ public class MapWithProtoValuesSubject<
   // UsingCorrespondence Methods
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  private MapSubject.UsingCorrespondence<M, M> usingCorrespondence() {
+  private MapSubject.UsingCorrespondence<M, M> usingCorrespondence(
+      Iterable<? extends M> expectedValues) {
     return comparingValuesUsing(
-        config.<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(actual().values())));
+        config
+            .withExpectedMessages(expectedValues)
+            .<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(actual().values())));
   }
 
   // The UsingCorrespondence methods have conflicting erasure with default MapSubject methods,
@@ -455,6 +478,11 @@ public class MapWithProtoValuesSubject<
     @Override
     public MapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForValues(double tolerance) {
       return subject.usingDoubleToleranceForValues(tolerance);
+    }
+
+    @Override
+    public MapWithProtoValuesFluentAssertion<M> comparingExpectedFieldsOnlyForValues() {
+      return subject.comparingExpectedFieldsOnlyForValues();
     }
 
     @Override
@@ -503,24 +531,36 @@ public class MapWithProtoValuesSubject<
 
     @Override
     public void containsEntry(@Nullable Object expectedKey, @Nullable M expectedValue) {
-      usingCorrespondence().containsEntry(expectedKey, expectedValue);
+      subject
+          .usingCorrespondence(Arrays.asList(expectedValue))
+          .containsEntry(expectedKey, expectedValue);
     }
 
     @Override
     public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable M excludedValue) {
-      usingCorrespondence().doesNotContainEntry(excludedKey, excludedValue);
+      subject
+          .usingCorrespondence(Arrays.asList(excludedValue))
+          .doesNotContainEntry(excludedKey, excludedValue);
     }
 
     @Override
     @CanIgnoreReturnValue
+    @SuppressWarnings("unchecked") // ClassCastException is fine
     public Ordered containsExactly(@Nullable Object k0, @Nullable M v0, Object... rest) {
-      return usingCorrespondence().containsExactly(k0, v0, rest);
+      List<M> expectedValues = new ArrayList<>();
+      expectedValues.add(v0);
+      for (int i = 1; i < rest.length; i += 2) {
+        expectedValues.add((M) rest[i]);
+      }
+      return subject.usingCorrespondence(expectedValues).containsExactly(k0, v0, rest);
     }
 
     @Override
     @CanIgnoreReturnValue
     public Ordered containsExactlyEntriesIn(Map<?, ? extends M> expectedMap) {
-      return usingCorrespondence().containsExactlyEntriesIn(expectedMap);
+      return subject
+          .usingCorrespondence(expectedMap.values())
+          .containsExactlyEntriesIn(expectedMap);
     }
 
     @Override
@@ -533,10 +573,6 @@ public class MapWithProtoValuesSubject<
     @Deprecated
     public int hashCode() {
       return subject.hashCode();
-    }
-
-    private final MapSubject.UsingCorrespondence<M, M> usingCorrespondence() {
-      return subject.usingCorrespondence();
     }
   }
 }
