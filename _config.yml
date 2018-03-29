@@ -10,7 +10,6 @@ tagline: Fluent assertions for Java
 description: "Fluent assertions for Java"
 
 themeColor: purple
-fixedNav: 'true' # true or false
 
 exclude: [_site, CHANGELOG.md, LICENSE, README.md, Gemfile, Gemfile.lock]
 sass:
