@@ -16,6 +16,7 @@
 
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.join;
 
 import com.google.auto.value.AutoValue;
@@ -25,10 +26,13 @@ import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Correspondence;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 /**
@@ -44,6 +48,7 @@ abstract class FluentEqualityConfig {
       new AutoValue_FluentEqualityConfig.Builder()
           .setIgnoreFieldAbsence(false)
           .setIgnoreRepeatedFieldOrder(false)
+          .setCompareExpectedFieldsOnly(false)
           .setFieldScopeLogic(FieldScopeLogic.all())
           .setReportMismatchesOnly(false)
           .setUsingCorrespondenceStringFunction(Functions.constant(""))
@@ -76,6 +81,16 @@ abstract class FluentEqualityConfig {
   abstract Optional<Correspondence<Number, Number>> doubleCorrespondence();
 
   abstract Optional<Correspondence<Number, Number>> floatCorrespondence();
+
+  abstract boolean compareExpectedFieldsOnly();
+
+  // The full list of non-null Messages in the 'expected' part of the assertion.  When set, the
+  // FieldScopeLogic should be narrowed appropriately if 'compareExpectedFieldsOnly()' is true.
+  //
+  // This field will be absent while the assertion is being composed, but *must* be set before
+  // passed to a message differencer.  We check this to ensure no assertion path forgets to pass
+  // along the expected protos.
+  abstract Optional<ImmutableList<Message>> expectedMessages();
 
   abstract FieldScopeLogic fieldScopeLogic();
 
@@ -125,6 +140,28 @@ abstract class FluentEqualityConfig {
         .build();
   }
 
+  final FluentEqualityConfig comparingExpectedFieldsOnly() {
+    return toBuilder()
+        .setCompareExpectedFieldsOnly(true)
+        .addUsingCorrespondenceString(".comparingExpectedFieldsOnly()")
+        .build();
+  }
+
+  final FluentEqualityConfig withExpectedMessages(Iterable<? extends Message> messages) {
+    ImmutableList.Builder<Message> listBuilder = ImmutableList.builder();
+    for (Message message : messages) {
+      if (message != null) {
+        listBuilder.add(message);
+      }
+    }
+    Builder builder = toBuilder().setExpectedMessages(listBuilder.build());
+    if (compareExpectedFieldsOnly()) {
+      builder.setFieldScopeLogic(
+          FieldScopeLogic.and(fieldScopeLogic(), FieldScopes.fromSetFields(messages).logic()));
+    }
+    return builder.build();
+  }
+
   final FluentEqualityConfig withPartialScope(FieldScope partialScope) {
     return toBuilder()
         .setFieldScopeLogic(FieldScopeLogic.and(fieldScopeLogic(), partialScope.logic()))
@@ -160,11 +197,13 @@ abstract class FluentEqualityConfig {
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   final ProtoTruthMessageDifferencer toMessageDifferencer(Descriptor descriptor) {
+    checkState(expectedMessages().isPresent(), "expectedMessages() not set");
     return messageDifferencers.getUnchecked(descriptor);
   }
 
   final <M extends Message> Correspondence<M, M> toCorrespondence(
       final Optional<Descriptor> optDescriptor) {
+    checkState(expectedMessages().isPresent(), "expectedMessages() not set");
     return new Correspondence<M, M>() {
       @Override
       public final boolean compare(@Nullable M actual, @Nullable M expected) {
@@ -200,6 +239,7 @@ abstract class FluentEqualityConfig {
 
   abstract Builder toBuilder();
 
+  @CanIgnoreReturnValue
   @AutoValue.Builder
   abstract static class Builder {
     abstract Builder setIgnoreFieldAbsence(boolean ignoringFieldAbsence);
@@ -212,8 +252,13 @@ abstract class FluentEqualityConfig {
 
     abstract Builder setFloatCorrespondence(Correspondence<Number, Number> floatCorrespondence);
 
+    abstract Builder setCompareExpectedFieldsOnly(boolean compare);
+
+    abstract Builder setExpectedMessages(ImmutableList<Message> messages);
+
     abstract Builder setFieldScopeLogic(FieldScopeLogic fieldScopeLogic);
 
+    @CheckReturnValue
     abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();
 
     abstract Builder setUsingCorrespondenceStringFunction(

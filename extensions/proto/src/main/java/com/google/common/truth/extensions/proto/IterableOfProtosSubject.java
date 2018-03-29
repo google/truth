@@ -21,6 +21,7 @@ import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.truth.Correspondence;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IterableSubject;
@@ -29,6 +30,7 @@ import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import java.util.Arrays;
 import java.util.Comparator;
 import javax.annotation.Nullable;
 
@@ -387,7 +389,7 @@ public class IterableOfProtosSubject<
    * <p>Note that calling this method makes no difference to whether a test passes or fails, it just
    * improves the message if it fails.
    */
-  public IterableSubject.UsingCorrespondence<M, M> displayingDiffsPairedBy(
+  public IterableOfProtosUsingCorrespondence<M> displayingDiffsPairedBy(
       Function<? super M, ?> keyFunction) {
     return usingCorrespondence().displayingDiffsPairedBy(keyFunction);
   }
@@ -511,6 +513,23 @@ public class IterableOfProtosSubject<
   }
 
   /**
+   * Limits the comparison of Protocol buffers to the fields set in the expected proto(s). When
+   * multiple protos are specified, the comparison is limited to the union of set fields in all the
+   * expected protos.
+   *
+   * <p>The "expected proto(s)" are those passed to the method in {@link
+   * IterableOfProtosUsingCorrespondence} at the end of the call-chain.
+   *
+   * <p>Fields not set in the expected proto(s) are ignored. In particular, proto3 fields which have
+   * their default values are ignored, as these are indistinguishable from unset fields. If you want
+   * to assert that a proto3 message has certain fields with default values, you cannot use this
+   * method.
+   */
+  public IterableOfProtosFluentAssertion<M> comparingExpectedFieldsOnly() {
+    return usingConfig(config.comparingExpectedFieldsOnly());
+  }
+
+  /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
@@ -615,9 +634,122 @@ public class IterableOfProtosSubject<
   // UsingCorrespondence Methods
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  private IterableSubject.UsingCorrespondence<M, M> usingCorrespondence() {
-    return comparingElementsUsing(
-        config.<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(actual())));
+  // A forwarding implementation of IterableSubject.UsingCorrespondence which passes the expected
+  // protos to FluentEqualityConfig before comparing.  This is required to support
+  // displayingDiffsPairedBy(), since we can't pass the user to a vanilla
+  // IterableSubject.UsingCorrespondence until we know what the expected messages are.
+  private static class UsingCorrespondence<M extends Message>
+      implements IterableOfProtosUsingCorrespondence<M> {
+    private final IterableOfProtosSubject<?, M, ?> subject;
+    @Nullable private final Function<? super M, ? extends Object> keyFunction;
+
+    UsingCorrespondence(
+        IterableOfProtosSubject<?, M, ?> subject,
+        @Nullable Function<? super M, ? extends Object> keyFunction) {
+      this.subject = checkNotNull(subject);
+      this.keyFunction = keyFunction;
+    }
+
+    private IterableSubject.UsingCorrespondence<M, M> delegate(Iterable<? extends M> messages) {
+      IterableSubject.UsingCorrespondence<M, M> usingCorrespondence =
+          subject.comparingElementsUsing(
+              subject
+                  .config
+                  .withExpectedMessages(messages)
+                  .<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(subject.actual())));
+      if (keyFunction != null) {
+        usingCorrespondence = usingCorrespondence.displayingDiffsPairedBy(keyFunction);
+      }
+      return usingCorrespondence;
+    }
+
+    @Override
+    public IterableOfProtosUsingCorrespondence<M> displayingDiffsPairedBy(
+        Function<? super M, ?> keyFunction) {
+      return new UsingCorrespondence<M>(subject, checkNotNull(keyFunction));
+    }
+
+    @Override
+    public void contains(@Nullable M expected) {
+      delegate(Arrays.asList(expected)).contains(expected);
+    }
+
+    @Override
+    public void doesNotContain(@Nullable M excluded) {
+      delegate(Arrays.asList(excluded)).doesNotContain(excluded);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsExactly(@Nullable M... expected) {
+      return delegate(Arrays.asList(expected)).containsExactly(expected);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsExactlyElementsIn(Iterable<? extends M> expected) {
+      return delegate(expected).containsExactlyElementsIn(expected);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsExactlyElementsIn(M[] expected) {
+      return delegate(Arrays.asList(expected)).containsExactlyElementsIn(expected);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsAllOf(@Nullable M first, @Nullable M second, @Nullable M... rest) {
+      return delegate(Lists.asList(first, second, rest)).containsAllOf(first, second, rest);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsAllIn(Iterable<? extends M> expected) {
+      return delegate(expected).containsAllIn(expected);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsAllIn(M[] expected) {
+      return delegate(Arrays.asList(expected)).containsAllIn(expected);
+    }
+
+    @Override
+    public void containsAnyOf(@Nullable M first, @Nullable M second, @Nullable M... rest) {
+      delegate(Lists.asList(first, second, rest)).containsAnyOf(first, second, rest);
+    }
+
+    @Override
+    public void containsAnyIn(Iterable<? extends M> expected) {
+      delegate(expected).containsAnyIn(expected);
+    }
+
+    @Override
+    public void containsAnyIn(M[] expected) {
+      delegate(Arrays.asList(expected)).containsAnyIn(expected);
+    }
+
+    @Override
+    public void containsNoneOf(
+        @Nullable M firstExcluded, @Nullable M secondExcluded, @Nullable M... restOfExcluded) {
+      delegate(Lists.asList(firstExcluded, secondExcluded, restOfExcluded))
+          .containsNoneOf(firstExcluded, secondExcluded, restOfExcluded);
+    }
+
+    @Override
+    public void containsNoneIn(Iterable<? extends M> excluded) {
+      delegate(excluded).containsNoneIn(excluded);
+    }
+
+    @Override
+    public void containsNoneIn(M[] excluded) {
+      delegate(Arrays.asList(excluded)).containsNoneIn(excluded);
+    }
+  }
+
+  private IterableOfProtosUsingCorrespondence<M> usingCorrespondence() {
+    return new UsingCorrespondence<M>(this, /* keyFunction= */ null);
   }
 
   // The UsingCorrespondence methods have conflicting erasure with default IterableSubject methods,
@@ -650,6 +782,11 @@ public class IterableOfProtosSubject<
     @Override
     public IterableOfProtosFluentAssertion<M> usingFloatTolerance(float tolerance) {
       return subject.usingFloatTolerance(tolerance);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> comparingExpectedFieldsOnly() {
+      return subject.comparingExpectedFieldsOnly();
     }
 
     @Override
@@ -690,7 +827,7 @@ public class IterableOfProtosSubject<
     }
 
     @Override
-    public IterableSubject.UsingCorrespondence<M, M> displayingDiffsPairedBy(
+    public IterableOfProtosUsingCorrespondence<M> displayingDiffsPairedBy(
         Function<? super M, ?> keyFunction) {
       return usingCorrespondence().displayingDiffsPairedBy(keyFunction);
     }
@@ -778,7 +915,7 @@ public class IterableOfProtosSubject<
       return subject.hashCode();
     }
 
-    private final IterableSubject.UsingCorrespondence<M, M> usingCorrespondence() {
+    private final IterableOfProtosUsingCorrespondence<M> usingCorrespondence() {
       return subject.usingCorrespondence();
     }
   }

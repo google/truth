@@ -15,27 +15,22 @@
  */
 package com.google.common.truth.extensions.proto;
 
-import com.google.common.base.Function;
-import com.google.common.truth.IterableSubject;
-import com.google.common.truth.Ordered;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import javax.annotation.Nullable;
 
 /**
  * Fluent API to perform detailed, customizable comparison of iterables of protocol buffers. The
  * same comparison rules are applied to all pairs of protocol buffers which get compared.
  *
- * <p>Methods may be chained in any order, but the chain should terminate with a method that doesn't
- * return an IterableOfProtosFluentAssertion, such as {@link #containsExactly}, or {@link
- * #containsAnyIn}.
+ * <p>Methods may be chained in any order, but the chain should terminate with a method from {@link
+ * IterableOfProtosUsingCorrespondence}.
  *
  * <p>The state of an {@code IterableOfProtosFluentAssertion} object after each method is called is
  * left undefined. Users should not retain references to {@code IterableOfProtosFluentAssertion}
  * instances.
  */
-public interface IterableOfProtosFluentAssertion<M extends Message> {
+public interface IterableOfProtosFluentAssertion<M extends Message>
+    extends IterableOfProtosUsingCorrespondence<M> {
 
   /**
    * Specifies that the 'has' bit of individual fields should be ignored when comparing for
@@ -134,6 +129,21 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
   IterableOfProtosFluentAssertion<M> usingFloatTolerance(float tolerance);
 
   /**
+   * Limits the comparison of Protocol buffers to the fields set in the expected proto(s). When
+   * multiple protos are specified, the comparison is limited to the union of set fields in all the
+   * expected protos.
+   *
+   * <p>The "expected proto(s)" are those passed to the method in {@link
+   * IterableOfProtosUsingCorrespondence} at the end of the call-chain.
+   *
+   * <p>Fields not set in the expected proto(s) are ignored. In particular, proto3 fields which have
+   * their default values are ignored, as these are indistinguishable from unset fields. If you want
+   * to assert that a proto3 message has certain fields with default values, you cannot use this
+   * method.
+   */
+  IterableOfProtosFluentAssertion<M> comparingExpectedFieldsOnly();
+
+  /**
    * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
    *
    * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
@@ -220,162 +230,6 @@ public interface IterableOfProtosFluentAssertion<M extends Message> {
    * <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.
    */
   IterableOfProtosFluentAssertion<M> reportingMismatchesOnly();
-
-  /**
-   * Specifies a way to pair up unexpected and missing elements in the message when an assertion
-   * fails. For example:
-   *
-   * <pre>{@code
-   * assertThat(actualFoos)
-   *     .ignoringRepeatedFieldOrder()
-   *     .ignoringFields(Foo.BAR_FIELD_NUMBER)
-   *     .displayingDiffsPairedBy(Foo::getId)
-   *     .containsExactlyElementsIn(expectedFoos);
-   * }</pre>
-   *
-   * <p>On assertions where it makes sense to do so, the elements are paired as follows: they are
-   * keyed by {@code keyFunction}, and if an unexpected element and a missing element have the same
-   * non-null key then the they are paired up. (Elements with null keys are not paired.) The failure
-   * message will show paired elements together, and a diff will be shown.
-   *
-   * <p>The expected elements given in the assertion should be uniquely keyed by {@link
-   * keyFunction}. If multiple missing elements have the same key then the pairing will be skipped.
-   *
-   * <p>Useful key functions will have the property that key equality is less strict than the
-   * already specified equality rules; i.e. given {@code actual} and {@code expected} values with
-   * keys {@code actualKey} and {@code expectedKey}, if {@code actual} and {@code expected} compare
-   * equal given the rest of the directives such as {@code ignoringRepeatedFieldOrder} and {@code
-   * ignoringFields}, then it is guaranteed that {@code actualKey} is equal to {@code expectedKey},
-   * but there are cases where {@code actualKey} is equal to {@code expectedKey} but the direct
-   * comparison fails.
-   *
-   * <p>Note that calling this method makes no difference to whether a test passes or fails, it just
-   * improves the message if it fails.
-   */
-  IterableSubject.UsingCorrespondence<M, M> displayingDiffsPairedBy(
-      Function<? super M, ?> keyFunction);
-
-  /**
-   * Checks that the subject contains at least one element that corresponds to the given expected
-   * element.
-   */
-  void contains(@Nullable M expected);
-
-  /** Checks that none of the actual elements correspond to the given element. */
-  void doesNotContain(@Nullable M excluded);
-
-  /**
-   * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
-   * that there is a 1:1 mapping between the actual elements and the expected elements where each
-   * pair of elements correspond.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
-   *
-   * <p>To test that the iterable contains the same elements as an array, prefer {@link
-   * #containsExactlyElementsIn(Message[])}. It makes clear that the given array is a list of
-   * elements, not an element itself.
-   */
-  @CanIgnoreReturnValue
-  Ordered containsExactly(@Nullable M... expected);
-
-  /**
-   * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
-   * that there is a 1:1 mapping between the actual elements and the expected elements where each
-   * pair of elements correspond.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
-   */
-  @CanIgnoreReturnValue
-  Ordered containsExactlyElementsIn(Iterable<? extends M> expected);
-
-  /**
-   * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
-   * that there is a 1:1 mapping between the actual elements and the expected elements where each
-   * pair of elements correspond.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
-   */
-  @CanIgnoreReturnValue
-  Ordered containsExactlyElementsIn(M[] expected);
-
-  /**
-   * Checks that the subject contains elements that corresponds to all of the expected elements,
-   * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
-   * elements where each pair of elements correspond.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The elements must appear in the given order within the
-   * subject, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  Ordered containsAllOf(@Nullable M first, @Nullable M second, @Nullable M... rest);
-
-  /**
-   * Checks that the subject contains elements that corresponds to all of the expected elements,
-   * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
-   * elements where each pair of elements correspond.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The elements must appear in the given order within the
-   * subject, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  Ordered containsAllIn(Iterable<? extends M> expected);
-
-  /**
-   * Checks that the subject contains elements that corresponds to all of the expected elements,
-   * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
-   * elements where each pair of elements correspond.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The elements must appear in the given order within the
-   * subject, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  Ordered containsAllIn(M[] expected);
-
-  /**
-   * Checks that the subject contains at least one element that corresponds to at least one of the
-   * expected elements.
-   */
-  void containsAnyOf(@Nullable M first, @Nullable M second, @Nullable M... rest);
-
-  /**
-   * Checks that the subject contains at least one element that corresponds to at least one of the
-   * expected elements.
-   */
-  void containsAnyIn(Iterable<? extends M> expected);
-
-  /**
-   * Checks that the subject contains at least one element that corresponds to at least one of the
-   * expected elements.
-   */
-  void containsAnyIn(M[] expected);
-
-  /**
-   * Checks that the subject contains no elements that correspond to any of the given elements.
-   * (Duplicates are irrelevant to this test, which fails if any of the subject elements correspond
-   * to any of the given elements.)
-   */
-  void containsNoneOf(
-      @Nullable M firstExcluded, @Nullable M secondExcluded, @Nullable M... restOfExcluded);
-
-  /**
-   * Checks that the subject contains no elements that correspond to any of the given elements.
-   * (Duplicates are irrelevant to this test, which fails if any of the subject elements correspond
-   * to any of the given elements.)
-   */
-  void containsNoneIn(Iterable<? extends M> excluded);
-
-  /**
-   * Checks that the subject contains no elements that correspond to any of the given elements.
-   * (Duplicates are irrelevant to this test, which fails if any of the subject elements correspond
-   * to any of the given elements.)
-   */
-  void containsNoneIn(M[] excluded);
 
   /**
    * @deprecated Do not call {@code equals()} on a {@code IterableOfProtosFluentAssertion}.

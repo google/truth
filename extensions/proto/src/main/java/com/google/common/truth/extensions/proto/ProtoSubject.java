@@ -25,6 +25,7 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import java.util.Arrays;
 import javax.annotation.Nullable;
 
 /**
@@ -93,6 +94,11 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
+  public ProtoFluentAssertion comparingExpectedFieldsOnly() {
+    return usingConfig(config.comparingExpectedFieldsOnly());
+  }
+
+  @Override
   public ProtoFluentAssertion withPartialScope(FieldScope fieldScope) {
     return usingConfig(config.withPartialScope(checkNotNull(fieldScope, "fieldScope")));
   }
@@ -141,7 +147,8 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     if (notMessagesWithSameDescriptor(actual(), expected)) {
       super.isEqualTo(expected);
     } else {
-      DiffResult diffResult = makeDifferencer().diffMessages(actual(), (Message) expected);
+      DiffResult diffResult =
+          makeDifferencer((Message) expected).diffMessages(actual(), (Message) expected);
       if (!diffResult.isMatched()) {
         failWithRawMessage(
             failureMessage(/* expectedEqual = */ true)
@@ -159,7 +166,9 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     if (notMessagesWithSameDescriptor(actual(), expected)) {
       return Objects.equal(actual(), expected);
     } else {
-      return makeDifferencer().diffMessages(actual(), (Message) expected).isMatched();
+      return makeDifferencer((Message) expected)
+          .diffMessages(actual(), (Message) expected)
+          .isMatched();
     }
   }
 
@@ -168,7 +177,8 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     if (notMessagesWithSameDescriptor(actual(), expected)) {
       super.isNotEqualTo(expected);
     } else {
-      DiffResult diffResult = makeDifferencer().diffMessages(actual(), (Message) expected);
+      DiffResult diffResult =
+          makeDifferencer((Message) expected).diffMessages(actual(), (Message) expected);
       if (diffResult.isMatched()) {
         failWithRawMessage(
             failureMessage(/* expectedEqual= */ false)
@@ -187,8 +197,10 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     }
   }
 
-  private ProtoTruthMessageDifferencer makeDifferencer() {
-    return config.toMessageDifferencer(actual().getDescriptorForType());
+  private ProtoTruthMessageDifferencer makeDifferencer(Message expected) {
+    return config
+        .withExpectedMessages(Arrays.asList(expected))
+        .toMessageDifferencer(actual().getDescriptorForType());
   }
 
   private String failureMessage(boolean expectedEqual) {
