@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -22,17 +23,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import org.junit.runner.Runner;
+import org.junit.runners.model.Statement;
 
 /** Utility that cleans stack traces to remove noise from common frameworks. */
+@GwtIncompatible
 final class StackTraceCleaner {
 
   static final String CLEANER_LINK = "https://goo.gl/aH3UyP";
 
   /**
-   * Cleans the stack trace on the given {@link Throwable}, replacing the original stack trace
+   * <b>Call {@link Platform#cleanStackTrace} rather than calling this directly.</b>
+   *
+   * <p>Cleans the stack trace on the given {@link Throwable}, replacing the original stack trace
    * stored on the instance (see {@link Throwable#setStackTrace(StackTraceElement[])}).
    *
-   * <p>Strips Truth stack frames from the top and JUnit framework and reflective call frames from
+   * <p>Removes Truth stack frames from the top and JUnit framework and reflective call frames from
    * the bottom. Collapses the frames for various frameworks in the middle of the trace as well.
    */
   static void cleanStackTrace(Throwable throwable) {
@@ -58,7 +64,7 @@ final class StackTraceCleaner {
   /** Cleans the stack trace on {@code throwable}, replacing the trace that was originally on it. */
   private void clean(Set<Throwable> seenThrowables) {
     // Stack trace cleaning can be disabled using a system property.
-    if (Platform.isStackTraceCleaningDisabled()) {
+    if (isStackTraceCleaningDisabled()) {
       return;
     }
 
@@ -72,11 +78,18 @@ final class StackTraceCleaner {
 
     int stackIndex = stackFrames.length - 1;
     for (; stackIndex >= 0 && !isTruthEntrance(stackFrames[stackIndex]); stackIndex--) {
-      // Find first frame that enters Truth's world and strips all above
+      // Find first frame that enters Truth's world, and remove all above.
     }
     stackIndex += 1;
 
-    for (; stackIndex < stackFrames.length; stackIndex++) {
+    int endIndex = 0;
+    for (;
+        endIndex < stackFrames.length && !isJUnitIntrastructure(stackFrames[endIndex]);
+        endIndex++) {
+      // Find last frame of setup frames, and remove from there down.
+    }
+
+    for (; stackIndex < endIndex; stackIndex++) {
       StackTraceElementWrapper stackTraceElementWrapper =
           new StackTraceElementWrapper(stackFrames[stackIndex]);
       // Always keep frames that might be useful.
@@ -165,12 +178,26 @@ final class StackTraceCleaner {
       ImmutableSet.<Class<?>>of(Subject.class, StandardSubjectBuilder.class);
 
   private static boolean isTruthEntrance(StackTraceElement stackTraceElement) {
-    Class<?> stackClass = Platform.classForName(stackTraceElement.getClassName());
-    if (stackClass == null) {
+    return isFromClass(stackTraceElement, TRUTH_ENTRANCE_CLASSES);
+  }
+
+  private static final ImmutableSet<Class<?>> JUNIT_INFRASTRUCTURE_CLASSES =
+      ImmutableSet.<Class<?>>of(Runner.class, Statement.class);
+
+  private static boolean isJUnitIntrastructure(StackTraceElement stackTraceElement) {
+    return isFromClass(stackTraceElement, JUNIT_INFRASTRUCTURE_CLASSES);
+  }
+
+  private static boolean isFromClass(
+      StackTraceElement stackTraceElement, ImmutableSet<Class<?>> classes) {
+    Class<?> stackClass;
+    try {
+      stackClass = Class.forName(stackTraceElement.getClassName());
+    } catch (ClassNotFoundException e) {
       return false;
     }
-    for (Class<?> knownEntranceClass : TRUTH_ENTRANCE_CLASSES) {
-      if (Platform.isAssignableFrom(knownEntranceClass, stackClass)) {
+    for (Class<?> knownEntranceClass : classes) {
+      if (knownEntranceClass.isAssignableFrom(stackClass)) {
         return true;
       }
     }
@@ -295,5 +322,15 @@ final class StackTraceCleaner {
       }
       return false;
     }
+  }
+
+  /**
+   * Returns true if stack trace cleaning is explicitly disabled in a system property. This switch
+   * is intended to be used when attempting to debug the frameworks which are collapsed or filtered
+   * out of stack traces by the cleaner.
+   */
+  private static boolean isStackTraceCleaningDisabled() {
+    return Boolean.parseBoolean(
+        System.getProperty("com.google.common.truth.disable_stack_trace_cleaning"));
   }
 }
