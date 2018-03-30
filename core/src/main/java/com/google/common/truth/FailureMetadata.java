@@ -170,6 +170,21 @@ public final class FailureMetadata {
     return derive(messages, steps);
   }
 
+  void failEqualityCheck(
+      ImmutableList<Fact> headFacts,
+      ImmutableList<Fact> tailFacts,
+      String expected,
+      String actual) {
+    doFail(
+        ComparisonFailureWithFacts.create(
+            evaluateAll(messages),
+            concat(descriptionAsFacts(), headFacts),
+            concat(tailFacts, rootUnlessThrowableAsFacts()),
+            expected,
+            actual,
+            rootCause().orNull()));
+  }
+
   void fail(ImmutableList<Fact> facts) {
     doFail(
         AssertionErrorWithFacts.create(

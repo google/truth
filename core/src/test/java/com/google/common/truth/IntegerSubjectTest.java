@@ -46,25 +46,16 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
   public void equalityWithLongs() {
     assertThat(0).isEqualTo(0L);
     expectFailureWhenTestingThat(0).isNotEqualTo(0L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <0> is not equal to <0>");
   }
 
   @Test
   public void equalityFail() {
     expectFailureWhenTestingThat(4).isEqualTo(5);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <4> is equal to <5>");
   }
 
   @Test
   public void inequalityFail() {
     expectFailureWhenTestingThat(4).isNotEqualTo(4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <4> is not equal to <4>");
   }
 
   @Test
@@ -75,17 +66,11 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
   @Test
   public void equalityOfNullsFail_nullActual() {
     expectFailureWhenTestingThat(null).isEqualTo(5);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is equal to <5>");
   }
 
   @Test
   public void equalityOfNullsFail_nullExpected() {
     expectFailureWhenTestingThat(5).isEqualTo(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <5> is equal to <null>");
   }
 
   @Test
@@ -97,9 +82,6 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
   @Test
   public void inequalityOfNullsFail() {
     expectFailureWhenTestingThat(null).isNotEqualTo(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not equal to <null>");
   }
 
   @Test
@@ -117,33 +99,21 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
   @Test
   public void overflowOnPrimitives_shouldBeEqualAfterCast_min() {
     expectFailureWhenTestingThat(Integer.MIN_VALUE).isNotEqualTo((long) Integer.MIN_VALUE);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <-2147483648> is not equal to <-2147483648>");
   }
 
   @Test
   public void overflowOnPrimitives_shouldBeEqualAfterCast_max() {
     expectFailureWhenTestingThat(Integer.MAX_VALUE).isNotEqualTo((long) Integer.MAX_VALUE);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <2147483647> is not equal to <2147483647>");
   }
 
   @Test
   public void overflowBetweenIntegerAndLong_shouldBeDifferent_min() {
     expectFailureWhenTestingThat(Integer.MIN_VALUE).isEqualTo(Long.MIN_VALUE);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <-2147483648> is equal to <-9223372036854775808>");
   }
 
   @Test
   public void overflowBetweenIntegerAndLong_shouldBeDifferent_max() {
     expectFailureWhenTestingThat(Integer.MAX_VALUE).isEqualTo(Long.MAX_VALUE);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <2147483647> is equal to <9223372036854775807>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -210,26 +180,19 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_int_long() {
     expectFailureWhenTestingThat(42).isNotEqualTo(42L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
   }
 
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_int_int() {
     expectFailureWhenTestingThat(42).isNotEqualTo(42);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
   }
 
   @Test
   public void testNumericPrimitiveTypes_isNotEqual_shouldFail_intToChar() {
     expectFailureWhenTestingThat(42).isNotEqualTo((char) 42);
     // 42 in ASCII is '*'
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <*>");
+    assertFailureValue("expected not to be", "*");
+    assertFailureValue("but was; string representation of actual value", "42");
   }
 
   @Test
@@ -237,9 +200,8 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
     // Uses Object overload rather than Integer.
     expectFailure.whenTesting().that((char) 42).isNotEqualTo(42);
     // 42 in ASCII is '*'
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <*> is not equal to <42>");
+    assertFailureValue("expected not to be", "42");
+    assertFailureValue("but was; string representation of actual value", "*");
   }
 
   private static final Subject.Factory<DefaultSubject, Object> DEFAULT_SUBJECT_FACTORY =
@@ -250,12 +212,9 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
         }
       };
 
-  private static void expectFailureWithMessage(
-      ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object> callback,
-      String failureMessage) {
-    AssertionError assertionError =
-        ExpectFailure.expectFailureAbout(DEFAULT_SUBJECT_FACTORY, callback);
-    assertThat(assertionError).hasMessageThat().isEqualTo(failureMessage);
+  private static void expectFailure(
+      ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object> callback) {
+    AssertionError unused = ExpectFailure.expectFailureAbout(DEFAULT_SUBJECT_FACTORY, callback);
   }
 
   @Test
@@ -291,8 +250,8 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
                 expect.that(expected).isNotEqualTo(actual);
               }
             };
-        expectFailureWithMessage(actualFirst, "Not true that <42> is not equal to <42>");
-        expectFailureWithMessage(expectedFirst, "Not true that <42> is not equal to <42>");
+        expectFailure(actualFirst);
+        expectFailure(expectedFirst);
       }
     }
 

@@ -49,17 +49,18 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
     expectFailureWhenTestingThat(array('a', 'q')).isEqualTo(array('q', 'a'));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[a, q]> is equal to <[q, a]>. differs at index: [0]");
+    assertFailureKeys("expected", "but was", "differs at index");
+    assertFailureValue("expected", "[q, a]");
+    assertFailureValue("but was", "[a, q]");
+    assertFailureValue("differs at index", "[0]");
   }
 
   @Test
-  public void isEqualTo_Fail_NotAnArray() {
+  public void isEqualTo_Fail_DifferentKindOfArray() {
     expectFailureWhenTestingThat(array('a', 'q')).isEqualTo(new int[] {});
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("wrong type; expected: int[]; but was: char[]");
+    assertFailureKeys("expected", "but was", "wrong type", "expected", "but was");
+    assertFailureValueIndexed("expected", 1, "int[]");
+    assertFailureValueIndexed("but was", 1, "char[]");
   }
 
   @Test
@@ -80,9 +81,6 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailEquals() {
     expectFailureWhenTestingThat(array('a', 'q')).isNotEqualTo(array('a', 'q'));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[a, q]> is not equal to <[a, q]>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -90,9 +88,6 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
   public void isNotEqualTo_FailSame() {
     char[] same = array('a', 'q');
     expectFailureWhenTestingThat(same).isNotEqualTo(same);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[a, q]> is not equal to <[a, q]>");
   }
 
   private static char[] array(char... ts) {

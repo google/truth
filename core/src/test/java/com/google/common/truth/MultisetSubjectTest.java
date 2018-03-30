@@ -43,9 +43,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   public void multisetIsEmptyWithFailure() {
     ImmutableMultiset<Integer> multiset = ImmutableMultiset.of(1, 5);
     expectFailureWhenTestingThat(multiset).isEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 5]> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -58,9 +56,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   public void multisetIsNotEmptyWithFailure() {
     ImmutableMultiset<Integer> multiset = ImmutableMultiset.of();
     expectFailureWhenTestingThat(multiset).isNotEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[]> is not empty");
+    assertFailureKeys("expected not to be empty");
   }
 
   @Test
@@ -96,9 +92,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
   public void hasCountFail() {
     ImmutableMultiset<String> multiset = ImmutableMultiset.of("kurt", "kurt", "kluever");
     expectFailureWhenTestingThat(multiset).hasCount("kurt", 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[kurt x 2, kluever]> has a count for <kurt> of <3>. It is <2>");
+    assertFailureValue("value of", "multiset.count(kurt)");
   }
 
   @Test

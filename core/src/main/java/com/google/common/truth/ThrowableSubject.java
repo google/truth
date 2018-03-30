@@ -47,7 +47,14 @@ public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
 
   /** Returns a {@code StringSubject} to make assertions about the throwable's message. */
   public final StringSubject hasMessageThat() {
-    return check("getMessage()").that(actual().getMessage());
+    StandardSubjectBuilder check = check("getMessage()");
+    if (actual() instanceof ErrorWithFacts && ((ErrorWithFacts) actual()).facts().size() > 1) {
+      check =
+          check.withMessage(
+              "(Note from Truth: When possible, instead of asserting on the full message, assert"
+                  + " about individual facts by using ExpectFailure.assertThat.)");
+    }
+    return check.that(actual().getMessage());
   }
 
   /**

@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.OptionalIntSubject.optionalInts;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
@@ -31,20 +32,11 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class OptionalIntSubjectTest {
-  @Test
-  public void namedOptionalInt() {
-    OptionalInt optional = OptionalInt.of(1337);
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(optional).named("name").hasValue(42));
-    assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo("Not true that name (<OptionalInt[1337]>) has value <42>");
-  }
 
   @Test
   public void failOnNullSubject() {
     AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is empty");
+    assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
   @Test
@@ -56,7 +48,7 @@ public class OptionalIntSubjectTest {
   public void isPresentFailing() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalInt.empty()).isPresent());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
+    assertThat(expected).factKeys().containsExactly("expected to be present");
   }
 
   @Test
@@ -64,7 +56,7 @@ public class OptionalIntSubjectTest {
     AssertionError expected =
         expectFailure(
             whenTesting -> whenTesting.that(OptionalInt.empty()).named("name").isPresent());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
+    assertThat(expected).factKeys().contains("name");
   }
 
   @Test
@@ -76,12 +68,14 @@ public class OptionalIntSubjectTest {
   public void isEmptyFailing() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalInt.of(1337)).isEmpty());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <OptionalInt[1337]> is empty");
+    assertThat(expected).factKeys().contains("expected to be empty");
+    assertThat(expected).factValue("but was present with value").isEqualTo("1337");
   }
 
   @Test
   public void isEmptyFailingNull() {
-    AssertionError unused = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
+    assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
   @Test
@@ -94,17 +88,17 @@ public class OptionalIntSubjectTest {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalInt.empty()).hasValue(1337));
     assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo("Not true that <OptionalInt.empty> has value <1337>");
+        .factKeys()
+        .containsExactly("expected to have value", "but was absent")
+        .inOrder();
+    assertThat(expected).factValue("expected to have value").isEqualTo("1337");
   }
 
   @Test
   public void hasValue_FailingWithWrongValue() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(OptionalInt.of(1337)).hasValue(42));
-    assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo("Not true that <OptionalInt[1337]> has value <42>");
+    assertThat(expected).factValue("value of").isEqualTo("optionalInt.getAsInt()");
   }
 
   @Test
@@ -114,15 +108,16 @@ public class OptionalIntSubjectTest {
             whenTesting -> {
               IntegerSubject unused = whenTesting.that(OptionalInt.empty()).hasValueThat();
             });
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
+    assertThat(expected).factKeys().containsExactly("expected to be present");
   }
 
   @Test
   public void hasValueThat_FailingWithComparison() {
-    AssertionError expected =
+    AssertionError unused =
         expectFailure(
             whenTesting -> whenTesting.that(OptionalInt.of(1337)).hasValueThat().isLessThan(42));
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <1337> is less than <42>");
+    // TODO(cpovirk): Assert that "value of" is present once we set it:
+    // assertThat(expected).fieldValue("value of").isEqualTo("optionalInt.getAsInt()");
   }
 
   @Test

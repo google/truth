@@ -15,6 +15,9 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
+
 import java.math.BigDecimal;
 import javax.annotation.Nullable;
 
@@ -88,9 +91,8 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
 
   private void compareValues(BigDecimal expected) {
     if (actual().compareTo(expected) != 0) {
-      failWithRawMessage(
-          "%s should have had the same value as <%s> (scale is ignored)",
-          actualAsString(), expected);
+      failWithoutActual(
+          fact("expected", expected), butWas(), factWithoutValue("(scale is ignored)"));
     }
   }
 }

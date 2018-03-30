@@ -61,10 +61,7 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
   @Test
   public void factValueFailWrongValue() {
     expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("foo").isEqualTo("the bar");
-    Truth.assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("value of: failure.factValue(foo)");
-    // TODO(cpovirk): Switch to using fact-based assertions once Subject uses them.
+    assertFailureValue("value of", "failure.factValue(foo)");
   }
 
   @Test
@@ -122,10 +119,7 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
   @Test
   public void factValueIntFailWrongValue() {
     expectFailureWhenTestingThat(fact("foo", "the foo")).factValue("foo", 0).isEqualTo("the bar");
-    Truth.assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("value of: failure.factValue(foo, 0)");
-    // TODO(cpovirk): Switch to using fact-based assertions once Subject uses them.
+    assertFailureValue("value of", "failure.factValue(foo, 0)");
   }
 
   @Test

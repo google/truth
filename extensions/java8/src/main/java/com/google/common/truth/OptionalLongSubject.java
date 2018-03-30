@@ -15,6 +15,9 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
+
 import java.util.OptionalLong;
 import javax.annotation.Nullable;
 
@@ -33,15 +36,21 @@ public final class OptionalLongSubject extends Subject<OptionalLongSubject, Opti
 
   /** Fails if the {@link OptionalLong} is empty or the subject is null. */
   public void isPresent() {
-    if (actual() == null || !actual().isPresent()) {
-      failWithoutActual("is present");
+    if (actual() == null) {
+      fail(factWithoutValue("expected present optional"));
+    } else if (!actual().isPresent()) {
+      failWithoutActual(factWithoutValue("expected to be present"));
     }
   }
 
   /** Fails if the {@link OptionalLong} is present or the subject is null. */
   public void isEmpty() {
-    if (actual() == null || actual().isPresent()) {
-      fail("is empty");
+    if (actual() == null) {
+      fail(factWithoutValue("expected empty optional"));
+    } else if (actual().isPresent()) {
+      failWithoutActual(
+          factWithoutValue("expected to be empty"),
+          fact("but was present with value", actual().getAsLong()));
     }
   }
 
@@ -50,13 +59,13 @@ public final class OptionalLongSubject extends Subject<OptionalLongSubject, Opti
    * sophisticated comparisons can be done using {@link #hasValueThat()}.
    */
   public void hasValue(long expected) {
-    if (actual() == null || !actual().isPresent()) {
-      fail("has value", expected);
+    if (actual() == null) {
+      failWithFact("expected an optional with value", expected);
+    } else if (!actual().isPresent()) {
+      failWithoutActual(
+          fact("expected to have value", expected), factWithoutValue("but was absent"));
     } else {
-      long actual = actual().getAsLong();
-      if (actual != expected) {
-        fail("has value", expected);
-      }
+      checkNoNeedToDisplayBothValues("getAsLong()").that(actual().getAsLong()).isEqualTo(expected);
     }
   }
 
@@ -66,7 +75,7 @@ public final class OptionalLongSubject extends Subject<OptionalLongSubject, Opti
    */
   public LongSubject hasValueThat() {
     if (actual() == null || !actual().isPresent()) {
-      failWithoutActual("is present");
+      isPresent(); // fails
       return ignoreCheck().that(0L);
     } else {
       return check().that(actual().getAsLong());

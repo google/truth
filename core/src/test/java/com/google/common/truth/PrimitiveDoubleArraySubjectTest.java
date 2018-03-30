@@ -79,46 +79,34 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_NotEqual() {
     expectFailureWhenTestingThat(array(2.2d)).isEqualTo(array(OVER_2POINT2));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[2.2]> is equal to <[2.2000000000000006]>. differs at index: [0]");
+    assertFailureValue("expected", "[2.2000000000000006]");
+    assertFailureValue("but was", "[2.2]");
+    assertFailureValue("differs at index", "[0]");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_DifferentOrder() {
     expectFailureWhenTestingThat(array(2.2d, 3.3d)).isEqualTo(array(3.3d, 2.2d));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[2.2, 3.3]> is equal to <[3.3, 2.2]>. differs at index: [0]");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_Longer() {
     expectFailureWhenTestingThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d, 3.3d, 4.4d));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[2.2, 3.3]> is equal to <[2.2, 3.3, 4.4]>. wrong length; expected: 3; "
-                + "but was: 2");
+    assertFailureKeys("expected", "but was", "wrong length", "expected", "but was");
+    assertFailureValueIndexed("expected", 1, "3");
+    assertFailureValueIndexed("but was", 1, "2");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_Shorter() {
     expectFailureWhenTestingThat(array(2.2d, 3.3d)).isEqualTo(array(2.2d));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[2.2, 3.3]> is equal to <[2.2]>. wrong length; expected: 1; but was: "
-                + "2");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_PlusMinusZero() {
     expectFailureWhenTestingThat(array(0.0d)).isEqualTo(array(-0.0d));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[0.0]> is equal to <[-0.0]>. differs at index: [0]");
+    assertFailureValue("expected", "[-0.0]");
+    assertFailureValue("but was", "[0.0]");
   }
 
   @Test
@@ -130,11 +118,6 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   public void isNotEqualTo_WithoutToleranceParameter_FailEquals() {
     expectFailureWhenTestingThat(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY))
         .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[2.2, 5.4, Infinity, -Infinity]> is not equal to <[2.2, 5.4, Infinity, "
-                + "-Infinity]>");
   }
 
   @Test
@@ -142,11 +125,6 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(
             array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0))
         .isNotEqualTo(array(2.2d, 5.4d, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0, -0.0));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0]> is not equal to "
-                + "<[2.2, 5.4, Infinity, -Infinity, NaN, 0.0, -0.0]>");
   }
 
   @Test
@@ -1314,9 +1292,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   public void noCommas() {
     // Maybe we should include commas, but we don't yet, so make sure we don't under GWT, either.
     expectFailureWhenTestingThat(array(10000.0)).isEqualTo(array(20000.0));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[10000.0]> is equal to <[20000.0]>. differs at index: [0]");
+    assertFailureValue("expected", "[20000.0]");
+    assertFailureValue("but was", "[10000.0]");
   }
 
   private static double[] array(double... primitives) {

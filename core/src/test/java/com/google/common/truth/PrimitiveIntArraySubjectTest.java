@@ -57,9 +57,7 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void hasLengthFail() {
     expectFailureWhenTestingThat(array(2, 5)).hasLength(1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[2, 5]> has length <1>");
+    assertFailureValue("value of", "array.length");
   }
 
   @Test
@@ -79,9 +77,7 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isEmptyFail() {
     expectFailureWhenTestingThat(array(2, 5)).isEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[2, 5]> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -92,17 +88,16 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEmptyFail() {
     expectFailureWhenTestingThat(EMPTY).isNotEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[]> is not empty");
+    assertFailureKeys("expected not to be empty");
   }
 
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
     expectFailureWhenTestingThat(array(2, 3)).isEqualTo(array(3, 2));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[2, 3]> is equal to <[3, 2]>. differs at index: [0]");
+    assertFailureKeys("expected", "but was", "differs at index");
+    assertFailureValue("expected", "[3, 2]");
+    assertFailureValue("but was", "[2, 3]");
+    assertFailureValue("differs at index", "[0]");
   }
 
   @Test
@@ -128,9 +123,6 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailEquals() {
     expectFailureWhenTestingThat(array(2, 3)).isNotEqualTo(array(2, 3));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[2, 3]> is not equal to <[2, 3]>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -138,9 +130,6 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
   public void isNotEqualTo_FailSame() {
     int[] same = array(2, 3);
     expectFailureWhenTestingThat(same).isNotEqualTo(same);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[2, 3]> is not equal to <[2, 3]>");
   }
 
   private static int[] array(int... ts) {

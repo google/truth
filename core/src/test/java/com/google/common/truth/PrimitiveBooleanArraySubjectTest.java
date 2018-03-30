@@ -49,11 +49,7 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
     expectFailureWhenTestingThat(array(true, false, true)).isEqualTo(array(false, true, true));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[true, false, true]> is equal to <[false, true, true]>. differs at "
-                + "index: [0]");
+    assertFailureValue("differs at index", "[0]");
   }
 
   @Test
@@ -79,9 +75,6 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailEquals() {
     expectFailureWhenTestingThat(array(true, false)).isNotEqualTo(array(true, false));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[true, false]> is not equal to <[true, false]>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -89,9 +82,6 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
   public void isNotEqualTo_FailSame() {
     boolean[] same = array(true, false);
     expectFailureWhenTestingThat(same).isNotEqualTo(same);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[true, false]> is not equal to <[true, false]>");
   }
 
   private static boolean[] array(boolean... ts) {

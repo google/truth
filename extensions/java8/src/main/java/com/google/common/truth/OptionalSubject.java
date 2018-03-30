@@ -15,6 +15,9 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
+
 import java.util.Optional;
 import javax.annotation.Nullable;
 
@@ -31,17 +34,25 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
     super(failureMetadata, subject, typeDescription);
   }
 
+  // TODO(cpovirk): Consider making OptionalIntSubject and OptionalLongSubject delegate to this.
+
   /** Fails if the {@link Optional}{@code <T>} is empty or the subject is null. */
   public void isPresent() {
-    if (actual() == null || !actual().isPresent()) {
-      failWithoutActual("is present");
+    if (actual() == null) {
+      fail(factWithoutValue("expected present optional"));
+    } else if (!actual().isPresent()) {
+      failWithoutActual(factWithoutValue("expected to be present"));
     }
   }
 
   /** Fails if the {@link Optional}{@code <T>} is present or the subject is null. */
   public void isEmpty() {
-    if (actual() == null || actual().isPresent()) {
-      fail("is empty");
+    if (actual() == null) {
+      fail(factWithoutValue("expected empty optional"));
+    } else if (actual().isPresent()) {
+      failWithoutActual(
+          factWithoutValue("expected to be empty"),
+          fact("but was present with value", actual().get()));
     }
   }
 
@@ -59,19 +70,13 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
     if (expected == null) {
       throw new NullPointerException("Optional cannot have a null value.");
     }
-    if (actual() == null || !actual().isPresent()) {
-      fail("has value", expected);
+    if (actual() == null) {
+      failWithFact("expected an optional with value", expected);
+    } else if (!actual().isPresent()) {
+      failWithoutActual(
+          fact("expected to have value", expected), factWithoutValue("but was absent"));
     } else {
-      Object actual = actual().get();
-      if (!actual.equals(expected)) {
-        if (actual.toString().equals(expected.toString())) {
-          failWithRawMessage(
-              "Not true that %s (%s) has value <%s> (%s)",
-              actualAsString(), actual.getClass(), expected, expected.getClass());
-        } else {
-          fail("has value", expected);
-        }
-      }
+      checkNoNeedToDisplayBothValues("get()").that(actual().get()).isEqualTo(expected);
     }
   }
 

@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.factWithoutValue;
 
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
@@ -57,32 +58,26 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} is not empty. */
   public void isEmpty() {
     if (!actual().isEmpty()) {
-      fail("is empty");
+      fail(factWithoutValue("expected to be empty"));
     }
   }
 
   /** Fails if the {@link AtomicLongMap} is empty. */
   public void isNotEmpty() {
     if (actual().isEmpty()) {
-      fail("is not empty");
+      failWithoutActual(factWithoutValue("expected not to be empty"));
     }
   }
 
   /** Fails if the {@link AtomicLongMap} does not have the given size. */
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
-    int actualSize = actual().size();
-    if (actualSize != expectedSize) {
-      failWithBadResults("has a size of", expectedSize, "is", actualSize);
-    }
+    check("size()").that(actual().size()).isEqualTo(expectedSize);
   }
 
   /** Fails if the {@link AtomicLongMap} does not have the given sum. */
   public void hasSum(long expectedSum) {
-    long actualSum = actual().sum();
-    if (actualSum != expectedSum) {
-      failWithBadResults("has a sum of", expectedSum, "is", actualSum);
-    }
+    check("sum()").that(actual().sum()).isEqualTo(expectedSum);
   }
 
   /** Fails if the {@link AtomicLongMap} does not contain the given key. */

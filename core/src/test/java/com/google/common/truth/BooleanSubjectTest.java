@@ -37,25 +37,23 @@ public class BooleanSubjectTest extends BaseSubjectTestCase {
   @Test
   public void nullIsTrueFailing() {
     expectFailureWhenTestingThat(null).isTrue();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("The subject was expected to be true, but was null");
+    assertFailureKeys("expected", "but was");
+    assertFailureValue("expected", "true");
+    assertFailureValue("but was", "null");
   }
 
   @Test
   public void nullIsFalseFailing() {
     expectFailureWhenTestingThat(null).isFalse();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("The subject was expected to be false, but was null");
+    assertFailureKeys("expected", "but was");
+    assertFailureValue("expected", "false");
+    assertFailureValue("but was", "null");
   }
 
   @Test
   public void isTrueFailing() {
     expectFailureWhenTestingThat(false).isTrue();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("The subject was expected to be true, but was false");
+    assertFailureKeys("expected to be true");
   }
 
   @Test
@@ -66,9 +64,7 @@ public class BooleanSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isFalseFailing() {
     expectFailureWhenTestingThat(true).isFalse();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("The subject was expected to be false, but was true");
+    assertFailureKeys("expected to be false");
   }
 
   private BooleanSubject expectFailureWhenTestingThat(Boolean actual) {

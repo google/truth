@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.annotations.GwtIncompatible;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -51,54 +50,22 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isEqualTo_Fail_shortVersion() {
-    byte[] actual = new byte[] {124, 112, 12, 11, 10};
-    byte[] expect = new byte[] {24, 12, 2, 1, 0};
-    expectFailureWhenTestingThat(actual).isEqualTo(expect);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "expected: [24, 12, 2, 1, 0]; but was: [124, 112, 12, 11, 10] expected:<[180C020100]> "
-                + "but was:<[7C700C0B0A]>");
-  }
-
-  @Test
-  @GwtIncompatible("Platform.comparisionFailure")
-  public void isEqualTo_Fail() {
-    byte[] actual =
-        new byte[] {
-          124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111,
-          109, 0, 0, 1, 0, 0
-        };
-    byte[] expect =
-        new byte[] {
-          124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111,
-          109, 0, 0, 1, 0, 1
-        };
-    expectFailureWhenTestingThat(actual).isEqualTo(expect);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "expected: [124, 112, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 101, 120, 97, 109, 112, 108, "
-                + "101, 3, 99, 111, 109, 0, 0, 1, 0, 1]; but was: [124, 112, 1, 0, 0, 1, 0, 0, 0, "
-                + "0, 0, 0, 7, 101, 120, 97, 109, 112, 108, 101, 3, 99, 111, 109, 0, 0, 1, 0, 0] "
-                + "expected:<...C6503636F6D000001000[1]> but was:<...C6503636F6D000001000[0]>");
-  }
-
-  @Test
   public void isEqualTo_Fail_UnequalOrdering() {
     expectFailureWhenTestingThat(array(BYTE_0, (byte) 123)).isEqualTo(array((byte) 123, BYTE_0));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("expected: [123, 0]; but was: [0, 123] expected:<[7B00]> but was:<[007B]>");
+    assertFailureKeys("expected", "but was", "expected", "but was");
+    assertFailureValueIndexed("expected", 0, "7B00");
+    assertFailureValueIndexed("but was", 0, "007B");
+    assertFailureValueIndexed("expected", 1, "[123, 0]");
+    assertFailureValueIndexed("but was", 1, "[0, 123]");
+    assertThat(expectFailure.getFailure()).isInstanceOf(ComparisonFailureWithFacts.class);
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
     expectFailureWhenTestingThat(array(BYTE_0, BYTE_1)).isEqualTo(new int[] {});
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("wrong type; expected: int[]; but was: byte[]");
+    assertFailureKeys("expected", "but was", "wrong type", "expected", "but was");
+    assertFailureValueIndexed("expected", 1, "int[]");
+    assertFailureValueIndexed("but was", 1, "byte[]");
   }
 
   @Test
@@ -119,9 +86,6 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailEquals() {
     expectFailureWhenTestingThat(array(BYTE_0, BYTE_1)).isNotEqualTo(array(BYTE_0, BYTE_1));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <0001> is not equal to <0001>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -129,9 +93,6 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
   public void isNotEqualTo_FailSame() {
     byte[] same = array(BYTE_0, BYTE_1);
     expectFailureWhenTestingThat(same).isNotEqualTo(same);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <0001> is not equal to <0001>");
   }
 
   private static byte[] array(byte... ts) {

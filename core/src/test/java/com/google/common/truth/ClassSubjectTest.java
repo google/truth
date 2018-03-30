@@ -17,7 +17,6 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -28,9 +27,7 @@ import org.junit.runners.JUnit4;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 @RunWith(JUnit4.class)
-public class ClassSubjectTest {
-  @Rule public final ExpectFailure expectFailure = new ExpectFailure();
-
+public class ClassSubjectTest extends BaseSubjectTestCase {
   @Test
   public void testIsAssignableTo_same() {
     assertThat(String.class).isAssignableTo(String.class);
@@ -45,21 +42,13 @@ public class ClassSubjectTest {
   @Test
   public void testIsAssignableTo_reversed() {
     expectFailureWhenTestingThat(Object.class).isAssignableTo(String.class);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <class java.lang.Object> "
-                + "is assignable to <class java.lang.String>");
+    assertFailureValue("expected to be assignable to", "java.lang.String");
   }
 
   @Test
-  public void testIsAssignableTo_reversedDifferentTypes() {
+  public void testIsAssignableTo_differentTypes() {
     expectFailureWhenTestingThat(String.class).isAssignableTo(Exception.class);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <class java.lang.String> "
-                + "is assignable to <class java.lang.Exception>");
+    assertFailureValue("expected to be assignable to", "java.lang.Exception");
   }
 
   private ClassSubject expectFailureWhenTestingThat(Class<?> actual) {

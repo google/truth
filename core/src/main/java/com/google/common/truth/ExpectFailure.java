@@ -28,14 +28,15 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 /**
- * A utility for testing that assertions against a custom {@link Subject} fail when they should.
+ * A utility for testing that assertions against a custom {@link Subject} fail when they should,
+ * plus a utility to assert about parts of the resulting failure messages.
  *
  * <p>Usage:
  *
  * <pre>{@code
  *   AssertionError failure =
  *       expectFailure(whenTesting -> whenTesting.that(cancelButton).isVisible());
- *   assertThat(failure).hasMessageThat().contains("visible");
+ *   assertThat(failure).factKeys().containsExactly("expected to be visible");
  *
  * ...
  *
@@ -53,7 +54,7 @@ import org.junit.runners.model.Statement;
  * {@code ...
  *
  *     expectFailure.whenTesting().about(uiElements()).that(cancelButton).isVisible();
- *     assertThat(expectFailure.getFailure()).hasMessageThat().contains("visible");
+ *     assertThat(failure).factKeys().containsExactly("expected to be visible");
  * }</pre>
  *
  * <p>{@code ExpectFailure} is similar to JUnit 5's <a
@@ -186,12 +187,11 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
         });
   }
 
-  // TODO(cpovirk): Expose this publicly once we finalize names.
   /**
    * Creates a subject for asserting about the given {@link AssertionError}, usually one produced by
    * Truth.
    */
-  static TruthFailureSubject assertThat(AssertionError actual) {
+  public static TruthFailureSubject assertThat(AssertionError actual) {
     return (TruthFailureSubject) assertAbout(truthFailures()).that(actual);
   }
 

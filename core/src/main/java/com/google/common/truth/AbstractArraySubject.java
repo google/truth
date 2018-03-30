@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.truth.Fact.factWithoutValue;
 
 import java.lang.reflect.Array;
 import javax.annotation.Nullable;
@@ -34,14 +35,14 @@ abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> ext
   /** Fails if the array is not empty (i.e. {@code array.length != 0}). */
   public final void isEmpty() {
     if (length() > 0) {
-      fail("is empty");
+      fail(factWithoutValue("expected to be empty"));
     }
   }
 
   /** Fails if the array is empty (i.e. {@code array.length == 0}). */
   public final void isNotEmpty() {
     if (length() == 0) {
-      fail("is not empty");
+      failWithoutActual(factWithoutValue("expected not to be empty"));
     }
   }
 
@@ -52,9 +53,7 @@ abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> ext
    */
   public final void hasLength(int length) {
     checkArgument(length >= 0, "length (%s) must be >= 0");
-    if (length() != length) {
-      fail("has length", length);
-    }
+    check("length").that(length()).isEqualTo(length);
   }
 
   private int length() {

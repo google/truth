@@ -15,12 +15,14 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.Platform.floatToString;
-import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import javax.annotation.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,12 +50,10 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
         }
       };
 
-  private static void expectFailureWithMessage(
-      ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback,
-      String failureMessage) {
-    AssertionError assertionError =
-        ExpectFailure.expectFailureAbout(FLOAT_SUBJECT_FACTORY, callback);
-    assertThat(assertionError).hasMessageThat().isEqualTo(failureMessage);
+  @CanIgnoreReturnValue
+  private static AssertionError expectFailure(
+      SimpleSubjectBuilderCallback<FloatSubject, Float> callback) {
+    return ExpectFailure.expectFailureAbout(FLOAT_SUBJECT_FACTORY, callback);
   }
 
   @Test
@@ -68,19 +68,18 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("GWT behavior difference")
-  public void j2clCornerCases() {
-    // Under GWT, -0.0f and 0.0f has same toString, so message will have extra
-    // "although their toString() representations are the same"
+  public void testJ2clCornerCaseZero() {
+    // GWT considers -0.0 to be equal to 0.0. But we've added a special workaround inside Truth.
     assertThatIsEqualToFails(-0.0f, 0.0f);
+  }
+
+  @Test
+  @GwtIncompatible("GWT behavior difference")
+  public void j2clCornerCaseDoubleVsFloat() {
     // Under GWT, 1.23f.toString() is different than 1.23d.toString(), so the message omits types.
+    // TODO(b/35377736): Consider making Truth add the types manually.
     expectFailureWhenTestingThat(1.23f).isEqualTo(1.23);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            format(
-                "Not true that <%s> (java.lang.Float) is equal to <%s> (java.lang.Double)",
-                1.23f, 1.23));
+    assertFailureKeys("expected", "an instance of", "but was", "an instance of");
   }
 
   @Test
@@ -103,15 +102,17 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
           public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
-            expect.that(actual).named("testValue").isWithin(tolerance).of(expected);
+            expect.that(actual).isWithin(tolerance).of(expected);
           }
         };
-    expectFailureWithMessage(
-        callback,
-        format(
-            "testValue (<%s>) and <%s> should have been finite values within"
-                + " <%s> of each other",
-            actual, expected, tolerance));
+    AssertionError failure = expectFailure(callback);
+    assertThat(failure)
+        .factKeys()
+        .containsExactly("expected", "but was", "outside tolerance")
+        .inOrder();
+    assertThat(failure).factValue("expected").isEqualTo(floatToString(expected));
+    assertThat(failure).factValue("but was").isEqualTo(floatToString(actual));
+    assertThat(failure).factValue("outside tolerance").isEqualTo(floatToString(tolerance));
   }
 
   @Test
@@ -134,15 +135,12 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
           public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
-            expect.that(actual).named("testValue").isNotWithin(tolerance).of(expected);
+            expect.that(actual).isNotWithin(tolerance).of(expected);
           }
         };
-    expectFailureWithMessage(
-        callback,
-        format(
-            "testValue (<%s>) and <%s> should have been finite values not within"
-                + " <%s> of each other",
-            floatToString(actual), expected, tolerance));
+    AssertionError failure = expectFailure(callback);
+    assertThat(failure).factValue("expected not to be").isEqualTo(floatToString(expected));
+    assertThat(failure).factValue("within tolerance").isEqualTo(floatToString(tolerance));
   }
 
   @Test
@@ -379,8 +377,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
             expect.that(actual).isEqualTo(expected);
           }
         };
-    expectFailureWithMessage(
-        callback, format("Not true that <%s> is equal to <%s>", actual, expected));
+    expectFailure(callback);
   }
 
   @Test
@@ -402,8 +399,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
             expect.that(value).isNotEqualTo(value);
           }
         };
-    expectFailureWithMessage(
-        callback, format("Not true that <%s> is not equal to <%s>", value, value));
+    expectFailure(callback);
   }
 
   @Test
@@ -422,34 +418,34 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
           public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
-            expect.that(value).named("testValue").isZero();
+            expect.that(value).isZero();
           }
         };
-    expectFailureWithMessage(callback, "Not true that testValue (<" + value + ">) is zero");
+    AssertionError failure = expectFailure(callback);
+    assertThat(failure).factKeys().containsExactly("expected zero", "but was").inOrder();
   }
 
   @Test
   public void isNonZero() {
-    assertThatIsNonZeroFails(0.0f);
-    assertThatIsNonZeroFails(-0.0f);
+    assertThatIsNonZeroFails(0.0f, "expected not to be zero");
+    assertThatIsNonZeroFails(-0.0f, "expected not to be zero");
     assertThat(Float.MIN_VALUE).isNonZero();
     assertThat(-1.23f).isNonZero();
     assertThat(Float.POSITIVE_INFINITY).isNonZero();
     assertThat(Float.NaN).isNonZero();
-    assertThatIsNonZeroFails(null);
+    assertThatIsNonZeroFails(null, "expected a float other than zero");
   }
 
-  private static void assertThatIsNonZeroFails(@Nullable final Float value) {
+  private static void assertThatIsNonZeroFails(@Nullable final Float value, String factKey) {
     ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
           public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
-            expect.that(value).named("testValue").isNonZero();
+            expect.that(value).isNonZero();
           }
         };
-    String valueAsString = value == null ? "null" : floatToString(value);
-    expectFailureWithMessage(
-        callback, "Not true that testValue (<" + valueAsString + ">) is non-zero");
+    AssertionError failure = expectFailure(callback);
+    assertThat(failure).factKeys().containsExactly(factKey, "but was").inOrder();
   }
 
   @Test
@@ -466,12 +462,10 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
           public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
-            expect.that(value).named("testValue").isPositiveInfinity();
+            expect.that(value).isPositiveInfinity();
           }
         };
-    expectFailureWithMessage(
-        callback,
-        "Not true that testValue (<" + value + ">) is equal to <" + Float.POSITIVE_INFINITY + ">");
+    expectFailure(callback);
   }
 
   @Test
@@ -488,12 +482,10 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
           public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
-            expect.that(value).named("testValue").isNegativeInfinity();
+            expect.that(value).isNegativeInfinity();
           }
         };
-    expectFailureWithMessage(
-        callback,
-        "Not true that testValue (<" + value + ">) is equal to <" + Float.NEGATIVE_INFINITY + ">");
+    expectFailure(callback);
   }
 
   @Test
@@ -510,10 +502,10 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
           public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
-            expect.that(value).named("testValue").isNaN();
+            expect.that(value).isNaN();
           }
         };
-    expectFailureWithMessage(callback, "Not true that testValue (<" + value + ">) is NaN");
+    expectFailure(callback);
   }
 
   @Test
@@ -532,10 +524,11 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
           public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
-            expect.that(value).named("testValue").isFinite();
+            expect.that(value).isFinite();
           }
         };
-    expectFailureWithMessage(callback, "testValue (<" + value + ">) should have been finite");
+    AssertionError failure = expectFailure(callback);
+    assertThat(failure).factKeys().containsExactly("expected to be finite", "but was").inOrder();
   }
 
   @Test
@@ -549,23 +542,13 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void isNotNaNIsNaN() {
-    assertThatIsNotNaNFails(Float.NaN);
+    expectFailureWhenTestingThat(Float.NaN).isNotNaN();
   }
 
   @Test
   public void isNotNaNIsNull() {
-    assertThatIsNotNaNFails(null);
-  }
-
-  private static void assertThatIsNotNaNFails(@Nullable final Float value) {
-    ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
-        new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
-          @Override
-          public void invokeAssertion(SimpleSubjectBuilder<FloatSubject, Float> expect) {
-            expect.that(value).named("testValue").isNotNaN();
-          }
-        };
-    expectFailureWithMessage(callback, "testValue (<" + value + ">) should not have been NaN");
+    expectFailureWhenTestingThat(null).isNotNaN();
+    assertFailureKeys("expected a float other than NaN", "but was");
   }
 
   private FloatSubject expectFailureWhenTestingThat(Float actual) {

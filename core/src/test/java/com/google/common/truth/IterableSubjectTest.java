@@ -52,9 +52,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void hasSizeFails() {
     expectFailureWhenTestingThat(ImmutableList.of(1, 2, 3)).hasSize(4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> has a size of <4>. It is <3>");
+    assertFailureValue("value of", "iterable.size()");
   }
 
   @Test
@@ -685,9 +683,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsExactlyElementsInWithEmptyExpected() {
     expectFailureWhenTestingThat(asList("foo")).containsExactlyElementsIn(ImmutableList.of());
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[foo]> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -992,9 +988,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableIsEmptyWithFailure() {
     expectFailureWhenTestingThat(asList(1, null, 3)).isEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, null, 3]> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -1005,9 +999,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableIsNotEmptyWithFailure() {
     expectFailureWhenTestingThat(asList()).isNotEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[]> is not empty");
+    assertFailureKeys("expected not to be empty");
   }
 
   @Test

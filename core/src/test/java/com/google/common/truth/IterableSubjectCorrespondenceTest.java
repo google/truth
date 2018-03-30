@@ -210,9 +210,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[+64, +128, 0x40, 0x80]> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test

@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.annotateEmptyStrings;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
@@ -108,18 +109,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Fails if the subject is not empty. */
   public final void isEmpty() {
     if (!Iterables.isEmpty(actual())) {
-      fail("is empty");
+      fail(factWithoutValue("expected to be empty"));
     }
   }
 
   /** Fails if the subject is empty. */
   public final void isNotEmpty() {
     if (Iterables.isEmpty(actual())) {
-      // TODO(kak): "Not true that <[]> is not empty" doesn't really need the <[]>,
-      // since it's empty. But would the bulkier "the subject" really be better?
-      // At best, we could *replace* <[]> with a given label (rather than supplementing it).
-      // Perhaps the right failure message is just "<[]> should not have been empty"
-      fail("is not empty");
+      failWithoutActual(factWithoutValue("expected not to be empty"));
     }
   }
 
@@ -127,9 +124,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
     int actualSize = Iterables.size(actual());
-    if (actualSize != expectedSize) {
-      failWithBadResults("has a size of", expectedSize, "is", actualSize);
-    }
+    check("size()").that(actualSize).isEqualTo(expectedSize);
   }
 
   /** Checks (with a side-effect failure) that the subject contains the supplied item. */
@@ -376,7 +371,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     if (!requiredIter.hasNext()) {
       if (actualIter.hasNext()) {
-        fail("is empty");
+        isEmpty(); // fails
         return ALREADY_FAILED;
       } else {
         return IN_ORDER;
@@ -886,7 +881,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         if (actualList.isEmpty()) {
           return IN_ORDER;
         } else {
-          subject.fail("is empty");
+          subject.isEmpty(); // fails
           return ALREADY_FAILED;
         }
       }
