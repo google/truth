@@ -37,11 +37,6 @@ public final class AtomicLongMapSubjectTest extends BaseSubjectTestCase {
     AtomicLongMap<String> alm2 = AtomicLongMap.create();
 
     expectFailureWhenTestingThat(alm1).isEqualTo(alm2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{}> is equal to <{}> "
-                + "(although their toString() representations are the same)");
   }
 
   @Test
@@ -56,9 +51,7 @@ public final class AtomicLongMapSubjectTest extends BaseSubjectTestCase {
     actual.getAndIncrement("foo");
 
     expectFailureWhenTestingThat(actual).isEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{foo=1}> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -72,9 +65,7 @@ public final class AtomicLongMapSubjectTest extends BaseSubjectTestCase {
   public void isNotEmptyWithFailure() {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     expectFailureWhenTestingThat(actual).isNotEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> is not empty");
+    assertFailureKeys("expected not to be empty");
   }
 
   @Test
@@ -103,9 +94,7 @@ public final class AtomicLongMapSubjectTest extends BaseSubjectTestCase {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
     expectFailureWhenTestingThat(actual).hasSize(2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=1}> has a size of <2>. It is <1>");
+    assertFailureValue("value of", "atomicLongMap.size()");
   }
 
   @Test
@@ -133,9 +122,7 @@ public final class AtomicLongMapSubjectTest extends BaseSubjectTestCase {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
     expectFailureWhenTestingThat(actual).hasSum(2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=1}> has a sum of <2>. It is <1>");
+    assertFailureValue("value of", "atomicLongMap.sum()");
   }
 
   @Test

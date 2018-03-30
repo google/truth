@@ -75,9 +75,7 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1);
 
     expectFailureWhenTestingThat(actual).containsExactly();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{jan=1}> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -85,9 +83,7 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1);
 
     expectFailureWhenTestingThat(actual).containsExactlyEntriesIn(ImmutableMap.of());
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{jan=1}> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -431,9 +427,7 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void isEqualToNonMap() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     expectFailureWhenTestingThat(actual).isEqualTo("something else");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{jan=1, feb=2, march=3}> is equal to <something else>");
+    assertFailureKeys("expected", "but was");
   }
 
   /**
@@ -499,10 +493,6 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     ImmutableMap<String, Integer> unexpected = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
     expectFailureWhenTestingThat(actual).isNotEqualTo(unexpected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> is not equal to <{jan=1, feb=2, march=3}>");
   }
 
   @Test
@@ -515,9 +505,7 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void isEmptyWithFailure() {
     ImmutableMap<Integer, Integer> actual = ImmutableMap.of(1, 5);
     expectFailureWhenTestingThat(actual).isEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{1=5}> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -530,9 +518,7 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void isNotEmptyWithFailure() {
     ImmutableMap<Integer, Integer> actual = ImmutableMap.of();
     expectFailureWhenTestingThat(actual).isNotEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> is not empty");
+    assertFailureKeys("expected not to be empty");
   }
 
   @Test
@@ -1171,9 +1157,7 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{abc=123}> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test

@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.OptionalSubject.optionals;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
@@ -42,20 +43,23 @@ public class OptionalSubjectTest {
   public void isPresentFailing() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.empty()).isPresent());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
+    assertThat(expected).factKeys().containsExactly("expected to be present");
   }
 
   @Test
   public void isPresentFailing_named() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.empty()).named("name").isPresent());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that \"name\" is present");
+    assertThat(expected).factKeys().contains("name");
   }
 
   @Test
   public void isPresentFailingNull() {
     AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isPresent());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that the subject is present");
+    assertThat(expected)
+        .factKeys()
+        .containsExactly("expected present optional", "but was")
+        .inOrder();
   }
 
   @Test
@@ -67,13 +71,14 @@ public class OptionalSubjectTest {
   public void isEmptyFailing() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).isEmpty());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[foo]> is empty");
+    assertThat(expected).factKeys().contains("expected to be empty");
+    assertThat(expected).factValue("but was present with value").isEqualTo("foo");
   }
 
   @Test
   public void isEmptyFailingNull() {
     AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isEmpty());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <null> is empty");
+    assertThat(expected).factKeys().containsExactly("expected empty optional", "but was").inOrder();
   }
 
   @Test
@@ -86,8 +91,10 @@ public class OptionalSubjectTest {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.empty()).hasValue("foo"));
     assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo("Not true that <Optional.empty> has value <foo>");
+        .factKeys()
+        .containsExactly("expected to have value", "but was absent")
+        .inOrder();
+    assertThat(expected).factValue("expected to have value").isEqualTo("foo");
   }
 
   @Test
@@ -101,51 +108,18 @@ public class OptionalSubjectTest {
   }
 
   @Test
-  public void hasValue_failingWithWrongValueForString() {
+  public void hasValue_failingWithWrongValue() {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).hasValue("boo"));
-    assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo("Not true that <Optional[foo]> has value <boo>");
+    assertThat(expected).factValue("value of").isEqualTo("optional.get()");
   }
 
   @Test
-  public void hasValue_failingWithWrongValueForString_named() {
+  public void hasValue_failingWithWrongValue_named() {
     AssertionError expected =
         expectFailure(
             whenTesting -> whenTesting.that(Optional.of("foo")).named("bar").hasValue("boo"));
-    assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo("Not true that bar (<Optional[foo]>) has value <boo>");
-  }
-
-  @Test
-  public void hasValue_failingWithWrongValueForOther() {
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(Optional.of(5)).hasValue(10));
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <Optional[5]> has value <10>");
-  }
-
-  @Test
-  public void hasValue_failingWithSameToStrings() {
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(Optional.of(10)).hasValue("10"));
-    assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <Optional[10]> (class java.lang.Integer) "
-                + "has value <10> (class java.lang.String)");
-  }
-
-  @Test
-  public void hasValue_failingWithSameToStrings_named() {
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(Optional.of(10)).named("bar").hasValue("10"));
-    assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that bar (<Optional[10]>) (class java.lang.Integer) "
-                + "has value <10> (class java.lang.String)");
+    assertThat(expected).factValue("value of").isEqualTo("bar.get()");
   }
 
   private static AssertionError expectFailure(

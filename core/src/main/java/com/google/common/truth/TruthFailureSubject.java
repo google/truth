@@ -25,8 +25,6 @@ import static com.google.common.truth.Fact.factWithoutValue;
 import com.google.common.collect.ImmutableList;
 import javax.annotation.Nullable;
 
-// TODO(cpovirk): Expose this publicly once we finalize names.
-
 /**
  * Subject for {@link AssertionError} objects thrown by Truth. {@code TruthFailureSubject} contains
  * methods for asserting about the individual "facts" of those failures. This allows tests to avoid
@@ -39,7 +37,7 @@ import javax.annotation.Nullable;
  * <p>This class accepts any {@code AssertionError} value, but it will throw an exception if a
  * caller tries to access the facts of an error that wasn't produced by Truth.
  */
-final class TruthFailureSubject extends ThrowableSubject {
+public final class TruthFailureSubject extends ThrowableSubject {
   static final Fact HOW_TO_TEST_KEYS_WITHOUT_VALUES =
       factWithoutValue(
           "To test that a key is present without a value, "

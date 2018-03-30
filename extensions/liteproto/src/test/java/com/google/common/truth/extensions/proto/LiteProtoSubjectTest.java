@@ -15,6 +15,7 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.extensions.proto.LiteProtoTruth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -275,18 +276,16 @@ public class LiteProtoSubjectTest {
       assertThat(config.nonEmptyMessage()).serializedSize().isGreaterThan(size);
       fail("Should have failed.");
     } catch (AssertionError e) {
-      expectRegex(
-          e,
-          "Not true that sizeOf\\(<.*optional_int:\\s*3.*>\\) \\(<2>\\) " + "is greater than <2>");
+      assertThat(e).factValue("value of").isEqualTo("messageLite.getSerializedSize()");
+      assertThat(e).factValue("messageLite was").containsMatch("optional_int:\\s*3");
     }
 
     try {
       assertThat(config.defaultInstance()).serializedSize().isGreaterThan(0);
       fail("Should have failed.");
     } catch (AssertionError e) {
-      expectRegex(
-          e,
-          "Not true that sizeOf\\(<.*\\[empty proto\\].*>\\) \\(<0>\\) " + "is greater than <0>");
+      assertThat(e).factValue("value of").isEqualTo("messageLite.getSerializedSize()");
+      assertThat(e).factValue("messageLite was").contains("[empty proto]");
     }
   }
 

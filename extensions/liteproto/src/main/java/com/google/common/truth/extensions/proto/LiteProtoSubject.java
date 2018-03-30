@@ -197,7 +197,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * assertThat(myProto).serializedSize().isAtLeast(16)}, etc.
    */
   public IntegerSubject serializedSize() {
-    return check().that(actual().getSerializedSize()).named("sizeOf(" + actualAsString() + ")");
+    return check("getSerializedSize()").that(actual().getSerializedSize());
   }
 
   static final class MessageLiteSubject extends LiteProtoSubject<MessageLiteSubject, MessageLite> {

@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
@@ -61,7 +62,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     // Fail but with a more descriptive message:
 
     if (!(other instanceof Map)) {
-      fail("is equal to", other);
+      super.isEqualTo(other);
       return;
     }
 
@@ -77,14 +78,14 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map is not empty. */
   public void isEmpty() {
     if (!actual().isEmpty()) {
-      fail("is empty");
+      fail(factWithoutValue("expected to be empty"));
     }
   }
 
   /** Fails if the map is empty. */
   public void isNotEmpty() {
     if (actual().isEmpty()) {
-      fail("is not empty");
+      failWithoutActual(factWithoutValue("expected not to be empty"));
     }
   }
 
@@ -92,9 +93,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
     int actualSize = actual().size();
-    if (actualSize != expectedSize) {
-      failWithBadResults("has a size of", expectedSize, "is", actualSize);
-    }
+    check("size()").that(actual().size()).isEqualTo(expectedSize);
   }
 
   /** Fails if the map does not contain the given key. */
@@ -223,7 +222,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       if (actual().isEmpty()) {
         return IN_ORDER;
       } else {
-        fail("is empty");
+        isEmpty(); // fails
         return ALREADY_FAILED;
       }
     }
@@ -564,7 +563,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         if (actual().isEmpty()) {
           return IN_ORDER;
         } else {
-          fail("is empty");
+          isEmpty(); // fails
           return ALREADY_FAILED;
         }
       }

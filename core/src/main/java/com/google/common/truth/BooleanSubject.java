@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Fact.factWithoutValue;
+
 import javax.annotation.Nullable;
 
 /**
@@ -30,22 +32,18 @@ public final class BooleanSubject extends Subject<BooleanSubject, Boolean> {
   /** Fails if the subject is false or {@code null}. */
   public void isTrue() {
     if (actual() == null) {
-      failWithRawMessage("%s was expected to be true, but was null", booleanSubject());
+      isEqualTo(true); // fails
     } else if (!actual()) {
-      failWithRawMessage("%s was expected to be true, but was false", booleanSubject());
+      failWithoutActual(factWithoutValue("expected to be true"));
     }
   }
 
   /** Fails if the subject is true or {@code null}. */
   public void isFalse() {
     if (actual() == null) {
-      failWithRawMessage("%s was expected to be false, but was null", booleanSubject());
+      isEqualTo(false); // fails
     } else if (actual()) {
-      failWithRawMessage("%s was expected to be false, but was true", booleanSubject());
+      failWithoutActual(factWithoutValue("expected to be false"));
     }
-  }
-
-  private String booleanSubject() {
-    return internalCustomName() == null ? "The subject" : actualAsString();
   }
 }

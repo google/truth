@@ -16,12 +16,12 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.TestPlatform.isGwt;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
-import com.google.auto.value.AutoValue;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
@@ -42,7 +42,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import javax.annotation.Nullable;
 import org.junit.Test;
@@ -105,9 +104,8 @@ public class SubjectTest extends BaseSubjectTestCase {
           subject.isNotNull(); // should throw
           throw new Error("assertThat(null).isNotNull() should throw an exception!");
         } catch (AssertionError expected) {
-          assertThat(expected)
-              .hasMessageThat()
-              .isEqualTo("Not true that the subject is a non-null reference");
+          assertThat(expected).factKeys().containsExactly("expected not to be");
+          assertThat(expected).factValue("expected not to be").isEqualTo("null");
         }
 
         subject.isEqualTo(null);
@@ -127,7 +125,7 @@ public class SubjectTest extends BaseSubjectTestCase {
           subject.isIn(ImmutableList.of());
           throw new Error("Expected to fail");
         } catch (AssertionError expected) {
-          assertThat(expected).hasMessageThat().contains("is equal to any element in");
+          assertThat(expected).factKeys().contains("expected any of");
         }
 
         // TODO(cpovirk): Fix bug.
@@ -142,8 +140,7 @@ public class SubjectTest extends BaseSubjectTestCase {
           subject.isEqualTo(new Object()); // should throw
           throw new Error("assertThat(null).isEqualTo(<non-null>) should throw an exception!");
         } catch (AssertionError expected) {
-          assertThat(expected).hasMessageThat().contains("Not true that ");
-          assertThat(expected).hasMessageThat().contains(" is equal to ");
+          assertThat(expected).factKeys().containsExactly("expected", "but was").inOrder();
         }
       }
     }
@@ -169,11 +166,12 @@ public class SubjectTest extends BaseSubjectTestCase {
     IntWrapper wrapper = new IntWrapper();
     wrapper.wrapped = 5;
     expectFailure.whenTesting().that(5).isEqualTo(wrapper);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <5> (java.lang.Integer) "
-                + "is equal to <5> (com.google.common.truth.SubjectTest$IntWrapper)");
+    assertFailureKeys("expected", "an instance of", "but was", "an instance of");
+    assertFailureValue("expected", "5");
+    assertFailureValueIndexed(
+        "an instance of", 0, "com.google.common.truth.SubjectTest$IntWrapper");
+    assertFailureValue("but was", "(non-equal value with same string representation)");
+    assertFailureValueIndexed("an instance of", 1, "java.lang.Integer");
   }
 
   private static class IntWrapper {
@@ -195,9 +193,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isSameAsFailureWithNulls() {
     Object o = null;
     expectFailure.whenTesting().that(o).isSameAs("a");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is the same instance as <a>");
+    assertFailureKeys("expected specific instance", "but was");
+    assertFailureValue("expected specific instance", "a");
   }
 
   @Test
@@ -212,9 +209,7 @@ public class SubjectTest extends BaseSubjectTestCase {
     Object a = OBJECT_1;
     Object b = OBJECT_2;
     expectFailure.whenTesting().that(a).isSameAs(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <Object 1> is the same instance as <Object 2>");
+    assertThat(expectFailure.getFailure()).isNotInstanceOf(ComparisonFailureWithFacts.class);
   }
 
   @Test
@@ -222,11 +217,10 @@ public class SubjectTest extends BaseSubjectTestCase {
     Object a = UnsignedInteger.valueOf(42);
     Object b = UnsignedInteger.fromIntBits(42);
     expectFailure.whenTesting().that(a).isSameAs(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <42> is the same instance as <42> "
-                + "(although their toString() representations are the same)");
+    assertFailureKeys("expected specific instance", "but was");
+    assertFailureValue("expected specific instance", "42");
+    assertFailureValue(
+        "but was", "(different but equal instance of same class with same string representation)");
   }
 
   @Test
@@ -235,11 +229,6 @@ public class SubjectTest extends BaseSubjectTestCase {
     Object a = "ab";
     Object b = new StringBuilder("ab").toString();
     expectFailure.whenTesting().that(a).isSameAs(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <ab> is the same instance as <ab>"
-                + " (although their toString() representations are the same)");
   }
 
   @Test
@@ -247,11 +236,11 @@ public class SubjectTest extends BaseSubjectTestCase {
     Object a = "true";
     Object b = true;
     expectFailure.whenTesting().that(a).isSameAs(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <true> (java.lang.String) is the same"
-                + " instance as <true> (java.lang.Boolean)");
+    assertFailureKeys("expected specific instance", "an instance of", "but was", "an instance of");
+    assertFailureValue("expected specific instance", "true");
+    assertFailureValueIndexed("an instance of", 0, "java.lang.Boolean");
+    assertFailureValue("but was", "(non-equal value with same string representation)");
+    assertFailureValueIndexed("an instance of", 1, "java.lang.String");
   }
 
   @Test
@@ -264,9 +253,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isNotSameAsFailureWithNulls() {
     Object o = null;
     expectFailure.whenTesting().that(o).isNotSameAs(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not the same instance as <null>");
+    assertFailureKeys("expected not to be specific instance");
+    assertFailureValue("expected not to be specific instance", "null");
   }
 
   @Test
@@ -281,9 +269,8 @@ public class SubjectTest extends BaseSubjectTestCase {
     Object a = OBJECT_1;
     Object b = a;
     expectFailure.whenTesting().that(a).isNotSameAs(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <Object 1> is not the same instance as <Object 1>");
+    assertFailureKeys("expected not to be specific instance");
+    assertFailureValue("expected not to be specific instance", "Object 1");
   }
 
   @Test
@@ -318,9 +305,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isNullFail() {
     Object o = new Object();
     expectFailure.whenTesting().that(o).isNull();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <" + o.toString() + "> is null");
+    assertFailureKeys("expected", "but was");
+    assertFailureValue("expected", "null");
   }
 
   @Test
@@ -336,9 +322,6 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringIsNullFail() {
     expectFailure.whenTesting().that("foo").isNull();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"foo\"> is null");
   }
 
   @Test
@@ -356,9 +339,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isNotNullFail() {
     Object o = null;
     expectFailure.whenTesting().that(o).isNotNull();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that the subject is a non-null reference");
+    assertFailureKeys("expected not to be");
+    assertFailureValue("expected not to be", "null");
   }
 
   @Test
@@ -386,43 +368,19 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isEqualToFailureWithNulls() {
     Object o = null;
     expectFailure.whenTesting().that(o).isEqualTo("a");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is equal to <a>");
+    assertFailureKeys("expected", "but was");
+    assertFailureValue("expected", "a");
+    assertFailureValue("but was", "null");
   }
 
   @Test
   public void isEqualToStringWithNullVsNull() {
     expectFailure.whenTesting().that("null").isEqualTo(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"null\"> is null");
-  }
-
-  @Test
-  public void isEqualToObjectWhoseToStringSaysNullVsNull() {
-    expectFailure.whenTesting().that(new ObjectWhoseToStringSaysNull()).isEqualTo(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <null> is equal to <null> (although their toString() representations are the same)");
-  }
-
-  private static final class ObjectWhoseToStringSaysNull {
-    @Override
-    public String toString() {
-      return "null";
-    }
-  }
-
-  @Test
-  public void isEqualToNullVsStringWithNull() {
-    Object o = null;
-    expectFailure.whenTesting().that(o).isEqualTo("null");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <null> is equal to <null> (although their toString() representations are the same)");
+    assertFailureKeys("expected", "an instance of", "but was", "an instance of");
+    assertFailureValue("expected", "null");
+    assertFailureValueIndexed("an instance of", 0, "(null reference)");
+    assertFailureValue("but was", "(non-equal value with same string representation)");
+    assertFailureValueIndexed("an instance of", 1, "java.lang.String");
   }
 
   @Test
@@ -437,26 +395,9 @@ public class SubjectTest extends BaseSubjectTestCase {
     Object a = OBJECT_1;
     Object b = OBJECT_2;
     expectFailure.whenTesting().that(a).isEqualTo(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <Object 1> is equal to <Object 2>");
-  }
-
-  @Test
-  public void isEqualToWithComparableObjects() {
-    Object a = "ab";
-    Object b = new StringBuilder("ab").toString();
-    assertThat(a).isEqualTo(b);
-  }
-
-  @Test
-  public void isEqualToFailureWithComparableObjects() {
-    Object a = "ab";
-    Object b = new StringBuilder("aa").toString();
-    expectFailure.whenTesting().that(a).isEqualTo(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <ab> is equal to <aa>");
+    assertFailureKeys("expected", "but was");
+    assertFailureValue("expected", "Object 2");
+    assertFailureValue("but was", "Object 1");
   }
 
   @Test
@@ -464,10 +405,11 @@ public class SubjectTest extends BaseSubjectTestCase {
     Object a = "true";
     Object b = true;
     expectFailure.whenTesting().that(a).isEqualTo(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <true> (java.lang.String) is equal to" + " <true> (java.lang.Boolean)");
+    assertFailureKeys("expected", "an instance of", "but was", "an instance of");
+    assertFailureValue("expected", "true");
+    assertFailureValueIndexed("an instance of", 0, "java.lang.Boolean");
+    assertFailureValue("but was", "(non-equal value with same string representation)");
+    assertFailureValueIndexed("an instance of", 1, "java.lang.String");
   }
 
   @Test
@@ -492,9 +434,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isNotEqualToFailureWithNulls() {
     Object o = null;
     expectFailure.whenTesting().that(o).isNotEqualTo(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not equal to <null>");
+    assertFailureKeys("expected not to be");
+    assertFailureValue("expected not to be", "null");
   }
 
   @Test
@@ -508,9 +449,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isNotEqualToFailureWithObjects() {
     Object o = new Integer(1);
     expectFailure.whenTesting().that(o).isNotEqualTo(new Integer(1));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <1> is not equal to <1>");
+    assertFailureKeys("expected not to be");
+    assertFailureValue("expected not to be", "1");
   }
 
   @Test
@@ -518,26 +458,6 @@ public class SubjectTest extends BaseSubjectTestCase {
     Object a = OBJECT_1;
     Object b = a;
     expectFailure.whenTesting().that(a).isNotEqualTo(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <Object 1> is not equal to <Object 1>");
-  }
-
-  @Test
-  public void isNotEqualToWithComparableObjects() {
-    Object a = "ab";
-    Object b = new StringBuilder("aa").toString();
-    assertThat(a).isNotEqualTo(b);
-  }
-
-  @Test
-  public void isNotEqualToFailureWithComparableObjects() {
-    Object a = "ab";
-    Object b = new StringBuilder("ab").toString();
-    expectFailure.whenTesting().that(a).isNotEqualTo(b);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <ab> is not equal to <ab>");
   }
 
   @Test
@@ -586,11 +506,10 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isInstanceOfUnrelatedClass() {
     expectFailure.whenTesting().that(4.5).isInstanceOf(Long.class);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <4.5> is an instance of <java.lang.Long>."
-                + " It is an instance of <java.lang.Double>");
+    assertFailureKeys("expected instance of", "but was instance of", "with value");
+    assertFailureValue("expected instance of", "java.lang.Long");
+    assertFailureValue("but was instance of", "java.lang.Double");
+    assertFailureValue("with value", "4.5");
   }
 
   @Test
@@ -605,27 +524,18 @@ public class SubjectTest extends BaseSubjectTestCase {
     }
 
     expectFailure.whenTesting().that(4.5).isInstanceOf(CharSequence.class);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <4.5> is an instance of <java.lang.CharSequence>."
-                + " It is an instance of <java.lang.Double>");
   }
 
   @Test
   public void isInstanceOfClassForNull() {
     expectFailure.whenTesting().that((Object) null).isInstanceOf(Long.class);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is an instance of <java.lang.Long>");
+    assertFailureKeys("expected instance of", "but was");
+    assertFailureValue("expected instance of", "java.lang.Long");
   }
 
   @Test
   public void isInstanceOfInterfaceForNull() {
     expectFailure.whenTesting().that((Object) null).isInstanceOf(CharSequence.class);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is an instance of <java.lang.CharSequence>");
   }
 
   @Test
@@ -650,17 +560,13 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotInstanceOfExactType() {
     expectFailure.whenTesting().that(5).isNotInstanceOf(Integer.class);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<5> expected not to be an instance of java.lang.Integer, but was.");
+    assertFailureKeys("expected not to be an instance of", "but was");
+    assertFailureValue("expected not to be an instance of", "java.lang.Integer");
   }
 
   @Test
   public void isNotInstanceOfSuperclass() {
     expectFailure.whenTesting().that(5).isNotInstanceOf(Number.class);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<5> expected not to be an instance of java.lang.Number, but was.");
   }
 
   @Test
@@ -675,9 +581,6 @@ public class SubjectTest extends BaseSubjectTestCase {
     }
 
     expectFailure.whenTesting().that("a").isNotInstanceOf(CharSequence.class);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<\"a\"> expected not to be an instance of java.lang.CharSequence, but was.");
   }
 
   @Test
@@ -693,9 +596,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isInFailure() {
     expectFailure.whenTesting().that("x").isIn(oneShotIterable("a", "b", "c"));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"x\"> is equal to any element in <[a, b, c]>");
+    assertFailureKeys("expected any of", "but was");
+    assertFailureValue("expected any of", "[a, b, c]");
   }
 
   @Test
@@ -711,17 +613,11 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isInNullFailure() {
     expectFailure.whenTesting().that((String) null).isIn(oneShotIterable("a", "b", "c"));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is equal to any element in <[a, b, c]>");
   }
 
   @Test
   public void isInEmptyFailure() {
     expectFailure.whenTesting().that("b").isIn(ImmutableList.<String>of());
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"b\"> is equal to any element in <[]>");
   }
 
   @Test
@@ -737,9 +633,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isAnyOfFailure() {
     expectFailure.whenTesting().that("x").isAnyOf("a", "b", "c");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"x\"> is equal to any element in <[a, b, c]>");
+    assertFailureKeys("expected any of", "but was");
+    assertFailureValue("expected any of", "[a, b, c]");
   }
 
   @Test
@@ -755,9 +650,6 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isAnyOfNullFailure() {
     expectFailure.whenTesting().that((String) null).isAnyOf("a", "b", "c");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is equal to any element in <[a, b, c]>");
   }
 
   @Test
@@ -768,9 +660,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotInFailure() {
     expectFailure.whenTesting().that("b").isNotIn(oneShotIterable("a", "b", "c"));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"b\"> is not in [a, b, c].");
+    assertFailureKeys("expected not to be any of", "but was");
+    assertFailureValue("expected not to be any of", "[a, b, c]");
   }
 
   @Test
@@ -784,9 +675,6 @@ public class SubjectTest extends BaseSubjectTestCase {
         .whenTesting()
         .that((String) null)
         .isNotIn(oneShotIterable("a", "b", (String) null));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not in [a, b, null].");
   }
 
   @Test
@@ -802,9 +690,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNoneOfFailure() {
     expectFailure.whenTesting().that("b").isNoneOf("a", "b", "c");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"b\"> is not in [a, b, c].");
+    assertFailureKeys("expected not to be any of", "but was");
+    assertFailureValue("expected not to be any of", "[a, b, c]");
   }
 
   @Test
@@ -815,9 +702,6 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNoneOfNullFailure() {
     expectFailure.whenTesting().that((String) null).isNoneOf("a", "b", (String) null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not in [a, b, null].");
   }
 
   @Test
@@ -865,39 +749,16 @@ public class SubjectTest extends BaseSubjectTestCase {
     };
   }
 
-  @AutoValue
-  abstract static class Foo {
-    public static Foo create(Collection<Long> nums) {
-      return new AutoValue_SubjectTest_Foo(nums);
-    }
-
-    abstract Collection<Long> nums();
-  }
-
   @Test
-  public void disambiguationWithSameToString_autovalue() {
-    Foo foo1 = Foo.create(Arrays.asList(1L, 2L));
-    Foo foo2 = Foo.create(ImmutableSet.of(1L, 2L));
-
-    expectFailure.whenTesting().that(foo1).isEqualTo(foo2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <Foo{nums=[1, 2]}> is equal to <Foo{nums=[1, 2]}> "
-                + "(although their toString() representations are the same)");
-  }
-
-  @Test
-  public void disambiguationWithSameToString_immutableSets() {
+  public void disambiguationWithSameToString() {
     ImmutableSet<Integer> ints = ImmutableSet.of(1, 2, 3);
     ImmutableSet<Long> longs = ImmutableSet.of(1L, 2L, 3L);
 
     expectFailure.whenTesting().that(ints).isEqualTo(longs);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> is equal to <[1, 2, 3]> "
-                + "(although their toString() representations are the same)");
+    assertFailureKeys("expected", "but was");
+    assertFailureValue("expected", "[1, 2, 3]");
+    assertFailureValue(
+        "but was", "(non-equal instance of same class with same string representation)");
   }
 
   private static final class ThrowsOnEqualsNull {

@@ -39,25 +39,19 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isPresentFailing() {
     expectFailureWhenTestingThat(Optional.absent()).isPresent();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that the subject is present");
+    assertFailureKeys("expected to be present");
   }
 
   @Test
   public void isPresentFailing_named() {
     expectFailureWhenTestingThat(Optional.absent()).named("name").isPresent();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that \"name\" is present");
+    assertFailureValue("name", "name");
   }
 
   @Test
   public void isPresentFailingNull() {
     expectFailureWhenTestingThat(null).isPresent();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that the subject is present");
+    assertFailureKeys("expected present optional", "but was");
   }
 
   @Test
@@ -68,17 +62,14 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isAbsentFailing() {
     expectFailureWhenTestingThat(Optional.of("foo")).isAbsent();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <Optional.of(foo)> is absent");
+    assertFailureKeys("expected to be absent", "but was present with value");
+    assertFailureValue("but was present with value", "foo");
   }
 
   @Test
   public void isAbsentFailingNull() {
     expectFailureWhenTestingThat(null).isAbsent();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is absent");
+    assertFailureKeys("expected absent optional", "but was");
   }
 
   @Test
@@ -89,9 +80,8 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   @Test
   public void hasValue_failingWithAbsent() {
     expectFailureWhenTestingThat(Optional.absent()).hasValue("foo");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <Optional.absent()> has value <foo>");
+    assertFailureKeys("expected to have value", "but was absent");
+    assertFailureValue("expected to have value", "foo");
   }
 
   @Test
@@ -105,47 +95,15 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasValue_failingWithWrongValueForString() {
+  public void hasValue_failingWithWrongValue() {
     expectFailureWhenTestingThat(Optional.of("foo")).hasValue("boo");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <Optional.of(foo)> has value <boo>");
+    assertFailureValue("value of", "optional.get()");
   }
 
   @Test
-  public void hasValue_failingWithWrongValueForString_named() {
+  public void hasValue_failingWithWrongValue_named() {
     expectFailureWhenTestingThat(Optional.of("foo")).named("bar").hasValue("boo");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that bar (<Optional.of(foo)>) has value <boo>");
-  }
-
-  @Test
-  public void hasValue_failingWithWrongValueForOther() {
-    expectFailureWhenTestingThat(Optional.of(5)).hasValue(10);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <Optional.of(5)> has value <10>");
-  }
-
-  @Test
-  public void hasValue_failingWithSameToStrings() {
-    expectFailureWhenTestingThat(Optional.of(10)).hasValue("10");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <Optional.of(10)> (class java.lang.Integer) "
-                + "has value <10> (class java.lang.String)");
-  }
-
-  @Test
-  public void hasValue_failingWithSameToStrings_named() {
-    expectFailureWhenTestingThat(Optional.of(10)).named("bar").hasValue("10");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that bar (<Optional.of(10)>) (class java.lang.Integer) "
-                + "has value <10> (class java.lang.String)");
+    assertFailureValue("value of", "bar.get()");
   }
 
   private GuavaOptionalSubject expectFailureWhenTestingThat(Optional<?> actual) {

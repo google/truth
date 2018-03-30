@@ -20,7 +20,6 @@ import static org.junit.Assert.fail;
 
 import com.google.common.annotations.GwtIncompatible;
 import java.util.regex.Pattern;
-import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -47,9 +46,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void hasLengthFails() {
     expectFailureWhenTestingThat("kurt").hasLength(5);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"kurt\"> has a length of 5. It is 4.");
+    assertFailureValue("value of", "string.length()");
   }
 
   @Test
@@ -69,17 +66,13 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringIsEmptyFail() {
     expectFailureWhenTestingThat("abc").isEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"abc\"> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
   public void stringIsEmptyFailNull() {
     expectFailureWhenTestingThat(null).isEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that null reference is empty");
+    assertFailureKeys("expected empty string", "but was");
   }
 
   @Test
@@ -90,17 +83,13 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringIsNotEmptyFail() {
     expectFailureWhenTestingThat("").isNotEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"\"> is not empty");
+    assertFailureKeys("expected not to be empty");
   }
 
   @Test
   public void stringIsNotEmptyFailNull() {
     expectFailureWhenTestingThat(null).isNotEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that null reference is not empty");
+    assertFailureKeys("expected nonempty string", "but was");
   }
 
   @Test
@@ -117,9 +106,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringContainsFail() {
     expectFailureWhenTestingThat("abc").contains("d");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <\"abc\"> contains <\"d\">");
+    assertFailureValue("expected to contain", "d");
   }
 
   @Test
@@ -136,75 +123,29 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringDoesNotContainFail() {
     expectFailureWhenTestingThat("abc").doesNotContain("b");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("<\"abc\"> unexpectedly contains <\"b\">");
+    assertFailureValue("expected not to contain", "b");
   }
 
   @Test
   public void stringEquality() {
-    assertThat("abc").isEqualTo("abc");
     assertThat("abc").isEqualTo("abc");
   }
 
   @Test
   public void stringEqualityToNull() {
     expectFailureWhenTestingThat("abc").isEqualTo(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <\"abc\"> is null");
+    assertThat(expectFailure.getFailure()).isNotInstanceOf(ComparisonFailureWithFacts.class);
   }
 
   @Test
-  @GwtIncompatible("ComparisonFailure")
   public void stringEqualityFail() {
-    try {
-      assertThat("abc").isEqualTo("abd");
-      fail();
-    } catch (ComparisonFailure expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("expected:<ab[d]> but was:<ab[c]>");
-      // truth used to create a synthetic cause, make sure that isn't happening anymore.
-      assertThat(expected).hasCauseThat().isNull();
-    }
-  }
-
-  @Test
-  @GwtIncompatible("ComparisonFailure")
-  public void stringEqualityCompleteFail() {
-    try {
-      assertThat("abc").isEqualTo("xyz");
-      fail();
-    } catch (ComparisonFailure expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("expected:<[xyz]> but was:<[abc]>");
-    }
-  }
-
-  @Test
-  @GwtIncompatible("ComparisonFailure")
-  public void stringNamedEqualityFail() {
-    try {
-      assertThat("abc").named("foo").isEqualTo("abd");
-      fail();
-    } catch (ComparisonFailure expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("\"foo\": expected:<ab[d]> but was:<ab[c]>");
-    }
+    expectFailureWhenTestingThat("abc").isEqualTo("abd");
+    assertThat(expectFailure.getFailure()).isInstanceOf(ComparisonFailureWithFacts.class);
   }
 
   @Test
   public void stringNamedNullFail() {
     expectFailureWhenTestingThat(null).named("foo").isEqualTo("abd");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that foo (<null>) is equal to <\"abd\">");
-  }
-
-  @GwtIncompatible // ComparisonFailure-style message
-  @Test
-  public void stringEqualityFailMultiline() {
-    expectFailureWhenTestingThat("abc\ndef\nxyz").isEqualTo("aaa\nqqq\nzzz");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("expected:<a[aa\nqqq\nzz]z> but was:<a[bc\ndef\nxy]z>");
   }
 
   @Test
@@ -215,9 +156,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringStartsWithFail() {
     expectFailureWhenTestingThat("abc").startsWith("bc");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <\"abc\"> starts with <\"bc\">");
+    assertFailureValue("expected to start with", "bc");
   }
 
   @Test
@@ -228,9 +167,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringEndsWithFail() {
     expectFailureWhenTestingThat("abc").endsWith("ab");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <\"abc\"> ends with <\"ab\">");
+    assertFailureValue("expected to end with", "ab");
   }
 
   @Test
@@ -251,9 +188,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   public void stringMatchesStringWithFail() {
     expectFailureWhenTestingThat("abcaqadev").matches(".*aaa.*");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"abcaqadev\"> matches <.*aaa.*>");
+    assertFailureValue("expected to match", ".*aaa.*");
   }
 
   @Test
@@ -266,9 +201,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @GwtIncompatible("Pattern")
   public void stringMatchesPatternWithFail() {
     expectFailureWhenTestingThat("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*"));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <\"abcaaadev\"> fails to match <.*aaa.*>");
+    assertFailureValue("expected not to match", ".*aaa.*");
   }
 
   @Test
@@ -283,9 +216,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     assertThat("aba").containsMatch(".*b.*");
 
     expectFailureWhenTestingThat("aaa").containsMatch(".*b.*");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<\"aaa\"> should have contained a match for <.*b.*>");
+    assertFailureValue("expected to contain a match for", ".*b.*");
   }
 
   @Test
@@ -294,9 +225,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     assertThat("aba").containsMatch(Pattern.compile(".*b.*"));
 
     expectFailureWhenTestingThat("aaa").containsMatch(Pattern.compile(".*b.*"));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<\"aaa\"> should have contained a match for <.*b.*>");
+    assertFailureValue("expected to contain a match for", ".*b.*");
   }
 
   @Test
@@ -304,17 +233,13 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     assertThat("aaa").doesNotContainMatch(".*b.*");
 
     expectFailureWhenTestingThat("aba").doesNotContainMatch(".*b.*");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<\"aba\"> should not have contained a match for <.*b.*>");
+    assertFailureValue("expected not to contain a match for", ".*b.*");
   }
 
   @Test
   public void stringDoesNotContainMatchStringUsesFind() {
     expectFailureWhenTestingThat("aba").doesNotContainMatch("[b]");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<\"aba\"> should not have contained a match for <[b]>");
+    assertFailureValue("expected not to contain a match for", "[b]");
   }
 
   @Test
@@ -323,9 +248,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     assertThat("aaa").doesNotContainMatch(Pattern.compile(".*b.*"));
 
     expectFailureWhenTestingThat("aba").doesNotContainMatch(Pattern.compile(".*b.*"));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<\"aba\"> should not have contained a match for <.*b.*>");
+    assertFailureValue("expected not to contain a match for", ".*b.*");
   }
 
   private StringSubject expectFailureWhenTestingThat(String actual) {

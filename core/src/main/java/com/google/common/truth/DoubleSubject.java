@@ -18,8 +18,12 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
+import static com.google.common.truth.Platform.doubleToString;
+import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 
 import javax.annotation.Nullable;
@@ -107,9 +111,10 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
         checkTolerance(tolerance);
 
         if (!equalWithinTolerance(actual, expected, tolerance)) {
-          failWithRawMessage(
-              "%s and <%s> should have been finite values within <%s> of each other",
-              actualAsString(), expected, tolerance);
+          failWithoutActual(
+              fact("expected", doubleToString(expected)),
+              butWas(),
+              fact("outside tolerance", doubleToString(tolerance)));
         }
       }
     };
@@ -145,9 +150,10 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
         checkTolerance(tolerance);
 
         if (!notEqualWithinTolerance(actual, expected, tolerance)) {
-          failWithRawMessage(
-              "%s and <%s> should have been finite values not within <%s> of each other",
-              actualAsString(), expected, tolerance);
+          failWithoutActual(
+              fact("expected not to be", doubleToString(expected)),
+              butWas(),
+              fact("within tolerance", doubleToString(tolerance)));
         }
       }
     };
@@ -211,7 +217,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
   /** Asserts that the subject is zero (i.e. it is either {@code 0.0} or {@code -0.0}). */
   public final void isZero() {
     if (actual() == null || actual().doubleValue() != 0.0) {
-      fail("is zero");
+      fail(factWithoutValue("expected zero"));
     }
   }
 
@@ -220,8 +226,10 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * {@code -0.0} or {@code null}).
    */
   public final void isNonZero() {
-    if (actual() == null || actual().doubleValue() == 0.0) {
-      fail("is non-zero");
+    if (actual() == null) {
+      fail(factWithoutValue("expected a double other than zero"));
+    } else if (actual().doubleValue() == 0.0) {
+      fail(factWithoutValue("expected not to be zero"));
     }
   }
 
@@ -237,9 +245,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
 
   /** Asserts that the subject is {@link Double#NaN}. */
   public final void isNaN() {
-    if (actual() == null || !actual().isNaN()) {
-      fail("is NaN");
-    }
+    isEqualTo(NaN);
   }
 
   /**
@@ -248,7 +254,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    */
   public final void isFinite() {
     if (actual() == null || actual().isNaN() || actual().isInfinite()) {
-      failWithRawMessage("%s should have been finite", actualAsString());
+      fail(factWithoutValue("expected to be finite"));
     }
   }
 
@@ -257,8 +263,10 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * {@link Double#POSITIVE_INFINITY} or {@link Double#NEGATIVE_INFINITY}).
    */
   public final void isNotNaN() {
-    if (actual() == null || actual().isNaN()) {
-      failWithRawMessage("%s should not have been NaN", actualAsString());
+    if (actual() == null) {
+      fail(factWithoutValue("expected a double other than NaN"));
+    } else {
+      isNotEqualTo(NaN);
     }
   }
 }

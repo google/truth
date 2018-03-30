@@ -45,25 +45,16 @@ public class LongSubjectTest extends BaseSubjectTestCase {
   public void equalityWithInts() {
     assertThat(0L).isEqualTo(0);
     expectFailureWhenTestingThat(0L).isNotEqualTo(0);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <0> is not equal to <0>");
   }
 
   @Test
   public void equalityFail() {
     expectFailureWhenTestingThat(4L).isEqualTo(5L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <4> is equal to <5>");
   }
 
   @Test
   public void inequalityFail() {
     expectFailureWhenTestingThat(4L).isNotEqualTo(4L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <4> is not equal to <4>");
   }
 
   @Test
@@ -74,17 +65,11 @@ public class LongSubjectTest extends BaseSubjectTestCase {
   @Test
   public void equalityOfNullsFail_nullActual() {
     expectFailureWhenTestingThat(null).isEqualTo(5L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is equal to <5>");
   }
 
   @Test
   public void equalityOfNullsFail_nullExpected() {
     expectFailureWhenTestingThat(5L).isEqualTo(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <5> is equal to <null>");
   }
 
   @Test
@@ -96,25 +81,16 @@ public class LongSubjectTest extends BaseSubjectTestCase {
   @Test
   public void inequalityOfNullsFail() {
     expectFailureWhenTestingThat(null).isNotEqualTo(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <null> is not equal to <null>");
   }
 
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_long_long() {
     expectFailureWhenTestingThat(42L).isNotEqualTo(42L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
   }
 
   @Test
   public void testNumericTypeWithSameValue_shouldBeEqual_long_int() {
     expectFailureWhenTestingThat(42L).isNotEqualTo(42);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <42> is not equal to <42>");
   }
 
   private LongSubject expectFailureWhenTestingThat(Long actual) {

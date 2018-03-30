@@ -61,9 +61,10 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
     expectFailureWhenTestingThat(array(1, 0, 1)).isEqualTo(array(0, 1, 1));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 0, 1]> is equal to <[0, 1, 1]>. differs at index: [0]");
+    assertFailureKeys("expected", "but was", "differs at index");
+    assertFailureValue("expected", "[0, 1, 1]");
+    assertFailureValue("but was", "[1, 0, 1]");
+    assertFailureValue("differs at index", "[0]");
   }
 
   @Test
@@ -89,9 +90,6 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailEquals() {
     expectFailureWhenTestingThat(array(1, 0)).isNotEqualTo(array(1, 0));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 0]> is not equal to <[1, 0]>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -99,9 +97,6 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
   public void isNotEqualTo_FailSame() {
     short[] same = array(1, 0);
     expectFailureWhenTestingThat(same).isNotEqualTo(same);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 0]> is not equal to <[1, 0]>");
   }
 
   private static short[] array(int a, int b, int c) {

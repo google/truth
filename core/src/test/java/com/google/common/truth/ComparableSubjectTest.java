@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -69,8 +70,8 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
 
     expectFailureWhenTestingThat(6).isIn(oneToFive);
     assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <6> is in <" + oneToFive + ">");
+        .factValue("expected to be in range")
+        .isEqualTo(oneToFive.toString());
   }
 
   @Test
@@ -80,8 +81,8 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
 
     expectFailureWhenTestingThat(4).isNotIn(oneToFive);
     assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <4> is not in <" + oneToFive + ">");
+        .factValue("expected not to be in range")
+        .isEqualTo(oneToFive.toString());
   }
 
   @Test
@@ -91,9 +92,7 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
 
     expectFailureWhenTestingThat(new StringComparedByLength("abc"))
         .isEquivalentAccordingToCompareTo(new StringComparedByLength("abcd"));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<abc> should have been equivalent to <abcd> according to compareTo()");
+    assertFailureValue("expected value that sorts equal to", "abcd");
   }
 
   private static final class StringComparedByLength implements Comparable<StringComparedByLength> {
@@ -119,17 +118,13 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertThat(5).isGreaterThan(4);
 
     expectFailureWhenTestingThat(4).isGreaterThan(4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <4> is greater than <4>");
+    assertFailureValue("expected to be greater than", "4");
   }
 
   @Test
   public void isGreaterThan_failsSmaller() {
     expectFailureWhenTestingThat(3).isGreaterThan(4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <3> is greater than <4>");
+    assertFailureValue("expected to be greater than", "4");
   }
 
   @Test
@@ -137,17 +132,13 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertThat(4).isLessThan(5);
 
     expectFailureWhenTestingThat(4).isLessThan(4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <4> is less than <4>");
+    assertFailureValue("expected to be less than", "4");
   }
 
   @Test
   public void isLessThan_failsGreater() {
     expectFailureWhenTestingThat(4).isLessThan(3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <4> is less than <3>");
+    assertFailureValue("expected to be less than", "3");
   }
 
   @Test
@@ -156,9 +147,7 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertThat(5).isAtMost(6);
 
     expectFailureWhenTestingThat(4).isAtMost(3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <4> is at most <3>");
+    assertFailureValue("expected to be at most", "3");
   }
 
   @Test
@@ -167,9 +156,7 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertThat(4).isAtLeast(4);
 
     expectFailureWhenTestingThat(4).isAtLeast(5);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("Not true that <4> is at least <5>");
+    assertFailureValue("expected to be at least", "5");
   }
 
   // Brief tests with other comparable types (no negative test cases)

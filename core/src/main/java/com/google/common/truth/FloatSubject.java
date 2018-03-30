@@ -18,8 +18,12 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
+import static com.google.common.truth.Platform.floatToString;
+import static java.lang.Float.NaN;
 import static java.lang.Float.floatToIntBits;
 
 import javax.annotation.Nullable;
@@ -107,9 +111,10 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
         checkTolerance(tolerance);
 
         if (!equalWithinTolerance(actual, expected, tolerance)) {
-          failWithRawMessage(
-              "%s and <%s> should have been finite values within <%s> of each other",
-              actualAsString(), expected, tolerance);
+          failWithoutActual(
+              fact("expected", floatToString(expected)),
+              butWas(),
+              fact("outside tolerance", floatToString(tolerance)));
         }
       }
     };
@@ -145,9 +150,10 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
         checkTolerance(tolerance);
 
         if (!notEqualWithinTolerance(actual, expected, tolerance)) {
-          failWithRawMessage(
-              "%s and <%s> should have been finite values not within <%s> of each other",
-              actualAsString(), expected, tolerance);
+          failWithoutActual(
+              fact("expected not to be", floatToString(expected)),
+              butWas(),
+              fact("within tolerance", floatToString(tolerance)));
         }
       }
     };
@@ -209,7 +215,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   /** Asserts that the subject is zero (i.e. it is either {@code 0.0f} or {@code -0.0f}). */
   public final void isZero() {
     if (actual() == null || actual().floatValue() != 0.0f) {
-      fail("is zero");
+      fail(factWithoutValue("expected zero"));
     }
   }
 
@@ -218,8 +224,10 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * {@code -0.0f} or {@code null}).
    */
   public final void isNonZero() {
-    if (actual() == null || actual().floatValue() == 0.0f) {
-      fail("is non-zero");
+    if (actual() == null) {
+      fail(factWithoutValue("expected a float other than zero"));
+    } else if (actual().floatValue() == 0.0f) {
+      fail(factWithoutValue("expected not to be zero"));
     }
   }
 
@@ -235,9 +243,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
 
   /** Asserts that the subject is {@link Float#NaN}. */
   public final void isNaN() {
-    if (actual() == null || !actual().isNaN()) {
-      fail("is NaN");
-    }
+    isEqualTo(NaN);
   }
 
   /**
@@ -246,7 +252,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    */
   public final void isFinite() {
     if (actual() == null || actual().isNaN() || actual().isInfinite()) {
-      failWithRawMessage("%s should have been finite", actualAsString());
+      fail(factWithoutValue("expected to be finite"));
     }
   }
 
@@ -255,8 +261,10 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * Float#POSITIVE_INFINITY} or {@link Float#NEGATIVE_INFINITY}).
    */
   public final void isNotNaN() {
-    if (actual() == null || actual().isNaN()) {
-      failWithRawMessage("%s should not have been NaN", actualAsString());
+    if (actual() == null) {
+      fail(factWithoutValue("expected a float other than NaN"));
+    } else {
+      isNotEqualTo(NaN);
     }
   }
 }

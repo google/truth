@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.SubjectUtils.HUMAN_UNDERSTANDABLE_EMPTY_STRING;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
@@ -70,24 +71,21 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   /** Fails if the multimap is not empty. */
   public void isEmpty() {
     if (!actual().isEmpty()) {
-      fail("is empty");
+      fail(factWithoutValue("expected to be empty"));
     }
   }
 
   /** Fails if the multimap is empty. */
   public void isNotEmpty() {
     if (actual().isEmpty()) {
-      fail("is not empty");
+      failWithoutActual(factWithoutValue("expected not to be empty"));
     }
   }
 
   /** Fails if the multimap does not have the given size. */
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    int actualSize = actual().size();
-    if (actualSize != expectedSize) {
-      failWithBadResults("has a size of", expectedSize, "is", actualSize);
-    }
+    check("size()").that(actual().size()).isEqualTo(expectedSize);
   }
 
   /** Fails if the multimap does not contain the given key. */
@@ -189,7 +187,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     } else if (actual() instanceof SetMultimap) {
       containsExactlyEntriesIn((Multimap<?, ?>) other);
     } else {
-      fail("is equal to", other);
+      super.isEqualTo(other);
     }
   }
 

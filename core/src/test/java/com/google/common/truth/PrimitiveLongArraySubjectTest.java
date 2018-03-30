@@ -49,17 +49,18 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isEqualTo_Fail_UnequalOrdering() {
     expectFailureWhenTestingThat(array(2, 3)).isEqualTo(array(3, 2));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[2, 3]> is equal to <[3, 2]>. differs at index: [0]");
+    assertFailureKeys("expected", "but was", "differs at index");
+    assertFailureValue("expected", "[3, 2]");
+    assertFailureValue("but was", "[2, 3]");
+    assertFailureValue("differs at index", "[0]");
   }
 
   @Test
   public void isEqualTo_Fail_NotAnArray() {
     expectFailureWhenTestingThat(array(2, 3, 4)).isEqualTo(new int[] {});
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .contains("wrong type; expected: int[]; but was: long[]");
+    assertFailureKeys("expected", "but was", "wrong type", "expected", "but was");
+    assertFailureValueIndexed("expected", 1, "int[]");
+    assertFailureValueIndexed("but was", 1, "long[]");
   }
 
   @Test
@@ -80,9 +81,6 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotEqualTo_FailEquals() {
     expectFailureWhenTestingThat(array(2, 3)).isNotEqualTo(array(2, 3));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[2, 3]> is not equal to <[2, 3]>");
   }
 
   @SuppressWarnings("TruthSelfEquals")
@@ -90,9 +88,6 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
   public void isNotEqualTo_FailSame() {
     long[] same = array(2, 3);
     expectFailureWhenTestingThat(same).isNotEqualTo(same);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[2, 3]> is not equal to <[2, 3]>");
   }
 
   private static long[] array(long... ts) {

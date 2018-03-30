@@ -73,71 +73,35 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_NotEqual() {
     expectFailureWhenTestingThat(array(2.2f)).isEqualTo(array(JUST_OVER_2POINT2));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <["
-                + floatToString(2.2f)
-                + "]> is equal to <[2.2000003]>. differs at index: [0]");
+    assertFailureKeys("expected", "but was", "differs at index");
+    assertFailureValue("expected", "[2.2000003]");
+    assertFailureValue("but was", "[" + floatToString(2.2f) + "]");
+    assertFailureValue("differs at index", "[0]");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_DifferentOrder() {
     expectFailureWhenTestingThat(array(2.2f, 3.3f)).isEqualTo(array(3.3f, 2.2f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <["
-                + floatToString(2.2f)
-                + ", "
-                + floatToString(3.3f)
-                + "]> is equal to <["
-                + floatToString(3.3f)
-                + ", "
-                + floatToString(2.2f)
-                + "]>. differs at index: [0]");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_Longer() {
     expectFailureWhenTestingThat(array(2.2f, 3.3f)).isEqualTo(array(2.2f, 3.3f, 4.4f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <["
-                + floatToString(2.2f)
-                + ", "
-                + floatToString(3.3f)
-                + "]> is equal to <["
-                + floatToString(2.2f)
-                + ", "
-                + floatToString(3.3f)
-                + ", "
-                + floatToString(4.4f)
-                + "]>. wrong length; expected: 3; but was: 2");
+    assertFailureKeys("expected", "but was", "wrong length", "expected", "but was");
+    assertFailureValueIndexed("expected", 1, "3");
+    assertFailureValueIndexed("but was", 1, "2");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_Shorter() {
     expectFailureWhenTestingThat(array(2.2f, 3.3f)).isEqualTo(array(2.2f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <["
-                + floatToString(2.2f)
-                + ", "
-                + floatToString(3.3f)
-                + "]> is equal to <["
-                + floatToString(2.2f)
-                + "]>. wrong length; expected: 1; but was: 2");
   }
 
   @Test
   public void isEqualTo_WithoutToleranceParameter_Fail_PlusMinusZero() {
     expectFailureWhenTestingThat(array(0.0f)).isEqualTo(array(-0.0f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[0.0]> is equal to <[-0.0]>. differs at index: [0]");
+    assertFailureValue("expected", "[-0.0]");
+    assertFailureValue("but was", "[0.0]");
   }
 
   @Test
@@ -150,18 +114,6 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(
             array(2.2f, 5.4f, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0f, -0.0f))
         .isNotEqualTo(array(2.2f, 5.4f, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN, 0.0f, -0.0f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <["
-                + floatToString(2.2f)
-                + ", "
-                + floatToString(5.4f)
-                + ", Infinity, -Infinity, NaN, 0.0, -0.0]> is not equal to <["
-                + floatToString(2.2f)
-                + ", "
-                + floatToString(5.4f)
-                + ", Infinity, -Infinity, NaN, 0.0, -0.0]>");
   }
 
   @Test

@@ -140,9 +140,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void multimapIsEmptyWithFailure() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     expectFailureWhenTestingThat(multimap).isEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{1=[5]}> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -155,9 +153,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void multimapIsNotEmptyWithFailure() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of();
     expectFailureWhenTestingThat(multimap).isNotEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> is not empty");
+    assertFailureKeys("expected not to be empty");
   }
 
   @Test
@@ -406,9 +402,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     assertThat(actual).containsExactly(ImmutableMultimap.of()).inOrder();
 
     expectFailureWhenTestingThat(ImmutableMultimap.of(42, "Answer", 42, "6x7")).containsExactly();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{42=[Answer, 6x7]}> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -1070,9 +1064,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(ImmutableListMultimap.of("abc", "+123"))
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{abc=[+123]}> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test

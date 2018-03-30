@@ -45,13 +45,7 @@ public final class StreamSubjectTest {
   public void testIsEqualToList() throws Exception {
     Stream<String> stream = Stream.of("hello");
     List<String> list = asList("hello");
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(stream).isEqualTo(list));
-    assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[hello]> (java.util.stream.ReferencePipeline$Head) "
-                + "is equal to <[hello]> (java.util.Arrays$ArrayList)");
+    AssertionError unused = expectFailure(whenTesting -> whenTesting.that(stream).isEqualTo(list));
   }
 
   @Test
@@ -83,9 +77,8 @@ public final class StreamSubjectTest {
 
   @Test
   public void testIsEmpty_fails() throws Exception {
-    AssertionError expected =
+    AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).isEmpty());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <[hello]> is empty");
   }
 
   @Test
@@ -95,9 +88,8 @@ public final class StreamSubjectTest {
 
   @Test
   public void testIsNotEmpty_fails() throws Exception {
-    AssertionError expected =
+    AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(Stream.of()).isNotEmpty());
-    assertThat(expected).hasMessageThat().isEqualTo("Not true that <[]> is not empty");
   }
 
   @Test
@@ -107,11 +99,8 @@ public final class StreamSubjectTest {
 
   @Test
   public void testHasSize_fails() throws Exception {
-    AssertionError expected =
+    AssertionError unused =
         expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).hasSize(2));
-    assertThat(expected)
-        .hasMessageThat()
-        .isEqualTo("Not true that <[hello]> has a size of <2>. It is <1>");
   }
 
   @Test

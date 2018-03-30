@@ -24,13 +24,13 @@ import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.StringUtil.format;
+import static com.google.common.truth.Subject.EqualityCheck.SAME_INSTANCE;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.concat;
 import static com.google.common.truth.SubjectUtils.sandwich;
 import static java.util.Arrays.asList;
 
 import com.google.common.base.Function;
-import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -152,16 +152,12 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails if the subject is not null. */
   public void isNull() {
-    if (actual() != null) {
-      fail("is null");
-    }
+    standardIsEqualTo(null);
   }
 
   /** Fails if the subject is null. */
   public void isNotNull() {
-    if (actual() == null) {
-      failWithoutActual("is a non-null reference");
-    }
+    standardIsNotEqualTo(null);
   }
 
   /**
@@ -176,10 +172,20 @@ public class Subject<S extends Subject<S, T>, T> {
    *       Integer}, or {@code Long}) and they are numerically equal when converted to {@code Long}.
    * </ul>
    */
+  /*
+   * TODO(cpovirk): Possibly ban overriding isEqualTo+isNotEqualTo in favor of a
+   * compareForEquality(Object, Object) method. That way, people would need to override only one
+   * method, they would get a ComparisonFailure and other message niceties, and they'd have less to
+   * test.
+   */
   public void isEqualTo(@Nullable Object expected) {
-    ComparisonResult difference = describeDifference(expected);
+    standardIsEqualTo(expected);
+  }
+
+  private void standardIsEqualTo(@Nullable Object expected) {
+    ComparisonResult difference = compareForEquality(expected);
     if (!difference.valuesAreEqual()) {
-      failEqualityCheck("is equal to", expected, difference);
+      failEqualityCheck(EqualityCheck.EQUAL, expected, difference);
     }
   }
 
@@ -188,9 +194,22 @@ public class Subject<S extends Subject<S, T>, T> {
    * the {@link #isEqualTo} method.
    */
   public void isNotEqualTo(@Nullable Object unexpected) {
-    ComparisonResult difference = describeDifference(unexpected);
+    standardIsNotEqualTo(unexpected);
+  }
+
+  private void standardIsNotEqualTo(@Nullable Object unexpected) {
+    ComparisonResult difference = compareForEquality(unexpected);
     if (difference.valuesAreEqual()) {
-      fail("is not equal to", formatActualOrExpected(unexpected));
+      String unexpectedAsString = formatActualOrExpected(unexpected);
+      if (actualCustomStringRepresentation().equals(unexpectedAsString)) {
+        failWithoutActual(fact("expected not to be", unexpectedAsString));
+      } else {
+        failWithoutActual(
+            fact("expected not to be", unexpectedAsString),
+            fact(
+                "but was; string representation of actual value",
+                actualCustomStringRepresentation()));
+      }
     }
   }
 
@@ -200,7 +219,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *
    * <p>The equality check follows the rules described on {@link #isEqualTo}.
    */
-  private ComparisonResult describeDifference(@Nullable Object expected) {
+  private ComparisonResult compareForEquality(@Nullable Object expected) {
     if (actual() == null && expected == null) {
       return ComparisonResult.equal();
     } else if (actual() == null || expected == null) {
@@ -251,23 +270,34 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /** Fails if the subject is not the same instance as the given object. */
-  public void isSameAs(@Nullable @CompatibleWith("T") Object other) {
-    if (actual() != other) {
+  public void isSameAs(@Nullable @CompatibleWith("T") Object expected) {
+    if (actual() != expected) {
       failEqualityCheck(
-          "is the same instance as",
-          other,
-          ComparisonResult
-              .differentNoDescription() // or maybe equal; what we mean is "nothing to describe"
-          );
+          SAME_INSTANCE,
+          expected,
+          /*
+           * Pass through *whether* the values are equal so that failEqualityCheck() can print that
+           * information. But remove the description of the difference, which is always about
+           * content, since people calling isSameAs() are explicitly not interested in content, only
+           * object identity.
+           */
+          compareForEquality(expected).withoutDescription());
     }
   }
 
   /** Fails if the subject is the same instance as the given object. */
-  public void isNotSameAs(@Nullable @CompatibleWith("T") Object other) {
-    if (actual() == other) {
-      fail("is not the same instance as", formatActualOrExpected(other));
+  public void isNotSameAs(@Nullable @CompatibleWith("T") Object unexpected) {
+    if (actual() == unexpected) {
+      /*
+       * We use actualCustomStringRepresentation() because it might be overridden to be better than
+       * actual.toString()/unexpected.toString().
+       */
+      failWithoutActual(
+          fact("expected not to be specific instance", actualCustomStringRepresentation()));
     }
   }
+
+  // TODO(cpovirk): Use StringUtil.compressType for instance and equality checks?
 
   /** Fails if the subject is not an instance of the given class. */
   public void isInstanceOf(Class<?> clazz) {
@@ -275,21 +305,23 @@ public class Subject<S extends Subject<S, T>, T> {
       throw new NullPointerException("clazz");
     }
     if (actual() == null) {
-      fail("is an instance of", clazz.getName());
+      failWithFact("expected instance of", clazz.getName());
       return;
     }
     if (!Platform.isInstanceOfType(actual(), clazz)) {
       if (classMetadataUnsupported()) {
         throw new UnsupportedOperationException(
-            actualAsString()
+            actualCustomStringRepresentation()
                 + ", an instance of "
                 + actual().getClass().getName()
                 + ", may or may not be an instance of "
                 + clazz.getName()
                 + ". Under -XdisableClassMetadata, we do not have enough information to tell.");
       }
-      failWithBadResults(
-          "is an instance of", clazz.getName(), "is an instance of", actual().getClass().getName());
+      failWithoutActual(
+          fact("expected instance of", clazz.getName()),
+          fact("but was instance of", actual().getClass().getName()),
+          fact("with value", actualCustomStringRepresentation()));
     }
   }
 
@@ -306,15 +338,18 @@ public class Subject<S extends Subject<S, T>, T> {
       return; // null is not an instance of clazz.
     }
     if (Platform.isInstanceOfType(actual(), clazz)) {
-      failWithRawMessage(
-          "%s expected not to be an instance of %s, but was.", actualAsString(), clazz.getName());
+      failWithFact("expected not to be an instance of", clazz.getName());
+      /*
+       * TODO(cpovirk): Consider including actual().getClass() if it's not clazz itself but only a
+       * subtype.
+       */
     }
   }
 
   /** Fails unless the subject is equal to any element in the given iterable. */
   public void isIn(Iterable<?> iterable) {
     if (!Iterables.contains(iterable, actual())) {
-      fail("is equal to any element in", iterable);
+      failWithFact("expected any of", iterable);
     }
   }
 
@@ -329,7 +364,7 @@ public class Subject<S extends Subject<S, T>, T> {
   /** Fails if the subject is equal to any element in the given iterable. */
   public void isNotIn(Iterable<?> iterable) {
     if (Iterables.contains(iterable, actual())) {
-      failWithRawMessage("Not true that %s is not in %s.", actualAsString(), iterable);
+      failWithFact("expected not to be any of", iterable);
     }
   }
 
@@ -523,6 +558,11 @@ public class Subject<S extends Subject<S, T>, T> {
 
     ImmutableList<Fact> factsOrEmpty() {
       return firstNonNull(facts, ImmutableList.<Fact>of());
+    }
+
+    /** Returns an instance with the same "equal"/"not-equal" bit but with no description. */
+    ComparisonResult withoutDescription() {
+      return fromEqualsResult(valuesAreEqual());
     }
   }
 
@@ -763,39 +803,74 @@ public class Subject<S extends Subject<S, T>, T> {
     fail(fact(key, value));
   }
 
-  private void failEqualityCheck(String verb, Object expected, ComparisonResult difference) {
-    if (actual() instanceof byte[] && expected instanceof byte[]) {
-      // TODO(cpovirk): Expand this to cover more types.
-      failComparing(
-          Joiner.on("; ").join(difference.factsOrEmpty()),
-          formatActualOrExpected(expected),
-          formatActualOrExpected(actual()));
-      return;
+  enum EqualityCheck {
+    EQUAL("expected"),
+    SAME_INSTANCE("expected specific instance");
+
+    final String keyForExpected;
+
+    EqualityCheck(String keyForExpected) {
+      this.keyForExpected = keyForExpected;
     }
-    StringBuilder message =
-        new StringBuilder("Not true that ").append(actualAsString()).append(" ");
-    // If the actual and parts aren't null, and they have equal toString()'s but different
-    // classes, we need to disambiguate them.
-    boolean neitherNull = (expected != null) && (actual() != null);
-    boolean sameToStrings =
-        actualCustomStringRepresentation().equals(formatActualOrExpected(expected));
-    boolean needsClassDisambiguation =
-        neitherNull && sameToStrings && !actual().getClass().equals(expected.getClass());
-    if (needsClassDisambiguation) {
-      message.append("(").append(actual().getClass().getName()).append(") ");
+  }
+
+  private void failEqualityCheck(
+      EqualityCheck equalityCheck, Object expected, ComparisonResult difference) {
+    String actualString = actualCustomStringRepresentation();
+    String expectedString = formatActualOrExpected(expected);
+    String actualClass = actual() == null ? "(null reference)" : actual().getClass().getName();
+    String expectedClass = expected == null ? "(null reference)" : expected.getClass().getName();
+
+    /*
+     * It's a little odd for expectedString to be formatActualOrExpected(expected) but actualString
+     * *not* to be formatActualOrExpected(actual), since we're going to compare the two. Instead,
+     * actualString is actualCustomStringRepresentation() -- as it is for other assertions, since
+     * users may have overridden that method. While actualCustomStringRepresentation() defaults to
+     * formatActualOrExpected(actual), it's only a default.
+     *
+     * What we really want here is probably to delete actualCustomStringRepresentation() and migrate
+     * users to formatActualOrExpected(actual).
+     */
+    boolean sameToStrings = actualString.equals(expectedString);
+    boolean sameClassNames = actualClass.equals(expectedClass);
+    // TODO(cpovirk): Handle "same class name, different class loader."
+    boolean equal = difference.valuesAreEqual(); // always false for isEqualTo; varies for isSameAs
+    // TODO(cpovirk): Call attention to differing trailing whitespace.
+
+    if (sameToStrings) {
+      if (sameClassNames) {
+        String doppelgangerDescription =
+            equal
+                ? "(different but equal instance of same class with same string representation)"
+                : "(non-equal instance of same class with same string representation)";
+        failEqualityCheckNoComparisonFailure(
+            difference,
+            fact(equalityCheck.keyForExpected, expectedString),
+            fact("but was", doppelgangerDescription));
+      } else {
+        failEqualityCheckNoComparisonFailure(
+            difference,
+            fact(equalityCheck.keyForExpected, expectedString),
+            fact("an instance of", expectedClass),
+            fact("but was", "(non-equal value with same string representation)"),
+            fact("an instance of", actualClass));
+      }
+    } else {
+      if (equalityCheck == EqualityCheck.EQUAL && actual() != null && expected != null) {
+        metadata.failEqualityCheck(
+            nameAsFacts(), difference.factsOrEmpty(), expectedString, actualString);
+      } else {
+        failEqualityCheckNoComparisonFailure(
+            difference,
+            fact(equalityCheck.keyForExpected, expectedString),
+            fact("but was", actualString));
+      }
     }
-    message.append(verb).append(" <").append(formatActualOrExpected(expected)).append(">");
-    if (needsClassDisambiguation) {
-      message.append(" (").append(expected.getClass().getName()).append(")");
-    }
-    if (!needsClassDisambiguation && sameToStrings) {
-      message.append(" (although their toString() representations are the same)");
-    }
-    if (!difference.factsOrEmpty().isEmpty()) {
-      message.append(". ");
-      Joiner.on("; ").appendTo(message, difference.factsOrEmpty());
-    }
-    metadata.fail(message.toString());
+  }
+
+  private void failEqualityCheckNoComparisonFailure(ComparisonResult difference, Fact... facts) {
+    // TODO(cpovirk): Is it possible for difference.factsOrEmpty() to be nonempty? If not, remove.
+    doFail(concat(asList(facts), difference.factsOrEmpty()));
   }
 
   /**

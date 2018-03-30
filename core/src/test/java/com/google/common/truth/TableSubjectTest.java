@@ -44,9 +44,7 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   public void tableIsEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of(1, 5, 7);
     expectFailureWhenTestingThat(table).isEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{1={5=7}}> is empty");
+    assertFailureKeys("expected to be empty", "but was");
   }
 
   @Test
@@ -59,9 +57,7 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   public void tableIsNotEmptyWithFailure() {
     ImmutableTable<Integer, Integer, Integer> table = ImmutableTable.of();
     expectFailureWhenTestingThat(table).isNotEmpty();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> is not empty");
+    assertFailureKeys("expected not to be empty");
   }
 
   @Test
