@@ -71,28 +71,8 @@ final class Platform {
     }
   }
 
-  /** Returns the class object for the given class name, or {@code null} if no class is found. */
-  static Class<?> classForName(String fullyQualifiedClassName) {
-    try {
-      return Class.forName(fullyQualifiedClassName);
-    } catch (ClassNotFoundException e) {
-      return null;
-    }
-  }
-
-  /** Returns true if the former class is assignable from the latter one. */
-  static boolean isAssignableFrom(Class<?> superClass, Class<?> subClass) {
-    return superClass.isAssignableFrom(subClass);
-  }
-
-  /**
-   * Returns true if stack trace cleaning is explicitly disabled in a system property. This switch
-   * os intended to be used when attempting to debug the frameworks which are collapsed or filtered
-   * out of stack traces by the cleaner.
-   */
-  static boolean isStackTraceCleaningDisabled() {
-    return Boolean.parseBoolean(
-        System.getProperty("com.google.common.truth.disable_stack_trace_cleaning"));
+  static void cleanStackTrace(Throwable throwable) {
+    StackTraceCleaner.cleanStackTrace(throwable);
   }
 
   @Nullable

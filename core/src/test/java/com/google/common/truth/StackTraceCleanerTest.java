@@ -17,12 +17,27 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.annotations.GwtIncompatible;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runner.Runner;
 import org.junit.runners.JUnit4;
+import org.junit.runners.model.Statement;
 
 /** Unit tests for {@link StackTraceCleaner}. */
+/*
+ * Cleaning doesn't actually work under j2cl (and presumably GWT): StackTraceElement.getClassName()
+ * doesn't have real data. Some data is available in toString(), albeit along the lines of
+ * "SimpleAssertionError.m_createError__java_lang_String_$pp_java_lang." StackTraceCleaner could
+ * maybe look through the toString() representations to count how many frames to remove, but that's
+ * a bigger project. (While we're at it, we could remove the j2cl-specific boilerplate from the
+ * _bottom_ of the stack, too.) And sadly, it's not necessarily as simple as looking at just _class_
+ * names: The cleaning is applied to causes, too, and it's possible for a cause to legitimately
+ * contain an exception created inside a class like Throwable -- e.g., x.initCause(x) will throw an
+ * exception, and it would be weird (though maybe tolerable) for us to remove that.
+ *
+ * Also note that j2cl includes some extra frames at the _top_, even beyond the ones that we try to
+ * remove: b/71355096
+ */
 @RunWith(JUnit4.class)
 public class StackTraceCleanerTest extends BaseSubjectTestCase {
 
@@ -59,22 +74,6 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible
-  /*
-   * Stripping doesn't actually work under j2cl (and presumably GWT):
-   * StackTraceElement.getClassName() doesn't have real data. Some data is available in toString(),
-   * albeit along the lines of
-   * "SimpleAssertionError.m_createError__java_lang_String_$pp_java_lang." StackTraceCleaner
-   * could maybe look through the toString() representations to count how many frames to strip, but
-   * that's a bigger project. (While we're at it, we could strip the j2cl-specific boilerplate from
-   * the _bottom_ of the stack, too.) And sadly, it's not necessarily as simple as looking at just
-   * _class_ names: The stripping is applied to causes, too, and it's possible for a cause to
-   * legitimately contain an exception created inside a class like Throwable -- e.g., x.initCause(x)
-   * will throw an exception, and it would be weird (though maybe tolerable) for us to strip that.
-   *
-   * Also note that j2cl includes some extra frames at the _top_, even beyond the ones that we try
-   * to strip: b/71355096
-   */
   public void assertionsActuallyUseCleaner() {
     expectFailure.whenTesting().that(1).isEqualTo(2);
     assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
@@ -82,7 +81,6 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible
   public void assertionsActuallyUseCleaner_ComparisonFailure() {
     expectFailure.whenTesting().that("1").isEqualTo("2");
     assertThat(expectFailure.getFailure().getStackTrace()[0].getClassName())
@@ -119,7 +117,6 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("Class.forName")
   public void mixedStreaks() {
     Throwable throwable =
         createThrowableWithStackTrace(
@@ -191,7 +188,6 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("Class.forName")
   public void allFramesAboveStandardSubjectBuilderCleaned() {
     Throwable throwable =
         createThrowableWithStackTrace(
@@ -210,7 +206,6 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
-  @GwtIncompatible("Class.forName")
   public void allFramesAboveSubjectCleaned() {
     Throwable throwable =
         createThrowableWithStackTrace(
@@ -227,6 +222,46 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
               createStackTraceElement("com.google.example.SomeClass"),
             });
   }
+
+  @Test
+  public void allFramesBelowJUnitStatementCleaned() {
+    Throwable throwable =
+        createThrowableWithStackTrace(
+            "com.google.common.truth.StringSubject",
+            "com.google.example.SomeTest",
+            SomeStatement.class.getName(),
+            "com.google.example.SomeClass");
+
+    StackTraceCleaner.cleanStackTrace(throwable);
+
+    assertThat(throwable.getStackTrace())
+        .isEqualTo(
+            new StackTraceElement[] {
+              createStackTraceElement("com.google.example.SomeTest"),
+            });
+  }
+
+  @Test
+  public void allFramesBelowJUnitRunnerCleaned() {
+    Throwable throwable =
+        createThrowableWithStackTrace(
+            "com.google.common.truth.StringSubject",
+            "com.google.example.SomeTest",
+            SomeRunner.class.getName(),
+            "com.google.example.SomeClass");
+
+    StackTraceCleaner.cleanStackTrace(throwable);
+
+    assertThat(throwable.getStackTrace())
+        .isEqualTo(
+            new StackTraceElement[] {
+              createStackTraceElement("com.google.example.SomeTest"),
+            });
+  }
+
+  abstract static class SomeStatement extends Statement {}
+
+  abstract static class SomeRunner extends Runner {}
 
   /**
    * This scenario where truth class is called directly without any subject's subclass or {@link

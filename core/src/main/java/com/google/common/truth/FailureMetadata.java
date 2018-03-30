@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.LazyMessage.evaluateAll;
-import static com.google.common.truth.StackTraceCleaner.cleanStackTrace;
+import static com.google.common.truth.Platform.cleanStackTrace;
 import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 
