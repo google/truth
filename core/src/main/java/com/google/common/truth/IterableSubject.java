@@ -599,12 +599,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   public final void isStrictlyOrdered(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
+        "is strictly ordered",
         new PairwiseChecker() {
           @Override
-          public void check(Object prev, Object next) {
-            if (((Comparator<Object>) comparator).compare(prev, next) >= 0) {
-              fail("is strictly ordered", prev, next);
-            }
+          public boolean check(Object prev, Object next) {
+            return ((Comparator<Object>) comparator).compare(prev, next) < 0;
           }
         });
   }
@@ -631,12 +630,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   public final void isOrdered(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
+        "is ordered",
         new PairwiseChecker() {
           @Override
-          public void check(Object prev, Object next) {
-            if (((Comparator<Object>) comparator).compare(prev, next) > 0) {
-              fail("is ordered", prev, next);
-            }
+          public boolean check(Object prev, Object next) {
+            return ((Comparator<Object>) comparator).compare(prev, next) <= 0;
           }
         });
   }
@@ -654,16 +652,19 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   private interface PairwiseChecker {
-    void check(Object prev, Object next);
+    boolean check(Object prev, Object next);
   }
 
-  private void pairwiseCheck(PairwiseChecker checker) {
+  private void pairwiseCheck(String verb, PairwiseChecker checker) {
     Iterator<?> iterator = actual().iterator();
     if (iterator.hasNext()) {
       Object prev = iterator.next();
       while (iterator.hasNext()) {
         Object next = iterator.next();
-        checker.check(prev, next);
+        if (!checker.check(prev, next)) {
+          fail(verb, prev, next);
+          return;
+        }
         prev = next;
       }
     }

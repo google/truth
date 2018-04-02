@@ -1040,6 +1040,13 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void isOrderedMultipleFailures() {
+    expectFailureWhenTestingThat(asList(1, 3, 2, 4, 0)).isOrdered();
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is ordered");
+    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<3> <2>");
+  }
+
+  @Test
   public void isOrderedWithNonComparableElementsFailure() {
     try {
       assertThat(asList((Object) 1, "2", 2, "3")).isOrdered();
