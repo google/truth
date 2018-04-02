@@ -262,13 +262,6 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     return containsExactlyEntriesIn(accumulateMultimap(k0, v0, rest));
   }
 
-  /** @deprecated Use {@link #containsExactlyEntriesIn} instead. */
-  @Deprecated
-  @CanIgnoreReturnValue
-  public Ordered containsExactly(Multimap<?, ?> expectedMultimap) {
-    return containsExactlyEntriesIn(expectedMultimap);
-  }
-
   private static Multimap<Object, Object> accumulateMultimap(
       @Nullable Object k0, @Nullable Object v0, Object... rest) {
     checkArgument(
