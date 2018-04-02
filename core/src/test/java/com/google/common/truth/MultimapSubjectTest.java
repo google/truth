@@ -398,8 +398,8 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void containsExactlyNoArg() {
     ImmutableMultimap<Integer, String> actual = ImmutableMultimap.of();
 
-    assertThat(actual).containsExactly(ImmutableMultimap.of());
-    assertThat(actual).containsExactly(ImmutableMultimap.of()).inOrder();
+    assertThat(actual).containsExactly();
+    assertThat(actual).containsExactly().inOrder();
 
     expectFailureWhenTestingThat(ImmutableMultimap.of(42, "Answer", 42, "6x7")).containsExactly();
     assertFailureKeys("expected to be empty", "but was");
