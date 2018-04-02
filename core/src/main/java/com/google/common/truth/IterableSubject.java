@@ -489,7 +489,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * @param actual the actual value the subject was compared against
    * @param suffix a suffix to append to the failure message
    */
-  protected final void failWithBadResultsAndSuffix(
+  private void failWithBadResultsAndSuffix(
       String verb, Object expected, String failVerb, Object actual, String suffix) {
     failWithRawMessage(
         "Not true that %s %s <%s>. It %s <%s>%s",
@@ -637,18 +637,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             return ((Comparator<Object>) comparator).compare(prev, next) <= 0;
           }
         });
-  }
-
-  /** @deprecated Use {@link #isOrdered} instead. */
-  @Deprecated
-  public final void isPartiallyOrdered() {
-    isOrdered();
-  }
-
-  /** @deprecated Use {@link #isOrdered(Comparator)} instead. */
-  @Deprecated
-  public final void isPartiallyOrdered(final Comparator<?> comparator) {
-    isOrdered(comparator);
   }
 
   private interface PairwiseChecker {
