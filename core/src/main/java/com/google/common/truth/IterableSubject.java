@@ -168,7 +168,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Checks that the subject contains at least one of the provided objects or fails. */
   public final void containsAnyOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
-    containsAny(accumulate(first, second, rest));
+    containsAnyIn(accumulate(first, second, rest));
   }
 
   /**
@@ -176,18 +176,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * collection or fails.
    */
   public final void containsAnyIn(Iterable<?> expected) {
-    containsAny(expected);
-  }
-
-  /**
-   * Checks that the subject contains at least one of the objects contained in the provided array or
-   * fails.
-   */
-  public final void containsAnyIn(Object[] expected) {
-    containsAnyIn(asList(expected));
-  }
-
-  private void containsAny(Iterable<?> expected) {
     Collection<?> actual = iterableToCollection(actual());
     for (Object item : expected) {
       if (actual.contains(item)) {
@@ -208,6 +196,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
+   * Checks that the subject contains at least one of the objects contained in the provided array or
+   * fails.
+   */
+  public final void containsAnyIn(Object[] expected) {
+    containsAnyIn(asList(expected));
+  }
+
+  /**
    * Checks that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements to this call then it must appear at
    * least that number of times in the actual elements.
@@ -221,7 +217,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       @Nullable Object firstExpected,
       @Nullable Object secondExpected,
       @Nullable Object... restOfExpected) {
-    return containsAll(accumulate(firstExpected, secondExpected, restOfExpected));
+    return containsAllIn(accumulate(firstExpected, secondExpected, restOfExpected));
   }
 
   /**
@@ -234,25 +230,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  public final Ordered containsAllIn(Iterable<?> expected) {
-    return containsAll(expected);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements then it must appear at least that
-   * number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  public final Ordered containsAllIn(Object[] expected) {
-    return containsAllIn(asList(expected));
-  }
-
-  private Ordered containsAll(Iterable<?> expectedIterable) {
+  public final Ordered containsAllIn(Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(actual());
     Collection<?> expected = iterableToCollection(expectedIterable);
 
@@ -297,6 +275,20 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
     }
     return ordered ? IN_ORDER : new NotInOrder(this, "contains all elements in order", expected);
+  }
+
+  /**
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements then it must appear at least that
+   * number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public final Ordered containsAllIn(Object[] expected) {
+    return containsAllIn(asList(expected));
   }
 
   /**
@@ -508,7 +500,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       @Nullable Object firstExcluded,
       @Nullable Object secondExcluded,
       @Nullable Object... restOfExcluded) {
-    containsNone(accumulate(firstExcluded, secondExcluded, restOfExcluded));
+    containsNoneIn(accumulate(firstExcluded, secondExcluded, restOfExcluded));
   }
 
   /**
@@ -517,19 +509,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * elements equal any of the excluded.)
    */
   public final void containsNoneIn(Iterable<?> excluded) {
-    containsNone(excluded);
-  }
-
-  /**
-   * Checks that the actual iterable contains none of the elements contained in the excluded array
-   * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
-   * equal any of the excluded.)
-   */
-  public final void containsNoneIn(Object[] excluded) {
-    containsNoneIn(asList(excluded));
-  }
-
-  private void containsNone(Iterable<?> excluded) {
     Collection<?> actual = iterableToCollection(actual());
     Collection<Object> present = new ArrayList<>();
     for (Object item : Sets.newLinkedHashSet(excluded)) {
@@ -544,6 +523,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           "contains",
           annotateEmptyStrings(present));
     }
+  }
+
+  /**
+   * Checks that the actual iterable contains none of the elements contained in the excluded array
+   * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
+   * equal any of the excluded.)
+   */
+  public final void containsNoneIn(Object[] excluded) {
+    containsNoneIn(asList(excluded));
   }
 
   /** Ordered implementation that always fails. */
