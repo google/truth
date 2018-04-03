@@ -15,11 +15,13 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.protobuf.DynamicMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
 import java.util.Collection;
+import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -222,6 +224,123 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .comparingExpectedFieldsOnly()
         .isNotEqualTo(narrowMessage);
     expectThatFailure().hasMessageThat().contains("ignored: r_string");
+  }
+
+  @Test
+  public void testIgnoringExtraRepeatedFieldElements_respectingOrder() {
+    Message message = parse("r_string: 'foo' r_string: 'bar'");
+    Message eqMessage = parse("r_string: 'foo' r_string: 'foobar' r_string: 'bar'");
+    Message diffMessage = parse("r_string: 'bar' r_string: 'foobar' r_string: 'foo'");
+
+    expectThat(eqMessage).ignoringExtraRepeatedFieldElements().isEqualTo(message);
+    expectThat(diffMessage).ignoringExtraRepeatedFieldElements().isNotEqualTo(message);
+
+    expectFailureWhenTesting()
+        .that(eqMessage)
+        .ignoringExtraRepeatedFieldElements()
+        .isNotEqualTo(message);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains("ignored: r_string[?] -> r_string[1]: \"foobar\"");
+
+    expectFailureWhenTesting()
+        .that(diffMessage)
+        .ignoringExtraRepeatedFieldElements()
+        .isEqualTo(message);
+    expectThatFailure()
+        .hasMessageThat()
+        .contains("out_of_order: r_string[1] -> r_string[0]: \"bar\"");
+    expectThatFailure().hasMessageThat().contains("moved: r_string[0] -> r_string[2]: \"foo\"");
+  }
+
+  @Test
+  public void testIgnoringExtraRepeatedFieldElements_ignoringOrder() {
+    Message message = parse("r_string: 'foo' r_string: 'bar'");
+    Message eqMessage = parse("r_string: 'baz' r_string: 'bar' r_string: 'qux' r_string: 'foo'");
+    Message diffMessage = parse("r_string: 'abc' r_string: 'foo' r_string: 'xyz'");
+
+    expectThat(eqMessage)
+        .ignoringExtraRepeatedFieldElements()
+        .ignoringRepeatedFieldOrder()
+        .isEqualTo(message);
+    expectThat(diffMessage)
+        .ignoringExtraRepeatedFieldElements()
+        .ignoringRepeatedFieldOrder()
+        .isNotEqualTo(message);
+
+    expectFailureWhenTesting()
+        .that(diffMessage)
+        .ignoringExtraRepeatedFieldElements()
+        .ignoringRepeatedFieldOrder()
+        .isEqualTo(message);
+    expectThatFailure().hasMessageThat().contains("moved: r_string[0] -> r_string[1]: \"foo\"");
+    expectThatFailure().hasMessageThat().contains("deleted: r_string[1]: \"bar\"");
+  }
+
+  @Test
+  public void testIgnoringExtraRepeatedFieldElements_empty() {
+    Message message = parse("o_int: 2");
+    Message diffMessage = parse("o_int: 2 r_string: 'error'");
+
+    expectThat(diffMessage).ignoringExtraRepeatedFieldElements().isNotEqualTo(message);
+    expectThat(diffMessage)
+        .ignoringExtraRepeatedFieldElements()
+        .ignoringRepeatedFieldOrder()
+        .isNotEqualTo(message);
+
+    expectThat(diffMessage)
+        .comparingExpectedFieldsOnly()
+        .ignoringExtraRepeatedFieldElements()
+        .isEqualTo(message);
+    expectThat(diffMessage)
+        .comparingExpectedFieldsOnly()
+        .ignoringExtraRepeatedFieldElements()
+        .ignoringRepeatedFieldOrder()
+        .isEqualTo(message);
+  }
+
+  // Utility which fills a proto map field, based on the java.util.Map.
+  private Message makeProtoMap(Map<String, Integer> map) {
+    StringBuilder textProto = new StringBuilder();
+    for (String key : map.keySet()) {
+      int value = map.get(key);
+      textProto
+          .append("test_message_map { key: '")
+          .append(key)
+          .append("' value { o_int: ")
+          .append(value)
+          .append(" } } ");
+    }
+    return parse(textProto.toString());
+  }
+
+  @Test
+  public void testIgnoringExtraRepeatedFieldElements_map() {
+    Message message = makeProtoMap(ImmutableMap.of("foo", 2, "bar", 3));
+    Message eqMessage = makeProtoMap(ImmutableMap.of("bar", 3, "qux", 4, "foo", 2));
+    Message diffMessage = makeProtoMap(ImmutableMap.of("quz", 5, "foo", 2));
+    Message emptyMessage = parse("");
+
+    expectThat(eqMessage).ignoringExtraRepeatedFieldElements().isEqualTo(message);
+    expectThat(eqMessage)
+        .ignoringRepeatedFieldOrder()
+        .ignoringExtraRepeatedFieldElements()
+        .isEqualTo(message);
+    expectThat(diffMessage).ignoringExtraRepeatedFieldElements().isNotEqualTo(message);
+    expectThat(diffMessage)
+        .ignoringExtraRepeatedFieldElements()
+        .ignoringRepeatedFieldOrder()
+        .isNotEqualTo(message);
+
+    expectThat(message).ignoringExtraRepeatedFieldElements().isNotEqualTo(emptyMessage);
+
+    expectFailureWhenTesting()
+        .that(diffMessage)
+        .ignoringExtraRepeatedFieldElements()
+        .isEqualTo(message);
+    expectThatFailure().hasMessageThat().contains("matched: test_message_map[\"foo\"].o_int: 2");
+    expectThatFailure().hasMessageThat().contains("ignored: test_message_map[\"quz\"]");
+    expectThatFailure().hasMessageThat().contains("deleted: test_message_map[\"bar\"]");
   }
 
   @Test

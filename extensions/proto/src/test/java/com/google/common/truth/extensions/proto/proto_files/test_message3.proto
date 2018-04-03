@@ -32,6 +32,7 @@ message TestMessage3 {
   repeated TestMessage3 r_test_message = 10;
   SubTestMessage3 o_sub_test_message = 11;
   repeated SubTestMessage3 r_sub_test_message = 12;
+  map<string, TestMessage3> test_message_map = 13;
 }
 
 // message RequiredStringMessage3 {

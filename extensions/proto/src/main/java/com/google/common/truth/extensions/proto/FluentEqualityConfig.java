@@ -48,6 +48,7 @@ abstract class FluentEqualityConfig {
       new AutoValue_FluentEqualityConfig.Builder()
           .setIgnoreFieldAbsence(false)
           .setIgnoreRepeatedFieldOrder(false)
+          .setIgnoreExtraRepeatedFieldElements(false)
           .setCompareExpectedFieldsOnly(false)
           .setFieldScopeLogic(FieldScopeLogic.all())
           .setReportMismatchesOnly(false)
@@ -76,7 +77,7 @@ abstract class FluentEqualityConfig {
 
   abstract boolean ignoreRepeatedFieldOrder();
 
-  abstract boolean reportMismatchesOnly();
+  abstract boolean ignoreExtraRepeatedFieldElements();
 
   abstract Optional<Correspondence<Number, Number>> doubleCorrespondence();
 
@@ -93,6 +94,8 @@ abstract class FluentEqualityConfig {
   abstract Optional<ImmutableList<Message>> expectedMessages();
 
   abstract FieldScopeLogic fieldScopeLogic();
+
+  abstract boolean reportMismatchesOnly();
 
   // For pretty-printing, does not affect behavior.
   abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();
@@ -119,10 +122,10 @@ abstract class FluentEqualityConfig {
         .build();
   }
 
-  final FluentEqualityConfig reportingMismatchesOnly() {
+  final FluentEqualityConfig ignoringExtraRepeatedFieldElements() {
     return toBuilder()
-        .setReportMismatchesOnly(true)
-        .addUsingCorrespondenceString(".reportingMismatchesOnly()")
+        .setIgnoreExtraRepeatedFieldElements(true)
+        .addUsingCorrespondenceString(".ignoringExtraRepeatedFieldElements()")
         .build();
   }
 
@@ -192,6 +195,13 @@ abstract class FluentEqualityConfig {
         .build();
   }
 
+  final FluentEqualityConfig reportingMismatchesOnly() {
+    return toBuilder()
+        .setReportMismatchesOnly(true)
+        .addUsingCorrespondenceString(".reportingMismatchesOnly()")
+        .build();
+  }
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // Converters into comparison utilities.
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,7 +256,7 @@ abstract class FluentEqualityConfig {
 
     abstract Builder setIgnoreRepeatedFieldOrder(boolean ignoringRepeatedFieldOrder);
 
-    abstract Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
+    abstract Builder setIgnoreExtraRepeatedFieldElements(boolean ignoreExtraRepeatedFieldElements);
 
     abstract Builder setDoubleCorrespondence(Correspondence<Number, Number> doubleCorrespondence);
 
@@ -257,6 +267,8 @@ abstract class FluentEqualityConfig {
     abstract Builder setExpectedMessages(ImmutableList<Message> messages);
 
     abstract Builder setFieldScopeLogic(FieldScopeLogic fieldScopeLogic);
+
+    abstract Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
 
     @CheckReturnValue
     abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();

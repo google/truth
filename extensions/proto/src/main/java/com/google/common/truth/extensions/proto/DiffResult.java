@@ -148,8 +148,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
             sb.append(valueString(fieldDescriptorOrUnknown().get(), expected().get())).append("\n");
           }
           return;
+        default:
+          throw new AssertionError("Impossible: " + result());
       }
-      throw new AssertionError("Impossible: " + result());
     }
 
     @Override
@@ -278,7 +279,16 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
                   .append(" -> ")
                   .append(indexed(fieldPrefix, actualFieldIndex()));
             }
-            sb.append("\n");
+
+            // We output the message contents for ignored pair results, since it's likely not clear
+            // from the index alone why they were ignored.
+            sb.append(":");
+            if (isMessage()) {
+              sb.append("\n");
+              printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
+            } else {
+              sb.append(" ").append(valueString(fieldDescriptor(), actual().get())).append("\n");
+            }
             return;
           case MATCHED:
             if (actualFieldIndex().get().equals(expectedFieldIndex().get())) {
@@ -289,6 +299,19 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
                   .append(" -> ")
                   .append(indexed(fieldPrefix, actualFieldIndex()));
             }
+            sb.append(":");
+            if (isMessage()) {
+              sb.append("\n");
+              printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
+            } else {
+              sb.append(" ").append(valueString(fieldDescriptor(), actual().get())).append("\n");
+            }
+            return;
+          case MOVED_OUT_OF_ORDER:
+            sb.append("out_of_order: ")
+                .append(indexed(fieldPrefix, expectedFieldIndex()))
+                .append(" -> ")
+                .append(indexed(fieldPrefix, actualFieldIndex()));
             sb.append(":");
             if (isMessage()) {
               sb.append("\n");
@@ -333,6 +356,8 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
       final boolean isContentEmpty() {
         return false;
       }
+
+      abstract Builder toBuilder();
 
       static Builder newBuilder() {
         return new AutoValue_DiffResult_RepeatedField_PairResult.Builder();
