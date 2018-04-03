@@ -699,13 +699,13 @@ public class Subject<S extends Subject<S, T>, T> {
    * automatically supplement their failure message with information about the original subject.
    *
    * <p>For example, {@link ThrowableSubject#hasMessageThat}, which returns a {@link StringSubject},
-   * is implemented with {@code check("getMessage()").that(actual().getMessage()}.
+   * is implemented with {@code check("getMessage()").that(actual().getMessage())}.
    *
    * <p>The arguments to {@code check} describe how the new subject was derived from the old,
    * formatted like a chained method call. This allows Truth to include that information in its
-   * failure messages. For example, the {@code assertThat(caught).hasCauseThat().hasMessageThat()}
-   * will produce a failure message that includes {@code throwable.getCause().getMessage()}, thanks
-   * to {@code check} calls that supplied "getCause()" and "getMessage()" as arguments.
+   * failure messages. For example, {@code assertThat(caught).hasCauseThat().hasMessageThat()} will
+   * produce a failure message that includes the string "throwable.getCause().getMessage()," thanks
+   * to internal {@code check} calls that supplied "getCause()" and "getMessage()" as arguments.
    *
    * <p>If the method you're delegating to accepts parameters, you can pass {@code check} a format
    * string. For example, {@link MultimapSubject#valuesForKey} calls {@code
@@ -714,7 +714,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * <p>If you aren't really delegating to an instance method on the actual value -- maybe you're
    * calling a static method, or you're calling a chain of several methods -- you can supply
    * whatever string will be most useful to users. For example, if you're delegating to {@code
-   * getOnlyElement(actual().colors())}, you might call {@check "onlyColor()"}.
+   * getOnlyElement(actual().colors())}, you might call {@code check("onlyColor()")}.
    *
    * @param format a template with {@code %s} placeholders
    * @param args the arguments to be inserted into those placeholders
