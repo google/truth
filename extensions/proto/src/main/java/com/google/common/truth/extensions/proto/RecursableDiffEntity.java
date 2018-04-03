@@ -177,6 +177,13 @@ abstract class RecursableDiffEntity {
       MODIFIED,
 
       /**
+       * The message was moved from one index to another, but strict ordering was expected.
+       *
+       * <p>This is only possible on {@link DiffResult.RepeatedField.PairResult}.
+       */
+      MOVED_OUT_OF_ORDER,
+
+      /**
        * The messages were ignored for the sake of comparison.
        *
        * <p>IGNORED fields should also be considered MATCHED, for the sake of pass/fail decisions.

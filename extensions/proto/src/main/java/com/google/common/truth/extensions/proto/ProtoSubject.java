@@ -84,6 +84,11 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
+  public ProtoFluentAssertion ignoringExtraRepeatedFieldElements() {
+    return usingConfig(config.ignoringExtraRepeatedFieldElements());
+  }
+
+  @Override
   public ProtoFluentAssertion usingDoubleTolerance(double tolerance) {
     return usingConfig(config.usingDoubleTolerance(tolerance));
   }

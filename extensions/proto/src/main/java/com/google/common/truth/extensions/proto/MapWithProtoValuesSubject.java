@@ -302,6 +302,23 @@ public class MapWithProtoValuesSubject<
   }
 
   /**
+   * Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
+   * not found in the 'expected' proto are ignored, with the exception of fields in the expected
+   * proto which are empty. To ignore empty repeated fields as well, use {@link
+   * #comparingExpectedFieldsOnlyForValues}.
+   *
+   * <p>This rule is applied independently from {@link #ignoringRepeatedFieldOrderForValues}. If
+   * ignoring repeated field order AND extra repeated field elements, all that is tested is that the
+   * expected elements comprise a subset of the actual elements. If not ignoring repeated field
+   * order, but still ignoring extra repeated field elements, the actual elements must contain a
+   * subsequence that matches the expected elements for the test to pass. (The subsequence rule does
+   * not apply to Map fields, which are always compared by key.)
+   */
+  public MapWithProtoValuesFluentAssertion<M> ignoringExtraRepeatedFieldElementsForValues() {
+    return usingConfig(config.ignoringExtraRepeatedFieldElements());
+  }
+
+  /**
    * Compares double fields as equal if they are both finite and their absolute difference is less
    * than or equal to {@code tolerance}.
    *
@@ -473,6 +490,11 @@ public class MapWithProtoValuesSubject<
     @Override
     public MapWithProtoValuesFluentAssertion<M> ignoringRepeatedFieldOrderForValues() {
       return subject.ignoringRepeatedFieldOrderForValues();
+    }
+
+    @Override
+    public MapWithProtoValuesFluentAssertion<M> ignoringExtraRepeatedFieldElementsForValues() {
+      return subject.ignoringExtraRepeatedFieldElementsForValues();
     }
 
     @Override

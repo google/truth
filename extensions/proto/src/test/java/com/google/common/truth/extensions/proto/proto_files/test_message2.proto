@@ -28,6 +28,7 @@ message TestMessage2 {
   repeated TestMessage2 r_test_message = 10;
   optional SubTestMessage2 o_sub_test_message = 11;
   repeated SubTestMessage2 r_sub_test_message = 12;
+  map<string, TestMessage2> test_message_map = 13;
 }
 
 message RequiredStringMessage2 {

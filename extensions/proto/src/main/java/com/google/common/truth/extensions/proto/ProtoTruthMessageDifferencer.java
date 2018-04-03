@@ -34,8 +34,13 @@ import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
 import com.google.protobuf.Message;
+import com.google.protobuf.TextFormat;
 import com.google.protobuf.UnknownFieldSet;
+import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -191,6 +196,15 @@ final class ProtoTruthMessageDifferencer {
                     shouldIgnore.shouldMaybeIgnore(),
                     fieldDescriptor,
                     fieldScopeLogic.subLogic(rootDescriptor, fieldDescriptorOrUnknown)));
+          } else if (config.ignoreExtraRepeatedFieldElements() && !expectedList.isEmpty()) {
+            builder.addRepeatedField(
+                fieldDescriptor.getNumber(),
+                compareRepeatedFieldExpectingSubsequence(
+                    actualList,
+                    expectedList,
+                    shouldIgnore.shouldMaybeIgnore(),
+                    fieldDescriptor,
+                    fieldScopeLogic.subLogic(rootDescriptor, fieldDescriptorOrUnknown)));
           } else {
             builder.addAllSingularFields(
                 fieldDescriptor.getNumber(),
@@ -261,6 +275,7 @@ final class ProtoTruthMessageDifferencer {
       Set<Object> keyOrder,
       FieldDescriptor mapFieldDescriptor,
       FieldScopeLogic mapFieldScopeLogic) {
+    FieldDescriptor keyFieldDescriptor = mapFieldDescriptor.getMessageType().findFieldByNumber(1);
     FieldDescriptor valueFieldDescriptor = mapFieldDescriptor.getMessageType().findFieldByNumber(2);
     FieldDescriptorOrUnknown valueFieldDescriptorOrUnknown =
         FieldDescriptorOrUnknown.fromFieldDescriptor(valueFieldDescriptor);
@@ -279,15 +294,22 @@ final class ProtoTruthMessageDifferencer {
     for (Object key : keyOrder) {
       @Nullable Object actualValue = actualMap.get(key);
       @Nullable Object expectedValue = expectedMap.get(key);
-      builder.add(
-          compareSingularValue(
-              actualValue,
-              expectedValue,
-              /*defaultValue=*/ null,
-              shouldIgnoreValue.shouldMaybeIgnore(),
-              valueFieldDescriptor,
-              indexedName(mapFieldDescriptor, key),
-              valueFieldScopeLogic));
+      if (config.ignoreExtraRepeatedFieldElements()
+          && !expectedMap.isEmpty()
+          && expectedValue == null) {
+        builder.add(
+            SingularField.ignored(indexedName(mapFieldDescriptor, key, keyFieldDescriptor)));
+      } else {
+        builder.add(
+            compareSingularValue(
+                actualValue,
+                expectedValue,
+                /*defaultValue=*/ null,
+                shouldIgnoreValue.shouldMaybeIgnore(),
+                valueFieldDescriptor,
+                indexedName(mapFieldDescriptor, key, keyFieldDescriptor),
+                valueFieldScopeLogic));
+      }
     }
 
     return builder.build();
@@ -327,15 +349,25 @@ final class ProtoTruthMessageDifferencer {
 
     // Record remaining unmatched elements.
     for (int i : unmatchedActual) {
-      builder.addPairResult(
-          compareRepeatedFieldElementPair(
-              actualList.get(i),
-              /*expected=*/ null,
-              shouldMaybeIgnore,
-              fieldDescriptor,
-              i,
-              /*expectedFieldIndex=*/ null,
-              fieldScopeLogic));
+      if (config.ignoreExtraRepeatedFieldElements() && !expectedList.isEmpty()) {
+        builder.addPairResult(
+            RepeatedField.PairResult.newBuilder()
+                .setResult(Result.IGNORED)
+                .setActual(actualList.get(i))
+                .setActualFieldIndex(i)
+                .setFieldDescriptor(fieldDescriptor)
+                .build());
+      } else {
+        builder.addPairResult(
+            compareRepeatedFieldElementPair(
+                actualList.get(i),
+                /*expected=*/ null,
+                shouldMaybeIgnore,
+                fieldDescriptor,
+                i,
+                /*expectedFieldIndex=*/ null,
+                fieldScopeLogic));
+      }
     }
     for (int j : unmatchedExpected) {
       builder.addPairResult(
@@ -350,6 +382,127 @@ final class ProtoTruthMessageDifferencer {
     }
 
     return builder.build();
+  }
+
+  private RepeatedField compareRepeatedFieldExpectingSubsequence(
+      List<?> actualList,
+      List<?> expectedList,
+      boolean shouldMaybeIgnore,
+      FieldDescriptor fieldDescriptor,
+      FieldScopeLogic fieldScopeLogic) {
+    RepeatedField.Builder builder =
+        RepeatedField.newBuilder()
+            .setFieldDescriptor(fieldDescriptor)
+            .setActual(actualList)
+            .setExpected(expectedList);
+
+    // Search for expectedList as a subsequence of actualList.
+    //
+    // This mostly replicates the algorithm used by IterableSubject.containsAll().inOrder(), but
+    // with some tweaks for fuzzy equality and structured output.
+    Deque<Integer> actualIndices = new ArrayDeque<>();
+    for (int i = 0; i < actualList.size(); i++) {
+      actualIndices.addLast(i);
+    }
+    Deque<Integer> actualNotInOrder = new ArrayDeque<>();
+
+    for (int expectedIndex = 0; expectedIndex < expectedList.size(); expectedIndex++) {
+      Object expected = expectedList.get(expectedIndex);
+
+      // Find the first actual element which matches.
+      @Nullable
+      RepeatedField.PairResult matchingResult =
+          findMatchingPairResult(
+              actualIndices,
+              actualList,
+              expectedIndex,
+              expected,
+              shouldMaybeIgnore,
+              fieldDescriptor,
+              fieldScopeLogic);
+
+      if (matchingResult != null) {
+        // Move all prior elements to actualNotInOrder.
+        while (!actualIndices.isEmpty()
+            && actualIndices.getFirst() < matchingResult.actualFieldIndex().get()) {
+          actualNotInOrder.add(actualIndices.removeFirst());
+        }
+        builder.addPairResult(matchingResult);
+      } else {
+        // Otherwise, see if a previous element matches, so we can improve the diff.
+        matchingResult =
+            findMatchingPairResult(
+                actualNotInOrder,
+                actualList,
+                expectedIndex,
+                expected,
+                shouldMaybeIgnore,
+                fieldDescriptor,
+                fieldScopeLogic);
+        if (matchingResult != null) {
+          // Report an out-of-order match, which is treated as not-matched.
+          matchingResult = matchingResult.toBuilder().setResult(Result.MOVED_OUT_OF_ORDER).build();
+          builder.addPairResult(matchingResult);
+        } else {
+          // Report a missing expected element.
+          builder.addPairResult(
+              RepeatedField.PairResult.newBuilder()
+                  .setResult(Result.REMOVED)
+                  .setFieldDescriptor(fieldDescriptor)
+                  .setExpected(expected)
+                  .setExpectedFieldIndex(expectedIndex)
+                  .build());
+        }
+      }
+    }
+
+    // Report any remaining not-in-order elements as ignored.
+    for (int index : actualNotInOrder) {
+      builder.addPairResult(
+          RepeatedField.PairResult.newBuilder()
+              .setResult(Result.IGNORED)
+              .setFieldDescriptor(fieldDescriptor)
+              .setActual(actualList.get(index))
+              .setActualFieldIndex(index)
+              .build());
+    }
+
+    return builder.build();
+  }
+
+  // Given a list of values, a list of indexes into that list, and an expected value, find the first
+  // actual value that compares equal to the expected value, and return the PairResult for it.
+  // Also removes the index for the matching value from actualIndicies.
+  //
+  // If there is no match, returns null.
+  @Nullable
+  private RepeatedField.PairResult findMatchingPairResult(
+      Deque<Integer> actualIndices,
+      List<?> actualValues,
+      int expectedIndex,
+      Object expectedValue,
+      boolean shouldMaybeIgnore,
+      FieldDescriptor fieldDescriptor,
+      FieldScopeLogic fieldScopeLogic) {
+    Iterator<Integer> actualIndexIter = actualIndices.iterator();
+    while (actualIndexIter.hasNext()) {
+      int actualIndex = actualIndexIter.next();
+      RepeatedField.PairResult pairResult =
+          compareRepeatedFieldElementPair(
+              actualValues.get(actualIndex),
+              expectedValue,
+              shouldMaybeIgnore,
+              fieldDescriptor,
+              actualIndex,
+              expectedIndex,
+              fieldScopeLogic);
+      if (pairResult.isMatched()) {
+        actualIndexIter.remove();
+        return pairResult;
+      }
+    }
+
+    return null;
   }
 
   private RepeatedField.PairResult compareRepeatedFieldElementPair(
@@ -740,8 +893,19 @@ final class ProtoTruthMessageDifferencer {
     return String.valueOf(unknownFieldDescriptor.fieldNumber());
   }
 
-  private static String indexedName(FieldDescriptor fieldDescriptor, Object key) {
-    return name(fieldDescriptor) + "[" + key + "]";
+  private static String indexedName(
+      FieldDescriptor fieldDescriptor, Object key, FieldDescriptor keyFieldDescriptor) {
+    StringBuilder sb = new StringBuilder();
+    try {
+      TextFormat.printFieldValue(keyFieldDescriptor, key, sb);
+    } catch (IOException impossible) {
+      throw new AssertionError(impossible);
+    }
+    return name(fieldDescriptor) + "[" + sb + "]";
+  }
+
+  private static String indexedName(FieldDescriptor fieldDescriptor, int index) {
+    return name(fieldDescriptor) + "[" + index + "]";
   }
 
   private static String indexedName(UnknownFieldDescriptor unknownFieldDescriptor, int index) {
