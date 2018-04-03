@@ -17,7 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.annotateEmptyStrings;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
@@ -234,8 +236,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     List<?> actual = Lists.newLinkedList(actual());
     Collection<?> expected = iterableToCollection(expectedIterable);
 
-    List<Object> missing = Lists.newArrayList();
-    List<Object> actualNotInOrder = Lists.newArrayList();
+    List<Object> missing = newArrayList();
+    List<Object> actualNotInOrder = newArrayList();
 
     boolean ordered = true;
     // step through the expected elements...
@@ -316,7 +318,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   @CanIgnoreReturnValue
   public final Ordered containsExactly(@Nullable Object... varargs) {
-    List<Object> expected = (varargs == null) ? Lists.newArrayList((Object) null) : asList(varargs);
+    List<Object> expected = (varargs == null) ? newArrayList((Object) null) : asList(varargs);
     return containsExactlyElementsIn(
         expected, varargs != null && varargs.length == 1 && varargs[0] instanceof Iterable);
   }
@@ -351,12 +353,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   private Ordered containsExactlyElementsIn(Iterable<?> required, boolean addElementsInWarning) {
-    String failSuffix =
-        addElementsInWarning
-            ? ". Passing an iterable to the varargs method containsExactly(Object...) is "
-                + "often not the correct thing to do. Did you mean to call "
-                + "containsExactlyElementsIn(Iterable) instead?"
-            : "";
     Iterator<?> actualIter = actual().iterator();
     Iterator<?> requiredIter = required.iterator();
 
@@ -380,12 +376,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // effect on the result now.
       if (!Objects.equal(actualElement, requiredElement)) {
         // Missing elements; elements that are not missing will be removed as we iterate.
-        Collection<Object> missing = Lists.newArrayList();
+        Collection<Object> missing = newArrayList();
         missing.add(requiredElement);
         Iterators.addAll(missing, requiredIter);
 
         // Extra elements that the subject had but shouldn't have.
-        Collection<Object> extra = Lists.newArrayList();
+        Collection<Object> extra = newArrayList();
 
         // Remove all actual elements from missing, and add any that weren't in missing
         // to extra.
@@ -399,49 +395,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           }
         }
 
-        // Fail if there are either missing or extra elements.
-
-        // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
-        // the subject but not enough times. Similarly for unexpected extra items.
-        if (!missing.isEmpty()) {
-          if (!extra.isEmpty()) {
-            // Subject is both missing required elements and contains extra elements
-            boolean addTypeInfo = hasMatchingToStringPair(missing, extra);
-            failWithRawMessage(
-                "Not true that %s contains exactly <%s>. "
-                    + "It is missing <%s> and has unexpected items <%s>%s",
-                actualAsString(),
-                annotateEmptyStrings(required),
-                addTypeInfo
-                    ? countDuplicatesAndAddTypeInfo(annotateEmptyStrings(missing))
-                    : countDuplicates(annotateEmptyStrings(missing)),
-                addTypeInfo
-                    ? countDuplicatesAndAddTypeInfo(annotateEmptyStrings(extra))
-                    : countDuplicates(annotateEmptyStrings(extra)),
-                failSuffix);
-            return ALREADY_FAILED;
-          } else {
-            failWithBadResultsAndSuffix(
-                "contains exactly",
-                annotateEmptyStrings(required),
-                "is missing",
-                countDuplicates(annotateEmptyStrings(missing)),
-                failSuffix);
-            return ALREADY_FAILED;
-          }
+        if (missing.isEmpty() && extra.isEmpty()) {
+          /*
+           * This containsExactly() call is a success. But the iterables were not in the same order,
+           * so return an object that will fail the test if the user calls inOrder().
+           */
+          return new NotInOrder(this, "contains exactly these elements in order", required);
         }
-        if (!extra.isEmpty()) {
-          failWithBadResultsAndSuffix(
-              "contains exactly",
-              annotateEmptyStrings(required),
-              "has unexpected items",
-              countDuplicates(annotateEmptyStrings(extra)),
-              failSuffix);
-          return ALREADY_FAILED;
-        }
-
-        // Since we know the iterables were not in the same order, inOrder() can just fail.
-        return new NotInOrder(this, "contains exactly these elements in order", required);
+        return failExactly(required, addElementsInWarning, missing, extra);
       }
     }
 
@@ -449,21 +410,17 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     // pairs of elements that differ. If the actual iterator still has elements, they're
     // extras. If the required iterator has elements, they're missing elements.
     if (actualIter.hasNext()) {
-      failWithBadResultsAndSuffix(
-          "contains exactly",
-          annotateEmptyStrings(required),
-          "has unexpected items",
-          countDuplicates(annotateEmptyStrings(Lists.newArrayList(actualIter))),
-          failSuffix);
-      return ALREADY_FAILED;
+      return failExactly(
+          required,
+          addElementsInWarning,
+          /* missing= */ ImmutableList.of(),
+          /* extra= */ newArrayList(actualIter));
     } else if (requiredIter.hasNext()) {
-      failWithBadResultsAndSuffix(
-          "contains exactly",
-          annotateEmptyStrings(required),
-          "is missing",
-          countDuplicates(annotateEmptyStrings(Lists.newArrayList(requiredIter))),
-          failSuffix);
-      return ALREADY_FAILED;
+      return failExactly(
+          required,
+          addElementsInWarning,
+          /* missing= */ newArrayList(requiredIter),
+          /* extra= */ ImmutableList.of());
     }
 
     // If neither iterator has elements, we reached the end and the elements were in
@@ -471,25 +428,52 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     return IN_ORDER;
   }
 
-  /**
-   * Fails with the bad results and a suffix.
-   *
-   * @param verb the check being asserted
-   * @param expected the expectations against which the subject is compared
-   * @param failVerb the failure of the check being asserted
-   * @param actual the actual value the subject was compared against
-   * @param suffix a suffix to append to the failure message
-   */
-  private void failWithBadResultsAndSuffix(
-      String verb, Object expected, String failVerb, Object actual, String suffix) {
-    failWithRawMessage(
-        "Not true that %s %s <%s>. It %s <%s>%s",
-        actualAsString(),
-        verb,
-        expected,
-        failVerb,
-        (actual == null) ? "null reference" : actual,
-        suffix);
+  private Ordered failExactly(
+      Iterable<?> required,
+      boolean addElementsInWarning,
+      Collection<?> missing,
+      Collection<?> extra) {
+    // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
+    // the subject but not enough times. Similarly for unexpected extra items.
+    // Subject is both missing required elements and contains extra elements
+    boolean addTypeInfo = hasMatchingToStringPair(missing, extra);
+    StringBuilder message =
+        new StringBuilder(
+            format(
+                "Not true that %s contains exactly <%s>. It ",
+                actualAsString(), annotateEmptyStrings(required)));
+    /*
+     * Fact keys like "missing (1)" and "unexpected (2)" violate our recommendation that keys
+     * should be fixed strings. This violation lets the fact value contain only the elements
+     * (instead of also containing the count), so it feels worthwhile.
+     */
+    if (!missing.isEmpty()) {
+      message.append(
+          format(
+              "is missing <%s>",
+              addTypeInfo
+                  ? countDuplicatesAndAddTypeInfo(annotateEmptyStrings(missing))
+                  : countDuplicates(annotateEmptyStrings(missing))));
+    }
+    if (!extra.isEmpty()) {
+      if (!missing.isEmpty()) {
+        message.append(" and ");
+      }
+      message.append(
+          format(
+              "has unexpected items <%s>",
+              addTypeInfo
+                  ? countDuplicatesAndAddTypeInfo(annotateEmptyStrings(extra))
+                  : countDuplicates(annotateEmptyStrings(extra))));
+    }
+    if (addElementsInWarning) {
+      message.append(
+          ". Passing an iterable to the varargs method containsExactly(Object...) is "
+              + "often not the correct thing to do. Did you mean to call "
+              + "containsExactlyElementsIn(Iterable) instead?");
+    }
+    failWithRawMessage(message.toString());
+    return ALREADY_FAILED;
   }
 
   /**
@@ -840,7 +824,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     @CanIgnoreReturnValue
     public final Ordered containsExactly(@Nullable E... expected) {
       return containsExactlyElementsIn(
-          (expected == null) ? Lists.newArrayList((E) null) : asList(expected));
+          (expected == null) ? newArrayList((E) null) : asList(expected));
     }
 
     /**
@@ -983,7 +967,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
               + "provided and has consequently been ignored.)";
         }
       } else if (missing.size() == 1 && extra.size() >= 1) {
-        return StringUtil.format(
+        return format(
             "is missing an element that %s <%s> and has unexpected elements <%s>",
             correspondence, missing.get(0), formatExtras(missing.get(0), extra));
       } else {
@@ -993,24 +977,23 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     private String describeMissingOrExtraWithoutPairing(
         String verb, List<? extends E> missing, List<? extends A> extra) {
-      List<String> messages = Lists.newArrayList();
+      List<String> messages = newArrayList();
       if (!missing.isEmpty()) {
-        messages.add(
-            StringUtil.format("is missing an element that %s %s", verb, formatMissing(missing)));
+        messages.add(format("is missing an element that %s %s", verb, formatMissing(missing)));
       }
       if (!extra.isEmpty()) {
-        messages.add(StringUtil.format("has unexpected elements <%s>", extra));
+        messages.add(format("has unexpected elements <%s>", extra));
       }
       return Joiner.on(" and ").join(messages);
     }
 
     private String describeMissingOrExtraWithPairing(Pairing pairing) {
-      List<String> messages = Lists.newArrayList();
+      List<String> messages = newArrayList();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
         List<A> extras = pairing.pairedKeysToActualValues.get(key);
         messages.add(
-            StringUtil.format(
+            format(
                 "is missing an element that corresponds to <%s> and has unexpected elements <%s> "
                     + "with key %s",
                 missing, formatExtras(missing, extras), key));
@@ -1032,7 +1015,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       for (A extra : extras) {
         @Nullable String diff = correspondence.formatDiff(extra, missing);
         if (diff != null) {
-          extrasFormatted.add(StringUtil.format("%s (diff: %s)", extra, diff));
+          extrasFormatted.add(format("%s (diff: %s)", extra, diff));
         } else {
           extrasFormatted.add(extra.toString());
         }
@@ -1050,7 +1033,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         // index must be in there once.
         return ImmutableList.of();
       }
-      List<T> notIndexed = Lists.newArrayList();
+      List<T> notIndexed = newArrayList();
       for (int index = 0; index < list.size(); index++) {
         if (!indexes.contains(index)) {
           notIndexed.add(list.get(index));
@@ -1279,16 +1262,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     private String describeMissingWithoutPairing(String verb, List<? extends E> missing) {
-      return StringUtil.format("is missing an element that %s %s", verb, formatMissing(missing));
+      return format("is missing an element that %s %s", verb, formatMissing(missing));
     }
 
     private String describeMissingWithPairing(Pairing pairing) {
-      List<String> messages = Lists.newArrayList();
+      List<String> messages = newArrayList();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
         List<A> extras = pairing.pairedKeysToActualValues.get(key);
         messages.add(
-            StringUtil.format(
+            format(
                 "is missing an element that corresponds to <%s> (but did have elements <%s> with "
                     + "matching key %s)",
                 missing, formatExtras(missing, extras), key));
@@ -1334,7 +1317,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     @SafeVarargs
     public final void containsAnyOf(@Nullable E first, @Nullable E second, @Nullable E... rest) {
       containsAny(
-          StringUtil.format("contains at least one element that %s any of", correspondence),
+          format("contains at least one element that %s any of", correspondence),
           accumulate(first, second, rest));
     }
 
@@ -1344,8 +1327,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     public void containsAnyIn(Iterable<? extends E> expected) {
       containsAny(
-          StringUtil.format("contains at least one element that %s any element in", correspondence),
-          expected);
+          format("contains at least one element that %s any element in", correspondence), expected);
     }
 
     /**
@@ -1390,12 +1372,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     private String describeAnyMatchesByKey(Pairing pairing) {
-      List<String> messages = Lists.newArrayList();
+      List<String> messages = newArrayList();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E expected = pairing.pairedKeysToExpectedValues.get(key);
         List<A> got = pairing.pairedKeysToActualValues.get(key);
         messages.add(
-            StringUtil.format(
+            format(
                 "with key %s, would have accepted %s, but got %s",
                 key, expected, formatExtras(expected, got)));
       }
@@ -1569,13 +1551,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
        * List of the expected values not used in the pairing. Iterates in the order they appear in
        * the input.
        */
-      private final List<E> unpairedExpectedValues = Lists.newArrayList();
+      private final List<E> unpairedExpectedValues = newArrayList();
 
       /**
        * List of the actual values not used in the pairing. Iterates in the order they appear in the
        * input.
        */
-      private final List<A> unpairedActualValues = Lists.newArrayList();
+      private final List<A> unpairedActualValues = newArrayList();
     }
   }
 }

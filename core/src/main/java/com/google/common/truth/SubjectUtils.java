@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.collect.Iterables.isEmpty;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.HashMultimap;
@@ -148,6 +150,9 @@ final class SubjectUtils {
    * <p>Example: {@code hasMatchingToStringPair([1L, 2L], [1]) == true}
    */
   static boolean hasMatchingToStringPair(Iterable<?> items1, Iterable<?> items2) {
+    if (isEmpty(items1) || isEmpty(items2)) {
+      return false; // Bail early to avoid calling hashCode() on the elements unnecessarily.
+    }
     return !retainMatchingToString(items1, items2).isEmpty();
   }
 
