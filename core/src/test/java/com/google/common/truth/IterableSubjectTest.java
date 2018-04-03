@@ -239,7 +239,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAnyIn(asList(5, 6, 0));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains any element in <[5, 6, 0]>");
+        .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
   }
 
   @Test
@@ -249,7 +249,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAnyIn(new Integer[] {5, 6, 0});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains any element in <[5, 6, 0]>");
+        .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
   }
 
   @Test
@@ -277,7 +277,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllOf(1, 2, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains all of <[1, 2, 4]>. It is missing <[4]>");
+        .isEqualTo("Not true that <[1, 2, 3]> contains at least <[1, 2, 4]>. It is missing <[4]>");
   }
 
   @Test
@@ -285,7 +285,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList("y", "x")).containsAllOf("x", "y", "z");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[y, x]> contains all of <[x, y, z]>. It is missing <[z]>");
+        .isEqualTo("Not true that <[y, x]> contains at least <[x, y, z]>. It is missing <[z]>");
   }
 
   @Test
@@ -293,7 +293,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList("y", "x")).containsAllOf("x", "y", "y");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo("Not true that <[y, x]> contains all of <[x, y, y]>. It is missing <[y]>");
+        .isEqualTo("Not true that <[y, x]> contains at least <[x, y, y]>. It is missing <[y]>");
   }
 
   @Test
@@ -302,7 +302,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1, 2, 3]> contains all of <[1, 2, 2, 2, 3, 4]>. "
+            "Not true that <[1, 2, 3]> contains at least <[1, 2, 2, 2, 3, 4]>. "
                 + "It is missing <[2 [2 copies], 4]>");
   }
 
@@ -316,7 +316,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1, 2]> contains all of <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
+            "Not true that <[1, 2]> contains at least <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
   }
 
   @Test
@@ -325,7 +325,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1, null, 3]> contains all of <[1, null, null, 3]>. "
+            "Not true that <[1, null, 3]> contains at least <[1, null, null, 3]>. "
                 + "It is missing <[null]>");
   }
 
@@ -335,7 +335,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1, 2]> contains all of <[1, 2]>. It is missing "
+            "Not true that <[1, 2]> contains at least <[1, 2]>. It is missing "
                 + "<[1, 2] (java.lang.Integer)>. However, it does contain "
                 + "<[1, 2] (java.lang.Long)>.");
   }
@@ -346,7 +346,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1, 2, 2]> contains all of <[1, 1, 2]>. It is missing "
+            "Not true that <[1, 2, 2]> contains at least <[1, 1, 2]>. It is missing "
                 + "<[1 [2 copies], 2] (java.lang.Integer)>. However, it does contain "
                 + "<[1, 2 [2 copies]] (java.lang.Long)>.");
   }
@@ -357,7 +357,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[null, abc]> contains all of <[abc, null]>. It is missing "
+            "Not true that <[null, abc]> contains at least <[abc, null]>. It is missing "
                 + "<[null (null type)]>. However, it does contain <[null] (java.lang.String)>.");
   }
 
@@ -367,7 +367,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1, 2, 2, 3, 3]> contains all of <[2, 2, 3, 3]>. It is missing "
+            "Not true that <[1, 2, 2, 3, 3]> contains at least <[2, 2, 3, 3]>. It is missing "
                 + "<[2 (java.lang.Long), 3 (java.lang.Integer) [2 copies]]>. However, it does "
                 + "contain <[2 (java.lang.Integer), 3 (java.lang.Long) [2 copies]]>.");
   }
@@ -379,7 +379,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[a, null]> contains all of <[\"\" (empty String), null]>. "
+            "Not true that <[a, null]> contains at least <[\"\" (empty String), null]>. "
                 + "It is missing <[\"\" (empty String)]>");
   }
 
@@ -462,8 +462,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllIn(asList(1, 2, 4));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains all elements in <[1, 2, 4]>. It is missing <[4]>");
+        .isEqualTo("Not true that <[1, 2, 3]> contains at least <[1, 2, 4]>. It is missing <[4]>");
   }
 
   @Test
@@ -473,8 +472,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllIn(new Integer[] {1, 2, 4});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains all elements in <[1, 2, 4]>. It is missing <[4]>");
+        .isEqualTo("Not true that <[1, 2, 3]> contains at least <[1, 2, 4]>. It is missing <[4]>");
   }
 
   @Test
@@ -525,8 +523,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneIn(asList(1, 2, 4));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains no elements in <[1, 2, 4]>. It contains <[1, 2]>");
+        .isEqualTo("Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
   }
 
   @Test
@@ -535,8 +532,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneIn(new Integer[] {1, 2, 4});
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains no elements in <[1, 2, 4]>. It contains <[1, 2]>");
+        .isEqualTo("Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
   }
 
   @Test

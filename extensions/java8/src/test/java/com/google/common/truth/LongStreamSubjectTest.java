@@ -165,7 +165,7 @@ public final class LongStreamSubjectTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Not true that <[42]> contains any element in <[43, 44]>");
+          .isEqualTo("Not true that <[42]> contains any of <[43, 44]>");
     }
   }
 
@@ -214,7 +214,7 @@ public final class LongStreamSubjectTest {
     } catch (AssertionError expected) {
       assertThat(expected)
           .hasMessageThat()
-          .isEqualTo("Not true that <[42]> contains no elements in <[42, 43]>. It contains <[42]>");
+          .isEqualTo("Not true that <[42]> contains none of <[42, 43]>. It contains <[42]>");
     }
   }
 
@@ -232,7 +232,7 @@ public final class LongStreamSubjectTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <[42, 43]> contains all of <[42, 43, 44]>. It is missing <[44]>");
+              "Not true that <[42, 43]> contains at least <[42, 43, 44]>. It is missing <[44]>");
     }
   }
 
@@ -267,7 +267,7 @@ public final class LongStreamSubjectTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <[42, 43]> contains all elements in <[42, 43, 44]>. "
+              "Not true that <[42, 43]> contains at least <[42, 43, 44]>. "
                   + "It is missing <[44]>");
     }
   }
@@ -281,7 +281,7 @@ public final class LongStreamSubjectTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <[42, 43]> contains all elements in <[42, 43, 44]>. "
+              "Not true that <[42, 43]> contains at least <[42, 43, 44]>. "
                   + "It is missing <[42, 43, 44] (java.lang.Integer)>. "
                   + "However, it does contain <[42, 43] (java.lang.Long)>.");
     }
@@ -313,7 +313,7 @@ public final class LongStreamSubjectTest {
       assertThat(expected)
           .hasMessageThat()
           .isEqualTo(
-              "Not true that <[42, 43]> contains all elements in <[43, 42]>. "
+              "Not true that <[42, 43]> contains at least <[43, 42]>. "
                   + "It is missing <[43, 42] (java.lang.Integer)>. "
                   + "However, it does contain <[42, 43] (java.lang.Long)>.");
     }

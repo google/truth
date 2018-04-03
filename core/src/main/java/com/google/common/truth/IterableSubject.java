@@ -168,7 +168,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Checks that the subject contains at least one of the provided objects or fails. */
   public final void containsAnyOf(
       @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
-    containsAny("contains any of", accumulate(first, second, rest));
+    containsAny(accumulate(first, second, rest));
   }
 
   /**
@@ -176,7 +176,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * collection or fails.
    */
   public final void containsAnyIn(Iterable<?> expected) {
-    containsAny("contains any element in", expected);
+    containsAny(expected);
   }
 
   /**
@@ -187,7 +187,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     containsAnyIn(asList(expected));
   }
 
-  private void containsAny(String failVerb, Iterable<?> expected) {
+  private void containsAny(Iterable<?> expected) {
     Collection<?> actual = iterableToCollection(actual());
     for (Object item : expected) {
       if (actual.contains(item)) {
@@ -198,12 +198,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       failWithRawMessage(
           "Not true that %s %s <%s>. However, it does contain <%s>.",
           actualAsString(),
-          failVerb,
+          "contains any of",
           iterableToStringWithTypeInfo(expected),
           countDuplicatesAndAddTypeInfo(
               retainMatchingToString(actual(), expected /* itemsToCheck */)));
     } else {
-      fail(failVerb, expected);
+      fail("contains any of", expected);
     }
   }
 
@@ -221,8 +221,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       @Nullable Object firstExpected,
       @Nullable Object secondExpected,
       @Nullable Object... restOfExpected) {
-    return containsAll(
-        "contains all of", accumulate(firstExpected, secondExpected, restOfExpected));
+    return containsAll(accumulate(firstExpected, secondExpected, restOfExpected));
   }
 
   /**
@@ -236,7 +235,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   @CanIgnoreReturnValue
   public final Ordered containsAllIn(Iterable<?> expected) {
-    return containsAll("contains all elements in", expected);
+    return containsAll(expected);
   }
 
   /**
@@ -253,7 +252,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     return containsAllIn(asList(expected));
   }
 
-  private Ordered containsAll(String failVerb, Iterable<?> expectedIterable) {
+  private Ordered containsAll(Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(actual());
     Collection<?> expected = iterableToCollection(expectedIterable);
 
@@ -281,9 +280,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     if (!missing.isEmpty()) {
       if (hasMatchingToStringPair(actual(), missing)) {
         failWithRawMessage(
-            "Not true that %s %s <%s>. It is missing <%s>. However, it does contain <%s>.",
+            "Not true that %s contains at least <%s>. "
+                + "It is missing <%s>. However, it does contain <%s>.",
             actualAsString(),
-            failVerb,
             annotateEmptyStrings(expected),
             countDuplicatesAndAddTypeInfo(annotateEmptyStrings(missing)),
             countDuplicatesAndAddTypeInfo(
@@ -291,7 +290,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                     retainMatchingToString(actual(), missing /* itemsToCheck */))));
       } else {
         failWithBadResults(
-            failVerb,
+            "contains at least",
             annotateEmptyStrings(expected),
             "is missing",
             countDuplicates(annotateEmptyStrings(missing)));
@@ -509,7 +508,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       @Nullable Object firstExcluded,
       @Nullable Object secondExcluded,
       @Nullable Object... restOfExcluded) {
-    containsNone("contains none of", accumulate(firstExcluded, secondExcluded, restOfExcluded));
+    containsNone(accumulate(firstExcluded, secondExcluded, restOfExcluded));
   }
 
   /**
@@ -518,7 +517,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * elements equal any of the excluded.)
    */
   public final void containsNoneIn(Iterable<?> excluded) {
-    containsNone("contains no elements in", excluded);
+    containsNone(excluded);
   }
 
   /**
@@ -530,7 +529,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     containsNoneIn(asList(excluded));
   }
 
-  private void containsNone(String failVerb, Iterable<?> excluded) {
+  private void containsNone(Iterable<?> excluded) {
     Collection<?> actual = iterableToCollection(actual());
     Collection<Object> present = new ArrayList<>();
     for (Object item : Sets.newLinkedHashSet(excluded)) {
@@ -540,7 +539,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
     if (!present.isEmpty()) {
       failWithBadResults(
-          failVerb, annotateEmptyStrings(excluded), "contains", annotateEmptyStrings(present));
+          "contains none of",
+          annotateEmptyStrings(excluded),
+          "contains",
+          annotateEmptyStrings(present));
     }
   }
 
