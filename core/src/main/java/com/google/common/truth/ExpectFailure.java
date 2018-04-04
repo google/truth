@@ -155,7 +155,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
 
   /**
    * Static alternative that directly returns the triggered failure. This is intended to be used in
-   * Java 8 tests similar to {@code expectThrows()}:
+   * Java 8+ tests similar to {@code expectThrows()}:
    *
    * <p>{@code AssertionError failure = expectFailure(whenTesting ->
    * whenTesting.that(4).isNotEqualTo(4));}
@@ -169,7 +169,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
 
   /**
    * Static alternative that directly returns the triggered failure. This is intended to be used in
-   * Java 8 tests similar to {@code expectThrows()}:
+   * Java 8+ tests similar to {@code expectThrows()}:
    *
    * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
    * whenTesting.that(myType).hasProperty());}
@@ -218,10 +218,10 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * A "functional interface" for {@link #expectFailure expectFailure()} to invoke and capture
    * failures.
    *
-   * <p>Java 8 users should pass a lambda to {@code .expectFailure()} rather than directly implement
-   * this interface. Java 7 users can define an {@code @Rule ExpectFailure} instance instead,
-   * however if you prefer the {@code .expectFailure()} pattern you can use this interface to pass
-   * in an anonymous class.
+   * <p>Java 8+ users should pass a lambda to {@code .expectFailure()} rather than directly
+   * implement this interface. Java 7+ users can define an {@code @Rule ExpectFailure} instance
+   * instead, however if you prefer the {@code .expectFailure()} pattern you can use this interface
+   * to pass in an anonymous class.
    */
   public interface StandardSubjectBuilderCallback {
     void invokeAssertion(StandardSubjectBuilder whenTesting);
@@ -231,8 +231,8 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * A "functional interface" for {@link #expectFailureAbout expectFailureAbout()} to invoke and
    * capture failures.
    *
-   * <p>Java 8 users should pass a lambda to {@code .expectFailureAbout()} rather than directly
-   * implement this interface. Java 7 users can define an {@code @Rule ExpectFailure} instance
+   * <p>Java 8+ users should pass a lambda to {@code .expectFailureAbout()} rather than directly
+   * implement this interface. Java 7+ users can define an {@code @Rule ExpectFailure} instance
    * instead, however if you prefer the {@code .expectFailureAbout()} pattern you can use this
    * interface to pass in an anonymous class.
    */
