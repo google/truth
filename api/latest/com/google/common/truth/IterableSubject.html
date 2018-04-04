@@ -18,8 +18,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":42,"i24":42,"i25":10,"i26":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -200,7 +200,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
@@ -226,7 +226,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#containsAllIn-java.lang.Iterable-">containsAllIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#containsAllIn-java.lang.Iterable-">containsAllIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expectedIterable)</code>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </td>
 </tr>
@@ -319,69 +319,43 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 </td>
 </tr>
 <tr id="i17" class="rowColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#failWithBadResultsAndSuffix-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-java.lang.String-">failWithBadResultsAndSuffix</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected,
-                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;failVerb,
-                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual,
-                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;suffix)</code>
-<div class="block">Fails with the bad results and a suffix.</div>
-</td>
-</tr>
-<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#hasSize-int-">hasSize</a></span>(int&nbsp;expectedSize)</code>
 <div class="block">Fails if the subject does not have the given size.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#isEmpty--">isEmpty</a></span>()</code>
 <div class="block">Fails if the subject is not empty.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#isNotEmpty--">isNotEmpty</a></span>()</code>
 <div class="block">Fails if the subject is empty.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#isOrdered--">isOrdered</a></span>()</code>
 <div class="block">Fails if the iterable is not ordered, according to the natural ordering of its elements.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#isOrdered-java.util.Comparator-">isOrdered</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</code>
 <div class="block">Fails if the iterable is not ordered, according to the given comparator.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#isPartiallyOrdered--">isPartiallyOrdered</a></span>()</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.html#isOrdered--"><code>isOrdered()</code></a> instead.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i24" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#isPartiallyOrdered-java.util.Comparator-">isPartiallyOrdered</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.html#isOrdered-java.util.Comparator-"><code>isOrdered(Comparator)</code></a> instead.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i25" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#isStrictlyOrdered--">isStrictlyOrdered</a></span>()</code>
 <div class="block">Fails if the iterable is not strictly ordered, according to the natural ordering of its
  elements.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.html#isStrictlyOrdered-java.util.Comparator-">isStrictlyOrdered</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</code>
 <div class="block">Fails if the iterable is not strictly ordered, according to the given comparator.</div>
@@ -587,7 +561,7 @@ public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" tit
 <li class="blockList">
 <h4>containsAllIn</h4>
 <pre>@CanIgnoreReturnValue
-public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</pre>
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expectedIterable)</pre>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements then it must appear at least that
  number of times in the actual elements.
@@ -667,28 +641,6 @@ public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" tit
 
  <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
  on the object returned by this method.</div>
-</li>
-</ul>
-<a name="failWithBadResultsAndSuffix-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>failWithBadResultsAndSuffix</h4>
-<pre>protected final&nbsp;void&nbsp;failWithBadResultsAndSuffix(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-                                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected,
-                                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;failVerb,
-                                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual,
-                                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;suffix)</pre>
-<div class="block">Fails with the bad results and a suffix.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>verb</code> - the check being asserted</dd>
-<dd><code>expected</code> - the expectations against which the subject is compared</dd>
-<dd><code>failVerb</code> - the failure of the check being asserted</dd>
-<dd><code>actual</code> - the actual value the subject was compared against</dd>
-<dd><code>suffix</code> - a suffix to append to the failure message</dd>
-</dl>
 </li>
 </ul>
 <a name="containsNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">
@@ -794,28 +746,6 @@ public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" tit
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang">ClassCastException</a></code> - if any pair of elements is not mutually Comparable</dd>
 </dl>
-</li>
-</ul>
-<a name="isPartiallyOrdered--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isPartiallyOrdered</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-public final&nbsp;void&nbsp;isPartiallyOrdered()</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.html#isOrdered--"><code>isOrdered()</code></a> instead.</span></div>
-</li>
-</ul>
-<a name="isPartiallyOrdered-java.util.Comparator-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isPartiallyOrdered</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-public final&nbsp;void&nbsp;isPartiallyOrdered(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.html#isOrdered-java.util.Comparator-"><code>isOrdered(Comparator)</code></a> instead.</span></div>
 </li>
 </ul>
 <a name="comparingElementsUsing-com.google.common.truth.Correspondence-">

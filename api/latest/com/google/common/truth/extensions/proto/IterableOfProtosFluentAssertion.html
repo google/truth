@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":38,"i16":38,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6};
+var methods = {"i0":6,"i1":38,"i2":38,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -99,14 +99,18 @@ var activeTableTab = "activeTableTab";
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt>All Superinterfaces:</dt>
+<dd><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a>&lt;M&gt;</dd>
+</dl>
 <hr>
 <br>
-<pre>public interface <span class="typeNameLabel">IterableOfProtosFluentAssertion&lt;M extends com.google.protobuf.Message&gt;</span></pre>
+<pre>public interface <span class="typeNameLabel">IterableOfProtosFluentAssertion&lt;M extends com.google.protobuf.Message&gt;</span>
+extends <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a>&lt;M&gt;</pre>
 <div class="block">Fluent API to perform detailed, customizable comparison of iterables of protocol buffers. The
  same comparison rules are applied to all pairs of protocol buffers which get compared.
 
- <p>Methods may be chained in any order, but the chain should terminate with a method that doesn't
- return an IterableOfProtosFluentAssertion, such as <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsExactly-M...-"><code>containsExactly(M...)</code></a>, or <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAnyIn-java.lang.Iterable-"><code>containsAnyIn(java.lang.Iterable&lt;? extends M&gt;)</code></a>.
+ <p>Methods may be chained in any order, but the chain should terminate with a method from <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto"><code>IterableOfProtosUsingCorrespondence</code></a>.
 
  <p>The state of an <code>IterableOfProtosFluentAssertion</code> object after each method is called is
  left undefined. Users should not retain references to <code>IterableOfProtosFluentAssertion</code>
@@ -130,110 +134,12 @@ var activeTableTab = "activeTableTab";
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#contains-M-">contains</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;expected)</code>
-<div class="block">Checks that the subject contains at least one element that corresponds to the given expected
- element.</div>
+<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#comparingExpectedFieldsOnly--">comparingExpectedFieldsOnly</a></span>()</code>
+<div class="block">Limits the comparison of Protocol buffers to the fields set in the expected proto(s).</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAllIn-java.lang.Iterable-">containsAllIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;expected)</code>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAllIn-M:A-">containsAllIn</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>[]&nbsp;expected)</code>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAllOf-M-M-M...-">containsAllOf</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;first,
-             <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;second,
-             <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>...&nbsp;rest)</code>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAnyIn-java.lang.Iterable-">containsAnyIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;expected)</code>
-<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
- expected elements.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAnyIn-M:A-">containsAnyIn</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>[]&nbsp;expected)</code>
-<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
- expected elements.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsAnyOf-M-M-M...-">containsAnyOf</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;first,
-             <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;second,
-             <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>...&nbsp;rest)</code>
-<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
- expected elements.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsExactly-M...-">containsExactly</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>...&nbsp;expected)</code>
-<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;expected)</code>
-<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsExactlyElementsIn-M:A-">containsExactlyElementsIn</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>[]&nbsp;expected)</code>
-<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsNoneIn-java.lang.Iterable-">containsNoneIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;excluded)</code>
-<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
-</td>
-</tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsNoneIn-M:A-">containsNoneIn</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>[]&nbsp;excluded)</code>
-<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
-</td>
-</tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsNoneOf-M-M-M...-">containsNoneOf</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;firstExcluded,
-              <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;secondExcluded,
-              <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>...&nbsp;restOfExcluded)</code>
-<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
-</td>
-</tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>,<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#displayingDiffsPairedBy-com.google.common.base.Function-">displayingDiffsPairedBy</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>,?&gt;&nbsp;keyFunction)</code>
-<div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
- fails.</div>
-</td>
-</tr>
-<tr id="i14" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#doesNotContain-M-">doesNotContain</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;excluded)</code>
-<div class="block">Checks that none of the actual elements correspond to the given element.</div>
-</td>
-</tr>
-<tr id="i15" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#equals-java.lang.Object-">equals</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;o)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -241,7 +147,7 @@ var activeTableTab = "activeTableTab";
 </div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#hashCode--">hashCode</a></span>()</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -249,80 +155,87 @@ var activeTableTab = "activeTableTab";
 </div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#ignoringFieldAbsence--">ignoringFieldAbsence</a></span>()</code>
 <div class="block">Specifies that the 'has' bit of individual fields should be ignored when comparing for
  equality.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#ignoringFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldDescriptors</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
                         com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
 <div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#ignoringFieldDescriptors-java.lang.Iterable-">ignoringFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#ignoringFields-int-int...-">ignoringFields</a></span>(int&nbsp;firstFieldNumber,
               int...&nbsp;rest)</code>
 <div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#ignoringFields-java.lang.Iterable-">ignoringFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
 <div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#ignoringFieldScope-com.google.common.truth.extensions.proto.FieldScope-">ignoringFieldScope</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>
 <div class="block">Excludes all specific field paths under the argument <a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> from the comparison.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#ignoringRepeatedFieldOrder--">ignoringRepeatedFieldOrder</a></span>()</code>
 <div class="block">Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
  for equality.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#reportingMismatchesOnly--">reportingMismatchesOnly</a></span>()</code>
 <div class="block">If set, in the event of a comparison failure, the error message printed will list only those
  specific fields that did not match between the actual and expected values.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#usingDoubleTolerance-double-">usingDoubleTolerance</a></span>(double&nbsp;tolerance)</code>
 <div class="block">Compares double fields as equal if they are both finite and their absolute difference is less
  than or equal to <code>tolerance</code>.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#usingFloatTolerance-float-">usingFloatTolerance</a></span>(float&nbsp;tolerance)</code>
 <div class="block">Compares float fields as equal if they are both finite and their absolute difference is less
  than or equal to <code>tolerance</code>.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#withPartialScope-com.google.common.truth.extensions.proto.FieldScope-">withPartialScope</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>
 <div class="block">Limits the comparison of Protocol buffers to the defined <a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a>.</div>
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.com.google.common.truth.extensions.proto.IterableOfProtosUsingCorrespondence">
+<!--   -->
+</a>
+<h3>Methods inherited from interface&nbsp;com.google.common.truth.extensions.proto.<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></h3>
+<code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#contains-M-">contains</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAllIn-java.lang.Iterable-">containsAllIn</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAllIn-M:A-">containsAllIn</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAllOf-M-M-M...-">containsAllOf</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAnyIn-java.lang.Iterable-">containsAnyIn</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAnyIn-M:A-">containsAnyIn</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAnyOf-M-M-M...-">containsAnyOf</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsExactly-M...-">containsExactly</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsExactlyElementsIn-M:A-">containsExactlyElementsIn</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsNoneIn-java.lang.Iterable-">containsNoneIn</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsNoneIn-M:A-">containsNoneIn</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsNoneOf-M-M-M...-">containsNoneOf</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-">displayingDiffsPairedBy</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#doesNotContain-M-">doesNotContain</a></code></li>
+</ul>
 </li>
 </ul>
 </li>
@@ -456,6 +369,25 @@ var activeTableTab = "activeTableTab";
 </dl>
 </li>
 </ul>
+<a name="comparingExpectedFieldsOnly--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>comparingExpectedFieldsOnly</h4>
+<pre><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;comparingExpectedFieldsOnly()</pre>
+<div class="block">Limits the comparison of Protocol buffers to the fields set in the expected proto(s). When
+ multiple protos are specified, the comparison is limited to the union of set fields in all the
+ expected protos.
+
+ <p>The "expected proto(s)" are those passed to the method in <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto"><code>IterableOfProtosUsingCorrespondence</code></a> at the end of the call-chain.
+
+ <p>Fields not set in the expected proto(s) are ignored. In particular, proto3 fields which have
+ their default values are ignored, as these are indistinguishable from unset fields. If you want
+ to assert that a proto3 message has certain fields with default values, you cannot use this
+ method.</div>
+</li>
+</ul>
 <a name="withPartialScope-com.google.common.truth.extensions.proto.FieldScope-">
 <!--   -->
 </a>
@@ -571,272 +503,6 @@ var activeTableTab = "activeTableTab";
  large protocol buffers.
 
  <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.</div>
-</li>
-</ul>
-<a name="displayingDiffsPairedBy-com.google.common.base.Function-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>displayingDiffsPairedBy</h4>
-<pre><a href="../../../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>,<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;displayingDiffsPairedBy(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>,?&gt;&nbsp;keyFunction)</pre>
-<div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
- fails. For example:
-
- <pre><code>
- assertThat(actualFoos)
-     .ignoringRepeatedFieldOrder()
-     .ignoringFields(Foo.BAR_FIELD_NUMBER)
-     .displayingDiffsPairedBy(Foo::getId)
-     .containsExactlyElementsIn(expectedFoos);
- </code></pre>
-
- <p>On assertions where it makes sense to do so, the elements are paired as follows: they are
- keyed by <code>keyFunction</code>, and if an unexpected element and a missing element have the same
- non-null key then the they are paired up. (Elements with null keys are not paired.) The failure
- message will show paired elements together, and a diff will be shown.
-
- <p>The expected elements given in the assertion should be uniquely keyed by <code>keyFunction</code>. If multiple missing elements have the same key then the pairing will be skipped.
-
- <p>Useful key functions will have the property that key equality is less strict than the
- already specified equality rules; i.e. given <code>actual</code> and <code>expected</code> values with
- keys <code>actualKey</code> and <code>expectedKey</code>, if <code>actual</code> and <code>expected</code> compare
- equal given the rest of the directives such as <code>ignoringRepeatedFieldOrder</code> and <code>ignoringFields</code>, then it is guaranteed that <code>actualKey</code> is equal to <code>expectedKey</code>,
- but there are cases where <code>actualKey</code> is equal to <code>expectedKey</code> but the direct
- comparison fails.
-
- <p>Note that calling this method makes no difference to whether a test passes or fails, it just
- improves the message if it fails.</div>
-</li>
-</ul>
-<a name="contains-com.google.protobuf.Message-">
-<!--   -->
-</a><a name="contains-M-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>contains</h4>
-<pre>void&nbsp;contains(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-              <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;expected)</pre>
-<div class="block">Checks that the subject contains at least one element that corresponds to the given expected
- element.</div>
-</li>
-</ul>
-<a name="doesNotContain-com.google.protobuf.Message-">
-<!--   -->
-</a><a name="doesNotContain-M-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>doesNotContain</h4>
-<pre>void&nbsp;doesNotContain(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                    <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;excluded)</pre>
-<div class="block">Checks that none of the actual elements correspond to the given element.</div>
-</li>
-</ul>
-<a name="containsExactly-com.google.protobuf.Message:A-">
-<!--   -->
-</a><a name="containsExactly-M...-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsExactly</h4>
-<pre>@CanIgnoreReturnValue
-<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                              <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>...&nbsp;expected)</pre>
-<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
- that there is a 1:1 mapping between the actual elements and the expected elements where each
- pair of elements correspond.
-
- <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
- on the object returned by this method.
-
- <p>To test that the iterable contains the same elements as an array, prefer <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#containsExactlyElementsIn-M:A-"><code>containsExactlyElementsIn(Message[])</code></a>. It makes clear that the given array is a list of
- elements, not an element itself.</div>
-</li>
-</ul>
-<a name="containsExactlyElementsIn-java.lang.Iterable-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsExactlyElementsIn</h4>
-<pre>@CanIgnoreReturnValue
-<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;expected)</pre>
-<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
- that there is a 1:1 mapping between the actual elements and the expected elements where each
- pair of elements correspond.
-
- <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
- on the object returned by this method.</div>
-</li>
-</ul>
-<a name="containsExactlyElementsIn-com.google.protobuf.Message:A-">
-<!--   -->
-</a><a name="containsExactlyElementsIn-M:A-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsExactlyElementsIn</h4>
-<pre>@CanIgnoreReturnValue
-<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyElementsIn(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>[]&nbsp;expected)</pre>
-<div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
- that there is a 1:1 mapping between the actual elements and the expected elements where each
- pair of elements correspond.
-
- <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
- on the object returned by this method.</div>
-</li>
-</ul>
-<a name="containsAllOf-com.google.protobuf.Message-com.google.protobuf.Message-com.google.protobuf.Message:A-">
-<!--   -->
-</a><a name="containsAllOf-M-M-M...-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsAllOf</h4>
-<pre>@CanIgnoreReturnValue
-<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllOf(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                            <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;first,
-                                            <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                            <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;second,
-                                            <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                                            <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>...&nbsp;rest)</pre>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
- elements where each pair of elements correspond.
-
- <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
- on the object returned by this method. The elements must appear in the given order within the
- subject, but they are not required to be consecutive.</div>
-</li>
-</ul>
-<a name="containsAllIn-java.lang.Iterable-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsAllIn</h4>
-<pre>@CanIgnoreReturnValue
-<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;expected)</pre>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
- elements where each pair of elements correspond.
-
- <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
- on the object returned by this method. The elements must appear in the given order within the
- subject, but they are not required to be consecutive.</div>
-</li>
-</ul>
-<a name="containsAllIn-com.google.protobuf.Message:A-">
-<!--   -->
-</a><a name="containsAllIn-M:A-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsAllIn</h4>
-<pre>@CanIgnoreReturnValue
-<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>[]&nbsp;expected)</pre>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
- elements where each pair of elements correspond.
-
- <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
- on the object returned by this method. The elements must appear in the given order within the
- subject, but they are not required to be consecutive.</div>
-</li>
-</ul>
-<a name="containsAnyOf-com.google.protobuf.Message-com.google.protobuf.Message-com.google.protobuf.Message:A-">
-<!--   -->
-</a><a name="containsAnyOf-M-M-M...-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsAnyOf</h4>
-<pre>void&nbsp;containsAnyOf(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                   <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;first,
-                   <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                   <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;second,
-                   <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                   <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>...&nbsp;rest)</pre>
-<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
- expected elements.</div>
-</li>
-</ul>
-<a name="containsAnyIn-java.lang.Iterable-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsAnyIn</h4>
-<pre>void&nbsp;containsAnyIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;expected)</pre>
-<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
- expected elements.</div>
-</li>
-</ul>
-<a name="containsAnyIn-com.google.protobuf.Message:A-">
-<!--   -->
-</a><a name="containsAnyIn-M:A-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsAnyIn</h4>
-<pre>void&nbsp;containsAnyIn(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>[]&nbsp;expected)</pre>
-<div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
- expected elements.</div>
-</li>
-</ul>
-<a name="containsNoneOf-com.google.protobuf.Message-com.google.protobuf.Message-com.google.protobuf.Message:A-">
-<!--   -->
-</a><a name="containsNoneOf-M-M-M...-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsNoneOf</h4>
-<pre>void&nbsp;containsNoneOf(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                    <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;firstExcluded,
-                    <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                    <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&nbsp;secondExcluded,
-                    <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                    <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>...&nbsp;restOfExcluded)</pre>
-<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.
- (Duplicates are irrelevant to this test, which fails if any of the subject elements correspond
- to any of the given elements.)</div>
-</li>
-</ul>
-<a name="containsNoneIn-java.lang.Iterable-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsNoneIn</h4>
-<pre>void&nbsp;containsNoneIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>&gt;&nbsp;excluded)</pre>
-<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.
- (Duplicates are irrelevant to this test, which fails if any of the subject elements correspond
- to any of the given elements.)</div>
-</li>
-</ul>
-<a name="containsNoneIn-com.google.protobuf.Message:A-">
-<!--   -->
-</a><a name="containsNoneIn-M:A-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsNoneIn</h4>
-<pre>void&nbsp;containsNoneIn(<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="type parameter in IterableOfProtosFluentAssertion">M</a>[]&nbsp;excluded)</pre>
-<div class="block">Checks that the subject contains no elements that correspond to any of the given elements.
- (Duplicates are irrelevant to this test, which fails if any of the subject elements correspond
- to any of the given elements.)</div>
 </li>
 </ul>
 <a name="equals-java.lang.Object-">

@@ -412,7 +412,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i30" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</code>
 <div class="block">Fails if the subject is the same instance as the given object.</div>
 </td>
 </tr>
@@ -424,7 +424,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i32" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
 <div class="block">Fails if the subject is not the same instance as the given object.</div>
 </td>
 </tr>
@@ -573,7 +573,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <li class="blockList">
 <h4>isSameAs</h4>
 <pre>public&nbsp;void&nbsp;isSameAs(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a> @CompatibleWith(value="T")
-                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</pre>
+                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not the same instance as the given object.</div>
 </li>
 </ul>
@@ -584,7 +584,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <li class="blockList">
 <h4>isNotSameAs</h4>
 <pre>public&nbsp;void&nbsp;isNotSameAs(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a> @CompatibleWith(value="T")
-                        <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</pre>
+                        <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</pre>
 <div class="block">Fails if the subject is the same instance as the given object.</div>
 </li>
 </ul>
@@ -734,20 +734,20 @@ protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Stri
  automatically supplement their failure message with information about the original subject.
 
  <p>For example, <a href="../../../../com/google/common/truth/ThrowableSubject.html#hasMessageThat--"><code>ThrowableSubject.hasMessageThat()</code></a>, which returns a <a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a>,
- is implemented with <code>check("getMessage()").that(actual().getMessage()</code>.
+ is implemented with <code>check("getMessage()").that(actual().getMessage())</code>.
 
  <p>The arguments to <code>check</code> describe how the new subject was derived from the old,
  formatted like a chained method call. This allows Truth to include that information in its
- failure messages. For example, the <code>assertThat(caught).hasCauseThat().hasMessageThat()</code>
- will produce a failure message that includes <code>throwable.getCause().getMessage()</code>, thanks
- to <code>check</code> calls that supplied "getCause()" and "getMessage()" as arguments.
+ failure messages. For example, <code>assertThat(caught).hasCauseThat().hasMessageThat()</code> will
+ produce a failure message that includes the string "throwable.getCause().getMessage()," thanks
+ to internal <code>check</code> calls that supplied "getCause()" and "getMessage()" as arguments.
 
  <p>If the method you're delegating to accepts parameters, you can pass <code>check</code> a format
  string. For example, <a href="../../../../com/google/common/truth/MultimapSubject.html#valuesForKey-java.lang.Object-"><code>MultimapSubject.valuesForKey(java.lang.Object)</code></a> calls <code>check("valuesForKey(%s)", key)</code>.
 
  <p>If you aren't really delegating to an instance method on the actual value -- maybe you're
  calling a static method, or you're calling a chain of several methods -- you can supply
- whatever string will be most useful to users. For example, if you're delegating to <code>getOnlyElement(actual().colors())</code>, you might call .</div>
+ whatever string will be most useful to users. For example, if you're delegating to <code>getOnlyElement(actual().colors())</code>, you might call <code>check("onlyColor()")</code>.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>format</code> - a template with <code>%s</code> placeholders</dd>

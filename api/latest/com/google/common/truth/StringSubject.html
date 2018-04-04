@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":42,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":42,"i12":10,"i13":10,"i14":10,"i15":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -182,117 +182,98 @@ extends <a href="../../../../com/google/common/truth/ComparableSubject.html" tit
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>protected <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a></span>()</code>
-<div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
- or otherwise position it in an error message.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#contains-java.lang.CharSequence-">contains</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;string)</code>
 <div class="block">Fails if the string does not contain the given sequence.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#containsMatch-java.util.regex.Pattern-">containsMatch</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;pattern)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#containsMatch-java.util.regex.Pattern-">containsMatch</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;regex)</code>
 <div class="block">Fails if the string does not contain a match on the given regex.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#containsMatch-java.lang.String-">containsMatch</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;regex)</code>
 <div class="block">Fails if the string does not contain a match on the given regex.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#doesNotContain-java.lang.CharSequence-">doesNotContain</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;string)</code>
 <div class="block">Fails if the string contains the given sequence.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#doesNotContainMatch-java.util.regex.Pattern-">doesNotContainMatch</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;pattern)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#doesNotContainMatch-java.util.regex.Pattern-">doesNotContainMatch</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;regex)</code>
 <div class="block">Fails if the string contains a match on the given regex.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#doesNotContainMatch-java.lang.String-">doesNotContainMatch</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;regex)</code>
 <div class="block">Fails if the string contains a match on the given regex.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#doesNotMatch-java.util.regex.Pattern-">doesNotMatch</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;regex)</code>
 <div class="block">Fails if the string matches the given regex.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#doesNotMatch-java.lang.String-">doesNotMatch</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;regex)</code>
 <div class="block">Fails if the string matches the given regex.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#endsWith-java.lang.String-">endsWith</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;string)</code>
 <div class="block">Fails if the string does not end with the given string.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#hasLength-int-">hasLength</a></span>(int&nbsp;expectedLength)</code>
 <div class="block">Fails if the string does not have the given length.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#isEmpty--">isEmpty</a></span>()</code>
 <div class="block">Fails if the string is not equal to the zero-length "empty string."</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#isEqualTo-java.lang.Object-">isEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
-<div class="block">Fails if the subject is not equal to the given object.</div>
-</td>
-</tr>
-<tr id="i13" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#isEquivalentAccordingToCompareTo-java.lang.String-">isEquivalentAccordingToCompareTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;other)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/StringSubject.html#isEqualTo-java.lang.Object-"><code>isEqualTo(java.lang.Object)</code></a> instead. String comparison is consistent with equality.</span></div>
+<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>Subject.isEqualTo(java.lang.Object)</code></a> instead. String comparison is consistent with equality.</span></div>
 </div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#isNotEmpty--">isNotEmpty</a></span>()</code>
 <div class="block">Fails if the string is equal to the zero-length "empty string."</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#isNull--">isNull</a></span>()</code>
-<div class="block">Fails if the string is not null.</div>
-</td>
-</tr>
-<tr id="i16" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#matches-java.util.regex.Pattern-">matches</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;regex)</code>
 <div class="block">Fails if the string does not match the given regex.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#matches-java.lang.String-">matches</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;regex)</code>
 <div class="block">Fails if the string does not match the given regex.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#startsWith-java.lang.String-">startsWith</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;string)</code>
 <div class="block">Fails if the string does not start with the given string.</div>
@@ -311,7 +292,7 @@ extends <a href="../../../../com/google/common/truth/ComparableSubject.html" tit
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;com.google.common.truth.<a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></h3>
-<code><a href="../../../../com/google/common/truth/Subject.html#actual--">actual</a>, <a href="../../../../com/google/common/truth/Subject.html#actualAsString--">actualAsString</a>, <a href="../../../../com/google/common/truth/Subject.html#check--">check</a>, <a href="../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">failComparing</a>, <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-java.lang.Throwable-">failComparing</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessage-java.lang.String-java.lang.Object...-">failWithRawMessage</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessageAndCause-java.lang.String-java.lang.Throwable-">failWithRawMessageAndCause</a>, <a href="../../../../com/google/common/truth/Subject.html#getSubject--">getSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../com/google/common/truth/Subject.html#internalCustomName--">internalCustomName</a>, <a href="../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a>, <a href="../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a>, <a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a>, <a href="../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
+<code><a href="../../../../com/google/common/truth/Subject.html#actual--">actual</a>, <a href="../../../../com/google/common/truth/Subject.html#actualAsString--">actualAsString</a>, <a href="../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a>, <a href="../../../../com/google/common/truth/Subject.html#check--">check</a>, <a href="../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a>, <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">failComparing</a>, <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-java.lang.Throwable-">failComparing</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessage-java.lang.String-java.lang.Object...-">failWithRawMessage</a>, <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessageAndCause-java.lang.String-java.lang.Throwable-">failWithRawMessageAndCause</a>, <a href="../../../../com/google/common/truth/Subject.html#getSubject--">getSubject</a>, <a href="../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../com/google/common/truth/Subject.html#internalCustomName--">internalCustomName</a>, <a href="../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a>, <a href="../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a>, <a href="../../../../com/google/common/truth/Subject.html#isNull--">isNull</a>, <a href="../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a>, <a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a>, <a href="../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -355,52 +336,6 @@ extends <a href="../../../../com/google/common/truth/ComparableSubject.html" tit
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="actualCustomStringRepresentation--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>actualCustomStringRepresentation</h4>
-<pre>protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;actualCustomStringRepresentation()</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">Subject</a></code></span></div>
-<div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
- or otherwise position it in an error message. This should only be overridden to provide an
- improved string representation of the value under test, as it would appear in any given error
- message, and should not be used for additional prefixing.
-
- <p>Subjects should override this with care.
-
- <p>By default, this returns <code>String.ValueOf(getActualValue())</code>.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a></code>&nbsp;in class&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a>,<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></dd>
-</dl>
-</li>
-</ul>
-<a name="isEqualTo-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isEqualTo</h4>
-<pre>public&nbsp;void&nbsp;isEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
-                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">Subject</a></code></span></div>
-<div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
- objects are equal if any of the following is true:
-
- <ul>
-   <li>they are equal according to <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Objects.html?is-external=true#equal-java.lang.Object-java.lang.Object-" title="class or interface in com.google.common.base"><code>Objects.equal(java.lang.Object, java.lang.Object)</code></a>
-   <li>they are arrays and are considered equal by the appropriate <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals-long:A-long:A-" title="class or interface in java.util"><code>Arrays.equals(long[], long[])</code></a>
-       overload
-   <li>they are boxed integer types (<code>Byte</code>, <code>Short</code>, <code>Character</code>, <code>Integer</code>, or <code>Long</code>) and they are numerically equal when converted to <code>Long</code>.
- </ul></div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a></code>&nbsp;in class&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a>,<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></dd>
-</dl>
-</li>
-</ul>
 <a name="isEquivalentAccordingToCompareTo-java.lang.String-">
 <!--   -->
 </a>
@@ -409,7 +344,7 @@ extends <a href="../../../../com/google/common/truth/ComparableSubject.html" tit
 <h4>isEquivalentAccordingToCompareTo</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public final&nbsp;void&nbsp;isEquivalentAccordingToCompareTo(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;other)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/StringSubject.html#isEqualTo-java.lang.Object-"><code>isEqualTo(java.lang.Object)</code></a> instead. String comparison is consistent with equality.</span></div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>Subject.isEqualTo(java.lang.Object)</code></a> instead. String comparison is consistent with equality.</span></div>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../com/google/common/truth/ComparableSubject.html#isEquivalentAccordingToCompareTo-T-">ComparableSubject</a></code></span></div>
 <div class="block">Checks that the subject is equivalent to <code>other</code> according to <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true#compareTo-T-" title="class or interface in java.lang"><code>Comparable.compareTo(T)</code></a>, (i.e., checks that <code>a.comparesTo(b) == 0</code>).
 
@@ -417,20 +352,6 @@ public final&nbsp;void&nbsp;isEquivalentAccordingToCompareTo(<a href="https://do
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="../../../../com/google/common/truth/ComparableSubject.html#isEquivalentAccordingToCompareTo-T-">isEquivalentAccordingToCompareTo</a></code>&nbsp;in class&nbsp;<code><a href="../../../../com/google/common/truth/ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>&lt;<a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a>,<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></dd>
-</dl>
-</li>
-</ul>
-<a name="isNull--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isNull</h4>
-<pre>public&nbsp;void&nbsp;isNull()</pre>
-<div class="block">Fails if the string is not null.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../com/google/common/truth/Subject.html#isNull--">isNull</a></code>&nbsp;in class&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a>,<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -553,7 +474,7 @@ public&nbsp;void&nbsp;doesNotMatch(<a href="https://docs.oracle.com/javase/7/doc
 <li class="blockList">
 <h4>containsMatch</h4>
 <pre><a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/annotations/GwtIncompatible.html?is-external=true" title="class or interface in com.google.common.annotations">@GwtIncompatible</a>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/annotations/GwtIncompatible.html?is-external=true#value--" title="class or interface in com.google.common.annotations">value</a>="java.util.regex.Pattern")
-public&nbsp;void&nbsp;containsMatch(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;pattern)</pre>
+public&nbsp;void&nbsp;containsMatch(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;regex)</pre>
 <div class="block">Fails if the string does not contain a match on the given regex.</div>
 </li>
 </ul>
@@ -574,7 +495,7 @@ public&nbsp;void&nbsp;containsMatch(<a href="https://docs.oracle.com/javase/7/do
 <li class="blockList">
 <h4>doesNotContainMatch</h4>
 <pre><a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/annotations/GwtIncompatible.html?is-external=true" title="class or interface in com.google.common.annotations">@GwtIncompatible</a>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/annotations/GwtIncompatible.html?is-external=true#value--" title="class or interface in com.google.common.annotations">value</a>="java.util.regex.Pattern")
-public&nbsp;void&nbsp;doesNotContainMatch(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;pattern)</pre>
+public&nbsp;void&nbsp;doesNotContainMatch(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;regex)</pre>
 <div class="block">Fails if the string contains a match on the given regex.</div>
 </li>
 </ul>
