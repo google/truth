@@ -366,6 +366,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     // Step through both iterators comparing elements pairwise.
+    boolean isFirst = true;
     while (actualIter.hasNext() && requiredIter.hasNext()) {
       Object actualElement = actualIter.next();
       Object requiredElement = requiredIter.next();
@@ -375,6 +376,28 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // Since any previous pairs of elements we iterated over were equal, they have no
       // effect on the result now.
       if (!Objects.equal(actualElement, requiredElement)) {
+        if (isFirst && !actualIter.hasNext() && !requiredIter.hasNext()) {
+          /*
+           * There's exactly one actual element and exactly one expected element, and they don't
+           * match, so throw a ComparisonFailure. The logical way to do that would be
+           * `check(...).that(actualElement).isEqualTo(requiredElement)`. But isEqualTo has magic
+           * behavior for arrays and primitives, behavior that's inconsistent with how this method
+           * otherwise behaves. For consistency, we want to rely only on the equal() call we've
+           * already made. So we expose a special method for this and call it from here.
+           *
+           * TODO(cpovirk): Consider always throwing ComparisonFailure if there is exactly one
+           * missing and exactly one extra element, even if there were additional (matching)
+           * elements. However, this will probably be useful less often, and it will be tricky to
+           * explain. First, what would we say, "value of: iterable.onlyElementThatDidNotMatch()?"
+           * And second, it feels weirder to call out a single element when the expected and actual
+           * values had multiple elements. Granted, Fuzzy Truth already does this, so maybe it's OK?
+           * But Fuzzy Truth doesn't (yet) make the mismatched value so prominent.
+           */
+          check("onlyElement()")
+              .that(actualElement)
+              .failEqualityCheckForEqualsWithoutDescription(requiredElement);
+          return ALREADY_FAILED;
+        }
         // Missing elements; elements that are not missing will be removed as we iterate.
         Collection<Object> missing = newArrayList();
         missing.add(requiredElement);
@@ -404,6 +427,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         }
         return failExactly(required, addElementsInWarning, missing, extra);
       }
+
+      isFirst = false;
     }
 
     // Here,  we must have reached the end of one of the iterators without finding any

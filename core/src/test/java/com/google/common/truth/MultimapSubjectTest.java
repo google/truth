@@ -169,25 +169,36 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
      * including eliminating named() itself. Or we could just special-case our logic to skip the
      * name for non-throwables. For now, I'm not too worried about this.
      */
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: multymap.valuesForKey(1)\n"
-                + "Not true that <[5]> contains exactly <[4]>. "
-                + "It is missing <[4]> and has unexpected items <[5]>\n"
-                + "multimap was: multymap ({1=[5]})");
+    assertFailureKeys("value of", "expected", "but was", "multimap was");
+    assertFailureValue("value of", "multymap.valuesForKey(1).onlyElement()");
+    assertFailureValue("multimap was", "multymap ({1=[5]})");
   }
 
   @Test
-  public void valuesForKeyNamed() {
+  public void valuesForKeyNamedSingleElements() {
+    /*
+     * TODO(cpovirk): We fail to include the name "valuez" in the failure message here. Fortunately,
+     * I see only 1 usage of valuesForKey().named() in the depot. Also "fortunately," something like
+     * 1/3 of all assertion methods fail to include the name, so the right fix is probably going to
+     * be to delete named() entirely.
+     */
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     expectFailureWhenTestingThat(multimap).valuesForKey(1).named("valuez").containsExactly(4);
+    assertFailureKeys("value of", "expected", "but was", "multimap was");
+    assertFailureValue("value of", "multimap.valuesForKey(1).onlyElement()");
+    assertFailureValue("multimap was", "{1=[5]}");
+  }
+
+  @Test
+  public void valuesForKeyNamedMultipleElements() {
+    ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
+    expectFailureWhenTestingThat(multimap).valuesForKey(1).named("valuez").containsExactly(3, 4);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
             "value of: multimap.valuesForKey(1)\n"
-                + "Not true that valuez (<[5]>) contains exactly <[4]>. "
-                + "It is missing <[4]> and has unexpected items <[5]>\n"
+                + "Not true that valuez (<[5]>) contains exactly <[3, 4]>. "
+                + "It is missing <[3, 4]> and has unexpected items <[5]>\n"
                 + "multimap was: {1=[5]}");
   }
 

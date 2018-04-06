@@ -814,7 +814,15 @@ public class Subject<S extends Subject<S, T>, T> {
     }
   }
 
-  private void failEqualityCheck(
+  /**
+   * Special version of {@link #failEqualityCheck} for use from {@link IterableSubject}, documented
+   * further there.
+   */
+  final void failEqualityCheckForEqualsWithoutDescription(Object expected) {
+    failEqualityCheck(EqualityCheck.EQUAL, expected, ComparisonResult.differentNoDescription());
+  }
+
+  private final void failEqualityCheck(
       EqualityCheck equalityCheck, Object expected, ComparisonResult difference) {
     String actualString = actualCustomStringRepresentation();
     String expectedString = formatActualOrExpected(expected);
