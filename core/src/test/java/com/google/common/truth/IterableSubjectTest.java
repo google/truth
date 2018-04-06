@@ -637,6 +637,20 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void iterableContainsExactlySingleElement() {
+    assertThat(asList(1)).containsExactly(1);
+
+    expectFailureWhenTestingThat(asList(1)).containsExactly(2);
+    assertFailureValue("value of", "iterable.onlyElement()");
+  }
+
+  @Test
+  public void iterableContainsExactlySingleElementNoEqualsMagic() {
+    expectFailureWhenTestingThat(asList(1)).containsExactly(1L);
+    assertFailureValueIndexed("an instance of", 0, "java.lang.Long");
+  }
+
+  @Test
   public void iterableContainsExactlyWithElementsThatThrowWhenYouCallHashCode() {
     HashCodeThrower one = new HashCodeThrower();
     HashCodeThrower two = new HashCodeThrower();
