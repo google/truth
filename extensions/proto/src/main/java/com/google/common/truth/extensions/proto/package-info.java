@@ -22,8 +22,6 @@
  * project.
  */
 @CheckReturnValue
-@ParametersAreNonnullByDefault
 package com.google.common.truth.extensions.proto;
 
-import javax.annotation.CheckReturnValue;
-import javax.annotation.ParametersAreNonnullByDefault;
+import com.google.errorprone.annotations.CheckReturnValue;

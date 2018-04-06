@@ -32,8 +32,8 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nullable;
+import com.google.errorprone.annotations.CheckReturnValue;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * A specification for a {@link MessageDifferencer} for comparing two individual protobufs.
@@ -216,14 +216,14 @@ abstract class FluentEqualityConfig {
     checkState(expectedMessages().isPresent(), "expectedMessages() not set");
     return new Correspondence<M, M>() {
       @Override
-      public final boolean compare(@Nullable M actual, @Nullable M expected) {
+      public final boolean compare(@NullableDecl M actual, @NullableDecl M expected) {
         return ProtoTruth.assertThat(actual)
             .usingConfig(FluentEqualityConfig.this)
             .testIsEqualTo(expected);
       }
 
       @Override
-      public final String formatDiff(@Nullable M actual, @Nullable M expected) {
+      public final String formatDiff(@NullableDecl M actual, @NullableDecl M expected) {
         if (actual == null || expected == null) {
           return "";
         }

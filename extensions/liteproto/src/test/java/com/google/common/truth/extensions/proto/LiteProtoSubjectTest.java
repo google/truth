@@ -28,7 +28,7 @@ import com.google.protobuf.MessageLite;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -131,11 +131,11 @@ public class LiteProtoSubjectTest {
     this.config = config;
   }
 
-  private LiteProtoSubject<?, MessageLite> expectThat(@Nullable MessageLite m) {
+  private LiteProtoSubject<?, MessageLite> expectThat(@NullableDecl MessageLite m) {
     return expect.about(LiteProtoTruth.liteProtos()).that(m);
   }
 
-  private Subject<?, ?> expectThat(@Nullable Object o) {
+  private Subject<?, ?> expectThat(@NullableDecl Object o) {
     return expect.that(o);
   }
 

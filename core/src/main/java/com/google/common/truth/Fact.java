@@ -21,7 +21,7 @@ import static com.google.common.base.Strings.padEnd;
 import static java.lang.Math.max;
 
 import com.google.common.collect.ImmutableList;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /** A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz." */
 final class Fact {
@@ -42,9 +42,9 @@ final class Fact {
   }
 
   final String key;
-  @Nullable final String value;
+  @NullableDecl final String value;
 
-  private Fact(String key, @Nullable String value) {
+  private Fact(String key, @NullableDecl String value) {
     this.key = checkNotNull(key);
     this.value = value;
   }

@@ -26,7 +26,7 @@ import static com.google.common.truth.Platform.floatToString;
 import static java.lang.Float.NaN;
 import static java.lang.Float.floatToIntBits;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@link Float} subjects.
@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
 
-  FloatSubject(FailureMetadata metadata, @Nullable Float actual) {
+  FloatSubject(FailureMetadata metadata, @NullableDecl Float actual) {
     super(metadata, actual);
   }
 
@@ -63,7 +63,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
      */
     @Deprecated
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(@NullableDecl Object o) {
       throw new UnsupportedOperationException(
           "If you meant to compare floats, use .of(float) instead.");
     }
@@ -174,7 +174,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * vice versa. For an assertion that passes for either {@code 0.0f} or {@code -0.0f}, use {@link
    * #isZero}.
    */
-  public final void isEqualTo(@Nullable Float other) {
+  public final void isEqualTo(@NullableDecl Float other) {
     super.isEqualTo(other);
   }
 
@@ -187,7 +187,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * versa. For an assertion that fails for either {@code 0.0f} or {@code -0.0f}, use {@link
    * #isNonZero}.
    */
-  public final void isNotEqualTo(@Nullable Float other) {
+  public final void isNotEqualTo(@NullableDecl Float other) {
     super.isNotEqualTo(other);
   }
 

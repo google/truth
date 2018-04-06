@@ -23,9 +23,9 @@ import static java.lang.Float.parseFloat;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.google.common.collect.ImmutableList;
-import javax.annotation.Nullable;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the
@@ -106,7 +106,7 @@ final class Platform {
     // Do nothing. See notes in StackTraceCleanerTest.
   }
 
-  @Nullable
+  @NullableDecl
   static ImmutableList<Fact> makeDiff(String expected, String actual) {
     /*
      * IIUC, GWT messages lose their newlines by the time users see them. Given that, users are

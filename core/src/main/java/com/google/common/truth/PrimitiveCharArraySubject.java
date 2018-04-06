@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Chars;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * A Subject for {@code char[]}.
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 public final class PrimitiveCharArraySubject
     extends AbstractArraySubject<PrimitiveCharArraySubject, char[]> {
   PrimitiveCharArraySubject(
-      FailureMetadata metadata, @Nullable char[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, @NullableDecl char[] o, @NullableDecl String typeDescription) {
     super(metadata, o, typeDescription);
   }
 

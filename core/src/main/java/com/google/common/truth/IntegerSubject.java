@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@link Integer} subjects.
@@ -30,7 +30,7 @@ public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
-  protected IntegerSubject(FailureMetadata metadata, @Nullable Integer integer) {
+  protected IntegerSubject(FailureMetadata metadata, @NullableDecl Integer integer) {
     super(metadata, integer);
   }
 

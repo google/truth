@@ -27,7 +27,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * The primary entry point for Truth, a fluent framework for test assertions.
@@ -135,128 +135,129 @@ public final class Truth {
     return assert_().about(factory);
   }
 
-  public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(@Nullable T actual) {
+  public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(
+      @NullableDecl T actual) {
     return assert_().that(actual);
   }
 
-  public static BigDecimalSubject assertThat(@Nullable BigDecimal actual) {
+  public static BigDecimalSubject assertThat(@NullableDecl BigDecimal actual) {
     return assert_().that(actual);
   }
 
-  public static Subject<DefaultSubject, Object> assertThat(@Nullable Object actual) {
+  public static Subject<DefaultSubject, Object> assertThat(@NullableDecl Object actual) {
     return assert_().that(actual);
   }
 
   @GwtIncompatible("ClassSubject.java")
-  public static ClassSubject assertThat(@Nullable Class<?> actual) {
+  public static ClassSubject assertThat(@NullableDecl Class<?> actual) {
     return assert_().that(actual);
   }
 
-  public static ThrowableSubject assertThat(@Nullable Throwable actual) {
+  public static ThrowableSubject assertThat(@NullableDecl Throwable actual) {
     return assert_().that(actual);
   }
 
-  public static LongSubject assertThat(@Nullable Long actual) {
+  public static LongSubject assertThat(@NullableDecl Long actual) {
     return assert_().that(actual);
   }
 
-  public static DoubleSubject assertThat(@Nullable Double actual) {
+  public static DoubleSubject assertThat(@NullableDecl Double actual) {
     return assert_().that(actual);
   }
 
-  public static FloatSubject assertThat(@Nullable Float actual) {
+  public static FloatSubject assertThat(@NullableDecl Float actual) {
     return assert_().that(actual);
   }
 
-  public static IntegerSubject assertThat(@Nullable Integer actual) {
+  public static IntegerSubject assertThat(@NullableDecl Integer actual) {
     return assert_().that(actual);
   }
 
-  public static BooleanSubject assertThat(@Nullable Boolean actual) {
+  public static BooleanSubject assertThat(@NullableDecl Boolean actual) {
     return assert_().that(actual);
   }
 
-  public static StringSubject assertThat(@Nullable String actual) {
+  public static StringSubject assertThat(@NullableDecl String actual) {
     return assert_().that(actual);
   }
 
-  public static IterableSubject assertThat(@Nullable Iterable<?> actual) {
+  public static IterableSubject assertThat(@NullableDecl Iterable<?> actual) {
     return assert_().that(actual);
   }
 
-  public static SortedSetSubject assertThat(@Nullable SortedSet<?> actual) {
+  public static SortedSetSubject assertThat(@NullableDecl SortedSet<?> actual) {
     return assert_().that(actual);
   }
 
-  public static <T> ObjectArraySubject<T> assertThat(@Nullable T[] actual) {
+  public static <T> ObjectArraySubject<T> assertThat(@NullableDecl T[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveBooleanArraySubject assertThat(@Nullable boolean[] actual) {
+  public static PrimitiveBooleanArraySubject assertThat(@NullableDecl boolean[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveShortArraySubject assertThat(@Nullable short[] actual) {
+  public static PrimitiveShortArraySubject assertThat(@NullableDecl short[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveIntArraySubject assertThat(@Nullable int[] actual) {
+  public static PrimitiveIntArraySubject assertThat(@NullableDecl int[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveLongArraySubject assertThat(@Nullable long[] actual) {
+  public static PrimitiveLongArraySubject assertThat(@NullableDecl long[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveByteArraySubject assertThat(@Nullable byte[] actual) {
+  public static PrimitiveByteArraySubject assertThat(@NullableDecl byte[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveCharArraySubject assertThat(@Nullable char[] actual) {
+  public static PrimitiveCharArraySubject assertThat(@NullableDecl char[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveFloatArraySubject assertThat(@Nullable float[] actual) {
+  public static PrimitiveFloatArraySubject assertThat(@NullableDecl float[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveDoubleArraySubject assertThat(@Nullable double[] actual) {
+  public static PrimitiveDoubleArraySubject assertThat(@NullableDecl double[] actual) {
     return assert_().that(actual);
   }
 
-  public static GuavaOptionalSubject assertThat(@Nullable Optional<?> actual) {
+  public static GuavaOptionalSubject assertThat(@NullableDecl Optional<?> actual) {
     return assert_().that(actual);
   }
 
-  public static MapSubject assertThat(@Nullable Map<?, ?> actual) {
+  public static MapSubject assertThat(@NullableDecl Map<?, ?> actual) {
     return assert_().that(actual);
   }
 
-  public static SortedMapSubject assertThat(@Nullable SortedMap<?, ?> actual) {
+  public static SortedMapSubject assertThat(@NullableDecl SortedMap<?, ?> actual) {
     return assert_().that(actual);
   }
 
-  public static MultimapSubject assertThat(@Nullable Multimap<?, ?> actual) {
+  public static MultimapSubject assertThat(@NullableDecl Multimap<?, ?> actual) {
     return assert_().that(actual);
   }
 
-  public static ListMultimapSubject assertThat(@Nullable ListMultimap<?, ?> actual) {
+  public static ListMultimapSubject assertThat(@NullableDecl ListMultimap<?, ?> actual) {
     return assert_().that(actual);
   }
 
-  public static SetMultimapSubject assertThat(@Nullable SetMultimap<?, ?> actual) {
+  public static SetMultimapSubject assertThat(@NullableDecl SetMultimap<?, ?> actual) {
     return assert_().that(actual);
   }
 
-  public static MultisetSubject assertThat(@Nullable Multiset<?> actual) {
+  public static MultisetSubject assertThat(@NullableDecl Multiset<?> actual) {
     return assert_().that(actual);
   }
 
-  public static TableSubject assertThat(@Nullable Table<?, ?, ?> actual) {
+  public static TableSubject assertThat(@NullableDecl Table<?, ?, ?> actual) {
     return assert_().that(actual);
   }
 
-  public static AtomicLongMapSubject assertThat(@Nullable AtomicLongMap<?> actual) {
+  public static AtomicLongMapSubject assertThat(@NullableDecl AtomicLongMap<?> actual) {
     return assert_().that(actual);
   }
 
@@ -266,11 +267,11 @@ public final class Truth {
    */
   static final class SimpleAssertionError extends AssertionError {
     /** Separate cause field, in case initCause() fails. */
-    @Nullable private final Throwable cause;
+    @NullableDecl private final Throwable cause;
 
     // TODO(cpovirk): Figure out if we ever pass a null message to this.
     private SimpleAssertionError(
-        String message, @Nullable String suffix, @Nullable Throwable cause) {
+        String message, @NullableDecl String suffix, @NullableDecl Throwable cause) {
       super(appendSuffixIfNotNull(message, suffix));
       this.cause = cause;
 
@@ -285,11 +286,11 @@ public final class Truth {
     }
 
     static SimpleAssertionError create(
-        String message, @Nullable String suffix, @Nullable Throwable cause) {
+        String message, @NullableDecl String suffix, @NullableDecl Throwable cause) {
       return new SimpleAssertionError(message, suffix, cause);
     }
 
-    static SimpleAssertionError createWithNoStack(String message, @Nullable Throwable cause) {
+    static SimpleAssertionError createWithNoStack(String message, @NullableDecl Throwable cause) {
       SimpleAssertionError error = new SimpleAssertionError(message, /* suffix= */ null, cause);
       error.setStackTrace(new StackTraceElement[0]);
       return error;
@@ -311,7 +312,7 @@ public final class Truth {
     }
   }
 
-  @Nullable
+  @NullableDecl
   static String appendSuffixIfNotNull(String message, String suffix) {
     if (suffix != null) {
       message += "\n" + suffix;

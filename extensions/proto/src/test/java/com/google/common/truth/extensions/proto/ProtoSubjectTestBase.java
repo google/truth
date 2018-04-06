@@ -34,7 +34,7 @@ import com.google.protobuf.UnknownFieldSet;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.Rule;
 
 /** Base class for testing {@link ProtoSubject} methods. */
@@ -156,7 +156,7 @@ public class ProtoSubjectTestBase {
     return expect.that(multiExpectFailure.getFailure());
   }
 
-  protected final ProtoSubject<?, Message> expectThat(@Nullable Message message) {
+  protected final ProtoSubject<?, Message> expectThat(@NullableDecl Message message) {
     return expect.about(ProtoTruth.protos()).that(message);
   }
 
@@ -176,7 +176,7 @@ public class ProtoSubjectTestBase {
   }
 
   protected final ProtoSubject<?, Message> expectThatWithMessage(
-      String msg, @Nullable Message message) {
+      String msg, @NullableDecl Message message) {
     return expect.withMessage(msg).about(ProtoTruth.protos()).that(message);
   }
 

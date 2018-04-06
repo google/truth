@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@code long} subjects.
@@ -30,7 +30,7 @@ public class LongSubject extends ComparableSubject<LongSubject, Long> {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
-  protected LongSubject(FailureMetadata metadata, @Nullable Long actual) {
+  protected LongSubject(FailureMetadata metadata, @NullableDecl Long actual) {
     super(metadata, actual);
   }
 

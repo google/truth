@@ -20,7 +20,7 @@ import com.google.common.truth.Ordered;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Fluent API to perform detailed, customizable comparison of {@link Multimap}s containing protocol
@@ -260,13 +260,13 @@ public interface MultimapWithProtoValuesFluentAssertion<M extends Message> {
    * Fails if the multimap does not contain an entry with the given key and a value that corresponds
    * to the given value.
    */
-  void containsEntry(@Nullable Object expectedKey, @Nullable M expectedValue);
+  void containsEntry(@NullableDecl Object expectedKey, @NullableDecl M expectedValue);
 
   /**
    * Fails if the multimap contains an entry with the given key and a value that corresponds to the
    * given value.
    */
-  void doesNotContainEntry(@Nullable Object excludedKey, @Nullable M excludedValue);
+  void doesNotContainEntry(@NullableDecl Object excludedKey, @NullableDecl M excludedValue);
 
   /**
    * Fails if the map does not contain exactly the keys in the given multimap, mapping to values
@@ -290,7 +290,7 @@ public interface MultimapWithProtoValuesFluentAssertion<M extends Message> {
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(@Nullable Object k0, @Nullable M v0, Object... rest);
+  public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl M v0, Object... rest);
 
   /**
    * @deprecated Do not call {@code equals()} on a {@code MultimapWithProtoValuesFluentAssertion}.

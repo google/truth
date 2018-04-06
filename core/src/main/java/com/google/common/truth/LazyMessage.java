@@ -20,7 +20,7 @@ import static com.google.common.truth.StringUtil.format;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 final class LazyMessage {
   private static final String PLACEHOLDER_ERR =
@@ -29,7 +29,7 @@ final class LazyMessage {
   private final String format;
   private final Object[] args;
 
-  LazyMessage(@Nullable String format, @Nullable Object... args) {
+  LazyMessage(@NullableDecl String format, @NullableDecl Object... args) {
     this.format = format;
     this.args = args;
     int placeholders = countPlaceholders(format);
@@ -42,7 +42,7 @@ final class LazyMessage {
   }
 
   @VisibleForTesting
-  static int countPlaceholders(@Nullable String template) {
+  static int countPlaceholders(@NullableDecl String template) {
     if (template == null) {
       return 0;
     }

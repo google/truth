@@ -49,7 +49,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * An object that lets you perform checks on the value under test. For example, {@code Subject}
@@ -98,13 +98,13 @@ public class Subject<S extends Subject<S, T>, T> {
   private final FailureMetadata metadata;
   private final T actual;
   private String customName = null;
-  @Nullable private final String typeDescriptionOverride;
+  @NullableDecl private final String typeDescriptionOverride;
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
-  protected Subject(FailureMetadata metadata, @Nullable T actual) {
+  protected Subject(FailureMetadata metadata, @NullableDecl T actual) {
     this(metadata, actual, /*typeDescriptionOverride=*/ null);
   }
 
@@ -119,7 +119,10 @@ public class Subject<S extends Subject<S, T>, T> {
    * easier to tweak the subjects to know their own names rather than generalize the tests to accept
    * obfuscated names.
    */
-  Subject(FailureMetadata metadata, @Nullable T actual, @Nullable String typeDescriptionOverride) {
+  Subject(
+      FailureMetadata metadata,
+      @NullableDecl T actual,
+      @NullableDecl String typeDescriptionOverride) {
     this.metadata = metadata.updateForSubject(this);
     this.actual = actual;
     this.typeDescriptionOverride = typeDescriptionOverride;
@@ -178,11 +181,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * method, they would get a ComparisonFailure and other message niceties, and they'd have less to
    * test.
    */
-  public void isEqualTo(@Nullable Object expected) {
+  public void isEqualTo(@NullableDecl Object expected) {
     standardIsEqualTo(expected);
   }
 
-  private void standardIsEqualTo(@Nullable Object expected) {
+  private void standardIsEqualTo(@NullableDecl Object expected) {
     ComparisonResult difference = compareForEquality(expected);
     if (!difference.valuesAreEqual()) {
       failEqualityCheck(EqualityCheck.EQUAL, expected, difference);
@@ -193,11 +196,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * Fails if the subject is equal to the given object. The meaning of equality is the same as for
    * the {@link #isEqualTo} method.
    */
-  public void isNotEqualTo(@Nullable Object unexpected) {
+  public void isNotEqualTo(@NullableDecl Object unexpected) {
     standardIsNotEqualTo(unexpected);
   }
 
-  private void standardIsNotEqualTo(@Nullable Object unexpected) {
+  private void standardIsNotEqualTo(@NullableDecl Object unexpected) {
     ComparisonResult difference = compareForEquality(unexpected);
     if (difference.valuesAreEqual()) {
       String unexpectedAsString = formatActualOrExpected(unexpected);
@@ -219,7 +222,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *
    * <p>The equality check follows the rules described on {@link #isEqualTo}.
    */
-  private ComparisonResult compareForEquality(@Nullable Object expected) {
+  private ComparisonResult compareForEquality(@NullableDecl Object expected) {
     if (actual() == null && expected == null) {
       return ComparisonResult.equal();
     } else if (actual() == null || expected == null) {
@@ -251,7 +254,7 @@ public class Subject<S extends Subject<S, T>, T> {
     }
   }
 
-  private static boolean isIntegralBoxedPrimitive(@Nullable Object o) {
+  private static boolean isIntegralBoxedPrimitive(@NullableDecl Object o) {
     return o instanceof Byte
         || o instanceof Short
         || o instanceof Character
@@ -270,7 +273,7 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /** Fails if the subject is not the same instance as the given object. */
-  public void isSameAs(@Nullable @CompatibleWith("T") Object expected) {
+  public void isSameAs(@NullableDecl @CompatibleWith("T") Object expected) {
     if (actual() != expected) {
       failEqualityCheck(
           SAME_INSTANCE,
@@ -286,7 +289,7 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /** Fails if the subject is the same instance as the given object. */
-  public void isNotSameAs(@Nullable @CompatibleWith("T") Object unexpected) {
+  public void isNotSameAs(@NullableDecl @CompatibleWith("T") Object unexpected) {
     if (actual() == unexpected) {
       /*
        * We use actualCustomStringRepresentation() because it might be overridden to be better than
@@ -355,9 +358,9 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails unless the subject is equal to any of the given elements. */
   public void isAnyOf(
-      @Nullable @CompatibleWith("T") Object first,
-      @Nullable @CompatibleWith("T") Object second,
-      @Nullable Object... rest) {
+      @NullableDecl @CompatibleWith("T") Object first,
+      @NullableDecl @CompatibleWith("T") Object second,
+      @NullableDecl Object... rest) {
     isIn(accumulate(first, second, rest));
   }
 
@@ -370,9 +373,9 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails if the subject is equal to any of the given elements. */
   public void isNoneOf(
-      @Nullable @CompatibleWith("T") Object first,
-      @Nullable @CompatibleWith("T") Object second,
-      @Nullable Object... rest) {
+      @NullableDecl @CompatibleWith("T") Object first,
+      @NullableDecl @CompatibleWith("T") Object second,
+      @NullableDecl Object... rest) {
     isNotIn(accumulate(first, second, rest));
   }
 
@@ -453,7 +456,7 @@ public class Subject<S extends Subject<S, T>, T> {
     return actualCustomStringRepresentation();
   }
 
-  private final String formatActualOrExpected(@Nullable Object o) {
+  private final String formatActualOrExpected(@NullableDecl Object o) {
     if (o instanceof byte[]) {
       return base16((byte[]) o);
     } else if (o != null && o.getClass().isArray()) {
@@ -486,7 +489,7 @@ public class Subject<S extends Subject<S, T>, T> {
   private static final Function<Object, Object> STRINGIFY =
       new Function<Object, Object>() {
         @Override
-        public Object apply(@Nullable Object input) {
+        public Object apply(@NullableDecl Object input) {
           if (input != null && input.getClass().isArray()) {
             Iterable<?> iterable;
             if (input.getClass() == boolean[].class) {
@@ -546,7 +549,7 @@ public class Subject<S extends Subject<S, T>, T> {
     private static final ComparisonResult DIFFERENT_NO_DESCRIPTION =
         new ComparisonResult(ImmutableList.<Fact>of());
 
-    @Nullable private final ImmutableList<Fact> facts;
+    @NullableDecl private final ImmutableList<Fact> facts;
 
     private ComparisonResult(ImmutableList<Fact> facts) {
       this.facts = facts;
@@ -984,7 +987,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   @Deprecated
   @Override
-  public final boolean equals(@Nullable Object o) {
+  public final boolean equals(@NullableDecl Object o) {
     throw new UnsupportedOperationException(
         "If you meant to test object equality, use .isEqualTo(other) instead.");
   }
@@ -1035,7 +1038,7 @@ public class Subject<S extends Subject<S, T>, T> {
   // unavoidable for Class<? extends Foo> (see https://bugs.openjdk.java.net/browse/JDK-8134009)
   @SuppressWarnings({"unchecked", "rawtypes"})
   private static String typeDescriptionOrGuess(
-      Class<? extends Subject> clazz, @Nullable String typeDescriptionOverride) {
+      Class<? extends Subject> clazz, @NullableDecl String typeDescriptionOverride) {
     if (typeDescriptionOverride != null) {
       return typeDescriptionOverride;
     }

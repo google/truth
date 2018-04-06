@@ -23,7 +23,7 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.factWithoutValue;
 
 import com.google.common.collect.ImmutableList;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Subject for {@link AssertionError} objects thrown by Truth. {@code TruthFailureSubject} contains
@@ -67,7 +67,9 @@ public final class TruthFailureSubject extends ThrowableSubject {
       };
 
   TruthFailureSubject(
-      FailureMetadata metadata, @Nullable Throwable throwable, @Nullable String typeDescription) {
+      FailureMetadata metadata,
+      @NullableDecl Throwable throwable,
+      @NullableDecl String typeDescription) {
     super(metadata, throwable, typeDescription);
   }
 
@@ -124,7 +126,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
     return doFactValue(key, index);
   }
 
-  private StringSubject doFactValue(String key, @Nullable Integer index) {
+  private StringSubject doFactValue(String key, @NullableDecl Integer index) {
     checkNotNull(key);
     if (!(actual() instanceof ErrorWithFacts)) {
       fail(factWithoutValue("expected a failure thrown by Truth's new failure API"));

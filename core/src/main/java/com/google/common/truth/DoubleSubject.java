@@ -26,7 +26,7 @@ import static com.google.common.truth.Platform.doubleToString;
 import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@link Double} subjects.
@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double> {
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 
-  DoubleSubject(FailureMetadata metadata, @Nullable Double actual) {
+  DoubleSubject(FailureMetadata metadata, @NullableDecl Double actual) {
     super(metadata, actual);
   }
 
@@ -63,7 +63,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
      */
     @Deprecated
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(@NullableDecl Object o) {
       throw new UnsupportedOperationException(
           "If you meant to compare doubles, use .of(double) instead.");
     }
@@ -174,7 +174,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * vice versa. For an assertion that passes for either {@code 0.0} or {@code -0.0}, use {@link
    * #isZero}.
    */
-  public final void isEqualTo(@Nullable Double other) {
+  public final void isEqualTo(@NullableDecl Double other) {
     super.isEqualTo(other);
   }
 
@@ -187,7 +187,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * versa. For an assertion that fails for either {@code 0.0} or {@code -0.0}, use {@link
    * #isNonZero}.
    */
-  public final void isNotEqualTo(@Nullable Double other) {
+  public final void isNotEqualTo(@NullableDecl Double other) {
     super.isNotEqualTo(other);
   }
 

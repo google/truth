@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Truth subject for maps with protocol buffers for values.
@@ -63,22 +63,22 @@ public class MapWithProtoValuesSubject<
       extends MapWithProtoValuesSubject<MapWithMessageValuesSubject<K, M>, K, M, Map<K, M>> {
     // See IterableOfProtosSubject.IterableOfMessagesSubject for why this class is exposed.
 
-    MapWithMessageValuesSubject(FailureMetadata failureMetadata, @Nullable Map<K, M> map) {
+    MapWithMessageValuesSubject(FailureMetadata failureMetadata, @NullableDecl Map<K, M> map) {
       super(failureMetadata, map);
     }
 
     private MapWithMessageValuesSubject(
-        FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable Map<K, M> map) {
+        FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl Map<K, M> map) {
       super(failureMetadata, config, map);
     }
   }
 
-  protected MapWithProtoValuesSubject(FailureMetadata failureMetadata, @Nullable C map) {
+  protected MapWithProtoValuesSubject(FailureMetadata failureMetadata, @NullableDecl C map) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), map);
   }
 
   MapWithProtoValuesSubject(
-      FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable C map) {
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C map) {
     super(failureMetadata, map);
     this.config = config;
   }
@@ -109,7 +109,7 @@ public class MapWithProtoValuesSubject<
 
   /** Fails if the subject is not equal to the given object. */
   @Override
-  public void isEqualTo(@Nullable Object other) {
+  public void isEqualTo(@NullableDecl Object other) {
     delegate().isEqualTo(other);
   }
 
@@ -129,22 +129,22 @@ public class MapWithProtoValuesSubject<
   }
 
   /** Fails if the map does not contain the given key. */
-  public void containsKey(@Nullable Object key) {
+  public void containsKey(@NullableDecl Object key) {
     delegate().containsKey(key);
   }
 
   /** Fails if the map contains the given key. */
-  public void doesNotContainKey(@Nullable Object key) {
+  public void doesNotContainKey(@NullableDecl Object key) {
     delegate().doesNotContainKey(key);
   }
 
   /** Fails if the map does not contain the given entry. */
-  public void containsEntry(@Nullable Object key, @Nullable Object value) {
+  public void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
     delegate().containsEntry(key, value);
   }
 
   /** Fails if the map contains the given entry. */
-  public void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
+  public void doesNotContainEntry(@NullableDecl Object key, @NullableDecl Object value) {
     delegate().doesNotContainEntry(key, value);
   }
 
@@ -161,7 +161,7 @@ public class MapWithProtoValuesSubject<
    * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(@Nullable Object k0, @Nullable Object v0, Object... rest) {
+  public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
     return delegate().containsExactly(k0, v0, rest);
   }
 
@@ -552,14 +552,15 @@ public class MapWithProtoValuesSubject<
     }
 
     @Override
-    public void containsEntry(@Nullable Object expectedKey, @Nullable M expectedValue) {
+    public void containsEntry(@NullableDecl Object expectedKey, @NullableDecl M expectedValue) {
       subject
           .usingCorrespondence(Arrays.asList(expectedValue))
           .containsEntry(expectedKey, expectedValue);
     }
 
     @Override
-    public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable M excludedValue) {
+    public void doesNotContainEntry(
+        @NullableDecl Object excludedKey, @NullableDecl M excludedValue) {
       subject
           .usingCorrespondence(Arrays.asList(excludedValue))
           .doesNotContainEntry(excludedKey, excludedValue);
@@ -568,7 +569,7 @@ public class MapWithProtoValuesSubject<
     @Override
     @CanIgnoreReturnValue
     @SuppressWarnings("unchecked") // ClassCastException is fine
-    public Ordered containsExactly(@Nullable Object k0, @Nullable M v0, Object... rest) {
+    public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl M v0, Object... rest) {
       List<M> expectedValues = new ArrayList<>();
       expectedValues.add(v0);
       for (int i = 1; i < rest.length; i += 2) {

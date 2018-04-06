@@ -32,7 +32,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Truth.SimpleAssertionError;
 import java.util.Set;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * An opaque, immutable object containing state from the previous calls in the fluent assertion
@@ -72,7 +72,7 @@ public final class FailureMetadata {
 
     static Step checkCall(
         OldAndNewValuesAreSimilar valuesAreSimilar,
-        @Nullable Function<String, String> descriptionUpdate) {
+        @NullableDecl Function<String, String> descriptionUpdate) {
       return new Step(null, descriptionUpdate, valuesAreSimilar);
     }
 
@@ -84,17 +84,17 @@ public final class FailureMetadata {
      * looks only at actual(), but it might try to look at facts initialized by a subclass, which
      * aren't ready yet.
      */
-    @Nullable final Subject<?, ?> subject;
+    @NullableDecl final Subject<?, ?> subject;
 
-    @Nullable final Function<String, String> descriptionUpdate;
+    @NullableDecl final Function<String, String> descriptionUpdate;
 
     // Present only when descriptionUpdate is.
-    @Nullable final OldAndNewValuesAreSimilar valuesAreSimilar;
+    @NullableDecl final OldAndNewValuesAreSimilar valuesAreSimilar;
 
     private Step(
-        @Nullable Subject<?, ?> subject,
-        @Nullable Function<String, String> descriptionUpdate,
-        @Nullable OldAndNewValuesAreSimilar valuesAreSimilar) {
+        @NullableDecl Subject<?, ?> subject,
+        @NullableDecl Function<String, String> descriptionUpdate,
+        @NullableDecl OldAndNewValuesAreSimilar valuesAreSimilar) {
       this.subject = subject;
       this.descriptionUpdate = descriptionUpdate;
       this.valuesAreSimilar = valuesAreSimilar;
@@ -384,7 +384,7 @@ public final class FailureMetadata {
     return ImmutableList.copyOf(rootUnlessThrowable().asSet());
   }
 
-  @Nullable
+  @NullableDecl
   private String rootUnlessThrowableAsString() {
     return rootUnlessThrowable().transform(toStringFunction()).orNull();
   }

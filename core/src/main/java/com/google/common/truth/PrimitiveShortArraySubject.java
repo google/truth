@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Shorts;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * A Subject for {@code short[]}.
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 public final class PrimitiveShortArraySubject
     extends AbstractArraySubject<PrimitiveShortArraySubject, short[]> {
   PrimitiveShortArraySubject(
-      FailureMetadata metadata, @Nullable short[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, @NullableDecl short[] o, @NullableDecl String typeDescription) {
     super(metadata, o, typeDescription);
   }
 

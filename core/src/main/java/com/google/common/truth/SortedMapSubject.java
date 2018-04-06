@@ -29,7 +29,7 @@ import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Tests for {@link SortedMap} and {@link NavigableMap} objects. This class supports assertions
@@ -52,7 +52,7 @@ public final class SortedMapSubject extends MapSubject {
   }
 
   /** Fails if the map's first key is not equal to the given key. */
-  public void hasFirstKey(@Nullable Object key) {
+  public void hasFirstKey(@NullableDecl Object key) {
     if (actualAsNavigableMap().isEmpty()) {
       fail("has first key", key);
       return;
@@ -74,7 +74,7 @@ public final class SortedMapSubject extends MapSubject {
   }
 
   /** Fails if the map's first key/value pair is not equal to the given entry. */
-  public void hasFirstEntry(@Nullable Object key, @Nullable Object value) {
+  public void hasFirstEntry(@NullableDecl Object key, @NullableDecl Object value) {
     Entry<Object, Object> expectedEntry = Maps.immutableEntry(key, value);
     if (actualAsNavigableMap().isEmpty()) {
       fail("has first entry", expectedEntry);
@@ -123,7 +123,7 @@ public final class SortedMapSubject extends MapSubject {
   }
 
   /** Fails if the map's last key is not equal to the given key. */
-  public void hasLastKey(@Nullable Object key) {
+  public void hasLastKey(@NullableDecl Object key) {
     if (actualAsNavigableMap().isEmpty()) {
       fail("has last key", key);
       return;
@@ -145,7 +145,7 @@ public final class SortedMapSubject extends MapSubject {
   }
 
   /** Fails if the map's last key/value pair is not equal to the given entry. */
-  public void hasLastEntry(@Nullable Object key, @Nullable Object value) {
+  public void hasLastEntry(@NullableDecl Object key, @NullableDecl Object value) {
     Entry<Object, Object> expectedEntry = Maps.immutableEntry(key, value);
     if (actualAsNavigableMap().isEmpty()) {
       fail("has last entry", expectedEntry);

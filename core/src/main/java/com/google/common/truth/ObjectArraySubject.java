@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import java.util.Arrays;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * A Subject for {@code Object[]} and more generically {@code T[]}.
@@ -24,7 +24,8 @@ import javax.annotation.Nullable;
  * @author Christian Gruber
  */
 public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubject<T>, T[]> {
-  ObjectArraySubject(FailureMetadata metadata, @Nullable T[] o, @Nullable String typeDescription) {
+  ObjectArraySubject(
+      FailureMetadata metadata, @NullableDecl T[] o, @NullableDecl String typeDescription) {
     super(metadata, o, typeDescription);
   }
 

@@ -30,7 +30,7 @@ import static java.lang.Math.max;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Platform.PlatformComparisonFailure;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * An {@link AssertionError} (usually a JUnit {@code ComparisonFailure}, but not under GWT) composed
@@ -45,7 +45,7 @@ final class ComparisonFailureWithFacts extends PlatformComparisonFailure impleme
       ImmutableList<Fact> tailFacts,
       String expected,
       String actual,
-      @Nullable Throwable cause) {
+      @NullableDecl Throwable cause) {
     ImmutableList<Fact> facts = makeFacts(headFacts, tailFacts, expected, actual);
     return new ComparisonFailureWithFacts(messages, facts, expected, actual, cause);
   }
@@ -57,7 +57,7 @@ final class ComparisonFailureWithFacts extends PlatformComparisonFailure impleme
       ImmutableList<Fact> facts,
       String expected,
       String actual,
-      @Nullable Throwable cause) {
+      @NullableDecl Throwable cause) {
     super(
         makeMessage(messages, facts),
         checkNotNull(expected),
@@ -112,7 +112,7 @@ final class ComparisonFailureWithFacts extends PlatformComparisonFailure impleme
     return ImmutableList.of(fact("expected", expected), fact("but was", actual));
   }
 
-  @Nullable
+  @NullableDecl
   private static ImmutableList<Fact> removeCommonPrefixAndSuffix(String expected, String actual) {
     int originalExpectedLength = expected.length();
 

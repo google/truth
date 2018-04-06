@@ -18,7 +18,7 @@ package com.google.common.truth;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.SetMultimap;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Type-specific extensions of {@link com.google.common.collect.Multimap} subjects for {@link
@@ -29,8 +29,8 @@ import javax.annotation.Nullable;
 public final class ListMultimapSubject extends MultimapSubject {
   ListMultimapSubject(
       FailureMetadata metadata,
-      @Nullable ListMultimap<?, ?> multimap,
-      @Nullable String typeDescription) {
+      @NullableDecl ListMultimap<?, ?> multimap,
+      @NullableDecl String typeDescription) {
     super(metadata, multimap, typeDescription);
   }
 
@@ -47,7 +47,7 @@ public final class ListMultimapSubject extends MultimapSubject {
    *     instead. Consult {@link com.google.common.collect.Multimap#equals} for more information.
    */
   @Deprecated
-  public void isEqualTo(@Nullable SetMultimap<?, ?> other) {
+  public void isEqualTo(@NullableDecl SetMultimap<?, ?> other) {
     super.isEqualTo(other);
   }
 }

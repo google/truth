@@ -29,7 +29,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * A Subject for {@code float[]}.
@@ -39,7 +39,7 @@ import javax.annotation.Nullable;
 public final class PrimitiveFloatArraySubject
     extends AbstractArraySubject<PrimitiveFloatArraySubject, float[]> {
   PrimitiveFloatArraySubject(
-      FailureMetadata metadata, @Nullable float[] o, @Nullable String typeDescription) {
+      FailureMetadata metadata, @NullableDecl float[] o, @NullableDecl String typeDescription) {
     super(metadata, o, typeDescription);
   }
 
@@ -125,7 +125,7 @@ public final class PrimitiveFloatArraySubject
      */
     @Deprecated
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(@NullableDecl Object o) {
       throw new UnsupportedOperationException(
           "If you meant to compare float arrays, use .of() or .ofElementsIn() instead.");
     }

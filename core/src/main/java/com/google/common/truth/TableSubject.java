@@ -22,7 +22,7 @@ import static com.google.common.truth.Fact.factWithoutValue;
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
 import com.google.common.collect.Tables;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@link Table} subjects.
@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
-  TableSubject(FailureMetadata metadata, @Nullable Table<?, ?, ?> table) {
+  TableSubject(FailureMetadata metadata, @NullableDecl Table<?, ?, ?> table) {
     super(metadata, table);
   }
 
@@ -55,14 +55,14 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   }
 
   /** Fails if the table does not contain a mapping for the given row key and column key. */
-  public void contains(@Nullable Object rowKey, @Nullable Object columnKey) {
+  public void contains(@NullableDecl Object rowKey, @NullableDecl Object columnKey) {
     if (!actual().contains(rowKey, columnKey)) {
       fail("contains mapping for row/column", rowKey, columnKey);
     }
   }
 
   /** Fails if the table contains a mapping for the given row key and column key. */
-  public void doesNotContain(@Nullable Object rowKey, @Nullable Object columnKey) {
+  public void doesNotContain(@NullableDecl Object rowKey, @NullableDecl Object columnKey) {
     if (actual().contains(rowKey, columnKey)) {
       fail("does not contain mapping for row/column", rowKey, columnKey);
     }
@@ -70,7 +70,7 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
 
   /** Fails if the table does not contain the given cell. */
   public void containsCell(
-      @Nullable Object rowKey, @Nullable Object colKey, @Nullable Object value) {
+      @NullableDecl Object rowKey, @NullableDecl Object colKey, @NullableDecl Object value) {
     containsCell(Tables.<Object, Object, Object>immutableCell(rowKey, colKey, value));
   }
 
@@ -84,7 +84,7 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
 
   /** Fails if the table contains the given cell. */
   public void doesNotContainCell(
-      @Nullable Object rowKey, @Nullable Object colKey, @Nullable Object value) {
+      @NullableDecl Object rowKey, @NullableDecl Object colKey, @NullableDecl Object value) {
     doesNotContainCell(Tables.<Object, Object, Object>immutableCell(rowKey, colKey, value));
   }
 
@@ -97,21 +97,21 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   }
 
   /** Fails if the table does not contain the given row key. */
-  public void containsRow(@Nullable Object rowKey) {
+  public void containsRow(@NullableDecl Object rowKey) {
     if (!actual().containsRow(rowKey)) {
       fail("contains row", rowKey);
     }
   }
 
   /** Fails if the table does not contain the given column key. */
-  public void containsColumn(@Nullable Object columnKey) {
+  public void containsColumn(@NullableDecl Object columnKey) {
     if (!actual().containsColumn(columnKey)) {
       fail("contains column", columnKey);
     }
   }
 
   /** Fails if the table does not contain the given value. */
-  public void containsValue(@Nullable Object value) {
+  public void containsValue(@NullableDecl Object value) {
     if (!actual().containsValue(value)) {
       fail("contains value", value);
     }

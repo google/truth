@@ -21,7 +21,7 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.MultimapSubject;
 import com.google.protobuf.Message;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Type-specific extension of {@link MultimapWithProtoValuesSubject}, used to detect bad usages of
@@ -41,7 +41,7 @@ public class SetMultimapWithProtoValuesSubject<
     // See IterableOfProtosSubject.IterableOfMessagesSubject for why this class is exposed.
 
     SetMultimapWithMessageValuesSubject(
-        FailureMetadata failureMetadata, @Nullable SetMultimap<K, M> multimap) {
+        FailureMetadata failureMetadata, @NullableDecl SetMultimap<K, M> multimap) {
       super(failureMetadata, multimap);
     }
   }
@@ -58,7 +58,7 @@ public class SetMultimapWithProtoValuesSubject<
    *     Consult {@link com.google.common.collect.Multimap#equals} for more information.
    */
   @Deprecated
-  public void isEqualTo(@Nullable ListMultimap<?, ?> other) {
+  public void isEqualTo(@NullableDecl ListMultimap<?, ?> other) {
     super.isEqualTo(other);
   }
 }

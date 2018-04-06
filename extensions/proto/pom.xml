@@ -23,9 +23,9 @@
 
     <!-- dependency versions -->
     <auto-value.version>1.5.3</auto-value.version>
-    <error_prone_annotations.version>2.0.19</error_prone_annotations.version>
-    <findbugs.version>3.0.2</findbugs.version>
-    <guava.version>23.4-android</guava.version>
+    <error_prone_annotations.version>2.2.0</error_prone_annotations.version>
+    <checker-framework.version>2.0.0</checker-framework.version>
+    <guava.version>23.6-android</guava.version>
     <protobuf.version>3.3.1</protobuf.version>
   </properties>
   <dependencies>
@@ -45,9 +45,9 @@
       <version>${guava.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>${findbugs.version}</version>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-compat-qual</artifactId>
+      <version>${checker-framework.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>

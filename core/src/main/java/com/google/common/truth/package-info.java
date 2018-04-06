@@ -22,8 +22,6 @@
  * library.
  */
 @CheckReturnValue
-@ParametersAreNonnullByDefault
 package com.google.common.truth;
 
-import javax.annotation.CheckReturnValue;
-import javax.annotation.ParametersAreNonnullByDefault;
+import com.google.errorprone.annotations.CheckReturnValue;

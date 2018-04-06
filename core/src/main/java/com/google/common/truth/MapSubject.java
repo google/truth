@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@link Map} subjects.
@@ -48,13 +48,13 @@ import javax.annotation.Nullable;
  */
 // Can't be final since SortedMapSubject extends it
 public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
-  MapSubject(FailureMetadata metadata, @Nullable Map<?, ?> map) {
+  MapSubject(FailureMetadata metadata, @NullableDecl Map<?, ?> map) {
     super(metadata, map);
   }
 
   /** Fails if the subject is not equal to the given object. */
   @Override
-  public void isEqualTo(@Nullable Object other) {
+  public void isEqualTo(@NullableDecl Object other) {
     if (Objects.equal(actual(), other)) {
       return;
     }
@@ -97,7 +97,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   }
 
   /** Fails if the map does not contain the given key. */
-  public void containsKey(@Nullable Object key) {
+  public void containsKey(@NullableDecl Object key) {
     if (!actual().containsKey(key)) {
       List<Object> keyList = Lists.newArrayList(key);
       if (hasMatchingToStringPair(actual().keySet(), keyList)) {
@@ -115,14 +115,14 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   }
 
   /** Fails if the map contains the given key. */
-  public void doesNotContainKey(@Nullable Object key) {
+  public void doesNotContainKey(@NullableDecl Object key) {
     if (actual().containsKey(key)) {
       fail("does not contain key", key);
     }
   }
 
   /** Fails if the map does not contain the given entry. */
-  public void containsEntry(@Nullable Object key, @Nullable Object value) {
+  public void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (!actual().entrySet().contains(entry)) {
       List<Object> keyList = Lists.newArrayList(key);
@@ -174,7 +174,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   }
 
   /** Fails if the map contains the given entry. */
-  public void doesNotContainEntry(@Nullable Object key, @Nullable Object value) {
+  public void doesNotContainEntry(@NullableDecl Object key, @NullableDecl Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (actual().entrySet().contains(entry)) {
       fail("does not contain entry", entry);
@@ -196,12 +196,12 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * <p>The arguments must not contain duplicate keys.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(@Nullable Object k0, @Nullable Object v0, Object... rest) {
+  public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
     return containsExactlyEntriesIn(accumulateMap(k0, v0, rest));
   }
 
   private static Map<Object, Object> accumulateMap(
-      @Nullable Object k0, @Nullable Object v0, Object... rest) {
+      @NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
     checkArgument(
         rest.length % 2 == 0,
         "There must be an equal number of key/value pairs "
@@ -257,13 +257,13 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   }
 
   private interface ValueTester<A, E> {
-    boolean test(@Nullable A actualValue, @Nullable E expectedValue);
+    boolean test(@NullableDecl A actualValue, @NullableDecl E expectedValue);
   }
 
   private static final ValueTester<Object, Object> EQUALITY =
       new ValueTester<Object, Object>() {
         @Override
-        public boolean test(@Nullable Object actualValue, @Nullable Object expectedValue) {
+        public boolean test(@NullableDecl Object actualValue, @NullableDecl Object expectedValue) {
           return Objects.equal(actualValue, expectedValue);
         }
       };
@@ -352,7 +352,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     private final A actual;
     private final E expected;
 
-    ValueDifference(@Nullable A actual, @Nullable E expected) {
+    ValueDifference(@NullableDecl A actual, @NullableDecl E expected) {
       this.actual = actual;
       this.expected = expected;
     }
@@ -483,7 +483,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
      * Fails if the map does not contain an entry with the given key and a value that corresponds to
      * the given value.
      */
-    public void containsEntry(@Nullable Object expectedKey, @Nullable E expectedValue) {
+    public void containsEntry(@NullableDecl Object expectedKey, @NullableDecl E expectedValue) {
       if (actual().containsKey(expectedKey)) {
         // Found matching key.
         A actualValue = getCastSubject().get(expectedKey);
@@ -492,7 +492,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           return;
         }
         // Found matching key with non-matching value.
-        @Nullable String diff = correspondence.formatDiff(actualValue, expectedValue);
+        @NullableDecl String diff = correspondence.formatDiff(actualValue, expectedValue);
         if (diff != null) {
           failWithRawMessage(
               "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
@@ -531,7 +531,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
      * Fails if the map contains an entry with the given key and a value that corresponds to the
      * given value.
      */
-    public void doesNotContainEntry(@Nullable Object excludedKey, @Nullable E excludedValue) {
+    public void doesNotContainEntry(
+        @NullableDecl Object excludedKey, @NullableDecl E excludedValue) {
       if (actual().containsKey(excludedKey)) {
         A actualValue = getCastSubject().get(excludedKey);
         if (correspondence.compare(actualValue, excludedValue)) {
@@ -556,7 +557,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
     // For bonus points, checking that the even-numbered values are of type E would be sweet.
     @CanIgnoreReturnValue
-    public Ordered containsExactly(@Nullable Object k0, @Nullable E v0, Object... rest) {
+    public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl E v0, Object... rest) {
       @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
       Map<Object, E> expectedMap = (Map<Object, E>) accumulateMap(k0, v0, rest);
       return containsExactlyEntriesIn(expectedMap);
@@ -609,7 +610,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       return new Function<ValueDifference<A, V>, String>() {
         @Override
         public String apply(ValueDifference<A, V> values) {
-          @Nullable String diffString = correspondence.formatDiff(values.actual, values.expected);
+          @NullableDecl
+          String diffString = correspondence.formatDiff(values.actual, values.expected);
           if (diffString != null) {
             return StringUtil.format(
                 "(expected %s but got %s, diff: %s)", values.expected, values.actual, diffString);
