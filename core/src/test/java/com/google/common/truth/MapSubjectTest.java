@@ -689,16 +689,21 @@ public class MapSubjectTest extends BaseSubjectTestCase {
                 + "However, the following keys are mapped to <null>: [null]");
   }
 
+  private static final String KEY_IS_PRESENT_WITH_DIFFERENT_VALUE =
+      "key is present but with a different value";
+
   @Test
   public void containsNullEntryKey() {
     Map<String, String> actual = Maps.newHashMap();
     actual.put(null, null);
     expectFailureWhenTestingThat(actual).containsEntry(null, "kluever");
+    assertFailureValue("value of", "map.get(null)");
+    assertFailureValue("expected", "kluever");
+    assertFailureValue("but was", "null");
+    assertFailureValue("map was", "{null=null}");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{null=null}> contains entry <null=kluever>. "
-                + "However, it has a mapping from <null> to <null>");
+        .contains(KEY_IS_PRESENT_WITH_DIFFERENT_VALUE);
   }
 
   @Test
@@ -781,11 +786,13 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void failMapContainsKeyWithValue() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     expectFailureWhenTestingThat(actual).containsEntry("a", "a");
+    assertFailureValue("value of", "map.get(a)");
+    assertFailureValue("expected", "a");
+    assertFailureValue("but was", "A");
+    assertFailureValue("map was", "{a=A}");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{a=A}> contains entry <a=a>. "
-                + "However, it has a mapping from <a> to <A>");
+        .doesNotContain(KEY_IS_PRESENT_WITH_DIFFERENT_VALUE);
   }
 
   @Test
@@ -793,22 +800,26 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     Map<String, String> actual = Maps.newHashMap();
     actual.put("a", null);
     expectFailureWhenTestingThat(actual).containsEntry("a", "A");
+    assertFailureValue("value of", "map.get(a)");
+    assertFailureValue("expected", "A");
+    assertFailureValue("but was", "null");
+    assertFailureValue("map was", "{a=null}");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{a=null}> contains entry <a=A>. "
-                + "However, it has a mapping from <a> to <null>");
+        .contains(KEY_IS_PRESENT_WITH_DIFFERENT_VALUE);
   }
 
   @Test
   public void failMapContainsKeyWithPresentValueNullExpected() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     expectFailureWhenTestingThat(actual).containsEntry("a", null);
+    assertFailureValue("value of", "map.get(a)");
+    assertFailureValue("expected", "null");
+    assertFailureValue("but was", "A");
+    assertFailureValue("map was", "{a=A}");
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{a=A}> contains entry <a=null>. "
-                + "However, it has a mapping from <a> to <A>");
+        .contains(KEY_IS_PRESENT_WITH_DIFFERENT_VALUE);
   }
 
   @Test
