@@ -30,7 +30,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.ComparisonFailure;
 import org.junit.rules.TestRule;
 
@@ -75,7 +75,7 @@ final class Platform {
     StackTraceCleaner.cleanStackTrace(throwable);
   }
 
-  @Nullable
+  @NullableDecl
   static ImmutableList<Fact> makeDiff(String expected, String actual) {
     ImmutableList<String> expectedLines = splitLines(expected);
     ImmutableList<String> actualLines = splitLines(actual);
@@ -109,19 +109,19 @@ final class Platform {
     private final String message;
 
     /** Separate cause field, in case initCause() fails. */
-    @Nullable private final Throwable cause;
+    @NullableDecl private final Throwable cause;
 
-    @Nullable private final String suffix;
+    @NullableDecl private final String suffix;
 
     private final ComparisonFailureMessageStrategy messageStrategy;
 
     // TODO(cpovirk): Do we ever pass null for message, expected, or actual?
     PlatformComparisonFailure(
-        @Nullable String message,
-        @Nullable String expected,
-        @Nullable String actual,
-        @Nullable String suffix,
-        @Nullable Throwable cause,
+        @NullableDecl String message,
+        @NullableDecl String expected,
+        @NullableDecl String actual,
+        @NullableDecl String suffix,
+        @NullableDecl Throwable cause,
         ComparisonFailureMessageStrategy messageStrategy) {
       super(message, expected, actual);
       this.message = message;

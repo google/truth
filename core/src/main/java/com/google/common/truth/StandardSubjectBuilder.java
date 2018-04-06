@@ -30,9 +30,9 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-/*>>>import org.checkerframework.checker.nullness.compatqual.NullableType;*/
+/*>>>import org.checkerframework.checker.nullness.compatcompatqual.NullableDeclType;*/
 
 /**
  * In a fluent assertion chain, an object with which you can do any of the following:
@@ -70,132 +70,132 @@ public class StandardSubjectBuilder {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   public final <ComparableT extends Comparable<?>> ComparableSubject<?, ComparableT> that(
-      @Nullable ComparableT actual) {
+      @NullableDecl ComparableT actual) {
     return new ComparableSubject(metadata(), actual) {};
   }
 
-  public final BigDecimalSubject that(@Nullable BigDecimal actual) {
+  public final BigDecimalSubject that(@NullableDecl BigDecimal actual) {
     return new BigDecimalSubject(metadata(), actual);
   }
 
-  public final Subject<DefaultSubject, Object> that(@Nullable Object actual) {
+  public final Subject<DefaultSubject, Object> that(@NullableDecl Object actual) {
     return new DefaultSubject(metadata(), actual);
   }
 
   @GwtIncompatible("ClassSubject.java")
-  public final ClassSubject that(@Nullable Class<?> actual) {
+  public final ClassSubject that(@NullableDecl Class<?> actual) {
     return new ClassSubject(metadata(), actual);
   }
 
-  public final ThrowableSubject that(@Nullable Throwable actual) {
+  public final ThrowableSubject that(@NullableDecl Throwable actual) {
     return new ThrowableSubject(metadata(), actual, "throwable");
   }
 
-  public final LongSubject that(@Nullable Long actual) {
+  public final LongSubject that(@NullableDecl Long actual) {
     return new LongSubject(metadata(), actual);
   }
 
-  public final DoubleSubject that(@Nullable Double actual) {
+  public final DoubleSubject that(@NullableDecl Double actual) {
     return new DoubleSubject(metadata(), actual);
   }
 
-  public final FloatSubject that(@Nullable Float actual) {
+  public final FloatSubject that(@NullableDecl Float actual) {
     return new FloatSubject(metadata(), actual);
   }
 
-  public final IntegerSubject that(@Nullable Integer actual) {
+  public final IntegerSubject that(@NullableDecl Integer actual) {
     return new IntegerSubject(metadata(), actual);
   }
 
-  public final BooleanSubject that(@Nullable Boolean actual) {
+  public final BooleanSubject that(@NullableDecl Boolean actual) {
     return new BooleanSubject(metadata(), actual);
   }
 
-  public final StringSubject that(@Nullable String actual) {
+  public final StringSubject that(@NullableDecl String actual) {
     return new StringSubject(metadata(), actual);
   }
 
-  public final IterableSubject that(@Nullable Iterable<?> actual) {
+  public final IterableSubject that(@NullableDecl Iterable<?> actual) {
     return new IterableSubject(metadata(), actual);
   }
 
-  public final SortedSetSubject that(@Nullable SortedSet<?> actual) {
+  public final SortedSetSubject that(@NullableDecl SortedSet<?> actual) {
     return new SortedSetSubject(metadata(), actual);
   }
 
-  public final <T> ObjectArraySubject<T> that(@Nullable T[] actual) {
+  public final <T> ObjectArraySubject<T> that(@NullableDecl T[] actual) {
     return new ObjectArraySubject<>(metadata(), actual, "array");
   }
 
-  public final PrimitiveBooleanArraySubject that(@Nullable boolean[] actual) {
+  public final PrimitiveBooleanArraySubject that(@NullableDecl boolean[] actual) {
     return new PrimitiveBooleanArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveShortArraySubject that(@Nullable short[] actual) {
+  public final PrimitiveShortArraySubject that(@NullableDecl short[] actual) {
     return new PrimitiveShortArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveIntArraySubject that(@Nullable int[] actual) {
+  public final PrimitiveIntArraySubject that(@NullableDecl int[] actual) {
     return new PrimitiveIntArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveLongArraySubject that(@Nullable long[] actual) {
+  public final PrimitiveLongArraySubject that(@NullableDecl long[] actual) {
     return new PrimitiveLongArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveCharArraySubject that(@Nullable char[] actual) {
+  public final PrimitiveCharArraySubject that(@NullableDecl char[] actual) {
     return new PrimitiveCharArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveByteArraySubject that(@Nullable byte[] actual) {
+  public final PrimitiveByteArraySubject that(@NullableDecl byte[] actual) {
     return new PrimitiveByteArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveFloatArraySubject that(@Nullable float[] actual) {
+  public final PrimitiveFloatArraySubject that(@NullableDecl float[] actual) {
     return new PrimitiveFloatArraySubject(metadata(), actual, "array");
   }
 
-  public final PrimitiveDoubleArraySubject that(@Nullable double[] actual) {
+  public final PrimitiveDoubleArraySubject that(@NullableDecl double[] actual) {
     return new PrimitiveDoubleArraySubject(metadata(), actual, "array");
   }
 
-  public final GuavaOptionalSubject that(@Nullable Optional<?> actual) {
+  public final GuavaOptionalSubject that(@NullableDecl Optional<?> actual) {
     return new GuavaOptionalSubject(metadata(), actual, "optional");
   }
 
-  public final MapSubject that(@Nullable Map<?, ?> actual) {
+  public final MapSubject that(@NullableDecl Map<?, ?> actual) {
     return new MapSubject(metadata(), actual);
   }
 
-  public final SortedMapSubject that(@Nullable SortedMap<?, ?> actual) {
+  public final SortedMapSubject that(@NullableDecl SortedMap<?, ?> actual) {
     return new SortedMapSubject(metadata(), actual);
   }
 
-  public final MultimapSubject that(@Nullable Multimap<?, ?> actual) {
+  public final MultimapSubject that(@NullableDecl Multimap<?, ?> actual) {
     return new MultimapSubject(metadata(), actual, "multimap");
   }
 
-  public final ListMultimapSubject that(@Nullable ListMultimap<?, ?> actual) {
+  public final ListMultimapSubject that(@NullableDecl ListMultimap<?, ?> actual) {
     return new ListMultimapSubject(metadata(), actual, "multimap");
   }
 
-  public final SetMultimapSubject that(@Nullable SetMultimap<?, ?> actual) {
+  public final SetMultimapSubject that(@NullableDecl SetMultimap<?, ?> actual) {
     return new SetMultimapSubject(metadata(), actual, "multimap");
   }
 
-  public final MultisetSubject that(@Nullable Multiset<?> actual) {
+  public final MultisetSubject that(@NullableDecl Multiset<?> actual) {
     return new MultisetSubject(metadata(), actual);
   }
 
-  public final TableSubject that(@Nullable Table<?, ?, ?> actual) {
+  public final TableSubject that(@NullableDecl Table<?, ?, ?> actual) {
     return new TableSubject(metadata(), actual);
   }
 
-  public final AtomicLongMapSubject that(@Nullable AtomicLongMap<?> actual) {
+  public final AtomicLongMapSubject that(@NullableDecl AtomicLongMap<?> actual) {
     return new AtomicLongMapSubject(metadata(), actual);
   }
 
-  public final StandardSubjectBuilder withMessage(@Nullable String messageToPrepend) {
+  public final StandardSubjectBuilder withMessage(@NullableDecl String messageToPrepend) {
     return withMessage("%s", messageToPrepend);
   }
 
@@ -211,7 +211,7 @@ public class StandardSubjectBuilder {
    *     equal the number of given arguments
    */
   public final StandardSubjectBuilder withMessage(
-      @Nullable String format, Object /* @NullableType */... args) {
+      @NullableDecl String format, Object /* @NullableDeclType */... args) {
     return new StandardSubjectBuilder(metadata().withMessage(format, args));
   }
 
@@ -236,7 +236,7 @@ public class StandardSubjectBuilder {
   }
 
   /** Triggers the failure strategy with the given failure message */
-  public final void fail(@Nullable String format, Object /*@NullableType*/... args) {
+  public final void fail(@NullableDecl String format, Object /*@NullableDeclType*/... args) {
     metadata().fail(format(format, args));
   }
 

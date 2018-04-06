@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@link Throwable} subjects.
@@ -24,7 +24,9 @@ import javax.annotation.Nullable;
  */
 public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
   ThrowableSubject(
-      FailureMetadata metadata, @Nullable Throwable throwable, @Nullable String typeDescription) {
+      FailureMetadata metadata,
+      @NullableDecl Throwable throwable,
+      @NullableDecl String typeDescription) {
     super(metadata, throwable, typeDescription);
   }
 
@@ -41,7 +43,7 @@ public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
    *     for less brittle tests.
    */
   @Deprecated
-  public final void hasMessage(@Nullable String expected) {
+  public final void hasMessage(@NullableDecl String expected) {
     hasMessageThat().isEqualTo(expected);
   }
 

@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 // TODO(cpovirk): Make this package-private, and later remove it?
 public final class DefaultSubject extends Subject<DefaultSubject, Object> {
@@ -23,7 +23,7 @@ public final class DefaultSubject extends Subject<DefaultSubject, Object> {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
-  DefaultSubject(FailureMetadata metadata, @Nullable Object o) {
+  DefaultSubject(FailureMetadata metadata, @NullableDecl Object o) {
     super(metadata, o);
   }
 }

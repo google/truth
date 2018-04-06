@@ -26,7 +26,7 @@ import com.google.common.truth.Subject;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import java.util.Arrays;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Truth subject for the full version of Protocol Buffers.
@@ -56,11 +56,12 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   // IterableOfProtosSubject and there is use for such typing.
   private final FluentEqualityConfig config;
 
-  protected ProtoSubject(FailureMetadata failureMetadata, @Nullable M message) {
+  protected ProtoSubject(FailureMetadata failureMetadata, @NullableDecl M message) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), message);
   }
 
-  ProtoSubject(FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable M message) {
+  ProtoSubject(
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl M message) {
     super(failureMetadata, message);
     this.config = config;
   }
@@ -140,7 +141,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   private static boolean notMessagesWithSameDescriptor(
-      @Nullable Message actual, @Nullable Object expected) {
+      @NullableDecl Message actual, @NullableDecl Object expected) {
     if (actual != null && expected instanceof Message) {
       return actual.getDescriptorForType() != ((Message) expected).getDescriptorForType();
     }
@@ -148,7 +149,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
-  public void isEqualTo(@Nullable Object expected) {
+  public void isEqualTo(@NullableDecl Object expected) {
     if (notMessagesWithSameDescriptor(actual(), expected)) {
       super.isEqualTo(expected);
     } else {
@@ -167,7 +168,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
    * Same as {@link #isEqualTo(Object)}, except it returns true on success and false on failure
    * without throwing any exceptions.
    */
-  boolean testIsEqualTo(@Nullable Object expected) {
+  boolean testIsEqualTo(@NullableDecl Object expected) {
     if (notMessagesWithSameDescriptor(actual(), expected)) {
       return Objects.equal(actual(), expected);
     } else {
@@ -178,7 +179,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
-  public void isNotEqualTo(@Nullable Object expected) {
+  public void isNotEqualTo(@NullableDecl Object expected) {
     if (notMessagesWithSameDescriptor(actual(), expected)) {
       super.isNotEqualTo(expected);
     } else {
@@ -234,12 +235,14 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
       };
     }
 
-    MessageSubject(FailureMetadata failureMetadata, @Nullable Message message) {
+    MessageSubject(FailureMetadata failureMetadata, @NullableDecl Message message) {
       super(failureMetadata, message);
     }
 
     private MessageSubject(
-        FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable Message message) {
+        FailureMetadata failureMetadata,
+        FluentEqualityConfig config,
+        @NullableDecl Message message) {
       super(failureMetadata, config, message);
     }
   }

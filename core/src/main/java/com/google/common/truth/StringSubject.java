@@ -21,7 +21,7 @@ import static com.google.common.truth.Fact.factWithoutValue;
 
 import com.google.common.annotations.GwtIncompatible;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for string subjects.
@@ -36,7 +36,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
-  protected StringSubject(FailureMetadata metadata, @Nullable String string) {
+  protected StringSubject(FailureMetadata metadata, @NullableDecl String string) {
     super(metadata, string);
   }
 

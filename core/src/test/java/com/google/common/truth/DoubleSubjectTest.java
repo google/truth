@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -391,7 +391,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThat(1.23).isNotEqualTo(1.23f);
   }
 
-  private static void assertThatIsNotEqualToFails(@Nullable final Double value) {
+  private static void assertThatIsNotEqualToFails(@NullableDecl final Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -413,7 +413,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsZeroFails(null);
   }
 
-  private static void assertThatIsZeroFails(@Nullable final Double value) {
+  private static void assertThatIsZeroFails(@NullableDecl final Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -436,7 +436,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsNonZeroFails(null, "expected a double other than zero");
   }
 
-  private static void assertThatIsNonZeroFails(@Nullable final Double value, String factKey) {
+  private static void assertThatIsNonZeroFails(@NullableDecl final Double value, String factKey) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -457,7 +457,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsPositiveInfinityFails(null);
   }
 
-  private static void assertThatIsPositiveInfinityFails(@Nullable final Double value) {
+  private static void assertThatIsPositiveInfinityFails(@NullableDecl final Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -477,7 +477,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsNegativeInfinityFails(null);
   }
 
-  private static void assertThatIsNegativeInfinityFails(@Nullable final Double value) {
+  private static void assertThatIsNegativeInfinityFails(@NullableDecl final Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -497,7 +497,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsNaNFails(null);
   }
 
-  private static void assertThatIsNaNFails(@Nullable final Double value) {
+  private static void assertThatIsNaNFails(@NullableDecl final Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override
@@ -519,7 +519,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsFiniteFails(null);
   }
 
-  private static void assertThatIsFiniteFails(@Nullable final Double value) {
+  private static void assertThatIsFiniteFails(@NullableDecl final Double value) {
     ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<DoubleSubject, Double>() {
           @Override

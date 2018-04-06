@@ -23,7 +23,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Ints;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /** {@link Correspondence} implementations for testing purposes. */
 final class TestCorrespondences {
@@ -36,7 +36,7 @@ final class TestCorrespondences {
       new Correspondence<String, Integer>() {
 
         @Override
-        public boolean compare(@Nullable String actual, @Nullable Integer expected) {
+        public boolean compare(@NullableDecl String actual, @NullableDecl Integer expected) {
           if (actual == null) {
             return expected == null;
           }
@@ -125,7 +125,7 @@ final class TestCorrespondences {
     }
 
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(@NullableDecl Object o) {
       if (o instanceof Record) {
         Record that = (Record) o;
         return this.id == that.id && this.score == that.score;
@@ -151,14 +151,14 @@ final class TestCorrespondences {
      * If the argument is the string form of a record, returns that record; otherwise returns {@code
      * null}.
      */
-    @Nullable
+    @NullableDecl
     static Record parse(String str) {
       List<String> parts = Splitter.on('/').splitToList(str);
       if (parts.size() != 2) {
         return null;
       }
-      @Nullable Integer id = parts.get(0).equals("none") ? -1 : Ints.tryParse(parts.get(0));
-      @Nullable Integer score = Ints.tryParse(parts.get(1));
+      @NullableDecl Integer id = parts.get(0).equals("none") ? -1 : Ints.tryParse(parts.get(0));
+      @NullableDecl Integer score = Ints.tryParse(parts.get(1));
       if (id == null || score == null) {
         return null;
       }
@@ -218,14 +218,14 @@ final class TestCorrespondences {
 
         @Override
         public boolean compare(String actual, Record expected) {
-          @Nullable Record actualRecord = Record.parse(actual);
+          @NullableDecl Record actualRecord = Record.parse(actual);
           return actualRecord != null
               && RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10.compare(actualRecord, expected);
         }
 
         @Override
         public String formatDiff(String actual, Record expected) {
-          @Nullable Record actualRecord = Record.parse(actual);
+          @NullableDecl Record actualRecord = Record.parse(actual);
           return actualRecord != null
               ? RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10.formatDiff(actualRecord, expected)
               : null;
@@ -245,7 +245,7 @@ final class TestCorrespondences {
       new Function<Record, Integer>() {
 
         @Override
-        @Nullable
+        @NullableDecl
         public Integer apply(Record record) {
           return record.hasId() ? record.getId() : null;
         }
@@ -260,9 +260,9 @@ final class TestCorrespondences {
       new Function<String, Integer>() {
 
         @Override
-        @Nullable
+        @NullableDecl
         public Integer apply(String str) {
-          @Nullable Record record = Record.parse(str);
+          @NullableDecl Record record = Record.parse(str);
           return record != null ? RECORD_ID.apply(record) : null;
         }
       };

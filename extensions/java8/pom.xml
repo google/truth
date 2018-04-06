@@ -15,7 +15,7 @@
     An extension for the Truth test assertion framework supporting Java8 types and structures
   </description>
   <properties>
-    <jsr305.version>3.0.2</jsr305.version>
+    <checker-framework.version>2.0.0</checker-framework.version>
   </properties>
   <dependencies>
     <dependency>
@@ -24,9 +24,9 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>${jsr305.version}</version>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-compat-qual</artifactId>
+      <version>${checker-framework.version}</version>
       <optional>true</optional>
     </dependency>
   </dependencies>

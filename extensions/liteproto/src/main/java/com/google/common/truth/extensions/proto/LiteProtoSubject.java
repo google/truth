@@ -21,11 +21,10 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.Subject;
 import com.google.common.truth.Truth;
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.MessageLite;
 import java.util.regex.Pattern;
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Truth subjects for the Lite version of Protocol Buffers.
@@ -38,7 +37,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * @param <M> MessageLite type.
  */
 @CheckReturnValue
-@ParametersAreNonnullByDefault
 public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends MessageLite>
     extends Subject<S, M> {
 
@@ -60,7 +58,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     return MessageLiteSubjectFactory.INSTANCE;
   }
 
-  protected LiteProtoSubject(FailureMetadata failureMetadata, @Nullable M messageLite) {
+  protected LiteProtoSubject(FailureMetadata failureMetadata, @NullableDecl M messageLite) {
     super(failureMetadata, messageLite);
   }
 
@@ -70,7 +68,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   // from the strings alone. So, we manually strip this prefix.
   // In case the class names are actually relevant, Subject.isEqualTo() will add them back for us.
   // TODO(user): Maybe get a way to do this upstream.
-  static String getTrimmedToString(@Nullable MessageLite messageLite) {
+  static String getTrimmedToString(@NullableDecl MessageLite messageLite) {
     String subjectString = String.valueOf(messageLite).trim();
     if (subjectString.startsWith("# ")) {
       String objectToString =
@@ -95,7 +93,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * implementation.
    */
   @Override
-  public void isEqualTo(@Nullable Object expected) {
+  public void isEqualTo(@NullableDecl Object expected) {
     // TODO(user): Do better here when MessageLite descriptors are available.
     if (!Objects.equal(actual(), expected)) {
       if (actual() == null || expected == null) {
@@ -130,12 +128,12 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead.
    */
   @Deprecated
-  public void isEqualTo(@Nullable MessageLite.Builder builder) {
+  public void isEqualTo(@NullableDecl MessageLite.Builder builder) {
     isEqualTo((Object) builder);
   }
 
   @Override
-  public void isNotEqualTo(@Nullable Object expected) {
+  public void isNotEqualTo(@NullableDecl Object expected) {
     if (Objects.equal(actual(), expected)) {
       if (actual() == null) {
         super.isNotEqualTo(expected);
@@ -152,7 +150,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead.
    */
   @Deprecated
-  public void isNotEqualTo(@Nullable MessageLite.Builder builder) {
+  public void isNotEqualTo(@NullableDecl MessageLite.Builder builder) {
     isNotEqualTo((Object) builder);
   }
 
@@ -201,7 +199,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   }
 
   static final class MessageLiteSubject extends LiteProtoSubject<MessageLiteSubject, MessageLite> {
-    MessageLiteSubject(FailureMetadata failureMetadata, @Nullable MessageLite messageLite) {
+    MessageLiteSubject(FailureMetadata failureMetadata, @NullableDecl MessageLite messageLite) {
       super(failureMetadata, messageLite);
     }
   }
@@ -212,7 +210,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
     @Override
     public MessageLiteSubject createSubject(
-        FailureMetadata failureMetadata, @Nullable MessageLite messageLite) {
+        FailureMetadata failureMetadata, @NullableDecl MessageLite messageLite) {
       return new MessageLiteSubject(failureMetadata, messageLite);
     }
   }

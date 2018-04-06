@@ -19,7 +19,7 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.factWithoutValue;
 
 import java.util.Optional;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for Java 8 {@link Optional} subjects.
@@ -29,8 +29,8 @@ import javax.annotation.Nullable;
 public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>> {
   OptionalSubject(
       FailureMetadata failureMetadata,
-      @Nullable Optional<?> subject,
-      @Nullable String typeDescription) {
+      @NullableDecl Optional<?> subject,
+      @NullableDecl String typeDescription) {
     super(failureMetadata, subject, typeDescription);
   }
 

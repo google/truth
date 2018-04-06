@@ -18,7 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Determines whether an instance of type {@code A} corresponds in some way to an instance of type
@@ -94,7 +94,7 @@ public abstract class Correspondence<A, E> {
    * Returns whether or not the {@code actual} value is said to correspond to the {@code expected}
    * value for the purposes of this test.
    */
-  public abstract boolean compare(@Nullable A actual, @Nullable E expected);
+  public abstract boolean compare(@NullableDecl A actual, @NullableDecl E expected);
 
   /**
    * Returns a {@link String} describing the difference between the {@code actual} and {@code
@@ -106,8 +106,8 @@ public abstract class Correspondence<A, E> {
    * <p>Assertions should only invoke this with parameters for which {@link #compare} returns {@code
    * false}.
    */
-  @Nullable
-  public String formatDiff(@Nullable A actual, @Nullable E expected) {
+  @NullableDecl
+  public String formatDiff(@NullableDecl A actual, @NullableDecl E expected) {
     return null;
   }
 
@@ -136,7 +136,7 @@ public abstract class Correspondence<A, E> {
    */
   @Deprecated
   @Override
-  public final boolean equals(@Nullable Object o) {
+  public final boolean equals(@NullableDecl Object o) {
     throw new UnsupportedOperationException(
         "Correspondence.equals(object) is not supported. If you meant to compare objects, use"
             + " .compare(actual, expected) instead.");

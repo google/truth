@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Fact.factWithoutValue;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for boolean subjects.
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class BooleanSubject extends Subject<BooleanSubject, Boolean> {
-  BooleanSubject(FailureMetadata metadata, @Nullable Boolean actual) {
+  BooleanSubject(FailureMetadata metadata, @NullableDecl Boolean actual) {
     super(metadata, actual);
   }
 

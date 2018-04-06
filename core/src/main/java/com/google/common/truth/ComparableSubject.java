@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.collect.Range;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@link Comparable} typed subjects.
@@ -29,7 +29,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
-  protected ComparableSubject(FailureMetadata metadata, @Nullable T actual) {
+  protected ComparableSubject(FailureMetadata metadata, @NullableDecl T actual) {
     super(metadata, actual);
   }
 

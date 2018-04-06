@@ -22,7 +22,7 @@ import com.google.common.collect.ForwardingSortedSet;
 import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.SortedSet;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Tests for {@link SortedSet} and {@link NavigableSet} objects. This class supports assertions
@@ -45,7 +45,7 @@ public final class SortedSetSubject extends IterableSubject {
   }
 
   /** Fails if the subject does not have the given first element. */
-  public void hasFirstElement(@Nullable Object element) {
+  public void hasFirstElement(@NullableDecl Object element) {
     if (actualAsNavigableSet().isEmpty()) {
       fail("has first element", element);
       return;
@@ -67,7 +67,7 @@ public final class SortedSetSubject extends IterableSubject {
   }
 
   /** Fails if the subject does not have the given last element. */
-  public void hasLastElement(@Nullable Object element) {
+  public void hasLastElement(@NullableDecl Object element) {
     if (actualAsNavigableSet().isEmpty()) {
       fail("has last element", element);
       return;

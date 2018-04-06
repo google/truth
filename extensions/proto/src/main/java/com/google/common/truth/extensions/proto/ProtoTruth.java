@@ -29,7 +29,7 @@ import com.google.common.truth.StandardSubjectBuilder;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * A set of static methods to begin a Truth assertion chain for protocol buffers.
@@ -50,12 +50,12 @@ public final class ProtoTruth {
   }
 
   /** Assert on a single {@link MessageLite} instance. */
-  public static LiteProtoSubject<?, MessageLite> assertThat(@Nullable MessageLite messageLite) {
+  public static LiteProtoSubject<?, MessageLite> assertThat(@NullableDecl MessageLite messageLite) {
     return assertAbout(protos()).that(messageLite);
   }
 
   /** Assert on a single {@link Message} instance. */
-  public static ProtoSubject<?, Message> assertThat(@Nullable Message message) {
+  public static ProtoSubject<?, Message> assertThat(@NullableDecl Message message) {
     return assertAbout(protos()).that(message);
   }
 
@@ -71,7 +71,7 @@ public final class ProtoTruth {
   // would result in method ambiguity errors.
   // See http://stackoverflow.com/a/8467804 for a more thorough explanation.
   public static <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> assertThat(
-      @Nullable Iterable<M> messages) {
+      @NullableDecl Iterable<M> messages) {
     return assertAbout(protos()).that(messages);
   }
 
@@ -82,7 +82,7 @@ public final class ProtoTruth {
    * comparison tests available on {@link MapSubject.UsingCorrespondence}.
    */
   public static <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> assertThat(
-      @Nullable Map<K, M> map) {
+      @NullableDecl Map<K, M> map) {
     return assertAbout(protos()).that(map);
   }
 
@@ -94,7 +94,7 @@ public final class ProtoTruth {
    */
   public static <K, M extends Message>
       MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> assertThat(
-          @Nullable Multimap<K, M> multimap) {
+          @NullableDecl Multimap<K, M> multimap) {
     return assertAbout(protos()).that(multimap);
   }
 
@@ -106,7 +106,7 @@ public final class ProtoTruth {
    */
   public static <K, M extends Message>
       ListMultimapWithProtoValuesSubject<?, K, M, ListMultimap<K, M>> assertThat(
-          @Nullable ListMultimap<K, M> listMultimap) {
+          @NullableDecl ListMultimap<K, M> listMultimap) {
     return assertAbout(protos()).that(listMultimap);
   }
 
@@ -118,7 +118,7 @@ public final class ProtoTruth {
    */
   public static <K, M extends Message>
       SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> assertThat(
-          @Nullable SetMultimap<K, M> setMultimap) {
+          @NullableDecl SetMultimap<K, M> setMultimap) {
     return assertAbout(protos()).that(setMultimap);
   }
 

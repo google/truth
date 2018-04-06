@@ -32,7 +32,7 @@ import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import java.util.Arrays;
 import java.util.Comparator;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Truth subject for the iterables of protocol buffers.
@@ -86,14 +86,14 @@ public class IterableOfProtosSubject<
     // The work around would be annoyingly verbose for users, so we expose IterableOfMessagesSubject
     // explicitly so that there are no wildcards to have conflicting bounds.
 
-    IterableOfMessagesSubject(FailureMetadata failureMetadata, @Nullable Iterable<M> messages) {
+    IterableOfMessagesSubject(FailureMetadata failureMetadata, @NullableDecl Iterable<M> messages) {
       super(failureMetadata, messages);
     }
 
     private IterableOfMessagesSubject(
         FailureMetadata failureMetadata,
         FluentEqualityConfig config,
-        @Nullable Iterable<M> messages) {
+        @NullableDecl Iterable<M> messages) {
       super(failureMetadata, config, messages);
     }
   }
@@ -110,12 +110,12 @@ public class IterableOfProtosSubject<
     };
   }
 
-  protected IterableOfProtosSubject(FailureMetadata failureMetadata, @Nullable C messages) {
+  protected IterableOfProtosSubject(FailureMetadata failureMetadata, @NullableDecl C messages) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), messages);
   }
 
   IterableOfProtosSubject(
-      FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable C messages) {
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C messages) {
     super(failureMetadata, messages);
     this.config = config;
   }
@@ -148,12 +148,12 @@ public class IterableOfProtosSubject<
   }
 
   /** Checks (with a side-effect failure) that the subject contains the supplied item. */
-  public void contains(@Nullable Object element) {
+  public void contains(@NullableDecl Object element) {
     delegate().contains(element);
   }
 
   /** Checks (with a side-effect failure) that the subject does not contain the supplied item. */
-  public void doesNotContain(@Nullable Object element) {
+  public void doesNotContain(@NullableDecl Object element) {
     delegate().doesNotContain(element);
   }
 
@@ -164,7 +164,7 @@ public class IterableOfProtosSubject<
 
   /** Checks that the subject contains at least one of the provided objects or fails. */
   public void containsAnyOf(
-      @Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
+      @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
     delegate().containsAnyOf(first, second, rest);
   }
 
@@ -195,9 +195,9 @@ public class IterableOfProtosSubject<
    */
   @CanIgnoreReturnValue
   public Ordered containsAllOf(
-      @Nullable Object firstExpected,
-      @Nullable Object secondExpected,
-      @Nullable Object... restOfExpected) {
+      @NullableDecl Object firstExpected,
+      @NullableDecl Object secondExpected,
+      @NullableDecl Object... restOfExpected) {
     return delegate().containsAllOf(firstExpected, secondExpected, restOfExpected);
   }
 
@@ -243,7 +243,7 @@ public class IterableOfProtosSubject<
    * elements, not an element itself. This helps human readers and avoids a compiler warning.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(@Nullable Object... varargs) {
+  public Ordered containsExactly(@NullableDecl Object... varargs) {
     return delegate().containsExactly(varargs);
   }
 
@@ -282,9 +282,9 @@ public class IterableOfProtosSubject<
    * irrelevant to this test, which fails if any of the actual elements equal any of the excluded.)
    */
   public void containsNoneOf(
-      @Nullable Object firstExcluded,
-      @Nullable Object secondExcluded,
-      @Nullable Object... restOfExcluded) {
+      @NullableDecl Object firstExcluded,
+      @NullableDecl Object secondExcluded,
+      @NullableDecl Object... restOfExcluded) {
     delegate().containsNoneOf(firstExcluded, secondExcluded, restOfExcluded);
   }
 
@@ -658,11 +658,11 @@ public class IterableOfProtosSubject<
   private static class UsingCorrespondence<M extends Message>
       implements IterableOfProtosUsingCorrespondence<M> {
     private final IterableOfProtosSubject<?, M, ?> subject;
-    @Nullable private final Function<? super M, ? extends Object> keyFunction;
+    @NullableDecl private final Function<? super M, ? extends Object> keyFunction;
 
     UsingCorrespondence(
         IterableOfProtosSubject<?, M, ?> subject,
-        @Nullable Function<? super M, ? extends Object> keyFunction) {
+        @NullableDecl Function<? super M, ? extends Object> keyFunction) {
       this.subject = checkNotNull(subject);
       this.keyFunction = keyFunction;
     }
@@ -687,18 +687,18 @@ public class IterableOfProtosSubject<
     }
 
     @Override
-    public void contains(@Nullable M expected) {
+    public void contains(@NullableDecl M expected) {
       delegate(Arrays.asList(expected)).contains(expected);
     }
 
     @Override
-    public void doesNotContain(@Nullable M excluded) {
+    public void doesNotContain(@NullableDecl M excluded) {
       delegate(Arrays.asList(excluded)).doesNotContain(excluded);
     }
 
     @Override
     @CanIgnoreReturnValue
-    public Ordered containsExactly(@Nullable M... expected) {
+    public Ordered containsExactly(@NullableDecl M... expected) {
       return delegate(Arrays.asList(expected)).containsExactly(expected);
     }
 
@@ -716,7 +716,8 @@ public class IterableOfProtosSubject<
 
     @Override
     @CanIgnoreReturnValue
-    public Ordered containsAllOf(@Nullable M first, @Nullable M second, @Nullable M... rest) {
+    public Ordered containsAllOf(
+        @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
       return delegate(Lists.asList(first, second, rest)).containsAllOf(first, second, rest);
     }
 
@@ -733,7 +734,8 @@ public class IterableOfProtosSubject<
     }
 
     @Override
-    public void containsAnyOf(@Nullable M first, @Nullable M second, @Nullable M... rest) {
+    public void containsAnyOf(
+        @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
       delegate(Lists.asList(first, second, rest)).containsAnyOf(first, second, rest);
     }
 
@@ -749,7 +751,9 @@ public class IterableOfProtosSubject<
 
     @Override
     public void containsNoneOf(
-        @Nullable M firstExcluded, @Nullable M secondExcluded, @Nullable M... restOfExcluded) {
+        @NullableDecl M firstExcluded,
+        @NullableDecl M secondExcluded,
+        @NullableDecl M... restOfExcluded) {
       delegate(Lists.asList(firstExcluded, secondExcluded, restOfExcluded))
           .containsNoneOf(firstExcluded, secondExcluded, restOfExcluded);
     }
@@ -855,17 +859,17 @@ public class IterableOfProtosSubject<
     }
 
     @Override
-    public void contains(@Nullable M expected) {
+    public void contains(@NullableDecl M expected) {
       usingCorrespondence().contains(expected);
     }
 
     @Override
-    public void doesNotContain(@Nullable M excluded) {
+    public void doesNotContain(@NullableDecl M excluded) {
       usingCorrespondence().doesNotContain(excluded);
     }
 
     @Override
-    public Ordered containsExactly(@Nullable M... expected) {
+    public Ordered containsExactly(@NullableDecl M... expected) {
       return usingCorrespondence().containsExactly(expected);
     }
 
@@ -880,7 +884,8 @@ public class IterableOfProtosSubject<
     }
 
     @Override
-    public Ordered containsAllOf(@Nullable M first, @Nullable M second, @Nullable M... rest) {
+    public Ordered containsAllOf(
+        @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
       return usingCorrespondence().containsAllOf(first, second, rest);
     }
 
@@ -895,7 +900,8 @@ public class IterableOfProtosSubject<
     }
 
     @Override
-    public void containsAnyOf(@Nullable M first, @Nullable M second, @Nullable M... rest) {
+    public void containsAnyOf(
+        @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
       usingCorrespondence().containsAnyOf(first, second, rest);
     }
 
@@ -911,7 +917,9 @@ public class IterableOfProtosSubject<
 
     @Override
     public void containsNoneOf(
-        @Nullable M firstExcluded, @Nullable M secondExcluded, @Nullable M... restOfExcluded) {
+        @NullableDecl M firstExcluded,
+        @NullableDecl M secondExcluded,
+        @NullableDecl M... restOfExcluded) {
       usingCorrespondence().containsNoneOf(firstExcluded, secondExcluded, restOfExcluded);
     }
 

@@ -17,9 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-/*>>>import org.checkerframework.checker.nullness.compatqual.NullableType;*/
+/*>>>import org.checkerframework.checker.nullness.compatcompatqual.NullableDeclType;*/
 
 /**
  * In a fluent assertion chain, exposes the most common {@code that} method, which accepts a value
@@ -43,7 +43,7 @@ public final class SimpleSubjectBuilder<SubjectT extends Subject<SubjectT, Actua
     this.subjectFactory = checkNotNull(subjectFactory);
   }
 
-  public SubjectT that(@Nullable ActualT actual) {
+  public SubjectT that(@NullableDecl ActualT actual) {
     return subjectFactory.createSubject(metadata, actual);
   }
 }

@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.ExpectFailure.SimpleSubjectBuilderCallback;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -391,7 +391,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThat(1.23f).isNotEqualTo(1.23);
   }
 
-  private static void assertThatIsNotEqualToFails(@Nullable final Float value) {
+  private static void assertThatIsNotEqualToFails(@NullableDecl final Float value) {
     ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
@@ -413,7 +413,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThatIsZeroFails(null);
   }
 
-  private static void assertThatIsZeroFails(@Nullable final Float value) {
+  private static void assertThatIsZeroFails(@NullableDecl final Float value) {
     ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
@@ -436,7 +436,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThatIsNonZeroFails(null, "expected a float other than zero");
   }
 
-  private static void assertThatIsNonZeroFails(@Nullable final Float value, String factKey) {
+  private static void assertThatIsNonZeroFails(@NullableDecl final Float value, String factKey) {
     ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
@@ -457,7 +457,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThatIsPositiveInfinityFails(null);
   }
 
-  private static void assertThatIsPositiveInfinityFails(@Nullable final Float value) {
+  private static void assertThatIsPositiveInfinityFails(@NullableDecl final Float value) {
     ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
@@ -477,7 +477,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThatIsNegativeInfinityFails(null);
   }
 
-  private static void assertThatIsNegativeInfinityFails(@Nullable final Float value) {
+  private static void assertThatIsNegativeInfinityFails(@NullableDecl final Float value) {
     ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
@@ -497,7 +497,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThatIsNaNFails(null);
   }
 
-  private static void assertThatIsNaNFails(@Nullable final Float value) {
+  private static void assertThatIsNaNFails(@NullableDecl final Float value) {
     ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override
@@ -519,7 +519,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThatIsFiniteFails(null);
   }
 
-  private static void assertThatIsFiniteFails(@Nullable final Float value) {
+  private static void assertThatIsFiniteFails(@NullableDecl final Float value) {
     ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float> callback =
         new ExpectFailure.SimpleSubjectBuilderCallback<FloatSubject, Float>() {
           @Override

@@ -19,9 +19,8 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.truth.Truth.assertAbout;
 
 import com.google.protobuf.MessageLite;
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
+import com.google.errorprone.annotations.CheckReturnValue;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * A set of static methods to begin a Truth assertion chain for the lite version of protocol
@@ -36,9 +35,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * about(liteProtos())} to begin a chain with those alternative behaviors.
  */
 @CheckReturnValue
-@ParametersAreNonnullByDefault
 public final class LiteProtoTruth {
-  public static LiteProtoSubject<?, MessageLite> assertThat(@Nullable MessageLite messageLite) {
+  public static LiteProtoSubject<?, MessageLite> assertThat(@NullableDecl MessageLite messageLite) {
     return assertAbout(liteProtos()).that(messageLite);
   }
 

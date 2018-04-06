@@ -24,7 +24,7 @@ import com.google.common.truth.FailureMetadata;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * {@link CustomSubjectBuilder} which aggregates all Proto-related {@link
@@ -52,38 +52,38 @@ public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
     super(failureMetadata);
   }
 
-  public LiteProtoSubject<?, MessageLite> that(@Nullable MessageLite messageLite) {
+  public LiteProtoSubject<?, MessageLite> that(@NullableDecl MessageLite messageLite) {
     return new LiteProtoSubject.MessageLiteSubject(metadata(), messageLite);
   }
 
-  public ProtoSubject<?, Message> that(@Nullable Message message) {
+  public ProtoSubject<?, Message> that(@NullableDecl Message message) {
     return new ProtoSubject.MessageSubject(metadata(), message);
   }
 
   public <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> that(
-      @Nullable Iterable<M> messages) {
+      @NullableDecl Iterable<M> messages) {
     return new IterableOfProtosSubject.IterableOfMessagesSubject<M>(metadata(), messages);
   }
 
   public <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> that(
-      @Nullable Map<K, M> map) {
+      @NullableDecl Map<K, M> map) {
     return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<>(metadata(), map);
   }
 
   public <K, M extends Message> MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> that(
-      @Nullable Multimap<K, M> map) {
+      @NullableDecl Multimap<K, M> map) {
     return new MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject<>(metadata(), map);
   }
 
   public <K, M extends Message>
       ListMultimapWithProtoValuesSubject<?, K, M, ListMultimap<K, M>> that(
-          @Nullable ListMultimap<K, M> map) {
+          @NullableDecl ListMultimap<K, M> map) {
     return new ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject<>(
         metadata(), map);
   }
 
   public <K, M extends Message> SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> that(
-      @Nullable SetMultimap<K, M> map) {
+      @NullableDecl SetMultimap<K, M> map) {
     return new SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject<>(
         metadata(), map);
   }

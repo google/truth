@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@link Class} subjects.
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  */
 @GwtIncompatible("reflection")
 public final class ClassSubject extends Subject<ClassSubject, Class<?>> {
-  ClassSubject(FailureMetadata metadata, @Nullable Class<?> o) {
+  ClassSubject(FailureMetadata metadata, @NullableDecl Class<?> o) {
     super(metadata, o);
   }
 

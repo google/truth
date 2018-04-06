@@ -16,8 +16,6 @@
    
   <inherits name="com.google.common.annotations.Annotations"/>
     
-  <inherits name="jsr305_annotations.Jsr305_annotations"/>
-   
   <inherits name="com.google.common.truth.Truth"/>
    
   <inherits name="com.google.gwt.core.Core"/>

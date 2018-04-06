@@ -22,7 +22,7 @@ import com.google.common.truth.FailureMetadata;
 import com.google.protobuf.Message;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Type-specific extension of {@link MultimapWithProtoValuesSubject}, used to detect bad usages of
@@ -42,7 +42,7 @@ public class ListMultimapWithProtoValuesSubject<
     // See IterableOfProtosSubject.IterableOfMessagesSubject for why this class is exposed.
 
     ListMultimapWithMessageValuesSubject(
-        FailureMetadata failureMetadata, @Nullable ListMultimap<K, M> multimap) {
+        FailureMetadata failureMetadata, @NullableDecl ListMultimap<K, M> multimap) {
       super(failureMetadata, multimap);
     }
   }
@@ -59,7 +59,7 @@ public class ListMultimapWithProtoValuesSubject<
    *     com.google.common.collect.Multimap#equals} for more information.
    */
   @Deprecated
-  public void isEqualTo(@Nullable SetMultimap<?, ?> other) {
+  public void isEqualTo(@NullableDecl SetMultimap<?, ?> other) {
     super.isEqualTo(other);
   }
 }

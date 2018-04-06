@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Utilities for string comparisons.
@@ -53,7 +53,7 @@ final class StringUtil {
    * @param args the arguments to be substituted into the message template. Arguments are converted
    *     to strings using {@link String#valueOf(Object)}. Arguments can be null.
    */
-  static String format(@Nullable String template, Object... args) {
+  static String format(@NullableDecl String template, Object... args) {
     template = String.valueOf(template); // null -> "null"
 
     // start substituting the arguments into the '%s' placeholders

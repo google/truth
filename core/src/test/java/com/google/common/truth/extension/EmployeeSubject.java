@@ -19,7 +19,7 @@ import static com.google.common.truth.Truth.assertAbout;
 
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * A <a href="https://github.com/google/truth">Truth</a> subject for {@link Employee}.
@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
 
   // User-defined entry point
-  public static EmployeeSubject assertThat(@Nullable Employee employee) {
+  public static EmployeeSubject assertThat(@NullableDecl Employee employee) {
     return assertAbout(EMPLOYEE_SUBJECT_FACTORY).that(employee);
   }
 
@@ -43,12 +43,12 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
       new Subject.Factory<EmployeeSubject, Employee>() {
         @Override
         public EmployeeSubject createSubject(
-            FailureMetadata failureMetadata, @Nullable Employee target) {
+            FailureMetadata failureMetadata, @NullableDecl Employee target) {
           return new EmployeeSubject(failureMetadata, target);
         }
       };
 
-  private EmployeeSubject(FailureMetadata failureMetadata, @Nullable Employee subject) {
+  private EmployeeSubject(FailureMetadata failureMetadata, @NullableDecl Employee subject) {
     super(failureMetadata, subject);
   }
 

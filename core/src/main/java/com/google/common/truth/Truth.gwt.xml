@@ -24,8 +24,6 @@
    
   <inherits name="com.google.common.util.concurrent.Concurrent"/>
     
-  <inherits name="jsr305_annotations.Jsr305_annotations"/>
-   
   <inherits name="com.google.gwt.core.Core"/>
    
 </module>

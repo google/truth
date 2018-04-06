@@ -21,7 +21,7 @@ import static com.google.common.truth.Fact.factWithoutValue;
 
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Propositions for {@link AtomicLongMap} subjects.
@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
  * @author Kurt Alfred Kluever
  */
 public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, AtomicLongMap<?>> {
-  AtomicLongMapSubject(FailureMetadata metadata, @Nullable AtomicLongMap<?> map) {
+  AtomicLongMapSubject(FailureMetadata metadata, @NullableDecl AtomicLongMap<?> map) {
     super(metadata, map);
   }
 
@@ -40,7 +40,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
    */
   @Deprecated
   @Override
-  public void isEqualTo(@Nullable Object other) {
+  public void isEqualTo(@NullableDecl Object other) {
     super.isEqualTo(other);
   }
 
@@ -51,7 +51,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
    */
   @Deprecated
   @Override
-  public void isNotEqualTo(@Nullable Object other) {
+  public void isNotEqualTo(@NullableDecl Object other) {
     super.isNotEqualTo(other);
   }
 
@@ -106,7 +106,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   }
 
   /** Fails if the {@link AtomicLongMap} contains the given entry. */
-  public void doesNotContainEntry(@Nullable Object key, long value) {
+  public void doesNotContainEntry(@NullableDecl Object key, long value) {
     if (key != null) {
       long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
       if (actualValue == value) {
