@@ -144,9 +144,18 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
             countDuplicatesAndAddTypeInfo(
                 retainMatchingToString(actual().values(), valueList /* itemsToCheck */)));
       } else if (actual().containsKey(key)) {
-        failWithRawMessage(
-            "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
-            actualAsString(), entry, key, actual().get(key));
+        Object actualValue = actual().get(key);
+        /*
+         * In the case of a null expected or actual value, clarify that the key *is* present and
+         * *is* expected to be present. That is, get() isn't returning null to indicate that the key
+         * is missing, and the user isn't making an assertion that the key is missing.
+         */
+        StandardSubjectBuilder check = check("get(%s)", key);
+        if (value == null || actualValue == null) {
+          check = check.withMessage("key is present but with a different value");
+        }
+        // See the comment on IterableSubject's use of failEqualityCheckForEqualsWithoutDescription.
+        check.that(actualValue).failEqualityCheckForEqualsWithoutDescription(value);
       } else if (actual().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, ?> actualEntry : actual().entrySet()) {
