@@ -74,7 +74,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   public void isEqualTo_WithoutToleranceParameter_Fail_NotEqual() {
     expectFailureWhenTestingThat(array(2.2f)).isEqualTo(array(JUST_OVER_2POINT2));
     assertFailureKeys("expected", "but was", "differs at index");
-    assertFailureValue("expected", "[2.2000003]");
+    assertFailureValue("expected", "[" + floatToString(JUST_OVER_2POINT2) + "]");
     assertFailureValue("but was", "[" + floatToString(2.2f) + "]");
     assertFailureValue("differs at index", "[0]");
   }
