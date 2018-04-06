@@ -657,6 +657,36 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
   }
 
+  /** @deprecated You probably meant to call {@link #containsNoneOf} instead. */
+  @Override
+  @Deprecated
+  public void isNoneOf(@Nullable Object first, @Nullable Object second, @Nullable Object... rest) {
+    super.isNoneOf(first, second, rest);
+  }
+
+  /** @deprecated You probably meant to call {@link #containsNoneIn} instead. */
+  @Override
+  @Deprecated
+  public void isNotIn(Iterable<?> iterable) {
+    if (Iterables.contains(iterable, actual())) {
+      failWithFact("expected not to be any of", iterable);
+    }
+    List<Object> nonIterables = new ArrayList<>();
+    for (Object element : iterable) {
+      if (!(element instanceof Iterable<?>)) {
+        nonIterables.add(element);
+      }
+    }
+    if (!nonIterables.isEmpty()) {
+      failWithRawMessage(
+          "The actual value is an Iterable, and you've written a test that compares it to some "
+              + "objects that are not Iterables. Did you instead mean to check whether its "
+              + "*contents* match any of the *contents* of the given values? If so, call "
+              + "containsNoneOf(...)/containsNoneIn(...) instead. Non-iterables: %s",
+          nonIterables);
+    }
+  }
+
   /**
    * Starts a method chain for a check in which the actual elements (i.e. the elements of the {@link
    * Iterable} under test) are compared to expected elements using the given {@link Correspondence}.

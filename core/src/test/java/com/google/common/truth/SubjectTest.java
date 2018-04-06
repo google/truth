@@ -118,8 +118,10 @@ public class SubjectTest extends BaseSubjectTestCase {
         subject.isSameAs(null);
         subject.isNotSameAs(new Object());
 
-        subject.isNotIn(ImmutableList.<Object>of());
-        subject.isNoneOf(new Object(), new Object());
+        if (!(subject instanceof IterableSubject)) { // b/36000148
+          subject.isNotIn(ImmutableList.<Object>of());
+          subject.isNoneOf(new Object(), new Object());
+        }
 
         try {
           subject.isIn(ImmutableList.of());

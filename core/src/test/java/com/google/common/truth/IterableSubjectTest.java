@@ -1146,11 +1146,17 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotIn() {
     ImmutableList<String> actual = ImmutableList.of("a");
-    ImmutableList<String> expectedB = ImmutableList.of("b");
-    ImmutableList<String> expectedC = ImmutableList.of("c");
-    ImmutableList<ImmutableList<String>> expected = ImmutableList.of(expectedB, expectedC);
 
-    assertThat(actual).isNotIn(expected);
+    assertThat(actual).isNotIn(ImmutableList.of(ImmutableList.of("b"), ImmutableList.of("c")));
+
+    expectFailureWhenTestingThat(actual).isNotIn(ImmutableList.of("a", "b"));
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "The actual value is an Iterable, and you've written a test that compares it to some "
+                + "objects that are not Iterables. Did you instead mean to check whether its "
+                + "*contents* match any of the *contents* of the given values? If so, call "
+                + "containsNoneOf(...)/containsNoneIn(...) instead. Non-iterables: [a, b]");
   }
 
   @Test
@@ -1163,12 +1169,20 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  @SuppressWarnings("IncompatibleArgumentType")
   public void isNoneOf() {
     ImmutableList<String> actual = ImmutableList.of("a");
-    ImmutableList<String> expectedB = ImmutableList.of("b");
-    ImmutableList<String> expectedC = ImmutableList.of("c");
 
-    assertThat(actual).isNoneOf(expectedB, expectedC);
+    assertThat(actual).isNoneOf(ImmutableList.of("b"), ImmutableList.of("c"));
+
+    expectFailureWhenTestingThat(actual).isNoneOf("a", "b");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "The actual value is an Iterable, and you've written a test that compares it to some "
+                + "objects that are not Iterables. Did you instead mean to check whether its "
+                + "*contents* match any of the *contents* of the given values? If so, call "
+                + "containsNoneOf(...)/containsNoneIn(...) instead. Non-iterables: [a, b]");
   }
 
   private IterableSubject expectFailureWhenTestingThat(Iterable<?> actual) {
