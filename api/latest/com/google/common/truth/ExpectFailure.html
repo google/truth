@@ -320,7 +320,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <h4>expectFailure</h4>
 <pre>public static&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang">AssertionError</a>&nbsp;expectFailure(<a href="../../../../com/google/common/truth/ExpectFailure.StandardSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.StandardSubjectBuilderCallback</a>&nbsp;assertionCallback)</pre>
 <div class="block">Static alternative that directly returns the triggered failure. This is intended to be used in
- Java 8 tests similar to <code>expectThrows()</code>:
+ Java 8+ tests similar to <code>expectThrows()</code>:
 
  <p><code>AssertionError failure = expectFailure(whenTesting -&gt;
  whenTesting.that(4).isNotEqualTo(4));</code></div>
@@ -335,7 +335,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <pre>public static&nbsp;&lt;S extends <a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;S,A&gt;,A&gt;&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang">AssertionError</a>&nbsp;expectFailureAbout(<a href="../../../../com/google/common/truth/Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;S,A&gt;&nbsp;factory,
                                                                            <a href="../../../../com/google/common/truth/ExpectFailure.SimpleSubjectBuilderCallback.html" title="interface in com.google.common.truth">ExpectFailure.SimpleSubjectBuilderCallback</a>&lt;S,A&gt;&nbsp;assertionCallback)</pre>
 <div class="block">Static alternative that directly returns the triggered failure. This is intended to be used in
- Java 8 tests similar to <code>expectThrows()</code>:
+ Java 8+ tests similar to <code>expectThrows()</code>:
 
  <p><code>AssertionError failure = expectFailureAbout(myTypes(), whenTesting -&gt;
  whenTesting.that(myType).hasProperty());</code></div>
