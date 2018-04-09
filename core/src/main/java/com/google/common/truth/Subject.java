@@ -957,7 +957,19 @@ public class Subject<S extends Subject<S, T>, T> {
     metadata.fail(format(message, parameters));
   }
 
-  /** Passes through a failure message verbatim, along with a cause. */
+  /**
+   * Passes through a failure message verbatim, along with a cause.
+   *
+   * @deprecated Pass the message to {@link #failWithRawMessage}, but also, to make Truth attach the
+   *     {@code Throwable cause} to the assertion failure, ensure that {@code cause} appears in the
+   *     assertion chain. This should typically already be the case, as in {@code
+   *     assertThat(throwable).hasMessageThat().isEqualTo("message")}. If it is not, you will need
+   *     to introduce an extra {@code check} call into your chain, something like {@code
+   *     check().about(unexpectedFailures()).that(cause).wasASuccess(message)}, with {@code
+   *     unexpectedFailures()} returning a factory for a "dummy" subject type that defines only a
+   *     {@code wasASuccess} method that fails unconditionally.
+   */
+  @Deprecated
   protected final void failWithRawMessageAndCause(String message, Throwable cause) {
     metadata.fail(message, cause);
   }
@@ -985,11 +997,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * @deprecated See {@linkplain #failComparing(String, CharSequence, CharSequence)} the other
    *     overload of this method for instructions on how to get Truth to throw a {@code
    *     ComparisonFailure}. To make Truth also attach the {@code Throwable cause} to the assertion
-   *     failure, ensure that {@code cause} appears in the assertion chain. This should typically
-   *     already be the case, as in {@code
-   *     assertThat(throwable).hasMessageThat().isEqualTo("message")}. If it is not, you will need
-   *     to introduce an extra {@code check(cause)} call into your chain. (We haven't encountered
-   *     this in Google's codebase. If you do, we're happy to provide more information.)
+   *     failure, see the instructions on {@link #failWithRawMessageAndCause}.
    */
   @Deprecated
   protected final void failComparing(
