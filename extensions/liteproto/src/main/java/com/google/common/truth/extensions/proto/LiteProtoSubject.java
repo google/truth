@@ -95,30 +95,31 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   @Override
   public void isEqualTo(@NullableDecl Object expected) {
     // TODO(user): Do better here when MessageLite descriptors are available.
-    if (!Objects.equal(actual(), expected)) {
-      if (actual() == null || expected == null) {
-        super.isEqualTo(expected);
-      } else if (actual().getClass() != expected.getClass()) {
-        failWithRawMessage(
-            "Not true that (%s) %s is equal to the expected (%s) object. "
-                + "They are not of the same class.",
-            actual().getClass().getName(),
-            internalCustomName() != null ? internalCustomName() + " (proto)" : "proto",
-            expected.getClass().getName());
+    if (Objects.equal(actual(), expected)) {
+      return;
+    }
+
+    if (actual() == null || expected == null) {
+      super.isEqualTo(expected);
+    } else if (actual().getClass() != expected.getClass()) {
+      failWithRawMessage(
+          "Not true that (%s) %s is equal to the expected (%s) object. "
+              + "They are not of the same class.",
+          actual().getClass().getName(),
+          internalCustomName() != null ? internalCustomName() + " (proto)" : "proto",
+          expected.getClass().getName());
+    } else {
+      /*
+       * TODO(cpovirk): If we someday let subjects override formatActualOrExpected(), change this
+       * class to do so, and make this code path always delegate to super.isEqualTo().
+       */
+      String ourString = getTrimmedToString(actual());
+      String theirString = getTrimmedToString((MessageLite) expected);
+      if (!ourString.equals(theirString)) {
+        check().that(ourString).isEqualTo(theirString); // fails
       } else {
-        String ourString = getTrimmedToString(actual());
-        String theirString = getTrimmedToString((MessageLite) expected);
-        if (!ourString.equals(theirString)) {
-          failComparing("Not true that protos are equal:", theirString, ourString);
-        } else if (actual().getClass() != expected.getClass()) {
-          failComparing(
-              "Not true that protos are equal:",
-              String.format("(%s) %s", expected.getClass().getName(), theirString),
-              String.format("(%s) %s", actual().getClass().getName(), ourString));
-        } else {
-          // This will include the Object.toString() headers.
-          super.isEqualTo(expected);
-        }
+        // This will include the Object.toString() headers.
+        super.isEqualTo(expected);
       }
     }
   }
