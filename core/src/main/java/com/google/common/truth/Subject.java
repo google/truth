@@ -26,6 +26,7 @@ import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.Subject.EqualityCheck.SAME_INSTANCE;
 import static com.google.common.truth.SubjectUtils.accumulate;
+import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 import static com.google.common.truth.SubjectUtils.sandwich;
 import static java.util.Arrays.asList;
@@ -762,6 +763,11 @@ public class Subject<S extends Subject<S, T>, T> {
   // TODO(cpovirk): Make this public once names are settled.
   final void fail(Fact first, Fact... rest) {
     doFail(sandwich(first, rest, butWas()));
+  }
+
+  // TODO(cpovirk): Consider making this public after names are settled (if there's a need for it).
+  final void fail(Iterable<Fact> facts) {
+    doFail(append(ImmutableList.copyOf(facts), butWas()));
   }
 
   /**

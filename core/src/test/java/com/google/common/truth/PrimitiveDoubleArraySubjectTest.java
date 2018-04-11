@@ -963,15 +963,15 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAllOf(array(2.2, 1.1))
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, "
-                + TOLERABLE_2POINT2
-                + ", 3.3]> contains, in order, at least one element that is a finite number "
-                + "within "
-                + DEFAULT_TOLERANCE
-                + " of each element of <[2.2, 1.1]>");
+    assertFailureKeys(
+        "value of",
+        "required elements were all found, but order was wrong",
+        "comparing contents by testing that each element is a finite number within "
+            + DEFAULT_TOLERANCE
+            + " of an expected value",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue("expected order for required elements", "[2.2, 1.1]");
   }
 
   @Test
@@ -1032,15 +1032,15 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsExactly(array(2.2, 1.1, 3.3))
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, "
-                + TOLERABLE_2POINT2
-                + ", 3.3]> contains, in order, exactly one element that is a finite number "
-                + "within "
-                + DEFAULT_TOLERANCE
-                + " of each element of <[2.2, 1.1, 3.3]>");
+    assertFailureKeys(
+        "value of",
+        "contents match, but order was wrong",
+        "comparing contents by testing that each element is a finite number within "
+            + DEFAULT_TOLERANCE
+            + " of an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", "[2.2, 1.1, 3.3]");
   }
 
   @Test
@@ -1198,12 +1198,13 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .usingExactEquality()
         .containsAllOf(array(2.2, 1.1))
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
-                + "contains, in order, at least one element that is "
-                + "exactly equal to each element of <[2.2, 1.1]>");
+    assertFailureKeys(
+        "value of",
+        "required elements were all found, but order was wrong",
+        "comparing contents by testing that each element is exactly equal to an expected value",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue("expected order for required elements", "[2.2, 1.1]");
   }
 
   @Test
@@ -1256,12 +1257,13 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .usingExactEquality()
         .containsExactly(array(2.2, 1.1, 3.3))
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
-                + "contains, in order, exactly one element that is "
-                + "exactly equal to each element of <[2.2, 1.1, 3.3]>");
+    assertFailureKeys(
+        "value of",
+        "contents match, but order was wrong",
+        "comparing contents by testing that each element is exactly equal to an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", "[2.2, 1.1, 3.3]");
   }
 
   @Test
