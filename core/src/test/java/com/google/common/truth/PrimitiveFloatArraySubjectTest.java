@@ -956,14 +956,15 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAllOf(array(2.0f, 1.0f))
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            format(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains, in order, at least one element that"
-                    + " is a finite number within %s of each element of <[%s, %s]>",
-                1.0f, TOLERABLE_TWO, 3.0f, (double) DEFAULT_TOLERANCE, 2.0f, 1.0f));
+    assertFailureKeys(
+        "value of",
+        "required elements were all found, but order was wrong",
+        "comparing contents by testing that each element is a finite number within "
+            + (double) DEFAULT_TOLERANCE
+            + " of an expected value",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue("expected order for required elements", format("[%s, %s]", 2.0f, 1.0f));
   }
 
   @Test
@@ -1025,14 +1026,15 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsExactly(array(2.0f, 1.0f, 3.0f))
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            format(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains, in order, exactly one element that is a "
-                    + "finite number within %s of each element of <[%s, %s, %s]>",
-                1.0f, TOLERABLE_TWO, 3.0f, (double) DEFAULT_TOLERANCE, 2.0f, 1.0f, 3.0f));
+    assertFailureKeys(
+        "value of",
+        "contents match, but order was wrong",
+        "comparing contents by testing that each element is a finite number within "
+            + (double) DEFAULT_TOLERANCE
+            + " of an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", format("[%s, %s, %s]", 2.0f, 1.0f, 3.0f));
   }
 
   @Test
@@ -1218,14 +1220,13 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .usingExactEquality()
         .containsAllOf(array(2.0f, 1.0f))
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            format(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains, in order, at least one element that is "
-                    + "exactly equal to each element of <[%s, %s]>",
-                1.0f, 2.0f, 3.0f, 2.0f, 1.0f));
+    assertFailureKeys(
+        "value of",
+        "required elements were all found, but order was wrong",
+        "comparing contents by testing that each element is exactly equal to an expected value",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue("expected order for required elements", format("[%s, %s]", 2.0f, 1.0f));
   }
 
   @Test
@@ -1284,14 +1285,13 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         .usingExactEquality()
         .containsExactly(array(2.0f, 1.0f, 3.0f))
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            format(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains, in order, exactly one element that is "
-                    + "exactly equal to each element of <[%s, %s, %s]>",
-                1.0f, 2.0f, 3.0f, 2.0f, 1.0f, 3.0f));
+    assertFailureKeys(
+        "value of",
+        "contents match, but order was wrong",
+        "comparing contents by testing that each element is exactly equal to an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", format("[%s, %s, %s]", 2.0f, 1.0f, 3.0f));
   }
 
   @Test
