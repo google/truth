@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.FailureAssertions.assertFailureKeys;
+import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.StreamSubject.streams;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
@@ -253,10 +255,12 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hell", "hello")).containsAllOf("hello", "hell").inOrder();
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hell, hello]> contains all elements in order <[hello, hell]>");
+      assertFailureKeys(
+          expected,
+          "required elements were all found, but order was wrong",
+          "expected order for required elements",
+          "but was");
+      assertFailureValue(expected, "expected order for required elements", "[hello, hell]");
     }
   }
 
@@ -290,10 +294,12 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hell", "hello")).containsAllIn(asList("hello", "hell")).inOrder();
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hell, hello]> contains all elements in order <[hello, hell]>");
+      assertFailureKeys(
+          expected,
+          "required elements were all found, but order was wrong",
+          "expected order for required elements",
+          "but was");
+      assertFailureValue(expected, "expected order for required elements", "[hello, hell]");
     }
   }
 
@@ -328,11 +334,8 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hell", "hello")).containsExactly("hello", "hell").inOrder();
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hell, hello]> contains exactly "
-                  + "these elements in order <[hello, hell]>");
+      assertFailureKeys(expected, "contents match, but order was wrong", "expected", "but was");
+      assertFailureValue(expected, "expected", "[hello, hell]");
     }
   }
 
@@ -371,11 +374,8 @@ public final class StreamSubjectTest {
           .inOrder();
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hell, hello]> contains exactly "
-                  + "these elements in order <[hello, hell]>");
+      assertFailureKeys(expected, "contents match, but order was wrong", "expected", "but was");
+      assertFailureValue(expected, "expected", "[hello, hell]");
     }
   }
 

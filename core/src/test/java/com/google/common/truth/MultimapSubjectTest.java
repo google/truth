@@ -1016,12 +1016,14 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyEntriesIn(expected)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
-                + "element that has a key that is equal to and a value that parses to the key "
-                + "and value of each element of <[def=64, def=64, def=128, abc=123]>");
+    assertFailureKeys(
+        "contents match, but order was wrong",
+        "comparing contents by testing that each element "
+            + "has a key that is equal to and a value that parses to the key and value of "
+            + "an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", "[def=64, def=64, def=128, abc=123]");
   }
 
   @Test
@@ -1034,12 +1036,14 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyEntriesIn(expected)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
-                + "element that has a key that is equal to and a value that parses to the key "
-                + "and value of each element of <[abc=123, def=64, def=128, def=64]>");
+    assertFailureKeys(
+        "contents match, but order was wrong",
+        "comparing contents by testing that each element "
+            + "has a key that is equal to and a value that parses to the key and value of "
+            + "an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", "[abc=123, def=64, def=128, def=64]");
   }
 
   @Test
@@ -1173,12 +1177,14 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly("def", 64, "def", 64, "def", 128, "abc", 123)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
-                + "element that has a key that is equal to and a value that parses to the key "
-                + "and value of each element of <[def=64, def=64, def=128, abc=123]>");
+    assertFailureKeys(
+        "contents match, but order was wrong",
+        "comparing contents by testing that each element "
+            + "has a key that is equal to and a value that parses to the key and value of "
+            + "an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", "[def=64, def=64, def=128, abc=123]");
   }
 
   @Test
@@ -1189,12 +1195,14 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly("abc", 123, "def", 64, "def", 128, "def", 64)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains, in order, exactly one "
-                + "element that has a key that is equal to and a value that parses to the key "
-                + "and value of each element of <[abc=123, def=64, def=128, def=64]>");
+    assertFailureKeys(
+        "contents match, but order was wrong",
+        "comparing contents by testing that each element "
+            + "has a key that is equal to and a value that parses to the key and value of "
+            + "an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", "[abc=123, def=64, def=128, def=64]");
   }
 
   @Test
