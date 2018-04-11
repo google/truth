@@ -393,7 +393,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
            * values had multiple elements. Granted, Fuzzy Truth already does this, so maybe it's OK?
            * But Fuzzy Truth doesn't (yet) make the mismatched value so prominent.
            */
-          check("onlyElement()")
+          checkNoNeedToDisplayBothValues("onlyElement()")
               .that(actualElement)
               .failEqualityCheckForEqualsWithoutDescription(requiredElement);
           return ALREADY_FAILED;
