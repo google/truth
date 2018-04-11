@@ -358,7 +358,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>contains</h4>
-<pre>public&nbsp;void&nbsp;contains(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;contains(@NullableDecl
                      <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;expected)</pre>
 <div class="block">Checks that the subject contains at least one element that corresponds to the given expected
  element.</div>
@@ -372,7 +372,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContain</h4>
-<pre>public&nbsp;void&nbsp;doesNotContain(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;doesNotContain(@NullableDecl
                            <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;excluded)</pre>
 <div class="block">Checks that none of the actual elements correspond to the given element.</div>
 </li>
@@ -387,7 +387,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <h4>containsExactly</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/SafeVarargs.html?is-external=true" title="class or interface in java.lang">@SafeVarargs</a>
  @CanIgnoreReturnValue
-public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(@NullableDecl
                                                                          <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;expected)</pre>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.
  that there is a 1:1 mapping between the actual elements and the expected elements where each
@@ -445,11 +445,11 @@ public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="in
 <h4>containsAllOf</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/SafeVarargs.html?is-external=true" title="class or interface in java.lang">@SafeVarargs</a>
  @CanIgnoreReturnValue
-public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllOf(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllOf(@NullableDecl
                                                                        <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
-                                                                       <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                       @NullableDecl
                                                                        <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
-                                                                       <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                                       @NullableDecl
                                                                        <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;rest)</pre>
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
@@ -505,11 +505,11 @@ public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="in
 <li class="blockList">
 <h4>containsAnyOf</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/SafeVarargs.html?is-external=true" title="class or interface in java.lang">@SafeVarargs</a>
-public final&nbsp;void&nbsp;containsAnyOf(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+public final&nbsp;void&nbsp;containsAnyOf(@NullableDecl
                                              <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
-                                             <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                             @NullableDecl
                                              <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
-                                             <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                             @NullableDecl
                                              <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;rest)</pre>
 <div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
  expected elements.</div>
@@ -548,11 +548,11 @@ public final&nbsp;void&nbsp;containsAnyOf(<a href="https://docs.oracle.com/javas
 <li class="blockList">
 <h4>containsNoneOf</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/SafeVarargs.html?is-external=true" title="class or interface in java.lang">@SafeVarargs</a>
-public final&nbsp;void&nbsp;containsNoneOf(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+public final&nbsp;void&nbsp;containsNoneOf(@NullableDecl
                                               <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;firstExcluded,
-                                              <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                              @NullableDecl
                                               <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;secondExcluded,
-                                              <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                              @NullableDecl
                                               <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;restOfExcluded)</pre>
 <div class="block">Checks that the subject contains no elements that correspond to any of the given elements.
  (Duplicates are irrelevant to this test, which fails if any of the subject elements

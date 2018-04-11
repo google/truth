@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":42,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":42,"i15":10,"i16":10,"i17":42,"i18":42,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":42,"i6":10,"i7":10,"i8":10,"i9":42,"i10":42,"i11":10,"i12":10,"i13":10,"i14":42,"i15":10,"i16":42,"i17":42,"i18":42,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -264,8 +264,13 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">failComparing</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual)</code>
-<div class="block">Passes through a failure message verbatim, along with the expected and actual values that the
- <a href="../../../../com/google/common/truth/FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> may use to construct a <code>ComparisonFailure</code>.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Instead of manually testing whether the actual value is equal to the expected and
+     then calling this method, ask Truth to do both with a statement like <code>check("foo()").that(actual().foo()).isEqualTo(expectedFoo)</code>. (If you are comparing the
+     values using a method other than <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(java.lang.Object)</code></a>, you'll have to wrap your actual and
+     expected values in a custom object that implements your desired logic in <code>equals</code> and
+     forwards the <code>toString</code> method.)</span></div>
+</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
@@ -274,8 +279,11 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual,
              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</code>
-<div class="block">Passes through a failure message verbatim, along with a cause and the expected and actual
- values that the <a href="../../../../com/google/common/truth/FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> may use to construct a <code>ComparisonFailure</code>.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">See <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">failComparing(String, CharSequence, CharSequence)</a> the other
+     overload of this method for instructions on how to get Truth to throw a <code>ComparisonFailure</code>. To make Truth also attach the <code>Throwable cause</code> to the assertion
+     failure, see the instructions on <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessageAndCause-java.lang.String-java.lang.Throwable-"><code>failWithRawMessageAndCause(java.lang.String, java.lang.Throwable)</code></a>.</span></div>
+</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
@@ -321,7 +329,13 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithRawMessageAndCause-java.lang.String-java.lang.Throwable-">failWithRawMessageAndCause</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</code>
-<div class="block">Passes through a failure message verbatim, along with a cause.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Pass the message to <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessage-java.lang.String-java.lang.Object...-"><code>failWithRawMessage(java.lang.String, java.lang.Object...)</code></a>, but also, to make Truth attach the
+     <code>Throwable cause</code> to the assertion failure, ensure that <code>cause</code> appears in the
+     assertion chain. This should typically already be the case, as in <code>assertThat(throwable).hasMessageThat().isEqualTo("message")</code>. If it is not, you will need
+     to introduce an extra <code>check</code> call into your chain, something like <code>check().about(unexpectedFailures()).that(cause).wasASuccess(message)</code>, with <code>unexpectedFailures()</code> returning a factory for a "dummy" subject type that defines only a
+     <code>wasASuccess</code> method that fails unconditionally.</span></div>
+</div>
 </td>
 </tr>
 <tr id="i17" class="rowColor">
@@ -470,7 +484,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <li class="blockList">
 <h4>Subject</h4>
 <pre>protected&nbsp;Subject(<a href="../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-                  <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                  @NullableDecl
                   <a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&nbsp;actual)</pre>
 <div class="block">Constructor for use by subclasses. If you want to create an instance of this class itself, call
  <a href="../../../../com/google/common/truth/Subject.html#check--"><code>check()</code></a><code>.that(actual)</code>.</div>
@@ -541,7 +555,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre>public&nbsp;void&nbsp;isEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;isEqualTo(@NullableDecl
                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
  objects are equal if any of the following is true:
@@ -560,7 +574,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotEqualTo</h4>
-<pre>public&nbsp;void&nbsp;isNotEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;isNotEqualTo(@NullableDecl
                          <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</pre>
 <div class="block">Fails if the subject is equal to the given object. The meaning of equality is the same as for
  the <a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>isEqualTo(java.lang.Object)</code></a> method.</div>
@@ -572,7 +586,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <ul class="blockList">
 <li class="blockList">
 <h4>isSameAs</h4>
-<pre>public&nbsp;void&nbsp;isSameAs(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a> @CompatibleWith(value="T")
+<pre>public&nbsp;void&nbsp;isSameAs(@NullableDecl @CompatibleWith(value="T")
                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not the same instance as the given object.</div>
 </li>
@@ -583,7 +597,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotSameAs</h4>
-<pre>public&nbsp;void&nbsp;isNotSameAs(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a> @CompatibleWith(value="T")
+<pre>public&nbsp;void&nbsp;isNotSameAs(@NullableDecl @CompatibleWith(value="T")
                         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</pre>
 <div class="block">Fails if the subject is the same instance as the given object.</div>
 </li>
@@ -624,11 +638,11 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <ul class="blockList">
 <li class="blockList">
 <h4>isAnyOf</h4>
-<pre>public&nbsp;void&nbsp;isAnyOf(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a> @CompatibleWith(value="T")
+<pre>public&nbsp;void&nbsp;isAnyOf(@NullableDecl @CompatibleWith(value="T")
                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;first,
-                    <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a> @CompatibleWith(value="T")
+                    @NullableDecl @CompatibleWith(value="T")
                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;second,
-                    <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                    @NullableDecl
                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails unless the subject is equal to any of the given elements.</div>
 </li>
@@ -649,11 +663,11 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
 <ul class="blockList">
 <li class="blockList">
 <h4>isNoneOf</h4>
-<pre>public&nbsp;void&nbsp;isNoneOf(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a> @CompatibleWith(value="T")
+<pre>public&nbsp;void&nbsp;isNoneOf(@NullableDecl @CompatibleWith(value="T")
                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;first,
-                     <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a> @CompatibleWith(value="T")
+                     @NullableDecl @CompatibleWith(value="T")
                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;second,
-                     <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                     @NullableDecl
                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails if the subject is equal to any of the given elements.</div>
 </li>
@@ -904,8 +918,14 @@ protected final&nbsp;void&nbsp;failWithoutSubject(<a href="https://docs.oracle.c
 <ul class="blockList">
 <li class="blockList">
 <h4>failWithRawMessageAndCause</h4>
-<pre>protected final&nbsp;void&nbsp;failWithRawMessageAndCause(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
-                                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</pre>
+<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+protected final&nbsp;void&nbsp;failWithRawMessageAndCause(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
+                                                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Pass the message to <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessage-java.lang.String-java.lang.Object...-"><code>failWithRawMessage(java.lang.String, java.lang.Object...)</code></a>, but also, to make Truth attach the
+     <code>Throwable cause</code> to the assertion failure, ensure that <code>cause</code> appears in the
+     assertion chain. This should typically already be the case, as in <code>assertThat(throwable).hasMessageThat().isEqualTo("message")</code>. If it is not, you will need
+     to introduce an extra <code>check</code> call into your chain, something like <code>check().about(unexpectedFailures()).that(cause).wasASuccess(message)</code>, with <code>unexpectedFailures()</code> returning a factory for a "dummy" subject type that defines only a
+     <code>wasASuccess</code> method that fails unconditionally.</span></div>
 <div class="block">Passes through a failure message verbatim, along with a cause.</div>
 </li>
 </ul>
@@ -915,9 +935,15 @@ protected final&nbsp;void&nbsp;failWithoutSubject(<a href="https://docs.oracle.c
 <ul class="blockList">
 <li class="blockList">
 <h4>failComparing</h4>
-<pre>protected final&nbsp;void&nbsp;failComparing(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual)</pre>
+<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+protected final&nbsp;void&nbsp;failComparing(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
+                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
+                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Instead of manually testing whether the actual value is equal to the expected and
+     then calling this method, ask Truth to do both with a statement like <code>check("foo()").that(actual().foo()).isEqualTo(expectedFoo)</code>. (If you are comparing the
+     values using a method other than <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(java.lang.Object)</code></a>, you'll have to wrap your actual and
+     expected values in a custom object that implements your desired logic in <code>equals</code> and
+     forwards the <code>toString</code> method.)</span></div>
 <div class="block">Passes through a failure message verbatim, along with the expected and actual values that the
  <a href="../../../../com/google/common/truth/FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> may use to construct a <code>ComparisonFailure</code>.</div>
 </li>
@@ -928,10 +954,14 @@ protected final&nbsp;void&nbsp;failWithoutSubject(<a href="https://docs.oracle.c
 <ul class="blockList">
 <li class="blockList">
 <h4>failComparing</h4>
-<pre>protected final&nbsp;void&nbsp;failComparing(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual,
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</pre>
+<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+protected final&nbsp;void&nbsp;failComparing(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
+                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected,
+                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;actual,
+                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;cause)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">See <a href="../../../../com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">failComparing(String, CharSequence, CharSequence)</a> the other
+     overload of this method for instructions on how to get Truth to throw a <code>ComparisonFailure</code>. To make Truth also attach the <code>Throwable cause</code> to the assertion
+     failure, see the instructions on <a href="../../../../com/google/common/truth/Subject.html#failWithRawMessageAndCause-java.lang.String-java.lang.Throwable-"><code>failWithRawMessageAndCause(java.lang.String, java.lang.Throwable)</code></a>.</span></div>
 <div class="block">Passes through a failure message verbatim, along with a cause and the expected and actual
  values that the <a href="../../../../com/google/common/truth/FailureStrategy.html" title="interface in com.google.common.truth"><code>FailureStrategy</code></a> may use to construct a <code>ComparisonFailure</code>.</div>
 </li>
@@ -943,7 +973,7 @@ protected final&nbsp;void&nbsp;failWithoutSubject(<a href="https://docs.oracle.c
 <li class="blockList">
 <h4>equals</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-public final&nbsp;boolean&nbsp;equals(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+public final&nbsp;boolean&nbsp;equals(@NullableDecl
                                         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;o)</pre>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(Object)</code></a> is not supported on Truth subjects. If you meant to
      test object equality between an expected and the actual value, use <a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>isEqualTo(Object)</code></a> instead.</span></div>

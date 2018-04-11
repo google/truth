@@ -320,7 +320,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsKey</h4>
-<pre>public&nbsp;void&nbsp;containsKey(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;containsKey(@NullableDecl
                         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</pre>
 <div class="block">Fails if the multimap does not contain the given key.</div>
 </li>
@@ -331,7 +331,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContainKey</h4>
-<pre>public&nbsp;void&nbsp;doesNotContainKey(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;doesNotContainKey(@NullableDecl
                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</pre>
 <div class="block">Fails if the multimap contains the given key.</div>
 </li>
@@ -342,9 +342,9 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsEntry</h4>
-<pre>public&nbsp;void&nbsp;containsEntry(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;containsEntry(@NullableDecl
                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key,
-                          <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                          @NullableDecl
                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</pre>
 <div class="block">Fails if the multimap does not contain the given entry.</div>
 </li>
@@ -355,9 +355,9 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContainEntry</h4>
-<pre>public&nbsp;void&nbsp;doesNotContainEntry(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;doesNotContainEntry(@NullableDecl
                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key,
-                                <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                @NullableDecl
                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</pre>
 <div class="block">Fails if the multimap contains the given entry.</div>
 </li>
@@ -368,7 +368,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>valuesForKey</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a>&nbsp;valuesForKey(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;<a href="../../../../com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a>&nbsp;valuesForKey(@NullableDecl
                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</pre>
 <div class="block">Returns a context-aware <a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> for making assertions about the values for the given
  key within the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>.
@@ -383,7 +383,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre>public&nbsp;void&nbsp;isEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;isEqualTo(@NullableDecl
                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">Subject</a></code></span></div>
 <div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
@@ -435,9 +435,9 @@ public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="in
 <li class="blockList">
 <h4>containsExactly</h4>
 <pre>@CanIgnoreReturnValue
-public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(@NullableDecl
                                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;k0,
-                                                     <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                                                     @NullableDecl
                                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;v0,
                                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails if the multimap does not contain exactly the given set of key/value pairs.

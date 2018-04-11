@@ -297,9 +297,9 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>contains</h4>
-<pre>public&nbsp;void&nbsp;contains(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;contains(@NullableDecl
                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;rowKey,
-                     <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                     @NullableDecl
                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;columnKey)</pre>
 <div class="block">Fails if the table does not contain a mapping for the given row key and column key.</div>
 </li>
@@ -310,9 +310,9 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContain</h4>
-<pre>public&nbsp;void&nbsp;doesNotContain(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;doesNotContain(@NullableDecl
                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;rowKey,
-                           <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                           @NullableDecl
                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;columnKey)</pre>
 <div class="block">Fails if the table contains a mapping for the given row key and column key.</div>
 </li>
@@ -323,11 +323,11 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsCell</h4>
-<pre>public&nbsp;void&nbsp;containsCell(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;containsCell(@NullableDecl
                          <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;rowKey,
-                         <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                         @NullableDecl
                          <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;colKey,
-                         <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                         @NullableDecl
                          <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</pre>
 <div class="block">Fails if the table does not contain the given cell.</div>
 </li>
@@ -348,11 +348,11 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContainCell</h4>
-<pre>public&nbsp;void&nbsp;doesNotContainCell(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;doesNotContainCell(@NullableDecl
                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;rowKey,
-                               <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                               @NullableDecl
                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;colKey,
-                               <a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+                               @NullableDecl
                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</pre>
 <div class="block">Fails if the table contains the given cell.</div>
 </li>
@@ -373,7 +373,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsRow</h4>
-<pre>public&nbsp;void&nbsp;containsRow(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;containsRow(@NullableDecl
                         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;rowKey)</pre>
 <div class="block">Fails if the table does not contain the given row key.</div>
 </li>
@@ -384,7 +384,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockList">
 <li class="blockList">
 <h4>containsColumn</h4>
-<pre>public&nbsp;void&nbsp;containsColumn(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;containsColumn(@NullableDecl
                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;columnKey)</pre>
 <div class="block">Fails if the table does not contain the given column key.</div>
 </li>
@@ -395,7 +395,7 @@ extends <a href="../../../../com/google/common/truth/Subject.html" title="class 
 <ul class="blockListLast">
 <li class="blockList">
 <h4>containsValue</h4>
-<pre>public&nbsp;void&nbsp;containsValue(<a href="https://docs.oracle.com/javase/7/docs/api/javax/annotation/Nullable.html?is-external=true" title="class or interface in javax.annotation">@Nullable</a>
+<pre>public&nbsp;void&nbsp;containsValue(@NullableDecl
                           <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</pre>
 <div class="block">Fails if the table does not contain the given value.</div>
 </li>
