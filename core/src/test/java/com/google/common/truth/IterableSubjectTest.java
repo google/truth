@@ -641,6 +641,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(1)).containsExactly(1);
 
     expectFailureWhenTestingThat(asList(1)).containsExactly(2);
+    assertFailureKeys("value of", "expected", "but was");
     assertFailureValue("value of", "iterable.onlyElement()");
   }
 
