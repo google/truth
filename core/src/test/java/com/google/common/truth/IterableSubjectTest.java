@@ -25,6 +25,7 @@ import com.google.common.collect.Iterators;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -272,6 +273,28 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(1, null, 3)).containsAllOf(1, 3, (Object) null);
   }
 
+  /*
+   * Test that we only call toString() if the assertion fails -- that is, not just if the elements
+   * are out of order, but only if someone actually calls inOrder(). There are 2 reasons for this:
+   *
+   * 1. Calling toString() uses extra time and space. (To be fair, Iterable assertions often use a
+   * lot of those already.)
+   *
+   * 2. Some toString() methods are buggy. Arguably we shouldn't accommodate these, especially since
+   * those users are in for a nasty surprise if their tests actually fail someday, but I don't want
+   * to bite that off now. (Maybe Fact should catch exceptions from toString()?)
+   */
+  @Test
+  public void iterableContainsAllOutOfOrderDoesNotStringify() {
+    CountsToStringCalls o = new CountsToStringCalls();
+    List<Object> actual = asList(o, 1);
+    List<Object> expected = asList(1, o);
+    assertThat(actual).containsAllIn(expected);
+    assertThat(o.calls).isEqualTo(0);
+    expectFailureWhenTestingThat(actual).containsAllIn(expected).inOrder();
+    assertThat(o.calls).isGreaterThan(0);
+  }
+
   @Test
   public void iterableContainsAllOfFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllOf(1, 2, 4);
@@ -408,9 +431,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsAllOfInOrderWithFailure() {
     expectFailureWhenTestingThat(asList(1, null, 3)).containsAllOf(null, 1, 3).inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, null, 3]> contains all elements in order <[null, 1, 3]>");
+    assertFailureKeys(
+        "required elements were all found, but order was wrong",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue("expected order for required elements", "[null, 1, 3]");
   }
 
   @Test
@@ -450,9 +475,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
         };
 
     expectFailureWhenTestingThat(iterable).containsAllOf(1, 3, (Object) null).inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <BadIterable> contains all elements in order <[1, 3, null]>");
+    assertFailureKeys(
+        "required elements were all found, but order was wrong",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue("expected order for required elements", "[1, 3, null]");
   }
 
   @Test
@@ -601,6 +628,17 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsExactlyWithNullOutOfOrder() {
     assertThat(asList(1, null, 3)).containsExactly(1, 3, (Integer) null);
+  }
+
+  @Test
+  public void iterableContainsExactlyOutOfOrderDoesNotStringify() {
+    CountsToStringCalls o = new CountsToStringCalls();
+    List<Object> actual = asList(o, 1);
+    List<Object> expected = asList(1, o);
+    assertThat(actual).containsExactlyElementsIn(expected);
+    assertThat(o.calls).isEqualTo(0);
+    expectFailureWhenTestingThat(actual).containsExactlyElementsIn(expected).inOrder();
+    assertThat(o.calls).isGreaterThan(0);
   }
 
   @Test
@@ -910,11 +948,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsExactlyInOrderWithFailure() {
     expectFailureWhenTestingThat(asList(1, null, 3)).containsExactly(null, 1, 3).inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, null, 3]> contains exactly these elements in order "
-                + "<[null, 1, 3]>");
+    assertFailureKeys("contents match, but order was wrong", "expected", "but was");
+    assertFailureValue("expected", "[null, 1, 3]");
   }
 
   @Test
@@ -947,11 +982,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
         };
 
     expectFailureWhenTestingThat(iterable).containsExactly(1, 3, null).inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <BadIterable> contains exactly "
-                + "these elements in order <[1, 3, null]>");
+    assertFailureKeys("contents match, but order was wrong", "expected", "but was");
+    assertFailureValue("expected", "[1, 3, null]");
   }
 
   @Test
@@ -1184,6 +1216,16 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
                 + "objects that are not Iterables. Did you instead mean to check whether its "
                 + "*contents* match any of the *contents* of the given values? If so, call "
                 + "containsNoneOf(...)/containsNoneIn(...) instead. Non-iterables: [a, b]");
+  }
+
+  private static final class CountsToStringCalls {
+    int calls;
+
+    @Override
+    public String toString() {
+      calls++;
+      return super.toString();
+    }
   }
 
   private IterableSubject expectFailureWhenTestingThat(Iterable<?> actual) {

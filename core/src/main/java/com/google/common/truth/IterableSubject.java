@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
@@ -234,7 +235,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   @CanIgnoreReturnValue
   public final Ordered containsAllIn(Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(actual());
-    Collection<?> expected = iterableToCollection(expectedIterable);
+    final Collection<?> expected = iterableToCollection(expectedIterable);
 
     List<Object> missing = newArrayList();
     List<Object> actualNotInOrder = newArrayList();
@@ -276,7 +277,24 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             countDuplicates(annotateEmptyStrings(missing)));
       }
     }
-    return ordered ? IN_ORDER : new NotInOrder(this, "contains all elements in order", expected);
+    /*
+     * TODO(cpovirk): In the NotInOrder case, also include a Fact that shows _only_ the required
+     * elements (that is, without any extras) but in the order they were actually found. That should
+     * make it easier for users to compare the actual order of the required elements to the expected
+     * order. Or, if that's too much trouble, at least try to find a better title for the full
+     * actual iterable than the default of "but was," which may _sound_ like it should show only the
+     * required elements, rather than the full actual iterable.
+     */
+    return ordered
+        ? IN_ORDER
+        : new Ordered() {
+          @Override
+          public void inOrder() {
+            fail(
+                factWithoutValue("required elements were all found, but order was wrong"),
+                fact("expected order for required elements", expected));
+          }
+        };
   }
 
   /**
@@ -352,7 +370,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     return containsExactlyElementsIn(asList(expected));
   }
 
-  private Ordered containsExactlyElementsIn(Iterable<?> required, boolean addElementsInWarning) {
+  private Ordered containsExactlyElementsIn(
+      final Iterable<?> required, boolean addElementsInWarning) {
     Iterator<?> actualIter = actual().iterator();
     Iterator<?> requiredIter = required.iterator();
 
@@ -423,7 +442,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
            * This containsExactly() call is a success. But the iterables were not in the same order,
            * so return an object that will fail the test if the user calls inOrder().
            */
-          return new NotInOrder(this, "contains exactly these elements in order", required);
+          return new Ordered() {
+            @Override
+            public void inOrder() {
+              fail(
+                  factWithoutValue("contents match, but order was wrong"),
+                  fact("expected", required));
+            }
+          };
         }
         return failExactly(required, addElementsInWarning, missing, extra);
       }
@@ -541,24 +567,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   public final void containsNoneIn(Object[] excluded) {
     containsNoneIn(asList(excluded));
-  }
-
-  /** Ordered implementation that always fails. */
-  private static final class NotInOrder implements Ordered {
-    private final IterableSubject subject;
-    private final String check;
-    private final Iterable<?> required;
-
-    NotInOrder(IterableSubject subject, String check, Iterable<?> required) {
-      this.subject = subject;
-      this.check = check;
-      this.required = required;
-    }
-
-    @Override
-    public void inOrder() {
-      subject.fail(check, required);
-    }
   }
 
   /** Ordered implementation that does nothing because it's already known to be true. */
@@ -892,7 +900,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * on the object returned by this method.
      */
     @CanIgnoreReturnValue
-    public Ordered containsExactlyElementsIn(Iterable<? extends E> expected) {
+    public Ordered containsExactlyElementsIn(final Iterable<? extends E> expected) {
       List<A> actualList = iterableToList(getCastActual());
       List<? extends E> expectedList = iterableToList(expected);
 
@@ -928,10 +936,24 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
       // The 1:1 mapping is complete, so the test succeeds (but we know from above that the mapping
       // is not in order).
-      return new NotInOrder(
-          subject,
-          "contains, in order, exactly one element that " + correspondence + " each element of",
-          expected);
+      return new Ordered() {
+        @Override
+        public void inOrder() {
+          subject.fail(
+              factWithoutValue("contents match, but order was wrong"),
+              factWithoutValue(
+                  "comparing contents by testing that each element "
+                      + correspondence
+                      + " an expected value"),
+              fact("expected", expected));
+        }
+      };
+      /*
+       * TODO(cpovirk): Revisit the above when we change the other failure messagse generated by
+       * Fuzzy Truth. Maybe the correspondence should be the value in a key-value fact? But that may
+       * mean we should change existing correspondence implementations to use a different phrasing,
+       * so I'm punting for now.
+       */
     }
 
     /**
@@ -1191,7 +1213,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * subject, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
-    public Ordered containsAllIn(Iterable<? extends E> expected) {
+    public Ordered containsAllIn(final Iterable<? extends E> expected) {
       List<A> actualList = iterableToList(getCastActual());
       List<? extends E> expectedList = iterableToList(expected);
       // Check if the expected elements correspond in order to any subset of the actual elements.
@@ -1216,10 +1238,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
       // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
       // above that the mapping is not in order).
-      return new NotInOrder(
-          subject,
-          "contains, in order, at least one element that " + correspondence + " each element of",
-          expected);
+      return new Ordered() {
+        @Override
+        public void inOrder() {
+          subject.fail(
+              factWithoutValue("required elements were all found, but order was wrong"),
+              factWithoutValue(
+                  "comparing contents by testing that each element "
+                      + correspondence
+                      + " an expected value"),
+              fact("expected order for required elements", expected));
+        }
+      };
     }
 
     /**

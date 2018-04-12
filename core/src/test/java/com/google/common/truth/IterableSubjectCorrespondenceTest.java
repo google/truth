@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Functions.identity;
 import static com.google.common.collect.Collections2.permutations;
 import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.TestCorrespondences.EQUALITY;
 import static com.google.common.truth.TestCorrespondences.PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
 import static com.google.common.truth.TestCorrespondences.PARSED_RECORD_ID;
 import static com.google.common.truth.TestCorrespondences.RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
@@ -153,6 +154,22 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_outOfOrderDoesNotStringify() {
+    CountsToStringCalls o = new CountsToStringCalls();
+    List<Object> actual = asList(o, 1);
+    List<Object> expected = asList(1, o);
+    assertThat(actual).comparingElementsUsing(EQUALITY).containsExactlyElementsIn(expected);
+    assertThat(o.calls).isEqualTo(0);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(EQUALITY)
+        .containsExactlyElementsIn(expected)
+        .inOrder();
+    assertThat(o.calls).isGreaterThan(0);
   }
 
   @Test
@@ -613,11 +630,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, 0x80, +256]> contains, in order, exactly one element "
-                + "that parses to each element of <[64, 128, 256, 128]>");
+    assertFailureKeys(
+        "contents match, but order was wrong",
+        "comparing contents by testing that each element parses to an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", "[64, 128, 256, 128]");
   }
 
   @Test
@@ -726,6 +744,22 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAllIn(expected);
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_outOfOrderDoesNotStringify() {
+    CountsToStringCalls o = new CountsToStringCalls();
+    List<Object> actual = asList(o, 1);
+    List<Object> expected = asList(1, o);
+    assertThat(actual).comparingElementsUsing(EQUALITY).containsAllIn(expected);
+    assertThat(o.calls).isEqualTo(0);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(EQUALITY)
+        .containsAllIn(expected)
+        .inOrder();
+    assertThat(o.calls).isGreaterThan(0);
   }
 
   @Test
@@ -888,11 +922,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAllIn(expected)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[fee, +128, +64, fi, fo, 0x80, +256, fum]> contains, in order, "
-                + "at least one element that parses to each element of <[64, 128, 256, 128]>");
+    assertFailureKeys(
+        "required elements were all found, but order was wrong",
+        "comparing contents by testing that each element parses to an expected value",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue("expected order for required elements", "[64, 128, 256, 128]");
   }
 
   @Test
@@ -1261,5 +1296,15 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
             "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
                 + "contains no element that parses to any element in <[127, 128, 129]>. "
                 + "It contains <[+128 which corresponds to 128]>");
+  }
+
+  private static final class CountsToStringCalls {
+    int calls;
+
+    @Override
+    public String toString() {
+      calls++;
+      return super.toString();
+    }
   }
 }
