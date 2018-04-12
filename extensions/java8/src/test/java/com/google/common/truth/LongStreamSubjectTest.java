@@ -15,8 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.FailureAssertions.assertFailureKeys;
-import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.LongStreamSubject.longStreams;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
@@ -249,12 +247,9 @@ public final class LongStreamSubjectTest {
       assertThat(LongStream.of(42, 43)).containsAllOf(43, 42).inOrder();
       fail();
     } catch (AssertionError expected) {
-      assertFailureKeys(
-          expected,
-          "required elements were all found, but order was wrong",
-          "expected order for required elements",
-          "but was");
-      assertFailureValue(expected, "expected order for required elements", "[43, 42]");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <[42, 43]> contains all elements in order <[43, 42]>");
     }
   }
 
@@ -303,12 +298,9 @@ public final class LongStreamSubjectTest {
       assertThat(LongStream.of(42, 43)).containsAllIn(asList(43L, 42L)).inOrder();
       fail();
     } catch (AssertionError expected) {
-      assertFailureKeys(
-          expected,
-          "required elements were all found, but order was wrong",
-          "expected order for required elements",
-          "but was");
-      assertFailureValue(expected, "expected order for required elements", "[43, 42]");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Not true that <[42, 43]> contains all elements in order <[43, 42]>");
     }
   }
 
@@ -357,8 +349,10 @@ public final class LongStreamSubjectTest {
       assertThat(LongStream.of(42, 43)).containsExactly(43, 42).inOrder();
       fail();
     } catch (AssertionError expected) {
-      assertFailureKeys(expected, "contents match, but order was wrong", "expected", "but was");
-      assertFailureValue(expected, "expected", "[43, 42]");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[42, 43]> contains exactly these elements in order <[43, 42]>");
     }
   }
 
@@ -408,8 +402,10 @@ public final class LongStreamSubjectTest {
       assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(43L, 42L)).inOrder();
       fail();
     } catch (AssertionError expected) {
-      assertFailureKeys(expected, "contents match, but order was wrong", "expected", "but was");
-      assertFailureValue(expected, "expected", "[43, 42]");
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "Not true that <[42, 43]> contains exactly these elements in order <[43, 42]>");
     }
   }
 

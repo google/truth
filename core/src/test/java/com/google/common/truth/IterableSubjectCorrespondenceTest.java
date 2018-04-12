@@ -613,12 +613,11 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected)
         .inOrder();
-    assertFailureKeys(
-        "contents match, but order was wrong",
-        "comparing contents by testing that each element parses to an expected value",
-        "expected",
-        "but was");
-    assertFailureValue("expected", "[64, 128, 256, 128]");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+128, +64, 0x80, +256]> contains, in order, exactly one element "
+                + "that parses to each element of <[64, 128, 256, 128]>");
   }
 
   @Test
@@ -889,12 +888,11 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAllIn(expected)
         .inOrder();
-    assertFailureKeys(
-        "required elements were all found, but order was wrong",
-        "comparing contents by testing that each element parses to an expected value",
-        "expected order for required elements",
-        "but was");
-    assertFailureValue("expected order for required elements", "[64, 128, 256, 128]");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[fee, +128, +64, fi, fo, 0x80, +256, fum]> contains, in order, "
+                + "at least one element that parses to each element of <[64, 128, 256, 128]>");
   }
 
   @Test

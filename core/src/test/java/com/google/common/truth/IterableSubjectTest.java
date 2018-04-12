@@ -408,11 +408,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsAllOfInOrderWithFailure() {
     expectFailureWhenTestingThat(asList(1, null, 3)).containsAllOf(null, 1, 3).inOrder();
-    assertFailureKeys(
-        "required elements were all found, but order was wrong",
-        "expected order for required elements",
-        "but was");
-    assertFailureValue("expected order for required elements", "[null, 1, 3]");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <[1, null, 3]> contains all elements in order <[null, 1, 3]>");
   }
 
   @Test
@@ -452,11 +450,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
         };
 
     expectFailureWhenTestingThat(iterable).containsAllOf(1, 3, (Object) null).inOrder();
-    assertFailureKeys(
-        "required elements were all found, but order was wrong",
-        "expected order for required elements",
-        "but was");
-    assertFailureValue("expected order for required elements", "[1, 3, null]");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo("Not true that <BadIterable> contains all elements in order <[1, 3, null]>");
   }
 
   @Test
@@ -914,8 +910,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsExactlyInOrderWithFailure() {
     expectFailureWhenTestingThat(asList(1, null, 3)).containsExactly(null, 1, 3).inOrder();
-    assertFailureKeys("contents match, but order was wrong", "expected", "but was");
-    assertFailureValue("expected", "[null, 1, 3]");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[1, null, 3]> contains exactly these elements in order "
+                + "<[null, 1, 3]>");
   }
 
   @Test
@@ -948,8 +947,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
         };
 
     expectFailureWhenTestingThat(iterable).containsExactly(1, 3, null).inOrder();
-    assertFailureKeys("contents match, but order was wrong", "expected", "but was");
-    assertFailureValue("expected", "[1, 3, null]");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <BadIterable> contains exactly "
+                + "these elements in order <[1, 3, null]>");
   }
 
   @Test
