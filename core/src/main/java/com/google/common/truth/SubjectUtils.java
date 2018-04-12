@@ -16,13 +16,20 @@
 package com.google.common.truth;
 
 import static com.google.common.collect.Iterables.isEmpty;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Multisets.immutableEntry;
 
+import com.google.common.base.Equivalence;
+import com.google.common.base.Equivalence.Wrapper;
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,22 +73,24 @@ final class SubjectUtils {
     return count;
   }
 
-  static <T> List<Object> countDuplicates(Iterable<T> items) {
-    // We use a List to de-dupe instead of a Set in case the elements don't have a proper
+  static String countDuplicates(Iterable<?> items) {
+    return countDuplicatesToMultiset(items).toString();
+  }
+
+  static String entryString(Multiset.Entry<?> entry) {
+    int count = entry.getCount();
+    String item = String.valueOf(entry.getElement());
+    return (count > 1) ? item + " [" + count + " copies]" : item;
+  }
+
+  private static <T> NonHashingMultiset<T> countDuplicatesToMultiset(Iterable<T> items) {
+    // We use avoid hashing in case the elements don't have a proper
     // .hashCode() method (e.g., MessageSet from old versions of protobuf).
-    List<T> itemSet = new ArrayList<T>();
+    NonHashingMultiset<T> multiset = new NonHashingMultiset<>();
     for (T item : items) {
-      if (!itemSet.contains(item)) {
-        itemSet.add(item);
-      }
+      multiset.add(item);
     }
-    Object[] params = new Object[itemSet.size()];
-    int n = 0;
-    for (T item : itemSet) {
-      int count = countOf(item, items);
-      params[n++] = (count > 1) ? item + " [" + count + " copies]" : item;
-    }
-    return Arrays.asList(params);
+    return multiset;
   }
 
   /**
@@ -99,6 +108,63 @@ final class SubjectUtils {
     return homogeneousTypeName.isPresent()
         ? StringUtil.format("%s (%s)", countDuplicates(items), homogeneousTypeName.get())
         : countDuplicates(addTypeInfoToEveryItem(items)).toString();
+  }
+
+  private static final class NonHashingMultiset<E> {
+    // This ought to be static, but the generics are easier when I can refer to <E>.
+    private final Function<Multiset.Entry<Wrapper<E>>, Multiset.Entry<?>> unwrapKey =
+        new Function<Multiset.Entry<Wrapper<E>>, Multiset.Entry<?>>() {
+          @Override
+          public Multiset.Entry<?> apply(Multiset.Entry<Wrapper<E>> input) {
+            return immutableEntry(input.getElement().get(), input.getCount());
+          }
+        };
+
+    private final Multiset<Equivalence.Wrapper<E>> contents = LinkedHashMultiset.create();
+
+    void add(E element) {
+      contents.add(EQUALITY_WITHOUT_USING_HASH_CODE.wrap(element));
+    }
+
+    boolean remove(E element) {
+      return contents.remove(EQUALITY_WITHOUT_USING_HASH_CODE.wrap(element));
+    }
+
+    int totalCopies() {
+      return contents.size();
+    }
+
+    boolean isEmpty() {
+      return contents.isEmpty();
+    }
+
+    Iterable<Multiset.Entry<?>> entrySet() {
+      return transform(contents.entrySet(), unwrapKey);
+    }
+
+    @Override
+    public String toString() {
+      List<String> parts = new ArrayList<>();
+      for (Multiset.Entry<?> entry : entrySet()) {
+        parts.add(entryString(entry));
+      }
+      String result = parts.toString();
+      return result;
+      // TODO(cpovirk): return result.substring(1, result.length() - 1); // strip [ and ]
+    }
+
+    private static final Equivalence<Object> EQUALITY_WITHOUT_USING_HASH_CODE =
+        new Equivalence<Object>() {
+          @Override
+          protected boolean doEquivalent(Object a, Object b) {
+            return Objects.equal(a, b);
+          }
+
+          @Override
+          protected int doHash(Object o) {
+            return 0; // slow but hopefully not much worse than what we get with a flat list
+          }
+        };
   }
 
   /**
