@@ -267,5 +267,18 @@ final class TestCorrespondences {
         }
       };
 
+  static final Correspondence<Object, Object> EQUALITY =
+      new Correspondence<Object, Object>() {
+        @Override
+        public boolean compare(Object actual, Object expected) {
+          return Objects.equal(expected, actual);
+        }
+
+        @Override
+        public String toString() {
+          return "is equal to";
+        }
+      };
+
   private TestCorrespondences() {}
 }
