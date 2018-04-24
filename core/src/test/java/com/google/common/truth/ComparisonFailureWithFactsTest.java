@@ -17,7 +17,10 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Strings.repeat;
+import static com.google.common.testing.SerializableTester.reserialize;
 import static com.google.common.truth.ComparisonFailureWithFacts.formatExpectedAndActual;
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -260,6 +263,58 @@ public class ComparisonFailureWithFactsTest {
         repeat("a\n", 19) + "a",
         repeat("a\n", 19) + "a\n",
         Joiner.on('\n').join("@@ -18,3 +18,4 @@", " a", " a", " a", "+"));
+  }
+
+  @GwtIncompatible
+  @Test
+  public void testSerialization_ComparisonFailureWithFacts() {
+    ImmutableList<String> messages = ImmutableList.of("hello");
+    ImmutableList<Fact> headFacts = ImmutableList.of(fact("head", "value"));
+    ImmutableList<Fact> tailFacts = ImmutableList.of(factWithoutValue("tail"));
+    String expected = "expected";
+    String actual = "actual";
+    Throwable cause = new Throwable("cause");
+    ComparisonFailureWithFacts original =
+        ComparisonFailureWithFacts.create(messages, headFacts, tailFacts, expected, actual, cause);
+
+    ComparisonFailureWithFacts reserialized = reserialize(original);
+    assertThat(reserialized).hasMessageThat().isEqualTo(original.getMessage());
+    assertThat(reserialized).hasCauseThat().hasMessageThat().isEqualTo(cause.getMessage());
+    assertThat(reserialized.facts().get(0).key).isEqualTo("head");
+    assertThat(reserialized.facts().get(0).value).isEqualTo("value");
+    assertThat(reserialized.facts().get(3).key).isEqualTo("tail");
+    assertThat(reserialized.getExpected()).isEqualTo("expected");
+    assertThat(reserialized.getActual()).isEqualTo("actual");
+  }
+
+  @GwtIncompatible
+  @Test
+  public void testSerialization_AssertionErrorWithFacts() {
+    ImmutableList<String> messages = ImmutableList.of("hello");
+    ImmutableList<Fact> facts = ImmutableList.of(fact("head", "value"), factWithoutValue("tail"));
+    Throwable cause = new Throwable("cause");
+    AssertionErrorWithFacts original = AssertionErrorWithFacts.create(messages, facts, cause);
+
+    AssertionErrorWithFacts reserialized = reserialize(original);
+    assertThat(reserialized).hasMessageThat().isEqualTo(original.getMessage());
+    assertThat(reserialized).hasCauseThat().hasMessageThat().isEqualTo(cause.getMessage());
+    assertThat(reserialized.facts().get(0).key).isEqualTo("head");
+    assertThat(reserialized.facts().get(0).value).isEqualTo("value");
+    assertThat(reserialized.facts().get(1).key).isEqualTo("tail");
+  }
+
+  @GwtIncompatible
+  @Test
+  public void testSerialization_Fact() {
+    Fact original = fact("head", "value");
+    Fact reserialized = reserialize(original);
+    assertThat(reserialized.key).isEqualTo(original.key);
+    assertThat(reserialized.value).isEqualTo(original.value);
+
+    original = factWithoutValue("tail");
+    reserialized = reserialize(original);
+    assertThat(reserialized.key).isEqualTo(original.key);
+    assertThat(reserialized.value).isEqualTo(original.value);
   }
 
   private static void runFormatTest(

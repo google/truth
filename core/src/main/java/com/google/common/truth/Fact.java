@@ -21,10 +21,11 @@ import static com.google.common.base.Strings.padEnd;
 import static java.lang.Math.max;
 
 import com.google.common.collect.ImmutableList;
+import java.io.Serializable;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /** A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz." */
-final class Fact {
+final class Fact implements Serializable {
   /**
    * Creates a fact with the given key and value, which will be printed in a format like "key:
    * value." The value is converted to a string by calling {@code String.valueOf} on it.
