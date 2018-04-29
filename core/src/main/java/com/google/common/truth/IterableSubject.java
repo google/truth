@@ -133,17 +133,19 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Checks (with a side-effect failure) that the subject contains the supplied item. */
   public final void contains(@NullableDecl Object element) {
     if (!Iterables.contains(actual(), element)) {
-      List<Object> elementList = Lists.newArrayList(element);
+      List<Object> elementList = newArrayList(element);
       if (hasMatchingToStringPair(actual(), elementList)) {
-        failWithRawMessage(
-            "%s should have contained <%s (%s)> but doesn't. However, it does contain <%s>.",
-            actualAsString(),
-            element,
-            objectToTypeName(element),
-            countDuplicatesAndAddTypeInfo(
-                retainMatchingToString(actual(), elementList /* itemsToCheck */)));
+        failWithoutActual(
+            fact("expected to contain", element),
+            fact("an instance of", objectToTypeName(element)),
+            factWithoutValue("but did not"),
+            fact(
+                "though it did contain",
+                countDuplicatesAndAddTypeInfo(
+                    retainMatchingToString(actual(), elementList /* itemsToCheck */))),
+            fullContents());
       } else {
-        failWithRawMessage("%s should have contained <%s>", actualAsString(), element);
+        failWithFact("expected to contain", element);
       }
     }
   }
@@ -151,7 +153,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Checks (with a side-effect failure) that the subject does not contain the supplied item. */
   public final void doesNotContain(@NullableDecl Object element) {
     if (Iterables.contains(actual(), element)) {
-      failWithRawMessage("%s should not have contained <%s>", actualAsString(), element);
+      failWithFact("expected not to contain", element);
     }
   }
 
@@ -694,6 +696,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
               + "containsNoneOf(...)/containsNoneIn(...) instead. Non-iterables: %s",
           nonIterables);
     }
+  }
+
+  private Fact fullContents() {
+    return fact("full contents", actualCustomStringRepresentationForPackageMembersToCall());
   }
 
   /**

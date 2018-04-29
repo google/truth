@@ -550,29 +550,36 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void containsKeyFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     expectFailureWhenTestingThat(actual).containsKey("greg");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=kluever}> contains key <greg>");
+    assertFailureKeys("value of", "expected to contain", "but was", "map was");
+    assertFailureValue("value of", "map.keySet()");
+    assertFailureValue("expected to contain", "greg");
+    assertFailureValue("but was", "[kurt]");
   }
 
   @Test
   public void containsKeyNullFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     expectFailureWhenTestingThat(actual).containsKey(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=kluever}> contains key <null>");
+    assertFailureKeys("value of", "expected to contain", "but was", "map was");
+    assertFailureValue("value of", "map.keySet()");
+    assertFailureValue("expected to contain", "null");
+    assertFailureValue("but was", "[kurt]");
   }
 
   @Test
   public void containsKey_failsWithSameToString() {
     expectFailureWhenTestingThat(ImmutableMap.of(1L, "value1", 2L, "value2", "1", "value3"))
         .containsKey(1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{1=value1, 2=value2, 1=value3}> contains key <1 (java.lang.Integer)>. "
-                + "However, it does contain keys <[1 (java.lang.Long), 1 (java.lang.String)]>.");
+    assertFailureKeys(
+        "value of",
+        "expected to contain",
+        "an instance of",
+        "but did not",
+        "though it did contain",
+        "full contents",
+        "map was");
+    assertFailureValue("value of", "map.keySet()");
+    assertFailureValue("expected to contain", "1");
   }
 
   @Test
@@ -581,11 +588,16 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     actual.put("null", "value1");
 
     expectFailureWhenTestingThat(actual).containsKey(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{null=value1}> contains key <null (null type)>. However, "
-                + "it does contain keys <[null] (java.lang.String)>.");
+    assertFailureKeys(
+        "value of",
+        "expected to contain",
+        "an instance of",
+        "but did not",
+        "though it did contain",
+        "full contents",
+        "map was");
+    assertFailureValue("value of", "map.keySet()");
+    assertFailureValue("expected to contain", "null");
   }
 
   @Test
@@ -606,9 +618,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void doesNotContainKeyFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     expectFailureWhenTestingThat(actual).doesNotContainKey("kurt");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=kluever}> does not contain key <kurt>");
+    assertFailureKeys("value of", "expected not to contain", "but was", "map was");
+    assertFailureValue("value of", "map.keySet()");
+    assertFailureValue("expected not to contain", "kurt");
+    assertFailureValue("but was", "[kurt]");
   }
 
   @Test
@@ -616,9 +629,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     Map<String, String> actual = Maps.newHashMap();
     actual.put(null, "null");
     expectFailureWhenTestingThat(actual).doesNotContainKey(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{null=null}> does not contain key <null>");
+    assertFailureKeys("value of", "expected not to contain", "but was", "map was");
+    assertFailureValue("value of", "map.keySet()");
+    assertFailureValue("expected not to contain", "null");
+    assertFailureValue("but was", "[null]");
   }
 
   @Test
@@ -719,9 +733,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void doesNotContainEntryFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     expectFailureWhenTestingThat(actual).doesNotContainEntry("kurt", "kluever");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=kluever}> does not contain entry <kurt=kluever>");
+    assertFailureKeys("value of", "expected not to contain", "but was");
+    assertFailureValue("value of", "map.entrySet()");
+    assertFailureValue("expected not to contain", "kurt=kluever");
+    assertFailureValue("but was", "[kurt=kluever]");
   }
 
   @Test
@@ -737,36 +752,40 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     Map<String, String> actual = Maps.newHashMap();
     actual.put(null, null);
     expectFailureWhenTestingThat(actual).doesNotContainEntry(null, null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{null=null}> does not contain entry <null=null>");
+    assertFailureKeys("value of", "expected not to contain", "but was");
+    assertFailureValue("value of", "map.entrySet()");
+    assertFailureValue("expected not to contain", "null=null");
+    assertFailureValue("but was", "[null=null]");
   }
 
   @Test
   public void failMapContainsKey() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     expectFailureWhenTestingThat(actual).containsKey("b");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{a=A}> contains key <b>");
+    assertFailureKeys("value of", "expected to contain", "but was", "map was");
+    assertFailureValue("value of", "map.keySet()");
+    assertFailureValue("expected to contain", "b");
+    assertFailureValue("but was", "[a]");
   }
 
   @Test
   public void failMapContainsKeyWithNull() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     expectFailureWhenTestingThat(actual).containsKey(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{a=A}> contains key <null>");
+    assertFailureKeys("value of", "expected to contain", "but was", "map was");
+    assertFailureValue("value of", "map.keySet()");
+    assertFailureValue("expected to contain", "null");
+    assertFailureValue("but was", "[a]");
   }
 
   @Test
   public void failMapLacksKey() {
     ImmutableMap<String, String> actual = ImmutableMap.of("a", "A");
     expectFailureWhenTestingThat(actual).doesNotContainKey("a");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{a=A}> does not contain key <a>");
+    assertFailureKeys("value of", "expected not to contain", "but was", "map was");
+    assertFailureValue("value of", "map.keySet()");
+    assertFailureValue("expected not to contain", "a");
+    assertFailureValue("but was", "[a]");
   }
 
   @Test

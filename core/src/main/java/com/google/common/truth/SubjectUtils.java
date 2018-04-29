@@ -223,6 +223,7 @@ final class SubjectUtils {
   }
 
   static String objectToTypeName(Object item) {
+    // TODO(cpovirk): Merge this with the code in Subject.failEqualityCheck().
     if (item == null) {
       // The name "null type" comes from the interface javax.lang.model.type.NullType.
       return "null type";

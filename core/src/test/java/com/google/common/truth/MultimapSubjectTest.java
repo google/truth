@@ -231,9 +231,10 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void containsKeyFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
     expectFailureWhenTestingThat(multimap).containsKey("daniel");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=[kluever]}> contains key <daniel>");
+    assertFailureKeys("value of", "expected to contain", "but was", "multimap was");
+    assertFailureValue("value of", "multimap.keySet()");
+    assertFailureValue("expected to contain", "daniel");
+    assertFailureValue("but was", "[kurt]");
   }
 
   @Test
@@ -247,9 +248,10 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void containsKeyNullFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
     expectFailureWhenTestingThat(multimap).containsKey(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=[kluever]}> contains key <null>");
+    assertFailureKeys("value of", "expected to contain", "but was", "multimap was");
+    assertFailureValue("value of", "multimap.keySet()");
+    assertFailureValue("expected to contain", "null");
+    assertFailureValue("but was", "[kurt]");
   }
 
   @Test
@@ -257,12 +259,16 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(
             ImmutableMultimap.of(1L, "value1a", 1L, "value1b", 2L, "value2", "1", "value3"))
         .containsKey(1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{1=[value1a, value1b], 2=[value2], 1=[value3]}> contains key "
-                + "<1 (java.lang.Integer)>. However, it does contain keys "
-                + "<[1 (java.lang.Long), 1 (java.lang.String)]>.");
+    assertFailureKeys(
+        "value of",
+        "expected to contain",
+        "an instance of",
+        "but did not",
+        "though it did contain",
+        "full contents",
+        "multimap was");
+    assertFailureValue("value of", "multimap.keySet()");
+    assertFailureValue("expected to contain", "1");
   }
 
   @Test
@@ -276,9 +282,10 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void doesNotContainKeyFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
     expectFailureWhenTestingThat(multimap).doesNotContainKey("kurt");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=[kluever]}> does not contain key <kurt>");
+    assertFailureKeys("value of", "expected not to contain", "but was", "multimap was");
+    assertFailureValue("value of", "multimap.keySet()");
+    assertFailureValue("expected not to contain", "kurt");
+    assertFailureValue("but was", "[kurt]");
   }
 
   @Test
@@ -286,9 +293,10 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     Multimap<String, String> multimap = HashMultimap.create();
     multimap.put(null, "null");
     expectFailureWhenTestingThat(multimap).doesNotContainKey(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{null=[null]}> does not contain key <null>");
+    assertFailureKeys("value of", "expected not to contain", "but was", "multimap was");
+    assertFailureValue("value of", "multimap.keySet()");
+    assertFailureValue("expected not to contain", "null");
+    assertFailureValue("but was", "[null]");
   }
 
   @Test
@@ -372,9 +380,10 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void doesNotContainEntryFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
     expectFailureWhenTestingThat(multimap).doesNotContainEntry("kurt", "kluever");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=[kluever]}> does not contain entry <kurt=kluever>");
+    assertFailureKeys("value of", "expected not to contain", "but was");
+    assertFailureValue("value of", "multimap.entries()");
+    assertFailureValue("expected not to contain", "kurt=kluever");
+    assertFailureValue("but was", "[kurt=kluever]");
   }
 
   @Test

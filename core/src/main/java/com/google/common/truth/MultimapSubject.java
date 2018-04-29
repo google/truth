@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.SubjectUtils.HUMAN_UNDERSTANDABLE_EMPTY_STRING;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
@@ -90,27 +91,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   /** Fails if the multimap does not contain the given key. */
   public void containsKey(@NullableDecl Object key) {
-    if (!actual().containsKey(key)) {
-      List<Object> keyList = Lists.newArrayList(key);
-      if (hasMatchingToStringPair(actual().keySet(), keyList)) {
-        failWithRawMessage(
-            "Not true that %s contains key <%s (%s)>. However, it does contain keys <%s>.",
-            actualAsString(),
-            key,
-            objectToTypeName(key),
-            countDuplicatesAndAddTypeInfo(
-                retainMatchingToString(actual().keySet(), keyList /* itemsToCheck */)));
-      } else {
-        fail("contains key", key);
-      }
-    }
+    check("keySet()").that(actual().keySet()).contains(key);
   }
 
   /** Fails if the multimap contains the given key. */
   public void doesNotContainKey(@NullableDecl Object key) {
-    if (actual().containsKey(key)) {
-      fail("does not contain key", key);
-    }
+    check("keySet()").that(actual().keySet()).doesNotContain(key);
   }
 
   /** Fails if the multimap does not contain the given entry. */
@@ -150,9 +136,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   /** Fails if the multimap contains the given entry. */
   public void doesNotContainEntry(@NullableDecl Object key, @NullableDecl Object value) {
-    if (actual().containsEntry(key, value)) {
-      fail("does not contain entry", Maps.immutableEntry(key, value));
-    }
+    checkNoNeedToDisplayBothValues("entries()")
+        .that(actual().entries())
+        .doesNotContain(immutableEntry(key, value));
   }
 
   /**

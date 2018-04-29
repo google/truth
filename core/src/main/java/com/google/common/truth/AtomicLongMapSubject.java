@@ -17,9 +17,9 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.factWithoutValue;
 
-import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -83,37 +83,52 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} does not contain the given key. */
   public void containsKey(Object key) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
-    if (!actual().containsKey(key)) {
-      fail("contains key", key);
-    }
+    check("asMap().keySet()").that(actual().asMap().keySet()).contains(key);
   }
 
   /** Fails if the {@link AtomicLongMap} contains the given key. */
   public void doesNotContainKey(Object key) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
-    if (actual().containsKey(key)) {
-      fail("does not contain key", key);
-    }
+    check("asMap().keySet()").that(actual().asMap().keySet()).doesNotContain(key);
   }
 
+  /*
+   * TODO(cpovirk): These methods don't actually check whether the AtomicLongMap contains the given
+   * entry. Specifically, if `value` is 0, they check that the AtomicLongMap contains the key with
+   * value 0 *or* that it does *not* contain the key. (Contrast to containsKey above, which
+   * distinguishes between "present with value 0" and "not present.")
+   *
+   * We should consider renaming the methods to something like "hasValue" (or changing their
+   * behavior to really check that the key is present, but that seems unlikely to be what most users
+   * want): https://github.com/google/truth/issues/451
+   */
   /** Fails if the {@link AtomicLongMap} does not contain the given entry. */
+  @SuppressWarnings("unchecked") // worse case should be a ClassCastException
+  /*
+   * TODO(cpovirk): Consider requiring key to be a K here. But AtomicLongMapSubject isn't currently
+   * parameterized, and if we're going to add a type parameter, I'd rather wait until after we
+   * (hopefully) remove the other existing type parameters.
+   */
   public void containsEntry(Object key, long value) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
     long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
     if (actualValue != value) {
-      fail("contains entry", Maps.immutableEntry(key, value));
+      fail("contains entry", immutableEntry(key, value));
     }
   }
 
+  @SuppressWarnings("unchecked") // see containsEntry
   /** Fails if the {@link AtomicLongMap} contains the given entry. */
-  public void doesNotContainEntry(@NullableDecl Object key, long value) {
-    if (key != null) {
-      long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
-      if (actualValue == value) {
-        fail("does not contain entry", Maps.immutableEntry(key, value));
-      }
+  public void doesNotContainEntry(Object key, long value) {
+    checkNotNull(key, "AtomicLongMap does not support null keys");
+    long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
+    if (actualValue == value) {
+      fail("does not contain entry", immutableEntry(key, value));
     }
   }
 
-  // TODO(kak): Consider adding containsExactly() / containsExactlyEntriesIn() like MapSubject?
+  /*
+   * TODO(kak): Consider adding containsExactly() / containsExactlyEntriesIn() like MapSubject? If
+   * we do, see the TODO about containsEntry above.
+   */
 }
