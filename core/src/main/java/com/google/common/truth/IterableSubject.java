@@ -159,14 +159,17 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   /** Checks that the subject does not contain duplicate elements. */
   public final void containsNoDuplicates() {
-    List<Entry<?>> duplicates = Lists.newArrayList();
+    List<Entry<?>> duplicates = newArrayList();
     for (Multiset.Entry<?> entry : LinkedHashMultiset.create(actual()).entrySet()) {
       if (entry.getCount() > 1) {
         duplicates.add(entry);
       }
     }
     if (!duplicates.isEmpty()) {
-      failWithRawMessage("%s has the following duplicates: <%s>", actualAsString(), duplicates);
+      failWithoutActual(
+          factWithoutValue("expected not to contain duplicates"),
+          fact("but contained", duplicates),
+          fullContents());
     }
   }
 
@@ -554,11 +557,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
     }
     if (!present.isEmpty()) {
-      failWithBadResults(
-          "contains none of",
-          annotateEmptyStrings(excluded),
-          "contains",
-          annotateEmptyStrings(present));
+      failWithoutActual(
+          fact("expected not to contain any of", annotateEmptyStrings(excluded)),
+          fact("but contained", annotateEmptyStrings(present)),
+          fullContents());
     }
   }
 
@@ -608,7 +610,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   public final void isStrictlyOrdered(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
-        "is strictly ordered",
+        "expected to be strictly ordered",
         new PairwiseChecker() {
           @Override
           public boolean check(Object prev, Object next) {
@@ -639,7 +641,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   public final void isOrdered(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
-        "is ordered",
+        "expected to be ordered",
         new PairwiseChecker() {
           @Override
           public boolean check(Object prev, Object next) {
@@ -652,14 +654,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     boolean check(Object prev, Object next);
   }
 
-  private void pairwiseCheck(String verb, PairwiseChecker checker) {
+  private void pairwiseCheck(String expectedFact, PairwiseChecker checker) {
     Iterator<?> iterator = actual().iterator();
     if (iterator.hasNext()) {
       Object prev = iterator.next();
       while (iterator.hasNext()) {
         Object next = iterator.next();
         if (!checker.check(prev, next)) {
-          fail(verb, prev, next);
+          failWithoutActual(
+              factWithoutValue(expectedFact),
+              fact("but contained", prev),
+              fact("followed by", next),
+              fullContents());
           return;
         }
         prev = next;

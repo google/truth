@@ -939,6 +939,11 @@ public class Subject<S extends Subject<S, T>, T> {
     doFail(ImmutableList.copyOf(Lists.asList(first, rest)));
   }
 
+  // TODO(cpovirk): Consider making this public after names are settled (if there's a need for it).
+  final void failWithoutActual(Iterable<Fact> facts) {
+    doFail(ImmutableList.copyOf(facts));
+  }
+
   /**
    * Assembles a failure message without a given subject and passes it to the FailureStrategy
    *

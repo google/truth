@@ -112,14 +112,9 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsNoDuplicates_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hello", "hello")).containsNoDuplicates();
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("<[hello, hello]> has the following duplicates: <[hello x 2]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(Stream.of("hello", "hello")).containsNoDuplicates());
   }
 
   @Test
@@ -185,15 +180,9 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsNoneOf_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hello")).containsNoneOf("hello", "hell");
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hello]> contains none of <[hello, hell]>. It contains <[hello]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(Stream.of("hello")).containsNoneOf("hello", "hell"));
   }
 
   @Test
@@ -203,16 +192,10 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsNoneIn_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hello")).containsNoneIn(asList("hello", "hell"));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hello]> contains none of <[hello, hell]>. "
-                  + "It contains <[hello]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(Stream.of("hello")).containsNoneIn(asList("hello", "hell")));
   }
 
   @Test

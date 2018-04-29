@@ -112,14 +112,9 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsNoDuplicates_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42, 42)).containsNoDuplicates();
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("<[42, 42]> has the following duplicates: <[42 x 2]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(LongStream.of(42, 42)).containsNoDuplicates());
   }
 
   @Test
@@ -185,14 +180,8 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsNoneOf_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42)).containsNoneOf(42, 43);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[42]> contains none of <[42, 43]>. It contains <[42]>");
-    }
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).containsNoneOf(42, 43));
   }
 
   @Test
@@ -202,14 +191,9 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsNoneIn_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42)).containsNoneIn(asList(42L, 43L));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[42]> contains none of <[42, 43]>. It contains <[42]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(LongStream.of(42)).containsNoneIn(asList(42L, 43L)));
   }
 
   @Test
