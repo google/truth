@@ -125,9 +125,10 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   public void containsCellFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     expectFailureWhenTestingThat(table).containsCell("row", "row", "val");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{row={col=val}}> contains cell <(row,row)=val>");
+    assertFailureKeys("value of", "expected to contain", "but was");
+    assertFailureValue("value of", "table.cellSet()");
+    assertFailureValue("expected to contain", "(row,row)=val");
+    assertFailureValue("but was", "[(row,col)=val]");
   }
 
   @Test
@@ -147,9 +148,10 @@ public class TableSubjectTest extends BaseSubjectTestCase {
   public void doesNotContainCellFailure() {
     ImmutableTable<String, String, String> table = ImmutableTable.of("row", "col", "val");
     expectFailureWhenTestingThat(table).doesNotContainCell("row", "col", "val");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{row={col=val}}> does not contain cell <(row,col)=val>");
+    assertFailureKeys("value of", "expected not to contain", "but was");
+    assertFailureValue("value of", "table.cellSet()");
+    assertFailureValue("expected not to contain", "(row,col)=val");
+    assertFailureValue("but was", "[(row,col)=val]");
   }
 
   private static <R, C, V> Cell<R, C, V> cell(R row, C col, V val) {

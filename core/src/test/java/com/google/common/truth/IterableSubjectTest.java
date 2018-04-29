@@ -78,45 +78,29 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsFailsWithSameToString() {
     expectFailureWhenTestingThat(asList(1L, 2L, 3L, 2L)).contains(2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "<[1, 2, 3, 2]> should have contained <2 (java.lang.Integer)> but doesn't. However, "
-                + "it does contain <[2 [2 copies]] (java.lang.Long)>.");
+    assertFailureKeys(
+        "expected to contain",
+        "an instance of",
+        "but did not",
+        "though it did contain",
+        "full contents");
+    assertFailureValue("expected to contain", "2");
+    assertFailureValue("an instance of", "java.lang.Integer");
+    assertFailureValue("though it did contain", "[2 [2 copies]] (java.lang.Long)");
+    assertFailureValue("full contents", "[1, 2, 3, 2]");
   }
 
   @Test
   public void iterableContainsFailsWithSameToStringAndNull() {
     expectFailureWhenTestingThat(asList(1, "null")).contains(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "<[1, null]> should have contained <null (null type)> but doesn't. However, it does "
-                + "contain <[null] (java.lang.String)>.");
+    assertFailureValue("an instance of", "null type");
   }
 
   @Test
   public void iterableContainsFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).contains(5);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<[1, 2, 3]> should have contained <5>");
-  }
-
-  @Test
-  public void namedIterableContainsFailure() {
-    expectFailureWhenTestingThat(asList(1, 2, 3)).named("numbers").contains(5);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("numbers (<[1, 2, 3]>) should have contained <5>");
-  }
-
-  @Test
-  public void failureMessageIterableContainsFailure() {
-    expectFailure.whenTesting().withMessage("custom msg").that(asList(1, 2, 3)).contains(5);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("custom msg\n<[1, 2, 3]> should have contained <5>");
+    assertFailureKeys("expected to contain", "but was");
+    assertFailureValue("expected to contain", "5");
   }
 
   @Test
@@ -132,9 +116,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableDoesNotContainFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).doesNotContain(2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<[1, 2, 3]> should not have contained <2>");
+    assertFailureKeys("expected not to contain", "but was");
+    assertFailureValue("expected not to contain", "2");
   }
 
   @Test

@@ -129,12 +129,8 @@ public final class IntStreamSubjectTest {
 
   @Test
   public void testContains_fails() throws Exception {
-    try {
-      assertThat(IntStream.of(42)).contains(100);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("<[42]> should have contained <100>");
-    }
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(IntStream.of(42)).contains(100));
   }
 
   @Test
@@ -178,12 +174,8 @@ public final class IntStreamSubjectTest {
 
   @Test
   public void testDoesNotContain_fails() throws Exception {
-    try {
-      assertThat(IntStream.of(42)).doesNotContain(42);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("<[42]> should not have contained <42>");
-    }
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(IntStream.of(42)).doesNotContain(42));
   }
 
   @Test

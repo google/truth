@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
@@ -92,33 +93,17 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map does not have the given size. */
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
-    int actualSize = actual().size();
     check("size()").that(actual().size()).isEqualTo(expectedSize);
   }
 
   /** Fails if the map does not contain the given key. */
   public void containsKey(@NullableDecl Object key) {
-    if (!actual().containsKey(key)) {
-      List<Object> keyList = Lists.newArrayList(key);
-      if (hasMatchingToStringPair(actual().keySet(), keyList)) {
-        failWithRawMessage(
-            "Not true that %s contains key <%s (%s)>. However, it does contain keys <%s>.",
-            actualAsString(),
-            key,
-            objectToTypeName(key),
-            countDuplicatesAndAddTypeInfo(
-                retainMatchingToString(actual().keySet(), keyList /* itemsToCheck */)));
-      } else {
-        fail("contains key", key);
-      }
-    }
+    check("keySet()").that(actual().keySet()).contains(key);
   }
 
   /** Fails if the map contains the given key. */
   public void doesNotContainKey(@NullableDecl Object key) {
-    if (actual().containsKey(key)) {
-      fail("does not contain key", key);
-    }
+    check("keySet()").that(actual().keySet()).doesNotContain(key);
   }
 
   /** Fails if the map does not contain the given entry. */
@@ -175,10 +160,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
   /** Fails if the map contains the given entry. */
   public void doesNotContainEntry(@NullableDecl Object key, @NullableDecl Object value) {
-    Entry<Object, Object> entry = Maps.immutableEntry(key, value);
-    if (actual().entrySet().contains(entry)) {
-      fail("does not contain entry", entry);
-    }
+    checkNoNeedToDisplayBothValues("entrySet()")
+        .that(actual().entrySet())
+        .doesNotContain(immutableEntry(key, value));
   }
 
   /** Fails if the map is not empty. */

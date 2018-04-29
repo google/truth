@@ -77,9 +77,7 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   /** Fails if the table does not contain the given cell. */
   public void containsCell(Cell<?, ?, ?> cell) {
     checkNotNull(cell);
-    if (!actual().cellSet().contains(cell)) {
-      fail("contains cell", cell);
-    }
+    checkNoNeedToDisplayBothValues("cellSet()").that(actual().cellSet()).contains(cell);
   }
 
   /** Fails if the table contains the given cell. */
@@ -91,29 +89,21 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   /** Fails if the table contains the given cell. */
   public void doesNotContainCell(Cell<?, ?, ?> cell) {
     checkNotNull(cell);
-    if (actual().cellSet().contains(cell)) {
-      fail("does not contain cell", cell);
-    }
+    checkNoNeedToDisplayBothValues("cellSet()").that(actual().cellSet()).doesNotContain(cell);
   }
 
   /** Fails if the table does not contain the given row key. */
   public void containsRow(@NullableDecl Object rowKey) {
-    if (!actual().containsRow(rowKey)) {
-      fail("contains row", rowKey);
-    }
+    check("rowKeySet()").that(actual().rowKeySet()).contains(rowKey);
   }
 
   /** Fails if the table does not contain the given column key. */
   public void containsColumn(@NullableDecl Object columnKey) {
-    if (!actual().containsColumn(columnKey)) {
-      fail("contains column", columnKey);
-    }
+    check("columnKeySet()").that(actual().columnKeySet()).contains(columnKey);
   }
 
   /** Fails if the table does not contain the given value. */
   public void containsValue(@NullableDecl Object value) {
-    if (!actual().containsValue(value)) {
-      fail("contains value", value);
-    }
+    check("values()").that(actual().values()).contains(value);
   }
 }

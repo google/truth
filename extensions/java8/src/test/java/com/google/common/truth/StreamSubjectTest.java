@@ -129,12 +129,8 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContains_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hello")).contains("goodbye");
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected).hasMessageThat().isEqualTo("<[hello]> should have contained <goodbye>");
-    }
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).contains("goodbye"));
   }
 
   @Test
@@ -178,14 +174,8 @@ public final class StreamSubjectTest {
 
   @Test
   public void testDoesNotContain_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hello")).doesNotContain("hello");
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("<[hello]> should not have contained <hello>");
-    }
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(Stream.of("hello")).doesNotContain("hello"));
   }
 
   @Test
