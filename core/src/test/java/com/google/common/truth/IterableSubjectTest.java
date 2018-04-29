@@ -133,9 +133,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void doesNotContainDuplicatesFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 2, 3)).containsNoDuplicates();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("<[1, 2, 2, 3]> has the following duplicates: <[2 x 2]>");
+    assertFailureKeys("expected not to contain duplicates", "but contained", "full contents");
+    assertFailureValue("but contained", "[2 x 2]");
+    assertFailureValue("full contents", "[1, 2, 2, 3]");
   }
 
   @Test
@@ -493,56 +493,47 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsNoneOfFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneOf(1, 2, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
+    assertFailureKeys("expected not to contain any of", "but contained", "full contents");
+    assertFailureValue("expected not to contain any of", "[1, 2, 4]");
+    assertFailureValue("but contained", "[1, 2]");
+    assertFailureValue("full contents", "[1, 2, 3]");
   }
 
   @Test
   public void iterableContainsNoneOfFailureWithDuplicateInSubject() {
     expectFailureWhenTestingThat(asList(1, 2, 2, 3)).containsNoneOf(1, 2, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
+    assertFailureValue("but contained", "[1, 2]");
   }
 
   @Test
   public void iterableContainsNoneOfFailureWithDuplicateInExpected() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneOf(1, 2, 2, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains none of <[1, 2, 2, 4]>. It contains <[1, 2]>");
+    assertFailureValue("but contained", "[1, 2]");
   }
 
   @Test
   public void iterableContainsNoneOfFailureWithEmptyString() {
     expectFailureWhenTestingThat(asList("")).containsNoneOf("", null);
-
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[]> contains none of <[\"\" (empty String), null]>. "
-                + "It contains <[\"\" (empty String)]>");
+    assertFailureKeys("expected not to contain any of", "but contained", "full contents");
+    assertFailureValue("expected not to contain any of", "[\"\" (empty String), null]");
+    assertFailureValue("but contained", "[\"\" (empty String)]");
+    assertFailureValue("full contents", "[]");
   }
 
   @Test
   public void iterableContainsNoneInIterable() {
     assertThat(asList(1, 2, 3)).containsNoneIn(asList(4, 5, 6));
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneIn(asList(1, 2, 4));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
+    assertFailureKeys("expected not to contain any of", "but contained", "full contents");
+    assertFailureValue("expected not to contain any of", "[1, 2, 4]");
+    assertFailureValue("but contained", "[1, 2]");
+    assertFailureValue("full contents", "[1, 2, 3]");
   }
 
   @Test
   public void iterableContainsNoneInArray() {
     assertThat(asList(1, 2, 3)).containsNoneIn(new Integer[] {4, 5, 6});
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsNoneIn(new Integer[] {1, 2, 4});
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains none of <[1, 2, 4]>. It contains <[1, 2]>");
   }
 
   @Test
@@ -1038,8 +1029,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isStrictlyOrderedFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 2, 4)).isStrictlyOrdered();
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is strictly ordered");
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<2> <2>");
+    assertFailureKeys(
+        "expected to be strictly ordered", "but contained", "followed by", "full contents");
+    assertFailureValue("but contained", "2");
+    assertFailureValue("followed by", "2");
+    assertFailureValue("full contents", "[1, 2, 2, 4]");
   }
 
   @Test
@@ -1061,15 +1055,15 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isOrderedFailure() {
     expectFailureWhenTestingThat(asList(1, 3, 2, 4)).isOrdered();
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is ordered");
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<3> <2>");
+    assertFailureKeys("expected to be ordered", "but contained", "followed by", "full contents");
+    assertFailureValue("but contained", "3");
+    assertFailureValue("followed by", "2");
+    assertFailureValue("full contents", "[1, 3, 2, 4]");
   }
 
   @Test
   public void isOrderedMultipleFailures() {
     expectFailureWhenTestingThat(asList(1, 3, 2, 4, 0)).isOrdered();
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is ordered");
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<3> <2>");
   }
 
   @Test
@@ -1093,8 +1087,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableIsStrictlyOrderedWithComparatorFailure() {
     expectFailureWhenTestingThat(asList("1", "2", "2", "10")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is strictly ordered");
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<2> <2>");
+    assertFailureKeys(
+        "expected to be strictly ordered", "but contained", "followed by", "full contents");
+    assertFailureValue("but contained", "2");
+    assertFailureValue("followed by", "2");
+    assertFailureValue("full contents", "[1, 2, 2, 10]");
   }
 
   @Test
@@ -1108,8 +1105,10 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableIsOrderedWithComparatorFailure() {
     expectFailureWhenTestingThat(asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("is ordered");
-    assertThat(expectFailure.getFailure()).hasMessageThat().contains("<10> <2>");
+    assertFailureKeys("expected to be ordered", "but contained", "followed by", "full contents");
+    assertFailureValue("but contained", "10");
+    assertFailureValue("followed by", "2");
+    assertFailureValue("full contents", "[1, 10, 2, 20]");
   }
 
   private static final Comparator<String> COMPARE_AS_DECIMAL =
