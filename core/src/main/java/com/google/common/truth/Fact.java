@@ -92,18 +92,16 @@ final class Fact implements Serializable {
      * leave a blank line at the beginning of the message in the normal case).
      */
     for (Fact fact : facts) {
-      if (seenNewlineInValue) {
+      if (fact.value == null) {
         builder.append(fact.key);
-        if (fact.value != null) {
-          builder.append(":\n");
-          builder.append(indent(fact.value));
-        }
+      } else if (seenNewlineInValue) {
+        builder.append(fact.key);
+        builder.append(":\n");
+        builder.append(indent(fact.value));
       } else {
         builder.append(padEnd(fact.key, longestKeyLength, ' '));
-        if (fact.value != null) {
-          builder.append(": ");
-          builder.append(fact.value);
-        }
+        builder.append(": ");
+        builder.append(fact.value);
       }
       builder.append('\n');
     }

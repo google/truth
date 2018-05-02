@@ -65,8 +65,8 @@ public class FactTest {
     assertThat(
             makeMessage(
                 ImmutableList.<String>of(),
-                ImmutableList.of(fact("foo", "bar"), factWithoutValue("hello"))))
-        .isEqualTo("foo: bar\nhello");
+                ImmutableList.of(fact("hello", "there"), factWithoutValue("foo"))))
+        .isEqualTo("hello: there\nfoo");
   }
 
   @Test
@@ -80,8 +80,8 @@ public class FactTest {
     assertThat(
             makeMessage(
                 ImmutableList.<String>of(),
-                ImmutableList.of(fact("foo", "bar\nbaz"), factWithoutValue("xyz"))))
-        .isEqualTo("foo:\n    bar\n    baz\nxyz");
+                ImmutableList.of(fact("hello", "there\neveryone"), factWithoutValue("xyz"))))
+        .isEqualTo("hello:\n    there\n    everyone\nxyz");
   }
 
   @Test

@@ -801,7 +801,7 @@ public class Subject<S extends Subject<S, T>, T> {
     for (Object part : messageParts) {
       message.append(" <").append(part).append(">");
     }
-    metadata.fail(message.toString());
+    failWithoutActual(factWithoutValue(message.toString()));
   }
 
   /*
@@ -908,7 +908,7 @@ public class Subject<S extends Subject<S, T>, T> {
             expected,
             failVerb,
             (actual == null) ? "null reference" : actual);
-    metadata.fail(message);
+    failWithoutActual(factWithoutValue(message));
   }
 
   /**
@@ -924,14 +924,14 @@ public class Subject<S extends Subject<S, T>, T> {
         format(
             "Not true that <%s> %s <%s>",
             (actual == null) ? "null reference" : actual, verb, expected);
-    metadata.fail(message);
+    failWithoutActual(factWithoutValue(message));
   }
 
   /** @deprecated Use {@link #failWithoutActual(String)} */
   @Deprecated
   protected final void failWithoutSubject(String check) {
     String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    metadata.fail(format("Not true that %s %s", strSubject, check));
+    failWithoutActual(factWithoutValue(format("Not true that %s %s", strSubject, check)));
   }
 
   // TODO(cpovirk): Make this public once names are settled.
@@ -965,7 +965,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   // TODO(cgruber) final
   protected void failWithRawMessage(String message, Object... parameters) {
-    metadata.fail(format(message, parameters));
+    failWithoutActual(factWithoutValue(format(message, parameters)));
   }
 
   /**
