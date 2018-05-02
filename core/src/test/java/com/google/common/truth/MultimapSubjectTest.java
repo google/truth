@@ -196,7 +196,8 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "value of: multimap.valuesForKey(1)\n"
+            "value of    : multimap.valuesForKey(1)\n"
+                + "name        : valuez\n"
                 + "Not true that valuez (<[5]>) contains exactly <[3, 4]>. "
                 + "It is missing <[3, 4]> and has unexpected items <[5]>\n"
                 + "multimap was: {1=[5]}");
@@ -1067,10 +1068,11 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each element "
-                + "of <[abc=123, def=456]>. It is missing an element that has a key that is "
-                + "equal to and a value that parses to the key and value of <def=456>");
+            "name: multymap\n"
+                + "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a "
+                + "key that is equal to and a value that parses to the key and value of each "
+                + "element of <[abc=123, def=456]>. It is missing an element that has a key that "
+                + "is equal to and a value that parses to the key and value of <def=456>");
   }
 
   @Test
@@ -1224,10 +1226,11 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a key "
-                + "that is equal to and a value that parses to the key and value of each element "
-                + "of <[abc=123, def=456]>. It is missing an element that has a key that is "
-                + "equal to and a value that parses to the key and value of <def=456>");
+            "name: multymap\n"
+                + "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a "
+                + "key that is equal to and a value that parses to the key and value of each "
+                + "element of <[abc=123, def=456]>. It is missing an element that has a key that "
+                + "is equal to and a value that parses to the key and value of <def=456>");
   }
 
   private MultimapSubject expectFailureWhenTestingThat(Multimap<?, ?> actual) {

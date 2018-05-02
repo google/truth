@@ -163,7 +163,9 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that foo (<{jan=1, feb=2, march=3}>) contains exactly <{feb=2, jan=1}>. "
+            "name: foo\n"
+                + "Not true that foo (<{jan=1, feb=2, march=3}>) contains exactly "
+                + "<{feb=2, jan=1}>. "
                 + "It has the following entries with unexpected keys: {march=3}");
   }
 
@@ -363,7 +365,9 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to <{jan=1, feb=2, march=4}>."
+            "name: foo\n"
+                + "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to "
+                + "<{jan=1, feb=2, march=4}>."
                 + " It has the following entries with matching keys but different values: "
                 + "{march=(expected 4 but got 3)}");
   }
