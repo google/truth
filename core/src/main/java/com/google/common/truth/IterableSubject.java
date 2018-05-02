@@ -281,6 +281,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             "is missing",
             countDuplicates(annotateEmptyStrings(missing)));
       }
+      return ALREADY_FAILED;
     }
     /*
      * TODO(cpovirk): In the NotInOrder case, also include a Fact that shows _only_ the required

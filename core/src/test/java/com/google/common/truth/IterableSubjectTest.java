@@ -466,6 +466,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void iterableContainsAllOfInOrderWrongOrderAndMissing() {
+    expectFailureWhenTestingThat(asList(1, 2)).containsAllOf(2, 1, 3).inOrder();
+  }
+
+  @Test
   public void iterableContainsAllInIterable() {
     assertThat(asList(1, 2, 3)).containsAllIn(asList(1, 2));
 
