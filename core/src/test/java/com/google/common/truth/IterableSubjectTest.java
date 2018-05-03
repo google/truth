@@ -624,33 +624,24 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void iterableContainsExactlyWithEmptyString() {
     expectFailureWhenTestingThat(asList()).containsExactly("");
 
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[]> contains exactly <[\"\" (empty String)]>. "
-                + "It is missing <[\"\" (empty String)]>");
+    assertFailureValue("missing (1)", "");
   }
 
   @Test
   public void iterableContainsExactlyWithEmptyStringAndUnexpectedItem() {
     expectFailureWhenTestingThat(asList("a", null)).containsExactly("");
 
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[a, null]> contains exactly <[\"\" (empty String)]>. "
-                + "It is missing <[\"\" (empty String)]> and has unexpected items <[a, null]>");
+    assertFailureKeys("missing (1)", "unexpected (2)", "---", "expected", "but was");
+    assertFailureValue("missing (1)", "");
+    assertFailureValue("unexpected (2)", "a, null");
   }
 
   @Test
   public void iterableContainsExactlyWithEmptyStringAndMissingItem() {
     expectFailureWhenTestingThat(asList("")).containsExactly("a", null);
 
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[]> contains exactly <[a, null]>. "
-                + "It is missing <[a, null]> and has unexpected items <[\"\" (empty String)]>");
+    assertFailureValue("missing (2)", "a, null");
+    assertFailureValue("unexpected (1)", "");
   }
 
   @Test
@@ -679,11 +670,6 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(one, two)).containsExactlyElementsIn(asList(one, two)).inOrder();
 
     expectFailureWhenTestingThat(asList(one, two)).containsExactly(one);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[HCT, HCT]> contains exactly <[HCT]>. "
-                + "It has unexpected items <[HCT]>");
   }
 
   private static class HashCodeThrower {
@@ -718,58 +704,62 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void iterableContainsExactlyElementsInErrorMessageIsOrdered() {
     expectFailureWhenTestingThat(asList("foo OR bar"))
         .containsExactlyElementsIn(asList("foo", "bar"));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[foo OR bar]> contains exactly <[foo, bar]>. "
-                + "It is missing <[foo, bar]> and has unexpected items <[foo OR bar]>");
+    assertFailureValue("missing (2)", "foo, bar");
+    assertFailureValue("unexpected (1)", "foo OR bar");
   }
 
   @Test
   public void iterableContainsExactlyMissingItemFailure() {
     expectFailureWhenTestingThat(asList(1, 2)).containsExactly(1, 2, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
+    assertFailureValue("missing (1)", "4");
   }
 
   @Test
   public void iterableContainsExactlyUnexpectedItemFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsExactly(1, 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains exactly <[1, 2]>. It has unexpected items <[3]>");
+    assertFailureValue("unexpected (1)", "3");
   }
 
   @Test
   public void iterableContainsExactlyWithDuplicatesNotEnoughItemsFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3]>. "
-                + "It is missing <[2 [2 copies]]>");
+    assertFailureValue("missing (2)", "2 [2 copies]");
   }
 
   @Test
   public void iterableContainsExactlyWithDuplicatesMissingItemFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsExactly(1, 2, 2, 2, 3, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains exactly <[1, 2, 2, 2, 3, 4]>. "
-                + "It is missing <[2 [2 copies], 4]>");
+    assertFailureValue("missing (3)", "2 [2 copies], 4");
+  }
+
+  @Test
+  public void iterableContainsExactlyWithDuplicatesMissingItemsWithNewlineFailure() {
+    expectFailureWhenTestingThat(asList("a", "b", "foo\nbar"))
+        .containsExactly("a", "b", "foo\nbar", "foo\nbar", "foo\nbar");
+    assertFailureKeys("missing (2)", "#1 [2 copies]", "---", "expected", "but was");
+    assertFailureValue("#1 [2 copies]", "foo\nbar");
+  }
+
+  @Test
+  public void iterableContainsExactlyWithDuplicatesMissingAndExtraItemsWithNewlineFailure() {
+    expectFailureWhenTestingThat(asList("a\nb", "a\nb")).containsExactly("foo\nbar", "foo\nbar");
+    assertFailureKeys(
+        "missing (2)",
+        "#1 [2 copies]",
+        "",
+        "unexpected (2)",
+        "#1 [2 copies]",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("#1 [2 copies]", 0, "foo\nbar");
+    assertFailureValueIndexed("#1 [2 copies]", 1, "a\nb");
   }
 
   @Test
   public void iterableContainsExactlyWithDuplicatesUnexpectedItemFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 2, 2, 2, 3)).containsExactly(1, 2, 2, 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 2, 2, 2, 3]> contains exactly <[1, 2, 2, 3]>. "
-                + "It has unexpected items <[2 [2 copies]]>");
+    assertFailureValue("unexpected (2)", "2 [2 copies]");
   }
 
   /*
@@ -779,96 +769,66 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsExactlyWithDuplicateMissingElements() {
     expectFailureWhenTestingThat(asList()).containsExactly(4, 4, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[]> contains exactly <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
+    assertFailureValue("missing (3)", "4 [3 copies]");
   }
 
   @Test
   public void iterableContainsExactlyWithNullFailure() {
     expectFailureWhenTestingThat(asList(1, null, 3)).containsExactly(1, null, null, 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, null, 3]> contains exactly <[1, null, null, 3]>. "
-                + "It is missing <[null]>");
+    assertFailureValue("missing (1)", "null");
   }
 
   @Test
   public void iterableContainsExactlyWithMissingAndExtraElements() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsExactly(1, 2, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains exactly <[1, 2, 4]>. "
-                + "It is missing <[4]> and has unexpected items <[3]>");
+    assertFailureValue("missing (1)", "4");
+    assertFailureValue("unexpected (1)", "3");
   }
 
   @Test
   public void iterableContainsExactlyWithDuplicateMissingAndExtraElements() {
     expectFailureWhenTestingThat(asList(1, 2, 3, 3)).containsExactly(1, 2, 4, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3, 3]> contains exactly <[1, 2, 4, 4]>. "
-                + "It is missing <[4 [2 copies]]> and has unexpected items <[3 [2 copies]]>");
+    assertFailureValue("missing (2)", "4 [2 copies]");
+    assertFailureValue("unexpected (2)", "3 [2 copies]");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousList() {
     expectFailureWhenTestingThat(asList(1L, 2L)).containsExactly(1, 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2]> contains exactly <[1, 2]>. It is missing "
-                + "<[1, 2] (java.lang.Integer)> and has unexpected items "
-                + "<[1, 2] (java.lang.Long)>");
+    assertFailureValue("missing (2)", "1, 2 (java.lang.Integer)");
+    assertFailureValue("unexpected (2)", "1, 2 (java.lang.Long)");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndListWithNull() {
     expectFailureWhenTestingThat(asList(1L, 2L)).containsExactly(null, 1, 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2]> contains exactly <[null, 1, 2]>. It is missing "
-                + "<[null (null type), 1 (java.lang.Integer), 2 (java.lang.Integer)]> and has "
-                + "unexpected items <[1, 2] (java.lang.Long)>");
+    assertFailureValue(
+        "missing (3)", "null (null type), 1 (java.lang.Integer), 2 (java.lang.Integer)");
+    assertFailureValue("unexpected (2)", "1, 2 (java.lang.Long)");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHeterogeneousList() {
     expectFailureWhenTestingThat(asList(1L, 2)).containsExactly(1, null, 2L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2]> contains exactly <[1, null, 2]>. It is missing "
-                + "<[1 (java.lang.Integer), null (null type), 2 (java.lang.Long)]> and has "
-                + "unexpected items <[1 (java.lang.Long), 2 (java.lang.Integer)]>");
+    assertFailureValue(
+        "missing (3)", "1 (java.lang.Integer), null (null type), 2 (java.lang.Long)");
+    assertFailureValue("unexpected (2)", "1 (java.lang.Long), 2 (java.lang.Integer)");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHomogeneousListWithDuplicates() {
     expectFailureWhenTestingThat(asList(1L, 2L)).containsExactly(1, 2, 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2]> contains exactly <[1, 2, 2]>. It is missing "
-                + "<[1, 2 [2 copies]] (java.lang.Integer)> and has unexpected items "
-                + "<[1, 2] (java.lang.Long)>");
+    assertFailureValue("missing (3)", "1, 2 [2 copies] (java.lang.Integer)");
+    assertFailureValue("unexpected (2)", "1, 2 (java.lang.Long)");
   }
 
   @Test
   public void iterableContainsExactlyFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
     expectFailureWhenTestingThat(asList(1L, 2)).containsExactly(1, null, null, 2L, 2L);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2]> contains exactly <[1, null, null, 2, 2]>. It is missing "
-                + "<[1 (java.lang.Integer), null (null type) [2 copies], "
-                + "2 (java.lang.Long) [2 copies]]> and has unexpected items "
-                + "<[1 (java.lang.Long), 2 (java.lang.Integer)]>");
+    assertFailureValue(
+        "missing (5)",
+        "1 (java.lang.Integer), null (null type) [2 copies], 2 (java.lang.Long) [2 copies]");
+    assertFailureValue("unexpected (2)", "1 (java.lang.Long), 2 (java.lang.Integer)");
   }
 
   @Test
@@ -876,22 +836,13 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactly(asList(1, 2, 3, 4));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2, 3, 4]]>. "
-                + "It is missing <[[1, 2, 3, 4]]> and has unexpected items <[1, 2, 3, 4]>. "
-                + "Passing an iterable to the varargs method containsExactly(Object...) is "
-                + "often not the correct thing to do. Did you mean to call "
-                + "containsExactlyElementsIn(Iterable) instead?");
+        .contains(CONTAINS_EXACTLY_ITERABLE_WARNING);
   }
 
   @Test
   public void iterableContainsExactlyElementsInWithOneIterableDoesNotGiveWarning() {
     expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactlyElementsIn(asList(1, 2, 3));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3, 4]> contains exactly <[1, 2, 3]>. "
-                + "It has unexpected items <[4]>");
+    assertFailureValue("unexpected (1)", "4");
   }
 
   @Test
@@ -899,19 +850,18 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactly(asList(1, 2), asList(3, 4));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3, 4]> contains exactly <[[1, 2], [3, 4]]>. "
-                + "It is missing <[[1, 2], [3, 4]]> and has unexpected items <[1, 2, 3, 4]>");
+        .doesNotContain(CONTAINS_EXACTLY_ITERABLE_WARNING);
   }
+
+  private static final String CONTAINS_EXACTLY_ITERABLE_WARNING =
+      "Passing an iterable to the varargs method containsExactly(Object...) is "
+          + "often not the correct thing to do. Did you mean to call "
+          + "containsExactlyElementsIn(Iterable) instead?";
 
   @Test
   public void iterableContainsExactlyWithOneNonIterableDoesNotGiveWarning() {
     expectFailureWhenTestingThat(asList(1, 2, 3, 4)).containsExactly(1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3, 4]> contains exactly <[1]>. "
-                + "It has unexpected items <[2, 3, 4]>");
+    assertFailureValue("unexpected (3)", "2, 3, 4");
   }
 
   @Test
@@ -976,10 +926,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
         };
 
     expectFailureWhenTestingThat(iterable).containsExactly(1, 2).inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains exactly <[1, 2]>. It has unexpected items <[3]>");
+    assertFailureValue("but was", "[1, 2, 3]");
   }
 
   @Test
@@ -987,9 +934,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(1, 2)).containsExactlyElementsIn(asList(1, 2));
 
     expectFailureWhenTestingThat(asList(1, 2)).containsExactlyElementsIn(asList(1, 2, 4));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
+    assertFailureValue("missing (1)", "4");
   }
 
   @Test
@@ -997,9 +942,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(1, 2)).containsExactlyElementsIn(new Integer[] {1, 2});
 
     expectFailureWhenTestingThat(asList(1, 2)).containsExactlyElementsIn(new Integer[] {1, 2, 4});
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2]> contains exactly <[1, 2, 4]>. It is missing <[4]>");
+    assertFailureValue("missing (1)", "4");
   }
 
   @Test

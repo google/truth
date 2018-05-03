@@ -288,11 +288,8 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hell", "hello")).containsExactly("hell");
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hell, hello]> contains exactly <[hell]>. "
-                  + "It has unexpected items <[hello]>");
+      assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
+      assertFailureValue(expected, "expected", "[hell]");
     }
   }
 
@@ -324,11 +321,8 @@ public final class StreamSubjectTest {
       assertThat(Stream.of("hell", "hello")).containsExactlyElementsIn(asList("hell"));
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hell, hello]> contains exactly <[hell]>. "
-                  + "It has unexpected items <[hello]>");
+      assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
+      assertFailureValue(expected, "expected", "[hell]");
     }
   }
 

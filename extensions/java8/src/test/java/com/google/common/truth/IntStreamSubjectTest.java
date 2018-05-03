@@ -283,11 +283,8 @@ public final class IntStreamSubjectTest {
       assertThat(IntStream.of(42, 43)).containsExactly(42);
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains exactly <[42]>. "
-                  + "It has unexpected items <[43]>");
+      assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
+      assertFailureValue(expected, "expected", "[42]");
     }
   }
 
@@ -319,11 +316,8 @@ public final class IntStreamSubjectTest {
       assertThat(IntStream.of(42, 43)).containsExactlyElementsIn(asList(42));
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains exactly <[42]>. "
-                  + "It has unexpected items <[43]>");
+      assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
+      assertFailureValue(expected, "expected", "[42]");
     }
   }
 

@@ -74,7 +74,7 @@ final class SubjectUtils {
   }
 
   static String countDuplicates(Iterable<?> items) {
-    return countDuplicatesToMultiset(items).toString();
+    return countDuplicatesToMultiset(items).toStringWithBrackets();
   }
 
   static String entryString(Multiset.Entry<?> entry) {
@@ -110,6 +110,28 @@ final class SubjectUtils {
         : countDuplicates(addTypeInfoToEveryItem(items)).toString();
   }
 
+  /**
+   * Similar to {@link #countDuplicatesAndAddTypeInfo} and {@link #countDuplicates} but (a) only
+   * adds type info if requested and (b) returns a richer object containing the data.
+   */
+  static DuplicateGroupedAndTyped countDuplicatesAndMaybeAddTypeInfoReturnObject(
+      Iterable<?> itemsIterable, boolean addTypeInfo) {
+    if (addTypeInfo) {
+      Collection<?> items = iterableToCollection(itemsIterable);
+      Optional<String> homogeneousTypeName = getHomogeneousTypeName(items);
+
+      NonHashingMultiset<?> valuesWithCountsAndMaybeTypes =
+          homogeneousTypeName.isPresent()
+              ? countDuplicatesToMultiset(items)
+              : countDuplicatesToMultiset(addTypeInfoToEveryItem(items));
+      return new DuplicateGroupedAndTyped(valuesWithCountsAndMaybeTypes, homogeneousTypeName);
+    } else {
+      return new DuplicateGroupedAndTyped(
+          countDuplicatesToMultiset(itemsIterable),
+          /* homogeneousTypeToDisplay= */ Optional.<String>absent());
+    }
+  }
+
   private static final class NonHashingMultiset<E> {
     // This ought to be static, but the generics are easier when I can refer to <E>.
     private final Function<Multiset.Entry<Wrapper<E>>, Multiset.Entry<?>> unwrapKey =
@@ -142,15 +164,18 @@ final class SubjectUtils {
       return transform(contents.entrySet(), unwrapKey);
     }
 
-    @Override
-    public String toString() {
+    String toStringWithBrackets() {
       List<String> parts = new ArrayList<>();
       for (Multiset.Entry<?> entry : entrySet()) {
         parts.add(entryString(entry));
       }
-      String result = parts.toString();
-      return result;
-      // TODO(cpovirk): return result.substring(1, result.length() - 1); // strip [ and ]
+      return parts.toString();
+    }
+
+    @Override
+    public String toString() {
+      String withBrackets = toStringWithBrackets();
+      return withBrackets.substring(1, withBrackets.length() - 1);
     }
 
     private static final Equivalence<Object> EQUALITY_WITHOUT_USING_HASH_CODE =
@@ -165,6 +190,45 @@ final class SubjectUtils {
             return 0; // slow but hopefully not much worse than what we get with a flat list
           }
         };
+  }
+
+  /**
+   * Missing or unexpected values from a collection assertion, with equal objects grouped together
+   * and, in some cases, type information added. If the type information is present, it is either
+   * present in {@code homogeneousTypeToDisplay} (if all objects have the same type) or appended to
+   * each individual element (if some elements have different types).
+   *
+   * <p>This allows collection assertions to the type information on a separate line from the
+   * elements and even to output different elements on different lines.
+   */
+  static final class DuplicateGroupedAndTyped {
+    final NonHashingMultiset<?> valuesAndMaybeTypes;
+    final Optional<String> homogeneousTypeToDisplay;
+
+    DuplicateGroupedAndTyped(
+        NonHashingMultiset<?> valuesAndMaybeTypes, Optional<String> homogeneousTypeToDisplay) {
+      this.valuesAndMaybeTypes = valuesAndMaybeTypes;
+      this.homogeneousTypeToDisplay = homogeneousTypeToDisplay;
+    }
+
+    int totalCopies() {
+      return valuesAndMaybeTypes.totalCopies();
+    }
+
+    boolean isEmpty() {
+      return valuesAndMaybeTypes.isEmpty();
+    }
+
+    Iterable<Multiset.Entry<?>> entrySet() {
+      return valuesAndMaybeTypes.entrySet();
+    }
+
+    @Override
+    public String toString() {
+      return homogeneousTypeToDisplay.isPresent()
+          ? valuesAndMaybeTypes + " (" + homogeneousTypeToDisplay.get() + ")"
+          : valuesAndMaybeTypes.toString();
+    }
   }
 
   /**
