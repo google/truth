@@ -17,6 +17,8 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.size;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.factWithoutValue;
@@ -131,7 +133,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Fails if the subject does not have the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    int actualSize = Iterables.size(actual());
+    int actualSize = size(actual());
     check("size()").that(actualSize).isEqualTo(expectedSize);
   }
 
@@ -586,27 +588,61 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     return count == 1 ? format("#%s", n) : format("#%s [%s copies]", n, count);
   }
 
-  private ElementFactGrouping pickGrouping(Iterable<Entry<?>> missing, Iterable<Entry<?>> extra) {
-    ElementFactGrouping groupingForMissing = preferredGrouping(missing);
-    ElementFactGrouping groupingForExtra = preferredGrouping(extra);
-    return (groupingForMissing == FACT_PER_ELEMENT || groupingForExtra == FACT_PER_ELEMENT)
-        ? FACT_PER_ELEMENT
-        : ALL_IN_ONE_FACT;
+  private static ElementFactGrouping pickGrouping(
+      Iterable<Entry<?>> missing, Iterable<Entry<?>> extra) {
+    if (anyHasMultiple(missing, extra) && anyContainsCommaOrNewline(missing, extra)) {
+      return FACT_PER_ELEMENT;
+    }
+    if (hasMultiple(missing) && containsEmptyOrLong(missing)) {
+      return FACT_PER_ELEMENT;
+    }
+    if (hasMultiple(extra) && containsEmptyOrLong(extra)) {
+      return FACT_PER_ELEMENT;
+    }
+    return ALL_IN_ONE_FACT;
   }
 
-  private ElementFactGrouping preferredGrouping(Iterable<Entry<?>> entries) {
+  private static boolean anyContainsCommaOrNewline(Iterable<Entry<?>>... lists) {
+    for (Entry<?> entry : concat(lists)) {
+      String s = String.valueOf(entry.getElement());
+      if (s.contains("\n") || s.contains(",")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean anyHasMultiple(Iterable<Entry<?>>... lists) {
+    for (Iterable<Entry<?>> list : lists) {
+      if (hasMultiple(list)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean hasMultiple(Iterable<Entry<?>> list) {
+    return totalCount(list) > 1;
+  }
+
+  private static boolean containsEmptyOrLong(Iterable<Entry<?>> entries) {
     int totalLength = 0;
-    int totalCopies = 0;
-    boolean seenConfusingItem = false;
     for (Multiset.Entry<?> entry : entries) {
       String s = entryString(entry);
+      if (s.isEmpty()) {
+        return true;
+      }
       totalLength += s.length();
-      totalCopies += entry.getCount();
-      seenConfusingItem |= s.isEmpty() || s.contains("\n") || s.contains(",");
     }
-    return totalCopies > 1 && (totalLength > 200 || seenConfusingItem)
-        ? FACT_PER_ELEMENT
-        : ALL_IN_ONE_FACT;
+    return totalLength > 200;
+  }
+
+  private static int totalCount(Iterable<Entry<?>> entries) {
+    int totalCount = 0;
+    for (Multiset.Entry<?> entry : entries) {
+      totalCount += entry.getCount();
+    }
+    return totalCount;
   }
 
   /**
