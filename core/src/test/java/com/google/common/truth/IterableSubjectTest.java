@@ -645,6 +645,17 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void iterableContainsExactlyWithEmptyStringAmongMissingItems() {
+    expectFailureWhenTestingThat(asList("a")).containsExactly("", "b");
+
+    assertFailureKeys(
+        "missing (2)", "#1", "#2", "", "unexpected (1)", "#1", "---", "expected", "but was");
+    assertFailureValueIndexed("#1", 0, "");
+    assertFailureValueIndexed("#2", 0, "b");
+    assertFailureValueIndexed("#1", 1, "a");
+  }
+
+  @Test
   public void iterableContainsExactlySingleElement() {
     assertThat(asList(1)).containsExactly(1);
 
@@ -790,6 +801,16 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(asList(1, 2, 3, 3)).containsExactly(1, 2, 4, 4);
     assertFailureValue("missing (2)", "4 [2 copies]");
     assertFailureValue("unexpected (2)", "3 [2 copies]");
+  }
+
+  @Test
+  public void iterableContainsExactlyWithCommaSeparatedVsIndividual() {
+    expectFailureWhenTestingThat(asList("a, b")).containsExactly("a", "b");
+    assertFailureKeys(
+        "missing (2)", "#1", "#2", "", "unexpected (1)", "#1", "---", "expected", "but was");
+    assertFailureValueIndexed("#1", 0, "a");
+    assertFailureValueIndexed("#2", 0, "b");
+    assertFailureValueIndexed("#1", 1, "a, b");
   }
 
   @Test
