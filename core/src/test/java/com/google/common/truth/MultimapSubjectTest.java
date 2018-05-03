@@ -193,14 +193,16 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void valuesForKeyNamedMultipleElements() {
     ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
     expectFailureWhenTestingThat(multimap).valuesForKey(1).named("valuez").containsExactly(3, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of    : multimap.valuesForKey(1)\n"
-                + "name        : valuez\n"
-                + "Not true that valuez (<[5]>) contains exactly <[3, 4]>. "
-                + "It is missing <[3, 4]> and has unexpected items <[5]>\n"
-                + "multimap was: {1=[5]}");
+    assertFailureKeys(
+        "value of",
+        "name",
+        "missing (2)",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "but was",
+        "multimap was");
+    assertFailureValue("value of", "multimap.valuesForKey(1)");
   }
 
   @Test

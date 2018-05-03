@@ -314,11 +314,8 @@ public final class LongStreamSubjectTest {
       assertThat(LongStream.of(42, 43)).containsExactly(42);
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains exactly <[42]>. "
-                  + "It has unexpected items <[43]>");
+      assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
+      assertFailureValue(expected, "expected", "[42]");
     }
   }
 
@@ -350,27 +347,17 @@ public final class LongStreamSubjectTest {
       assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(42L));
       fail();
     } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains exactly <[42]>. "
-                  + "It has unexpected items <[43]>");
+      assertFailureKeys(expected, "unexpected (1)", "---", "expected", "but was");
+      assertFailureValue(expected, "expected", "[42]");
     }
   }
 
   @Test
   public void testContainsExactlyElementsIn_wrongType_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(42));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains exactly <[42]>. "
-                  + "It is missing <[42] (java.lang.Integer)> and "
-                  + "has unexpected items <[42, 43] (java.lang.Long)>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(LongStream.of(42, 43)).containsExactlyElementsIn(asList(42)));
   }
 
   @Test
@@ -391,17 +378,13 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsExactlyElementsIn_inOrder_wrongType_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42, 43)).containsExactlyElementsIn(asList(43, 42)).inOrder();
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains exactly <[43, 42]>. "
-                  + "It is missing <[43, 42] (java.lang.Integer)> and "
-                  + "has unexpected items <[42, 43] (java.lang.Long)>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(LongStream.of(42, 43))
+                    .containsExactlyElementsIn(asList(43, 42))
+                    .inOrder());
   }
 
   @Test

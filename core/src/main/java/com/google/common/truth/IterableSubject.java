@@ -20,11 +20,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.IterableSubject.ElementFactGrouping.ALL_IN_ONE_FACT;
+import static com.google.common.truth.IterableSubject.ElementFactGrouping.FACT_PER_ELEMENT;
 import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.annotateEmptyStrings;
 import static com.google.common.truth.SubjectUtils.countDuplicates;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
+import static com.google.common.truth.SubjectUtils.countDuplicatesAndMaybeAddTypeInfoReturnObject;
+import static com.google.common.truth.SubjectUtils.entryString;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.iterableToCollection;
 import static com.google.common.truth.SubjectUtils.iterableToList;
@@ -52,6 +56,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
+import com.google.common.truth.SubjectUtils.DuplicateGroupedAndTyped;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -470,14 +475,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return failExactly(
           required,
           addElementsInWarning,
-          /* missing= */ ImmutableList.of(),
-          /* extra= */ newArrayList(actualIter));
+          /* missingRawObjects= */ ImmutableList.of(),
+          /* extraRawObjects= */ newArrayList(actualIter));
     } else if (requiredIter.hasNext()) {
       return failExactly(
           required,
           addElementsInWarning,
-          /* missing= */ newArrayList(requiredIter),
-          /* extra= */ ImmutableList.of());
+          /* missingRawObjects= */ newArrayList(requiredIter),
+          /* extraRawObjects= */ ImmutableList.of());
     }
 
     // If neither iterator has elements, we reached the end and the elements were in
@@ -488,49 +493,129 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   private Ordered failExactly(
       Iterable<?> required,
       boolean addElementsInWarning,
-      Collection<?> missing,
-      Collection<?> extra) {
+      Collection<?> missingRawObjects,
+      Collection<?> extraRawObjects) {
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
     // the subject but not enough times. Similarly for unexpected extra items.
-    // Subject is both missing required elements and contains extra elements
-    boolean addTypeInfo = hasMatchingToStringPair(missing, extra);
-    StringBuilder message =
-        new StringBuilder(
-            format(
-                "Not true that %s contains exactly <%s>. It ",
-                actualAsString(), annotateEmptyStrings(required)));
-    /*
-     * Fact keys like "missing (1)" and "unexpected (2)" violate our recommendation that keys
-     * should be fixed strings. This violation lets the fact value contain only the elements
-     * (instead of also containing the count), so it feels worthwhile.
-     */
-    if (!missing.isEmpty()) {
-      message.append(
-          format(
-              "is missing <%s>",
-              addTypeInfo
-                  ? countDuplicatesAndAddTypeInfo(annotateEmptyStrings(missing))
-                  : countDuplicates(annotateEmptyStrings(missing))));
+    boolean addTypeInfo = hasMatchingToStringPair(missingRawObjects, extraRawObjects);
+    DuplicateGroupedAndTyped missing =
+        countDuplicatesAndMaybeAddTypeInfoReturnObject(missingRawObjects, addTypeInfo);
+    DuplicateGroupedAndTyped extra =
+        countDuplicatesAndMaybeAddTypeInfoReturnObject(extraRawObjects, addTypeInfo);
+    ElementFactGrouping grouping = pickGrouping(missing.entrySet(), extra.entrySet());
+
+    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    ImmutableList<Fact> missingFacts = makeFailExactlyFacts("missing", missing, grouping);
+    ImmutableList<Fact> unexpectedFacts = makeFailExactlyFacts("unexpected", extra, grouping);
+    facts.addAll(missingFacts);
+    if (missingFacts.size() > 1 && unexpectedFacts.size() > 1) {
+      facts.add(factWithoutValue(""));
     }
-    if (!extra.isEmpty()) {
-      if (!missing.isEmpty()) {
-        message.append(" and ");
-      }
-      message.append(
-          format(
-              "has unexpected items <%s>",
-              addTypeInfo
-                  ? countDuplicatesAndAddTypeInfo(annotateEmptyStrings(extra))
-                  : countDuplicates(annotateEmptyStrings(extra))));
-    }
+    facts.addAll(unexpectedFacts);
+    facts.add(factWithoutValue("---"));
+    facts.add(fact("expected", required));
+    facts.add(butWas());
     if (addElementsInWarning) {
-      message.append(
-          ". Passing an iterable to the varargs method containsExactly(Object...) is "
-              + "often not the correct thing to do. Did you mean to call "
-              + "containsExactlyElementsIn(Iterable) instead?");
+      facts.add(
+          factWithoutValue(
+              "Passing an iterable to the varargs method containsExactly(Object...) is "
+                  + "often not the correct thing to do. Did you mean to call "
+                  + "containsExactlyElementsIn(Iterable) instead?"));
     }
-    failWithRawMessage(message.toString());
+
+    failWithoutActual(facts.build());
     return ALREADY_FAILED;
+  }
+
+  /**
+   * Returns a list of facts (zero, one, or many, depending on the number of elements and the
+   * grouping policy) describing the given missing or unexpected elements.
+   */
+  private static ImmutableList<Fact> makeFailExactlyFacts(
+      String label, DuplicateGroupedAndTyped elements, ElementFactGrouping grouping) {
+    if (elements.isEmpty()) {
+      return ImmutableList.of();
+    }
+
+    if (grouping == ALL_IN_ONE_FACT) {
+      return ImmutableList.of(fact(keyToGoWithElementsString(label, elements), elements));
+    }
+
+    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    facts.add(factWithoutValue(keyToServeAsHeader(label, elements)));
+    int n = 1;
+    for (Multiset.Entry<?> entry : elements.entrySet()) {
+      int count = entry.getCount();
+      Object item = entry.getElement();
+      facts.add(fact(numberString(n, count), item));
+      n += count;
+    }
+    return facts.build();
+  }
+
+  /*
+   * Fact keys like "missing (1)" go against our recommendation that keys should be fixed strings.
+   * But this violation lets the fact value contain only the elements (instead of also containing
+   * the count), so it feels worthwhile.
+   */
+
+  private static String keyToGoWithElementsString(String label, DuplicateGroupedAndTyped elements) {
+    /*
+     * elements.toString(), which the caller is going to use, includes the homogeneous type (if
+     * any), so we don't want to include it here. (And it's better to have it in the value, rather
+     * than in the key, so that it doesn't push the horizontally aligned values over too far.)
+     */
+    return format("%s (%s)", label, elements.totalCopies());
+  }
+
+  private static String keyToServeAsHeader(String label, DuplicateGroupedAndTyped elements) {
+    /*
+     * The caller of this method outputs each individual element manually (as opposed to calling
+     * elements.toString()), so the homogeneous type isn't present unless we add it. Fortunately, we
+     * can add it here without pushing the horizontally aligned values over, as this key won't have
+     * an associated value, so it won't factor into alignment.
+     */
+    String key = keyToGoWithElementsString(label, elements);
+    if (elements.homogeneousTypeToDisplay.isPresent()) {
+      key += " (" + elements.homogeneousTypeToDisplay.get() + ")";
+    }
+    return key;
+  }
+
+  private static String numberString(int n, int count) {
+    return count == 1 ? format("#%s", n) : format("#%s [%s copies]", n, count);
+  }
+
+  private ElementFactGrouping pickGrouping(Iterable<Entry<?>> missing, Iterable<Entry<?>> extra) {
+    ElementFactGrouping groupingForMissing = preferredGrouping(missing);
+    ElementFactGrouping groupingForExtra = preferredGrouping(extra);
+    return (groupingForMissing == FACT_PER_ELEMENT || groupingForExtra == FACT_PER_ELEMENT)
+        ? FACT_PER_ELEMENT
+        : ALL_IN_ONE_FACT;
+  }
+
+  private ElementFactGrouping preferredGrouping(Iterable<Entry<?>> entries) {
+    int totalLength = 0;
+    int totalCopies = 0;
+    boolean seenConfusingItem = false;
+    for (Multiset.Entry<?> entry : entries) {
+      String s = entryString(entry);
+      totalLength += s.length();
+      totalCopies += entry.getCount();
+      seenConfusingItem |= s.isEmpty() || s.contains("\n") || s.contains(",");
+    }
+    return totalCopies > 1 && (totalLength > 200 || seenConfusingItem)
+        ? FACT_PER_ELEMENT
+        : ALL_IN_ONE_FACT;
+  }
+
+  /**
+   * Whether to output each missing/unexpected item as its own {@link Fact} or to group all those
+   * items together into a single {@code Fact}.
+   */
+  enum ElementFactGrouping {
+    ALL_IN_ONE_FACT,
+    FACT_PER_ELEMENT;
   }
 
   /**
