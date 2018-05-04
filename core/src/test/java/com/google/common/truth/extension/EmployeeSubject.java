@@ -15,6 +15,7 @@
  */
 package com.google.common.truth.extension;
 
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Truth.assertAbout;
 
 import com.google.common.truth.FailureMetadata;
@@ -55,38 +56,30 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
   // User-defined test assertion SPI below this point
 
   public void hasName(String name) {
-    if (!actual().name().equals(name)) {
-      fail("has name", name);
-    }
+    check("name()").that(actual().name()).isEqualTo(name);
   }
 
   public void hasUsername(String username) {
-    if (!actual().username().equals(username)) {
-      fail("has username", username);
-    }
+    check("username()").that(actual().username()).isEqualTo(username);
   }
 
   public void hasId(long id) {
-    if (actual().id() != id) {
-      fail("has id", id);
-    }
+    check("id()").that(actual().id()).isEqualTo(id);
   }
 
   public void hasLocation(Employee.Location location) {
-    if (actual().location() != location) {
-      fail("has location", location);
-    }
+    check("location()").that(actual().location()).isEqualTo(location);
   }
 
   public void isCeo() {
     if (!actual().isCeo()) {
-      fail("is CEO");
+      failWithActual(simpleFact("expected to be CEO"));
     }
   }
 
   public void isNotCeo() {
     if (actual().isCeo()) {
-      fail("is not CEO");
+      failWithActual(simpleFact("expected not to be CEO"));
     }
   }
 

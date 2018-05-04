@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 
 import java.math.BigDecimal;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -91,8 +91,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
 
   private void compareValues(BigDecimal expected) {
     if (actual().compareTo(expected) != 0) {
-      failWithoutActual(
-          fact("expected", expected), butWas(), factWithoutValue("(scale is ignored)"));
+      failWithoutActual(fact("expected", expected), butWas(), simpleFact("(scale is ignored)"));
     }
   }
 }

@@ -17,8 +17,8 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
 import static com.google.common.truth.Fact.makeMessage;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableList;
@@ -36,7 +36,7 @@ public class FactTest {
 
   @Test
   public void stringWithoutValue() {
-    assertThat(factWithoutValue("foo").toString()).isEqualTo("foo");
+    assertThat(simpleFact("foo").toString()).isEqualTo("foo");
   }
 
   @Test
@@ -56,7 +56,7 @@ public class FactTest {
 
   @Test
   public void oneFactWithoutValue() {
-    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(factWithoutValue("foo"))))
+    assertThat(makeMessage(ImmutableList.<String>of(), ImmutableList.of(simpleFact("foo"))))
         .isEqualTo("foo");
   }
 
@@ -65,7 +65,7 @@ public class FactTest {
     assertThat(
             makeMessage(
                 ImmutableList.<String>of(),
-                ImmutableList.of(fact("hello", "there"), factWithoutValue("foo"))))
+                ImmutableList.of(fact("hello", "there"), simpleFact("foo"))))
         .isEqualTo("hello: there\nfoo");
   }
 
@@ -80,7 +80,7 @@ public class FactTest {
     assertThat(
             makeMessage(
                 ImmutableList.<String>of(),
-                ImmutableList.of(fact("hello", "there\neveryone"), factWithoutValue("xyz"))))
+                ImmutableList.of(fact("hello", "there\neveryone"), simpleFact("xyz"))))
         .isEqualTo("hello:\n    there\n    everyone\nxyz");
   }
 

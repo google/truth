@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.TestPlatform.isGwt;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.common.truth.Truth.assertThat;
@@ -61,6 +62,7 @@ public class SubjectTest extends BaseSubjectTestCase {
   @GwtIncompatible("NullPointerTester")
   public void nullPointerTester() {
     NullPointerTester npTester = new NullPointerTester();
+    npTester.setDefault(Fact.class, simpleFact("fact"));
 
     // TODO(kak): Automatically generate this list with reflection,
     // or maybe use AbstractPackageSanityTests?
@@ -92,6 +94,7 @@ public class SubjectTest extends BaseSubjectTestCase {
   @GwtIncompatible("NullPointerTester")
   public void allAssertThatOverloadsAcceptNull() throws Exception {
     NullPointerTester npTester = new NullPointerTester();
+    npTester.setDefault(Fact.class, simpleFact("fact"));
     for (Method method : Truth.class.getDeclaredMethods()) {
       if (Modifier.isPublic(method.getModifiers())
           && method.getName().equals("assertThat")

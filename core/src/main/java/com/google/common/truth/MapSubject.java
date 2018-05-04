@@ -18,7 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.immutableEntry;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
@@ -79,14 +79,14 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   /** Fails if the map is not empty. */
   public void isEmpty() {
     if (!actual().isEmpty()) {
-      fail(factWithoutValue("expected to be empty"));
+      failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the map is empty. */
   public void isNotEmpty() {
     if (actual().isEmpty()) {
-      failWithoutActual(factWithoutValue("expected not to be empty"));
+      failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 
