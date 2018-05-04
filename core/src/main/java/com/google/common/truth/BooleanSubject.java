@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -34,7 +34,7 @@ public final class BooleanSubject extends Subject<BooleanSubject, Boolean> {
     if (actual() == null) {
       isEqualTo(true); // fails
     } else if (!actual()) {
-      failWithoutActual(factWithoutValue("expected to be true"));
+      failWithoutActual(simpleFact("expected to be true"));
     }
   }
 
@@ -43,7 +43,7 @@ public final class BooleanSubject extends Subject<BooleanSubject, Boolean> {
     if (actual() == null) {
       isEqualTo(false); // fails
     } else if (actual()) {
-      failWithoutActual(factWithoutValue("expected to be false"));
+      failWithoutActual(simpleFact("expected to be false"));
     }
   }
 }

@@ -36,14 +36,14 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
   /** Checks that the subject is in {@code range}. */
   public final void isIn(Range<T> range) {
     if (!range.contains(actual())) {
-      failWithFact("expected to be in range", range);
+      failWithActual("expected to be in range", range);
     }
   }
 
   /** Checks that the subject is <i>not</i> in {@code range}. */
   public final void isNotIn(Range<T> range) {
     if (range.contains(actual())) {
-      failWithFact("expected not to be in range", range);
+      failWithActual("expected not to be in range", range);
     }
   }
 
@@ -56,7 +56,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    */
   public void isEquivalentAccordingToCompareTo(T expected) {
     if (actual().compareTo(expected) != 0) {
-      failWithFact("expected value that sorts equal to", expected);
+      failWithActual("expected value that sorts equal to", expected);
     }
   }
 
@@ -82,7 +82,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    */
   public final void isGreaterThan(T other) {
     if (actual().compareTo(other) <= 0) {
-      failWithFact("expected to be greater than", other);
+      failWithActual("expected to be greater than", other);
     }
   }
 
@@ -94,7 +94,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    */
   public final void isLessThan(T other) {
     if (actual().compareTo(other) >= 0) {
-      failWithFact("expected to be less than", other);
+      failWithActual("expected to be less than", other);
     }
   }
 
@@ -105,7 +105,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    */
   public final void isAtMost(T other) {
     if (actual().compareTo(other) > 0) {
-      failWithFact("expected to be at most", other);
+      failWithActual("expected to be at most", other);
     }
   }
 
@@ -116,7 +116,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    */
   public final void isAtLeast(T other) {
     if (actual().compareTo(other) < 0) {
-      failWithFact("expected to be at least", other);
+      failWithActual("expected to be at least", other);
     }
   }
 }

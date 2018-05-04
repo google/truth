@@ -20,7 +20,7 @@ import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
 import static com.google.common.truth.StringUtil.format;
@@ -309,7 +309,7 @@ public class Subject<S extends Subject<S, T>, T> {
       throw new NullPointerException("clazz");
     }
     if (actual() == null) {
-      failWithFact("expected instance of", clazz.getName());
+      failWithActual("expected instance of", clazz.getName());
       return;
     }
     if (!Platform.isInstanceOfType(actual(), clazz)) {
@@ -342,7 +342,7 @@ public class Subject<S extends Subject<S, T>, T> {
       return; // null is not an instance of clazz.
     }
     if (Platform.isInstanceOfType(actual(), clazz)) {
-      failWithFact("expected not to be an instance of", clazz.getName());
+      failWithActual("expected not to be an instance of", clazz.getName());
       /*
        * TODO(cpovirk): Consider including actual().getClass() if it's not clazz itself but only a
        * subtype.
@@ -353,7 +353,7 @@ public class Subject<S extends Subject<S, T>, T> {
   /** Fails unless the subject is equal to any element in the given iterable. */
   public void isIn(Iterable<?> iterable) {
     if (!Iterables.contains(iterable, actual())) {
-      failWithFact("expected any of", iterable);
+      failWithActual("expected any of", iterable);
     }
   }
 
@@ -368,7 +368,7 @@ public class Subject<S extends Subject<S, T>, T> {
   /** Fails if the subject is equal to any element in the given iterable. */
   public void isNotIn(Iterable<?> iterable) {
     if (Iterables.contains(iterable, actual())) {
-      failWithFact("expected not to be any of", iterable);
+      failWithActual("expected not to be any of", iterable);
     }
   }
 
@@ -599,9 +599,7 @@ public class Subject<S extends Subject<S, T>, T> {
     String actualType = arrayType(actualArray);
     if (!expectedType.equals(actualType)) {
       Fact indexFact =
-          lastIndex.isEmpty()
-              ? factWithoutValue("wrong type")
-              : fact("wrong type for index", lastIndex);
+          lastIndex.isEmpty() ? simpleFact("wrong type") : fact("wrong type for index", lastIndex);
       return ComparisonResult.differentWithDescription(
           indexFact, fact("expected", expectedType), fact("but was", actualType));
     }
@@ -610,7 +608,7 @@ public class Subject<S extends Subject<S, T>, T> {
     if (expectedLength != actualLength) {
       Fact indexFact =
           lastIndex.isEmpty()
-              ? factWithoutValue("wrong length")
+              ? simpleFact("wrong length")
               : fact("wrong length for index", lastIndex);
       return ComparisonResult.differentWithDescription(
           indexFact, fact("expected", expectedLength), fact("but was", actualLength));
@@ -760,13 +758,45 @@ public class Subject<S extends Subject<S, T>, T> {
     return StandardSubjectBuilder.forCustomFailureStrategy(IGNORE_STRATEGY);
   }
 
-  // TODO(cpovirk): Make this public once names are settled.
-  final void fail(Fact first, Fact... rest) {
+  /**
+   * Fails, reporting a message with two "{@linkplain Fact facts}":
+   *
+   * <ul>
+   *   <li><i>key</i>: <i>value</i>
+   *   <li>but was: <i>actual value</i>.
+   * </ul>
+   *
+   * <p>This is the simplest failure API. For more advanced needs, see {@linkplain
+   * #failWithActual(Fact, Fact...) the other overload} and {@link #failWithActual(Fact, Fact...)
+   * failWithoutActual}.
+   *
+   * <p>Example usage: The check {@code contains(String)} calls {@code failWithActual("expected to
+   * contain", string)}.
+   */
+  public final void failWithActual(String key, @NullableDecl Object value) {
+    failWithActual(fact(key, value));
+  }
+
+  /**
+   * Fails, reporting a message with the given facts, followed by an automatically added fact of the
+   * form:
+   *
+   * <ul>
+   *   <li>but was: <i>actual value</i>.
+   * </ul>
+   *
+   * <p>If you have only one fact to report (and it's a {@linkplain Fact#fact key-value fact}),
+   * prefer {@linkplain #failWithActual(String, Object) the simpler overload}.
+   *
+   * <p>Example usage: The check {@code isEmpty()} calls {@code failWithActual(simpleFact("expected
+   * to be empty"))}.
+   */
+  public final void failWithActual(Fact first, Fact... rest) {
     doFail(sandwich(first, rest, butWas()));
   }
 
-  // TODO(cpovirk): Consider making this public after names are settled (if there's a need for it).
-  final void fail(Iterable<Fact> facts) {
+  // TODO(cpovirk): Consider making this public if there's a need for it.
+  final void failWithActual(Iterable<Fact> facts) {
     doFail(append(ImmutableList.copyOf(facts), butWas()));
   }
 
@@ -801,15 +831,7 @@ public class Subject<S extends Subject<S, T>, T> {
     for (Object part : messageParts) {
       message.append(" <").append(part).append(">");
     }
-    failWithoutActual(factWithoutValue(message.toString()));
-  }
-
-  /*
-   * TODO(cpovirk): Once the old `fail(String, ...)` methods are gone, rename this to `fail` and
-   * make it public, too.
-   */
-  final void failWithFact(String key, Object value) {
-    fail(fact(key, value));
+    failWithoutActual(simpleFact(message.toString()));
   }
 
   enum EqualityCheck {
@@ -908,7 +930,7 @@ public class Subject<S extends Subject<S, T>, T> {
             expected,
             failVerb,
             (actual == null) ? "null reference" : actual);
-    failWithoutActual(factWithoutValue(message));
+    failWithoutActual(simpleFact(message));
   }
 
   /**
@@ -924,22 +946,41 @@ public class Subject<S extends Subject<S, T>, T> {
         format(
             "Not true that <%s> %s <%s>",
             (actual == null) ? "null reference" : actual, verb, expected);
-    failWithoutActual(factWithoutValue(message));
+    failWithoutActual(simpleFact(message));
   }
 
   /** @deprecated Use {@link #failWithoutActual(String)} */
   @Deprecated
   protected final void failWithoutSubject(String check) {
     String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    failWithoutActual(factWithoutValue(format("Not true that %s %s", strSubject, check)));
+    failWithoutActual(simpleFact(format("Not true that %s %s", strSubject, check)));
   }
 
-  // TODO(cpovirk): Make this public once names are settled.
-  final void failWithoutActual(Fact first, Fact... rest) {
+  /**
+   * Fails, reporting a message with the given facts, <i>without automatically adding the actual
+   * value.</i>
+   *
+   * <p>Most failure messages should report the actual value, so most checks should call {@link
+   * #failWithActual(Fact, Fact...) failWithAcutal} instead. However, {@code failWithoutActual} is
+   * useful in some cases:
+   *
+   * <ul>
+   *   <li>when the actual value is obvious from the rest of the message. For example, {@code
+   *       isNotEmpty()} calls {@code failWithoutActual(simpleFact("expected not to be empty")}.
+   *   <li>when the actual value shouldn't come last or should have a different key than the default
+   *       of "but was." For example, {@code isNotWithin(...).of(...)} calls {@code
+   *       failWithoutActual} so that it can put the expected and actual values together, followed
+   *       by the tolerance.
+   * </ul>
+   *
+   * <p>Example usage: The check {@code isEmpty()} calls {@code failWithActual(simpleFact("expected
+   * to be empty"))}.
+   */
+  public final void failWithoutActual(Fact first, Fact... rest) {
     doFail(ImmutableList.copyOf(Lists.asList(first, rest)));
   }
 
-  // TODO(cpovirk): Consider making this public after names are settled (if there's a need for it).
+  // TODO(cpovirk): Consider making this public if there's a need for it.
   final void failWithoutActual(Iterable<Fact> facts) {
     doFail(ImmutableList.copyOf(facts));
   }
@@ -965,7 +1006,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   // TODO(cgruber) final
   protected void failWithRawMessage(String message, Object... parameters) {
-    failWithoutActual(factWithoutValue(format(message, parameters)));
+    failWithoutActual(simpleFact(format(message, parameters)));
   }
 
   /**

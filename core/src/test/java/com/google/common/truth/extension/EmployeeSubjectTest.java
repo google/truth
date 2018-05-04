@@ -15,6 +15,7 @@
  */
 package com.google.common.truth.extension;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.ExpectFailure.expectFailureAbout;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.extension.EmployeeSubject.assertThat;
@@ -49,9 +50,11 @@ public final class EmployeeSubjectTest {
   @Test
   public void username() {
     assertThat(KURT).hasUsername("kak");
-    // Here's an example of asserting on the failure message:
-    AssertionError failure = expectFailure(whenTesting -> whenTesting.that(KURT).hasName("sundar"));
-    assertThat(failure).hasMessageThat().contains("username");
+    // Here's an example of asserting on the failure message.
+    // Note that it uses the assertThat method from ExpectFailure.
+    AssertionError failure =
+        expectFailure(whenTesting -> whenTesting.that(KURT).hasUsername("sundar"));
+    assertThat(failure).factValue("value of").isEqualTo("employee.username()");
   }
 
   private static AssertionError expectFailure(

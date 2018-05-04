@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 
 import java.lang.reflect.Array;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -35,14 +35,14 @@ abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> ext
   /** Fails if the array is not empty (i.e. {@code array.length != 0}). */
   public final void isEmpty() {
     if (length() > 0) {
-      fail(factWithoutValue("expected to be empty"));
+      failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the array is empty (i.e. {@code array.length == 0}). */
   public final void isNotEmpty() {
     if (length() == 0) {
-      failWithoutActual(factWithoutValue("expected not to be empty"));
+      failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 

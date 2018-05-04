@@ -20,7 +20,7 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -39,7 +39,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 public final class TruthFailureSubject extends ThrowableSubject {
   static final Fact HOW_TO_TEST_KEYS_WITHOUT_VALUES =
-      factWithoutValue(
+      simpleFact(
           "To test that a key is present without a value, "
               + "use factKeys().contains(...) or a similar method.");
 
@@ -76,7 +76,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
   /** Returns a subject for the list of fact keys. */
   public IterableSubject factKeys() {
     if (!(actual() instanceof ErrorWithFacts)) {
-      fail(factWithoutValue("expected a failure thrown by Truth's new failure API"));
+      failWithActual(simpleFact("expected a failure thrown by Truth's new failure API"));
       return ignoreCheck().that(ImmutableList.of());
     }
     ErrorWithFacts error = (ErrorWithFacts) actual();
@@ -100,8 +100,8 @@ public final class TruthFailureSubject extends ThrowableSubject {
    * <p>The value is never null:
    *
    * <ul>
-   *   <li>In the case of {@linkplain Fact#factWithoutValue facts that have no value}, {@code
-   *       factValue} throws an exception. To test for such facts, use {@link #factKeys()}{@code
+   *   <li>In the case of {@linkplain Fact#simpleFact facts that have no value}, {@code factValue}
+   *       throws an exception. To test for such facts, use {@link #factKeys()}{@code
    *       .contains(...)} or a similar method.
    *   <li>In the case of facts that have a value that is rendered as "null" (such as those created
    *       with {@code fact("key", null)}), {@code factValue} considers them have a string value,
@@ -129,7 +129,7 @@ public final class TruthFailureSubject extends ThrowableSubject {
   private StringSubject doFactValue(String key, @NullableDecl Integer index) {
     checkNotNull(key);
     if (!(actual() instanceof ErrorWithFacts)) {
-      fail(factWithoutValue("expected a failure thrown by Truth's new failure API"));
+      failWithActual(simpleFact("expected a failure thrown by Truth's new failure API"));
       return ignoreCheck().that("");
     }
     ErrorWithFacts error = (ErrorWithFacts) actual();
@@ -161,16 +161,16 @@ public final class TruthFailureSubject extends ThrowableSubject {
     if (value == null) {
       if (index == null) {
         failWithoutActual(
-            factWithoutValue("expected to have a value"),
+            simpleFact("expected to have a value"),
             fact("for key", key),
-            factWithoutValue("but the key was present with no value"),
+            simpleFact("but the key was present with no value"),
             HOW_TO_TEST_KEYS_WITHOUT_VALUES);
       } else {
         failWithoutActual(
-            factWithoutValue("expected to have a value"),
+            simpleFact("expected to have a value"),
             fact("for key", key),
             fact("and index", index),
-            factWithoutValue("but the key was present with no value"),
+            simpleFact("but the key was present with no value"),
             HOW_TO_TEST_KEYS_WITHOUT_VALUES);
       }
       return ignoreCheck().that("");

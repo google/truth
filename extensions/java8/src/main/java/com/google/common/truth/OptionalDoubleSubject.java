@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 
 import java.util.OptionalDouble;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -38,19 +38,19 @@ public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, 
   /** Fails if the {@link OptionalDouble} is empty or the subject is null. */
   public void isPresent() {
     if (actual() == null) {
-      fail(factWithoutValue("expected present optional"));
+      failWithActual(simpleFact("expected present optional"));
     } else if (!actual().isPresent()) {
-      failWithoutActual(factWithoutValue("expected to be present"));
+      failWithoutActual(simpleFact("expected to be present"));
     }
   }
 
   /** Fails if the {@link OptionalDouble} is present or the subject is null. */
   public void isEmpty() {
     if (actual() == null) {
-      fail(factWithoutValue("expected empty optional"));
+      failWithActual(simpleFact("expected empty optional"));
     } else if (actual().isPresent()) {
       failWithoutActual(
-          factWithoutValue("expected to be empty"),
+          simpleFact("expected to be empty"),
           fact("but was present with value", actual().getAsDouble()));
     }
   }
@@ -65,10 +65,9 @@ public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, 
    */
   public void hasValue(double expected) {
     if (actual() == null) {
-      failWithFact("expected an optional with value", expected);
+      failWithActual("expected an optional with value", expected);
     } else if (!actual().isPresent()) {
-      failWithoutActual(
-          fact("expected to have value", expected), factWithoutValue("but was absent"));
+      failWithoutActual(fact("expected to have value", expected), simpleFact("but was absent"));
     } else {
       checkNoNeedToDisplayBothValues("getAsDouble()")
           .that(actual().getAsDouble())

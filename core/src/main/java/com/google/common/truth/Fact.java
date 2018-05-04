@@ -24,21 +24,38 @@ import com.google.common.collect.ImmutableList;
 import java.io.Serializable;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-/** A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz." */
-final class Fact implements Serializable {
+/**
+ * A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz."
+ *
+ * <p>Most Truth users will never interact with this type. It appears in the Truth API only as a
+ * parameter to methods like {@link Subject#failWithActual(Fact, Fact...)}, which are used only by
+ * custom {@code Subject} implementations.
+ */
+public final class Fact implements Serializable {
   /**
    * Creates a fact with the given key and value, which will be printed in a format like "key:
    * value." The value is converted to a string by calling {@code String.valueOf} on it.
    */
-  static Fact fact(String key, Object value) {
+  public static Fact fact(String key, @NullableDecl Object value) {
     return new Fact(key, String.valueOf(value));
   }
 
   /**
    * Creates a fact with no value, which will be printed in the format "key" (with no colon or
    * value).
+   *
+   * <p>In most cases, prefer {@linkplain #fact key-value facts}, which give Truth more flexibility
+   * in how to format the fact for display. {@code simpleFact} is useful primarily for:
+   *
+   * <ul>
+   *   <li>messages from no-arg assertions. For example, {@code isNotEmpty()} would generate the
+   *       fact "expected not to be empty"
+   *   <li>prose that is part of a larger message. For example, {@code contains()} sometimes
+   *       displays facts like "expected to contain: ..." <i>"but did not"</i> "though it did
+   *       contain: ..."
+   * </ul>
    */
-  static Fact factWithoutValue(String key) {
+  public static Fact simpleFact(String key) {
     return new Fact(key, null);
   }
 

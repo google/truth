@@ -20,7 +20,7 @@ import static com.google.common.base.Strings.repeat;
 import static com.google.common.testing.SerializableTester.reserialize;
 import static com.google.common.truth.ComparisonFailureWithFacts.formatExpectedAndActual;
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -270,7 +270,7 @@ public class ComparisonFailureWithFactsTest {
   public void testSerialization_ComparisonFailureWithFacts() {
     ImmutableList<String> messages = ImmutableList.of("hello");
     ImmutableList<Fact> headFacts = ImmutableList.of(fact("head", "value"));
-    ImmutableList<Fact> tailFacts = ImmutableList.of(factWithoutValue("tail"));
+    ImmutableList<Fact> tailFacts = ImmutableList.of(simpleFact("tail"));
     String expected = "expected";
     String actual = "actual";
     Throwable cause = new Throwable("cause");
@@ -291,7 +291,7 @@ public class ComparisonFailureWithFactsTest {
   @Test
   public void testSerialization_AssertionErrorWithFacts() {
     ImmutableList<String> messages = ImmutableList.of("hello");
-    ImmutableList<Fact> facts = ImmutableList.of(fact("head", "value"), factWithoutValue("tail"));
+    ImmutableList<Fact> facts = ImmutableList.of(fact("head", "value"), simpleFact("tail"));
     Throwable cause = new Throwable("cause");
     AssertionErrorWithFacts original = AssertionErrorWithFacts.create(messages, facts, cause);
 
@@ -311,7 +311,7 @@ public class ComparisonFailureWithFactsTest {
     assertThat(reserialized.key).isEqualTo(original.key);
     assertThat(reserialized.value).isEqualTo(original.value);
 
-    original = factWithoutValue("tail");
+    original = simpleFact("tail");
     reserialized = reserialize(original);
     assertThat(reserialized.key).isEqualTo(original.key);
     assertThat(reserialized.value).isEqualTo(original.value);

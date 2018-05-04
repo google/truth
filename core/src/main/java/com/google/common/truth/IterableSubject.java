@@ -21,7 +21,7 @@ import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Iterables.size;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.ALL_IN_ONE_FACT;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.FACT_PER_ELEMENT;
 import static com.google.common.truth.StringUtil.format;
@@ -117,14 +117,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Fails if the subject is not empty. */
   public final void isEmpty() {
     if (!Iterables.isEmpty(actual())) {
-      fail(factWithoutValue("expected to be empty"));
+      failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the subject is empty. */
   public final void isNotEmpty() {
     if (Iterables.isEmpty(actual())) {
-      failWithoutActual(factWithoutValue("expected not to be empty"));
+      failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 
@@ -143,14 +143,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         failWithoutActual(
             fact("expected to contain", element),
             fact("an instance of", objectToTypeName(element)),
-            factWithoutValue("but did not"),
+            simpleFact("but did not"),
             fact(
                 "though it did contain",
                 countDuplicatesAndAddTypeInfo(
                     retainMatchingToString(actual(), elementList /* itemsToCheck */))),
             fullContents());
       } else {
-        failWithFact("expected to contain", element);
+        failWithActual("expected to contain", element);
       }
     }
   }
@@ -158,7 +158,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Checks (with a side-effect failure) that the subject does not contain the supplied item. */
   public final void doesNotContain(@NullableDecl Object element) {
     if (Iterables.contains(actual(), element)) {
-      failWithFact("expected not to contain", element);
+      failWithActual("expected not to contain", element);
     }
   }
 
@@ -172,7 +172,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
     if (!duplicates.isEmpty()) {
       failWithoutActual(
-          factWithoutValue("expected not to contain duplicates"),
+          simpleFact("expected not to contain duplicates"),
           fact("but contained", duplicates),
           fullContents());
     }
@@ -199,14 +199,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     if (hasMatchingToStringPair(actual, expected)) {
       failWithoutActual(
           fact("expected to contain any of", countDuplicatesAndAddTypeInfo(expected)),
-          factWithoutValue("but did not"),
+          simpleFact("but did not"),
           fact(
               "though it did contain",
               countDuplicatesAndAddTypeInfo(
                   retainMatchingToString(actual(), expected /* itemsToCheck */))),
           fullContents());
     } else {
-      failWithFact("expected to contain any of", expected);
+      failWithActual("expected to contain any of", expected);
     }
   }
 
@@ -287,8 +287,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         : new Ordered() {
           @Override
           public void inOrder() {
-            fail(
-                factWithoutValue("required elements were all found, but order was wrong"),
+            failWithActual(
+                simpleFact("required elements were all found, but order was wrong"),
                 fact("expected order for required elements", expected));
           }
         };
@@ -465,9 +465,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           return new Ordered() {
             @Override
             public void inOrder() {
-              fail(
-                  factWithoutValue("contents match, but order was wrong"),
-                  fact("expected", required));
+              failWithActual(
+                  simpleFact("contents match, but order was wrong"), fact("expected", required));
             }
           };
         }
@@ -511,7 +510,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     facts.add(butWas());
     if (addElementsInWarning) {
       facts.add(
-          factWithoutValue(
+          simpleFact(
               "Passing an iterable to the varargs method containsExactly(Object...) is "
                   + "often not the correct thing to do. Did you mean to call "
                   + "containsExactlyElementsIn(Iterable) instead?"));
@@ -540,10 +539,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     ImmutableList<Fact> secondFacts = makeElementFacts(secondKey, second, grouping);
     facts.addAll(firstFacts);
     if (firstFacts.size() > 1 && secondFacts.size() > 1) {
-      facts.add(factWithoutValue(""));
+      facts.add(simpleFact(""));
     }
     facts.addAll(secondFacts);
-    facts.add(factWithoutValue("---"));
+    facts.add(simpleFact("---"));
     return facts.build();
   }
 
@@ -562,7 +561,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     ImmutableList.Builder<Fact> facts = ImmutableList.builder();
-    facts.add(factWithoutValue(keyToServeAsHeader(label, elements)));
+    facts.add(simpleFact(keyToServeAsHeader(label, elements)));
     int n = 1;
     for (Multiset.Entry<?> entry : elements.entrySet()) {
       int count = entry.getCount();
@@ -802,7 +801,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         Object next = iterator.next();
         if (!checker.check(prev, next)) {
           failWithoutActual(
-              factWithoutValue(expectedFact),
+              simpleFact(expectedFact),
               fact("but contained", prev),
               fact("followed by", next),
               fullContents());
@@ -826,7 +825,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   @Deprecated
   public void isNotIn(Iterable<?> iterable) {
     if (Iterables.contains(iterable, actual())) {
-      failWithFact("expected not to be any of", iterable);
+      failWithActual("expected not to be any of", iterable);
     }
     List<Object> nonIterables = new ArrayList<>();
     for (Object element : iterable) {
@@ -1091,9 +1090,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return new Ordered() {
         @Override
         public void inOrder() {
-          subject.fail(
-              factWithoutValue("contents match, but order was wrong"),
-              factWithoutValue(
+          subject.failWithActual(
+              simpleFact("contents match, but order was wrong"),
+              simpleFact(
                   "comparing contents by testing that each element "
                       + correspondence
                       + " an expected value"),
@@ -1393,9 +1392,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return new Ordered() {
         @Override
         public void inOrder() {
-          subject.fail(
-              factWithoutValue("required elements were all found, but order was wrong"),
-              factWithoutValue(
+          subject.failWithActual(
+              simpleFact("required elements were all found, but order was wrong"),
+              simpleFact(
                   "comparing contents by testing that each element "
                       + correspondence
                       + " an expected value"),

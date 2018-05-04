@@ -18,7 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.immutableEntry;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.util.concurrent.AtomicLongMap;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -58,14 +58,14 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} is not empty. */
   public void isEmpty() {
     if (!actual().isEmpty()) {
-      fail(factWithoutValue("expected to be empty"));
+      failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the {@link AtomicLongMap} is empty. */
   public void isNotEmpty() {
     if (actual().isEmpty()) {
-      failWithoutActual(factWithoutValue("expected not to be empty"));
+      failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 

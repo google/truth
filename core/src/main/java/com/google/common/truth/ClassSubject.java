@@ -35,7 +35,7 @@ public final class ClassSubject extends Subject<ClassSubject, Class<?>> {
    */
   public void isAssignableTo(Class<?> clazz) {
     if (!clazz.isAssignableFrom(actual())) {
-      failWithFact("expected to be assignable to", clazz.getName());
+      failWithActual("expected to be assignable to", clazz.getName());
     }
   }
 }

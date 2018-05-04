@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.annotations.GwtIncompatible;
 import java.util.regex.Pattern;
@@ -56,18 +56,18 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string is not equal to the zero-length "empty string." */
   public void isEmpty() {
     if (actual() == null) {
-      fail(factWithoutValue("expected empty string"));
+      failWithActual(simpleFact("expected empty string"));
     } else if (!actual().isEmpty()) {
-      fail(factWithoutValue("expected to be empty"));
+      failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the string is equal to the zero-length "empty string." */
   public void isNotEmpty() {
     if (actual() == null) {
-      fail(factWithoutValue("expected nonempty string"));
+      failWithActual(simpleFact("expected nonempty string"));
     } else if (actual().isEmpty()) {
-      failWithoutActual(factWithoutValue("expected not to be empty"));
+      failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 
@@ -75,9 +75,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   public void contains(CharSequence string) {
     checkNotNull(string);
     if (actual() == null) {
-      failWithFact("expected a string that contains", string);
+      failWithActual("expected a string that contains", string);
     } else if (!actual().contains(string)) {
-      failWithFact("expected to contain", string);
+      failWithActual("expected to contain", string);
     }
   }
 
@@ -85,9 +85,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   public void doesNotContain(CharSequence string) {
     checkNotNull(string);
     if (actual() == null) {
-      failWithFact("expected a string that does not contain", string);
+      failWithActual("expected a string that does not contain", string);
     } else if (actual().contains(string)) {
-      failWithFact("expected not to contain", string);
+      failWithActual("expected not to contain", string);
     }
   }
 
@@ -95,9 +95,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   public void startsWith(String string) {
     checkNotNull(string);
     if (actual() == null) {
-      failWithFact("expected a string that starts with", string);
+      failWithActual("expected a string that starts with", string);
     } else if (!actual().startsWith(string)) {
-      failWithFact("expected to start with", string);
+      failWithActual("expected to start with", string);
     }
   }
 
@@ -105,9 +105,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   public void endsWith(String string) {
     checkNotNull(string);
     if (actual() == null) {
-      failWithFact("expected a string that ends with", string);
+      failWithActual("expected a string that ends with", string);
     } else if (!actual().endsWith(string)) {
-      failWithFact("expected to end with", string);
+      failWithActual("expected to end with", string);
     }
   }
 
@@ -116,7 +116,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string does not match the given regex. */
   public void matches(String regex) {
     if (!actual().matches(regex)) {
-      failWithFact("expected to match", regex);
+      failWithActual("expected to match", regex);
     }
   }
 
@@ -124,14 +124,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   @GwtIncompatible("java.util.regex.Pattern")
   public void matches(Pattern regex) {
     if (!regex.matcher(actual()).matches()) {
-      failWithFact("expected to match", regex);
+      failWithActual("expected to match", regex);
     }
   }
 
   /** Fails if the string matches the given regex. */
   public void doesNotMatch(String regex) {
     if (actual().matches(regex)) {
-      failWithFact("expected not to match", regex);
+      failWithActual("expected not to match", regex);
     }
   }
 
@@ -139,7 +139,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotMatch(Pattern regex) {
     if (regex.matcher(actual()).matches()) {
-      failWithFact("expected not to match", regex);
+      failWithActual("expected not to match", regex);
     }
   }
 
@@ -147,14 +147,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   @GwtIncompatible("java.util.regex.Pattern")
   public void containsMatch(Pattern regex) {
     if (!regex.matcher(actual()).find()) {
-      failWithFact("expected to contain a match for", regex);
+      failWithActual("expected to contain a match for", regex);
     }
   }
 
   /** Fails if the string does not contain a match on the given regex. */
   public void containsMatch(String regex) {
     if (!Platform.containsMatch(actual(), regex)) {
-      failWithFact("expected to contain a match for", regex);
+      failWithActual("expected to contain a match for", regex);
     }
   }
 
@@ -162,14 +162,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotContainMatch(Pattern regex) {
     if (regex.matcher(actual()).find()) {
-      failWithFact("expected not to contain a match for", regex);
+      failWithActual("expected not to contain a match for", regex);
     }
   }
 
   /** Fails if the string contains a match on the given regex. */
   public void doesNotContainMatch(String regex) {
     if (Platform.containsMatch(actual(), regex)) {
-      failWithFact("expected not to contain a match for", regex);
+      failWithActual("expected not to contain a match for", regex);
     }
   }
 }

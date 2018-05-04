@@ -19,7 +19,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 import static com.google.common.truth.Platform.floatToString;
@@ -215,7 +215,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   /** Asserts that the subject is zero (i.e. it is either {@code 0.0f} or {@code -0.0f}). */
   public final void isZero() {
     if (actual() == null || actual().floatValue() != 0.0f) {
-      fail(factWithoutValue("expected zero"));
+      failWithActual(simpleFact("expected zero"));
     }
   }
 
@@ -225,9 +225,9 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    */
   public final void isNonZero() {
     if (actual() == null) {
-      fail(factWithoutValue("expected a float other than zero"));
+      failWithActual(simpleFact("expected a float other than zero"));
     } else if (actual().floatValue() == 0.0f) {
-      fail(factWithoutValue("expected not to be zero"));
+      failWithActual(simpleFact("expected not to be zero"));
     }
   }
 
@@ -252,7 +252,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    */
   public final void isFinite() {
     if (actual() == null || actual().isNaN() || actual().isInfinite()) {
-      fail(factWithoutValue("expected to be finite"));
+      failWithActual(simpleFact("expected to be finite"));
     }
   }
 
@@ -262,7 +262,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    */
   public final void isNotNaN() {
     if (actual() == null) {
-      fail(factWithoutValue("expected a float other than NaN"));
+      failWithActual(simpleFact("expected a float other than NaN"));
     } else {
       isNotEqualTo(NaN);
     }

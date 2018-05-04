@@ -17,7 +17,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.TruthFailureSubject.HOW_TO_TEST_KEYS_WITHOUT_VALUES;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 import static org.junit.Assert.fail;
@@ -39,7 +39,7 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void factKeysNoValue() {
-    assertThat(factWithoutValue("foo")).factKeys().containsExactly("foo");
+    assertThat(simpleFact("foo")).factKeys().containsExactly("foo");
   }
 
   @Test
@@ -84,7 +84,7 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void factValueFailNoValue() {
-    Object unused = expectFailureWhenTestingThat(factWithoutValue("foo")).factValue("foo");
+    Object unused = expectFailureWhenTestingThat(simpleFact("foo")).factValue("foo");
     assertFailureKeys(
         "expected to have a value",
         "for key",
@@ -141,7 +141,7 @@ public class TruthFailureSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void factValueIntFailNoValue() {
-    Object unused = expectFailureWhenTestingThat(factWithoutValue("foo")).factValue("foo", 0);
+    Object unused = expectFailureWhenTestingThat(simpleFact("foo")).factValue("foo", 0);
     assertFailureKeys(
         "expected to have a value",
         "for key",

@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Fact.factWithoutValue;
+import static com.google.common.truth.Fact.simpleFact;
 
 import java.util.Optional;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -39,20 +39,19 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
   /** Fails if the {@link Optional}{@code <T>} is empty or the subject is null. */
   public void isPresent() {
     if (actual() == null) {
-      fail(factWithoutValue("expected present optional"));
+      failWithActual(simpleFact("expected present optional"));
     } else if (!actual().isPresent()) {
-      failWithoutActual(factWithoutValue("expected to be present"));
+      failWithoutActual(simpleFact("expected to be present"));
     }
   }
 
   /** Fails if the {@link Optional}{@code <T>} is present or the subject is null. */
   public void isEmpty() {
     if (actual() == null) {
-      fail(factWithoutValue("expected empty optional"));
+      failWithActual(simpleFact("expected empty optional"));
     } else if (actual().isPresent()) {
       failWithoutActual(
-          factWithoutValue("expected to be empty"),
-          fact("but was present with value", actual().get()));
+          simpleFact("expected to be empty"), fact("but was present with value", actual().get()));
     }
   }
 
@@ -71,10 +70,9 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
       throw new NullPointerException("Optional cannot have a null value.");
     }
     if (actual() == null) {
-      failWithFact("expected an optional with value", expected);
+      failWithActual("expected an optional with value", expected);
     } else if (!actual().isPresent()) {
-      failWithoutActual(
-          fact("expected to have value", expected), factWithoutValue("but was absent"));
+      failWithoutActual(fact("expected to have value", expected), simpleFact("but was absent"));
     } else {
       checkNoNeedToDisplayBothValues("get()").that(actual().get()).isEqualTo(expected);
     }
