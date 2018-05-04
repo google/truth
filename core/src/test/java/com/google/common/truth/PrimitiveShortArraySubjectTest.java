@@ -49,13 +49,13 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void asListWithoutCastingFails() {
     expectFailureWhenTestingThat(array(1, 1, 0)).asList().containsAllOf(1, 0);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1, 1, 0]> "
-                + "contains at least <[1, 0]>. It is missing "
-                + "<[1, 0] (java.lang.Integer)>. However, it does contain "
-                + "<[1 [2 copies], 0] (java.lang.Short)>.");
+    assertFailureKeys(
+        "value of",
+        "missing (2)",
+        "though it did contain (3)",
+        "---",
+        "expected to contain at least",
+        "but was");
   }
 
   @Test

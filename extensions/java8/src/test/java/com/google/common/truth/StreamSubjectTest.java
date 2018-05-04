@@ -135,14 +135,9 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAnyOf_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hello")).containsAnyOf("goodbye", "good");
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[hello]> contains any of <[goodbye, good]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(Stream.of("hello")).containsAnyOf("goodbye", "good"));
   }
 
   @Test
@@ -152,14 +147,10 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAnyIn_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hello")).containsAnyIn(asList("goodbye", "good"));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[hello]> contains any of <[goodbye, good]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(Stream.of("hello")).containsAnyIn(asList("goodbye", "good")));
   }
 
   @Test
@@ -205,16 +196,12 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAllOf_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hell", "hello")).containsAllOf("hell", "hello", "goodbye");
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hell, hello]> contains at least <[hell, hello, goodbye]>. "
-                  + "It is missing <[goodbye]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(Stream.of("hell", "hello"))
+                    .containsAllOf("hell", "hello", "goodbye"));
   }
 
   @Test
@@ -244,16 +231,12 @@ public final class StreamSubjectTest {
 
   @Test
   public void testContainsAllIn_fails() throws Exception {
-    try {
-      assertThat(Stream.of("hell", "hello")).containsAllIn(asList("hell", "hello", "goodbye"));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[hell, hello]> contains at least <[hell, hello, goodbye]>. "
-                  + "It is missing <[goodbye]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(Stream.of("hell", "hello"))
+                    .containsAllIn(asList("hell", "hello", "goodbye")));
   }
 
   @Test

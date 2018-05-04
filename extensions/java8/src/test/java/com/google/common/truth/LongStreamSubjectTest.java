@@ -135,14 +135,8 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAnyOf_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42)).containsAnyOf(43, 44);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[42]> contains any of <[43, 44]>");
-    }
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(LongStream.of(42)).containsAnyOf(43, 44));
   }
 
   @Test
@@ -152,14 +146,9 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAnyIn_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42)).containsAnyIn(asList(43, 44));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[42]> contains any of <[43, 44]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(LongStream.of(42)).containsAnyIn(asList(43, 44)));
   }
 
   @Test
@@ -203,15 +192,9 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAllOf_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42, 43)).containsAllOf(42, 43, 44);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains at least <[42, 43, 44]>. It is missing <[44]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(LongStream.of(42, 43)).containsAllOf(42, 43, 44));
   }
 
   @Test
@@ -241,31 +224,18 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAllIn_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42, 43)).containsAllIn(asList(42L, 43L, 44L));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains at least <[42, 43, 44]>. "
-                  + "It is missing <[44]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(LongStream.of(42, 43)).containsAllIn(asList(42L, 43L, 44L)));
   }
 
   @Test
   public void testContainsAllIn_wrongType_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42, 43)).containsAllIn(asList(42, 43, 44));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains at least <[42, 43, 44]>. "
-                  + "It is missing <[42, 43, 44] (java.lang.Integer)>. "
-                  + "However, it does contain <[42, 43] (java.lang.Long)>.");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(LongStream.of(42, 43)).containsAllIn(asList(42, 43, 44)));
   }
 
   @Test
@@ -290,17 +260,10 @@ public final class LongStreamSubjectTest {
 
   @Test
   public void testContainsAllIn_inOrder_wrongType_fails() throws Exception {
-    try {
-      assertThat(LongStream.of(42, 43)).containsAllIn(asList(43, 42)).inOrder();
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains at least <[43, 42]>. "
-                  + "It is missing <[43, 42] (java.lang.Integer)>. "
-                  + "However, it does contain <[42, 43] (java.lang.Long)>.");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(LongStream.of(42, 43)).containsAllIn(asList(43, 42)).inOrder());
   }
 
   @Test

@@ -134,14 +134,8 @@ public final class IntStreamSubjectTest {
 
   @Test
   public void testContainsAnyOf_fails() throws Exception {
-    try {
-      assertThat(IntStream.of(42)).containsAnyOf(43, 44);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[42]> contains any of <[43, 44]>");
-    }
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(IntStream.of(42)).containsAnyOf(43, 44));
   }
 
   @Test
@@ -151,14 +145,9 @@ public final class IntStreamSubjectTest {
 
   @Test
   public void testContainsAnyIn_fails() throws Exception {
-    try {
-      assertThat(IntStream.of(42)).containsAnyIn(asList(43, 44));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo("Not true that <[42]> contains any of <[43, 44]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(IntStream.of(42)).containsAnyIn(asList(43, 44)));
   }
 
   @Test
@@ -202,15 +191,9 @@ public final class IntStreamSubjectTest {
 
   @Test
   public void testContainsAllOf_fails() throws Exception {
-    try {
-      assertThat(IntStream.of(42, 43)).containsAllOf(42, 43, 44);
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains at least <[42, 43, 44]>. It is missing <[44]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(IntStream.of(42, 43)).containsAllOf(42, 43, 44));
   }
 
   @Test
@@ -240,16 +223,10 @@ public final class IntStreamSubjectTest {
 
   @Test
   public void testContainsAllIn_fails() throws Exception {
-    try {
-      assertThat(IntStream.of(42, 43)).containsAllIn(asList(42, 43, 44));
-      fail();
-    } catch (AssertionError expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Not true that <[42, 43]> contains at least <[42, 43, 44]>. "
-                  + "It is missing <[44]>");
-    }
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting.that(IntStream.of(42, 43)).containsAllIn(asList(42, 43, 44)));
   }
 
   @Test
