@@ -74,6 +74,11 @@ final class SubjectUtils {
   }
 
   static String countDuplicates(Iterable<?> items) {
+    /*
+     * TODO(cpovirk): Remove brackets after migrating all callers to the new message format. But
+     * will that look OK when we put the result next to a homogeneous type name? If not, maybe move
+     * the homogeneous type name to a separate Fact?
+     */
     return countDuplicatesToMultiset(items).toStringWithBrackets();
   }
 
@@ -107,7 +112,7 @@ final class SubjectUtils {
 
     return homogeneousTypeName.isPresent()
         ? StringUtil.format("%s (%s)", countDuplicates(items), homogeneousTypeName.get())
-        : countDuplicates(addTypeInfoToEveryItem(items)).toString();
+        : countDuplicates(addTypeInfoToEveryItem(items));
   }
 
   /**
@@ -309,6 +314,11 @@ final class SubjectUtils {
     Optional<String> homogeneousTypeName = Optional.absent();
     for (Object item : items) {
       if (item == null) {
+        /*
+         * TODO(cpovirk): Why? We could have multiple nulls, which would be homogeneous. More
+         * likely, we could have exactly one null, which is still homogeneous. Arguably it's weird
+         * to call a single element "homogeneous" at all, but that's not specific to null.
+         */
         return Optional.absent();
       } else if (!homogeneousTypeName.isPresent()) {
         // This is the first item

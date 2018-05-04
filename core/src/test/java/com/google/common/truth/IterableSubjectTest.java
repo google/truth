@@ -156,50 +156,48 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsAnyOfFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAnyOf(5, 6, 0);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
+    assertFailureKeys("expected to contain any of", "but was");
+    assertFailureValue("expected to contain any of", "[5, 6, 0]");
   }
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndHomogeneousList() {
     expectFailureWhenTestingThat(asList(1L, 2L, 3L)).containsAnyOf(2, 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains any of <[2, 3] (java.lang.Integer)>. "
-                + "However, it does contain <[2, 3] (java.lang.Long)>.");
+    assertFailureKeys(
+        "expected to contain any of", "but did not", "though it did contain", "full contents");
+    assertFailureValue("expected to contain any of", "[2, 3] (java.lang.Integer)");
+    assertFailureValue("though it did contain", "[2, 3] (java.lang.Long)");
+    assertFailureValue("full contents", "[1, 2, 3]");
   }
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndHomogeneousListWithDuplicates() {
     expectFailureWhenTestingThat(asList(3L, 3L)).containsAnyOf(2, 3, 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[3, 3]> contains any of <[2, 3, 3] (java.lang.Integer)>. "
-                + "However, it does contain <[3 [2 copies]] (java.lang.Long)>.");
+    assertFailureKeys(
+        "expected to contain any of", "but did not", "though it did contain", "full contents");
+    assertFailureValue("expected to contain any of", "[2, 3 [2 copies]] (java.lang.Integer)");
+    assertFailureValue("though it did contain", "[3 [2 copies]] (java.lang.Long)");
+    assertFailureValue("full contents", "[3, 3]");
   }
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndNullInSubject() {
     expectFailureWhenTestingThat(asList(null, "abc")).containsAnyOf("def", "null");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[null, abc]> contains any of <[def, null] (java.lang.String)>. "
-                + "However, it does contain <[null (null type)]>.");
+    assertFailureKeys(
+        "expected to contain any of", "but did not", "though it did contain", "full contents");
+    assertFailureValue("expected to contain any of", "[def, null] (java.lang.String)");
+    assertFailureValue("though it did contain", "[null (null type)]");
+    assertFailureValue("full contents", "[null, abc]");
   }
 
   @Test
   public void iterableContainsAnyOfFailsWithSameToStringAndNullInExpectation() {
     expectFailureWhenTestingThat(asList("null", "abc")).containsAnyOf("def", null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[null, abc]> contains any of "
-                + "<[def (java.lang.String), null (null type)]>. "
-                + "However, it does contain <[null] (java.lang.String)>.");
+    assertFailureKeys(
+        "expected to contain any of", "but did not", "though it did contain", "full contents");
+    assertFailureValue("expected to contain any of", "[def (java.lang.String), null (null type)]");
+    assertFailureValue("though it did contain", "[null] (java.lang.String)");
+    assertFailureValue("full contents", "[null, abc]");
   }
 
   @Test
@@ -221,9 +219,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(1, 2, 3)).containsAnyIn(asList(1, 10, 100));
 
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAnyIn(asList(5, 6, 0));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
+    assertFailureKeys("expected to contain any of", "but was");
+    assertFailureValue("expected to contain any of", "[5, 6, 0]");
   }
 
   @Test
@@ -231,9 +228,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(1, 2, 3)).containsAnyIn(new Integer[] {1, 10, 100});
 
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAnyIn(new Integer[] {5, 6, 0});
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains any of <[5, 6, 0]>");
+    assertFailureKeys("expected to contain any of", "but was");
+    assertFailureValue("expected to contain any of", "[5, 6, 0]");
   }
 
   @Test
@@ -281,35 +277,27 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsAllOfFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllOf(1, 2, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains at least <[1, 2, 4]>. It is missing <[4]>");
+    assertFailureKeys("missing (1)", "---", "expected to contain at least", "but was");
+    assertFailureValue("missing (1)", "4");
+    assertFailureValue("expected to contain at least", "[1, 2, 4]");
   }
 
   @Test
   public void iterableContainsAllOfWithExtras() {
     expectFailureWhenTestingThat(asList("y", "x")).containsAllOf("x", "y", "z");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[y, x]> contains at least <[x, y, z]>. It is missing <[z]>");
+    assertFailureValue("missing (1)", "z");
   }
 
   @Test
   public void iterableContainsAllOfWithExtraCopiesOfOutOfOrder() {
     expectFailureWhenTestingThat(asList("y", "x")).containsAllOf("x", "y", "y");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[y, x]> contains at least <[x, y, y]>. It is missing <[y]>");
+    assertFailureValue("missing (1)", "y");
   }
 
   @Test
   public void iterableContainsAllOfWithDuplicatesFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllOf(1, 2, 2, 2, 3, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 3]> contains at least <[1, 2, 2, 2, 3, 4]>. "
-                + "It is missing <[2 [2 copies], 4]>");
+    assertFailureValue("missing (3)", "2 [2 copies], 4");
   }
 
   /*
@@ -319,74 +307,50 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableContainsAllOfWithDuplicateMissingElements() {
     expectFailureWhenTestingThat(asList(1, 2)).containsAllOf(4, 4, 4);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2]> contains at least <[4, 4, 4]>. It is missing <[4 [3 copies]]>");
+    assertFailureValue("missing (3)", "4 [3 copies]");
   }
 
   @Test
   public void iterableContainsAllOfWithNullFailure() {
     expectFailureWhenTestingThat(asList(1, null, 3)).containsAllOf(1, null, null, 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, null, 3]> contains at least <[1, null, null, 3]>. "
-                + "It is missing <[null]>");
+    assertFailureValue("missing (1)", "null");
   }
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousList() {
     expectFailureWhenTestingThat(asList(1L, 2L)).containsAllOf(1, 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2]> contains at least <[1, 2]>. It is missing "
-                + "<[1, 2] (java.lang.Integer)>. However, it does contain "
-                + "<[1, 2] (java.lang.Long)>.");
+    assertFailureValue("missing (2)", "1, 2 (java.lang.Integer)");
+    assertFailureValue("though it did contain (2)", "1, 2 (java.lang.Long)");
   }
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithDuplicates() {
     expectFailureWhenTestingThat(asList(1L, 2L, 2L)).containsAllOf(1, 1, 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 2]> contains at least <[1, 1, 2]>. It is missing "
-                + "<[1 [2 copies], 2] (java.lang.Integer)>. However, it does contain "
-                + "<[1, 2 [2 copies]] (java.lang.Long)>.");
+    assertFailureValue("missing (3)", "1 [2 copies], 2 (java.lang.Integer)");
+    assertFailureValue("though it did contain (3)", "1, 2 [2 copies] (java.lang.Long)");
   }
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithNull() {
     expectFailureWhenTestingThat(asList("null", "abc")).containsAllOf("abc", null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[null, abc]> contains at least <[abc, null]>. It is missing "
-                + "<[null (null type)]>. However, it does contain <[null] (java.lang.String)>.");
+    assertFailureValue("missing (1)", "null (null type)");
+    assertFailureValue("though it did contain (1)", "null (java.lang.String)");
   }
 
   @Test
   public void iterableContainsAllOfFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
     expectFailureWhenTestingThat(asList(1, 2, 2L, 3L, 3L)).containsAllOf(2L, 2L, 3, 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1, 2, 2, 3, 3]> contains at least <[2, 2, 3, 3]>. It is missing "
-                + "<[2 (java.lang.Long), 3 (java.lang.Integer) [2 copies]]>. However, it does "
-                + "contain <[2 (java.lang.Integer), 3 (java.lang.Long) [2 copies]]>.");
+    assertFailureValue("missing (3)", "2 (java.lang.Long), 3 (java.lang.Integer) [2 copies]");
+    assertFailureValue(
+        "though it did contain (3)", "2 (java.lang.Integer), 3 (java.lang.Long) [2 copies]");
   }
 
   @Test
   public void iterableContainsAllOfFailsWithEmptyString() {
     expectFailureWhenTestingThat(asList("a", null)).containsAllOf("", null);
 
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[a, null]> contains at least <[\"\" (empty String), null]>. "
-                + "It is missing <[\"\" (empty String)]>");
+    assertFailureKeys("missing (1)", "---", "expected to contain at least", "but was");
+    assertFailureValue("missing (1)", "");
   }
 
   @Test
@@ -475,9 +439,17 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(1, 2, 3)).containsAllIn(asList(1, 2));
 
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllIn(asList(1, 2, 4));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains at least <[1, 2, 4]>. It is missing <[4]>");
+    assertFailureKeys("missing (1)", "---", "expected to contain at least", "but was");
+    assertFailureValue("missing (1)", "4");
+    assertFailureValue("expected to contain at least", "[1, 2, 4]");
+  }
+
+  @Test
+  public void iterableContainsAllInCanUseFactPerElement() {
+    expectFailureWhenTestingThat(asList("abc")).containsAllIn(asList("123\n456", "789"));
+    assertFailureKeys("missing (2)", "#1", "#2", "---", "expected to contain at least", "but was");
+    assertFailureValue("#1", "123\n456");
+    assertFailureValue("#2", "789");
   }
 
   @Test
@@ -485,9 +457,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList(1, 2, 3)).containsAllIn(new Integer[] {1, 2});
 
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllIn(new Integer[] {1, 2, 4});
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[1, 2, 3]> contains at least <[1, 2, 4]>. It is missing <[4]>");
+    assertFailureKeys("missing (1)", "---", "expected to contain at least", "but was");
+    assertFailureValue("missing (1)", "4");
+    assertFailureValue("expected to contain at least", "[1, 2, 4]");
   }
 
   @Test

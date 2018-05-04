@@ -27,14 +27,12 @@ import static com.google.common.truth.IterableSubject.ElementFactGrouping.FACT_P
 import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.annotateEmptyStrings;
-import static com.google.common.truth.SubjectUtils.countDuplicates;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndMaybeAddTypeInfoReturnObject;
 import static com.google.common.truth.SubjectUtils.entryString;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.iterableToCollection;
 import static com.google.common.truth.SubjectUtils.iterableToList;
-import static com.google.common.truth.SubjectUtils.iterableToStringWithTypeInfo;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 import static java.util.Arrays.asList;
@@ -190,6 +188,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * Checks that the subject contains at least one of the objects contained in the provided
    * collection or fails.
    */
+  // TODO(cpovirk): Consider using makeElementFacts-style messages here, in contains(), etc.
   public final void containsAnyIn(Iterable<?> expected) {
     Collection<?> actual = iterableToCollection(actual());
     for (Object item : expected) {
@@ -198,15 +197,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
     }
     if (hasMatchingToStringPair(actual, expected)) {
-      failWithRawMessage(
-          "Not true that %s %s <%s>. However, it does contain <%s>.",
-          actualAsString(),
-          "contains any of",
-          iterableToStringWithTypeInfo(expected),
-          countDuplicatesAndAddTypeInfo(
-              retainMatchingToString(actual(), expected /* itemsToCheck */)));
+      failWithoutActual(
+          fact("expected to contain any of", countDuplicatesAndAddTypeInfo(expected)),
+          factWithoutValue("but did not"),
+          fact(
+              "though it did contain",
+              countDuplicatesAndAddTypeInfo(
+                  retainMatchingToString(actual(), expected /* itemsToCheck */))),
+          fullContents());
     } else {
-      fail("contains any of", expected);
+      failWithFact("expected to contain any of", expected);
     }
   }
 
@@ -271,25 +271,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
     // if we have any missing expected elements, fail
     if (!missing.isEmpty()) {
-      if (hasMatchingToStringPair(actual(), missing)) {
-        failWithRawMessage(
-            "Not true that %s contains at least <%s>. "
-                + "It is missing <%s>. However, it does contain <%s>.",
-            actualAsString(),
-            annotateEmptyStrings(expected),
-            countDuplicatesAndAddTypeInfo(annotateEmptyStrings(missing)),
-            countDuplicatesAndAddTypeInfo(
-                annotateEmptyStrings(
-                    retainMatchingToString(actual(), missing /* itemsToCheck */))));
-      } else {
-        failWithBadResults(
-            "contains at least",
-            annotateEmptyStrings(expected),
-            "is missing",
-            countDuplicates(annotateEmptyStrings(missing)));
-      }
-      return ALREADY_FAILED;
+      return failAllIn(expected, missing);
     }
+
     /*
      * TODO(cpovirk): In the NotInOrder case, also include a Fact that shows _only_ the required
      * elements (that is, without any extras) but in the order they were actually found. That should
@@ -308,6 +292,29 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 fact("expected order for required elements", expected));
           }
         };
+  }
+
+  private Ordered failAllIn(Collection<?> expected, Collection<?> missingRawObjects) {
+    Collection<?> nearMissRawObjects =
+        retainMatchingToString(actual(), missingRawObjects /* itemsToCheck */);
+
+    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    facts.addAll(
+        makeElementFactsForBoth(
+            "missing", missingRawObjects, "though it did contain", nearMissRawObjects));
+    /*
+     * TODO(cpovirk): Make makeElementFactsForBoth support generating just "though it did contain"
+     * rather than "though it did contain (2)?" Users might interpret the number as the *total*
+     * number of actual elements (or the total number of non-matched elements). (Frankly, they might
+     * think that even *without* the number.... Can we do better than the phrase "though it did
+     * contain," which has been our standard so far?) Or maybe it's all clear enough in context,
+     * since this error shows up only to inform users of type mismatches.
+     */
+    facts.add(fact("expected to contain at least", expected));
+    facts.add(butWas());
+
+    failWithoutActual(facts.build());
+    return ALREADY_FAILED;
   }
 
   /**
@@ -497,24 +504,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       boolean addElementsInWarning,
       Collection<?> missingRawObjects,
       Collection<?> extraRawObjects) {
-    // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
-    // the subject but not enough times. Similarly for unexpected extra items.
-    boolean addTypeInfo = hasMatchingToStringPair(missingRawObjects, extraRawObjects);
-    DuplicateGroupedAndTyped missing =
-        countDuplicatesAndMaybeAddTypeInfoReturnObject(missingRawObjects, addTypeInfo);
-    DuplicateGroupedAndTyped extra =
-        countDuplicatesAndMaybeAddTypeInfoReturnObject(extraRawObjects, addTypeInfo);
-    ElementFactGrouping grouping = pickGrouping(missing.entrySet(), extra.entrySet());
-
     ImmutableList.Builder<Fact> facts = ImmutableList.builder();
-    ImmutableList<Fact> missingFacts = makeFailExactlyFacts("missing", missing, grouping);
-    ImmutableList<Fact> unexpectedFacts = makeFailExactlyFacts("unexpected", extra, grouping);
-    facts.addAll(missingFacts);
-    if (missingFacts.size() > 1 && unexpectedFacts.size() > 1) {
-      facts.add(factWithoutValue(""));
-    }
-    facts.addAll(unexpectedFacts);
-    facts.add(factWithoutValue("---"));
+    facts.addAll(
+        makeElementFactsForBoth("missing", missingRawObjects, "unexpected", extraRawObjects));
     facts.add(fact("expected", required));
     facts.add(butWas());
     if (addElementsInWarning) {
@@ -529,11 +521,37 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     return ALREADY_FAILED;
   }
 
+  private static ImmutableList<Fact> makeElementFactsForBoth(
+      String firstKey,
+      Collection<?> firstCollection,
+      String secondKey,
+      Collection<?> secondCollection) {
+    // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
+    // the subject but not enough times. Similarly for unexpected extra items.
+    boolean addTypeInfo = hasMatchingToStringPair(firstCollection, secondCollection);
+    DuplicateGroupedAndTyped first =
+        countDuplicatesAndMaybeAddTypeInfoReturnObject(firstCollection, addTypeInfo);
+    DuplicateGroupedAndTyped second =
+        countDuplicatesAndMaybeAddTypeInfoReturnObject(secondCollection, addTypeInfo);
+    ElementFactGrouping grouping = pickGrouping(first.entrySet(), second.entrySet());
+
+    ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+    ImmutableList<Fact> firstFacts = makeElementFacts(firstKey, first, grouping);
+    ImmutableList<Fact> secondFacts = makeElementFacts(secondKey, second, grouping);
+    facts.addAll(firstFacts);
+    if (firstFacts.size() > 1 && secondFacts.size() > 1) {
+      facts.add(factWithoutValue(""));
+    }
+    facts.addAll(secondFacts);
+    facts.add(factWithoutValue("---"));
+    return facts.build();
+  }
+
   /**
    * Returns a list of facts (zero, one, or many, depending on the number of elements and the
-   * grouping policy) describing the given missing or unexpected elements.
+   * grouping policy) describing the given missing, unexpected, or near-miss elements.
    */
-  private static ImmutableList<Fact> makeFailExactlyFacts(
+  private static ImmutableList<Fact> makeElementFacts(
       String label, DuplicateGroupedAndTyped elements, ElementFactGrouping grouping) {
     if (elements.isEmpty()) {
       return ImmutableList.of();
@@ -589,14 +607,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   private static ElementFactGrouping pickGrouping(
-      Iterable<Entry<?>> missing, Iterable<Entry<?>> extra) {
-    if (anyHasMultiple(missing, extra) && anyContainsCommaOrNewline(missing, extra)) {
+      Iterable<Entry<?>> first, Iterable<Entry<?>> second) {
+    if (anyHasMultiple(first, second) && anyContainsCommaOrNewline(first, second)) {
       return FACT_PER_ELEMENT;
     }
-    if (hasMultiple(missing) && containsEmptyOrLong(missing)) {
+    if (hasMultiple(first) && containsEmptyOrLong(first)) {
       return FACT_PER_ELEMENT;
     }
-    if (hasMultiple(extra) && containsEmptyOrLong(extra)) {
+    if (hasMultiple(second) && containsEmptyOrLong(second)) {
       return FACT_PER_ELEMENT;
     }
     return ALL_IN_ONE_FACT;
