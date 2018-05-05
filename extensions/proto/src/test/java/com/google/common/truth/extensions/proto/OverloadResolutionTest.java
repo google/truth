@@ -363,4 +363,35 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     assertThat(altActualObjects).doesNotContainEntry("a", message1);
     assertThat(altActualObjects).doesNotContainEntry("b", message2);
   }
+
+  @Test
+  public void testHackHackHackBug195497495() {
+    // Empty sub message.
+    TestMessage2 message = parse("o_int: 1 o_sub_test_message: { }");
+    TestMessage2 strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
+    assertThat(strippedMessage.hasOSubTestMessage()).isFalse();
+    assertThat(strippedMessage.getOInt()).isEqualTo(1);
+
+    // Recurisvely empty sub message.
+    message = parse("o_int: 1 o_sub_test_message: { o_sub_sub_test_message: { } }");
+    strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
+    assertThat(strippedMessage.hasOSubTestMessage()).isFalse();
+    assertThat(strippedMessage.getOInt()).isEqualTo(1);
+
+    // Recursively non-empty sub message.
+    message = parse("o_int: 1 o_sub_test_message: { o_sub_sub_test_message: { o_int: 3 } }");
+    strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
+    assertThat(strippedMessage).isEqualTo(message);
+
+    // Recursively empty repeated field.
+    message = parse("o_int: 1 r_sub_test_message: { } r_sub_test_message: { }");
+    strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
+    assertThat(strippedMessage.getRSubTestMessageList()).isEmpty();
+    assertThat(strippedMessage.getOInt()).isEqualTo(1);
+
+    // Recursively non-empty repeated field.
+    message = parse("o_int: 1 r_sub_test_message: { } r_sub_test_message: { o_int: 5 }");
+    strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
+    assertThat(strippedMessage).isEqualTo(message);
+  }
 }

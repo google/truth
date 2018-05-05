@@ -123,4 +123,5 @@ public final class ProtoTruth {
   }
 
   private ProtoTruth() {}
+
 }
