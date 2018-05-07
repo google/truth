@@ -193,33 +193,67 @@ There are four parts to the example:
         should call the constructor directly except the `Subject.Factory` and
         subclasses.
 
-    5.  Finally, you define your test assertion API on the custom Subject. Since
-        you're defining the API, you can write it however you'd like. However,
-        we recommend method names that will make the assertions read *as close
-        to English as possible*. For some advice on naming assertion methods,
-        please see [here](faq#assertion-naming). For example:
+    5.  Finally, you define your test assertion API on the custom `Subject`.
+        Since you're defining the API, you can write it however you'd like.
+        However, we recommend method names that will make the assertions read
+        *as close to English as possible*. For some advice on naming assertion
+        methods, please see [here](faq#assertion-naming).
+
+        As for the implementation: Most assertion implementations employ one of
+        the two basic approaches. The simpler approach is to delegate to an
+        existing assertion. To do so, use `Subject.check()`, which preserves the
+        caller-specified `FailureStrategy` and other context. For example:
 
         ```java
         public void hasName(String name) {
-          if (!getSubject().name().equals(name)) {
-            fail("has name", name);
+          check("name()").that(actual().name()).isEqualTo(name);
+        }
+        ```
+
+        This gives Truth enough information to construct a failure message like:
+
+        ```none
+        value of    : employee.name()
+        expected    : Sundar Pichai
+        but was     : Kurt Alfred Kluever
+        employee was: Employee{username=kak, name=Kurt Alfred Kluever, isCeo=false}
+        ```
+
+        But sometimes you can't delegate to an existing assertion. Or you could,
+        but the failure message would be poor. In such cases, you can take the
+        other approach -- manually perform your check and report a failure. For
+        example:
+
+        ```java
+        public void isCeo() {
+          if (!actual().isCeo()) {
+            failWithActual(simpleFact("expected to be CEO"));
           }
         }
         ```
 
-        Inside the method, you simply do the check you're testing, and `fail()`
-        if it is not true.
+        This lets Truth produce a failure message like:
 
-        One advanced point: Custom `Subject` implementations often need to
-        delegate to an existing `Subject`―say, to declare a
+        ```none
+        expected to be CEO
+        but was: Employee{username=kak, name=Kurt Alfred Kluever, isCeo=false}
+        ```
+
+        This message contains all the relevant information, yet it's much
+        shorter than the `hasName(…)` example above. This is possible because
+        `isCeo()` is testing a boolean property. Boolean properties are good
+        candidates for the manual check-and-fail approach.
+
+        One advanced point: Custom `Subject` types sometimes declare "chaining"
+        methods that return an instance of another `Subject`. For example,
+        instead of providing `hasName(…)`, `EmployeeSubject` might declare a
         `EmployeeSubject.name()` method that returns a `StringSubject` for the
-        value of `employee.name()`. To create such "chained" subjects, call
-        `Subject.check()`, which preserves the caller-specified
-        `FailureStrategy` and other context:
+        value of `employee.name()`. To create such "chained" subjects, use
+        `Subject.check()`, as above, and return the `Subject` you create:
 
         ```java
         public StringSubject name() {
-          return check().that(actual().name());
+          return check("name()").that(actual().name());
         }
         ```
 
@@ -266,9 +300,14 @@ There are four parts to the example:
     [`ExpectFailure`] utility. The example above shows how to define a helper
     method to make your `ExpectFailure` calls even shorter.
 
-    For people who want to test more thoroughly, `expectFailure` returns an
-    `AssertionError`, enabling tests of failure messages like
-    `assertThat(failure).hasMessageThat().contains("ID")`.
+    If you want to test more thoroughly, `expectFailure` returns an
+    `AssertionError`, so you can write:
+
+    ```java
+    import static com.google.common.truth.ExpectFailure.assertThat;
+
+    assertThat(failure).factValue("value of").isEqualTo("employee.username()");
+    ```
 
     `ExpectFailure` also provides an API for users who can't use lambdas. See
     its docs for details.
