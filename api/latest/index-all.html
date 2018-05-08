@@ -1346,6 +1346,15 @@
 </a>
 <h2 class="title">F</h2>
 <dl>
+<dt><a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><span class="typeNameLink">Fact</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
+<dd>
+<div class="block">A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz."</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Fact.html#fact-java.lang.String-java.lang.Object-">fact(String, Object)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a></dt>
+<dd>
+<div class="block">Creates a fact with the given key and value, which will be printed in a format like "key:
+ value." The value is converted to a string by calling <code>String.valueOf</code> on it.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/TruthFailureSubject.html#factKeys--">factKeys()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TruthFailureSubject.html" title="class in com.google.common.truth">TruthFailureSubject</a></dt>
 <dd>
 <div class="block">Returns a subject for the list of fact keys.</div>
@@ -1412,6 +1421,22 @@
 <dd>
 <div class="block">Defines what to do when a check fails.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-">failWithActual(String, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
+<dd>
+<div class="block">Fails, reporting a message with two "<a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth">facts</a>":
+
+ 
+   <i>key</i>: <i>value</i>
+   but was: <i>actual value</i>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithActual(Fact, Fact...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
+<dd>
+<div class="block">Fails, reporting a message with the given facts, followed by an automatically added fact of the
+ form:
+
+ 
+   but was: <i>actual value</i>.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults(String, Object, String, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Assembles a failure message and passes it to the FailureStrategy</div>
@@ -1420,6 +1445,11 @@
 <dd>
 <div class="block">Assembles a failure message with an alternative representation of the wrapped subject and
  passes it to the FailureStrategy</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual(Fact, Fact...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
+<dd>
+<div class="block">Fails, reporting a message with the given facts, <i>without automatically adding the actual
+ value.</i></div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual(String)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
@@ -3065,6 +3095,11 @@
 <dd>
 <div class="block">Default implementation of <a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>SetMultimapWithProtoValuesSubject</code></a>.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Fact.html#simpleFact-java.lang.String-">simpleFact(String)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a></dt>
+<dd>
+<div class="block">Creates a fact with no value, which will be printed in the format "key" (with no colon or
+ value).</div>
+</dd>
 <dt><a href="com/google/common/truth/SimpleSubjectBuilder.html" title="class in com.google.common.truth"><span class="typeNameLink">SimpleSubjectBuilder</span></a>&lt;<a href="com/google/common/truth/SimpleSubjectBuilder.html" title="type parameter in SimpleSubjectBuilder">SubjectT</a> extends <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="com/google/common/truth/SimpleSubjectBuilder.html" title="type parameter in SimpleSubjectBuilder">SubjectT</a>,<a href="com/google/common/truth/SimpleSubjectBuilder.html" title="type parameter in SimpleSubjectBuilder">ActualT</a>&gt;,<a href="com/google/common/truth/SimpleSubjectBuilder.html" title="type parameter in SimpleSubjectBuilder">ActualT</a>&gt; - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">In a fluent assertion chain, exposes the most common <code>that</code> method, which accepts a value
@@ -3217,6 +3252,10 @@
 <dd>
 <div class="block">Returns a description of the correspondence, suitable to fill the gap in a failure message of
  the form {@code "<some actual element> is an element that ...</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Fact.html#toString--">toString()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a></dt>
+<dd>
+<div class="block">Returns a simple string representation for the fact.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#toString--">toString()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>&nbsp;</dd>
