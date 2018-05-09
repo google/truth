@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
@@ -139,7 +140,7 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void stringEqualityFail() {
-    expectFailureWhenTestingThat("abc").isEqualTo("abd");
+    expectFailureWhenTestingThat("abc").isEqualTo("ABC");
     assertThat(expectFailure.getFailure()).isInstanceOf(ComparisonFailureWithFacts.class);
   }
 
@@ -249,6 +250,40 @@ public class StringSubjectTest extends BaseSubjectTestCase {
 
     expectFailureWhenTestingThat("aba").doesNotContainMatch(Pattern.compile(".*b.*"));
     assertFailureValue("expected not to contain a match for", ".*b.*");
+  }
+
+  @Test
+  public void stringEqualityIgnoringCase() {
+    assertThat("café").ignoringCase().isEqualTo("CAFÉ");
+  }
+
+  @Test
+  public void stringEqualityIgnoringCaseWithNullSubject() {
+    assertThat((String) null).ignoringCase().isEqualTo(null);
+  }
+
+  @Test
+  public void stringEqualityIgnoringCaseFail() {
+    expectFailureWhenTestingThat("abc").ignoringCase().isEqualTo("abd");
+
+    assertFailureValue("expected", "abd");
+    assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
+  }
+
+  @Test
+  public void stringEqualityIgnoringCaseFailWithNullSubject() {
+    expectFailureWhenTestingThat((String) null).ignoringCase().isEqualTo("abc");
+
+    assertFailureValue("expected a string that is equal to", "abc");
+    assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
+  }
+
+  @Test
+  public void stringEqualityIgnoringCaseFailWithNullString() {
+    expectFailureWhenTestingThat("abc").ignoringCase().isEqualTo(null);
+
+    assertFailureValue("expected", "null (null reference)");
+    assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
   }
 
   private StringSubject expectFailureWhenTestingThat(String actual) {

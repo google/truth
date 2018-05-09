@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -170,6 +171,52 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   public void doesNotContainMatch(String regex) {
     if (Platform.containsMatch(actual(), regex)) {
       failWithActual("expected not to contain a match for", regex);
+    }
+  }
+
+  /**
+   * Returns a {@link StringSubject}-like instance that will ignore the case of the characters.
+   *
+   * <p>Character equality ignoring case is defined as follows: Characters are equal according to
+   * the {@code ==} operator before or after calling {@code
+   * Character.toLowerCase(Character.toUpperCase(character))} on each character. Note that this is
+   * independent of any locale.
+   */
+  public CaseInsensitiveStringComparison ignoringCase() {
+    return new CaseInsensitiveStringComparison();
+  }
+
+  /** Case insensitive propositions for string subjects. */
+  public final class CaseInsensitiveStringComparison {
+    private CaseInsensitiveStringComparison() {}
+
+    /**
+     * Fails if the subject is not equal to the given sequence (while ignoring case). For the
+     * purposes of this comparison, two strings are equal if any of the following is true:
+     *
+     * <ul>
+     *   <li>they are equal according to {@link String#equalsIgnoreCase}
+     *   <li>they are both null
+     * </ul>
+     *
+     * <p>Example: "abc" is equal to "ABC", but not to "abcd".
+     */
+    public void isEqualTo(CharSequence expected) {
+      if (actual() == null) {
+        if (expected != null) {
+          failWithoutActual(
+              fact("expected a string that is equal to", expected),
+              butWas(),
+              simpleFact("(case is ignored)"));
+        }
+      } else {
+        if (expected == null) {
+          failWithoutActual(
+              fact("expected", "null (null reference)"), butWas(), simpleFact("(case is ignored)"));
+        } else if (!actual().equalsIgnoreCase(expected.toString())) {
+          failWithoutActual(fact("expected", expected), butWas(), simpleFact("(case is ignored)"));
+        }
+      }
     }
   }
 }
