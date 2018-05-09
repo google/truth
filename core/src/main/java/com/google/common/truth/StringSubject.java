@@ -218,5 +218,41 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
         }
       }
     }
+
+    /** Fails if the string does not contain the given sequence (while ignoring case). */
+    public void contains(CharSequence expectedSequence) {
+      checkNotNull(expectedSequence);
+      String expected = expectedSequence.toString();
+      if (actual() == null) {
+        failWithoutActual(
+            fact("expected a string that contains", expected),
+            butWas(),
+            simpleFact("(case is ignored)"));
+      } else if (!containsIgnoreCase(expected)) {
+        failWithoutActual(
+            fact("expected to contain", expected), butWas(), simpleFact("(case is ignored)"));
+      }
+    }
+
+    private boolean containsIgnoreCase(String string) {
+      if (string.isEmpty()) {
+        // TODO(b/79459427): Fix for J2CL discrepancy when string is empty
+        return true;
+      }
+      String subject = actual();
+      for (int subjectOffset = 0;
+          subjectOffset <= subject.length() - string.length();
+          subjectOffset++) {
+        if (subject.regionMatches(
+            /* ignoreCase = */ true,
+            /* toffset = */ subjectOffset,
+            /* other = */ string,
+            /* ooffset = */ 0,
+            /* len = */ string.length())) {
+          return true;
+        }
+      }
+      return false;
+    }
   }
 }
