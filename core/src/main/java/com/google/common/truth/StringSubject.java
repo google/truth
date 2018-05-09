@@ -177,10 +177,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /**
    * Returns a {@link StringSubject}-like instance that will ignore the case of the characters.
    *
-   * <p>Character equality ignoring case is defined as follows: Characters are equal according to
-   * the {@code ==} operator before or after calling {@code
-   * Character.toLowerCase(Character.toUpperCase(character))} on each character. Note that this is
-   * independent of any locale.
+   * <p>Character equality ignoring case is defined as follows: Characters must be equal either
+   * after calling {@link Character#toLowerCase} or after calling {@link Character#toUpperCase}.
+   * Note that this is independent of any locale.
    */
   public CaseInsensitiveStringComparison ignoringCase() {
     return new CaseInsensitiveStringComparison();
