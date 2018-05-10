@@ -458,6 +458,10 @@
 <dd>
 <div class="block">Fails if the subject does not contain the given element.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#contains-java.lang.CharSequence-">contains(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></dt>
+<dd>
+<div class="block">Fails if the string does not contain the given sequence (while ignoring case).</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#contains-java.lang.CharSequence-">contains(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
 <dd>
 <div class="block">Fails if the string does not contain the given sequence.</div>
@@ -1776,6 +1780,10 @@
 <dd>
 <div class="block">Begins a new call chain that ignores any failures.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#ignoringCase--">ignoringCase()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
+<dd>
+<div class="block">Returns a <a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a>-like instance that will ignore the case of the characters.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#ignoringExtraRepeatedFieldElements--">ignoringExtraRepeatedFieldElements()</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
@@ -2295,6 +2303,10 @@
      equal. Prefer <a href="com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap)</code></a> instead.
      Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
 </div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#isEqualTo-java.lang.CharSequence-">isEqualTo(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></dt>
+<dd>
+<div class="block">Fails if the subject is not equal to the given sequence (while ignoring case).</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
@@ -3137,6 +3149,10 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#StringSubject-com.google.common.truth.FailureMetadata-java.lang.String-">StringSubject(FailureMetadata, String)</a></span> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
 <dd>
 <div class="block">Constructor for use by subclasses.</div>
+</dd>
+<dt><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth"><span class="typeNameLink">StringSubject.CaseInsensitiveStringComparison</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
+<dd>
+<div class="block">Case insensitive propositions for string subjects.</div>
 </dd>
 <dt><a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><span class="typeNameLink">Subject</span></a>&lt;<a href="com/google/common/truth/Subject.html" title="type parameter in Subject">S</a> extends <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="com/google/common/truth/Subject.html" title="type parameter in Subject">S</a>,<a href="com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&gt;,<a href="com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&gt; - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>

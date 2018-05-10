@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":42,"i12":10,"i13":10,"i14":10,"i15":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":42,"i13":10,"i14":10,"i15":10,"i16":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -50,7 +50,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?com/google/common/truth/StringSubject.html" target="_top">Frames</a></li>
@@ -74,7 +74,7 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested.classes.inherited.from.class.com.google.common.truth.Subject">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
@@ -138,6 +138,19 @@ extends <a href="../../../../com/google/common/truth/ComparableSubject.html" tit
 <!--   -->
 </a>
 <h3>Nested Class Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Nested Class Summary table, listing nested classes, and an explanation">
+<caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></span></code>
+<div class="block">Case insensitive propositions for string subjects.</div>
+</td>
+</tr>
+</table>
 <ul class="blockList">
 <li class="blockList"><a name="nested.classes.inherited.from.class.com.google.common.truth.Subject">
 <!--   -->
@@ -242,12 +255,18 @@ extends <a href="../../../../com/google/common/truth/ComparableSubject.html" tit
 </td>
 </tr>
 <tr id="i10" class="altColor">
+<td class="colFirst"><code><a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#ignoringCase--">ignoringCase</a></span>()</code>
+<div class="block">Returns a <a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a>-like instance that will ignore the case of the characters.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#isEmpty--">isEmpty</a></span>()</code>
 <div class="block">Fails if the string is not equal to the zero-length "empty string."</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#isEquivalentAccordingToCompareTo-java.lang.String-">isEquivalentAccordingToCompareTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;other)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -255,25 +274,25 @@ extends <a href="../../../../com/google/common/truth/ComparableSubject.html" tit
 </div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#isNotEmpty--">isNotEmpty</a></span>()</code>
 <div class="block">Fails if the string is equal to the zero-length "empty string."</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#matches-java.util.regex.Pattern-">matches</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;regex)</code>
 <div class="block">Fails if the string does not match the given regex.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#matches-java.lang.String-">matches</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;regex)</code>
 <div class="block">Fails if the string does not match the given regex.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.html#startsWith-java.lang.String-">startsWith</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;string)</code>
 <div class="block">Fails if the string does not start with the given string.</div>
@@ -502,11 +521,25 @@ public&nbsp;void&nbsp;doesNotContainMatch(<a href="https://docs.oracle.com/javas
 <a name="doesNotContainMatch-java.lang.String-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>doesNotContainMatch</h4>
 <pre>public&nbsp;void&nbsp;doesNotContainMatch(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;regex)</pre>
 <div class="block">Fails if the string contains a match on the given regex.</div>
+</li>
+</ul>
+<a name="ignoringCase--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>ignoringCase</h4>
+<pre>public&nbsp;<a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a>&nbsp;ignoringCase()</pre>
+<div class="block">Returns a <a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a>-like instance that will ignore the case of the characters.
+
+ <p>Character equality ignoring case is defined as follows: Characters must be equal either
+ after calling <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Character.html?is-external=true#toLowerCase-char-" title="class or interface in java.lang"><code>Character.toLowerCase(char)</code></a> or after calling <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Character.html?is-external=true#toUpperCase-char-" title="class or interface in java.lang"><code>Character.toUpperCase(char)</code></a>.
+ Note that this is independent of any locale.</div>
 </li>
 </ul>
 </li>
@@ -538,7 +571,7 @@ public&nbsp;void&nbsp;doesNotContainMatch(<a href="https://docs.oracle.com/javas
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?com/google/common/truth/StringSubject.html" target="_top">Frames</a></li>
@@ -562,7 +595,7 @@ public&nbsp;void&nbsp;doesNotContainMatch(<a href="https://docs.oracle.com/javas
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested.classes.inherited.from.class.com.google.common.truth.Subject">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
