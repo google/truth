@@ -218,6 +218,25 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
       }
     }
 
+    /**
+     * Fails if the subject is equal to the given string (while ignoring case). The meaning of
+     * equality is the same as for the {@link #isEqualTo} method.
+     */
+    public void isNotEqualTo(CharSequence unexpected) {
+      if (actual() == null) {
+        if (unexpected == null) {
+          failWithoutActual(
+              fact("expected a string that is not equal to", "null (null reference)"),
+              simpleFact("(case is ignored)"));
+        }
+      } else {
+        if (unexpected != null && actual().equalsIgnoreCase(unexpected.toString())) {
+          failWithoutActual(
+              fact("expected not to be", unexpected), butWas(), simpleFact("(case is ignored)"));
+        }
+      }
+    }
+
     /** Fails if the string does not contain the given sequence (while ignoring case). */
     public void contains(CharSequence expectedSequence) {
       checkNotNull(expectedSequence);
