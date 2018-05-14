@@ -200,7 +200,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
      *
      * <p>Example: "abc" is equal to "ABC", but not to "abcd".
      */
-    public void isEqualTo(CharSequence expected) {
+    public void isEqualTo(String expected) {
       if (actual() == null) {
         if (expected != null) {
           failWithoutActual(
@@ -212,7 +212,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
         if (expected == null) {
           failWithoutActual(
               fact("expected", "null (null reference)"), butWas(), simpleFact("(case is ignored)"));
-        } else if (!actual().equalsIgnoreCase(expected.toString())) {
+        } else if (!actual().equalsIgnoreCase(expected)) {
           failWithoutActual(fact("expected", expected), butWas(), simpleFact("(case is ignored)"));
         }
       }
@@ -222,7 +222,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
      * Fails if the subject is equal to the given string (while ignoring case). The meaning of
      * equality is the same as for the {@link #isEqualTo} method.
      */
-    public void isNotEqualTo(CharSequence unexpected) {
+    public void isNotEqualTo(String unexpected) {
       if (actual() == null) {
         if (unexpected == null) {
           failWithoutActual(
@@ -230,7 +230,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
               simpleFact("(case is ignored)"));
         }
       } else {
-        if (unexpected != null && actual().equalsIgnoreCase(unexpected.toString())) {
+        if (unexpected != null && actual().equalsIgnoreCase(unexpected)) {
           failWithoutActual(
               fact("expected not to be", unexpected), butWas(), simpleFact("(case is ignored)"));
         }
