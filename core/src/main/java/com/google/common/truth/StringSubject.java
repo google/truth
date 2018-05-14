@@ -252,6 +252,21 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
       }
     }
 
+    /** Fails if the string contains the given sequence (while ignoring case). */
+    public void doesNotContain(CharSequence expectedSequence) {
+      checkNotNull(expectedSequence);
+      String expected = expectedSequence.toString();
+      if (actual() == null) {
+        failWithoutActual(
+            fact("expected a string that does not contain", expected),
+            butWas(),
+            simpleFact("(case is ignored)"));
+      } else if (containsIgnoreCase(expected)) {
+        failWithoutActual(
+            fact("expected not to contain", expected), butWas(), simpleFact("(case is ignored)"));
+      }
+    }
+
     private boolean containsIgnoreCase(String string) {
       if (string.isEmpty()) {
         // TODO(b/79459427): Fix for J2CL discrepancy when string is empty
