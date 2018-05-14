@@ -279,10 +279,41 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void stringEqualityIgnoringCaseFailWithNullString() {
+  public void stringEqualityIgnoringCaseFailWithNullExpectedString() {
     expectFailureWhenTestingThat("abc").ignoringCase().isEqualTo(null);
 
     assertFailureValue("expected", "null (null reference)");
+    assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
+  }
+
+  @Test
+  public void stringInequalityIgnoringCase() {
+    assertThat("café").ignoringCase().isNotEqualTo("AFÉ");
+  }
+
+  @Test
+  public void stringInequalityIgnoringCaseWithNullSubject() {
+    assertThat((String) null).ignoringCase().isNotEqualTo("abc");
+  }
+
+  @Test
+  public void stringInequalityIgnoringCaseWithNullExpectedString() {
+    assertThat("abc").ignoringCase().isNotEqualTo(null);
+  }
+
+  @Test
+  public void stringInequalityIgnoringCaseFail() {
+    expectFailureWhenTestingThat("café").ignoringCase().isNotEqualTo("CAFÉ");
+
+    assertFailureValue("expected not to be", "CAFÉ");
+    assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
+  }
+
+  @Test
+  public void stringInequalityIgnoringCaseFailWithNullSubject() {
+    expectFailureWhenTestingThat((String) null).ignoringCase().isNotEqualTo(null);
+
+    assertFailureValue("expected a string that is not equal to", "null (null reference)");
     assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
   }
 
