@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -142,8 +142,20 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#isEqualTo-java.lang.CharSequence-">isEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#doesNotContain-java.lang.CharSequence-">doesNotContain</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expectedSequence)</code>
+<div class="block">Fails if the string contains the given sequence (while ignoring case).</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#isEqualTo-java.lang.String-">isEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;expected)</code>
 <div class="block">Fails if the subject is not equal to the given sequence (while ignoring case).</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#isNotEqualTo-java.lang.String-">isNotEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;unexpected)</code>
+<div class="block">Fails if the subject is equal to the given string (while ignoring case).</div>
 </td>
 </tr>
 </table>
@@ -168,13 +180,13 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="isEqualTo-java.lang.CharSequence-">
+<a name="isEqualTo-java.lang.String-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre>public&nbsp;void&nbsp;isEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expected)</pre>
+<pre>public&nbsp;void&nbsp;isEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not equal to the given sequence (while ignoring case). For the
  purposes of this comparison, two strings are equal if any of the following is true:
 
@@ -186,14 +198,35 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
  <p>Example: "abc" is equal to "ABC", but not to "abcd".</div>
 </li>
 </ul>
+<a name="isNotEqualTo-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isNotEqualTo</h4>
+<pre>public&nbsp;void&nbsp;isNotEqualTo(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;unexpected)</pre>
+<div class="block">Fails if the subject is equal to the given string (while ignoring case). The meaning of
+ equality is the same as for the <a href="../../../../com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#isEqualTo-java.lang.String-"><code>isEqualTo(java.lang.String)</code></a> method.</div>
+</li>
+</ul>
 <a name="contains-java.lang.CharSequence-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>contains</h4>
 <pre>public&nbsp;void&nbsp;contains(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expectedSequence)</pre>
 <div class="block">Fails if the string does not contain the given sequence (while ignoring case).</div>
+</li>
+</ul>
+<a name="doesNotContain-java.lang.CharSequence-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>doesNotContain</h4>
+<pre>public&nbsp;void&nbsp;doesNotContain(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/CharSequence.html?is-external=true" title="class or interface in java.lang">CharSequence</a>&nbsp;expectedSequence)</pre>
+<div class="block">Fails if the string contains the given sequence (while ignoring case).</div>
 </li>
 </ul>
 </li>
