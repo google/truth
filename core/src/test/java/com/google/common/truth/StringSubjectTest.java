@@ -367,6 +367,41 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
   }
 
+  @Test
+  public void stringDoesNotContainIgnoringCase() {
+    assertThat("äbc").ignoringCase().doesNotContain("Äc");
+  }
+
+  @Test
+  public void stringDoesNotContainIgnoringCaseCharSeq() {
+    CharSequence charSeq = new StringBuilder("cb");
+    assertThat("abc").ignoringCase().doesNotContain(charSeq);
+  }
+
+  @Test
+  public void stringDoesNotContainIgnoringCaseFail() {
+    expectFailureWhenTestingThat("äbc").ignoringCase().doesNotContain("Äb");
+
+    assertFailureValue("expected not to contain", "Äb");
+    assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
+  }
+
+  @Test
+  public void stringDoesNotContainIgnoringCaseFailWithEmptyString() {
+    expectFailureWhenTestingThat("abc").ignoringCase().doesNotContain("");
+
+    assertFailureValue("expected not to contain", "");
+    assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
+  }
+
+  @Test
+  public void stringDoesNotContainIgnoringCaseFailBecauseNullSubject() {
+    expectFailureWhenTestingThat((String) null).ignoringCase().doesNotContain("d");
+
+    assertFailureValue("expected a string that does not contain", "d");
+    assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
+  }
+
   private StringSubject expectFailureWhenTestingThat(String actual) {
     return expectFailure.whenTesting().that(actual);
   }
