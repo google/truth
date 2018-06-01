@@ -55,6 +55,8 @@ public class ComparableSubjectCompileTest {
 
     assertAbout(javaSource())
         .that(file)
+        // https://github.com/google/compile-testing/issues/149
+        .withCompilerOptions("-sourcepath", "")
         .failsToCompile()
         .withErrorContaining("java.lang.String cannot be converted to test.MyTest.ComparableType")
         .in(file)
@@ -84,6 +86,8 @@ public class ComparableSubjectCompileTest {
             "}");
     assertAbout(javaSource())
         .that(file)
+        // https://github.com/google/compile-testing/issues/149
+        .withCompilerOptions("-sourcepath", "")
         .failsToCompile()
         .withErrorContaining(
             "java.lang.String cannot be converted to test.MyTest.RawComparableType")
