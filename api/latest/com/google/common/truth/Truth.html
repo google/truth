@@ -384,8 +384,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <div class="block">Returns a <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth"><code>StandardSubjectBuilder</code></a> that will prepend the formatted message using the
  specified arguments to the failure message in the event of a test failure.
 
- <p><b>Note:</b> The failure message template string only supports the <code>"%s"</code> specifier,
- not the full range of <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Formatter.html?is-external=true" title="class or interface in java.util"><code>Formatter</code></a> specifiers.</div>
+ <p><b>Note:</b> the arguments will be substituted into the format template using <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Strings.html?is-external=true#lenientFormat-java.lang.String-java.lang.Object...-" title="class or interface in com.google.common.base"><code>Strings.lenientFormat</code></a>. Note this only supports
+ the <code>%s</code> specifier.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - if the number of placeholders in the format string does not
