@@ -30,7 +30,6 @@
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-compat-qual</artifactId>
       <version>${checker-framework.version}</version>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
