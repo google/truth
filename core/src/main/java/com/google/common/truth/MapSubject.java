@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
@@ -348,7 +349,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         @Override
         public String apply(ValueDifference<Object, Object> values) {
           boolean includeTypes = values.actual.toString().equals(values.expected.toString());
-          return StringUtil.format(
+          return lenientFormat(
               "(expected %s but got %s)",
               includeTypes ? new TypedToStringWrapper(values.expected) : values.expected,
               includeTypes ? new TypedToStringWrapper(values.actual) : values.actual);
@@ -383,7 +384,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
     @Override
     public String toString() {
-      return StringUtil.format("%s (%s)", delegate, objectToTypeName(delegate));
+      return lenientFormat("%s (%s)", delegate, objectToTypeName(delegate));
     }
   }
 
@@ -574,7 +575,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       if (diff.isEmpty()) {
         return new MapInOrder(
             expectedMap,
-            StringUtil.format(
+            lenientFormat(
                 "contains, in order, exactly one entry that has a key that is equal to and a value "
                     + "that %s the key and value of each entry of",
                 correspondence));
@@ -597,10 +598,10 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           @NullableDecl
           String diffString = correspondence.formatDiff(values.actual, values.expected);
           if (diffString != null) {
-            return StringUtil.format(
+            return lenientFormat(
                 "(expected %s but got %s, diff: %s)", values.expected, values.actual, diffString);
           } else {
-            return StringUtil.format("(expected %s but got %s)", values.expected, values.actual);
+            return lenientFormat("(expected %s but got %s)", values.expected, values.actual);
           }
         }
       };

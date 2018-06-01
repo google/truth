@@ -15,8 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Platform.floatToString;
-import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.Float.NEGATIVE_INFINITY;
 import static java.lang.Float.NaN;
@@ -164,7 +164,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[%s, %s]>."
                     + " It differs at indexes <[1]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f, INTOLERABLE_3POINT3));
@@ -178,7 +178,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[%s, %s]>."
                     + " It differs at indexes <[0, 1]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 3.3f, 2.2f));
@@ -192,7 +192,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[%s, %s, %s]>."
                     + " Expected length <3> but got <2>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f, 3.3f, 1.1f));
@@ -204,7 +204,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[%s]>."
                     + " Expected length <1> but got <2>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f));
@@ -218,7 +218,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, Infinity]> has values within %s of"
                     + " <[%s, Infinity]>. It differs at indexes <[1]>",
                 2.2f, DEFAULT_TOLERANCE, 2.2f));
@@ -231,7 +231,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, Infinity]> has values within %s of"
                     + " <[%s, Infinity]>. It differs at indexes <[1]>",
                 2.2f, DEFAULT_TOLERANCE, 2.2f));
@@ -245,7 +245,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[%s, Infinity]>."
                     + " It differs at indexes <[1]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f));
@@ -259,7 +259,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[Infinity]>."
                     + " Expected length <1> but got <2>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE));
@@ -271,7 +271,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[NaN]> has values within %s of <[NaN]>."
                     + " It differs at indexes <[0]>",
                 DEFAULT_TOLERANCE));
@@ -305,7 +305,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     } catch (IllegalArgumentException e) {
       assertThat(e)
           .hasMessageThat()
-          .isEqualTo(format("tolerance (%s) cannot be negative", -0.001f));
+          .isEqualTo(lenientFormat("tolerance (%s) cannot be negative", -0.001f));
     }
   }
 
@@ -345,7 +345,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of"
                     + " <[%s, %s]>. It differs at indexes <[1]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f, INTOLERABLE_3POINT3));
@@ -359,7 +359,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[%s, %s]>."
                     + " It differs at indexes <[0, 1]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 3.3f, 2.2f));
@@ -373,7 +373,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[%s, %s, %s]>."
                     + " Expected length <3> but got <2>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f, 3.3f, 1.1f));
@@ -387,7 +387,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[%s]>."
                     + " Expected length <1> but got <2>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f));
@@ -401,7 +401,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, Infinity]> has values within %s of"
                     + " <[%s, Infinity]>. It differs at indexes <[1]>",
                 2.2f, DEFAULT_TOLERANCE, 2.2f));
@@ -415,7 +415,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[%s, Infinity]>."
                     + " It differs at indexes <[1]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f));
@@ -429,7 +429,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values within %s of <[Infinity]>."
                     + " Expected length <1> but got <2>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE));
@@ -443,7 +443,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[NaN]> has values within %s of <[NaN]>."
                     + " It differs at indexes <[0]>",
                 DEFAULT_TOLERANCE));
@@ -481,7 +481,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     } catch (IllegalArgumentException e) {
       assertThat(e)
           .hasMessageThat()
-          .isEqualTo(format("tolerance (%s) cannot be negative", -0.001f));
+          .isEqualTo(lenientFormat("tolerance (%s) cannot be negative", -0.001f));
     }
   }
 
@@ -506,7 +506,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values not within %s of <[%s, %s]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f, 3.3f));
   }
@@ -520,7 +520,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values not within %s of <[%s, %s]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f, TOLERABLE_3POINT3));
   }
@@ -541,7 +541,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values not within %s of <[%s, %s]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f, 3.3f));
   }
@@ -555,7 +555,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, Infinity]> has values not within %s of <[%s, Infinity]>",
                 2.2f, DEFAULT_TOLERANCE, 2.2f));
   }
@@ -568,7 +568,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, Infinity]> has values not within %s of <[%s, Infinity]>",
                 2.2f, DEFAULT_TOLERANCE, 2.2f));
   }
@@ -582,7 +582,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values not within %s of <[%s, Infinity]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f));
   }
@@ -600,7 +600,8 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format("Not true that <[NaN]> has values not within %s of <[NaN]>", DEFAULT_TOLERANCE));
+            lenientFormat(
+                "Not true that <[NaN]> has values not within %s of <[NaN]>", DEFAULT_TOLERANCE));
   }
 
   @Test
@@ -634,7 +635,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     } catch (IllegalArgumentException e) {
       assertThat(e)
           .hasMessageThat()
-          .isEqualTo(format("tolerance (%s) cannot be negative", -0.001f));
+          .isEqualTo(lenientFormat("tolerance (%s) cannot be negative", -0.001f));
     }
   }
 
@@ -679,7 +680,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values not within %s of <[%s, %s]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f, 3.3f));
   }
@@ -693,7 +694,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values not within %s of <[%s, %s]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f, TOLERABLE_3POINT3));
   }
@@ -715,7 +716,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, Infinity]> has values not within %s of <[%s, Infinity]>",
                 2.2f, DEFAULT_TOLERANCE, 2.2f));
   }
@@ -729,7 +730,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "Not true that <[%s, %s]> has values not within %s of <[%s, Infinity]>",
                 2.2f, 3.3f, DEFAULT_TOLERANCE, 2.2f));
   }
@@ -751,7 +752,8 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format("Not true that <[NaN]> has values not within %s of <[NaN]>", DEFAULT_TOLERANCE));
+            lenientFormat(
+                "Not true that <[NaN]> has values not within %s of <[NaN]>", DEFAULT_TOLERANCE));
   }
 
   @Test
@@ -791,7 +793,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     } catch (IllegalArgumentException e) {
       assertThat(e)
           .hasMessageThat()
-          .isEqualTo(format("tolerance (%s) cannot be negative", -0.001f));
+          .isEqualTo(lenientFormat("tolerance (%s) cannot be negative", -0.001f));
     }
   }
 
@@ -813,7 +815,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is a finite "
                     + "number within %s of <%s>",
@@ -828,7 +830,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, Infinity, %s]> "
                     + "contains at least one element that is "
                     + "a finite number within %s of <Infinity>",
@@ -843,7 +845,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, NaN, %s]> "
                     + "contains at least one element that is "
                     + "a finite number within %s of <NaN>",
@@ -927,7 +929,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is a "
                     + "finite number within %s of each element of <[%s, %s]>. "
@@ -964,7 +966,8 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
             + " of an expected value",
         "expected order for required elements",
         "but was");
-    assertFailureValue("expected order for required elements", format("[%s, %s]", 2.0f, 1.0f));
+    assertFailureValue(
+        "expected order for required elements", lenientFormat("[%s, %s]", 2.0f, 1.0f));
   }
 
   @Test
@@ -982,7 +985,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is "
                     + "a finite number within %s of any element in <[%s, %s]>",
@@ -1004,7 +1007,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains exactly one element that is a finite "
                     + "number within %s of each element of <[%s, %s]>. "
@@ -1034,7 +1037,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
             + " of an expected value",
         "expected",
         "but was");
-    assertFailureValue("expected", format("[%s, %s, %s]", 2.0f, 1.0f, 3.0f));
+    assertFailureValue("expected", lenientFormat("[%s, %s, %s]", 2.0f, 1.0f, 3.0f));
   }
 
   @Test
@@ -1052,7 +1055,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains no element that is a finite number within %s"
                     + " of any element in <[%s, %s]>. It contains <[%s which corresponds to %s]>",
@@ -1079,7 +1082,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element "
                     + "that is exactly equal to <%s>",
@@ -1169,7 +1172,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, -0.0, %s]> "
                     + "contains at least one element that is "
                     + "exactly equal to <%s>",
@@ -1198,7 +1201,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is exactly equal "
                     + "to each element of <[%s, %s]>. It is missing an element that is exactly "
@@ -1226,7 +1229,8 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         "comparing contents by testing that each element is exactly equal to an expected value",
         "expected order for required elements",
         "but was");
-    assertFailureValue("expected order for required elements", format("[%s, %s]", 2.0f, 1.0f));
+    assertFailureValue(
+        "expected order for required elements", lenientFormat("[%s, %s]", 2.0f, 1.0f));
   }
 
   @Test
@@ -1242,7 +1246,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains at least one element that is exactly equal "
                     + "to any element in <[%s, %s]>",
@@ -1264,7 +1268,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains exactly one element that is exactly equal "
                     + "to each element of <[%s, %s]>. It has unexpected elements <[%s]>",
@@ -1291,7 +1295,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         "comparing contents by testing that each element is exactly equal to an expected value",
         "expected",
         "but was");
-    assertFailureValue("expected", format("[%s, %s, %s]", 2.0f, 1.0f, 3.0f));
+    assertFailureValue("expected", lenientFormat("[%s, %s, %s]", 2.0f, 1.0f, 3.0f));
   }
 
   @Test
@@ -1309,7 +1313,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            format(
+            lenientFormat(
                 "value of: array.asList()\nNot true that <[%s, %s, %s]> "
                     + "contains no element that is exactly equal to any "
                     + "element in <[%s, %s]>. It contains <[%s which corresponds to %s]>",

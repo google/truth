@@ -15,8 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
-import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.Truth.appendSuffixIfNotNull;
 import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;
@@ -78,7 +78,7 @@ final class Platform {
         ComparisonFailureMessageStrategy messageStrategy) {
       String body =
           messageStrategy == INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE
-              ? format("%s expected:<[%s]> but was:<[%s]>", message, expected, actual)
+              ? lenientFormat("%s expected:<[%s]> but was:<[%s]>", message, expected, actual)
               : message;
       return appendSuffixIfNotNull(body, suffix);
     }

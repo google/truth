@@ -19,11 +19,11 @@ import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.doubleToString;
 import static com.google.common.truth.Platform.floatToString;
-import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.Subject.EqualityCheck.SAME_INSTANCE;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.append;
@@ -141,16 +141,17 @@ public class Subject<S extends Subject<S, T>, T> {
    * message.
    *
    * <p>{@code named()} takes a format template and argument objects which will be substituted into
-   * the template, similar to {@link String#format(String, Object...)}, the chief difference being
-   * that extra parameters (for which there are no template variables) will be appended to the
-   * resulting string in brackets. Additionally, this only supports the {@code %s} template variable
-   * type.
+   * the template using {@link com.google.common.base.Strings#lenientFormat Strings.lenientFormat}.
+   * Note this only supports the {@code %s} specifier.
+   *
+   * @param format a template with {@code %s} placeholders
+   * @param args the object parameters which will be applied to the message template.
    */
   @SuppressWarnings("unchecked")
   @CanIgnoreReturnValue
   public S named(String format, Object... args) {
     checkNotNull(format, "Name passed to named() cannot be null.");
-    this.customName = StringUtil.format(format, args);
+    this.customName = lenientFormat(format, checkNotNull(args));
     return (S) this;
   }
 
@@ -300,8 +301,6 @@ public class Subject<S extends Subject<S, T>, T> {
           fact("expected not to be specific instance", actualCustomStringRepresentation()));
     }
   }
-
-  // TODO(cpovirk): Use StringUtil.compressType for instance and equality checks?
 
   /** Fails if the subject is not an instance of the given class. */
   public void isInstanceOf(Class<?> clazz) {
@@ -923,7 +922,7 @@ public class Subject<S extends Subject<S, T>, T> {
   protected final void failWithBadResults(
       String verb, Object expected, String failVerb, Object actual) {
     String message =
-        format(
+        lenientFormat(
             "Not true that %s %s <%s>. It %s <%s>",
             actualAsString(),
             verb,
@@ -943,7 +942,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   protected final void failWithCustomSubject(String verb, Object expected, Object actual) {
     String message =
-        format(
+        lenientFormat(
             "Not true that <%s> %s <%s>",
             (actual == null) ? "null reference" : actual, verb, expected);
     failWithoutActual(simpleFact(message));
@@ -953,7 +952,7 @@ public class Subject<S extends Subject<S, T>, T> {
   @Deprecated
   protected final void failWithoutSubject(String check) {
     String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
-    failWithoutActual(simpleFact(format("Not true that %s %s", strSubject, check)));
+    failWithoutActual(simpleFact(lenientFormat("Not true that %s %s", strSubject, check)));
   }
 
   /**
@@ -998,15 +997,12 @@ public class Subject<S extends Subject<S, T>, T> {
    * Passes through a failure message verbatim. Used for {@link Subject} subclasses which need to
    * provide alternate language for more fit-to-purpose error messages.
    *
-   * @param message the message template to be passed to the failure. Note, this method only
-   *     guarantees to process {@code %s} tokens. It is not guaranteed to be compatible with {@code
-   *     String.format()}. Any other formatting desired (such as floats or scientific notation)
-   *     should be performed before the method call and the formatted value passed in as a string.
+   * @param message a template with {@code %s} placeholders
    * @param parameters the object parameters which will be applied to the message template.
    */
   // TODO(cgruber) final
   protected void failWithRawMessage(String message, Object... parameters) {
-    failWithoutActual(simpleFact(format(message, parameters)));
+    failWithoutActual(simpleFact(lenientFormat(message, parameters)));
   }
 
   /**

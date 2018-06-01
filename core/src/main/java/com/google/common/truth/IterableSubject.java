@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Iterables.size;
 import static com.google.common.collect.Lists.newArrayList;
@@ -24,7 +25,6 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.ALL_IN_ONE_FACT;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.FACT_PER_ELEMENT;
-import static com.google.common.truth.StringUtil.format;
 import static com.google.common.truth.SubjectUtils.accumulate;
 import static com.google.common.truth.SubjectUtils.annotateEmptyStrings;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
@@ -584,7 +584,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * any), so we don't want to include it here. (And it's better to have it in the value, rather
      * than in the key, so that it doesn't push the horizontally aligned values over too far.)
      */
-    return format("%s (%s)", label, elements.totalCopies());
+    return lenientFormat("%s (%s)", label, elements.totalCopies());
   }
 
   private static String keyToServeAsHeader(String label, DuplicateGroupedAndTyped elements) {
@@ -602,7 +602,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   private static String numberString(int n, int count) {
-    return count == 1 ? format("#%s", n) : format("#%s [%s copies]", n, count);
+    return count == 1 ? lenientFormat("#%s", n) : lenientFormat("#%s [%s copies]", n, count);
   }
 
   private static ElementFactGrouping pickGrouping(
@@ -1196,7 +1196,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
               + "provided and has consequently been ignored.)";
         }
       } else if (missing.size() == 1 && extra.size() >= 1) {
-        return format(
+        return lenientFormat(
             "is missing an element that %s <%s> and has unexpected elements <%s>",
             correspondence, missing.get(0), formatExtras(missing.get(0), extra));
       } else {
@@ -1208,10 +1208,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         String verb, List<? extends E> missing, List<? extends A> extra) {
       List<String> messages = newArrayList();
       if (!missing.isEmpty()) {
-        messages.add(format("is missing an element that %s %s", verb, formatMissing(missing)));
+        messages.add(
+            lenientFormat("is missing an element that %s %s", verb, formatMissing(missing)));
       }
       if (!extra.isEmpty()) {
-        messages.add(format("has unexpected elements <%s>", extra));
+        messages.add(lenientFormat("has unexpected elements <%s>", extra));
       }
       return Joiner.on(" and ").join(messages);
     }
@@ -1222,7 +1223,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
         List<A> extras = pairing.pairedKeysToActualValues.get(key);
         messages.add(
-            format(
+            lenientFormat(
                 "is missing an element that corresponds to <%s> and has unexpected elements <%s> "
                     + "with key %s",
                 missing, formatExtras(missing, extras), key));
@@ -1244,7 +1245,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       for (A extra : extras) {
         @NullableDecl String diff = correspondence.formatDiff(extra, missing);
         if (diff != null) {
-          extrasFormatted.add(format("%s (diff: %s)", extra, diff));
+          extrasFormatted.add(lenientFormat("%s (diff: %s)", extra, diff));
         } else {
           extrasFormatted.add(extra.toString());
         }
@@ -1500,7 +1501,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     private String describeMissingWithoutPairing(String verb, List<? extends E> missing) {
-      return format("is missing an element that %s %s", verb, formatMissing(missing));
+      return lenientFormat("is missing an element that %s %s", verb, formatMissing(missing));
     }
 
     private String describeMissingWithPairing(Pairing pairing) {
@@ -1509,7 +1510,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
         List<A> extras = pairing.pairedKeysToActualValues.get(key);
         messages.add(
-            format(
+            lenientFormat(
                 "is missing an element that corresponds to <%s> (but did have elements <%s> with "
                     + "matching key %s)",
                 missing, formatExtras(missing, extras), key));
@@ -1556,7 +1557,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     public final void containsAnyOf(
         @NullableDecl E first, @NullableDecl E second, @NullableDecl E... rest) {
       containsAny(
-          format("contains at least one element that %s any of", correspondence),
+          lenientFormat("contains at least one element that %s any of", correspondence),
           accumulate(first, second, rest));
     }
 
@@ -1566,7 +1567,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     public void containsAnyIn(Iterable<? extends E> expected) {
       containsAny(
-          format("contains at least one element that %s any element in", correspondence), expected);
+          lenientFormat("contains at least one element that %s any element in", correspondence),
+          expected);
     }
 
     /**
@@ -1616,7 +1618,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         E expected = pairing.pairedKeysToExpectedValues.get(key);
         List<A> got = pairing.pairedKeysToActualValues.get(key);
         messages.add(
-            format(
+            lenientFormat(
                 "with key %s, would have accepted %s, but got %s",
                 key, expected, formatExtras(expected, got)));
       }

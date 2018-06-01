@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.SubjectUtils.HUMAN_UNDERSTANDABLE_EMPTY_STRING;
@@ -574,7 +575,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
     @Override
     public String toString() {
-      return StringUtil.format(
+      return lenientFormat(
           "has a key that is equal to and a value that %s the key and value of",
           valueCorrespondence);
     }

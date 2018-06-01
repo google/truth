@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.truth.StringUtil.format;
+import static com.google.common.base.Strings.lenientFormat;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
@@ -204,8 +204,9 @@ public class StandardSubjectBuilder {
    * this method is called multiple times, the messages will appear in the order that they were
    * specified.
    *
-   * <p><b>Note:</b> The failure message template string only supports the {@code "%s"} specifier,
-   * not the full range of {@link java.util.Formatter} specifiers.
+   * <p><b>Note:</b> the arguments will be substituted into the format template using {@link
+   * com.google.common.base.Strings#lenientFormat Strings.lenientFormat}. Note this only supports
+   * the {@code %s} specifier.
    *
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
@@ -237,7 +238,7 @@ public class StandardSubjectBuilder {
 
   /** Triggers the failure strategy with the given failure message */
   public final void fail(@NullableDecl String format, Object /*@NullableDeclType*/... args) {
-    metadata().fail(format(format, args));
+    metadata().fail(lenientFormat(format, args));
   }
 
   private FailureMetadata metadata() {
