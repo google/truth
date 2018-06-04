@@ -56,68 +56,78 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 final class ProtoTruthMessageDifferencer {
 
-  /** Whether or not a sub-message tree should be ignored. */
+  /**
+   * Whether or not a sub-message tree should be ignored.
+   *
+   * <p>This enables {@link FieldScopeLogic}s and the {@code ProtoTruthMessageDifferencer} to work
+   * together on traversing a message, instead of either class doing redundant work. The need for
+   * {@code NONRECURSIVE} arises from sub-messages. For example:
+   *
+   * <p><code>
+   *   message Foo {
+   *     optional Bar bar = 1;
+   *   }
+   *
+   *   message Bar {
+   *     optional Baz baz = 1;
+   *   }
+   *
+   *   message Baz {
+   *     optional string name = 1;
+   *     optional int64 id = 2;
+   *   }
+   * </code>
+   *
+   * <p>A {@link FieldScopeLogic} which ignores everything except 'Baz.name', when asked if
+   * 'Foo.bar' should be ignored, cannot know whether it should be ignored or not without scanning
+   * all of 'Foo.bar' for Baz submessages, and whether they have the name field set. We could scan
+   * the entire message to make this decision, but the message differencer will be scanning anyway
+   * if we choose not to ignore it, which creates redundant work. {@code NONRECURSIVEMAYBE} is the
+   * solution to this problem: The logic defers the decision back to the message differencer, which
+   * proceeds with the complete scan of 'Foo.bar', and ignores the entire submessage if and only if
+   * nothing in 'Foo.bar' was determined to be un-ignorable.
+   */
   enum ShouldIgnore {
-    /** Indicates that this field (and all its children) should be completely ignored. */
-    YES,
+    /** This field should be ignored, but children might not be ignorable. */
+    YES_NONRECURSIVE(true, false),
+    /** This field and all its children should be ignored. */
+    YES_RECURSIVE(true, true),
+    /** This field should not be ignored, but children might be ignorable. */
+    NO_NONRECURSIVE(false, false),
+    /** This field and all its children should not be ignored. */
+    NO_RECURSIVE(false, true);
 
-    /**
-     * Indicates that this field is a {@code Message} which may or may not contain sub-fields that
-     * should not be ignored. The {@code Message} should be ignored iff no descendant (that is,
-     * child, child-of-child, etc.) reports {@code SubResult.NO}.
-     *
-     * <p>This enables {@link FieldScopeLogic}s and the {@code ProtoTruthMessageDifferencer} to work
-     * together on traversing a message, instead of either class doing redundant work. The need for
-     * {@code MAYBE} arises from sub-messages. For example:
-     *
-     * <p><code>
-     *   message Foo {
-     *     optional Bar bar = 1;
-     *   }
-     *
-     *   message Bar {
-     *     optional Baz baz = 1;
-     *   }
-     *
-     *   message Baz {
-     *     optional string name = 1;
-     *     optional int64 id = 2;
-     *   }
-     * </code>
-     *
-     * <p>A {@link FieldScopeLogic} which ignores everything except 'Baz.name', when asked if
-     * 'Foo.bar' should be ignored, cannot know whether it should be ignored or not without scanning
-     * all of 'Foo.bar' for Baz submessages, and whether they have the name field set. We could scan
-     * the entire message to make this decision, but the message differencer will be scanning anyway
-     * if we choose not to ignore it, which creates redundant work. {@code MAYBE} is the solution to
-     * this problem: The logic defers the decision back to the message differencer, which proceeds
-     * with the complete scan of 'Foo.bar', and ignores the entire submessage if and only if nothing
-     * in 'Foo.bar' was determined to be un-ignorable.
-     */
-    MAYBE,
-
-    /**
-     * Indicates that this field should definitely not be ignored. However, its children might still
-     * be ignorable.
-     */
-    NO;
-
-    /**
-     * Returns whether we should maybe ignore for this case, or we should definitely not ignore.
-     *
-     * <p>Useful as a simplification where YES is not expected, since it's illegal to call this
-     * method on YES.
-     */
-    boolean shouldMaybeIgnore() {
-      switch (this) {
-        case YES:
-          throw new IllegalStateException("Should not have ShouldIgnore.YES here.");
-        case MAYBE:
-          return true;
-        case NO:
-          return false;
+    public static ShouldIgnore of(boolean shouldIgnore, boolean recursive) {
+      if (shouldIgnore) {
+        return recursive ? YES_RECURSIVE : YES_NONRECURSIVE;
+      } else {
+        return recursive ? NO_RECURSIVE : NO_NONRECURSIVE;
       }
-      throw new AssertionError("Impossible: " + this);
+    }
+
+    private final boolean shouldIgnore;
+    private final boolean recursive;
+
+    ShouldIgnore(boolean shouldIgnore, boolean recursive) {
+      this.shouldIgnore = shouldIgnore;
+      this.recursive = recursive;
+    }
+
+    /** Whether this field should be ignored or not. */
+    boolean shouldIgnore() {
+      return shouldIgnore;
+    }
+
+    /**
+     * Whether this field's sub-children should also be unilaterally ignored or not-ignored,
+     * conditional on {@link #shouldIgnore()}.
+     */
+    boolean recursive() {
+      return recursive;
+    }
+
+    boolean shouldIgnoreNonRecursive() {
+      return this == YES_NONRECURSIVE;
     }
   }
 
@@ -166,7 +176,7 @@ final class ProtoTruthMessageDifferencer {
           FieldDescriptorOrUnknown.fromFieldDescriptor(fieldDescriptor);
       ShouldIgnore shouldIgnore =
           fieldScopeLogic.shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown);
-      if (shouldIgnore == ShouldIgnore.YES) {
+      if (shouldIgnore == ShouldIgnore.YES_RECURSIVE) {
         builder.addSingularField(
             fieldDescriptor.getNumber(), SingularField.ignored(name(fieldDescriptor)));
         continue;
@@ -193,7 +203,7 @@ final class ProtoTruthMessageDifferencer {
                 compareRepeatedFieldIgnoringOrder(
                     actualList,
                     expectedList,
-                    shouldIgnore.shouldMaybeIgnore(),
+                    shouldIgnore.shouldIgnoreNonRecursive(),
                     fieldDescriptor,
                     fieldScopeLogic.subLogic(rootDescriptor, fieldDescriptorOrUnknown)));
           } else if (config.ignoreExtraRepeatedFieldElements() && !expectedList.isEmpty()) {
@@ -202,7 +212,7 @@ final class ProtoTruthMessageDifferencer {
                 compareRepeatedFieldExpectingSubsequence(
                     actualList,
                     expectedList,
-                    shouldIgnore.shouldMaybeIgnore(),
+                    shouldIgnore.shouldIgnoreNonRecursive(),
                     fieldDescriptor,
                     fieldScopeLogic.subLogic(rootDescriptor, fieldDescriptorOrUnknown)));
           } else {
@@ -211,7 +221,7 @@ final class ProtoTruthMessageDifferencer {
                 compareRepeatedFieldByIndices(
                     actualList,
                     expectedList,
-                    shouldIgnore.shouldMaybeIgnore(),
+                    shouldIgnore.shouldIgnoreNonRecursive(),
                     fieldDescriptor,
                     fieldScopeLogic.subLogic(rootDescriptor, fieldDescriptorOrUnknown)));
           }
@@ -223,7 +233,7 @@ final class ProtoTruthMessageDifferencer {
                 actualFields.get(fieldDescriptor),
                 expectedFields.get(fieldDescriptor),
                 actual.getDefaultInstanceForType().getField(fieldDescriptor),
-                shouldIgnore.shouldMaybeIgnore(),
+                shouldIgnore.shouldIgnoreNonRecursive(),
                 fieldDescriptor,
                 name(fieldDescriptor),
                 fieldScopeLogic.subLogic(rootDescriptor, fieldDescriptorOrUnknown)));
@@ -285,7 +295,7 @@ final class ProtoTruthMessageDifferencer {
     // We never ignore the key, no matter what the logic dictates.
     ShouldIgnore shouldIgnoreValue =
         valueFieldScopeLogic.shouldIgnore(rootDescriptor, valueFieldDescriptorOrUnknown);
-    if (shouldIgnoreValue == ShouldIgnore.YES) {
+    if (shouldIgnoreValue == ShouldIgnore.YES_RECURSIVE) {
       return ImmutableList.of(SingularField.ignored(name(mapFieldDescriptor)));
     }
 
@@ -305,7 +315,7 @@ final class ProtoTruthMessageDifferencer {
                 actualValue,
                 expectedValue,
                 /*defaultValue=*/ null,
-                shouldIgnoreValue.shouldMaybeIgnore(),
+                shouldIgnoreValue.shouldIgnoreNonRecursive(),
                 valueFieldDescriptor,
                 indexedName(mapFieldDescriptor, key, keyFieldDescriptor),
                 valueFieldScopeLogic));
@@ -318,7 +328,7 @@ final class ProtoTruthMessageDifferencer {
   private RepeatedField compareRepeatedFieldIgnoringOrder(
       List<?> actualList,
       List<?> expectedList,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       FieldDescriptor fieldDescriptor,
       FieldScopeLogic fieldScopeLogic) {
     RepeatedField.Builder builder =
@@ -336,7 +346,7 @@ final class ProtoTruthMessageDifferencer {
         Object expected = expectedList.get(j);
         RepeatedField.PairResult pairResult =
             compareRepeatedFieldElementPair(
-                actual, expected, shouldMaybeIgnore, fieldDescriptor, i, j, fieldScopeLogic);
+                actual, expected, shouldIgnoreNonRecursive, fieldDescriptor, i, j, fieldScopeLogic);
         if (pairResult.isMatched()) {
           // Found a match - remove both these elements from the candidate pools.
           builder.addPairResult(pairResult);
@@ -362,7 +372,7 @@ final class ProtoTruthMessageDifferencer {
             compareRepeatedFieldElementPair(
                 actualList.get(i),
                 /*expected=*/ null,
-                shouldMaybeIgnore,
+                shouldIgnoreNonRecursive,
                 fieldDescriptor,
                 i,
                 /*expectedFieldIndex=*/ null,
@@ -374,7 +384,7 @@ final class ProtoTruthMessageDifferencer {
           compareRepeatedFieldElementPair(
               /*actual=*/ null,
               expectedList.get(j),
-              shouldMaybeIgnore,
+              shouldIgnoreNonRecursive,
               fieldDescriptor,
               /*actualFieldIndex=*/ null,
               j,
@@ -387,7 +397,7 @@ final class ProtoTruthMessageDifferencer {
   private RepeatedField compareRepeatedFieldExpectingSubsequence(
       List<?> actualList,
       List<?> expectedList,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       FieldDescriptor fieldDescriptor,
       FieldScopeLogic fieldScopeLogic) {
     RepeatedField.Builder builder =
@@ -417,7 +427,7 @@ final class ProtoTruthMessageDifferencer {
               actualList,
               expectedIndex,
               expected,
-              shouldMaybeIgnore,
+              shouldIgnoreNonRecursive,
               fieldDescriptor,
               fieldScopeLogic);
 
@@ -436,7 +446,7 @@ final class ProtoTruthMessageDifferencer {
                 actualList,
                 expectedIndex,
                 expected,
-                shouldMaybeIgnore,
+                shouldIgnoreNonRecursive,
                 fieldDescriptor,
                 fieldScopeLogic);
         if (matchingResult != null) {
@@ -481,7 +491,7 @@ final class ProtoTruthMessageDifferencer {
       List<?> actualValues,
       int expectedIndex,
       Object expectedValue,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       FieldDescriptor fieldDescriptor,
       FieldScopeLogic fieldScopeLogic) {
     Iterator<Integer> actualIndexIter = actualIndices.iterator();
@@ -491,7 +501,7 @@ final class ProtoTruthMessageDifferencer {
           compareRepeatedFieldElementPair(
               actualValues.get(actualIndex),
               expectedValue,
-              shouldMaybeIgnore,
+              shouldIgnoreNonRecursive,
               fieldDescriptor,
               actualIndex,
               expectedIndex,
@@ -508,7 +518,7 @@ final class ProtoTruthMessageDifferencer {
   private RepeatedField.PairResult compareRepeatedFieldElementPair(
       @NullableDecl Object actual,
       @NullableDecl Object expected,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       FieldDescriptor fieldDescriptor,
       @NullableDecl Integer actualFieldIndex,
       @NullableDecl Integer expectedFieldIndex,
@@ -518,7 +528,7 @@ final class ProtoTruthMessageDifferencer {
             actual,
             expected,
             /*defaultValue=*/ null,
-            shouldMaybeIgnore,
+            shouldIgnoreNonRecursive,
             fieldDescriptor,
             "<no field path>",
             fieldScopeLogic);
@@ -550,7 +560,7 @@ final class ProtoTruthMessageDifferencer {
 
   /**
    * Compares {@code actualList} and {@code expectedList}, two submessages corresponding to {@code
-   * fieldDescriptor}. Uses {@code shouldMaybeIgnore}, {@code parentFieldPath}, and {@code
+   * fieldDescriptor}. Uses {@code shouldIgnoreNonRecursive}, {@code parentFieldPath}, and {@code
    * fieldScopeLogic} to compare the messages.
    *
    * @return A list in index order, containing the diff results for each message.
@@ -558,7 +568,7 @@ final class ProtoTruthMessageDifferencer {
   private List<SingularField> compareRepeatedFieldByIndices(
       List<?> actualList,
       List<?> expectedList,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       FieldDescriptor fieldDescriptor,
       FieldScopeLogic fieldScopeLogic) {
     int maxSize = Math.max(actualList.size(), expectedList.size());
@@ -571,7 +581,7 @@ final class ProtoTruthMessageDifferencer {
               actual,
               expected,
               /*defaultValue=*/ null,
-              shouldMaybeIgnore,
+              shouldIgnoreNonRecursive,
               fieldDescriptor,
               indexedName(fieldDescriptor, i),
               fieldScopeLogic));
@@ -584,7 +594,7 @@ final class ProtoTruthMessageDifferencer {
       @NullableDecl Object actual,
       @NullableDecl Object expected,
       @NullableDecl Object defaultValue,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       FieldDescriptor fieldDescriptor,
       String fieldName,
       FieldScopeLogic fieldScopeLogic) {
@@ -593,12 +603,13 @@ final class ProtoTruthMessageDifferencer {
           (Message) actual,
           (Message) expected,
           (Message) defaultValue,
-          shouldMaybeIgnore,
+          shouldIgnoreNonRecursive,
           fieldDescriptor,
           fieldName,
           fieldScopeLogic);
+    } else if (shouldIgnoreNonRecursive) {
+      return SingularField.ignored(fieldName);
     } else {
-      checkState(!shouldMaybeIgnore, "MAYBE is not a valid ShouldIgnore for primitives.");
       return compareSingularPrimitive(actual, expected, defaultValue, fieldDescriptor, fieldName);
     }
   }
@@ -620,7 +631,7 @@ final class ProtoTruthMessageDifferencer {
       @NullableDecl Message actual,
       @NullableDecl Message expected,
       @NullableDecl Message defaultValue,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       FieldDescriptor fieldDescriptor,
       String fieldName,
       FieldScopeLogic fieldScopeLogic) {
@@ -636,12 +647,12 @@ final class ProtoTruthMessageDifferencer {
 
     // Perform the detailed breakdown only if necessary.
     @NullableDecl DiffResult breakdown = null;
-    if (result.build() == Result.MATCHED || shouldMaybeIgnore) {
+    if (result.build() == Result.MATCHED || shouldIgnoreNonRecursive) {
       actual = orDefaultForType(actual, expected);
       expected = orDefaultForType(expected, actual);
 
       breakdown = diffMessages(actual, expected, fieldScopeLogic);
-      if (breakdown.isIgnored() && shouldMaybeIgnore) {
+      if (breakdown.isIgnored() && shouldIgnoreNonRecursive) {
         // Ignore this field entirely, report nothing.
         return SingularField.ignored(fieldName);
       }
@@ -749,7 +760,7 @@ final class ProtoTruthMessageDifferencer {
             FieldDescriptorOrUnknown.fromUnknown(unknownFieldDescriptor);
         ShouldIgnore shouldIgnore =
             fieldScopeLogic.shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown);
-        if (shouldIgnore == ShouldIgnore.YES) {
+        if (shouldIgnore == ShouldIgnore.YES_NONRECURSIVE) {
           builder.addSingularField(
               fieldNumber, SingularField.ignored(name(unknownFieldDescriptor)));
           continue;
@@ -760,7 +771,7 @@ final class ProtoTruthMessageDifferencer {
             compareUnknownFieldList(
                 actualValues,
                 expectedValues,
-                shouldIgnore.shouldMaybeIgnore(),
+                shouldIgnore.shouldIgnoreNonRecursive(),
                 unknownFieldDescriptor,
                 fieldScopeLogic.subLogic(rootDescriptor, fieldDescriptorOrUnknown)));
       }
@@ -772,7 +783,7 @@ final class ProtoTruthMessageDifferencer {
   private List<SingularField> compareUnknownFieldList(
       List<?> actualValues,
       List<?> expectedValues,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       UnknownFieldDescriptor unknownFieldDescriptor,
       FieldScopeLogic fieldScopeLogic) {
     int maxSize = Math.max(actualValues.size(), expectedValues.size());
@@ -784,7 +795,7 @@ final class ProtoTruthMessageDifferencer {
           compareUnknownFieldValue(
               actual,
               expected,
-              shouldMaybeIgnore,
+              shouldIgnoreNonRecursive,
               unknownFieldDescriptor,
               indexedName(unknownFieldDescriptor, i),
               fieldScopeLogic));
@@ -796,7 +807,7 @@ final class ProtoTruthMessageDifferencer {
   private SingularField compareUnknownFieldValue(
       @NullableDecl Object actual,
       @NullableDecl Object expected,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       UnknownFieldDescriptor unknownFieldDescriptor,
       String fieldName,
       FieldScopeLogic fieldScopeLogic) {
@@ -804,12 +815,13 @@ final class ProtoTruthMessageDifferencer {
       return compareUnknownFieldSet(
           (UnknownFieldSet) actual,
           (UnknownFieldSet) expected,
-          shouldMaybeIgnore,
+          shouldIgnoreNonRecursive,
           unknownFieldDescriptor,
           fieldName,
           fieldScopeLogic);
     } else {
-      checkState(!shouldMaybeIgnore, "MAYBE is not a valid ShouldIgnore for primitives.");
+      checkState(
+          !shouldIgnoreNonRecursive, "shouldIgnoreNonRecursive is not a valid for primitives.");
       return compareUnknownPrimitive(actual, expected, unknownFieldDescriptor, fieldName);
     }
   }
@@ -817,7 +829,7 @@ final class ProtoTruthMessageDifferencer {
   private SingularField compareUnknownFieldSet(
       @NullableDecl UnknownFieldSet actual,
       @NullableDecl UnknownFieldSet expected,
-      boolean shouldMaybeIgnore,
+      boolean shouldIgnoreNonRecursive,
       UnknownFieldDescriptor unknownFieldDescriptor,
       String fieldName,
       FieldScopeLogic fieldScopeLogic) {
@@ -829,12 +841,12 @@ final class ProtoTruthMessageDifferencer {
 
     // Perform the detailed breakdown only if necessary.
     @NullableDecl UnknownFieldSetDiff unknownsBreakdown = null;
-    if (result.build() == Result.MATCHED || shouldMaybeIgnore) {
+    if (result.build() == Result.MATCHED || shouldIgnoreNonRecursive) {
       actual = firstNonNull(actual, UnknownFieldSet.getDefaultInstance());
       expected = firstNonNull(expected, UnknownFieldSet.getDefaultInstance());
 
       unknownsBreakdown = diffUnknowns(actual, expected, fieldScopeLogic);
-      if (unknownsBreakdown.isIgnored() && shouldMaybeIgnore) {
+      if (unknownsBreakdown.isIgnored() && shouldIgnoreNonRecursive) {
         // Ignore this field entirely, report nothing.
         return SingularField.ignored(fieldName);
       }

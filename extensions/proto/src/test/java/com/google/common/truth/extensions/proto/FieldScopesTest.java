@@ -199,6 +199,27 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testEmptySubMessage() {
+    Message message = parse("o_int: 1 o_sub_test_message: { }");
+    Message eqMessage = parse("o_int: 2 o_sub_test_message: { }");
+    Message diffMessage = parse("o_int: 3");
+
+    // Different logic gets exercised when we add an 'ignore' clause.
+    // Let's ensure o_sub_test_message is compared properly in all cases.
+    int fieldNumber = getFieldNumber("o_int");
+
+    expectThat(eqMessage).isNotEqualTo(message);
+    expectThat(eqMessage).ignoringFieldAbsence().isNotEqualTo(message);
+    expectThat(eqMessage).ignoringFields(fieldNumber).isEqualTo(message);
+    expectThat(eqMessage).ignoringFields(fieldNumber).ignoringFieldAbsence().isEqualTo(message);
+
+    expectThat(diffMessage).isNotEqualTo(message);
+    expectThat(diffMessage).ignoringFieldAbsence().isNotEqualTo(message);
+    expectThat(diffMessage).ignoringFields(fieldNumber).isNotEqualTo(message);
+    expectThat(diffMessage).ignoringFields(fieldNumber).ignoringFieldAbsence().isEqualTo(message);
+  }
+
+  @Test
   public void testIgnoreSubMessageField() {
     Message message = parse("o_int: 1 o_sub_test_message: { o_int: 2 }");
     Message diffMessage = parse("o_int: 2 o_sub_test_message: { o_int: 2 }");
