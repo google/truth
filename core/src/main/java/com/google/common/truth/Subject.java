@@ -772,7 +772,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * <p>Example usage: The check {@code contains(String)} calls {@code failWithActual("expected to
    * contain", string)}.
    */
-  public final void failWithActual(String key, @NullableDecl Object value) {
+  protected final void failWithActual(String key, @NullableDecl Object value) {
     failWithActual(fact(key, value));
   }
 
@@ -790,11 +790,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * <p>Example usage: The check {@code isEmpty()} calls {@code failWithActual(simpleFact("expected
    * to be empty"))}.
    */
-  public final void failWithActual(Fact first, Fact... rest) {
+  protected final void failWithActual(Fact first, Fact... rest) {
     doFail(sandwich(first, rest, butWas()));
   }
 
-  // TODO(cpovirk): Consider making this public if there's a need for it.
+  // TODO(cpovirk): Consider making this protected if there's a need for it.
   final void failWithActual(Iterable<Fact> facts) {
     doFail(append(ImmutableList.copyOf(facts), butWas()));
   }
@@ -975,11 +975,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * <p>Example usage: The check {@code isEmpty()} calls {@code failWithActual(simpleFact("expected
    * to be empty"))}.
    */
-  public final void failWithoutActual(Fact first, Fact... rest) {
+  protected final void failWithoutActual(Fact first, Fact... rest) {
     doFail(ImmutableList.copyOf(Lists.asList(first, rest)));
   }
 
-  // TODO(cpovirk): Consider making this public if there's a need for it.
+  // TODO(cpovirk): Consider making this protected if there's a need for it.
   final void failWithoutActual(Iterable<Fact> facts) {
     doFail(ImmutableList.copyOf(facts));
   }
