@@ -1042,8 +1042,8 @@ public class Subject<S extends Subject<S, T>, T> {
    * Passes through a failure message verbatim, along with a cause and the expected and actual
    * values that the {@link FailureStrategy} may use to construct a {@code ComparisonFailure}.
    *
-   * @deprecated See {@linkplain #failComparing(String, CharSequence, CharSequence)} the other
-   *     overload of this method for instructions on how to get Truth to throw a {@code
+   * @deprecated See {@linkplain #failComparing(String, CharSequence, CharSequence) the other
+   *     overload of this method} for instructions on how to get Truth to throw a {@code
    *     ComparisonFailure}. To make Truth also attach the {@code Throwable cause} to the assertion
    *     failure, see the instructions on {@link #failWithRawMessageAndCause}.
    */
