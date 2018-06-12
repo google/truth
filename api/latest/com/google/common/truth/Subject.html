@@ -287,7 +287,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </td>
 </tr>
 <tr id="i11" class="rowColor">
-<td class="colFirst"><code>void</code></td>
+<td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithActual</a></span>(<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>&nbsp;first,
               <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>...&nbsp;rest)</code>
 <div class="block">Fails, reporting a message with the given facts, followed by an automatically added fact of the
@@ -298,7 +298,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </td>
 </tr>
 <tr id="i12" class="altColor">
-<td class="colFirst"><code>void</code></td>
+<td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-">failWithActual</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;key,
               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</code>
 <div class="block">Fails, reporting a message with two "<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">facts</a>":
@@ -327,7 +327,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </td>
 </tr>
 <tr id="i15" class="rowColor">
-<td class="colFirst"><code>void</code></td>
+<td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual</a></span>(<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>&nbsp;first,
                  <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>...&nbsp;rest)</code>
 <div class="block">Fails, reporting a message with the given facts, <i>without automatically adding the actual
@@ -822,9 +822,9 @@ protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Stri
 <ul class="blockList">
 <li class="blockList">
 <h4>failWithActual</h4>
-<pre>public final&nbsp;void&nbsp;failWithActual(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;key,
-                                 @NullableDecl
-                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</pre>
+<pre>protected final&nbsp;void&nbsp;failWithActual(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;key,
+                                    @NullableDecl
+                                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</pre>
 <div class="block">Fails, reporting a message with two "<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">facts</a>":
 
  <ul>
@@ -844,8 +844,8 @@ protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Stri
 <ul class="blockList">
 <li class="blockList">
 <h4>failWithActual</h4>
-<pre>public final&nbsp;void&nbsp;failWithActual(<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>&nbsp;first,
-                                 <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>...&nbsp;rest)</pre>
+<pre>protected final&nbsp;void&nbsp;failWithActual(<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>&nbsp;first,
+                                    <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>...&nbsp;rest)</pre>
 <div class="block">Fails, reporting a message with the given facts, followed by an automatically added fact of the
  form:
 
@@ -962,8 +962,8 @@ protected final&nbsp;void&nbsp;failWithoutSubject(<a href="https://docs.oracle.c
 <ul class="blockList">
 <li class="blockList">
 <h4>failWithoutActual</h4>
-<pre>public final&nbsp;void&nbsp;failWithoutActual(<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>&nbsp;first,
-                                    <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>...&nbsp;rest)</pre>
+<pre>protected final&nbsp;void&nbsp;failWithoutActual(<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>&nbsp;first,
+                                       <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>...&nbsp;rest)</pre>
 <div class="block">Fails, reporting a message with the given facts, <i>without automatically adding the actual
  value.</i>
 
