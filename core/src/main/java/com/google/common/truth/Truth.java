@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
 import com.google.common.collect.ListMultimap;
@@ -266,14 +268,13 @@ public final class Truth {
    * An {@code AssertionError} that (a) always supports a cause, even under old versions of Android
    * and (b) omits "java.lang.AssertionError:" from the beginning of its toString() representation.
    */
+  // TODO(cpovirk): Consider eliminating this, adding its functionality to AssertionErrorWithFacts?
   static final class SimpleAssertionError extends AssertionError {
     /** Separate cause field, in case initCause() fails. */
     @NullableDecl private final Throwable cause;
 
-    // TODO(cpovirk): Figure out if we ever pass a null message to this.
-    private SimpleAssertionError(
-        String message, @NullableDecl String suffix, @NullableDecl Throwable cause) {
-      super(appendSuffixIfNotNull(message, suffix));
+    private SimpleAssertionError(String message, @NullableDecl Throwable cause) {
+      super(checkNotNull(message));
       this.cause = cause;
 
       try {
@@ -286,19 +287,18 @@ public final class Truth {
       }
     }
 
-    static SimpleAssertionError create(
-        String message, @NullableDecl String suffix, @NullableDecl Throwable cause) {
-      return new SimpleAssertionError(message, suffix, cause);
+    static SimpleAssertionError create(String message, @NullableDecl Throwable cause) {
+      return new SimpleAssertionError(message, cause);
     }
 
     static SimpleAssertionError createWithNoStack(String message, @NullableDecl Throwable cause) {
-      SimpleAssertionError error = new SimpleAssertionError(message, /* suffix= */ null, cause);
+      SimpleAssertionError error = create(message, cause);
       error.setStackTrace(new StackTraceElement[0]);
       return error;
     }
 
     static SimpleAssertionError createWithNoStack(String message) {
-      return createWithNoStack(message, null);
+      return createWithNoStack(message, /*cause=*/ null);
     }
 
     @Override
@@ -311,13 +311,5 @@ public final class Truth {
     public String toString() {
       return getLocalizedMessage();
     }
-  }
-
-  @NullableDecl
-  static String appendSuffixIfNotNull(String message, String suffix) {
-    if (suffix != null) {
-      message += "\n" + suffix;
-    }
-    return message;
   }
 }

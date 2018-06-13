@@ -19,7 +19,6 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 
-import com.google.common.base.Objects;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -185,13 +184,6 @@ public final class ChainingTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void namedAndComparisonFailure() {
-    expectFailureWhenTestingThat("root").delegatingToNamed("child", "child").isEqualToString("z");
-    assertNoCause(
-        "value of: myObject.child\nmessage expected:<[child]> but was:<[z]>\nmyObject was: root");
-  }
-
-  @Test
   public void namedAndMessage() {
     expectFailure
         .whenTesting()
@@ -212,7 +204,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
   @Test
   public void checkFailWithName() {
     expectFailureWhenTestingThat("root").doCheckFail("child");
-    assertNoCause("value of: myObject.child\nmessage\nmyObject was: root");
+    assertNoCause("value of    : myObject.child\nmessage\nmyObject was: root");
   }
 
   @Test
@@ -246,16 +238,6 @@ public final class ChainingTest extends BaseSubjectTestCase {
     /** Runs a check that always fails with the generic message "message." */
     void isThePresentKingOfFrance() {
       failWithRawMessage("message");
-    }
-
-    /**
-     * Checks that the value is equal to the given string, failing with the generic message
-     * "message" and a {@link org.junit.ComparisonFailure} if not.
-     */
-    void isEqualToString(String expected) {
-      if (!Objects.equal(actual(), expected)) {
-        failComparing("message", String.valueOf(actual()), expected);
-      }
     }
 
     void doCheckFail() {

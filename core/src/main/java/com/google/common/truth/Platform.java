@@ -16,8 +16,6 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Fact.fact;
-import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
-import static com.google.common.truth.Truth.appendSuffixIfNotNull;
 import static difflib.DiffUtils.diff;
 import static difflib.DiffUtils.generateUnifiedDiff;
 
@@ -94,40 +92,23 @@ final class Platform {
     }
     return ImmutableList.of(fact("diff", result));
   }
+
   private static ImmutableList<String> splitLines(String s) {
     // splitToList is @Beta, so we avoid it.
     return ImmutableList.copyOf(Splitter.onPattern("\r?\n").split(s));
   }
 
-  enum ComparisonFailureMessageStrategy {
-    OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE,
-    INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE;
-  }
-
-  // TODO(cpovirk): Figure out which parameters can be null (and whether we want them to be).
   abstract static class PlatformComparisonFailure extends ComparisonFailure {
     private final String message;
 
     /** Separate cause field, in case initCause() fails. */
     @NullableDecl private final Throwable cause;
 
-    @NullableDecl private final String suffix;
-
-    private final ComparisonFailureMessageStrategy messageStrategy;
-
-    // TODO(cpovirk): Do we ever pass null for message, expected, or actual?
     PlatformComparisonFailure(
-        @NullableDecl String message,
-        @NullableDecl String expected,
-        @NullableDecl String actual,
-        @NullableDecl String suffix,
-        @NullableDecl Throwable cause,
-        ComparisonFailureMessageStrategy messageStrategy) {
+        String message, String expected, String actual, @NullableDecl Throwable cause) {
       super(message, expected, actual);
       this.message = message;
-      this.suffix = suffix;
       this.cause = cause;
-      this.messageStrategy = messageStrategy;
 
       try {
         initCause(cause);
@@ -138,11 +119,7 @@ final class Platform {
 
     @Override
     public final String getMessage() {
-      String body =
-          messageStrategy == INCLUDE_COMPARISON_FAILURE_GENERATED_MESSAGE
-              ? super.getMessage()
-              : message;
-      return appendSuffixIfNotNull(body, suffix);
+      return message;
     }
 
     @Override
@@ -151,6 +128,8 @@ final class Platform {
       return cause;
     }
 
+    // To avoid printing the class name before the message.
+    // TODO(cpovirk): Write a test that fails without this. Ditto for SimpleAssertionError.
     @Override
     public final String toString() {
       return getLocalizedMessage();
