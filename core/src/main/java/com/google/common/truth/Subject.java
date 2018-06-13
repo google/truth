@@ -1006,54 +1006,6 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Passes through a failure message verbatim, along with a cause.
-   *
-   * @deprecated Pass the message to {@link #failWithRawMessage}, but also, to make Truth attach the
-   *     {@code Throwable cause} to the assertion failure, ensure that {@code cause} appears in the
-   *     assertion chain. This should typically already be the case, as in {@code
-   *     assertThat(throwable).hasMessageThat().isEqualTo("message")}. If it is not, you will need
-   *     to introduce an extra {@code check} call into your chain, something like {@code
-   *     check().about(unexpectedFailures()).that(cause).wasASuccess(message)}, with {@code
-   *     unexpectedFailures()} returning a factory for a "dummy" subject type that defines only a
-   *     {@code wasASuccess} method that fails unconditionally.
-   */
-  @Deprecated
-  protected final void failWithRawMessageAndCause(String message, Throwable cause) {
-    metadata.fail(message, cause);
-  }
-
-  /**
-   * Passes through a failure message verbatim, along with the expected and actual values that the
-   * {@link FailureStrategy} may use to construct a {@code ComparisonFailure}.
-   *
-   * @deprecated Instead of manually testing whether the actual value is equal to the expected and
-   *     then calling this method, ask Truth to do both with a statement like {@code
-   *     check("foo()").that(actual().foo()).isEqualTo(expectedFoo)}. (If you are comparing the
-   *     values using a method other than {@link Object#equals}, you'll have to wrap your actual and
-   *     expected values in a custom object that implements your desired logic in {@code equals} and
-   *     forwards the {@code toString} method.)
-   */
-  @Deprecated
-  protected final void failComparing(String message, CharSequence expected, CharSequence actual) {
-    metadata.failComparing(message, expected, actual);
-  }
-
-  /**
-   * Passes through a failure message verbatim, along with a cause and the expected and actual
-   * values that the {@link FailureStrategy} may use to construct a {@code ComparisonFailure}.
-   *
-   * @deprecated See {@linkplain #failComparing(String, CharSequence, CharSequence) the other
-   *     overload of this method} for instructions on how to get Truth to throw a {@code
-   *     ComparisonFailure}. To make Truth also attach the {@code Throwable cause} to the assertion
-   *     failure, see the instructions on {@link #failWithRawMessageAndCause}.
-   */
-  @Deprecated
-  protected final void failComparing(
-      String message, CharSequence expected, CharSequence actual, Throwable cause) {
-    metadata.failComparing(message, expected, actual, cause);
-  }
-
-  /**
    * @throws UnsupportedOperationException always
    * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects. If you meant to
    *     test object equality between an expected and the actual value, use {@link

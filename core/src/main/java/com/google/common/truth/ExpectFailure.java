@@ -92,8 +92,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
   public StandardSubjectBuilder whenTesting() {
     checkState(inRuleContext, "ExpectFailure must be used as a JUnit @Rule");
     if (failure != null) {
-      throw SimpleAssertionError.create(
-          "ExpectFailure already captured a failure", /*suffix=*/ null, failure);
+      throw SimpleAssertionError.create("ExpectFailure already captured a failure", failure);
     }
     if (failureExpected) {
       throw new AssertionError(

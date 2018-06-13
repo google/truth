@@ -21,7 +21,6 @@ import static com.google.common.base.Strings.commonPrefix;
 import static com.google.common.base.Strings.commonSuffix;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.makeMessage;
-import static com.google.common.truth.Platform.ComparisonFailureMessageStrategy.OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE;
 import static com.google.common.truth.SubjectUtils.concat;
 import static java.lang.Character.isHighSurrogate;
 import static java.lang.Character.isLowSurrogate;
@@ -58,13 +57,7 @@ final class ComparisonFailureWithFacts extends PlatformComparisonFailure impleme
       String expected,
       String actual,
       @NullableDecl Throwable cause) {
-    super(
-        makeMessage(messages, facts),
-        checkNotNull(expected),
-        checkNotNull(actual),
-        /* suffix= */ null,
-        cause,
-        OMIT_COMPARISON_FAILURE_GENERATED_MESSAGE);
+    super(makeMessage(messages, facts), checkNotNull(expected), checkNotNull(actual), cause);
     this.facts = checkNotNull(facts);
   }
 

@@ -17,9 +17,11 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.lenientFormat;
+import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
@@ -233,12 +235,16 @@ public class StandardSubjectBuilder {
 
   /** Triggers the failure strategy with an empty failure message */
   public final void fail() {
-    metadata().fail("");
+    doFail("");
   }
 
   /** Triggers the failure strategy with the given failure message */
   public final void fail(@NullableDecl String format, Object /*@NullableDeclType*/... args) {
-    metadata().fail(lenientFormat(format, args));
+    doFail(lenientFormat(format, args));
+  }
+
+  private void doFail(String message) {
+    metadata().fail(ImmutableList.of(simpleFact(message)));
   }
 
   private FailureMetadata metadata() {

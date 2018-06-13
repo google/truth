@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Functions.toStringFunction;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -27,11 +26,7 @@ import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 
 import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.truth.Truth.SimpleAssertionError;
-import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -178,79 +173,24 @@ public final class FailureMetadata {
     doFail(
         ComparisonFailureWithFacts.create(
             evaluateAll(messages),
-            concat(descriptionAsFacts(), headFacts),
-            concat(tailFacts, rootUnlessThrowableAsFacts()),
+            concat(description(), headFacts),
+            concat(tailFacts, rootUnlessThrowable()),
             expected,
             actual,
-            rootCause().orNull()));
+            rootCause()));
   }
 
   void fail(ImmutableList<Fact> facts) {
     doFail(
         AssertionErrorWithFacts.create(
             evaluateAll(messages),
-            concat(descriptionAsFacts(), facts, rootUnlessThrowableAsFacts()),
-            rootCause().orNull()));
-  }
-
-  void fail(String message) {
-    doFail(
-        SimpleAssertionError.create(
-            addToMessage(message), rootUnlessThrowableAsString(), rootCause().orNull()));
-  }
-
-  void fail(String message, Throwable cause) {
-    doFail(
-        SimpleAssertionError.create(addToMessage(message), rootUnlessThrowableAsString(), cause));
-    // TODO(cpovirk): add rootCause() as a suppressed exception?
-  }
-
-  void failComparing(String message, CharSequence expected, CharSequence actual) {
-    doFail(
-        new JUnitComparisonFailure(
-            addToMessage(message),
-            expected.toString(),
-            actual.toString(),
-            rootUnlessThrowableAsString(),
-            rootCause().orNull()));
-  }
-
-  void failComparing(String message, CharSequence expected, CharSequence actual, Throwable cause) {
-    doFail(
-        new JUnitComparisonFailure(
-            addToMessage(message),
-            expected.toString(),
-            actual.toString(),
-            rootUnlessThrowableAsString(),
-            cause));
-    // TODO(cpovirk): add rootCause() as a suppressed exception?
+            concat(description(), facts, rootUnlessThrowable()),
+            rootCause()));
   }
 
   private void doFail(AssertionError failure) {
     cleanStackTrace(failure);
     strategy.fail(failure);
-  }
-
-  private String addToMessage(String body) {
-    ImmutableList<?> messages = allPrefixMessages();
-    StringBuilder result = new StringBuilder(body.length());
-    Joiner.on("\n").appendTo(result, messages);
-    if (!messages.isEmpty()) {
-      result.append("\n");
-    }
-    result.append(body);
-    /*
-     * JUnit's ComparisonFailure will append " expected: <...> but was: <...> to the end of this.
-     * Note the space at the beginning. That means that, if the body is empty, the "expected... but
-     * was" text will come at the beginning of a line... indented by one space :\ The right fix for
-     * this is to stop depending on JUnit's ComparisonFailure formatting. That's coming. For now,
-     * the space is an annoyance.
-     */
-    return result.toString();
-  }
-
-  private ImmutableList<?> allPrefixMessages() {
-    return concat(messages, descriptionAsStrings());
   }
 
   private FailureMetadata derive(ImmutableList<LazyMessage> messages, ImmutableList<Step> steps) {
@@ -276,7 +216,7 @@ public final class FailureMetadata {
    * root's exact relationship to the final object, but we know it's some object "different enough"
    * to be worth displaying.)
    */
-  private Optional<Fact> description() {
+  private ImmutableList<Fact> description() {
     String description = null;
     boolean descriptionWasDerived = false;
     for (Step step : steps) {
@@ -298,16 +238,8 @@ public final class FailureMetadata {
       }
     }
     return descriptionWasDerived
-        ? Optional.of(fact("value of", description))
-        : Optional.<Fact>absent();
-  }
-
-  private ImmutableList<Fact> descriptionAsFacts() {
-    return ImmutableList.copyOf(description().asSet());
-  }
-
-  private Set<String> descriptionAsStrings() {
-    return description().transform(toStringFunction()).asSet();
+        ? ImmutableList.of(fact("value of", description))
+        : ImmutableList.<Fact>of();
   }
 
   /**
@@ -337,7 +269,7 @@ public final class FailureMetadata {
    * objects -- first and last (well, last besides the one we're already displaying in the main
    * message) would be enough.
    */
-  private Optional<Fact> rootUnlessThrowable() {
+  private ImmutableList<Fact> rootUnlessThrowable() {
     Step rootSubject = null;
     boolean seenDerivation = false;
     for (Step step : steps) {
@@ -362,7 +294,7 @@ public final class FailureMetadata {
            * We'll already include the Throwable as a cause of the AssertionError (see rootCause()),
            * so we don't need to include it again in the message.
            */
-          return Optional.absent();
+          return ImmutableList.of();
         }
         rootSubject = step;
       }
@@ -373,32 +305,24 @@ public final class FailureMetadata {
      * name we have is just "object?"
      */
     return seenDerivation
-        ? Optional.of(
+        ? ImmutableList.of(
             fact(
                 rootSubject.subject.typeDescription() + " was",
                 rootSubject.subject.actualAsStringNoBrackets()))
-        : Optional.<Fact>absent();
-  }
-
-  private ImmutableList<Fact> rootUnlessThrowableAsFacts() {
-    return ImmutableList.copyOf(rootUnlessThrowable().asSet());
-  }
-
-  @NullableDecl
-  private String rootUnlessThrowableAsString() {
-    return rootUnlessThrowable().transform(toStringFunction()).orNull();
+        : ImmutableList.<Fact>of();
   }
 
   /**
    * Returns the first {@link Throwable} in the chain of actual values. Typically, we'll have a root
    * cause only if the assertion chain contains a {@link ThrowableSubject}.
    */
-  private Optional<Throwable> rootCause() {
+  @NullableDecl
+  private Throwable rootCause() {
     for (Step step : steps) {
       if (!step.isCheckCall() && step.subject.actual() instanceof Throwable) {
-        return Optional.of((Throwable) step.subject.actual());
+        return (Throwable) step.subject.actual();
       }
     }
-    return Optional.absent();
+    return null;
   }
 }
