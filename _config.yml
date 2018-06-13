@@ -3,7 +3,7 @@ url: "https://google.github.io"
 baseurl: '/truth'
 markdown: kramdown
 repository: google/truth
-version: "0.40"
+version: "0.41"
 
 title: Truth
 tagline: Fluent assertions for Java
@@ -26,7 +26,7 @@ nav:
       url: /comparison
   - item:
       name: Javadoc
-      url: /api/0.40/
+      url: /api/0.41/
   - item:
       name: FAQ
       url: /faq
