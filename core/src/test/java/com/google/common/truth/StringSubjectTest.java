@@ -246,10 +246,12 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   @Test
   @GwtIncompatible("Pattern")
   public void stringDoesNotContainMatchPattern() {
-    assertThat("aaa").doesNotContainMatch(Pattern.compile(".*b.*"));
+    assertThat("zzaaazz").doesNotContainMatch(Pattern.compile(".b."));
 
-    expectFailureWhenTestingThat("aba").doesNotContainMatch(Pattern.compile(".*b.*"));
-    assertFailureValue("expected not to contain a match for", ".*b.*");
+    expectFailureWhenTestingThat("zzabazz").doesNotContainMatch(Pattern.compile(".b."));
+    assertFailureValue("expected not to contain a match for", ".b.");
+    assertFailureValue("but contained", "aba");
+    assertFailureValue("full string", "zzabazz");
   }
 
   @Test
