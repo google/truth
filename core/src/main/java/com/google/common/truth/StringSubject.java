@@ -21,6 +21,7 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.annotations.GwtIncompatible;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -162,8 +163,12 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string contains a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotContainMatch(Pattern regex) {
-    if (regex.matcher(actual()).find()) {
-      failWithActual("expected not to contain a match for", regex);
+    Matcher matcher = regex.matcher(actual());
+    if (matcher.find()) {
+      failWithoutActual(
+          fact("expected not to contain a match for", regex),
+          fact("but contained", matcher.group()),
+          fact("full string", actualCustomStringRepresentationForPackageMembersToCall()));
     }
   }
 
