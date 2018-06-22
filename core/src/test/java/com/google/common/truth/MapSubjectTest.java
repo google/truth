@@ -193,6 +193,19 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void containsExactlyWrongValueWithNull() {
+    // Test for https://github.com/google/truth/issues/468
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "march", null, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> contains exactly "
+                + "<{jan=1, march=null, feb=2}>. It has the following entries with matching keys "
+                + "but different values: {march=(expected null but got 3)}");
+  }
+
+  @Test
   public void containsExactlyExtraKeyAndMissingKey() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "march", 3);
     expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "feb", 2);
