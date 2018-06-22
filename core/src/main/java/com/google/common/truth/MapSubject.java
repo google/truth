@@ -348,7 +348,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       new Function<ValueDifference<Object, Object>, String>() {
         @Override
         public String apply(ValueDifference<Object, Object> values) {
-          boolean includeTypes = values.actual.toString().equals(values.expected.toString());
+          boolean includeTypes =
+              String.valueOf(values.actual).equals(String.valueOf(values.expected));
           return lenientFormat(
               "(expected %s but got %s)",
               includeTypes ? new TypedToStringWrapper(values.expected) : values.expected,
