@@ -1402,24 +1402,6 @@
 <dd>
 <div class="block">Assembles a failure message and passes such to the FailureStrategy</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">failComparing(String, CharSequence, CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Instead of manually testing whether the actual value is equal to the expected and
-     then calling this method, ask Truth to do both with a statement like <code>check("foo()").that(actual().foo()).isEqualTo(expectedFoo)</code>. (If you are comparing the
-     values using a method other than <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(java.lang.Object)</code></a>, you'll have to wrap your actual and
-     expected values in a custom object that implements your desired logic in <code>equals</code> and
-     forwards the <code>toString</code> method.)</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-java.lang.Throwable-">failComparing(String, CharSequence, CharSequence, Throwable)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">See <a href="com/google/common/truth/Subject.html#failComparing-java.lang.String-java.lang.CharSequence-java.lang.CharSequence-">Subject.failComparing(String, CharSequence, CharSequence)</a> the other
-     overload of this method for instructions on how to get Truth to throw a <code>ComparisonFailure</code>. To make Truth also attach the <code>Throwable cause</code> to the assertion
-     failure, see the instructions on <a href="com/google/common/truth/Subject.html#failWithRawMessageAndCause-java.lang.String-java.lang.Throwable-"><code>Subject.failWithRawMessageAndCause(java.lang.String, java.lang.Throwable)</code></a>.</span></div>
-</div>
-</dd>
 <dt><a href="com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth"><span class="typeNameLink">FailureMetadata</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">An opaque, immutable object containing state from the previous calls in the fluent assertion
@@ -1472,16 +1454,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithRawMessage-java.lang.String-java.lang.Object...-">failWithRawMessage(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Passes through a failure message verbatim.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithRawMessageAndCause-java.lang.String-java.lang.Throwable-">failWithRawMessageAndCause(String, Throwable)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Pass the message to <a href="com/google/common/truth/Subject.html#failWithRawMessage-java.lang.String-java.lang.Object...-"><code>Subject.failWithRawMessage(java.lang.String, java.lang.Object...)</code></a>, but also, to make Truth attach the
-     <code>Throwable cause</code> to the assertion failure, ensure that <code>cause</code> appears in the
-     assertion chain. This should typically already be the case, as in <code>assertThat(throwable).hasMessageThat().isEqualTo("message")</code>. If it is not, you will need
-     to introduce an extra <code>check</code> call into your chain, something like <code>check().about(unexpectedFailures()).that(cause).wasASuccess(message)</code>, with <code>unexpectedFailures()</code> returning a factory for a "dummy" subject type that defines only a
-     <code>wasASuccess</code> method that fails unconditionally.</span></div>
-</div>
 </dd>
 <dt><a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">FieldScope</span></a> - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
