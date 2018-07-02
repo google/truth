@@ -24,7 +24,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.truth.extensions.proto.ProtoTruthMessageDifferencer.ShouldIgnore;
+import com.google.errorprone.annotations.ForOverride;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -44,35 +44,45 @@ import java.util.List;
  */
 abstract class FieldScopeLogic {
 
-  /** Returns whether comparison should be ignored for the specified field. */
-  abstract ShouldIgnore shouldIgnore(
+  /**
+   * Returns whether the given field is included in this FieldScopeLogic, along with whether it's
+   * included recursively or not.
+   */
+  abstract FieldScopeResult policyFor(
       Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown);
+
+  /** Returns whether the given field is included in this FieldScopeLogic. */
+  final boolean contains(
+      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+    return policyFor(rootDescriptor, fieldDescriptorOrUnknown).included();
+  }
 
   /**
    * Returns a {@code FieldScopeLogic} to handle the message pointed to by this descriptor.
    *
-   * <p>Returns {@code this} by default. Subclasses with different behavior must override this
-   * method to return something else and {@code isRecursive} to return false.
+   * <p>Subclasses which can return non-recursive {@link FieldScopeResult}s must override {@link
+   * #subScopeImpl} to implement those cases.
    */
-  final FieldScopeLogic subLogic(
+  final FieldScopeLogic subScope(
       Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    ShouldIgnore shouldIgnore = shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown);
-    if (shouldIgnore.recursive()) {
-      return shouldIgnore.shouldIgnore() ? none() : all();
+    FieldScopeResult result = policyFor(rootDescriptor, fieldDescriptorOrUnknown);
+    if (result.recursive()) {
+      return result.included() ? all() : none();
     } else {
-      return subLogicImpl(rootDescriptor, fieldDescriptorOrUnknown);
+      return subScopeImpl(rootDescriptor, fieldDescriptorOrUnknown);
     }
   }
 
   /**
-   * Returns {@link #subLogic} for {@code NONRECURSIVE} results.
+   * Returns {@link #subScope} for {@code NONRECURSIVE} results.
    *
    * <p>Throws an {@link UnsupportedOperationException} by default. Subclasses which can return
    * {@code NONRECURSIVE} results must override this method.
    */
-  FieldScopeLogic subLogicImpl(
+  @ForOverride
+  FieldScopeLogic subScopeImpl(
       Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-    throw new UnsupportedOperationException("subLogicImpl not implemented for " + getClass());
+    throw new UnsupportedOperationException("subScopeImpl not implemented for " + getClass());
   }
 
   /**
@@ -143,9 +153,9 @@ abstract class FieldScopeLogic {
         }
 
         @Override
-        final ShouldIgnore shouldIgnore(
+        final FieldScopeResult policyFor(
             Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-          return ShouldIgnore.NO_RECURSIVE;
+          return FieldScopeResult.INCLUDED_RECURSIVELY;
         }
       };
 
@@ -157,9 +167,9 @@ abstract class FieldScopeLogic {
         }
 
         @Override
-        final ShouldIgnore shouldIgnore(
+        final FieldScopeResult policyFor(
             Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-          return ShouldIgnore.YES_RECURSIVE;
+          return FieldScopeResult.EXCLUDED_RECURSIVELY;
         }
       };
 
@@ -186,15 +196,15 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    final ShouldIgnore shouldIgnore(
+    final FieldScopeResult policyFor(
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
       return fieldNumberTree.hasChild(fieldDescriptorOrUnknown)
-          ? ShouldIgnore.NO_NONRECURSIVE
-          : ShouldIgnore.YES_RECURSIVE;
+          ? FieldScopeResult.INCLUDED_NONRECURSIVELY
+          : FieldScopeResult.EXCLUDED_NONRECURSIVELY;
     }
 
     @Override
-    final FieldScopeLogic subLogicImpl(
+    final FieldScopeLogic subScopeImpl(
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
       return newPartialScopeLogic(fieldNumberTree.child(fieldDescriptorOrUnknown));
     }
@@ -252,26 +262,27 @@ abstract class FieldScopeLogic {
     abstract boolean matchesFieldDescriptor(Descriptor descriptor, FieldDescriptor fieldDescriptor);
 
     @Override
-    final ShouldIgnore shouldIgnore(
+    final FieldScopeResult policyFor(
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
       if (fieldDescriptorOrUnknown.unknownFieldDescriptor().isPresent()) {
-        return ShouldIgnore.YES_RECURSIVE;
+        return FieldScopeResult.EXCLUDED_RECURSIVELY;
       }
 
       FieldDescriptor fieldDescriptor = fieldDescriptorOrUnknown.fieldDescriptor().get();
       if (matchesFieldDescriptor(rootDescriptor, fieldDescriptor)) {
-        return ShouldIgnore.NO_RECURSIVE;
+        return FieldScopeResult.INCLUDED_RECURSIVELY;
       }
 
-      // We return 'YES_NONRECURSIVE' for both field descriptor scopes and field number scopes.
-      // In the former case, the field descriptors are arbitrary, so it's always possible we find a
-      // hit on a sub-message somewhere.  In the latter case, the message definition may be cyclic,
-      // so we need to return 'YES_NONRECURSIVE' even if the top level field number doesn't match.
-      return ShouldIgnore.YES_NONRECURSIVE;
+      // We return 'EXCLUDED_NONRECURSIVELY' for both field descriptor scopes and field number
+      // scopes. In the former case, the field descriptors are arbitrary, so it's always possible we
+      // find a hit on a sub-message somewhere.  In the latter case, the message definition may be
+      // cyclic, so we need to return 'EXCLUDED_NONRECURSIVELY' even if the top level field number
+      // doesn't match.
+      return FieldScopeResult.EXCLUDED_NONRECURSIVELY;
     }
 
     @Override
-    final FieldScopeLogic subLogicImpl(
+    final FieldScopeLogic subScopeImpl(
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
       return this;
     }
@@ -356,12 +367,12 @@ abstract class FieldScopeLogic {
     abstract T newLogicOfSameType(List<FieldScopeLogic> newElements);
 
     @Override
-    final FieldScopeLogic subLogicImpl(
+    final FieldScopeLogic subScopeImpl(
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
       ImmutableList.Builder<FieldScopeLogic> builder =
           ImmutableList.builderWithExpectedSize(elements.size());
       for (FieldScopeLogic elem : elements) {
-        builder.add(elem.subLogic(rootDescriptor, fieldDescriptorOrUnknown));
+        builder.add(elem.subScope(rootDescriptor, fieldDescriptorOrUnknown));
       }
       return newLogicOfSameType(builder.build());
     }
@@ -380,27 +391,29 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    ShouldIgnore shouldIgnore(
+    FieldScopeResult policyFor(
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
       // The intersection of two scopes is ignorable if either scope is itself ignorable.
       return intersection(
-          elements.get(0).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown),
-          elements.get(1).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown));
+          elements.get(0).policyFor(rootDescriptor, fieldDescriptorOrUnknown),
+          elements.get(1).policyFor(rootDescriptor, fieldDescriptorOrUnknown));
     }
 
-    private static ShouldIgnore intersection(ShouldIgnore op1, ShouldIgnore op2) {
-      if (op1 == ShouldIgnore.YES_RECURSIVE || op2 == ShouldIgnore.YES_RECURSIVE) {
-        // If either argument ignores recursively, the result does too.
-        return ShouldIgnore.YES_RECURSIVE;
-      } else if (op1.shouldIgnore() || op2.shouldIgnore()) {
-        // Otherwise, we ignore non-recursively if either result is a YES.
-        return ShouldIgnore.YES_NONRECURSIVE;
-      } else if (op1.recursive() && op2.recursive()) {
-        // We unignore recursively if both arguments are recursive.
-        return ShouldIgnore.NO_RECURSIVE;
+    private static FieldScopeResult intersection(
+        FieldScopeResult result1, FieldScopeResult result2) {
+      if (result1 == FieldScopeResult.EXCLUDED_RECURSIVELY
+          || result2 == FieldScopeResult.EXCLUDED_RECURSIVELY) {
+        // If either argument is excluded recursively, the result is too.
+        return FieldScopeResult.EXCLUDED_RECURSIVELY;
+      } else if (!result1.included() || !result2.included()) {
+        // Otherwise, we exclude non-recursively if either result is an exclusion.
+        return FieldScopeResult.EXCLUDED_NONRECURSIVELY;
+      } else if (result1.recursive() && result2.recursive()) {
+        // We include recursively if both arguments are recursive.
+        return FieldScopeResult.INCLUDED_RECURSIVELY;
       } else {
-        // Otherwise, we unignore non-recursively.
-        return ShouldIgnore.NO_NONRECURSIVE;
+        // Otherwise, we include non-recursively.
+        return FieldScopeResult.INCLUDED_NONRECURSIVELY;
       }
     }
 
@@ -423,27 +436,28 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    ShouldIgnore shouldIgnore(
+    FieldScopeResult policyFor(
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
       // The union of two scopes is ignorable only if both scopes are themselves ignorable.
       return union(
-          elements.get(0).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown),
-          elements.get(1).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown));
+          elements.get(0).policyFor(rootDescriptor, fieldDescriptorOrUnknown),
+          elements.get(1).policyFor(rootDescriptor, fieldDescriptorOrUnknown));
     }
 
-    private static ShouldIgnore union(ShouldIgnore op1, ShouldIgnore op2) {
-      if (op1 == ShouldIgnore.NO_RECURSIVE || op2 == ShouldIgnore.NO_RECURSIVE) {
-        // If either argument unignores recursively, the result does too.
-        return ShouldIgnore.NO_RECURSIVE;
-      } else if (!op1.shouldIgnore() || !op2.shouldIgnore()) {
-        // Otherwise, if either argument unignores, we unignore non-recursively.
-        return ShouldIgnore.NO_NONRECURSIVE;
-      } else if (op1.recursive() && op2.recursive()) {
-        // If both arguments are recursive, we ignore recursively.
-        return ShouldIgnore.YES_RECURSIVE;
+    private static FieldScopeResult union(FieldScopeResult result1, FieldScopeResult result2) {
+      if (result1 == FieldScopeResult.INCLUDED_RECURSIVELY
+          || result2 == FieldScopeResult.INCLUDED_RECURSIVELY) {
+        // If either argument is included recursively, the result is too.
+        return FieldScopeResult.INCLUDED_RECURSIVELY;
+      } else if (result1.included() || result2.included()) {
+        // Otherwise, if either is included, we include non-recursively.
+        return FieldScopeResult.INCLUDED_NONRECURSIVELY;
+      } else if (result1.recursive() && result2.recursive()) {
+        // If both arguments are recursive, we exclude recursively.
+        return FieldScopeResult.EXCLUDED_RECURSIVELY;
       } else {
-        // Otherwise, we ignore non-recursively.
-        return ShouldIgnore.YES_NONRECURSIVE;
+        // Otherwise, we exclude exclude non-recursively.
+        return FieldScopeResult.EXCLUDED_NONRECURSIVELY;
       }
     }
 
@@ -466,10 +480,10 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    ShouldIgnore shouldIgnore(
+    FieldScopeResult policyFor(
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
-      ShouldIgnore op = elements.get(0).shouldIgnore(rootDescriptor, fieldDescriptorOrUnknown);
-      return ShouldIgnore.of(!op.shouldIgnore(), op.recursive());
+      FieldScopeResult result = elements.get(0).policyFor(rootDescriptor, fieldDescriptorOrUnknown);
+      return FieldScopeResult.of(!result.included(), result.recursive());
     }
 
     @Override

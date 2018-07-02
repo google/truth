@@ -29,10 +29,10 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Correspondence;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import com.google.errorprone.annotations.CheckReturnValue;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -50,7 +50,7 @@ abstract class FluentEqualityConfig {
           .setIgnoreRepeatedFieldOrder(false)
           .setIgnoreExtraRepeatedFieldElements(false)
           .setCompareExpectedFieldsOnly(false)
-          .setFieldScopeLogic(FieldScopeLogic.all())
+          .setCompareFieldsScope(FieldScopeLogic.all())
           .setReportMismatchesOnly(false)
           .setUsingCorrespondenceStringFunction(Functions.constant(""))
           .build();
@@ -93,7 +93,7 @@ abstract class FluentEqualityConfig {
   // along the expected protos.
   abstract Optional<ImmutableList<Message>> expectedMessages();
 
-  abstract FieldScopeLogic fieldScopeLogic();
+  abstract FieldScopeLogic compareFieldsScope();
 
   abstract boolean reportMismatchesOnly();
 
@@ -159,29 +159,29 @@ abstract class FluentEqualityConfig {
     }
     Builder builder = toBuilder().setExpectedMessages(listBuilder.build());
     if (compareExpectedFieldsOnly()) {
-      builder.setFieldScopeLogic(
-          FieldScopeLogic.and(fieldScopeLogic(), FieldScopes.fromSetFields(messages).logic()));
+      builder.setCompareFieldsScope(
+          FieldScopeLogic.and(compareFieldsScope(), FieldScopes.fromSetFields(messages).logic()));
     }
     return builder.build();
   }
 
   final FluentEqualityConfig withPartialScope(FieldScope partialScope) {
     return toBuilder()
-        .setFieldScopeLogic(FieldScopeLogic.and(fieldScopeLogic(), partialScope.logic()))
+        .setCompareFieldsScope(FieldScopeLogic.and(compareFieldsScope(), partialScope.logic()))
         .addUsingCorrespondenceFieldScopeString(".withPartialScope(%s)", partialScope)
         .build();
   }
 
   final FluentEqualityConfig ignoringFields(Iterable<Integer> fieldNumbers) {
     return toBuilder()
-        .setFieldScopeLogic(fieldScopeLogic().ignoringFields(fieldNumbers))
+        .setCompareFieldsScope(compareFieldsScope().ignoringFields(fieldNumbers))
         .addUsingCorrespondenceFieldNumbersString(".ignoringFields(%s)", fieldNumbers)
         .build();
   }
 
   final FluentEqualityConfig ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
     return toBuilder()
-        .setFieldScopeLogic(fieldScopeLogic().ignoringFieldDescriptors(fieldDescriptors))
+        .setCompareFieldsScope(compareFieldsScope().ignoringFieldDescriptors(fieldDescriptors))
         .addUsingCorrespondenceFieldDescriptorsString(
             ".ignoringFieldDescriptors(%s)", fieldDescriptors)
         .build();
@@ -189,8 +189,8 @@ abstract class FluentEqualityConfig {
 
   final FluentEqualityConfig ignoringFieldScope(FieldScope fieldScope) {
     return toBuilder()
-        .setFieldScopeLogic(
-            FieldScopeLogic.and(fieldScopeLogic(), FieldScopeLogic.not(fieldScope.logic())))
+        .setCompareFieldsScope(
+            FieldScopeLogic.and(compareFieldsScope(), FieldScopeLogic.not(fieldScope.logic())))
         .addUsingCorrespondenceFieldScopeString(".ignoringFieldScope(%s)", fieldScope)
         .build();
   }
@@ -266,7 +266,7 @@ abstract class FluentEqualityConfig {
 
     abstract Builder setExpectedMessages(ImmutableList<Message> messages);
 
-    abstract Builder setFieldScopeLogic(FieldScopeLogic fieldScopeLogic);
+    abstract Builder setCompareFieldsScope(FieldScopeLogic fieldScopeLogic);
 
     abstract Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
 
