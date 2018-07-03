@@ -80,8 +80,55 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
+  public ProtoFluentAssertion ignoringFieldAbsenceOfFields(int firstFieldNumber, int... rest) {
+    return usingConfig(config.ignoringFieldAbsenceOfFields(asList(firstFieldNumber, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringFieldAbsenceOfFields(Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringFieldAbsenceOfFields(fieldNumbers));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringFieldAbsenceOfFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.ignoringFieldAbsenceOfFieldDescriptors(asList(firstFieldDescriptor, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringFieldAbsenceOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.ignoringFieldAbsenceOfFieldDescriptors(fieldDescriptors));
+  }
+
+  @Override
   public ProtoFluentAssertion ignoringRepeatedFieldOrder() {
     return usingConfig(config.ignoringRepeatedFieldOrder());
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFields(
+      int firstFieldNumber, int... rest) {
+    return usingConfig(config.ignoringRepeatedFieldOrderOfFields(asList(firstFieldNumber, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFields(Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringRepeatedFieldOrderOfFields(fieldNumbers));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.ignoringRepeatedFieldOrderOfFieldDescriptors(asList(firstFieldDescriptor, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.ignoringRepeatedFieldOrderOfFieldDescriptors(fieldDescriptors));
   }
 
   @Override
@@ -90,13 +137,94 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   @Override
+  public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFields(
+      int firstFieldNumber, int... rest) {
+    return usingConfig(
+        config.ignoringExtraRepeatedFieldElementsOfFields(asList(firstFieldNumber, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFields(
+      Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringExtraRepeatedFieldElementsOfFields(fieldNumbers));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+      FieldDescriptor first, FieldDescriptor... rest) {
+    return usingConfig(
+        config.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(asList(first, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(
+        config.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(fieldDescriptors));
+  }
+
+  @Override
   public ProtoFluentAssertion usingDoubleTolerance(double tolerance) {
     return usingConfig(config.usingDoubleTolerance(tolerance));
   }
 
   @Override
+  public ProtoFluentAssertion usingDoubleToleranceForFields(
+      double tolerance, int firstFieldNumber, int... rest) {
+    return usingConfig(
+        config.usingDoubleToleranceForFields(tolerance, asList(firstFieldNumber, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion usingDoubleToleranceForFields(
+      double tolerance, Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.usingDoubleToleranceForFields(tolerance, fieldNumbers));
+  }
+
+  @Override
+  public ProtoFluentAssertion usingDoubleToleranceForFieldDescriptors(
+      double tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.usingDoubleToleranceForFieldDescriptors(
+            tolerance, asList(firstFieldDescriptor, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion usingDoubleToleranceForFieldDescriptors(
+      double tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.usingDoubleToleranceForFieldDescriptors(tolerance, fieldDescriptors));
+  }
+
+  @Override
   public ProtoFluentAssertion usingFloatTolerance(float tolerance) {
     return usingConfig(config.usingFloatTolerance(tolerance));
+  }
+
+  @Override
+  public ProtoFluentAssertion usingFloatToleranceForFields(
+      float tolerance, int firstFieldNumber, int... rest) {
+    return usingConfig(
+        config.usingFloatToleranceForFields(tolerance, asList(firstFieldNumber, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion usingFloatToleranceForFields(
+      float tolerance, Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.usingFloatToleranceForFields(tolerance, fieldNumbers));
+  }
+
+  @Override
+  public ProtoFluentAssertion usingFloatToleranceForFieldDescriptors(
+      float tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.usingFloatToleranceForFieldDescriptors(
+            tolerance, asList(firstFieldDescriptor, rest)));
+  }
+
+  @Override
+  public ProtoFluentAssertion usingFloatToleranceForFieldDescriptors(
+      float tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.usingFloatToleranceForFieldDescriptors(tolerance, fieldDescriptors));
   }
 
   @Override

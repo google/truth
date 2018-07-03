@@ -36,7 +36,8 @@ import com.google.protobuf.Message;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
- * A specification for a {@link MessageDifferencer} for comparing two individual protobufs.
+ * A specification for a {@link ProtoTruthMessageDifferencer} for comparing two individual
+ * protobufs.
  *
  * <p>Can be used to compare lists, maps, and multimaps of protos as well by conversion to a {@link
  * Correspondence}.
@@ -46,9 +47,11 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
   private static final FluentEqualityConfig DEFAULT_INSTANCE =
       new AutoValue_FluentEqualityConfig.Builder()
-          .setIgnoreFieldAbsence(false)
-          .setIgnoreRepeatedFieldOrder(false)
-          .setIgnoreExtraRepeatedFieldElements(false)
+          .setIgnoreFieldAbsenceScope(FieldScopeLogic.none())
+          .setIgnoreRepeatedFieldOrderScope(FieldScopeLogic.none())
+          .setIgnoreExtraRepeatedFieldElementsScope(FieldScopeLogic.none())
+          .setDoubleCorrespondenceMap(FieldScopeLogicMap.<Correspondence<Number, Number>>empty())
+          .setFloatCorrespondenceMap(FieldScopeLogicMap.<Correspondence<Number, Number>>empty())
           .setCompareExpectedFieldsOnly(false)
           .setCompareFieldsScope(FieldScopeLogic.all())
           .setReportMismatchesOnly(false)
@@ -73,15 +76,15 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   // Storage of AbstractProtoFluentEquals configuration data.
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  abstract boolean ignoreFieldAbsence();
+  abstract FieldScopeLogic ignoreFieldAbsenceScope();
 
-  abstract boolean ignoreRepeatedFieldOrder();
+  abstract FieldScopeLogic ignoreRepeatedFieldOrderScope();
 
-  abstract boolean ignoreExtraRepeatedFieldElements();
+  abstract FieldScopeLogic ignoreExtraRepeatedFieldElementsScope();
 
-  abstract Optional<Correspondence<Number, Number>> doubleCorrespondence();
+  abstract FieldScopeLogicMap<Correspondence<Number, Number>> doubleCorrespondenceMap();
 
-  abstract Optional<Correspondence<Number, Number>> floatCorrespondence();
+  abstract FieldScopeLogicMap<Correspondence<Number, Number>> floatCorrespondenceMap();
 
   abstract boolean compareExpectedFieldsOnly();
 
@@ -110,36 +113,147 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
   final FluentEqualityConfig ignoringFieldAbsence() {
     return toBuilder()
-        .setIgnoreFieldAbsence(true)
+        .setIgnoreFieldAbsenceScope(FieldScopeLogic.all())
         .addUsingCorrespondenceString(".ignoringFieldAbsence()")
+        .build();
+  }
+
+  final FluentEqualityConfig ignoringFieldAbsenceOfFields(Iterable<Integer> fieldNumbers) {
+    return toBuilder()
+        .setIgnoreFieldAbsenceScope(
+            ignoreFieldAbsenceScope().allowingFieldsNonRecursive(fieldNumbers))
+        .addUsingCorrespondenceFieldNumbersString(".ignoringFieldAbsenceOf(%s)", fieldNumbers)
+        .build();
+  }
+
+  final FluentEqualityConfig ignoringFieldAbsenceOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return toBuilder()
+        .setIgnoreFieldAbsenceScope(
+            ignoreFieldAbsenceScope().allowingFieldDescriptorsNonRecursive(fieldDescriptors))
+        .addUsingCorrespondenceFieldDescriptorsString(
+            ".ignoringFieldAbsenceOf(%s)", fieldDescriptors)
         .build();
   }
 
   final FluentEqualityConfig ignoringRepeatedFieldOrder() {
     return toBuilder()
-        .setIgnoreRepeatedFieldOrder(true)
+        .setIgnoreRepeatedFieldOrderScope(FieldScopeLogic.all())
         .addUsingCorrespondenceString(".ignoringRepeatedFieldOrder()")
+        .build();
+  }
+
+  final FluentEqualityConfig ignoringRepeatedFieldOrderOfFields(Iterable<Integer> fieldNumbers) {
+    return toBuilder()
+        .setIgnoreRepeatedFieldOrderScope(
+            ignoreRepeatedFieldOrderScope().allowingFieldsNonRecursive(fieldNumbers))
+        .addUsingCorrespondenceFieldNumbersString(".ignoringRepeatedFieldOrderOf(%s)", fieldNumbers)
+        .build();
+  }
+
+  final FluentEqualityConfig ignoringRepeatedFieldOrderOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return toBuilder()
+        .setIgnoreRepeatedFieldOrderScope(
+            ignoreRepeatedFieldOrderScope().allowingFieldDescriptorsNonRecursive(fieldDescriptors))
+        .addUsingCorrespondenceFieldDescriptorsString(
+            ".ignoringRepeatedFieldOrderOf(%s)", fieldDescriptors)
         .build();
   }
 
   final FluentEqualityConfig ignoringExtraRepeatedFieldElements() {
     return toBuilder()
-        .setIgnoreExtraRepeatedFieldElements(true)
+        .setIgnoreExtraRepeatedFieldElementsScope(FieldScopeLogic.all())
         .addUsingCorrespondenceString(".ignoringExtraRepeatedFieldElements()")
+        .build();
+  }
+
+  final FluentEqualityConfig ignoringExtraRepeatedFieldElementsOfFields(
+      Iterable<Integer> fieldNumbers) {
+    return toBuilder()
+        .setIgnoreExtraRepeatedFieldElementsScope(
+            ignoreExtraRepeatedFieldElementsScope().allowingFieldsNonRecursive(fieldNumbers))
+        .addUsingCorrespondenceFieldNumbersString(
+            ".ignoringExtraRepeatedFieldElements(%s)", fieldNumbers)
+        .build();
+  }
+
+  final FluentEqualityConfig ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return toBuilder()
+        .setIgnoreExtraRepeatedFieldElementsScope(
+            ignoreExtraRepeatedFieldElementsScope()
+                .allowingFieldDescriptorsNonRecursive(fieldDescriptors))
+        .addUsingCorrespondenceFieldDescriptorsString(
+            ".ignoringExtraRepeatedFieldElements(%s)", fieldDescriptors)
         .build();
   }
 
   final FluentEqualityConfig usingDoubleTolerance(double tolerance) {
     return toBuilder()
-        .setDoubleCorrespondence(Correspondence.tolerance(tolerance))
+        .setDoubleCorrespondenceMap(
+            FieldScopeLogicMap.defaultValue(Correspondence.tolerance(tolerance)))
         .addUsingCorrespondenceString(".usingDoubleTolerance(" + tolerance + ")")
+        .build();
+  }
+
+  final FluentEqualityConfig usingDoubleToleranceForFields(
+      double tolerance, Iterable<Integer> fieldNumbers) {
+    return toBuilder()
+        .setDoubleCorrespondenceMap(
+            doubleCorrespondenceMap()
+                .with(
+                    FieldScopeLogic.none().allowingFieldsNonRecursive(fieldNumbers),
+                    Correspondence.tolerance(tolerance)))
+        .addUsingCorrespondenceFieldNumbersString(
+            ".usingDoubleTolerance(" + tolerance + ", %s)", fieldNumbers)
+        .build();
+  }
+
+  final FluentEqualityConfig usingDoubleToleranceForFieldDescriptors(
+      double tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+    return toBuilder()
+        .setDoubleCorrespondenceMap(
+            doubleCorrespondenceMap()
+                .with(
+                    FieldScopeLogic.none().allowingFieldDescriptorsNonRecursive(fieldDescriptors),
+                    Correspondence.tolerance(tolerance)))
+        .addUsingCorrespondenceFieldDescriptorsString(
+            ".usingDoubleTolerance(" + tolerance + ", %s)", fieldDescriptors)
         .build();
   }
 
   final FluentEqualityConfig usingFloatTolerance(float tolerance) {
     return toBuilder()
-        .setFloatCorrespondence(Correspondence.tolerance(tolerance))
+        .setFloatCorrespondenceMap(
+            FieldScopeLogicMap.defaultValue(Correspondence.tolerance(tolerance)))
         .addUsingCorrespondenceString(".usingFloatTolerance(" + tolerance + ")")
+        .build();
+  }
+
+  final FluentEqualityConfig usingFloatToleranceForFields(
+      float tolerance, Iterable<Integer> fieldNumbers) {
+    return toBuilder()
+        .setFloatCorrespondenceMap(
+            floatCorrespondenceMap()
+                .with(
+                    FieldScopeLogic.none().allowingFieldsNonRecursive(fieldNumbers),
+                    Correspondence.tolerance(tolerance)))
+        .addUsingCorrespondenceFieldNumbersString(
+            ".usingFloatTolerance(" + tolerance + ", %s)", fieldNumbers)
+        .build();
+  }
+
+  final FluentEqualityConfig usingFloatToleranceForFieldDescriptors(
+      float tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+    return toBuilder()
+        .setFloatCorrespondenceMap(
+            floatCorrespondenceMap()
+                .with(
+                    FieldScopeLogic.none().allowingFieldDescriptorsNonRecursive(fieldDescriptors),
+                    Correspondence.tolerance(tolerance)))
+        .addUsingCorrespondenceFieldDescriptorsString(
+            ".usingFloatTolerance(" + tolerance + ", %s)", fieldDescriptors)
         .build();
   }
 
@@ -206,6 +320,17 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   public final FluentEqualityConfig subScope(
       Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
     return toBuilder()
+        .setIgnoreFieldAbsenceScope(
+            ignoreFieldAbsenceScope().subScope(rootDescriptor, fieldDescriptorOrUnknown))
+        .setIgnoreRepeatedFieldOrderScope(
+            ignoreRepeatedFieldOrderScope().subScope(rootDescriptor, fieldDescriptorOrUnknown))
+        .setIgnoreExtraRepeatedFieldElementsScope(
+            ignoreExtraRepeatedFieldElementsScope()
+                .subScope(rootDescriptor, fieldDescriptorOrUnknown))
+        .setDoubleCorrespondenceMap(
+            doubleCorrespondenceMap().subScope(rootDescriptor, fieldDescriptorOrUnknown))
+        .setFloatCorrespondenceMap(
+            floatCorrespondenceMap().subScope(rootDescriptor, fieldDescriptorOrUnknown))
         .setCompareFieldsScope(
             compareFieldsScope().subScope(rootDescriptor, fieldDescriptorOrUnknown))
         .build();
@@ -213,6 +338,14 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
 
   @Override
   public final void validate(Descriptor rootDescriptor) {
+    // TODO(user): Add some basic sanity-checking here for explicit scopes.
+    // For example, it doesn't make sense to call 'usingDoubleTolerance(0.1, STRING_FIELD)'.
+
+    ignoreFieldAbsenceScope().validate(rootDescriptor);
+    ignoreRepeatedFieldOrderScope().validate(rootDescriptor);
+    ignoreExtraRepeatedFieldElementsScope().validate(rootDescriptor);
+    doubleCorrespondenceMap().validate(rootDescriptor);
+    floatCorrespondenceMap().validate(rootDescriptor);
     compareFieldsScope().validate(rootDescriptor);
   }
 
@@ -266,15 +399,17 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   @CanIgnoreReturnValue
   @AutoValue.Builder
   abstract static class Builder {
-    abstract Builder setIgnoreFieldAbsence(boolean ignoringFieldAbsence);
+    abstract Builder setIgnoreFieldAbsenceScope(FieldScopeLogic fieldScopeLogic);
 
-    abstract Builder setIgnoreRepeatedFieldOrder(boolean ignoringRepeatedFieldOrder);
+    abstract Builder setIgnoreRepeatedFieldOrderScope(FieldScopeLogic fieldScopeLogic);
 
-    abstract Builder setIgnoreExtraRepeatedFieldElements(boolean ignoreExtraRepeatedFieldElements);
+    abstract Builder setIgnoreExtraRepeatedFieldElementsScope(FieldScopeLogic fieldScopeLogic);
 
-    abstract Builder setDoubleCorrespondence(Correspondence<Number, Number> doubleCorrespondence);
+    abstract Builder setDoubleCorrespondenceMap(
+        FieldScopeLogicMap<Correspondence<Number, Number>> doubleCorrespondenceMap);
 
-    abstract Builder setFloatCorrespondence(Correspondence<Number, Number> floatCorrespondence);
+    abstract Builder setFloatCorrespondenceMap(
+        FieldScopeLogicMap<Correspondence<Number, Number>> floatCorrespondenceMap);
 
     abstract Builder setCompareExpectedFieldsOnly(boolean compare);
 

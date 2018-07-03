@@ -281,6 +281,63 @@ public class MultimapWithProtoValuesSubject<
   }
 
   /**
+   * Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+   * ignored when comparing for equality. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if they are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsenceForValues()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsenceForValues() for details
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> ignoringFieldAbsenceOfFieldsForValues(
+      int firstFieldNumber, int... rest) {
+    return usingConfig(config.ignoringFieldAbsenceOfFields(asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+   * ignored when comparing for equality. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if they are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsenceForValues()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsenceForValues() for details
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> ignoringFieldAbsenceOfFieldsForValues(
+      Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringFieldAbsenceOfFields(fieldNumbers));
+  }
+
+  /**
+   * Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+   * when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
+   * as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsenceForValues()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsenceForValues() for details
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> ignoringFieldAbsenceOfFieldDescriptorsForValues(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.ignoringFieldAbsenceOfFieldDescriptors(asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+   * when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
+   * as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsenceForValues()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsenceForValues() for details
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> ignoringFieldAbsenceOfFieldDescriptorsForValues(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.ignoringFieldAbsenceOfFieldDescriptors(fieldDescriptors));
+  }
+
+  /**
    * Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
    * for equality.
    *
@@ -347,6 +404,65 @@ public class MultimapWithProtoValuesSubject<
   }
 
   /**
+   * Specifies that the ordering of repeated fields for these explicitly specified top-level field
+   * numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
+   * (via {@link FieldDescriptor}) if their orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrderForValues()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrderForValues() for details.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> ignoringRepeatedFieldOrderOfFieldsForValues(
+      int firstFieldNumber, int... rest) {
+    return usingConfig(config.ignoringRepeatedFieldOrderOfFields(asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified top-level field
+   * numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
+   * (via {@link FieldDescriptor}) if their orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrderForValues()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrderForValues() for details.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> ignoringRepeatedFieldOrderOfFieldsForValues(
+      Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringRepeatedFieldOrderOfFields(fieldNumbers));
+  }
+
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+   * should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
+   * orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrderForValues()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrderForValues() for details.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M>
+      ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(
+          FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.ignoringRepeatedFieldOrderOfFieldDescriptors(asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+   * should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
+   * orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrderForValues()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrderForValues() for details.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M>
+      ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(
+          Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.ignoringRepeatedFieldOrderOfFieldDescriptors(fieldDescriptors));
+  }
+
+  /**
    * Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
    * not found in the 'expected' proto are ignored, with the exception of fields in the expected
    * proto which are empty. To ignore empty repeated fields as well, use {@link
@@ -364,6 +480,72 @@ public class MultimapWithProtoValuesSubject<
   }
 
   /**
+   * Specifies that extra repeated field elements for these explicitly specified top-level field
+   * numbers should be ignored. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if their extra elements are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElementsForValues()} instead to ignore these for all
+   * fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElementsForValues() for details.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M>
+      ignoringExtraRepeatedFieldElementsOfFieldsForValues(int firstFieldNumber, int... rest) {
+    return usingConfig(
+        config.ignoringExtraRepeatedFieldElementsOfFields(asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified top-level field
+   * numbers should be ignored. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if their extra elements are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElementsForValues()} instead to ignore these for all
+   * fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElementsForValues() for details.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M>
+      ignoringExtraRepeatedFieldElementsOfFieldsForValues(Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringExtraRepeatedFieldElementsOfFields(fieldNumbers));
+  }
+
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified field descriptors
+   * should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
+   * ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElementsForValues()} instead to ignore these for all
+   * fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElementsForValues() for details.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M>
+      ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(
+          FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+            asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified field descriptors
+   * should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
+   * ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElementsForValues()} instead to ignore these for all
+   * fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElementsForValues() for details.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M>
+      ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(
+          Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(
+        config.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(fieldDescriptors));
+  }
+
+  /**
    * Compares double fields as equal if they are both finite and their absolute difference is less
    * than or equal to {@code tolerance}.
    *
@@ -374,6 +556,53 @@ public class MultimapWithProtoValuesSubject<
   }
 
   /**
+   * Compares double fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForFieldsForValues(
+      double tolerance, int firstFieldNumber, int... rest) {
+    return usingConfig(
+        config.usingDoubleToleranceForFields(tolerance, asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Compares double fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForFieldsForValues(
+      double tolerance, Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.usingDoubleToleranceForFields(tolerance, fieldNumbers));
+  }
+
+  /**
+   * Compares double fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForFieldDescriptorsForValues(
+      double tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.usingDoubleToleranceForFieldDescriptors(
+            tolerance, asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Compares double fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForFieldDescriptorsForValues(
+      double tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.usingDoubleToleranceForFieldDescriptors(tolerance, fieldDescriptors));
+  }
+
+  /**
    * Compares float fields as equal if they are both finite and their absolute difference is less
    * than or equal to {@code tolerance}.
    *
@@ -381,6 +610,53 @@ public class MultimapWithProtoValuesSubject<
    */
   public MultimapWithProtoValuesFluentAssertion<M> usingFloatToleranceForValues(float tolerance) {
     return usingConfig(config.usingFloatTolerance(tolerance));
+  }
+
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> usingFloatToleranceForFieldsForValues(
+      float tolerance, int firstFieldNumber, int... rest) {
+    return usingConfig(
+        config.usingFloatToleranceForFields(tolerance, asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> usingFloatToleranceForFieldsForValues(
+      float tolerance, Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.usingFloatToleranceForFields(tolerance, fieldNumbers));
+  }
+
+  /**
+   * Compares float fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> usingFloatToleranceForFieldDescriptorsForValues(
+      float tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.usingFloatToleranceForFieldDescriptors(
+            tolerance, asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public MultimapWithProtoValuesFluentAssertion<M> usingFloatToleranceForFieldDescriptorsForValues(
+      float tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.usingFloatToleranceForFieldDescriptors(tolerance, fieldDescriptors));
   }
 
   /**
@@ -535,13 +811,94 @@ public class MultimapWithProtoValuesSubject<
     }
 
     @Override
+    public MultimapWithProtoValuesFluentAssertion<M> ignoringFieldAbsenceOfFieldsForValues(
+        int firstFieldNumber, int... rest) {
+      return subject.ignoringFieldAbsenceOfFieldsForValues(firstFieldNumber, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M> ignoringFieldAbsenceOfFieldsForValues(
+        Iterable<Integer> fieldNumbers) {
+      return subject.ignoringFieldAbsenceOfFieldsForValues(fieldNumbers);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        ignoringFieldAbsenceOfFieldDescriptorsForValues(
+            FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.ignoringFieldAbsenceOfFieldDescriptorsForValues(firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        ignoringFieldAbsenceOfFieldDescriptorsForValues(
+            Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.ignoringFieldAbsenceOfFieldDescriptorsForValues(fieldDescriptors);
+    }
+
+    @Override
     public MultimapWithProtoValuesFluentAssertion<M> ignoringRepeatedFieldOrderForValues() {
       return subject.ignoringRepeatedFieldOrderForValues();
     }
 
     @Override
+    public MultimapWithProtoValuesFluentAssertion<M> ignoringRepeatedFieldOrderOfFieldsForValues(
+        int firstFieldNumber, int... rest) {
+      return subject.ignoringRepeatedFieldOrderOfFieldsForValues(firstFieldNumber, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M> ignoringRepeatedFieldOrderOfFieldsForValues(
+        Iterable<Integer> fieldNumbers) {
+      return subject.ignoringRepeatedFieldOrderOfFieldsForValues(fieldNumbers);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(
+            FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(
+          firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(
+            Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(fieldDescriptors);
+    }
+
+    @Override
     public MultimapWithProtoValuesFluentAssertion<M> ignoringExtraRepeatedFieldElementsForValues() {
       return subject.ignoringExtraRepeatedFieldElementsForValues();
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        ignoringExtraRepeatedFieldElementsOfFieldsForValues(int firstFieldNumber, int... rest) {
+      return subject.ignoringExtraRepeatedFieldElementsOfFieldsForValues(firstFieldNumber, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        ignoringExtraRepeatedFieldElementsOfFieldsForValues(Iterable<Integer> fieldNumbers) {
+      return subject.ignoringExtraRepeatedFieldElementsOfFieldsForValues(fieldNumbers);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(
+            FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(
+          firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(
+            Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(
+          fieldDescriptors);
     }
 
     @Override
@@ -551,8 +908,62 @@ public class MultimapWithProtoValuesSubject<
     }
 
     @Override
+    public MultimapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForFieldsForValues(
+        double tolerance, int firstFieldNumber, int... rest) {
+      return subject.usingDoubleToleranceForFieldsForValues(tolerance, firstFieldNumber, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M> usingDoubleToleranceForFieldsForValues(
+        double tolerance, Iterable<Integer> fieldNumbers) {
+      return subject.usingDoubleToleranceForFieldsForValues(tolerance, fieldNumbers);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        usingDoubleToleranceForFieldDescriptorsForValues(
+            double tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.usingDoubleToleranceForFieldDescriptorsForValues(
+          tolerance, firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        usingDoubleToleranceForFieldDescriptorsForValues(
+            double tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.usingDoubleToleranceForFieldDescriptorsForValues(tolerance, fieldDescriptors);
+    }
+
+    @Override
     public MultimapWithProtoValuesFluentAssertion<M> usingFloatToleranceForValues(float tolerance) {
       return subject.usingFloatToleranceForValues(tolerance);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M> usingFloatToleranceForFieldsForValues(
+        float tolerance, int firstFieldNumber, int... rest) {
+      return subject.usingFloatToleranceForFieldsForValues(tolerance, firstFieldNumber, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M> usingFloatToleranceForFieldsForValues(
+        float tolerance, Iterable<Integer> fieldNumbers) {
+      return subject.usingFloatToleranceForFieldsForValues(tolerance, fieldNumbers);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        usingFloatToleranceForFieldDescriptorsForValues(
+            float tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.usingFloatToleranceForFieldDescriptorsForValues(
+          tolerance, firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public MultimapWithProtoValuesFluentAssertion<M>
+        usingFloatToleranceForFieldDescriptorsForValues(
+            float tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.usingFloatToleranceForFieldDescriptorsForValues(tolerance, fieldDescriptors);
     }
 
     @Override

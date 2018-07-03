@@ -8,6 +8,10 @@ option java_api_version = 2;
 
 // For brevity: o_ means 'optional', r_ means 'repeated'
 
+// This file must be kept in sync with test_message3.proto for tests to work.
+// Field names and field numbers should all match. Features supported in one
+// syntax but not the other are commented out in the other file.
+
 message TestMessage2 {
   enum TestEnum2 {
     DEFAULT = 0;
@@ -20,15 +24,17 @@ message TestMessage2 {
   optional int64 o_long_defaults_to_42 = 3 [default = 42];
   optional TestEnum2 o_enum = 4;
   optional float o_float = 5;
-  optional double o_double = 6;
+  optional float o_float2 = 6;
+  optional double o_double = 7;
+  optional double o_double2 = 8;
 
-  optional RequiredStringMessage2 o_required_string_message = 7;
-  repeated RequiredStringMessage2 r_required_string_message = 8;
-  optional TestMessage2 o_test_message = 9;
-  repeated TestMessage2 r_test_message = 10;
-  optional SubTestMessage2 o_sub_test_message = 11;
-  repeated SubTestMessage2 r_sub_test_message = 12;
-  map<string, TestMessage2> test_message_map = 13;
+  optional RequiredStringMessage2 o_required_string_message = 9;
+  repeated RequiredStringMessage2 r_required_string_message = 10;
+  optional TestMessage2 o_test_message = 11;
+  repeated TestMessage2 r_test_message = 12;
+  optional SubTestMessage2 o_sub_test_message = 13;
+  repeated SubTestMessage2 r_sub_test_message = 14;
+  map<string, TestMessage2> test_message_map = 15;
 }
 
 message RequiredStringMessage2 {
@@ -38,12 +44,16 @@ message RequiredStringMessage2 {
 message SubTestMessage2 {
   optional int32 o_int = 1;
   repeated string r_string = 2;
+  optional float o_float = 3;
+  optional double o_double = 4;
 
-  optional TestMessage2 o_test_message = 3;
-  optional SubSubTestMessage2 o_sub_sub_test_message = 4;
+  optional TestMessage2 o_test_message = 5;
+  optional SubSubTestMessage2 o_sub_sub_test_message = 6;
 }
 
 message SubSubTestMessage2 {
   optional int32 o_int = 1;
   repeated string r_string = 2;
+  optional float o_float = 3;
+  optional double o_double = 4;
 }

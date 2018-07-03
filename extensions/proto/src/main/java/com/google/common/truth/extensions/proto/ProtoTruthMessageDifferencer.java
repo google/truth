@@ -128,7 +128,15 @@ final class ProtoTruthMessageDifferencer {
           List<?> actualList = toProtoList(actualFields.get(fieldDescriptor));
           List<?> expectedList = toProtoList(expectedFields.get(fieldDescriptor));
 
-          if (config.ignoreRepeatedFieldOrder()) {
+          boolean ignoreRepeatedFieldOrder =
+              config
+                  .ignoreRepeatedFieldOrderScope()
+                  .contains(rootDescriptor, fieldDescriptorOrUnknown);
+          boolean ignoreExtraRepeatedFieldElements =
+              config
+                  .ignoreExtraRepeatedFieldElementsScope()
+                  .contains(rootDescriptor, fieldDescriptorOrUnknown);
+          if (ignoreRepeatedFieldOrder) {
             builder.addRepeatedField(
                 fieldDescriptor.getNumber(),
                 compareRepeatedFieldIgnoringOrder(
@@ -136,8 +144,9 @@ final class ProtoTruthMessageDifferencer {
                     expectedList,
                     shouldCompare == FieldScopeResult.EXCLUDED_NONRECURSIVELY,
                     fieldDescriptor,
+                    ignoreExtraRepeatedFieldElements,
                     config.subScope(rootDescriptor, fieldDescriptorOrUnknown)));
-          } else if (config.ignoreExtraRepeatedFieldElements() && !expectedList.isEmpty()) {
+          } else if (ignoreExtraRepeatedFieldElements && !expectedList.isEmpty()) {
             builder.addRepeatedField(
                 fieldDescriptor.getNumber(),
                 compareRepeatedFieldExpectingSubsequence(
@@ -172,7 +181,7 @@ final class ProtoTruthMessageDifferencer {
     }
 
     // Compare unknown fields.
-    if (!config.ignoreFieldAbsence()) {
+    if (!config.ignoreFieldAbsenceScope().isAll()) {
       UnknownFieldSetDiff diff =
           diffUnknowns(actual.getUnknownFields(), expected.getUnknownFields(), config);
       builder.setUnknownFields(diff);
@@ -228,6 +237,12 @@ final class ProtoTruthMessageDifferencer {
       return ImmutableList.of(SingularField.ignored(name(mapFieldDescriptor)));
     }
 
+    boolean ignoreExtraRepeatedFieldElements =
+        mapConfig
+            .ignoreExtraRepeatedFieldElementsScope()
+            .contains(
+                rootDescriptor, FieldDescriptorOrUnknown.fromFieldDescriptor(mapFieldDescriptor));
+
     FluentEqualityConfig valuesConfig =
         mapConfig.subScope(rootDescriptor, valueFieldDescriptorOrUnknown);
 
@@ -236,9 +251,7 @@ final class ProtoTruthMessageDifferencer {
     for (Object key : keyOrder) {
       @NullableDecl Object actualValue = actualMap.get(key);
       @NullableDecl Object expectedValue = expectedMap.get(key);
-      if (mapConfig.ignoreExtraRepeatedFieldElements()
-          && !expectedMap.isEmpty()
-          && expectedValue == null) {
+      if (ignoreExtraRepeatedFieldElements && !expectedMap.isEmpty() && expectedValue == null) {
         builder.add(
             SingularField.ignored(indexedName(mapFieldDescriptor, key, keyFieldDescriptor)));
       } else {
@@ -262,6 +275,7 @@ final class ProtoTruthMessageDifferencer {
       List<?> expectedList,
       boolean excludeNonRecursive,
       FieldDescriptor fieldDescriptor,
+      boolean ignoreExtraRepeatedFieldElements,
       FluentEqualityConfig config) {
     RepeatedField.Builder builder =
         RepeatedField.newBuilder()
@@ -291,7 +305,7 @@ final class ProtoTruthMessageDifferencer {
 
     // Record remaining unmatched elements.
     for (int i : unmatchedActual) {
-      if (config.ignoreExtraRepeatedFieldElements() && !expectedList.isEmpty()) {
+      if (ignoreExtraRepeatedFieldElements && !expectedList.isEmpty()) {
         builder.addPairResult(
             RepeatedField.PairResult.newBuilder()
                 .setResult(Result.IGNORED)
@@ -572,8 +586,13 @@ final class ProtoTruthMessageDifferencer {
     Result.Builder result = Result.builder();
 
     // Use the default if it's set and we're ignoring field absence.
-    actual = orIfIgnoringFieldAbsence(actual, defaultValue, config.ignoreFieldAbsence());
-    expected = orIfIgnoringFieldAbsence(expected, defaultValue, config.ignoreFieldAbsence());
+    boolean ignoreFieldAbsence =
+        config
+            .ignoreFieldAbsenceScope()
+            .contains(
+                rootDescriptor, FieldDescriptorOrUnknown.fromFieldDescriptor(fieldDescriptor));
+    actual = orIfIgnoringFieldAbsence(actual, defaultValue, ignoreFieldAbsence);
+    expected = orIfIgnoringFieldAbsence(expected, defaultValue, ignoreFieldAbsence);
 
     // If actual or expected is missing here, we know our result so long as it's not ignored.
     result.markRemovedIf(actual == null);
@@ -623,8 +642,12 @@ final class ProtoTruthMessageDifferencer {
     Result.Builder result = Result.builder();
 
     // Use the default if it's set and we're ignoring field absence.
-    actual = orIfIgnoringFieldAbsence(actual, defaultValue, config.ignoreFieldAbsence());
-    expected = orIfIgnoringFieldAbsence(expected, defaultValue, config.ignoreFieldAbsence());
+    FieldDescriptorOrUnknown fieldDescriptorOrUnknown =
+        FieldDescriptorOrUnknown.fromFieldDescriptor(fieldDescriptor);
+    boolean ignoreFieldAbsence =
+        config.ignoreFieldAbsenceScope().contains(rootDescriptor, fieldDescriptorOrUnknown);
+    actual = orIfIgnoringFieldAbsence(actual, defaultValue, ignoreFieldAbsence);
+    expected = orIfIgnoringFieldAbsence(expected, defaultValue, ignoreFieldAbsence);
 
     // If actual or expected is missing here, we know our result.
     result.markRemovedIf(actual == null);
@@ -636,14 +659,14 @@ final class ProtoTruthMessageDifferencer {
             !doublesEqual(
                 (double) actual,
                 (double) expected,
-                config.doubleCorrespondence()
+                config.doubleCorrespondenceMap().get(rootDescriptor, fieldDescriptorOrUnknown)
                 ));
       } else if (actual instanceof Float) {
         result.markModifiedIf(
             !floatsEqual(
                 (float) actual,
                 (float) expected,
-                config.floatCorrespondence()
+                config.floatCorrespondenceMap().get(rootDescriptor, fieldDescriptorOrUnknown)
                 ));
       } else {
         result.markModifiedIf(!Objects.equal(actual, expected));

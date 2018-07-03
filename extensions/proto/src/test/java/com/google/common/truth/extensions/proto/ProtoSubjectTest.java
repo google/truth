@@ -15,7 +15,10 @@
  */
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.collect.ImmutableMap;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.DynamicMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
@@ -104,6 +107,47 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     }
   }
 
+  @Test
+  public void testIgnoringFieldAbsence_scoped() {
+    Message message = parse("o_sub_test_message: { o_test_message: {} }");
+    Message emptyMessage = parse("");
+    Message partialMessage = parse("o_sub_test_message: {}");
+
+    // All three are equal if we ignore field absence entirely.
+    expectThat(emptyMessage).ignoringFieldAbsence().isEqualTo(message);
+    expectThat(partialMessage).ignoringFieldAbsence().isEqualTo(message);
+
+    // If we ignore only o_sub_test_message.o_test_message, only the partial message is equal.
+    FieldDescriptor subTestMessageField = getFieldDescriptor("o_sub_test_message");
+    FieldDescriptor subTestMessageTestMessageField =
+        checkNotNull(subTestMessageField.getMessageType().findFieldByName("o_test_message"));
+    expectThat(partialMessage)
+        .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageTestMessageField)
+        .isEqualTo(message);
+    expectFailureWhenTesting()
+        .that(emptyMessage)
+        .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageTestMessageField)
+        .isEqualTo(message);
+    expectIsEqualToFailed();
+    expectThatFailure().hasMessageThat().contains("deleted: o_sub_test_message");
+
+    // But, we can ignore both.
+    expectThat(partialMessage)
+        .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageField)
+        .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageTestMessageField)
+        .isEqualTo(message);
+    expectThat(partialMessage)
+        .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageField, subTestMessageTestMessageField)
+        .isEqualTo(message);
+    expectThat(emptyMessage)
+        .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageField)
+        .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageTestMessageField)
+        .isEqualTo(message);
+    expectThat(emptyMessage)
+        .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageField, subTestMessageTestMessageField)
+        .isEqualTo(message);
+  }
+
   @SuppressWarnings("unchecked")
   @Test
   public void testUnknownFields() throws InvalidProtocolBufferException {
@@ -188,6 +232,53 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testRepeatedFieldOrder_scoped() {
+    Message message =
+        parse("r_string: 'a' r_string: 'b' o_sub_test_message: { r_string: 'c' r_string: 'd' }");
+    Message diffSubMessage =
+        parse("r_string: 'a' r_string: 'b' o_sub_test_message: { r_string: 'd' r_string: 'c' }");
+    Message diffAll =
+        parse("r_string: 'b' r_string: 'a' o_sub_test_message: { r_string: 'd' r_string: 'c' }");
+
+    FieldDescriptor rootMessageRepeatedfield = getFieldDescriptor("r_string");
+    FieldDescriptor subMessageRepeatedField =
+        checkNotNull(
+            getFieldDescriptor("o_sub_test_message").getMessageType().findFieldByName("r_string"));
+
+    // Ignoring all repeated field order tests pass.
+    expectThat(diffSubMessage).ignoringRepeatedFieldOrder().isEqualTo(message);
+    expectThat(diffAll).ignoringRepeatedFieldOrder().isEqualTo(message);
+
+    // Ignoring only some results in failures.
+    //
+    // TODO(user): Whether we check failure message substrings or not is currently ad-hoc on a
+    // per-test basis, and not especially maintainable.  We should make the tests consistent
+    // according to some reasonable rule in this regard.
+    expectFailureWhenTesting()
+        .that(diffSubMessage)
+        .ignoringRepeatedFieldOrderOfFieldDescriptors(rootMessageRepeatedfield)
+        .isEqualTo(message);
+    expectIsEqualToFailed();
+    expectThatFailure()
+        .hasMessageThat()
+        .contains("modified: o_sub_test_message.r_string[0]: \"c\" -> \"d\"");
+    expectThat(diffSubMessage)
+        .ignoringRepeatedFieldOrderOfFieldDescriptors(subMessageRepeatedField)
+        .isEqualTo(message);
+
+    expectThat(diffAll)
+        .ignoringRepeatedFieldOrderOfFieldDescriptors(rootMessageRepeatedfield)
+        .isNotEqualTo(message);
+    expectThat(diffAll)
+        .ignoringRepeatedFieldOrderOfFieldDescriptors(subMessageRepeatedField)
+        .isNotEqualTo(message);
+    expectThat(diffAll)
+        .ignoringRepeatedFieldOrderOfFieldDescriptors(
+            rootMessageRepeatedfield, subMessageRepeatedField)
+        .isEqualTo(message);
+  }
+
+  @Test
   public void testDoubleTolerance() {
     Message message = parse("o_double: 1.0");
     Message diffMessage = parse("o_double: 1.1");
@@ -200,6 +291,41 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testDoubleTolerance_scoped() {
+    Message message = parse("o_double: 1.0 o_double2: 1.0");
+    Message diffMessage = parse("o_double: 1.1 o_double2: 1.5");
+
+    int doubleFieldNumber = getFieldNumber("o_double");
+    int double2FieldNumber = getFieldNumber("o_double2");
+
+    expectThat(diffMessage).usingDoubleTolerance(0.6).isEqualTo(message);
+    expectThat(diffMessage).usingDoubleTolerance(0.2).isNotEqualTo(message);
+
+    // usingDoubleTolerance*() statements override all previous statements.
+    expectThat(diffMessage)
+        .usingDoubleTolerance(0.2)
+        .usingDoubleToleranceForFields(0.6, double2FieldNumber)
+        .isEqualTo(message);
+    expectThat(diffMessage)
+        .usingDoubleToleranceForFields(0.6, doubleFieldNumber, double2FieldNumber)
+        .usingDoubleToleranceForFields(0.2, doubleFieldNumber)
+        .isEqualTo(message);
+
+    expectThat(diffMessage)
+        .usingDoubleTolerance(0.2)
+        .usingDoubleToleranceForFields(0.6, doubleFieldNumber)
+        .isNotEqualTo(message);
+    expectThat(diffMessage)
+        .usingDoubleToleranceForFields(0.6, double2FieldNumber)
+        .usingDoubleTolerance(0.2)
+        .isNotEqualTo(message);
+    expectThat(diffMessage)
+        .usingDoubleToleranceForFields(0.6, doubleFieldNumber, double2FieldNumber)
+        .usingDoubleToleranceForFields(0.2, double2FieldNumber)
+        .isNotEqualTo(message);
+  }
+
+  @Test
   public void testFloatTolerance() {
     Message message = parse("o_float: 1.0");
     Message diffMessage = parse("o_float: 1.1");
@@ -209,6 +335,40 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).usingFloatTolerance(0.05f).isNotEqualTo(message);
     expectThat(diffMessage).usingDoubleTolerance(0.2).isNotEqualTo(message);
 
+  }
+
+  @Test
+  public void testFloatTolerance_scoped() {
+    Message message = parse("o_float: 1.0 o_float2: 1.0");
+    Message diffMessage = parse("o_float: 1.1 o_float2: 1.5");
+
+    int floatFieldNumber = getFieldNumber("o_float");
+    int float2FieldNumber = getFieldNumber("o_float2");
+
+    expectThat(diffMessage).usingFloatTolerance(0.6f).isEqualTo(message);
+    expectThat(diffMessage).usingFloatTolerance(0.2f).isNotEqualTo(message);
+
+    // usingFloatTolerance*() statements override all previous statements.
+    expectThat(diffMessage)
+        .usingFloatTolerance(0.2f)
+        .usingFloatToleranceForFields(0.6f, float2FieldNumber)
+        .isEqualTo(message);
+    expectThat(diffMessage)
+        .usingFloatTolerance(0.2f)
+        .usingFloatToleranceForFields(0.6f, floatFieldNumber)
+        .isNotEqualTo(message);
+    expectThat(diffMessage)
+        .usingFloatToleranceForFields(0.6f, float2FieldNumber)
+        .usingFloatTolerance(0.2f)
+        .isNotEqualTo(message);
+    expectThat(diffMessage)
+        .usingFloatToleranceForFields(0.6f, floatFieldNumber, float2FieldNumber)
+        .usingFloatToleranceForFields(0.2f, floatFieldNumber)
+        .isEqualTo(message);
+    expectThat(diffMessage)
+        .usingFloatToleranceForFields(0.6f, floatFieldNumber, float2FieldNumber)
+        .usingFloatToleranceForFields(0.2f, float2FieldNumber)
+        .isNotEqualTo(message);
   }
 
   @Test
@@ -296,6 +456,30 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .comparingExpectedFieldsOnly()
         .ignoringExtraRepeatedFieldElements()
         .ignoringRepeatedFieldOrder()
+        .isEqualTo(message);
+  }
+
+  @Test
+  public void testIgnoringExtraRepeatedFieldElements_scoped() {
+    Message message = parse("r_string: 'a' o_sub_test_message: { r_string: 'c' }");
+    Message diffMessage =
+        parse("r_string: 'a' o_sub_test_message: { r_string: 'b' r_string: 'c' }");
+
+    FieldDescriptor rootRepeatedField = getFieldDescriptor("r_string");
+    FieldDescriptor subMessageRepeatedField =
+        checkNotNull(
+            getFieldDescriptor("o_sub_test_message").getMessageType().findFieldByName("r_string"));
+
+    expectThat(diffMessage).ignoringExtraRepeatedFieldElements().isEqualTo(message);
+    expectThat(diffMessage)
+        .ignoringExtraRepeatedFieldElementsOfFieldDescriptors(rootRepeatedField)
+        .isNotEqualTo(message);
+    expectThat(diffMessage)
+        .ignoringExtraRepeatedFieldElementsOfFieldDescriptors(subMessageRepeatedField)
+        .isEqualTo(message);
+    expectThat(diffMessage)
+        .ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+            rootRepeatedField, subMessageRepeatedField)
         .isEqualTo(message);
   }
 

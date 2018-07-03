@@ -47,6 +47,52 @@ public interface ProtoFluentAssertion {
   ProtoFluentAssertion ignoringFieldAbsence();
 
   /**
+   * Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+   * ignored when comparing for equality. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if they are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
+  ProtoFluentAssertion ignoringFieldAbsenceOfFields(int firstFieldNumber, int... rest);
+
+  /**
+   * Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+   * ignored when comparing for equality. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if they are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
+  ProtoFluentAssertion ignoringFieldAbsenceOfFields(Iterable<Integer> fieldNumbers);
+
+  /**
+   * Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+   * when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
+   * as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
+  ProtoFluentAssertion ignoringFieldAbsenceOfFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
+
+  /**
+   * Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+   * when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
+   * as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
+  ProtoFluentAssertion ignoringFieldAbsenceOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors);
+
+  /**
    * Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
    * for equality.
    *
@@ -111,6 +157,52 @@ public interface ProtoFluentAssertion {
   ProtoFluentAssertion ignoringRepeatedFieldOrder();
 
   /**
+   * Specifies that the ordering of repeated fields for these explicitly specified top-level field
+   * numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
+   * (via {@link FieldDescriptor}) if their orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
+  ProtoFluentAssertion ignoringRepeatedFieldOrderOfFields(int firstFieldNumber, int... rest);
+
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified top-level field
+   * numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
+   * (via {@link FieldDescriptor}) if their orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
+  ProtoFluentAssertion ignoringRepeatedFieldOrderOfFields(Iterable<Integer> fieldNumbers);
+
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+   * should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
+   * orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
+  ProtoFluentAssertion ignoringRepeatedFieldOrderOfFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
+
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+   * should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
+   * orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
+  ProtoFluentAssertion ignoringRepeatedFieldOrderOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors);
+
+  /**
    * Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
    * not found in the 'expected' proto are ignored, with the exception of fields in the expected
    * proto which are empty. To ignore empty repeated fields as well, use {@link
@@ -126,6 +218,53 @@ public interface ProtoFluentAssertion {
   ProtoFluentAssertion ignoringExtraRepeatedFieldElements();
 
   /**
+   * Specifies that extra repeated field elements for these explicitly specified top-level field
+   * numbers should be ignored. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if their extra elements are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
+  ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFields(
+      int firstFieldNumber, int... rest);
+
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified top-level field
+   * numbers should be ignored. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if their extra elements are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
+  ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFields(Iterable<Integer> fieldNumbers);
+
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified field descriptors
+   * should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
+   * ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
+  ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
+
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified field descriptors
+   * should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
+   * ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
+  ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors);
+
+  /**
    * Compares double fields as equal if they are both finite and their absolute difference is less
    * than or equal to {@code tolerance}.
    *
@@ -134,12 +273,84 @@ public interface ProtoFluentAssertion {
   ProtoFluentAssertion usingDoubleTolerance(double tolerance);
 
   /**
+   * Compares double fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  ProtoFluentAssertion usingDoubleToleranceForFields(
+      double tolerance, int firstFieldNumber, int... rest);
+
+  /**
+   * Compares double fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  ProtoFluentAssertion usingDoubleToleranceForFields(
+      double tolerance, Iterable<Integer> fieldNumbers);
+
+  /**
+   * Compares double fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  ProtoFluentAssertion usingDoubleToleranceForFieldDescriptors(
+      double tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
+
+  /**
+   * Compares double fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  ProtoFluentAssertion usingDoubleToleranceForFieldDescriptors(
+      double tolerance, Iterable<FieldDescriptor> fieldDescriptors);
+
+  /**
    * Compares float fields as equal if they are both finite and their absolute difference is less
    * than or equal to {@code tolerance}.
    *
    * @param tolerance A finite, non-negative tolerance.
    */
   ProtoFluentAssertion usingFloatTolerance(float tolerance);
+
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  ProtoFluentAssertion usingFloatToleranceForFields(
+      float tolerance, int firstFieldNumber, int... rest);
+
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  ProtoFluentAssertion usingFloatToleranceForFields(
+      float tolerance, Iterable<Integer> fieldNumbers);
+
+  /**
+   * Compares float fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  ProtoFluentAssertion usingFloatToleranceForFieldDescriptors(
+      float tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest);
+
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  ProtoFluentAssertion usingFloatToleranceForFieldDescriptors(
+      float tolerance, Iterable<FieldDescriptor> fieldDescriptors);
 
   /**
    * Limits the comparison of Protocol buffers to the fields set in the expected proto(s). When

@@ -427,6 +427,63 @@ public class IterableOfProtosSubject<
   }
 
   /**
+   * Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+   * ignored when comparing for equality. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if they are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringFieldAbsenceOfFields(
+      int firstFieldNumber, int... rest) {
+    return usingConfig(config.ignoringFieldAbsenceOfFields(asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+   * ignored when comparing for equality. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if they are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringFieldAbsenceOfFields(
+      Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringFieldAbsenceOfFields(fieldNumbers));
+  }
+
+  /**
+   * Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+   * when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
+   * as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringFieldAbsenceOfFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.ignoringFieldAbsenceOfFieldDescriptors(asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+   * when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
+   * as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringFieldAbsenceOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.ignoringFieldAbsenceOfFieldDescriptors(fieldDescriptors));
+  }
+
+  /**
    * Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
    * for equality.
    *
@@ -493,6 +550,63 @@ public class IterableOfProtosSubject<
   }
 
   /**
+   * Specifies that the ordering of repeated fields for these explicitly specified top-level field
+   * numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
+   * (via {@link FieldDescriptor}) if their orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrderOfFields(
+      int firstFieldNumber, int... rest) {
+    return usingConfig(config.ignoringRepeatedFieldOrderOfFields(asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified top-level field
+   * numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
+   * (via {@link FieldDescriptor}) if their orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrderOfFields(
+      Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringRepeatedFieldOrderOfFields(fieldNumbers));
+  }
+
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+   * should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
+   * orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrderOfFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.ignoringRepeatedFieldOrderOfFieldDescriptors(asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+   * should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
+   * orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrderOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.ignoringRepeatedFieldOrderOfFieldDescriptors(fieldDescriptors));
+  }
+
+  /**
    * Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
    * not found in the 'expected' proto are ignored, with the exception of fields in the expected
    * proto which are empty. To ignore empty repeated fields as well, use {@link
@@ -510,6 +624,66 @@ public class IterableOfProtosSubject<
   }
 
   /**
+   * Specifies that extra repeated field elements for these explicitly specified top-level field
+   * numbers should be ignored. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if their extra elements are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringExtraRepeatedFieldElementsOfFields(
+      int firstFieldNumber, int... rest) {
+    return usingConfig(
+        config.ignoringExtraRepeatedFieldElementsOfFields(asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified top-level field
+   * numbers should be ignored. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if their extra elements are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringExtraRepeatedFieldElementsOfFields(
+      Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.ignoringExtraRepeatedFieldElementsOfFields(fieldNumbers));
+  }
+
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified field descriptors
+   * should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
+   * ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+      FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+            asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified field descriptors
+   * should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
+   * ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
+  public IterableOfProtosFluentAssertion<M> ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+      Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(
+        config.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(fieldDescriptors));
+  }
+
+  /**
    * Compares double fields as equal if they are both finite and their absolute difference is less
    * than or equal to {@code tolerance}.
    *
@@ -520,6 +694,53 @@ public class IterableOfProtosSubject<
   }
 
   /**
+   * Compares double fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingDoubleToleranceForFields(
+      double tolerance, int firstFieldNumber, int... rest) {
+    return usingConfig(
+        config.usingDoubleToleranceForFields(tolerance, asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Compares double fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingDoubleToleranceForFields(
+      double tolerance, Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.usingDoubleToleranceForFields(tolerance, fieldNumbers));
+  }
+
+  /**
+   * Compares double fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingDoubleToleranceForFieldDescriptors(
+      double tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.usingDoubleToleranceForFieldDescriptors(
+            tolerance, asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Compares double fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingDoubleToleranceForFieldDescriptors(
+      double tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.usingDoubleToleranceForFieldDescriptors(tolerance, fieldDescriptors));
+  }
+
+  /**
    * Compares float fields as equal if they are both finite and their absolute difference is less
    * than or equal to {@code tolerance}.
    *
@@ -527,6 +748,53 @@ public class IterableOfProtosSubject<
    */
   public IterableOfProtosFluentAssertion<M> usingFloatTolerance(float tolerance) {
     return usingConfig(config.usingFloatTolerance(tolerance));
+  }
+
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingFloatToleranceForFields(
+      float tolerance, int firstFieldNumber, int... rest) {
+    return usingConfig(
+        config.usingFloatToleranceForFields(tolerance, asList(firstFieldNumber, rest)));
+  }
+
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingFloatToleranceForFields(
+      float tolerance, Iterable<Integer> fieldNumbers) {
+    return usingConfig(config.usingFloatToleranceForFields(tolerance, fieldNumbers));
+  }
+
+  /**
+   * Compares float fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingFloatToleranceForFieldDescriptors(
+      float tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+    return usingConfig(
+        config.usingFloatToleranceForFieldDescriptors(
+            tolerance, asList(firstFieldDescriptor, rest)));
+  }
+
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
+  public IterableOfProtosFluentAssertion<M> usingFloatToleranceForFieldDescriptors(
+      float tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+    return usingConfig(config.usingFloatToleranceForFieldDescriptors(tolerance, fieldDescriptors));
   }
 
   /**
@@ -791,8 +1059,56 @@ public class IterableOfProtosSubject<
     }
 
     @Override
+    public IterableOfProtosFluentAssertion<M> ignoringFieldAbsenceOfFields(
+        int firstFieldNumber, int... rest) {
+      return subject.ignoringFieldAbsenceOfFields(firstFieldNumber, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringFieldAbsenceOfFields(
+        Iterable<Integer> fieldNumbers) {
+      return subject.ignoringFieldAbsenceOfFields(fieldNumbers);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringFieldAbsenceOfFieldDescriptors(
+        FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.ignoringFieldAbsenceOfFieldDescriptors(firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringFieldAbsenceOfFieldDescriptors(
+        Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.ignoringFieldAbsenceOfFieldDescriptors(fieldDescriptors);
+    }
+
+    @Override
     public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrder() {
       return subject.ignoringRepeatedFieldOrder();
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrderOfFields(
+        int firstFieldNumber, int... rest) {
+      return subject.ignoringRepeatedFieldOrderOfFields(firstFieldNumber, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrderOfFields(
+        Iterable<Integer> fieldNumbers) {
+      return subject.ignoringRepeatedFieldOrderOfFields(fieldNumbers);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrderOfFieldDescriptors(
+        FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.ignoringRepeatedFieldOrderOfFieldDescriptors(firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringRepeatedFieldOrderOfFieldDescriptors(
+        Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.ignoringRepeatedFieldOrderOfFieldDescriptors(fieldDescriptors);
     }
 
     @Override
@@ -801,13 +1117,86 @@ public class IterableOfProtosSubject<
     }
 
     @Override
+    public IterableOfProtosFluentAssertion<M> ignoringExtraRepeatedFieldElementsOfFields(
+        int firstFieldNumber, int... rest) {
+      return subject.ignoringExtraRepeatedFieldElementsOfFields(firstFieldNumber, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringExtraRepeatedFieldElementsOfFields(
+        Iterable<Integer> fieldNumbers) {
+      return subject.ignoringExtraRepeatedFieldElementsOfFields(fieldNumbers);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+        FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+          firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+        Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(fieldDescriptors);
+    }
+
+    @Override
     public IterableOfProtosFluentAssertion<M> usingDoubleTolerance(double tolerance) {
       return subject.usingDoubleTolerance(tolerance);
     }
 
     @Override
+    public IterableOfProtosFluentAssertion<M> usingDoubleToleranceForFields(
+        double tolerance, int firstFieldNumber, int... rest) {
+      return subject.usingDoubleToleranceForFields(tolerance, firstFieldNumber, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> usingDoubleToleranceForFields(
+        double tolerance, Iterable<Integer> fieldNumbers) {
+      return subject.usingDoubleToleranceForFields(tolerance, fieldNumbers);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> usingDoubleToleranceForFieldDescriptors(
+        double tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.usingDoubleToleranceForFieldDescriptors(tolerance, firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> usingDoubleToleranceForFieldDescriptors(
+        double tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.usingDoubleToleranceForFieldDescriptors(tolerance, fieldDescriptors);
+    }
+
+    @Override
     public IterableOfProtosFluentAssertion<M> usingFloatTolerance(float tolerance) {
       return subject.usingFloatTolerance(tolerance);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> usingFloatToleranceForFields(
+        float tolerance, int firstFieldNumber, int... rest) {
+      return subject.usingFloatToleranceForFields(tolerance, firstFieldNumber, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> usingFloatToleranceForFields(
+        float tolerance, Iterable<Integer> fieldNumbers) {
+      return subject.usingFloatToleranceForFields(tolerance, fieldNumbers);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> usingFloatToleranceForFieldDescriptors(
+        float tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return subject.usingFloatToleranceForFieldDescriptors(tolerance, firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public IterableOfProtosFluentAssertion<M> usingFloatToleranceForFieldDescriptors(
+        float tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+      return subject.usingFloatToleranceForFieldDescriptors(tolerance, fieldDescriptors);
     }
 
     @Override
