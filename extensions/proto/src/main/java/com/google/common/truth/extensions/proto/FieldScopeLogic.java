@@ -42,7 +42,7 @@ import java.util.List;
  *       operations.
  * </ul>
  */
-abstract class FieldScopeLogic {
+abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLogic> {
 
   /**
    * Returns whether the given field is included in this FieldScopeLogic, along with whether it's
@@ -63,7 +63,8 @@ abstract class FieldScopeLogic {
    * <p>Subclasses which can return non-recursive {@link FieldScopeResult}s must override {@link
    * #subScopeImpl} to implement those cases.
    */
-  final FieldScopeLogic subScope(
+  @Override
+  public final FieldScopeLogic subScope(
       Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
     FieldScopeResult result = policyFor(rootDescriptor, fieldDescriptorOrUnknown);
     if (result.recursive()) {
@@ -101,7 +102,8 @@ abstract class FieldScopeLogic {
    *
    * @throws IllegalArgumentException if invalid input was provided
    */
-  void validate(Descriptor descriptor) {}
+  @Override
+  public void validate(Descriptor rootDescriptor) {}
 
   private static boolean isEmpty(Iterable<?> container) {
     boolean isEmpty = true;
@@ -225,13 +227,13 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    void validate(Descriptor descriptor) {
+    public void validate(Descriptor rootDescriptor) {
       Preconditions.checkArgument(
-          expectedDescriptor.equals(descriptor),
+          expectedDescriptor.equals(rootDescriptor),
           "Message given to FieldScopes.fromSetFields() does not have the same descriptor as the "
               + "message being tested. Expected %s, got %s.",
           expectedDescriptor.getFullName(),
-          descriptor.getFullName());
+          rootDescriptor.getFullName());
     }
 
     @Override
@@ -298,13 +300,13 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    void validate(Descriptor descriptor) {
-      super.validate(descriptor);
+    public void validate(Descriptor rootDescriptor) {
+      super.validate(rootDescriptor);
       for (int fieldNumber : fieldNumbers) {
         checkArgument(
-            descriptor.findFieldByNumber(fieldNumber) != null,
+            rootDescriptor.findFieldByNumber(fieldNumber) != null,
             "Message type %s has no field with number %s.",
-            descriptor.getFullName(),
+            rootDescriptor.getFullName(),
             fieldNumber);
       }
     }
@@ -357,9 +359,9 @@ abstract class FieldScopeLogic {
     }
 
     @Override
-    final void validate(Descriptor descriptor) {
+    public final void validate(Descriptor rootDescriptor) {
       for (FieldScopeLogic elem : elements) {
-        elem.validate(descriptor);
+        elem.validate(rootDescriptor);
       }
     }
 

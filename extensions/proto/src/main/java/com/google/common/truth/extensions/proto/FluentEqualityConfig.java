@@ -42,7 +42,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * Correspondence}.
  */
 @AutoValue
-abstract class FluentEqualityConfig {
+abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEqualityConfig> {
 
   private static final FluentEqualityConfig DEFAULT_INSTANCE =
       new AutoValue_FluentEqualityConfig.Builder()
@@ -200,6 +200,20 @@ abstract class FluentEqualityConfig {
         .setReportMismatchesOnly(true)
         .addUsingCorrespondenceString(".reportingMismatchesOnly()")
         .build();
+  }
+
+  @Override
+  public final FluentEqualityConfig subScope(
+      Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
+    return toBuilder()
+        .setCompareFieldsScope(
+            compareFieldsScope().subScope(rootDescriptor, fieldDescriptorOrUnknown))
+        .build();
+  }
+
+  @Override
+  public final void validate(Descriptor rootDescriptor) {
+    compareFieldsScope().validate(rootDescriptor);
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
