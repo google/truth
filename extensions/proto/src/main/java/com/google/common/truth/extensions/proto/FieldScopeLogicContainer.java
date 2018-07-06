@@ -29,6 +29,6 @@ interface FieldScopeLogicContainer<T extends FieldScopeLogicContainer<T>> {
   /** Returns the analog of {@link FieldScopeLogic#subScope} for this container. */
   T subScope(Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown);
 
-  /** Validates integer field numbers for this container. */
-  void validate(Descriptor rootDescriptor);
+  /** Validates explicitly specified fields for this container. */
+  void validate(Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator);
 }

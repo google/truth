@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.join;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
+import com.google.common.base.Verify;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.ForOverride;
@@ -97,13 +97,9 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
   @Override
   public abstract String toString();
 
-  /**
-   * Performs any validation that requires a Descriptor to validate against.
-   *
-   * @throws IllegalArgumentException if invalid input was provided
-   */
   @Override
-  public void validate(Descriptor rootDescriptor) {}
+  public void validate(
+      Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator) {}
 
   private static boolean isEmpty(Iterable<?> container) {
     boolean isEmpty = true;
@@ -258,8 +254,13 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
 
     @Override
-    public void validate(Descriptor rootDescriptor) {
-      Preconditions.checkArgument(
+    public void validate(
+        Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator) {
+      Verify.verify(
+          fieldDescriptorValidator == FieldDescriptorValidator.ALLOW_ALL,
+          "PartialScopeLogic doesn't support custom field validators.");
+
+      checkArgument(
           expectedDescriptor.equals(rootDescriptor),
           "Message given to FieldScopes.fromSetFields() does not have the same descriptor as the "
               + "message being tested. Expected %s, got %s.",
@@ -325,6 +326,17 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
       return this;
     }
+
+    @Override
+    public void validate(
+        Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator) {
+      if (isRecursive) {
+        Verify.verify(
+            fieldDescriptorValidator == FieldDescriptorValidator.ALLOW_ALL,
+            "Field descriptor validators are not supported "
+                + "for non-recursive field matcher logics.");
+      }
+    }
   }
 
   // Matches any specific fields which fall under a sub-message field (or root) matching the root
@@ -338,14 +350,17 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
 
     @Override
-    public void validate(Descriptor rootDescriptor) {
-      super.validate(rootDescriptor);
+    public void validate(
+        Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator) {
+      super.validate(rootDescriptor, fieldDescriptorValidator);
       for (int fieldNumber : fieldNumbers) {
+        FieldDescriptor fieldDescriptor = rootDescriptor.findFieldByNumber(fieldNumber);
         checkArgument(
-            rootDescriptor.findFieldByNumber(fieldNumber) != null,
+            fieldDescriptor != null,
             "Message type %s has no field with number %s.",
             rootDescriptor.getFullName(),
             fieldNumber);
+        fieldDescriptorValidator.validate(fieldDescriptor);
       }
     }
 
@@ -376,6 +391,15 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
 
     @Override
+    public void validate(
+        Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator) {
+      super.validate(rootDescriptor, fieldDescriptorValidator);
+      for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
+        fieldDescriptorValidator.validate(fieldDescriptor);
+      }
+    }
+
+    @Override
     public String toString() {
       return String.format("FieldScopes.allowingFieldDescriptors(%s)", join(fieldDescriptors));
     }
@@ -398,9 +422,10 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
     }
 
     @Override
-    public final void validate(Descriptor rootDescriptor) {
+    public final void validate(
+        Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator) {
       for (FieldScopeLogic elem : elements) {
-        elem.validate(rootDescriptor);
+        elem.validate(rootDescriptor, fieldDescriptorValidator);
       }
     }
 

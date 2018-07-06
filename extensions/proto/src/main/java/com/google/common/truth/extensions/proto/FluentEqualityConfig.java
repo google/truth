@@ -23,6 +23,7 @@ import com.google.auto.value.AutoValue;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Optional;
+import com.google.common.base.Verify;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -337,16 +338,20 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   }
 
   @Override
-  public final void validate(Descriptor rootDescriptor) {
-    // TODO(user): Add some basic sanity-checking here for explicit scopes.
-    // For example, it doesn't make sense to call 'usingDoubleTolerance(0.1, STRING_FIELD)'.
+  public final void validate(
+      Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator) {
+    // FluentEqualityConfig should never be validated other than as a root entity.
+    Verify.verify(fieldDescriptorValidator == FieldDescriptorValidator.ALLOW_ALL);
 
-    ignoreFieldAbsenceScope().validate(rootDescriptor);
-    ignoreRepeatedFieldOrderScope().validate(rootDescriptor);
-    ignoreExtraRepeatedFieldElementsScope().validate(rootDescriptor);
-    doubleCorrespondenceMap().validate(rootDescriptor);
-    floatCorrespondenceMap().validate(rootDescriptor);
-    compareFieldsScope().validate(rootDescriptor);
+    ignoreFieldAbsenceScope()
+        .validate(rootDescriptor, FieldDescriptorValidator.IS_FIELD_WITH_ABSENCE);
+    ignoreRepeatedFieldOrderScope()
+        .validate(rootDescriptor, FieldDescriptorValidator.IS_FIELD_WITH_ORDER);
+    ignoreExtraRepeatedFieldElementsScope()
+        .validate(rootDescriptor, FieldDescriptorValidator.IS_FIELD_WITH_EXTRA_ELEMENTS);
+    doubleCorrespondenceMap().validate(rootDescriptor, FieldDescriptorValidator.IS_DOUBLE_FIELD);
+    floatCorrespondenceMap().validate(rootDescriptor, FieldDescriptorValidator.IS_FLOAT_FIELD);
+    compareFieldsScope().validate(rootDescriptor, FieldDescriptorValidator.ALLOW_ALL);
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////

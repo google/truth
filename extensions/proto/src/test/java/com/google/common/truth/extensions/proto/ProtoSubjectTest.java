@@ -16,6 +16,8 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.protobuf.Descriptors.FieldDescriptor;
@@ -146,6 +148,32 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(emptyMessage)
         .ignoringFieldAbsenceOfFieldDescriptors(subTestMessageField, subTestMessageTestMessageField)
         .isEqualTo(message);
+
+    try {
+      expectThat(message)
+          .ignoringFieldAbsenceOfFieldDescriptors(getFieldDescriptor("r_string"))
+          .isEqualTo(message);
+      fail("Expected failure.");
+    } catch (Exception e) {
+      assertThat(e).hasMessageThat().contains("r_string");
+      assertThat(e).hasMessageThat().contains("repeated fields cannot be absent");
+    }
+
+    if (isProto3()) {
+      try {
+        expectThat(message)
+            .ignoringFieldAbsenceOfFieldDescriptors(getFieldDescriptor("o_double"))
+            .isEqualTo(message);
+        fail("Expected failure.");
+      } catch (Exception e) {
+        assertThat(e).hasMessageThat().contains("o_double");
+        assertThat(e).hasMessageThat().contains("is a primitive field in a Proto 3 message");
+      }
+    } else {
+      expectThat(message)
+          .ignoringFieldAbsenceOfFieldDescriptors(getFieldDescriptor("o_double"))
+          .isEqualTo(message);
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -276,6 +304,16 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrderOfFieldDescriptors(
             rootMessageRepeatedfield, subMessageRepeatedField)
         .isEqualTo(message);
+
+    try {
+      expectThat(message)
+          .ignoringRepeatedFieldOrderOfFields(getFieldNumber("o_int"))
+          .isEqualTo(message);
+      fail("Expected failure.");
+    } catch (Exception e) {
+      assertThat(e).hasMessageThat().contains("o_int");
+      assertThat(e).hasMessageThat().contains("is not a repeated field");
+    }
   }
 
   @Test
@@ -323,6 +361,16 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .usingDoubleToleranceForFields(0.6, doubleFieldNumber, double2FieldNumber)
         .usingDoubleToleranceForFields(0.2, double2FieldNumber)
         .isNotEqualTo(message);
+
+    try {
+      expectThat(message)
+          .usingDoubleToleranceForFields(3.14159, getFieldNumber("o_int"))
+          .isEqualTo(message);
+      fail("Expected failure.");
+    } catch (Exception e) {
+      assertThat(e).hasMessageThat().contains("o_int");
+      assertThat(e).hasMessageThat().contains("is not a double field");
+    }
   }
 
   @Test
@@ -369,6 +417,16 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .usingFloatToleranceForFields(0.6f, floatFieldNumber, float2FieldNumber)
         .usingFloatToleranceForFields(0.2f, float2FieldNumber)
         .isNotEqualTo(message);
+
+    try {
+      expectThat(message)
+          .usingFloatToleranceForFields(3.1416f, getFieldNumber("o_int"))
+          .isEqualTo(message);
+      fail("Expected failure.");
+    } catch (Exception e) {
+      assertThat(e).hasMessageThat().contains("o_int");
+      assertThat(e).hasMessageThat().contains("is not a float field");
+    }
   }
 
   @Test
@@ -481,6 +539,16 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
         .ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
             rootRepeatedField, subMessageRepeatedField)
         .isEqualTo(message);
+
+    try {
+      expectThat(message)
+          .ignoringExtraRepeatedFieldElementsOfFields(getFieldNumber("o_int"))
+          .isEqualTo(message);
+      fail("Expected failure.");
+    } catch (Exception e) {
+      assertThat(e).hasMessageThat().contains("o_int");
+      assertThat(e).hasMessageThat().contains("it cannot contain extra elements");
+    }
   }
 
   // Utility which fills a proto map field, based on the java.util.Map.

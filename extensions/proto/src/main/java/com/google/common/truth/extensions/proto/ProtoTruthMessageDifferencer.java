@@ -62,7 +62,7 @@ final class ProtoTruthMessageDifferencer {
   private final Descriptor rootDescriptor;
 
   private ProtoTruthMessageDifferencer(FluentEqualityConfig rootConfig, Descriptor descriptor) {
-    rootConfig.validate(descriptor);
+    rootConfig.validate(descriptor, FieldDescriptorValidator.ALLOW_ALL);
 
     this.rootConfig = rootConfig;
     this.rootDescriptor = descriptor;

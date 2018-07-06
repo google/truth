@@ -96,9 +96,10 @@ class FieldScopeLogicMap<V> implements FieldScopeLogicContainer<FieldScopeLogicM
   }
 
   @Override
-  public void validate(Descriptor rootDescriptor) {
+  public void validate(
+      Descriptor rootDescriptor, FieldDescriptorValidator fieldDescriptorValidator) {
     for (Entry<V> entry : entries) {
-      entry.fieldScopeLogic().validate(rootDescriptor);
+      entry.fieldScopeLogic().validate(rootDescriptor, fieldDescriptorValidator);
     }
   }
 
