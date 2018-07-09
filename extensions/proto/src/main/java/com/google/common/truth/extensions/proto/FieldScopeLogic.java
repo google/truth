@@ -229,7 +229,7 @@ abstract class FieldScopeLogic implements FieldScopeLogicContainer<FieldScopeLog
         Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
       return fieldNumberTree.hasChild(fieldDescriptorOrUnknown)
           ? FieldScopeResult.INCLUDED_NONRECURSIVELY
-          : FieldScopeResult.EXCLUDED_NONRECURSIVELY;
+          : FieldScopeResult.EXCLUDED_RECURSIVELY;
     }
 
     @Override
