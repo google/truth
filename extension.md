@@ -10,14 +10,14 @@ Truth is configurable in two ways: custom failure behaviors and custom assertion
 methods.
 
 Configurable [failure behaviors][`FailureStrategy`] can be useful, particularly
-[the alternative built-in behaviors][`FailureStrategy`]. Or you can [write your
-own][`FailureStrategy.fail`].
+the alternative built-in behaviors. You can also define your own custom
+behavior.
 
 But when people talk about Truth extensions, they're usually referring to custom
 assertion methods, implemented on a custom [`Subject`] subclass. That's what
 we'll cover in the rest of this page.
 
-## Some commonly used custom subjects
+## Subjects provided in Truth extensions
 
 Some subjects aren't part of core Truth but can be found in other parts of the
 project. They include:
@@ -25,42 +25,56 @@ project. They include:
 *   [`Truth8`] for java8 types such as `java.util.Optional`
 *   [`ProtoSubject`] for `Message` style protocol buffers
     *   A [`LiteProtoSubject`] with only lite dependencies is also provided.
+*   [`RE2JSubjects`] for use with the RE2J library
 
 Other extensions that are not part of the Truth project itself include:
 
 *   [Compile Testing] for testing annotation processors and compilation jobs
 
 
-## Using custom subjects
+## Using subjects from extensions
 
 The steps are nearly the same as [for using the core Truth assertions](index):
 
-### 1. Add the appropriate dependency to your build file:
+### 1. Add the appropriate dependency to your build file
 
-For example, for Protocol Buffers, `com.google.truth.extensions:truth-proto-extension:{{ site.version }}`. Of course, you can skip this step if you define the `Subject` in the same project as the tests that use it.
+Each extension is packaged separately so you can include only what you need.
+
+* Java 8: `com.google.truth.extensions:truth-java8-extension:{{ site.version }}`
+* Protocol Buffers: `com.google.truth.extensions:truth-proto-extension:{{ site.version }}`
+  * LiteProto: `com.google.truth.extensions:truth-liteproto-extension:{{ site.version }}`
+* RE2J: `com.google.truth.extensions:truth-re2j-extension:{{ site.version }}`
 
 
-### 2. Add a static import:
+### 2. Add a static import
+
+For example:
 
 ```java
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 ```
 
-### 3. Write a test assertion:
+It's fine to also statically import `Truth.assertThat` in the same file, as the
+methods have different signatures.
+
+### 3. Write a test assertion using the static import
 
 ```java
-assertThat(myBuilder).hasAllRequiredFields();
+assertThat(protoBuilder).hasAllRequiredFields();
 ```
 
-If you need to set a failure message or use a custom [`FailureStrategy`], you'll
-instead need to find the extension's `Subject.Factory`. For an extension named
-`FooSubject`, the factory is usually `FooSubject.foos()`. In the case of the
-Protocol Buffers extension, it's `ProtoTruth.protos()`. So, to use the
-[`expect`] `FailureStrategy` and a custom message in a check about Protocol
-Buffers, you would write:
+If you need to set a failure message or use a different [`FailureStrategy`],
+you'll instead need to find the extension's `Subject.Factory`. For an extension
+named `FooSubject`, the factory is usually `FooSubject.foos()`. In the case of
+the Protocol Buffers extension, it's `ProtoTruth.protos()`. So, to use the
+[`expect`] `FailureStrategy` and provide an additional message in a check about
+Protocol Buffers, you would write:
 
 ```java
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
+import com.google.common.truth.Expect;
+…
+@Rule public final Expect expect = Expect.create();
 …
 expect
     .withMessage("fields not copied from input %s", input)
@@ -73,7 +87,7 @@ But in most cases you'll use shortcuts, either `assertThat(...)` or
 `assertWithMessage(...).about(...).that(...)`. For more information about the
 available shortcuts, see [this FAQ entry][shortcuts].
 
-## Writing your own subject
+## Writing your own custom subject
 
 For an example of how to support custom types in Truth, please see the [employee
 example]. The rest of this doc will walk through each of the files, step by
@@ -163,7 +177,7 @@ There are four parts to the example:
 
         We recommend putting this method on your `Subject` class itself. Or, if
         your library defines multiple `Subject` subclasses, you may wish to
-        create a single class (like [`ProtoTruth`]) that contains all your
+        create a single class (like [`Truth8`]) that contains all your
         `assertThat` methods so that users can access them all with a single
         static import.
 
@@ -336,25 +350,28 @@ There are four parts to the example:
 
 <!-- References -->
 
+[shortcuts]: faq#full-chain
+
+<!-- External URLs -->
+
 [`@AutoValue`]:           http://github.com/google/auto/tree/master/value
-[`Truth8`]:                  http://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/Truth8.java
-[`Re2jSubjects`]:         http://github.com/google/truth/blob/master/extensions/re2j/src/main/java/com/google/common/truth/extensions/re2j/Re2jSubjects.java
-[`LiteProtoSubject`]:     http://github.com/google/truth/blob/master/extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java
-[`ProtoSubject`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoSubject.java
-[`ProtoTruth`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoTruth.java
+[`ComparableSubject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/ComparableSubject.java
 [Compile Testing]:        http://github.com/google/compile-testing
 [employee example]:       http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/
 [`Employee.java`]:        http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/Employee.java
-[`EmployeeSubjectTest.java`]:    http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubjectTest.java
 [`EmployeeSubject.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubject.java
-[`FakeHrDatabaseTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/FakeHrDatabaseTest.java
-[`ComparableSubject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/ComparableSubject.java
-[`Subject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
-[`Subject.Factory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
-[`FailureMetadata`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureMetadata.java
-[`FailureStrategy`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
+[`EmployeeSubjectTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubjectTest.java
+[`ExpectFailure`]:        https://google.github.io/truth/api/latest/com/google/common/truth/ExpectFailure.html
 [`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
-[`ExpectFailure`]:               https://google.github.io/truth/api/latest/com/google/common/truth/ExpectFailure.html
-[shortcuts]: faq#full-chain
-[`FailureStrategy.fail`]:    https://google.github.io/truth/api/latest/com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-
+[`FailureMetadata`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureMetadata.java
+[`FailureStrategy.fail`]: https://google.github.io/truth/api/latest/com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-
+[`FailureStrategy`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
+[`FakeHrDatabaseTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/FakeHrDatabaseTest.java
+[`LiteProtoSubject`]:     http://github.com/google/truth/blob/master/extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java
+[`ProtoSubject`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoSubject.java
+[`ProtoTruth`]:           http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoTruth.java
+[`Re2jSubjects`]:         http://github.com/google/truth/blob/master/extensions/re2j/src/main/java/com/google/common/truth/extensions/re2j/Re2jSubjects.java
+[`Subject.Factory`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
+[`Subject`]:              https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
+[`Truth8`]:               http://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/Truth8.java
 
