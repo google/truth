@@ -70,66 +70,6 @@ currently at the tip of the branch is sound.
 
 ### Update versions
 
-#### Increment SNAPSHOT dependency versions
-
-Do a quick check of the dependency versions to ensure that the truth artifact
-is not relying on -SNAPSHOT dependencies. Since truth manages versions in maven
-properties, the following is a useful tool:
-
-```shell
-mvn -N versions:display-property-updates
-```
-
-Version properties will be generated and should look something like this:
-
-```
-...
-[INFO] ------------------------------------------------------------------------
-[INFO] Building truth 1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] --- versions-maven-plugin:2.3:display-property-updates (default-cli) @ truth ---
-[INFO]
-[INFO] The following version properties are referencing the newest available version:
-[INFO]   ${auto-value.version} ......................................... 1.5-SNAPSHOT
-[INFO]   ${jsr305.version} ............................................. 3.0.2
-[INFO]   ${compile-testing.version} ..................................... 0.11
-[INFO]   ${junit.version} ............................................... 4.12
-[INFO]   ${error-prone.annotations.version} ........................... 2.0.19
-[INFO] The following version property updates are available:
-[INFO]   ${gwt.version} ....................................... 2.8.0 -> 2.8.1
-[INFO]   ${guava.version} ....................................... 21.0 -> 22.0
-[INFO]
-...
-[INFO] ------------------------------------------------------------------------
-[INFO] Building Truth Extension for Lite Protocol Buffers 1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] --- versions-maven-plugin:2.3:display-property-updates (default-cli) @ truth-liteproto-extension ---
-[INFO]
-[INFO] The following version properties are referencing the newest available version:
-[INFO]   ${auto-value.version} ......................................... 1.4.1
-[INFO] The following version property updates are available:
-[INFO]   ${findbugs.version} .................................. 3.0.1 -> 3.0.2
-[INFO]   ${protobuf.version} .................................. 3.1.0 -> 3.3.1
-[INFO]   ${guava.version} ............................... 21.0 -> 22.0-android
-[INFO]   ${error_prone_annotations.version} .................. 2.0.8 -> 2.0.19
-...
-```
-
-For release avoid updating older verisions at the last minute, as this requires
-more testing and investigation than one typically does at release.  But
-**releases are gated on any -SNAPSHOT dependencies**, so these should be
-incremented.
-
-> ***Note:*** *If any dependencies are altered, file a bug to update the
-> dependencies in the project's master branch.*
-
-
-> ***Note:*** *If there is enough dependency lag, the release should be abandoned
-> and dependencies should be incremented as a normal part of development, and
-> a release re-rolled after these have been merged into the master branch.*
-
 #### Update the project's version.
 
 Update the versions of the project and commit the changes, like so:
