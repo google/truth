@@ -14,9 +14,6 @@
   <description>
     An extension for the Truth test assertion framework supporting Java8 types and structures
   </description>
-  <properties>
-    <checker-framework.version>2.0.0</checker-framework.version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.google.truth</groupId>
@@ -26,8 +23,6 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-compat-qual</artifactId>
-      <version>${checker-framework.version}</version>
-      <optional>true</optional>
     </dependency>
   </dependencies>
   <build>

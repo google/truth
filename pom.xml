@@ -16,7 +16,88 @@
   <name>Truth (Parent)</name>
   <properties>
     <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
+
+    <!-- Properties for multiple-artifact deps. -->
+    <auto-value.version>1.6.2</auto-value.version>
+    <checker-framework.version>2.5.3</checker-framework.version>
+    <guava.version>25.1</guava.version>
+    <gwt.version>2.8.2</gwt.version>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <!-- I tried also including Truth's own submodules here, with version set to ${project.version} (as we have it in the individual POMs), but Maven doesn't like that, at least when run under TAP (which probably means "with an empty local repository" and/or "with no access to remote repositories"). So we have to specify project.version wherever we use submodules. At least we'll never need to update it :) -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}-android</version>
+      </dependency>
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-compat-qual</artifactId>
+        <version>${checker-framework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-qual</artifactId>
+        <version>${checker-framework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+      </dependency>
+      <dependency>
+        <groupId>com.googlecode.java-diff-utils</groupId>
+        <artifactId>diffutils</artifactId>
+        <version>1.3.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.gwt</groupId>
+        <artifactId>gwt-user</artifactId>
+        <version>${gwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.auto.value</groupId>
+        <artifactId>auto-value-annotations</artifactId>
+        <version>${auto-value.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.auto.value</groupId>
+        <artifactId>auto-value</artifactId>
+        <version>${auto-value.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava-gwt</artifactId>
+        <version>${guava.version}-jre</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava-testlib</artifactId>
+        <version>${guava.version}-android</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.testing.compile</groupId>
+        <artifactId>compile-testing</artifactId>
+        <version>0.15</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.errorprone</groupId>
+        <artifactId>error_prone_annotations</artifactId>
+        <version>2.3.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>3.6.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.re2j</groupId>
+        <artifactId>re2j</artifactId>
+        <version>1.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <description>
     Parent metdata for Truth, a Java assertion framework.
   </description>
@@ -162,6 +243,11 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.12.4</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>gwt-maven-plugin</artifactId>
+          <version>${gwt.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
