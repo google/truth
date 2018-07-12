@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.google.truth.extensions</groupId>
     <artifactId>truth-extensions-parent</artifactId>
-    <version>0.41</version>
+    <version>0.42</version>
   </parent>
   <artifactId>truth-liteproto-extension</artifactId>
   <name>Truth Extension for Lite Protocol Buffers</name>

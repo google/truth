@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.google.truth</groupId>
     <artifactId>truth-parent</artifactId>
-    <version>0.41</version>
+    <version>0.42</version>
   </parent>
   <artifactId>truth</artifactId>
   <name>Truth Core</name>
