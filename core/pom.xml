@@ -9,79 +9,61 @@
   </parent>
   <artifactId>truth</artifactId>
   <name>Truth Core</name>
-  <properties>
-    <guava.version>25.1-android</guava.version>
-    <guava-gwt.version>25.1-jre</guava-gwt.version>
-    <gwt.version>2.8.2</gwt.version>
-    <junit.version>4.12</junit.version>
-    <diffutils.version>1.3.0</diffutils.version>
-    <checker-framework.version>2.5.2</checker-framework.version>
-    <auto-value.version>1.5.3</auto-value.version>
-    <compile-testing.version>0.15</compile-testing.version>
-    <error-prone.annotations.version>2.2.0</error-prone.annotations.version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>${guava.version}</version>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-compat-qual</artifactId>
-      <version>${checker-framework.version}</version>
     </dependency>
     <!-- Manually add a dependency that guava-gwt needs but doesn't declare as of May 2018. -->
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
-      <version>${checker-framework.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.java-diff-utils</groupId>
       <artifactId>diffutils</artifactId>
-      <version>${diffutils.version}</version>
     </dependency>
     <!-- Required only to build the -gwt sub-artifact. -->
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <version>${gwt.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.auto.value</groupId>
+      <artifactId>auto-value-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auto.value</groupId>
       <artifactId>auto-value</artifactId>
-      <version>${auto-value.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava-gwt</artifactId>
-      <version>${guava-gwt.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava-testlib</artifactId>
-      <version>${guava.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.testing.compile</groupId>
       <artifactId>compile-testing</artifactId>
-      <version>${compile-testing.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.errorprone</groupId>
       <artifactId>error_prone_annotations</artifactId>
-      <version>${error-prone.annotations.version}</version>
     </dependency>
   </dependencies>
   <build>
@@ -164,7 +146,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
-        <version>${gwt.version}</version>
         <executions>
           <execution>
             <id>gwt-test</id>

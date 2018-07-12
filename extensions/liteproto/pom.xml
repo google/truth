@@ -20,13 +20,6 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- TODO(cgruber): Add protoc dependencies to support tests. -->
     <maven.test.skip>true</maven.test.skip>
-
-    <!-- dependency versions -->
-    <auto-value.version>1.5.3</auto-value.version>
-    <error_prone_annotations.version>2.2.0</error_prone_annotations.version>
-    <checker-framework.version>2.0.0</checker-framework.version>
-    <guava.version>23.6-android</guava.version>
-    <protobuf.version>3.3.1</protobuf.version>
   </properties>
   <dependencies>
     <dependency>
@@ -37,30 +30,28 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>${guava.version}</version>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-compat-qual</artifactId>
-      <version>${checker-framework.version}</version>
-      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auto.value</groupId>
+      <artifactId>auto-value-annotations</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.auto.value</groupId>
       <artifactId>auto-value</artifactId>
-      <version>${auto-value.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.errorprone</groupId>
       <artifactId>error_prone_annotations</artifactId>
-      <version>${error_prone_annotations.version}</version>
     </dependency>
     <!-- TODO(dploch): Depend on protobuf-lite when available. -->
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
-      <version>${protobuf.version}</version>
     </dependency>
   </dependencies>
   <build>
