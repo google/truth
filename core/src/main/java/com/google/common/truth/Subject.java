@@ -766,7 +766,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * </ul>
    *
    * <p>This is the simplest failure API. For more advanced needs, see {@linkplain
-   * #failWithActual(Fact, Fact...) the other overload} and {@link #failWithActual(Fact, Fact...)
+   * #failWithActual(Fact, Fact...) the other overload} and {@link #failWithoutActual(Fact, Fact...)
    * failWithoutActual}.
    *
    * <p>Example usage: The check {@code contains(String)} calls {@code failWithActual("expected to
