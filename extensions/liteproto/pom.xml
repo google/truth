@@ -48,7 +48,7 @@
       <groupId>com.google.errorprone</groupId>
       <artifactId>error_prone_annotations</artifactId>
     </dependency>
-    <!-- TODO(dploch): Depend on protobuf-lite when available. -->
+    <!-- TODO(user): Depend on protobuf-lite when available. -->
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
