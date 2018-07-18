@@ -58,13 +58,13 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
 
   @Test
   public void testPlain_isEmpty() {
-    expectThat(ImmutableMultimap.of()).isEmpty();
+    expectThat(ImmutableMultimap.<Object, Message>of()).isEmpty();
     expectThat(multimapOf(1, message1)).isNotEmpty();
 
     expectFailureWhenTesting().that(multimapOf(1, message1)).isEmpty();
     expectThatFailure().isNotNull();
 
-    expectFailureWhenTesting().that(ImmutableMap.of()).isNotEmpty();
+    expectFailureWhenTesting().that(ImmutableMap.<Object, Message>of()).isNotEmpty();
     expectThatFailure().isNotNull();
   }
 
@@ -131,8 +131,8 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
 
   @Test
   public void testPlain_containsExactlyNoArgs() {
-    expectThat(ImmutableMultimap.of()).containsExactly();
-    expectThat(ImmutableMultimap.of()).containsExactly().inOrder();
+    expectThat(ImmutableMultimap.<Object, Message>of()).containsExactly();
+    expectThat(ImmutableMultimap.<Object, Message>of()).containsExactly().inOrder();
 
     expectFailureWhenTesting().that(multimapOf(1, message1)).containsExactly();
     expectThatFailure().isNotNull();
@@ -235,8 +235,10 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
 
   @Test
   public void testFluent_containsExactly_noArgs() {
-    expectThat(ImmutableMultimap.of()).ignoringRepeatedFieldOrderForValues().containsExactly();
-    expectThat(ImmutableMultimap.of())
+    expectThat(ImmutableMultimap.<Object, Message>of())
+        .ignoringRepeatedFieldOrderForValues()
+        .containsExactly();
+    expectThat(ImmutableMultimap.<Object, Message>of())
         .ignoringRepeatedFieldOrderForValues()
         .containsExactly()
         .inOrder();

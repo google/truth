@@ -18,8 +18,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <!-- TODO(cgruber): Add protoc dependencies to support tests. -->
-    <maven.test.skip>true</maven.test.skip>
+    <protobuf.lite.version>3.0.1</protobuf.lite.version>
+    <protobuf.lite.protoc.version>3.1.0</protobuf.lite.protoc.version>
   </properties>
   <dependencies>
     <dependency>
@@ -48,23 +48,47 @@
       <groupId>com.google.errorprone</groupId>
       <artifactId>error_prone_annotations</artifactId>
     </dependency>
-    <!-- TODO(user): Depend on protobuf-lite when available. -->
     <dependency>
       <groupId>com.google.protobuf</groupId>
-      <artifactId>protobuf-java</artifactId>
+      <artifactId>protobuf-lite</artifactId>
+      <version>${protobuf.lite.version}</version>
+      <!-- protobuf-lite is not compatible with protobuf-java, so we mark it optional. -->
+      <optional>true</optional>
     </dependency>
   </dependencies>
   <build>
+    <extensions>
+      <extension>
+        <groupId>kr.motd.maven</groupId>
+        <artifactId>os-maven-plugin</artifactId>
+        <version>1.5.0.Final</version>
+      </extension>
+    </extensions>
+
     <plugins>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
       </plugin>
-      <!-- TODO(cgruber): Add protoc dependencies to support tests. -->
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <version>0.5.1</version>
         <configuration>
-          <skip>true</skip>
+          <protocArtifact>com.google.protobuf:protoc:${protobuf.lite.protoc.version}:exe:${os.detected.classifier}</protocArtifact>
+          <includes>
+            <param>test_message_lite2.proto</param>
+            <param>test_message_lite3.proto</param>
+          </includes>
         </configuration>
+        <executions>
+          <execution>
+            <id>build-test-protos</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

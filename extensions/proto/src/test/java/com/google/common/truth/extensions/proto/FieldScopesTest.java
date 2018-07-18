@@ -30,6 +30,7 @@ import com.google.protobuf.UnknownFieldSet;
 import com.google.protobuf.UnknownFieldSet.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -780,7 +781,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     messages.add(null);
 
     expectThat(listOf(message1, message2))
-        .withPartialScope(FieldScopes.fromSetFields(listOf()))
+        .withPartialScope(FieldScopes.fromSetFields(Collections.<Message>emptyList()))
         .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
     expectThat(listOf(message1, message2))
         .withPartialScope(FieldScopes.fromSetFields(messages))
@@ -788,7 +789,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     expectFailureWhenTesting()
         .that(listOf(message1, message2))
-        .withPartialScope(FieldScopes.fromSetFields(listOf()))
+        .withPartialScope(FieldScopes.fromSetFields(Collections.<Message>emptyList()))
         .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2);
 
     expectFailureWhenTesting()

@@ -19,6 +19,7 @@ package com.google.common.truth.extensions.proto;
 import com.google.common.base.Function;
 import com.google.protobuf.Message;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,13 +59,13 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
 
   @Test
   public void testPlain_isEmpty() {
-    expectThat(listOf()).isEmpty();
+    expectThat(Collections.<Message>emptyList()).isEmpty();
     expectThat(listOf(message1)).isNotEmpty();
 
     expectFailureWhenTesting().that(listOf(message1)).isEmpty();
     expectThatFailure().isNotNull();
 
-    expectFailureWhenTesting().that(listOf()).isNotEmpty();
+    expectFailureWhenTesting().that(Collections.<Message>emptyList()).isNotEmpty();
     expectThatFailure().isNotNull();
   }
 

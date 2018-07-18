@@ -18,8 +18,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <!-- TODO(cgruber): Add protoc dependencies to support tests. -->
-    <maven.test.skip>true</maven.test.skip>
+    <protobuf.version>3.5.1</protobuf.version>
   </properties>
   <dependencies>
     <dependency>
@@ -56,19 +55,42 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
+      <version>${protobuf.version}</version>
     </dependency>
   </dependencies>
   <build>
+    <extensions>
+      <extension>
+        <groupId>kr.motd.maven</groupId>
+        <artifactId>os-maven-plugin</artifactId>
+        <version>1.5.0.Final</version>
+      </extension>
+    </extensions>
+
     <plugins>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
       </plugin>
-      <!-- TODO(cgruber): Add protoc dependencies to support tests. -->
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <version>0.5.1</version>
         <configuration>
-          <skip>true</skip>
+          <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+          <includes>
+            <param>test_message2.proto</param>
+            <param>test_message3.proto</param>
+          </includes>
         </configuration>
+        <executions>
+          <execution>
+            <id>build-test-protos</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

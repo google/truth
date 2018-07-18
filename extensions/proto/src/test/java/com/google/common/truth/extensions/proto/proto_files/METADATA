@@ -1,5 +1,0 @@
-tricorder: {
-  # Test protos are never persisted, so it is fine to change them in
-  # breaking ways.
-  disable: ProtoBestPractices
-}
