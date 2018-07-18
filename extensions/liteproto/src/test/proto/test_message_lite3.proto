@@ -6,7 +6,6 @@ option optimize_for = LITE_RUNTIME;
 
 option java_package = "com.google.common.truth.extensions.proto";
 option java_multiple_files = true;
-option java_api_version = 2;
 
 message TestMessageLite3 {
   int32 optional_int = 1;

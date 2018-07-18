@@ -62,7 +62,6 @@ public class ProtoSubjectTestBase {
 
   private static final TextFormat.Parser PARSER =
       TextFormat.Parser.newBuilder()
-          .setAllowUnknownFields(false)
           .setSingularOverwritePolicy(
               TextFormat.Parser.SingularOverwritePolicy.FORBID_SINGULAR_OVERWRITES)
           .build();

@@ -71,13 +71,13 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
 
   @Test
   public void testPlain_isEmpty() {
-    expectThat(ImmutableMap.of()).isEmpty();
+    expectThat(ImmutableMap.<Object, Message>of()).isEmpty();
     expectThat(mapOf(1, message1)).isNotEmpty();
 
     expectFailureWhenTesting().that(mapOf(1, message1)).isEmpty();
     expectThatFailure().isNotNull();
 
-    expectFailureWhenTesting().that(ImmutableMap.of()).isNotEmpty();
+    expectFailureWhenTesting().that(ImmutableMap.<Object, Message>of()).isNotEmpty();
     expectThatFailure().isNotNull();
   }
 

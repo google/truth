@@ -161,7 +161,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   public void testIterableOverloads_objects_actuallyNotMessages() {
     TestMessage2 message1 = TestMessage2.newBuilder().setOInt(1).addRString("foo").build();
     TestMessage2 message2 = TestMessage2.newBuilder().setOInt(2).addRString("bar").build();
-    ImmutableList<Object> altActualObjects = ImmutableList.of("Foo!", 42);
+    ImmutableList<Object> altActualObjects = ImmutableList.<Object>of("Foo!", 42);
 
     assertThat(altActualObjects).containsExactly(21 * 2, "Foo! Bar!".substring(0, 4));
     assertThat(altActualObjects).containsNoneOf(message1, message2);
@@ -183,7 +183,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
     Object object1 = message1;
     Object object2 = message2;
-    ImmutableMap<Object, TestMessage2> actualMessages = mapOf(1, message1, 2, message2);
+    ImmutableMap<Integer, TestMessage2> actualMessages = mapOf(1, message1, 2, message2);
 
     assertThat(actualMessages).containsExactly(1, message1, 2, message2).inOrder();
     assertThat(actualMessages).containsExactly(1, object1, 2, object2).inOrder();
@@ -224,7 +224,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   public void testMapOverloads_objects_actuallyNotMessages() {
     TestMessage2 message1 = TestMessage2.newBuilder().setOInt(1).addRString("foo").build();
     TestMessage2 message2 = TestMessage2.newBuilder().setOInt(2).addRString("bar").build();
-    ImmutableMap<Object, Object> altActualObjects = mapOf("a", "Foo!", "b", 42);
+    ImmutableMap<String, Object> altActualObjects = mapOf("a", (Object) "Foo!", "b", 42);
 
     assertThat(altActualObjects).containsExactly("a", "Foo! Bar!".substring(0, 4), "b", 21 * 2);
     assertThat(altActualObjects).doesNotContainEntry("a", message1);
@@ -246,7 +246,6 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   public void testMultimapOverloads_assertAbout_listAndSet() {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
-    TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
     ImmutableMultimap<Integer, TestMessage2> multimap =
         multimapOf(1, message1, 1, message2, 2, message1);
     ImmutableListMultimap<Integer, TestMessage2> listMultimap =
@@ -275,7 +274,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
     Object object1 = message1;
     Object object2 = message2;
-    ImmutableMultimap<Object, TestMessage2> actualMessages =
+    ImmutableMultimap<Integer, TestMessage2> actualMessages =
         multimapOf(1, message1, 1, message2, 2, message1);
 
     assertThat(actualMessages)
@@ -291,13 +290,11 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     TestMessage2 message1 = parse("o_int: 1 r_string: \"foo\"");
     TestMessage2 message2 = parse("o_int: 2 r_string: \"bar\"");
     TestMessage2 eqMessage2 = parse("o_int: 2 r_string: \"bar\"");
-    Object object1 = message1;
-    Object object2 = message2;
-    ImmutableMultimap<Object, TestMessage2> multimap =
+    ImmutableMultimap<Integer, TestMessage2> multimap =
         multimapOf(1, message1, 1, message2, 2, message1);
-    ImmutableListMultimap<Object, TestMessage2> listMultimap =
+    ImmutableListMultimap<Integer, TestMessage2> listMultimap =
         ImmutableListMultimap.copyOf(multimap);
-    ImmutableSetMultimap<Object, TestMessage2> setMultimap = ImmutableSetMultimap.copyOf(multimap);
+    ImmutableSetMultimap<Integer, TestMessage2> setMultimap = ImmutableSetMultimap.copyOf(multimap);
 
     assertThat(multimap)
         .containsExactlyEntriesIn(multimapOf(1, message1, 1, eqMessage2, 2, message1))
@@ -354,44 +351,13 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
   public void testMultimapOverloads_objects_actuallyNotMessages() {
     TestMessage2 message1 = TestMessage2.newBuilder().setOInt(1).addRString("foo").build();
     TestMessage2 message2 = TestMessage2.newBuilder().setOInt(2).addRString("bar").build();
-    ImmutableMultimap<Object, Object> altActualObjects =
-        multimapOf("a", "Foo!", "a", "Baz!", "b", 42);
+    ImmutableMultimap<String, Object> altActualObjects =
+        multimapOf("a", (Object) "Foo!", "a", "Baz!", "b", 42);
 
     assertThat(altActualObjects)
         .containsExactlyEntriesIn(
             multimapOf("b", 21 * 2, "a", "Ba" + "z!", "a", "Foo! Bar!".substring(0, 4)));
     assertThat(altActualObjects).doesNotContainEntry("a", message1);
     assertThat(altActualObjects).doesNotContainEntry("b", message2);
-  }
-
-  @Test
-  public void testHackHackHackBug195497495() {
-    // Empty sub message.
-    TestMessage2 message = parse("o_int: 1 o_sub_test_message: { }");
-    TestMessage2 strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
-    assertThat(strippedMessage.hasOSubTestMessage()).isFalse();
-    assertThat(strippedMessage.getOInt()).isEqualTo(1);
-
-    // Recurisvely empty sub message.
-    message = parse("o_int: 1 o_sub_test_message: { o_sub_sub_test_message: { } }");
-    strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
-    assertThat(strippedMessage.hasOSubTestMessage()).isFalse();
-    assertThat(strippedMessage.getOInt()).isEqualTo(1);
-
-    // Recursively non-empty sub message.
-    message = parse("o_int: 1 o_sub_test_message: { o_sub_sub_test_message: { o_int: 3 } }");
-    strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
-    assertThat(strippedMessage).isEqualTo(message);
-
-    // Recursively empty repeated field.
-    message = parse("o_int: 1 r_sub_test_message: { } r_sub_test_message: { }");
-    strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
-    assertThat(strippedMessage.getRSubTestMessageList()).isEmpty();
-    assertThat(strippedMessage.getOInt()).isEqualTo(1);
-
-    // Recursively non-empty repeated field.
-    message = parse("o_int: 1 r_sub_test_message: { } r_sub_test_message: { o_int: 5 }");
-    strippedMessage = ProtoTruth.removeEmptySubMessagesForBug79268889(message);
-    assertThat(strippedMessage).isEqualTo(message);
   }
 }
