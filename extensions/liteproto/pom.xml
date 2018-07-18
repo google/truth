@@ -15,12 +15,6 @@
     An extension for the Truth test assertion framework supporting the Lite
     version of Protocol Buffers.
   </description>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <protobuf.lite.version>3.0.1</protobuf.lite.version>
-    <protobuf.lite.protoc.version>3.1.0</protobuf.lite.protoc.version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.google.truth</groupId>
@@ -51,7 +45,6 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-lite</artifactId>
-      <version>${protobuf.lite.version}</version>
       <!-- protobuf-lite is not compatible with protobuf-java, so we mark it optional. -->
       <optional>true</optional>
     </dependency>
@@ -61,7 +54,7 @@
       <extension>
         <groupId>kr.motd.maven</groupId>
         <artifactId>os-maven-plugin</artifactId>
-        <version>1.5.0.Final</version>
+        <version>${os-maven-plugin.version}</version>
       </extension>
     </extensions>
 
@@ -72,9 +65,8 @@
       <plugin>
         <groupId>org.xolstice.maven.plugins</groupId>
         <artifactId>protobuf-maven-plugin</artifactId>
-        <version>0.5.1</version>
         <configuration>
-          <protocArtifact>com.google.protobuf:protoc:${protobuf.lite.protoc.version}:exe:${os.detected.classifier}</protocArtifact>
+          <protocArtifact>com.google.protobuf:protoc:${protobuf-lite.protoc.version}:exe:${os.detected.classifier}</protocArtifact>
           <includes>
             <param>test_message_lite2.proto</param>
             <param>test_message_lite3.proto</param>
