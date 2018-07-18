@@ -34,7 +34,8 @@ Truth has built in support for the following types:
 
 *   Other JDK types
 
-    *   [`Object`]
+    *   [`Object`] - since all types extend `Object` you can make simple
+        assertions such as `.isEqualTo()` on any type
     *   [`String`]
     *   [`Comparable`] - this can be used for any Comparable type (Integers,
         Ranges, etc.)
@@ -53,6 +54,10 @@ Truth has built in support for the following types:
         *   [`SetMultimap`]
     *   [`Multiset`]
     *   [`Table`]
+
+Truth is [extensible](extension.md), so if you don't see a type you need to
+make assertions on in this list you can
+[write your own](extension.md#writing-your-own-custom-subject).
 
 <!-- References -->
 
