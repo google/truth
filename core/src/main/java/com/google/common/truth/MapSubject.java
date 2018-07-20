@@ -70,10 +70,12 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
     boolean mapEquals = containsExactlyEntriesInAnyOrder((Map<?, ?>) other, "is equal to");
     if (mapEquals) {
-      failWithRawMessage(
-          "Not true that %s is equal to <%s>. It is equal according to the contract of "
-              + "Map.equals(Object), but this implementation returned false",
-          actualAsString(), other);
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s is equal to <%s>. It is equal according to the contract of "
+                      + "Map.equals(Object), but this implementation returned false",
+                  actualAsString(), other)));
     }
   }
 
@@ -149,10 +151,12 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
             keys.add(actualEntry.getKey());
           }
         }
-        failWithRawMessage(
-            "Not true that %s contains entry <%s>. "
-                + "However, the following keys are mapped to <%s>: %s",
-            actualAsString(), entry, value, keys);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains entry <%s>. "
+                        + "However, the following keys are mapped to <%s>: %s",
+                    actualAsString(), entry, value, keys)));
       } else {
         fail("contains entry", entry);
       }
@@ -235,9 +239,11 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     if (diff.isEmpty()) {
       return true;
     }
-    failWithRawMessage(
-        "Not true that %s %s <%s>. It %s",
-        actualAsString(), failVerb, expectedMap, diff.describe(VALUE_DIFFERENCE_FORMAT));
+    failWithoutActual(
+        simpleFact(
+            lenientFormat(
+                "Not true that %s %s <%s>. It %s",
+                actualAsString(), failVerb, expectedMap, diff.describe(VALUE_DIFFERENCE_FORMAT))));
     return false;
   }
 
@@ -404,7 +410,10 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       List<?> expectedKeyOrder = Lists.newArrayList(expectedMap.keySet());
       List<?> actualKeyOrder = Lists.newArrayList(actual().keySet());
       if (!actualKeyOrder.equals(expectedKeyOrder)) {
-        failWithRawMessage("Not true that %s %s <%s>", actualAsString(), failVerb, expectedMap);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s %s <%s>", actualAsString(), failVerb, expectedMap)));
       }
     }
   }
@@ -480,15 +489,24 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         // Found matching key with non-matching value.
         @NullableDecl String diff = correspondence.formatDiff(actualValue, expectedValue);
         if (diff != null) {
-          failWithRawMessage(
-              "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
-                  + "However, it has a mapping from that key to <%s> (diff: %s)",
-              actualAsString(), expectedKey, correspondence, expectedValue, actualValue, diff);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
+                          + "However, it has a mapping from that key to <%s> (diff: %s)",
+                      actualAsString(),
+                      expectedKey,
+                      correspondence,
+                      expectedValue,
+                      actualValue,
+                      diff)));
         } else {
-          failWithRawMessage(
-              "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
-                  + "However, it has a mapping from that key to <%s>",
-              actualAsString(), expectedKey, correspondence, expectedValue, actualValue);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
+                          + "However, it has a mapping from that key to <%s>",
+                      actualAsString(), expectedKey, correspondence, expectedValue, actualValue)));
         }
       } else {
         // Did not find matching key.
@@ -500,15 +518,19 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         }
         if (!keys.isEmpty()) {
           // Found matching values with non-matching keys.
-          failWithRawMessage(
-              "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
-                  + "However, the following keys are mapped to such values: <%s>",
-              actualAsString(), expectedKey, correspondence, expectedValue, keys);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
+                          + "However, the following keys are mapped to such values: <%s>",
+                      actualAsString(), expectedKey, correspondence, expectedValue, keys)));
         } else {
           // Did not find matching key or value.
-          failWithRawMessage(
-              "Not true that %s contains an entry with key <%s> and a value that %s <%s>",
-              actualAsString(), expectedKey, correspondence, expectedValue);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s contains an entry with key <%s> and a value that %s <%s>",
+                      actualAsString(), expectedKey, correspondence, expectedValue)));
         }
       }
     }
@@ -522,10 +544,12 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       if (actual().containsKey(excludedKey)) {
         A actualValue = getCastSubject().get(excludedKey);
         if (correspondence.compare(actualValue, excludedValue)) {
-          failWithRawMessage(
-              "Not true that %s does not contain an entry with key <%s> and a value that %s <%s>. "
-                  + "It maps that key to <%s>",
-              actualAsString(), excludedKey, correspondence, excludedValue, actualValue);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s does not contain an entry with key <%s> and a value that "
+                          + "%s <%s>. It maps that key to <%s>",
+                      actualAsString(), excludedKey, correspondence, excludedValue, actualValue)));
         }
       }
     }
@@ -581,10 +605,15 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                     + "that %s the key and value of each entry of",
                 correspondence));
       }
-      failWithRawMessage(
-          "Not true that %s contains exactly one entry that has a key that is equal to and a value "
-              + "that %s the key and value of each entry of <%s>. It %s",
-          actualAsString(), correspondence, expectedMap, diff.describe(this.<V>valueDiffFormat()));
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s contains exactly one entry that has a key that is equal to "
+                      + "and a value that %s the key and value of each entry of <%s>. It %s",
+                  actualAsString(),
+                  correspondence,
+                  expectedMap,
+                  diff.describe(this.<V>valueDiffFormat()))));
       return ALREADY_FAILED;
     }
 

@@ -834,12 +834,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
     }
     if (!nonIterables.isEmpty()) {
-      failWithRawMessage(
-          "The actual value is an Iterable, and you've written a test that compares it to some "
-              + "objects that are not Iterables. Did you instead mean to check whether its "
-              + "*contents* match any of the *contents* of the given values? If so, call "
-              + "containsNoneOf(...)/containsNoneIn(...) instead. Non-iterables: %s",
-          nonIterables);
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "The actual value is an Iterable, and you've written a test that compares it to "
+                      + "some objects that are not Iterables. Did you instead mean to check "
+                      + "whether its *contents* match any of the *contents* of the given values? "
+                      + "If so, call containsNoneOf(...)/containsNoneIn(...) instead. "
+                      + "Non-iterables: %s",
+                  nonIterables)));
     }
   }
 
@@ -994,13 +997,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       if (pairer.isPresent()) {
         List<A> keyMatches = pairer.get().pairOne(expected, getCastActual());
         if (!keyMatches.isEmpty()) {
-          subject.failWithRawMessage(
-              "Not true that %s contains exactly one element that %s <%s>. It did contain the "
-                  + "following elements with the correct key: <%s>",
-              subject.actualAsString(),
-              correspondence,
-              expected,
-              formatExtras(expected, keyMatches));
+          subject.failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s contains exactly one element that %s <%s>. It did contain "
+                          + "the following elements with the correct key: <%s>",
+                      subject.actualAsString(),
+                      correspondence,
+                      expected,
+                      formatExtras(expected, keyMatches))));
           return;
         }
       }
@@ -1016,10 +1021,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         }
       }
       if (!matchingElements.isEmpty()) {
-        subject.failWithRawMessage(
-            "%s should not have contained an element that %s <%s>. "
-                + "It contained the following such elements: <%s>",
-            subject.actualAsString(), correspondence, excluded, matchingElements);
+        subject.failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "%s should not have contained an element that %s <%s>. "
+                        + "It contained the following such elements: <%s>",
+                    subject.actualAsString(), correspondence, excluded, matchingElements)));
       }
     }
 
@@ -1169,12 +1176,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty() || !extra.isEmpty()) {
-        subject.failWithRawMessage(
-            "Not true that %s contains exactly one element that %s each element of <%s>. It %s",
-            subject.actualAsString(),
-            correspondence,
-            expected,
-            describeMissingOrExtra(missing, extra));
+        subject.failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains exactly one element that %s each element of <%s>. "
+                        + "It %s",
+                    subject.actualAsString(),
+                    correspondence,
+                    expected,
+                    describeMissingOrExtra(missing, extra))));
         return true;
       }
       return false;
@@ -1323,17 +1333,19 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty() || !extra.isEmpty()) {
-        subject.failWithRawMessage(
-            "Not true that %s contains exactly one element that %s each element of <%s>. "
-                + "It contains at least one element that matches each expected element, "
-                + "and every element it contains matches at least one expected element, "
-                + "but there was no 1:1 mapping between all the actual and expected elements. "
-                + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
-                + "it %s",
-            subject.actualAsString(),
-            correspondence,
-            expected,
-            describeMissingOrExtra(missing, extra));
+        subject.failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains exactly one element that %s each element of <%s>. "
+                        + "It contains at least one element that matches each expected element, "
+                        + "and every element it contains matches at least one expected element, "
+                        + "but there was no 1:1 mapping between all the actual and expected "
+                        + "elements. Using the most complete 1:1 mapping (or one such mapping, if "
+                        + "there is a tie), it %s",
+                    subject.actualAsString(),
+                    correspondence,
+                    expected,
+                    describeMissingOrExtra(missing, extra))));
         return true;
       }
       return false;
@@ -1468,9 +1480,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
-        subject.failWithRawMessage(
-            "Not true that %s contains at least one element that %s each element of <%s>. It %s",
-            subject.actualAsString(), correspondence, expected, describeMissing(missing, extra));
+        subject.failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains at least one element that %s each element of <%s>. "
+                        + "It %s",
+                    subject.actualAsString(),
+                    correspondence,
+                    expected,
+                    describeMissing(missing, extra))));
         return true;
       }
       return false;
@@ -1537,13 +1555,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
-        subject.failWithRawMessage(
-            "Not true that %s contains at least one element that %s each element of <%s>. "
-                + "It contains at least one element that matches each expected element, "
-                + "but there was no 1:1 mapping between all the expected elements and any subset "
-                + "of the actual elements. Using the most complete 1:1 mapping (or one such "
-                + "mapping, if there is a tie), it %s",
-            subject.actualAsString(), correspondence, expected, describeMissing(missing, extra));
+        subject.failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains at least one element that %s each element of <%s>. "
+                        + "It contains at least one element that matches each expected element, "
+                        + "but there was no 1:1 mapping between all the expected elements and any "
+                        + "subset of the actual elements. Using the most complete 1:1 mapping (or "
+                        + "one such mapping, if there is a tie), it %s",
+                    subject.actualAsString(),
+                    correspondence,
+                    expected,
+                    describeMissing(missing, extra))));
         return true;
       }
       return false;
@@ -1593,19 +1616,29 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         Pairing pairing = pairer.get().pair(iterableToList(expected), iterableToList(actual));
         if (pairing != null) {
           if (!pairing.pairedKeysToExpectedValues.isEmpty()) {
-            subject.failWithRawMessage(
-                "Not true that %s %s <%s>. It contains the following values that match by key: %s",
-                subject.actualAsString(), failVerb, expected, describeAnyMatchesByKey(pairing));
+            subject.failWithoutActual(
+                simpleFact(
+                    lenientFormat(
+                        "Not true that %s %s <%s>. It contains the following values that match by "
+                            + "key: %s",
+                        subject.actualAsString(),
+                        failVerb,
+                        expected,
+                        describeAnyMatchesByKey(pairing))));
           } else {
-            subject.failWithRawMessage(
-                "Not true that %s %s <%s>. It does not contain any matches by key, either",
-                subject.actualAsString(), failVerb, expected);
+            subject.failWithoutActual(
+                simpleFact(
+                    lenientFormat(
+                        "Not true that %s %s <%s>. It does not contain any matches by key, either",
+                        subject.actualAsString(), failVerb, expected)));
           }
         } else {
-          subject.failWithRawMessage(
-              "Not true that %s %s <%s>. (N.B. A key function which does not uniquely key the "
-                  + "expected elements was provided and has consequently been ignored.)",
-              subject.actualAsString(), failVerb, expected);
+          subject.failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s %s <%s>. (N.B. A key function which does not uniquely key "
+                          + "the expected elements was provided and has consequently been ignored.)",
+                      subject.actualAsString(), failVerb, expected)));
         }
       } else {
         subject.fail(failVerb, expected);
@@ -1685,9 +1718,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 .append(excludedItem);
           }
         }
-        subject.failWithRawMessage(
-            "Not true that %s contains no element that %s %s <%s>. It contains <[%s]>",
-            subject.actualAsString(), correspondence, excludedPrefix, excluded, presentDescription);
+        subject.failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains no element that %s %s <%s>. It contains <[%s]>",
+                    subject.actualAsString(),
+                    correspondence,
+                    excludedPrefix,
+                    excluded,
+                    presentDescription)));
       }
     }
 

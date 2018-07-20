@@ -16,6 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
+import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ForwardingSortedSet;
@@ -53,16 +55,20 @@ public final class SortedSetSubject extends IterableSubject {
 
     if (!Objects.equal(actualAsNavigableSet().first(), element)) {
       if (actualAsNavigableSet().contains(element)) {
-        failWithRawMessage(
-            "Not true that %s has first element <%s>. "
-                + "It does contain this element, but the first element is <%s>",
-            actualAsString(), element, actualAsNavigableSet().first());
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has first element <%s>. "
+                        + "It does contain this element, but the first element is <%s>",
+                    actualAsString(), element, actualAsNavigableSet().first())));
         return;
       }
-      failWithRawMessage(
-          "Not true that %s has first element <%s>. "
-              + "It does not contain this element, and the first element is <%s>",
-          actualAsString(), element, actualAsNavigableSet().first());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s has first element <%s>. "
+                      + "It does not contain this element, and the first element is <%s>",
+                  actualAsString(), element, actualAsNavigableSet().first())));
     }
   }
 
@@ -75,16 +81,20 @@ public final class SortedSetSubject extends IterableSubject {
 
     if (!Objects.equal(actualAsNavigableSet().last(), element)) {
       if (actualAsNavigableSet().contains(element)) {
-        failWithRawMessage(
-            "Not true that %s has last element <%s>. "
-                + "It does contain this element, but the last element is <%s>",
-            actualAsString(), element, actualAsNavigableSet().last());
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has last element <%s>. "
+                        + "It does contain this element, but the last element is <%s>",
+                    actualAsString(), element, actualAsNavigableSet().last())));
         return;
       }
-      failWithRawMessage(
-          "Not true that %s has last element <%s>. "
-              + "It does not contain this element, and the last element is <%s>",
-          actualAsString(), element, actualAsNavigableSet().last());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s has last element <%s>. "
+                      + "It does not contain this element, and the last element is <%s>",
+                  actualAsString(), element, actualAsNavigableSet().last())));
     }
   }
 

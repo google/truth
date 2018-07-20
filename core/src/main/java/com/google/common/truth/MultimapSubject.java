@@ -115,9 +115,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
             countDuplicatesAndAddTypeInfo(
                 retainMatchingToString(actual().entries(), entryList /* itemsToCheck */)));
       } else if (actual().containsKey(key)) {
-        failWithRawMessage(
-            "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to <%s>",
-            actualAsString(), entry, key, actual().asMap().get(key));
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to "
+                        + "<%s>",
+                    actualAsString(), entry, key, actual().asMap().get(key))));
       } else if (actual().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, ?> actualEntry : actual().entries()) {
@@ -125,10 +128,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
             keys.add(actualEntry.getKey());
           }
         }
-        failWithRawMessage(
-            "Not true that %s contains entry <%s>. "
-                + "However, the following keys are mapped to <%s>: %s",
-            actualAsString(), entry, value, keys);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains entry <%s>. "
+                        + "However, the following keys are mapped to <%s>: %s",
+                    actualAsString(), entry, value, keys)));
       } else {
         fail("contains entry", Maps.immutableEntry(key, value));
       }
@@ -165,10 +170,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         || (actual() instanceof SetMultimap && other instanceof ListMultimap)) {
       String mapType1 = (actual() instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
       String mapType2 = (other instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
-      failWithRawMessage(
-          "Not true that %s %s is equal to %s <%s>. "
-              + "A %s cannot equal a %s if either is non-empty.",
-          mapType1, actualAsString(), mapType2, other, mapType1, mapType2);
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s %s is equal to %s <%s>. "
+                      + "A %s cannot equal a %s if either is non-empty.",
+                  mapType1, actualAsString(), mapType2, other, mapType1, mapType2)));
     } else if (actual() instanceof ListMultimap) {
       containsExactlyEntriesIn((Multimap<?, ?>) other).inOrder();
     } else if (actual() instanceof SetMultimap) {
@@ -320,20 +327,26 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
       if (!keysInOrder) {
         if (!keysWithValuesOutOfOrder.isEmpty()) {
-          failWithRawMessage(
-              "Not true that %s contains exactly <%s> in order. The keys are not in order, "
-                  + "and the values for keys <%s> are not in order either",
-              actualAsString(), expectedMultimap, keysWithValuesOutOfOrder);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s contains exactly <%s> in order. The keys are not in order, "
+                          + "and the values for keys <%s> are not in order either",
+                      actualAsString(), expectedMultimap, keysWithValuesOutOfOrder)));
         } else {
-          failWithRawMessage(
-              "Not true that %s contains exactly <%s> in order. The keys are not in order",
-              actualAsString(), expectedMultimap);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s contains exactly <%s> in order. The keys are not in order",
+                      actualAsString(), expectedMultimap)));
         }
       } else if (!keysWithValuesOutOfOrder.isEmpty()) {
-        failWithRawMessage(
-            "Not true that %s contains exactly <%s> in order. "
-                + "The values for keys <%s> are not in order",
-            actualAsString(), expectedMultimap, keysWithValuesOutOfOrder);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains exactly <%s> in order. "
+                        + "The values for keys <%s> are not in order",
+                    actualAsString(), expectedMultimap, keysWithValuesOutOfOrder)));
       }
     }
   }
@@ -458,10 +471,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           }
         }
         // Found matching key with non-matching values.
-        failWithRawMessage(
-            "Not true that %s contains at least one entry with key <%s> and a value that %s <%s>. "
-                + "However, it has a mapping from that key to <%s>",
-            actualAsString(), expectedKey, correspondence, expectedValue, actualValues);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains at least one entry with key <%s> and a value that "
+                        + "%s <%s>. However, it has a mapping from that key to <%s>",
+                    actualAsString(), expectedKey, correspondence, expectedValue, actualValues)));
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<>();
@@ -472,15 +487,20 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         }
         if (!keys.isEmpty()) {
           // Found matching values with non-matching keys.
-          failWithRawMessage(
-              "Not true that %s contains at least one entry with key <%s> and a value that %s <%s>."
-                  + " However, the following keys are mapped to such values: <%s>",
-              actualAsString(), expectedKey, correspondence, expectedValue, keys);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s contains at least one entry with key <%s> and a value that "
+                          + "%s <%s>. However, the following keys are mapped to such values: <%s>",
+                      actualAsString(), expectedKey, correspondence, expectedValue, keys)));
         } else {
           // Did not find matching key or value.
-          failWithRawMessage(
-              "Not true that %s contains at least one entry with key <%s> and a value that %s <%s>",
-              actualAsString(), expectedKey, correspondence, expectedValue);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s contains at least one entry with key <%s> and a value that "
+                          + "%s <%s>",
+                      actualAsString(), expectedKey, correspondence, expectedValue)));
         }
       }
     }
@@ -500,10 +520,16 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           }
         }
         if (!matchingValues.isEmpty()) {
-          failWithRawMessage(
-              "Not true that %s did not contain an entry with key <%s> and a value that %s <%s>. "
-                  + "It maps that key to the following such values: <%s>",
-              actualAsString(), excludedKey, correspondence, excludedValue, matchingValues);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s did not contain an entry with key <%s> and a value that %s <%s>. "
+                          + "It maps that key to the following such values: <%s>",
+                      actualAsString(),
+                      excludedKey,
+                      correspondence,
+                      excludedValue,
+                      matchingValues)));
         }
       }
     }

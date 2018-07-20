@@ -18,7 +18,9 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.FloatSubject.checkTolerance;
 import static com.google.common.truth.MathUtil.equalWithinTolerance;
 import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
@@ -180,13 +182,16 @@ public final class PrimitiveFloatArraySubject
           expectedCount++;
         }
         if (actual.length != expectedCount) {
-          failWithRawMessage(
-              "Not true that %s has values within %s of <%s>. Expected length <%s> but got <%s>",
-              actualAsString(),
-              tolerance,
-              Iterables.toString(expected),
-              expectedCount,
-              actual.length);
+          failWithoutActual(
+              simpleFact(
+                  lenientFormat(
+                      "Not true that %s has values within %s of <%s>. Expected length <%s> but "
+                          + "got <%s>",
+                      actualAsString(),
+                      tolerance,
+                      Iterables.toString(expected),
+                      expectedCount,
+                      actual.length)));
           return;
         }
         if (!mismatches.isEmpty()) {

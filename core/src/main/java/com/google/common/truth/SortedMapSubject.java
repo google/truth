@@ -16,6 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
+import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ForwardingSortedMap;
@@ -60,16 +62,20 @@ public final class SortedMapSubject extends MapSubject {
 
     if (!Objects.equal(actualAsNavigableMap().firstKey(), key)) {
       if (actualAsNavigableMap().containsKey(key)) {
-        failWithRawMessage(
-            "Not true that %s has first key <%s>. "
-                + "It does contain this key, but the first key is <%s>",
-            actualAsString(), key, actualAsNavigableMap().firstKey());
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has first key <%s>. "
+                        + "It does contain this key, but the first key is <%s>",
+                    actualAsString(), key, actualAsNavigableMap().firstKey())));
         return;
       }
-      failWithRawMessage(
-          "Not true that %s has first key <%s>. "
-              + "It does not contain this key, and the first key is <%s>",
-          actualAsString(), key, actualAsNavigableMap().firstKey());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s has first key <%s>. "
+                      + "It does not contain this key, and the first key is <%s>",
+                  actualAsString(), key, actualAsNavigableMap().firstKey())));
     }
   }
 
@@ -85,23 +91,34 @@ public final class SortedMapSubject extends MapSubject {
     if (!Objects.equal(actualFirstEntry, expectedEntry)) {
       Object actualFirstKey = actualFirstEntry.getKey();
       if (actualAsNavigableMap().entrySet().contains(expectedEntry)) {
-        failWithRawMessage(
-            "Not true that %s has first entry <%s>. "
-                + "It does contain this entry, but the first entry is <%s>",
-            actualAsString(), expectedEntry, actualFirstEntry);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has first entry <%s>. "
+                        + "It does contain this entry, but the first entry is <%s>",
+                    actualAsString(), expectedEntry, actualFirstEntry)));
       } else if (Objects.equal(actualFirstKey, key)) {
-        failWithRawMessage(
-            "Not true that %s has first entry <%s>, the first value is <%s>",
-            actualAsString(), expectedEntry, actualFirstEntry.getValue());
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has first entry <%s>, the first value is <%s>",
+                    actualAsString(), expectedEntry, actualFirstEntry.getValue())));
       } else if (Objects.equal(actualFirstEntry.getValue(), value)) {
-        failWithRawMessage(
-            "Not true that %s has first entry <%s>, the first key is <%s>",
-            actualAsString(), expectedEntry, actualFirstKey);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has first entry <%s>, the first key is <%s>",
+                    actualAsString(), expectedEntry, actualFirstKey)));
       } else if (actualAsNavigableMap().containsKey(key)) {
-        failWithRawMessage(
-            "Not true that %s has first entry <%s>. It does contain this key, "
-                + "but the key is mapped to <%s>, and the first entry is <%s>",
-            actualAsString(), expectedEntry, actualAsNavigableMap().get(key), actualFirstEntry);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has first entry <%s>. It does contain this key, "
+                        + "but the key is mapped to <%s>, and the first entry is <%s>",
+                    actualAsString(),
+                    expectedEntry,
+                    actualAsNavigableMap().get(key),
+                    actualFirstEntry)));
       } else if (actualAsNavigableMap().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, ?> actualEntry : actualAsNavigableMap().entrySet()) {
@@ -109,15 +126,19 @@ public final class SortedMapSubject extends MapSubject {
             keys.add(actualEntry.getKey());
           }
         }
-        failWithRawMessage(
-            "Not true that %s has first entry <%s>. It does contain this value, but the value is "
-                + "mapped from the keys <%s>, and the first entry is <%s>",
-            actualAsString(), expectedEntry, keys, actualFirstEntry);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has first entry <%s>. It does contain this value, but the "
+                        + "value is mapped from the keys <%s>, and the first entry is <%s>",
+                    actualAsString(), expectedEntry, keys, actualFirstEntry)));
       } else {
-        failWithRawMessage(
-            "Not true that %s has first entry <%s>. "
-                + "It does not contain this entry, and the first entry is <%s>",
-            actualAsString(), expectedEntry, actualFirstEntry);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has first entry <%s>. "
+                        + "It does not contain this entry, and the first entry is <%s>",
+                    actualAsString(), expectedEntry, actualFirstEntry)));
       }
     }
   }
@@ -131,16 +152,20 @@ public final class SortedMapSubject extends MapSubject {
 
     if (!Objects.equal(actualAsNavigableMap().lastKey(), key)) {
       if (actualAsNavigableMap().containsKey(key)) {
-        failWithRawMessage(
-            "Not true that %s has last key <%s>. "
-                + "It does contain this key, but the last key is <%s>",
-            actualAsString(), key, actualAsNavigableMap().lastKey());
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has last key <%s>. "
+                        + "It does contain this key, but the last key is <%s>",
+                    actualAsString(), key, actualAsNavigableMap().lastKey())));
         return;
       }
-      failWithRawMessage(
-          "Not true that %s has last key <%s>. "
-              + "It does not contain this key, and the last key is <%s>",
-          actualAsString(), key, actualAsNavigableMap().lastKey());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s has last key <%s>. "
+                      + "It does not contain this key, and the last key is <%s>",
+                  actualAsString(), key, actualAsNavigableMap().lastKey())));
     }
   }
 
@@ -156,23 +181,34 @@ public final class SortedMapSubject extends MapSubject {
     if (!Objects.equal(actualLastEntry, expectedEntry)) {
       Object actualLastKey = actualLastEntry.getKey();
       if (actualAsNavigableMap().entrySet().contains(expectedEntry)) {
-        failWithRawMessage(
-            "Not true that %s has last entry <%s>. "
-                + "It does contain this entry, but the last entry is <%s>",
-            actualAsString(), expectedEntry, actualLastEntry);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has last entry <%s>. "
+                        + "It does contain this entry, but the last entry is <%s>",
+                    actualAsString(), expectedEntry, actualLastEntry)));
       } else if (Objects.equal(actualLastKey, key)) {
-        failWithRawMessage(
-            "Not true that %s has last entry <%s>, the last value is <%s>",
-            actualAsString(), expectedEntry, actualLastEntry.getValue());
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has last entry <%s>, the last value is <%s>",
+                    actualAsString(), expectedEntry, actualLastEntry.getValue())));
       } else if (Objects.equal(actualLastEntry.getValue(), value)) {
-        failWithRawMessage(
-            "Not true that %s has last entry <%s>, the last key is <%s>",
-            actualAsString(), expectedEntry, actualLastKey);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has last entry <%s>, the last key is <%s>",
+                    actualAsString(), expectedEntry, actualLastKey)));
       } else if (actualAsNavigableMap().containsKey(key)) {
-        failWithRawMessage(
-            "Not true that %s has last entry <%s>. It does contain this key, "
-                + "but the key is mapped to <%s>, and the last entry is <%s>",
-            actualAsString(), expectedEntry, actualAsNavigableMap().get(key), actualLastEntry);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has last entry <%s>. It does contain this key, "
+                        + "but the key is mapped to <%s>, and the last entry is <%s>",
+                    actualAsString(),
+                    expectedEntry,
+                    actualAsNavigableMap().get(key),
+                    actualLastEntry)));
       } else if (actualAsNavigableMap().containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, ?> actualEntry : actualAsNavigableMap().entrySet()) {
@@ -180,15 +216,19 @@ public final class SortedMapSubject extends MapSubject {
             keys.add(actualEntry.getKey());
           }
         }
-        failWithRawMessage(
-            "Not true that %s has last entry <%s>. It does contain this value, but the value is "
-                + "mapped from the keys <%s>, and the last entry is <%s>",
-            actualAsString(), expectedEntry, keys, actualLastEntry);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has last entry <%s>. It does contain this value, but the "
+                        + "value is mapped from the keys <%s>, and the last entry is <%s>",
+                    actualAsString(), expectedEntry, keys, actualLastEntry)));
       } else {
-        failWithRawMessage(
-            "Not true that %s has last entry <%s>. "
-                + "It does not contain this entry, and the last entry is <%s>",
-            actualAsString(), expectedEntry, actualLastEntry);
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s has last entry <%s>. "
+                        + "It does not contain this entry, and the last entry is <%s>",
+                    actualAsString(), expectedEntry, actualLastEntry)));
       }
     }
   }

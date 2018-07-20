@@ -17,7 +17,9 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Lists.asList;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.common.base.Objects;
@@ -325,9 +327,11 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   @Override
   public void hasAllRequiredFields() {
     if (!actual().isInitialized()) {
-      failWithRawMessage(
-          "Not true that %s has all required fields set. Missing: %s",
-          actualAsString(), actual().findInitializationErrors());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s has all required fields set. Missing: %s",
+                  actualAsString(), actual().findInitializationErrors())));
     }
   }
 

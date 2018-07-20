@@ -16,6 +16,7 @@
 
 package com.google.common.truth;
 
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 
@@ -237,7 +238,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
 
     /** Runs a check that always fails with the generic message "message." */
     void isThePresentKingOfFrance() {
-      failWithRawMessage("message");
+      failWithoutActual(simpleFact("message"));
     }
 
     void doCheckFail() {

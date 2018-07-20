@@ -15,6 +15,8 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Strings.lenientFormat;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Before;
@@ -146,8 +148,10 @@ public class ExpectFailureTest {
     @Override
     public void isEqualTo(Object expected) {
       if (!actual().equals(expected)) {
-        failWithRawMessage("expected <%s> is equal to <%s>", actual(), expected);
-        failWithRawMessage("expected <%s> is equal to <%s>", expected, actual());
+        failWithoutActual(
+            simpleFact(lenientFormat("expected <%s> is equal to <%s>", actual(), expected)));
+        failWithoutActual(
+            simpleFact(lenientFormat("expected <%s> is equal to <%s>", expected, actual())));
       }
     }
 
