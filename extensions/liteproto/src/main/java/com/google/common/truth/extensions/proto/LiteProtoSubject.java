@@ -16,6 +16,9 @@
 
 package com.google.common.truth.extensions.proto;
 
+import static com.google.common.base.Strings.lenientFormat;
+import static com.google.common.truth.Fact.simpleFact;
+
 import com.google.common.base.Objects;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IntegerSubject;
@@ -102,12 +105,14 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     if (actual() == null || expected == null) {
       super.isEqualTo(expected);
     } else if (actual().getClass() != expected.getClass()) {
-      failWithRawMessage(
-          "Not true that (%s) %s is equal to the expected (%s) object. "
-              + "They are not of the same class.",
-          actual().getClass().getName(),
-          internalCustomName() != null ? internalCustomName() + " (proto)" : "proto",
-          expected.getClass().getName());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that (%s) %s is equal to the expected (%s) object. "
+                      + "They are not of the same class.",
+                  actual().getClass().getName(),
+                  internalCustomName() != null ? internalCustomName() + " (proto)" : "proto",
+                  expected.getClass().getName())));
     } else {
       /*
        * TODO(cpovirk): If we someday let subjects override formatActualOrExpected(), change this
@@ -139,9 +144,11 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
       if (actual() == null) {
         super.isNotEqualTo(expected);
       } else {
-        failWithRawMessage(
-            "Not true that protos are different. Both are (%s) <%s>.",
-            actual().getClass().getName(), getTrimmedToString(actual()));
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that protos are different. Both are (%s) <%s>.",
+                    actual().getClass().getName(), getTrimmedToString(actual()))));
       }
     }
   }
@@ -158,20 +165,27 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   /** Checks whether the subject is a {@link MessageLite} with no fields set. */
   public void isEqualToDefaultInstance() {
     if (actual() == null) {
-      failWithRawMessage(
-          "Not true that %s is a default proto instance. It is null.", actualAsString());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s is a default proto instance. It is null.", actualAsString())));
     } else if (!actual().equals(actual().getDefaultInstanceForType())) {
-      failWithRawMessage(
-          "Not true that %s is a default proto instance. It has set values.", actualAsString());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s is a default proto instance. It has set values.",
+                  actualAsString())));
     }
   }
 
   /** Checks whether the subject is not equivalent to a {@link MessageLite} with no fields set. */
   public void isNotEqualToDefaultInstance() {
     if (actual() != null && actual().equals(actual().getDefaultInstanceForType())) {
-      failWithRawMessage(
-          "Not true that (%s) %s is not a default proto instance. It has no set values.",
-          actual().getClass().getName(), actualAsString());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that (%s) %s is not a default proto instance. It has no set values.",
+                  actual().getClass().getName(), actualAsString())));
     }
   }
 
@@ -182,10 +196,12 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   public void hasAllRequiredFields() {
     if (!actual().isInitialized()) {
       // MessageLite doesn't support reflection so this is the best we can do.
-      failWithRawMessage(
-          "Not true that %s has all required fields set. "
-              + "(Lite runtime could not determine which fields were missing.)",
-          actualAsString());
+      failWithoutActual(
+          simpleFact(
+              lenientFormat(
+                  "Not true that %s has all required fields set. "
+                      + "(Lite runtime could not determine which fields were missing.)",
+                  actualAsString())));
     }
   }
 
