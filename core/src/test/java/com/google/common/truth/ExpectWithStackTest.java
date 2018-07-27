@@ -18,8 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -37,12 +35,11 @@ public class ExpectWithStackTest {
   @Test
   public void testExpectTrace_simpleCase() {
     verifyAssertionError.setErrorVerifier(
-        new Predicate<AssertionError>() {
+        new ErrorVerifier() {
           @Override
-          public boolean apply(AssertionError expected) {
+          public void verify(AssertionError expected) {
             assertThat(expected.getStackTrace()).hasLength(0);
             assertThat(expected).hasMessageThat().startsWith("3 expectations failed:");
-            return true;
           }
         });
 
@@ -54,15 +51,14 @@ public class ExpectWithStackTest {
   @Test
   public void testExpectTrace_loop() {
     verifyAssertionError.setErrorVerifier(
-        new Predicate<AssertionError>() {
+        new ErrorVerifier() {
           @Override
-          public boolean apply(AssertionError expected) {
+          public void verify(AssertionError expected) {
             assertThat(expected.getStackTrace()).hasLength(0);
             assertThat(expected).hasMessageThat().startsWith("4 expectations failed:");
             assertWithMessage("test method name should only show up once with following omitted")
                 .that(expected.getMessage().split("testExpectTrace_loop"))
                 .hasLength(2);
-            return true;
           }
         });
 
@@ -74,12 +70,11 @@ public class ExpectWithStackTest {
   @Test
   public void testExpectTrace_callerException() {
     verifyAssertionError.setErrorVerifier(
-        new Predicate<AssertionError>() {
+        new ErrorVerifier() {
           @Override
-          public boolean apply(AssertionError expected) {
+          public void verify(AssertionError expected) {
             assertThat(expected.getStackTrace()).hasLength(0);
             assertThat(expected).hasMessageThat().startsWith("2 expectations failed:");
-            return true;
           }
         });
 
@@ -92,13 +87,12 @@ public class ExpectWithStackTest {
   @Test
   public void testExpectTrace_onlyCallerException() {
     verifyAssertionError.setErrorVerifier(
-        new Predicate<AssertionError>() {
+        new ErrorVerifier() {
           @Override
-          public boolean apply(AssertionError expected) {
+          public void verify(AssertionError expected) {
             assertWithMessage("Should throw exception as it is if only caller exception")
                 .that(expected.getStackTrace().length)
                 .isAtLeast(2);
-            return true;
           }
         });
 
@@ -127,16 +121,15 @@ public class ExpectWithStackTest {
     }
   }
 
-  private static class TestRuleVerifier implements TestRule {
-    protected Predicate<AssertionError> errorVerifier = Predicates.alwaysFalse();
-
+  private static final class TestRuleVerifier implements TestRule {
     private final TestRule ruleToVerify;
+    private ErrorVerifier errorVerifier = NO_VERIFIER;
 
-    public TestRuleVerifier(TestRule ruleToVerify) {
+    TestRuleVerifier(TestRule ruleToVerify) {
       this.ruleToVerify = ruleToVerify;
     }
 
-    public void setErrorVerifier(Predicate<AssertionError> verifier) {
+    void setErrorVerifier(ErrorVerifier verifier) {
       this.errorVerifier = verifier;
     }
 
@@ -148,12 +141,20 @@ public class ExpectWithStackTest {
           try {
             ruleToVerify.apply(base, description).evaluate();
           } catch (AssertionError caught) {
-            if (!errorVerifier.apply(caught)) {
-              throw new AssertionError("Caught error doesn't meet expectation", caught);
-            }
+            errorVerifier.verify(caught);
           }
         }
       };
     }
   }
+
+  interface ErrorVerifier {
+    void verify(AssertionError error);
+  }
+
+  private static final ErrorVerifier NO_VERIFIER =
+      new ErrorVerifier() {
+        @Override
+        public void verify(AssertionError expected) {}
+      };
 }
