@@ -88,14 +88,6 @@ final class StackTraceCleaner {
         endIndex++) {
       // Find last frame of setup frames, and remove from there down.
     }
-    /*
-     * If the stack trace would be empty, the error was probably thrown from "JUnit infrastructure"
-     * frames. Keep those frames around (though much of JUnit itself and related startup frames will
-     * still be removed by the remainder of this method) so that the user sees a useful stack.
-     */
-    if (!(stackIndex < endIndex)) {
-      endIndex = stackFrames.length;
-    }
 
     for (; stackIndex < endIndex; stackIndex++) {
       StackTraceElementWrapper stackTraceElementWrapper =
@@ -182,52 +174,21 @@ final class StackTraceCleaner {
     currentStreakLength = 0;
   }
 
-  private static final ImmutableSet<Class<?>> SUBJECT_CLASS =
-      ImmutableSet.<Class<?>>of(Subject.class);
-
-  private static final ImmutableSet<Class<?>> STANDARD_SUBJECT_BUILDER_CLASS =
-      ImmutableSet.<Class<?>>of(StandardSubjectBuilder.class);
+  private static final ImmutableSet<Class<?>> TRUTH_ENTRANCE_CLASSES =
+      ImmutableSet.<Class<?>>of(Subject.class, StandardSubjectBuilder.class);
 
   private static boolean isTruthEntrance(StackTraceElement stackTraceElement) {
-    return isFromClassOrClassNestedInside(stackTraceElement, SUBJECT_CLASS)
-        /*
-         * Don't match classes _nested inside_ StandardSubjectBuilder because that would match
-         * Expect's Statement implementation. While we want to strip everything from there _down_, we
-         * don't want to strip everything from there _up_ (which would strip the test class itself!).
-         *
-         * (StandardSubjectBuilder is listed here only for its fail() methods, anyway, so we don't
-         * have to worry about nested classes like we do with Subject.)
-         */
-        || isFromClassDirectly(stackTraceElement, STANDARD_SUBJECT_BUILDER_CLASS);
+    return isFromClass(stackTraceElement, TRUTH_ENTRANCE_CLASSES);
   }
 
   private static final ImmutableSet<Class<?>> JUNIT_INFRASTRUCTURE_CLASSES =
       ImmutableSet.<Class<?>>of(Runner.class, Statement.class);
 
   private static boolean isJUnitIntrastructure(StackTraceElement stackTraceElement) {
-    // It's not clear whether looking at nested classes here is useful, harmful, or neutral.
-    return isFromClassOrClassNestedInside(stackTraceElement, JUNIT_INFRASTRUCTURE_CLASSES);
+    return isFromClass(stackTraceElement, JUNIT_INFRASTRUCTURE_CLASSES);
   }
 
-  private static boolean isFromClassOrClassNestedInside(
-      StackTraceElement stackTraceElement, ImmutableSet<Class<?>> classes) {
-    Class<?> stackClass;
-    try {
-      stackClass = Class.forName(stackTraceElement.getClassName());
-    } catch (ClassNotFoundException e) {
-      return false;
-    }
-    for (; stackClass != null; stackClass = stackClass.getEnclosingClass()) {
-      for (Class<?> knownEntranceClass : classes) {
-        if (knownEntranceClass.isAssignableFrom(stackClass)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  private static boolean isFromClassDirectly(
+  private static boolean isFromClass(
       StackTraceElement stackTraceElement, ImmutableSet<Class<?>> classes) {
     Class<?> stackClass;
     try {
@@ -315,9 +276,6 @@ final class StackTraceCleaner {
     private static StackFrameType forClassName(String fullyQualifiedClassName) {
       // Never remove the frames from a test class. These will probably be the frame of a failing
       // assertion.
-      // TODO(cpovirk): This is really only for tests in Truth itself, so this doesn't matter yet,
-      // but.... If the Truth tests someday start calling into nested classes, we may want to add:
-      // || fullyQualifiedClassName.contains("Test$")
       if (fullyQualifiedClassName.endsWith("Test")) {
         return StackFrameType.NEVER_REMOVE;
       }
