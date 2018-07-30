@@ -145,6 +145,21 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void classNestedInSubject() {
+    Throwable throwable =
+        createThrowableWithStackTrace(
+            "com.google.common.truth.IterableSubject$UsingCorrespondence", "com.example.MyTest");
+
+    StackTraceCleaner.cleanStackTrace(throwable);
+
+    assertThat(throwable.getStackTrace())
+        .isEqualTo(
+            new StackTraceElement[] {
+              createStackTraceElement("com.example.MyTest"),
+            });
+  }
+
+  @Test
   public void removesTestingAndReflectiveFramesOnBottom() {
     Throwable throwable =
         createThrowableWithStackTrace(
@@ -238,6 +253,24 @@ public class StackTraceCleanerTest extends BaseSubjectTestCase {
         .isEqualTo(
             new StackTraceElement[] {
               createStackTraceElement("com.google.example.SomeTest"),
+            });
+  }
+
+  @Test
+  public void failureFromJUnitInfrastructureIncludesItInStack() {
+    Throwable throwable =
+        createThrowableWithStackTrace(
+            "com.google.common.truth.StringSubject",
+            SomeStatement.class.getName(),
+            "com.google.example.SomeClass");
+
+    StackTraceCleaner.cleanStackTrace(throwable);
+
+    assertThat(throwable.getStackTrace())
+        .isEqualTo(
+            new StackTraceElement[] {
+              createStackTraceElement(SomeStatement.class.getName()),
+              createStackTraceElement("com.google.example.SomeClass"),
             });
   }
 
