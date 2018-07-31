@@ -994,18 +994,6 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * Passes through a failure message verbatim. Used for {@link Subject} subclasses which need to
-   * provide alternate language for more fit-to-purpose error messages.
-   *
-   * @param message a template with {@code %s} placeholders
-   * @param parameters the object parameters which will be applied to the message template.
-   */
-  // TODO(cgruber) final
-  protected void failWithRawMessage(String message, Object... parameters) {
-    failWithoutActual(simpleFact(lenientFormat(message, parameters)));
-  }
-
-  /**
    * @throws UnsupportedOperationException always
    * @deprecated {@link Object#equals(Object)} is not supported on Truth subjects. If you meant to
    *     test object equality between an expected and the actual value, use {@link
