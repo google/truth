@@ -107,13 +107,17 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       Entry<Object, Object> entry = Maps.immutableEntry(key, value);
       List<Entry<Object, Object>> entryList = ImmutableList.of(entry);
       if (hasMatchingToStringPair(actual().entries(), entryList)) {
-        failWithRawMessage(
-            "Not true that %s contains entry <%s (%s)>. However, it does contain entries <%s>",
-            actualAsString(),
-            entry,
-            objectToTypeName(entry),
-            countDuplicatesAndAddTypeInfo(
-                retainMatchingToString(actual().entries(), entryList /* itemsToCheck */)));
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains entry <%s (%s)>. However, it does contain entries "
+                        + "<%s>",
+                    actualAsString(),
+                    entry,
+                    objectToTypeName(entry),
+                    countDuplicatesAndAddTypeInfo(
+                        retainMatchingToString(
+                            actual().entries(), entryList /* itemsToCheck */)))));
       } else if (actual().containsKey(key)) {
         failWithoutActual(
             simpleFact(
@@ -204,20 +208,25 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     if (!missing.isEmpty()) {
       if (!extra.isEmpty()) {
         boolean addTypeInfo = hasMatchingToStringPair(missing.entries(), extra.entries());
-        failWithRawMessage(
-            "Not true that %s contains exactly <%s>. "
-                + "It is missing <%s> and has unexpected items <%s>",
-            actualAsString(),
-            annotateEmptyStringsMultimap(expectedMultimap),
-            // Note: The usage of countDuplicatesAndAddTypeInfo() below causes entries no longer to
-            // be grouped by key in the 'missing' and 'unexpected items' parts of the message (we
-            // still show the actual and expected multimaps in the standard format).
-            addTypeInfo
-                ? countDuplicatesAndAddTypeInfo(annotateEmptyStringsMultimap(missing).entries())
-                : countDuplicatesMultimap(annotateEmptyStringsMultimap(missing)),
-            addTypeInfo
-                ? countDuplicatesAndAddTypeInfo(annotateEmptyStringsMultimap(extra).entries())
-                : countDuplicatesMultimap(annotateEmptyStringsMultimap(extra)));
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains exactly <%s>. "
+                        + "It is missing <%s> and has unexpected items <%s>",
+                    actualAsString(),
+                    annotateEmptyStringsMultimap(expectedMultimap),
+                    // Note: The usage of countDuplicatesAndAddTypeInfo() below causes entries no
+                    // longer to be grouped by key in the 'missing' and 'unexpected items' parts of
+                    // the message (we still show the actual and expected multimaps in the standard
+                    // format).
+                    addTypeInfo
+                        ? countDuplicatesAndAddTypeInfo(
+                            annotateEmptyStringsMultimap(missing).entries())
+                        : countDuplicatesMultimap(annotateEmptyStringsMultimap(missing)),
+                    addTypeInfo
+                        ? countDuplicatesAndAddTypeInfo(
+                            annotateEmptyStringsMultimap(extra).entries())
+                        : countDuplicatesMultimap(annotateEmptyStringsMultimap(extra)))));
         return ALREADY_FAILED;
       } else {
         failWithBadResults(
