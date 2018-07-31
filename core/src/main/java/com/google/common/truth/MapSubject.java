@@ -116,21 +116,27 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       List<Object> keyList = Lists.newArrayList(key);
       List<Object> valueList = Lists.newArrayList(value);
       if (hasMatchingToStringPair(actual().keySet(), keyList)) {
-        failWithRawMessage(
-            "Not true that %s contains entry <%s (%s)>. However, it does contain keys <%s>.",
-            actualAsString(),
-            entry,
-            objectToTypeName(entry),
-            countDuplicatesAndAddTypeInfo(
-                retainMatchingToString(actual().keySet(), keyList /* itemsToCheck */)));
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains entry <%s (%s)>. However, it does contain keys "
+                        + "<%s>.",
+                    actualAsString(),
+                    entry,
+                    objectToTypeName(entry),
+                    countDuplicatesAndAddTypeInfo(
+                        retainMatchingToString(actual().keySet(), keyList /* itemsToCheck */)))));
       } else if (hasMatchingToStringPair(actual().values(), valueList)) {
-        failWithRawMessage(
-            "Not true that %s contains entry <%s (%s)>. However, it does contain values <%s>.",
-            actualAsString(),
-            entry,
-            objectToTypeName(entry),
-            countDuplicatesAndAddTypeInfo(
-                retainMatchingToString(actual().values(), valueList /* itemsToCheck */)));
+        failWithoutActual(
+            simpleFact(
+                lenientFormat(
+                    "Not true that %s contains entry <%s (%s)>. However, it does contain values "
+                        + "<%s>.",
+                    actualAsString(),
+                    entry,
+                    objectToTypeName(entry),
+                    countDuplicatesAndAddTypeInfo(
+                        retainMatchingToString(actual().values(), valueList /* itemsToCheck */)))));
       } else if (actual().containsKey(key)) {
         Object actualValue = actual().get(key);
         /*

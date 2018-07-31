@@ -286,10 +286,11 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
       DiffResult diffResult =
           makeDifferencer((Message) expected).diffMessages(actual(), (Message) expected);
       if (!diffResult.isMatched()) {
-        failWithRawMessage(
-            failureMessage(/* expectedEqual = */ true)
-                + "\n"
-                + diffResult.printToString(config.reportMismatchesOnly()));
+        failWithoutActual(
+            simpleFact(
+                failureMessage(/* expectedEqual = */ true)
+                    + "\n"
+                    + diffResult.printToString(config.reportMismatchesOnly())));
       }
     }
   }
@@ -316,10 +317,11 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
       DiffResult diffResult =
           makeDifferencer((Message) expected).diffMessages(actual(), (Message) expected);
       if (diffResult.isMatched()) {
-        failWithRawMessage(
-            failureMessage(/* expectedEqual= */ false)
-                + "\n"
-                + diffResult.printToString(config.reportMismatchesOnly()));
+        failWithoutActual(
+            simpleFact(
+                failureMessage(/* expectedEqual= */ false)
+                    + "\n"
+                    + diffResult.printToString(config.reportMismatchesOnly())));
       }
     }
   }
