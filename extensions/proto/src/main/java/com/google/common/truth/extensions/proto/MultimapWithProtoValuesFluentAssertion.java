@@ -46,14 +46,13 @@ public interface MultimapWithProtoValuesFluentAssertion<M extends Message> {
    * equality.
    *
    * <p>For version 2 Protocol Buffers, this setting determines whether two protos with the same
-   * value for a primitive field compare equal if one explicitly sets the value, and the other
-   * merely implicitly uses the schema-defined default. This setting also determines whether unknown
-   * fields should be considered in the comparison. By {@code ignoringFieldAbsence()}, unknown
-   * fields are ignored, and value-equal fields as specified above are considered equal.
+   * value for a field compare equal if one explicitly sets the value, and the other merely
+   * implicitly uses the schema-defined default. This setting also determines whether unknown fields
+   * should be considered in the comparison. By {@code ignoringFieldAbsence()}, unknown fields are
+   * ignored, and value-equal fields as specified above are considered equal.
    *
-   * <p>For version 3 Protocol Buffers, this setting has no effect. Primitive fields set to their
-   * default value are indistinguishable from unset fields in proto 3. Proto 3 also eliminates
-   * unknown fields, so this setting has no effect there either.
+   * <p>For version 3 Protocol Buffers, this setting does not affect primitive fields, because their
+   * default value is indistinguishable from unset.
    */
   MultimapWithProtoValuesFluentAssertion<M> ignoringFieldAbsenceForValues();
 

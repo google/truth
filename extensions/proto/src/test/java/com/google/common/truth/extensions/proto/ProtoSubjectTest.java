@@ -179,11 +179,6 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   @SuppressWarnings("unchecked")
   @Test
   public void testUnknownFields() throws InvalidProtocolBufferException {
-    if (isProto3()) {
-      // Proto 3 doesn't support unknown fields.
-      return;
-    }
-
     Message message =
         fromUnknownFields(
             UnknownFieldSet.newBuilder()
