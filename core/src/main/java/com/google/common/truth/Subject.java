@@ -960,7 +960,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * value.</i>
    *
    * <p>Most failure messages should report the actual value, so most checks should call {@link
-   * #failWithActual(Fact, Fact...) failWithAcutal} instead. However, {@code failWithoutActual} is
+   * #failWithActual(Fact, Fact...) failWithActual} instead. However, {@code failWithoutActual} is
    * useful in some cases:
    *
    * <ul>
