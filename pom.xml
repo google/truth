@@ -18,13 +18,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <!-- Property for a plugin for which pluginManagement hasn't been working for us. -->
+    <!-- Properties for plugins for which pluginManagement hasn't been working for us. -->
     <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
+    <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
 
     <!-- Properties for multiple-artifact deps. -->
     <auto-value.version>1.6.2</auto-value.version>
     <checker-framework.version>2.5.3</checker-framework.version>
-    <guava.version>25.1</guava.version>
+    <guava.version>26.0</guava.version>
     <gwt.version>2.8.2</gwt.version>
     <protobuf.version>3.6.0</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
@@ -39,6 +40,14 @@
     <dependencies>
       <!-- I tried also including Truth's own submodules here, with version set to ${project.version} (as we have it in the individual POMs), but Maven doesn't like that, at least when run under TAP (which probably means "with an empty local repository" and/or "with no access to remote repositories"). So we have to specify project.version wherever we use submodules. At least we'll never need to update it :) -->
       <dependency>
+        <!--
+          In addition to setting the version of Guava that's used when Truth
+          depends directly on com.google.common:guava, this section also
+          overrides the version that's pulled in transitively by guava-gwt
+          (which is a test-scope dependency of core Truth). The Guava APIs
+          "missing" in guava-android might cause us problems down the line if we
+          actually started to run nontrivial GWT tests; I'm not sure.
+          -->
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}-android</version>
@@ -97,7 +106,7 @@
             <groupId>com.google.truth</groupId>
             <artifactId>truth</artifactId>
           </exclusion>
-          <!-- TODO(cpovirk): Remove after a Compile-Testing release moves this test scope. -->
+          <!-- TODO(cpovirk): Remove after a Compile-Testing release moves this to test scope. -->
           <exclusion>
             <groupId>com.google.truth.extensions</groupId>
             <artifactId>truth-java8-extension</artifactId>
@@ -273,6 +282,75 @@
           <version>2.12.4</version>
         </plugin>
         <plugin>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven-enforcer-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>enforce</id>
+              <configuration>
+                <rules>
+                  <!--
+                    Perhaps surprisingly, requireUpperBoundDeps catches problems
+                    that dependencyConvergence does not: If we use
+                    dependencyManagement to force Maven to use an *old* version
+                    of a dependency, that will satisfy dependencyConvergence
+                    (because the version is now consistent), but it will not
+                    satisfy requireUpperBoundDeps, which apparently still sees
+                    the original request for the newer version.
+                    requireUpperBoundDeps's behavior is probably a good thing.
+                    But: Given the problem I describe in the next paragraph, I
+                    suspect that requireUpperBoundDeps doesn't have well defined
+                    behavior under dependencyManagement, so it might not be as
+                    good as I'd hoped.
+
+                    And in what seems like a bug, dependencyConvergence catches
+                    certain upper-bound problems that requireUpperBoundDeps does
+                    not. To be clear, it's usually *not* a bug for
+                    dependencyConvergence to give an error when
+                    requireUpperBoundDeps does not: dependencyConvergence is in
+                    some ways a stricter test than requireUpperBoundDeps. What
+                    I'm seeing here is weirder: When I changed liteproto to
+                    request checker-compat-qual 2.1.0 and
+                    error_prone_annotations 2.0.9, both older versions than
+                    those inherited through core Truth, dependencyConvergence
+                    flagged both as expected, but requireUpperBoundDeps flagged
+                    only error_prone_annotations. The reason for this may have
+                    something to do with guava-25.1-android's dependency on the
+                    even older checker-compat-qual 2.0.0: When I updated Truth
+                    to depend on guava-26.0, which depends on
+                    checker-compat-qual 2.5.3, then requireUpperBoundDeps
+                    detected the problem.
+                    -->
+                  <requireUpperBoundDeps>
+                    <excludes>
+                      <!-- We have some deps on guava-android and others on guava-jre. -->
+                      <exclude>com.google.guava:guava</exclude>
+                    </excludes>
+                  </requireUpperBoundDeps>
+                  <!--
+                    This should be a no-op for us, since we try to list
+                    everything in dependencyManagement. But it should at least
+                    make sure that we do remember to put new deps into
+                    dependencyManagement. It might also flag conflicts that
+                    exist only in transitive dependencies. If that becomes too
+                    much of a pain, we can back this check out.
+                    -->
+                  <dependencyConvergence />
+                  <!--
+                    Note that neither of these rules would catch a conflict
+                    between, say, java8 and liteproto, since no Truth module
+                    depends on both of those. If we wanted, we could create
+                    such a module.
+                    -->
+                </rules>
+              </configuration>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>gwt-maven-plugin</artifactId>
           <version>${gwt.version}</version>
@@ -284,15 +362,25 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
       <!--
         Force a version >2.7 for this parent project. If we use the current
         default of 2.7, Maven ignores this parent project's configuration when
         running maven-javadoc-plugin in children during releases.
         -->
-    <plugins>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${maven-javadoc-plugin.version}</version>
+      </plugin>
+      <!--
+        Similar. Without this, Maven tries to run maven-enforcer-plugin 1.0,
+        and it fails to construct an instance of the rule class, apparently
+        because of a mismatch between the new Maven APIs and the old Enforcer
+        APIs.
+        -->
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${maven-enforcer-plugin.version}</version>
       </plugin>
     </plugins>
   </build>
