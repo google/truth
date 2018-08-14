@@ -92,6 +92,17 @@
         <groupId>com.google.testing.compile</groupId>
         <artifactId>compile-testing</artifactId>
         <version>0.15</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.google.truth</groupId>
+            <artifactId>truth</artifactId>
+          </exclusion>
+          <!-- TODO(cpovirk): Remove after a Compile-Testing release moves this test scope. -->
+          <exclusion>
+            <groupId>com.google.truth.extensions</groupId>
+            <artifactId>truth-java8-extension</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>com.google.errorprone</groupId>
@@ -273,11 +284,11 @@
         </plugin>
       </plugins>
     </pluginManagement>
-    <!--
-      Force a version >2.7 for this parent project. If we use the current
-      default of 2.7, Maven ignores this parent project's configuration when
-      running maven-javadoc-plugin in children during releases.
-      -->
+      <!--
+        Force a version >2.7 for this parent project. If we use the current
+        default of 2.7, Maven ignores this parent project's configuration when
+        running maven-javadoc-plugin in children during releases.
+        -->
     <plugins>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
