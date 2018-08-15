@@ -45,6 +45,7 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-lite</artifactId>
+      <version>3.0.1</version>
       <!-- protobuf-lite is not compatible with protobuf-java, so we mark it optional. -->
       <optional>true</optional>
     </dependency>
