@@ -298,12 +298,8 @@
                     satisfy requireUpperBoundDeps, which apparently still sees
                     the original request for the newer version.
                     requireUpperBoundDeps's behavior is probably a good thing.
-                    But: Given the problem I describe in the next paragraph, I
-                    suspect that requireUpperBoundDeps doesn't have well defined
-                    behavior under dependencyManagement, so it might not be as
-                    good as I'd hoped.
 
-                    And in what seems like a bug, dependencyConvergence catches
+                    But, in what seems like a bug, dependencyConvergence catches
                     certain upper-bound problems that requireUpperBoundDeps does
                     not. To be clear, it's usually *not* a bug for
                     dependencyConvergence to give an error when
@@ -320,6 +316,9 @@
                     to depend on guava-26.0, which depends on
                     checker-compat-qual 2.5.3, then requireUpperBoundDeps
                     detected the problem.
+
+                    I filed a bug against Maven:
+                    https://issues.apache.org/jira/browse/MENFORCER-316
                     -->
                   <requireUpperBoundDeps>
                     <excludes>
