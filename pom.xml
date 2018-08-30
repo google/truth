@@ -38,7 +38,20 @@
   </properties>
   <dependencyManagement>
     <dependencies>
-      <!-- I tried also including Truth's own submodules here, with version set to ${project.version} (as we have it in the individual POMs), but Maven doesn't like that, at least when run under TAP (which probably means "with an empty local repository" and/or "with no access to remote repositories"). So we have to specify project.version wherever we use submodules. At least we'll never need to update it :) -->
+      <dependency>
+        <groupId>com.google.truth</groupId>
+        <artifactId>truth</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.truth.extensions</groupId>
+        <artifactId>truth-liteproto-extension</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <!--
+        We could add the other modules of Truth, but there's no need because no
+        modules depend on them yet.
+        -->
       <dependency>
         <!--
           In addition to setting the version of Guava that's used when Truth
