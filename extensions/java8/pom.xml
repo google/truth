@@ -18,7 +18,6 @@
     <dependency>
       <groupId>com.google.truth</groupId>
       <artifactId>truth</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
