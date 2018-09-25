@@ -92,7 +92,7 @@ public class OptionalSubjectTest {
         expectFailure(whenTesting -> whenTesting.that(Optional.empty()).hasValue("foo"));
     assertThat(expected)
         .factKeys()
-        .containsExactly("expected to have value", "but was absent")
+        .containsExactly("expected to have value", "but was empty")
         .inOrder();
     assertThat(expected).factValue("expected to have value").isEqualTo("foo");
   }
