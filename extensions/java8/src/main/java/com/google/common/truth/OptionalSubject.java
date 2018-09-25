@@ -72,7 +72,7 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
     if (actual() == null) {
       failWithActual("expected an optional with value", expected);
     } else if (!actual().isPresent()) {
-      failWithoutActual(fact("expected to have value", expected), simpleFact("but was absent"));
+      failWithoutActual(fact("expected to have value", expected), simpleFact("but was empty"));
     } else {
       checkNoNeedToDisplayBothValues("get()").that(actual().get()).isEqualTo(expected);
     }
