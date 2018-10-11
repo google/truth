@@ -107,7 +107,7 @@ There are four parts to the example:
     example. There are several
     important things to note about this file:
 
-    1.  Every custom subject must extend from [`Subject`] or one of its
+    1.  Every custom subject must extend [`Subject`] or one of its
         subclasses. Your class definition will usually look like this:
 
         ```java
