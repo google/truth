@@ -767,6 +767,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   private static final class ThrowsOnEqualsNull {
+
+    @SuppressWarnings("EqualsHashCode")
     @Override
     public boolean equals(Object obj) {
       checkNotNull(obj); // buggy implementation but one that we're working around, at least for now
@@ -775,6 +777,8 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   private static final class ThrowsOnEquals {
+
+    @SuppressWarnings("EqualsHashCode")
     @Override
     public boolean equals(Object obj) {
       throw new UnsupportedOperationException();
