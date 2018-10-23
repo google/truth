@@ -1,3 +1,5 @@
+# Truth
+
 [![Main Site][gh-pages-shield]][gh-pages-link]
 [![Build Status][travis-shield]][travis-link]
 [![Maven Release][maven-shield]][maven-link]
@@ -8,6 +10,34 @@
 Truth makes your [test assertions] and [failure messages] more readable.
 [Similar][comparison] to [AssertJ], it [natively supports][known_types] many JDK
 and [Guava] types, and it is [extensible][extension] to others.
+
+Compare these example JUnit assertions...
+
+```java
+assertEquals(b, a);
+assertTrue(c);
+assertTrue(d.contains(a));
+assertTrue(d.contains(a) && d.contains(b));
+assertTrue(d.contains(a) || d.contains(b) || d.contains(c));
+```
+
+...to their Truth equivalents...
+
+```java
+assertThat(a).isEqualTo(b);
+assertThat(c).isTrue();
+assertThat(d).contains(a);
+assertThat(d).containsAllOf(a, b);
+assertThat(d).containsAnyOf(a, b, c);
+```
+
+### Advantages of Truth
+
+* aligns all the "actual" values on the left
+* produces more detailed failure messages
+* provides richer operations (like [IterableSubject#containsExactly](https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/IterableSubject.java))
+
+## Reference
 
 Truth is owned and maintained by the [Guava] team. It is used from the majority
 of the tests in Google’s own codebase.
