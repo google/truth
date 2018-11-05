@@ -14,6 +14,7 @@ framework is quite general.
 
 ## Correspondence {#correspondence}
 
+
 The primary concept of Fuzzy Truth is a `Correspondence`. A correspondence
 determines whether an instance of type `A` corresponds in some way to an
 instance of type `E`. Optionally, it can also [describe the
