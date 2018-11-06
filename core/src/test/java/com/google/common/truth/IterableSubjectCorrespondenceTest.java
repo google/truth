@@ -323,6 +323,46 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsMissingAndExtraNull() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    List<String> actual = asList("+64", "+128", "0x80", null);
+    // Actual list has candidate matches for 64, 128, and the other 128, but is missing 256 and has
+    // extra null. (N.B. This tests a previous regression from calling extra.toString().)
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+64, +128, 0x80, null]> contains exactly one element that "
+                + "parses to each element of <[64, 128, 256, 128]>. "
+                + "It is missing an element that parses to <256> "
+                + "and has unexpected elements <[null]>");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_failsNullMissingAndExtra() {
+    List<Integer> expected = asList(64, 128, null, 128);
+    ImmutableList<String> actual = ImmutableList.of("+64", "+128", "0x80", "cheese");
+    // Actual list has candidate matches for 64, 128, and the other 128, but is missing null and has
+    // extra cheese.
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyElementsIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[+64, +128, 0x80, cheese]> contains exactly one element that "
+                + "parses to each element of <[64, 128, null, 128]>. "
+                + "It is missing an element that parses to <null> "
+                + "and has unexpected elements <[cheese]>");
+  }
+
+  @Test
   public void comparingElementsUsing_containsExactlyElementsIn_diffOneMissingSomeExtraCandidate() {
     ImmutableList<Integer> expected = ImmutableList.of(30, 60, 90);
     ImmutableList<Integer> actual = ImmutableList.of(101, 65, 35, 190);
