@@ -1250,14 +1250,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return Joiner.on(", ").join(messages);
     }
 
-    private List<String> formatExtras(E missing, List<? extends A> extras) {
-      List<String> extrasFormatted = new ArrayList<>();
+    private List<Object> formatExtras(E missing, List<? extends A> extras) {
+      List<Object> extrasFormatted = new ArrayList<>();
       for (A extra : extras) {
         @NullableDecl String diff = correspondence.formatDiff(extra, missing);
         if (diff != null) {
           extrasFormatted.add(lenientFormat("%s (diff: %s)", extra, diff));
         } else {
-          extrasFormatted.add(extra.toString());
+          extrasFormatted.add(extra);
         }
       }
       return extrasFormatted;
