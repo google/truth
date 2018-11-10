@@ -23,12 +23,12 @@ import com.google.protobuf.Descriptors.FieldDescriptor;
 /** An 'Either' of a {@link FieldDescriptor} or {@link UnknownFieldDescriptor}. */
 @AutoValue
 abstract class FieldDescriptorOrUnknown {
-  static FieldDescriptorOrUnknown fromFieldDescriptor(FieldDescriptor fieldDescriptor) {
+  static FieldDescriptorOrUnknown fromFieldDescriptor(final FieldDescriptor fieldDescriptor) {
     return new AutoValue_FieldDescriptorOrUnknown(
         Optional.of(fieldDescriptor), Optional.<UnknownFieldDescriptor>absent());
   }
 
-  static FieldDescriptorOrUnknown fromUnknown(UnknownFieldDescriptor unknownFieldDescriptor) {
+  static FieldDescriptorOrUnknown fromUnknown(final UnknownFieldDescriptor unknownFieldDescriptor) {
     return new AutoValue_FieldDescriptorOrUnknown(
         Optional.<FieldDescriptor>absent(), Optional.of(unknownFieldDescriptor));
   }
