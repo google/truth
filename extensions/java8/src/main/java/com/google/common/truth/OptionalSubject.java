@@ -79,14 +79,12 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
   }
 
   public Subject hasValueThat() {
-    if (actual() == null) {
-      failWithActual(simpleFact("expected present optional"));
-    } else if (!actual().isPresent()) {
-      failWithoutActual(simpleFact("expected to be present"));
+    if (actual() == null || !actual().isPresent()) {
+      isPresent(); //fails
+      return ignoreCheck().that((Object) null);
     } else {
       return check("get()").that(actual().get());
     }
-    return check("get()").that((Object) null);
   }
 
   public static Subject.Factory<OptionalSubject, Optional<?>> optionals() {
