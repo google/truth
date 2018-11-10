@@ -122,6 +122,28 @@ public class OptionalSubjectTest {
     assertThat(expected).factValue("value of").isEqualTo("bar.get()");
   }
 
+  @Test
+  public void hasValueThat() {
+    Optional optional = Optional.of("foo");
+    assertThat(optional).hasValueThat().isEqualTo("foo");
+  }
+
+  @Test
+  public void hasValueThat_npeWithNullParameter() {
+    AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).hasValueThat());
+    assertThat(expected)
+            .factKeys()
+            .containsExactly("expected present optional", "but was")
+            .inOrder();
+  }
+
+  @Test
+  public void hasValueThat_failingWithEmpty() {
+    AssertionError expected =
+            expectFailure(whenTesting -> whenTesting.that(Optional.empty()).hasValueThat());
+    assertThat(expected).factKeys().containsExactly("expected to be present");
+  }
+
   private static AssertionError expectFailure(
       ExpectFailure.SimpleSubjectBuilderCallback<OptionalSubject, Optional<?>> assertionCallback) {
     return ExpectFailure.expectFailureAbout(optionals(), assertionCallback);
