@@ -78,6 +78,10 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
     }
   }
 
+  /**
+   * Prepares for a check regarding the value contained within the {@link Optional}. Fails
+   * immediately if the subject is empty.
+   */
   public Subject hasValueThat() {
     if (actual() == null || !actual().isPresent()) {
       isPresent(); //fails
