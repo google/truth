@@ -41,13 +41,7 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
 
   // Boiler-plate Subject.Factory for EmployeeSubject
   private static final Subject.Factory<EmployeeSubject, Employee> EMPLOYEE_SUBJECT_FACTORY =
-      new Subject.Factory<EmployeeSubject, Employee>() {
-        @Override
-        public EmployeeSubject createSubject(
-            FailureMetadata failureMetadata, @NullableDecl Employee target) {
-          return new EmployeeSubject(failureMetadata, target);
-        }
-      };
+      EmployeeSubject::new;
 
   private EmployeeSubject(FailureMetadata failureMetadata, @NullableDecl Employee subject) {
     super(failureMetadata, subject);
