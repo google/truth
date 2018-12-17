@@ -55,6 +55,35 @@ assertThat(string).endsWith("gle");
 assert_().that(string).endsWith("gle");
 ```
 
+## When should I use `named()` instead of `assertWithMessage()`?
+
+To name the actual value being tested, use `named()`:
+
+```java
+  assertThat(fred.isHappy()).named("fred's happiness").isTrue();
+```
+
+This produces the following failure message:
+
+```
+  name: fred's happiness
+  expected to be true
+```
+
+To describe the assertion as a whole, use `assertWithMessage()`:
+
+```
+  assertWithMessage("Fred must be happy").that(fred.isHappy()).isTrue();
+```
+
+This produces the following failure message:
+
+
+```
+  fred must be happy
+  expected to be true
+```
+
 ## Referencing a Truth subject directly is _generally_ an anti-pattern {#subject-references}
 
 If you find yourself referencing a Truth subject type, there's a good chance
