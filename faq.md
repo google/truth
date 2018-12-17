@@ -60,13 +60,13 @@ assert_().that(string).endsWith("gle");
 To name the actual value being tested, use `named()`:
 
 ```java
-  assertThat(fred.isHappy()).named("fred's happiness").isTrue();
+  assertThat(fred.isHappy()).named("Fred's happiness").isTrue();
 ```
 
 This produces the following failure message:
 
 ```
-  name: fred's happiness
+  name: Fred's happiness
   expected to be true
 ```
 
@@ -80,7 +80,7 @@ This produces the following failure message:
 
 
 ```
-  fred must be happy
+  Fred must be happy
   expected to be true
 ```
 
