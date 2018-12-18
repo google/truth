@@ -31,7 +31,7 @@ abstract class BaseSubjectTestCase extends PlatformBaseSubjectTestCase {
     assertThatFailure().factValue(key, index).isEqualTo(value);
   }
 
-  private TruthFailureSubject assertThatFailure() {
+  final TruthFailureSubject assertThatFailure() {
     return assertThat(expectFailure.getFailure());
   }
 }

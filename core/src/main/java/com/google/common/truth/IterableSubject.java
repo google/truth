@@ -1076,12 +1076,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       if (correspondInOrderExactly(actualList.iterator(), expectedList.iterator())) {
         return IN_ORDER;
       }
+
       // We know they don't correspond in order, so we're going to have to do an any-order test.
       // Find a many:many mapping between the indexes of the elements which correspond, and check
       // it for completeness.
+      // Exceptions from Correspondence.compare are stored and treated as if false was returned.
+      Correspondence.ExceptionStore compareExceptions = new Correspondence.ExceptionStore();
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
-          findCandidateMapping(actualList, expectedList);
-      if (failIfCandidateMappingHasMissingOrExtra(actualList, expectedList, candidateMapping)) {
+          findCandidateMapping(actualList, expectedList, compareExceptions);
+      if (failIfCandidateMappingHasMissingOrExtra(
+          actualList, expectedList, candidateMapping, compareExceptions)) {
         return ALREADY_FAILED;
       }
       // We know that every expected element maps to at least one actual element, and vice versa.
@@ -1089,7 +1093,22 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       ImmutableBiMap<Integer, Integer> maximalOneToOneMapping =
           findMaximalOneToOneMapping(candidateMapping);
       if (failIfOneToOneMappingHasMissingOrExtra(
-          actualList, expectedList, maximalOneToOneMapping)) {
+          actualList, expectedList, maximalOneToOneMapping, compareExceptions)) {
+        return ALREADY_FAILED;
+      }
+      // Check whether we caught any exceptions from Correspondence.compare. We do the any-order
+      // assertions treating exceptions as if false was returned before this, because the failure
+      // messages are normally more useful (e.g. reporting that the actual iterable contained an
+      // unexpected null) but we are contractually obliged to throw here if the assertions passed.
+      if (!compareExceptions.isEmpty()) {
+        subject.failWithActual(
+            simpleFact("one or more exceptions were thrown while comparing elements"),
+            compareExceptions.describe(),
+            simpleFact(
+                "comparing contents by testing that each element "
+                    + correspondence
+                    + " an expected value"),
+            fact("expected", expected));
         return ALREADY_FAILED;
       }
       // The 1:1 mapping is complete, so the test succeeds (but we know from above that the mapping
@@ -1130,16 +1149,21 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     /**
      * Returns whether the actual and expected iterators have the same number of elements and, when
      * iterated pairwise, every pair of actual and expected values satisfies the correspondence.
+     * Returns false if any comparison threw an exception.
      */
     private boolean correspondInOrderExactly(
         Iterator<? extends A> actual, Iterator<? extends E> expected) {
+      Correspondence.ExceptionStore exceptions = new Correspondence.ExceptionStore();
       while (actual.hasNext() && expected.hasNext()) {
         A actualElement = actual.next();
         E expectedElement = expected.next();
-        if (!correspondence.compare(actualElement, expectedElement)) {
+        // Return false if the elements didn't correspond, or if the correspondence threw an
+        // exception. We'll fall back on the any-order assertion in this case.
+        if (!correspondence.safeCompare(actualElement, expectedElement, exceptions)) {
           return false;
         }
       }
+      // No need to check the ExceptionStore, as we'll already have returned false on any exception.
       return !(actual.hasNext() || expected.hasNext());
     }
 
@@ -1147,14 +1171,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * Given a list of actual elements and a list of expected elements, finds a many:many mapping
      * between actual and expected elements where a pair of elements maps if it satisfies the
      * correspondence. Returns this mapping as a multimap where the keys are indexes into the actual
-     * list and the values are indexes into the expected list.
+     * list and the values are indexes into the expected list. Any exceptions are treated as if the
+     * elements did not correspond, and the exception added to the store.
      */
     private ImmutableSetMultimap<Integer, Integer> findCandidateMapping(
-        List<? extends A> actual, List<? extends E> expected) {
+        List<? extends A> actual,
+        List<? extends E> expected,
+        Correspondence.ExceptionStore exceptions) {
       ImmutableSetMultimap.Builder<Integer, Integer> mapping = ImmutableSetMultimap.builder();
       for (int actualIndex = 0; actualIndex < actual.size(); actualIndex++) {
         for (int expectedIndex = 0; expectedIndex < expected.size(); expectedIndex++) {
-          if (correspondence.compare(actual.get(actualIndex), expected.get(expectedIndex))) {
+          if (correspondence.safeCompare(
+              actual.get(actualIndex), expected.get(expectedIndex), exceptions)) {
             mapping.put(actualIndex, expectedIndex);
           }
         }
@@ -1172,11 +1200,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     private boolean failIfCandidateMappingHasMissingOrExtra(
         List<? extends A> actual,
         List<? extends E> expected,
-        ImmutableSetMultimap<Integer, Integer> mapping) {
+        ImmutableSetMultimap<Integer, Integer> mapping,
+        Correspondence.ExceptionStore compareExceptions) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty() || !extra.isEmpty()) {
-        subject.failWithoutActual(
+        Fact fact =
             simpleFact(
                 lenientFormat(
                     "Not true that %s contains exactly one element that %s each element of <%s>. "
@@ -1184,7 +1213,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                     subject.actualAsString(),
                     correspondence,
                     expected,
-                    describeMissingOrExtra(missing, extra))));
+                    describeMissingOrExtra(missing, extra)));
+        if (compareExceptions.isEmpty()) {
+          subject.failWithoutActual(fact);
+        } else {
+          subject.failWithoutActual(
+              fact,
+              simpleFact(
+                  "additionally, one or more exceptions were thrown while comparing elements"),
+              compareExceptions.describe());
+        }
         return true;
       }
       return false;
@@ -1329,11 +1367,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * versa, and fails if this is not the case. Returns whether the assertion failed.
      */
     private boolean failIfOneToOneMappingHasMissingOrExtra(
-        List<? extends A> actual, List<? extends E> expected, BiMap<Integer, Integer> mapping) {
+        List<? extends A> actual,
+        List<? extends E> expected,
+        BiMap<Integer, Integer> mapping,
+        Correspondence.ExceptionStore compareExceptions) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty() || !extra.isEmpty()) {
-        subject.failWithoutActual(
+        Fact fact =
             simpleFact(
                 lenientFormat(
                     "Not true that %s contains exactly one element that %s each element of <%s>. "
@@ -1345,7 +1386,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                     subject.actualAsString(),
                     correspondence,
                     expected,
-                    describeMissingOrExtra(missing, extra))));
+                    describeMissingOrExtra(missing, extra)));
+        if (compareExceptions.isEmpty()) {
+          subject.failWithoutActual(fact);
+        } else {
+          subject.failWithoutActual(
+              fact,
+              simpleFact(
+                  "additionally, one or more exceptions were thrown while comparing elements"),
+              compareExceptions.describe());
+        }
         return true;
       }
       return false;
@@ -1388,16 +1438,34 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // We know they don't correspond in order, so we're going to have to do an any-order test.
       // Find a many:many mapping between the indexes of the elements which correspond, and check
       // it for completeness.
+      Correspondence.ExceptionStore compareExceptions = new Correspondence.ExceptionStore();
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
-          findCandidateMapping(actualList, expectedList);
-      if (failIfCandidateMappingHasMissing(actualList, expectedList, candidateMapping)) {
+          findCandidateMapping(actualList, expectedList, compareExceptions);
+      if (failIfCandidateMappingHasMissing(
+          actualList, expectedList, candidateMapping, compareExceptions)) {
         return ALREADY_FAILED;
       }
       // We know that every expected element maps to at least one actual element, and vice versa.
       // Find a maximal 1:1 mapping, and check it for completeness.
       ImmutableBiMap<Integer, Integer> maximalOneToOneMapping =
           findMaximalOneToOneMapping(candidateMapping);
-      if (failIfOneToOneMappingHasMissing(actualList, expectedList, maximalOneToOneMapping)) {
+      if (failIfOneToOneMappingHasMissing(
+          actualList, expectedList, maximalOneToOneMapping, compareExceptions)) {
+        return ALREADY_FAILED;
+      }
+      // Check whether we caught any exceptions from Correspondence.compare. As with
+      // containsExactlyElementIn, we do the any-order assertions treating exceptions as if false
+      // was returned before this, but we are contractually obliged to throw here if the assertions
+      // passed.
+      if (!compareExceptions.isEmpty()) {
+        subject.failWithActual(
+            simpleFact("one or more exceptions were thrown while comparing elements"),
+            compareExceptions.describe(),
+            simpleFact(
+                "comparing contents by testing that each element "
+                    + correspondence
+                    + " an expected value"),
+            fact("expected", expected));
         return ALREADY_FAILED;
       }
       // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
@@ -1433,7 +1501,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     /**
      * Returns whether all the elements of the expected iterator and any subset of the elements of
      * the actual iterator can be paired up in order, such that every pair of actual and expected
-     * elements satisfies the correspondence.
+     * elements satisfies the correspondence. Returns false if any comparison threw an exception.
      */
     private boolean correspondInOrderAllIn(
         Iterator<? extends A> actual, Iterator<? extends E> expected) {
@@ -1443,9 +1511,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // couldn't be achieved by pairing it with the first. (For the any-order test, we may want to
       // pair an expected element with a later actual element so that we can pair the earlier actual
       // element with a later expected element, but that doesn't apply here.)
+      Correspondence.ExceptionStore exceptions = new Correspondence.ExceptionStore();
       while (expected.hasNext()) {
         E expectedElement = expected.next();
-        if (!findCorresponding(actual, expectedElement)) {
+        // Return false if we couldn't find the expected exception, or if the correspondence threw
+        // an exception. We'll fall back on the any-order assertion in this case.
+        if (!findCorresponding(actual, expectedElement, exceptions) || !exceptions.isEmpty()) {
           return false;
         }
       }
@@ -1456,10 +1527,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * Advances the actual iterator looking for an element which corresponds to the expected
      * element. Returns whether or not it finds one.
      */
-    private boolean findCorresponding(Iterator<? extends A> actual, E expectedElement) {
+    private boolean findCorresponding(
+        Iterator<? extends A> actual, E expectedElement, Correspondence.ExceptionStore exceptions) {
       while (actual.hasNext()) {
         A actualElement = actual.next();
-        if (correspondence.compare(actualElement, expectedElement)) {
+        if (correspondence.safeCompare(actualElement, expectedElement, exceptions)) {
           return true;
         }
       }
@@ -1476,11 +1548,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     private boolean failIfCandidateMappingHasMissing(
         List<? extends A> actual,
         List<? extends E> expected,
-        ImmutableSetMultimap<Integer, Integer> mapping) {
+        ImmutableSetMultimap<Integer, Integer> mapping,
+        Correspondence.ExceptionStore compareExceptions) {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
-        subject.failWithoutActual(
+        Fact fact =
             simpleFact(
                 lenientFormat(
                     "Not true that %s contains at least one element that %s each element of <%s>. "
@@ -1488,7 +1561,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                     subject.actualAsString(),
                     correspondence,
                     expected,
-                    describeMissing(missing, extra))));
+                    describeMissing(missing, extra)));
+        if (compareExceptions.isEmpty()) {
+          subject.failWithoutActual(fact);
+        } else {
+          subject.failWithoutActual(
+              fact,
+              simpleFact(
+                  "additionally, one or more exceptions were thrown while comparing elements"),
+              compareExceptions.describe());
+        }
         return true;
       }
       return false;
@@ -1551,11 +1633,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * any expected elements are ignored.
      */
     private boolean failIfOneToOneMappingHasMissing(
-        List<? extends A> actual, List<? extends E> expected, BiMap<Integer, Integer> mapping) {
+        List<? extends A> actual,
+        List<? extends E> expected,
+        BiMap<Integer, Integer> mapping,
+        Correspondence.ExceptionStore compareExceptions) {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
-        subject.failWithoutActual(
+        Fact fact =
             simpleFact(
                 lenientFormat(
                     "Not true that %s contains at least one element that %s each element of <%s>. "
@@ -1566,7 +1651,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                     subject.actualAsString(),
                     correspondence,
                     expected,
-                    describeMissing(missing, extra))));
+                    describeMissing(missing, extra)));
+        if (compareExceptions.isEmpty()) {
+          subject.failWithoutActual(fact);
+        } else {
+          subject.failWithoutActual(
+              fact,
+              simpleFact(
+                  "additionally, one or more exceptions were thrown while comparing elements"),
+              compareExceptions.describe());
+        }
         return true;
       }
       return false;

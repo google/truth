@@ -994,17 +994,24 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   @Test
   public void comparingValuesUsing_containsExactlyEntriesIn_wrongTypeInActual() {
     ImmutableListMultimap<String, Object> actual =
-        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", new Object());
+        ImmutableListMultimap.<String, Object>of(
+            "abc", "+123", "def", "+64", "def", "0x40", "def", 999);
     ImmutableListMultimap<String, Integer> expected =
         ImmutableListMultimap.of("def", 64, "def", 123, "def", 64, "abc", 123);
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (ClassCastException e) {
-      // expected
-    }
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertFailureKeys(
+        "Not true that <{abc=[+123], def=[+64, 0x40, 999]}> contains exactly one element that "
+            + "has a key that is equal to and a value that parses to the key and value of each "
+            + "element of <[def=64, def=123, def=64, abc=123]>. It is missing an element that has "
+            + "a key that is equal to and a value that parses to the key and value of <def=123> "
+            + "and has unexpected elements <[def=999]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare([def=999, def=64]) threw java.lang.ClassCastException");
   }
 
   @Test
@@ -1162,15 +1169,22 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   @Test
   public void comparingValuesUsing_containsExactly_wrongTypeInActual() {
     ImmutableListMultimap<String, Object> actual =
-        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", new Object());
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsExactly("def", 64, "def", 123, "def", 64, "abc", 123);
-      fail("Should have thrown.");
-    } catch (ClassCastException e) {
-      // expected
-    }
+        ImmutableListMultimap.<String, Object>of(
+            "abc", "+123", "def", "+64", "def", "0x40", "def", 999);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 64, "def", 123, "def", 64, "abc", 123);
+    assertFailureKeys(
+        "Not true that <{abc=[+123], def=[+64, 0x40, 999]}> contains exactly one element that "
+            + "has a key that is equal to and a value that parses to the key and value of each "
+            + "element of <[def=64, def=123, def=64, abc=123]>. It is missing an element that has "
+            + "a key that is equal to and a value that parses to the key and value of <def=123> "
+            + "and has unexpected elements <[def=999]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare([def=999, def=64]) threw java.lang.ClassCastException");
   }
 
   @Test

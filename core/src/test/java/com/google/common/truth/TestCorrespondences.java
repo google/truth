@@ -84,6 +84,47 @@ final class TestCorrespondences {
       };
 
   /**
+   * A correspondence between strings which tests for case-insensitive equality. Supports null
+   * expected elements, but throws {@link NullPointerException} on null actual elements.
+   */
+  static final Correspondence<String, String> CASE_INSENSITIVE_EQUALITY =
+      new Correspondence<String, String>() {
+
+        @Override
+        public boolean compare(String actual, String expected) {
+          return actual.equalsIgnoreCase(expected);
+        }
+
+        @Override
+        public String toString() {
+          return "equals (ignoring case)";
+        }
+      };
+
+  /**
+   * A correspondence between strings which tests for case-insensitive equality, with a broken
+   * attempt at null-safety. The {@link #compare} implementation returns true for (null, null) and
+   * false for (non-null, null), but throws {@link NullPointerException} for (null, non-null).
+   */
+  static final Correspondence<String, String> CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE =
+      new Correspondence<String, String>() {
+
+        @Override
+        public boolean compare(String actual, String expected) {
+          if (actual == null && expected == null) {
+            return true;
+          }
+          // Oops! We don't handle the case where actual == null but expected != null.
+          return actual.equalsIgnoreCase(expected);
+        }
+
+        @Override
+        public String toString() {
+          return "equals (ignoring case)";
+        }
+      };
+
+  /**
    * An example value object. It has an optional {@code id} field and a required {@code score}
    * field, both positive integers.
    */
