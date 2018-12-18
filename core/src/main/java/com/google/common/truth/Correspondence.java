@@ -16,18 +16,25 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
+import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Platform.getStackTraceAsString;
+import static java.util.Arrays.asList;
 
+import com.google.common.base.Strings;
+import java.util.Arrays;
+import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Determines whether an instance of type {@code A} corresponds in some way to an instance of type
- * {@code E}. For example, the implementation returned by the {@link #tolerance(double)} factory
- * method implements approximate equality between numeric values, with values being said to
- * correspond if the difference between them is does not exceed some fixed tolerance. The instances
- * of type {@code A} are typically actual values from a collection returned by the code under test;
- * the instances of type {@code E} are typically expected values with which the actual values are
- * compared by the test.
+ * {@code E} for the purposes of a test assertion. For example, the implementation returned by the
+ * {@link #tolerance(double)} factory method implements approximate equality between numeric values,
+ * with values being said to correspond if the difference between them is does not exceed some fixed
+ * tolerance. The instances of type {@code A} are typically actual values from a collection returned
+ * by the code under test; the instances of type {@code E} are typically expected values with which
+ * the actual values are compared by the test.
  *
  * <p>The correspondence is required to be consistent: for any given values {@code actual} and
  * {@code expected}, multiple invocations of {@code compare(actual, expected)} must consistently
@@ -93,8 +100,157 @@ public abstract class Correspondence<A, E> {
   /**
    * Returns whether or not the {@code actual} value is said to correspond to the {@code expected}
    * value for the purposes of this test.
+   *
+   * <h3>Exception handling</h3>
+   *
+   * <p>Throwing a {@link RuntimeException} from this method indicates that this {@link
+   * Correspondence} cannot compare the given values. Any assertion which encounters such an
+   * exception during the course of evaluating its condition must not pass. However, an assertion is
+   * not required to invoke this method for every pair of values in its input just in order to check
+   * for exceptions, if it is able to evaluate its condition without doing so.
+   *
+   * <h4>Conventions for handling exceptions</h4>
+   *
+   * <p>(N.B. This section is only really of interest when implementing assertion methods that call
+   * {@link Correspondence#compare}, not to users making such assertions in their tests.)
+   *
+   * <p>The only requirement on an assertion is that, if it encounters an exception from this
+   * method, it must not pass. The simplest implementation choice is simply to allow the exception
+   * to propagate. However, it is normally more helpful to catch the exception and instead fail with
+   * a message which includes more information about the assertion in progress and the nature of the
+   * failure.
+   *
+   * <p>By convention, an assertion may catch and store the exception and continue evaluating the
+   * condition as if the method had returned false instead of throwing. If the assertion's condition
+   * does not hold with this alternative behaviour, it may choose to fail with a message that gives
+   * details about how the condition does not hold, additionally mentioning that assertions were
+   * encountered and giving details about one of the stored exceptions. (See the first example
+   * below.) If the assertion's condition does hold with this alternative behaviour, the requirement
+   * that the assertion must not pass still applies, so it should fail with a message giving details
+   * about one of the stored exceptions. (See the second and third examples below.)
+   *
+   * <p>This behaviour is only a convention and should only be implemented when it makes sense to do
+   * so. In particular, in an assertion that has multiple stages, it may be better to only continue
+   * evaluation to the end of the current stage, and fail citing a stored exception at the end of
+   * the stage, rather than accumulating exceptions through the multiple stages.
+   *
+   * <h4>Examples of exception handling</h4>
+   *
+   * <p>Suppose that {@code CASE_INSENSITIVE_EQUALITY} is a {@code Correspondence<String, String>}
+   * whose {@code compare} method calls {@link actual.equalsIgnoreCase(expected)} and therefore
+   * throws {@link NullPointerException} if the actual value is null. The assertion
+   *
+   * <pre>{@code
+   * assertThat(asList(null, "xyz", "abc", "def"))
+   *     .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+   *     .containsExactly("ABC", "DEF", "GHI", "JKL");
+   * }</pre>
+   *
+   * may fail saying that the actual iterable contains unexpected values {@code null} and {@code
+   * xyz} and is missing values corresponding to {@code GHI} and {@code JKL}, which is what it would
+   * do if the {@code compare} method returned false instead of throwing, and additionally mention
+   * the exception. (This is more helpful than allowing the {@link NullPointerException} to
+   * propagate to the caller, or than failing with only a description of the exception.)
+   *
+   * <p>However, the assertions
+   *
+   * <pre>{@code
+   * assertThat(asList(null, "xyz", "abc", "def"))
+   *     .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+   *     .doesNotContain("MNO");
+   * }</pre>
+   *
+   * and
+   *
+   * <pre>{@code
+   * assertThat(asList(null, "xyz", "abc", "def"))
+   *     .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+   *     .doesNotContain(null);
+   * }</pre>
+   *
+   * must both fail citing the exception, even though they would pass if the {@code compare} method
+   * returned false. (Note that, in the latter case at least, it is likely that the test author's
+   * intention was <i>not</i> for the test to pass with these values.)
    */
+  // TODO(b/119038411): Ensure that all callers in Truth handle exceptions sensibly
+  // TODO(b/119038894): Simplify the 'for example' by using a factory method when it's ready
   public abstract boolean compare(@NullableDecl A actual, @NullableDecl E expected);
+
+  /**
+   * Helper object to store exceptions encountered while executing a {@link Correspondence} method.
+   */
+  static final class ExceptionStore {
+
+    private boolean empty = true;
+    private Exception firstException;
+    private String firstMethod;
+    private List<Object> firstArguments;
+
+    /**
+     * Adds an exception to the store.
+     *
+     * @param callingClass The class from which the {@link Correspondence} method was called. When
+     *     reporting failures, stack traces will be truncated above elements in this class.
+     * @param exception The exception encountered
+     * @param method The name of the {@link Correspondence} method during which the exception was
+     *     encountered (e.g. {@code "compare"})
+     * @param arguments The arguments to the {@link Correspondence} method call during which the
+     *     exception was encountered
+     */
+    void add(Class<?> callingClass, Exception exception, String method, Object... arguments) {
+      if (empty) {
+        empty = false;
+        truncateStackTrace(exception, callingClass);
+        firstException = exception;
+        firstMethod = method;
+        firstArguments = asList(arguments);
+      }
+    }
+
+    /** Returns whether the store is empty (i.e. no calls to {@link #add} were made). */
+    boolean isEmpty() {
+      return empty;
+    }
+
+    /**
+     * Returns a fact describing first exception encountered and which the {@link Correspondence}
+     * method call it was encountered in.
+     */
+    Fact describe() {
+      checkState(!empty);
+      return fact(
+          "first exception",
+          Strings.lenientFormat(
+              "%s(%s) threw %s at %s",
+              firstMethod, firstArguments, firstException, getStackTraceAsString(firstException)));
+    }
+
+    private static void truncateStackTrace(Exception exception, Class<?> callingClass) {
+      StackTraceElement[] original = exception.getStackTrace();
+      int keep = 0;
+      while (keep < original.length
+          && !original[keep].getClassName().equals(callingClass.getName())) {
+        keep++;
+      }
+      exception.setStackTrace(Arrays.copyOf(original, keep));
+    }
+  }
+
+  /**
+   * Invokes {@link #compare}, catching any exceptions. If the comparison does not throw, returns
+   * the result. If it does throw, adds the exception to the given {@link ExceptionStore} and
+   * returns false. This method can help with implementing the exception-handling policy described
+   * above, but note that assertions using it <i>must</i> fail later if an exception was stored.
+   */
+  final boolean safeCompare(
+      @NullableDecl A actual, @NullableDecl E expected, ExceptionStore exceptions) {
+    try {
+      return compare(actual, expected);
+    } catch (RuntimeException e) {
+      exceptions.add(Correspondence.class, e, "compare", actual, expected);
+      return false;
+    }
+  }
 
   /**
    * Returns a {@link String} describing the difference between the {@code actual} and {@code

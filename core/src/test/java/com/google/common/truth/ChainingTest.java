@@ -287,8 +287,4 @@ public final class ChainingTest extends BaseSubjectTestCase {
     assertThatFailure().hasMessageThat().isEqualTo(message);
     assertThatFailure().hasCauseThat().isEqualTo(throwable);
   }
-
-  private ThrowableSubject assertThatFailure() {
-    return assertThat(expectFailure.getFailure());
-  }
 }

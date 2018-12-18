@@ -18,6 +18,9 @@ package com.google.common.truth;
 import static com.google.common.base.Functions.identity;
 import static com.google.common.collect.Collections2.permutations;
 import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.ExpectFailure.assertThat;
+import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
+import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE;
 import static com.google.common.truth.TestCorrespondences.EQUALITY;
 import static com.google.common.truth.TestCorrespondences.PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
 import static com.google.common.truth.TestCorrespondences.PARSED_RECORD_ID;
@@ -360,6 +363,54 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
                 + "parses to each element of <[64, 128, null, 128]>. "
                 + "It is missing an element that parses to <null> "
                 + "and has unexpected elements <[cheese]>");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_handlesExceptions() {
+    ImmutableList<String> expected = ImmutableList.of("ABC", "DEF", "GHI", "JKL");
+    // CASE_INSENSITIVE_EQUALITY.compare throws on the null actual element.
+    List<String> actual = asList(null, "xyz", "abc", "def");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsExactlyElementsIn(expected);
+    // We fail with the more helpful failure message about the mis-matched values, not the NPE.
+    assertFailureKeys(
+        "Not true that <[null, xyz, abc, def]> contains exactly one element that "
+            + "equals (ignoring case) each element of <[ABC, DEF, GHI, JKL]>. "
+            + "It is missing an element that equals (ignoring case) each of <[GHI, JKL]>"
+            + " and has unexpected elements <[null, xyz]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare([null, ABC]) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsExactlyElementsIn_handlesExceptions_alwaysFails() {
+    List<String> expected = asList("ABC", "DEF", "GHI", null);
+    List<String> actual = asList(null, "def", "ghi", "abc");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE)
+        .containsExactlyElementsIn(expected);
+    // CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE.compare(null, null) returns true, so there is a
+    // mapping between actual and expected elements where they all correspond. However, no
+    // reasonable implementation would find that mapping without hitting the (null, "ABC") case
+    // along the way, and that throws NPE, so we are contractually required to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing elements",
+        "first exception",
+        "comparing contents by testing that each element equals (ignoring case) an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", "[ABC, DEF, GHI, null]");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare([null, ABC]) threw java.lang.NullPointerException");
   }
 
   @Test
@@ -835,6 +886,53 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
             "Not true that <[fee, +64, +128, fi, fo, 0x40, 0x80, fum]> contains at least one "
                 + "element that parses to each element of <[64, 128, 256, 128]>. "
                 + "It is missing an element that parses to <256>");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_handlesExceptions() {
+    ImmutableList<String> expected = ImmutableList.of("ABC", "DEF", "GHI");
+    // CASE_INSENSITIVE_EQUALITY.compare throws on the null actual element.
+    List<String> actual = asList(null, "xyz", "abc", "ghi");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsAllIn(expected);
+    // We fail with the more helpful failure message about the mis-matched values, not the NPE.
+    assertFailureKeys(
+        "Not true that <[null, xyz, abc, ghi]> contains at least one element that "
+            + "equals (ignoring case) each element of <[ABC, DEF, GHI]>. "
+            + "It is missing an element that equals (ignoring case) <DEF>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare([null, ABC]) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAllIn_handlesExceptions_alwaysFails() {
+    List<String> expected = asList("ABC", "DEF", null);
+    List<String> actual = asList(null, "def", "ghi", "abc");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE)
+        .containsAllIn(expected);
+    // CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE.compare(null, null) returns true, so there is a
+    // mapping between actual and expected elements which includes all the expected. However, no
+    // reasonable implementation would find that mapping without hitting the (null, "ABC") case
+    // along the way, and that throws NPE, so we are contractually required to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing elements",
+        "first exception",
+        "comparing contents by testing that each element equals (ignoring case) an expected value",
+        "expected",
+        "but was");
+    assertFailureValue("expected", "[ABC, DEF, null]");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare([null, ABC]) threw java.lang.NullPointerException");
   }
 
   @Test
