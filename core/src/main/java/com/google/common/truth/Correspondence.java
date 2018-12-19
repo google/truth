@@ -19,10 +19,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
 import static com.google.common.truth.Fact.fact;
+import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.Platform.getStackTraceAsString;
 import static java.util.Arrays.asList;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -181,10 +183,19 @@ public abstract class Correspondence<A, E> {
    */
   static final class ExceptionStore {
 
+    private final String context;
     private boolean empty = true;
     private Exception firstException;
     private String firstMethod;
     private List<Object> firstArguments;
+
+    static ExceptionStore forCompare() {
+      return new ExceptionStore("comparing elements");
+    }
+
+    private ExceptionStore(String context) {
+      this.context = context;
+    }
 
     /**
      * Adds an exception to the store.
@@ -213,11 +224,37 @@ public abstract class Correspondence<A, E> {
     }
 
     /**
-     * Returns a fact describing first exception encountered and which the {@link Correspondence}
-     * method call it was encountered in.
+     * Returns facts to use in a failure message when the exceptions are the main cause of the
+     * failure. This method must not be called when the store is empty. Assertions should use this
+     * when exceptions were thrown while comparing elements and no more meaningful failure was
+     * discovered by assuming a false return and continuing (see the javadoc for {@link
+     * Correspondence#compare}). C.f. {@link #describeAsAdditionalInfo}.
      */
-    Fact describe() {
+    ImmutableList<Fact> describeAsMainCause() {
       checkState(!empty);
+      return ImmutableList.of(
+          simpleFact("one or more exceptions were thrown while " + context), firstExceptionFact());
+    }
+
+    /**
+     * If any exceptions are stored, returns facts to use in a failure message when the exceptions
+     * should be noted as additional info; if empty, returns an empty list. Assertions should use
+     * this when exceptions were thrown while comparing elements but more meaningful failures were
+     * discovered by assuming a false return and continuing (see the javadoc for {@link
+     * Correspondence#compare}), or when exceptions were thrown by other methods while generating
+     * the failure message. C.f. {@link #describeAsMainCause}.
+     */
+    ImmutableList<Fact> describeAsAdditionalInfo() {
+      if (!empty) {
+        return ImmutableList.of(
+            simpleFact("additionally, one or more exceptions were thrown while " + context),
+            firstExceptionFact());
+      } else {
+        return ImmutableList.of();
+      }
+    }
+
+    private Fact firstExceptionFact() {
       return fact(
           "first exception",
           Strings.lenientFormat(

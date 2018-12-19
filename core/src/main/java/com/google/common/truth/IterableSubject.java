@@ -1081,7 +1081,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // Find a many:many mapping between the indexes of the elements which correspond, and check
       // it for completeness.
       // Exceptions from Correspondence.compare are stored and treated as if false was returned.
-      Correspondence.ExceptionStore compareExceptions = new Correspondence.ExceptionStore();
+      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
           findCandidateMapping(actualList, expectedList, compareExceptions);
       if (failIfCandidateMappingHasMissingOrExtra(
@@ -1102,13 +1102,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // unexpected null) but we are contractually obliged to throw here if the assertions passed.
       if (!compareExceptions.isEmpty()) {
         subject.failWithActual(
-            simpleFact("one or more exceptions were thrown while comparing elements"),
-            compareExceptions.describe(),
-            simpleFact(
-                "comparing contents by testing that each element "
-                    + correspondence
-                    + " an expected value"),
-            fact("expected", expected));
+            concat(
+                compareExceptions.describeAsMainCause(),
+                asList(
+                    simpleFact(
+                        "comparing contents by testing that each element "
+                            + correspondence
+                            + " an expected value"),
+                    fact("expected", expected))));
         return ALREADY_FAILED;
       }
       // The 1:1 mapping is complete, so the test succeeds (but we know from above that the mapping
@@ -1153,7 +1154,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     private boolean correspondInOrderExactly(
         Iterator<? extends A> actual, Iterator<? extends E> expected) {
-      Correspondence.ExceptionStore exceptions = new Correspondence.ExceptionStore();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
       while (actual.hasNext() && expected.hasNext()) {
         A actualElement = actual.next();
         E expectedElement = expected.next();
@@ -1205,24 +1206,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty() || !extra.isEmpty()) {
-        Fact fact =
-            simpleFact(
-                lenientFormat(
-                    "Not true that %s contains exactly one element that %s each element of <%s>. "
-                        + "It %s",
-                    subject.actualAsString(),
-                    correspondence,
-                    expected,
-                    describeMissingOrExtra(missing, extra)));
-        if (compareExceptions.isEmpty()) {
-          subject.failWithoutActual(fact);
-        } else {
-          subject.failWithoutActual(
-              fact,
-              simpleFact(
-                  "additionally, one or more exceptions were thrown while comparing elements"),
-              compareExceptions.describe());
-        }
+        subject.failWithoutActual(
+            concat(
+                asList(
+                    simpleFact(
+                        lenientFormat(
+                            "Not true that %s contains exactly one element that %s each element "
+                                + "of <%s>. It %s",
+                            subject.actualAsString(),
+                            correspondence,
+                            expected,
+                            describeMissingOrExtra(missing, extra)))),
+                compareExceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1374,28 +1369,23 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty() || !extra.isEmpty()) {
-        Fact fact =
-            simpleFact(
-                lenientFormat(
-                    "Not true that %s contains exactly one element that %s each element of <%s>. "
-                        + "It contains at least one element that matches each expected element, "
-                        + "and every element it contains matches at least one expected element, "
-                        + "but there was no 1:1 mapping between all the actual and expected "
-                        + "elements. Using the most complete 1:1 mapping (or one such mapping, if "
-                        + "there is a tie), it %s",
-                    subject.actualAsString(),
-                    correspondence,
-                    expected,
-                    describeMissingOrExtra(missing, extra)));
-        if (compareExceptions.isEmpty()) {
-          subject.failWithoutActual(fact);
-        } else {
-          subject.failWithoutActual(
-              fact,
-              simpleFact(
-                  "additionally, one or more exceptions were thrown while comparing elements"),
-              compareExceptions.describe());
-        }
+        subject.failWithoutActual(
+            concat(
+                asList(
+                    simpleFact(
+                        lenientFormat(
+                            "Not true that %s contains exactly one element that %s each element "
+                                + "of <%s>. It contains at least one element that matches each "
+                                + "expected element, and every element it contains matches at "
+                                + "least one expected element, but there was no 1:1 mapping "
+                                + "between all the actual and expected elements. Using the most "
+                                + "complete 1:1 mapping (or one such mapping, if there is a tie), "
+                                + "it %s",
+                            subject.actualAsString(),
+                            correspondence,
+                            expected,
+                            describeMissingOrExtra(missing, extra)))),
+                compareExceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1438,7 +1428,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // We know they don't correspond in order, so we're going to have to do an any-order test.
       // Find a many:many mapping between the indexes of the elements which correspond, and check
       // it for completeness.
-      Correspondence.ExceptionStore compareExceptions = new Correspondence.ExceptionStore();
+      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
           findCandidateMapping(actualList, expectedList, compareExceptions);
       if (failIfCandidateMappingHasMissing(
@@ -1459,13 +1449,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // passed.
       if (!compareExceptions.isEmpty()) {
         subject.failWithActual(
-            simpleFact("one or more exceptions were thrown while comparing elements"),
-            compareExceptions.describe(),
-            simpleFact(
-                "comparing contents by testing that each element "
-                    + correspondence
-                    + " an expected value"),
-            fact("expected", expected));
+            concat(
+                compareExceptions.describeAsMainCause(),
+                asList(
+                    simpleFact(
+                        "comparing contents by testing that each element "
+                            + correspondence
+                            + " an expected value"),
+                    fact("expected", expected))));
         return ALREADY_FAILED;
       }
       // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
@@ -1511,7 +1502,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // couldn't be achieved by pairing it with the first. (For the any-order test, we may want to
       // pair an expected element with a later actual element so that we can pair the earlier actual
       // element with a later expected element, but that doesn't apply here.)
-      Correspondence.ExceptionStore exceptions = new Correspondence.ExceptionStore();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
       while (expected.hasNext()) {
         E expectedElement = expected.next();
         // Return false if we couldn't find the expected exception, or if the correspondence threw
@@ -1553,24 +1544,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
-        Fact fact =
-            simpleFact(
-                lenientFormat(
-                    "Not true that %s contains at least one element that %s each element of <%s>. "
-                        + "It %s",
-                    subject.actualAsString(),
-                    correspondence,
-                    expected,
-                    describeMissing(missing, extra)));
-        if (compareExceptions.isEmpty()) {
-          subject.failWithoutActual(fact);
-        } else {
-          subject.failWithoutActual(
-              fact,
-              simpleFact(
-                  "additionally, one or more exceptions were thrown while comparing elements"),
-              compareExceptions.describe());
-        }
+        subject.failWithoutActual(
+            concat(
+                asList(
+                    simpleFact(
+                        lenientFormat(
+                            "Not true that %s contains at least one element that %s each element "
+                                + "of <%s>. It %s",
+                            subject.actualAsString(),
+                            correspondence,
+                            expected,
+                            describeMissing(missing, extra)))),
+                compareExceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1640,27 +1625,22 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
-        Fact fact =
-            simpleFact(
-                lenientFormat(
-                    "Not true that %s contains at least one element that %s each element of <%s>. "
-                        + "It contains at least one element that matches each expected element, "
-                        + "but there was no 1:1 mapping between all the expected elements and any "
-                        + "subset of the actual elements. Using the most complete 1:1 mapping (or "
-                        + "one such mapping, if there is a tie), it %s",
-                    subject.actualAsString(),
-                    correspondence,
-                    expected,
-                    describeMissing(missing, extra)));
-        if (compareExceptions.isEmpty()) {
-          subject.failWithoutActual(fact);
-        } else {
-          subject.failWithoutActual(
-              fact,
-              simpleFact(
-                  "additionally, one or more exceptions were thrown while comparing elements"),
-              compareExceptions.describe());
-        }
+        subject.failWithoutActual(
+            concat(
+                asList(
+                    simpleFact(
+                        lenientFormat(
+                            "Not true that %s contains at least one element that %s each element "
+                                + "of <%s>. It contains at least one element that matches each "
+                                + "expected element, but there was no 1:1 mapping between all the "
+                                + "expected elements and any subset of the actual elements. Using "
+                                + "the most complete 1:1 mapping (or one such mapping, if there is"
+                                + " a tie), it %s",
+                            subject.actualAsString(),
+                            correspondence,
+                            expected,
+                            describeMissing(missing, extra)))),
+                compareExceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1731,7 +1711,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
               simpleFact(
                   lenientFormat(
                       "Not true that %s %s <%s>. (N.B. A key function which does not uniquely key "
-                          + "the expected elements was provided and has consequently been ignored.)",
+                          + "the expected elements was provided and has consequently been "
+                          + "ignored.)",
                       subject.actualAsString(), failVerb, expected)));
         }
       } else {
