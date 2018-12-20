@@ -20,11 +20,11 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.Platform.getStackTraceAsString;
 import static java.util.Arrays.asList;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -230,9 +230,9 @@ public abstract class Correspondence<A, E> {
      * discovered by assuming a false return and continuing (see the javadoc for {@link
      * Correspondence#compare}). C.f. {@link #describeAsAdditionalInfo}.
      */
-    ImmutableList<Fact> describeAsMainCause() {
+    Facts describeAsMainCause() {
       checkState(!empty);
-      return ImmutableList.of(
+      return facts(
           simpleFact("one or more exceptions were thrown while " + context), firstExceptionFact());
     }
 
@@ -244,13 +244,13 @@ public abstract class Correspondence<A, E> {
      * Correspondence#compare}), or when exceptions were thrown by other methods while generating
      * the failure message. C.f. {@link #describeAsMainCause}.
      */
-    ImmutableList<Fact> describeAsAdditionalInfo() {
+    Facts describeAsAdditionalInfo() {
       if (!empty) {
-        return ImmutableList.of(
+        return facts(
             simpleFact("additionally, one or more exceptions were thrown while " + context),
             firstExceptionFact());
       } else {
-        return ImmutableList.of();
+        return facts();
       }
     }
 

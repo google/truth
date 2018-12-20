@@ -23,6 +23,7 @@ import static com.google.common.collect.Iterables.size;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.ALL_IN_ONE_FACT;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.FACT_PER_ELEMENT;
 import static com.google.common.truth.SubjectUtils.accumulate;
@@ -1102,14 +1103,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // unexpected null) but we are contractually obliged to throw here if the assertions passed.
       if (!compareExceptions.isEmpty()) {
         subject.failWithActual(
-            concat(
-                compareExceptions.describeAsMainCause(),
-                asList(
+            compareExceptions
+                .describeAsMainCause()
+                .and(
                     simpleFact(
                         "comparing contents by testing that each element "
                             + correspondence
                             + " an expected value"),
-                    fact("expected", expected))));
+                    fact("expected", expected)));
         return ALREADY_FAILED;
       }
       // The 1:1 mapping is complete, so the test succeeds (but we know from above that the mapping
@@ -1207,8 +1208,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty() || !extra.isEmpty()) {
         subject.failWithoutActual(
-            concat(
-                asList(
+            facts(
                     simpleFact(
                         lenientFormat(
                             "Not true that %s contains exactly one element that %s each element "
@@ -1216,8 +1216,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             subject.actualAsString(),
                             correspondence,
                             expected,
-                            describeMissingOrExtra(missing, extra)))),
-                compareExceptions.describeAsAdditionalInfo()));
+                            describeMissingOrExtra(missing, extra))))
+                .and(compareExceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1370,8 +1370,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty() || !extra.isEmpty()) {
         subject.failWithoutActual(
-            concat(
-                asList(
+            facts(
                     simpleFact(
                         lenientFormat(
                             "Not true that %s contains exactly one element that %s each element "
@@ -1384,8 +1383,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             subject.actualAsString(),
                             correspondence,
                             expected,
-                            describeMissingOrExtra(missing, extra)))),
-                compareExceptions.describeAsAdditionalInfo()));
+                            describeMissingOrExtra(missing, extra))))
+                .and(compareExceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1449,14 +1448,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // passed.
       if (!compareExceptions.isEmpty()) {
         subject.failWithActual(
-            concat(
-                compareExceptions.describeAsMainCause(),
-                asList(
+            compareExceptions
+                .describeAsMainCause()
+                .and(
                     simpleFact(
                         "comparing contents by testing that each element "
                             + correspondence
                             + " an expected value"),
-                    fact("expected", expected))));
+                    fact("expected", expected)));
         return ALREADY_FAILED;
       }
       // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
@@ -1545,8 +1544,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
         subject.failWithoutActual(
-            concat(
-                asList(
+            facts(
                     simpleFact(
                         lenientFormat(
                             "Not true that %s contains at least one element that %s each element "
@@ -1554,8 +1552,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             subject.actualAsString(),
                             correspondence,
                             expected,
-                            describeMissing(missing, extra)))),
-                compareExceptions.describeAsAdditionalInfo()));
+                            describeMissing(missing, extra))))
+                .and(compareExceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1626,8 +1624,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
         subject.failWithoutActual(
-            concat(
-                asList(
+            facts(
                     simpleFact(
                         lenientFormat(
                             "Not true that %s contains at least one element that %s each element "
@@ -1639,8 +1636,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             subject.actualAsString(),
                             correspondence,
                             expected,
-                            describeMissing(missing, extra)))),
-                compareExceptions.describeAsAdditionalInfo()));
+                            describeMissing(missing, extra))))
+                .and(compareExceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
