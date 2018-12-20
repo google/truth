@@ -799,6 +799,10 @@ public class Subject<S extends Subject<S, T>, T> {
     doFail(append(ImmutableList.copyOf(facts), butWas()));
   }
 
+  final void failWithActual(Facts facts) {
+    failWithActual(facts.asIterable());
+  }
+
   /**
    * Reports a failure constructing a message from a simple verb.
    *
@@ -982,6 +986,10 @@ public class Subject<S extends Subject<S, T>, T> {
   // TODO(cpovirk): Consider making this protected if there's a need for it.
   final void failWithoutActual(Iterable<Fact> facts) {
     doFail(ImmutableList.copyOf(facts));
+  }
+
+  final void failWithoutActual(Facts facts) {
+    failWithoutActual(facts.asIterable());
   }
 
   /**
