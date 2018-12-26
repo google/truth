@@ -990,44 +990,83 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * element.
      */
     public void contains(@NullableDecl E expected) {
+      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
       for (A actual : getCastActual()) {
-        if (correspondence.compare(actual, expected)) {
+        if (correspondence.safeCompare(actual, expected, compareExceptions)) {
+          if (!compareExceptions.isEmpty()) {
+            // Found a match, but we still need to fail if we hit an exception along the way.
+            subject.failWithActual(
+                compareExceptions
+                    .describeAsMainCause()
+                    .and(
+                        simpleFact(
+                            "comparing contents by testing that at least one element "
+                                + correspondence
+                                + " the expected value"),
+                        fact("expected to contain", expected)));
+          }
           return;
         }
       }
+      // Found no match. Fail, reporting elements that have the correct key if there are any.
       if (pairer.isPresent()) {
         List<A> keyMatches = pairer.get().pairOne(expected, getCastActual());
         if (!keyMatches.isEmpty()) {
           subject.failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s contains exactly one element that %s <%s>. It did contain "
-                          + "the following elements with the correct key: <%s>",
-                      subject.actualAsString(),
-                      correspondence,
-                      expected,
-                      formatExtras(expected, keyMatches))));
+              facts(
+                      simpleFact(
+                          lenientFormat(
+                              "Not true that %s contains at least one element that %s <%s>. It did "
+                                  + "contain the following elements with the correct key: <%s>",
+                              subject.actualAsString(),
+                              correspondence,
+                              expected,
+                              formatExtras(expected, keyMatches))))
+                  .and(compareExceptions.describeAsAdditionalInfo()));
           return;
         }
       }
-      subject.fail("contains at least one element that " + correspondence, expected);
+      subject.failWithoutActual(
+          facts(
+                  simpleFact(
+                      lenientFormat(
+                          "Not true that %s contains at least one element that %s <%s>",
+                          subject.actualAsString(), correspondence, expected)))
+              .and(compareExceptions.describeAsAdditionalInfo()));
     }
 
     /** Checks that none of the actual elements correspond to the given element. */
     public void doesNotContain(@NullableDecl E excluded) {
+      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
       List<A> matchingElements = new ArrayList<>();
       for (A actual : getCastActual()) {
-        if (correspondence.compare(actual, excluded)) {
+        if (correspondence.safeCompare(actual, excluded, compareExceptions)) {
           matchingElements.add(actual);
         }
       }
+      // Fail if we found any matches.
       if (!matchingElements.isEmpty()) {
         subject.failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "%s should not have contained an element that %s <%s>. "
-                        + "It contained the following such elements: <%s>",
-                    subject.actualAsString(), correspondence, excluded, matchingElements)));
+            facts(
+                    simpleFact(
+                        lenientFormat(
+                            "%s should not have contained an element that %s <%s>. "
+                                + "It contained the following such elements: <%s>",
+                            subject.actualAsString(), correspondence, excluded, matchingElements)))
+                .and(compareExceptions.describeAsAdditionalInfo()));
+        return;
+      }
+      // Found no match, but we still need to fail if we hit an exception along the way.
+      if (!compareExceptions.isEmpty()) {
+        subject.failWithActual(
+            compareExceptions
+                .describeAsMainCause()
+                .and(
+                    simpleFact(
+                        "comparing contents by testing that no element "
+                            + correspondence
+                            + " the forbidden value"),
+                    fact("expected not to contain", excluded)));
       }
     }
 
@@ -1675,45 +1714,72 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     private void containsAny(String failVerb, Iterable<? extends E> expected) {
       Collection<A> actual = iterableToCollection(getCastActual());
+      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
       for (E expectedItem : expected) {
         for (A actualItem : actual) {
-          if (correspondence.compare(actualItem, expectedItem)) {
+          if (correspondence.safeCompare(actualItem, expectedItem, compareExceptions)) {
+            // Found a match, but we still need to fail if we hit an exception along the way.
+            if (!compareExceptions.isEmpty()) {
+              subject.failWithActual(
+                  compareExceptions
+                      .describeAsMainCause()
+                      .and(
+                          simpleFact(
+                              "comparing contents by testing that at least one element "
+                                  + correspondence
+                                  + " any expected value"),
+                          fact("expected to contain any of", expected)));
+            }
             return;
           }
         }
       }
+      // Found no match. Fail, reporting elements that have a correct key if there are any.
       if (pairer.isPresent()) {
         @NullableDecl
         Pairing pairing = pairer.get().pair(iterableToList(expected), iterableToList(actual));
         if (pairing != null) {
           if (!pairing.pairedKeysToExpectedValues.isEmpty()) {
             subject.failWithoutActual(
-                simpleFact(
-                    lenientFormat(
-                        "Not true that %s %s <%s>. It contains the following values that match by "
-                            + "key: %s",
-                        subject.actualAsString(),
-                        failVerb,
-                        expected,
-                        describeAnyMatchesByKey(pairing))));
+                facts(
+                        simpleFact(
+                            lenientFormat(
+                                "Not true that %s %s <%s>. It contains the following values that "
+                                    + "match by key: %s",
+                                subject.actualAsString(),
+                                failVerb,
+                                expected,
+                                describeAnyMatchesByKey(pairing))))
+                    .and(compareExceptions.describeAsAdditionalInfo()));
           } else {
             subject.failWithoutActual(
-                simpleFact(
-                    lenientFormat(
-                        "Not true that %s %s <%s>. It does not contain any matches by key, either",
-                        subject.actualAsString(), failVerb, expected)));
+                facts(
+                        simpleFact(
+                            lenientFormat(
+                                "Not true that %s %s <%s>. It does not contain any matches by key, "
+                                    + "either",
+                                subject.actualAsString(), failVerb, expected)))
+                    .and(compareExceptions.describeAsAdditionalInfo()));
           }
         } else {
           subject.failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s %s <%s>. (N.B. A key function which does not uniquely key "
-                          + "the expected elements was provided and has consequently been "
-                          + "ignored.)",
-                      subject.actualAsString(), failVerb, expected)));
+              facts(
+                      simpleFact(
+                          lenientFormat(
+                              "Not true that %s %s <%s>. (N.B. A key function which does not "
+                                  + "uniquely key the expected elements was provided and has "
+                                  + "consequently been ignored.)",
+                              subject.actualAsString(), failVerb, expected)))
+                  .and(compareExceptions.describeAsAdditionalInfo()));
         }
       } else {
-        subject.fail(failVerb, expected);
+        subject.failWithoutActual(
+            facts(
+                    simpleFact(
+                        lenientFormat(
+                            "Not true that %s %s <%s>",
+                            subject.actualAsString(), failVerb, expected)))
+                .and(compareExceptions.describeAsAdditionalInfo()));
       }
     }
 
@@ -1764,13 +1830,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     private void containsNone(String excludedPrefix, Iterable<? extends E> excluded) {
       Collection<A> actual = iterableToCollection(getCastActual());
       ListMultimap<E, A> present = LinkedListMultimap.create();
+      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
       for (E excludedItem : Sets.newLinkedHashSet(excluded)) {
         for (A actualItem : actual) {
-          if (correspondence.compare(actualItem, excludedItem)) {
+          if (correspondence.safeCompare(actualItem, excludedItem, compareExceptions)) {
             present.put(excludedItem, actualItem);
           }
         }
       }
+      // Fail if we found any matches.
       if (!present.isEmpty()) {
         StringBuilder presentDescription = new StringBuilder();
         for (E excludedItem : present.keySet()) {
@@ -1791,14 +1859,30 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           }
         }
         subject.failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that %s contains no element that %s %s <%s>. It contains <[%s]>",
-                    subject.actualAsString(),
-                    correspondence,
-                    excludedPrefix,
-                    excluded,
-                    presentDescription)));
+            facts(
+                    simpleFact(
+                        lenientFormat(
+                            "Not true that %s contains no element that %s %s <%s>. "
+                                + "It contains <[%s]>",
+                            subject.actualAsString(),
+                            correspondence,
+                            excludedPrefix,
+                            excluded,
+                            presentDescription)))
+                .and(compareExceptions.describeAsAdditionalInfo()));
+        return;
+      }
+      // Found no match, but we still need to fail if we hit an exception along the way.
+      if (!compareExceptions.isEmpty()) {
+        subject.failWithActual(
+            compareExceptions
+                .describeAsMainCause()
+                .and(
+                    simpleFact(
+                        "comparing contents by testing that no element "
+                            + correspondence
+                            + " any forbidden value"),
+                    fact("expected not to contain any of", excluded)));
       }
     }
 

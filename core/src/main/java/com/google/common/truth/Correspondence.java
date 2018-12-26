@@ -24,6 +24,7 @@ import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.Platform.getStackTraceAsString;
 import static java.util.Arrays.asList;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import java.util.Arrays;
 import java.util.List;
@@ -82,12 +83,12 @@ public abstract class Correspondence<A, E> {
     private final double tolerance;
 
     private TolerantNumericEquality(double tolerance) {
+      checkTolerance(tolerance);
       this.tolerance = tolerance;
     }
 
     @Override
     public boolean compare(Number actual, Number expected) {
-      checkTolerance(tolerance);
       double actualDouble = checkNotNull(actual).doubleValue();
       double expectedDouble = checkNotNull(expected).doubleValue();
       return MathUtil.equalWithinTolerance(actualDouble, expectedDouble, tolerance);
@@ -183,6 +184,8 @@ public abstract class Correspondence<A, E> {
    */
   static final class ExceptionStore {
 
+    private static final Joiner ARGUMENT_JOINER = Joiner.on(", ").useForNull("null");
+
     private final String context;
     private boolean empty = true;
     private Exception firstException;
@@ -259,7 +262,10 @@ public abstract class Correspondence<A, E> {
           "first exception",
           Strings.lenientFormat(
               "%s(%s) threw %s at %s",
-              firstMethod, firstArguments, firstException, getStackTraceAsString(firstException)));
+              firstMethod,
+              ARGUMENT_JOINER.join(firstArguments),
+              firstException,
+              getStackTraceAsString(firstException)));
     }
 
     private static void truncateStackTrace(Exception exception, Class<?> callingClass) {
