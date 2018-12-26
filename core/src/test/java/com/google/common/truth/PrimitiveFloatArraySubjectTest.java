@@ -30,6 +30,7 @@ import com.google.common.primitives.Floats;
 import com.google.common.primitives.Longs;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -895,11 +896,21 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_contains_nullExpected() {
-    try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).usingTolerance(DEFAULT_TOLERANCE).contains(null);
-      fail("Expected NullPointerException to be thrown but wasn't");
-    } catch (NullPointerException expected) {
-    }
+    float[] actual = array(1.0f, 2.0f, 3.0f);
+    expectFailureWhenTestingThat(actual).usingTolerance(DEFAULT_TOLERANCE).contains(null);
+    assertFailureKeys(
+        "value of",
+        "Not true that <"
+            + Arrays.toString(actual)
+            + "> contains at least one element that is a finite number "
+            + "within "
+            + (double) DEFAULT_TOLERANCE
+            + " of <null>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(" + actual[0] + ", null) threw java.lang.NullPointerException");
   }
 
   @Test
@@ -1094,64 +1105,160 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     // Expected value is Integer - supported up to +/- 2^24
     assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(2);
     assertThat(array(1.0f, 1 << 24, 3.0f)).usingExactEquality().contains(1 << 24);
-    try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains((1 << 24) + 1);
-      fail("Expected IllegalArgumentException to be thrown");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Expected value 16777217 in assertion using exact float equality was an int with an "
-                  + "absolute value greater than 2^24 which has no exact float representation");
-    }
     // Expected value is Long - supported up to +/- 2^24
     assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(2L);
     assertThat(array(1.0f, 1 << 24, 3.0f)).usingExactEquality().contains(1L << 24);
-    try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains((1L << 24) + 1L);
-      fail("Expected IllegalArgumentException to be thrown");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Expected value 16777217 in assertion using exact float equality was a long with an "
-                  + "absolute value greater than 2^24 which has no exact float representation");
-    }
-    // Expected value is Double - not supported
-    try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(2.0);
-      fail("Expected IllegalArgumentException to be thrown");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Expected value in assertion using exact float equality was a double, which is not "
-                  + "supported as a double may not have an exact float representation");
-    }
-    // Expected value is BigInteger - not supported
-    try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(BigInteger.valueOf(2));
-      fail("Expected IllegalArgumentException to be thrown");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Expected value in assertion using exact float equality was of unsupported type "
-                  + BigInteger.class
-                  + " (it may not have an exact float representation)");
-    }
-    // Expected value is BigDecimal - not supported
-    try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(BigDecimal.valueOf(2.0));
-      fail("Expected IllegalArgumentException to be thrown");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Expected value in assertion using exact float equality was of unsupported type "
-                  + BigDecimal.class
-                  + " (it may not have an exact float representation)");
-    }
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes_intOutOfRange() {
+    int expected = (1 << 24) + 1;
+    float[] actual = array(1.0f, 2.0f, 3.0f);
+    expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
+    assertFailureKeys(
+        "value of",
+        "Not true that <"
+            + Arrays.toString(actual)
+            + "> contains at least one element that is exactly equal to <"
+            + expected
+            + ">",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith(
+            "compare("
+                + actual[0]
+                + ", "
+                + expected
+                + ") threw java.lang.IllegalArgumentException");
+    assertThatFailure()
+        .factValue("first exception")
+        .contains(
+            "Expected value "
+                + expected
+                + " in assertion using exact float equality was an int with an absolute value "
+                + "greater than 2^24 which has no exact float representation");
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes_longOutOfRange() {
+    long expected = (1L << 24) + 1L;
+    float[] actual = array(1.0f, 2.0f, 3.0f);
+    expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
+    assertFailureKeys(
+        "value of",
+        "Not true that <"
+            + Arrays.toString(actual)
+            + "> contains at least one element that is exactly equal to <"
+            + expected
+            + ">",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith(
+            "compare("
+                + actual[0]
+                + ", "
+                + expected
+                + ") threw java.lang.IllegalArgumentException");
+    assertThatFailure()
+        .factValue("first exception")
+        .contains(
+            "Expected value "
+                + expected
+                + " in assertion using exact float equality was a long with an absolute value "
+                + "greater than 2^24 which has no exact float representation");
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes_doubleNotSupported() {
+    double expected = 2.0;
+    float[] actual = array(1.0f, 2.0f, 3.0f);
+    expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
+    assertFailureKeys(
+        "value of",
+        "Not true that <"
+            + Arrays.toString(actual)
+            + "> contains at least one element that is exactly equal to <"
+            + expected
+            + ">",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith(
+            "compare("
+                + actual[0]
+                + ", "
+                + expected
+                + ") threw java.lang.IllegalArgumentException");
+    assertThatFailure()
+        .factValue("first exception")
+        .contains(
+            "Expected value in assertion using exact float equality was a double, which is not "
+                + "supported as a double may not have an exact float representation");
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes_bigIntegerNotSupported() {
+    BigInteger expected = BigInteger.valueOf(2);
+    float[] actual = array(1.0f, 2.0f, 3.0f);
+    expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
+    assertFailureKeys(
+        "value of",
+        "Not true that <"
+            + Arrays.toString(actual)
+            + "> contains at least one element that is exactly equal to <"
+            + expected
+            + ">",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith(
+            "compare("
+                + actual[0]
+                + ", "
+                + expected
+                + ") threw java.lang.IllegalArgumentException");
+    assertThatFailure()
+        .factValue("first exception")
+        .contains(
+            "Expected value in assertion using exact float equality was of unsupported type "
+                + BigInteger.class
+                + " (it may not have an exact float representation)");
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes_bigDecimalNotSupported() {
+    BigDecimal expected = BigDecimal.valueOf(2.0);
+    float[] actual = array(1.0f, 2.0f, 3.0f);
+    expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
+    assertFailureKeys(
+        "value of",
+        "Not true that <"
+            + Arrays.toString(actual)
+            + "> contains at least one element that is exactly equal to <"
+            + expected
+            + ">",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith(
+            "compare("
+                + actual[0]
+                + ", "
+                + expected
+                + ") threw java.lang.IllegalArgumentException");
+    assertThatFailure()
+        .factValue("first exception")
+        .contains(
+            "Expected value in assertion using exact float equality was of unsupported type "
+                + BigDecimal.class
+                + " (it may not have an exact float representation)");
   }
 
   @Test
@@ -1181,11 +1288,19 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_contains_nullExpected() {
-    try {
-      assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().contains(null);
-      fail("Expected NullPointerException to be thrown but wasn't");
-    } catch (NullPointerException expected) {
-    }
+    float[] actual = array(1.0f, 2.0f, 3.0f);
+    expectFailureWhenTestingThat(actual).usingExactEquality().contains(null);
+    assertFailureKeys(
+        "value of",
+        "Not true that <"
+            + Arrays.toString(actual)
+            + "> contains at least one element that is exactly equal to "
+            + "<null>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(" + actual[0] + ", null) threw java.lang.NullPointerException");
   }
 
   @Test

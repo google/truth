@@ -1011,7 +1011,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
         "first exception");
     assertThatFailure()
         .factValue("first exception")
-        .startsWith("compare([def=999, def=64]) threw java.lang.ClassCastException");
+        .startsWith("compare(def=999, def=64) threw java.lang.ClassCastException");
   }
 
   @Test
@@ -1184,7 +1184,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
         "first exception");
     assertThatFailure()
         .factValue("first exception")
-        .startsWith("compare([def=999, def=64]) threw java.lang.ClassCastException");
+        .startsWith("compare(def=999, def=64) threw java.lang.ClassCastException");
   }
 
   @Test

@@ -904,11 +904,20 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingTolerance_contains_nullExpected() {
-    try {
-      assertThat(array(1.1, 2.2, 3.3)).usingTolerance(DEFAULT_TOLERANCE).contains(null);
-      fail("Expected NullPointerException to be thrown but wasn't");
-    } catch (NullPointerException expected) {
-    }
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .contains(null);
+    assertFailureKeys(
+        "value of",
+        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is a finite number "
+            + "within "
+            + DEFAULT_TOLERANCE
+            + " of <null>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(1.1, null) threw java.lang.NullPointerException");
   }
 
   @Test
@@ -1093,41 +1102,73 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     // Expected value is Long - supported up to +/- 2^53
     assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(2L);
     assertThat(array(1.0, 1L << 53, 3.0)).usingExactEquality().contains(1L << 53);
-    try {
-      assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains((1L << 53) + 1L);
-      fail("Expected IllegalArgumentException to be thrown");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Expected value 9007199254740993 in assertion using exact double equality was a long "
-                  + "with an absolute value greater than 2^52 which has no exact double "
-                  + "representation");
-    }
-    // Expected value is BigInteger - not supported
-    try {
-      assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(BigInteger.valueOf(2));
-      fail("Expected IllegalArgumentException to be thrown");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Expected value in assertion using exact double equality was of unsupported type "
-                  + BigInteger.class
-                  + " (it may not have an exact double representation)");
-    }
-    // Expected value is BigDecimal - not supported
-    try {
-      assertThat(array(1.0, 2.0, 3.0)).usingExactEquality().contains(BigDecimal.valueOf(2.0));
-      fail("Expected IllegalArgumentException to be thrown");
-    } catch (IllegalArgumentException expected) {
-      assertThat(expected)
-          .hasMessageThat()
-          .isEqualTo(
-              "Expected value in assertion using exact double equality was of unsupported type "
-                  + BigDecimal.class
-                  + " (it may not have an exact double representation)");
-    }
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes_longOutOfRange() {
+    long expected = (1L << 53) + 1L;
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected);
+    assertFailureKeys(
+        "value of",
+        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to <"
+            + expected
+            + ">",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(1.1, " + expected + ") threw java.lang.IllegalArgumentException");
+    assertThatFailure()
+        .factValue("first exception")
+        .contains(
+            "Expected value "
+                + expected
+                + " in assertion using exact double equality was a long with an absolute value "
+                + "greater than 2^52 which has no exact double representation");
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes_bigIntegerNotSupported() {
+    BigInteger expected = BigInteger.valueOf(2);
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected);
+    assertFailureKeys(
+        "value of",
+        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to <"
+            + expected
+            + ">",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(1.1, " + expected + ") threw java.lang.IllegalArgumentException");
+    assertThatFailure()
+        .factValue("first exception")
+        .contains(
+            "Expected value in assertion using exact double equality was of unsupported type "
+                + BigInteger.class
+                + " (it may not have an exact double representation)");
+  }
+
+  @Test
+  public void usingExactEquality_contains_otherTypes_bigDecimalNotSupported() {
+    BigDecimal expected = BigDecimal.valueOf(2.0);
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected);
+    assertFailureKeys(
+        "value of",
+        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to <"
+            + expected
+            + ">",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(1.1, " + expected + ") threw java.lang.IllegalArgumentException");
+    assertThatFailure()
+        .factValue("first exception")
+        .contains(
+            "Expected value in assertion using exact double equality was of unsupported type "
+                + BigDecimal.class
+                + " (it may not have an exact double representation)");
   }
 
   @Test
@@ -1161,11 +1202,16 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void usingExactEquality_contains_nullExpected() {
-    try {
-      assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(null);
-      fail("Expected NullPointerException to be thrown but wasn't");
-    } catch (NullPointerException expected) {
-    }
+    expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(null);
+    assertFailureKeys(
+        "value of",
+        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to "
+            + "<null>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(1.1, null) threw java.lang.NullPointerException");
   }
 
   @Test

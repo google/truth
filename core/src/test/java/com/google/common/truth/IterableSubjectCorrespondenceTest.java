@@ -31,7 +31,6 @@ import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEG
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.TestCorrespondences.Record;
@@ -73,6 +72,50 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingElementsUsing_contains_handlesExceptions() {
+    // CASE_INSENSITIVE_EQUALITY.compare throws on the null actual element.
+    List<String> actual = asList("abc", null, "ghi");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .contains("DEF");
+    // We fail with the more helpful failure message about the missing value, not the NPE.
+    assertFailureKeys(
+        "Not true that <[abc, null, ghi]> contains at least one element that "
+            + "equals (ignoring case) <DEF>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, DEF) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingElementsUsing_contains_handlesExceptions_alwaysFails() {
+    List<String> actual = asList("abc", null, "ghi");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .contains("GHI");
+    // The actual list does contain the required match. However, no reasonable implementation would
+    // find that mapping without hitting the null along the way, and that throws NPE, so we are
+    // contractually required to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing elements",
+        "first exception",
+        "comparing contents by testing that at least one element equals (ignoring case) "
+            + "the expected value",
+        "expected to contain",
+        "but was");
+    assertFailureValue("expected to contain", "GHI");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, GHI) threw java.lang.NullPointerException");
+  }
+
+  @Test
   public void comparingElementsUsing_displayingDiffsPairedBy_1arg_contains() {
     Record expected = Record.create(2, 200);
     ImmutableList<Record> actual =
@@ -91,7 +134,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
-            "Not true that <[1/100, 2/211, 4/400, 2/189, none/999]> contains exactly one element "
+            "Not true that <[1/100, 2/211, 4/400, 2/189, none/999]> contains at least one element "
                 + "that has the same id as and a score is within 10 of <2/200>. It did contain the "
                 + "following elements with the correct key: "
                 + "<[2/211 (diff: score:11), 2/189 (diff: score:-11)]>");
@@ -108,13 +151,18 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   @Test
   public void comparingElementsUsing_wrongTypeInActual() {
     ImmutableList<?> actual = ImmutableList.of("valid", 123);
-    IterableSubject.UsingCorrespondence<String, Integer> intermediate =
-        assertThat(actual).comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
-    try {
-      intermediate.contains(456);
-      fail("Expected ClassCastException as actual Iterable contains a non-String");
-    } catch (ClassCastException expected) {
-    }
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .contains(456);
+    assertFailureKeys(
+        "Not true that <[valid, 123]> contains at least one element that parses to <456>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(123, 456) threw java.lang.ClassCastException");
   }
 
   @Test
@@ -138,6 +186,49 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .isEqualTo(
             "<[not a number, +123, +456, +789]> should not have contained an element that "
                 + "parses to <456>. It contained the following such elements: <[+456]>");
+  }
+
+  @Test
+  public void comparingElementsUsing_doesNotContain_handlesExceptions() {
+    // CASE_INSENSITIVE_EQUALITY.compare throws on the null actual element.
+    List<String> actual = asList("abc", null, "ghi");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .doesNotContain("GHI");
+    // We fail with the more helpful failure message about the unexpected value, not the NPE.
+    assertFailureKeys(
+        "<[abc, null, ghi]> should not have contained an element that "
+            + "equals (ignoring case) <GHI>. It contained the following such elements: <[ghi]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, GHI) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingElementsUsing_doesNotContain_handlesExceptions_alwaysFails() {
+    List<String> actual = asList("abc", null, "ghi");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .doesNotContain("DEF");
+    // The actual list does not contain the forbidden match. However, we cannot establish that
+    // without hitting the null along the way, and that throws NPE, so we are contractually required
+    // to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing elements",
+        "first exception",
+        "comparing contents by testing that no element equals (ignoring case) the forbidden value",
+        "expected not to contain",
+        "but was");
+    assertFailureValue("expected not to contain", "DEF");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, DEF) threw java.lang.NullPointerException");
   }
 
   @Test
@@ -385,7 +476,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         "first exception");
     assertThatFailure()
         .factValue("first exception")
-        .startsWith("compare([null, ABC]) threw java.lang.NullPointerException");
+        .startsWith("compare(null, ABC) threw java.lang.NullPointerException");
   }
 
   @Test
@@ -410,7 +501,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureValue("expected", "[ABC, DEF, GHI, null]");
     assertThatFailure()
         .factValue("first exception")
-        .startsWith("compare([null, ABC]) threw java.lang.NullPointerException");
+        .startsWith("compare(null, ABC) threw java.lang.NullPointerException");
   }
 
   @Test
@@ -907,7 +998,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         "first exception");
     assertThatFailure()
         .factValue("first exception")
-        .startsWith("compare([null, ABC]) threw java.lang.NullPointerException");
+        .startsWith("compare(null, ABC) threw java.lang.NullPointerException");
   }
 
   @Test
@@ -932,7 +1023,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureValue("expected", "[ABC, DEF, null]");
     assertThatFailure()
         .factValue("first exception")
-        .startsWith("compare([null, ABC]) threw java.lang.NullPointerException");
+        .startsWith("compare(null, ABC) threw java.lang.NullPointerException");
   }
 
   @Test
@@ -1180,6 +1271,50 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingElementsUsing_containsAnyOf_handlesExceptions() {
+    // CASE_INSENSITIVE_EQUALITY.compare throws on the null actual element.
+    List<String> actual = asList("abc", null, "ghi");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsAnyOf("DEF", "FED");
+    // We fail with the more helpful failure message about missing the expected values, not the NPE.
+    assertFailureKeys(
+        "Not true that <[abc, null, ghi]> contains at least one element that "
+            + "equals (ignoring case) any of <[DEF, FED]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, DEF) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsAnyOf_handlesExceptions_alwaysFails() {
+    List<String> actual = asList("abc", null, "ghi");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsAnyOf("GHI", "XYZ");
+    // The actual list does contain the required match. However, no reasonable implementation would
+    // find that mapping without hitting the null along the way, and that throws NPE, so we are
+    // contractually required to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing elements",
+        "first exception",
+        "comparing contents by testing that at least one element equals (ignoring case) "
+            + "any expected value",
+        "expected to contain any of",
+        "but was");
+    assertFailureValue("expected to contain any of", "[GHI, XYZ]");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, GHI) threw java.lang.NullPointerException");
+  }
+
+  @Test
   public void comparingElementsUsing_containsAnyIn_success() {
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256", "0x40");
     ImmutableList<Integer> expected = ImmutableList.of(255, 256, 257);
@@ -1367,6 +1502,50 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .isEqualTo(
             "Not true that <[+128, +64, null, 0x40]> contains no element that parses to any of "
                 + "<[255, null, 257]>. It contains <[null which corresponds to null]>");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsNoneOf_handlesExceptions() {
+    // CASE_INSENSITIVE_EQUALITY.compare throws on the null actual element.
+    List<String> actual = asList("abc", null, "ghi");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsNoneOf("GHI", "XYZ");
+    // We fail with the more helpful failure message about the unexpected value, not the NPE.
+    assertFailureKeys(
+        "Not true that <[abc, null, ghi]> contains no element that "
+            + "equals (ignoring case) any of <[GHI, XYZ]>. "
+            + "It contains <[ghi which corresponds to GHI]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, GHI) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingElementsUsing_containsNoneOf_handlesExceptions_alwaysFails() {
+    List<String> actual = asList("abc", null, "ghi");
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsNoneOf("DEF", "XYZ");
+    // The actual list does not contain the forbidden matcesh. However, we cannot establish that
+    // without hitting the null along the way, and that throws NPE, so we are contractually required
+    // to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing elements",
+        "first exception",
+        "comparing contents by testing that no element equals (ignoring case) any forbidden value",
+        "expected not to contain any of",
+        "but was");
+    assertFailureValue("expected not to contain any of", "[DEF, XYZ]");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, DEF) threw java.lang.NullPointerException");
   }
 
   @Test
