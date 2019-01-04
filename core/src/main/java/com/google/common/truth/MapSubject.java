@@ -19,7 +19,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Maps.immutableEntry;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
@@ -488,55 +490,76 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       if (actual().containsKey(expectedKey)) {
         // Found matching key.
         A actualValue = getCastSubject().get(expectedKey);
-        if (correspondence.compare(actualValue, expectedValue)) {
-          // Found matching key and value. Test passes!
+        Correspondence.ExceptionStore compareExceptions =
+            Correspondence.ExceptionStore.forMapValuesCompare();
+        if (correspondence.safeCompare(actualValue, expectedValue, compareExceptions)) {
+          // The expected key had the expected value. There's no need to check compareExceptions
+          // here, because if Correspondence.compare() threw then safeCompare() would return false.
           return;
         }
         // Found matching key with non-matching value.
         @NullableDecl String diff = correspondence.formatDiff(actualValue, expectedValue);
         if (diff != null) {
           failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
-                          + "However, it has a mapping from that key to <%s> (diff: %s)",
-                      actualAsString(),
-                      expectedKey,
-                      correspondence,
-                      expectedValue,
-                      actualValue,
-                      diff)));
+              facts(
+                      simpleFact(
+                          lenientFormat(
+                              "Not true that %s contains an entry with key <%s> and a value that "
+                                  + "%s <%s>. However, it has a mapping from that key to <%s> "
+                                  + "(diff: %s)",
+                              actualAsString(),
+                              expectedKey,
+                              correspondence,
+                              expectedValue,
+                              actualValue,
+                              diff)))
+                  .and(compareExceptions.describeAsAdditionalInfo()));
         } else {
           failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
-                          + "However, it has a mapping from that key to <%s>",
-                      actualAsString(), expectedKey, correspondence, expectedValue, actualValue)));
+              facts(
+                      simpleFact(
+                          lenientFormat(
+                              "Not true that %s contains an entry with key <%s> and a value that "
+                                  + "%s <%s>. However, it has a mapping from that key to <%s>",
+                              actualAsString(),
+                              expectedKey,
+                              correspondence,
+                              expectedValue,
+                              actualValue)))
+                  .and(compareExceptions.describeAsAdditionalInfo()));
         }
       } else {
-        // Did not find matching key.
+        // Did not find matching key. Look for the matching value with a different key.
         Set<Object> keys = new LinkedHashSet<>();
+        Correspondence.ExceptionStore compareExceptions =
+            Correspondence.ExceptionStore.forMapValuesCompare();
         for (Entry<?, A> actualEntry : getCastSubject().entrySet()) {
-          if (correspondence.compare(actualEntry.getValue(), expectedValue)) {
+          if (correspondence.safeCompare(
+              actualEntry.getValue(), expectedValue, compareExceptions)) {
             keys.add(actualEntry.getKey());
           }
         }
         if (!keys.isEmpty()) {
           // Found matching values with non-matching keys.
           failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s contains an entry with key <%s> and a value that %s <%s>. "
-                          + "However, the following keys are mapped to such values: <%s>",
-                      actualAsString(), expectedKey, correspondence, expectedValue, keys)));
+              facts(
+                      simpleFact(
+                          lenientFormat(
+                              "Not true that %s contains an entry with key <%s> and a value that "
+                                  + "%s <%s>. However, the following keys are mapped to such "
+                                  + "values: <%s>",
+                              actualAsString(), expectedKey, correspondence, expectedValue, keys)))
+                  .and(compareExceptions.describeAsAdditionalInfo()));
         } else {
           // Did not find matching key or value.
           failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s contains an entry with key <%s> and a value that %s <%s>",
-                      actualAsString(), expectedKey, correspondence, expectedValue)));
+              facts(
+                      simpleFact(
+                          lenientFormat(
+                              "Not true that %s contains an entry with key <%s> and a value that "
+                                  + "%s <%s>",
+                              actualAsString(), expectedKey, correspondence, expectedValue)))
+                  .and(compareExceptions.describeAsAdditionalInfo()));
         }
       }
     }
@@ -548,14 +571,33 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     public void doesNotContainEntry(
         @NullableDecl Object excludedKey, @NullableDecl E excludedValue) {
       if (actual().containsKey(excludedKey)) {
+        // Found matching key. Fail if the value matches, too.
         A actualValue = getCastSubject().get(excludedKey);
-        if (correspondence.compare(actualValue, excludedValue)) {
+        Correspondence.ExceptionStore compareExceptions =
+            Correspondence.ExceptionStore.forMapValuesCompare();
+        if (correspondence.safeCompare(actualValue, excludedValue, compareExceptions)) {
+          // The matching key had a matching value. There's no need to check compareExceptions
+          // here, because if Correspondence.compare() threw then safeCompare() would return false.
           failWithoutActual(
               simpleFact(
                   lenientFormat(
                       "Not true that %s does not contain an entry with key <%s> and a value that "
                           + "%s <%s>. It maps that key to <%s>",
                       actualAsString(), excludedKey, correspondence, excludedValue, actualValue)));
+        }
+        // The value didn't match, but we still need to fail if we hit an exception along the way.
+        if (!compareExceptions.isEmpty()) {
+          failWithActual(
+              compareExceptions
+                  .describeAsMainCause()
+                  .and(
+                      simpleFact(
+                          "comparing contents by testing that no entry had the forbidden key and "
+                              + "a value that "
+                              + correspondence
+                              + " the forbidden value"),
+                      fact("forbidden key", excludedKey),
+                      fact("forbidden value", excludedValue)));
         }
       }
     }
@@ -593,6 +635,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           return ALREADY_FAILED;
         }
       }
+      final Correspondence.ExceptionStore compareExceptions =
+          Correspondence.ExceptionStore.forMapValuesCompare();
       MapDifference<Object, A, V> diff =
           MapDifference.create(
               getCastSubject(),
@@ -600,10 +644,13 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
               new ValueTester<A, E>() {
                 @Override
                 public boolean test(A actualValue, E expectedValue) {
-                  return correspondence.compare(actualValue, expectedValue);
+                  return correspondence.safeCompare(actualValue, expectedValue, compareExceptions);
                 }
               });
       if (diff.isEmpty()) {
+        // The maps correspond exactly. There's no need to check compareExceptions here, because if
+        // Correspondence.compare() threw then safeCompare() would return false and the diff would
+        // record that we had the wrong value for that key.
         return new MapInOrder(
             expectedMap,
             lenientFormat(
@@ -612,14 +659,17 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                 correspondence));
       }
       failWithoutActual(
-          simpleFact(
-              lenientFormat(
-                  "Not true that %s contains exactly one entry that has a key that is equal to "
-                      + "and a value that %s the key and value of each entry of <%s>. It %s",
-                  actualAsString(),
-                  correspondence,
-                  expectedMap,
-                  diff.describe(this.<V>valueDiffFormat()))));
+          facts(
+                  simpleFact(
+                      lenientFormat(
+                          "Not true that %s contains exactly one entry that has a key that is "
+                              + "equal to and a value that %s the key and value of each entry of "
+                              + "<%s>. It %s",
+                          actualAsString(),
+                          correspondence,
+                          expectedMap,
+                          diff.describe(this.<V>valueDiffFormat()))))
+              .and(compareExceptions.describeAsAdditionalInfo()));
       return ALREADY_FAILED;
     }
 

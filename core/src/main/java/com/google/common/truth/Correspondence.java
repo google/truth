@@ -196,6 +196,10 @@ public abstract class Correspondence<A, E> {
       return new ExceptionStore("comparing elements");
     }
 
+    static ExceptionStore forMapValuesCompare() {
+      return new ExceptionStore("comparing values");
+    }
+
     private ExceptionStore(String context) {
       this.context = context;
     }

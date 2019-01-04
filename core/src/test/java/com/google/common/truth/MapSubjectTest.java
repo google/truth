@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
@@ -24,6 +25,7 @@ import static org.junit.Assert.fail;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -921,6 +923,49 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingValuesUsing_containsEntry_handlesExceptions_expectedKeyHasWrongValue() {
+    Map<Integer, String> actual = new LinkedHashMap<>();
+    actual.put(1, "one");
+    actual.put(2, null);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsEntry(2, "TWO");
+    // The test fails because the expected key has a null value which causes compare() to throw.
+    // We should report that the key has the wrong value, and also that we saw an exception.
+    assertFailureKeys(
+        "Not true that <{1=one, 2=null}> contains an entry with key <2> and a value that equals "
+            + "(ignoring case) <TWO>. However, it has a mapping from that key to <null>",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, TWO) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_handlesExceptions_wrongKeyHasExpectedValue() {
+    Map<Integer, String> actual = new LinkedHashMap<>();
+    actual.put(1, null);
+    actual.put(2, "three");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsEntry(3, "THREE");
+    // The test fails and does not contain the expected key, but does contain the expected value for
+    // a different key. No reasonable implementation would find this value in the second entry
+    // without hitting the exception from trying the first entry (which has a null value), so we
+    // should report the exception as well.
+    assertFailureKeys(
+        "Not true that <{1=null, 2=three}> contains an entry with key <3> and a value that equals "
+            + "(ignoring case) <THREE>. However, the following keys are mapped to such values: "
+            + "<[2]>",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, THREE) threw java.lang.NullPointerException");
+  }
+
+  @Test
   public void comparingValuesUsing_doesNotContainEntry_successExcludedKeyHasWrongValues() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "+123", "def", "+456");
     assertThat(actual)
@@ -937,7 +982,7 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void comparingValuesUsing_doesNotContainEntry_failsMissingExcludedKeyAndValue() {
+  public void comparingValuesUsing_doesNotContainEntry_successMissingExcludedKeyAndValue() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
     assertThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
@@ -955,6 +1000,31 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .isEqualTo(
             "Not true that <{abc=+123, def=+456}> does not contain an entry with "
                 + "key <def> and a value that parses to <456>. It maps that key to <+456>");
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_handlesException() {
+    Map<Integer, String> actual = new LinkedHashMap<>();
+    actual.put(1, "one");
+    actual.put(2, null);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .doesNotContainEntry(2, "TWO");
+    // This test would pass if compare(null, "TWO") returned false. But it actually throws, so the
+    // test must fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing values",
+        "first exception",
+        "comparing contents by testing that no entry had the forbidden key and a value that "
+            + "equals (ignoring case) the forbidden value",
+        "forbidden key",
+        "forbidden value",
+        "but was");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, TWO) threw java.lang.NullPointerException");
+    assertFailureValue("forbidden key", "2");
+    assertFailureValue("forbidden value", "TWO");
   }
 
   @Test
@@ -1034,6 +1104,26 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingValuesUsing_containsExactly_handlesExceptions() {
+    Map<Integer, String> actual = new LinkedHashMap<>();
+    actual.put(1, "one");
+    actual.put(2, null);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsExactly(1, "ONE", 2, "TWO");
+    assertFailureKeys(
+        "Not true that <{1=one, 2=null}> contains exactly one entry that has a key that is "
+            + "equal to and a value that equals (ignoring case) the key and value of each entry of "
+            + "<{1=ONE, 2=TWO}>. It has the following entries with matching keys but different "
+            + "values: {2=(expected TWO but got null)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, TWO) threw java.lang.NullPointerException");
+  }
+
+  @Test
   public void comparingValuesUsing_containsExactly_inOrder_failsOutOfOrder() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
     expectFailureWhenTestingThat(actual)
@@ -1051,25 +1141,37 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   @Test
   public void comparingValuesUsing_containsExactly_wrongValueTypeInActual() {
     ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
-    MapSubject.UsingCorrespondence<String, Integer> intermediate =
-        assertThat(actual).comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
-    try {
-      intermediate.containsExactly("def", 456, "abc", 123);
-      fail("Should have thrown.");
-    } catch (ClassCastException expected) {
-    }
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 456, "abc", 123);
+    assertFailureKeys(
+        "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+            + "equal to and a value that parses to the key and value of each entry of "
+            + "<{def=456, abc=123}>. It has the following entries with matching keys but "
+            + "different values: {def=(expected 456 but got 456)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(456, 456) threw java.lang.ClassCastException");
   }
 
   @Test
   public void comparingValuesUsing_containsExactly_wrongValueTypeInExpected() {
     ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
-    MapSubject.UsingCorrespondence<String, Integer> intermediate =
-        assertThat(actual).comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
-    try {
-      intermediate.containsExactly("def", 456, "abc", 123L);
-      fail("Should have thrown.");
-    } catch (ClassCastException expected) {
-    }
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly("def", 456, "abc", 123L);
+    assertFailureKeys(
+        "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+            + "equal to and a value that parses to the key and value of each entry of "
+            + "<{def=456, abc=123}>. It has the following entries with matching keys but "
+            + "different values: {abc=(expected 123 but got 123)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(123, 123) threw java.lang.ClassCastException");
   }
 
   @Test
@@ -1211,14 +1313,19 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void comparingValuesUsing_containsExactlyEntriesIn_wrongValueTypeInActual() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 123);
     ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
-    MapSubject.UsingCorrespondence<String, Integer> intermediate =
-        assertThat(actual).comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE);
-    try {
-      intermediate.containsExactlyEntriesIn(expected);
-      fail("Should have thrown.");
-    } catch (ClassCastException e) {
-      // expected
-    }
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactlyEntriesIn(expected);
+    assertFailureKeys(
+        "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
+            + "equal to and a value that parses to the key and value of each entry of "
+            + "<{def=456, abc=123}>. It has the following entries with matching keys but "
+            + "different values: {def=(expected 456 but got 456)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(456, 456) threw java.lang.ClassCastException");
   }
 
   private MapSubject expectFailureWhenTestingThat(Map<?, ?> actual) {
