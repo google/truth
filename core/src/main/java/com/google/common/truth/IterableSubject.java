@@ -993,8 +993,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
       for (A actual : getCastActual()) {
         if (correspondence.safeCompare(actual, expected, compareExceptions)) {
+          // Found a match, but we still need to fail if we hit an exception along the way.
           if (!compareExceptions.isEmpty()) {
-            // Found a match, but we still need to fail if we hit an exception along the way.
             subject.failWithActual(
                 compareExceptions
                     .describeAsMainCause()
