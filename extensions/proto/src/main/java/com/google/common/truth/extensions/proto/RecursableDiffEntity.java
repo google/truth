@@ -35,7 +35,7 @@ package com.google.common.truth.extensions.proto;
  */
 abstract class RecursableDiffEntity {
 
-  // Lazily-initialized return values for the resursive properties of the entity.
+  // Lazily-initialized return values for the recursive properties of the entity.
   // null = not initialized yet
   //
   // This essentially implements what @Memoized does, but @AutoValue doesn't support @Memoized on
