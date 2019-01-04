@@ -165,7 +165,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   @Override
   public void isEqualTo(@NullableDecl Object other) {
-    if (Objects.equal(actual(), other)) {
+    @SuppressWarnings("UndefinedEquals") // the contract of this method is to follow Multimap.equals
+    boolean isEqual = Objects.equal(actual(), other);
+    if (isEqual) {
       return;
     }
 
