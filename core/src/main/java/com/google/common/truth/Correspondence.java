@@ -175,7 +175,6 @@ public abstract class Correspondence<A, E> {
    * returned false. (Note that, in the latter case at least, it is likely that the test author's
    * intention was <i>not</i> for the test to pass with these values.)
    */
-  // TODO(b/119038411): Ensure that all callers in Truth handle exceptions sensibly
   // TODO(b/119038894): Simplify the 'for example' by using a factory method when it's ready
   public abstract boolean compare(@NullableDecl A actual, @NullableDecl E expected);
 

@@ -19,7 +19,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Maps.immutableEntry;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
+import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.SubjectUtils.HUMAN_UNDERSTANDABLE_EMPTY_STRING;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
@@ -475,43 +477,74 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       if (actual().containsKey(expectedKey)) {
         // Found matching key.
         Collection<A> actualValues = getCastActual().asMap().get(expectedKey);
+        Correspondence.ExceptionStore compareExceptions =
+            Correspondence.ExceptionStore.forMapValuesCompare();
         for (A actualValue : actualValues) {
-          if (correspondence.compare(actualValue, expectedValue)) {
-            // Found matching key and value. Test passes!
+          if (correspondence.safeCompare(actualValue, expectedValue, compareExceptions)) {
+            // Found matching key and value, but we still need to fail if we hit an exception along
+            // the way.
+            if (!compareExceptions.isEmpty()) {
+              failWithActual(
+                  compareExceptions
+                      .describeAsMainCause()
+                      .and(
+                          simpleFact(
+                              "comparing contents by testing that at least one entry had a key "
+                                  + "equal to the expected key and a value that "
+                                  + correspondence
+                                  + " the expected value"),
+                          fact("expected key", expectedKey),
+                          fact("expected value", expectedValue)));
+            }
             return;
           }
         }
         // Found matching key with non-matching values.
         failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that %s contains at least one entry with key <%s> and a value that "
-                        + "%s <%s>. However, it has a mapping from that key to <%s>",
-                    actualAsString(), expectedKey, correspondence, expectedValue, actualValues)));
+            facts(
+                    simpleFact(
+                        lenientFormat(
+                            "Not true that %s contains at least one entry with key <%s> and a "
+                                + "value that %s <%s>. However, it has a mapping from that key to "
+                                + "<%s>",
+                            actualAsString(),
+                            expectedKey,
+                            correspondence,
+                            expectedValue,
+                            actualValues)))
+                .and(compareExceptions.describeAsAdditionalInfo()));
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<>();
+        Correspondence.ExceptionStore compareExceptions =
+            Correspondence.ExceptionStore.forMapValuesCompare();
         for (Entry<?, A> actualEntry : getCastActual().entries()) {
-          if (correspondence.compare(actualEntry.getValue(), expectedValue)) {
+          if (correspondence.safeCompare(
+              actualEntry.getValue(), expectedValue, compareExceptions)) {
             keys.add(actualEntry.getKey());
           }
         }
         if (!keys.isEmpty()) {
           // Found matching values with non-matching keys.
           failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s contains at least one entry with key <%s> and a value that "
-                          + "%s <%s>. However, the following keys are mapped to such values: <%s>",
-                      actualAsString(), expectedKey, correspondence, expectedValue, keys)));
+              facts(
+                      simpleFact(
+                          lenientFormat(
+                              "Not true that %s contains at least one entry with key <%s> and a "
+                                  + "value that %s <%s>. However, the following keys are mapped to "
+                                  + "such values: <%s>",
+                              actualAsString(), expectedKey, correspondence, expectedValue, keys)))
+                  .and(compareExceptions.describeAsAdditionalInfo()));
         } else {
           // Did not find matching key or value.
           failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s contains at least one entry with key <%s> and a value that "
-                          + "%s <%s>",
-                      actualAsString(), expectedKey, correspondence, expectedValue)));
+              facts(
+                      simpleFact(
+                          lenientFormat(
+                              "Not true that %s contains at least one entry with key <%s> and a "
+                                  + "value that %s <%s>",
+                              actualAsString(), expectedKey, correspondence, expectedValue)))
+                  .and(compareExceptions.describeAsAdditionalInfo()));
         }
       }
     }
@@ -525,22 +558,43 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       if (actual().containsKey(excludedKey)) {
         Collection<A> actualValues = getCastActual().asMap().get(excludedKey);
         List<A> matchingValues = new ArrayList<>();
+        Correspondence.ExceptionStore compareExceptions =
+            Correspondence.ExceptionStore.forMapValuesCompare();
         for (A actualValue : actualValues) {
-          if (correspondence.compare(actualValue, excludedValue)) {
+          if (correspondence.safeCompare(actualValue, excludedValue, compareExceptions)) {
             matchingValues.add(actualValue);
           }
         }
+        // Fail if we found a matching value for the key.
         if (!matchingValues.isEmpty()) {
           failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s did not contain an entry with key <%s> and a value that %s <%s>. "
-                          + "It maps that key to the following such values: <%s>",
-                      actualAsString(),
-                      excludedKey,
-                      correspondence,
-                      excludedValue,
-                      matchingValues)));
+              facts(
+                      simpleFact(
+                          lenientFormat(
+                              "Not true that %s did not contain an entry with key <%s> and a value "
+                                  + "that %s <%s>. It maps that key to the following such values: "
+                                  + "<%s>",
+                              actualAsString(),
+                              excludedKey,
+                              correspondence,
+                              excludedValue,
+                              matchingValues)))
+                  .and(compareExceptions.describeAsAdditionalInfo()));
+        } else {
+          // No value matched, but we still need to fail if we hit an exception along the way.
+          if (!compareExceptions.isEmpty()) {
+            failWithActual(
+                compareExceptions
+                    .describeAsMainCause()
+                    .and(
+                        simpleFact(
+                            "comparing contents by testing that no entry had the forbidden key and "
+                                + "a value that "
+                                + correspondence
+                                + " the forbidden value"),
+                        fact("forbidden key", excludedKey),
+                        fact("forbidden value", excludedValue)));
+          }
         }
       }
     }

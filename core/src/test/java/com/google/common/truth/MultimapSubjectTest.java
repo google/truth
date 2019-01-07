@@ -16,6 +16,8 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Strings.lenientFormat;
+import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
+import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -852,16 +854,96 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingValuesUsing_containsEntry_handlesException_expectedKeyHasWrongValues() {
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    actual.put(1, "one");
+    actual.put(2, "two");
+    actual.put(2, "deux");
+    actual.put(2, null);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsEntry(2, "ZWEI");
+    // The test fails because the expected key doesn't have a match for the expected value. We are
+    // bound also to hit a NPE from compare(null, ZWEI) along the way, and should also report that.
+    assertFailureKeys(
+        "Not true that <{1=[one], 2=[two, deux, null]}> contains at least one entry with key <2> "
+            + "and a value that equals (ignoring case) <ZWEI>. However, it has a mapping from that "
+            + "key to <[two, deux, null]>",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, ZWEI) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_handlesException_wrongKeyHasExpectedValue() {
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    actual.put(1, "one");
+    actual.put(3, "two");
+    actual.put(3, null);
+    actual.put(3, "zwei");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsEntry(2, "ZWEI");
+    // The test fails and does not contain the expected key, but does contain the expected value
+    // we the wrong key. We are bound also to hit a NPE from compare(null, ZWEI) along the way, and
+    // should also report that.
+    assertFailureKeys(
+        "Not true that <{1=[one], 3=[two, null, zwei]}> contains at least one entry with key <2> "
+            + "and a value that equals (ignoring case) <ZWEI>. However, the following keys are "
+            + "mapped to such values: <[3]>",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, ZWEI) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsEntry_handlesException_alwaysFails() {
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    actual.put(1, "one");
+    actual.put(2, "two");
+    actual.put(2, null);
+    actual.put(2, "zwei");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsEntry(2, "ZWEI");
+    // The multimap does contain the expected entry, but no reasonable implementation could find
+    // it without hitting the NPE from compare(null, ZWEI) first, so we are contractually required
+    // to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing values",
+        "first exception",
+        "comparing contents by testing that at least one entry had a key equal to the expected key "
+            + "and a value that equals (ignoring case) the expected value",
+        "expected key",
+        "expected value",
+        "but was");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, ZWEI) threw java.lang.NullPointerException");
+    assertFailureValue("expected key", "2");
+    assertFailureValue("expected value", "ZWEI");
+  }
+
+  @Test
   public void comparingValuesUsing_containsEntry_wrongTypeInActual() {
     ImmutableListMultimap<String, Object> actual =
-        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", new Object());
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .containsEntry("def", 123);
-      fail("Should have thrown.");
-    } catch (ClassCastException expected) {
-    }
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", 789);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsEntry("def", 789);
+    assertFailureKeys(
+        "Not true that <{abc=[+123], def=[+456, 789]}> contains at least one entry with key <def> "
+            + "and a value that parses to <789>. However, it has a mapping from that key to "
+            + "<[+456, 789]>",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(789, 789) threw java.lang.ClassCastException");
   }
 
   @Test
@@ -907,16 +989,75 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingValuesUsing_doesNotContainEntry_handlesException_didContainEntry() {
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    actual.put(1, "one");
+    actual.put(2, "two");
+    actual.put(2, null);
+    actual.put(2, "zwei");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .doesNotContainEntry(2, "ZWEI");
+    // The test fails because it does contain the expected entry. We are bound to also hit the NPE
+    // from compare(null, ZWEI) along the way, and should also report that.
+    assertFailureKeys(
+        "Not true that <{1=[one], 2=[two, null, zwei]}> did not contain an entry with key <2> and "
+            + "a value that equals (ignoring case) <ZWEI>. It maps that key to the following such "
+            + "values: <[zwei]>",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, ZWEI) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingValuesUsing_doesNotContainEntry_handlesException_didNotContainEntry() {
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    actual.put(1, "one");
+    actual.put(2, "two");
+    actual.put(2, "deux");
+    actual.put(2, null);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .doesNotContainEntry(2, "ZWEI");
+    // The test would pass if compare(null, ZWEI) returned false. But it actually throws NPE, and
+    // we are bound to hit that, so we are contractually required to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing values",
+        "first exception",
+        "comparing contents by testing that no entry had the forbidden key and a value that "
+            + "equals (ignoring case) the forbidden value",
+        "forbidden key",
+        "forbidden value",
+        "but was");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, ZWEI) threw java.lang.NullPointerException");
+    assertFailureValue("forbidden key", "2");
+    assertFailureValue("forbidden value", "ZWEI");
+  }
+
+  @Test
   public void comparingValuesUsing_doesNotContainEntry_wrongTypeInActual() {
     ImmutableListMultimap<String, Object> actual =
-        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", new Object());
-    try {
-      assertThat(actual)
-          .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-          .doesNotContainEntry("def", 789);
-      fail("Should have thrown.");
-    } catch (ClassCastException expected) {
-    }
+        ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", 789);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .doesNotContainEntry("def", 789);
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing values",
+        "first exception",
+        "comparing contents by testing that no entry had the forbidden key and a value that "
+            + "parses to the forbidden value",
+        "forbidden key",
+        "forbidden value",
+        "but was");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(789, 789) threw java.lang.ClassCastException");
+    assertFailureValue("forbidden key", "def");
+    assertFailureValue("forbidden value", "789");
   }
 
   @Test
@@ -989,6 +1130,63 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isAnyOf(expectedPreamble + "<[def=+64]>", expectedPreamble + "<[def=0x40]>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_handlesException() {
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    actual.put(1, "one");
+    actual.put(2, null);
+    actual.put(2, "deux");
+    actual.put(2, "zwei");
+    ImmutableListMultimap<Integer, String> expected =
+        ImmutableListMultimap.of(1, "ONE", 2, "TWO", 2, "DEUX", 2, "ZWEI");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsExactlyEntriesIn(expected);
+    assertFailureKeys(
+        "Not true that <{1=[one], 2=[null, deux, zwei]}> contains exactly one element that has a "
+            + "key that is equal to and a value that equals (ignoring case) the key and value of "
+            + "each element of <[1=ONE, 2=TWO, 2=DEUX, 2=ZWEI]>. It is missing an element that has "
+            + "a key that is equal to and a value that equals (ignoring case) the key and value of "
+            + "<2=TWO> and has unexpected elements <[2=null]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(2=null, 2=TWO) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_handlesException_alwaysFails() {
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    actual.put(1, "one");
+    actual.put(2, null);
+    actual.put(2, "two");
+    actual.put(2, "deux");
+    ListMultimap<Integer, String> expected = LinkedListMultimap.create();
+    expected.put(1, "ONE");
+    expected.put(2, "TWO");
+    expected.put(2, "DEUX");
+    expected.put(2, null);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE)
+        .containsExactlyEntriesIn(expected);
+    // CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE.compare(null, null) returns true, so there is a
+    // mapping between actual and expected entries where they all correspond. However, no
+    // reasonable implementation would find that mapping without hitting the (null, "TWO") case
+    // along the way, and that throws NPE, so we are contractually required to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing elements",
+        "first exception",
+        "comparing contents by testing that each element has a key that is equal to and a value "
+            + "that equals (ignoring case) the key and value of an expected value",
+        "expected",
+        "but was");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(2=null, 2=TWO) threw java.lang.NullPointerException");
+    assertFailureValue("expected", "[1=ONE, 2=TWO, 2=DEUX, 2=null]");
   }
 
   @Test
