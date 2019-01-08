@@ -264,10 +264,9 @@ public abstract class Correspondence<A, E> {
       return fact(
           "first exception",
           Strings.lenientFormat(
-              "%s(%s) threw %s at %s",
+              "%s(%s) threw %s",
               firstMethod,
               ARGUMENT_JOINER.join(firstArguments),
-              firstException,
               getStackTraceAsString(firstException)));
     }
 
