@@ -260,11 +260,17 @@ public abstract class Correspondence<A, E> {
       }
     }
 
+    /**
+     * Returns a fact describing the first exception stored. This includes a stack trace (except
+     * under j2cl, where this is not available). It also has a separator at the end, so that when
+     * this appears at the end of an {@code AssertionError} message, the stack trace of the stored
+     * exception is distinguishable from the stack trace of the {@code AssertionError}.
+     */
     private Fact firstExceptionFact() {
       return fact(
           "first exception",
           Strings.lenientFormat(
-              "%s(%s) threw %s",
+              "%s(%s) threw %s\n---",
               firstMethod,
               ARGUMENT_JOINER.join(firstArguments),
               getStackTraceAsString(firstException)));
