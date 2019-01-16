@@ -26,6 +26,7 @@ import static java.util.Arrays.asList;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -178,68 +179,107 @@ public abstract class Correspondence<A, E> {
   // TODO(b/119038894): Simplify the 'for example' by using a factory method when it's ready
   public abstract boolean compare(@NullableDecl A actual, @NullableDecl E expected);
 
+  private static class StoredException {
+
+    private static final Joiner ARGUMENT_JOINER = Joiner.on(", ").useForNull("null");
+
+    private final Exception exception;
+    private final String methodName;
+    private final List<Object> methodArguments;
+
+    StoredException(Exception exception, String methodName, List<Object> methodArguments) {
+      this.exception = checkNotNull(exception);
+      this.methodName = checkNotNull(methodName);
+      this.methodArguments = checkNotNull(methodArguments);
+    }
+
+    /**
+     * Returns a String describing the exception stored. This includes a stack trace (except under
+     * j2cl, where this is not available). It also has a separator at the end, so that when this
+     * appears at the end of an {@code AssertionError} message, the stack trace of the stored
+     * exception is distinguishable from the stack trace of the {@code AssertionError}.
+     */
+    private String describe() {
+      return Strings.lenientFormat(
+          "%s(%s) threw %s\n---",
+          methodName, ARGUMENT_JOINER.join(methodArguments), getStackTraceAsString(exception));
+    }
+  }
+
   /**
    * Helper object to store exceptions encountered while executing a {@link Correspondence} method.
    */
   static final class ExceptionStore {
 
-    private static final Joiner ARGUMENT_JOINER = Joiner.on(", ").useForNull("null");
+    private final String argumentLabel;
+    private StoredException firstCompareException = null;
+    private StoredException firstFormatDiffException = null;
 
-    private final String context;
-    private boolean empty = true;
-    private Exception firstException;
-    private String firstMethod;
-    private List<Object> firstArguments;
-
-    static ExceptionStore forCompare() {
-      return new ExceptionStore("comparing elements");
+    static ExceptionStore forIterable() {
+      return new ExceptionStore("elements");
     }
 
-    static ExceptionStore forMapValuesCompare() {
-      return new ExceptionStore("comparing values");
+    static ExceptionStore forMapValues() {
+      return new ExceptionStore("values");
     }
 
-    private ExceptionStore(String context) {
-      this.context = context;
+    private ExceptionStore(String argumentLabel) {
+      this.argumentLabel = argumentLabel;
     }
 
     /**
-     * Adds an exception to the store.
+     * Adds an exception that was thrown during a {@code compare} call.
      *
-     * @param callingClass The class from which the {@link Correspondence} method was called. When
+     * @param callingClass The class from which the {@code compare} method was called. When
      *     reporting failures, stack traces will be truncated above elements in this class.
      * @param exception The exception encountered
-     * @param method The name of the {@link Correspondence} method during which the exception was
-     *     encountered (e.g. {@code "compare"})
-     * @param arguments The arguments to the {@link Correspondence} method call during which the
-     *     exception was encountered
+     * @param arguments The arguments to the {@code compare} call during which the exception was
+     *     encountered
      */
-    void add(Class<?> callingClass, Exception exception, String method, Object... arguments) {
-      if (empty) {
-        empty = false;
+    void addCompareException(Class<?> callingClass, Exception exception, Object... arguments) {
+      if (firstCompareException == null) {
         truncateStackTrace(exception, callingClass);
-        firstException = exception;
-        firstMethod = method;
-        firstArguments = asList(arguments);
+        firstCompareException = new StoredException(exception, "compare", asList(arguments));
       }
     }
 
-    /** Returns whether the store is empty (i.e. no calls to {@link #add} were made). */
-    boolean isEmpty() {
-      return empty;
+    /**
+     * Adds an exception that was thrown during a {@code formatDiff} call.
+     *
+     * @param callingClass The class from which the {@code formatDiff} method was called. When
+     *     reporting failures, stack traces will be truncated above elements in this class.
+     * @param exception The exception encountered
+     * @param arguments The arguments to the {@code formatDiff} call during which the exception was
+     *     encountered
+     */
+    void addFormatDiffException(Class<?> callingClass, Exception exception, Object... arguments) {
+      if (firstFormatDiffException == null) {
+        truncateStackTrace(exception, callingClass);
+        firstFormatDiffException = new StoredException(exception, "formatDiff", asList(arguments));
+      }
+    }
+
+    /** Returns whether any exceptions thrown during {@code compare} calls were stored. */
+    boolean hasCompareException() {
+      return firstCompareException != null;
     }
 
     /**
-     * Returns facts to use in a failure message when the exceptions are the main cause of the
-     * failure. This method must not be called when the store is empty. Assertions should use this
-     * when exceptions were thrown while comparing elements and no more meaningful failure was
-     * discovered by assuming a false return and continuing (see the javadoc for {@link
+     * Returns facts to use in a failure message when the exceptions from {@code compare} calls are
+     * the main cause of the failure. At least one exception thrown during a {@code compare} call
+     * must have been stored, and no exceptions from a {@code formatDiff} call. Assertions should
+     * use this when exceptions were thrown while comparing elements and no more meaningful failure
+     * was discovered by assuming a false return and continuing (see the javadoc for {@link
      * Correspondence#compare}). C.f. {@link #describeAsAdditionalInfo}.
      */
     Facts describeAsMainCause() {
-      checkState(!empty);
+      checkState(firstCompareException != null);
+      // We won't do diff formatting unless a more meaningful failure was found, and if a more
+      // meaningful failure was found then we shouldn't be using this method:
+      checkState(firstFormatDiffException == null);
       return facts(
-          simpleFact("one or more exceptions were thrown while " + context), firstExceptionFact());
+          simpleFact("one or more exceptions were thrown while comparing " + argumentLabel),
+          fact("first exception", firstCompareException.describe()));
     }
 
     /**
@@ -251,29 +291,20 @@ public abstract class Correspondence<A, E> {
      * the failure message. C.f. {@link #describeAsMainCause}.
      */
     Facts describeAsAdditionalInfo() {
-      if (!empty) {
-        return facts(
-            simpleFact("additionally, one or more exceptions were thrown while " + context),
-            firstExceptionFact());
-      } else {
-        return facts();
+      ImmutableList.Builder<Fact> builder = ImmutableList.builder();
+      if (firstCompareException != null) {
+        builder.add(
+            simpleFact(
+                "additionally, one or more exceptions were thrown while comparing "
+                    + argumentLabel));
+        builder.add(fact("first exception", firstCompareException.describe()));
       }
-    }
-
-    /**
-     * Returns a fact describing the first exception stored. This includes a stack trace (except
-     * under j2cl, where this is not available). It also has a separator at the end, so that when
-     * this appears at the end of an {@code AssertionError} message, the stack trace of the stored
-     * exception is distinguishable from the stack trace of the {@code AssertionError}.
-     */
-    private Fact firstExceptionFact() {
-      return fact(
-          "first exception",
-          Strings.lenientFormat(
-              "%s(%s) threw %s\n---",
-              firstMethod,
-              ARGUMENT_JOINER.join(firstArguments),
-              getStackTraceAsString(firstException)));
+      if (firstFormatDiffException != null) {
+        builder.add(
+            simpleFact("additionally, one or more exceptions were thrown while formatting diffs"));
+        builder.add(fact("first exception", firstFormatDiffException.describe()));
+      }
+      return facts(builder.build());
     }
 
     private static void truncateStackTrace(Exception exception, Class<?> callingClass) {
@@ -298,7 +329,7 @@ public abstract class Correspondence<A, E> {
     try {
       return compare(actual, expected);
     } catch (RuntimeException e) {
-      exceptions.add(Correspondence.class, e, "compare", actual, expected);
+      exceptions.addCompareException(Correspondence.class, e, actual, expected);
       return false;
     }
   }
@@ -312,10 +343,32 @@ public abstract class Correspondence<A, E> {
    *
    * <p>Assertions should only invoke this with parameters for which {@link #compare} returns {@code
    * false}.
+   *
+   * <p>If this throws an exception, that implies that it is not possible to describe the diffs. An
+   * assertion will normally only call this method if it has established that its condition does not
+   * hold: good practice dictates that, if this method throws, the assertion should catch the
+   * exception and continue to describe the original failure as if this method had returned null,
+   * mentioning the failure from this method as additional information.
    */
   @NullableDecl
   public String formatDiff(@NullableDecl A actual, @NullableDecl E expected) {
     return null;
+  }
+
+  /**
+   * Invokes {@link #formatDiff}, catching any exceptions. If the comparison does not throw, returns
+   * the result. If it does throw, adds the exception to the given {@link ExceptionStore} and
+   * returns null.
+   */
+  @NullableDecl
+  final String safeFormatDiff(
+      @NullableDecl A actual, @NullableDecl E expected, ExceptionStore exceptions) {
+    try {
+      return formatDiff(actual, expected);
+    } catch (RuntimeException e) {
+      exceptions.addFormatDiffException(Correspondence.class, e, actual, expected);
+      return null;
+    }
   }
 
   /**

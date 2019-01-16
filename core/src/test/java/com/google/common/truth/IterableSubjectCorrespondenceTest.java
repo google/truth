@@ -141,6 +141,28 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void
+      comparingElementsUsing_displayingDiffsPairedBy_1arg_contains_handlesFormatDiffExceptions() {
+    Record expected = Record.create(0, 999);
+    List<Record> actual = asList(Record.create(1, 100), null, Record.create(4, 400));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .contains(expected);
+    assertFailureKeys(
+        "Not true that <[1/100, null, 4/400]> contains at least one element that has the same id "
+            + "as and a score is within 10 of <0/999>. It did contain the following elements with "
+            + "the correct key: <[null]>",
+        "additionally, one or more exceptions were thrown while formatting diffs",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("formatDiff(null, 0/999) threw java.lang.NullPointerException");
+  }
+
+  @Test
   public void comparingElementsUsing_contains_null() {
     List<String> actual = Arrays.asList("+123", null, "+789");
     assertThat(actual)
@@ -718,6 +740,31 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void
+      comparingElementsUsing_displayingDiffsPairedBy_containsExactlyElementsIn_handlesExceptionsFromFormatDiff() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(0, 999));
+    List<Record> actual = asList(Record.create(1, 101), Record.create(2, 211), null);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsExactlyElementsIn(expected);
+    assertFailureKeys(
+        "Not true that <[1/101, 2/211, null]> contains exactly one element that has the same id as "
+            + "and a score is within 10 of each element of <[1/100, 2/200, 0/999]>. It is missing "
+            + "an element that corresponds to <2/200> and has unexpected elements "
+            + "<[2/211 (diff: score:11)]> with key 2, and is missing an element that corresponds "
+            + "to <0/999> and has unexpected elements <[null]> with key 0",
+        "additionally, one or more exceptions were thrown while formatting diffs",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("formatDiff(null, 0/999) threw java.lang.NullPointerException");
+  }
+
+  @Test
   public void comparingElementsUsing_containsExactlyElementsIn_failsMissingElementInOneToOne() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual = ImmutableList.of("+128", "+64", "+256");
@@ -1082,6 +1129,32 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void
+      comparingElementsUsing_displayingElementsPairedBy_containsAllIn_handlesFormatDiffExceptions() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(0, 999));
+    List<Record> actual =
+        asList(Record.create(1, 101), Record.create(2, 211), Record.create(3, 303), null);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsAllIn(expected);
+    assertFailureKeys(
+        "Not true that <[1/101, 2/211, 3/303, null]> contains at least one element that has the "
+            + "same id as and a score is within 10 of each element of <[1/100, 2/200, 0/999]>. "
+            + "It is missing an element that corresponds to <2/200> (but did have elements "
+            + "<[2/211 (diff: score:11)]> with matching key 2), and is missing an element that "
+            + "corresponds to <0/999> (but did have elements <[null]> with matching key 0)",
+        "additionally, one or more exceptions were thrown while formatting diffs",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("formatDiff(null, 0/999) threw java.lang.NullPointerException");
+  }
+
+  @Test
   public void comparingElementsUsing_containsAllIn_failsMultipleMissingCandidates() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
@@ -1416,6 +1489,30 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
                 + "same id as and a score is within 10 of any element in "
                 + "<[1/100, 2/200, 2/250, none/999]>. (N.B. A key function which does not uniquely "
                 + "key the expected elements was provided and has consequently been ignored.)");
+  }
+
+  @Test
+  public void
+      comparingElementsUsing_displayingDiffsPairedBy_containsAnyIn_handlesFormatDiffExceptions() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(0, 999));
+    List<Record> actual = asList(Record.create(3, 311), Record.create(4, 404), null);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsAnyIn(expected);
+    assertFailureKeys(
+        "Not true that <[3/311, 4/404, null]> contains at least one element that has the same id "
+            + "as and a score is within 10 of any element in <[1/100, 2/200, 0/999]>. It contains "
+            + "the following values that match by key: with key 0, would have accepted 0/999, but "
+            + "got [null]",
+        "additionally, one or more exceptions were thrown while formatting diffs",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("formatDiff(null, 0/999) threw java.lang.NullPointerException");
   }
 
   @Test

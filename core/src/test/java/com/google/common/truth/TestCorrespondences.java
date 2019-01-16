@@ -133,13 +133,13 @@ final class TestCorrespondences {
     private final int score;
 
     static Record create(int id, int score) {
-      checkState(id > 0);
+      checkState(id >= 0);
       checkState(score > 0);
       return new Record(id, score);
     }
 
     static Record createWithoutId(int score) {
-      checkState(score > 0);
+      checkState(score >= 0);
       return new Record(-1, score);
     }
 
@@ -149,7 +149,7 @@ final class TestCorrespondences {
     }
 
     boolean hasId() {
-      return id > 0;
+      return id >= 0;
     }
 
     int getId() {
@@ -211,6 +211,12 @@ final class TestCorrespondences {
 
     @Override
     public boolean compare(Record actual, Record expected) {
+      if (actual == null) {
+        return expected == null;
+      }
+      if (expected == null) {
+        return false;
+      }
       return actual.hasSameId(expected) && Math.abs(actual.getScore() - expected.getScore()) <= 10;
     }
 
@@ -233,8 +239,10 @@ final class TestCorrespondences {
    * A correspondence between {@link Record} instances which tests whether their {@code id} values
    * are equal and their {@code score} values are within 10 of each other. Smart diffing is enabled
    * for records with equal {@code id} values, with a formatted diff showing the actual {@code
-   * score} value less the expected {@code score} value preceded by the literal {@code score:}. Does
-   * not support null records.
+   * score} value less the expected {@code score} value preceded by the literal {@code score:}.
+   *
+   * <p>The {@link #compare} implementation support nulls, such that null corresponds to null only.
+   * The {@link #formatDiff} implementation does not support nulls.
    */
   static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
       new RecordCorrespondence();
@@ -280,7 +288,7 @@ final class TestCorrespondences {
 
   /**
    * A key function for {@link Record} instances that keys records by their {@code id} values. The
-   * key is null if the record has no {@code id}. Does not support null records.
+   * key is null if the record has no {@code id}. Treats null records as if they have an ID of 0.
    */
   static final Function<Record, Integer> RECORD_ID =
       new Function<Record, Integer>() {
@@ -288,6 +296,9 @@ final class TestCorrespondences {
         @Override
         @NullableDecl
         public Integer apply(Record record) {
+          if (record == null) {
+            return 0;
+          }
           return record.hasId() ? record.getId() : null;
         }
       };
