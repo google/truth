@@ -35,21 +35,21 @@ import org.junit.runners.JUnit4;
 public final class CorrespondenceExceptionStoreTest extends BaseSubjectTestCase {
 
   @Test
-  public void isEmpty_empty() {
-    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
-    assertThat(exceptions.isEmpty()).isTrue();
+  public void hasCompareException_empty() {
+    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
+    assertThat(exceptions.hasCompareException()).isFalse();
   }
 
   @Test
-  public void isEmpty_notEmpty() {
-    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
-    addException(exceptions);
-    assertThat(exceptions.isEmpty()).isFalse();
+  public void hasCompareException_hasCompareException() {
+    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
+    addCompareException(exceptions);
+    assertThat(exceptions.hasCompareException()).isTrue();
   }
 
   @Test
   public void describeAsMainCause_empty() {
-    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
+    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
     try {
       exceptions.describeAsMainCause();
       fail("Expected IllegalStateException");
@@ -59,8 +59,8 @@ public final class CorrespondenceExceptionStoreTest extends BaseSubjectTestCase 
 
   @Test
   public void describeAsMainCause_notEmpty() {
-    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
-    addException(exceptions);
+    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
+    addCompareException(exceptions);
     assertExpectedFacts(
         exceptions.describeAsMainCause().asIterable(),
         "one or more exceptions were thrown while comparing elements");
@@ -68,32 +68,32 @@ public final class CorrespondenceExceptionStoreTest extends BaseSubjectTestCase 
 
   @Test
   public void describeAsAdditionalInfo_empty() {
-    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
+    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
     assertThat(exceptions.describeAsAdditionalInfo().asIterable()).isEmpty();
   }
 
   @Test
   public void describeAsAdditionalInfo_notEmpty() {
-    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
-    addException(exceptions);
+    Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
+    addCompareException(exceptions);
     assertExpectedFacts(
         exceptions.describeAsAdditionalInfo().asIterable(),
         "additionally, one or more exceptions were thrown while comparing elements");
   }
 
-  /** Adds a somewhat realistic exception to the given store. */
-  private static void addException(Correspondence.ExceptionStore exceptions) {
+  /** Adds a somewhat realistic exception from {@link compare} to the given store. */
+  private static void addCompareException(Correspondence.ExceptionStore exceptions) {
     try {
       boolean unused = TestCorrespondences.WITHIN_10_OF.compare(null, 123);
     } catch (RuntimeException e) {
-      exceptions.add(CorrespondenceExceptionStoreTest.class, e, "compare", null, 123);
+      exceptions.addCompareException(CorrespondenceExceptionStoreTest.class, e, null, 123);
     }
   }
 
   /**
    * Asserts that the given iterable has two facts, the first with the given key and no value, the
    * second with a key of {@code "first exception"} and a value describing the exception added by
-   * {@link #addException}.
+   * {@link #addCompareException}.
    */
   private static void assertExpectedFacts(Iterable<Fact> facts, String expectedFirstKey) {
     assertThat(facts).hasSize(2);

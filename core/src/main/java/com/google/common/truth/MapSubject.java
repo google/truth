@@ -490,11 +490,10 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       if (actual().containsKey(expectedKey)) {
         // Found matching key.
         A actualValue = getCastSubject().get(expectedKey);
-        Correspondence.ExceptionStore compareExceptions =
-            Correspondence.ExceptionStore.forMapValuesCompare();
-        if (correspondence.safeCompare(actualValue, expectedValue, compareExceptions)) {
-          // The expected key had the expected value. There's no need to check compareExceptions
-          // here, because if Correspondence.compare() threw then safeCompare() would return false.
+        Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
+        if (correspondence.safeCompare(actualValue, expectedValue, exceptions)) {
+          // The expected key had the expected value. There's no need to check exceptions here,
+          // because if Correspondence.compare() threw then safeCompare() would return false.
           return;
         }
         // Found matching key with non-matching value.
@@ -513,7 +512,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                               expectedValue,
                               actualValue,
                               diff)))
-                  .and(compareExceptions.describeAsAdditionalInfo()));
+                  .and(exceptions.describeAsAdditionalInfo()));
         } else {
           failWithoutActual(
               facts(
@@ -526,16 +525,14 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                               correspondence,
                               expectedValue,
                               actualValue)))
-                  .and(compareExceptions.describeAsAdditionalInfo()));
+                  .and(exceptions.describeAsAdditionalInfo()));
         }
       } else {
         // Did not find matching key. Look for the matching value with a different key.
         Set<Object> keys = new LinkedHashSet<>();
-        Correspondence.ExceptionStore compareExceptions =
-            Correspondence.ExceptionStore.forMapValuesCompare();
+        Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (Entry<?, A> actualEntry : getCastSubject().entrySet()) {
-          if (correspondence.safeCompare(
-              actualEntry.getValue(), expectedValue, compareExceptions)) {
+          if (correspondence.safeCompare(actualEntry.getValue(), expectedValue, exceptions)) {
             keys.add(actualEntry.getKey());
           }
         }
@@ -549,7 +546,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                                   + "%s <%s>. However, the following keys are mapped to such "
                                   + "values: <%s>",
                               actualAsString(), expectedKey, correspondence, expectedValue, keys)))
-                  .and(compareExceptions.describeAsAdditionalInfo()));
+                  .and(exceptions.describeAsAdditionalInfo()));
         } else {
           // Did not find matching key or value.
           failWithoutActual(
@@ -559,7 +556,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                               "Not true that %s contains an entry with key <%s> and a value that "
                                   + "%s <%s>",
                               actualAsString(), expectedKey, correspondence, expectedValue)))
-                  .and(compareExceptions.describeAsAdditionalInfo()));
+                  .and(exceptions.describeAsAdditionalInfo()));
         }
       }
     }
@@ -573,11 +570,10 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       if (actual().containsKey(excludedKey)) {
         // Found matching key. Fail if the value matches, too.
         A actualValue = getCastSubject().get(excludedKey);
-        Correspondence.ExceptionStore compareExceptions =
-            Correspondence.ExceptionStore.forMapValuesCompare();
-        if (correspondence.safeCompare(actualValue, excludedValue, compareExceptions)) {
-          // The matching key had a matching value. There's no need to check compareExceptions
-          // here, because if Correspondence.compare() threw then safeCompare() would return false.
+        Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
+        if (correspondence.safeCompare(actualValue, excludedValue, exceptions)) {
+          // The matching key had a matching value. There's no need to check exceptions here,
+          // because if Correspondence.compare() threw then safeCompare() would return false.
           failWithoutActual(
               simpleFact(
                   lenientFormat(
@@ -586,9 +582,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                       actualAsString(), excludedKey, correspondence, excludedValue, actualValue)));
         }
         // The value didn't match, but we still need to fail if we hit an exception along the way.
-        if (!compareExceptions.isEmpty()) {
+        if (exceptions.hasCompareException()) {
           failWithActual(
-              compareExceptions
+              exceptions
                   .describeAsMainCause()
                   .and(
                       simpleFact(
@@ -635,8 +631,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           return ALREADY_FAILED;
         }
       }
-      final Correspondence.ExceptionStore compareExceptions =
-          Correspondence.ExceptionStore.forMapValuesCompare();
+      final Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
       MapDifference<Object, A, V> diff =
           MapDifference.create(
               getCastSubject(),
@@ -644,11 +639,11 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
               new ValueTester<A, E>() {
                 @Override
                 public boolean test(A actualValue, E expectedValue) {
-                  return correspondence.safeCompare(actualValue, expectedValue, compareExceptions);
+                  return correspondence.safeCompare(actualValue, expectedValue, exceptions);
                 }
               });
       if (diff.isEmpty()) {
-        // The maps correspond exactly. There's no need to check compareExceptions here, because if
+        // The maps correspond exactly. There's no need to check exceptions here, because if
         // Correspondence.compare() threw then safeCompare() would return false and the diff would
         // record that we had the wrong value for that key.
         return new MapInOrder(
@@ -669,7 +664,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                           correspondence,
                           expectedMap,
                           diff.describe(this.<V>valueDiffFormat()))))
-              .and(compareExceptions.describeAsAdditionalInfo()));
+              .and(exceptions.describeAsAdditionalInfo()));
       return ALREADY_FAILED;
     }
 

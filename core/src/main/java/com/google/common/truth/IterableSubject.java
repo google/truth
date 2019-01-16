@@ -990,13 +990,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * element.
      */
     public void contains(@NullableDecl E expected) {
-      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       for (A actual : getCastActual()) {
-        if (correspondence.safeCompare(actual, expected, compareExceptions)) {
+        if (correspondence.safeCompare(actual, expected, exceptions)) {
           // Found a match, but we still need to fail if we hit an exception along the way.
-          if (!compareExceptions.isEmpty()) {
+          if (exceptions.hasCompareException()) {
             subject.failWithActual(
-                compareExceptions
+                exceptions
                     .describeAsMainCause()
                     .and(
                         simpleFact(
@@ -1021,8 +1021,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                               subject.actualAsString(),
                               correspondence,
                               expected,
-                              formatExtras(expected, keyMatches))))
-                  .and(compareExceptions.describeAsAdditionalInfo()));
+                              formatExtras(expected, keyMatches, exceptions))))
+                  .and(exceptions.describeAsAdditionalInfo()));
           return;
         }
       }
@@ -1032,15 +1032,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                       lenientFormat(
                           "Not true that %s contains at least one element that %s <%s>",
                           subject.actualAsString(), correspondence, expected)))
-              .and(compareExceptions.describeAsAdditionalInfo()));
+              .and(exceptions.describeAsAdditionalInfo()));
     }
 
     /** Checks that none of the actual elements correspond to the given element. */
     public void doesNotContain(@NullableDecl E excluded) {
-      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       List<A> matchingElements = new ArrayList<>();
       for (A actual : getCastActual()) {
-        if (correspondence.safeCompare(actual, excluded, compareExceptions)) {
+        if (correspondence.safeCompare(actual, excluded, exceptions)) {
           matchingElements.add(actual);
         }
       }
@@ -1053,13 +1053,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             "%s should not have contained an element that %s <%s>. "
                                 + "It contained the following such elements: <%s>",
                             subject.actualAsString(), correspondence, excluded, matchingElements)))
-                .and(compareExceptions.describeAsAdditionalInfo()));
+                .and(exceptions.describeAsAdditionalInfo()));
         return;
       }
       // Found no match, but we still need to fail if we hit an exception along the way.
-      if (!compareExceptions.isEmpty()) {
+      if (exceptions.hasCompareException()) {
         subject.failWithActual(
-            compareExceptions
+            exceptions
                 .describeAsMainCause()
                 .and(
                     simpleFact(
@@ -1121,11 +1121,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // Find a many:many mapping between the indexes of the elements which correspond, and check
       // it for completeness.
       // Exceptions from Correspondence.compare are stored and treated as if false was returned.
-      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
-          findCandidateMapping(actualList, expectedList, compareExceptions);
+          findCandidateMapping(actualList, expectedList, exceptions);
       if (failIfCandidateMappingHasMissingOrExtra(
-          actualList, expectedList, candidateMapping, compareExceptions)) {
+          actualList, expectedList, candidateMapping, exceptions)) {
         return ALREADY_FAILED;
       }
       // We know that every expected element maps to at least one actual element, and vice versa.
@@ -1133,16 +1133,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       ImmutableBiMap<Integer, Integer> maximalOneToOneMapping =
           findMaximalOneToOneMapping(candidateMapping);
       if (failIfOneToOneMappingHasMissingOrExtra(
-          actualList, expectedList, maximalOneToOneMapping, compareExceptions)) {
+          actualList, expectedList, maximalOneToOneMapping, exceptions)) {
         return ALREADY_FAILED;
       }
       // Check whether we caught any exceptions from Correspondence.compare. We do the any-order
       // assertions treating exceptions as if false was returned before this, because the failure
       // messages are normally more useful (e.g. reporting that the actual iterable contained an
       // unexpected null) but we are contractually obliged to throw here if the assertions passed.
-      if (!compareExceptions.isEmpty()) {
+      if (exceptions.hasCompareException()) {
         subject.failWithActual(
-            compareExceptions
+            exceptions
                 .describeAsMainCause()
                 .and(
                     simpleFact(
@@ -1194,7 +1194,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     private boolean correspondInOrderExactly(
         Iterator<? extends A> actual, Iterator<? extends E> expected) {
-      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       while (actual.hasNext() && expected.hasNext()) {
         A actualElement = actual.next();
         E expectedElement = expected.next();
@@ -1242,7 +1242,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends A> actual,
         List<? extends E> expected,
         ImmutableSetMultimap<Integer, Integer> mapping,
-        Correspondence.ExceptionStore compareExceptions) {
+        Correspondence.ExceptionStore exceptions) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty() || !extra.isEmpty()) {
@@ -1255,8 +1255,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             subject.actualAsString(),
                             correspondence,
                             expected,
-                            describeMissingOrExtra(missing, extra))))
-                .and(compareExceptions.describeAsAdditionalInfo()));
+                            describeMissingOrExtra(missing, extra, exceptions))))
+                .and(exceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1265,13 +1265,17 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     /**
      * Given a list of missing elements and a list of extra elements, at least one of which must be
      * non-empty, returns a verb phrase (suitable for appearing after the subject of the verb)
-     * describing them.
+     * describing them. Exceptions from calling {@link Correspondence#formatDiff} are stored in
+     * {@code exceptions}.
      */
-    private String describeMissingOrExtra(List<? extends E> missing, List<? extends A> extra) {
+    private String describeMissingOrExtra(
+        List<? extends E> missing,
+        List<? extends A> extra,
+        Correspondence.ExceptionStore exceptions) {
       if (pairer.isPresent()) {
         @NullableDecl Pairing pairing = pairer.get().pair(missing, extra);
         if (pairing != null) {
-          return describeMissingOrExtraWithPairing(pairing);
+          return describeMissingOrExtraWithPairing(pairing, exceptions);
         } else {
           return describeMissingOrExtraWithoutPairing(correspondence.toString(), missing, extra)
               + ". (N.B. A key function which does not uniquely key the expected elements was "
@@ -1280,7 +1284,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       } else if (missing.size() == 1 && extra.size() >= 1) {
         return lenientFormat(
             "is missing an element that %s <%s> and has unexpected elements <%s>",
-            correspondence, missing.get(0), formatExtras(missing.get(0), extra));
+            correspondence, missing.get(0), formatExtras(missing.get(0), extra, exceptions));
       } else {
         return describeMissingOrExtraWithoutPairing(correspondence.toString(), missing, extra);
       }
@@ -1299,7 +1303,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return Joiner.on(" and ").join(messages);
     }
 
-    private String describeMissingOrExtraWithPairing(Pairing pairing) {
+    private String describeMissingOrExtraWithPairing(
+        Pairing pairing, Correspondence.ExceptionStore exceptions) {
       List<String> messages = newArrayList();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
@@ -1308,7 +1313,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             lenientFormat(
                 "is missing an element that corresponds to <%s> and has unexpected elements <%s> "
                     + "with key %s",
-                missing, formatExtras(missing, extras), key));
+                missing, formatExtras(missing, extras, exceptions), key));
       }
       if (!pairing.unpairedActualValues.isEmpty() || !pairing.unpairedExpectedValues.isEmpty()) {
         messages.add(
@@ -1322,10 +1327,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return Joiner.on(", ").join(messages);
     }
 
-    private List<Object> formatExtras(E missing, List<? extends A> extras) {
+    private List<Object> formatExtras(
+        E missing, List<? extends A> extras, Correspondence.ExceptionStore exceptions) {
       List<Object> extrasFormatted = new ArrayList<>();
       for (A extra : extras) {
-        @NullableDecl String diff = correspondence.formatDiff(extra, missing);
+        @NullableDecl String diff = correspondence.safeFormatDiff(extra, missing, exceptions);
         if (diff != null) {
           extrasFormatted.add(lenientFormat("%s (diff: %s)", extra, diff));
         } else {
@@ -1404,7 +1410,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends A> actual,
         List<? extends E> expected,
         BiMap<Integer, Integer> mapping,
-        Correspondence.ExceptionStore compareExceptions) {
+        Correspondence.ExceptionStore exceptions) {
       List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty() || !extra.isEmpty()) {
@@ -1422,8 +1428,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             subject.actualAsString(),
                             correspondence,
                             expected,
-                            describeMissingOrExtra(missing, extra))))
-                .and(compareExceptions.describeAsAdditionalInfo()));
+                            describeMissingOrExtra(missing, extra, exceptions))))
+                .and(exceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1466,11 +1472,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // We know they don't correspond in order, so we're going to have to do an any-order test.
       // Find a many:many mapping between the indexes of the elements which correspond, and check
       // it for completeness.
-      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       ImmutableSetMultimap<Integer, Integer> candidateMapping =
-          findCandidateMapping(actualList, expectedList, compareExceptions);
+          findCandidateMapping(actualList, expectedList, exceptions);
       if (failIfCandidateMappingHasMissing(
-          actualList, expectedList, candidateMapping, compareExceptions)) {
+          actualList, expectedList, candidateMapping, exceptions)) {
         return ALREADY_FAILED;
       }
       // We know that every expected element maps to at least one actual element, and vice versa.
@@ -1478,16 +1484,16 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       ImmutableBiMap<Integer, Integer> maximalOneToOneMapping =
           findMaximalOneToOneMapping(candidateMapping);
       if (failIfOneToOneMappingHasMissing(
-          actualList, expectedList, maximalOneToOneMapping, compareExceptions)) {
+          actualList, expectedList, maximalOneToOneMapping, exceptions)) {
         return ALREADY_FAILED;
       }
       // Check whether we caught any exceptions from Correspondence.compare. As with
       // containsExactlyElementIn, we do the any-order assertions treating exceptions as if false
       // was returned before this, but we are contractually obliged to throw here if the assertions
       // passed.
-      if (!compareExceptions.isEmpty()) {
+      if (exceptions.hasCompareException()) {
         subject.failWithActual(
-            compareExceptions
+            exceptions
                 .describeAsMainCause()
                 .and(
                     simpleFact(
@@ -1540,12 +1546,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // couldn't be achieved by pairing it with the first. (For the any-order test, we may want to
       // pair an expected element with a later actual element so that we can pair the earlier actual
       // element with a later expected element, but that doesn't apply here.)
-      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forCompare();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       while (expected.hasNext()) {
         E expectedElement = expected.next();
         // Return false if we couldn't find the expected exception, or if the correspondence threw
         // an exception. We'll fall back on the any-order assertion in this case.
-        if (!findCorresponding(actual, expectedElement, exceptions) || !exceptions.isEmpty()) {
+        if (!findCorresponding(actual, expectedElement, exceptions)
+            || exceptions.hasCompareException()) {
           return false;
         }
       }
@@ -1578,7 +1585,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends A> actual,
         List<? extends E> expected,
         ImmutableSetMultimap<Integer, Integer> mapping,
-        Correspondence.ExceptionStore compareExceptions) {
+        Correspondence.ExceptionStore exceptions) {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
@@ -1591,8 +1598,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             subject.actualAsString(),
                             correspondence,
                             expected,
-                            describeMissing(missing, extra))))
-                .and(compareExceptions.describeAsAdditionalInfo()));
+                            describeMissing(missing, extra, exceptions))))
+                .and(exceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1603,11 +1610,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * returns a verb phrase (suitable for appearing after the subject of the verb) describing the
      * missing elements, diffing against the extra ones where appropriate.
      */
-    private String describeMissing(List<? extends E> missing, List<? extends A> extra) {
+    private String describeMissing(
+        List<? extends E> missing,
+        List<? extends A> extra,
+        Correspondence.ExceptionStore exceptions) {
       if (pairer.isPresent()) {
         @NullableDecl Pairing pairing = pairer.get().pair(missing, extra);
         if (pairing != null) {
-          return describeMissingWithPairing(pairing);
+          return describeMissingWithPairing(pairing, exceptions);
         } else {
           return describeMissingWithoutPairing(correspondence.toString(), missing)
               + ". (N.B. A key function which does not uniquely key the expected elements was "
@@ -1626,7 +1636,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       return lenientFormat("is missing an element that %s %s", verb, formatMissing(missing));
     }
 
-    private String describeMissingWithPairing(Pairing pairing) {
+    private String describeMissingWithPairing(
+        Pairing pairing, Correspondence.ExceptionStore exceptions) {
       List<String> messages = newArrayList();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E missing = pairing.pairedKeysToExpectedValues.get(key);
@@ -1635,7 +1646,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             lenientFormat(
                 "is missing an element that corresponds to <%s> (but did have elements <%s> with "
                     + "matching key %s)",
-                missing, formatExtras(missing, extras), key));
+                missing, formatExtras(missing, extras, exceptions), key));
       }
       if (!pairing.unpairedExpectedValues.isEmpty()) {
         messages.add(
@@ -1658,7 +1669,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends A> actual,
         List<? extends E> expected,
         BiMap<Integer, Integer> mapping,
-        Correspondence.ExceptionStore compareExceptions) {
+        Correspondence.ExceptionStore exceptions) {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
@@ -1675,8 +1686,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             subject.actualAsString(),
                             correspondence,
                             expected,
-                            describeMissing(missing, extra))))
-                .and(compareExceptions.describeAsAdditionalInfo()));
+                            describeMissing(missing, extra, exceptions))))
+                .and(exceptions.describeAsAdditionalInfo()));
         return true;
       }
       return false;
@@ -1714,14 +1725,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     private void containsAny(String failVerb, Iterable<? extends E> expected) {
       Collection<A> actual = iterableToCollection(getCastActual());
-      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       for (E expectedItem : expected) {
         for (A actualItem : actual) {
-          if (correspondence.safeCompare(actualItem, expectedItem, compareExceptions)) {
+          if (correspondence.safeCompare(actualItem, expectedItem, exceptions)) {
             // Found a match, but we still need to fail if we hit an exception along the way.
-            if (!compareExceptions.isEmpty()) {
+            if (exceptions.hasCompareException()) {
               subject.failWithActual(
-                  compareExceptions
+                  exceptions
                       .describeAsMainCause()
                       .and(
                           simpleFact(
@@ -1749,8 +1760,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                                 subject.actualAsString(),
                                 failVerb,
                                 expected,
-                                describeAnyMatchesByKey(pairing))))
-                    .and(compareExceptions.describeAsAdditionalInfo()));
+                                describeAnyMatchesByKey(pairing, exceptions))))
+                    .and(exceptions.describeAsAdditionalInfo()));
           } else {
             subject.failWithoutActual(
                 facts(
@@ -1759,7 +1770,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                                 "Not true that %s %s <%s>. It does not contain any matches by key, "
                                     + "either",
                                 subject.actualAsString(), failVerb, expected)))
-                    .and(compareExceptions.describeAsAdditionalInfo()));
+                    .and(exceptions.describeAsAdditionalInfo()));
           }
         } else {
           subject.failWithoutActual(
@@ -1770,7 +1781,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                                   + "uniquely key the expected elements was provided and has "
                                   + "consequently been ignored.)",
                               subject.actualAsString(), failVerb, expected)))
-                  .and(compareExceptions.describeAsAdditionalInfo()));
+                  .and(exceptions.describeAsAdditionalInfo()));
         }
       } else {
         subject.failWithoutActual(
@@ -1779,11 +1790,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                         lenientFormat(
                             "Not true that %s %s <%s>",
                             subject.actualAsString(), failVerb, expected)))
-                .and(compareExceptions.describeAsAdditionalInfo()));
+                .and(exceptions.describeAsAdditionalInfo()));
       }
     }
 
-    private String describeAnyMatchesByKey(Pairing pairing) {
+    private String describeAnyMatchesByKey(
+        Pairing pairing, Correspondence.ExceptionStore exceptions) {
       List<String> messages = newArrayList();
       for (Object key : pairing.pairedKeysToExpectedValues.keySet()) {
         E expected = pairing.pairedKeysToExpectedValues.get(key);
@@ -1791,7 +1803,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         messages.add(
             lenientFormat(
                 "with key %s, would have accepted %s, but got %s",
-                key, expected, formatExtras(expected, got)));
+                key, expected, formatExtras(expected, got, exceptions)));
       }
       return Joiner.on("; ").join(messages);
     }
@@ -1830,10 +1842,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     private void containsNone(String excludedPrefix, Iterable<? extends E> excluded) {
       Collection<A> actual = iterableToCollection(getCastActual());
       ListMultimap<E, A> present = LinkedListMultimap.create();
-      Correspondence.ExceptionStore compareExceptions = Correspondence.ExceptionStore.forCompare();
+      Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
       for (E excludedItem : Sets.newLinkedHashSet(excluded)) {
         for (A actualItem : actual) {
-          if (correspondence.safeCompare(actualItem, excludedItem, compareExceptions)) {
+          if (correspondence.safeCompare(actualItem, excludedItem, exceptions)) {
             present.put(excludedItem, actualItem);
           }
         }
@@ -1869,13 +1881,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                             excludedPrefix,
                             excluded,
                             presentDescription)))
-                .and(compareExceptions.describeAsAdditionalInfo()));
+                .and(exceptions.describeAsAdditionalInfo()));
         return;
       }
       // Found no match, but we still need to fail if we hit an exception along the way.
-      if (!compareExceptions.isEmpty()) {
+      if (exceptions.hasCompareException()) {
         subject.failWithActual(
-            compareExceptions
+            exceptions
                 .describeAsMainCause()
                 .and(
                     simpleFact(

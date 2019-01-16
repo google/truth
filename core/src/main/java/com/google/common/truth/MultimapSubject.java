@@ -477,15 +477,14 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       if (actual().containsKey(expectedKey)) {
         // Found matching key.
         Collection<A> actualValues = getCastActual().asMap().get(expectedKey);
-        Correspondence.ExceptionStore compareExceptions =
-            Correspondence.ExceptionStore.forMapValuesCompare();
+        Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (A actualValue : actualValues) {
-          if (correspondence.safeCompare(actualValue, expectedValue, compareExceptions)) {
+          if (correspondence.safeCompare(actualValue, expectedValue, exceptions)) {
             // Found matching key and value, but we still need to fail if we hit an exception along
             // the way.
-            if (!compareExceptions.isEmpty()) {
+            if (exceptions.hasCompareException()) {
               failWithActual(
-                  compareExceptions
+                  exceptions
                       .describeAsMainCause()
                       .and(
                           simpleFact(
@@ -512,15 +511,13 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
                             correspondence,
                             expectedValue,
                             actualValues)))
-                .and(compareExceptions.describeAsAdditionalInfo()));
+                .and(exceptions.describeAsAdditionalInfo()));
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<>();
-        Correspondence.ExceptionStore compareExceptions =
-            Correspondence.ExceptionStore.forMapValuesCompare();
+        Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (Entry<?, A> actualEntry : getCastActual().entries()) {
-          if (correspondence.safeCompare(
-              actualEntry.getValue(), expectedValue, compareExceptions)) {
+          if (correspondence.safeCompare(actualEntry.getValue(), expectedValue, exceptions)) {
             keys.add(actualEntry.getKey());
           }
         }
@@ -534,7 +531,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
                                   + "value that %s <%s>. However, the following keys are mapped to "
                                   + "such values: <%s>",
                               actualAsString(), expectedKey, correspondence, expectedValue, keys)))
-                  .and(compareExceptions.describeAsAdditionalInfo()));
+                  .and(exceptions.describeAsAdditionalInfo()));
         } else {
           // Did not find matching key or value.
           failWithoutActual(
@@ -544,7 +541,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
                               "Not true that %s contains at least one entry with key <%s> and a "
                                   + "value that %s <%s>",
                               actualAsString(), expectedKey, correspondence, expectedValue)))
-                  .and(compareExceptions.describeAsAdditionalInfo()));
+                  .and(exceptions.describeAsAdditionalInfo()));
         }
       }
     }
@@ -558,10 +555,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       if (actual().containsKey(excludedKey)) {
         Collection<A> actualValues = getCastActual().asMap().get(excludedKey);
         List<A> matchingValues = new ArrayList<>();
-        Correspondence.ExceptionStore compareExceptions =
-            Correspondence.ExceptionStore.forMapValuesCompare();
+        Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (A actualValue : actualValues) {
-          if (correspondence.safeCompare(actualValue, excludedValue, compareExceptions)) {
+          if (correspondence.safeCompare(actualValue, excludedValue, exceptions)) {
             matchingValues.add(actualValue);
           }
         }
@@ -579,12 +575,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
                               correspondence,
                               excludedValue,
                               matchingValues)))
-                  .and(compareExceptions.describeAsAdditionalInfo()));
+                  .and(exceptions.describeAsAdditionalInfo()));
         } else {
           // No value matched, but we still need to fail if we hit an exception along the way.
-          if (!compareExceptions.isEmpty()) {
+          if (exceptions.hasCompareException()) {
             failWithActual(
-                compareExceptions
+                exceptions
                     .describeAsMainCause()
                     .and(
                         simpleFact(

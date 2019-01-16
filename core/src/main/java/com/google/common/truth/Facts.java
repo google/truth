@@ -33,6 +33,11 @@ final class Facts {
     return new Facts(asList(facts));
   }
 
+  /** Returns an instance wrapping the given facts. */
+  static Facts facts(Iterable<Fact> facts) {
+    return new Facts(facts);
+  }
+
   private Facts(Iterable<Fact> facts) {
     this.facts = facts;
   }
