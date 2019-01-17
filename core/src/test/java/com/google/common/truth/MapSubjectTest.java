@@ -923,6 +923,29 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingValuesUsing_containsEntry_handlesFormatDiffExceptions() {
+    Map<String, Integer> actual = new LinkedHashMap<>();
+    actual.put("abc", 35);
+    actual.put("def", null);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(WITHIN_10_OF)
+        .containsEntry("def", 60);
+    assertFailureKeys(
+        "Not true that <{abc=35, def=null}> contains an entry with key <def> and a value that is "
+            + "within 10 of <60>. However, it has a mapping from that key to <null>",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception",
+        "additionally, one or more exceptions were thrown while formatting diffs",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception", 0)
+        .startsWith("compare(null, 60) threw java.lang.NullPointerException");
+    assertThatFailure()
+        .factValue("first exception", 1)
+        .startsWith("formatDiff(null, 60) threw java.lang.NullPointerException");
+  }
+
+  @Test
   public void comparingValuesUsing_containsEntry_handlesExceptions_expectedKeyHasWrongValue() {
     Map<Integer, String> actual = new LinkedHashMap<>();
     actual.put(1, "one");
@@ -1272,6 +1295,33 @@ public class MapSubjectTest extends BaseSubjectTestCase {
                 + "entries: {def=60} and has the following entries with unexpected keys: {fed=60} "
                 + "and has the following entries with matching keys but different values: "
                 + "{ghi=(expected 90 but got 101, diff: 11)}");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsExactlyEntriesIn_handlesFormatDiffExceptions() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 30, "def", 60, "ghi", 90);
+    Map<String, Integer> actual = new LinkedHashMap<>();
+    actual.put("abc", 35);
+    actual.put("def", null);
+    actual.put("ghi", 95);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(WITHIN_10_OF)
+        .containsExactlyEntriesIn(expected);
+    assertFailureKeys(
+        "Not true that <{abc=35, def=null, ghi=95}> contains exactly one entry that has a key that "
+            + "is equal to and a value that is within 10 of the key and value of each entry of "
+            + "<{abc=30, def=60, ghi=90}>. It has the following entries with matching keys but "
+            + "different values: {def=(expected 60 but got null)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception",
+        "additionally, one or more exceptions were thrown while formatting diffs",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception", 0)
+        .startsWith("compare(null, 60) threw java.lang.NullPointerException");
+    assertThatFailure()
+        .factValue("first exception", 1)
+        .startsWith("formatDiff(null, 60) threw java.lang.NullPointerException");
   }
 
   @Test

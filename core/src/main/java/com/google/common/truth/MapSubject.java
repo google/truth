@@ -497,7 +497,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           return;
         }
         // Found matching key with non-matching value.
-        @NullableDecl String diff = correspondence.formatDiff(actualValue, expectedValue);
+        @NullableDecl
+        String diff = correspondence.safeFormatDiff(actualValue, expectedValue, exceptions);
         if (diff != null) {
           failWithoutActual(
               facts(
@@ -663,7 +664,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                           actualAsString(),
                           correspondence,
                           expectedMap,
-                          diff.describe(this.<V>valueDiffFormat()))))
+                          diff.describe(this.<V>valueDiffFormat(exceptions)))))
               .and(exceptions.describeAsAdditionalInfo()));
       return ALREADY_FAILED;
     }
@@ -672,12 +673,14 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
      * Returns a formatting function for value differences when compared using the current
      * correspondence.
      */
-    private final <V extends E> Function<ValueDifference<A, V>, String> valueDiffFormat() {
+    private final <V extends E> Function<ValueDifference<A, V>, String> valueDiffFormat(
+        final Correspondence.ExceptionStore exceptions) {
       return new Function<ValueDifference<A, V>, String>() {
         @Override
         public String apply(ValueDifference<A, V> values) {
           @NullableDecl
-          String diffString = correspondence.formatDiff(values.actual, values.expected);
+          String diffString =
+              correspondence.safeFormatDiff(values.actual, values.expected, exceptions);
           if (diffString != null) {
             return lenientFormat(
                 "(expected %s but got %s, diff: %s)", values.expected, values.actual, diffString);
