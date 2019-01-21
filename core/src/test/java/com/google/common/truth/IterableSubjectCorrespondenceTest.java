@@ -22,6 +22,7 @@ import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE;
 import static com.google.common.truth.TestCorrespondences.EQUALITY;
+import static com.google.common.truth.TestCorrespondences.NULL_SAFE_RECORD_ID;
 import static com.google.common.truth.TestCorrespondences.PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
 import static com.google.common.truth.TestCorrespondences.PARSED_RECORD_ID;
 import static com.google.common.truth.TestCorrespondences.RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
@@ -146,7 +147,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void displayingDiffsPairedBy_1arg_contains_handlesFormatDiffExceptions() {
+  public void displayingDiffsPairedBy_1arg_contains_handlesActualKeyerExceptions() {
     Record expected = Record.create(0, 999);
     List<Record> actual = asList(Record.create(1, 100), null, Record.create(4, 400));
     expectFailure
@@ -154,6 +155,46 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
+        .contains(expected);
+    assertFailureKeys(
+        "Not true that <[1/100, null, 4/400]> contains at least one element that has the same id "
+            + "as and a score is within 10 of <0/999>",
+        "additionally, one or more exceptions were thrown while keying elements for pairing",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("actualKeyFunction.apply(null) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void displayingDiffsPairedBy_1arg_contains_handlesExpectedKeyerExceptions() {
+    List<Record> actual =
+        asList(Record.create(1, 100), Record.create(2, 200), Record.create(4, 400));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .contains(null);
+    assertFailureKeys(
+        "Not true that <[1/100, 2/200, 4/400]> contains at least one element that has the same id "
+            + "as and a score is within 10 of <null>",
+        "additionally, one or more exceptions were thrown while keying elements for pairing",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("expectedKeyFunction.apply(null) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void displayingDiffsPairedBy_1arg_contains_handlesFormatDiffExceptions() {
+    Record expected = Record.create(0, 999);
+    List<Record> actual = asList(Record.create(1, 100), null, Record.create(4, 400));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(NULL_SAFE_RECORD_ID)
         .contains(expected);
     assertFailureKeys(
         "Not true that <[1/100, null, 4/400]> contains at least one element that has the same id "
@@ -744,7 +785,55 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void displayingDiffsPairedBy_containsExactlyElementsIn_handlesExceptionsFromFormatDiff() {
+  public void displayingDiffsPairedBy_containsExactlyElementsIn_handlesActualKeyerExceptions() {
+    ImmutableList<Record> expected =
+        ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(4, 400));
+    List<Record> actual = asList(Record.create(1, 101), Record.create(2, 211), null);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsExactlyElementsIn(expected);
+    assertFailureKeys(
+        "Not true that <[1/101, 2/211, null]> contains exactly one element that has the same id "
+            + "as and a score is within 10 of each element of <[1/100, 2/200, 4/400]>. It is "
+            + "missing an element that corresponds to <2/200> and has unexpected elements "
+            + "<[2/211 (diff: score:11)]> with key 2, and is missing an element that corresponds "
+            + "to <4/400> and has unexpected elements <[null]> without matching keys",
+        "additionally, one or more exceptions were thrown while keying elements for pairing",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("actualKeyFunction.apply(null) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void displayingDiffsPairedBy_containsExactlyElementsIn_handlesExpectedKeyerExceptions() {
+    List<Record> expected = asList(Record.create(1, 100), Record.create(2, 200), null);
+    List<Record> actual =
+        asList(Record.create(1, 101), Record.create(2, 211), Record.create(4, 400));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsExactlyElementsIn(expected);
+    assertFailureKeys(
+        "Not true that <[1/101, 2/211, 4/400]> contains exactly one element that has the same id "
+            + "as and a score is within 10 of each element of <[1/100, 2/200, null]>. It is "
+            + "missing an element that corresponds to <2/200> and has unexpected elements "
+            + "<[2/211 (diff: score:11)]> with key 2, and is missing an element that corresponds "
+            + "to <null> and has unexpected elements <[4/400]> without matching keys",
+        "additionally, one or more exceptions were thrown while keying elements for pairing",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("expectedKeyFunction.apply(null) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void displayingDiffsPairedBy_containsExactlyElementsIn_handlesFormatDiffExceptions() {
     ImmutableList<Record> expected =
         ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(0, 999));
     List<Record> actual = asList(Record.create(1, 101), Record.create(2, 211), null);
@@ -752,7 +841,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
-        .displayingDiffsPairedBy(RECORD_ID)
+        .displayingDiffsPairedBy(NULL_SAFE_RECORD_ID)
         .containsExactlyElementsIn(expected);
     assertFailureKeys(
         "Not true that <[1/101, 2/211, null]> contains exactly one element that has the same id as "
@@ -1141,7 +1230,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
-        .displayingDiffsPairedBy(RECORD_ID)
+        .displayingDiffsPairedBy(NULL_SAFE_RECORD_ID)
         .containsAllIn(expected);
     assertFailureKeys(
         "Not true that <[1/101, 2/211, 3/303, null]> contains at least one element that has the "
@@ -1502,7 +1591,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
-        .displayingDiffsPairedBy(RECORD_ID)
+        .displayingDiffsPairedBy(NULL_SAFE_RECORD_ID)
         .containsAnyIn(expected);
     assertFailureKeys(
         "Not true that <[3/311, 4/404, null]> contains at least one element that has the same id "

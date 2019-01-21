@@ -213,6 +213,7 @@ public abstract class Correspondence<A, E> {
 
     private final String argumentLabel;
     private StoredException firstCompareException = null;
+    private StoredException firstPairingException = null;
     private StoredException firstFormatDiffException = null;
 
     static ExceptionStore forIterable() {
@@ -233,13 +234,53 @@ public abstract class Correspondence<A, E> {
      * @param callingClass The class from which the {@code compare} method was called. When
      *     reporting failures, stack traces will be truncated above elements in this class.
      * @param exception The exception encountered
-     * @param arguments The arguments to the {@code compare} call during which the exception was
-     *     encountered
+     * @param actual The {@code actual} argument to the {@code compare} call during which the
+     *     exception was encountered
+     * @param expected The {@code expected} argument to the {@code compare} call during which the
+     *     exception was encountered
      */
-    void addCompareException(Class<?> callingClass, Exception exception, Object... arguments) {
+    void addCompareException(
+        Class<?> callingClass, Exception exception, Object actual, Object expected) {
       if (firstCompareException == null) {
         truncateStackTrace(exception, callingClass);
-        firstCompareException = new StoredException(exception, "compare", asList(arguments));
+        firstCompareException = new StoredException(exception, "compare", asList(actual, expected));
+      }
+    }
+
+    /**
+     * Adds an exception that was thrown during an {@code apply} call on the function used to key
+     * actual elements.
+     *
+     * @param callingClass The class from which the {@code apply} method was called. When reporting
+     *     failures, stack traces will be truncated above elements in this class.
+     * @param exception The exception encountered
+     * @param actual The {@code actual} argument to the {@code apply} call during which the
+     *     exception was encountered
+     */
+    void addActualKeyFunctionException(Class<?> callingClass, Exception exception, Object actual) {
+      if (firstPairingException == null) {
+        truncateStackTrace(exception, callingClass);
+        firstPairingException =
+            new StoredException(exception, "actualKeyFunction.apply", asList(actual));
+      }
+    }
+
+    /**
+     * Adds an exception that was thrown during an {@code apply} call on the function used to key
+     * expected elements.
+     *
+     * @param callingClass The class from which the {@code apply} method was called. When reporting
+     *     failures, stack traces will be truncated above elements in this class.
+     * @param exception The exception encountered
+     * @param expected The {@code expected} argument to the {@code apply} call during which the
+     *     exception was encountered
+     */
+    void addExpectedKeyFunctionException(
+        Class<?> callingClass, Exception exception, Object expected) {
+      if (firstPairingException == null) {
+        truncateStackTrace(exception, callingClass);
+        firstPairingException =
+            new StoredException(exception, "expectedKeyFunction.apply", asList(expected));
       }
     }
 
@@ -249,13 +290,17 @@ public abstract class Correspondence<A, E> {
      * @param callingClass The class from which the {@code formatDiff} method was called. When
      *     reporting failures, stack traces will be truncated above elements in this class.
      * @param exception The exception encountered
-     * @param arguments The arguments to the {@code formatDiff} call during which the exception was
-     *     encountered
+     * @param actual The {@code actual} argument to the {@code formatDiff} call during which the
+     *     exception was encountered
+     * @param expected The {@code expected} argument to the {@code formatDiff} call during which the
+     *     exception was encountered
      */
-    void addFormatDiffException(Class<?> callingClass, Exception exception, Object... arguments) {
+    void addFormatDiffException(
+        Class<?> callingClass, Exception exception, Object actual, Object expected) {
       if (firstFormatDiffException == null) {
         truncateStackTrace(exception, callingClass);
-        firstFormatDiffException = new StoredException(exception, "formatDiff", asList(arguments));
+        firstFormatDiffException =
+            new StoredException(exception, "formatDiff", asList(actual, expected));
       }
     }
 
@@ -274,8 +319,9 @@ public abstract class Correspondence<A, E> {
      */
     Facts describeAsMainCause() {
       checkState(firstCompareException != null);
-      // We won't do diff formatting unless a more meaningful failure was found, and if a more
-      // meaningful failure was found then we shouldn't be using this method:
+      // We won't do pairing or diff formatting unless a more meaningful failure was found, and if a
+      // more meaningful failure was found then we shouldn't be using this method:
+      checkState(firstPairingException == null);
       checkState(firstFormatDiffException == null);
       return facts(
           simpleFact("one or more exceptions were thrown while comparing " + argumentLabel),
@@ -298,6 +344,14 @@ public abstract class Correspondence<A, E> {
                 "additionally, one or more exceptions were thrown while comparing "
                     + argumentLabel));
         builder.add(fact("first exception", firstCompareException.describe()));
+      }
+      if (firstPairingException != null) {
+        builder.add(
+            simpleFact(
+                "additionally, one or more exceptions were thrown while keying "
+                    + argumentLabel
+                    + " for pairing"));
+        builder.add(fact("first exception", firstPairingException.describe()));
       }
       if (firstFormatDiffException != null) {
         builder.add(
