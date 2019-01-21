@@ -935,6 +935,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * are cases where {@code actualKey} is equal to {@code expectedKey} but {@code
      * correspondence.compare(actual, expected)} is false.
      *
+     * <p>If the {@code apply} method on the key function throws an exception then the element will
+     * be treated as if it had a null key and not paired. (The first such exception will be noted in
+     * the failure message.)
+     *
      * <p>Note that calling this method makes no difference to whether a test passes or fails, it
      * just improves the message if it fails.
      */
@@ -975,6 +979,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * are cases where {@code actualKey} is equal to {@code expectedKey} but {@code
      * correspondence.compare(actual, expected)} is false.
      *
+     * <p>If the {@code apply} method on either of the key functions throws an exception then the
+     * element will be treated as if it had a null key and not paired. (The first such exception
+     * will be noted in the failure message.)
+     *
      * <p>Note that calling this method makes no difference to whether a test passes or fails, it
      * just improves the message if it fails.
      */
@@ -1010,7 +1018,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       }
       // Found no match. Fail, reporting elements that have the correct key if there are any.
       if (pairer.isPresent()) {
-        List<A> keyMatches = pairer.get().pairOne(expected, getCastActual());
+        List<A> keyMatches = pairer.get().pairOne(expected, getCastActual(), exceptions);
         if (!keyMatches.isEmpty()) {
           subject.failWithoutActual(
               facts(
@@ -1273,7 +1281,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends A> extra,
         Correspondence.ExceptionStore exceptions) {
       if (pairer.isPresent()) {
-        @NullableDecl Pairing pairing = pairer.get().pair(missing, extra);
+        @NullableDecl Pairing pairing = pairer.get().pair(missing, extra, exceptions);
         if (pairing != null) {
           return describeMissingOrExtraWithPairing(pairing, exceptions);
         } else {
@@ -1615,7 +1623,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         List<? extends A> extra,
         Correspondence.ExceptionStore exceptions) {
       if (pairer.isPresent()) {
-        @NullableDecl Pairing pairing = pairer.get().pair(missing, extra);
+        @NullableDecl Pairing pairing = pairer.get().pair(missing, extra, exceptions);
         if (pairing != null) {
           return describeMissingWithPairing(pairing, exceptions);
         } else {
@@ -1748,7 +1756,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       // Found no match. Fail, reporting elements that have a correct key if there are any.
       if (pairer.isPresent()) {
         @NullableDecl
-        Pairing pairing = pairer.get().pair(iterableToList(expected), iterableToList(actual));
+        Pairing pairing =
+            pairer.get().pair(iterableToList(expected), iterableToList(actual), exceptions);
         if (pairing != null) {
           if (!pairing.pairedKeysToExpectedValues.isEmpty()) {
             subject.failWithoutActual(
@@ -1929,13 +1938,24 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
        * expected values are not uniquely keyed.
        */
       @NullableDecl
-      Pairing pair(List<? extends E> expectedValues, List<? extends A> actualValues) {
+      Pairing pair(
+          List<? extends E> expectedValues,
+          List<? extends A> actualValues,
+          Correspondence.ExceptionStore exceptions) {
         Pairing pairing = new Pairing();
+
+        // Populate expectedKeys with the keys of the corresponding elements of expectedValues.
+        // We do this ahead of time to avoid invoking the key function twice for each element.
+        List<Object> expectedKeys = new ArrayList<>(expectedValues.size());
+        for (E expected : expectedValues) {
+          expectedKeys.add(expectedKey(expected, exceptions));
+        }
 
         // Populate pairedKeysToExpectedValues with *all* the expected values with non-null keys.
         // We will remove the unpaired keys later. Return null if we find a duplicate key.
-        for (E expected : expectedValues) {
-          @NullableDecl Object key = expectedKeyFunction.apply(expected);
+        for (int i = 0; i < expectedValues.size(); i++) {
+          E expected = expectedValues.get(i);
+          @NullableDecl Object key = expectedKeys.get(i);
           if (key != null) {
             if (pairing.pairedKeysToExpectedValues.containsKey(key)) {
               return null;
@@ -1947,7 +1967,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
         // Populate pairedKeysToActualValues and unpairedActualValues.
         for (A actual : actualValues) {
-          @NullableDecl Object key = actualKeyFunction.apply(actual);
+          @NullableDecl Object key = actualKey(actual, exceptions);
           if (pairing.pairedKeysToExpectedValues.containsKey(key)) {
             pairing.pairedKeysToActualValues.put(key, actual);
           } else {
@@ -1956,8 +1976,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         }
 
         // Populate unpairedExpectedValues and remove unpaired keys from pairedKeysToExpectedValues.
-        for (E expected : expectedValues) {
-          @NullableDecl Object key = expectedKeyFunction.apply(expected);
+        for (int i = 0; i < expectedValues.size(); i++) {
+          E expected = expectedValues.get(i);
+          @NullableDecl Object key = expectedKeys.get(i);
           if (!pairing.pairedKeysToActualValues.containsKey(key)) {
             pairing.unpairedExpectedValues.add(expected);
             pairing.pairedKeysToExpectedValues.remove(key);
@@ -1967,17 +1988,42 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         return pairing;
       }
 
-      List<A> pairOne(E expectedValue, Iterable<? extends A> actualValues) {
-        @NullableDecl Object key = expectedKeyFunction.apply(expectedValue);
+      List<A> pairOne(
+          E expectedValue,
+          Iterable<? extends A> actualValues,
+          Correspondence.ExceptionStore exceptions) {
+        @NullableDecl Object key = expectedKey(expectedValue, exceptions);
         List<A> matches = new ArrayList<>();
         if (key != null) {
           for (A actual : actualValues) {
-            if (key.equals(actualKeyFunction.apply(actual))) {
+            if (key.equals(actualKey(actual, exceptions))) {
               matches.add(actual);
             }
           }
         }
         return matches;
+      }
+
+      @NullableDecl
+      private Object actualKey(A actual, Correspondence.ExceptionStore exceptions) {
+        try {
+          return actualKeyFunction.apply(actual);
+        } catch (RuntimeException e) {
+          exceptions.addActualKeyFunctionException(
+              IterableSubject.UsingCorrespondence.Pairer.class, e, actual);
+          return null;
+        }
+      }
+
+      @NullableDecl
+      private Object expectedKey(E expected, Correspondence.ExceptionStore exceptions) {
+        try {
+          return expectedKeyFunction.apply(expected);
+        } catch (RuntimeException e) {
+          exceptions.addExpectedKeyFunctionException(
+              IterableSubject.UsingCorrespondence.Pairer.class, e, expected);
+          return null;
+        }
       }
     }
 

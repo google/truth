@@ -288,9 +288,23 @@ final class TestCorrespondences {
 
   /**
    * A key function for {@link Record} instances that keys records by their {@code id} values. The
-   * key is null if the record has no {@code id}. Treats null records as if they have an ID of 0.
+   * key is null if the record has no {@code id}. Does not support null records.
    */
   static final Function<Record, Integer> RECORD_ID =
+      new Function<Record, Integer>() {
+
+        @Override
+        @NullableDecl
+        public Integer apply(Record record) {
+          return record.hasId() ? record.getId() : null;
+        }
+      };
+
+  /**
+   * A key function for {@link Record} instances that keys records by their {@code id} values. The
+   * key is null if the record has no {@code id}. Does not support null records.
+   */
+  static final Function<Record, Integer> NULL_SAFE_RECORD_ID =
       new Function<Record, Integer>() {
 
         @Override
