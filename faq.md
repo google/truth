@@ -26,7 +26,10 @@ Optional<String> guavaOptional = user.getMiddleName();
 assertThat(guavaOptional).hasValue("alfred");
 ```
 
-## Why do I get a "`cannot find symbol .someMethod("foo");`" error when testing a custom type? {#missing-import}
+See [below](#full-chain) for more examples of asserting on external subjects,
+including how to use alternate assertion entry points such as `expect`.
+
+## Why do I get a "`cannot find symbol .someMethod("foo");`" error for a type that should have `someMethod`? {#missing-import}
 
 This is a symptom that you are passing the object being tested to the main
 `Truth.assertThat(...)` overloads, which don't include the type you are testing,
@@ -265,9 +268,9 @@ import static com.google.common.truth.Truth.assertThat;
 assertThat(usernames).containsExactly("kak");
 ```
 
-**Custom `Subject` only:** Even with [a custom `Subject` type](extension), you can generally use
-`assertThat`. (If the subject doesn't expose an `assertThat` method, read on—or
-[add one](extension#writing-your-own-truth-extension)!)
+**Extension `Subject` only:** most [external `Subject` types](extension) provide
+an `assertThat` overload you can import (and one should be
+[added](extension#writing-your-own-truth-extension) if it's missing):
 
 ```java
 import static com.google.common.truth.extension.EmployeeSubject.assertThat;
@@ -304,7 +307,7 @@ If you're curious why we chose that order, you can read [this design
 doc](subject_builder_design). But most users will just be interested in the
 shortcuts:
 
-**Custom message and custom `Subject`:** `assertWithMessage(...).about(...).that(...)`
+**Custom message and extension `Subject`:** `assertWithMessage(...).about(...).that(...)`
 
 **Custom failure behavior:** `expect.that(...)`
 
@@ -312,7 +315,7 @@ For a list of built-in behaviors, see the docs on [`FailureStrategy`].
 
 **Custom failure behavior and custom message:** `expect.withMessage(...).that(...)`
 
-**Custom failure behavior and custom `Subject`:** `expect.about(...).that(...)`
+**Custom failure behavior and extension `Subject`:** `expect.about(...).that(...)`
 
 **Custom `Subject` that doesn't expose an `assertThat` shortcut:** `assertAbout(...).that(...)`
 
