@@ -26,14 +26,16 @@ message TestMessage2 {
   optional float o_float2 = 6;
   optional double o_double = 7;
   optional double o_double2 = 8;
+  optional float o_float_defaults_to_42 = 9 [default = 42.0];
+  optional double o_double_defaults_to_42 = 10 [default = 42.0];
 
-  optional RequiredStringMessage2 o_required_string_message = 9;
-  repeated RequiredStringMessage2 r_required_string_message = 10;
-  optional TestMessage2 o_test_message = 11;
-  repeated TestMessage2 r_test_message = 12;
-  optional SubTestMessage2 o_sub_test_message = 13;
-  repeated SubTestMessage2 r_sub_test_message = 14;
-  map<string, TestMessage2> test_message_map = 15;
+  optional RequiredStringMessage2 o_required_string_message = 11;
+  repeated RequiredStringMessage2 r_required_string_message = 12;
+  optional TestMessage2 o_test_message = 13;
+  repeated TestMessage2 r_test_message = 14;
+  optional SubTestMessage2 o_sub_test_message = 15;
+  repeated SubTestMessage2 r_sub_test_message = 16;
+  map<string, TestMessage2> test_message_map = 17;
 }
 
 message RequiredStringMessage2 {

@@ -324,6 +324,46 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testDoubleTolerance_defaultValue() {
+    Message message = parse("o_double: 0.0");
+    Message defaultInstance = parse("");
+    Message diffMessage = parse("o_double: 0.01");
+
+    expectThat(diffMessage).isNotEqualTo(message);
+
+    if (isProto3()) {
+      // The default value is ignored and treated as unset.
+      // We treat is as equivalent to being set to 0.0 because there is no distinction in Proto 3.
+      expectThat(message).isEqualTo(defaultInstance);
+      expectThat(diffMessage).usingDoubleTolerance(0.1).isEqualTo(message);
+      expectThat(diffMessage).usingDoubleTolerance(0.1).ignoringFieldAbsence().isEqualTo(message);
+    } else {
+      // The default value can be set or unset, so we respect it.
+      expectThat(message).isNotEqualTo(defaultInstance);
+
+      expectThat(diffMessage).usingDoubleTolerance(0.1).isEqualTo(message);
+      expectThat(diffMessage).usingDoubleTolerance(0.1).isNotEqualTo(defaultInstance);
+      expectThat(diffMessage).usingDoubleTolerance(0.1).ignoringFieldAbsence().isEqualTo(message);
+      expectThat(diffMessage)
+          .usingDoubleTolerance(0.1)
+          .ignoringFieldAbsence()
+          .isEqualTo(defaultInstance);
+
+      // The same logic applies for a specified default; not available in Proto 3.
+      Message message2 = parse("o_double_defaults_to_42: 42.0");
+      Message diffMessage2 = parse("o_double_defaults_to_42: 42.01");
+
+      expectThat(diffMessage2).usingDoubleTolerance(0.1).isEqualTo(message2);
+      expectThat(diffMessage2).usingDoubleTolerance(0.1).isNotEqualTo(defaultInstance);
+      expectThat(diffMessage2).usingDoubleTolerance(0.1).ignoringFieldAbsence().isEqualTo(message2);
+      expectThat(diffMessage2)
+          .usingDoubleTolerance(0.1)
+          .ignoringFieldAbsence()
+          .isEqualTo(defaultInstance);
+    }
+  }
+
+  @Test
   public void testDoubleTolerance_scoped() {
     Message message = parse("o_double: 1.0 o_double2: 1.0");
     Message diffMessage = parse("o_double: 1.1 o_double2: 1.5");
@@ -378,6 +418,46 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).usingFloatTolerance(0.05f).isNotEqualTo(message);
     expectThat(diffMessage).usingDoubleTolerance(0.2).isNotEqualTo(message);
 
+  }
+
+  @Test
+  public void testFloatTolerance_defaultValue() {
+    Message message = parse("o_float: 0.0");
+    Message defaultInstance = parse("");
+    Message diffMessage = parse("o_float: 0.01");
+
+    expectThat(diffMessage).isNotEqualTo(message);
+
+    if (isProto3()) {
+      // The default value is ignored and treated as unset.
+      // We treat is as equivalent to being set to 0.0f because there is no distinction in Proto 3.
+      expectThat(message).isEqualTo(defaultInstance);
+      expectThat(diffMessage).usingFloatTolerance(0.1f).isEqualTo(message);
+      expectThat(diffMessage).usingFloatTolerance(0.1f).ignoringFieldAbsence().isEqualTo(message);
+    } else {
+      // The default value can be set or unset, so we respect it.
+      expectThat(message).isNotEqualTo(defaultInstance);
+
+      expectThat(diffMessage).usingFloatTolerance(0.1f).isEqualTo(message);
+      expectThat(diffMessage).usingFloatTolerance(0.1f).isNotEqualTo(defaultInstance);
+      expectThat(diffMessage).usingFloatTolerance(0.1f).ignoringFieldAbsence().isEqualTo(message);
+      expectThat(diffMessage)
+          .usingFloatTolerance(0.1f)
+          .ignoringFieldAbsence()
+          .isEqualTo(defaultInstance);
+
+      // The same logic applies for a specified default; not available in Proto 3.
+      Message message2 = parse("o_float_defaults_to_42: 42.0");
+      Message diffMessage2 = parse("o_float_defaults_to_42: 42.01");
+
+      expectThat(diffMessage2).usingFloatTolerance(0.1f).isEqualTo(message2);
+      expectThat(diffMessage2).usingFloatTolerance(0.1f).isNotEqualTo(defaultInstance);
+      expectThat(diffMessage2).usingFloatTolerance(0.1f).ignoringFieldAbsence().isEqualTo(message2);
+      expectThat(diffMessage2)
+          .usingFloatTolerance(0.1f)
+          .ignoringFieldAbsence()
+          .isEqualTo(defaultInstance);
+    }
   }
 
   @Test
