@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.Truth.assertThat;
+import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
@@ -67,7 +68,74 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
     }
   }
 
-  // Tests of the tolerance factory method. Includes both direct tests of the compare method and
+  // Tests of the 'from' factory method.
+
+  private static final Correspondence<String, String> STRING_PREFIX_EQUALITY =
+      Correspondence.from(
+          new Correspondence.BinaryPredicate<String, String>() {
+            @Override
+            public boolean apply(String actual, String expected) {
+              return actual.startsWith(expected);
+            }
+          },
+          "starts with");
+
+  @Test
+  public void testFrom_compare() {
+    assertThat(STRING_PREFIX_EQUALITY.compare("foot", "foo")).isTrue();
+    assertThat(STRING_PREFIX_EQUALITY.compare("foot", "foot")).isTrue();
+    assertThat(STRING_PREFIX_EQUALITY.compare("foo", "foot")).isFalse();
+  }
+
+  @Test
+  public void testFrom_formatDiff() {
+    assertThat(STRING_PREFIX_EQUALITY.formatDiff("foo", "foot")).isNull();
+  }
+
+  @Test
+  public void testFrom_toString() {
+    assertThat(STRING_PREFIX_EQUALITY.toString()).isEqualTo("starts with");
+  }
+
+  @Test
+  public void testFrom_viaIterableSubjectContainsExactly_success() {
+    assertThat(ImmutableList.of("foot", "barn"))
+        .comparingElementsUsing(STRING_PREFIX_EQUALITY)
+        .containsExactly("foo", "bar");
+  }
+
+  @Test
+  public void testFrom_viaIterableSubjectContainsExactly_failure() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableList.of("foot", "barn", "gallon"))
+        .comparingElementsUsing(STRING_PREFIX_EQUALITY)
+        .containsExactly("foot", "barn");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[foot, barn, gallon]> contains exactly one element that starts with "
+                + "each element of <[foot, barn]>. It has unexpected elements <[gallon]>");
+  }
+
+  @Test
+  public void testFrom_viaIterableSubjectContainsExactly_null() {
+    expectFailure
+        .whenTesting()
+        .that(asList("foot", "barn", null))
+        .comparingElementsUsing(STRING_PREFIX_EQUALITY)
+        .containsExactly("foot", "barn");
+    assertFailureKeys(
+        "Not true that <[foot, barn, null]> contains exactly one element that starts with each "
+            + "element of <[foot, barn]>. It has unexpected elements <[null]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, foot) threw java.lang.NullPointerException");
+  }
+
+  // Tests of the 'tolerance' factory method. Includes both direct tests of the compare method and
   // indirect tests using it in a basic call chain.
 
   @Test

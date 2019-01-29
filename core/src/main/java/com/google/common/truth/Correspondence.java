@@ -59,6 +59,94 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public abstract class Correspondence<A, E> {
 
   /**
+   * Constructs a {@link Correspondence} that compares actual and expected elements using the given
+   * binary predicate.
+   *
+   * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}).
+   *
+   * <p>Note that, if the data you are asserting about contains nulls, your predicate may be invoked
+   * with null arguments. If this causes it to throw a {@link NullPointerException}, then your test
+   * will fail. (See {@link Correspondence#compare} for more detail on how exceptions are handled.)
+   * In particular, if your predicate is an instance method reference on the actual value (as in the
+   * {@code String::startsWith} example below), your test will fail if it sees null actual values.
+   *
+   * <p>Example using an instance method reference:
+   *
+   * <pre>{@code
+   * static final Correspondence<String, String> STRING_PREFIX_EQUALITY =
+   *     Correspondence.from(String::startsWith, "starts with");
+   * }</pre>
+   *
+   * <p>Example using a static method reference:
+   *
+   * <pre>{@code
+   * class MyRecordTestHelper {
+   *   static boolean recordsEquivalentForTests(MyRecord actual, MyRecord expected) {
+   *     // code to check whether records should be considered equivalent for testing purposes
+   *   }
+   *   static final Correspondence<MyRecord, MyRecord> EQUIVALENCE =
+   *       Correspondence.from(MyRecordTestHelper::recordsEquivalentForTests, "is equivalent to");
+   * }
+   * }</pre>
+   *
+   * <p>Example using a lambda:
+   *
+   * <pre>{@code
+   * static final Correspondence<Object, Class<?>> INSTANCE_OF =
+   *     Correspondence.from((obj, clazz) -> clazz.isInstance(obj), "is an instance of");
+   * }</pre>
+   *
+   * @param predicate a {@link BinaryPredicate} taking an actual and expected value (in that order)
+   *     and returning whether the actual value corresponds to the expected value in some way
+   * @param description should fill the gap in a failure message of the form {@code "not true that
+   *     <some actual element> is an element that <description> <some expected element>"}, e.g.
+   *     {@code "starts with"}, {@code "is an instance of"}, or {@code "is equivalent to"}
+   */
+  // TODO(b/119038898): Mention formattingDiffsUsing in the javadoc when it exists.
+  public static <A, E> Correspondence<A, E> from(
+      BinaryPredicate<A, E> predicate, String description) {
+    return new FromBinaryPredicate<>(predicate, description);
+  }
+
+  /**
+   * A functional interface for a binary predicate, to be used to test whether a pair of objects of
+   * types {@code A} and {@code E} satisfy some condition.
+   *
+   * <p>This interface will normally be implemented using a lambda or a method reference, and the
+   * resulting object will normally be passed directly to {@link Correspondence#from}. As a result,
+   * you should almost never see {@code BinaryPredicate} used as the type of a field or variable, or
+   * a return type.
+   */
+  public interface BinaryPredicate<A, E> {
+
+    /**
+     * Returns whether or not the actual and expected values satisfy the condition defined by this
+     * predicate.
+     */
+    boolean apply(@NullableDecl A actual, @NullableDecl E expected);
+  }
+
+  private static final class FromBinaryPredicate<A, E> extends Correspondence<A, E> {
+    private final BinaryPredicate<A, E> predicate;
+    private final String description;
+
+    private FromBinaryPredicate(BinaryPredicate<A, E> correspondencePredicate, String description) {
+      this.predicate = checkNotNull(correspondencePredicate);
+      this.description = checkNotNull(description);
+    }
+
+    @Override
+    public boolean compare(@NullableDecl A actual, @NullableDecl E expected) {
+      return predicate.apply(actual, expected);
+    }
+
+    @Override
+    public String toString() {
+      return description;
+    }
+  }
+
+  /**
    * Returns a {@link Correspondence} between {@link Number} instances that considers instances to
    * correspond (i.e. {@link Correspondence#compare(Object, Object)} returns {@code true}) if the
    * double values of each instance (i.e. the result of calling {@link Number#doubleValue()} on
@@ -100,6 +188,9 @@ public abstract class Correspondence<A, E> {
       return "is a finite number within " + tolerance + " of";
     }
   }
+
+  // TODO(b/119038898): Once all functionality is available via factory methods, consider explicitly
+  // adding the no-arg constructor here, and use its javadoc to discourage subclassing.
 
   /**
    * Returns whether or not the {@code actual} value is said to correspond to the {@code expected}
