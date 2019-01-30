@@ -128,6 +128,9 @@ fails.)
 
 ### Enabling formatted diffs between elements {#formatDiff}
 
+<!-- TODO(b/119038898): Suggest using formattingDiffsUsing instead of overriding
+     formatDiff, once implemented. -->
+
 Your `Correspondence` subclass may optionally implement the `formatDiff` method,
 which takes an actual and an expected element and returns a `String` describing
 how they differ. For example, a `Correspondence` that describes whether two
