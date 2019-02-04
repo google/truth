@@ -801,6 +801,255 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void containsAtLeastEntriesIn() {
+    ImmutableListMultimap<Integer, String> actual =
+        ImmutableListMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ImmutableSetMultimap<Integer, String> expected =
+        ImmutableSetMultimap.of(3, "one", 3, "six", 3, "two", 4, "five");
+
+    assertThat(actual).containsAtLeastEntriesIn(expected);
+  }
+
+  @Test
+  public void containsAtLeastEmpty() {
+    ImmutableListMultimap<Integer, String> actual = ImmutableListMultimap.of(3, "one");
+    ImmutableSetMultimap<Integer, String> expected = ImmutableSetMultimap.of();
+
+    assertThat(actual).containsAtLeastEntriesIn(expected);
+    assertThat(actual).containsAtLeastEntriesIn(expected).inOrder();
+  }
+
+  @Test
+  public void containsAtLeastRejectsNull() {
+    ImmutableMultimap<Integer, String> multimap =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+
+    try {
+      assertThat(multimap).containsAtLeastEntriesIn(null);
+      fail("Should have thrown.");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void containsAtLeastRespectsDuplicates() {
+    ImmutableListMultimap<Integer, String> actual =
+        ImmutableListMultimap.of(3, "one", 3, "two", 3, "one", 4, "five", 4, "five");
+    ImmutableListMultimap<Integer, String> expected =
+        ImmutableListMultimap.of(3, "two", 4, "five", 3, "one", 4, "five", 3, "one");
+
+    assertThat(actual).containsAtLeastEntriesIn(expected);
+  }
+
+  @Test
+  public void containsAtLeastRespectsDuplicatesFailure() {
+    ImmutableListMultimap<Integer, String> expected =
+        ImmutableListMultimap.of(3, "one", 3, "two", 3, "one", 4, "five", 4, "five");
+    ImmutableSetMultimap<Integer, String> actual = ImmutableSetMultimap.copyOf(expected);
+
+    expectFailureWhenTestingThat(actual).containsAtLeastEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            lenientFormat(
+                "Not true that <%s> contains at least <%s>. "
+                    + "It is missing <{3=[one], 4=[five]}>",
+                actual, expected));
+  }
+
+  @Test
+  public void containsAtLeastFailureMissing() {
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create(expected);
+    actual.remove(3, "six");
+    actual.remove(4, "five");
+    actual.put(50, "hawaii");
+
+    expectFailureWhenTestingThat(actual).containsAtLeastEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            lenientFormat(
+                "Not true that <%s> contains at least <%s>. "
+                    + "It is missing <{3=[six], 4=[five]}>",
+                actual, expected));
+  }
+
+  @Test
+  public void containsAtLeastFailureWithEmptyStringMissing() {
+    expectFailureWhenTestingThat(ImmutableMultimap.of("key", "value")).containsAtLeast("", "a");
+
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{key=[value]}> contains at least <{\"\" (empty String)=[a]}>. "
+                + "It is missing <{\"\" (empty String)=[a]}>");
+  }
+
+  @Test
+  public void containsAtLeastInOrder() {
+    ImmutableMultimap<Integer, String> actual =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(3, "one", 3, "six", 4, "five", 4, "four");
+
+    assertThat(actual).containsAtLeastEntriesIn(expected).inOrder();
+  }
+
+  @Test
+  public void containsAtLeastInOrderDifferentTypes() {
+    ImmutableListMultimap<Integer, String> actual =
+        ImmutableListMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ImmutableSetMultimap<Integer, String> expected =
+        ImmutableSetMultimap.of(3, "one", 3, "six", 4, "five", 4, "four");
+
+    assertThat(actual).containsAtLeastEntriesIn(expected).inOrder();
+  }
+
+  @Test
+  public void containsAtLeastInOrderFailure() {
+    ImmutableMultimap<Integer, String> actual =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(4, "four", 3, "six", 3, "two", 3, "one");
+
+    assertThat(actual).containsAtLeastEntriesIn(expected);
+    expectFailureWhenTestingThat(actual).containsAtLeastEntriesIn(expected).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .startsWith(
+            lenientFormat(
+                "Not true that <%s> contains at least <%s> in order. ", actual, expected));
+  }
+
+  @Test
+  public void containsAtLeastInOrderFailureValuesOnly() {
+    ImmutableMultimap<Integer, String> actual =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(3, "six", 3, "one", 4, "five", 4, "four");
+
+    assertThat(actual).containsAtLeastEntriesIn(expected);
+    expectFailureWhenTestingThat(actual).containsAtLeastEntriesIn(expected).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            lenientFormat(
+                "Not true that <%s> contains at least <%s> in order. "
+                    + "The values for keys <[3]> are not in order",
+                actual, expected));
+  }
+
+  @Test
+  public void containsAtLeastVararg() {
+    ImmutableListMultimap<Integer, String> listMultimap =
+        ImmutableListMultimap.of(1, "one", 3, "six", 3, "two", 3, "one");
+
+    assertThat(listMultimap).containsAtLeast(1, "one", 3, "six", 3, "two");
+  }
+
+  @Test
+  public void containsAtLeastVarargWithNull() {
+    Multimap<Integer, String> listMultimap =
+        LinkedListMultimap.create(ImmutableListMultimap.of(1, "one", 3, "six", 3, "two"));
+    listMultimap.put(4, null);
+
+    assertThat(listMultimap).containsAtLeast(1, "one", 3, "two", 4, null);
+  }
+
+  @Test
+  public void containsAtLeastVarargFailureMissing() {
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create(expected);
+    actual.remove(3, "six");
+    actual.remove(4, "five");
+    actual.put(3, "nine");
+
+    expectFailureWhenTestingThat(actual)
+        .containsAtLeast(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            lenientFormat(
+                "Not true that <%s> contains at least <%s>. "
+                    + "It is missing <{3=[six], 4=[five]}>",
+                actual, expected));
+  }
+
+  @Test
+  public void containsAtLeastVarargRespectsDuplicates() {
+    ImmutableListMultimap<Integer, String> actual =
+        ImmutableListMultimap.of(3, "one", 3, "two", 3, "one", 4, "five", 4, "five");
+
+    assertThat(actual).containsAtLeast(3, "two", 4, "five", 3, "one", 3, "one");
+  }
+
+  @Test
+  public void containsAtLeastVarargRespectsDuplicatesFailure() {
+    ImmutableListMultimap<Integer, String> actual =
+        ImmutableListMultimap.of(3, "one", 3, "two", 4, "five", 4, "five");
+    ImmutableListMultimap<Integer, String> expected =
+        ImmutableListMultimap.of(3, "one", 3, "one", 3, "one", 4, "five");
+
+    expectFailureWhenTestingThat(actual).containsAtLeast(3, "one", 3, "one", 3, "one", 4, "five");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            lenientFormat(
+                "Not true that <%s> contains at least <%s>. "
+                    + "It is missing <{3=[one [2 copies]]}>",
+                actual, expected));
+  }
+
+  @Test
+  public void containsAtLeastVarargInOrder() {
+    ImmutableMultimap<Integer, String> actual =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+
+    assertThat(actual).containsAtLeast(3, "one", 3, "six", 4, "five", 4, "four").inOrder();
+  }
+
+  @Test
+  public void containsAtLeastVarargInOrderFailure() {
+    ImmutableMultimap<Integer, String> actual =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(4, "four", 3, "six", 3, "two", 3, "one");
+
+    assertThat(actual).containsAtLeast(4, "four", 3, "six", 3, "two", 3, "one");
+    expectFailureWhenTestingThat(actual)
+        .containsAtLeast(4, "four", 3, "six", 3, "two", 3, "one")
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .startsWith(
+            lenientFormat(
+                "Not true that <%s> contains at least <%s> in order. ", actual, expected));
+  }
+
+  @Test
+  public void containsAtLeastVarargInOrderFailureValuesOnly() {
+    ImmutableMultimap<Integer, String> actual =
+        ImmutableMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
+    ImmutableMultimap<Integer, String> expected =
+        ImmutableMultimap.of(3, "two", 3, "one", 4, "five", 4, "four");
+
+    assertThat(actual).containsAtLeast(3, "two", 3, "one", 4, "five", 4, "four");
+    expectFailureWhenTestingThat(actual)
+        .containsAtLeast(3, "two", 3, "one", 4, "five", 4, "four")
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            lenientFormat(
+                "Not true that <%s> contains at least <%s> in order. "
+                    + "The values for keys <[3]> are not in order",
+                actual, expected));
+  }
+
+  @Test
   public void comparingValuesUsing_containsEntry_success() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+456", "def", "+789");
@@ -1443,6 +1692,350 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
             "name: multymap\n"
                 + "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a "
                 + "key that is equal to and a value that parses to the key and value of each "
+                + "element of <[abc=123, def=456]>. It is missing an element that has a key that "
+                + "is equal to and a value that parses to the key and value of <def=456>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_success() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 128, "abc", 123);
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_missingKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("def", "+64", "def", "0x40", "def", "+128", "abc", "+99");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 128, "def", 64, "abc", 123);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{def=[+64, 0x40, +128], abc=[+99]}> contains at least one element that "
+                + "has a key that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=64, def=128, def=64, abc=123]>. It is missing an element "
+                + "that has a key that is equal to and a value that parses to the key and value "
+                + "of <abc=123>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_wrongValueForKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 128, "def", 128, "abc", 123);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+    String expectedPreamble =
+        "Not true that <{abc=[+123], def=[+64, 0x40, +128]}> contains at least one element that "
+            + "has a key that is equal to and a value that parses to the key and value of each "
+            + "element of <[def=64, def=128, def=128, abc=123]>. It contains at least one "
+            + "element that matches each expected element, but there was no 1:1 mapping between "
+            + "all the expected elements and any subset of the actual elements. Using the most "
+            + "complete 1:1 mapping (or one such mapping, if there is a tie), it is missing an "
+            + "element that has a key that is equal to and a value that parses to the key and "
+            + "value of ";
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(expectedPreamble + "<def=128>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_handlesException() {
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    actual.put(1, "one");
+    actual.put(2, null);
+    actual.put(2, "deux");
+    actual.put(2, "zwei");
+    ImmutableListMultimap<Integer, String> expected =
+        ImmutableListMultimap.of(1, "ONE", 2, "TWO", 2, "DEUX");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsAtLeastEntriesIn(expected);
+    assertFailureKeys(
+        "Not true that <{1=[one], 2=[null, deux, zwei]}> contains at least one element that has a "
+            + "key that is equal to and a value that equals (ignoring case) the key and value of "
+            + "each element of <[1=ONE, 2=TWO, 2=DEUX]>. It is missing an element that has "
+            + "a key that is equal to and a value that equals (ignoring case) the key and value of "
+            + "<2=TWO>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(2=null, 2=TWO) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_handlesException_alwaysFails() {
+    ListMultimap<Integer, String> actual = LinkedListMultimap.create();
+    actual.put(1, "one");
+    actual.put(2, null);
+    actual.put(2, "two");
+    actual.put(2, "deux");
+    ListMultimap<Integer, String> expected = LinkedListMultimap.create();
+    expected.put(1, "ONE");
+    expected.put(2, "TWO");
+    expected.put(2, "DEUX");
+    expected.put(2, null);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE)
+        .containsAtLeastEntriesIn(expected);
+    // CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE.compare(null, null) returns true, so there is a
+    // mapping between actual and expected entries where they all correspond. However, no
+    // reasonable implementation would find that mapping without hitting the (null, "TWO") case
+    // along the way, and that throws NPE, so we are contractually required to fail.
+    assertFailureKeys(
+        "one or more exceptions were thrown while comparing elements",
+        "first exception",
+        "comparing contents by testing that each element has a key that is equal to and a value "
+            + "that equals (ignoring case) the key and value of an expected value",
+        "expected",
+        "but was");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(2=null, 2=TWO) threw java.lang.NullPointerException");
+    assertFailureValue("expected", "[1=ONE, 2=TWO, 2=DEUX, 2=null]");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_wrongTypeInActual() {
+    ImmutableListMultimap<String, Object> actual =
+        ImmutableListMultimap.<String, Object>of(
+            "abc", "+123", "def", "+64", "def", "0x40", "def", 999);
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 123, "def", 64, "abc", 123);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+    assertFailureKeys(
+        "Not true that <{abc=[+123], def=[+64, 0x40, 999]}> contains at least one element that "
+            + "has a key that is equal to and a value that parses to the key and value of each "
+            + "element of <[def=64, def=123, def=64, abc=123]>. It is missing an element that has "
+            + "a key that is equal to and a value that parses to the key and value of <def=123>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(def=999, def=64) threw java.lang.ClassCastException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_inOrder_success() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of(
+            "def", "+64", "abc", "+123", "def", "0x40", "m", "+1", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 64, "def", 128, "abc", 123);
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_inOrder_wrongKeyOrder() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of(
+            "abc", "+123", "def", "+64", "m", "+1", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("def", 64, "def", 64, "def", 128, "abc", 123);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected)
+        .inOrder();
+    assertFailureKeys(
+        "required elements were all found, but order was wrong",
+        "comparing contents by testing that each element "
+            + "has a key that is equal to and a value that parses to the key and value of "
+            + "an expected value",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue(
+        "expected order for required elements", "[def=64, def=64, def=128, abc=123]");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_inOrder_wrongValueOrder() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of(
+            "abc", "+123", "def", "+64", "m", "+1", "def", "0x40", "def", "+128");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("abc", 123, "def", 64, "def", 128, "def", 64);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected)
+        .inOrder();
+    assertFailureKeys(
+        "required elements were all found, but order was wrong",
+        "comparing contents by testing that each element "
+            + "has a key that is equal to and a value that parses to the key and value of "
+            + "an expected value",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue(
+        "expected order for required elements", "[abc=123, def=64, def=128, def=64]");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_failsWithNamed() {
+    ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
+    ImmutableListMultimap<String, Integer> expected =
+        ImmutableListMultimap.of("abc", 123, "def", 456);
+    expectFailureWhenTestingThat(actual)
+        .named("multymap")
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "name: multymap\n"
+                + "Not true that multymap (<{abc=[+123]}>) contains at least one element that has "
+                + "a key that is equal to and a value that parses to the key and value of each "
+                + "element of <[abc=123, def=456]>. It is missing an element that has a key that "
+                + "is equal to and a value that parses to the key and value of <def=456>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_success() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of(
+            "abc", "+123", "def", "+64", "m", "+1", "def", "0x40", "def", "+128");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 64, "def", 128, "def", 64, "abc", 123);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_missingKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of("def", "+64", "def", "0x40", "m", "+1", "def", "+128");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 64, "def", 128, "def", 64, "abc", 123);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{def=[+64, 0x40, +128], m=[+1]}> contains at least one element that "
+                + "has a key that is equal to and a value that parses to the key and value of each "
+                + "element of <[def=64, def=128, def=64, abc=123]>. It is missing an element "
+                + "that has a key that is equal to and a value that parses to the key and value "
+                + "of <abc=123>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_wrongValueForKey() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of(
+            "abc", "+123", "def", "+64", "m", "+1", "def", "0x40", "def", "+128");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 64, "def", 128, "def", 128, "abc", 123);
+    String expectedPreamble =
+        "Not true that <{abc=[+123], def=[+64, 0x40, +128], m=[+1]}> contains at least one element "
+            + "that has a key that is equal to and a value that parses to the key and value of "
+            + "each element of <[def=64, def=128, def=128, abc=123]>. It contains at least one "
+            + "element that matches each expected element, but there was no 1:1 mapping between "
+            + "all the expected elements and any subset of the actual elements. Using the most "
+            + "complete 1:1 mapping (or one such mapping, if there is a tie), it is missing an "
+            + "element that has a key that is equal to and a value that parses to the key and "
+            + "value of ";
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(expectedPreamble + "<def=128>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_wrongTypeInActual() {
+    ImmutableListMultimap<String, Object> actual =
+        ImmutableListMultimap.<String, Object>of(
+            "abc", "+123", "def", "+64", "def", "0x40", "def", 999, "m", "+1");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 64, "def", 123, "def", 64, "abc", 123);
+    assertFailureKeys(
+        "Not true that <{abc=[+123], def=[+64, 0x40, 999], m=[+1]}> contains at least one element "
+            + "that has a key that is equal to and a value that parses to the key and value of "
+            + "each element of <[def=64, def=123, def=64, abc=123]>. It is missing an element that "
+            + "has a key that is equal to and a value that parses to the key and value of "
+            + "<def=123>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(def=999, def=64) threw java.lang.ClassCastException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_inOrder_success() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of(
+            "abc", "+123", "def", "+64", "m", "+1", "def", "0x40", "def", "+128");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("abc", 123, "def", 64, "def", 64, "def", 128);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_inOrder_wrongKeyOrder() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of(
+            "abc", "+123", "def", "+64", "def", "0x40", "m", "+1", "def", "+128");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 64, "def", 64, "def", 128, "abc", 123)
+        .inOrder();
+    assertFailureKeys(
+        "required elements were all found, but order was wrong",
+        "comparing contents by testing that each element "
+            + "has a key that is equal to and a value that parses to the key and value of "
+            + "an expected value",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue(
+        "expected order for required elements", "[def=64, def=64, def=128, abc=123]");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_inOrder_wrongValueOrder() {
+    ImmutableListMultimap<String, String> actual =
+        ImmutableListMultimap.of(
+            "abc", "+123", "m", "+1", "def", "+64", "def", "0x40", "def", "+128");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("abc", 123, "def", 64, "def", 128, "def", 64)
+        .inOrder();
+    assertFailureKeys(
+        "required elements were all found, but order was wrong",
+        "comparing contents by testing that each element "
+            + "has a key that is equal to and a value that parses to the key and value of "
+            + "an expected value",
+        "expected order for required elements",
+        "but was");
+    assertFailureValue(
+        "expected order for required elements", "[abc=123, def=64, def=128, def=64]");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_failsWithNamed() {
+    ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
+    expectFailureWhenTestingThat(actual)
+        .named("multymap")
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("abc", 123, "def", 456);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "name: multymap\n"
+                + "Not true that multymap (<{abc=[+123]}>) contains at least one element that has "
+                + "a key that is equal to and a value that parses to the key and value of each "
                 + "element of <[abc=123, def=456]>. It is missing an element that has a key that "
                 + "is equal to and a value that parses to the key and value of <def=456>");
   }
