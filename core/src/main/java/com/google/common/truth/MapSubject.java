@@ -70,7 +70,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       return;
     }
 
-    boolean mapEquals = containsExactlyEntriesInAnyOrder((Map<?, ?>) other, "is equal to");
+    boolean mapEquals = containsEntriesInAnyOrder((Map<?, ?>) other, "is equal to", false);
     if (mapEquals) {
       failWithoutActual(
           simpleFact(
@@ -194,11 +194,16 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    */
   @CanIgnoreReturnValue
   public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
-    return containsExactlyEntriesIn(accumulateMap(k0, v0, rest));
+    return containsExactlyEntriesIn(accumulateMap("containsExactly", k0, v0, rest));
+  }
+
+  @CanIgnoreReturnValue
+  public Ordered containsAtLeast(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
+    return containsAtLeastEntriesIn(accumulateMap("containsAtLeast", k0, v0, rest));
   }
 
   private static Map<Object, Object> accumulateMap(
-      @NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
+      String functionName, @NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
     checkArgument(
         rest.length % 2 == 0,
         "There must be an equal number of key/value pairs "
@@ -216,8 +221,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     }
     checkArgument(
         keys.size() == expectedMap.size(),
-        "Duplicate keys (%s) cannot be passed to containsExactly().",
-        keys);
+        "Duplicate keys (%s) cannot be passed to %s().",
+        keys,
+        functionName);
     return expectedMap;
   }
 
@@ -232,7 +238,8 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         return ALREADY_FAILED;
       }
     }
-    boolean containsAnyOrder = containsExactlyEntriesInAnyOrder(expectedMap, "contains exactly");
+    boolean containsAnyOrder =
+        containsEntriesInAnyOrder(expectedMap, "contains exactly", /* allowUnexpected= */ false);
     if (containsAnyOrder) {
       return new MapInOrder(expectedMap, "contains exactly these entries in order");
     } else {
@@ -240,10 +247,26 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     }
   }
 
+  /** Fails if the map does not contain at least the given set of entries in the given map. */
   @CanIgnoreReturnValue
-  private boolean containsExactlyEntriesInAnyOrder(Map<?, ?> expectedMap, String failVerb) {
+  public Ordered containsAtLeastEntriesIn(Map<?, ?> expectedMap) {
+    if (expectedMap.isEmpty()) {
+      return IN_ORDER;
+    }
+    boolean containsAnyOrder =
+        containsEntriesInAnyOrder(expectedMap, "contains at least", /* allowUnexpected= */ true);
+    if (containsAnyOrder) {
+      return new MapInOrder(expectedMap, "contains at least these entries in order");
+    } else {
+      return ALREADY_FAILED;
+    }
+  }
+
+  @CanIgnoreReturnValue
+  private boolean containsEntriesInAnyOrder(
+      Map<?, ?> expectedMap, String failVerb, boolean allowUnexpected) {
     MapDifference<Object, Object, Object> diff =
-        MapDifference.create(actual(), expectedMap, EQUALITY);
+        MapDifference.create(actual(), expectedMap, allowUnexpected, EQUALITY);
     if (diff.isEmpty()) {
       return true;
     }
@@ -274,10 +297,12 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     private final Map<K, E> missing;
     private final Map<K, A> unexpected;
     private final Map<K, ValueDifference<A, E>> wrongValues;
+    private final Set<K> allKeys;
 
     static <K, A, E> MapDifference<K, A, E> create(
         Map<? extends K, ? extends A> actual,
         Map<? extends K, ? extends E> expected,
+        boolean allowUnexpected,
         ValueTester<? super A, ? super E> valueTester) {
       Map<K, A> unexpected = new LinkedHashMap<>(actual);
       Map<K, E> missing = new LinkedHashMap<>();
@@ -294,14 +319,22 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           missing.put(expectedKey, expectedValue);
         }
       }
-      return new MapDifference<>(missing, unexpected, wrongValues);
+      if (allowUnexpected) {
+        unexpected.clear();
+      }
+      return new MapDifference<>(
+          missing, unexpected, wrongValues, Sets.union(actual.keySet(), expected.keySet()));
     }
 
     private MapDifference(
-        Map<K, E> missing, Map<K, A> unexpected, Map<K, ValueDifference<A, E>> wrongValues) {
+        Map<K, E> missing,
+        Map<K, A> unexpected,
+        Map<K, ValueDifference<A, E>> wrongValues,
+        Set<K> allKeys) {
       this.missing = missing;
       this.unexpected = unexpected;
       this.wrongValues = wrongValues;
+      this.allKeys = allKeys;
     }
 
     boolean isEmpty() {
@@ -343,7 +376,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       keys.addAll(missing.keySet());
       keys.addAll(unexpected.keySet());
       keys.addAll(wrongValues.keySet());
-      return hasMatchingToStringPair(keys, keys);
+      return hasMatchingToStringPair(keys, allKeys);
     }
   }
 
@@ -413,10 +446,19 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       this.failVerb = failVerb;
     }
 
+    /**
+     * Checks whether the common elements between actual and expected are in the same order.
+     *
+     * <p>This doesn't check whether the keys have the same values or whether all the required keys
+     * are actually present. That was supposed to be done before the "in order" part.
+     */
     @Override
     public void inOrder() {
-      List<?> expectedKeyOrder = Lists.newArrayList(expectedMap.keySet());
-      List<?> actualKeyOrder = Lists.newArrayList(actual().keySet());
+      // We're using the fact that Sets.intersection keeps the order of the first set.
+      List<?> expectedKeyOrder =
+          Lists.newArrayList(Sets.intersection(expectedMap.keySet(), actual().keySet()));
+      List<?> actualKeyOrder =
+          Lists.newArrayList(Sets.intersection(actual().keySet(), expectedMap.keySet()));
       if (!actualKeyOrder.equals(expectedKeyOrder)) {
         failWithoutActual(
             simpleFact(
@@ -614,8 +656,27 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     @CanIgnoreReturnValue
     public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl E v0, Object... rest) {
       @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
-      Map<Object, E> expectedMap = (Map<Object, E>) accumulateMap(k0, v0, rest);
+      Map<Object, E> expectedMap = (Map<Object, E>) accumulateMap("containsExactly", k0, v0, rest);
       return containsExactlyEntriesIn(expectedMap);
+    }
+
+    /**
+     * Fails if the map does not contain at least the given set of keys mapping to values that
+     * correspond to the given values.
+     *
+     * <p>The values must all be of type {@code E}, and a {@link ClassCastException} will be thrown
+     * if any other type is encountered.
+     *
+     * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+     * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+     */
+    // TODO(b/25744307): Can we add an error-prone check that rest.length % 2 == 0?
+    // For bonus points, checking that the even-numbered values are of type E would be sweet.
+    @CanIgnoreReturnValue
+    public Ordered containsAtLeast(@NullableDecl Object k0, @NullableDecl E v0, Object... rest) {
+      @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
+      Map<Object, E> expectedMap = (Map<Object, E>) accumulateMap("containsAtLeast", k0, v0, rest);
+      return containsAtLeastEntriesIn(expectedMap);
     }
 
     /**
@@ -632,11 +693,29 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           return ALREADY_FAILED;
         }
       }
+      return internalContainsEntriesIn("exactly", expectedMap, false);
+    }
+
+    /**
+     * Fails if the map does not contain at least the keys in the given map, mapping to values that
+     * correspond to the values of the given map.
+     */
+    @CanIgnoreReturnValue
+    public <K, V extends E> Ordered containsAtLeastEntriesIn(Map<K, V> expectedMap) {
+      if (expectedMap.isEmpty()) {
+        return IN_ORDER;
+      }
+      return internalContainsEntriesIn("at least", expectedMap, true);
+    }
+
+    private <K, V extends E> Ordered internalContainsEntriesIn(
+        String modifier, Map<K, V> expectedMap, boolean allowUnexpected) {
       final Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
       MapDifference<Object, A, V> diff =
           MapDifference.create(
               getCastSubject(),
               expectedMap,
+              allowUnexpected,
               new ValueTester<A, E>() {
                 @Override
                 public boolean test(A actualValue, E expectedValue) {
@@ -650,18 +729,19 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         return new MapInOrder(
             expectedMap,
             lenientFormat(
-                "contains, in order, exactly one entry that has a key that is equal to and a value "
-                    + "that %s the key and value of each entry of",
-                correspondence));
+                "contains, in order, %s one entry that has a key that is equal to and a "
+                    + "value that %s the key and value of each entry of",
+                modifier, correspondence));
       }
       failWithoutActual(
           facts(
                   simpleFact(
                       lenientFormat(
-                          "Not true that %s contains exactly one entry that has a key that is "
+                          "Not true that %s contains %s one entry that has a key that is "
                               + "equal to and a value that %s the key and value of each entry of "
                               + "<%s>. It %s",
                           actualAsString(),
+                          modifier,
                           correspondence,
                           expectedMap,
                           diff.describe(this.<V>valueDiffFormat(exceptions)))))

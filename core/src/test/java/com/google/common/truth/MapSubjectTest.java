@@ -334,6 +334,221 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void containsAtLeastWithNullKey() {
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put(null, "value");
+    actual.put("unexpectedKey", "unexpectedValue");
+    Map<String, String> expected = Maps.newHashMap();
+    expected.put(null, "value");
+
+    assertThat(actual).containsAtLeast(null, "value");
+    assertThat(actual).containsAtLeast(null, "value").inOrder();
+    assertThat(actual).containsAtLeastEntriesIn(expected);
+    assertThat(actual).containsAtLeastEntriesIn(expected).inOrder();
+  }
+
+  @Test
+  public void containsAtLeastWithNullValue() {
+    Map<String, String> actual = Maps.newHashMap();
+    actual.put("key", null);
+    actual.put("unexpectedKey", "unexpectedValue");
+    Map<String, String> expected = Maps.newHashMap();
+    expected.put("key", null);
+
+    assertThat(actual).containsAtLeast("key", null);
+    assertThat(actual).containsAtLeast("key", null).inOrder();
+    assertThat(actual).containsAtLeastEntriesIn(expected);
+    assertThat(actual).containsAtLeastEntriesIn(expected).inOrder();
+  }
+
+  @Test
+  public void containsAtLeastEmpty() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("key", 1);
+
+    assertThat(actual).containsAtLeastEntriesIn(ImmutableMap.of());
+    assertThat(actual).containsAtLeastEntriesIn(ImmutableMap.of()).inOrder();
+  }
+
+  @Test
+  public void containsAtLeastOneEntry() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1);
+
+    assertThat(actual).containsAtLeast("jan", 1);
+    assertThat(actual).containsAtLeast("jan", 1).inOrder();
+    assertThat(actual).containsAtLeastEntriesIn(actual);
+    assertThat(actual).containsAtLeastEntriesIn(actual).inOrder();
+  }
+
+  @Test
+  public void containsAtLeastMultipleEntries() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "mar", 3, "apr", 4);
+
+    assertThat(actual).containsAtLeast("apr", 4, "jan", 1, "feb", 2);
+    assertThat(actual).containsAtLeast("jan", 1, "feb", 2, "apr", 4).inOrder();
+    assertThat(actual).containsAtLeastEntriesIn(ImmutableMap.of("apr", 4, "jan", 1, "feb", 2));
+    assertThat(actual).containsAtLeastEntriesIn(actual).inOrder();
+  }
+
+  @Test
+  public void containsAtLeastDuplicateKeys() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    try {
+      assertThat(actual).containsAtLeast("jan", 1, "jan", 2, "jan", 3);
+      fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Duplicate keys ([jan x 3]) cannot be passed to containsAtLeast().");
+    }
+  }
+
+  @Test
+  public void containsAtLeastMultipleDuplicateKeys() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    try {
+      assertThat(actual).containsAtLeast("jan", 1, "jan", 1, "feb", 2, "feb", 2);
+      fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo("Duplicate keys ([jan x 2, feb x 2]) cannot be passed to containsAtLeast().");
+    }
+  }
+
+  @Test
+  public void containsAtLeastMissingKey() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
+    expectFailureWhenTestingThat(actual).containsAtLeast("jan", 1, "march", 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2}> contains at least <{jan=1, march=3}>. "
+                + "It is missing keys for the following entries: {march=3}");
+  }
+
+  @Test
+  public void namedMapContainsAtLeastMissingKey() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
+    expectFailureWhenTestingThat(actual).named("foo").containsAtLeast("march", 3);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "name: foo\n"
+                + "Not true that foo (<{jan=1, feb=2}>) contains at least "
+                + "<{march=3}>. "
+                + "It is missing keys for the following entries: {march=3}");
+  }
+
+  @Test
+  public void containsAtLeastWrongValue() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    expectFailureWhenTestingThat(actual).containsAtLeast("jan", 1, "march", 33);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> contains at least <{jan=1, march=33}>. "
+                + "It has the following entries with matching keys but different values: "
+                + "{march=(expected 33 but got 3)}");
+  }
+
+  @Test
+  public void containsAtLeastWrongValueWithNull() {
+    // Test for https://github.com/google/truth/issues/468
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+    expectFailureWhenTestingThat(actual).containsAtLeast("jan", 1, "march", null);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> contains at least "
+                + "<{jan=1, march=null}>. It has the following entries with matching keys "
+                + "but different values: {march=(expected null but got 3)}");
+  }
+
+  @Test
+  public void containsAtLeastExtraKeyAndMissingKeyAndWrongValue() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "march", 3);
+    expectFailureWhenTestingThat(actual).containsAtLeast("march", 33, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, march=3}> contains at least <{march=33, feb=2}>. "
+                + "It is missing keys for the following entries: {feb=2} "
+                + "and has the following entries with matching keys but different values: "
+                + "{march=(expected 33 but got 3)}");
+  }
+
+  @Test
+  public void containsAtLeastNotInOrder() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
+
+    assertThat(actual).containsAtLeast("march", 3, "feb", 2);
+    expectFailureWhenTestingThat(actual).containsAtLeast("march", 3, "feb", 2).inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, march=3}> contains at least these entries in order "
+                + "<{march=3, feb=2}>");
+  }
+
+  @Test
+  @SuppressWarnings("ShouldHaveEvenArgs")
+  public void containsAtLeastBadNumberOfArgs() {
+    ImmutableMap<String, Integer> actual =
+        ImmutableMap.of("jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5);
+
+    try {
+      assertThat(actual)
+          .containsAtLeast("jan", 1, "feb", 2, "march", 3, "april", 4, "may", 5, "june", 6, "july");
+      fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException expected) {
+      assertThat(expected)
+          .hasMessageThat()
+          .isEqualTo(
+              "There must be an equal number of key/value pairs "
+                  + "(i.e., the number of key/value parameters (13) must be even).");
+    }
+  }
+
+  @Test
+  public void containsAtLeastWrongValue_sameToStringForValues() {
+    expectFailureWhenTestingThat(ImmutableMap.of("jan", 1L, "feb", 2L, "mar", 3L))
+        .containsAtLeast("jan", 1, "feb", 2);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{jan=1, feb=2, mar=3}> contains at least <{jan=1, feb=2}>. "
+                + "It has the following entries with matching keys but different values: "
+                + "{jan=(expected 1 (java.lang.Integer) but got 1 (java.lang.Long)), "
+                + "feb=(expected 2 (java.lang.Integer) but got 2 (java.lang.Long))}");
+  }
+
+  @Test
+  public void containsAtLeastWrongValue_sameToStringForKeys() {
+    expectFailureWhenTestingThat(ImmutableMap.of(1L, "jan", 1, "feb"))
+        .containsAtLeast(1, "jan", 1L, "feb");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=jan, 1=feb}> contains at least <{1=jan, 1=feb}>. "
+                + "It has the following entries with matching keys but different values: "
+                + "{1 (java.lang.Integer)=(expected jan but got feb), "
+                + "1 (java.lang.Long)=(expected feb but got jan)}");
+  }
+
+  @Test
+  public void containsAtLeastExtraKeyAndMissingKey_failsWithSameToStringForKeys() {
+    expectFailureWhenTestingThat(ImmutableMap.of(1L, "jan", 2, "feb"))
+        .containsAtLeast(1, "jan", 2, "feb");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{1=jan, 2=feb}> contains at least <{1=jan, 2=feb}>. "
+                + "It is missing keys for the following entries: {1 (java.lang.Integer)=jan}");
+  }
+
+  @Test
   public void isEqualToPass() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
@@ -1376,6 +1591,312 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(456, 456) threw java.lang.ClassCastException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_success() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 456, "abc", 123);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_inOrder_success() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "ghi", "789", "def", "456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("abc", 123, "def", 456)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_failsMissingEntry() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 456, "xyz", 999, "abc", 123);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=123, def=456, ghi=789}> contains at least one entry that has a "
+                + "key that is equal to and a value that parses to the key and value of each entry "
+                + "of <{def=456, xyz=999, abc=123}>. It is missing keys for the following entries: "
+                + "{xyz=999}");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_failsWrongKey() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 456, "cab", 123);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456, cab=123}>. It is missing keys for the following entries: {cab=123}");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_failsWrongValue() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("abc", 321);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{abc=321}>. It has the following entries with matching keys but "
+                + "different values: {abc=(expected 321 but got 123)}");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_handlesExceptions() {
+    Map<Integer, String> actual = new LinkedHashMap<>();
+    actual.put(1, "one");
+    actual.put(2, null);
+    actual.put(3, "three");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
+        .containsAtLeast(1, "ONE", 2, "TWO");
+    assertFailureKeys(
+        "Not true that <{1=one, 2=null, 3=three}> contains at least one entry that has a key that "
+            + "is equal to and a value that equals (ignoring case) the key and value of each "
+            + "entry of <{1=ONE, 2=TWO}>. It has the following entries with matching keys but "
+            + "different values: {2=(expected TWO but got null)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, TWO) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_inOrder_failsOutOfOrder() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 456, "abc", 123)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=123, def=456, ghi=789}> contains, in order, at least one entry "
+                + "that has a key that is equal to and a value that parses to the key and value of "
+                + "each entry of <{def=456, abc=123}>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_wrongValueTypeInExpectedActual() {
+    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 456);
+    assertFailureKeys(
+        "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
+            + "equal to and a value that parses to the key and value of each entry of "
+            + "<{def=456}>. It has the following entries with matching keys but "
+            + "different values: {def=(expected 456 but got 456)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(456, 456) threw java.lang.ClassCastException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_wrongValueTypeInUnexpectedActual_success() {
+    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("abc", 123);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeast_wrongValueTypeInExpected() {
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast("def", 456, "abc", 123L);
+    assertFailureKeys(
+        "Not true that <{abc=123, def=456, ghi=789}> contains at least one entry that has a key "
+            + "that is equal to and a value that parses to the key and value of each entry of "
+            + "<{def=456, abc=123}>. It has the following entries with matching keys but "
+            + "different values: {abc=(expected 123 but got 123)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(123, 123) threw java.lang.ClassCastException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_success() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 123);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_inOrder_success() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 123, "ghi", 789);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected)
+        .inOrder();
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_failsMissingEntry() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "xyz", 999, "abc", 123);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=123, def=456, ghi=789}> contains at least one entry that has a "
+                + "key that is equal to and a value that parses to the key and value of each entry "
+                + "of <{def=456, xyz=999, abc=123}>. It is missing keys for the following entries: "
+                + "{xyz=999}");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_failsWrongKey() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "cab", 123);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
+                + "equal to and a value that parses to the key and value of each entry of "
+                + "<{def=456, cab=123}>. It is missing keys for the following entries: {cab=123}");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_failsWrongValue() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456, "abc", 321);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=123, def=456, ghi=789}> contains at least one entry that has a "
+                + "key that is equal to and a value that parses to the key and value of each entry "
+                + "of <{def=456, abc=321}>. It has the following entries with matching keys but "
+                + "different values: {abc=(expected 321 but got 123)}");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_diffMissingAndExtraAndWrongValue() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 30, "def", 60, "ghi", 90);
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("abc", 35, "fed", 60, "ghi", 101);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(WITHIN_10_OF)
+        .containsAtLeastEntriesIn(expected);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=35, fed=60, ghi=101}> contains at least one entry that has a key "
+                + "that is equal to and a value that is within 10 of the key and value of each "
+                + "entry of <{abc=30, def=60, ghi=90}>. It is missing keys for the following "
+                + "entries: {def=60} "
+                + "and has the following entries with matching keys but different values: "
+                + "{ghi=(expected 90 but got 101, diff: 11)}");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_handlesFormatDiffExceptions() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 30, "def", 60, "ghi", 90);
+    Map<String, Integer> actual = new LinkedHashMap<>();
+    actual.put("abc", 35);
+    actual.put("def", null);
+    actual.put("ghi", 95);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(WITHIN_10_OF)
+        .containsAtLeastEntriesIn(expected);
+    assertFailureKeys(
+        "Not true that <{abc=35, def=null, ghi=95}> contains at least one entry that has a key that "
+            + "is equal to and a value that is within 10 of the key and value of each entry of "
+            + "<{abc=30, def=60, ghi=90}>. It has the following entries with matching keys but "
+            + "different values: {def=(expected 60 but got null)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception",
+        "additionally, one or more exceptions were thrown while formatting diffs",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception", 0)
+        .startsWith("compare(null, 60) threw java.lang.NullPointerException");
+    assertThatFailure()
+        .factValue("first exception", 1)
+        .startsWith("formatDiff(null, 60) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_inOrder_failsOutOfOrder() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("ghi", 789, "abc", 123);
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456", "ghi", "789");
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected)
+        .inOrder();
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <{abc=123, def=456, ghi=789}> contains, in order, at least one entry "
+                + "that has a key that is equal to and a value that parses to the key and value of "
+                + "each entry of <{ghi=789, abc=123}>");
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_empty() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of();
+    ImmutableMap<String, String> actual = ImmutableMap.of("abc", "123", "def", "456");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+  }
+
+  @Test
+  public void comparingValuesUsing_containsAtLeastEntriesIn_wrongValueTypeInExpectedActual() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("def", 456);
+    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    expectFailureWhenTestingThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
+    assertFailureKeys(
+        "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
+            + "equal to and a value that parses to the key and value of each entry of "
+            + "<{def=456}>. It has the following entries with matching keys but "
+            + "different values: {def=(expected 456 but got 456)}",
+        "additionally, one or more exceptions were thrown while comparing values",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(456, 456) threw java.lang.ClassCastException");
+  }
+
+  @Test
+  public void
+      comparingValuesUsing_containsAtLeastEntriesIn_wrongValueTypeInUnexpectedActual_success() {
+    ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 123);
+    ImmutableMap<String, Object> actual = ImmutableMap.<String, Object>of("abc", "123", "def", 456);
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastEntriesIn(expected);
   }
 
   private MapSubject expectFailureWhenTestingThat(Map<?, ?> actual) {

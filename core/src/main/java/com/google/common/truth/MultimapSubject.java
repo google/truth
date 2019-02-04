@@ -43,6 +43,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map.Entry;
@@ -249,7 +250,35 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder(expectedMultimap);
+    return new MultimapInOrder("contains exactly", expectedMultimap);
+  }
+
+  /**
+   * Fails if the {@link Multimap} does not contain at least the entries in the argument {@link
+   * Multimap}.
+   *
+   * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify that
+   * the entries are present in the same order as given. That is, the keys are present in the given
+   * order in the key set, and the values for each key are present in the given order order in the
+   * value collections.
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsAtLeastEntriesIn(Multimap<?, ?> expectedMultimap) {
+    checkNotNull(expectedMultimap, "expectedMultimap");
+    ListMultimap<?, ?> missing = difference(expectedMultimap, actual());
+
+    // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
+    // the subject but not enough times. Similarly for unexpected extra items.
+    if (!missing.isEmpty()) {
+      failWithBadResults(
+          "contains at least",
+          annotateEmptyStringsMultimap(expectedMultimap),
+          "is missing",
+          countDuplicatesMultimap(annotateEmptyStringsMultimap(missing)));
+      return ALREADY_FAILED;
+    }
+
+    return new MultimapInOrder("contains at least", expectedMultimap);
   }
 
   /** Fails if the multimap is not empty. */
@@ -267,6 +296,17 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   @CanIgnoreReturnValue
   public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
     return containsExactlyEntriesIn(accumulateMultimap(k0, v0, rest));
+  }
+
+  /**
+   * Fails if the multimap does not contain at least the given key/value pairs.
+   *
+   * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+   * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsAtLeast(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
+    return containsAtLeastEntriesIn(accumulateMultimap(k0, v0, rest));
   }
 
   private static Multimap<Object, Object> accumulateMultimap(
@@ -315,26 +355,36 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
 
   private class MultimapInOrder implements Ordered {
     private final Multimap<?, ?> expectedMultimap;
+    private final String verb;
 
-    MultimapInOrder(Multimap<?, ?> expectedMultimap) {
+    MultimapInOrder(String verb, Multimap<?, ?> expectedMultimap) {
       this.expectedMultimap = expectedMultimap;
+      this.verb = verb;
     }
 
+    /**
+     * Checks whether entries in expected appear in the same order in actual.
+     *
+     * <p>We allow for actual to have more items than the expected to support both {@link
+     * #containsExactly} and {@link #containsAtLeast}.
+     */
     @Override
     public void inOrder() {
+      // We use the fact that Sets.intersection's result has the same order as the first parameter
       boolean keysInOrder =
-          Lists.newArrayList(actual().keySet())
+          Lists.newArrayList(Sets.intersection(actual().keySet(), expectedMultimap.keySet()))
               .equals(Lists.newArrayList(expectedMultimap.keySet()));
 
       LinkedHashSet<Object> keysWithValuesOutOfOrder = Sets.newLinkedHashSet();
-      LinkedHashSet<Object> allKeys = Sets.newLinkedHashSet();
-      allKeys.addAll(actual().keySet());
-      allKeys.addAll(expectedMultimap.keySet());
-      for (Object key : allKeys) {
+      for (Object key : expectedMultimap.keySet()) {
         List<?> actualVals = Lists.newArrayList(get(actual(), key));
         List<?> expectedVals = Lists.newArrayList(get(expectedMultimap, key));
-        if (!actualVals.equals(expectedVals)) {
-          keysWithValuesOutOfOrder.add(key);
+        Iterator<?> actualIterator = actualVals.iterator();
+        for (Object value : expectedVals) {
+          if (!advanceToFind(actualIterator, value)) {
+            keysWithValuesOutOfOrder.add(key);
+            break;
+          }
         }
       }
 
@@ -343,25 +393,42 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           failWithoutActual(
               simpleFact(
                   lenientFormat(
-                      "Not true that %s contains exactly <%s> in order. The keys are not in order, "
+                      "Not true that %s %s <%s> in order. The keys are not in order, "
                           + "and the values for keys <%s> are not in order either",
-                      actualAsString(), expectedMultimap, keysWithValuesOutOfOrder)));
+                      actualAsString(), verb, expectedMultimap, keysWithValuesOutOfOrder)));
         } else {
           failWithoutActual(
               simpleFact(
                   lenientFormat(
-                      "Not true that %s contains exactly <%s> in order. The keys are not in order",
-                      actualAsString(), expectedMultimap)));
+                      "Not true that %s %s <%s> in order. The keys are not in order",
+                      actualAsString(), verb, expectedMultimap)));
         }
       } else if (!keysWithValuesOutOfOrder.isEmpty()) {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s contains exactly <%s> in order. "
+                    "Not true that %s %s <%s> in order. "
                         + "The values for keys <%s> are not in order",
-                    actualAsString(), expectedMultimap, keysWithValuesOutOfOrder)));
+                    actualAsString(), verb, expectedMultimap, keysWithValuesOutOfOrder)));
       }
     }
+  }
+
+  /**
+   * Advances the iterator until it either returns value, or has no more elements.
+   *
+   * <p>Returns true if the value was found, false if the end was reached before finding it.
+   *
+   * <p>This is basically the same as {@link Iterables#contains}, but where the contract explicitly
+   * states that the iterator isn't advanced beyond the value if the value is found.
+   */
+  private static boolean advanceToFind(Iterator<?> iterator, Object value) {
+    while (iterator.hasNext()) {
+      if (Objects.equal(iterator.next(), value)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private static <K, V> Collection<V> get(Multimap<K, V> multimap, @NullableDecl Object key) {
@@ -620,6 +687,30 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     }
 
     /**
+     * Fails if the map does not contain at least the keys in the given multimap, mapping to values
+     * that correspond to the values of the given multimap.
+     *
+     * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify
+     * that the two Multimaps iterate fully in the same order. That is, their key sets iterate in
+     * the same order, and the corresponding value collections for each key iterate in the same
+     * order.
+     */
+    @CanIgnoreReturnValue
+    public <K, V extends E> Ordered containsAtLeastEntriesIn(Multimap<K, V> expectedMultimap) {
+      // Note: The non-fuzzy MultimapSubject.containsAtLeastEntriesIn has a custom implementation
+      // and produces somewhat better failure messages simply asserting about the iterables of
+      // entries would: it formats the expected values as  k=[v1, v2] rather than k=v1, k=v2; and in
+      // the case where inOrder() fails it says the keys and/or the values for some keys are out of
+      // order. We don't bother with that here. It would be nice, but it would be a lot of added
+      // complexity for little gain.
+      return check()
+          .about(iterableEntries())
+          .that(actual().entries())
+          .comparingElementsUsing(new EntryCorrespondence<K, A, V>(correspondence))
+          .containsAllIn(expectedMultimap.entries());
+    }
+
+    /**
      * Fails if the multimap does not contain exactly the given set of key/value pairs.
      *
      * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
@@ -631,6 +722,20 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       @SuppressWarnings("unchecked")
       Multimap<K, V> expectedMultimap = (Multimap<K, V>) accumulateMultimap(k0, v0, rest);
       return containsExactlyEntriesIn(expectedMultimap);
+    }
+
+    /**
+     * Fails if the multimap does not contain at least the given key/value pairs.
+     *
+     * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
+     * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
+     */
+    @CanIgnoreReturnValue
+    public <K, V extends E> Ordered containsAtLeast(
+        @NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
+      @SuppressWarnings("unchecked")
+      Multimap<K, V> expectedMultimap = (Multimap<K, V>) accumulateMultimap(k0, v0, rest);
+      return containsAtLeastEntriesIn(expectedMultimap);
     }
 
     /** Fails if the multimap is not empty. */
