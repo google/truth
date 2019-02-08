@@ -231,9 +231,15 @@ public abstract class Correspondence<A, E> {
    *
    * <h4>Examples of exception handling</h4>
    *
-   * <p>Suppose that {@code CASE_INSENSITIVE_EQUALITY} is a {@code Correspondence<String, String>}
-   * whose {@code compare} method calls {@link actual.equalsIgnoreCase(expected)} and therefore
-   * throws {@link NullPointerException} if the actual value is null. The assertion
+   * <p>Suppose that we have the correspondence
+   *
+   * <pre>{@code
+   * static final Correspondence<String, String> CASE_INSENSITIVE_EQUALITY =
+   *     Correspondence.from(String::equalsIgnoreCase, "equals ignoring case"}
+   * }</pre>
+   *
+   * whose {@code compare} method throws {@link NullPointerException} if the actual value is null.
+   * The assertion
    *
    * <pre>{@code
    * assertThat(asList(null, "xyz", "abc", "def"))
@@ -267,7 +273,6 @@ public abstract class Correspondence<A, E> {
    * returned false. (Note that, in the latter case at least, it is likely that the test author's
    * intention was <i>not</i> for the test to pass with these values.)
    */
-  // TODO(b/119038894): Simplify the 'for example' by using a factory method when it's ready
   public abstract boolean compare(@NullableDecl A actual, @NullableDecl E expected);
 
   private static class StoredException {
