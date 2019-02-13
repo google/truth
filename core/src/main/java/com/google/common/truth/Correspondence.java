@@ -15,6 +15,7 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.Functions.identity;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
@@ -24,7 +25,9 @@ import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.Platform.getStackTraceAsString;
 import static java.util.Arrays.asList;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
@@ -56,6 +59,8 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Pete Gillin
  */
+// TODO(b/119038898): Once there is little reason to prefer subclassing to factory methods, change
+// the class-level javadoc to point folks at the factory methods and drop references to subclassing.
 public abstract class Correspondence<A, E> {
 
   /**
@@ -138,6 +143,75 @@ public abstract class Correspondence<A, E> {
     @Override
     public boolean compare(@NullableDecl A actual, @NullableDecl E expected) {
       return predicate.apply(actual, expected);
+    }
+
+    @Override
+    public String toString() {
+      return description;
+    }
+  }
+
+  /**
+   * Constructs a {@link Correspondence} that compares elements by transforming the actual elements
+   * using the given function and tests for equality with the expected elements. If the transformed
+   * actual element (i.e. the output of the given function) is null, it will correspond to a null
+   * expected element.
+   *
+   * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}).
+   *
+   * <p>Note that, if you the data you are asserting about contains null actual values, your
+   * function may be invoked with a null argument. If this causes it to throw a {@link
+   * NullPointerException}, then your test will fail. (See {@link Correspondence#compare} for more
+   * detail on how exceptions are handled.) In particular, this applies if your predicate is an
+   * instance method reference on the actual value (as in the example below). If you want a null
+   * actual element to correspond to a null expected element, you must ensure that your function
+   * transforms a null input to a null output.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * static final Correspondence<MyRecord, Integer> HAS_ID =
+   *     Correspondence.transforming(MyRecord::getId, "has an ID of");
+   * }</pre>
+   *
+   * This can be used as follows:
+   *
+   * <pre>{@code
+   * assertThat(myRecords).comparingElementsUsing(HAS_ID).containsExactly(123, 456, 789);
+   * }</pre>
+   *
+   * @param actualTransform a {@link Function} taking an actual value and returning a new value
+   *     which will be compared with an expected value to determine whether they correspond
+   * @param description should fill the gap in a failure message of the form {@code "not true that
+   *     <some actual element> is an element that <description> <some expected element>"}, e.g.
+   *     {@code "has an ID of"}
+   */
+  // TODO(b/119038898): Mention formattingDiffsUsing in the javadoc when it exists.
+  public static <A, E> Correspondence<A, E> transforming(
+      Function<A, ? extends E> actualTransform, String description) {
+    return new Transforming<>(actualTransform, identity(), description);
+  }
+
+  // TODO(b/119038894): Add the two-function overload of transforming that also transforms expected.
+
+  private static final class Transforming<A, E> extends Correspondence<A, E> {
+
+    private final Function<? super A, ?> actualTransform;
+    private final Function<? super E, ?> expectedTransform;
+    private final String description;
+
+    private Transforming(
+        Function<? super A, ?> actualTransform,
+        Function<? super E, ?> expectedTransform,
+        String description) {
+      this.actualTransform = actualTransform;
+      this.expectedTransform = expectedTransform;
+      this.description = description;
+    }
+
+    @Override
+    public boolean compare(@NullableDecl A actual, @NullableDecl E expected) {
+      return Objects.equal(actualTransform.apply(actual), expectedTransform.apply(expected));
     }
 
     @Override
