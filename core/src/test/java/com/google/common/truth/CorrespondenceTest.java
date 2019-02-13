@@ -20,7 +20,9 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -133,6 +135,97 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, foot) threw java.lang.NullPointerException");
+  }
+
+  // Tests of the 'transform' factory methods.
+
+  private static final Correspondence<String, Integer> LENGTHS =
+      Correspondence.transforming(
+          new Function<String, Integer>() {
+            @Override
+            @NullableDecl
+            public Integer apply(String str) {
+              return str.length();
+            }
+          },
+          "has a length of");
+
+  private static final Correspondence<String, Integer> HYPHEN_INDEXES =
+      Correspondence.transforming(
+          new Function<String, Integer>() {
+            @Override
+            @NullableDecl
+            public Integer apply(String str) {
+              int index = str.indexOf('-');
+              return (index >= 0) ? index : null;
+            }
+          },
+          "has a hyphen at an index of");
+
+  @Test
+  public void testTransforming_actual_compare() {
+    assertThat(LENGTHS.compare("foo", 3)).isTrue();
+    assertThat(LENGTHS.compare("foot", 4)).isTrue();
+    assertThat(LENGTHS.compare("foo", 4)).isFalse();
+  }
+
+  @Test
+  public void testTransforming_actual_formatDiff() {
+    assertThat(LENGTHS.formatDiff("foo", 4)).isNull();
+  }
+
+  @Test
+  public void testTransforming_actual_toString() {
+    assertThat(LENGTHS.toString()).isEqualTo("has a length of");
+  }
+
+  @Test
+  public void testTransforming_actual_viaIterableSubjectContainsExactly_success() {
+    assertThat(ImmutableList.of("feet", "barns", "gallons"))
+        .comparingElementsUsing(LENGTHS)
+        .containsExactly(4, 5, 7)
+        .inOrder();
+  }
+
+  @Test
+  public void testTransforming_actual_viaIterableSubjectContainsExactly_failure() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableList.of("feet", "barns", "gallons"))
+        .comparingElementsUsing(LENGTHS)
+        .containsExactly(4, 5);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[feet, barns, gallons]> contains exactly one element that has a length "
+                + "of each element of <[4, 5]>. It has unexpected elements <[gallons]>");
+  }
+
+  @Test
+  public void testTransforming_actual_viaIterableSubjectContainsExactly_nullActual() {
+    expectFailure
+        .whenTesting()
+        .that(asList("feet", "barns", null))
+        .comparingElementsUsing(LENGTHS)
+        .containsExactly(4, 5);
+    assertFailureKeys(
+        "Not true that <[feet, barns, null]> contains exactly one element that has a length of "
+            + "each element of <[4, 5]>. It has unexpected elements <[null]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, 4) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void testTransforming_actual_viaIterableSubjectContainsExactly_nullTransformed() {
+    // "mailing-list" and "chat-room" have hyphens at index 7 and 4 respectively.
+    // "forum" contains no hyphen so the Function in HYPHEN_INDEXES transforms it to null.
+    assertThat(ImmutableList.of("mailing-list", "chat-room", "forum"))
+        .comparingElementsUsing(HYPHEN_INDEXES)
+        .containsExactly(7, 4, null)
+        .inOrder();
   }
 
   // Tests of the 'tolerance' factory method. Includes both direct tests of the compare method and
