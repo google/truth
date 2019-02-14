@@ -23,8 +23,7 @@ Some subjects aren't part of core Truth but can be found in other parts of the
 project. They include:
 
 *   [`Truth8`] for java8 types such as `java.util.Optional`
-*   [`ProtoSubject`] for `Message` style protocol buffers
-    *   A [`LiteProtoSubject`] with only lite dependencies is also provided.
+*   [`ProtoTruth`] for `Message` style protocol buffers and lite versions
 *   [`RE2JSubjects`] for use with the RE2J library
 
 Other extensions that are not part of the Truth project itself include:
@@ -367,9 +366,7 @@ There are four parts to the example:
 [`FailureStrategy.fail`]: https://google.github.io/truth/api/latest/com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-
 [`FailureStrategy`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
 [`FakeHrDatabaseTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/FakeHrDatabaseTest.java
-[`LiteProtoSubject`]:     http://github.com/google/truth/blob/master/extensions/liteproto/src/main/java/com/google/common/truth/extensions/proto/LiteProtoSubject.java
-[`ProtoSubject`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoSubject.java
-[`ProtoTruth`]:           http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoTruth.java
+[`ProtoTruth`]:           https://google.github.io/truth/protobufs
 [`Re2jSubjects`]:         http://github.com/google/truth/blob/master/extensions/re2j/src/main/java/com/google/common/truth/extensions/re2j/Re2jSubjects.java
 [`Subject.Factory`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
 [`Subject`]:              https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
