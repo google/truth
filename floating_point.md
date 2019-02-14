@@ -214,11 +214,33 @@ lookups will always be done using exact equality (by the definition of `Map`)
 this doesn't really make sense, and floating point keys are generally not
 recommended.
 
-### Assertions about protocol buffers with `double` properties, and about `Iterable`, `Map`, and `Multimap` values containing them
+### Assertions about protocol buffers with `double` properties
 
-Custom support for this is planned but has not been implemented yet. Until that
-happens, you'll have to treat protocol buffers the same as any other data
-structure, see below.
+[`ProtoTruth`] supports approximate comparison of floats and doubles through
+methods `usingFloatTolerance(float)` and `usingDoubleTolerance(double)`
+respectively. This applies to all floats/doubles within the protocol buffers
+being compared, so you don't have to specify which fields you want to test if
+you don't want to.
+
+`Iterables`, `Maps`, and `Multimaps` also have equivalent tolerance methods for
+protocol buffer values within the containers (not keys!).
+
+```java
+import static com.google.common.truth.proto.ProtoTruth.assertThat;
+
+...
+
+assertThat(actualProto)
+    .usingDoubleTolerance(1.0e-10)
+    .isEqualTo(MyProto.newBuilder().setScore(1.023).build());
+assertThat(mapOfProtos)
+    .usingDoubleTolerance(1.0e-10)
+    .containsExactly(
+        "low",
+        MyProto.newBuilder().setScore(0.001).build(),
+        "high",
+        MyProto.newBuilder().setScore(156.17).build());
+```
 
 ### Assertions about other data structures with `double` properties
 
@@ -235,7 +257,6 @@ assertThat(actualReport.toBuilder().clearScore().build())
     .isEqualTo(expectedReport.toBuilder().clearScore().build());
 ```
 
-
 If you do this quite a bit, you might want to write a helper method. If you do
 it a lot, you might want to write a [custom subject](extension.md).
 
@@ -243,9 +264,13 @@ it a lot, you might want to write a [custom subject](extension.md).
 
 Write your own `Correspondence` implementation and use [Fuzzy Truth](fuzzy.md).
 
-
 ```java
 assertThat(actualReports)
     .comparingElementsUsing(REPORT_CORRESPONDENCE)
     .containsExactlyElementsIn(expectedReports);
 ```
+
+<!-- References -->
+
+[`ProtoTruth`]: https://google.github.io/truth/protobufs
+
