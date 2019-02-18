@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,6 +74,8 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   // Tests of the 'from' factory method.
 
   private static final Correspondence<String, String> STRING_PREFIX_EQUALITY =
+      // If we were allowed to use method references here, this would be:
+      // Correspondence.from(String::startsWith, "starts with");
       Correspondence.from(
           new Correspondence.BinaryPredicate<String, String>() {
             @Override
@@ -140,6 +143,8 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   // Tests of the 'transform' factory methods.
 
   private static final Correspondence<String, Integer> LENGTHS =
+      // If we were allowed to use method references here, this would be:
+      // Correspondence.transforming(String::length, "has a length of");
       Correspondence.transforming(
           new Function<String, Integer>() {
             @Override
@@ -151,6 +156,14 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
           "has a length of");
 
   private static final Correspondence<String, Integer> HYPHEN_INDEXES =
+      // If we were allowed to use lambdas here, this would be:
+      // Correspondence.transforming(
+      //     str -> {
+      //       int index = str.indexOf('-');
+      //       return (index >= 0) ? index : null;
+      //     },
+      //     "has a hyphen at an index of");
+      // (Or else perhaps we'd pull out a method for the lambda body and use a method reference?)
       Correspondence.transforming(
           new Function<String, Integer>() {
             @Override
@@ -167,6 +180,33 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
     assertThat(LENGTHS.compare("foo", 3)).isTrue();
     assertThat(LENGTHS.compare("foot", 4)).isTrue();
     assertThat(LENGTHS.compare("foo", 4)).isFalse();
+  }
+
+  @Test
+  public void testTransforming_actual_compare_nullTransformedValues() {
+    assertThat(HYPHEN_INDEXES.compare("mailing-list", null)).isFalse();
+    assertThat(HYPHEN_INDEXES.compare("forum", 7)).isFalse();
+    assertThat(HYPHEN_INDEXES.compare("forum", null)).isTrue();
+  }
+
+  @Test
+  public void testTransforming_actual_compare_nullActualValue() {
+    try {
+      HYPHEN_INDEXES.compare(null, 7);
+      fail("Expected NullPointerException to be thrown but wasn't");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void foo() {
+    ArrayList<String> list = new ArrayList<>();
+    assertThat(list).isEmpty();
+    list.add("element");
+    assertThat(list).containsExactly("element");
+    list.remove("element");
+    assertThat(list).isEmpty();
+    assertThat(list.size()).isEqualTo(0);
   }
 
   @Test
@@ -225,6 +265,147 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
     assertThat(ImmutableList.of("mailing-list", "chat-room", "forum"))
         .comparingElementsUsing(HYPHEN_INDEXES)
         .containsExactly(7, 4, null)
+        .inOrder();
+  }
+
+  private static final Correspondence<String, String> HYPHENS_MATCH_COLONS =
+      // If we were allowed to use lambdas here, this would be:
+      // Correspondence.transforming(
+      //     str -> {
+      //       int index = str.indexOf('-');
+      //       return (index >= 0) ? index : null;
+      //     },
+      //     str -> {
+      //       int index = str.indexOf(':');
+      //       return (index >= 0) ? index : null;
+      //     },
+      //     "has a hyphen at the same index as the colon in");
+      // (Or else perhaps we'd pull out a method for the lambda bodies?)
+      Correspondence.transforming(
+          new Function<String, Integer>() {
+            @Override
+            @NullableDecl
+            public Integer apply(String str) {
+              int index = str.indexOf('-');
+              return (index >= 0) ? index : null;
+            }
+          },
+          new Function<String, Integer>() {
+            @Override
+            @NullableDecl
+            public Integer apply(String str) {
+              int index = str.indexOf(':');
+              return (index >= 0) ? index : null;
+            }
+          },
+          "has a hyphen at the same index as the colon in");
+
+  @Test
+  public void testTransforming_both_compare() {
+    assertThat(HYPHENS_MATCH_COLONS.compare("mailing-list", "abcdefg:hij")).isTrue();
+    assertThat(HYPHENS_MATCH_COLONS.compare("chat-room", "abcd:efghij")).isTrue();
+    assertThat(HYPHENS_MATCH_COLONS.compare("chat-room", "abcdefg:hij")).isFalse();
+  }
+
+  @Test
+  public void testTransforming_both_compare_nullTransformedValue() {
+    assertThat(HYPHENS_MATCH_COLONS.compare("mailing-list", "abcdefg-hij")).isFalse();
+    assertThat(HYPHENS_MATCH_COLONS.compare("forum", "abcde:fghij")).isFalse();
+    assertThat(HYPHENS_MATCH_COLONS.compare("forum", "abcde-fghij")).isTrue();
+  }
+
+  @Test
+  public void testTransforming_both_compare_nullInputValues() {
+    try {
+      HYPHENS_MATCH_COLONS.compare(null, "abcde:fghij");
+      fail("Expected NullPointerException to be thrown but wasn't");
+    } catch (NullPointerException expected) {
+    }
+    try {
+      HYPHENS_MATCH_COLONS.compare("mailing-list", null);
+      fail("Expected NullPointerException to be thrown but wasn't");
+    } catch (NullPointerException expected) {
+    }
+  }
+
+  @Test
+  public void testTransforming_both_formatDiff() {
+    assertThat(HYPHENS_MATCH_COLONS.formatDiff("chat-room", "abcdefg:hij")).isNull();
+  }
+
+  @Test
+  public void testTransforming_both_toString() {
+    assertThat(HYPHENS_MATCH_COLONS.toString())
+        .isEqualTo("has a hyphen at the same index as the colon in");
+  }
+
+  @Test
+  public void testTransforming_both_viaIterableSubjectContainsExactly_success() {
+    assertThat(ImmutableList.of("mailing-list", "chat-room", "web-app"))
+        .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+        .containsExactly("abcdefg:hij", "abcd:efghij", "abc:defghij")
+        .inOrder();
+  }
+
+  @Test
+  public void testTransforming_both_viaIterableSubjectContainsExactly_failure() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableList.of("mailing-list", "chat-room", "web-app"))
+        .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+        .containsExactly("abcdefg:hij", "abcd:efghij");
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[mailing-list, chat-room, web-app]> contains exactly one element that "
+                + "has a hyphen at the same index as the colon in each element of "
+                + "<[abcdefg:hij, abcd:efghij]>. It has unexpected elements <[web-app]>");
+  }
+
+  @Test
+  public void testTransforming_both_viaIterableSubjectContainsExactly_nullActual() {
+    expectFailure
+        .whenTesting()
+        .that(asList("mailing-list", "chat-room", null))
+        .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+        .containsExactly("abcdefg:hij", "abcd:efghij");
+    assertFailureKeys(
+        "Not true that <[mailing-list, chat-room, null]> contains exactly one element that has a "
+            + "hyphen at the same index as the colon in each element of "
+            + "<[abcdefg:hij, abcd:efghij]>. It has unexpected elements <[null]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(null, abcdefg:hij) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void testTransforming_both_viaIterableSubjectContainsExactly_nullExpected() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableList.of("mailing-list", "chat-room"))
+        .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+        .containsExactly("abcdefg:hij", "abcd:efghij", null);
+    assertFailureKeys(
+        "Not true that <[mailing-list, chat-room]> contains exactly one element that has a hyphen "
+            + "at the same index as the colon in each element of "
+            + "<[abcdefg:hij, abcd:efghij, null]>. It is missing an element that has a hyphen at "
+            + "the same index as the colon in <null>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception")
+        .startsWith("compare(mailing-list, null) threw java.lang.NullPointerException");
+  }
+
+  @Test
+  public void testTransforming_both_viaIterableSubjectContainsExactly_nullTransformed() {
+    // The actual element "forum" contains no hyphen, and the expected element "abcde-fghij"
+    // contains no colon, so they both transform to null, and so they correspond.
+    assertThat(ImmutableList.of("mailing-list", "chat-room", "forum"))
+        .comparingElementsUsing(HYPHENS_MATCH_COLONS)
+        .containsExactly("abcdefg:hij", "abcd:efghij", "abcde-fghij")
         .inOrder();
   }
 
