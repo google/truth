@@ -153,16 +153,16 @@ public abstract class Correspondence<A, E> {
 
   /**
    * Constructs a {@link Correspondence} that compares elements by transforming the actual elements
-   * using the given function and tests for equality with the expected elements. If the transformed
-   * actual element (i.e. the output of the given function) is null, it will correspond to a null
-   * expected element.
+   * using the given function and testing for equality with the expected elements. If the
+   * transformed actual element (i.e. the output of the given function) is null, it will correspond
+   * to a null expected element.
    *
    * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}).
    *
    * <p>Note that, if you the data you are asserting about contains null actual values, your
    * function may be invoked with a null argument. If this causes it to throw a {@link
    * NullPointerException}, then your test will fail. (See {@link Correspondence#compare} for more
-   * detail on how exceptions are handled.) In particular, this applies if your predicate is an
+   * detail on how exceptions are handled.) In particular, this applies if your function is an
    * instance method reference on the actual value (as in the example below). If you want a null
    * actual element to correspond to a null expected element, you must ensure that your function
    * transforms a null input to a null output.
@@ -192,7 +192,52 @@ public abstract class Correspondence<A, E> {
     return new Transforming<>(actualTransform, identity(), description);
   }
 
-  // TODO(b/119038894): Add the two-function overload of transforming that also transforms expected.
+  /**
+   * Constructs a {@link Correspondence} that compares elements by transforming the actual and the
+   * expected elements using the given functions and testing the transformed values for equality. If
+   * an actual element is transformed to null, it will correspond to an expected element that is
+   * also transformed to null.
+   *
+   * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}).
+   *
+   * <p>Note that, if you the data you are asserting about contains null actual or expected values,
+   * the appropriate function may be invoked with a null argument. If this causes it to throw a
+   * {@link NullPointerException}, then your test will fail. (See {@link Correspondence#compare} for
+   * more detail on how exceptions are handled.) In particular, this applies if your function is an
+   * instance method reference on the actual or expected value (as in the example below). If you
+   * want a null actual element to correspond to a null expected element, you must ensure that your
+   * functions both transform a null input to a null output.
+   *
+   * <p>If you want to apply the same function to both the actual and expected elements, just
+   * provide the same argument twice.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * static final Correspondence<MyRequest, MyResponse> SAME_IDS =
+   *     Correspondence.transforming(MyRequest::getId, MyResponse::getId, "has the same ID as");
+   * }</pre>
+   *
+   * This can be used as follows:
+   *
+   * <pre>{@code
+   * assertThat(myResponses).comparingElementsUsing(SAME_IDS).containsExactlyElementsIn(myRequests);
+   * }</pre>
+   *
+   * @param actualTransform a {@link Function} taking an actual value and returning a new value
+   *     which will be compared with a transformed expected value to determine whether they
+   *     correspond
+   * @param expectedTransform a {@link Function} taking an expected value and returning a new value
+   *     which will be compared with a transformed actual value
+   * @param description should fill the gap in a failure message of the form {@code "not true that
+   *     <some actual element> is an element that <description> <some expected element>"}, e.g.
+   *     {@code "has the same ID as"}
+   */
+  // TODO(b/119038898): Mention formattingDiffsUsing in the javadoc when it exists.
+  public static <A, E> Correspondence<A, E> transforming(
+      Function<A, ?> actualTransform, Function<E, ?> expectedTransform, String description) {
+    return new Transforming<>(actualTransform, expectedTransform, description);
+  }
 
   private static final class Transforming<A, E> extends Correspondence<A, E> {
 
