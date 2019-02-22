@@ -176,6 +176,12 @@ public class Subject<S extends Subject<S, T>, T> {
    *   <li>they are boxed integer types ({@code Byte}, {@code Short}, {@code Character}, {@code
    *       Integer}, or {@code Long}) and they are numerically equal when converted to {@code Long}.
    * </ul>
+   *
+   * <p><b>Note:</b> This method does not test the {@link Object#equals} implementation itself; it
+   * <i>assumes</i> that method is functioning correctly according to its contract. Testing an
+   * {@code equals} implementation requires a utility such as <a
+   * href="https://mvnrepository.com/artifact/com.google.guava/guava-testlib">guava-testlib</a>'s <a
+   * href="https://static.javadoc.io/com.google.guava/guava-testlib/23.0/com/google/common/testing/EqualsTester.html">EqualsTester</a>.
    */
   /*
    * TODO(cpovirk): Possibly ban overriding isEqualTo+isNotEqualTo in favor of a
