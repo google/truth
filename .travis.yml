@@ -8,8 +8,9 @@ jdk:
 install:
   - mvn -B -U -P!standard-with-extra-repos dependency:go-offline test clean --quiet --fail-never -DskipTests=true
 
+# https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received
 script:
-  - mvn -B -U -P!standard-with-extra-repos verify --fail-at-end -Dsource.skip=true -Dmaven.javadoc.skip=true
+  - travis_wait 60 mvn -B -U -P!standard-with-extra-repos verify --fail-at-end -Dsource.skip=true -Dmaven.javadoc.skip=true
 
 env:
   global:
