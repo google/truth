@@ -158,7 +158,7 @@
               <mode>htmlunit</mode>
               <htmlunit>FF38</htmlunit>
               <productionMode>true</productionMode>
-              <!-- Attempt to fix OutOfMemoryError in Travis. -->
+              <!-- Fix OutOfMemoryError in Travis. -->
               <extraJvmArgs>-Xms3500m -Xmx3500m -Xss1024k</extraJvmArgs>
               <sourceLevel>auto</sourceLevel>
               <userAgents>gecko1_8</userAgents>
