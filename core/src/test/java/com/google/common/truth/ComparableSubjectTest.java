@@ -220,6 +220,7 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertThat(new RawComparableType(3)).isLessThan(new RawComparableType(4));
   }
 
+  @SuppressWarnings("ComparableType")
   private static final class RawComparableType implements Comparable {
     private final int wrapped;
 
