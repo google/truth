@@ -251,6 +251,7 @@
               <!-- TODO(cpovirk): Link to the version that we depend on? -->
               <link>https://google.github.io/guava/releases/snapshot-jre/api/docs</link>
             </links>
+            <source>8</source>
           </configuration>
         </plugin>
         <plugin>
