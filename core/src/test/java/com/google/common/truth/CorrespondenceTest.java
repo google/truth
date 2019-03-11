@@ -22,7 +22,6 @@ import static org.junit.Assert.fail;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import java.util.ArrayList;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -196,17 +195,6 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
       fail("Expected NullPointerException to be thrown but wasn't");
     } catch (NullPointerException expected) {
     }
-  }
-
-  @Test
-  public void foo() {
-    ArrayList<String> list = new ArrayList<>();
-    assertThat(list).isEmpty();
-    list.add("element");
-    assertThat(list).containsExactly("element");
-    list.remove("element");
-    assertThat(list).isEmpty();
-    assertThat(list.size()).isEqualTo(0);
   }
 
   @Test
