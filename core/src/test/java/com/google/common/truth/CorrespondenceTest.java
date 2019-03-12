@@ -483,4 +483,85 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
             "Not true that <[1.02, 2.04, 3.08]> contains at least one element that "
                 + "is a finite number within 0.05 of <3.01>");
   }
+
+  // Tests of formattingDiffsUsing.
+
+  private static final Correspondence<String, Integer> LENGTHS_WITH_DIFF =
+      // If we were allowed to use method references and lambdas here, this would be:
+      // Correspondence.transforming(String::length, "has a length of")
+      //     .formattingDiffsUsing((a, e) -> Integer.toString(a.length() - e));
+      Correspondence.transforming(
+              new Function<String, Integer>() {
+                @Override
+                @NullableDecl
+                public Integer apply(String str) {
+                  return str.length();
+                }
+              },
+              "has a length of")
+          .formattingDiffsUsing(
+              new Correspondence.DiffFormatter<String, Integer>() {
+                @Override
+                public String formatDiff(String actualString, Integer expectedLength) {
+                  return Integer.toString(actualString.length() - expectedLength);
+                }
+              });
+
+  @Test
+  public void testFormattingDiffsUsing_compare() {
+    // The compare behaviour should be the same as the wrapped correspondence.
+    assertThat(LENGTHS_WITH_DIFF.compare("foo", 3)).isTrue();
+    assertThat(LENGTHS_WITH_DIFF.compare("foot", 4)).isTrue();
+    assertThat(LENGTHS_WITH_DIFF.compare("foo", 4)).isFalse();
+  }
+
+  @Test
+  public void testFormattingDiffsUsing_formatDiff() {
+    assertThat(LENGTHS_WITH_DIFF.formatDiff("foo", 4)).isEqualTo("-1");
+    assertThat(LENGTHS_WITH_DIFF.formatDiff("foot", 3)).isEqualTo("1");
+  }
+
+  @Test
+  public void testFormattingDiffsUsing_toString() {
+    // The toString behaviour should be the same as the wrapped correspondence.
+    assertThat(LENGTHS_WITH_DIFF.toString()).isEqualTo("has a length of");
+  }
+
+  @Test
+  public void testFormattingDiffsUsing_viaIterableSubjectContainsExactly_failure() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableList.of("feet", "gallons"))
+        .comparingElementsUsing(LENGTHS_WITH_DIFF)
+        .containsExactly(4, 5);
+    assertThat(expectFailure.getFailure())
+        .hasMessageThat()
+        .isEqualTo(
+            "Not true that <[feet, gallons]> contains exactly one element that has a length of "
+                + "each element of <[4, 5]>. It is missing an element that has a length of <5> "
+                + "and has unexpected elements <[gallons (diff: 2)]>");
+  }
+
+  @Test
+  public void testFormattingDiffsUsing_viaIterableSubjectContainsExactly_nullActual() {
+    expectFailure
+        .whenTesting()
+        .that(asList("feet", null))
+        .comparingElementsUsing(LENGTHS_WITH_DIFF)
+        .containsExactly(4, 5);
+    assertFailureKeys(
+        "Not true that <[feet, null]> contains exactly one element that has a length of each "
+            + "element of <[4, 5]>. It is missing an element that has a length of <5> "
+            + "and has unexpected elements <[null]>",
+        "additionally, one or more exceptions were thrown while comparing elements",
+        "first exception",
+        "additionally, one or more exceptions were thrown while formatting diffs",
+        "first exception");
+    assertThatFailure()
+        .factValue("first exception", 0)
+        .startsWith("compare(null, 4) threw java.lang.NullPointerException");
+    assertThatFailure()
+        .factValue("first exception", 1)
+        .startsWith("formatDiff(null, 5) threw java.lang.NullPointerException");
+  }
 }
