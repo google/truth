@@ -67,7 +67,8 @@ public abstract class Correspondence<A, E> {
    * Constructs a {@link Correspondence} that compares actual and expected elements using the given
    * binary predicate.
    *
-   * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}).
+   * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}). You can
+   * add that behaviour by calling {@link Correspondence#formattingDiffsUsing}.
    *
    * <p>Note that, if the data you are asserting about contains nulls, your predicate may be invoked
    * with null arguments. If this causes it to throw a {@link NullPointerException}, then your test
@@ -86,11 +87,11 @@ public abstract class Correspondence<A, E> {
    *
    * <pre>{@code
    * class MyRecordTestHelper {
-   *   static boolean recordsEquivalentForTests(MyRecord actual, MyRecord expected) {
+   *   static boolean recordsEquivalent(@Nullable MyRecord actual, @Nullable MyRecord expected) {
    *     // code to check whether records should be considered equivalent for testing purposes
    *   }
    *   static final Correspondence<MyRecord, MyRecord> EQUIVALENCE =
-   *       Correspondence.from(MyRecordTestHelper::recordsEquivalentForTests, "is equivalent to");
+   *       Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to");
    * }
    * }</pre>
    *
@@ -107,7 +108,6 @@ public abstract class Correspondence<A, E> {
    *     <some actual element> is an element that <description> <some expected element>"}, e.g.
    *     {@code "starts with"}, {@code "is an instance of"}, or {@code "is equivalent to"}
    */
-  // TODO(b/119038898): Mention formattingDiffsUsing in the javadoc when it exists.
   public static <A, E> Correspondence<A, E> from(
       BinaryPredicate<A, E> predicate, String description) {
     return new FromBinaryPredicate<>(predicate, description);
@@ -157,7 +157,8 @@ public abstract class Correspondence<A, E> {
    * transformed actual element (i.e. the output of the given function) is null, it will correspond
    * to a null expected element.
    *
-   * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}).
+   * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}). You can
+   * add that behaviour by calling {@link Correspondence#formattingDiffsUsing}.
    *
    * <p>Note that, if you the data you are asserting about contains null actual values, your
    * function may be invoked with a null argument. If this causes it to throw a {@link
@@ -186,7 +187,6 @@ public abstract class Correspondence<A, E> {
    *     <some actual element> is an element that <description> <some expected element>"}, e.g.
    *     {@code "has an ID of"}
    */
-  // TODO(b/119038898): Mention formattingDiffsUsing in the javadoc when it exists.
   public static <A, E> Correspondence<A, E> transforming(
       Function<A, ? extends E> actualTransform, String description) {
     return new Transforming<>(actualTransform, identity(), description);
@@ -198,7 +198,8 @@ public abstract class Correspondence<A, E> {
    * an actual element is transformed to null, it will correspond to an expected element that is
    * also transformed to null.
    *
-   * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}).
+   * <p>The correspondence does not support formatting of diffs (see {@link #formatDiff}). You can
+   * add that behaviour by calling {@link Correspondence#formattingDiffsUsing}.
    *
    * <p>Note that, if you the data you are asserting about contains null actual or expected values,
    * the appropriate function may be invoked with a null argument. If this causes it to throw a
@@ -233,7 +234,6 @@ public abstract class Correspondence<A, E> {
    *     <some actual element> is an element that <description> <some expected element>"}, e.g.
    *     {@code "has the same ID as"}
    */
-  // TODO(b/119038898): Mention formattingDiffsUsing in the javadoc when it exists.
   public static <A, E> Correspondence<A, E> transforming(
       Function<A, ?> actualTransform, Function<E, ?> expectedTransform, String description) {
     return new Transforming<>(actualTransform, expectedTransform, description);
@@ -310,6 +310,83 @@ public abstract class Correspondence<A, E> {
 
   // TODO(b/119038898): Once all functionality is available via factory methods, consider explicitly
   // adding the no-arg constructor here, and use its javadoc to discourage subclassing.
+
+  /**
+   * Returns a new correspondence which is like this one, except that the given formatter may be
+   * used to format the difference between a pair of elements that do not correspond.
+   *
+   * <p>Note that, if you the data you are asserting about contains null actual or expected values,
+   * the formatter may be invoked with a null argument. If this causes it to throw a {@link
+   * NullPointerException}, that will be taken to indicate that the values cannot be diffed. (See
+   * {@link Correspondence#formatDiff} for more detail on how exceptions are handled.) If you think
+   * null values are likely, it is slightly cleaner to have the formatter return null in that case
+   * instead of throwing.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * class MyRecordTestHelper {
+   *   static boolean recordsEquivalent(@Nullable MyRecord actual, @Nullable MyRecord expected) {
+   *     // code to check whether records should be considered equivalent for testing purposes
+   *   }
+   *   static String formatRecordDiff(@Nullable MyRecord actual, @Nullable MyRecord expected) {
+   *     // code to format the diff between the records
+   *   }
+   *   static final Correspondence<MyRecord, MyRecord> EQUIVALENCE =
+   *       Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to")
+   *           .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff);
+   * }
+   * }</pre>
+   */
+  public Correspondence<A, E> formattingDiffsUsing(DiffFormatter<? super A, ? super E> formatter) {
+    return new FormattingDiffs<>(this, formatter);
+  }
+
+  /**
+   * A functional interface to be used format the diff between a pair of objects of types {@code A}
+   * and {@code E}.
+   *
+   * <p>This interface will normally be implemented using a lambda or a method reference, and the
+   * resulting object will normally be passed directly to {@link
+   * Correspondence#formattingDiffsUsing}. As a result, you should almost never see {@code
+   * DiffFormatter} used as the type of a field or variable, or a return type.
+   */
+  public interface DiffFormatter<A, E> {
+
+    /**
+     * Returns a {@link String} describing the difference between the {@code actual} and {@code
+     * expected} values, if possible, or {@code null} if not.
+     */
+    @NullableDecl
+    String formatDiff(@NullableDecl A actual, @NullableDecl E expected);
+  }
+
+  private static class FormattingDiffs<A, E> extends Correspondence<A, E> {
+
+    private final Correspondence<A, E> delegate;
+    private final DiffFormatter<? super A, ? super E> formatter;
+
+    FormattingDiffs(Correspondence<A, E> delegate, DiffFormatter<? super A, ? super E> formatter) {
+      this.delegate = checkNotNull(delegate);
+      this.formatter = checkNotNull(formatter);
+    }
+
+    @Override
+    public boolean compare(@NullableDecl A actual, @NullableDecl E expected) {
+      return delegate.compare(actual, expected);
+    }
+
+    @Override
+    @NullableDecl
+    public String formatDiff(@NullableDecl A actual, @NullableDecl E expected) {
+      return formatter.formatDiff(actual, expected);
+    }
+
+    @Override
+    public String toString() {
+      return delegate.toString();
+    }
+  }
 
   /**
    * Returns whether or not the {@code actual} value is said to correspond to the {@code expected}
