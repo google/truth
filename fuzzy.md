@@ -10,7 +10,7 @@ Fuzzy Truth extends Truth to allow you to make assertions about `Iterable`,
 `Map`, and `Multimap` subjects, where the values are compared using something
 other than object equality. This mechanism is integral to the APIs for comparing
 collections of doubles and floats using [approximate equality](floating_point)
-and of [protocol buffers], but the framework is quite general.
+and of [protocol buffers](protobufs), but the framework is quite general.
 
 ## Correspondence {#correspondence}
 
@@ -180,8 +180,14 @@ it will show a diff between the value it got and the one it expected. For this
 to work for an assertion about an `Iterable` (with more than one missing value)
 you need to [enable pairing, as shown above](#displayingDiffsPairedBy).
 
+## Protocol buffers
 
-[protocol buffers]: https://developers.google.com/protocol-buffers/
+If you want to assert about a proto, an `Iterable` of protos, or a `Map` or
+`Multimap` with proto values, you should normally use [Proto Truth](protobufs).
+It is built on top of Fuzzy Truth and allows you to express most assertions more
+concisely.
+
+
 [correspondence-class]: http://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html
 [correspondence-from]: http://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html#from-com.google.common.truth.Correspondence.BinaryPredicate-java.lang.String-
 [correspondence-transforming]: http://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html#transforming-com.google.common.base.Function-java-lang-String-
