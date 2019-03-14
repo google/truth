@@ -33,31 +33,34 @@ final class TestCorrespondences {
    * correspond to null only.
    */
   static final Correspondence<String, Integer> STRING_PARSES_TO_INTEGER_CORRESPONDENCE =
-      new Correspondence<String, Integer>() {
-
-        @Override
-        public boolean compare(@NullableDecl String actual, @NullableDecl Integer expected) {
-          if (actual == null) {
-            return expected == null;
-          }
-          try {
-            // Older versions of Android reject leading plus signs, per the pre-Java-7 contract:
-            // https://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html#decode(java.lang.String)
-            // https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html#decode(java.lang.String)
-            if (actual.startsWith("+")) {
-              actual = actual.substring(1);
+      Correspondence.from(
+          // If we were allowed to use method references, this would be:
+          // TestCorrespondences::stringParsesToInteger,
+          new Correspondence.BinaryPredicate<String, Integer>() {
+            @Override
+            public boolean apply(@NullableDecl String actual, @NullableDecl Integer expected) {
+              return stringParsesToInteger(actual, expected);
             }
-            return Integer.decode(actual).equals(expected);
-          } catch (NumberFormatException e) {
-            return false;
-          }
-        }
+          },
+          "parses to");
 
-        @Override
-        public String toString() {
-          return "parses to";
-        }
-      };
+  private static boolean stringParsesToInteger(
+      @NullableDecl String actual, @NullableDecl Integer expected) {
+    if (actual == null) {
+      return expected == null;
+    }
+    try {
+      // Older versions of Android reject leading plus signs, per the pre-Java-7 contract:
+      // https://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html#decode(java.lang.String)
+      // https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html#decode(java.lang.String)
+      if (actual.startsWith("+")) {
+        actual = actual.substring(1);
+      }
+      return Integer.decode(actual).equals(expected);
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
 
   /**
    * A correspondence between integers which tests whether they are within 10 of each other. Smart
@@ -65,41 +68,40 @@ final class TestCorrespondences {
    * Does not support null values.
    */
   static final Correspondence<Integer, Integer> WITHIN_10_OF =
-      new Correspondence<Integer, Integer>() {
-
-        @Override
-        public boolean compare(Integer actual, Integer expected) {
-          return Math.abs(actual - expected) <= 10;
-        }
-
-        @Override
-        public String formatDiff(Integer actual, Integer expected) {
-          return Integer.toString(actual - expected);
-        }
-
-        @Override
-        public String toString() {
-          return "is within 10 of";
-        }
-      };
+      Correspondence.from(
+              // If we were allowed to use lambdas, this would be:
+              // (Integer a, Integer e) -> Math.abs(a - e) <= 10,
+              new Correspondence.BinaryPredicate<Integer, Integer>() {
+                @Override
+                public boolean apply(Integer actual, Integer expected) {
+                  return Math.abs(actual - expected) <= 10;
+                }
+              },
+              "is within 10 of")
+          .formattingDiffsUsing(
+              // If we were allowed to use lambdas, this would be:
+              // (a, e) -> Integer.toString(a - e));
+              new Correspondence.DiffFormatter<Integer, Integer>() {
+                @Override
+                public String formatDiff(Integer actual, Integer expected) {
+                  return Integer.toString(actual - expected);
+                }
+              });
 
   /**
    * A correspondence between strings which tests for case-insensitive equality. Supports null
    * expected elements, but throws {@link NullPointerException} on null actual elements.
    */
   static final Correspondence<String, String> CASE_INSENSITIVE_EQUALITY =
-      new Correspondence<String, String>() {
-
-        @Override
-        public boolean compare(String actual, String expected) {
-          return actual.equalsIgnoreCase(expected);
-        }
-
-        @Override
-        public String toString() {
-          return "equals (ignoring case)";
-        }
-      };
+      Correspondence.from(
+          // If we were allowed to use method references, this would be String::equalsIgnoreCase.
+          new Correspondence.BinaryPredicate<String, String>() {
+            @Override
+            public boolean apply(String actual, String expected) {
+              return actual.equalsIgnoreCase(expected);
+            }
+          },
+          "equals (ignoring case)");
 
   /**
    * A correspondence between strings which tests for case-insensitive equality, with a broken
@@ -107,22 +109,24 @@ final class TestCorrespondences {
    * false for (non-null, null), but throws {@link NullPointerException} for (null, non-null).
    */
   static final Correspondence<String, String> CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE =
-      new Correspondence<String, String>() {
+      Correspondence.from(
+          // If we were allowed to use method references, this would be:
+          // TestCorrespondences::equalsIgnoreCaseHalfNullSafe,
+          new Correspondence.BinaryPredicate<String, String>() {
+            @Override
+            public boolean apply(String actual, String expected) {
+              return equalsIgnoreCaseHalfNullSafe(actual, expected);
+            }
+          },
+          "equals (ignoring case)");
 
-        @Override
-        public boolean compare(String actual, String expected) {
-          if (actual == null && expected == null) {
-            return true;
-          }
-          // Oops! We don't handle the case where actual == null but expected != null.
-          return actual.equalsIgnoreCase(expected);
-        }
-
-        @Override
-        public String toString() {
-          return "equals (ignoring case)";
-        }
-      };
+  private static boolean equalsIgnoreCaseHalfNullSafe(String actual, String expected) {
+    if (actual == null && expected == null) {
+      return true;
+    }
+    // Oops! We don't handle the case where actual == null but expected != null.
+    return actual.equalsIgnoreCase(expected);
+  }
 
   /**
    * An example value object. It has an optional {@code id} field and a required {@code score}
@@ -207,33 +211,25 @@ final class TestCorrespondences {
     }
   }
 
-  private static class RecordCorrespondence extends Correspondence<Record, Record> {
-
-    @Override
-    public boolean compare(Record actual, Record expected) {
-      if (actual == null) {
-        return expected == null;
-      }
-      if (expected == null) {
-        return false;
-      }
-      return actual.hasSameId(expected) && Math.abs(actual.getScore() - expected.getScore()) <= 10;
-    }
-
-    @Override
-    public String formatDiff(Record actual, Record expected) {
-      if (actual.hasId() && expected.hasId() && actual.getId() == expected.getId()) {
-        return "score:" + Integer.toString(actual.getScore() - expected.getScore());
-      } else {
-        return null;
-      }
-    }
-
-    @Override
-    public String toString() {
-      return "has the same id as and a score is within 10 of";
-    }
-  }
+  /**
+   * A correspondence between {@link Record} instances which tests whether their {@code id} values
+   * are equal and their {@code score} values are within 10 of each other. Smart diffing is not
+   * supported.
+   *
+   * <p>The {@link #compare} implementation support nulls, such that null corresponds to null only.
+   * The {@link #formatDiff} implementation does not support nulls.
+   */
+  static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF =
+      Correspondence.from(
+          // If we were allowed to use method references, this would be:
+          // TestCorrespondences::recordsAreCloseEnough,
+          new Correspondence.BinaryPredicate<Record, Record>() {
+            @Override
+            public boolean apply(Record actual, Record expected) {
+              return recordsAreCloseEnough(actual, expected);
+            }
+          },
+          "has the same id as and a score is within 10 of");
 
   /**
    * A correspondence between {@link Record} instances which tests whether their {@code id} values
@@ -245,17 +241,15 @@ final class TestCorrespondences {
    * The {@link #formatDiff} implementation does not support nulls.
    */
   static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
-      new RecordCorrespondence();
-
-  /** Like {@link #RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10} but with no smart diffing. */
-  static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF =
-      new RecordCorrespondence() {
-
-        @Override
-        public String formatDiff(Record actual, Record expected) {
-          return null;
-        }
-      };
+      RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF.formattingDiffsUsing(
+          // If we were allowed to use method references, this would be:
+          // TestCorrespondences::formatRecordDiff);
+          new Correspondence.DiffFormatter<Record, Record>() {
+            @Override
+            public String formatDiff(Record actual, Record expected) {
+              return formatRecordDiff(actual, expected);
+            }
+          });
 
   /**
    * A correspondence like {@link #RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10} except that the actual
@@ -263,28 +257,52 @@ final class TestCorrespondences {
    * record then it does not correspond and is not diffed. Does not support null strings or records.
    */
   static final Correspondence<String, Record> PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
-      new Correspondence<String, Record>() {
+      Correspondence.from(
+              // If we were allowed to use lambdas, this would be:
+              // (String a, Record e) -> {
+              //   @NullableDecl Record actualRecord = Record.parse(a);
+              //   return actualRecord != null && recordsAreCloseEnough(actualRecord, e);
+              // },
+              new Correspondence.BinaryPredicate<String, Record>() {
+                @Override
+                public boolean apply(String actual, Record expected) {
+                  @NullableDecl Record actualRecord = Record.parse(actual);
+                  return actualRecord != null && recordsAreCloseEnough(actualRecord, expected);
+                }
+              },
+              "parses to a record that " + RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
+          .formattingDiffsUsing(
+              // If we were allowe to use lambdas, this would be:
+              // (a, e) -> {
+              //   @NullableDecl Record actualRecord = Record.parse(a);
+              //   return actualRecord != null ? formatRecordDiff(actualRecord, e) : null;
+              // });
+              new Correspondence.DiffFormatter<String, Record>() {
+                @Override
+                public String formatDiff(String actual, Record expected) {
+                  @NullableDecl Record actualRecord = Record.parse(actual);
+                  return actualRecord != null ? formatRecordDiff(actualRecord, expected) : null;
+                }
+              });
 
-        @Override
-        public boolean compare(String actual, Record expected) {
-          @NullableDecl Record actualRecord = Record.parse(actual);
-          return actualRecord != null
-              && RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10.compare(actualRecord, expected);
-        }
+  private static boolean recordsAreCloseEnough(
+      @NullableDecl Record actual, @NullableDecl Record expected) {
+    if (actual == null) {
+      return expected == null;
+    }
+    if (expected == null) {
+      return false;
+    }
+    return actual.hasSameId(expected) && Math.abs(actual.getScore() - expected.getScore()) <= 10;
+  }
 
-        @Override
-        public String formatDiff(String actual, Record expected) {
-          @NullableDecl Record actualRecord = Record.parse(actual);
-          return actualRecord != null
-              ? RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10.formatDiff(actualRecord, expected)
-              : null;
-        }
-
-        @Override
-        public String toString() {
-          return "parses to a record that " + RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
-        }
-      };
+  private static String formatRecordDiff(Record actual, Record expected) {
+    if (actual.hasId() && expected.hasId() && actual.getId() == expected.getId()) {
+      return "score:" + (actual.getScore() - expected.getScore());
+    } else {
+      return null;
+    }
+  }
 
   /**
    * A key function for {@link Record} instances that keys records by their {@code id} values. The
@@ -334,17 +352,15 @@ final class TestCorrespondences {
       };
 
   static final Correspondence<Object, Object> EQUALITY =
-      new Correspondence<Object, Object>() {
-        @Override
-        public boolean compare(Object actual, Object expected) {
-          return Objects.equal(expected, actual);
-        }
-
-        @Override
-        public String toString() {
-          return "is equal to";
-        }
-      };
+      Correspondence.from(
+          // If we were allowed to use method references, this would be Objects::equal.
+          new Correspondence.BinaryPredicate<Object, Object>() {
+            @Override
+            public boolean apply(@NullableDecl Object actual, @NullableDecl Object expected) {
+              return Objects.equal(actual, expected);
+            }
+          },
+          "is equal to");
 
   private TestCorrespondences() {}
 }

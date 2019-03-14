@@ -37,18 +37,16 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   // Tests of the abstract base class (just assert that equals and hashCode throw).
 
   private static final Correspondence<Object, Object> INSTANCE =
-      new Correspondence<Object, Object>() {
-
-        @Override
-        public boolean compare(Object actual, Object expected) {
-          return false;
-        }
-
-        @Override
-        public String toString() {
-          return "has example property";
-        }
-      };
+      Correspondence.from(
+          // If we were allowed to use lambdas, this would be:
+          // (a, e) -> false,
+          new Correspondence.BinaryPredicate<Object, Object>() {
+            @Override
+            public boolean apply(@NullableDecl Object actual, @NullableDecl Object expected) {
+              return false;
+            }
+          },
+          "has example property");
 
   @Test
   @SuppressWarnings("deprecation") // testing deprecated method
