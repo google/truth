@@ -51,16 +51,21 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * should have any of the other properties of an equivalence relation (reflexivity, symmetry, or
  * transitivity).
  *
- * <p>Subclasses may optionally override {@link #formatDiff}. This results in failure messages
- * including formatted diffs between expected and actual elements, where possible.
+ * <p>Optionally, instances of this class can also provide functionality to format the difference
+ * between values which do not correspond. This results in failure messages including formatted
+ * diffs between expected and actual value, where possible.
+ *
+ * <p>The recommended approach for creating an instance of this class is to use one of the static
+ * factory methods. The most general of these is {@link #from}; the other methods are more
+ * convenient in specific cases. The optional diff-formatting functionality can be added using
+ * {@link #formattingDiffsUsing}. (Alternatively, you can subclass this class yourself, but that is
+ * generally not recommended.)
  *
  * <p>Instances of this are typically used via {@link IterableSubject#comparingElementsUsing},
  * {@link MapSubject#comparingValuesUsing}, or {@link MultimapSubject#comparingValuesUsing}.
  *
  * @author Pete Gillin
  */
-// TODO(b/119038898): Once there is little reason to prefer subclassing to factory methods, change
-// the class-level javadoc to point folks at the factory methods and drop references to subclassing.
 public abstract class Correspondence<A, E> {
 
   /**
@@ -87,11 +92,11 @@ public abstract class Correspondence<A, E> {
    *
    * <pre>{@code
    * class MyRecordTestHelper {
+   *   static final Correspondence<MyRecord, MyRecord> EQUIVALENCE =
+   *       Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to");
    *   static boolean recordsEquivalent(@Nullable MyRecord actual, @Nullable MyRecord expected) {
    *     // code to check whether records should be considered equivalent for testing purposes
    *   }
-   *   static final Correspondence<MyRecord, MyRecord> EQUIVALENCE =
-   *       Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to");
    * }
    * }</pre>
    *
@@ -308,8 +313,12 @@ public abstract class Correspondence<A, E> {
     }
   }
 
-  // TODO(b/119038898): Once all functionality is available via factory methods, consider explicitly
-  // adding the no-arg constructor here, and use its javadoc to discourage subclassing.
+  /**
+   * Constructor. Creating subclasses (anonymous or otherwise) of this class is <i>not
+   * recommended</i>, but is possible via this constructor. The recommended approach is to use the
+   * factory methods instead (see {@linkplain Correspondence class-level documentation}).
+   */
+  protected Correspondence() {}
 
   /**
    * Returns a new correspondence which is like this one, except that the given formatter may be
@@ -326,15 +335,15 @@ public abstract class Correspondence<A, E> {
    *
    * <pre>{@code
    * class MyRecordTestHelper {
+   *   static final Correspondence<MyRecord, MyRecord> EQUIVALENCE =
+   *       Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to")
+   *           .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff);
    *   static boolean recordsEquivalent(@Nullable MyRecord actual, @Nullable MyRecord expected) {
    *     // code to check whether records should be considered equivalent for testing purposes
    *   }
    *   static String formatRecordDiff(@Nullable MyRecord actual, @Nullable MyRecord expected) {
    *     // code to format the diff between the records
    *   }
-   *   static final Correspondence<MyRecord, MyRecord> EQUIVALENCE =
-   *       Correspondence.from(MyRecordTestHelper::recordsEquivalent, "is equivalent to")
-   *           .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff);
    * }
    * }</pre>
    */
@@ -685,7 +694,8 @@ public abstract class Correspondence<A, E> {
    * expected} values, if possible, or {@code null} if not.
    *
    * <p>The implementation on the {@link Correspondence} base class always returns {@code null}. To
-   * enable diffing, subclasses should override this method.
+   * enable diffing, use {@link #formattingDiffsUsing} (or override this method in a subclass, but
+   * factory methods are recommended over subclassing).
    *
    * <p>Assertions should only invoke this with parameters for which {@link #compare} returns {@code
    * false}.
