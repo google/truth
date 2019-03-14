@@ -366,33 +366,39 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   final <M extends Message> Correspondence<M, M> toCorrespondence(
       final Optional<Descriptor> optDescriptor) {
     checkState(expectedMessages().isPresent(), "expectedMessages() not set");
-    return new Correspondence<M, M>() {
-      @Override
-      public final boolean compare(@NullableDecl M actual, @NullableDecl M expected) {
-        return ProtoTruth.assertThat(actual)
-            .usingConfig(FluentEqualityConfig.this)
-            .testIsEqualTo(expected);
-      }
+    return Correspondence.from(
+            // If we were allowed lambdas, this would be:
+            // (M a, M e) ->
+            //     ProtoTruth.assertThat(a).usingConfig(FluentEqualityConfig.this).testIsEqualTo(e),
+            new Correspondence.BinaryPredicate<M, M>() {
+              @Override
+              public boolean apply(@NullableDecl M actual, @NullableDecl M expected) {
+                return ProtoTruth.assertThat(actual)
+                    .usingConfig(FluentEqualityConfig.this)
+                    .testIsEqualTo(expected);
+              }
+            },
+            "is equivalent according to assertThat(proto)"
+                + usingCorrespondenceString(optDescriptor)
+                + ".isEqualTo(target) to")
+        .formattingDiffsUsing(
+            // If we were allowed method references, this would be this::formatDiff.
+            new Correspondence.DiffFormatter<M, M>() {
+              @Override
+              public String formatDiff(@NullableDecl M actual, @NullableDecl M expected) {
+                return FluentEqualityConfig.this.formatDiff(actual, expected);
+              }
+            });
+  }
 
-      @Override
-      public final String formatDiff(@NullableDecl M actual, @NullableDecl M expected) {
-        if (actual == null || expected == null) {
-          return "";
-        }
+  private <M extends Message> String formatDiff(@NullableDecl M actual, @NullableDecl M expected) {
+    if (actual == null || expected == null) {
+      return "";
+    }
 
-        return FluentEqualityConfig.this
-            .toMessageDifferencer(actual.getDescriptorForType())
-            .diffMessages(actual, expected)
-            .printToString(FluentEqualityConfig.this.reportMismatchesOnly());
-      }
-
-      @Override
-      public final String toString() {
-        return "is equivalent according to assertThat(proto)"
-            + usingCorrespondenceString(optDescriptor)
-            + ".isEqualTo(target) to";
-      }
-    };
+    return toMessageDifferencer(actual.getDescriptorForType())
+        .diffMessages(actual, expected)
+        .printToString(reportMismatchesOnly());
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////

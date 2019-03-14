@@ -283,19 +283,17 @@ public final class PrimitiveDoubleArraySubject
   }
 
   private static final Correspondence<Double, Number> EXACT_EQUALITY_CORRESPONDENCE =
-      new Correspondence<Double, Number>() {
-
-        @Override
-        public boolean compare(Double actual, Number expected) {
-          return Double.doubleToLongBits(actual)
-              == Double.doubleToLongBits(checkedToDouble(expected));
-        }
-
-        @Override
-        public String toString() {
-          return "is exactly equal to";
-        }
-      };
+      Correspondence.from(
+          // If we were allowed lambdas, this would be:
+          // (a, e) -> Double.doubleToLongBits(a) == Double.doubleToLongBits(checkedToDouble(e)),
+          new Correspondence.BinaryPredicate<Double, Number>() {
+            @Override
+            public boolean apply(Double actual, Number expected) {
+              return Double.doubleToLongBits(actual)
+                  == Double.doubleToLongBits(checkedToDouble(expected));
+            }
+          },
+          "is exactly equal to");
 
   private static double checkedToDouble(Number expected) {
     checkNotNull(expected);

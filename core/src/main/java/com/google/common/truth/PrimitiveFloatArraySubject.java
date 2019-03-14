@@ -282,18 +282,17 @@ public final class PrimitiveFloatArraySubject
   }
 
   private static final Correspondence<Float, Number> EXACT_EQUALITY_CORRESPONDENCE =
-      new Correspondence<Float, Number>() {
+      Correspondence.from(
+          // If we were allowed lambdas, this would be:
+          // (a, e) -> Float.floatToIntBits(a) == Float.floatToIntBits(checkedToFloat(e)),
+          new Correspondence.BinaryPredicate<Float, Number>() {
 
-        @Override
-        public boolean compare(Float actual, Number expected) {
-          return Float.floatToIntBits(actual) == Float.floatToIntBits(checkedToFloat(expected));
-        }
-
-        @Override
-        public String toString() {
-          return "is exactly equal to";
-        }
-      };
+            @Override
+            public boolean apply(Float actual, Number expected) {
+              return Float.floatToIntBits(actual) == Float.floatToIntBits(checkedToFloat(expected));
+            }
+          },
+          "is exactly equal to");
 
   private static float checkedToFloat(Number expected) {
     checkNotNull(expected);
