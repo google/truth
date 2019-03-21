@@ -869,7 +869,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * encounter an actual element that is not of type {@code A}.
    */
   public <A, E> UsingCorrespondence<A, E> comparingElementsUsing(
-      Correspondence<A, E> correspondence) {
+      Correspondence<? super A, ? super E> correspondence) {
     return new UsingCorrespondence<>(this, correspondence);
   }
 
@@ -913,10 +913,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * }</pre>
      *
      * <p><b>Important</b>: The {code keyFunction} function must be able to accept both the actual
-     * and the unexpected elements, i.e. it must satisfy {@code Function<? super A, ? extends
-     * Object>} as well as {@code Function<? super E, ? extends Object>}. If that constraint is not
-     * met then a subsequent method may throw {@link ClassCastException}. Use the two-parameter
-     * overload if you need to specify different key functions for the actual and expected elements.
+     * and the unexpected elements, i.e. it must satisfy {@code Function<? super A, ?>} as well as
+     * {@code Function<? super E, ?>}. If that constraint is not met then a subsequent method may
+     * throw {@link ClassCastException}. Use the two-parameter overload if you need to specify
+     * different key functions for the actual and expected elements.
      *
      * <p>On assertions where it makes sense to do so, the elements are paired as follows: they are
      * keyed by {@code keyFunction}, and if an unexpected element and a missing element have the
@@ -942,11 +942,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * <p>Note that calling this method makes no difference to whether a test passes or fails, it
      * just improves the message if it fails.
      */
-    public UsingCorrespondence<A, E> displayingDiffsPairedBy(
-        Function<? super E, ? extends Object> keyFunction) {
+    public UsingCorrespondence<A, E> displayingDiffsPairedBy(Function<? super E, ?> keyFunction) {
       @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
-      Function<? super A, ? extends Object> actualKeyFunction =
-          (Function<? super A, ? extends Object>) keyFunction;
+      Function<? super A, ?> actualKeyFunction = (Function<? super A, ?>) keyFunction;
       return displayingDiffsPairedBy(actualKeyFunction, keyFunction);
     }
 
@@ -987,8 +985,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * just improves the message if it fails.
      */
     public UsingCorrespondence<A, E> displayingDiffsPairedBy(
-        Function<? super A, ? extends Object> actualKeyFunction,
-        Function<? super E, ? extends Object> expectedKeyFunction) {
+        Function<? super A, ?> actualKeyFunction, Function<? super E, ?> expectedKeyFunction) {
       return new UsingCorrespondence<>(
           subject, correspondence, new Pairer(actualKeyFunction, expectedKeyFunction));
     }

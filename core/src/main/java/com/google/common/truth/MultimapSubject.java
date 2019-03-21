@@ -517,7 +517,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
    * encounter an actual value that is not of type {@code A}.
    */
   public <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
-      Correspondence<A, E> correspondence) {
+      Correspondence<? super A, ? super E> correspondence) {
     return new UsingCorrespondence<>(correspondence);
   }
 
@@ -530,9 +530,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
    */
   public final class UsingCorrespondence<A, E> {
 
-    private final Correspondence<A, E> correspondence;
+    private final Correspondence<? super A, ? super E> correspondence;
 
-    private UsingCorrespondence(Correspondence<A, E> correspondence) {
+    private UsingCorrespondence(Correspondence<? super A, ? super E> correspondence) {
       this.correspondence = checkNotNull(correspondence);
     }
 
@@ -753,9 +753,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
   private static final class EntryCorrespondence<K, A, E>
       extends Correspondence<Entry<K, A>, Entry<K, E>> {
 
-    private final Correspondence<A, ? super E> valueCorrespondence;
+    private final Correspondence<? super A, ? super E> valueCorrespondence;
 
-    EntryCorrespondence(Correspondence<A, ? super E> valueCorrespondence) {
+    EntryCorrespondence(Correspondence<? super A, ? super E> valueCorrespondence) {
       this.valueCorrespondence = valueCorrespondence;
     }
 

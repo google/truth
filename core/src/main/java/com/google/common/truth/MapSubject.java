@@ -505,7 +505,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * type {@code E}.
    */
   public <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
-      Correspondence<A, E> correspondence) {
+      Correspondence<? super A, ? super E> correspondence) {
     return new UsingCorrespondence<>(correspondence);
   }
 
@@ -518,9 +518,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    */
   public final class UsingCorrespondence<A, E> {
 
-    private final Correspondence<A, E> correspondence;
+    private final Correspondence<? super A, ? super E> correspondence;
 
-    private UsingCorrespondence(Correspondence<A, E> correspondence) {
+    private UsingCorrespondence(Correspondence<? super A, ? super E> correspondence) {
       this.correspondence = checkNotNull(correspondence);
     }
 
