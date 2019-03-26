@@ -35,18 +35,6 @@ public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
    * suppressed exception
    */
 
-  /**
-   * Fails if the subject does not have the given message.
-   *
-   * @deprecated Use {@code hasMessageThat().isEqualTo(expected)} instead. You may also consider
-   *     using inexact matching of the message (e.g. {@code hasMessageThat().contains(substring)})
-   *     for less brittle tests.
-   */
-  @Deprecated
-  public final void hasMessage(@NullableDecl String expected) {
-    hasMessageThat().isEqualTo(expected);
-  }
-
   /** Returns a {@code StringSubject} to make assertions about the throwable's message. */
   public final StringSubject hasMessageThat() {
     StandardSubjectBuilder check = check("getMessage()");

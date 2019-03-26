@@ -30,13 +30,6 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ThrowableSubjectTest extends BaseSubjectTestCase {
 
-  @SuppressWarnings("deprecation")
-  @Test
-  public void hasMessage() {
-    NullPointerException npe = new NullPointerException("message");
-    assertThat(npe).hasMessage("message");
-  }
-
   @Test
   public void hasMessageThat() {
     NullPointerException npe = new NullPointerException("message");
