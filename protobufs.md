@@ -94,7 +94,7 @@ your test assumptions. It will:
     `ignoringRepeatedFieldOrder()`
 *   _not report_ mismatches only; to change this behavior, use:
     `reportingMismatchesOnly()`
-*   _use exact equality_ for floating-point fields; to change this behaviour,
+*   _use exact equality_ for floating-point fields; to change this behavior,
     use: `usingDoubleTolerance` and/or `usingFloatTolerance`
 *   check all fields; to change this behavior, use a combination of:
     *   `ignoringFields(int...)`
