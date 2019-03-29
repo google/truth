@@ -18,19 +18,11 @@ package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Correspondence.tolerance;
-import static com.google.common.truth.DoubleSubject.checkTolerance;
-import static com.google.common.truth.Fact.simpleFact;
-import static com.google.common.truth.MathUtil.equalWithinTolerance;
-import static com.google.common.truth.MathUtil.notEqualWithinTolerance;
 
-import com.google.common.collect.Iterables;
 import com.google.common.primitives.Doubles;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -143,115 +135,6 @@ public final class PrimitiveDoubleArraySubject
     public int hashCode() {
       throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
     }
-  }
-
-  /**
-   * Prepares for a check that the subject and object are arrays both (a) of the same length, and
-   * (b) where the values at all corresponding positions in each array are finite values within
-   * {@code tolerance} of each other, that is {@code
-   * assertThat(actual[i]).isWithin(tolerance).of(expected[i])} passes for all {@code i} (see the
-   * {@link DoubleSubject#isWithin isWithin} assertion for doubles).
-   *
-   * <p>The check will fail if any value in either the subject array or the object array is {@link
-   * Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, or {@link Double#NaN}.
-   *
-   * @param tolerance an inclusive upper bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not {@link
-   *     Double#NaN}, {@link Double#POSITIVE_INFINITY}, or negative, including {@code -0.0}
-   * @deprecated Use {@link #usingTolerance}, e.g. {@code
-   *     assertThat(doubleArray).usingTolerance(1e-5).containsExactly(1.2, 3.4, 5.6).inOrder();}
-   */
-  @Deprecated
-  public TolerantPrimitiveDoubleArrayComparison hasValuesWithin(
-      final double tolerance) {
-    return new TolerantPrimitiveDoubleArrayComparison() {
-
-      @Override
-      public void ofElementsIn(Iterable<? extends Number> expected) {
-        checkTolerance(tolerance);
-        double[] actual = checkNotNull(actual());
-        List<Integer> mismatches = new ArrayList<>();
-        int expectedCount = 0;
-        for (Number expectedValue : expected) {
-          // if expected is longer than actual, we can skip the excess values: this case is covered
-          // by the length check below
-          if (expectedCount < actual.length
-              && !equalWithinTolerance(
-                  actual[expectedCount], expectedValue.doubleValue(), tolerance)) {
-            mismatches.add(expectedCount);
-          }
-          expectedCount++;
-        }
-        if (actual.length != expectedCount) {
-          failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that %s has values within %s of <%s>. Expected length <%s> but "
-                          + "got <%s>",
-                      actualAsString(),
-                      tolerance,
-                      Iterables.toString(expected),
-                      expectedCount,
-                      actual.length)));
-          return;
-        }
-        if (!mismatches.isEmpty()) {
-          failWithBadResults(
-              "has values within " + tolerance + " of",
-              Iterables.toString(expected),
-              "differs at indexes",
-              mismatches);
-          return;
-        }
-      }
-    };
-  }
-
-  /**
-   * Prepares for a check that the subject and object are arrays either (a) of the different
-   * lengths, or (b) of the same length but where the values at at least one corresponding position
-   * in each array are finite values not within {@code tolerance} of each other, that is {@code
-   * assertThat(actual[i]).isNotWithin(tolerance).of(expected[i])} passes for at least one {@code i}
-   * (see the {@link DoubleSubject#isNotWithin isNotWithin} assertion for doubles).
-   *
-   * <p>In the case (b), a pair of subject and object values will not cause the test to pass if
-   * either of them is {@link Double#POSITIVE_INFINITY}, {@link Double#NEGATIVE_INFINITY}, or {@link
-   * Double#NaN}.
-   *
-   * @param tolerance an exclusive lower bound on the difference between the subject and object
-   *     allowed by the check, which must be a non-negative finite value, i.e. not {@code
-   *     Double.NaN}, {@code Double.POSITIVE_INFINITY}, or negative, including {@code -0.0}
-   * @deprecated Write a for loop over the values looking for mismatches (see this implementation
-   *     for an example)
-   */
-  @Deprecated
-  public TolerantPrimitiveDoubleArrayComparison hasValuesNotWithin(
-      final double tolerance) {
-    return new TolerantPrimitiveDoubleArrayComparison() {
-
-      @Override
-      public void ofElementsIn(Iterable<? extends Number> expected) {
-        checkTolerance(tolerance);
-        double[] actual = checkNotNull(actual());
-        int expectedCount = 0;
-        for (Number expectedValue : expected) {
-          // if expected is longer than actual, we can skip the excess values: this case is covered
-          // by the length check below
-          if (expectedCount < actual.length
-              && notEqualWithinTolerance(
-                  actual[expectedCount], expectedValue.doubleValue(), tolerance)) {
-            return;
-          }
-          expectedCount++;
-        }
-        // By the method contract, the assertion passes if the lengths are different. This is so
-        // that hasValuesNotWithin behaves like isNotEqualTo with a tolerance (and different
-        // handling of non-finite values).
-        if (actual.length == expectedCount) {
-          fail("has values not within " + tolerance + " of", Iterables.toString(expected));
-        }
-      }
-    };
   }
 
   /**

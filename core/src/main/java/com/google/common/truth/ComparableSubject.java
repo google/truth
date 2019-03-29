@@ -61,20 +61,6 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
   }
 
   /**
-   * Checks that the subject is equivalent to {@code other} according to {@link
-   * Comparable#compareTo}, (i.e., checks that {@code a.comparesTo(b) == 0}).
-   *
-   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
-   * #isEqualTo(Object)}.
-   *
-   * @deprecated Use {@link #isEquivalentAccordingToCompareTo} instead.
-   */
-  @Deprecated
-  public void comparesEqualTo(T other) {
-    isEquivalentAccordingToCompareTo(other);
-  }
-
-  /**
    * Checks that the subject is greater than {@code other}.
    *
    * <p>Use {@link #isAtLeast} to check that the subject is greater than <i>or equal to</i> {@code
