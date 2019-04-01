@@ -1492,6 +1492,56 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
+     * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
+     *
+     * <p>Checks that the subject contains elements that corresponds to all of the expected
+     * elements, i.e. that there is a 1:1 mapping between any subset of the actual elements and the
+     * expected elements where each pair of elements correspond.
+     *
+     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+     * on the object returned by this method. The elements must appear in the given order within the
+     * subject, but they are not required to be consecutive.
+     */
+    @SafeVarargs
+    @CanIgnoreReturnValue
+    public final Ordered containsAllOf(
+        @NullableDecl E first, @NullableDecl E second, @NullableDecl E... rest) {
+      return containsAtLeast(first, second, rest);
+    }
+
+    /**
+     * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
+     *
+     * <p>Checks that the subject contains elements that corresponds to all of the expected
+     * elements, i.e. that there is a 1:1 mapping between any subset of the actual elements and the
+     * expected elements where each pair of elements correspond.
+     *
+     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+     * on the object returned by this method. The elements must appear in the given order within the
+     * subject, but they are not required to be consecutive.
+     */
+    @CanIgnoreReturnValue
+    public Ordered containsAllIn(final Iterable<? extends E> expected) {
+      return containsAtLeastElementsIn(expected);
+    }
+
+    /**
+     * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Object[])}.</i>
+     *
+     * <p>Checks that the subject contains elements that corresponds to all of the expected
+     * elements, i.e. that there is a 1:1 mapping between any subset of the actual elements and the
+     * expected elements where each pair of elements correspond.
+     *
+     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+     * on the object returned by this method. The elements must appear in the given order within the
+     * subject, but they are not required to be consecutive.
+     */
+    @CanIgnoreReturnValue
+    public Ordered containsAllIn(E[] expected) {
+      return containsAtLeastElementsIn(expected);
+    }
+
+    /**
      * Checks that the subject contains elements that corresponds to all of the expected elements,
      * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
      * elements where each pair of elements correspond.
@@ -1502,9 +1552,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     @SafeVarargs
     @CanIgnoreReturnValue
-    public final Ordered containsAllOf(
+    public final Ordered containsAtLeast(
         @NullableDecl E first, @NullableDecl E second, @NullableDecl E... rest) {
-      return containsAllIn(accumulate(first, second, rest));
+      return containsAtLeastElementsIn(accumulate(first, second, rest));
     }
 
     /**
@@ -1517,7 +1567,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * subject, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
-    public Ordered containsAllIn(final Iterable<? extends E> expected) {
+    public Ordered containsAtLeastElementsIn(final Iterable<? extends E> expected) {
       List<A> actualList = iterableToList(getCastActual());
       List<? extends E> expectedList = iterableToList(expected);
       // Check if the expected elements correspond in order to any subset of the actual elements.
@@ -1585,8 +1635,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      * subject, but they are not required to be consecutive.
      */
     @CanIgnoreReturnValue
-    public Ordered containsAllIn(E[] expected) {
-      return containsAllIn(asList(expected));
+    public Ordered containsAtLeastElementsIn(E[] expected) {
+      return containsAtLeastElementsIn(asList(expected));
     }
 
     /**
