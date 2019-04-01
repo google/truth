@@ -44,8 +44,8 @@ import org.junit.runners.JUnit4;
 /**
  * Tests for {@link IterableSubject} APIs that use {@link Correspondence}.
  *
- * <p>Note: Most of the assertions here call {@link assertThat(someIterable)} to get an {@link
- * IterableSubject}, and then call {@link comparingElementsUsing(someCorrespondence)} on that to get
+ * <p>Note: Most of the assertions here call {@code assertThat(someIterable)} to get an {@link
+ * IterableSubject}, and then call {@code comparingElementsUsing(someCorrespondence)} on that to get
  * an {@link IterableSubject.UsingCorrespondence}. The test method names omit the {@code
  * comparingElementsUsing_} prefix for brevity.
  *
@@ -1047,6 +1047,17 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void containsAtLeastElementsIn() {
+    ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+64", "+128", "fi", "fo", "+256", "0x80", "fum");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastElementsIn(expected)
+        .inOrder();
+  }
+
+  @Test
   public void containsAllIn_inOrder_success() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
@@ -1333,6 +1344,16 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void containsAtLeastElementsIn_array() {
+    Integer[] expected = new Integer[] {64, 128, 256, 128};
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+128", "+64", "fi", "fo", "0x80", "+256", "fum");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeastElementsIn(expected);
+  }
+
+  @Test
   public void containsAllIn_array() {
     Integer[] expected = new Integer[] {64, 128, 256, 128};
     ImmutableList<String> actual =
@@ -1353,6 +1374,16 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
             "Not true that <[fee, +64, +128, fi, fo, 0x40, 0x80, fum]> contains at least one "
                 + "element that parses to each element of <[64, 128, 256, 128]>. "
                 + "It is missing an element that parses to <256>");
+  }
+
+  @Test
+  public void containsAtLeast() {
+    ImmutableList<String> actual =
+        ImmutableList.of("fee", "+64", "+128", "fi", "fo", "+256", "0x80", "fum");
+    assertThat(actual)
+        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsAtLeast(64, 128, 256, 128)
+        .inOrder();
   }
 
   @Test
