@@ -220,8 +220,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements to this call then it must appear at
+   * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
+   *
+   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
+   * an element appears more than once in the expected elements to this call then it must appear at
    * least that number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
@@ -233,7 +235,56 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
       @NullableDecl Object firstExpected,
       @NullableDecl Object secondExpected,
       @NullableDecl Object... restOfExpected) {
-    return containsAllIn(accumulate(firstExpected, secondExpected, restOfExpected));
+    return containsAtLeast(firstExpected, secondExpected, restOfExpected);
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
+   *
+   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
+   * an element appears more than once in the expected elements then it must appear at least that
+   * number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public final Ordered containsAllIn(Iterable<?> expectedIterable) {
+    return containsAtLeastElementsIn(expectedIterable);
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Object[])}.</i>
+   *
+   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
+   * an element appears more than once in the expected elements then it must appear at least that
+   * number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public final Ordered containsAllIn(Object[] expected) {
+    return containsAtLeastElementsIn(expected);
+  }
+
+  /**
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements to this call then it must appear at
+   * least that number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public final Ordered containsAtLeast(
+      @NullableDecl Object firstExpected,
+      @NullableDecl Object secondExpected,
+      @NullableDecl Object... restOfExpected) {
+    return containsAtLeastElementsIn(accumulate(firstExpected, secondExpected, restOfExpected));
   }
 
   /**
@@ -246,7 +297,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  public final Ordered containsAllIn(Iterable<?> expectedIterable) {
+  public final Ordered containsAtLeastElementsIn(Iterable<?> expectedIterable) {
     List<?> actual = Lists.newLinkedList(actual());
     final Collection<?> expected = iterableToCollection(expectedIterable);
 
@@ -272,7 +323,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
     // if we have any missing expected elements, fail
     if (!missing.isEmpty()) {
-      return failAllIn(expected, missing);
+      return failAtLeast(expected, missing);
     }
 
     /*
@@ -295,7 +346,21 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
         };
   }
 
-  private Ordered failAllIn(Collection<?> expected, Collection<?> missingRawObjects) {
+  /**
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements then it must appear at least that
+   * number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public final Ordered containsAtLeastElementsIn(Object[] expected) {
+    return containsAtLeastElementsIn(asList(expected));
+  }
+
+  private Ordered failAtLeast(Collection<?> expected, Collection<?> missingRawObjects) {
     Collection<?> nearMissRawObjects =
         retainMatchingToString(actual(), missingRawObjects /* itemsToCheck */);
 
@@ -316,20 +381,6 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     failWithoutActual(facts.build());
     return ALREADY_FAILED;
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements then it must appear at least that
-   * number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  public final Ordered containsAllIn(Object[] expected) {
-    return containsAllIn(asList(expected));
   }
 
   /**

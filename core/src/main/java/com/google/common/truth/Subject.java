@@ -280,8 +280,17 @@ public class Subject<S extends Subject<S, T>, T> {
     }
   }
 
-  /** Fails if the subject is not the same instance as the given object. */
+  /**
+   * <i>To be deprecated in favor of {@link #isSameInstanceAs}.</i>
+   *
+   * <p>Fails if the subject is not the same instance as the given object.
+   */
   public void isSameAs(@NullableDecl @CompatibleWith("T") Object expected) {
+    isSameInstanceAs(expected);
+  }
+
+  /** Fails if the subject is not the same instance as the given object. */
+  public final void isSameInstanceAs(@NullableDecl @CompatibleWith("T") Object expected) {
     if (actual() != expected) {
       failEqualityCheck(
           SAME_INSTANCE,
@@ -296,8 +305,17 @@ public class Subject<S extends Subject<S, T>, T> {
     }
   }
 
-  /** Fails if the subject is the same instance as the given object. */
+  /**
+   * <i>To be deprecated in favor of {@link #isNotSameInstanceAs}.</i>
+   *
+   * <p>Fails if the subject is the same instance as the given object.
+   */
   public void isNotSameAs(@NullableDecl @CompatibleWith("T") Object unexpected) {
+    isNotSameInstanceAs(unexpected);
+  }
+
+  /** Fails if the subject is the same instance as the given object. */
+  public final void isNotSameInstanceAs(@NullableDecl @CompatibleWith("T") Object unexpected) {
     if (actual() == unexpected) {
       /*
        * We use actualCustomStringRepresentation() because it might be overridden to be better than

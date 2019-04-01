@@ -233,6 +233,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void iterableContainsAtLeast() {
+    assertThat(asList(1, 2, 3)).containsAtLeast(1, 2);
+  }
+
+  @Test
   public void iterableContainsAllOfWithMany() {
     assertThat(asList(1, 2, 3)).containsAllOf(1, 2);
   }
@@ -435,6 +440,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void iterableContainsAtLeastElementsInIterable() {
+    assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(asList(1, 2));
+  }
+
+  @Test
   public void iterableContainsAllInIterable() {
     assertThat(asList(1, 2, 3)).containsAllIn(asList(1, 2));
 
@@ -450,6 +460,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertFailureKeys("missing (2)", "#1", "#2", "---", "expected to contain at least", "but was");
     assertFailureValue("#1", "123\n456");
     assertFailureValue("#2", "789");
+  }
+
+  @Test
+  public void iterableContainsAtLeastElementsInArray() {
+    assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(new Integer[] {1, 2});
   }
 
   @Test
