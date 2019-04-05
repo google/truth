@@ -480,7 +480,7 @@ public class Subject<S extends Subject<S, T>, T> {
     return actualCustomStringRepresentation();
   }
 
-  private final String formatActualOrExpected(@NullableDecl Object o) {
+  private String formatActualOrExpected(@NullableDecl Object o) {
     if (o instanceof byte[]) {
       return base16((byte[]) o);
     } else if (o != null && o.getClass().isArray()) {
@@ -636,25 +636,21 @@ public class Subject<S extends Subject<S, T>, T> {
       return ComparisonResult.differentWithDescription(
           indexFact, fact("expected", expectedLength), fact("but was", actualLength));
     }
-    for (int i = 0; i < actualLength || i < expectedLength; i++) {
+    for (int i = 0; i < actualLength; i++) {
       String index = lastIndex + "[" + i + "]";
-      if (i < expectedLength && i < actualLength) {
-        Object expected = Array.get(expectedArray, i);
-        Object actual = Array.get(actualArray, i);
-        if (actual != null
-            && actual.getClass().isArray()
-            && expected != null
-            && expected.getClass().isArray()) {
-          ComparisonResult result = checkArrayEqualsRecursive(expected, actual, index);
-          if (!result.valuesAreEqual()) {
-            return result;
-          }
-          continue;
-        } else if (gwtSafeObjectEquals(actual, expected)) {
-          continue;
+      Object expected = Array.get(expectedArray, i);
+      Object actual = Array.get(actualArray, i);
+      if (actual != null
+          && actual.getClass().isArray()
+          && expected != null
+          && expected.getClass().isArray()) {
+        ComparisonResult result = checkArrayEqualsRecursive(expected, actual, index);
+        if (!result.valuesAreEqual()) {
+          return result;
         }
+      } else if (!gwtSafeObjectEquals(actual, expected)) {
+        return ComparisonResult.differentWithDescription(fact("differs at index", index));
       }
-      return ComparisonResult.differentWithDescription(fact("differs at index", index));
     }
     return ComparisonResult.equal();
   }
@@ -880,7 +876,7 @@ public class Subject<S extends Subject<S, T>, T> {
     failEqualityCheck(EqualityCheck.EQUAL, expected, ComparisonResult.differentNoDescription());
   }
 
-  private final void failEqualityCheck(
+  private void failEqualityCheck(
       EqualityCheck equalityCheck, Object expected, ComparisonResult difference) {
     String actualString = actualCustomStringRepresentation();
     String expectedString = formatActualOrExpected(expected);

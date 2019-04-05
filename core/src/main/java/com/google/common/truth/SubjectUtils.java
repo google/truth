@@ -384,6 +384,7 @@ final class SubjectUtils {
     }
   }
 
+  @SafeVarargs
   static <E> ImmutableList<E> concat(Iterable<? extends E>... inputs) {
     return ImmutableList.copyOf(Iterables.concat(inputs));
   }
