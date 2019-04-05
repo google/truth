@@ -18,7 +18,15 @@ package com.google.common.truth;
 
 import com.google.common.primitives.Doubles;
 
-/** Math utilities to be shared by numeric subjects. */
+/**
+ * Math utilities to be shared by numeric subjects.
+ *
+ * @deprecated Similar static methods are available through {@link
+ *     com.google.common.math.DoubleMath#fuzzyEquals}. However, if you're using {@code MathUtil}
+ *     from the implementation of a custom {@link Subject}, you may prefer to delegate to {@link
+ *     DoubleSubject}, as in {@code check(...).that(actual().someValue()).isWithin(...).of(...)}.
+ */
+@Deprecated
 public final class MathUtil {
   private MathUtil() {}
 

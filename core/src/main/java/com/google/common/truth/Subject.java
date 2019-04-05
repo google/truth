@@ -281,10 +281,11 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #isSameInstanceAs}.</i>
+   * Fails if the subject is not the same instance as the given object.
    *
-   * <p>Fails if the subject is not the same instance as the given object.
+   * @deprecated Use {@link #isSameInstanceAs}, which is equivalent.
    */
+  @Deprecated
   public void isSameAs(@NullableDecl @CompatibleWith("T") Object expected) {
     isSameInstanceAs(expected);
   }
@@ -306,10 +307,11 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #isNotSameInstanceAs}.</i>
+   * Fails if the subject is the same instance as the given object.
    *
-   * <p>Fails if the subject is the same instance as the given object.
+   * @deprecated Use {@link #isNotSameInstanceAs}, which is equivalent.
    */
+  @Deprecated
   public void isNotSameAs(@NullableDecl @CompatibleWith("T") Object unexpected) {
     isNotSameInstanceAs(unexpected);
   }
@@ -711,7 +713,10 @@ public class Subject<S extends Subject<S, T>, T> {
    * Returns a builder for creating a derived subject but without providing information about how
    * the derived subject will relate to the current subject. In most cases, you should provide such
    * information by using {@linkplain #check(String, Object...) the other overload}.
+   *
+   * @deprecated Use {@linkplain #check(String, Object[]) the overload that accepts a description}.
    */
+  @Deprecated
   protected final StandardSubjectBuilder check() {
     return new StandardSubjectBuilder(metadata.updateForCheckCall());
   }

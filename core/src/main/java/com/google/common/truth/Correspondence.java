@@ -67,7 +67,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Pete Gillin
  */
 public abstract class Correspondence<A, E> {
-
   /**
    * Constructs a {@link Correspondence} that compares actual and expected elements using the given
    * binary predicate.
@@ -317,7 +316,11 @@ public abstract class Correspondence<A, E> {
    * Constructor. Creating subclasses (anonymous or otherwise) of this class is <i>not
    * recommended</i>, but is possible via this constructor. The recommended approach is to use the
    * factory methods instead (see {@linkplain Correspondence class-level documentation}).
+   *
+   * @deprecated Construct an instance with the static factory methods instead. The most mechanical
+   *     migration is usually to {@link #from}.
    */
+  @Deprecated
   protected Correspondence() {}
 
   /**

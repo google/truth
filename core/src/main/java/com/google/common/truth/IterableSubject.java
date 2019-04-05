@@ -220,17 +220,18 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
-   *
-   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
-   * an element appears more than once in the expected elements to this call then it must appear at
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements to this call then it must appear at
    * least that number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeast}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   public final Ordered containsAllOf(
       @NullableDecl Object firstExpected,
       @NullableDecl Object secondExpected,
@@ -239,33 +240,35 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
-   *
-   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
-   * an element appears more than once in the expected elements then it must appear at least that
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeastElementsIn(Iterable)}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   public final Ordered containsAllIn(Iterable<?> expectedIterable) {
     return containsAtLeastElementsIn(expectedIterable);
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Object[])}.</i>
-   *
-   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
-   * an element appears more than once in the expected elements then it must appear at least that
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeastElementsIn(Object[])}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   public final Ordered containsAllIn(Object[] expected) {
     return containsAtLeastElementsIn(expected);
   }
@@ -1492,51 +1495,54 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
     }
 
     /**
-     * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
-     *
-     * <p>Checks that the subject contains elements that corresponds to all of the expected
-     * elements, i.e. that there is a 1:1 mapping between any subset of the actual elements and the
-     * expected elements where each pair of elements correspond.
+     * Checks that the subject contains elements that corresponds to all of the expected elements,
+     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+     * elements where each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method. The elements must appear in the given order within the
      * subject, but they are not required to be consecutive.
+     *
+     * @deprecated Use {@link #containsAtLeast}, which is equivalent.
      */
     @SafeVarargs
     @CanIgnoreReturnValue
+    @Deprecated
     public final Ordered containsAllOf(
         @NullableDecl E first, @NullableDecl E second, @NullableDecl E... rest) {
       return containsAtLeast(first, second, rest);
     }
 
     /**
-     * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
-     *
-     * <p>Checks that the subject contains elements that corresponds to all of the expected
-     * elements, i.e. that there is a 1:1 mapping between any subset of the actual elements and the
-     * expected elements where each pair of elements correspond.
+     * Checks that the subject contains elements that corresponds to all of the expected elements,
+     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+     * elements where each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method. The elements must appear in the given order within the
      * subject, but they are not required to be consecutive.
+     *
+     * @deprecated Use {@link #containsAtLeastElementsIn(Iterable)}, which is equivalent.
      */
     @CanIgnoreReturnValue
+    @Deprecated
     public Ordered containsAllIn(final Iterable<? extends E> expected) {
       return containsAtLeastElementsIn(expected);
     }
 
     /**
-     * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Object[])}.</i>
-     *
-     * <p>Checks that the subject contains elements that corresponds to all of the expected
-     * elements, i.e. that there is a 1:1 mapping between any subset of the actual elements and the
-     * expected elements where each pair of elements correspond.
+     * Checks that the subject contains elements that corresponds to all of the expected elements,
+     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+     * elements where each pair of elements correspond.
      *
      * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
      * on the object returned by this method. The elements must appear in the given order within the
      * subject, but they are not required to be consecutive.
+     *
+     * @deprecated Use {@link #containsAtLeastElementsIn(Object[])}, which is equivalent.
      */
     @CanIgnoreReturnValue
+    @Deprecated
     public Ordered containsAllIn(E[] expected) {
       return containsAtLeastElementsIn(expected);
     }

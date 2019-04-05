@@ -215,10 +215,11 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #create}, which also enables stack traces.</i>
+   * Creates a new instance.
    *
-   * <p>Creates a new instance.
+   * @deprecated Use {@link #create}, which also enables stack traces.
    */
+  @Deprecated
   public static Expect createAndEnableStackTrace() {
     return create();
   }
