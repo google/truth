@@ -75,11 +75,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     @GuardedBy("this")
     private TestPhase inRuleContext = BEFORE;
 
-    private final boolean showStackTrace;
-
-    ExpectationGatherer(boolean showStackTrace) {
-      this.showStackTrace = showStackTrace;
-    }
+    ExpectationGatherer() {}
 
     @Override
     public synchronized void fail(AssertionError failure) {
@@ -134,17 +130,12 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
         message.append(padStart(String.valueOf(count), countLength, ' '));
         message.append(". ");
         if (count == 1) {
-          appendIndented(
-              countLength,
-              message,
-              showStackTrace ? getStackTraceAsString(failure) : failure.getMessage());
+          appendIndented(countLength, message, getStackTraceAsString(failure));
         } else {
           appendIndented(
               countLength,
               message,
-              showStackTrace
-                  ? printSubsequentFailure(failures.get(0).getStackTrace(), failure)
-                  : failure.getMessage());
+              printSubsequentFailure(failures.get(0).getStackTrace(), failure));
         }
         message.append("\n");
       }
@@ -218,12 +209,18 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
 
   private final ExpectationGatherer gatherer;
 
+  /** Creates a new instance. */
   public static Expect create() {
-    return new Expect(new ExpectationGatherer(false /* showStackTrace */));
+    return new Expect(new ExpectationGatherer());
   }
 
+  /**
+   * <i>To be deprecated in favor of {@link #create}, which also enables stack traces.</i>
+   *
+   * <p>Creates a new instance.
+   */
   public static Expect createAndEnableStackTrace() {
-    return new Expect(new ExpectationGatherer(true /* showStackTrace */));
+    return create();
   }
 
   private Expect(ExpectationGatherer gatherer) {
