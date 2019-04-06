@@ -32,7 +32,7 @@ abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> ext
     super(metadata, actual, typeDescription);
   }
 
-  /** Fails if the array is not empty (i.e. {@code array.length != 0}). */
+  /** Fails if the array is not empty (i.e. {@code array.length > 0}). */
   public final void isEmpty() {
     if (length() > 0) {
       failWithActual(simpleFact("expected to be empty"));
