@@ -27,8 +27,8 @@ Here's an example correspondence between strings, which tests whether the actual
 strings start with the expected substrings:
 
 ```java
-private static final Correspondence<String, String> STARTS_WITH =
-    Correspondence.from(String::startsWith, "starts with");
+private static final Correspondence<String, String> CONTAINS_SUBSTRING =
+    Correspondence.from(String::contains, "contains");
 ```
 
 Here's an example correspondence between strings and integers, which tests
@@ -70,8 +70,8 @@ private static final Correspondence<MyRecord, Integer> RECORD_HAS_ID =
 
 You may want to think about handling of null elements. In the examples above,
 `STRING_PARSES_TO_INTEGER` has explicit null handling such that a null actual
-string corresponds to a null expected integer; `STARTS_WITH` does not, and any
-test which sees a null string will fail.
+string corresponds to a null expected integer; `CONTAINS_SUBSTRING` does not,
+and any test which sees a null string will fail.
 
 ## Iterable Example {#iterable}
 
