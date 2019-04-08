@@ -79,13 +79,13 @@ public abstract class Correspondence<A, E> {
    * with null arguments. If this causes it to throw a {@link NullPointerException}, then your test
    * will fail. (See {@link Correspondence#compare} for more detail on how exceptions are handled.)
    * In particular, if your predicate is an instance method reference on the actual value (as in the
-   * {@code String::startsWith} example below), your test will fail if it sees null actual values.
+   * {@code String::contains} example below), your test will fail if it sees null actual values.
    *
    * <p>Example using an instance method reference:
    *
    * <pre>{@code
-   * static final Correspondence<String, String> STRING_PREFIX_EQUALITY =
-   *     Correspondence.from(String::startsWith, "starts with");
+   * static final Correspondence<String, String> CONTAINS_SUBSTRING =
+   *     Correspondence.from(String::contains, "contains");
    * }</pre>
    *
    * <p>Example using a static method reference:
@@ -111,7 +111,7 @@ public abstract class Correspondence<A, E> {
    *     and returning whether the actual value corresponds to the expected value in some way
    * @param description should fill the gap in a failure message of the form {@code "not true that
    *     <some actual element> is an element that <description> <some expected element>"}, e.g.
-   *     {@code "starts with"}, {@code "is an instance of"}, or {@code "is equivalent to"}
+   *     {@code "contains"}, {@code "is an instance of"}, or {@code "is equivalent to"}
    */
   public static <A, E> Correspondence<A, E> from(
       BinaryPredicate<A, E> predicate, String description) {
