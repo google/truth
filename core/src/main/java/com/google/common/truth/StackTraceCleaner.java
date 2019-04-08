@@ -324,7 +324,7 @@ final class StackTraceCleaner {
         "com.google.testing.junit",
         "com.google.testing.testsize",
         "com.google.testing.util"),
-    REFLECTION("Reflective call", "java.lang.reflect", "sun.reflect"),
+    REFLECTION("Reflective call", "java.lang.reflect", "jdk.internal.reflect", "sun.reflect"),
     CONCURRENT_FRAMEWORK(
         "Concurrent framework",
         "com.google.tracing.CurrentContext",
