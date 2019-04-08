@@ -15,8 +15,10 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.ExpectFailure.expectFailure;
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.Range;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
@@ -40,6 +42,20 @@ import org.junit.runners.model.Statement;
  */
 @RunWith(JUnit4.class)
 public class StackTraceCleanerTest extends BaseSubjectTestCase {
+  @Test
+  public void realWorld() {
+    try {
+      assertThat(0).isEqualTo(1);
+      throw new Error();
+    } catch (AssertionError failure) {
+      assertThat(failure.getStackTrace()).hasLength(1);
+    }
+
+    // ExpectFailure ends up with "extra" frames, but that's probably the right behavior :\
+    AssertionError failure = expectFailure(whenTesting -> whenTesting.that(0).isEqualTo(1));
+    // Currently 3 total frames on the JVM, 4 on Android.
+    assertThat(failure.getStackTrace().length).isIn(Range.closed(3, 4));
+  }
 
   @Test
   public void emptyTrace() {
