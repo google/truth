@@ -68,6 +68,12 @@ final class StackTraceCleaner {
       return;
     }
 
+    /*
+     * TODO(cpovirk): Consider wrapping this whole method in a try-catch in case there are any bugs.
+     * It would be a shame for us to fail to report the "real" assertion failure because we're
+     * instead reporting a bug in Truth's cosmetic stack cleaning.
+     */
+
     // Prevent infinite recursion if there is a reference cycle between Throwables.
     if (seenThrowables.contains(throwable)) {
       return;
@@ -386,7 +392,14 @@ final class StackTraceCleaner {
    * out of stack traces by the cleaner.
    */
   private static boolean isStackTraceCleaningDisabled() {
-    return Boolean.parseBoolean(
-        System.getProperty("com.google.common.truth.disable_stack_trace_cleaning"));
+    // Reading system properties might be forbidden.
+    try {
+      return Boolean.parseBoolean(
+          System.getProperty("com.google.common.truth.disable_stack_trace_cleaning"));
+    } catch (SecurityException e) {
+      // Hope for the best.
+      return false;
+      // TODO(cpovirk): Log a warning? Or is that likely to trigger other violations?
+    }
   }
 }
