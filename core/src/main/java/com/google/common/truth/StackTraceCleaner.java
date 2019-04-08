@@ -15,6 +15,9 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static java.lang.Thread.currentThread;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -219,7 +222,7 @@ final class StackTraceCleaner {
       StackTraceElement stackTraceElement, ImmutableSet<Class<?>> recognizedClasses) {
     Class<?> stackClass;
     try {
-      stackClass = Class.forName(stackTraceElement.getClassName());
+      stackClass = loadClass(stackTraceElement.getClassName());
     } catch (ClassNotFoundException e) {
       return false;
     }
@@ -251,7 +254,7 @@ final class StackTraceCleaner {
       StackTraceElement stackTraceElement, ImmutableSet<Class<?>> recognizedClasses) {
     Class<?> stackClass;
     try {
-      stackClass = Class.forName(stackTraceElement.getClassName());
+      stackClass = loadClass(stackTraceElement.getClassName());
     } catch (ClassNotFoundException e) {
       return false;
     }
@@ -261,6 +264,23 @@ final class StackTraceCleaner {
       }
     }
     return false;
+  }
+
+  // Using plain Class.forName can cause problems.
+  /*
+   * TODO(cpovirk): Consider avoiding classloading entirely by reading classes with ASM. But that
+   * won't work on Android, so we might ultimately need classloading as a fallback. Another
+   * possibility is to load classes in a fresh, isolated classloader. However, that requires
+   * creating a list of jars to load from, which is fragile and would also require special handling
+   * under Android. If we're lucky, this new solution will just work: The classes should already be
+   * loaded, anyway, since they appear on the stack, so we just have to hope that we have the right
+   * classloader.
+   */
+  private static Class<?> loadClass(String name) throws ClassNotFoundException {
+    ClassLoader loader =
+        firstNonNull(
+            currentThread().getContextClassLoader(), StackTraceCleaner.class.getClassLoader());
+    return loader.loadClass(name);
   }
 
   /**
