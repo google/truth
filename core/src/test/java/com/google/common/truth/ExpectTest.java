@@ -132,9 +132,7 @@ public class ExpectTest {
     thrown.expectMessage("3 expectations failed:");
     thrown.expectMessage("1. x");
     thrown.expectMessage("2. y");
-    thrown.expectMessage(
-        "3. Also, after those failures, an exception was thrown: "
-            + "java.lang.IllegalStateException");
+    thrown.expectMessage("3. Also, after those failures, an exception was thrown:");
     expect.fail("x");
     expect.fail("y");
     throw new IllegalStateException();
@@ -145,9 +143,7 @@ public class ExpectTest {
     thrown.expectMessage("3 expectations failed:");
     thrown.expectMessage("1. x");
     thrown.expectMessage("2. y");
-    thrown.expectMessage(
-        "3. Also, after those failures, an exception was thrown: "
-            + "java.lang.IllegalStateException: testing");
+    thrown.expectMessage("3. Also, after those failures, an exception was thrown:");
     expect.fail("x");
     expect.fail("y");
     throw new IllegalStateException("testing");
@@ -171,9 +167,7 @@ public class ExpectTest {
     thrown.expectMessage("3 expectations failed:");
     thrown.expectMessage("1. x");
     thrown.expectMessage("2. y");
-    thrown.expectMessage(
-        "3. Also, after those failures, an assumption was violated: "
-            + "com.google.common.truth.TruthJUnit$ThrowableAssumptionViolatedException: testing");
+    thrown.expectMessage("3. Also, after those failures, an assumption was violated:");
     expect.fail("x");
     expect.fail("y");
     assume().fail("testing");

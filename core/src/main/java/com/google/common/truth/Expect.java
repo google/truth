@@ -191,9 +191,9 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       if (hasFailures()) {
         String message =
             caught instanceof AssumptionViolatedException
-                ? "Also, after those failures, an assumption was violated"
-                : "Also, after those failures, an exception was thrown";
-        record(SimpleAssertionError.createWithNoStack(message + ": " + caught, caught));
+                ? "Also, after those failures, an assumption was violated:"
+                : "Also, after those failures, an exception was thrown:";
+        record(SimpleAssertionError.createWithNoStack(message, caught));
         throw SimpleAssertionError.createWithNoStack(this.toString());
       } else {
         throw caught;
