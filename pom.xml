@@ -146,10 +146,15 @@
         <artifactId>re2j</artifactId>
         <version>1.2</version>
       </dependency>
+      <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm</artifactId>
+        <version>7.1</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <description>
-    Parent metdata for Truth, a Java assertion framework.
+    Parent metadata for Truth, a Java assertion framework.
   </description>
   <modules>
     <module>core</module>
@@ -261,7 +266,8 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>animal-sniffer-maven-plugin</artifactId>
-          <version>1.14</version>
+          <!-- Note that 1.17 doesn't work with Java 8: https://github.com/mojohaus/animal-sniffer/issues/53 -->
+          <version>1.16</version>
           <configuration>
             <signature>
               <groupId>org.codehaus.mojo.signature</groupId>
