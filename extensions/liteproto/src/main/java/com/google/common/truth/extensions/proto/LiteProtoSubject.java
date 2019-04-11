@@ -72,14 +72,15 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   // In case the class names are actually relevant, Subject.isEqualTo() will add them back for us.
   // TODO(user): Maybe get a way to do this upstream.
   static String getTrimmedToString(@NullableDecl MessageLite messageLite) {
-    String subjectString = String.valueOf(messageLite).trim();
-    if (subjectString.startsWith("# ")) {
+    String subjectString = String.valueOf(messageLite);
+    String trimmedSubjectString = subjectString.trim();
+    if (trimmedSubjectString.startsWith("# ")) {
       String objectToString =
           String.format(
               "# %s@%s",
               messageLite.getClass().getName(), Integer.toHexString(messageLite.hashCode()));
-      if (subjectString.startsWith(objectToString)) {
-        subjectString = subjectString.replaceFirst(Pattern.quote(objectToString), "").trim();
+      if (trimmedSubjectString.startsWith(objectToString)) {
+        subjectString = trimmedSubjectString.replaceFirst(Pattern.quote(objectToString), "").trim();
       }
     }
 
