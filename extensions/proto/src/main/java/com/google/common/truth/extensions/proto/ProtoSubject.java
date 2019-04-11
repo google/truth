@@ -19,6 +19,7 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Lists.asList;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
@@ -270,6 +271,17 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     return usingConfig(config.reportingMismatchesOnly());
   }
 
+  private static boolean sameClassMessagesWithDifferentDescriptors(
+      @NullableDecl Message actual, @NullableDecl Object expected) {
+    if (actual == null
+        || !(expected instanceof Message)
+        || actual.getClass() != expected.getClass()) {
+      return false;
+    }
+
+    return actual.getDescriptorForType() != ((Message) expected).getDescriptorForType();
+  }
+
   private static boolean notMessagesWithSameDescriptor(
       @NullableDecl Message actual, @NullableDecl Object expected) {
     if (actual != null && expected instanceof Message) {
@@ -280,7 +292,16 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
 
   @Override
   public void isEqualTo(@NullableDecl Object expected) {
-    if (notMessagesWithSameDescriptor(actual(), expected)) {
+    if (sameClassMessagesWithDifferentDescriptors(actual(), expected)) {
+      // This can happen with DynamicMessages, and it's very confusing if they both have the
+      // same string.
+      failWithoutActual(
+          simpleFact("Not true that messages compare equal; they have different descriptors."),
+          fact("expected", expected),
+          fact("with descriptor", ((Message) expected).getDescriptorForType()),
+          fact("but was", actual()),
+          fact("with descriptor", actual().getDescriptorForType()));
+    } else if (notMessagesWithSameDescriptor(actual(), expected)) {
       super.isEqualTo(expected);
     } else {
       DiffResult diffResult =

@@ -56,6 +56,26 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testDifferentDynamicDescriptors() throws InvalidProtocolBufferException {
+    // Only test once.
+    if (!isProto3()) {
+      return;
+    }
+
+    DynamicMessage message1 =
+        DynamicMessage.parseFrom(
+            TestMessage2.getDescriptor(),
+            TestMessage2.newBuilder().setOInt(43).build().toByteString());
+    DynamicMessage message2 =
+        DynamicMessage.parseFrom(
+            TestMessage3.getDescriptor(),
+            TestMessage3.newBuilder().setOInt(43).build().toByteString());
+
+    expectFailureWhenTesting().that(message1).isEqualTo(message2);
+    expectThatFailure().hasMessageThat().contains("different descriptors");
+  }
+
+  @Test
   public void testFullDiffOnlyWhenRelevant() {
     // There are no matches, so 'Full diff' should not be printed.
     expectFailureWhenTesting().that(parse("o_int: 3")).isEqualTo(parse("o_int: 4"));
