@@ -84,7 +84,7 @@ public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, 
       isPresent(); // fails
       return ignoreCheck().that(0.0);
     } else {
-      return check().that(actual().getAsDouble());
+      return check("getAsDouble()").that(actual().getAsDouble());
     }
   }
 

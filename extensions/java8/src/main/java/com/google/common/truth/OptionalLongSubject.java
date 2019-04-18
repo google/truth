@@ -77,7 +77,7 @@ public final class OptionalLongSubject extends Subject<OptionalLongSubject, Opti
       isPresent(); // fails
       return ignoreCheck().that(0L);
     } else {
-      return check().that(actual().getAsLong());
+      return check("getAsLong()").that(actual().getAsLong());
     }
   }
 
