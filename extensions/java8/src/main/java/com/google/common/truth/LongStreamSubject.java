@@ -95,6 +95,7 @@ public final class LongStreamSubject extends Subject<LongStreamSubject, LongStre
   }
 
   /** Fails if the subject does not contain at least one of the given elements. */
+  @SuppressWarnings("GoodTime") // false positive; b/122617528
   public void containsAnyOf(long first, long second, long... rest) {
     check().that(actualList).containsAnyOf(first, second, box(rest));
   }
@@ -113,6 +114,7 @@ public final class LongStreamSubject extends Subject<LongStreamSubject, LongStre
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
    */
+  @SuppressWarnings("GoodTime") // false positive; b/122617528
   @CanIgnoreReturnValue
   public Ordered containsAllOf(long first, long second, long... rest) {
     return check().that(actualList).containsAllOf(first, second, box(rest));
@@ -164,6 +166,7 @@ public final class LongStreamSubject extends Subject<LongStreamSubject, LongStre
    * Fails if the subject contains any of the given elements. (Duplicates are irrelevant to this
    * test, which fails if any of the actual elements equal any of the excluded.)
    */
+  @SuppressWarnings("GoodTime") // false positive; b/122617528
   public void containsNoneOf(long first, long second, long... rest) {
     check().that(actualList).containsNoneOf(first, second, box(rest));
   }
