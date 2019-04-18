@@ -77,7 +77,7 @@ public final class OptionalIntSubject extends Subject<OptionalIntSubject, Option
       isPresent(); // fails
       return ignoreCheck().that(0);
     } else {
-      return check().that(actual().getAsInt());
+      return check("getAsInt()").that(actual().getAsInt());
     }
   }
 
