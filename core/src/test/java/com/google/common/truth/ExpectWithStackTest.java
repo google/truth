@@ -28,7 +28,7 @@ import org.junit.runners.model.Statement;
 
 @RunWith(JUnit4.class)
 public class ExpectWithStackTest {
-  private final Expect expectWithTrace = Expect.createAndEnableStackTrace();
+  private final Expect expectWithTrace = Expect.create();
 
   @Rule public final TestRuleVerifier verifyAssertionError = new TestRuleVerifier(expectWithTrace);
 

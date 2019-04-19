@@ -40,7 +40,7 @@ public class ExpectFailureWithStackTraceTest {
 
   /** Expect class that can examine the error message */
   public static class FailingExpect implements TestRule {
-    final Expect delegate = Expect.createAndEnableStackTrace();
+    final Expect delegate = Expect.create();
 
     @Override
     public Statement apply(Statement base, Description description) {
