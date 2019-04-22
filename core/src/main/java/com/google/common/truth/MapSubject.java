@@ -166,7 +166,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
                         + "However, the following keys are mapped to <%s>: %s",
                     actualAsString(), entry, value, keys)));
       } else {
-        fail("contains entry", entry);
+        failWithActual("expected to contain entry", entry);
       }
     }
   }

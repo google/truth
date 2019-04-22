@@ -142,7 +142,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
                         + "However, the following keys are mapped to <%s>: %s",
                     actualAsString(), entry, value, keys)));
       } else {
-        fail("contains entry", Maps.immutableEntry(key, value));
+        failWithActual("expected to contain entry", Maps.immutableEntry(key, value));
       }
     }
   }

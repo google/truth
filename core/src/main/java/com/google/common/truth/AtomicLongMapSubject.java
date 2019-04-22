@@ -113,7 +113,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
     checkNotNull(key, "AtomicLongMap does not support null keys");
     long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
     if (actualValue != value) {
-      fail("contains entry", immutableEntry(key, value));
+      failWithActual("expected to contain entry", immutableEntry(key, value));
     }
   }
 
@@ -123,7 +123,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
     checkNotNull(key, "AtomicLongMap does not support null keys");
     long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
     if (actualValue == value) {
-      fail("does not contain entry", immutableEntry(key, value));
+      failWithActual("expected not to contain entry", immutableEntry(key, value));
     }
   }
 

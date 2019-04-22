@@ -71,7 +71,7 @@ public final class Re2jSubjects {
     /** Fails if the string does not match the given regex. */
     public void matches(String regex) {
       if (!Pattern.matches(regex, actual())) {
-        fail("matches", regex);
+        failWithActual("expected to match ", regex);
       }
     }
 
@@ -79,14 +79,14 @@ public final class Re2jSubjects {
     @GwtIncompatible("com.google.re2j.Pattern")
     public void matches(Pattern regex) {
       if (!regex.matcher(actual()).matches()) {
-        fail("matches", regex);
+        failWithActual("expected to match ", regex);
       }
     }
 
     /** Fails if the string matches the given regex. */
     public void doesNotMatch(String regex) {
       if (Pattern.matches(regex, actual())) {
-        fail("fails to match", regex);
+        failWithActual("expected to fail to match", regex);
       }
     }
 
@@ -94,7 +94,7 @@ public final class Re2jSubjects {
     @GwtIncompatible("com.google.re2j.Pattern")
     public void doesNotMatch(Pattern regex) {
       if (regex.matcher(actual()).matches()) {
-        fail("fails to match", regex);
+        failWithActual("expected to fail to match", regex);
       }
     }
 

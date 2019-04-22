@@ -49,7 +49,7 @@ public final class SortedSetSubject extends IterableSubject {
   /** Fails if the subject does not have the given first element. */
   public void hasFirstElement(@NullableDecl Object element) {
     if (actualAsNavigableSet().isEmpty()) {
-      fail("has first element", element);
+      failWithActual("expected to have first element", element);
       return;
     }
 
@@ -75,7 +75,7 @@ public final class SortedSetSubject extends IterableSubject {
   /** Fails if the subject does not have the given last element. */
   public void hasLastElement(@NullableDecl Object element) {
     if (actualAsNavigableSet().isEmpty()) {
-      fail("has last element", element);
+      failWithActual("expected to have last element", element);
       return;
     }
 

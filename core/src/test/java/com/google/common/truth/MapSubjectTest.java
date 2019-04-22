@@ -879,9 +879,9 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void containsEntryFailure() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     expectFailureWhenTestingThat(actual).containsEntry("greg", "kick");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=kluever}> contains entry <greg=kick>");
+    assertFailureKeys("expected to contain entry", "but was");
+    assertFailureValue("expected to contain entry", "greg=kick");
+    assertFailureValue("but was", "{kurt=kluever}");
   }
 
   @Test
@@ -913,9 +913,9 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void containsNullKeyAndValue() {
     ImmutableMap<String, String> actual = ImmutableMap.of("kurt", "kluever");
     expectFailureWhenTestingThat(actual).containsEntry(null, null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=kluever}> contains entry <null=null>");
+    assertFailureKeys("expected to contain entry", "but was");
+    assertFailureValue("expected to contain entry", "null=null");
+    assertFailureValue("but was", "{kurt=kluever}");
   }
 
   @Test
@@ -1829,10 +1829,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(WITHIN_10_OF)
         .containsAtLeastEntriesIn(expected);
     assertFailureKeys(
-        "Not true that <{abc=35, def=null, ghi=95}> contains at least one entry that has a key that "
-            + "is equal to and a value that is within 10 of the key and value of each entry of "
-            + "<{abc=30, def=60, ghi=90}>. It has the following entries with matching keys but "
-            + "different values: {def=(expected 60 but got null)}",
+        "Not true that <{abc=35, def=null, ghi=95}> contains at least one entry that has a key"
+            + " that is equal to and a value that is within 10 of the key and value of each entry"
+            + " of <{abc=30, def=60, ghi=90}>. It has the following entries with matching keys but"
+            + " different values: {def=(expected 60 but got null)}",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception",
         "additionally, one or more exceptions were thrown while formatting diffs",

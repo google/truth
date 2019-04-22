@@ -68,35 +68,35 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasFirstLastElement_empty() {
+  public void hasFirstElement_empty() {
     expectFailureWhenTestingThat(ImmutableSortedSet.of()).hasFirstElement(1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[]> has first element <1>");
+    assertFailureKeys("expected to have first element", "but was");
+    assertFailureValue("expected to have first element", "1");
+    assertFailureValue("but was", "[]");
   }
 
   @Test
-  public void hasFirstLastElement_empty_2() {
+  public void hasLastElement_empty() {
     expectFailureWhenTestingThat(ImmutableSortedSet.of()).hasLastElement(1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[]> has last element <1>");
+    assertFailureKeys("expected to have last element", "but was");
+    assertFailureValue("expected to have last element", "1");
+    assertFailureValue("but was", "[]");
   }
 
   @Test
-  public void hasFirstLastElement_empty_3() {
+  public void hasFirstElement_empty_null() {
     expectFailureWhenTestingThat(ImmutableSortedSet.of()).hasFirstElement(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[]> has first element <null>");
+    assertFailureKeys("expected to have first element", "but was");
+    assertFailureValue("expected to have first element", "null");
+    assertFailureValue("but was", "[]");
   }
 
   @Test
-  public void hasFirstLastElement_empty_4() {
+  public void hasLastElement_empty_null() {
     expectFailureWhenTestingThat(ImmutableSortedSet.of()).hasLastElement(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <[]> has last element <null>");
+    assertFailureKeys("expected to have last element", "but was");
+    assertFailureValue("expected to have last element", "null");
+    assertFailureValue("but was", "[]");
   }
 
   @Test
