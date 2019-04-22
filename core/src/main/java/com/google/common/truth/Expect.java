@@ -214,15 +214,6 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     return new Expect(new ExpectationGatherer());
   }
 
-  /**
-   * <i>To be deprecated in favor of {@link #create}, which also enables stack traces.</i>
-   *
-   * <p>Creates a new instance.
-   */
-  public static Expect createAndEnableStackTrace() {
-    return create();
-  }
-
   private Expect(ExpectationGatherer gatherer) {
     super(FailureMetadata.forFailureStrategy(gatherer));
     this.gatherer = checkNotNull(gatherer);
