@@ -56,7 +56,7 @@ public final class SortedMapSubject extends MapSubject {
   /** Fails if the map's first key is not equal to the given key. */
   public void hasFirstKey(@NullableDecl Object key) {
     if (actualAsNavigableMap().isEmpty()) {
-      fail("has first key", key);
+      failWithActual("expected to have first key", key);
       return;
     }
 
@@ -83,7 +83,7 @@ public final class SortedMapSubject extends MapSubject {
   public void hasFirstEntry(@NullableDecl Object key, @NullableDecl Object value) {
     Entry<Object, Object> expectedEntry = Maps.immutableEntry(key, value);
     if (actualAsNavigableMap().isEmpty()) {
-      fail("has first entry", expectedEntry);
+      failWithActual("expected to have first entry", expectedEntry);
       return;
     }
 
@@ -146,7 +146,7 @@ public final class SortedMapSubject extends MapSubject {
   /** Fails if the map's last key is not equal to the given key. */
   public void hasLastKey(@NullableDecl Object key) {
     if (actualAsNavigableMap().isEmpty()) {
-      fail("has last key", key);
+      failWithActual("expected to have last key", key);
       return;
     }
 
@@ -173,7 +173,7 @@ public final class SortedMapSubject extends MapSubject {
   public void hasLastEntry(@NullableDecl Object key, @NullableDecl Object value) {
     Entry<Object, Object> expectedEntry = Maps.immutableEntry(key, value);
     if (actualAsNavigableMap().isEmpty()) {
-      fail("has last entry", expectedEntry);
+      failWithActual("expected to have last entry", expectedEntry);
       return;
     }
 

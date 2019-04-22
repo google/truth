@@ -68,35 +68,35 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasFirstLastKey_empty_1() {
+  public void hasFirstKey_empty() {
     expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasFirstKey(1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> has first key <1>");
+    assertFailureKeys("expected to have first key", "but was");
+    assertFailureValue("expected to have first key", "1");
+    assertFailureValue("but was", "{}");
   }
 
   @Test
-  public void hasFirstLastKey_empty_2() {
+  public void hasLastKey_empty() {
     expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasLastKey(1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> has last key <1>");
+    assertFailureKeys("expected to have last key", "but was");
+    assertFailureValue("expected to have last key", "1");
+    assertFailureValue("but was", "{}");
   }
 
   @Test
-  public void hasFirstLastKey_empty_3() {
+  public void hasFirstKey_empty_null() {
     expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasFirstKey(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> has first key <null>");
+    assertFailureKeys("expected to have first key", "but was");
+    assertFailureValue("expected to have first key", "null");
+    assertFailureValue("but was", "{}");
   }
 
   @Test
-  public void hasFirstLastKey_empty_4() {
+  public void hasLastKey_empty_null() {
     expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasLastKey(null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> has last key <null>");
+    assertFailureKeys("expected to have last key", "but was");
+    assertFailureValue("expected to have last key", "null");
+    assertFailureValue("but was", "{}");
   }
 
   @Test
@@ -154,36 +154,35 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasFirstLastEntry_empty() {
+  public void hasFirstEntry_empty() {
     expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasFirstEntry(1, 0);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> has first entry <1=0>");
+    assertFailureKeys("expected to have first entry", "but was");
+    assertFailureValue("expected to have first entry", "1=0");
+    assertFailureValue("but was", "{}");
   }
 
   @Test
-  public void hasFirstLastEntry_empty_2() {
-
+  public void hasLastEntry_empty() {
     expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasLastEntry(1, 0);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> has last entry <1=0>");
+    assertFailureKeys("expected to have last entry", "but was");
+    assertFailureValue("expected to have last entry", "1=0");
+    assertFailureValue("but was", "{}");
   }
 
   @Test
-  public void hasFirstLastEntry_empty_3() {
+  public void hasFirstEntry_empty_null() {
     expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasFirstEntry(null, null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> has first entry <null=null>");
+    assertFailureKeys("expected to have first entry", "but was");
+    assertFailureValue("expected to have first entry", "null=null");
+    assertFailureValue("but was", "{}");
   }
 
   @Test
-  public void hasFirstLastEntry_empty_4() {
+  public void hasLastEntry_empty_null() {
     expectFailureWhenTestingThat(ImmutableSortedMap.of()).hasLastEntry(null, null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{}> has last entry <null=null>");
+    assertFailureKeys("expected to have last entry", "but was");
+    assertFailureValue("expected to have last entry", "null=null");
+    assertFailureValue("but was", "{}");
   }
 
   @Test

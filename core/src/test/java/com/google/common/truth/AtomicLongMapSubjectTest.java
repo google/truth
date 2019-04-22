@@ -189,9 +189,9 @@ public final class AtomicLongMapSubjectTest extends BaseSubjectTestCase {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
     expectFailureWhenTestingThat(actual).containsEntry("greg", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=1}> contains entry <greg=2>");
+    assertFailureKeys("expected to contain entry", "but was");
+    assertFailureValue("expected to contain entry", "greg=2");
+    assertFailureValue("but was", "{kurt=1}");
   }
 
   @Test
@@ -217,9 +217,9 @@ public final class AtomicLongMapSubjectTest extends BaseSubjectTestCase {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
     expectFailureWhenTestingThat(actual).doesNotContainEntry("kurt", 1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=1}> does not contain entry <kurt=1>");
+    assertFailureKeys("expected not to contain entry", "but was");
+    assertFailureValue("expected not to contain entry", "kurt=1");
+    assertFailureValue("but was", "{kurt=1}");
   }
 
   @Test
@@ -254,9 +254,9 @@ public final class AtomicLongMapSubjectTest extends BaseSubjectTestCase {
     AtomicLongMap<String> actual = AtomicLongMap.create();
     actual.getAndIncrement("kurt");
     expectFailureWhenTestingThat(actual).containsEntry("kurt", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=1}> contains entry <kurt=2>");
+    assertFailureKeys("expected to contain entry", "but was");
+    assertFailureValue("expected to contain entry", "kurt=2");
+    assertFailureValue("but was", "{kurt=1}");
   }
 
   private AtomicLongMapSubject expectFailureWhenTestingThat(AtomicLongMap<?> actual) {

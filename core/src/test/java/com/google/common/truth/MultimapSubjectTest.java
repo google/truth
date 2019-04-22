@@ -314,9 +314,9 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void containsEntryFailure() {
     ImmutableMultimap<String, String> multimap = ImmutableMultimap.of("kurt", "kluever");
     expectFailureWhenTestingThat(multimap).containsEntry("daniel", "ploch");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo("Not true that <{kurt=[kluever]}> contains entry <daniel=ploch>");
+    assertFailureKeys("expected to contain entry", "but was");
+    assertFailureValue("expected to contain entry", "daniel=ploch");
+    assertFailureValue("but was", "{kurt=[kluever]}");
   }
 
   @Test
