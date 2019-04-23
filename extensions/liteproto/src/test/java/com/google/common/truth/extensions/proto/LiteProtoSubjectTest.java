@@ -142,7 +142,7 @@ public class LiteProtoSubjectTest {
   @Test
   public void testSubjectMethods() {
     expectThat(config.nonEmptyMessage()).isSameAs(config.nonEmptyMessage());
-    expectThat(config.nonEmptyMessage().toBuilder()).isNotSameAs(config.nonEmptyMessage());
+    expectThat(config.nonEmptyMessage().toBuilder()).isNotSameInstanceAs(config.nonEmptyMessage());
 
     expectThat(config.nonEmptyMessage()).isInstanceOf(MessageLite.class);
     expectThat(config.nonEmptyMessage().toBuilder()).isInstanceOf(MessageLite.Builder.class);
