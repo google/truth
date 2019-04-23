@@ -398,7 +398,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
 
     assertThat(multimap).valuesForKey(3).hasSize(3);
     assertThat(multimap).valuesForKey(4).containsExactly("four", "five");
-    assertThat(multimap).valuesForKey(3).containsAllOf("one", "six").inOrder();
+    assertThat(multimap).valuesForKey(3).containsAtLeast("one", "six").inOrder();
     assertThat(multimap).valuesForKey(5).isEmpty();
   }
 

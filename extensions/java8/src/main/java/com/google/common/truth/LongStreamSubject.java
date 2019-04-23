@@ -117,7 +117,7 @@ public final class LongStreamSubject extends Subject<LongStreamSubject, LongStre
   @SuppressWarnings("GoodTime") // false positive; b/122617528
   @CanIgnoreReturnValue
   public Ordered containsAllOf(long first, long second, long... rest) {
-    return check().that(actualList).containsAllOf(first, second, box(rest));
+    return check().that(actualList).containsAtLeast(first, second, box(rest));
   }
 
   /**

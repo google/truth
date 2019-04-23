@@ -198,7 +198,7 @@ public class IterableOfProtosSubject<
       @NullableDecl Object firstExpected,
       @NullableDecl Object secondExpected,
       @NullableDecl Object... restOfExpected) {
-    return delegate().containsAllOf(firstExpected, secondExpected, restOfExpected);
+    return delegate().containsAtLeast(firstExpected, secondExpected, restOfExpected);
   }
 
   /**

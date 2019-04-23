@@ -45,7 +45,7 @@ public class PrimitiveIntArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void asList() {
-    assertThat(array(5, 2, 9)).asList().containsAllOf(2, 9);
+    assertThat(array(5, 2, 9)).asList().containsAtLeast(2, 9);
   }
 
   @Test

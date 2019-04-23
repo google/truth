@@ -43,12 +43,12 @@ public class PrimitiveShortArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void asList() {
-    assertThat(array(1, 1, 0)).asList().containsAllOf((short) 1, (short) 0);
+    assertThat(array(1, 1, 0)).asList().containsAtLeast((short) 1, (short) 0);
   }
 
   @Test
   public void asListWithoutCastingFails() {
-    expectFailureWhenTestingThat(array(1, 1, 0)).asList().containsAllOf(1, 0);
+    expectFailureWhenTestingThat(array(1, 1, 0)).asList().containsAtLeast(1, 0);
     assertFailureKeys(
         "value of",
         "missing (2)",
