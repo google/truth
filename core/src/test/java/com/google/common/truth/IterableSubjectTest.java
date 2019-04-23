@@ -273,9 +273,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     CountsToStringCalls o = new CountsToStringCalls();
     List<Object> actual = asList(o, 1);
     List<Object> expected = asList(1, o);
-    assertThat(actual).containsAllIn(expected);
+    assertThat(actual).containsAtLeastElementsIn(expected);
     assertThat(o.calls).isEqualTo(0);
-    expectFailureWhenTestingThat(actual).containsAllIn(expected).inOrder();
+    expectFailureWhenTestingThat(actual).containsAtLeastElementsIn(expected).inOrder();
     assertThat(o.calls).isGreaterThan(0);
   }
 
@@ -446,9 +446,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllInIterable() {
-    assertThat(asList(1, 2, 3)).containsAllIn(asList(1, 2));
+    assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(asList(1, 2));
 
-    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllIn(asList(1, 2, 4));
+    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAtLeastElementsIn(asList(1, 2, 4));
     assertFailureKeys("missing (1)", "---", "expected to contain at least", "but was");
     assertFailureValue("missing (1)", "4");
     assertFailureValue("expected to contain at least", "[1, 2, 4]");
@@ -456,7 +456,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllInCanUseFactPerElement() {
-    expectFailureWhenTestingThat(asList("abc")).containsAllIn(asList("123\n456", "789"));
+    expectFailureWhenTestingThat(asList("abc"))
+        .containsAtLeastElementsIn(asList("123\n456", "789"));
     assertFailureKeys("missing (2)", "#1", "#2", "---", "expected to contain at least", "but was");
     assertFailureValue("#1", "123\n456");
     assertFailureValue("#2", "789");
@@ -469,9 +470,10 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAllInArray() {
-    assertThat(asList(1, 2, 3)).containsAllIn(new Integer[] {1, 2});
+    assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(new Integer[] {1, 2});
 
-    expectFailureWhenTestingThat(asList(1, 2, 3)).containsAllIn(new Integer[] {1, 2, 4});
+    expectFailureWhenTestingThat(asList(1, 2, 3))
+        .containsAtLeastElementsIn(new Integer[] {1, 2, 4});
     assertFailureKeys("missing (1)", "---", "expected to contain at least", "but was");
     assertFailureValue("missing (1)", "4");
     assertFailureValue("expected to contain at least", "[1, 2, 4]");
