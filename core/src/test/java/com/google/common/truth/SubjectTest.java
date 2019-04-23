@@ -119,7 +119,7 @@ public class SubjectTest extends BaseSubjectTestCase {
         }
 
         subject.isSameAs(null);
-        subject.isNotSameAs(new Object());
+        subject.isNotSameInstanceAs(new Object());
 
         if (!(subject instanceof IterableSubject)) { // b/36000148
           subject.isNotIn(ImmutableList.<Object>of());
@@ -251,13 +251,13 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isNotSameAsWithNulls() {
     Object o = null;
-    assertThat(o).isNotSameAs("a");
+    assertThat(o).isNotSameInstanceAs("a");
   }
 
   @Test
   public void isNotSameAsFailureWithNulls() {
     Object o = null;
-    expectFailure.whenTesting().that(o).isNotSameAs(null);
+    expectFailure.whenTesting().that(o).isNotSameInstanceAs(null);
     assertFailureKeys("expected not to be specific instance");
     assertFailureValue("expected not to be specific instance", "null");
   }
@@ -266,14 +266,14 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isNotSameAsWithObjects() {
     Object a = new Object();
     Object b = new Object();
-    assertThat(a).isNotSameAs(b);
+    assertThat(a).isNotSameInstanceAs(b);
   }
 
   @Test
   public void isNotSameAsFailureWithSameObject() {
     Object a = OBJECT_1;
     Object b = a;
-    expectFailure.whenTesting().that(a).isNotSameAs(b);
+    expectFailure.whenTesting().that(a).isNotSameInstanceAs(b);
     assertFailureKeys("expected not to be specific instance");
     assertFailureValue("expected not to be specific instance", "Object 1");
   }
@@ -282,7 +282,7 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isNotSameAsWithComparableObjects_nonString() {
     Object a = UnsignedInteger.valueOf(42);
     Object b = UnsignedInteger.fromIntBits(42);
-    assertThat(a).isNotSameAs(b);
+    assertThat(a).isNotSameInstanceAs(b);
   }
 
   @Test
@@ -290,14 +290,14 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isNotSameAsWithComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder("ab").toString();
-    assertThat(a).isNotSameAs(b);
+    assertThat(a).isNotSameInstanceAs(b);
   }
 
   @Test
   public void isNotSameAsWithDifferentTypesAndSameToString() {
     Object a = "true";
     Object b = true;
-    assertThat(a).isNotSameAs(b);
+    assertThat(a).isNotSameInstanceAs(b);
   }
 
   @Test
