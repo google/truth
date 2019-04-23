@@ -212,7 +212,7 @@ public class IterableOfProtosSubject<
    */
   @CanIgnoreReturnValue
   public Ordered containsAllIn(Iterable<?> expected) {
-    return delegate().containsAllIn(expected);
+    return delegate().containsAtLeastElementsIn(expected);
   }
 
   /**
@@ -226,7 +226,7 @@ public class IterableOfProtosSubject<
    */
   @CanIgnoreReturnValue
   public Ordered containsAllIn(Object[] expected) {
-    return delegate().containsAllIn(expected);
+    return delegate().containsAtLeastElementsIn(expected);
   }
 
   /**

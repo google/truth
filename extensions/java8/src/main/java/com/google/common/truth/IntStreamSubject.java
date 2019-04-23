@@ -131,7 +131,7 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
    */
   @CanIgnoreReturnValue
   public Ordered containsAllIn(Iterable<?> expected) {
-    return check().that(actualList).containsAllIn(expected);
+    return check().that(actualList).containsAtLeastElementsIn(expected);
   }
 
   /**
