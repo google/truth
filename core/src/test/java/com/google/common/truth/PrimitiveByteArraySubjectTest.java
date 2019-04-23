@@ -46,7 +46,7 @@ public class PrimitiveByteArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void asList() {
-    assertThat(array(BYTE_0, BYTE_1, BYTE_2)).asList().containsAllOf(BYTE_0, BYTE_2);
+    assertThat(array(BYTE_0, BYTE_1, BYTE_2)).asList().containsAtLeast(BYTE_0, BYTE_2);
   }
 
   @Test

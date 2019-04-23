@@ -43,7 +43,7 @@ public class PrimitiveBooleanArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void asList() {
-    assertThat(array(true, true, false)).asList().containsAllOf(true, false);
+    assertThat(array(true, true, false)).asList().containsAtLeast(true, false);
   }
 
   @Test

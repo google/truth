@@ -117,7 +117,7 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
   @SuppressWarnings("GoodTime") // false positive; b/122617528
   @CanIgnoreReturnValue
   public Ordered containsAllOf(int first, int second, int... rest) {
-    return check().that(actualList).containsAllOf(first, second, box(rest));
+    return check().that(actualList).containsAtLeast(first, second, box(rest));
   }
 
   /**

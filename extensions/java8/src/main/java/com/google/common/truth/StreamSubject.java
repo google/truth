@@ -115,7 +115,7 @@ public final class StreamSubject extends Subject<StreamSubject, Stream<?>> {
   @CanIgnoreReturnValue
   public Ordered containsAllOf(
       @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
-    return check().that(actualList).containsAllOf(first, second, rest);
+    return check().that(actualList).containsAtLeast(first, second, rest);
   }
 
   /**

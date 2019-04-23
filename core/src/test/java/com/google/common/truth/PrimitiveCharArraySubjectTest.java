@@ -43,7 +43,7 @@ public class PrimitiveCharArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void asList() {
-    assertThat(array('a', 'q', 'z')).asList().containsAllOf('a', 'z');
+    assertThat(array('a', 'q', 'z')).asList().containsAtLeast('a', 'z');
   }
 
   @Test

@@ -43,7 +43,7 @@ public class PrimitiveLongArraySubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void asList() {
-    assertThat(array(5, 2, 9)).asList().containsAllOf(2L, 9L);
+    assertThat(array(5, 2, 9)).asList().containsAtLeast(2L, 9L);
   }
 
   @Test
