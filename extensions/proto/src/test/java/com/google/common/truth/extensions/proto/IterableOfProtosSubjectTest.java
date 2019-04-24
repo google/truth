@@ -140,6 +140,29 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testPlain_containsAtLeast() {
+    expectThat(listOf(message1, message2, eqIgnoredMessage1))
+        .containsAtLeast(eqMessage1, eqMessage2);
+    expectThat(listOf(message1, message2, eqIgnoredMessage1))
+        .containsAtLeastElementsIn(listOf(eqMessage1, eqMessage2));
+    expectThat(listOf(message1, message2, eqIgnoredMessage1))
+        .containsAtLeastElementsIn(arrayOf(eqMessage1, eqMessage2));
+
+    expectFailureWhenTesting().that(listOf(message1)).containsAtLeast(eqMessage1, eqMessage2);
+    expectThatFailure().isNotNull();
+
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .containsAtLeastElementsIn(listOf(eqMessage1, eqMessage2));
+    expectThatFailure().isNotNull();
+
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .containsAtLeastElementsIn(arrayOf(eqMessage1, eqMessage2));
+    expectThatFailure().isNotNull();
+  }
+
+  @Test
   public void testPlain_containsExactly() {
     expectThat(listOf(message1, message2)).containsExactly(eqMessage2, eqMessage1);
     expectThat(listOf(message1, message2)).containsExactly(eqMessage1, eqMessage2).inOrder();
@@ -312,6 +335,31 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .that(listOf(message1))
         .ignoringRepeatedFieldOrder()
         .containsAllIn(listOf(eqMessage1, eqMessage2));
+    expectThatFailure().isNotNull();
+  }
+
+  @Test
+  public void testFluent_containsAtLeast() {
+    // TODO(peteg): containsAtLeast and containsExactly don't surface Correspondence.toString().
+    // We should add a string test here once they do.
+
+    expectThat(listOf(message1, message2, eqRepeatedMessage2))
+        .ignoringFields(ignoreFieldNumber)
+        .containsAtLeast(eqIgnoredMessage1, eqIgnoredMessage2);
+    expectThat(listOf(message1, message2, eqIgnoredMessage1))
+        .ignoringRepeatedFieldOrder()
+        .containsAtLeastElementsIn(listOf(eqRepeatedMessage1, eqRepeatedMessage2));
+
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .ignoringRepeatedFieldOrder()
+        .containsAtLeast(eqMessage1, eqMessage2);
+    expectThatFailure().isNotNull();
+
+    expectFailureWhenTesting()
+        .that(listOf(message1))
+        .ignoringRepeatedFieldOrder()
+        .containsAtLeastElementsIn(listOf(eqMessage1, eqMessage2));
     expectThatFailure().isNotNull();
   }
 
