@@ -194,7 +194,7 @@ public class IterableOfProtosSubject<
    * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  public Ordered containsAllOf(
+  public Ordered containsAtLeast(
       @NullableDecl Object firstExpected,
       @NullableDecl Object secondExpected,
       @NullableDecl Object... restOfExpected) {
@@ -211,13 +211,64 @@ public class IterableOfProtosSubject<
    * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  public Ordered containsAllIn(Iterable<?> expected) {
+  public Ordered containsAtLeastElementsIn(Iterable<?> expected) {
     return delegate().containsAtLeastElementsIn(expected);
   }
 
   /**
    * Checks that the actual iterable contains at least all of the expected elements or fails. If an
    * element appears more than once in the expected elements then it must appear at least that
+   * number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsAtLeastElementsIn(Object[] expected) {
+    return delegate().containsAtLeastElementsIn(expected);
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
+   *
+   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
+   * an element appears more than once in the expected elements to this call then it must appear at
+   * least that number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsAllOf(
+      @NullableDecl Object firstExpected,
+      @NullableDecl Object secondExpected,
+      @NullableDecl Object... restOfExpected) {
+    return delegate().containsAllOf(firstExpected, secondExpected, restOfExpected);
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
+   *
+   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
+   * an element appears more than once in the expected elements then it must appear at least that
+   * number of times in the actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsAllIn(Iterable<?> expected) {
+    return delegate().containsAllIn(expected);
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Object[])}.</i>
+   *
+   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
+   * an element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
@@ -375,7 +426,7 @@ public class IterableOfProtosSubject<
    * non-null key then the they are paired up. (Elements with null keys are not paired.) The failure
    * message will show paired elements together, and a diff will be shown.
    *
-   * <p>The expected elements given in the assertion should be uniquely keyed by {@link
+   * <p>The expected elements given in the assertion should be uniquely keyed by {@code
    * keyFunction}. If multiple missing elements have the same key then the pairing will be skipped.
    *
    * <p>Useful key functions will have the property that key equality is less strict than the
@@ -983,6 +1034,25 @@ public class IterableOfProtosSubject<
 
     @Override
     @CanIgnoreReturnValue
+    public Ordered containsAtLeast(
+        @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
+      return delegate(Lists.asList(first, second, rest)).containsAtLeast(first, second, rest);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsAtLeastElementsIn(Iterable<? extends M> expected) {
+      return delegate(expected).containsAtLeastElementsIn(expected);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public Ordered containsAtLeastElementsIn(M[] expected) {
+      return delegate(Arrays.asList(expected)).containsAtLeastElementsIn(expected);
+    }
+
+    @Override
+    @CanIgnoreReturnValue
     public Ordered containsAllOf(
         @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
       return delegate(Lists.asList(first, second, rest)).containsAllOf(first, second, rest);
@@ -1269,6 +1339,22 @@ public class IterableOfProtosSubject<
     @Override
     public Ordered containsExactlyElementsIn(M[] expected) {
       return usingCorrespondence().containsExactlyElementsIn(expected);
+    }
+
+    @Override
+    public Ordered containsAtLeast(
+        @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
+      return usingCorrespondence().containsAtLeast(first, second, rest);
+    }
+
+    @Override
+    public Ordered containsAtLeastElementsIn(Iterable<? extends M> expected) {
+      return usingCorrespondence().containsAtLeastElementsIn(expected);
+    }
+
+    @Override
+    public Ordered containsAtLeastElementsIn(M[] expected) {
+      return usingCorrespondence().containsAtLeastElementsIn(expected);
     }
 
     @Override

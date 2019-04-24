@@ -117,7 +117,7 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * subject, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  Ordered containsAllOf(@NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest);
+  Ordered containsAtLeast(@NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest);
 
   /**
    * Checks that the subject contains elements that corresponds to all of the expected elements,
@@ -129,10 +129,52 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * subject, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  Ordered containsAllIn(Iterable<? extends M> expected);
+  Ordered containsAtLeastElementsIn(Iterable<? extends M> expected);
 
   /**
    * Checks that the subject contains elements that corresponds to all of the expected elements,
+   * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+   * elements where each pair of elements correspond.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The elements must appear in the given order within the
+   * subject, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  Ordered containsAtLeastElementsIn(M[] expected);
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
+   *
+   * <p>Checks that the subject contains elements that corresponds to all of the expected elements,
+   * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+   * elements where each pair of elements correspond.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The elements must appear in the given order within the
+   * subject, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  Ordered containsAllOf(@NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest);
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
+   *
+   * <p>Checks that the subject contains elements that corresponds to all of the expected elements,
+   * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+   * elements where each pair of elements correspond.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The elements must appear in the given order within the
+   * subject, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  Ordered containsAllIn(Iterable<? extends M> expected);
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Object[])}.</i>
+   *
+   * <p>Checks that the subject contains elements that corresponds to all of the expected elements,
    * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
    * elements where each pair of elements correspond.
    *
@@ -184,5 +226,4 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * to any of the given elements.)
    */
   void containsNoneIn(M[] excluded);
-
 }
