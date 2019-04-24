@@ -29,7 +29,6 @@ import com.google.common.truth.IterableSubject;
 import com.google.common.truth.ListMultimapSubject;
 import com.google.common.truth.LongSubject;
 import com.google.common.truth.MapSubject;
-import com.google.common.truth.MathUtil;
 import com.google.common.truth.MultimapSubject;
 import com.google.common.truth.MultisetSubject;
 import com.google.common.truth.ObjectArraySubject;
@@ -68,7 +67,6 @@ public class Inventory {
   ListMultimapSubject listMultimapSubject;
   LongSubject longSubject;
   MapSubject mapSubject;
-  MathUtil mathUtil;
   MultimapSubject multimapSubject;
   MultisetSubject multisetSubject;
   ObjectArraySubject objectArraySubject;
