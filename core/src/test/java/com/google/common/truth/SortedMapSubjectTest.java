@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Collections.unmodifiableSortedMap;
 
 import com.google.common.collect.ImmutableSortedMap;
@@ -56,7 +57,7 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
   @Test
   public void verifyNamed() {
     @SuppressWarnings("unused")
-    SortedMapSubject unused = assertThat(ImmutableSortedMap.of()).named("foo");
+    SortedMapSubject unused = assertWithMessage("foo").that(ImmutableSortedMap.of());
   }
 
   @Test

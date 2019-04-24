@@ -18,6 +18,7 @@ package com.google.common.truth;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.Range;
@@ -199,7 +200,7 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void namedComparableType() {
-    assertThat(new ComparableType(2)).named("comparable").isLessThan(new ComparableType(3));
+    assertWithMessage("comparable").that(new ComparableType(2)).isLessThan(new ComparableType(3));
   }
 
   private static final class ComparableType implements Comparable<ComparableType> {
