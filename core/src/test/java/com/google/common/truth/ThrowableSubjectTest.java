@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
 import org.junit.Test;
@@ -137,7 +138,7 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
   }
 
   private static void assertErrorHasActualAsCause(Throwable actual, AssertionError failure) {
-    assertThat(failure.getCause()).named("AssertionError's cause").isEqualTo(actual);
+    assertWithMessage("AssertionError's cause").that(failure.getCause()).isEqualTo(actual);
   }
 
   private ThrowableSubject expectFailureWhenTestingThat(Throwable actual) {

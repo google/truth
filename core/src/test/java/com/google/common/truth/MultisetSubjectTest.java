@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
@@ -38,7 +39,7 @@ public class MultisetSubjectTest extends BaseSubjectTestCase {
     assertThat(multiset).hasCount("kluever", 1);
     assertThat(multiset).hasCount("alfred", 0);
 
-    assertThat(multiset).named("name").hasCount("kurt", 2);
+    assertWithMessage("name").that(multiset).hasCount("kurt", 2);
   }
 
   @Test
