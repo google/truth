@@ -827,7 +827,13 @@ public class Subject<S extends Subject<S, T>, T> {
    * Reports a failure constructing a message from a simple verb.
    *
    * @param check the check being asserted
+   * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
+   *     #failWithActual(Fact, Fact...) failWithActual}{@code (}{@link Fact#simpleFact
+   *     simpleFact(...)}{@code )}. However, if you want to preserve your exact failure message as a
+   *     migration aid, you can inline this method (and then inline the resulting method call, as
+   *     well).
    */
+  @Deprecated
   protected final void fail(String check) {
     fail(check, new Object[0]);
   }
@@ -837,7 +843,12 @@ public class Subject<S extends Subject<S, T>, T> {
    *
    * @param verb the check being asserted
    * @param other the value against which the subject is compared
+   * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
+   *     #failWithActual(String, Object)}. However, if you want to preserve your exact failure
+   *     message as a migration aid, you can inline this method (and then inline the resulting
+   *     method call, as well).
    */
+  @Deprecated
   protected final void fail(String verb, Object other) {
     fail(verb, new Object[] {other});
   }
@@ -847,7 +858,11 @@ public class Subject<S extends Subject<S, T>, T> {
    *
    * @param verb the check being asserted
    * @param messageParts the expectations against which the subject is compared
+   * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
+   *     #failWithActual(Fact, Fact...)}. However, if you want to preserve your exact failure
+   *     message as a migration aid, you can inline this method.
    */
+  @Deprecated
   protected final void fail(String verb, Object... messageParts) {
     StringBuilder message = new StringBuilder("Not true that ");
     message.append(actualAsString()).append(" ").append(verb);
@@ -942,7 +957,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param expected the expectations against which the subject is compared
    * @param failVerb the failure of the check being asserted
    * @param actual the actual value the subject was compared against
+   * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
+   *     #failWithActual(Fact, Fact...)}. However, if you want to preserve your exact failure
+   *     message as a migration aid, you can inline this method.
    */
+  @Deprecated
   protected final void failWithBadResults(
       String verb, Object expected, String failVerb, Object actual) {
     String message =
@@ -963,7 +982,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * @param verb the check being asserted
    * @param expected the expected value of the check
    * @param actual the custom representation of the subject to be reported in the failure.
+   * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
+   *     #failWithoutActual(Fact, Fact...)}. However, if you want to preserve your exact failure
+   *     message as a migration aid, you can inline this method.
    */
+  @Deprecated
   protected final void failWithCustomSubject(String verb, Object expected, Object actual) {
     String message =
         lenientFormat(
@@ -972,7 +995,12 @@ public class Subject<S extends Subject<S, T>, T> {
     failWithoutActual(simpleFact(message));
   }
 
-  /** @deprecated Use {@link #failWithoutActual(String)} */
+  /**
+   * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
+   *     #failWithoutActual(Fact, Fact...) failWithoutActual}{@code (}{@link Fact#simpleFact
+   *     simpleFact(...)}{@code )}. However, if you want to preserve your exact failure message as a
+   *     migration aid, you can inline this method.
+   */
   @Deprecated
   protected final void failWithoutSubject(String check) {
     String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
@@ -1016,7 +1044,13 @@ public class Subject<S extends Subject<S, T>, T> {
    * Assembles a failure message without a given subject and passes it to the FailureStrategy
    *
    * @param check the check being asserted
+   * @deprecated Prefer to construct {@link Fact}-style methods, typically by using {@link
+   *     #failWithoutActual(Fact, Fact...) failWithoutActual}{@code (}{@link Fact#simpleFact
+   *     simpleFact(...)}{@code )}. However, if you want to preserve your exact failure message as a
+   *     migration aid, you can inline this method (and then inline the resulting method call, as
+   *     well).
    */
+  @Deprecated
   protected final void failWithoutActual(String check) {
     failWithoutSubject(check);
   }
