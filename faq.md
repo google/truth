@@ -166,9 +166,10 @@ including a failure message or configuring parameters on a subject (e.g.
 *   **When in doubt, prefer method names that make the assertion statements
     "sound natural".**
 
-## What's the difference between `containsAll` and `containsExactly` for iterables? {#exactly}
+## What's the difference between `containsAtLeast` and `containsExactly` for iterables? {#exactly}
 
-`containsAll` asserts that the iterable contains all of the expected elements.
+`containsAtLeast` asserts that the iterable contains _at least_ the expected
+elements.
 
 `containsExactly` asserts that the iterable contains all of the expected
 elements __and nothing else__.
@@ -178,10 +179,10 @@ For example:
 ```java
 ImmutableList<String> abc = ImmutableList.of("a", "b", "c");
 
-assertThat(abc).containsAllOf("a", "b", "c");   // passes
+assertThat(abc).containsAtLeast("a", "b", "c"); // passes
 assertThat(abc).containsExactly("a", "b", "c"); // passes
 
-assertThat(abc).containsAllOf("a", "b");        // passes
+assertThat(abc).containsAtLeast("a", "b");      // passes
 assertThat(abc).containsExactly("a", "b");      // fails
 ```
 
@@ -192,12 +193,12 @@ assertion. For example:
 ```java
 ImmutableList<String> abc = ImmutableList.of("a", "b", "c");
 
-assertThat(abc).containsAllOf("c", "a", "b");             // passes
+assertThat(abc).containsAtLeast("c", "a", "b");           // passes
 assertThat(abc).containsExactly("c", "a", "b");           // passes
 
-assertThat(abc).containsAllOf("a", "b").inOrder();        // passes
+assertThat(abc).containsAtLeast("a", "b").inOrder();      // passes
 
-assertThat(abc).containsAllOf("c", "a", "b").inOrder();   // fails
+assertThat(abc).containsAtLeast("c", "a", "b").inOrder(); // fails
 assertThat(abc).containsExactly("c", "a", "b").inOrder(); // fails
 ```
 
