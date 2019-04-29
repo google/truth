@@ -801,7 +801,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   public final void isInStrictOrder(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
-        "expected to be strictly ordered",
+        "expected to be in strict order",
         new PairwiseChecker() {
           @Override
           public boolean check(Object prev, Object next) {
@@ -832,7 +832,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   public final void isInOrder(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
-        "expected to be ordered",
+        "expected to be in order",
         new PairwiseChecker() {
           @Override
           public boolean check(Object prev, Object next) {
