@@ -978,6 +978,14 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void iterableIsInStrictOrder() {
+    assertThat(asList()).isInStrictOrder();
+    assertThat(asList(1)).isInStrictOrder();
+    assertThat(asList(1, 2, 3, 4)).isInStrictOrder();
+    expectFailureWhenTestingThat(asList(1, 2, 2, 4)).isInStrictOrder();
+  }
+
+  @Test
   public void iterableIsStrictlyOrdered() {
     assertThat(asList()).isStrictlyOrdered();
     assertThat(asList(1)).isStrictlyOrdered();
@@ -1001,6 +1009,14 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
       fail("Should have thrown.");
     } catch (ClassCastException expected) {
     }
+  }
+
+  @Test
+  public void iterableIsInOrder() {
+    assertThat(asList()).isInOrder();
+    assertThat(asList(1)).isInOrder();
+    assertThat(asList(1, 1, 2, 3, 3, 3, 4)).isInOrder();
+    expectFailureWhenTestingThat(asList(1, 3, 2, 4)).isInOrder();
   }
 
   @Test
@@ -1034,6 +1050,16 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void iterableIsInStrictOrderWithComparator() {
+    Iterable<String> emptyStrings = asList();
+    assertThat(emptyStrings).isInStrictOrder(COMPARE_AS_DECIMAL);
+    assertThat(asList("1")).isInStrictOrder(COMPARE_AS_DECIMAL);
+    // Note: Use "10" and "20" to distinguish numerical and lexicographical ordering.
+    assertThat(asList("1", "2", "10", "20")).isInStrictOrder(COMPARE_AS_DECIMAL);
+    expectFailureWhenTestingThat(asList("1", "2", "2", "10")).isInStrictOrder(COMPARE_AS_DECIMAL);
+  }
+
+  @Test
   public void iterableIsStrictlyOrderedWithComparator() {
     Iterable<String> emptyStrings = asList();
     assertThat(emptyStrings).isStrictlyOrdered(COMPARE_AS_DECIMAL);
@@ -1050,6 +1076,15 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertFailureValue("but contained", "2");
     assertFailureValue("followed by", "2");
     assertFailureValue("full contents", "[1, 2, 2, 10]");
+  }
+
+  @Test
+  public void iterableIsInOrderWithComparator() {
+    Iterable<String> emptyStrings = asList();
+    assertThat(emptyStrings).isInOrder(COMPARE_AS_DECIMAL);
+    assertThat(asList("1")).isInOrder(COMPARE_AS_DECIMAL);
+    assertThat(asList("1", "1", "2", "10", "10", "10", "20")).isInOrder(COMPARE_AS_DECIMAL);
+    expectFailureWhenTestingThat(asList("1", "10", "2", "20")).isInOrder(COMPARE_AS_DECIMAL);
   }
 
   @Test

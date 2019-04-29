@@ -357,12 +357,35 @@ public class IterableOfProtosSubject<
     delegate().containsNoneIn(excluded);
   }
 
-  // Messages don't have a natural order so we do not provide the no-args variant of
-  // isStrictlyOrdered, or isOrdered. If we move to inheritance, the methods should be deprecated in
+  // Messages don't have a natural order, so we do not provide the no-args variant of
+  // isInStrictOrder or isInOrder. If we move to inheritance, the methods should be deprecated in
   // this class.
 
   /**
    * Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
+   * ordered means that each element in the iterable is <i>strictly</i> greater than the element
+   * that preceded it.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   */
+  public void isInStrictOrder(Comparator<?> comparator) {
+    delegate().isInStrictOrder(comparator);
+  }
+
+  /**
+   * Fails if the iterable is not ordered, according to the given comparator. Ordered means that
+   * each element in the iterable is greater than or equal to the element that preceded it.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   */
+  public void isInOrder(Comparator<?> comparator) {
+    delegate().isInOrder(comparator);
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #isInStrictOrder(Comparator)}.</i>
+   *
+   * <p>Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
    * ordered means that each element in the iterable is <i>strictly</i> greater than the element
    * that preceded it.
    *
@@ -373,7 +396,9 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * Fails if the iterable is not ordered, according to the given comparator. Ordered means that
+   * <i>To be deprecated in favor of {@link #isInOrder(Comparator)}.</i>
+   *
+   * <p>Fails if the iterable is not ordered, according to the given comparator. Ordered means that
    * each element in the iterable is greater than or equal to the element that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable

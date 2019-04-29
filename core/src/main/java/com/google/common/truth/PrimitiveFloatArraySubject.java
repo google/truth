@@ -260,7 +260,19 @@ public final class PrimitiveFloatArraySubject
       super(subject, correspondence);
     }
 
-    /** As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive float array. */
+    /**
+     * As {@link #containsAtLeast(Object, Object, Object...)} but taking a primitive float array.
+     */
+    @CanIgnoreReturnValue
+    public Ordered containsAtLeast(float[] expected) {
+      return containsAtLeastElementsIn(Floats.asList(expected));
+    }
+
+    /**
+     * <i>To be deprecated in favor of {@link #containsAtLeast(float[])}.</i>
+     *
+     * <p>As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive float array.
+     */
     @CanIgnoreReturnValue
     public Ordered containsAllOf(float[] expected) {
       return containsAllIn(Floats.asList(expected));

@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.StreamSubject.streams;
-import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
@@ -190,6 +189,21 @@ public final class StreamSubjectTest {
   }
 
   @Test
+  public void testContainsAtLeast() throws Exception {
+    assertThat(Stream.of("hell", "hello")).containsAtLeast("hell", "hello");
+  }
+
+  @Test
+  public void testContainsAtLeast_fails() throws Exception {
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(Stream.of("hell", "hello"))
+                    .containsAtLeast("hell", "hello", "goodbye"));
+  }
+
+  @Test
   public void testContainsAllOf() throws Exception {
     assertThat(Stream.of("hell", "hello")).containsAllOf("hell", "hello");
   }
@@ -222,6 +236,21 @@ public final class StreamSubjectTest {
           "but was");
       assertFailureValue(expected, "expected order for required elements", "[hello, hell]");
     }
+  }
+
+  @Test
+  public void testContainsAtLeastElementsIn() throws Exception {
+    assertThat(Stream.of("hell", "hello")).containsAtLeastElementsIn(asList("hell", "hello"));
+  }
+
+  @Test
+  public void testContainsAtLeastElementsIn_fails() throws Exception {
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(Stream.of("hell", "hello"))
+                    .containsAtLeastElementsIn(asList("hell", "hello", "goodbye")));
   }
 
   @Test
@@ -327,6 +356,32 @@ public final class StreamSubjectTest {
       assertFailureKeys(expected, "contents match, but order was wrong", "expected", "but was");
       assertFailureValue(expected, "expected", "[hello, hell]");
     }
+  }
+
+  @Test
+  public void testIsInOrder() {
+    assertThat(Stream.of()).isInOrder();
+    assertThat(Stream.of(1)).isInOrder();
+    assertThat(Stream.of(1, 1, 2, 3, 3, 3, 4)).isInOrder();
+  }
+
+  @Test
+  public void testIsInOrder_fails() {
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(Stream.of(1, 3, 2, 4)).isInOrder());
+  }
+
+  @Test
+  public void testIsInStrictOrder() {
+    assertThat(Stream.of()).isInStrictOrder();
+    assertThat(Stream.of(1)).isInStrictOrder();
+    assertThat(Stream.of(1, 2, 3, 4)).isInStrictOrder();
+  }
+
+  @Test
+  public void testIsInStrictOrder_fails() {
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(Stream.of(1, 2, 2, 4)).isInStrictOrder());
   }
 
   private static AssertionError expectFailure(

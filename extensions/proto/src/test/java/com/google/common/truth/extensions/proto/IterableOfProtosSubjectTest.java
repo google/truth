@@ -232,6 +232,20 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testPlain_isInOrder() {
+    expectThat(listOf(message1, eqMessage1, message2)).isInOrder(compareByOIntAscending());
+    expectThat(listOf(message1, message2)).isInStrictOrder(compareByOIntAscending());
+
+    expectFailureWhenTesting().that(listOf(message2, message1)).isInOrder(compareByOIntAscending());
+    expectThatFailure().isNotNull();
+
+    expectFailureWhenTesting()
+        .that(listOf(message1, eqMessage1, message2))
+        .isInStrictOrder(compareByOIntAscending());
+    expectThatFailure().isNotNull();
+  }
+
+  @Test
   public void testPlain_isOrdered() {
     expectThat(listOf(message1, eqMessage1, message2)).isOrdered(compareByOIntAscending());
     expectThat(listOf(message1, message2)).isStrictlyOrdered(compareByOIntAscending());

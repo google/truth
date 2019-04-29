@@ -272,6 +272,16 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void usingTolerance_containsAtLeast_primitiveFloatArray() {
+    assertThat(array(1.0f, TOLERABLE_TWO, 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsAtLeast(array(2.0f, 1.0f));
+    expectFailureWhenTestingThat(array(1.0f, TOLERABLE_TWO, 3.0f))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsAtLeast(array(2.0f, 99.99f));
+  }
+
+  @Test
   public void usingTolerance_containsAllOf_primitiveFloatArray_success() {
     assertThat(array(1.0f, TOLERABLE_TWO, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
