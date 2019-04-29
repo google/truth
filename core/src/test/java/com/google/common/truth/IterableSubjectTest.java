@@ -996,7 +996,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void isStrictlyOrderedFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 2, 4)).isStrictlyOrdered();
     assertFailureKeys(
-        "expected to be strictly ordered", "but contained", "followed by", "full contents");
+        "expected to be in strict order", "but contained", "followed by", "full contents");
     assertFailureValue("but contained", "2");
     assertFailureValue("followed by", "2");
     assertFailureValue("full contents", "[1, 2, 2, 4]");
@@ -1029,7 +1029,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void isOrderedFailure() {
     expectFailureWhenTestingThat(asList(1, 3, 2, 4)).isOrdered();
-    assertFailureKeys("expected to be ordered", "but contained", "followed by", "full contents");
+    assertFailureKeys("expected to be in order", "but contained", "followed by", "full contents");
     assertFailureValue("but contained", "3");
     assertFailureValue("followed by", "2");
     assertFailureValue("full contents", "[1, 3, 2, 4]");
@@ -1072,7 +1072,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   public void iterableIsStrictlyOrderedWithComparatorFailure() {
     expectFailureWhenTestingThat(asList("1", "2", "2", "10")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
     assertFailureKeys(
-        "expected to be strictly ordered", "but contained", "followed by", "full contents");
+        "expected to be in strict order", "but contained", "followed by", "full contents");
     assertFailureValue("but contained", "2");
     assertFailureValue("followed by", "2");
     assertFailureValue("full contents", "[1, 2, 2, 10]");
@@ -1098,7 +1098,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableIsOrderedWithComparatorFailure() {
     expectFailureWhenTestingThat(asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
-    assertFailureKeys("expected to be ordered", "but contained", "followed by", "full contents");
+    assertFailureKeys("expected to be in order", "but contained", "followed by", "full contents");
     assertFailureValue("but contained", "10");
     assertFailureValue("followed by", "2");
     assertFailureValue("full contents", "[1, 10, 2, 20]");
