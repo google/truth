@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.truth.FailureAssertions.assertFailureKeys;
 import static com.google.common.truth.FailureAssertions.assertFailureValue;
 import static com.google.common.truth.IntStreamSubject.intStreams;
-import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
@@ -185,6 +184,18 @@ public final class IntStreamSubjectTest {
   }
 
   @Test
+  public void testContainsAtLeast() throws Exception {
+    assertThat(IntStream.of(42, 43)).containsAtLeast(42, 43);
+  }
+
+  @Test
+  public void testContainsAtLeast_fails() throws Exception {
+    AssertionError unused =
+        expectFailure(
+            whenTesting -> whenTesting.that(IntStream.of(42, 43)).containsAtLeast(42, 43, 44));
+  }
+
+  @Test
   public void testContainsAllOf() throws Exception {
     assertThat(IntStream.of(42, 43)).containsAllOf(42, 43);
   }
@@ -214,6 +225,21 @@ public final class IntStreamSubjectTest {
           "but was");
       assertFailureValue(expected, "expected order for required elements", "[43, 42]");
     }
+  }
+
+  @Test
+  public void testContainsAtLeastElementsIn() throws Exception {
+    assertThat(IntStream.of(42, 43)).containsAtLeastElementsIn(asList(42, 43));
+  }
+
+  @Test
+  public void testContainsAtLeastElementsIn_fails() throws Exception {
+    AssertionError unused =
+        expectFailure(
+            whenTesting ->
+                whenTesting
+                    .that(IntStream.of(42, 43))
+                    .containsAtLeastElementsIn(asList(42, 43, 44)));
   }
 
   @Test
@@ -317,6 +343,32 @@ public final class IntStreamSubjectTest {
   @Test
   public void testContainsExactlyElementsIn_inOrder_intStream() throws Exception {
     assertThat(IntStream.of(1, 2, 3, 4)).containsExactly(1, 2, 3, 4).inOrder();
+  }
+
+  @Test
+  public void testIsInOrder() {
+    assertThat(IntStream.of()).isInOrder();
+    assertThat(IntStream.of(1)).isInOrder();
+    assertThat(IntStream.of(1, 1, 2, 3, 3, 3, 4)).isInOrder();
+  }
+
+  @Test
+  public void testIsInOrder_fails() {
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(IntStream.of(1, 3, 2, 4)).isInOrder());
+  }
+
+  @Test
+  public void testIsInStrictOrder() {
+    assertThat(IntStream.of()).isInStrictOrder();
+    assertThat(IntStream.of(1)).isInStrictOrder();
+    assertThat(IntStream.of(1, 2, 3, 4)).isInStrictOrder();
+  }
+
+  @Test
+  public void testIsInStrictOrder_fails() {
+    AssertionError unused =
+        expectFailure(whenTesting -> whenTesting.that(IntStream.of(1, 2, 2, 4)).isInStrictOrder());
   }
 
   private static AssertionError expectFailure(

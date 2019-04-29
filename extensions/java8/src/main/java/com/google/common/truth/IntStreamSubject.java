@@ -116,7 +116,7 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
    */
   @SuppressWarnings("GoodTime") // false positive; b/122617528
   @CanIgnoreReturnValue
-  public Ordered containsAllOf(int first, int second, int... rest) {
+  public Ordered containsAtLeast(int first, int second, int... rest) {
     return check().that(actualList).containsAtLeast(first, second, box(rest));
   }
 
@@ -130,8 +130,41 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
    * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  public Ordered containsAllIn(Iterable<?> expected) {
+  public Ordered containsAtLeastElementsIn(Iterable<?> expected) {
     return check().that(actualList).containsAtLeastElementsIn(expected);
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
+   *
+   * <p>Fails if the subject does not contain all of the given elements. If an element appears more
+   * than once in the given elements, then it must appear at least that number of times in the
+   * actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @SuppressWarnings("GoodTime") // false positive; b/122617528
+  @CanIgnoreReturnValue
+  public Ordered containsAllOf(int first, int second, int... rest) {
+    return containsAtLeast(first, second, rest);
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
+   *
+   * <p>Fails if the subject does not contain all of the given elements. If an element appears more
+   * than once in the given elements, then it must appear at least that number of times in the
+   * actual elements.
+   *
+   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
+   * on the object returned by this method. The expected elements must appear in the given order
+   * within the actual elements, but they are not required to be consecutive.
+   */
+  @CanIgnoreReturnValue
+  public Ordered containsAllIn(Iterable<?> expected) {
+    return containsAtLeastElementsIn(expected);
   }
 
   /**
@@ -187,9 +220,8 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  // TODO(kak): Make this public once go/truth-stream-isinorder is decided
-  private void isInStrictOrder() {
-    check().that(actualList).isStrictlyOrdered();
+  public void isInStrictOrder() {
+    check().that(actualList).isInStrictOrder();
   }
 
   /**
@@ -199,9 +231,8 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  // TODO(kak): Make this public once go/truth-stream-isinorder is decided
-  private void isInStrictOrder(Comparator<?> comparator) {
-    check().that(actualList).isStrictlyOrdered(comparator);
+  public void isInStrictOrder(Comparator<?> comparator) {
+    check().that(actualList).isInStrictOrder(comparator);
   }
 
   /**
@@ -211,9 +242,8 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  // TODO(kak): Make this public once go/truth-stream-isinorder is decided
-  private void isInOrder() {
-    check().that(actualList).isOrdered();
+  public void isInOrder() {
+    check().that(actualList).isInOrder();
   }
 
   /**
@@ -222,9 +252,8 @@ public final class IntStreamSubject extends Subject<IntStreamSubject, IntStream>
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  // TODO(kak): Make this public once go/truth-stream-isinorder is decided
-  private void isInOrder(Comparator<?> comparator) {
-    check().that(actualList).isOrdered(comparator);
+  public void isInOrder(Comparator<?> comparator) {
+    check().that(actualList).isInOrder(comparator);
   }
 
   private static Object[] box(int[] rest) {

@@ -786,8 +786,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  public final void isStrictlyOrdered() {
-    isStrictlyOrdered(Ordering.natural());
+  public final void isInStrictOrder() {
+    isInStrictOrder(Ordering.natural());
   }
 
   /**
@@ -798,7 +798,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
   @SuppressWarnings({"unchecked"})
-  public final void isStrictlyOrdered(final Comparator<?> comparator) {
+  public final void isInStrictOrder(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
         "expected to be strictly ordered",
@@ -818,8 +818,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  public final void isOrdered() {
-    isOrdered(Ordering.natural());
+  public final void isInOrder() {
+    isInOrder(Ordering.natural());
   }
 
   /**
@@ -829,7 +829,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
   @SuppressWarnings({"unchecked"})
-  public final void isOrdered(final Comparator<?> comparator) {
+  public final void isInOrder(final Comparator<?> comparator) {
     checkNotNull(comparator);
     pairwiseCheck(
         "expected to be ordered",
@@ -839,6 +839,61 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             return ((Comparator<Object>) comparator).compare(prev, next) <= 0;
           }
         });
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #isInStrictOrder()}.</i>
+   *
+   * <p>Fails if the iterable is not strictly ordered, according to the natural ordering of its
+   * elements. Strictly ordered means that each element in the iterable is <i>strictly</i> greater
+   * than the element that preceded it.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   */
+  public final void isStrictlyOrdered() {
+    isInStrictOrder();
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #isInStrictOrder(Comparator)}.</i>
+   *
+   * <p>Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
+   * ordered means that each element in the iterable is <i>strictly</i> greater than the element
+   * that preceded it.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   */
+  @SuppressWarnings({"unchecked"})
+  public final void isStrictlyOrdered(final Comparator<?> comparator) {
+    isInStrictOrder(comparator);
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #isInOrder()}.</i>
+   *
+   * <p>Fails if the iterable is not ordered, according to the natural ordering of its elements.
+   * Ordered means that each element in the iterable is greater than or equal to the element that
+   * preceded it.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @throws NullPointerException if any element is null
+   */
+  public final void isOrdered() {
+    isInOrder();
+  }
+
+  /**
+   * <i>To be deprecated in favor of {@link #isInOrder(Comparator)}.</i>
+   *
+   * <p>Fails if the iterable is not ordered, according to the given comparator. Ordered means that
+   * each element in the iterable is greater than or equal to the element that preceded it.
+   *
+   * @throws ClassCastException if any pair of elements is not mutually Comparable
+   */
+  @SuppressWarnings({"unchecked"})
+  public final void isOrdered(final Comparator<?> comparator) {
+    isInOrder(comparator);
   }
 
   private interface PairwiseChecker {

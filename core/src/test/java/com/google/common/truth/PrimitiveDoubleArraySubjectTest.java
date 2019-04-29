@@ -278,6 +278,16 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void usingTolerance_containsAtLeast_primitiveDoubleArray() {
+    assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsAtLeast(array(2.2, 1.1));
+    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
+        .usingTolerance(DEFAULT_TOLERANCE)
+        .containsAtLeast(array(2.2, 99.99));
+  }
+
+  @Test
   public void usingTolerance_containsAllOf_primitiveDoubleArray_success() {
     assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)

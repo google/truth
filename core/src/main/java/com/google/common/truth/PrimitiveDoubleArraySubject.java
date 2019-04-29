@@ -253,7 +253,19 @@ public final class PrimitiveDoubleArraySubject
       super(subject, correspondence);
     }
 
-    /** As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive double array. */
+    /**
+     * As {@link #containsAtLeast(Object, Object, Object...)} but taking a primitive double array.
+     */
+    @CanIgnoreReturnValue
+    public Ordered containsAtLeast(double[] expected) {
+      return containsAtLeastElementsIn(Doubles.asList(expected));
+    }
+
+    /**
+     * <i>To be deprecated in favor of {@link #containsAtLeast(double[])}.</i>
+     *
+     * <p>As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive double array.
+     */
     @CanIgnoreReturnValue
     public Ordered containsAllOf(double[] expected) {
       return containsAllIn(Doubles.asList(expected));
