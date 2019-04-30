@@ -144,45 +144,48 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
   Ordered containsAtLeastElementsIn(M[] expected);
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
-   *
-   * <p>Checks that the subject contains elements that corresponds to all of the expected elements,
+   * Checks that the subject contains elements that corresponds to all of the expected elements,
    * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
    * elements where each pair of elements correspond.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The elements must appear in the given order within the
    * subject, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeast}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   Ordered containsAllOf(@NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest);
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
-   *
-   * <p>Checks that the subject contains elements that corresponds to all of the expected elements,
+   * Checks that the subject contains elements that corresponds to all of the expected elements,
    * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
    * elements where each pair of elements correspond.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The elements must appear in the given order within the
    * subject, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeastElementsIn(Iterable)}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   Ordered containsAllIn(Iterable<? extends M> expected);
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Object[])}.</i>
-   *
-   * <p>Checks that the subject contains elements that corresponds to all of the expected elements,
+   * Checks that the subject contains elements that corresponds to all of the expected elements,
    * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
    * elements where each pair of elements correspond.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The elements must appear in the given order within the
    * subject, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeastElementsIn(Object[])}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   Ordered containsAllIn(M[] expected);
 
   /**

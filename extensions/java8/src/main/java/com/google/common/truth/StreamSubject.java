@@ -135,34 +135,36 @@ public final class StreamSubject extends Subject<StreamSubject, Stream<?>> {
   // TODO(cpovirk): Add array overload of contains*ElementsIn methods? Also for int and long stream.
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
-   *
-   * <p>Fails if the subject does not contain all of the given elements. If an element appears more
+   * Fails if the subject does not contain all of the given elements. If an element appears more
    * than once in the given elements, then it must appear at least that number of times in the
    * actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeast}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   public Ordered containsAllOf(
       @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
     return containsAtLeast(first, second, rest);
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
-   *
-   * <p>Fails if the subject does not contain all of the given elements. If an element appears more
+   * Fails if the subject does not contain all of the given elements. If an element appears more
    * than once in the given elements, then it must appear at least that number of times in the
    * actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeastElementsIn(Iterable)}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   public Ordered containsAllIn(Iterable<?> expected) {
     return containsAtLeastElementsIn(expected);
   }
