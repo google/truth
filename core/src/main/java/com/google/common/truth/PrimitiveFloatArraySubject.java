@@ -269,13 +269,14 @@ public final class PrimitiveFloatArraySubject
     }
 
     /**
-     * <i>To be deprecated in favor of {@link #containsAtLeast(float[])}.</i>
+     * As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive float array.
      *
-     * <p>As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive float array.
+     * @deprecated Use {@link #containsAtLeast(float[])}, which is equivalent.
      */
     @CanIgnoreReturnValue
+    @Deprecated
     public Ordered containsAllOf(float[] expected) {
-      return containsAllIn(Floats.asList(expected));
+      return containsAtLeast(expected);
     }
 
     /** As {@link #containsAnyOf(Object, Object, Object...)} but taking a primitive float array. */

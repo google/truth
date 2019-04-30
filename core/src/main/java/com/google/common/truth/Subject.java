@@ -281,10 +281,11 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #isSameInstanceAs}.</i>
+   * Fails if the subject is not the same instance as the given object.
    *
-   * <p>Fails if the subject is not the same instance as the given object.
+   * @deprecated Use {@link #isSameInstanceAs}, which is equivalent.
    */
+  @Deprecated
   public void isSameAs(@NullableDecl @CompatibleWith("T") Object expected) {
     isSameInstanceAs(expected);
   }
@@ -306,10 +307,11 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #isNotSameInstanceAs}.</i>
+   * Fails if the subject is the same instance as the given object.
    *
-   * <p>Fails if the subject is the same instance as the given object.
+   * @deprecated Use {@link #isNotSameInstanceAs}, which is equivalent.
    */
+  @Deprecated
   public void isNotSameAs(@NullableDecl @CompatibleWith("T") Object unexpected) {
     isNotSameInstanceAs(unexpected);
   }

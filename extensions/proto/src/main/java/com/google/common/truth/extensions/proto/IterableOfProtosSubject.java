@@ -230,54 +230,57 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeast}.</i>
-   *
-   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
-   * an element appears more than once in the expected elements to this call then it must appear at
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements to this call then it must appear at
    * least that number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeast}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   public Ordered containsAllOf(
       @NullableDecl Object firstExpected,
       @NullableDecl Object secondExpected,
       @NullableDecl Object... restOfExpected) {
-    return delegate().containsAllOf(firstExpected, secondExpected, restOfExpected);
+    return containsAtLeast(firstExpected, secondExpected, restOfExpected);
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Iterable)}.</i>
-   *
-   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
-   * an element appears more than once in the expected elements then it must appear at least that
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeastElementsIn(Iterable)}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   public Ordered containsAllIn(Iterable<?> expected) {
-    return delegate().containsAllIn(expected);
+    return containsAtLeastElementsIn(expected);
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #containsAtLeastElementsIn(Object[])}.</i>
-   *
-   * <p>Checks that the actual iterable contains at least all of the expected elements or fails. If
-   * an element appears more than once in the expected elements then it must appear at least that
+   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
+   * element appears more than once in the expected elements then it must appear at least that
    * number of times in the actual elements.
    *
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
+   *
+   * @deprecated Use {@link #containsAtLeastElementsIn(Object[])}, which is equivalent.
    */
   @CanIgnoreReturnValue
+  @Deprecated
   public Ordered containsAllIn(Object[] expected) {
-    return delegate().containsAtLeastElementsIn(expected);
+    return containsAtLeastElementsIn(expected);
   }
 
   /**
@@ -1080,19 +1083,19 @@ public class IterableOfProtosSubject<
     @CanIgnoreReturnValue
     public Ordered containsAllOf(
         @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
-      return delegate(Lists.asList(first, second, rest)).containsAllOf(first, second, rest);
+      return containsAtLeast(first, second, rest);
     }
 
     @Override
     @CanIgnoreReturnValue
     public Ordered containsAllIn(Iterable<? extends M> expected) {
-      return delegate(expected).containsAllIn(expected);
+      return containsAtLeastElementsIn(expected);
     }
 
     @Override
     @CanIgnoreReturnValue
     public Ordered containsAllIn(M[] expected) {
-      return delegate(Arrays.asList(expected)).containsAllIn(expected);
+      return containsAtLeastElementsIn(expected);
     }
 
     @Override
@@ -1385,17 +1388,17 @@ public class IterableOfProtosSubject<
     @Override
     public Ordered containsAllOf(
         @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
-      return usingCorrespondence().containsAllOf(first, second, rest);
+      return containsAtLeast(first, second, rest);
     }
 
     @Override
     public Ordered containsAllIn(Iterable<? extends M> expected) {
-      return usingCorrespondence().containsAllIn(expected);
+      return containsAtLeastElementsIn(expected);
     }
 
     @Override
     public Ordered containsAllIn(M[] expected) {
-      return usingCorrespondence().containsAllIn(expected);
+      return containsAtLeastElementsIn(expected);
     }
 
     @Override
