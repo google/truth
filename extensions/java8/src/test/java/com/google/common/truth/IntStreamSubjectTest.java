@@ -68,7 +68,7 @@ public final class IntStreamSubjectTest {
   @Test
   public void testIsSameAs() throws Exception {
     IntStream stream = IntStream.of(1);
-    assertThat(stream).isSameAs(stream);
+    assertThat(stream).isSameInstanceAs(stream);
   }
 
   @Test

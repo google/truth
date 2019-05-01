@@ -58,7 +58,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     Object eqObject = eqMessage;
     Object diffObject = diffMessage;
 
-    assertThat(message).isSameAs(object);
+    assertThat(message).isSameInstanceAs(object);
     assertThat(message).isNotSameInstanceAs(eqMessage);
     assertThat(message).isEqualTo(eqMessage);
     assertThat(message).isNotEqualTo(diffMessage);
@@ -83,7 +83,7 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     Object eqObject = eqMessage;
     Object diffObject = diffMessage;
 
-    assertThat(object).isSameAs(message);
+    assertThat(object).isSameInstanceAs(message);
     assertThat(object).isNotSameInstanceAs(eqObject);
     assertThat(object).isEqualTo(eqObject);
     assertThat(object).isNotEqualTo(diffObject);

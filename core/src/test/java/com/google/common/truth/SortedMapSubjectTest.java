@@ -49,9 +49,9 @@ public class SortedMapSubjectTest extends BaseSubjectTestCase {
   @Test
   public void verifyWrappingIsInternalOnly() {
     Map<?, ?> map = new HashMap<>();
-    assertThat(map).isSameAs(map);
+    assertThat(map).isSameInstanceAs(map);
     SortedMap<?, ?> sortedMap = unmodifiableSortedMap(new TreeMap<>());
-    assertThat(sortedMap).isSameAs(sortedMap);
+    assertThat(sortedMap).isSameInstanceAs(sortedMap);
   }
 
   @Test

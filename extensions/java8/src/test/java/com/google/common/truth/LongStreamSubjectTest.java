@@ -68,7 +68,7 @@ public final class LongStreamSubjectTest {
   @Test
   public void testIsSameAs() throws Exception {
     LongStream stream = LongStream.of(1);
-    assertThat(stream).isSameAs(stream);
+    assertThat(stream).isSameInstanceAs(stream);
   }
 
   @Test
