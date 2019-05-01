@@ -49,9 +49,9 @@ public class SortedSetSubjectTest extends BaseSubjectTestCase {
   @Test
   public void verifyWrappingIsInternalOnly() {
     Set<?> map = new HashSet<>();
-    assertThat(map).isSameAs(map);
+    assertThat(map).isSameInstanceAs(map);
     SortedSet<?> sortedSet = unmodifiableSortedSet(new TreeSet<>());
-    assertThat(sortedSet).isSameAs(sortedSet);
+    assertThat(sortedSet).isSameInstanceAs(sortedSet);
   }
 
   @Test

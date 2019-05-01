@@ -118,7 +118,7 @@ public class SubjectTest extends BaseSubjectTestCase {
         } catch (AssertionError expected) {
         }
 
-        subject.isSameAs(null);
+        subject.isSameInstanceAs(null);
         subject.isNotSameInstanceAs(new Object());
 
         if (!(subject instanceof IterableSubject)) { // b/36000148
@@ -191,13 +191,13 @@ public class SubjectTest extends BaseSubjectTestCase {
   @Test
   public void isSameAsWithNulls() {
     Object o = null;
-    assertThat(o).isSameAs(null);
+    assertThat(o).isSameInstanceAs(null);
   }
 
   @Test
   public void isSameAsFailureWithNulls() {
     Object o = null;
-    expectFailure.whenTesting().that(o).isSameAs("a");
+    expectFailure.whenTesting().that(o).isSameInstanceAs("a");
     assertFailureKeys("expected specific instance", "but was");
     assertFailureValue("expected specific instance", "a");
   }
@@ -206,14 +206,14 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isSameAsWithSameObject() {
     Object a = new Object();
     Object b = a;
-    assertThat(a).isSameAs(b);
+    assertThat(a).isSameInstanceAs(b);
   }
 
   @Test
   public void isSameAsFailureWithObjects() {
     Object a = OBJECT_1;
     Object b = OBJECT_2;
-    expectFailure.whenTesting().that(a).isSameAs(b);
+    expectFailure.whenTesting().that(a).isSameInstanceAs(b);
     assertThat(expectFailure.getFailure()).isNotInstanceOf(ComparisonFailureWithFacts.class);
   }
 
@@ -221,7 +221,7 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isSameAsFailureWithComparableObjects_nonString() {
     Object a = UnsignedInteger.valueOf(42);
     Object b = UnsignedInteger.fromIntBits(42);
-    expectFailure.whenTesting().that(a).isSameAs(b);
+    expectFailure.whenTesting().that(a).isSameInstanceAs(b);
     assertFailureKeys("expected specific instance", "but was");
     assertFailureValue("expected specific instance", "42");
     assertFailureValue(
@@ -233,14 +233,14 @@ public class SubjectTest extends BaseSubjectTestCase {
   public void isSameAsFailureWithComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder("ab").toString();
-    expectFailure.whenTesting().that(a).isSameAs(b);
+    expectFailure.whenTesting().that(a).isSameInstanceAs(b);
   }
 
   @Test
   public void isSameAsFailureWithDifferentTypesAndSameToString() {
     Object a = "true";
     Object b = true;
-    expectFailure.whenTesting().that(a).isSameAs(b);
+    expectFailure.whenTesting().that(a).isSameInstanceAs(b);
     assertFailureKeys("expected specific instance", "an instance of", "but was", "an instance of");
     assertFailureValue("expected specific instance", "true");
     assertFailureValueIndexed("an instance of", 0, "java.lang.Boolean");
