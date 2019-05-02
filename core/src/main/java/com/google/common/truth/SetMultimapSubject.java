@@ -33,6 +33,7 @@ public final class SetMultimapSubject extends MultimapSubject {
     super(metadata, multimap, typeDescription);
   }
 
+  @Deprecated
   @Override
   public SetMultimapSubject named(String format, Object... args) {
     super.named(format, args);

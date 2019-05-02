@@ -31,6 +31,7 @@ public final class MultisetSubject extends IterableSubject {
     super(metadata, multiset);
   }
 
+  @Deprecated
   @Override
   public MultisetSubject named(String format, Object... args) {
     super.named(format, args);
