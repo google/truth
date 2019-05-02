@@ -17,7 +17,12 @@ package com.google.common.truth;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-// TODO(cpovirk): Make this package-private, and later remove it?
+/**
+ * @deprecated Use plain {@link Subject} instead. At the moment, {@code Subject} has type
+ *     parameters, so you may wish to use {@code Subject<?, ?>}. However, those type parameters will
+ *     soon go away, so you may wish to start using raw {@code Subject} now to prepare.
+ */
+@Deprecated
 public final class DefaultSubject extends Subject<DefaultSubject, Object> {
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
