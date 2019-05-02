@@ -47,6 +47,7 @@ public final class SortedMapSubject extends MapSubject {
     actualAsNavigableMap = map == null ? null : SortedMapAsNavigableMap.wrapIfNecessary(map);
   }
 
+  @Deprecated
   @Override
   public SortedMapSubject named(String format, Object... args) {
     super.named(format, args);

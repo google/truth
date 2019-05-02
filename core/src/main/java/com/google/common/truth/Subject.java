@@ -146,9 +146,15 @@ public class Subject<S extends Subject<S, T>, T> {
    *
    * @param format a template with {@code %s} placeholders
    * @param args the object parameters which will be applied to the message template.
+   * @deprecated Instead of {@code assertThat(foo).named("foo")}, use {@code
+   *     assertWithMessage("foo").that(foo)}. For custom subjects, use {@code
+   *     assertWithMessage("foo").about(foos()).that(foo)}. For other scenarios, see <a
+   *     href="https://google.github.io/truth/faq#full-chain">this FAQ entry about adding
+   *     messages</a>. We will be releasing a tool to automate most migrations.
    */
   @SuppressWarnings("unchecked")
   @CanIgnoreReturnValue
+  @Deprecated
   public S named(String format, Object... args) {
     checkNotNull(format, "Name passed to named() cannot be null.");
     this.customName = lenientFormat(format, checkNotNull(args));

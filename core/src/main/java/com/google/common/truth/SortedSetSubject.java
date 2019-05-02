@@ -40,6 +40,7 @@ public final class SortedSetSubject extends IterableSubject {
     actualAsNavigableSet = set == null ? null : SortedSetAsNavigableSet.wrapIfNecessary(set);
   }
 
+  @Deprecated
   @Override
   public SortedSetSubject named(String format, Object... args) {
     super.named(format, args);

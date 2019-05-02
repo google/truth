@@ -34,6 +34,7 @@ public final class ListMultimapSubject extends MultimapSubject {
     super(metadata, multimap, typeDescription);
   }
 
+  @Deprecated
   @Override
   public ListMultimapSubject named(String format, Object... args) {
     super.named(format, args);
