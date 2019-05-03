@@ -82,6 +82,10 @@ final class Platform {
     // Do nothing. See notes in StackTraceCleanerTest.
   }
 
+  static String inferDescription() {
+    return null;
+  }
+
   @NullableDecl
   static ImmutableList<Fact> makeDiff(String expected, String actual) {
     /*

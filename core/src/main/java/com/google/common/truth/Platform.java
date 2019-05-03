@@ -73,6 +73,57 @@ final class Platform {
     StackTraceCleaner.cleanStackTrace(throwable);
   }
 
+  /**
+   * Tries to infer a name for the root actual value from the bytecode. The "root" actual value is
+   * the value passed to {@code assertThat} or {@code that}, as distinct from any later actual
+   * values produced by chaining calls like {@code hasMessageThat}.
+   */
+  static String inferDescription() {
+    if (isInferDescriptionDisabled()) {
+      return null;
+    }
+
+    AssertionError stack = new AssertionError();
+    /*
+     * cleanStackTrace() lets users turn off cleaning, so it's possible that we'll end up operating
+     * on an uncleaned stack trace. That should be mostly harmless. We could try force-enabling
+     * cleaning for inferDescription() only, but if anyone is turning it off, it might be because of
+     * bugs or confusing stack traces. Force-enabling it here might trigger those same problems.
+     */
+    cleanStackTrace(stack);
+    if (stack.getStackTrace().length == 0) {
+      return null;
+    }
+    StackTraceElement top = stack.getStackTrace()[0];
+    try {
+      // Invoke reflectively so that Truth can be compiled and run without ASM on the classpath.
+      /*
+       * TODO(cpovirk): Consider always compiling with ASM present but then omitting it (and
+       * ActualValueInference itself) at runtime. Then we could use a trick more like Guava's
+       * UnsignedBytes.lexicographicalComparator() (being sure to eagerly load ASM classes at the
+       * same time as we load ActualValueInference). But the reference to a missing class is likely
+       * to confuse tools like Proguard (and thus require suppressions).
+       */
+      return (String)
+          Class.forName("com.google.common.truth.ActualValueInference")
+              .getDeclaredMethod("describeActualValue", String.class, String.class, int.class)
+              .invoke(null, top.getClassName(), top.getMethodName(), top.getLineNumber());
+    } catch (IllegalAccessException
+        | InvocationTargetException
+        | NoSuchMethodException
+        | ClassNotFoundException
+        | LinkageError
+        | RuntimeException e) {
+      // Some possible reasons:
+      // - Inside Google, we omit ActualValueInference entirely under Android.
+      // - Outside Google, someone is running without ASM on the classpath.
+      // - There's a bug.
+      // - We don't handle a new bytecode feature.
+      // TODO(cpovirk): Log a warning, at least for non-ClassNotFoundException, non-LinkageError?
+      return null;
+    }
+  }
+
   @NullableDecl
   static ImmutableList<Fact> makeDiff(String expected, String actual) {
     ImmutableList<String> expectedLines = splitLines(expected);
@@ -163,4 +214,16 @@ final class Platform {
   interface JUnitTestRule extends TestRule {}
 
   static final String EXPECT_FAILURE_WARNING_IF_GWT = "";
+
+  // TODO(cpovirk): Share code with StackTraceCleaner?
+  private static boolean isInferDescriptionDisabled() {
+    // Reading system properties might be forbidden.
+    try {
+      return Boolean.parseBoolean(
+          System.getProperty("com.google.common.truth.disable_infer_description"));
+    } catch (SecurityException e) {
+      // Hope for the best.
+      return false;
+    }
+  }
 }

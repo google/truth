@@ -22,6 +22,7 @@ import static com.google.common.base.Verify.verifyNotNull;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.LazyMessage.evaluateAll;
 import static com.google.common.truth.Platform.cleanStackTrace;
+import static com.google.common.truth.Platform.inferDescription;
 import static com.google.common.truth.SubjectUtils.append;
 import static com.google.common.truth.SubjectUtils.concat;
 
@@ -198,16 +199,21 @@ public final class FailureMetadata {
   }
 
   /**
-   * Returns a description of how the final actual value was derived from earlier actual values in
-   * the chain, if the chain ends with at least one derivation that we have a name for.
+   * Returns a description of the final actual value, if it appears "interesting" enough to show.
+   * The description is considered interesting if the chain of derived subjects ends with at least
+   * one derivation that we have a name for. It's also considered interesting in the absence of
+   * derived subjects if we inferred a name for the root actual value from the bytecode.
    *
    * <p>We don't want to say: "value of string: expected [foo] but was [bar]" (OK, we might still
    * decide to say this, but for now, we don't.)
    *
    * <p>We do want to say: "value of throwable.getMessage(): expected [foo] but was [bar]"
    *
-   * <p>To support that, {@code descriptionWasDerived} tracks whether we've been given context
-   * through {@code check} calls <i>that include names</i>.
+   * <p>We also want to say: "value of getLogMessages(): expected not to be empty"
+   *
+   * <p>To support that, {@code descriptionIsInteresting} tracks whether we've been given context
+   * through {@code check} calls <i>that include names</i> or, initially, whether we inferred a name
+   * for the root actual value from the bytecode.
    *
    * <p>If we're missing a naming function halfway through, we have to reset: We don't want to claim
    * that the value is "foo.bar.baz" when it's "foo.bar.somethingelse.baz." We have to go back to
@@ -217,17 +223,17 @@ public final class FailureMetadata {
    * to be worth displaying.)
    */
   private ImmutableList<Fact> description() {
-    String description = null;
-    boolean descriptionWasDerived = false;
+    String description = inferDescription();
+    boolean descriptionIsInteresting = description != null;
     for (Step step : steps) {
       if (step.isCheckCall()) {
         checkState(description != null);
         if (step.descriptionUpdate == null) {
           description = null;
-          descriptionWasDerived = false;
+          descriptionIsInteresting = false;
         } else {
           description = verifyNotNull(step.descriptionUpdate.apply(description));
-          descriptionWasDerived = true;
+          descriptionIsInteresting = true;
         }
         continue;
       }
@@ -237,7 +243,7 @@ public final class FailureMetadata {
             firstNonNull(step.subject.internalCustomName(), step.subject.typeDescription());
       }
     }
-    return descriptionWasDerived
+    return descriptionIsInteresting
         ? ImmutableList.of(fact("value of", description))
         : ImmutableList.<Fact>of();
   }
@@ -307,6 +313,7 @@ public final class FailureMetadata {
     return seenDerivation
         ? ImmutableList.of(
             fact(
+                // TODO(cpovirk): Use inferDescription() here when appropriate?
                 rootSubject.subject.typeDescription() + " was",
                 rootSubject.subject.actualAsStringNoBrackets()))
         : ImmutableList.<Fact>of();
