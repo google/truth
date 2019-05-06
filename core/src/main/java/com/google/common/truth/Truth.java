@@ -97,20 +97,22 @@ public final class Truth {
   }
 
   /**
-   * Returns a {@link StandardSubjectBuilder} that will prepend the given message to the failure
-   * message in the event of a test failure.
+   * Begins an assertion that, if it fails, will prepend the given message to the failure message.
+   *
+   * <p>This method is a shortcut for {@code assert_().withMessage(...)}.
    */
   public static StandardSubjectBuilder assertWithMessage(String messageToPrepend) {
     return assert_().withMessage(messageToPrepend);
   }
 
   /**
-   * Returns a {@link StandardSubjectBuilder} that will prepend the formatted message using the
-   * specified arguments to the failure message in the event of a test failure.
+   * Begins an assertion that, if it fails, will prepend the given message to the failure message.
    *
    * <p><b>Note:</b> the arguments will be substituted into the format template using {@link
    * com.google.common.base.Strings#lenientFormat Strings.lenientFormat}. Note this only supports
    * the {@code %s} specifier.
+   *
+   * <p>This method is a shortcut for {@code assert_().withMessage(...)}.
    *
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
