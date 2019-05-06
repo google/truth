@@ -223,7 +223,7 @@ public class StandardSubjectBuilder {
    * method creates instances of that class. Created subjects use the previously set failure
    * strategy and any previously set failure message.
    */
-  public final <S extends Subject<S, A>, A> SimpleSubjectBuilder<S, A> about(
+  public final <S extends Subject, A> SimpleSubjectBuilder<S, A> about(
       Subject.Factory<S, A> factory) {
     return new SimpleSubjectBuilder<>(metadata(), factory);
   }
