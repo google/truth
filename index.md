@@ -73,8 +73,8 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 # More information {#more-information}
 
 *   Questions: Ask on [Stack Overflow] with the `google-truth` tag.
-*   Bugs: [Github issues]
-*   Source: [Github][source]
+*   Bugs: [GitHub issues]
+*   Source: [GitHub][source]
 
 <!-- References -->
 
