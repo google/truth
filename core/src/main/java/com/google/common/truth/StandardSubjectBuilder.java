@@ -197,6 +197,11 @@ public class StandardSubjectBuilder {
     return new AtomicLongMapSubject(metadata(), actual);
   }
 
+  /**
+   * Returns a new instance that will output the given message before the main failure message. If
+   * this method is called multiple times, the messages will appear in the order that they were
+   * specified.
+   */
   public final StandardSubjectBuilder withMessage(@NullableDecl String messageToPrepend) {
     return withMessage("%s", messageToPrepend);
   }
