@@ -33,7 +33,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>You won't extend this type. When you write a custom subject, see <a
  * href="https://google.github.io/truth/extension">our doc on extensions</a>.
  */
-public final class SimpleSubjectBuilder<SubjectT extends Subject<SubjectT, ActualT>, ActualT> {
+public final class SimpleSubjectBuilder<SubjectT extends Subject, ActualT> {
   private final FailureMetadata metadata;
   private final Subject.Factory<SubjectT, ActualT> subjectFactory;
 

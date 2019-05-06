@@ -173,7 +173,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * <p>{@code AssertionError failure = expectFailureAbout(myTypes(), whenTesting ->
    * whenTesting.that(myType).hasProperty());}
    */
-  public static <S extends Subject<S, A>, A> AssertionError expectFailureAbout(
+  public static <S extends Subject, A> AssertionError expectFailureAbout(
       final Subject.Factory<S, A> factory,
       final SimpleSubjectBuilderCallback<S, A> assertionCallback) {
     // whenTesting -> assertionCallback.invokeAssertion(whenTesting.about(factory))
@@ -235,7 +235,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * instead, however if you prefer the {@code .expectFailureAbout()} pattern you can use this
    * interface to pass in an anonymous class.
    */
-  public interface SimpleSubjectBuilderCallback<S extends Subject<S, A>, A> {
+  public interface SimpleSubjectBuilderCallback<S extends Subject, A> {
     void invokeAssertion(SimpleSubjectBuilder<S, A> whenTesting);
   }
 }

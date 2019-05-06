@@ -85,7 +85,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * <p>When you write a custom subject, see <a href="https://google.github.io/truth/extension">our doc on
    * extensions</a>. It explains where {@code Subject.Factory} fits into the process.
    */
-  public interface Factory<SubjectT extends Subject<SubjectT, ActualT>, ActualT> {
+  public interface Factory<SubjectT extends Subject, ActualT> {
     /** Creates a new {@link Subject}. */
     SubjectT createSubject(FailureMetadata metadata, ActualT actual);
   }
