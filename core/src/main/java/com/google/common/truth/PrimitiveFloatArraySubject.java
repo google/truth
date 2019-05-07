@@ -32,9 +32,12 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 public final class PrimitiveFloatArraySubject
     extends AbstractArraySubject<PrimitiveFloatArraySubject, float[]> {
+  private final float[] actual;
+
   PrimitiveFloatArraySubject(
       FailureMetadata metadata, @NullableDecl float[] o, @NullableDecl String typeDescription) {
     super(metadata, o, typeDescription);
+    this.actual = o;
   }
 
   /**
@@ -299,7 +302,7 @@ public final class PrimitiveFloatArraySubject
   private IterableSubject iterableSubject() {
     return checkNoNeedToDisplayBothValues("asList()")
         .about(iterablesWithCustomFloatToString())
-        .that(Floats.asList(actual()));
+        .that(Floats.asList(actual));
   }
 
   /*
@@ -320,6 +323,7 @@ public final class PrimitiveFloatArraySubject
   }
 
   private final class IterableSubjectWithInheritedToString extends IterableSubject {
+
     IterableSubjectWithInheritedToString(FailureMetadata metadata, Iterable<?> actual) {
       super(metadata, actual);
     }

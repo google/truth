@@ -30,20 +30,23 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Kurt Alfred Kluever
  */
 public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
+  private final Table<?, ?, ?> actual;
+
   TableSubject(FailureMetadata metadata, @NullableDecl Table<?, ?, ?> table) {
     super(metadata, table);
+    this.actual = table;
   }
 
   /** Fails if the table is not empty. */
   public void isEmpty() {
-    if (!actual().isEmpty()) {
+    if (!actual.isEmpty()) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the table is empty. */
   public void isNotEmpty() {
-    if (actual().isEmpty()) {
+    if (actual.isEmpty()) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
@@ -51,19 +54,19 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   /** Fails if the table does not have the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    check("size()").that(actual().size()).isEqualTo(expectedSize);
+    check("size()").that(actual.size()).isEqualTo(expectedSize);
   }
 
   /** Fails if the table does not contain a mapping for the given row key and column key. */
   public void contains(@NullableDecl Object rowKey, @NullableDecl Object columnKey) {
-    if (!actual().contains(rowKey, columnKey)) {
+    if (!actual.contains(rowKey, columnKey)) {
       fail("contains mapping for row/column", rowKey, columnKey);
     }
   }
 
   /** Fails if the table contains a mapping for the given row key and column key. */
   public void doesNotContain(@NullableDecl Object rowKey, @NullableDecl Object columnKey) {
-    if (actual().contains(rowKey, columnKey)) {
+    if (actual.contains(rowKey, columnKey)) {
       fail("does not contain mapping for row/column", rowKey, columnKey);
     }
   }
@@ -77,7 +80,7 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   /** Fails if the table does not contain the given cell. */
   public void containsCell(Cell<?, ?, ?> cell) {
     checkNotNull(cell);
-    checkNoNeedToDisplayBothValues("cellSet()").that(actual().cellSet()).contains(cell);
+    checkNoNeedToDisplayBothValues("cellSet()").that(actual.cellSet()).contains(cell);
   }
 
   /** Fails if the table contains the given cell. */
@@ -89,21 +92,21 @@ public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
   /** Fails if the table contains the given cell. */
   public void doesNotContainCell(Cell<?, ?, ?> cell) {
     checkNotNull(cell);
-    checkNoNeedToDisplayBothValues("cellSet()").that(actual().cellSet()).doesNotContain(cell);
+    checkNoNeedToDisplayBothValues("cellSet()").that(actual.cellSet()).doesNotContain(cell);
   }
 
   /** Fails if the table does not contain the given row key. */
   public void containsRow(@NullableDecl Object rowKey) {
-    check("rowKeySet()").that(actual().rowKeySet()).contains(rowKey);
+    check("rowKeySet()").that(actual.rowKeySet()).contains(rowKey);
   }
 
   /** Fails if the table does not contain the given column key. */
   public void containsColumn(@NullableDecl Object columnKey) {
-    check("columnKeySet()").that(actual().columnKeySet()).contains(columnKey);
+    check("columnKeySet()").that(actual.columnKeySet()).contains(columnKey);
   }
 
   /** Fails if the table does not contain the given value. */
   public void containsValue(@NullableDecl Object value) {
-    check("values()").that(actual().values()).contains(value);
+    check("values()").that(actual.values()).contains(value);
   }
 }

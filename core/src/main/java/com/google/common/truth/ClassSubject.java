@@ -25,8 +25,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 @GwtIncompatible("reflection")
 public final class ClassSubject extends Subject<ClassSubject, Class<?>> {
+  private final Class<?> actual;
+
   ClassSubject(FailureMetadata metadata, @NullableDecl Class<?> o) {
     super(metadata, o);
+    this.actual = o;
   }
 
   /**
@@ -34,7 +37,7 @@ public final class ClassSubject extends Subject<ClassSubject, Class<?>> {
    * class or interface.
    */
   public void isAssignableTo(Class<?> clazz) {
-    if (!clazz.isAssignableFrom(actual())) {
+    if (!clazz.isAssignableFrom(actual)) {
       failWithActual("expected to be assignable to", clazz.getName());
     }
   }

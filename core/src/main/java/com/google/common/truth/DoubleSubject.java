@@ -36,8 +36,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double> {
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 
+  private final Double actual;
+
   DoubleSubject(FailureMetadata metadata, @NullableDecl Double actual) {
     super(metadata, actual);
+    this.actual = actual;
   }
 
   /**
@@ -105,7 +108,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
     return new TolerantDoubleComparison() {
       @Override
       public void of(double expected) {
-        Double actual = actual();
+        Double actual = DoubleSubject.this.actual;
         checkNotNull(
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
@@ -144,7 +147,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
     return new TolerantDoubleComparison() {
       @Override
       public void of(double expected) {
-        Double actual = actual();
+        Double actual = DoubleSubject.this.actual;
         checkNotNull(
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
@@ -216,7 +219,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
 
   /** Asserts that the subject is zero (i.e. it is either {@code 0.0} or {@code -0.0}). */
   public final void isZero() {
-    if (actual() == null || actual().doubleValue() != 0.0) {
+    if (actual == null || actual.doubleValue() != 0.0) {
       failWithActual(simpleFact("expected zero"));
     }
   }
@@ -226,9 +229,9 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * {@code -0.0} or {@code null}).
    */
   public final void isNonZero() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected a double other than zero"));
-    } else if (actual().doubleValue() == 0.0) {
+    } else if (actual.doubleValue() == 0.0) {
       failWithActual(simpleFact("expected not to be zero"));
     }
   }
@@ -253,7 +256,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * Double#NEGATIVE_INFINITY}, or {@link Double#NaN}.
    */
   public final void isFinite() {
-    if (actual() == null || actual().isNaN() || actual().isInfinite()) {
+    if (actual == null || actual.isNaN() || actual.isInfinite()) {
       failWithActual(simpleFact("expected to be finite"));
     }
   }
@@ -263,7 +266,7 @@ public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double
    * {@link Double#POSITIVE_INFINITY} or {@link Double#NEGATIVE_INFINITY}).
    */
   public final void isNotNaN() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected a double other than NaN"));
     } else {
       isNotEqualTo(NaN);

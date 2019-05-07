@@ -57,6 +57,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
 
   // TODO(user): Type this if we solve the typing assertAbout() problem for
   // IterableOfProtosSubject and there is use for such typing.
+  private final M actual;
   private final FluentEqualityConfig config;
 
   protected ProtoSubject(FailureMetadata failureMetadata, @NullableDecl M message) {
@@ -66,11 +67,12 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   ProtoSubject(
       FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl M message) {
     super(failureMetadata, message);
+    this.actual = message;
     this.config = config;
   }
 
   ProtoSubject<?, Message> usingConfig(FluentEqualityConfig newConfig) {
-    MessageSubject newSubject = check().about(MessageSubject.messages(newConfig)).that(actual());
+    MessageSubject newSubject = check().about(MessageSubject.messages(newConfig)).that(actual);
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
@@ -292,20 +294,20 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
 
   @Override
   public void isEqualTo(@NullableDecl Object expected) {
-    if (sameClassMessagesWithDifferentDescriptors(actual(), expected)) {
+    if (sameClassMessagesWithDifferentDescriptors(actual, expected)) {
       // This can happen with DynamicMessages, and it's very confusing if they both have the
       // same string.
       failWithoutActual(
           simpleFact("Not true that messages compare equal; they have different descriptors."),
           fact("expected", expected),
           fact("with descriptor", ((Message) expected).getDescriptorForType()),
-          fact("but was", actual()),
-          fact("with descriptor", actual().getDescriptorForType()));
-    } else if (notMessagesWithSameDescriptor(actual(), expected)) {
+          fact("but was", actual),
+          fact("with descriptor", actual.getDescriptorForType()));
+    } else if (notMessagesWithSameDescriptor(actual, expected)) {
       super.isEqualTo(expected);
     } else {
       DiffResult diffResult =
-          makeDifferencer((Message) expected).diffMessages(actual(), (Message) expected);
+          makeDifferencer((Message) expected).diffMessages(actual, (Message) expected);
       if (!diffResult.isMatched()) {
         failWithoutActual(
             simpleFact(
@@ -321,22 +323,22 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
    * without throwing any exceptions.
    */
   boolean testIsEqualTo(@NullableDecl Object expected) {
-    if (notMessagesWithSameDescriptor(actual(), expected)) {
-      return Objects.equal(actual(), expected);
+    if (notMessagesWithSameDescriptor(actual, expected)) {
+      return Objects.equal(actual, expected);
     } else {
       return makeDifferencer((Message) expected)
-          .diffMessages(actual(), (Message) expected)
+          .diffMessages(actual, (Message) expected)
           .isMatched();
     }
   }
 
   @Override
   public void isNotEqualTo(@NullableDecl Object expected) {
-    if (notMessagesWithSameDescriptor(actual(), expected)) {
+    if (notMessagesWithSameDescriptor(actual, expected)) {
       super.isNotEqualTo(expected);
     } else {
       DiffResult diffResult =
-          makeDifferencer((Message) expected).diffMessages(actual(), (Message) expected);
+          makeDifferencer((Message) expected).diffMessages(actual, (Message) expected);
       if (diffResult.isMatched()) {
         failWithoutActual(
             simpleFact(
@@ -349,19 +351,19 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
 
   @Override
   public void hasAllRequiredFields() {
-    if (!actual().isInitialized()) {
+    if (!actual.isInitialized()) {
       failWithoutActual(
           simpleFact(
               lenientFormat(
                   "Not true that %s has all required fields set. Missing: %s",
-                  actualAsString(), actual().findInitializationErrors())));
+                  actualAsString(), actual.findInitializationErrors())));
     }
   }
 
   private ProtoTruthMessageDifferencer makeDifferencer(Message expected) {
     return config
         .withExpectedMessages(Arrays.asList(expected))
-        .toMessageDifferencer(actual().getDescriptorForType());
+        .toMessageDifferencer(actual.getDescriptorForType());
   }
 
   private String failureMessage(boolean expectedEqual) {

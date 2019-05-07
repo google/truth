@@ -59,18 +59,21 @@ public final class Re2jSubjects {
           }
         };
 
+    private final String actual;
+
     private Re2jStringSubject(FailureMetadata failureMetadata, String subject) {
       super(failureMetadata, subject);
+      this.actual = subject;
     }
 
     @Override
     protected String actualCustomStringRepresentation() {
-      return quote(actual());
+      return quote(actual);
     }
 
     /** Fails if the string does not match the given regex. */
     public void matches(String regex) {
-      if (!Pattern.matches(regex, actual())) {
+      if (!Pattern.matches(regex, actual)) {
         failWithActual("expected to match ", regex);
       }
     }
@@ -78,14 +81,14 @@ public final class Re2jSubjects {
     /** Fails if the string does not match the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void matches(Pattern regex) {
-      if (!regex.matcher(actual()).matches()) {
+      if (!regex.matcher(actual).matches()) {
         failWithActual("expected to match ", regex);
       }
     }
 
     /** Fails if the string matches the given regex. */
     public void doesNotMatch(String regex) {
-      if (Pattern.matches(regex, actual())) {
+      if (Pattern.matches(regex, actual)) {
         failWithActual("expected to fail to match", regex);
       }
     }
@@ -93,7 +96,7 @@ public final class Re2jSubjects {
     /** Fails if the string matches the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void doesNotMatch(Pattern regex) {
-      if (regex.matcher(actual()).matches()) {
+      if (regex.matcher(actual).matches()) {
         failWithActual("expected to fail to match", regex);
       }
     }
@@ -101,7 +104,7 @@ public final class Re2jSubjects {
     /** Fails if the string does not contain a match on the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void containsMatch(Pattern pattern) {
-      if (!pattern.matcher(actual()).find()) {
+      if (!pattern.matcher(actual).find()) {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
@@ -111,7 +114,7 @@ public final class Re2jSubjects {
 
     /** Fails if the string does not contain a match on the given regex. */
     public void containsMatch(String regex) {
-      if (!doContainsMatch(actual(), regex)) {
+      if (!doContainsMatch(actual, regex)) {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
@@ -122,7 +125,7 @@ public final class Re2jSubjects {
     /** Fails if the string contains a match on the given regex. */
     @GwtIncompatible("com.google.re2j.Pattern")
     public void doesNotContainMatch(Pattern pattern) {
-      if (pattern.matcher(actual()).find()) {
+      if (pattern.matcher(actual).find()) {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
@@ -132,7 +135,7 @@ public final class Re2jSubjects {
 
     /** Fails if the string contains a match on the given regex. */
     public void doesNotContainMatch(String regex) {
-      if (doContainsMatch(actual(), regex)) {
+      if (doContainsMatch(actual, regex)) {
         failWithoutActual(
             simpleFact(
                 lenientFormat(

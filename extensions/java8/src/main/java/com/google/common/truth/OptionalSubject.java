@@ -27,31 +27,34 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Christian Gruber
  */
 public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>> {
+  private final Optional<?> actual;
+
   OptionalSubject(
       FailureMetadata failureMetadata,
       @NullableDecl Optional<?> subject,
       @NullableDecl String typeDescription) {
     super(failureMetadata, subject, typeDescription);
+    this.actual = subject;
   }
 
   // TODO(cpovirk): Consider making OptionalIntSubject and OptionalLongSubject delegate to this.
 
   /** Fails if the {@link Optional}{@code <T>} is empty or the subject is null. */
   public void isPresent() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
-    } else if (!actual().isPresent()) {
+    } else if (!actual.isPresent()) {
       failWithoutActual(simpleFact("expected to be present"));
     }
   }
 
   /** Fails if the {@link Optional}{@code <T>} is present or the subject is null. */
   public void isEmpty() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
-    } else if (actual().isPresent()) {
+    } else if (actual.isPresent()) {
       failWithoutActual(
-          simpleFact("expected to be empty"), fact("but was present with value", actual().get()));
+          simpleFact("expected to be empty"), fact("but was present with value", actual.get()));
     }
   }
 
@@ -69,12 +72,12 @@ public final class OptionalSubject extends Subject<OptionalSubject, Optional<?>>
     if (expected == null) {
       throw new NullPointerException("Optional cannot have a null value.");
     }
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual("expected an optional with value", expected);
-    } else if (!actual().isPresent()) {
+    } else if (!actual.isPresent()) {
       failWithoutActual(fact("expected to have value", expected), simpleFact("but was empty"));
     } else {
-      checkNoNeedToDisplayBothValues("get()").that(actual().get()).isEqualTo(expected);
+      checkNoNeedToDisplayBothValues("get()").that(actual.get()).isEqualTo(expected);
     }
   }
 

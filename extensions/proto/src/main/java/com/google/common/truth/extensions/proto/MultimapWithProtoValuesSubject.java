@@ -60,6 +60,7 @@ public class MultimapWithProtoValuesSubject<
         C extends Multimap<K, M>>
     extends Subject<S, C> {
 
+  private final C actual;
   private final FluentEqualityConfig config;
 
   /** Default implementation of {@link MultimapWithProtoValuesSubject}. */
@@ -101,6 +102,7 @@ public class MultimapWithProtoValuesSubject<
   MultimapWithProtoValuesSubject(
       FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C multimap) {
     super(failureMetadata, multimap);
+    this.actual = multimap;
     this.config = config;
   }
 
@@ -109,7 +111,7 @@ public class MultimapWithProtoValuesSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   private final MultimapSubject delegate() {
-    MultimapSubject delegate = check().that(actual());
+    MultimapSubject delegate = check().that(actual);
     if (internalCustomName() != null) {
       delegate = delegate.named(internalCustomName());
     }
@@ -187,9 +189,8 @@ public class MultimapWithProtoValuesSubject<
    */
   public IterableOfProtosSubject<?, M, Iterable<M>> valuesForKey(@NullableDecl Object key) {
     Subject.Factory<IterableValuesForKey<M>, Iterable<M>> factory =
-        iterableOfProtos(
-            "Values for key <" + key + "> (<" + actual() + ">) in " + actualAsString());
-    return check().about(factory).that(((Multimap<Object, M>) actual()).get(key));
+        iterableOfProtos("Values for key <" + key + "> (<" + actual + ">) in " + actualAsString());
+    return check().about(factory).that(((Multimap<Object, M>) actual).get(key));
   }
 
   /**
@@ -255,7 +256,7 @@ public class MultimapWithProtoValuesSubject<
   MultimapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
     Subject.Factory<MultimapWithMessageValuesSubject<K, M>, Multimap<K, M>> factory =
         multimapWithMessageValues(newConfig);
-    MultimapWithMessageValuesSubject<K, M> newSubject = check().about(factory).that(actual());
+    MultimapWithMessageValuesSubject<K, M> newSubject = check().about(factory).that(actual);
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
@@ -789,7 +790,7 @@ public class MultimapWithProtoValuesSubject<
     return comparingValuesUsing(
         config
             .withExpectedMessages(expectedValues)
-            .<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(actual().values())));
+            .<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(actual.values())));
   }
 
   // The UsingCorrespondence methods have conflicting erasure with default MapSubject methods,

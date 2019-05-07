@@ -43,36 +43,39 @@ public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
   private static final Subject.Factory<EmployeeSubject, Employee> EMPLOYEE_SUBJECT_FACTORY =
       EmployeeSubject::new;
 
+  private final Employee actual;
+
   private EmployeeSubject(FailureMetadata failureMetadata, @NullableDecl Employee subject) {
     super(failureMetadata, subject);
+    this.actual = subject;
   }
 
   // User-defined test assertion SPI below this point
 
   public void hasName(String name) {
-    check("name()").that(actual().name()).isEqualTo(name);
+    check("name()").that(actual.name()).isEqualTo(name);
   }
 
   public void hasUsername(String username) {
-    check("username()").that(actual().username()).isEqualTo(username);
+    check("username()").that(actual.username()).isEqualTo(username);
   }
 
   public void hasId(long id) {
-    check("id()").that(actual().id()).isEqualTo(id);
+    check("id()").that(actual.id()).isEqualTo(id);
   }
 
   public void hasLocation(Employee.Location location) {
-    check("location()").that(actual().location()).isEqualTo(location);
+    check("location()").that(actual.location()).isEqualTo(location);
   }
 
   public void isCeo() {
-    if (!actual().isCeo()) {
+    if (!actual.isCeo()) {
       failWithActual(simpleFact("expected to be CEO"));
     }
   }
 
   public void isNotCeo() {
-    if (actual().isCeo()) {
+    if (actual.isCeo()) {
       failWithActual(simpleFact("expected not to be CEO"));
     }
   }

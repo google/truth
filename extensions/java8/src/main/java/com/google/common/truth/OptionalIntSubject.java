@@ -27,30 +27,33 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Ben Douglass
  */
 public final class OptionalIntSubject extends Subject<OptionalIntSubject, OptionalInt> {
+  private final OptionalInt actual;
+
   OptionalIntSubject(
       FailureMetadata failureMetadata,
       @NullableDecl OptionalInt subject,
       @NullableDecl String typeDescription) {
     super(failureMetadata, subject, typeDescription);
+    this.actual = subject;
   }
 
   /** Fails if the {@link OptionalInt} is empty or the subject is null. */
   public void isPresent() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
-    } else if (!actual().isPresent()) {
+    } else if (!actual.isPresent()) {
       failWithoutActual(simpleFact("expected to be present"));
     }
   }
 
   /** Fails if the {@link OptionalInt} is present or the subject is null. */
   public void isEmpty() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
-    } else if (actual().isPresent()) {
+    } else if (actual.isPresent()) {
       failWithoutActual(
           simpleFact("expected to be empty"),
-          fact("but was present with value", actual().getAsInt()));
+          fact("but was present with value", actual.getAsInt()));
     }
   }
 
@@ -59,12 +62,12 @@ public final class OptionalIntSubject extends Subject<OptionalIntSubject, Option
    * sophisticated comparisons can be done using {@link #hasValueThat()}.
    */
   public void hasValue(int expected) {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual("expected an optional with value", expected);
-    } else if (!actual().isPresent()) {
+    } else if (!actual.isPresent()) {
       failWithoutActual(fact("expected to have value", expected), simpleFact("but was absent"));
     } else {
-      checkNoNeedToDisplayBothValues("getAsInt()").that(actual().getAsInt()).isEqualTo(expected);
+      checkNoNeedToDisplayBothValues("getAsInt()").that(actual.getAsInt()).isEqualTo(expected);
     }
   }
 
@@ -73,11 +76,11 @@ public final class OptionalIntSubject extends Subject<OptionalIntSubject, Option
    * immediately if the subject is empty.
    */
   public IntegerSubject hasValueThat() {
-    if (actual() == null || !actual().isPresent()) {
+    if (actual == null || !actual.isPresent()) {
       isPresent(); // fails
       return ignoreCheck().that(0);
     } else {
-      return check("getAsInt()").that(actual().getAsInt());
+      return check("getAsInt()").that(actual.getAsInt());
     }
   }
 

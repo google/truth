@@ -23,11 +23,14 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Kurt Alfred Kluever
  */
 public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
+  private final Throwable actual;
+
   ThrowableSubject(
       FailureMetadata metadata,
       @NullableDecl Throwable throwable,
       @NullableDecl String typeDescription) {
     super(metadata, throwable, typeDescription);
+    this.actual = throwable;
   }
 
   /*
@@ -38,13 +41,13 @@ public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
   /** Returns a {@code StringSubject} to make assertions about the throwable's message. */
   public final StringSubject hasMessageThat() {
     StandardSubjectBuilder check = check("getMessage()");
-    if (actual() instanceof ErrorWithFacts && ((ErrorWithFacts) actual()).facts().size() > 1) {
+    if (actual instanceof ErrorWithFacts && ((ErrorWithFacts) actual).facts().size() > 1) {
       check =
           check.withMessage(
               "(Note from Truth: When possible, instead of asserting on the full message, assert"
                   + " about individual facts by using ExpectFailure.assertThat.)");
     }
-    return check.that(actual().getMessage());
+    return check.that(actual.getMessage());
   }
 
   /**
@@ -57,7 +60,7 @@ public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
     // e.g. assertThat(new Exception()).hCT().hCT()....
     // TODO(diamondm) in keeping with other subjects' behavior this should still NPE if the subject
     // *itself* is null, since there's no context to lose. See also b/37645583
-    if (actual() == null) {
+    if (actual == null) {
       check("getCause()").fail("Causal chain is not deep enough - add a .isNotNull() check?");
       return ignoreCheck()
           .that(
@@ -69,6 +72,6 @@ public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
                 }
               });
     }
-    return check("getCause()").that(actual().getCause());
+    return check("getCause()").that(actual.getCause());
   }
 }

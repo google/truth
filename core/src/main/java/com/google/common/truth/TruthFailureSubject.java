@@ -66,20 +66,23 @@ public final class TruthFailureSubject extends ThrowableSubject {
         }
       };
 
+  private final Throwable actual;
+
   TruthFailureSubject(
       FailureMetadata metadata,
       @NullableDecl Throwable throwable,
       @NullableDecl String typeDescription) {
     super(metadata, throwable, typeDescription);
+    this.actual = throwable;
   }
 
   /** Returns a subject for the list of fact keys. */
   public IterableSubject factKeys() {
-    if (!(actual() instanceof ErrorWithFacts)) {
+    if (!(actual instanceof ErrorWithFacts)) {
       failWithActual(simpleFact("expected a failure thrown by Truth's new failure API"));
       return ignoreCheck().that(ImmutableList.of());
     }
-    ErrorWithFacts error = (ErrorWithFacts) actual();
+    ErrorWithFacts error = (ErrorWithFacts) actual;
     return check("factKeys()").that(getFactKeys(error));
   }
 
@@ -128,11 +131,11 @@ public final class TruthFailureSubject extends ThrowableSubject {
 
   private StringSubject doFactValue(String key, @NullableDecl Integer index) {
     checkNotNull(key);
-    if (!(actual() instanceof ErrorWithFacts)) {
+    if (!(actual instanceof ErrorWithFacts)) {
       failWithActual(simpleFact("expected a failure thrown by Truth's new failure API"));
       return ignoreCheck().that("");
     }
-    ErrorWithFacts error = (ErrorWithFacts) actual();
+    ErrorWithFacts error = (ErrorWithFacts) actual;
 
     /*
      * We don't care as much about including the actual Throwable and its facts in these because

@@ -38,8 +38,11 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
+  private final String actual;
+
   protected StringSubject(FailureMetadata metadata, @NullableDecl String string) {
     super(metadata, string);
+    this.actual = string;
   }
 
   /** @deprecated Use {@link #isEqualTo} instead. String comparison is consistent with equality. */
@@ -52,23 +55,23 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string does not have the given length. */
   public void hasLength(int expectedLength) {
     checkArgument(expectedLength >= 0, "expectedLength(%s) must be >= 0", expectedLength);
-    check("length()").that(actual().length()).isEqualTo(expectedLength);
+    check("length()").that(actual.length()).isEqualTo(expectedLength);
   }
 
   /** Fails if the string is not equal to the zero-length "empty string." */
   public void isEmpty() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected empty string"));
-    } else if (!actual().isEmpty()) {
+    } else if (!actual.isEmpty()) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the string is equal to the zero-length "empty string." */
   public void isNotEmpty() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected nonempty string"));
-    } else if (actual().isEmpty()) {
+    } else if (actual.isEmpty()) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
@@ -76,9 +79,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string does not contain the given sequence. */
   public void contains(CharSequence string) {
     checkNotNull(string);
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual("expected a string that contains", string);
-    } else if (!actual().contains(string)) {
+    } else if (!actual.contains(string)) {
       failWithActual("expected to contain", string);
     }
   }
@@ -86,9 +89,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string contains the given sequence. */
   public void doesNotContain(CharSequence string) {
     checkNotNull(string);
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual("expected a string that does not contain", string);
-    } else if (actual().contains(string)) {
+    } else if (actual.contains(string)) {
       failWithActual("expected not to contain", string);
     }
   }
@@ -96,9 +99,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string does not start with the given string. */
   public void startsWith(String string) {
     checkNotNull(string);
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual("expected a string that starts with", string);
-    } else if (!actual().startsWith(string)) {
+    } else if (!actual.startsWith(string)) {
       failWithActual("expected to start with", string);
     }
   }
@@ -106,9 +109,9 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string does not end with the given string. */
   public void endsWith(String string) {
     checkNotNull(string);
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual("expected a string that ends with", string);
-    } else if (!actual().endsWith(string)) {
+    } else if (!actual.endsWith(string)) {
       failWithActual("expected to end with", string);
     }
   }
@@ -117,7 +120,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
 
   /** Fails if the string does not match the given regex. */
   public void matches(String regex) {
-    if (!actual().matches(regex)) {
+    if (!actual.matches(regex)) {
       failWithActual("expected to match", regex);
     }
   }
@@ -125,14 +128,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string does not match the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void matches(Pattern regex) {
-    if (!regex.matcher(actual()).matches()) {
+    if (!regex.matcher(actual).matches()) {
       failWithActual("expected to match", regex);
     }
   }
 
   /** Fails if the string matches the given regex. */
   public void doesNotMatch(String regex) {
-    if (actual().matches(regex)) {
+    if (actual.matches(regex)) {
       failWithActual("expected not to match", regex);
     }
   }
@@ -140,7 +143,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string matches the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotMatch(Pattern regex) {
-    if (regex.matcher(actual()).matches()) {
+    if (regex.matcher(actual).matches()) {
       failWithActual("expected not to match", regex);
     }
   }
@@ -148,14 +151,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string does not contain a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void containsMatch(Pattern regex) {
-    if (!regex.matcher(actual()).find()) {
+    if (!regex.matcher(actual).find()) {
       failWithActual("expected to contain a match for", regex);
     }
   }
 
   /** Fails if the string does not contain a match on the given regex. */
   public void containsMatch(String regex) {
-    if (!Platform.containsMatch(actual(), regex)) {
+    if (!Platform.containsMatch(actual, regex)) {
       failWithActual("expected to contain a match for", regex);
     }
   }
@@ -163,7 +166,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
   /** Fails if the string contains a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotContainMatch(Pattern regex) {
-    Matcher matcher = regex.matcher(actual());
+    Matcher matcher = regex.matcher(actual);
     if (matcher.find()) {
       failWithoutActual(
           fact("expected not to contain a match for", regex),
@@ -174,7 +177,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
 
   /** Fails if the string contains a match on the given regex. */
   public void doesNotContainMatch(String regex) {
-    if (Platform.containsMatch(actual(), regex)) {
+    if (Platform.containsMatch(actual, regex)) {
       failWithActual("expected not to contain a match for", regex);
     }
   }
@@ -206,7 +209,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
      * <p>Example: "abc" is equal to "ABC", but not to "abcd".
      */
     public void isEqualTo(String expected) {
-      if (actual() == null) {
+      if (actual == null) {
         if (expected != null) {
           failWithoutActual(
               fact("expected a string that is equal to", expected),
@@ -217,7 +220,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
         if (expected == null) {
           failWithoutActual(
               fact("expected", "null (null reference)"), butWas(), simpleFact("(case is ignored)"));
-        } else if (!actual().equalsIgnoreCase(expected)) {
+        } else if (!actual.equalsIgnoreCase(expected)) {
           failWithoutActual(fact("expected", expected), butWas(), simpleFact("(case is ignored)"));
         }
       }
@@ -228,14 +231,14 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
      * equality is the same as for the {@link #isEqualTo} method.
      */
     public void isNotEqualTo(String unexpected) {
-      if (actual() == null) {
+      if (actual == null) {
         if (unexpected == null) {
           failWithoutActual(
               fact("expected a string that is not equal to", "null (null reference)"),
               simpleFact("(case is ignored)"));
         }
       } else {
-        if (unexpected != null && actual().equalsIgnoreCase(unexpected)) {
+        if (unexpected != null && actual.equalsIgnoreCase(unexpected)) {
           failWithoutActual(
               fact("expected not to be", unexpected), butWas(), simpleFact("(case is ignored)"));
         }
@@ -246,7 +249,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     public void contains(CharSequence expectedSequence) {
       checkNotNull(expectedSequence);
       String expected = expectedSequence.toString();
-      if (actual() == null) {
+      if (actual == null) {
         failWithoutActual(
             fact("expected a string that contains", expected),
             butWas(),
@@ -261,7 +264,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
     public void doesNotContain(CharSequence expectedSequence) {
       checkNotNull(expectedSequence);
       String expected = expectedSequence.toString();
-      if (actual() == null) {
+      if (actual == null) {
         failWithoutActual(
             fact("expected a string that does not contain", expected),
             butWas(),
@@ -277,7 +280,7 @@ public class StringSubject extends ComparableSubject<StringSubject, String> {
         // TODO(b/79459427): Fix for J2CL discrepancy when string is empty
         return true;
       }
-      String subject = actual();
+      String subject = actual;
       for (int subjectOffset = 0;
           subjectOffset <= subject.length() - string.length();
           subjectOffset++) {

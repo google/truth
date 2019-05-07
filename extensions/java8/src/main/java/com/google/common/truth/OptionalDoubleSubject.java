@@ -28,30 +28,33 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, OptionalDouble> {
 
+  private final OptionalDouble actual;
+
   OptionalDoubleSubject(
       FailureMetadata failureMetadata,
       @NullableDecl OptionalDouble subject,
       @NullableDecl String typeDescription) {
     super(failureMetadata, subject, typeDescription);
+    this.actual = subject;
   }
 
   /** Fails if the {@link OptionalDouble} is empty or the subject is null. */
   public void isPresent() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected present optional"));
-    } else if (!actual().isPresent()) {
+    } else if (!actual.isPresent()) {
       failWithoutActual(simpleFact("expected to be present"));
     }
   }
 
   /** Fails if the {@link OptionalDouble} is present or the subject is null. */
   public void isEmpty() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected empty optional"));
-    } else if (actual().isPresent()) {
+    } else if (actual.isPresent()) {
       failWithoutActual(
           simpleFact("expected to be empty"),
-          fact("but was present with value", actual().getAsDouble()));
+          fact("but was present with value", actual.getAsDouble()));
     }
   }
 
@@ -64,13 +67,13 @@ public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, 
    * modification from its input or returning a well-defined literal or constant value.
    */
   public void hasValue(double expected) {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual("expected an optional with value", expected);
-    } else if (!actual().isPresent()) {
+    } else if (!actual.isPresent()) {
       failWithoutActual(fact("expected to have value", expected), simpleFact("but was absent"));
     } else {
       checkNoNeedToDisplayBothValues("getAsDouble()")
-          .that(actual().getAsDouble())
+          .that(actual.getAsDouble())
           .isEqualTo(expected);
     }
   }
@@ -80,11 +83,11 @@ public final class OptionalDoubleSubject extends Subject<OptionalDoubleSubject, 
    * immediately if the subject is empty.
    */
   public DoubleSubject hasValueThat() {
-    if (actual() == null || !actual().isPresent()) {
+    if (actual == null || !actual.isPresent()) {
       isPresent(); // fails
       return ignoreCheck().that(0.0);
     } else {
-      return check("getAsDouble()").that(actual().getAsDouble());
+      return check("getAsDouble()").that(actual.getAsDouble());
     }
   }
 

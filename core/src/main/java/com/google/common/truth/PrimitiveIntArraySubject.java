@@ -25,12 +25,15 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 public final class PrimitiveIntArraySubject
     extends AbstractArraySubject<PrimitiveIntArraySubject, int[]> {
+  private final int[] actual;
+
   PrimitiveIntArraySubject(
       FailureMetadata metadata, @NullableDecl int[] o, @NullableDecl String typeDescription) {
     super(metadata, o, typeDescription);
+    this.actual = o;
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Ints.asList(actual()));
+    return checkNoNeedToDisplayBothValues("asList()").that(Ints.asList(actual));
   }
 }

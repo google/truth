@@ -27,8 +27,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 public final class MultisetSubject extends IterableSubject {
 
+  private final Multiset<?> actual;
+
   MultisetSubject(FailureMetadata metadata, @NullableDecl Multiset<?> multiset) {
     super(metadata, multiset);
+    this.actual = multiset;
   }
 
   @Deprecated
@@ -41,7 +44,7 @@ public final class MultisetSubject extends IterableSubject {
   /** Fails if the element does not have the given count. */
   public final void hasCount(@NullableDecl Object element, int expectedCount) {
     checkArgument(expectedCount >= 0, "expectedCount(%s) must be >= 0", expectedCount);
-    int actualCount = ((Multiset<?>) actual()).count(element);
+    int actualCount = ((Multiset<?>) actual).count(element);
     check("count(%s)", element).that(actualCount).isEqualTo(expectedCount);
   }
 }
