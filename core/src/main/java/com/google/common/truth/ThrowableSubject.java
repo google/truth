@@ -25,6 +25,14 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
   private final Throwable actual;
 
+  /**
+   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
+   * {@link Subject#check}{@code .that(throwable)}.
+   */
+  protected ThrowableSubject(FailureMetadata metadata, @NullableDecl Throwable throwable) {
+    this(metadata, throwable, null);
+  }
+
   ThrowableSubject(
       FailureMetadata metadata,
       @NullableDecl Throwable throwable,
