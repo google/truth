@@ -715,7 +715,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * Returns a builder for creating a derived subject but without providing information about how
    * the derived subject will relate to the current subject. In most cases, you should provide such
    * information by using {@linkplain #check(String, Object...) the other overload}.
+   *
+   * @deprecated Use {@linkplain #check(String, Object...) the other overload}, which requires you
+   *     to supply more information to include in any failure messages.
    */
+  @Deprecated
   protected final StandardSubjectBuilder check() {
     return new StandardSubjectBuilder(metadata.updateForCheckCall());
   }
