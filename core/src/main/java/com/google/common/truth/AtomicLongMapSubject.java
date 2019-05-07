@@ -29,8 +29,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Kurt Alfred Kluever
  */
 public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, AtomicLongMap<?>> {
+  private final AtomicLongMap<?> actual;
+
   AtomicLongMapSubject(FailureMetadata metadata, @NullableDecl AtomicLongMap<?> map) {
     super(metadata, map);
+    this.actual = map;
   }
 
   /**
@@ -57,14 +60,14 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
 
   /** Fails if the {@link AtomicLongMap} is not empty. */
   public void isEmpty() {
-    if (!actual().isEmpty()) {
+    if (!actual.isEmpty()) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the {@link AtomicLongMap} is empty. */
   public void isNotEmpty() {
-    if (actual().isEmpty()) {
+    if (actual.isEmpty()) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
@@ -72,24 +75,24 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} does not have the given size. */
   public void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
-    check("size()").that(actual().size()).isEqualTo(expectedSize);
+    check("size()").that(actual.size()).isEqualTo(expectedSize);
   }
 
   /** Fails if the {@link AtomicLongMap} does not have the given sum. */
   public void hasSum(long expectedSum) {
-    check("sum()").that(actual().sum()).isEqualTo(expectedSum);
+    check("sum()").that(actual.sum()).isEqualTo(expectedSum);
   }
 
   /** Fails if the {@link AtomicLongMap} does not contain the given key. */
   public void containsKey(Object key) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
-    check("asMap().keySet()").that(actual().asMap().keySet()).contains(key);
+    check("asMap().keySet()").that(actual.asMap().keySet()).contains(key);
   }
 
   /** Fails if the {@link AtomicLongMap} contains the given key. */
   public void doesNotContainKey(Object key) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
-    check("asMap().keySet()").that(actual().asMap().keySet()).doesNotContain(key);
+    check("asMap().keySet()").that(actual.asMap().keySet()).doesNotContain(key);
   }
 
   /*
@@ -111,7 +114,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
    */
   public void containsEntry(Object key, long value) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
-    long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
+    long actualValue = ((AtomicLongMap<Object>) actual).get(key);
     if (actualValue != value) {
       failWithActual("expected to contain entry", immutableEntry(key, value));
     }
@@ -121,7 +124,7 @@ public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, At
   /** Fails if the {@link AtomicLongMap} contains the given entry. */
   public void doesNotContainEntry(Object key, long value) {
     checkNotNull(key, "AtomicLongMap does not support null keys");
-    long actualValue = ((AtomicLongMap<Object>) actual()).get(key);
+    long actualValue = ((AtomicLongMap<Object>) actual).get(key);
     if (actualValue == value) {
       failWithActual("expected not to contain entry", immutableEntry(key, value));
     }

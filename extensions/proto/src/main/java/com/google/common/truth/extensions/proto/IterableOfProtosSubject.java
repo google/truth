@@ -56,6 +56,7 @@ public class IterableOfProtosSubject<
         S extends IterableOfProtosSubject<S, M, C>, M extends Message, C extends Iterable<M>>
     extends Subject<S, C> {
 
+  private final C actual;
   private final FluentEqualityConfig config;
 
   /** Default implementation of {@link IterableOfProtosSubject}. */
@@ -117,6 +118,7 @@ public class IterableOfProtosSubject<
   IterableOfProtosSubject(
       FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C messages) {
     super(failureMetadata, messages);
+    this.actual = messages;
     this.config = config;
   }
 
@@ -125,7 +127,7 @@ public class IterableOfProtosSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   private final IterableSubject delegate() {
-    IterableSubject delegate = check().that(actual());
+    IterableSubject delegate = check().that(actual);
     if (internalCustomName() != null) {
       delegate = delegate.named(internalCustomName());
     }
@@ -480,7 +482,7 @@ public class IterableOfProtosSubject<
   IterableOfProtosFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
     Subject.Factory<IterableOfMessagesSubject<M>, Iterable<M>> factory =
         iterableOfMessages(newConfig);
-    IterableOfMessagesSubject<M> newSubject = check().about(factory).that(actual());
+    IterableOfMessagesSubject<M> newSubject = check().about(factory).that(actual);
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
@@ -1019,7 +1021,7 @@ public class IterableOfProtosSubject<
               subject
                   .config
                   .withExpectedMessages(messages)
-                  .<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(subject.actual())));
+                  .<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(subject.actual)));
       if (keyFunction != null) {
         usingCorrespondence = usingCorrespondence.displayingDiffsPairedBy(keyFunction);
       }

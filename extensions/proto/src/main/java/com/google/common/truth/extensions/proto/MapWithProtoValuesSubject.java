@@ -56,6 +56,7 @@ public class MapWithProtoValuesSubject<
         S extends MapWithProtoValuesSubject<S, K, M, C>, K, M extends Message, C extends Map<K, M>>
     extends Subject<S, C> {
 
+  private final C actual;
   private final FluentEqualityConfig config;
 
   /** Default implementation of {@link MapWithProtoValuesSubject}. */
@@ -80,6 +81,7 @@ public class MapWithProtoValuesSubject<
   MapWithProtoValuesSubject(
       FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C map) {
     super(failureMetadata, map);
+    this.actual = map;
     this.config = config;
   }
 
@@ -100,7 +102,7 @@ public class MapWithProtoValuesSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   private final MapSubject delegate() {
-    MapSubject delegate = check().that(actual());
+    MapSubject delegate = check().that(actual);
     if (internalCustomName() != null) {
       delegate = delegate.named(internalCustomName());
     }
@@ -210,7 +212,7 @@ public class MapWithProtoValuesSubject<
   MapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
     Subject.Factory<MapWithMessageValuesSubject<K, M>, Map<K, M>> factory =
         mapWithProtoValues(newConfig);
-    MapWithMessageValuesSubject<K, M> newSubject = check().about(factory).that(actual());
+    MapWithMessageValuesSubject<K, M> newSubject = check().about(factory).that(actual);
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
@@ -740,7 +742,7 @@ public class MapWithProtoValuesSubject<
     return comparingValuesUsing(
         config
             .withExpectedMessages(expectedValues)
-            .<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(actual().values())));
+            .<M>toCorrespondence(FieldScopeUtil.getSingleDescriptor(actual.values())));
   }
 
   // The UsingCorrespondence methods have conflicting erasure with default MapSubject methods,

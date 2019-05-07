@@ -25,24 +25,27 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public final class BooleanSubject extends Subject<BooleanSubject, Boolean> {
+  private final Boolean actual;
+
   BooleanSubject(FailureMetadata metadata, @NullableDecl Boolean actual) {
     super(metadata, actual);
+    this.actual = actual;
   }
 
   /** Fails if the subject is false or {@code null}. */
   public void isTrue() {
-    if (actual() == null) {
+    if (actual == null) {
       isEqualTo(true); // fails
-    } else if (!actual()) {
+    } else if (!actual) {
       failWithoutActual(simpleFact("expected to be true"));
     }
   }
 
   /** Fails if the subject is true or {@code null}. */
   public void isFalse() {
-    if (actual() == null) {
+    if (actual == null) {
       isEqualTo(false); // fails
-    } else if (actual()) {
+    } else if (actual) {
       failWithoutActual(simpleFact("expected to be false"));
     }
   }

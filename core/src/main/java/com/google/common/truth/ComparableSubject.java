@@ -29,20 +29,23 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
+  private final T actual;
+
   protected ComparableSubject(FailureMetadata metadata, @NullableDecl T actual) {
     super(metadata, actual);
+    this.actual = actual;
   }
 
   /** Checks that the subject is in {@code range}. */
   public final void isIn(Range<T> range) {
-    if (!range.contains(actual())) {
+    if (!range.contains(actual)) {
       failWithActual("expected to be in range", range);
     }
   }
 
   /** Checks that the subject is <i>not</i> in {@code range}. */
   public final void isNotIn(Range<T> range) {
-    if (range.contains(actual())) {
+    if (range.contains(actual)) {
       failWithActual("expected not to be in range", range);
     }
   }
@@ -55,7 +58,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    * #isEqualTo(Object)}.
    */
   public void isEquivalentAccordingToCompareTo(T expected) {
-    if (actual().compareTo(expected) != 0) {
+    if (actual.compareTo(expected) != 0) {
       failWithActual("expected value that sorts equal to", expected);
     }
   }
@@ -67,7 +70,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    * other}.
    */
   public final void isGreaterThan(T other) {
-    if (actual().compareTo(other) <= 0) {
+    if (actual.compareTo(other) <= 0) {
       failWithActual("expected to be greater than", other);
     }
   }
@@ -79,7 +82,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    * other}.
    */
   public final void isLessThan(T other) {
-    if (actual().compareTo(other) >= 0) {
+    if (actual.compareTo(other) >= 0) {
       failWithActual("expected to be less than", other);
     }
   }
@@ -90,7 +93,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    * <p>Use {@link #isLessThan} to check that the subject is less than {@code other}.
    */
   public final void isAtMost(T other) {
-    if (actual().compareTo(other) > 0) {
+    if (actual.compareTo(other) > 0) {
       failWithActual("expected to be at most", other);
     }
   }
@@ -101,7 +104,7 @@ public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T ext
    * <p>Use {@link #isGreaterThan} to check that the subject is greater than {@code other}.
    */
   public final void isAtLeast(T other) {
-    if (actual().compareTo(other) < 0) {
+    if (actual.compareTo(other) < 0) {
       failWithActual("expected to be at least", other);
     }
   }

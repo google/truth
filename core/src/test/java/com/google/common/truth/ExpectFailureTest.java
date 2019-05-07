@@ -141,17 +141,20 @@ public class ExpectFailureTest {
   }
 
   private static class BadSubject extends Subject<BadSubject, Integer> {
+    private final Integer actual;
+
     BadSubject(FailureMetadata failureMetadat, Integer actual) {
       super(failureMetadat, actual);
+      this.actual = actual;
     }
 
     @Override
     public void isEqualTo(Object expected) {
-      if (!actual().equals(expected)) {
+      if (!actual.equals(expected)) {
         failWithoutActual(
-            simpleFact(lenientFormat("expected <%s> is equal to <%s>", actual(), expected)));
+            simpleFact(lenientFormat("expected <%s> is equal to <%s>", actual, expected)));
         failWithoutActual(
-            simpleFact(lenientFormat("expected <%s> is equal to <%s>", expected, actual())));
+            simpleFact(lenientFormat("expected <%s> is equal to <%s>", expected, actual)));
       }
     }
 

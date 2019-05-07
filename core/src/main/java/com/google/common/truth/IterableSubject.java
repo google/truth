@@ -95,21 +95,22 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
+  private final Iterable<?> actual;
+
   protected IterableSubject(FailureMetadata metadata, @NullableDecl Iterable<?> iterable) {
     super(metadata, iterable);
+    this.actual = iterable;
   }
 
   @Override
   protected String actualCustomStringRepresentation() {
-    if (actual() != null) {
+    if (actual != null) {
       // Check the value of iterable.toString() against the default Object.toString() implementation
       // so we can avoid things like "com.google.common.graph.Traverser$GraphTraverser$1@5e316c74"
       String objectToString =
-          actual().getClass().getName()
-              + '@'
-              + Integer.toHexString(System.identityHashCode(actual()));
-      if (actual().toString().equals(objectToString)) {
-        return Iterables.toString(actual());
+          actual.getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(actual));
+      if (actual.toString().equals(objectToString)) {
+        return Iterables.toString(actual);
       }
     }
     return super.actualCustomStringRepresentation();
@@ -117,14 +118,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   /** Fails if the subject is not empty. */
   public final void isEmpty() {
-    if (!Iterables.isEmpty(actual())) {
+    if (!Iterables.isEmpty(actual)) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the subject is empty. */
   public final void isNotEmpty() {
-    if (Iterables.isEmpty(actual())) {
+    if (Iterables.isEmpty(actual)) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
@@ -132,15 +133,15 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Fails if the subject does not have the given size. */
   public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize(%s) must be >= 0", expectedSize);
-    int actualSize = size(actual());
+    int actualSize = size(actual);
     check("size()").that(actualSize).isEqualTo(expectedSize);
   }
 
   /** Checks (with a side-effect failure) that the subject contains the supplied item. */
   public final void contains(@NullableDecl Object element) {
-    if (!Iterables.contains(actual(), element)) {
+    if (!Iterables.contains(actual, element)) {
       List<Object> elementList = newArrayList(element);
-      if (hasMatchingToStringPair(actual(), elementList)) {
+      if (hasMatchingToStringPair(actual, elementList)) {
         failWithoutActual(
             fact("expected to contain", element),
             fact("an instance of", objectToTypeName(element)),
@@ -148,7 +149,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             fact(
                 "though it did contain",
                 countDuplicatesAndAddTypeInfo(
-                    retainMatchingToString(actual(), elementList /* itemsToCheck */))),
+                    retainMatchingToString(actual, elementList /* itemsToCheck */))),
             fullContents());
       } else {
         failWithActual("expected to contain", element);
@@ -158,7 +159,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   /** Checks (with a side-effect failure) that the subject does not contain the supplied item. */
   public final void doesNotContain(@NullableDecl Object element) {
-    if (Iterables.contains(actual(), element)) {
+    if (Iterables.contains(actual, element)) {
       failWithActual("expected not to contain", element);
     }
   }
@@ -166,7 +167,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** Checks that the subject does not contain duplicate elements. */
   public final void containsNoDuplicates() {
     List<Entry<?>> duplicates = newArrayList();
-    for (Multiset.Entry<?> entry : LinkedHashMultiset.create(actual()).entrySet()) {
+    for (Multiset.Entry<?> entry : LinkedHashMultiset.create(actual).entrySet()) {
       if (entry.getCount() > 1) {
         duplicates.add(entry);
       }
@@ -191,7 +192,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   // TODO(cpovirk): Consider using makeElementFacts-style messages here, in contains(), etc.
   public final void containsAnyIn(Iterable<?> expected) {
-    Collection<?> actual = iterableToCollection(actual());
+    Collection<?> actual = iterableToCollection(this.actual);
     for (Object item : expected) {
       if (actual.contains(item)) {
         return;
@@ -204,7 +205,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           fact(
               "though it did contain",
               countDuplicatesAndAddTypeInfo(
-                  retainMatchingToString(actual(), expected /* itemsToCheck */))),
+                  retainMatchingToString(this.actual, expected /* itemsToCheck */))),
           fullContents());
     } else {
       failWithActual("expected to contain any of", expected);
@@ -301,7 +302,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    */
   @CanIgnoreReturnValue
   public final Ordered containsAtLeastElementsIn(Iterable<?> expectedIterable) {
-    List<?> actual = Lists.newLinkedList(actual());
+    List<?> actual = Lists.newLinkedList(this.actual);
     final Collection<?> expected = iterableToCollection(expectedIterable);
 
     List<Object> missing = newArrayList();
@@ -365,7 +366,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   private Ordered failAtLeast(Collection<?> expected, Collection<?> missingRawObjects) {
     Collection<?> nearMissRawObjects =
-        retainMatchingToString(actual(), missingRawObjects /* itemsToCheck */);
+        retainMatchingToString(actual, missingRawObjects /* itemsToCheck */);
 
     ImmutableList.Builder<Fact> facts = ImmutableList.builder();
     facts.addAll(
@@ -447,7 +448,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
   private Ordered containsExactlyElementsIn(
       final Iterable<?> required, boolean addElementsInWarning) {
-    Iterator<?> actualIter = actual().iterator();
+    Iterator<?> actualIter = actual.iterator();
     Iterator<?> requiredIter = required.iterator();
 
     if (!requiredIter.hasNext()) {
@@ -743,7 +744,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * elements equal any of the excluded.)
    */
   public final void containsNoneIn(Iterable<?> excluded) {
-    Collection<?> actual = iterableToCollection(actual());
+    Collection<?> actual = iterableToCollection(this.actual);
     Collection<Object> present = new ArrayList<>();
     for (Object item : Sets.newLinkedHashSet(excluded)) {
       if (actual.contains(item)) {
@@ -904,7 +905,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   private void pairwiseCheck(String expectedFact, PairwiseChecker checker) {
-    Iterator<?> iterator = actual().iterator();
+    Iterator<?> iterator = actual.iterator();
     if (iterator.hasNext()) {
       Object prev = iterator.next();
       while (iterator.hasNext()) {
@@ -934,7 +935,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   @Override
   @Deprecated
   public void isNotIn(Iterable<?> iterable) {
-    if (Iterables.contains(iterable, actual())) {
+    if (Iterables.contains(iterable, actual)) {
       failWithActual("expected not to be any of", iterable);
     }
     List<Object> nonIterables = new ArrayList<>();
@@ -2068,7 +2069,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour
     private Iterable<A> getCastActual() {
-      return (Iterable<A>) subject.actual();
+      return (Iterable<A>) subject.actual;
     }
 
     // TODO(b/69154276): Consider commoning up some of the logic between IterableSubject.Pairer,

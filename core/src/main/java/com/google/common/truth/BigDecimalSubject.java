@@ -27,8 +27,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Kurt Alfred Kluever
  */
 public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject, BigDecimal> {
+  private final BigDecimal actual;
+
   BigDecimalSubject(FailureMetadata metadata, @NullableDecl BigDecimal actual) {
     super(metadata, actual);
+    this.actual = actual;
   }
 
   /**
@@ -90,7 +93,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject
   }
 
   private void compareValues(BigDecimal expected) {
-    if (actual().compareTo(expected) != 0) {
+    if (actual.compareTo(expected) != 0) {
       failWithoutActual(fact("expected", expected), butWas(), simpleFact("(scale is ignored)"));
     }
   }

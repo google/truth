@@ -36,8 +36,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
   private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
 
+  private final Float actual;
+
   FloatSubject(FailureMetadata metadata, @NullableDecl Float actual) {
     super(metadata, actual);
+    this.actual = actual;
   }
 
   /**
@@ -105,7 +108,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
     return new TolerantFloatComparison() {
       @Override
       public void of(float expected) {
-        Float actual = actual();
+        Float actual = FloatSubject.this.actual;
         checkNotNull(
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
@@ -144,7 +147,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
     return new TolerantFloatComparison() {
       @Override
       public void of(float expected) {
-        Float actual = actual();
+        Float actual = FloatSubject.this.actual;
         checkNotNull(
             actual, "actual value cannot be null. tolerance=%s expected=%s", tolerance, expected);
         checkTolerance(tolerance);
@@ -214,7 +217,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
 
   /** Asserts that the subject is zero (i.e. it is either {@code 0.0f} or {@code -0.0f}). */
   public final void isZero() {
-    if (actual() == null || actual().floatValue() != 0.0f) {
+    if (actual == null || actual.floatValue() != 0.0f) {
       failWithActual(simpleFact("expected zero"));
     }
   }
@@ -224,9 +227,9 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * {@code -0.0f} or {@code null}).
    */
   public final void isNonZero() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected a float other than zero"));
-    } else if (actual().floatValue() == 0.0f) {
+    } else if (actual.floatValue() == 0.0f) {
       failWithActual(simpleFact("expected not to be zero"));
     }
   }
@@ -251,7 +254,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * Float#NEGATIVE_INFINITY}, or {@link Float#NaN}.
    */
   public final void isFinite() {
-    if (actual() == null || actual().isNaN() || actual().isInfinite()) {
+    if (actual == null || actual.isNaN() || actual.isInfinite()) {
       failWithActual(simpleFact("expected to be finite"));
     }
   }
@@ -261,7 +264,7 @@ public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
    * Float#POSITIVE_INFINITY} or {@link Float#NEGATIVE_INFINITY}).
    */
   public final void isNotNaN() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual(simpleFact("expected a float other than NaN"));
     } else {
       isNotEqualTo(NaN);

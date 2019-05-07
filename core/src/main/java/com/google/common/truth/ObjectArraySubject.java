@@ -24,12 +24,15 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Christian Gruber
  */
 public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubject<T>, T[]> {
+  private final T[] actual;
+
   ObjectArraySubject(
       FailureMetadata metadata, @NullableDecl T[] o, @NullableDecl String typeDescription) {
     super(metadata, o, typeDescription);
+    this.actual = o;
   }
 
   public IterableSubject asList() {
-    return checkNoNeedToDisplayBothValues("asList()").that(Arrays.asList(actual()));
+    return checkNoNeedToDisplayBothValues("asList()").that(Arrays.asList(actual));
   }
 }

@@ -61,8 +61,11 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     return MessageLiteSubjectFactory.INSTANCE;
   }
 
+  private final M actual;
+
   protected LiteProtoSubject(FailureMetadata failureMetadata, @NullableDecl M messageLite) {
     super(failureMetadata, messageLite);
+    this.actual = messageLite;
   }
 
   // It is wrong to compare protos using their string representations. The MessageLite runtime
@@ -89,7 +92,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
   @Override
   protected String actualCustomStringRepresentation() {
-    return getTrimmedToString(actual());
+    return getTrimmedToString(actual);
   }
 
   /**
@@ -99,19 +102,19 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
   @Override
   public void isEqualTo(@NullableDecl Object expected) {
     // TODO(user): Do better here when MessageLite descriptors are available.
-    if (Objects.equal(actual(), expected)) {
+    if (Objects.equal(actual, expected)) {
       return;
     }
 
-    if (actual() == null || expected == null) {
+    if (actual == null || expected == null) {
       super.isEqualTo(expected);
-    } else if (actual().getClass() != expected.getClass()) {
+    } else if (actual.getClass() != expected.getClass()) {
       failWithoutActual(
           simpleFact(
               lenientFormat(
                   "Not true that (%s) %s is equal to the expected (%s) object. "
                       + "They are not of the same class.",
-                  actual().getClass().getName(),
+                  actual.getClass().getName(),
                   internalCustomName() != null ? internalCustomName() + " (proto)" : "proto",
                   expected.getClass().getName())));
     } else {
@@ -119,7 +122,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
        * TODO(cpovirk): If we someday let subjects override formatActualOrExpected(), change this
        * class to do so, and make this code path always delegate to super.isEqualTo().
        */
-      String ourString = getTrimmedToString(actual());
+      String ourString = getTrimmedToString(actual);
       String theirString = getTrimmedToString((MessageLite) expected);
       if (!ourString.equals(theirString)) {
         check().that(ourString).isEqualTo(theirString); // fails
@@ -141,15 +144,15 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
   @Override
   public void isNotEqualTo(@NullableDecl Object expected) {
-    if (Objects.equal(actual(), expected)) {
-      if (actual() == null) {
+    if (Objects.equal(actual, expected)) {
+      if (actual == null) {
         super.isNotEqualTo(expected);
       } else {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
                     "Not true that protos are different. Both are (%s) <%s>.",
-                    actual().getClass().getName(), getTrimmedToString(actual()))));
+                    actual.getClass().getName(), getTrimmedToString(actual))));
       }
     }
   }
@@ -165,12 +168,12 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
   /** Checks whether the subject is a {@link MessageLite} with no fields set. */
   public void isEqualToDefaultInstance() {
-    if (actual() == null) {
+    if (actual == null) {
       failWithoutActual(
           simpleFact(
               lenientFormat(
                   "Not true that %s is a default proto instance. It is null.", actualAsString())));
-    } else if (!actual().equals(actual().getDefaultInstanceForType())) {
+    } else if (!actual.equals(actual.getDefaultInstanceForType())) {
       failWithoutActual(
           simpleFact(
               lenientFormat(
@@ -181,12 +184,12 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
   /** Checks whether the subject is not equivalent to a {@link MessageLite} with no fields set. */
   public void isNotEqualToDefaultInstance() {
-    if (actual() != null && actual().equals(actual().getDefaultInstanceForType())) {
+    if (actual != null && actual.equals(actual.getDefaultInstanceForType())) {
       failWithoutActual(
           simpleFact(
               lenientFormat(
                   "Not true that (%s) %s is not a default proto instance. It has no set values.",
-                  actual().getClass().getName(), actualAsString())));
+                  actual.getClass().getName(), actualAsString())));
     }
   }
 
@@ -195,7 +198,7 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * {@code build()}, which itself fails if required fields aren't set.
    */
   public void hasAllRequiredFields() {
-    if (!actual().isInitialized()) {
+    if (!actual.isInitialized()) {
       // MessageLite doesn't support reflection so this is the best we can do.
       failWithoutActual(
           simpleFact(
@@ -213,10 +216,11 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * assertThat(myProto).serializedSize().isAtLeast(16)}, etc.
    */
   public IntegerSubject serializedSize() {
-    return check("getSerializedSize()").that(actual().getSerializedSize());
+    return check("getSerializedSize()").that(actual.getSerializedSize());
   }
 
   static final class MessageLiteSubject extends LiteProtoSubject<MessageLiteSubject, MessageLite> {
+
     MessageLiteSubject(FailureMetadata failureMetadata, @NullableDecl MessageLite messageLite) {
       super(failureMetadata, messageLite);
     }
