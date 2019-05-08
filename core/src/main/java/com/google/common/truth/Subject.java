@@ -411,14 +411,24 @@ public class Subject<S extends Subject<S, T>, T> {
     isNotIn(accumulate(first, second, rest));
   }
 
-  /** @deprecated Prefer {@code #actual()} for direct access to the subject. */
+  /**
+   * Returns the unedited, unformatted raw actual value.
+   *
+   * @deprecated Instead, declare a private field to store the actual value inside your {@link
+   *     Subject} subclass. We will be releasing a tool to automate most migrations.
+   */
   @Deprecated
   protected T getSubject() {
-    // TODO(cgruber): move functionality to actual() and delete when no callers.
     return actual;
   }
 
-  /** Returns the unedited, unformatted raw actual value. */
+  /**
+   * Returns the unedited, unformatted raw actual value.
+   *
+   * @deprecated Instead, declare a private field to store the actual value inside your {@link
+   *     Subject} subclass. We will be releasing a tool to automate most migrations.
+   */
+  @Deprecated
   protected final T actual() {
     return getSubject();
   }
