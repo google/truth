@@ -66,8 +66,13 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>For information about writing a custom {@link Subject}, see <a
  * href="https://google.github.io/truth/extension">our doc on extensions</a>.
  *
- * @param <S> the self-type, allowing {@code this}-returning methods to avoid needing subclassing
- * @param <T> the type of the object being tested by this {@code Subject}
+ * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
+ *     needing subclassing. <i>Both type parameters will be removed, as the methods that need them
+ *     are being removed. You can prepare for this change by editing your class to refer to raw
+ *     {@code Subject} today.</i>
+ * @param <T> <b>deprecated -</b> the type of the object being tested by this {@code Subject}.
+ *     <i>Both type parameters will be removed, as the methods that need them are being removed. You
+ *     can prepare for this change by editing your class to refer to raw {@code Subject} today.</i>
  * @author David Saff
  * @author Christian Gruber
  */
