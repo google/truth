@@ -846,55 +846,55 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #isInStrictOrder()}.</i>
-   *
-   * <p>Fails if the iterable is not strictly ordered, according to the natural ordering of its
+   * Fails if the iterable is not strictly ordered, according to the natural ordering of its
    * elements. Strictly ordered means that each element in the iterable is <i>strictly</i> greater
    * than the element that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
+   * @deprecated Use {@link #isInStrictOrder()}.
    */
+  @Deprecated
   public final void isStrictlyOrdered() {
     isInStrictOrder();
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #isInStrictOrder(Comparator)}.</i>
-   *
-   * <p>Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
+   * Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
    * ordered means that each element in the iterable is <i>strictly</i> greater than the element
    * that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @deprecated Use {@link #isInStrictOrder(Comparator)}.
    */
+  @Deprecated
   @SuppressWarnings({"unchecked"})
   public final void isStrictlyOrdered(final Comparator<?> comparator) {
     isInStrictOrder(comparator);
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #isInOrder()}.</i>
-   *
-   * <p>Fails if the iterable is not ordered, according to the natural ordering of its elements.
+   * Fails if the iterable is not ordered, according to the natural ordering of its elements.
    * Ordered means that each element in the iterable is greater than or equal to the element that
    * preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
+   * @deprecated Use {@link #isInOrder()}
    */
+  @Deprecated
   public final void isOrdered() {
     isInOrder();
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #isInOrder(Comparator)}.</i>
-   *
-   * <p>Fails if the iterable is not ordered, according to the given comparator. Ordered means that
+   * Fails if the iterable is not ordered, according to the given comparator. Ordered means that
    * each element in the iterable is greater than or equal to the element that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @deprecated Use {@link #isInOrder(Comparator)}.
    */
+  @Deprecated
   @SuppressWarnings({"unchecked"})
   public final void isOrdered(final Comparator<?> comparator) {
     isInOrder(comparator);

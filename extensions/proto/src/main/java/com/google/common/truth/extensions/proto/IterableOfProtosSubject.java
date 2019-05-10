@@ -388,14 +388,14 @@ public class IterableOfProtosSubject<
   }
 
   /**
-   * <i>To be deprecated in favor of {@link #isInStrictOrder(Comparator)}.</i>
-   *
-   * <p>Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
+   * Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
    * ordered means that each element in the iterable is <i>strictly</i> greater than the element
    * that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @deprecated Use {@link #isInStrictOrder(Comparator)}.
    */
+  @Deprecated
   public void isStrictlyOrdered(Comparator<?> comparator) {
     delegate().isStrictlyOrdered(comparator);
   }
@@ -407,7 +407,9 @@ public class IterableOfProtosSubject<
    * each element in the iterable is greater than or equal to the element that preceded it.
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
+   * @deprecated Use {@link #isInOrder(Comparator)}.
    */
+  @Deprecated
   public void isOrdered(Comparator<?> comparator) {
     delegate().isOrdered(comparator);
   }
