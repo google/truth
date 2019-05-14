@@ -42,8 +42,6 @@ Truth has built in support for the following types:
     *   [`Iterable`] - this can be used for any Iterable type (Lists, Sets,
         Collections, etc.)
     *   [`Map`]
-    *   [`SortedMap`]
-    *   [`SortedSet`]
     *   [`Throwable`]
     *   [`Class`]
     *   [`BigDecimal`]
@@ -52,8 +50,6 @@ Truth has built in support for the following types:
 
     *   [`Optional`](http://google.github.io/truth/api/latest/com/google/common/truth/GuavaOptionalSubject)
     *   [`Multimap`]
-        *   [`ListMultimap`]
-        *   [`SetMultimap`]
     *   [`Multiset`]
     *   [`Table`]
     *   [`AtomicLongMap`]
@@ -84,14 +80,12 @@ make assertions on in this list you can
 [`Float`]: http://google.github.io/truth/api/latest/com/google/common/truth/FloatSubject
 [`Integer`]: http://google.github.io/truth/api/latest/com/google/common/truth/IntegerSubject
 [`Iterable`]: http://google.github.io/truth/api/latest/com/google/common/truth/IterableSubject
-[`ListMultimap`]: http://google.github.io/truth/api/latest/com/google/common/truth/ListMultimapSubject
 [`Long`]: http://google.github.io/truth/api/latest/com/google/common/truth/LongSubject
 [`Map`]: http://google.github.io/truth/api/latest/com/google/common/truth/MapSubject
 [`Multimap`]: http://google.github.io/truth/api/latest/com/google/common/truth/MultimapSubject
 [`Multiset`]: http://google.github.io/truth/api/latest/com/google/common/truth/MultisetSubject
 [`Object`]: http://google.github.io/truth/api/latest/com/google/common/truth/Subject
 [`Optional`]: https://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/OptionalSubject.java
-[`SetMultimap`]: http://google.github.io/truth/api/latest/com/google/common/truth/SetMultimapSubject
 [`SortedMap`]: http://google.github.io/truth/api/latest/com/google/common/truth/SortedMapSubject
 [`SortedSet`]: http://google.github.io/truth/api/latest/com/google/common/truth/SortedSetSubject
 [`Stream`]: https://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/StreamSubject.java
