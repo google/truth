@@ -26,7 +26,10 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 /**
  * Type-specific extension of {@link MultimapWithProtoValuesSubject}, used to detect bad usages of
  * {@link #isEqualTo}.
+ *
+ * @deprecated Use plain {@link MultimapWithProtoValuesSubject}.
  */
+@Deprecated
 public class SetMultimapWithProtoValuesSubject<
         S extends SetMultimapWithProtoValuesSubject<S, K, M, C>,
         K,

@@ -25,7 +25,9 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * com.google.common.collect.ListMultimap} subjects.
  *
  * @author Daniel Ploch
+ * @deprecated Use plain {@link MultimapSubject}.
  */
+@Deprecated
 public final class ListMultimapSubject extends MultimapSubject {
   ListMultimapSubject(
       FailureMetadata metadata,
