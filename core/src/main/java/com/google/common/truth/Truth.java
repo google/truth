@@ -246,11 +246,13 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  public static ListMultimapSubject assertThat(@NullableDecl ListMultimap<?, ?> actual) {
+  public static ListMultimapSubject assertThat(
+      @NullableDecl ListMultimap<?, ?> actual) {
     return assert_().that(actual);
   }
 
-  public static SetMultimapSubject assertThat(@NullableDecl SetMultimap<?, ?> actual) {
+  public static SetMultimapSubject assertThat(
+      @NullableDecl SetMultimap<?, ?> actual) {
     return assert_().that(actual);
   }
 

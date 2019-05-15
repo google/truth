@@ -82,8 +82,9 @@ public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
         metadata(), map);
   }
 
-  public <K, M extends Message> SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> that(
-      @NullableDecl SetMultimap<K, M> map) {
+  public <K, M extends Message>
+      SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> that(
+          @NullableDecl SetMultimap<K, M> map) {
     return new SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject<>(
         metadata(), map);
   }
