@@ -134,7 +134,12 @@ public class Subject<S extends Subject<S, T>, T> {
     this.typeDescriptionOverride = typeDescriptionOverride;
   }
 
-  /** An internal method used to obtain the value set by {@link #named(String, Object...)}. */
+  /**
+   * An internal method used to obtain the value set by {@link #named(String, Object...)}.
+   *
+   * @deprecated This method will be removed when {@link #named} is.
+   */
+  @Deprecated
   protected String internalCustomName() {
     return customName;
   }
@@ -441,14 +446,19 @@ public class Subject<S extends Subject<S, T>, T> {
   /**
    * Returns a string representation of the actual value. This will either be the toString() of the
    * value or a prefixed "name" along with the string representation.
+   *
+   * @deprecated Now that {@link #named} is being removed, this method simply returns {@link
+   *     #actualCustomStringRepresentation}, surrounded by angle brackets (and we discourage angle
+   *     brackets in the new key-value style of failure messages). Most callers can use the actual
+   *     value directly instead. If they format it in {@code actualCustomStringRepresentation()},
+   *     they may wish to apply similar formatting here.
    */
   /*
-   * TODO(cpovirk): If we delete named(), this method will be a thin wrapper around
-   * actualCustomStringRepresentation(), one that merely adds angle brackets (which we might not
-   * want it to do). But if we delete actualCustomStringRepresentation() in favor of a "format
-   * actual or expected" method, as described in a comment on that method, then it becomes useful
-   * again (though there's still a question of what to do with the angle brackets).
+   * TODO(cpovirk): If we delete actualCustomStringRepresentation() in favor of a "format actual or
+   * expected" method, as described in a comment on that method, then it becomes useful again
+   * (though there's still a question of what to do with the angle brackets).
    */
+  @Deprecated
   protected final String actualAsString() {
     String formatted = actualCustomStringRepresentation();
     if (customName != null) {
