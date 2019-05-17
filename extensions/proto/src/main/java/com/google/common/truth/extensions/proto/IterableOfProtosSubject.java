@@ -51,6 +51,18 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>Equality tests, and other methods, may yield slightly different behavior for versions 2 and 3
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
+ *
+ * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
+ *     needing subclassing. <i>This type parameter will be removed, as the method that needs it is
+ *     being removed. You can prepare for this change by editing your class to refer to raw {@code
+ *     IterableOfProtosSubject} today and then, after the removal, editing it to refer to {@code
+ *     IterableOfProtosSubject<M>} (with a single type parameter).</i>
+ * @param <M> the type of the messages in the {@code Iterable}
+ * @param <C> <b>deprecated -</b> the type of the {@code Iterable} being tested by this {@code
+ *     Subject}. <i>This type parameter will be removed, as the method that needs it is being
+ *     removed. You can prepare for this change by editing your class to refer to raw {@code
+ *     IterableOfProtosSubject} today and then, after the removal, editing it to refer to {@code
+ *     IterableOfProtosSubject<M>} (with a single type parameter).</i>
  */
 public class IterableOfProtosSubject<
         S extends IterableOfProtosSubject<S, M, C>, M extends Message, C extends Iterable<M>>

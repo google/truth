@@ -36,8 +36,14 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * descriptors, its functionality is limited compared to ProtoSubject, in particular in performing
  * detailed comparisons between messages.
  *
- * @param <S> Subject class type.
- * @param <M> MessageLite type.
+ * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
+ *     needing subclassing. <i>Both type parameters will be removed, as the methods that need them
+ *     are being removed. You can prepare for this change by editing your class to refer to raw
+ *     {@code LiteProtoSubject} today.</i>
+ * @param <M> <b>deprecated -</b> the type of the message being tested by this {@code Subject}.
+ *     <i>Both type parameters will be removed, as the methods that need them are being removed. You
+ *     can prepare for this change by editing your class to refer to raw {@code LiteProtoSubject}
+ *     today.</i>
  */
 @CheckReturnValue
 public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends MessageLite>

@@ -49,8 +49,14 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
  *
- * @param <S> subject class type.
- * @param <M> message type.
+ * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
+ *     needing subclassing. <i>Both type parameters will be removed, as the methods that need them
+ *     are being removed. You can prepare for this change by editing your class to refer to raw
+ *     {@code ProtoSubject} today.</i>
+ * @param <M> <b>deprecated -</b> the type of the message being tested by this {@code Subject}.
+ *     <i>Both type parameters will be removed, as the methods that need them are being removed. You
+ *     can prepare for this change by editing your class to refer to raw {@code ProtoSubject}
+ *     today.</i>
  */
 public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     extends LiteProtoSubject<S, M> implements ProtoFluentAssertion {
