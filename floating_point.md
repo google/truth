@@ -226,7 +226,7 @@ you don't want to.
 protocol buffer values within the containers (not keys!).
 
 ```java
-import static com.google.common.truth.proto.ProtoTruth.assertThat;
+import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 
 ...
 
