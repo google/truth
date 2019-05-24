@@ -159,55 +159,6 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void multimapNamedValuesForKey() {
-    ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
-    expectFailureWhenTestingThat(multimap).named("multymap").valuesForKey(1).containsExactly(4);
-    /*
-     * TODO(cpovirk): It's silly that we display "multymap" twice in the failure, once for "value
-     * of" and once for "root." The problem is that we need to include it in "value of" in case it's
-     * a Throwable (since we don't include a "root" for Throwables), but it also comes along
-     * automatically with "root" because we call actualAsString(). We'll probably fix this
-     * incidentally as part of reducing the number of ways to set string representations, possibly
-     * including eliminating named() itself. Or we could just special-case our logic to skip the
-     * name for non-throwables. For now, I'm not too worried about this.
-     */
-    assertFailureKeys("value of", "expected", "but was", "multimap was");
-    assertFailureValue("value of", "multymap.valuesForKey(1).onlyElement()");
-    assertFailureValue("multimap was", "multymap ({1=[5]})");
-  }
-
-  @Test
-  public void valuesForKeyNamedSingleElements() {
-    /*
-     * TODO(cpovirk): We fail to include the name "valuez" in the failure message here. Fortunately,
-     * I see only 1 usage of valuesForKey().named() in the depot. Also "fortunately," something like
-     * 1/3 of all assertion methods fail to include the name, so the right fix is probably going to
-     * be to delete named() entirely.
-     */
-    ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
-    expectFailureWhenTestingThat(multimap).valuesForKey(1).named("valuez").containsExactly(4);
-    assertFailureKeys("value of", "expected", "but was", "multimap was");
-    assertFailureValue("value of", "multimap.valuesForKey(1).onlyElement()");
-    assertFailureValue("multimap was", "{1=[5]}");
-  }
-
-  @Test
-  public void valuesForKeyNamedMultipleElements() {
-    ImmutableMultimap<Integer, Integer> multimap = ImmutableMultimap.of(1, 5);
-    expectFailureWhenTestingThat(multimap).valuesForKey(1).named("valuez").containsExactly(3, 4);
-    assertFailureKeys(
-        "value of",
-        "name",
-        "missing (2)",
-        "unexpected (1)",
-        "---",
-        "expected",
-        "but was",
-        "multimap was");
-    assertFailureValue("value of", "multimap.valuesForKey(1)");
-  }
-
-  @Test
   public void hasSize() {
     assertThat(ImmutableMultimap.of(1, 2, 3, 4)).hasSize(2);
   }
@@ -1513,25 +1464,6 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void comparingValuesUsing_containsExactlyEntriesIn_failsWithNamed() {
-    ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
-    ImmutableListMultimap<String, Integer> expected =
-        ImmutableListMultimap.of("abc", 123, "def", 456);
-    expectFailureWhenTestingThat(actual)
-        .named("multymap")
-        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsExactlyEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "name: multymap\n"
-                + "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a "
-                + "key that is equal to and a value that parses to the key and value of each "
-                + "element of <[abc=123, def=456]>. It is missing an element that has a key that "
-                + "is equal to and a value that parses to the key and value of <def=456>");
-  }
-
-  @Test
   public void comparingValuesUsing_containsExactlyNoArgs() {
     ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of();
 
@@ -1677,23 +1609,6 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
         "expected",
         "but was");
     assertFailureValue("expected", "[abc=123, def=64, def=128, def=64]");
-  }
-
-  @Test
-  public void comparingValuesUsing_containsExactly_failsWithNamed() {
-    ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
-    expectFailureWhenTestingThat(actual)
-        .named("multymap")
-        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsExactly("abc", 123, "def", 456);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "name: multymap\n"
-                + "Not true that multymap (<{abc=[+123]}>) contains exactly one element that has a "
-                + "key that is equal to and a value that parses to the key and value of each "
-                + "element of <[abc=123, def=456]>. It is missing an element that has a key that "
-                + "is equal to and a value that parses to the key and value of <def=456>");
   }
 
   @Test
@@ -1885,25 +1800,6 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void comparingValuesUsing_containsAtLeastEntriesIn_failsWithNamed() {
-    ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
-    ImmutableListMultimap<String, Integer> expected =
-        ImmutableListMultimap.of("abc", 123, "def", 456);
-    expectFailureWhenTestingThat(actual)
-        .named("multymap")
-        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAtLeastEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "name: multymap\n"
-                + "Not true that multymap (<{abc=[+123]}>) contains at least one element that has "
-                + "a key that is equal to and a value that parses to the key and value of each "
-                + "element of <[abc=123, def=456]>. It is missing an element that has a key that "
-                + "is equal to and a value that parses to the key and value of <def=456>");
-  }
-
-  @Test
   public void comparingValuesUsing_containsAtLeast_success() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of(
@@ -2021,23 +1917,6 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
         "but was");
     assertFailureValue(
         "expected order for required elements", "[abc=123, def=64, def=128, def=64]");
-  }
-
-  @Test
-  public void comparingValuesUsing_containsAtLeast_failsWithNamed() {
-    ImmutableListMultimap<String, String> actual = ImmutableListMultimap.of("abc", "+123");
-    expectFailureWhenTestingThat(actual)
-        .named("multymap")
-        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAtLeast("abc", 123, "def", 456);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "name: multymap\n"
-                + "Not true that multymap (<{abc=[+123]}>) contains at least one element that has "
-                + "a key that is equal to and a value that parses to the key and value of each "
-                + "element of <[abc=123, def=456]>. It is missing an element that has a key that "
-                + "is equal to and a value that parses to the key and value of <def=456>");
   }
 
   private MultimapSubject expectFailureWhenTestingThat(Multimap<?, ?> actual) {

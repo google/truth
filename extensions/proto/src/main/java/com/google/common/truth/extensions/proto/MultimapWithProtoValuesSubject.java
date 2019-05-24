@@ -132,6 +132,7 @@ public class MultimapWithProtoValuesSubject<
     if (internalCustomName() != null) {
       delegate = delegate.named(internalCustomName());
     }
+
     return delegate;
   }
 
@@ -277,6 +278,7 @@ public class MultimapWithProtoValuesSubject<
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
+
     return new MultimapWithProtoValuesFluentAssertionImpl<>(newSubject);
   }
 
