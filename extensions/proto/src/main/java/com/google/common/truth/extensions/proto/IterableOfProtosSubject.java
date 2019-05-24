@@ -143,6 +143,7 @@ public class IterableOfProtosSubject<
     if (internalCustomName() != null) {
       delegate = delegate.named(internalCustomName());
     }
+
     return delegate;
   }
 
@@ -500,6 +501,7 @@ public class IterableOfProtosSubject<
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
+
     return new IterableOfProtosFluentAssertionImpl<M>(newSubject);
   }
 

@@ -347,6 +347,7 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       if (multimapSubject.internalCustomName() != null) {
         named(multimapSubject.internalCustomName());
       }
+
     }
 
     @Override

@@ -122,6 +122,7 @@ public class MapWithProtoValuesSubject<
     if (internalCustomName() != null) {
       delegate = delegate.named(internalCustomName());
     }
+
     return delegate;
   }
 
@@ -232,6 +233,7 @@ public class MapWithProtoValuesSubject<
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
+
     return new MapWithProtoValuesFluentAssertionImpl<>(newSubject);
   }
 

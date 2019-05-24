@@ -82,6 +82,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     if (internalCustomName() != null) {
       newSubject = newSubject.named(internalCustomName());
     }
+
     return newSubject;
   }
 
