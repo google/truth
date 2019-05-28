@@ -38,6 +38,7 @@ if [[ -n "${RELEASE_VERSION:-}" ||
   fi
 
   mvn javadoc:aggregate
+  perl -ni -e 'print unless /Tolerant.*Comparison/ || /SubjectBuilderCallback/ || /UsingCorrespondence/ || /AsIterable/ || /Correspondence[.][A-Z]/ || /FluentAssertion/ || /PathSubject/ || /Re2jSubjects/ || /Ordered/' target/site/apidocs/allclasses-frame.html
   target_dir="$(pwd)/target"
   cd ${target_dir}
   rm -rf gh-pages
