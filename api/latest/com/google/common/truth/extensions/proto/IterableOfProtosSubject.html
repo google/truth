@@ -18,8 +18,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":42,"i4":42,"i5":42,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":42,"i47":42,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -113,6 +113,15 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>S</code> - <b>deprecated -</b> the self-type, allowing <code>this</code>-returning methods to avoid
+     needing subclassing. <i>This type parameter will be removed, as the method that needs it is
+     being removed. You can prepare for this change by editing your class to refer to raw <code>IterableOfProtosSubject</code> today and then, after the removal, editing it to refer to <code>IterableOfProtosSubject&lt;M&gt;</code> (with a single type parameter).</i></dd>
+<dd><code>M</code> - the type of the messages in the <code>Iterable</code></dd>
+<dd><code>C</code> - <b>deprecated -</b> the type of the <code>Iterable</code> being tested by this <code>Subject</code>. <i>This type parameter will be removed, as the method that needs it is being
+     removed. You can prepare for this change by editing your class to refer to raw <code>IterableOfProtosSubject</code> today and then, after the removal, editing it to refer to <code>IterableOfProtosSubject&lt;M&gt;</code> (with a single type parameter).</i></dd>
+</dl>
+<dl>
 <dt>Direct Known Subclasses:</dt>
 <dd><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.IterableOfMessagesSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject.IterableOfMessagesSubject</a></dd>
 </dl>
@@ -165,7 +174,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 <!--   -->
 </a>
 <h3>Nested classes/interfaces inherited from class&nbsp;com.google.common.truth.<a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></h3>
-<code><a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">SubjectT</a> extends <a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">SubjectT</a>,<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">ActualT</a>&gt;,<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">ActualT</a>&gt;</code></li>
+<code><a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">SubjectT</a> extends <a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>,<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">ActualT</a>&gt;</code></li>
 </ul>
 </li>
 </ul>
@@ -196,7 +205,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
@@ -222,13 +231,17 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllIn-java.lang.Iterable-">containsAllIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</code>
-<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
+</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllIn-java.lang.Object:A-">containsAllIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;expected)</code>
-<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Object:A-"><code>containsAtLeastElementsIn(Object[])</code></a>, which is equivalent.</span></div>
+</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
@@ -236,7 +249,9 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAllOf</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;firstExpected,
              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;secondExpected,
              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;restOfExpected)</code>
-<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-"><code>containsAtLeast(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a>, which is equivalent.</span></div>
+</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
@@ -263,43 +278,63 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAtLeast</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;firstExpected,
+               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;secondExpected,
+               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;restOfExpected)</code>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Iterable-">containsAtLeastElementsIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</code>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Object:A-">containsAtLeastElementsIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;expected)</code>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
+<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsExactly-java.lang.Object...-">containsExactly</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;varargs)</code>
 <div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</code>
 <div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsExactlyElementsIn-java.lang.Object:A-">containsExactlyElementsIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;expected)</code>
 <div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoDuplicates--">containsNoDuplicates</a></span>()</code>
 <div class="block">Checks that the subject does not contain duplicate elements.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoneIn-java.lang.Iterable-">containsNoneIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;excluded)</code>
 <div class="block">Checks that a actual iterable contains none of the elements contained in the excluded iterable
  or fails.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoneIn-java.lang.Object:A-">containsNoneIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;excluded)</code>
 <div class="block">Checks that a actual iterable contains none of the elements contained in the excluded iterable
  or fails.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsNoneOf</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;firstExcluded,
               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;secondExcluded,
@@ -307,26 +342,26 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 <div class="block">Checks that a actual iterable contains none of the excluded objects or fails.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#displayingDiffsPairedBy-com.google.common.base.Function-">displayingDiffsPairedBy</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>,?&gt;&nbsp;keyFunction)</code>
 <div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
  fails.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#doesNotContain-java.lang.Object-">doesNotContain</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;element)</code>
 <div class="block">Checks (with a side-effect failure) that the subject does not contain the supplied item.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#hasSize-int-">hasSize</a></span>(int&nbsp;expectedSize)</code>
 <div class="block">Fails if the subject does not have the given size.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringExtraRepeatedFieldElements--">ignoringExtraRepeatedFieldElements</a></span>()</code>
 <div class="block">Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
@@ -334,7 +369,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  proto which are empty.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringExtraRepeatedFieldElementsOfFieldDescriptors</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
                                                     com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
@@ -342,14 +377,14 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  should be ignored.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptors-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
  should be ignored.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringExtraRepeatedFieldElementsOfFields-int-int...-">ignoringExtraRepeatedFieldElementsOfFields</a></span>(int&nbsp;firstFieldNumber,
                                           int...&nbsp;rest)</code>
@@ -357,21 +392,21 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  numbers should be ignored.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringExtraRepeatedFieldElementsOfFields-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
  numbers should be ignored.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFieldAbsence--">ignoringFieldAbsence</a></span>()</code>
 <div class="block">Specifies that the 'has' bit of individual fields should be ignored when comparing for
  equality.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFieldAbsenceOfFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldAbsenceOfFieldDescriptors</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
                                       com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
@@ -379,14 +414,14 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFieldAbsenceOfFieldDescriptors-java.lang.Iterable-">ignoringFieldAbsenceOfFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
  when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFieldAbsenceOfFields-int-int...-">ignoringFieldAbsenceOfFields</a></span>(int&nbsp;firstFieldNumber,
                             int...&nbsp;rest)</code>
@@ -394,53 +429,53 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFieldAbsenceOfFields-java.lang.Iterable-">ignoringFieldAbsenceOfFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
 <div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
  ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldDescriptors</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
                         com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
 <div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFieldDescriptors-java.lang.Iterable-">ignoringFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFields-int-int...-">ignoringFields</a></span>(int&nbsp;firstFieldNumber,
               int...&nbsp;rest)</code>
 <div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFields-java.lang.Iterable-">ignoringFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
 <div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringFieldScope-com.google.common.truth.extensions.proto.FieldScope-">ignoringFieldScope</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>
 <div class="block">Excludes all specific field paths under the argument <a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> from the comparison.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringRepeatedFieldOrder--">ignoringRepeatedFieldOrder</a></span>()</code>
 <div class="block">Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
  for equality.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringRepeatedFieldOrderOfFieldDescriptors</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
                                             com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
@@ -448,14 +483,14 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  should be ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptors-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
  should be ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringRepeatedFieldOrderOfFields-int-int...-">ignoringRepeatedFieldOrderOfFields</a></span>(int&nbsp;firstFieldNumber,
                                   int...&nbsp;rest)</code>
@@ -463,52 +498,68 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  numbers should be ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#ignoringRepeatedFieldOrderOfFields-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
  numbers should be ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isEmpty--">isEmpty</a></span>()</code>
 <div class="block">Fails if the subject is not empty.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i43" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInOrder-java.util.Comparator-">isInOrder</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</code>
+<div class="block">Fails if the iterable is not ordered, according to the given comparator.</div>
+</td>
+</tr>
+<tr id="i44" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInStrictOrder-java.util.Comparator-">isInStrictOrder</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</code>
+<div class="block">Fails if the iterable is not strictly ordered, according to the given comparator.</div>
+</td>
+</tr>
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isNotEmpty--">isNotEmpty</a></span>()</code>
 <div class="block">Fails if the subject is empty.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isOrdered-java.util.Comparator-">isOrdered</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</code>
-<div class="block">Fails if the iterable is not ordered, according to the given comparator.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInOrder-java.util.Comparator-"><code>isInOrder(Comparator)</code></a>.</span></div>
+</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isStrictlyOrdered-java.util.Comparator-">isStrictlyOrdered</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</code>
-<div class="block">Fails if the iterable is not strictly ordered, according to the given comparator.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInStrictOrder-java.util.Comparator-"><code>isInStrictOrder(Comparator)</code></a>.</span></div>
+</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#reportingMismatchesOnly--">reportingMismatchesOnly</a></span>()</code>
 <div class="block">If set, in the event of a comparison failure, the error message printed will list only those
  specific fields that did not match between the actual and expected values.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingDoubleTolerance-double-">usingDoubleTolerance</a></span>(double&nbsp;tolerance)</code>
 <div class="block">Compares double fields as equal if they are both finite and their absolute difference is less
  than or equal to <code>tolerance</code>.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i50" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingDoubleToleranceForFieldDescriptors-double-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingDoubleToleranceForFieldDescriptors</a></span>(double&nbsp;tolerance,
                                        com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
@@ -517,7 +568,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  tolerance.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i51" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingDoubleToleranceForFieldDescriptors-double-java.lang.Iterable-">usingDoubleToleranceForFieldDescriptors</a></span>(double&nbsp;tolerance,
                                        <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
@@ -525,7 +576,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  tolerance.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i52" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingDoubleToleranceForFields-double-int-int...-">usingDoubleToleranceForFields</a></span>(double&nbsp;tolerance,
                              int&nbsp;firstFieldNumber,
@@ -534,7 +585,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
+<tr id="i53" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingDoubleToleranceForFields-double-java.lang.Iterable-">usingDoubleToleranceForFields</a></span>(double&nbsp;tolerance,
                              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
@@ -542,14 +593,14 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i49" class="rowColor">
+<tr id="i54" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingFloatTolerance-float-">usingFloatTolerance</a></span>(float&nbsp;tolerance)</code>
 <div class="block">Compares float fields as equal if they are both finite and their absolute difference is less
  than or equal to <code>tolerance</code>.</div>
 </td>
 </tr>
-<tr id="i50" class="altColor">
+<tr id="i55" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingFloatToleranceForFieldDescriptors-float-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingFloatToleranceForFieldDescriptors</a></span>(float&nbsp;tolerance,
                                       com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
@@ -558,7 +609,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  tolerance.</div>
 </td>
 </tr>
-<tr id="i51" class="rowColor">
+<tr id="i56" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingFloatToleranceForFieldDescriptors-float-java.lang.Iterable-">usingFloatToleranceForFieldDescriptors</a></span>(float&nbsp;tolerance,
                                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
@@ -566,7 +617,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i52" class="altColor">
+<tr id="i57" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingFloatToleranceForFields-float-int-int...-">usingFloatToleranceForFields</a></span>(float&nbsp;tolerance,
                             int&nbsp;firstFieldNumber,
@@ -575,7 +626,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i53" class="rowColor">
+<tr id="i58" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#usingFloatToleranceForFields-float-java.lang.Iterable-">usingFloatToleranceForFields</a></span>(float&nbsp;tolerance,
                             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
@@ -583,7 +634,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i54" class="altColor">
+<tr id="i59" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#withPartialScope-com.google.common.truth.extensions.proto.FieldScope-">withPartialScope</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>
 <div class="block">Limits the comparison of Protocol buffers to the defined <a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a>.</div>
@@ -595,7 +646,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;com.google.common.truth.<a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></h3>
-<code><a href="../../../../../../com/google/common/truth/Subject.html#actual--">actual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#actualAsString--">actualAsString</a>, <a href="../../../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a>, <a href="../../../../../../com/google/common/truth/Subject.html#check--">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#getSubject--">getSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../../../com/google/common/truth/Subject.html#internalCustomName--">internalCustomName</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNull--">isNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a>, <a href="../../../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
+<code><a href="../../../../../../com/google/common/truth/Subject.html#actual--">actual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#actualAsString--">actualAsString</a>, <a href="../../../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a>, <a href="../../../../../../com/google/common/truth/Subject.html#check--">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#getSubject--">getSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../../../com/google/common/truth/Subject.html#internalCustomName--">internalCustomName</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-">isNotSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNull--">isNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-">isSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a>, <a href="../../../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -738,6 +789,62 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  fails.</div>
 </li>
 </ul>
+<a name="containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>containsAtLeast</h4>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast(@NullableDecl
+                                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;firstExpected,
+                                                     @NullableDecl
+                                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;secondExpected,
+                                                     @NullableDecl
+                                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;restOfExpected)</pre>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
+ element appears more than once in the expected elements to this call then it must appear at
+ least that number of times in the actual elements.
+
+ <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
+ on the object returned by this method. The expected elements must appear in the given order
+ within the actual elements, but they are not required to be consecutive.</div>
+</li>
+</ul>
+<a name="containsAtLeastElementsIn-java.lang.Iterable-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>containsAtLeastElementsIn</h4>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</pre>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
+ element appears more than once in the expected elements then it must appear at least that
+ number of times in the actual elements.
+
+ <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
+ on the object returned by this method. The expected elements must appear in the given order
+ within the actual elements, but they are not required to be consecutive.</div>
+</li>
+</ul>
+<a name="containsAtLeastElementsIn-java.lang.Object:A-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>containsAtLeastElementsIn</h4>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;expected)</pre>
+<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
+ element appears more than once in the expected elements then it must appear at least that
+ number of times in the actual elements.
+
+ <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
+ on the object returned by this method. The expected elements must appear in the given order
+ within the actual elements, but they are not required to be consecutive.</div>
+</li>
+</ul>
 <a name="containsAllOf-java.lang.Object-java.lang.Object-java.lang.Object...-">
 <!--   -->
 </a>
@@ -745,12 +852,14 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 <li class="blockList">
 <h4>containsAllOf</h4>
 <pre>@CanIgnoreReturnValue
+ <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllOf(@NullableDecl
-                                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;firstExpected,
-                                                   @NullableDecl
-                                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;secondExpected,
-                                                   @NullableDecl
-                                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;restOfExpected)</pre>
+                                                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;firstExpected,
+                                                                @NullableDecl
+                                                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;secondExpected,
+                                                                @NullableDecl
+                                                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;restOfExpected)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-"><code>containsAtLeast(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a>, which is equivalent.</span></div>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements to this call then it must appear at
  least that number of times in the actual elements.
@@ -767,7 +876,9 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
 <li class="blockList">
 <h4>containsAllIn</h4>
 <pre>@CanIgnoreReturnValue
+ <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;expected)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements then it must appear at least that
  number of times in the actual elements.
@@ -784,7 +895,9 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
 <li class="blockList">
 <h4>containsAllIn</h4>
 <pre>@CanIgnoreReturnValue
+ <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>[]&nbsp;expected)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Object:A-"><code>containsAtLeastElementsIn(Object[])</code></a>, which is equivalent.</span></div>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails. If an
  element appears more than once in the expected elements then it must appear at least that
  number of times in the actual elements.
@@ -889,13 +1002,46 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
  equal any of the excluded.)</div>
 </li>
 </ul>
+<a name="isInStrictOrder-java.util.Comparator-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isInStrictOrder</h4>
+<pre>public&nbsp;void&nbsp;isInStrictOrder(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</pre>
+<div class="block">Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
+ ordered means that each element in the iterable is <i>strictly</i> greater than the element
+ that preceded it.</div>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang">ClassCastException</a></code> - if any pair of elements is not mutually Comparable</dd>
+</dl>
+</li>
+</ul>
+<a name="isInOrder-java.util.Comparator-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isInOrder</h4>
+<pre>public&nbsp;void&nbsp;isInOrder(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</pre>
+<div class="block">Fails if the iterable is not ordered, according to the given comparator. Ordered means that
+ each element in the iterable is greater than or equal to the element that preceded it.</div>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang">ClassCastException</a></code> - if any pair of elements is not mutually Comparable</dd>
+</dl>
+</li>
+</ul>
 <a name="isStrictlyOrdered-java.util.Comparator-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>isStrictlyOrdered</h4>
-<pre>public&nbsp;void&nbsp;isStrictlyOrdered(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</pre>
+<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+public&nbsp;void&nbsp;isStrictlyOrdered(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInStrictOrder-java.util.Comparator-"><code>isInStrictOrder(Comparator)</code></a>.</span></div>
 <div class="block">Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
  ordered means that each element in the iterable is <i>strictly</i> greater than the element
  that preceded it.</div>
@@ -911,8 +1057,12 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
 <ul class="blockList">
 <li class="blockList">
 <h4>isOrdered</h4>
-<pre>public&nbsp;void&nbsp;isOrdered(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</pre>
-<div class="block">Fails if the iterable is not ordered, according to the given comparator. Ordered means that
+<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+public&nbsp;void&nbsp;isOrdered(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util">Comparator</a>&lt;?&gt;&nbsp;comparator)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInOrder-java.util.Comparator-"><code>isInOrder(Comparator)</code></a>.</span></div>
+<div class="block"><i>To be deprecated in favor of <a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInOrder-java.util.Comparator-"><code>isInOrder(Comparator)</code></a>.</i>
+
+ <p>Fails if the iterable is not ordered, according to the given comparator. Ordered means that
  each element in the iterable is greater than or equal to the element that preceded it.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1676,6 +1826,6 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
 <!--   -->
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
-<p class="legalCopy"><small>Copyright &#169; 2018. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2019. All rights reserved.</small></p>
 </body>
 </html>

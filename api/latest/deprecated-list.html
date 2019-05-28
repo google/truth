@@ -73,10 +73,53 @@
 <h1 title="Deprecated API" class="title">Deprecated API</h1>
 <h2 title="Contents">Contents</h2>
 <ul>
+<li><a href="#class">Deprecated Classes</a></li>
 <li><a href="#method">Deprecated Methods</a></li>
 </ul>
 </div>
-<div class="contentContainer"><a name="method">
+<div class="contentContainer"><a name="class">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<table class="deprecatedSummary" border="0" cellpadding="3" cellspacing="0" summary="Deprecated Classes table, listing deprecated classes, and an explanation">
+<caption><span>Deprecated Classes</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/DefaultSubject.html" title="class in com.google.common.truth">com.google.common.truth.DefaultSubject</a>
+<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> instead. At the moment, <code>Subject</code> has type
+     parameters, so you may wish to use <code>Subject&lt;?, ?&gt;</code>. However, those type parameters will
+     soon go away, so you may wish to start using raw <code>Subject</code> now to prepare.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/ListMultimapSubject.html" title="class in com.google.common.truth">com.google.common.truth.ListMultimapSubject</a>
+<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth"><code>MultimapSubject</code></a>.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">com.google.common.truth.extensions.proto.ListMultimapWithProtoValuesSubject</a>
+<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MultimapWithProtoValuesSubject</code></a>.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/SetMultimapSubject.html" title="class in com.google.common.truth">com.google.common.truth.SetMultimapSubject</a>
+<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth"><code>MultimapSubject</code></a>.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">com.google.common.truth.extensions.proto.SetMultimapWithProtoValuesSubject</a>
+<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MultimapWithProtoValuesSubject</code></a>.</span></div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<a name="method">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -88,8 +131,122 @@
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colOne"><a href="com/google/common/truth/ComparableSubject.html#comparesEqualTo-T-">com.google.common.truth.ComparableSubject.comparesEqualTo(T)</a>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/ComparableSubject.html#isEquivalentAccordingToCompareTo-T-"><code>ComparableSubject.isEquivalentAccordingToCompareTo(T)</code></a> instead.</span></div>
+<td class="colOne"><a href="com/google/common/truth/Subject.html#actual--">com.google.common.truth.Subject.actual()</a>
+<div class="block"><span class="deprecationComment">Instead, declare a private field to store the actual value inside your <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> subclass. We will be releasing a tool to automate most migrations.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#actualAsString--">com.google.common.truth.Subject.actualAsString()</a>
+<div class="block"><span class="deprecationComment">Now that <a href="com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-"><code>Subject.named(java.lang.String, java.lang.Object...)</code></a> is being removed, this method simply returns <a href="com/google/common/truth/Subject.html#actualCustomStringRepresentation--"><code>Subject.actualCustomStringRepresentation()</code></a>, surrounded by angle brackets (and we discourage angle
+     brackets in the new key-value style of failure messages). Most callers can use the actual
+     value directly instead. If they format it in <code>actualCustomStringRepresentation()</code>,
+     they may wish to apply similar formatting here.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#check--">com.google.common.truth.Subject.check()</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">the other overload</a>, which requires you
+     to supply more information to include in any failure messages.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-E:A-">com.google.common.truth.IterableSubject.UsingCorrespondence.containsAllIn(E[])</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-E:A-"><code>IterableSubject.UsingCorrespondence.containsAtLeastElementsIn(Object[])</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/IntStreamSubject.html#containsAllIn-java.lang.Iterable-">com.google.common.truth.IntStreamSubject.containsAllIn(Iterable&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IntStreamSubject.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>IntStreamSubject.containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/LongStreamSubject.html#containsAllIn-java.lang.Iterable-">com.google.common.truth.LongStreamSubject.containsAllIn(Iterable&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/LongStreamSubject.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>LongStreamSubject.containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/StreamSubject.html#containsAllIn-java.lang.Iterable-">com.google.common.truth.StreamSubject.containsAllIn(Iterable&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/StreamSubject.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>StreamSubject.containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.html#containsAllIn-java.lang.Iterable-">com.google.common.truth.IterableSubject.containsAllIn(Iterable&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>IterableSubject.containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllIn-java.lang.Iterable-">com.google.common.truth.extensions.proto.IterableOfProtosSubject.containsAllIn(Iterable&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>IterableOfProtosSubject.containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-java.lang.Iterable-">com.google.common.truth.IterableSubject.UsingCorrespondence.containsAllIn(Iterable&lt;? extends E&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>IterableSubject.UsingCorrespondence.containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAllIn-java.lang.Iterable-">com.google.common.truth.extensions.proto.IterableOfProtosUsingCorrespondence.containsAllIn(Iterable&lt;? extends M&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>IterableOfProtosUsingCorrespondence.containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAllIn-M:A-">com.google.common.truth.extensions.proto.IterableOfProtosUsingCorrespondence.containsAllIn(M[])</a>
+<div class="block"><span class="deprecationComment">Use <code>#containsAtLeastElementsIn(Object[])</code>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.html#containsAllIn-java.lang.Object:A-">com.google.common.truth.IterableSubject.containsAllIn(Object[])</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.html#containsAtLeastElementsIn-java.lang.Object:A-"><code>IterableSubject.containsAtLeastElementsIn(Object[])</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllIn-java.lang.Object:A-">com.google.common.truth.extensions.proto.IterableOfProtosSubject.containsAllIn(Object[])</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Object:A-"><code>IterableOfProtosSubject.containsAtLeastElementsIn(Object[])</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html#containsAllOf-double:A-">com.google.common.truth.PrimitiveDoubleArraySubject.DoubleArrayAsIterable.containsAllOf(double[])</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/PrimitiveDoubleArraySubject.DoubleArrayAsIterable.html#containsAtLeast-double:A-"><code>PrimitiveDoubleArraySubject.DoubleArrayAsIterable.containsAtLeast(double[])</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllOf-E-E-E...-">com.google.common.truth.IterableSubject.UsingCorrespondence.containsAllOf(E, E, E...)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeast-E-E-E...-"><code>IterableSubject.UsingCorrespondence.containsAtLeast(E, E, E...)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html#containsAllOf-float:A-">com.google.common.truth.PrimitiveFloatArraySubject.FloatArrayAsIterable.containsAllOf(float[])</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html#containsAtLeast-float:A-"><code>PrimitiveFloatArraySubject.FloatArrayAsIterable.containsAtLeast(float[])</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/IntStreamSubject.html#containsAllOf-int-int-int...-">com.google.common.truth.IntStreamSubject.containsAllOf(int, int, int...)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IntStreamSubject.html#containsAtLeast-int-int-int...-"><code>IntStreamSubject.containsAtLeast(int, int, int...)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/LongStreamSubject.html#containsAllOf-long-long-long...-">com.google.common.truth.LongStreamSubject.containsAllOf(long, long, long...)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/LongStreamSubject.html#containsAtLeast-long-long-long...-"><code>LongStreamSubject.containsAtLeast(long, long, long...)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAllOf-M-M-M...-">com.google.common.truth.extensions.proto.IterableOfProtosUsingCorrespondence.containsAllOf(M, M, M...)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAtLeast-M-M-M...-"><code>IterableOfProtosUsingCorrespondence.containsAtLeast(M, M, M...)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/StreamSubject.html#containsAllOf-java.lang.Object-java.lang.Object-java.lang.Object...-">com.google.common.truth.StreamSubject.containsAllOf(Object, Object, Object...)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/StreamSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-"><code>StreamSubject.containsAtLeast(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.html#containsAllOf-java.lang.Object-java.lang.Object-java.lang.Object...-">com.google.common.truth.IterableSubject.containsAllOf(Object, Object, Object...)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-"><code>IterableSubject.containsAtLeast(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllOf-java.lang.Object-java.lang.Object-java.lang.Object...-">com.google.common.truth.extensions.proto.IterableOfProtosSubject.containsAllOf(Object, Object, Object...)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-"><code>IterableOfProtosSubject.containsAtLeast(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a>, which is equivalent.</span></div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -99,63 +256,103 @@
 </td>
 </tr>
 <tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/DoubleSubject.TolerantDoubleComparison.html#equals-java.lang.Object-">com.google.common.truth.DoubleSubject.TolerantDoubleComparison.equals(Object)</a>
+<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(Object)</code></a> is not supported on TolerantDoubleComparison. If
+     you meant to compare doubles, use <a href="com/google/common/truth/DoubleSubject.TolerantDoubleComparison.html#of-double-"><code>DoubleSubject.TolerantDoubleComparison.of(double)</code></a> instead.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/Correspondence.html#equals-java.lang.Object-">com.google.common.truth.Correspondence.equals(Object)</a>
+<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(Object)</code></a> is not supported. If you meant to compare objects
+     using this <a href="com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>, use <a href="com/google/common/truth/Correspondence.html#compare-A-E-"><code>Correspondence.compare(A, E)</code></a>.</span></div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/PrimitiveFloatArraySubject.TolerantPrimitiveFloatArrayComparison.html#equals-java.lang.Object-">com.google.common.truth.PrimitiveFloatArraySubject.TolerantPrimitiveFloatArrayComparison.equals(Object)</a>
 <div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(Object)</code></a> is not supported on
      TolerantPrimitiveFloatArrayComparison. If you meant to compare float arrays, use <a href="com/google/common/truth/PrimitiveFloatArraySubject.TolerantPrimitiveFloatArrayComparison.html#of-float...-"><code>PrimitiveFloatArraySubject.TolerantPrimitiveFloatArrayComparison.of(float...)</code></a> or <a href="com/google/common/truth/PrimitiveFloatArraySubject.TolerantPrimitiveFloatArrayComparison.html#ofElementsIn-java.lang.Iterable-"><code>PrimitiveFloatArraySubject.TolerantPrimitiveFloatArrayComparison.ofElementsIn(java.lang.Iterable&lt;? extends java.lang.Number&gt;)</code></a> instead.</span></div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#equals-java.lang.Object-">com.google.common.truth.FloatSubject.TolerantFloatComparison.equals(Object)</a>
-<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(Object)</code></a> is not supported on TolerantFloatComparison. If you
-     meant to compare floats, use <a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#of-float-"><code>FloatSubject.TolerantFloatComparison.of(float)</code></a> instead.</span></div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colOne"><a href="com/google/common/truth/Correspondence.html#equals-java.lang.Object-">com.google.common.truth.Correspondence.equals(Object)</a>
-<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(Object)</code></a> is not supported. If you meant to compare objects
-     using this <a href="com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>, use <a href="com/google/common/truth/Correspondence.html#compare-A-E-"><code>Correspondence.compare(A, E)</code></a>.</span></div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/DoubleSubject.TolerantDoubleComparison.html#equals-java.lang.Object-">com.google.common.truth.DoubleSubject.TolerantDoubleComparison.equals(Object)</a>
-<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(Object)</code></a> is not supported on TolerantDoubleComparison. If
-     you meant to compare doubles, use <a href="com/google/common/truth/DoubleSubject.TolerantDoubleComparison.html#of-double-"><code>DoubleSubject.TolerantDoubleComparison.of(double)</code></a> instead.</span></div>
-</td>
-</tr>
-<tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/Subject.html#equals-java.lang.Object-">com.google.common.truth.Subject.equals(Object)</a>
 <div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(Object)</code></a> is not supported on Truth subjects. If you meant to
      test object equality between an expected and the actual value, use <a href="com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>Subject.isEqualTo(Object)</code></a> instead.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#equals-java.lang.Object-">com.google.common.truth.extensions.proto.MultimapWithProtoValuesFluentAssertion.equals(Object)</a>
-<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>MultimapWithProtoValuesFluentAssertion</code>.</span></div>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#equals-java.lang.Object-">com.google.common.truth.FloatSubject.TolerantFloatComparison.equals(Object)</a>
+<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(Object)</code></a> is not supported on TolerantFloatComparison. If you
+     meant to compare floats, use <a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#of-float-"><code>FloatSubject.TolerantFloatComparison.of(float)</code></a> instead.</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#equals-java.lang.Object-">com.google.common.truth.extensions.proto.ProtoFluentAssertion.equals(Object)</a>
 <div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>ProtoFluentAssertion.isEqualTo(Object)</code></a> instead.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#equals-java.lang.Object-">com.google.common.truth.extensions.proto.MapWithProtoValuesFluentAssertion.equals(Object)</a>
-<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>MapWithProtoValuesFluentAssertion</code>.</span></div>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#equals-java.lang.Object-">com.google.common.truth.extensions.proto.MultimapWithProtoValuesFluentAssertion.equals(Object)</a>
+<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>MultimapWithProtoValuesFluentAssertion</code>.</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#equals-java.lang.Object-">com.google.common.truth.extensions.proto.IterableOfProtosFluentAssertion.equals(Object)</a>
 <div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>IterableOfProtosFluentAssertion</code>.</span></div>
 </td>
 </tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#equals-java.lang.Object-">com.google.common.truth.extensions.proto.MapWithProtoValuesFluentAssertion.equals(Object)</a>
+<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>MapWithProtoValuesFluentAssertion</code>.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#fail-java.lang.String-">com.google.common.truth.Subject.fail(String)</a>
+<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithActual</code></a><code>(</code><a href="com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
+     migration aid, you can inline this method (and then inline the resulting method call, as
+     well).</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">com.google.common.truth.Subject.fail(String, Object...)</a>
+<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>Subject.failWithActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
+     message as a migration aid, you can inline this method.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">com.google.common.truth.Subject.fail(String, Object)</a>
+<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-"><code>Subject.failWithActual(String, Object)</code></a>. However, if you want to preserve your exact failure
+     message as a migration aid, you can inline this method (and then inline the resulting
+     method call, as well).</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">com.google.common.truth.Subject.failWithBadResults(String, Object, String, Object)</a>
+<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>Subject.failWithActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
+     message as a migration aid, you can inline this method.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">com.google.common.truth.Subject.failWithCustomSubject(String, Object, Object)</a>
+<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>Subject.failWithoutActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
+     message as a migration aid, you can inline this method.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">com.google.common.truth.Subject.failWithoutActual(String)</a>
+<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual</code></a><code>(</code><a href="com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
+     migration aid, you can inline this method (and then inline the resulting method call, as
+     well).</span></div>
+</td>
+</tr>
 <tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">com.google.common.truth.Subject.failWithoutSubject(String)</a>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-"><code>Subject.failWithoutActual(String)</code></a></span></div>
+<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual</code></a><code>(</code><a href="com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
+     migration aid, you can inline this method.</span></div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/Subject.html#getSubject--">com.google.common.truth.Subject.getSubject()</a>
-<div class="block"><span class="deprecationComment">Prefer <code>#actual()</code> for direct access to the subject.</span></div>
+<div class="block"><span class="deprecationComment">Instead, declare a private field to store the actual value inside your <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> subclass. We will be releasing a tool to automate most migrations.</span></div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -165,78 +362,54 @@
 </td>
 </tr>
 <tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/DoubleSubject.TolerantDoubleComparison.html#hashCode--">com.google.common.truth.DoubleSubject.TolerantDoubleComparison.hashCode()</a>
+<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> is not supported on TolerantDoubleComparison</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/Correspondence.html#hashCode--">com.google.common.truth.Correspondence.hashCode()</a>
+<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> is not supported.</span></div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/PrimitiveFloatArraySubject.TolerantPrimitiveFloatArrayComparison.html#hashCode--">com.google.common.truth.PrimitiveFloatArraySubject.TolerantPrimitiveFloatArrayComparison.hashCode()</a>
 <div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> is not supported on
      TolerantPrimitiveFloatArrayComparison</span></div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#hashCode--">com.google.common.truth.FloatSubject.TolerantFloatComparison.hashCode()</a>
-<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> is not supported on TolerantFloatComparison</span></div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colOne"><a href="com/google/common/truth/Correspondence.html#hashCode--">com.google.common.truth.Correspondence.hashCode()</a>
-<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> is not supported.</span></div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/DoubleSubject.TolerantDoubleComparison.html#hashCode--">com.google.common.truth.DoubleSubject.TolerantDoubleComparison.hashCode()</a>
-<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> is not supported on TolerantDoubleComparison</span></div>
-</td>
-</tr>
-<tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/Subject.html#hashCode--">com.google.common.truth.Subject.hashCode()</a>
 <div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> is not supported on Truth subjects.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#hashCode--">com.google.common.truth.extensions.proto.MultimapWithProtoValuesFluentAssertion.hashCode()</a>
-<div class="block"><span class="deprecationComment"><code>MultimapWithProtoValuesFluentAssertion</code> does not support <code>hashCode()</code>.</span></div>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#hashCode--">com.google.common.truth.FloatSubject.TolerantFloatComparison.hashCode()</a>
+<div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> is not supported on TolerantFloatComparison</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#hashCode--">com.google.common.truth.extensions.proto.ProtoFluentAssertion.hashCode()</a>
 <div class="block"><span class="deprecationComment"><code>ProtoFluentAssertion</code> does not support <code>hashCode()</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>ProtoFluentAssertion.isEqualTo(Object)</code></a> for testing.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#hashCode--">com.google.common.truth.extensions.proto.MapWithProtoValuesFluentAssertion.hashCode()</a>
-<div class="block"><span class="deprecationComment"><code>MapWithProtoValuesFluentAssertion</code> does not support <code>hashCode()</code>.</span></div>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#hashCode--">com.google.common.truth.extensions.proto.MultimapWithProtoValuesFluentAssertion.hashCode()</a>
+<div class="block"><span class="deprecationComment"><code>MultimapWithProtoValuesFluentAssertion</code> does not support <code>hashCode()</code>.</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#hashCode--">com.google.common.truth.extensions.proto.IterableOfProtosFluentAssertion.hashCode()</a>
 <div class="block"><span class="deprecationComment"><code>IterableOfProtosFluentAssertion</code> does not support <code>hashCode()</code>.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/ThrowableSubject.html#hasMessage-java.lang.String-">com.google.common.truth.ThrowableSubject.hasMessage(String)</a>
-<div class="block"><span class="deprecationComment">Use <code>hasMessageThat().isEqualTo(expected)</code> instead. You may also consider
-     using inexact matching of the message (e.g. <code>hasMessageThat().contains(substring)</code>)
-     for less brittle tests.</span></div>
-</td>
-</tr>
 <tr class="altColor">
-<td class="colOne"><a href="com/google/common/truth/PrimitiveDoubleArraySubject.html#hasValuesNotWithin-double-">com.google.common.truth.PrimitiveDoubleArraySubject.hasValuesNotWithin(double)</a>
-<div class="block"><span class="deprecationComment">Write a for loop over the values looking for mismatches (see this implementation
-     for an example)</span></div>
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#hashCode--">com.google.common.truth.extensions.proto.MapWithProtoValuesFluentAssertion.hashCode()</a>
+<div class="block"><span class="deprecationComment"><code>MapWithProtoValuesFluentAssertion</code> does not support <code>hashCode()</code>.</span></div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/PrimitiveFloatArraySubject.html#hasValuesNotWithin-float-">com.google.common.truth.PrimitiveFloatArraySubject.hasValuesNotWithin(float)</a>
-<div class="block"><span class="deprecationComment">Write a for loop over the values looking for mismatches (see this implementation
-     for an example)</span></div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colOne"><a href="com/google/common/truth/PrimitiveDoubleArraySubject.html#hasValuesWithin-double-">com.google.common.truth.PrimitiveDoubleArraySubject.hasValuesWithin(double)</a>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/PrimitiveDoubleArraySubject.html#usingTolerance-double-"><code>PrimitiveDoubleArraySubject.usingTolerance(double)</code></a>, e.g. <code>assertThat(doubleArray).usingTolerance(1e-5).containsExactly(1.2, 3.4, 5.6).inOrder();</code></span></div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/PrimitiveFloatArraySubject.html#hasValuesWithin-float-">com.google.common.truth.PrimitiveFloatArraySubject.hasValuesWithin(float)</a>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/PrimitiveFloatArraySubject.html#usingTolerance-double-"><code>PrimitiveFloatArraySubject.usingTolerance(double)</code></a>, e.g. <code>assertThat(floatArray).usingTolerance(1e-5).containsExactly(1.2f, 3.4f, 5.6f).inOrder();</code></span></div>
+<td class="colOne"><a href="com/google/common/truth/Subject.html#internalCustomName--">com.google.common.truth.Subject.internalCustomName()</a>
+<div class="block"><span class="deprecationComment">This method will be removed when <a href="com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-"><code>Subject.named(java.lang.String, java.lang.Object...)</code></a> is.</span></div>
 </td>
 </tr>
 <tr class="altColor">
@@ -332,6 +505,68 @@
 <div class="block"><span class="deprecationComment">You probably meant to call <a href="com/google/common/truth/IterableSubject.html#containsNoneIn-java.lang.Iterable-"><code>IterableSubject.containsNoneIn(java.lang.Iterable&lt;?&gt;)</code></a> instead.</span></div>
 </td>
 </tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">com.google.common.truth.Subject.isNotSameAs(Object)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-"><code>Subject.isNotSameInstanceAs(java.lang.Object)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.html#isOrdered--">com.google.common.truth.IterableSubject.isOrdered()</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.html#isInOrder--"><code>IterableSubject.isInOrder()</code></a></span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.html#isOrdered-java.util.Comparator-">com.google.common.truth.IterableSubject.isOrdered(Comparator&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.html#isInOrder-java.util.Comparator-"><code>IterableSubject.isInOrder(Comparator)</code></a>.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isOrdered-java.util.Comparator-">com.google.common.truth.extensions.proto.IterableOfProtosSubject.isOrdered(Comparator&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInOrder-java.util.Comparator-"><code>IterableOfProtosSubject.isInOrder(Comparator)</code></a>.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">com.google.common.truth.Subject.isSameAs(Object)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-"><code>Subject.isSameInstanceAs(java.lang.Object)</code></a>, which is equivalent.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.html#isStrictlyOrdered--">com.google.common.truth.IterableSubject.isStrictlyOrdered()</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.html#isInStrictOrder--"><code>IterableSubject.isInStrictOrder()</code></a>.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.html#isStrictlyOrdered-java.util.Comparator-">com.google.common.truth.IterableSubject.isStrictlyOrdered(Comparator&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/IterableSubject.html#isInStrictOrder-java.util.Comparator-"><code>IterableSubject.isInStrictOrder(Comparator)</code></a>.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isStrictlyOrdered-java.util.Comparator-">com.google.common.truth.extensions.proto.IterableOfProtosSubject.isStrictlyOrdered(Comparator&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInStrictOrder-java.util.Comparator-"><code>IterableOfProtosSubject.isInStrictOrder(Comparator)</code></a>.</span></div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/ListMultimapSubject.html#named-java.lang.String-java.lang.Object...-">com.google.common.truth.ListMultimapSubject.named(String, Object...)</a></td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/SortedSetSubject.html#named-java.lang.String-java.lang.Object...-">com.google.common.truth.SortedSetSubject.named(String, Object...)</a></td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/SetMultimapSubject.html#named-java.lang.String-java.lang.Object...-">com.google.common.truth.SetMultimapSubject.named(String, Object...)</a></td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/MultisetSubject.html#named-java.lang.String-java.lang.Object...-">com.google.common.truth.MultisetSubject.named(String, Object...)</a></td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">com.google.common.truth.Subject.named(String, Object...)</a>
+<div class="block"><span class="deprecationComment">Instead of <code>assertThat(foo).named("foo")</code>, use <code>assertWithMessage("foo").that(foo)</code>. For custom subjects, use <code>assertWithMessage("foo").about(foos()).that(foo)</code>. For other scenarios, see <a
+     href="https://google.github.io/truth/faq#full-chain">this FAQ entry about adding
+     messages</a>. We will be releasing a tool to automate most migrations.</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="com/google/common/truth/SortedMapSubject.html#named-java.lang.String-java.lang.Object...-">com.google.common.truth.SortedMapSubject.named(String, Object...)</a></td>
+</tr>
 </tbody>
 </table>
 </li>
@@ -384,6 +619,6 @@
 <!--   -->
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
-<p class="legalCopy"><small>Copyright &#169; 2018. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2019. All rights reserved.</small></p>
 </body>
 </html>

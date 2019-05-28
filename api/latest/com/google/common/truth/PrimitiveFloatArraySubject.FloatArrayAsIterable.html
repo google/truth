@@ -18,8 +18,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var methods = {"i0":42,"i1":10,"i2":10,"i3":10,"i4":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -140,7 +140,7 @@ extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorres
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
@@ -148,7 +148,9 @@ extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorres
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html#containsAllOf-float:A-">containsAllOf</a></span>(float[]&nbsp;expected)</code>
-<div class="block">As <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllOf-E-E-E...-"><code>IterableSubject.UsingCorrespondence.containsAllOf(Object, Object, Object...)</code></a> but taking a primitive float array.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html#containsAtLeast-float:A-"><code>containsAtLeast(float[])</code></a>, which is equivalent.</span></div>
+</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
@@ -159,11 +161,17 @@ extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorres
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html#containsAtLeast-float:A-">containsAtLeast</a></span>(float[]&nbsp;expected)</code>
+<div class="block">As <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeast-E-E-E...-"><code>IterableSubject.UsingCorrespondence.containsAtLeast(Object, Object, Object...)</code></a> but taking a primitive float array.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html#containsExactly-float:A-">containsExactly</a></span>(float[]&nbsp;expected)</code>
 <div class="block">As <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactly-E...-"><code>IterableSubject.UsingCorrespondence.containsExactly(Object...)</code></a> but taking a primitive float array.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html#containsNoneOf-float:A-">containsNoneOf</a></span>(float[]&nbsp;excluded)</code>
 <div class="block">As <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneOf-E-E-E...-"><code>IterableSubject.UsingCorrespondence.containsNoneOf(Object, Object, Object...)</code></a> but taking a primitive float array.</div>
@@ -175,7 +183,7 @@ extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorres
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;com.google.common.truth.<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></h3>
-<code><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#contains-E-">contains</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-E:A-">containsAllIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-java.lang.Iterable-">containsAllIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllOf-E-E-E...-">containsAllOf</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyIn-E:A-">containsAnyIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyIn-java.lang.Iterable-">containsAnyIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyOf-E-E-E...-">containsAnyOf</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactly-E...-">containsExactly</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn-E:A-">containsExactlyElementsIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneIn-E:A-">containsNoneIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneIn-java.lang.Iterable-">containsNoneIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneOf-E-E-E...-">containsNoneOf</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-com.google.common.base.Function-">displayingDiffsPairedBy</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-">displayingDiffsPairedBy</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#doesNotContain-E-">doesNotContain</a></code></li>
+<code><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#contains-E-">contains</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-E:A-">containsAllIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-java.lang.Iterable-">containsAllIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllOf-E-E-E...-">containsAllOf</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyIn-E:A-">containsAnyIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyIn-java.lang.Iterable-">containsAnyIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyOf-E-E-E...-">containsAnyOf</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeast-E-E-E...-">containsAtLeast</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-E:A-">containsAtLeastElementsIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-java.lang.Iterable-">containsAtLeastElementsIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactly-E...-">containsExactly</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn-E:A-">containsExactlyElementsIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneIn-E:A-">containsNoneIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneIn-java.lang.Iterable-">containsNoneIn</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneOf-E-E-E...-">containsNoneOf</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-com.google.common.base.Function-">displayingDiffsPairedBy</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-">displayingDiffsPairedBy</a>, <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#doesNotContain-E-">doesNotContain</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -198,6 +206,17 @@ extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorres
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a name="containsAtLeast-float:A-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>containsAtLeast</h4>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast(float[]&nbsp;expected)</pre>
+<div class="block">As <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeast-E-E-E...-"><code>IterableSubject.UsingCorrespondence.containsAtLeast(Object, Object, Object...)</code></a> but taking a primitive float array.</div>
+</li>
+</ul>
 <a name="containsAllOf-float:A-">
 <!--   -->
 </a>
@@ -205,7 +224,9 @@ extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorres
 <li class="blockList">
 <h4>containsAllOf</h4>
 <pre>@CanIgnoreReturnValue
+ <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllOf(float[]&nbsp;expected)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.FloatArrayAsIterable.html#containsAtLeast-float:A-"><code>containsAtLeast(float[])</code></a>, which is equivalent.</span></div>
 <div class="block">As <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllOf-E-E-E...-"><code>IterableSubject.UsingCorrespondence.containsAllOf(Object, Object, Object...)</code></a> but taking a primitive float array.</div>
 </li>
 </ul>
@@ -309,6 +330,6 @@ public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="in
 <!--   -->
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
-<p class="legalCopy"><small>Copyright &#169; 2018. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2019. All rights reserved.</small></p>
 </body>
 </html>

@@ -18,8 +18,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var methods = {"i0":10,"i1":42,"i2":42,"i3":42,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -135,7 +135,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
@@ -150,15 +150,17 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-E:A-">containsAllIn</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</code>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-E:A-"><code>containsAtLeastElementsIn(Object[])</code></a>, which is equivalent.</span></div>
+</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllIn-java.lang.Iterable-">containsAllIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</code>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
+</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -166,8 +168,9 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAllOf-E-E-E...-">containsAllOf</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
              <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
              <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;rest)</code>
-<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
- i.e.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeast-E-E-E...-"><code>containsAtLeast(E, E, E...)</code></a>, which is equivalent.</span></div>
+</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
@@ -195,35 +198,58 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeast-E-E-E...-">containsAtLeast</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
+               <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
+               <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;rest)</code>
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
+ i.e.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-E:A-">containsAtLeastElementsIn</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</code>
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
+ i.e.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-java.lang.Iterable-">containsAtLeastElementsIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</code>
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
+ i.e.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactly-E...-">containsExactly</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;expected)</code>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn-E:A-">containsExactlyElementsIn</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</code>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</code>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneIn-E:A-">containsNoneIn</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;excluded)</code>
 <div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneIn-java.lang.Iterable-">containsNoneIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;excluded)</code>
 <div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsNoneOf-E-E-E...-">containsNoneOf</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;firstExcluded,
               <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;secondExcluded,
@@ -231,22 +257,22 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <div class="block">Checks that the subject contains no elements that correspond to any of the given elements.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-com.google.common.base.Function-">displayingDiffsPairedBy</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;actualKeyFunction,
-                       <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;expectedKeyFunction)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-com.google.common.base.Function-">displayingDiffsPairedBy</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,?&gt;&nbsp;actualKeyFunction,
+                       <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,?&gt;&nbsp;expectedKeyFunction)</code>
 <div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
  fails.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-">displayingDiffsPairedBy</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;keyFunction)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-">displayingDiffsPairedBy</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,?&gt;&nbsp;keyFunction)</code>
 <div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
  fails.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#doesNotContain-E-">doesNotContain</a></span>(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;excluded)</code>
 <div class="block">Checks that none of the actual elements correspond to the given element.</div>
@@ -280,7 +306,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>displayingDiffsPairedBy</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;displayingDiffsPairedBy(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;keyFunction)</pre>
+<pre>public&nbsp;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;displayingDiffsPairedBy(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,?&gt;&nbsp;keyFunction)</pre>
 <div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
  fails. For example:
 
@@ -292,10 +318,10 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
  </code></pre>
 
  <p><b>Important</b>: The {code keyFunction} function must be able to accept both the actual
- and the unexpected elements, i.e. it must satisfy <code>Function&lt;? super A, ? extends
- Object&gt;</code> as well as <code>Function&lt;? super E, ? extends Object&gt;</code>. If that constraint is not
- met then a subsequent method may throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang"><code>ClassCastException</code></a>. Use the two-parameter
- overload if you need to specify different key functions for the actual and expected elements.
+ and the unexpected elements, i.e. it must satisfy <code>Function&lt;? super A, ?&gt;</code> as well as
+ <code>Function&lt;? super E, ?&gt;</code>. If that constraint is not met then a subsequent method may
+ throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang"><code>ClassCastException</code></a>. Use the two-parameter overload if you need to specify
+ different key functions for the actual and expected elements.
 
  <p>On assertions where it makes sense to do so, the elements are paired as follows: they are
  keyed by <code>keyFunction</code>, and if an unexpected element and a missing element have the
@@ -310,6 +336,10 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
  true then it is guaranteed that <code>actualKey</code> is equal to <code>expectedKey</code>, but there
  are cases where <code>actualKey</code> is equal to <code>expectedKey</code> but <code>correspondence.compare(actual, expected)</code> is false.
 
+ <p>If the <code>apply</code> method on the key function throws an exception then the element will
+ be treated as if it had a null key and not paired. (The first such exception will be noted in
+ the failure message.)
+
  <p>Note that calling this method makes no difference to whether a test passes or fails, it
  just improves the message if it fails.</div>
 </li>
@@ -320,8 +350,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>displayingDiffsPairedBy</h4>
-<pre>public&nbsp;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;displayingDiffsPairedBy(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;actualKeyFunction,
-                                                                        <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,? extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;expectedKeyFunction)</pre>
+<pre>public&nbsp;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;displayingDiffsPairedBy(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,?&gt;&nbsp;actualKeyFunction,
+                                                                        <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;? super <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>,?&gt;&nbsp;expectedKeyFunction)</pre>
 <div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
  fails. For example:
 
@@ -345,6 +375,10 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
  correspondence, i.e. given <code>actual</code> and <code>expected</code> values with keys <code>actualKey</code> and <code>expectedKey</code>, if <code>correspondence.compare(actual, expected)</code> is
  true then it is guaranteed that <code>actualKey</code> is equal to <code>expectedKey</code>, but there
  are cases where <code>actualKey</code> is equal to <code>expectedKey</code> but <code>correspondence.compare(actual, expected)</code> is false.
+
+ <p>If the <code>apply</code> method on either of the key functions throws an exception then the
+ element will be treated as if it had a null key and not paired. (The first such exception
+ will be noted in the failure message.)
 
  <p>Note that calling this method makes no difference to whether a test passes or fails, it
  just improves the message if it fails.</div>
@@ -445,12 +479,14 @@ public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="in
 <h4>containsAllOf</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/SafeVarargs.html?is-external=true" title="class or interface in java.lang">@SafeVarargs</a>
  @CanIgnoreReturnValue
+ <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllOf(@NullableDecl
-                                                                       <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
-                                                                       @NullableDecl
-                                                                       <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
-                                                                       @NullableDecl
-                                                                       <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;rest)</pre>
+                                                                                    <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
+                                                                                    @NullableDecl
+                                                                                    <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
+                                                                                    @NullableDecl
+                                                                                    <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;rest)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeast-E-E-E...-"><code>containsAtLeast(E, E, E...)</code></a>, which is equivalent.</span></div>
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
@@ -467,7 +503,9 @@ public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" tit
 <li class="blockList">
 <h4>containsAllIn</h4>
 <pre>@CanIgnoreReturnValue
+ <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
@@ -486,7 +524,70 @@ public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="in
 <li class="blockList">
 <h4>containsAllIn</h4>
 <pre>@CanIgnoreReturnValue
+ <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAllIn(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAtLeastElementsIn-E:A-"><code>containsAtLeastElementsIn(Object[])</code></a>, which is equivalent.</span></div>
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
+ i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+ elements where each pair of elements correspond.
+
+ <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
+ on the object returned by this method. The elements must appear in the given order within the
+ subject, but they are not required to be consecutive.</div>
+</li>
+</ul>
+<a name="containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object:A-">
+<!--   -->
+</a><a name="containsAtLeast-E-E-E...-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>containsAtLeast</h4>
+<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/SafeVarargs.html?is-external=true" title="class or interface in java.lang">@SafeVarargs</a>
+ @CanIgnoreReturnValue
+public final&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast(@NullableDecl
+                                                                         <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;first,
+                                                                         @NullableDecl
+                                                                         <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&nbsp;second,
+                                                                         @NullableDecl
+                                                                         <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>...&nbsp;rest)</pre>
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
+ i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+ elements where each pair of elements correspond.
+
+ <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
+ on the object returned by this method. The elements must appear in the given order within the
+ subject, but they are not required to be consecutive.</div>
+</li>
+</ul>
+<a name="containsAtLeastElementsIn-java.lang.Iterable-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>containsAtLeastElementsIn</h4>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;? extends <a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt;&nbsp;expected)</pre>
+<div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
+ i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
+ elements where each pair of elements correspond.
+
+ <p>To also test that the contents appear in the given order, make a call to <code>inOrder()</code>
+ on the object returned by this method. The elements must appear in the given order within the
+ subject, but they are not required to be consecutive.</div>
+</li>
+</ul>
+<a name="containsAtLeastElementsIn-java.lang.Object:A-">
+<!--   -->
+</a><a name="containsAtLeastElementsIn-E:A-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>containsAtLeastElementsIn</h4>
+<pre>@CanIgnoreReturnValue
+public&nbsp;<a href="../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeastElementsIn(<a href="../../../../com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>[]&nbsp;expected)</pre>
 <div class="block">Checks that the subject contains elements that corresponds to all of the expected elements,
  i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
  elements where each pair of elements correspond.
@@ -654,6 +755,6 @@ public final&nbsp;void&nbsp;containsNoneOf(@NullableDecl
 <!--   -->
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
-<p class="legalCopy"><small>Copyright &#169; 2018. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2019. All rights reserved.</small></p>
 </body>
 </html>
