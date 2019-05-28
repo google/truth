@@ -120,9 +120,7 @@ my build setup.
 Truth supports Android in all its versions. The downside is that it requires you
 to look in a separate class for Java 8 assertions.
 
-Truth also supports [GWT], but we haven't made the necessary artifacts available
-outside Google. If you'd be interested in using open-source Truth under GWT,
-[let us know][bug].
+Truth also supports [GWT].
 
 ### Writing your own assertion methods
 
@@ -174,8 +172,11 @@ Google.
 
 Both libraries have some sharp edges:
 
-Under AssertJ, `assertThat(someLongThatIsEqualTo1).isNotEqualTo(1)` passes, even
-though you probably didn't mean it to. Under Truth, it fails as intended.
+Under AssertJ,
+`assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next())` can
+pass, even though if both `next()` calls return the same value. Under Truth,
+we've chosen a different name for the method (`isNotSameInstanceAs`) to steer
+people away from using it unless they mean to test reference equality.
 
 Under Truth, `assertThat(listOfStrings).doesNotContain(integer)` passes, even
 though your test is probably buggy. Under AssertJ, it doesn't compile.
@@ -184,8 +185,10 @@ though your test is probably buggy. Under AssertJ, it doesn't compile.
 
 AssertJ supports Hamcrest-style ["conditions."][conditions]
 
-Truth does not. We encourage people to instead write [custom `Subject`
-implementations](extension), which IDEs can better surface during autocompletion.
+Truth mostly does not. We encourage people to instead write
+[custom `Subject` implementations](extension), which IDEs can better surface
+during autocompletion. However, we do offer similar functionality for
+collections through our [`Correspondence`] class.
 
 ### And more
 
@@ -319,4 +322,5 @@ softly.assertThat(actual).isEqualTo(expected); // @Rule with JUnitSoftAssertions
 [conditions]: https://joel-costigliola.github.io/assertj/assertj-core-conditions.html
 [reflective field comparisons]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#field-by-field-comparison
 [bug]: https://github.com/google/truth/issues/new
+[`Correspondence`]: https://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html
 
