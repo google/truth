@@ -569,7 +569,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
  message.
 
  <p><code>named()</code> takes a format template and argument objects which will be substituted into
- the template using <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Strings.html?is-external=true#lenientFormat-java.lang.String-java.lang.Object...-" title="class or interface in com.google.common.base"><code>Strings.lenientFormat</code></a>.
+ the template using <code>Strings.lenientFormat</code>.
  Note this only supports the <code>%s</code> specifier.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -610,7 +610,7 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
  objects are equal if any of the following is true:
 
  <ul>
-   <li>they are equal according to <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Objects.html?is-external=true#equal-java.lang.Object-java.lang.Object-" title="class or interface in com.google.common.base"><code>Objects.equal(java.lang.Object, java.lang.Object)</code></a>
+   <li>they are equal according to <code>Objects.equal(java.lang.Object, java.lang.Object)</code>
    <li>they are arrays and are considered equal by the appropriate <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals-long:A-long:A-" title="class or interface in java.util"><code>Arrays.equals(long[], long[])</code></a>
        overload
    <li>they are boxed integer types (<code>Byte</code>, <code>Short</code>, <code>Character</code>, <code>Integer</code>, or <code>Long</code>) and they are numerically equal when converted to <code>Long</code>.
