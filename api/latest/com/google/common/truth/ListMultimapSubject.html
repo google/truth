@@ -100,7 +100,7 @@ var activeTableTab = "activeTableTab";
 <li><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">com.google.common.truth.Subject</a>&lt;<a href="../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a>,com.google.common.collect.Multimap&lt;?,?&gt;&gt;</li>
+<li><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">com.google.common.truth.Subject</a>&lt;<a href="../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a>,<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,?&gt;&gt;</li>
 <li>
 <ul class="inheritance">
 <li><a href="../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">com.google.common.truth.MultimapSubject</a></li>
@@ -125,7 +125,7 @@ var activeTableTab = "activeTableTab";
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public final class <span class="typeNameLabel">ListMultimapSubject</span>
 extends <a href="../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></pre>
-<div class="block">Type-specific extensions of <code>Multimap</code> subjects for <code>ListMultimap</code> subjects.</div>
+<div class="block">Type-specific extensions of <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> subjects for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/ListMultimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>ListMultimap</code></a> subjects.</div>
 <dl>
 <dt><span class="simpleTagLabel">Author:</span></dt>
 <dd>Daniel Ploch</dd>
@@ -172,12 +172,12 @@ extends <a href="../../../../com/google/common/truth/MultimapSubject.html" title
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/ListMultimapSubject.html#isEqualTo-com.google.common.collect.SetMultimap-">isEqualTo</a></span>(com.google.common.collect.SetMultimap&lt;?,?&gt;&nbsp;other)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/ListMultimapSubject.html#isEqualTo-com.google.common.collect.SetMultimap-">isEqualTo</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/SetMultimap.html?is-external=true" title="class or interface in com.google.common.collect">SetMultimap</a>&lt;?,?&gt;&nbsp;other)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
 <div class="block"><span class="deprecationComment">A SetMultimap can never compare equal with a ListMultimap if either Multimap is
      non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> can never compare equal. Prefer
      <a href="../../../../com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap)</code></a>
-     instead. Consult <code>Multimap.equals(java.lang.Object)</code> for more information.</span></div>
+     instead. Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
 </div>
 </td>
 </tr>
@@ -241,11 +241,11 @@ public&nbsp;<a href="../../../../com/google/common/truth/ListMultimapSubject.htm
  message.
 
  <p><code>named()</code> takes a format template and argument objects which will be substituted into
- the template using <code>Strings.lenientFormat</code>.
+ the template using <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Strings.html?is-external=true#lenientFormat-java.lang.String-java.lang.Object...-" title="class or interface in com.google.common.base"><code>Strings.lenientFormat</code></a>.
  Note this only supports the <code>%s</code> specifier.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a></code>&nbsp;in class&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a>,com.google.common.collect.Multimap&lt;?,?&gt;&gt;</code></dd>
+<dd><code><a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a></code>&nbsp;in class&nbsp;<code><a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a>,<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,?&gt;&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>format</code> - a template with <code>%s</code> placeholders</dd>
 <dd><code>args</code> - the object parameters which will be applied to the message template.</dd>
@@ -260,11 +260,11 @@ public&nbsp;<a href="../../../../com/google/common/truth/ListMultimapSubject.htm
 <h4>isEqualTo</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 public&nbsp;void&nbsp;isEqualTo(@NullableDecl
-                                  com.google.common.collect.SetMultimap&lt;?,?&gt;&nbsp;other)</pre>
+                                  <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/SetMultimap.html?is-external=true" title="class or interface in com.google.common.collect">SetMultimap</a>&lt;?,?&gt;&nbsp;other)</pre>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">A SetMultimap can never compare equal with a ListMultimap if either Multimap is
      non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> can never compare equal. Prefer
      <a href="../../../../com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap)</code></a>
-     instead. Consult <code>Multimap.equals(java.lang.Object)</code> for more information.</span></div>
+     instead. Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
 </li>
 </ul>
 </li>

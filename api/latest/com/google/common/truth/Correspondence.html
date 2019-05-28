@@ -274,8 +274,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>static &lt;A,E&gt;&nbsp;<a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;A,E&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Correspondence.html#transforming-com.google.common.base.Function-com.google.common.base.Function-java.lang.String-">transforming</a></span>(com.google.common.base.Function&lt;A,?&gt;&nbsp;actualTransform,
-            com.google.common.base.Function&lt;E,?&gt;&nbsp;expectedTransform,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Correspondence.html#transforming-com.google.common.base.Function-com.google.common.base.Function-java.lang.String-">transforming</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;A,?&gt;&nbsp;actualTransform,
+            <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;E,?&gt;&nbsp;expectedTransform,
             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;description)</code>
 <div class="block">Constructs a <a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> that compares elements by transforming the actual and the
  expected elements using the given functions and testing the transformed values for equality.</div>
@@ -283,7 +283,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>static &lt;A,E&gt;&nbsp;<a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;A,E&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Correspondence.html#transforming-com.google.common.base.Function-java.lang.String-">transforming</a></span>(com.google.common.base.Function&lt;A,? extends E&gt;&nbsp;actualTransform,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Correspondence.html#transforming-com.google.common.base.Function-java.lang.String-">transforming</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;A,? extends E&gt;&nbsp;actualTransform,
             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;description)</code>
 <div class="block">Constructs a <a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> that compares elements by transforming the actual elements
  using the given function and testing for equality with the expected elements.</div>
@@ -392,7 +392,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>transforming</h4>
-<pre>public static&nbsp;&lt;A,E&gt;&nbsp;<a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;A,E&gt;&nbsp;transforming(com.google.common.base.Function&lt;A,? extends E&gt;&nbsp;actualTransform,
+<pre>public static&nbsp;&lt;A,E&gt;&nbsp;<a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;A,E&gt;&nbsp;transforming(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;A,? extends E&gt;&nbsp;actualTransform,
                                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;description)</pre>
 <div class="block">Constructs a <a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> that compares elements by transforming the actual elements
  using the given function and testing for equality with the expected elements. If the
@@ -423,7 +423,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
  </code></pre></div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>actualTransform</code> - a <code>Function</code> taking an actual value and returning a new value
+<dd><code>actualTransform</code> - a <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><code>Function</code></a> taking an actual value and returning a new value
      which will be compared with an expected value to determine whether they correspond</dd>
 <dd><code>description</code> - should fill the gap in a failure message of the form <code>"not true that
      &lt;some actual element&gt; is an element that &lt;description&gt; &lt;some expected element&gt;"</code>, e.g.
@@ -437,8 +437,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>transforming</h4>
-<pre>public static&nbsp;&lt;A,E&gt;&nbsp;<a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;A,E&gt;&nbsp;transforming(com.google.common.base.Function&lt;A,?&gt;&nbsp;actualTransform,
-                                                     com.google.common.base.Function&lt;E,?&gt;&nbsp;expectedTransform,
+<pre>public static&nbsp;&lt;A,E&gt;&nbsp;<a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;A,E&gt;&nbsp;transforming(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;A,?&gt;&nbsp;actualTransform,
+                                                     <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</a>&lt;E,?&gt;&nbsp;expectedTransform,
                                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;description)</pre>
 <div class="block">Constructs a <a href="../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a> that compares elements by transforming the actual and the
  expected elements using the given functions and testing the transformed values for equality. If
@@ -473,10 +473,10 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
  </code></pre></div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>actualTransform</code> - a <code>Function</code> taking an actual value and returning a new value
+<dd><code>actualTransform</code> - a <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><code>Function</code></a> taking an actual value and returning a new value
      which will be compared with a transformed expected value to determine whether they
      correspond</dd>
-<dd><code>expectedTransform</code> - a <code>Function</code> taking an expected value and returning a new value
+<dd><code>expectedTransform</code> - a <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><code>Function</code></a> taking an expected value and returning a new value
      which will be compared with a transformed actual value</dd>
 <dd><code>description</code> - should fill the gap in a failure message of the form <code>"not true that
      &lt;some actual element&gt; is an element that &lt;description&gt; &lt;some expected element&gt;"</code>, e.g.

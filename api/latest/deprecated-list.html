@@ -417,7 +417,7 @@
 <div class="block"><span class="deprecationComment">A ListMultimap can never compare equal with a SetMultimap if either Multimap is
      non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> can never compare
      equal. Prefer <a href="com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap)</code></a> instead.
-     Consult <code>Multimap.equals(java.lang.Object)</code> for more information.</span></div>
+     Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -425,7 +425,7 @@
 <div class="block"><span class="deprecationComment"><code>#isEqualTo</code> A ListMultimap can never compare equal with a SetMultimap if
      either Multimap is non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> can
      never compare equal. Prefer <a href="com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap)</code></a> instead.
-     Consult <code>Multimap.equals(java.lang.Object)</code> for more information.</span></div>
+     Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
 </td>
 </tr>
 <tr class="altColor">
@@ -436,7 +436,7 @@
 </tr>
 <tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/AtomicLongMapSubject.html#isEqualTo-java.lang.Object-">com.google.common.truth.AtomicLongMapSubject.isEqualTo(Object)</a>
-<div class="block"><span class="deprecationComment"><code>AtomicLongMap</code> does not define equality (i.e., it does not implement
+<div class="block"><span class="deprecationComment"><a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not define equality (i.e., it does not implement
      equals()), so you probably don't want to call this method. Instead, perform your assertion
      on the map view (e.g., assertThat(atomicLongMap.asMap()).isEqualTo(EXPECTED_MAP)).</span></div>
 </td>
@@ -446,7 +446,7 @@
 <div class="block"><span class="deprecationComment">A SetMultimap can never compare equal with a ListMultimap if either Multimap is
      non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> can never compare equal. Prefer
      <a href="com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap)</code></a>
-     instead. Consult <code>Multimap.equals(java.lang.Object)</code> for more information.</span></div>
+     instead. Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -454,7 +454,7 @@
 <div class="block"><span class="deprecationComment"><code>#isEqualTo</code> A SetMultimap can never compare equal with a ListMultimap if
      either Multimap is non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> can never compare equal.
      Prefer <a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapWithProtoValuesSubject.containsExactlyEntriesIn(
-     com.google.common.collect.Multimap)</code></a> instead. Consult <code>Multimap.equals(java.lang.Object)</code> for more information.</span></div>
+     com.google.common.collect.Multimap)</code></a> instead. Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
 </td>
 </tr>
 <tr class="altColor">
@@ -495,7 +495,7 @@
 </tr>
 <tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/AtomicLongMapSubject.html#isNotEqualTo-java.lang.Object-">com.google.common.truth.AtomicLongMapSubject.isNotEqualTo(Object)</a>
-<div class="block"><span class="deprecationComment"><code>AtomicLongMap</code> does not define equality (i.e., it does not implement
+<div class="block"><span class="deprecationComment"><a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not define equality (i.e., it does not implement
      equals()), so you probably don't want to call this method. Instead, perform your assertion
      on the map view (e.g., assertThat(atomicLongMap.asMap()).isNotEqualTo(UNEXPECTED_MAP)).</span></div>
 </td>

@@ -102,13 +102,13 @@ var activeTableTab = "activeTableTab";
 <hr>
 <br>
 <pre>public interface <span class="typeNameLabel">MultimapWithProtoValuesFluentAssertion&lt;M extends com.google.protobuf.Message&gt;</span></pre>
-<div class="block">Fluent API to perform detailed, customizable comparison of <code>Multimap</code>s containing protocol
+<div class="block">Fluent API to perform detailed, customizable comparison of <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>s containing protocol
  buffers as values. The same comparison rules are applied to all pairs of protocol buffers which
  get compared.
 
  <p>The <b>keys</b> of these maps are treated as ordinary objects, and keys which happen to be
  protocol buffers are not given special treatment. They are compared with <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(java.lang.Object)</code></a>
- and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> as documented by the <code>Multimap</code> interface.
+ and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> as documented by the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> interface.
 
  <p>Methods may be chained in any order, but the chain should terminate with a method that doesn't
  return a <code>MultimapWithProtoValuesFluentAssertion</code>, such as <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>containsExactlyEntriesIn(com.google.common.collect.Multimap&lt;?, ? extends M&gt;)</code></a> or <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#containsEntry-java.lang.Object-M-"><code>containsEntry(java.lang.Object, M)</code></a>.
@@ -163,7 +163,7 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-">containsExactlyEntriesIn</a></span>(com.google.common.collect.Multimap&lt;?,? extends <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="type parameter in MultimapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;expectedMultimap)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-">containsExactlyEntriesIn</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,? extends <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="type parameter in MultimapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;expectedMultimap)</code>
 <div class="block">Fails if the map does not contain exactly the keys in the given multimap, mapping to values
  that correspond to the values of the given multimap.</div>
 </td>
@@ -1113,7 +1113,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>containsExactlyEntriesIn</h4>
 <pre>@CanIgnoreReturnValue
-<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyEntriesIn(com.google.common.collect.Multimap&lt;?,? extends <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="type parameter in MultimapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;expectedMultimap)</pre>
+<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyEntriesIn(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,? extends <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="type parameter in MultimapWithProtoValuesFluentAssertion">M</a>&gt;&nbsp;expectedMultimap)</pre>
 <div class="block">Fails if the map does not contain exactly the keys in the given multimap, mapping to values
  that correspond to the values of the given multimap.
 
