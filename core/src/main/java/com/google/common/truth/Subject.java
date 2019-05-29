@@ -296,16 +296,6 @@ public class Subject<S extends Subject<S, T>, T> {
     }
   }
 
-  /**
-   * Fails if the subject is not the same instance as the given object.
-   *
-   * @deprecated Use {@link #isSameInstanceAs}, which is equivalent.
-   */
-  @Deprecated
-  public void isSameAs(@NullableDecl @CompatibleWith("T") Object expected) {
-    isSameInstanceAs(expected);
-  }
-
   /** Fails if the subject is not the same instance as the given object. */
   public final void isSameInstanceAs(@NullableDecl @CompatibleWith("T") Object expected) {
     if (actual() != expected) {
@@ -320,16 +310,6 @@ public class Subject<S extends Subject<S, T>, T> {
            */
           compareForEquality(expected).withoutDescription());
     }
-  }
-
-  /**
-   * Fails if the subject is the same instance as the given object.
-   *
-   * @deprecated Use {@link #isNotSameInstanceAs}, which is equivalent.
-   */
-  @Deprecated
-  public void isNotSameAs(@NullableDecl @CompatibleWith("T") Object unexpected) {
-    isNotSameInstanceAs(unexpected);
   }
 
   /** Fails if the subject is the same instance as the given object. */
@@ -745,7 +725,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     to supply more information to include in any failure messages.
    */
   @Deprecated
-  protected final StandardSubjectBuilder check() {
+  final StandardSubjectBuilder check() {
     return new StandardSubjectBuilder(metadata.updateForCheckCall());
   }
 
@@ -871,7 +851,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     well).
    */
   @Deprecated
-  protected final void fail(String check) {
+  final void fail(String check) {
     fail(check, new Object[0]);
   }
 
@@ -886,7 +866,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     method call, as well).
    */
   @Deprecated
-  protected final void fail(String verb, Object other) {
+  final void fail(String verb, Object other) {
     fail(verb, new Object[] {other});
   }
 
@@ -900,7 +880,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     message as a migration aid, you can inline this method.
    */
   @Deprecated
-  protected final void fail(String verb, Object... messageParts) {
+  final void fail(String verb, Object... messageParts) {
     StringBuilder message = new StringBuilder("Not true that ");
     message.append(actualAsString()).append(" ").append(verb);
     for (Object part : messageParts) {
@@ -999,8 +979,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     message as a migration aid, you can inline this method.
    */
   @Deprecated
-  protected final void failWithBadResults(
-      String verb, Object expected, String failVerb, Object actual) {
+  final void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
     String message =
         lenientFormat(
             "Not true that %s %s <%s>. It %s <%s>",
@@ -1024,7 +1003,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     message as a migration aid, you can inline this method.
    */
   @Deprecated
-  protected final void failWithCustomSubject(String verb, Object expected, Object actual) {
+  final void failWithCustomSubject(String verb, Object expected, Object actual) {
     String message =
         lenientFormat(
             "Not true that <%s> %s <%s>",
@@ -1039,7 +1018,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     migration aid, you can inline this method.
    */
   @Deprecated
-  protected final void failWithoutSubject(String check) {
+  final void failWithoutSubject(String check) {
     String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
     failWithoutActual(simpleFact(lenientFormat("Not true that %s %s", strSubject, check)));
   }
@@ -1088,7 +1067,7 @@ public class Subject<S extends Subject<S, T>, T> {
    *     well).
    */
   @Deprecated
-  protected final void failWithoutActual(String check) {
+  final void failWithoutActual(String check) {
     failWithoutSubject(check);
   }
 
