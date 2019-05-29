@@ -6,8 +6,8 @@ repository: google/truth
 version: "0.44"
 
 title: Truth
-tagline: Fluent assertions for Java
-description: "Fluent assertions for Java"
+tagline: Fluent assertions for Java and Android
+description: "Fluent assertions for Java and Android"
 
 themeColor: purple
 
