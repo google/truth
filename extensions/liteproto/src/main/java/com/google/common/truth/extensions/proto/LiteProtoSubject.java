@@ -67,10 +67,26 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     return MessageLiteSubjectFactory.INSTANCE;
   }
 
+  /*
+   * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice: The
+   * FailureMetadata instance contains the chain of subjects used to create this one (as in
+   * assertThat(value).hasFooThat().hasBarThat()). Reusing that instance for a different Subject
+   * (like one produced by a hasBazThat() method) would result in a Subject with the wrong chain,
+   * potentially producing misleading failure messages. To get the messages right, Subject
+   * subclasses should instead use check(...).
+   *
+   * However... here we are using the FailureMetadata instance only to create a Subject for an
+   * "equivalent" object. Thus, it will still be accurate for the failure message to be written as
+   * if it's talking about the proto itself.
+   *
+   * TODO(b/127819891): Use a better API for this if one is addded.
+   */
+  private final FailureMetadata metadata;
   private final M actual;
 
   protected LiteProtoSubject(FailureMetadata failureMetadata, @NullableDecl M messageLite) {
     super(failureMetadata, messageLite);
+    this.metadata = failureMetadata;
     this.actual = messageLite;
   }
 
@@ -131,11 +147,17 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
       String ourString = getTrimmedToString(actual);
       String theirString = getTrimmedToString((MessageLite) expected);
       if (!ourString.equals(theirString)) {
-        check().that(ourString).isEqualTo(theirString); // fails
+        new LiteProtoAsStringSubject(metadata, ourString).isEqualTo(theirString); // fails
       } else {
         // This will include the Object.toString() headers.
         super.isEqualTo(expected);
       }
+    }
+  }
+
+  private static final class LiteProtoAsStringSubject extends Subject {
+    LiteProtoAsStringSubject(FailureMetadata metadata, @NullableDecl String actual) {
+      super(metadata, actual);
     }
   }
 

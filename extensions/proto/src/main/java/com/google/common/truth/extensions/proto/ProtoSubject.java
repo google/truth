@@ -25,7 +25,6 @@ import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.common.base.Objects;
 import com.google.common.truth.FailureMetadata;
-import com.google.common.truth.Subject;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import java.util.Arrays;
@@ -61,9 +60,14 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     extends LiteProtoSubject<S, M> implements ProtoFluentAssertion {
 
+  /*
+   * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice. For an
+   * explanation of why it works out OK here, see LiteProtoSubject.
+   */
+  private final FailureMetadata metadata;
+  private final M actual;
   // TODO(user): Type this if we solve the typing assertAbout() problem for
   // IterableOfProtosSubject and there is use for such typing.
-  private final M actual;
   private final FluentEqualityConfig config;
 
   protected ProtoSubject(FailureMetadata failureMetadata, @NullableDecl M message) {
@@ -73,14 +77,15 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   ProtoSubject(
       FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl M message) {
     super(failureMetadata, message);
+    this.metadata = failureMetadata;
     this.actual = message;
     this.config = config;
   }
 
   ProtoSubject<?, Message> usingConfig(FluentEqualityConfig newConfig) {
-    MessageSubject newSubject = check().about(MessageSubject.messages(newConfig)).that(actual);
+    MessageSubject newSubject = new MessageSubject(metadata, newConfig, actual);
     if (internalCustomName() != null) {
-      newSubject = newSubject.named(internalCustomName());
+      newSubject.named(internalCustomName());
     }
 
     return newSubject;
@@ -390,15 +395,6 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   static final class MessageSubject extends ProtoSubject<MessageSubject, Message> {
-    static Subject.Factory<MessageSubject, Message> messages(final FluentEqualityConfig config) {
-      return new Subject.Factory<MessageSubject, Message>() {
-        @Override
-        public MessageSubject createSubject(FailureMetadata failureMetadata, Message actual) {
-          return new MessageSubject(failureMetadata, config, actual);
-        }
-      };
-    }
-
     MessageSubject(FailureMetadata failureMetadata, @NullableDecl Message message) {
       super(failureMetadata, message);
     }

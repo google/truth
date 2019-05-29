@@ -90,13 +90,12 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 // Can't be final since MultisetSubject and SortedSetSubject extend it
 public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
 
-  // TODO(kak): Make this package-protected?
+  private final Iterable<?> actual;
+
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
-  private final Iterable<?> actual;
-
   protected IterableSubject(FailureMetadata metadata, @NullableDecl Iterable<?> iterable) {
     super(metadata, iterable);
     this.actual = iterable;
@@ -790,7 +789,17 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  public final void isInStrictOrder() {
+  /*
+   * non-final because it's overridden by IterableOfProtosSubject.
+   *
+   * If we really, really wanted it to be final, we could make IterableOfProtosSubject implement a
+   * package-private(?) interface that redeclares this method as deprecated.
+   *
+   * Alternatively, we could avoid deprecating the method there, relying instead on Error Prone
+   * static analysis. It's _possible_ that users would be confused by having one overload deprecated
+   * and the other not, anyway.
+   */
+  public void isInStrictOrder() {
     isInStrictOrder(Ordering.natural());
   }
 
@@ -822,7 +831,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    * @throws NullPointerException if any element is null
    */
-  public final void isInOrder() {
+  // non-final because it's overridden by IterableOfProtosSubject. See isInStrictOrder.
+  public void isInOrder() {
     isInOrder(Ordering.natural());
   }
 

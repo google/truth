@@ -50,18 +50,21 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Christian Gruber
  * @author Kurt Alfred Kluever
  */
-// Can't be final since SortedMapSubject extends it
 public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   private final Map<?, ?> actual;
 
-  MapSubject(FailureMetadata metadata, @NullableDecl Map<?, ?> map) {
+  /**
+   * Constructor for use by subclasses. If you want to create an instance of this class itself, call
+   * {@link Subject#check}{@code .that(actual)}.
+   */
+  protected MapSubject(FailureMetadata metadata, @NullableDecl Map<?, ?> map) {
     super(metadata, map);
     this.actual = map;
   }
 
   /** Fails if the subject is not equal to the given object. */
   @Override
-  public void isEqualTo(@NullableDecl Object other) {
+  public final void isEqualTo(@NullableDecl Object other) {
     if (Objects.equal(actual, other)) {
       return;
     }
@@ -85,37 +88,37 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   }
 
   /** Fails if the map is not empty. */
-  public void isEmpty() {
+  public final void isEmpty() {
     if (!actual.isEmpty()) {
       failWithActual(simpleFact("expected to be empty"));
     }
   }
 
   /** Fails if the map is empty. */
-  public void isNotEmpty() {
+  public final void isNotEmpty() {
     if (actual.isEmpty()) {
       failWithoutActual(simpleFact("expected not to be empty"));
     }
   }
 
   /** Fails if the map does not have the given size. */
-  public void hasSize(int expectedSize) {
+  public final void hasSize(int expectedSize) {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be >= 0", expectedSize);
     check("size()").that(actual.size()).isEqualTo(expectedSize);
   }
 
   /** Fails if the map does not contain the given key. */
-  public void containsKey(@NullableDecl Object key) {
+  public final void containsKey(@NullableDecl Object key) {
     check("keySet()").that(actual.keySet()).contains(key);
   }
 
   /** Fails if the map contains the given key. */
-  public void doesNotContainKey(@NullableDecl Object key) {
+  public final void doesNotContainKey(@NullableDecl Object key) {
     check("keySet()").that(actual.keySet()).doesNotContain(key);
   }
 
   /** Fails if the map does not contain the given entry. */
-  public void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
+  public final void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
     Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (!actual.entrySet().contains(entry)) {
       List<Object> keyList = Lists.newArrayList(key);
@@ -175,7 +178,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
   }
 
   /** Fails if the map contains the given entry. */
-  public void doesNotContainEntry(@NullableDecl Object key, @NullableDecl Object value) {
+  public final void doesNotContainEntry(@NullableDecl Object key, @NullableDecl Object value) {
     checkNoNeedToDisplayBothValues("entrySet()")
         .that(actual.entrySet())
         .doesNotContain(immutableEntry(key, value));
@@ -183,7 +186,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
   /** Fails if the map is not empty. */
   @CanIgnoreReturnValue
-  public Ordered containsExactly() {
+  public final Ordered containsExactly() {
     return containsExactlyEntriesIn(ImmutableMap.of());
   }
 
@@ -196,12 +199,14 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * <p>The arguments must not contain duplicate keys.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
+  public final Ordered containsExactly(
+      @NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
     return containsExactlyEntriesIn(accumulateMap("containsExactly", k0, v0, rest));
   }
 
   @CanIgnoreReturnValue
-  public Ordered containsAtLeast(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
+  public final Ordered containsAtLeast(
+      @NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
     return containsAtLeastEntriesIn(accumulateMap("containsAtLeast", k0, v0, rest));
   }
 
@@ -232,7 +237,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
   /** Fails if the map does not contain exactly the given set of entries in the given map. */
   @CanIgnoreReturnValue
-  public Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
+  public final Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
     if (expectedMap.isEmpty()) {
       if (actual.isEmpty()) {
         return IN_ORDER;
@@ -252,7 +257,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
 
   /** Fails if the map does not contain at least the given set of entries in the given map. */
   @CanIgnoreReturnValue
-  public Ordered containsAtLeastEntriesIn(Map<?, ?> expectedMap) {
+  public final Ordered containsAtLeastEntriesIn(Map<?, ?> expectedMap) {
     if (expectedMap.isEmpty()) {
       return IN_ORDER;
     }
@@ -507,7 +512,7 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
    * encounter an actual value that is not of type {@code A} or an expected value that is not of
    * type {@code E}.
    */
-  public <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
+  public final <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
       Correspondence<? super A, ? super E> correspondence) {
     return new UsingCorrespondence<>(correspondence);
   }

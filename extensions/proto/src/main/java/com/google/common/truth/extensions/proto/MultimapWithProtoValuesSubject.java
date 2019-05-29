@@ -19,9 +19,9 @@ package com.google.common.truth.extensions.proto;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
+import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 
 import com.google.common.collect.Multimap;
-import com.google.common.truth.Correspondence;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.MultimapSubject;
 import com.google.common.truth.Ordered;
@@ -75,8 +75,13 @@ public class MultimapWithProtoValuesSubject<
         K,
         M extends Message,
         C extends Multimap<K, M>>
-    extends Subject<S, C> {
+    extends MultimapSubject {
 
+  /*
+   * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice. For an
+   * explanation of why it works out OK here, see LiteProtoSubject.
+   */
+  private final FailureMetadata metadata;
   private final C actual;
   private final FluentEqualityConfig config;
 
@@ -99,18 +104,6 @@ public class MultimapWithProtoValuesSubject<
     }
   }
 
-  private static <K, M extends Message>
-      Subject.Factory<MultimapWithMessageValuesSubject<K, M>, Multimap<K, M>>
-          multimapWithMessageValues(final FluentEqualityConfig config) {
-    return new Subject.Factory<MultimapWithMessageValuesSubject<K, M>, Multimap<K, M>>() {
-      @Override
-      public MultimapWithMessageValuesSubject<K, M> createSubject(
-          FailureMetadata metadata, Multimap<K, M> actual) {
-        return new MultimapWithMessageValuesSubject<>(metadata, config, actual);
-      }
-    };
-  }
-
   protected MultimapWithProtoValuesSubject(
       FailureMetadata failureMetadata, @NullableDecl C multimap) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), multimap);
@@ -119,83 +112,9 @@ public class MultimapWithProtoValuesSubject<
   MultimapWithProtoValuesSubject(
       FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C multimap) {
     super(failureMetadata, multimap);
+    this.metadata = failureMetadata;
     this.actual = multimap;
     this.config = config;
-  }
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  // MultimapSubject methods
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  private final MultimapSubject delegate() {
-    MultimapSubject delegate = check().that(actual);
-    if (internalCustomName() != null) {
-      delegate = delegate.named(internalCustomName());
-    }
-
-    return delegate;
-  }
-
-  /** Fails if the multimap is not empty. */
-  public void isEmpty() {
-    delegate().isEmpty();
-  }
-
-  /** Fails if the multimap is empty. */
-  public void isNotEmpty() {
-    delegate().isNotEmpty();
-  }
-
-  /** Fails if the multimap does not have the given size. */
-  public void hasSize(int expectedSize) {
-    delegate().hasSize(expectedSize);
-  }
-
-  /** Fails if the multimap does not contain the given key. */
-  public void containsKey(@NullableDecl Object key) {
-    delegate().containsKey(key);
-  }
-
-  /** Fails if the multimap contains the given key. */
-  public void doesNotContainKey(@NullableDecl Object key) {
-    delegate().doesNotContainKey(key);
-  }
-
-  /** Fails if the multimap does not contain the given entry. */
-  public void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
-    delegate().containsEntry(key, value);
-  }
-
-  /** Fails if the multimap contains the given entry. */
-  public void doesNotContainEntry(@NullableDecl Object key, @NullableDecl Object value) {
-    delegate().doesNotContainEntry(key, value);
-  }
-
-  private static class IterableValuesForKey<M extends Message>
-      extends IterableOfProtosSubject<IterableValuesForKey<M>, M, Iterable<M>> {
-    private final String stringRepresentation;
-
-    @SuppressWarnings({"unchecked"})
-    IterableValuesForKey(
-        FailureMetadata failureMetadata, Iterable<M> actual, String stringRepresentation) {
-      super(failureMetadata, actual);
-      this.stringRepresentation = stringRepresentation;
-    }
-
-    @Override
-    protected String actualCustomStringRepresentation() {
-      return stringRepresentation;
-    }
-  }
-
-  static <M extends Message> Subject.Factory<IterableValuesForKey<M>, Iterable<M>> iterableOfProtos(
-      final String stringRepresentation) {
-    return new Subject.Factory<IterableValuesForKey<M>, Iterable<M>>() {
-      @Override
-      public IterableValuesForKey<M> createSubject(FailureMetadata metadata, Iterable<M> actual) {
-        return new IterableValuesForKey<>(metadata, actual, stringRepresentation);
-      }
-    };
   }
 
   /**
@@ -206,65 +125,9 @@ public class MultimapWithProtoValuesSubject<
    * assertions must be chained onto this method call to test properties of the {@link Multimap}.
    */
   public IterableOfProtosSubject<?, M, Iterable<M>> valuesForKey(@NullableDecl Object key) {
-    Subject.Factory<IterableValuesForKey<M>, Iterable<M>> factory =
-        iterableOfProtos("Values for key <" + key + "> (<" + actual + ">) in " + actualAsString());
-    return check().about(factory).that(((Multimap<Object, M>) actual).get(key));
-  }
-
-  /**
-   * Fails if the {@link Multimap} does not contain precisely the same entries as the argument
-   * {@link Multimap}.
-   *
-   * <p>A subsequent call to {@link Ordered#inOrder} may be made if the caller wishes to verify that
-   * the two multimaps iterate fully in the same order. That is, their key sets iterate in the same
-   * order, and the value collections for each key iterate in the same order.
-   */
-  @CanIgnoreReturnValue
-  public Ordered containsExactlyEntriesIn(Multimap<?, ?> expectedMultimap) {
-    return delegate().containsExactlyEntriesIn(expectedMultimap);
-  }
-
-  /**
-   * Fails if the multimap does not contain exactly the given set of key/value pairs.
-   *
-   * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
-   * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
-   */
-  @CanIgnoreReturnValue
-  public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
-    return delegate().containsExactly(k0, v0, rest);
-  }
-
-  /** Fails if the multimap is not empty. */
-  @CanIgnoreReturnValue
-  public Ordered containsExactly() {
-    return delegate().containsExactly();
-  }
-
-  /**
-   * Starts a method chain for a check in which the actual values (i.e. the values of the {@link
-   * Multimap} under test) are compared to expected values using the given {@link Correspondence}.
-   * The actual values must be of type {@code A} and the expected values must be of type {@code E}.
-   * The check is actually executed by continuing the method chain. For example:
-   *
-   * <pre>{@code
-   * assertThat(actualMultimap)
-   *   .comparingValuesUsing(correspondence)
-   *   .containsEntry(expectedKey, expectedValue);
-   * }</pre>
-   *
-   * where {@code actualMultimap} is a {@code Multimap<?, A>} (or, more generally, a {@code
-   * Multimap<?, ? extends A>}), {@code correspondence} is a {@code Correspondence<A, E>}, and
-   * {@code expectedValue} is an {@code E}.
-   *
-   * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
-   *
-   * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
-   * encounter an actual value that is not of type {@code A}.
-   */
-  public <A, E> MultimapSubject.UsingCorrespondence<A, E> comparingValuesUsing(
-      Correspondence<A, E> correspondence) {
-    return delegate().comparingValuesUsing(correspondence);
+    return check("valuesForKey(%s)", key)
+        .about(protos())
+        .that(((Multimap<Object, M>) actual).get(key));
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,11 +135,10 @@ public class MultimapWithProtoValuesSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   MultimapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
-    Subject.Factory<MultimapWithMessageValuesSubject<K, M>, Multimap<K, M>> factory =
-        multimapWithMessageValues(newConfig);
-    MultimapWithMessageValuesSubject<K, M> newSubject = check().about(factory).that(actual);
+    MultimapWithMessageValuesSubject<K, M> newSubject =
+        new MultimapWithMessageValuesSubject<>(metadata, newConfig, actual);
     if (internalCustomName() != null) {
-      newSubject = newSubject.named(internalCustomName());
+      newSubject.named(internalCustomName());
     }
 
     return new MultimapWithProtoValuesFluentAssertionImpl<>(newSubject);

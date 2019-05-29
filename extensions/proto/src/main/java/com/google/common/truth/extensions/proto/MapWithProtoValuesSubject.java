@@ -20,11 +20,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
-import com.google.common.truth.Correspondence;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.MapSubject;
 import com.google.common.truth.Ordered;
-import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -70,8 +68,13 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 public class MapWithProtoValuesSubject<
         S extends MapWithProtoValuesSubject<S, K, M, C>, K, M extends Message, C extends Map<K, M>>
-    extends Subject<S, C> {
+    extends MapSubject {
 
+  /*
+   * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice. For an
+   * explanation of why it works out OK here, see LiteProtoSubject.
+   */
+  private final FailureMetadata metadata;
   private final C actual;
   private final FluentEqualityConfig config;
 
@@ -97,129 +100,9 @@ public class MapWithProtoValuesSubject<
   MapWithProtoValuesSubject(
       FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C map) {
     super(failureMetadata, map);
+    this.metadata = failureMetadata;
     this.actual = map;
     this.config = config;
-  }
-
-  private static <M extends Message, K>
-      Subject.Factory<MapWithMessageValuesSubject<K, M>, Map<K, M>> mapWithProtoValues(
-          final FluentEqualityConfig config) {
-    return new Subject.Factory<MapWithMessageValuesSubject<K, M>, Map<K, M>>() {
-      @Override
-      public MapWithMessageValuesSubject<K, M> createSubject(
-          FailureMetadata metadata, Map<K, M> actual) {
-        return new MapWithMessageValuesSubject<>(metadata, config, actual);
-      }
-    };
-  }
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  // MapSubject methods
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  private final MapSubject delegate() {
-    MapSubject delegate = check().that(actual);
-    if (internalCustomName() != null) {
-      delegate = delegate.named(internalCustomName());
-    }
-
-    return delegate;
-  }
-
-  /** Fails if the subject is not equal to the given object. */
-  @Override
-  public void isEqualTo(@NullableDecl Object other) {
-    delegate().isEqualTo(other);
-  }
-
-  /** Fails if the map is not empty. */
-  public void isEmpty() {
-    delegate().isEmpty();
-  }
-
-  /** Fails if the map is empty. */
-  public void isNotEmpty() {
-    delegate().isNotEmpty();
-  }
-
-  /** Fails if the map does not have the given size. */
-  public void hasSize(int expectedSize) {
-    delegate().hasSize(expectedSize);
-  }
-
-  /** Fails if the map does not contain the given key. */
-  public void containsKey(@NullableDecl Object key) {
-    delegate().containsKey(key);
-  }
-
-  /** Fails if the map contains the given key. */
-  public void doesNotContainKey(@NullableDecl Object key) {
-    delegate().doesNotContainKey(key);
-  }
-
-  /** Fails if the map does not contain the given entry. */
-  public void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
-    delegate().containsEntry(key, value);
-  }
-
-  /** Fails if the map contains the given entry. */
-  public void doesNotContainEntry(@NullableDecl Object key, @NullableDecl Object value) {
-    delegate().doesNotContainEntry(key, value);
-  }
-
-  /** Fails if the map is not empty. */
-  @CanIgnoreReturnValue
-  public Ordered containsExactly() {
-    return delegate().containsExactly();
-  }
-
-  /**
-   * Fails if the map does not contain exactly the given set of key/value pairs.
-   *
-   * <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
-   * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
-   */
-  @CanIgnoreReturnValue
-  public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
-    return delegate().containsExactly(k0, v0, rest);
-  }
-
-  /** Fails if the map does not contain exactly the given set of entries in the given map. */
-  @CanIgnoreReturnValue
-  public Ordered containsExactlyEntriesIn(Map<?, ?> expectedMap) {
-    return delegate().containsExactlyEntriesIn(expectedMap);
-  }
-
-  /**
-   * Starts a method chain for a check in which the actual values (i.e. the values of the {@link
-   * Map} under test) are compared to expected values using the given {@link Correspondence}. The
-   * actual values must be of type {@code A}, the expected values must be of type {@code E}. The
-   * check is actually executed by continuing the method chain. For example:
-   *
-   * <pre>{@code
-   * assertThat(actualMap)
-   *   .comparingValuesUsing(correspondence)
-   *   .containsEntry(expectedKey, expectedValue);
-   * }</pre>
-   *
-   * where {@code actualMap} is a {@code Map<?, A>} (or, more generally, a {@code Map<?, ? extends
-   * A>}), {@code correspondence} is a {@code Correspondence<A, E>}, and {@code expectedValue} is an
-   * {@code E}.
-   *
-   * <p>Note that keys will always be compared with regular object equality ({@link Object#equals}).
-   *
-   * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
-   * encounter an actual value that is not of type {@code A} or an expected value that is not of
-   * type {@code E}.
-   *
-   * <p>Note that the {@code MapWithProtoValuesSubject} is designed to save you from having to write
-   * your own {@link Correspondence}. The configuration methods, such as {@link
-   * #ignoringRepeatedFieldOrderForValues()} will construct a {@link Correspondence} under the hood
-   * which performs protobuf comparisons with {@link ProtoSubject#ignoringRepeatedFieldOrder()}.
-   */
-  public <A, E> MapSubject.UsingCorrespondence<A, E> comparingValuesUsing(
-      Correspondence<A, E> correspondence) {
-    return delegate().comparingValuesUsing(correspondence);
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,11 +110,10 @@ public class MapWithProtoValuesSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   MapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
-    Subject.Factory<MapWithMessageValuesSubject<K, M>, Map<K, M>> factory =
-        mapWithProtoValues(newConfig);
-    MapWithMessageValuesSubject<K, M> newSubject = check().about(factory).that(actual);
+    MapWithMessageValuesSubject<K, M> newSubject =
+        new MapWithMessageValuesSubject<>(metadata, newConfig, actual);
     if (internalCustomName() != null) {
-      newSubject = newSubject.named(internalCustomName());
+      newSubject.named(internalCustomName());
     }
 
     return new MapWithProtoValuesFluentAssertionImpl<>(newSubject);

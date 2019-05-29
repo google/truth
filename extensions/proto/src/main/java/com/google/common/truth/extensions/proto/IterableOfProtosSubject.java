@@ -22,11 +22,9 @@ import static com.google.common.truth.extensions.proto.FieldScopeUtil.asList;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.truth.Correspondence;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IterableSubject;
 import com.google.common.truth.Ordered;
-import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -66,8 +64,13 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 public class IterableOfProtosSubject<
         S extends IterableOfProtosSubject<S, M, C>, M extends Message, C extends Iterable<M>>
-    extends Subject<S, C> {
+    extends IterableSubject {
 
+  /*
+   * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice. For an
+   * explanation of why it works out OK here, see LiteProtoSubject.
+   */
+  private final FailureMetadata metadata;
   private final C actual;
   private final FluentEqualityConfig config;
 
@@ -111,18 +114,6 @@ public class IterableOfProtosSubject<
     }
   }
 
-  static <M extends Message>
-      Subject.Factory<IterableOfMessagesSubject<M>, Iterable<M>> iterableOfMessages(
-          final FluentEqualityConfig config) {
-    return new Subject.Factory<IterableOfMessagesSubject<M>, Iterable<M>>() {
-      @Override
-      public IterableOfMessagesSubject<M> createSubject(
-          FailureMetadata metadata, Iterable<M> actual) {
-        return new IterableOfMessagesSubject<M>(metadata, config, actual);
-      }
-    };
-  }
-
   protected IterableOfProtosSubject(FailureMetadata failureMetadata, @NullableDecl C messages) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), messages);
   }
@@ -130,328 +121,9 @@ public class IterableOfProtosSubject<
   IterableOfProtosSubject(
       FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C messages) {
     super(failureMetadata, messages);
+    this.metadata = failureMetadata;
     this.actual = messages;
     this.config = config;
-  }
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  // IterableSubject methods
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  private final IterableSubject delegate() {
-    IterableSubject delegate = check().that(actual);
-    if (internalCustomName() != null) {
-      delegate = delegate.named(internalCustomName());
-    }
-
-    return delegate;
-  }
-
-  /** Fails if the subject is not empty. */
-  public void isEmpty() {
-    delegate().isEmpty();
-  }
-
-  /** Fails if the subject is empty. */
-  public void isNotEmpty() {
-    delegate().isNotEmpty();
-  }
-
-  /** Fails if the subject does not have the given size. */
-  public void hasSize(int expectedSize) {
-    delegate().hasSize(expectedSize);
-  }
-
-  /** Checks (with a side-effect failure) that the subject contains the supplied item. */
-  public void contains(@NullableDecl Object element) {
-    delegate().contains(element);
-  }
-
-  /** Checks (with a side-effect failure) that the subject does not contain the supplied item. */
-  public void doesNotContain(@NullableDecl Object element) {
-    delegate().doesNotContain(element);
-  }
-
-  /** Checks that the subject does not contain duplicate elements. */
-  public void containsNoDuplicates() {
-    delegate().containsNoDuplicates();
-  }
-
-  /** Checks that the subject contains at least one of the provided objects or fails. */
-  public void containsAnyOf(
-      @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
-    delegate().containsAnyOf(first, second, rest);
-  }
-
-  /**
-   * Checks that the subject contains at least one of the objects contained in the provided
-   * collection or fails.
-   */
-  public void containsAnyIn(Iterable<?> expected) {
-    delegate().containsAnyIn(expected);
-  }
-
-  /**
-   * Checks that the subject contains at least one of the objects contained in the provided array or
-   * fails.
-   */
-  public void containsAnyIn(Object[] expected) {
-    delegate().containsAnyIn(expected);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements to this call then it must appear at
-   * least that number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  public Ordered containsAtLeast(
-      @NullableDecl Object firstExpected,
-      @NullableDecl Object secondExpected,
-      @NullableDecl Object... restOfExpected) {
-    return delegate().containsAtLeast(firstExpected, secondExpected, restOfExpected);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements then it must appear at least that
-   * number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  public Ordered containsAtLeastElementsIn(Iterable<?> expected) {
-    return delegate().containsAtLeastElementsIn(expected);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements then it must appear at least that
-   * number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   */
-  @CanIgnoreReturnValue
-  public Ordered containsAtLeastElementsIn(Object[] expected) {
-    return delegate().containsAtLeastElementsIn(expected);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements to this call then it must appear at
-   * least that number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   *
-   * @deprecated Use {@link #containsAtLeast}, which is equivalent.
-   */
-  @CanIgnoreReturnValue
-  @Deprecated
-  public Ordered containsAllOf(
-      @NullableDecl Object firstExpected,
-      @NullableDecl Object secondExpected,
-      @NullableDecl Object... restOfExpected) {
-    return containsAtLeast(firstExpected, secondExpected, restOfExpected);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements then it must appear at least that
-   * number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   *
-   * @deprecated Use {@link #containsAtLeastElementsIn(Iterable)}, which is equivalent.
-   */
-  @CanIgnoreReturnValue
-  @Deprecated
-  public Ordered containsAllIn(Iterable<?> expected) {
-    return containsAtLeastElementsIn(expected);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements then it must appear at least that
-   * number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   *
-   * @deprecated Use {@link #containsAtLeastElementsIn(Object[])}, which is equivalent.
-   */
-  @CanIgnoreReturnValue
-  @Deprecated
-  public Ordered containsAllIn(Object[] expected) {
-    return containsAtLeastElementsIn(expected);
-  }
-
-  /**
-   * Checks that a subject contains exactly the provided objects or fails.
-   *
-   * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the
-   * parameters asserts that the object must likewise be duplicated exactly 3 times in the subject.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
-   *
-   * <p>To test that the iterable contains the same elements as an array, prefer {@link
-   * #containsExactlyElementsIn(Object[])}. It makes clear that the given array is a list of
-   * elements, not an element itself. This helps human readers and avoids a compiler warning.
-   */
-  @CanIgnoreReturnValue
-  public Ordered containsExactly(@NullableDecl Object... varargs) {
-    return delegate().containsExactly(varargs);
-  }
-
-  /**
-   * Checks that a subject contains exactly the provided objects or fails.
-   *
-   * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the {@code
-   * Iterable} parameter asserts that the object must likewise be duplicated exactly 3 times in the
-   * subject.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
-   */
-  @CanIgnoreReturnValue
-  public Ordered containsExactlyElementsIn(Iterable<?> expected) {
-    return delegate().containsExactlyElementsIn(expected);
-  }
-
-  /**
-   * Checks that a subject contains exactly the provided objects or fails.
-   *
-   * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the {@code
-   * Iterable} parameter asserts that the object must likewise be duplicated exactly 3 times in the
-   * subject.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method.
-   */
-  @CanIgnoreReturnValue
-  public Ordered containsExactlyElementsIn(Object[] expected) {
-    return delegate().containsExactlyElementsIn(expected);
-  }
-
-  /**
-   * Checks that a actual iterable contains none of the excluded objects or fails. (Duplicates are
-   * irrelevant to this test, which fails if any of the actual elements equal any of the excluded.)
-   */
-  public void containsNoneOf(
-      @NullableDecl Object firstExcluded,
-      @NullableDecl Object secondExcluded,
-      @NullableDecl Object... restOfExcluded) {
-    delegate().containsNoneOf(firstExcluded, secondExcluded, restOfExcluded);
-  }
-
-  /**
-   * Checks that a actual iterable contains none of the elements contained in the excluded iterable
-   * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
-   * equal any of the excluded.)
-   */
-  public void containsNoneIn(Iterable<?> excluded) {
-    delegate().containsNoneIn(excluded);
-  }
-
-  /**
-   * Checks that a actual iterable contains none of the elements contained in the excluded iterable
-   * or fails. (Duplicates are irrelevant to this test, which fails if any of the actual elements
-   * equal any of the excluded.)
-   */
-  public void containsNoneIn(Object[] excluded) {
-    delegate().containsNoneIn(excluded);
-  }
-
-  // Messages don't have a natural order, so we do not provide the no-args variant of
-  // isInStrictOrder or isInOrder. If we move to inheritance, the methods should be deprecated in
-  // this class.
-
-  /**
-   * Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
-   * ordered means that each element in the iterable is <i>strictly</i> greater than the element
-   * that preceded it.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   */
-  public void isInStrictOrder(Comparator<?> comparator) {
-    delegate().isInStrictOrder(comparator);
-  }
-
-  /**
-   * Fails if the iterable is not ordered, according to the given comparator. Ordered means that
-   * each element in the iterable is greater than or equal to the element that preceded it.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   */
-  public void isInOrder(Comparator<?> comparator) {
-    delegate().isInOrder(comparator);
-  }
-
-  /**
-   * Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
-   * ordered means that each element in the iterable is <i>strictly</i> greater than the element
-   * that preceded it.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @deprecated Use {@link #isInStrictOrder(Comparator)}.
-   */
-  @Deprecated
-  public void isStrictlyOrdered(Comparator<?> comparator) {
-    delegate().isStrictlyOrdered(comparator);
-  }
-
-  /**
-   * <i>To be deprecated in favor of {@link #isInOrder(Comparator)}.</i>
-   *
-   * <p>Fails if the iterable is not ordered, according to the given comparator. Ordered means that
-   * each element in the iterable is greater than or equal to the element that preceded it.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @deprecated Use {@link #isInOrder(Comparator)}.
-   */
-  @Deprecated
-  public void isOrdered(Comparator<?> comparator) {
-    delegate().isOrdered(comparator);
-  }
-
-  /**
-   * Starts a method chain for a check in which the actual elements (i.e. the elements of the {@link
-   * Iterable} under test) are compared to expected elements using the given {@link Correspondence}.
-   * The actual elements must be of type {@code A}, the expected elements must be of type {@code E}.
-   * The check is actually executed by continuing the method chain. For example:
-   *
-   * <pre>{@code
-   * assertThat(actualIterable).comparingElementsUsing(correspondence).contains(expected);
-   * }</pre>
-   *
-   * where {@code actualIterable} is an {@code Iterable<A>} (or, more generally, an {@code
-   * Iterable<? extends A>}), {@code correspondence} is a {@code Correspondence<A, E>}, and {@code
-   * expected} is an {@code E}.
-   *
-   * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
-   * encounter an actual element that is not of type {@code A}.
-   *
-   * <p>Note that the {@code IterableOfProtosSubject} is designed to save you from having to write
-   * your own {@link Correspondence}. The configuration methods, such as {@link
-   * #ignoringRepeatedFieldOrder()} will construct a {@link Correspondence} under the hood which
-   * performs protobuf comparisons with {@link #ignoringRepeatedFieldOrder()}.
-   */
-  public <A, E> IterableSubject.UsingCorrespondence<A, E> comparingElementsUsing(
-      Correspondence<A, E> correspondence) {
-    return delegate().comparingElementsUsing(correspondence);
   }
 
   /**
@@ -495,14 +167,13 @@ public class IterableOfProtosSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   IterableOfProtosFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
-    Subject.Factory<IterableOfMessagesSubject<M>, Iterable<M>> factory =
-        iterableOfMessages(newConfig);
-    IterableOfMessagesSubject<M> newSubject = check().about(factory).that(actual);
+    IterableOfMessagesSubject<M> newSubject =
+        new IterableOfMessagesSubject<>(metadata, newConfig, actual);
     if (internalCustomName() != null) {
-      newSubject = newSubject.named(internalCustomName());
+      newSubject.named(internalCustomName());
     }
 
-    return new IterableOfProtosFluentAssertionImpl<M>(newSubject);
+    return new IterableOfProtosFluentAssertionImpl<>(newSubject);
   }
 
   /**
@@ -1009,6 +680,34 @@ public class IterableOfProtosSubject<
    */
   public IterableOfProtosFluentAssertion<M> reportingMismatchesOnly() {
     return usingConfig(config.reportingMismatchesOnly());
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  // Overrides for IterableSubject Methods
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * @deprecated Protos do not implement {@link Comparable}, so you must {@linkplain
+   *     #isInStrictOrder(Comparator) supply a comparator}.
+   * @throws ClassCastException always
+   */
+  @Override
+  @Deprecated
+  public final void isInStrictOrder() {
+    throw new ClassCastException(
+        "Protos do not implement Comparable, so you must supply a Comparator.");
+  }
+
+  /**
+   * @deprecated Protos do not implement {@link Comparable}, so you must {@linkplain
+   *     #isInOrder(Comparator) supply a comparator}.
+   * @throws ClassCastException always
+   */
+  @Override
+  @Deprecated
+  public final void isInOrder() {
+    throw new ClassCastException(
+        "Protos do not implement Comparable, so you must supply a Comparator.");
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
