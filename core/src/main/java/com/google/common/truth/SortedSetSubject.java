@@ -29,9 +29,13 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 /**
  * Tests for {@link SortedSet} and {@link NavigableSet} objects. This class supports assertions
  * based on {@code NavigableSet}'s API even if the subject only implements {@code SortedSet}.
+ *
+ * @deprecated Perform assertions directly on the result of methods like {@code first}. We haven't
+ *     found sufficient demand for this class to keep it.
  */
 // TODO(diamondm): identify use-cases for assertions on other NavigableSet methods, such as
 // ceiling(), and propose an API to support such assertions.
+@Deprecated
 public final class SortedSetSubject extends IterableSubject {
   private final NavigableSet<?> actualAsNavigableSet;
 

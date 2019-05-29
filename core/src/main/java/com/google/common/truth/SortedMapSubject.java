@@ -36,9 +36,13 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 /**
  * Tests for {@link SortedMap} and {@link NavigableMap} objects. This class supports assertions
  * based on {@code NavigableMap}'s API even if the subject only implements {@code SortedMap}.
+ *
+ * @deprecated Perform assertions directly on the result of methods like {@code firstKey}. We
+ *     haven't found sufficient demand for this class to keep it.
  */
 // TODO(diamondm): identify use-cases for assertions on other NavigableMap methods, such as
 // ceilingKey(), and propose an API to support such assertions.
+@Deprecated
 public final class SortedMapSubject extends MapSubject {
   private final NavigableMap<?, ?> actualAsNavigableMap;
 
