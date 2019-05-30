@@ -22,16 +22,12 @@ import static com.google.common.truth.Fact.simpleFact;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.util.concurrent.AtomicLongMap;
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.SortedSet;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /*>>>import org.checkerframework.checker.nullness.compatcompatqual.NullableDeclType;*/
@@ -121,10 +117,6 @@ public class StandardSubjectBuilder {
     return new IterableSubject(metadata(), actual);
   }
 
-  public final SortedSetSubject that(@NullableDecl SortedSet<?> actual) {
-    return new SortedSetSubject(metadata(), actual);
-  }
-
   public final <T> ObjectArraySubject<T> that(@NullableDecl T[] actual) {
     return new ObjectArraySubject<>(metadata(), actual, "array");
   }
@@ -169,20 +161,8 @@ public class StandardSubjectBuilder {
     return new MapSubject(metadata(), actual);
   }
 
-  public final SortedMapSubject that(@NullableDecl SortedMap<?, ?> actual) {
-    return new SortedMapSubject(metadata(), actual);
-  }
-
   public final MultimapSubject that(@NullableDecl Multimap<?, ?> actual) {
     return new MultimapSubject(metadata(), actual, "multimap");
-  }
-
-  public final ListMultimapSubject that(@NullableDecl ListMultimap<?, ?> actual) {
-    return new ListMultimapSubject(metadata(), actual, "multimap");
-  }
-
-  public final SetMultimapSubject that(@NullableDecl SetMultimap<?, ?> actual) {
-    return new SetMultimapSubject(metadata(), actual, "multimap");
   }
 
   public final MultisetSubject that(@NullableDecl Multiset<?> actual) {

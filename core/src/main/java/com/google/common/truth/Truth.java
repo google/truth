@@ -19,16 +19,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
-import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.util.concurrent.AtomicLongMap;
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.SortedSet;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -190,10 +186,6 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  public static SortedSetSubject assertThat(@NullableDecl SortedSet<?> actual) {
-    return assert_().that(actual);
-  }
-
   public static <T> ObjectArraySubject<T> assertThat(@NullableDecl T[] actual) {
     return assert_().that(actual);
   }
@@ -238,21 +230,7 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  public static SortedMapSubject assertThat(@NullableDecl SortedMap<?, ?> actual) {
-    return assert_().that(actual);
-  }
-
   public static MultimapSubject assertThat(@NullableDecl Multimap<?, ?> actual) {
-    return assert_().that(actual);
-  }
-
-  public static ListMultimapSubject assertThat(
-      @NullableDecl ListMultimap<?, ?> actual) {
-    return assert_().that(actual);
-  }
-
-  public static SetMultimapSubject assertThat(
-      @NullableDecl SetMultimap<?, ?> actual) {
     return assert_().that(actual);
   }
 

@@ -18,9 +18,7 @@ package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.Truth.assertAbout;
 
-import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.SetMultimap;
 import com.google.common.truth.CustomSubjectBuilder;
 import com.google.common.truth.IterableSubject;
 import com.google.common.truth.MapSubject;
@@ -96,30 +94,6 @@ public final class ProtoTruth {
       MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> assertThat(
           @NullableDecl Multimap<K, M> multimap) {
     return assertAbout(protos()).that(multimap);
-  }
-
-  /**
-   * Assert on a {@link ListMultimap} with {@link Message} values.
-   *
-   * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
-   * comparison tests available on {@link MultimapSubject.UsingCorrespondence}.
-   */
-  public static <K, M extends Message>
-      ListMultimapWithProtoValuesSubject<?, K, M, ListMultimap<K, M>> assertThat(
-          @NullableDecl ListMultimap<K, M> listMultimap) {
-    return assertAbout(protos()).that(listMultimap);
-  }
-
-  /**
-   * Assert on a {@link Multimap} with {@link Message} values.
-   *
-   * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
-   * comparison tests available on {@link MultimapSubject.UsingCorrespondence}.
-   */
-  public static <K, M extends Message>
-      SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> assertThat(
-          @NullableDecl SetMultimap<K, M> setMultimap) {
-    return assertAbout(protos()).that(setMultimap);
   }
 
   private ProtoTruth() {}

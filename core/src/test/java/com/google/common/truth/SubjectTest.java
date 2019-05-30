@@ -32,8 +32,6 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
-import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterators;
 import com.google.common.primitives.UnsignedInteger;
@@ -60,6 +58,7 @@ public class SubjectTest extends BaseSubjectTestCase {
 
   @Test
   @GwtIncompatible("NullPointerTester")
+  @SuppressWarnings("GoogleInternalApi")
   public void nullPointerTester() {
     NullPointerTester npTester = new NullPointerTester();
     npTester.setDefault(Fact.class, simpleFact("fact"));
@@ -82,8 +81,6 @@ public class SubjectTest extends BaseSubjectTestCase {
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableMultiset.of()));
     npTester.testAllPublicInstanceMethods(assertThat(new Object[0]));
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableSetMultimap.of()));
-    npTester.testAllPublicInstanceMethods(assertThat(ImmutableSortedMap.of()));
-    npTester.testAllPublicInstanceMethods(assertThat(ImmutableSortedSet.of()));
     npTester.testAllPublicInstanceMethods(assertThat("hello"));
     npTester.testAllPublicInstanceMethods(assertThat(new Object()));
     npTester.testAllPublicInstanceMethods(assertThat(ImmutableTable.of()));
