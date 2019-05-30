@@ -112,15 +112,14 @@ There are four parts to the example:
         Your class definition will usually look like this:
 
         ```java
-        public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {…}
+        public final class EmployeeSubject extends Subject {…}
         ```
 
         The class must be accessible to the tests that will use it. Typically
         that means making it `public`.
 
-        We suggest making the class `final` if possible. If you attempt to
-        subclass a `Subject`, you will likely run into problems with generics.
-        We hope to make `Subject` class hierarchies work better in the future.
+        We suggest making the class `final` for simplicity, but it's fine to
+        make it extensible if you find that useful.
 
         Tip: What if your `Subject` class has a type parameter, like
         [`ComparableSubject`]? Follow our instructions for
@@ -131,7 +130,7 @@ There are four parts to the example:
         static method. The definition is usually boilerplate:
 
         ```java
-        public static Subject.Factory<EmployeeSubject, Employee> employees() {
+        public static Factory<EmployeeSubject, Employee> employees() {
           return EmployeeSubject::new;
         }
         ```
@@ -140,13 +139,8 @@ There are four parts to the example:
         to the tests that will use it―typically, `public`.
 
         We recommend naming this method in the *plural form* (e.g.,
-        `EmployeeSubject.employees()`, `PersonSubject.people()`, etc.).
-
-        We recommend putting this method on your `Subject` class itself.
-
-        The `Subject.Factory` should usually be a method reference, as shown
-        above. In particular, you should *not* expose the *type* to users.
-        Instead, you expose only an *instance* through a static factory method.
+        `EmployeeSubject.employees()`, `PersonSubject.people()`, etc.). We
+        recommend putting this method on your `Subject` class itself.
 
         By passing your `Subject.Factory` to an `about()` method, users can
         perform all the operations that they expect of a built-in `Subject`
@@ -215,8 +209,8 @@ There are four parts to the example:
     5.  Finally, you define your test assertion API on the custom `Subject`.
         Since you're defining the API, you can write it however you'd like.
         However, we recommend method names that will make the assertions read
-        *as close to English as possible*. For some advice on naming assertion
-        methods, please see [here](faq#assertion-naming).
+        like English sentences. For some advice on naming assertion methods,
+        please see [this FAQ entry](faq#assertion-naming).
 
         As for the implementation: Most assertion implementations employ one of
         the two basic approaches. The simpler approach is to delegate to an
