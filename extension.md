@@ -28,6 +28,8 @@ project. They include:
 
 Other extensions that are not part of the Truth project itself include:
 
+*   [AndroidX Test](https://developer.android.com/training/testing/fundamentals#assertions)
+    for testing Android types, like `Intent`
 *   [Compile Testing] for testing annotation processors and compilation jobs
 
 
