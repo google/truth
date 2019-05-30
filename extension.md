@@ -6,12 +6,18 @@ title: Extension
 
 ## Extension points
 
-Truth is configurable in two ways: custom failure behaviors and custom assertion
-methods.
+Truth is configurable in multiple ways, including:
 
-Configurable [failure behaviors][`FailureStrategy`] can be useful, particularly
-the alternative built-in behaviors. You can also define your own custom
-behavior.
+*   custom failure behaviors
+*   custom correspondences
+*   custom assertion methods
+
+Custom failure behaviors can be useful, as can the the alternative built-in
+behaviors. For information about both, see [`FailureStrategy`].
+
+Custom correspondences are useful for testing whether a collection contains a
+value that is "similar to" an expected value. For more information, see
+[`Correspondence`].
 
 But when people talk about Truth extensions, they're usually referring to custom
 assertion methods, implemented on a custom [`Subject`] subclass. That's what
@@ -350,6 +356,8 @@ There are four parts to the example:
 <!-- References -->
 
 [shortcuts]: faq#full-chain
+[`Correspondence`]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html
+[`FailureStrategy`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html
 
 <!-- External URLs -->
 
@@ -364,7 +372,6 @@ There are four parts to the example:
 [`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
 [`FailureMetadata`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureMetadata.java
 [`FailureStrategy.fail`]: https://google.github.io/truth/api/latest/com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-
-[`FailureStrategy`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
 [`FakeHrDatabaseTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/FakeHrDatabaseTest.java
 [`ProtoTruth`]:           https://google.github.io/truth/protobufs
 [`Re2jSubjects`]:         http://github.com/google/truth/blob/master/extensions/re2j/src/main/java/com/google/common/truth/extensions/re2j/Re2jSubjects.java
