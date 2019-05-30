@@ -106,8 +106,8 @@ There are four parts to the example:
     example. There are several
     important things to note about this file:
 
-    1.  Every custom subject must extend [`Subject`] or one of its
-        subclasses. Your class definition will usually look like this:
+    1.  Every custom subject must extend [`Subject`] or one of its subclasses.
+        Your class definition will usually look like this:
 
         ```java
         public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {…}
@@ -191,12 +191,16 @@ There are four parts to the example:
         (`EmployeeSubject.assertThat(...)`).)
 
     4.  Your custom `Subject` class must have a constructor that accepts a
-        [`FailureMetadata`] and a reference to the *instance under test*. Pass
-        both to the superclass constructor:
+        [`FailureMetadata`] and a reference to the *instance under test*. Store
+        a reference to the instance, and pass both to the superclass
+        constructor:
 
         ```java
+        @Nullable private final Employee actual;
+
         private EmployeeSubject(FailureMetadata metadata, @Nullable Employee actual) {
           super(metadata, actual);
+          this.actual = actual;
         }
         ```
 
@@ -219,7 +223,7 @@ There are four parts to the example:
 
         ```java
         public void hasName(String name) {
-          check("name()").that(actual().name()).isEqualTo(name);
+          check("name()").that(actual.name()).isEqualTo(name);
         }
         ```
 
@@ -239,7 +243,7 @@ There are four parts to the example:
 
         ```java
         public void isCeo() {
-          if (!actual().isCeo()) {
+          if (!actual.isCeo()) {
             failWithActual(simpleFact("expected to be CEO"));
           }
         }
@@ -266,7 +270,7 @@ There are four parts to the example:
 
         ```java
         public StringSubject name() {
-          return check("name()").that(actual().name());
+          return check("name()").that(actual.name());
         }
         ```
 
