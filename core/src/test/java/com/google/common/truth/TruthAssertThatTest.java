@@ -21,7 +21,7 @@ import static java.util.Arrays.asList;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
 import com.google.common.reflect.TypeToken;
@@ -48,7 +48,7 @@ public class TruthAssertThatTest {
 
   @Test
   public void staticAssertThatMethodsMatchStandardSubjectBuilderInstanceMethods() {
-    ImmutableSortedSet<TypeToken<?>> verbTypes =
+    ImmutableSet<TypeToken<?>> verbTypes =
         FluentIterable.from(asList(StandardSubjectBuilder.class.getMethods()))
             .filter(
                 new Predicate<Method>() {
@@ -59,7 +59,7 @@ public class TruthAssertThatTest {
                 })
             .transform(METHOD_TO_RETURN_TYPE_TOKEN)
             .toSortedSet(Ordering.usingToString());
-    ImmutableSortedSet<TypeToken<?>> truthTypes =
+    ImmutableSet<TypeToken<?>> truthTypes =
         FluentIterable.from(asList(Truth.class.getMethods()))
             .filter(
                 new Predicate<Method>() {

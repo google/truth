@@ -16,9 +16,7 @@
 
 package com.google.common.truth.extensions.proto;
 
-import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.SetMultimap;
 import com.google.common.truth.CustomSubjectBuilder;
 import com.google.common.truth.FailureMetadata;
 import com.google.protobuf.Message;
@@ -74,19 +72,4 @@ public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
       @NullableDecl Multimap<K, M> map) {
     return new MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject<>(metadata(), map);
   }
-
-  public <K, M extends Message>
-      ListMultimapWithProtoValuesSubject<?, K, M, ListMultimap<K, M>> that(
-          @NullableDecl ListMultimap<K, M> map) {
-    return new ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject<>(
-        metadata(), map);
-  }
-
-  public <K, M extends Message>
-      SetMultimapWithProtoValuesSubject<?, K, M, SetMultimap<K, M>> that(
-          @NullableDecl SetMultimap<K, M> map) {
-    return new SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject<>(
-        metadata(), map);
-  }
-
 }
