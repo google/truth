@@ -1141,9 +1141,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
               facts(
                       simpleFact(
                           lenientFormat(
-                              "Not true that %s contains at least one element that %s <%s>. It did "
-                                  + "contain the following elements with the correct key: <%s>",
-                              subject.actualAsString(),
+                              "Not true that <%s> contains at least one element that %s <%s>. It"
+                                  + " did contain the following elements with the correct key:"
+                                  + " <%s>",
+                              subject.actualCustomStringRepresentationForPackageMembersToCall(),
                               correspondence,
                               expected,
                               formatExtras(expected, keyMatches, exceptions))))
@@ -1155,8 +1156,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
           facts(
                   simpleFact(
                       lenientFormat(
-                          "Not true that %s contains at least one element that %s <%s>",
-                          subject.actualAsString(), correspondence, expected)))
+                          "Not true that <%s> contains at least one element that %s <%s>",
+                          subject.actualCustomStringRepresentationForPackageMembersToCall(),
+                          correspondence,
+                          expected)))
               .and(exceptions.describeAsAdditionalInfo()));
     }
 
@@ -1175,9 +1178,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             facts(
                     simpleFact(
                         lenientFormat(
-                            "%s should not have contained an element that %s <%s>. "
+                            "<%s> should not have contained an element that %s <%s>. "
                                 + "It contained the following such elements: <%s>",
-                            subject.actualAsString(), correspondence, excluded, matchingElements)))
+                            subject.actualCustomStringRepresentationForPackageMembersToCall(),
+                            correspondence,
+                            excluded,
+                            matchingElements)))
                 .and(exceptions.describeAsAdditionalInfo()));
         return;
       }
@@ -1375,9 +1381,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             facts(
                     simpleFact(
                         lenientFormat(
-                            "Not true that %s contains exactly one element that %s each element "
+                            "Not true that <%s> contains exactly one element that %s each element "
                                 + "of <%s>. It %s",
-                            subject.actualAsString(),
+                            subject.actualCustomStringRepresentationForPackageMembersToCall(),
                             correspondence,
                             expected,
                             describeMissingOrExtra(missing, extra, exceptions))))
@@ -1543,14 +1549,14 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             facts(
                     simpleFact(
                         lenientFormat(
-                            "Not true that %s contains exactly one element that %s each element "
+                            "Not true that <%s> contains exactly one element that %s each element "
                                 + "of <%s>. It contains at least one element that matches each "
                                 + "expected element, and every element it contains matches at "
                                 + "least one expected element, but there was no 1:1 mapping "
                                 + "between all the actual and expected elements. Using the most "
                                 + "complete 1:1 mapping (or one such mapping, if there is a tie), "
                                 + "it %s",
-                            subject.actualAsString(),
+                            subject.actualCustomStringRepresentationForPackageMembersToCall(),
                             correspondence,
                             expected,
                             describeMissingOrExtra(missing, extra, exceptions))))
@@ -1771,9 +1777,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             facts(
                     simpleFact(
                         lenientFormat(
-                            "Not true that %s contains at least one element that %s each element "
+                            "Not true that <%s> contains at least one element that %s each element "
                                 + "of <%s>. It %s",
-                            subject.actualAsString(),
+                            subject.actualCustomStringRepresentationForPackageMembersToCall(),
                             correspondence,
                             expected,
                             describeMissing(missing, extra, exceptions))))
@@ -1855,13 +1861,13 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             facts(
                     simpleFact(
                         lenientFormat(
-                            "Not true that %s contains at least one element that %s each element "
+                            "Not true that <%s> contains at least one element that %s each element "
                                 + "of <%s>. It contains at least one element that matches each "
                                 + "expected element, but there was no 1:1 mapping between all the "
                                 + "expected elements and any subset of the actual elements. Using "
                                 + "the most complete 1:1 mapping (or one such mapping, if there is"
                                 + " a tie), it %s",
-                            subject.actualAsString(),
+                            subject.actualCustomStringRepresentationForPackageMembersToCall(),
                             correspondence,
                             expected,
                             describeMissing(missing, extra, exceptions))))
@@ -1934,9 +1940,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 facts(
                         simpleFact(
                             lenientFormat(
-                                "Not true that %s %s <%s>. It contains the following values that "
+                                "Not true that <%s> %s <%s>. It contains the following values that "
                                     + "match by key: %s",
-                                subject.actualAsString(),
+                                subject.actualCustomStringRepresentationForPackageMembersToCall(),
                                 failVerb,
                                 expected,
                                 describeAnyMatchesByKey(pairing, exceptions))))
@@ -1946,9 +1952,11 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
                 facts(
                         simpleFact(
                             lenientFormat(
-                                "Not true that %s %s <%s>. It does not contain any matches by key, "
-                                    + "either",
-                                subject.actualAsString(), failVerb, expected)))
+                                "Not true that <%s> %s <%s>. It does not contain any matches by"
+                                    + " key, either",
+                                subject.actualCustomStringRepresentationForPackageMembersToCall(),
+                                failVerb,
+                                expected)))
                     .and(exceptions.describeAsAdditionalInfo()));
           }
         } else {
@@ -1956,10 +1964,12 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
               facts(
                       simpleFact(
                           lenientFormat(
-                              "Not true that %s %s <%s>. (N.B. A key function which does not "
+                              "Not true that <%s> %s <%s>. (N.B. A key function which does not "
                                   + "uniquely key the expected elements was provided and has "
                                   + "consequently been ignored.)",
-                              subject.actualAsString(), failVerb, expected)))
+                              subject.actualCustomStringRepresentationForPackageMembersToCall(),
+                              failVerb,
+                              expected)))
                   .and(exceptions.describeAsAdditionalInfo()));
         }
       } else {
@@ -1967,8 +1977,10 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             facts(
                     simpleFact(
                         lenientFormat(
-                            "Not true that %s %s <%s>",
-                            subject.actualAsString(), failVerb, expected)))
+                            "Not true that <%s> %s <%s>",
+                            subject.actualCustomStringRepresentationForPackageMembersToCall(),
+                            failVerb,
+                            expected)))
                 .and(exceptions.describeAsAdditionalInfo()));
       }
     }
@@ -2053,9 +2065,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
             facts(
                     simpleFact(
                         lenientFormat(
-                            "Not true that %s contains no element that %s %s <%s>. "
+                            "Not true that <%s> contains no element that %s %s <%s>. "
                                 + "It contains <[%s]>",
-                            subject.actualAsString(),
+                            subject.actualCustomStringRepresentationForPackageMembersToCall(),
                             correspondence,
                             excludedPrefix,
                             excluded,

@@ -65,12 +65,6 @@ public class ObjectArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasLengthFailNamed() {
-    expectFailureWhenTestingThat(objectArray("A", 5L)).named("foo").hasLength(1);
-    assertFailureValue("value of", "foo.length");
-  }
-
-  @Test
   public void hasLengthMultiFail() {
     expectFailureWhenTestingThat(new Object[][] {{"A"}, {5L}}).hasLength(1);
     assertFailureValue("value of", "array.length");

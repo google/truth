@@ -17,7 +17,6 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Lists.asList;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
@@ -83,12 +82,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   }
 
   ProtoSubject<?, Message> usingConfig(FluentEqualityConfig newConfig) {
-    MessageSubject newSubject = new MessageSubject(metadata, newConfig, actual);
-    if (internalCustomName() != null) {
-      newSubject.named(internalCustomName());
-    }
-
-    return newSubject;
+    return new MessageSubject(metadata, newConfig, actual);
   }
 
   @Override
@@ -323,8 +317,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
       if (!diffResult.isMatched()) {
         failWithoutActual(
             simpleFact(
-                failureMessage(/* expectedEqual = */ true)
-                    + "\n"
+                "Not true that messages compare equal.\n"
                     + diffResult.printToString(config.reportMismatchesOnly())));
       }
     }
@@ -354,8 +347,7 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
       if (diffResult.isMatched()) {
         failWithoutActual(
             simpleFact(
-                failureMessage(/* expectedEqual= */ false)
-                    + "\n"
+                "Not true that messages compare not equal.\n"
                     + diffResult.printToString(config.reportMismatchesOnly())));
       }
     }
@@ -365,10 +357,9 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
   public void hasAllRequiredFields() {
     if (!actual.isInitialized()) {
       failWithoutActual(
-          simpleFact(
-              lenientFormat(
-                  "Not true that %s has all required fields set. Missing: %s",
-                  actualAsString(), actual.findInitializationErrors())));
+          simpleFact("expected to have all required fields set"),
+          fact("but was missing", actual.findInitializationErrors()),
+          fact("proto was", actualCustomStringRepresentationForProtoPackageMembersToCall()));
     }
   }
 
@@ -376,22 +367,6 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     return config
         .withExpectedMessages(Arrays.asList(expected))
         .toMessageDifferencer(actual.getDescriptorForType());
-  }
-
-  private String failureMessage(boolean expectedEqual) {
-    StringBuilder rawMessage = new StringBuilder();
-    rawMessage.append("Not true that ");
-    if (internalCustomName() != null) {
-      rawMessage
-          .append(internalCustomName())
-          .append(" compares ")
-          .append(expectedEqual ? "" : "not ")
-          .append("equal. ");
-    } else {
-      rawMessage.append("messages compare ").append(expectedEqual ? "" : "not ").append("equal. ");
-    }
-
-    return rawMessage.toString();
   }
 
   static final class MessageSubject extends ProtoSubject<MessageSubject, Message> {

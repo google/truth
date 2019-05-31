@@ -169,10 +169,6 @@ public class IterableOfProtosSubject<
   IterableOfProtosFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
     IterableOfMessagesSubject<M> newSubject =
         new IterableOfMessagesSubject<>(metadata, newConfig, actual);
-    if (internalCustomName() != null) {
-      newSubject.named(internalCustomName());
-    }
-
     return new IterableOfProtosFluentAssertionImpl<>(newSubject);
   }
 

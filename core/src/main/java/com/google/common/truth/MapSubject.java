@@ -81,9 +81,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
       failWithoutActual(
           simpleFact(
               lenientFormat(
-                  "Not true that %s is equal to <%s>. It is equal according to the contract of "
+                  "Not true that <%s> is equal to <%s>. It is equal according to the contract of "
                       + "Map.equals(Object), but this implementation returned false",
-                  actualAsString(), other)));
+                  actualCustomStringRepresentationForPackageMembersToCall(), other)));
     }
   }
 
@@ -127,9 +127,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s contains entry <%s (%s)>. However, it does contain keys "
+                    "Not true that <%s> contains entry <%s (%s)>. However, it does contain keys "
                         + "<%s>.",
-                    actualAsString(),
+                    actualCustomStringRepresentationForPackageMembersToCall(),
                     entry,
                     objectToTypeName(entry),
                     countDuplicatesAndAddTypeInfo(
@@ -138,9 +138,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s contains entry <%s (%s)>. However, it does contain values "
+                    "Not true that <%s> contains entry <%s (%s)>. However, it does contain values "
                         + "<%s>.",
-                    actualAsString(),
+                    actualCustomStringRepresentationForPackageMembersToCall(),
                     entry,
                     objectToTypeName(entry),
                     countDuplicatesAndAddTypeInfo(
@@ -168,9 +168,12 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s contains entry <%s>. "
+                    "Not true that <%s> contains entry <%s>. "
                         + "However, the following keys are mapped to <%s>: %s",
-                    actualAsString(), entry, value, keys)));
+                    actualCustomStringRepresentationForPackageMembersToCall(),
+                    entry,
+                    value,
+                    keys)));
       } else {
         failWithActual("expected to contain entry", entry);
       }
@@ -281,8 +284,11 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
     failWithoutActual(
         simpleFact(
             lenientFormat(
-                "Not true that %s %s <%s>. It %s",
-                actualAsString(), failVerb, expectedMap, diff.describe(VALUE_DIFFERENCE_FORMAT))));
+                "Not true that <%s> %s <%s>. It %s",
+                actualCustomStringRepresentationForPackageMembersToCall(),
+                failVerb,
+                expectedMap,
+                diff.describe(VALUE_DIFFERENCE_FORMAT))));
     return false;
   }
 
@@ -471,7 +477,10 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s %s <%s>", actualAsString(), failVerb, expectedMap)));
+                    "Not true that <%s> %s <%s>",
+                    actualCustomStringRepresentationForPackageMembersToCall(),
+                    failVerb,
+                    expectedMap)));
       }
     }
   }
@@ -554,10 +563,10 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
               facts(
                       simpleFact(
                           lenientFormat(
-                              "Not true that %s contains an entry with key <%s> and a value that "
+                              "Not true that <%s> contains an entry with key <%s> and a value that "
                                   + "%s <%s>. However, it has a mapping from that key to <%s> "
                                   + "(diff: %s)",
-                              actualAsString(),
+                              actualCustomStringRepresentationForPackageMembersToCall(),
                               expectedKey,
                               correspondence,
                               expectedValue,
@@ -569,9 +578,9 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
               facts(
                       simpleFact(
                           lenientFormat(
-                              "Not true that %s contains an entry with key <%s> and a value that "
+                              "Not true that <%s> contains an entry with key <%s> and a value that "
                                   + "%s <%s>. However, it has a mapping from that key to <%s>",
-                              actualAsString(),
+                              actualCustomStringRepresentationForPackageMembersToCall(),
                               expectedKey,
                               correspondence,
                               expectedValue,
@@ -593,10 +602,14 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
               facts(
                       simpleFact(
                           lenientFormat(
-                              "Not true that %s contains an entry with key <%s> and a value that "
+                              "Not true that <%s> contains an entry with key <%s> and a value that "
                                   + "%s <%s>. However, the following keys are mapped to such "
                                   + "values: <%s>",
-                              actualAsString(), expectedKey, correspondence, expectedValue, keys)))
+                              actualCustomStringRepresentationForPackageMembersToCall(),
+                              expectedKey,
+                              correspondence,
+                              expectedValue,
+                              keys)))
                   .and(exceptions.describeAsAdditionalInfo()));
         } else {
           // Did not find matching key or value.
@@ -604,9 +617,12 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
               facts(
                       simpleFact(
                           lenientFormat(
-                              "Not true that %s contains an entry with key <%s> and a value that "
+                              "Not true that <%s> contains an entry with key <%s> and a value that "
                                   + "%s <%s>",
-                              actualAsString(), expectedKey, correspondence, expectedValue)))
+                              actualCustomStringRepresentationForPackageMembersToCall(),
+                              expectedKey,
+                              correspondence,
+                              expectedValue)))
                   .and(exceptions.describeAsAdditionalInfo()));
         }
       }
@@ -628,9 +644,13 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           failWithoutActual(
               simpleFact(
                   lenientFormat(
-                      "Not true that %s does not contain an entry with key <%s> and a value that "
+                      "Not true that <%s> does not contain an entry with key <%s> and a value that "
                           + "%s <%s>. It maps that key to <%s>",
-                      actualAsString(), excludedKey, correspondence, excludedValue, actualValue)));
+                      actualCustomStringRepresentationForPackageMembersToCall(),
+                      excludedKey,
+                      correspondence,
+                      excludedValue,
+                      actualValue)));
         }
         // The value didn't match, but we still need to fail if we hit an exception along the way.
         if (exceptions.hasCompareException()) {
@@ -745,10 +765,10 @@ public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
           facts(
                   simpleFact(
                       lenientFormat(
-                          "Not true that %s contains %s one entry that has a key that is "
+                          "Not true that <%s> contains %s one entry that has a key that is "
                               + "equal to and a value that %s the key and value of each entry of "
                               + "<%s>. It %s",
-                          actualAsString(),
+                          actualCustomStringRepresentationForPackageMembersToCall(),
                           modifier,
                           correspondence,
                           expectedMap,

@@ -123,9 +123,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s contains entry <%s (%s)>. However, it does contain entries "
+                    "Not true that <%s> contains entry <%s (%s)>. However, it does contain entries "
                         + "<%s>",
-                    actualAsString(),
+                    actualCustomStringRepresentationForPackageMembersToCall(),
                     entry,
                     objectToTypeName(entry),
                     countDuplicatesAndAddTypeInfo(
@@ -134,9 +134,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s contains entry <%s>. However, it has a mapping from <%s> to "
-                        + "<%s>",
-                    actualAsString(), entry, key, actual.asMap().get(key))));
+                    "Not true that <%s> contains entry <%s>. However, it has a mapping from <%s>"
+                        + " to <%s>",
+                    actualCustomStringRepresentationForPackageMembersToCall(),
+                    entry,
+                    key,
+                    actual.asMap().get(key))));
       } else if (actual.containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<>();
         for (Entry<?, ?> actualEntry : actual.entries()) {
@@ -147,9 +150,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s contains entry <%s>. "
+                    "Not true that <%s> contains entry <%s>. "
                         + "However, the following keys are mapped to <%s>: %s",
-                    actualAsString(), entry, value, keys)));
+                    actualCustomStringRepresentationForPackageMembersToCall(),
+                    entry,
+                    value,
+                    keys)));
       } else {
         failWithActual("expected to contain entry", Maps.immutableEntry(key, value));
       }
@@ -199,9 +205,14 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       failWithoutActual(
           simpleFact(
               lenientFormat(
-                  "Not true that %s %s is equal to %s <%s>. "
+                  "Not true that %s <%s> is equal to %s <%s>. "
                       + "A %s cannot equal a %s if either is non-empty.",
-                  mapType1, actualAsString(), mapType2, other, mapType1, mapType2)));
+                  mapType1,
+                  actualCustomStringRepresentationForPackageMembersToCall(),
+                  mapType2,
+                  other,
+                  mapType1,
+                  mapType2)));
     } else if (actual instanceof ListMultimap) {
       containsExactlyEntriesIn((Multimap<?, ?>) other).inOrder();
     } else if (actual instanceof SetMultimap) {
@@ -233,9 +244,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s contains exactly <%s>. "
+                    "Not true that <%s> contains exactly <%s>. "
                         + "It is missing <%s> and has unexpected items <%s>",
-                    actualAsString(),
+                    actualCustomStringRepresentationForPackageMembersToCall(),
                     annotateEmptyStringsMultimap(expectedMultimap),
                     // Note: The usage of countDuplicatesAndAddTypeInfo() below causes entries no
                     // longer to be grouped by key in the 'missing' and 'unexpected items' parts of
@@ -360,11 +371,6 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
       super(metadata, actual);
       // We want to use the multimap's toString() instead of the iterable of entries' toString():
       this.stringRepresentation = multimapSubject.actual.toString();
-      // If the multimap subject is named() then this should be, too:
-      if (multimapSubject.internalCustomName() != null) {
-        named(multimapSubject.internalCustomName());
-      }
-
     }
 
     @Override
@@ -413,23 +419,31 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
           failWithoutActual(
               simpleFact(
                   lenientFormat(
-                      "Not true that %s %s <%s> in order. The keys are not in order, "
+                      "Not true that <%s> %s <%s> in order. The keys are not in order, "
                           + "and the values for keys <%s> are not in order either",
-                      actualAsString(), verb, expectedMultimap, keysWithValuesOutOfOrder)));
+                      actualCustomStringRepresentationForPackageMembersToCall(),
+                      verb,
+                      expectedMultimap,
+                      keysWithValuesOutOfOrder)));
         } else {
           failWithoutActual(
               simpleFact(
                   lenientFormat(
-                      "Not true that %s %s <%s> in order. The keys are not in order",
-                      actualAsString(), verb, expectedMultimap)));
+                      "Not true that <%s> %s <%s> in order. The keys are not in order",
+                      actualCustomStringRepresentationForPackageMembersToCall(),
+                      verb,
+                      expectedMultimap)));
         }
       } else if (!keysWithValuesOutOfOrder.isEmpty()) {
         failWithoutActual(
             simpleFact(
                 lenientFormat(
-                    "Not true that %s %s <%s> in order. "
+                    "Not true that <%s> %s <%s> in order. "
                         + "The values for keys <%s> are not in order",
-                    actualAsString(), verb, expectedMultimap, keysWithValuesOutOfOrder)));
+                    actualCustomStringRepresentationForPackageMembersToCall(),
+                    verb,
+                    expectedMultimap,
+                    keysWithValuesOutOfOrder)));
       }
     }
   }
@@ -590,10 +604,10 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
             facts(
                     simpleFact(
                         lenientFormat(
-                            "Not true that %s contains at least one entry with key <%s> and a "
+                            "Not true that <%s> contains at least one entry with key <%s> and a "
                                 + "value that %s <%s>. However, it has a mapping from that key to "
                                 + "<%s>",
-                            actualAsString(),
+                            actualCustomStringRepresentationForPackageMembersToCall(),
                             expectedKey,
                             correspondence,
                             expectedValue,
@@ -614,10 +628,14 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
               facts(
                       simpleFact(
                           lenientFormat(
-                              "Not true that %s contains at least one entry with key <%s> and a "
+                              "Not true that <%s> contains at least one entry with key <%s> and a "
                                   + "value that %s <%s>. However, the following keys are mapped to "
                                   + "such values: <%s>",
-                              actualAsString(), expectedKey, correspondence, expectedValue, keys)))
+                              actualCustomStringRepresentationForPackageMembersToCall(),
+                              expectedKey,
+                              correspondence,
+                              expectedValue,
+                              keys)))
                   .and(exceptions.describeAsAdditionalInfo()));
         } else {
           // Did not find matching key or value.
@@ -625,9 +643,12 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
               facts(
                       simpleFact(
                           lenientFormat(
-                              "Not true that %s contains at least one entry with key <%s> and a "
+                              "Not true that <%s> contains at least one entry with key <%s> and a "
                                   + "value that %s <%s>",
-                              actualAsString(), expectedKey, correspondence, expectedValue)))
+                              actualCustomStringRepresentationForPackageMembersToCall(),
+                              expectedKey,
+                              correspondence,
+                              expectedValue)))
                   .and(exceptions.describeAsAdditionalInfo()));
         }
       }
@@ -654,10 +675,10 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
               facts(
                       simpleFact(
                           lenientFormat(
-                              "Not true that %s did not contain an entry with key <%s> and a value "
-                                  + "that %s <%s>. It maps that key to the following such values: "
-                                  + "<%s>",
-                              actualAsString(),
+                              "Not true that <%s> did not contain an entry with key <%s> and a"
+                                  + " value that %s <%s>. It maps that key to the following such"
+                                  + " values: <%s>",
+                              actualCustomStringRepresentationForPackageMembersToCall(),
                               excludedKey,
                               correspondence,
                               excludedValue,

@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
@@ -73,12 +72,11 @@ public final class FailureMetadata {
     }
 
     /*
-     * We store Subject, rather than the actual value itself, so that we can call actualAsString(),
-     * which lets subjects customize display through actualCustomStringRepresentation(). Why not
-     * call actualAsString() immediately? First, it might be expensive, and second, the Subject
-     * isn't initialized at the time we receive it. We *might* be able to make it safe to call if it
-     * looks only at actual(), but it might try to look at facts initialized by a subclass, which
-     * aren't ready yet.
+     * We store Subject, rather than the actual value itself, so that we can call
+     * actualCustomStringRepresentation(). Why not call actualCustomStringRepresentation()
+     * immediately? First, it might be expensive, and second, the Subject isn't initialized at the
+     * time we receive it. We *might* be able to make it safe to call if it looks only at actual(),
+     * but it might try to look at facts initialized by a subclass, which aren't ready yet.
      */
     @NullableDecl final Subject<?, ?> subject;
 
@@ -239,8 +237,7 @@ public final class FailureMetadata {
       }
 
       if (description == null) {
-        description =
-            firstNonNull(step.subject.internalCustomName(), step.subject.typeDescription());
+        description = step.subject.typeDescription();
       }
     }
     return descriptionIsInteresting
@@ -315,7 +312,7 @@ public final class FailureMetadata {
             fact(
                 // TODO(cpovirk): Use inferDescription() here when appropriate?
                 rootSubject.subject.typeDescription() + " was",
-                rootSubject.subject.actualAsStringNoBrackets()))
+                rootSubject.subject.actualCustomStringRepresentationForPackageMembersToCall()))
         : ImmutableList.<Fact>of();
   }
 

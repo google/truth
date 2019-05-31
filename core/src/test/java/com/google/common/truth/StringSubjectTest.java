@@ -145,11 +145,6 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void stringNamedNullFail() {
-    expectFailureWhenTestingThat(null).named("foo").isEqualTo("abd");
-  }
-
-  @Test
   public void stringStartsWith() {
     assertThat("abc").startsWith("ab");
   }

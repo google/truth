@@ -221,8 +221,8 @@ public class LiteProtoSubjectTest {
     } catch (AssertionError e) {
       expectRegex(
           e,
-          "Not true that <.*> has all required fields set\\.\\s*"
-              + "\\(Lite runtime could not determine which fields were missing\\.\\)");
+          "expected to have all required fields set\\s*but was: .*\\(Lite runtime could not"
+              + " determine which fields were missing.\\)");
     }
   }
 
@@ -289,18 +289,11 @@ public class LiteProtoSubjectTest {
     }
   }
 
-  // TODO(cgruber): These probably belong in ThrowableSubject.
   private void expectRegex(AssertionError e, String regex) {
-    expect
-        .withMessage(String.format("Expected <%s> to match '%s'.", regex, e.getMessage()))
-        .that(Pattern.compile(regex, Pattern.DOTALL).matcher(e.getMessage()).matches())
-        .isTrue();
+    expect.that(e).hasMessageThat().matches(Pattern.compile(regex, Pattern.DOTALL));
   }
 
   private void expectNoRegex(AssertionError e, String regex) {
-    expect
-        .withMessage(String.format("Expected <%s> to match '%s'.", regex, e.getMessage()))
-        .that(Pattern.compile(regex, Pattern.DOTALL).matcher(e.getMessage()).matches())
-        .isFalse();
+    expect.that(e).hasMessageThat().doesNotMatch(Pattern.compile(regex, Pattern.DOTALL));
   }
 }

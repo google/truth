@@ -191,7 +191,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
    * Truth.
    */
   public static TruthFailureSubject assertThat(AssertionError actual) {
-    return (TruthFailureSubject) assertAbout(truthFailures()).that(actual);
+    return assertAbout(truthFailures()).that(actual);
   }
 
   @Override

@@ -34,13 +34,6 @@ public final class MultisetSubject extends IterableSubject {
     this.actual = multiset;
   }
 
-  @Deprecated
-  @Override
-  public MultisetSubject named(String format, Object... args) {
-    super.named(format, args);
-    return this;
-  }
-
   /** Fails if the element does not have the given count. */
   public final void hasCount(@NullableDecl Object element, int expectedCount) {
     checkArgument(expectedCount >= 0, "expectedCount(%s) must be >= 0", expectedCount);

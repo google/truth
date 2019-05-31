@@ -159,19 +159,6 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void namedMapContainsExactlyExtraKey() {
-    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
-    expectFailureWhenTestingThat(actual).named("foo").containsExactly("feb", 2, "jan", 1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "name: foo\n"
-                + "Not true that foo (<{jan=1, feb=2, march=3}>) contains exactly "
-                + "<{feb=2, jan=1}>. "
-                + "It has the following entries with unexpected keys: {march=3}");
-  }
-
-  @Test
   public void containsExactlyMissingKey() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
     expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "march", 3, "feb", 2);
@@ -429,19 +416,6 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void namedMapContainsAtLeastMissingKey() {
-    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
-    expectFailureWhenTestingThat(actual).named("foo").containsAtLeast("march", 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "name: foo\n"
-                + "Not true that foo (<{jan=1, feb=2}>) contains at least "
-                + "<{march=3}>. "
-                + "It is missing keys for the following entries: {march=3}");
-  }
-
-  @Test
   public void containsAtLeastWrongValue() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     expectFailureWhenTestingThat(actual).containsAtLeast("jan", 1, "march", 33);
@@ -583,22 +557,6 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .isEqualTo(
             "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=4}>. "
                 + "It has the following entries with matching keys but different values: "
-                + "{march=(expected 4 but got 3)}");
-  }
-
-  @Test
-  public void namedMapIsEqualToFailureDiffering() {
-    ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
-    ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 4);
-
-    expectFailureWhenTestingThat(actual).named("foo").isEqualTo(expectedMap);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "name: foo\n"
-                + "Not true that foo (<{jan=1, feb=2, march=3}>) is equal to "
-                + "<{jan=1, feb=2, march=4}>."
-                + " It has the following entries with matching keys but different values: "
                 + "{march=(expected 4 but got 3)}");
   }
 
