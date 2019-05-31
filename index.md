@@ -3,6 +3,17 @@ layout: default
 title: Truth - Fluent assertions for Java and Android
 ---
 
+# What is Truth?
+
+Truth is a library for performing assertions in tests:
+
+```java
+assertThat(confirmationMessage).contains("testuser@google.com");
+```
+
+Truth is owned and maintained by the [Guava] team. It is used from the majority
+of the tests in Google’s own codebase.
+
 # Why use an assertion library?
 
 In other words, why depend on a new library when you can use the methods built
@@ -73,13 +84,16 @@ we’d made some decisions that would be difficult to retrofit onto AssertJ.
 
 Both Truth and AssertJ have their
 [advantages](comparison#comparison-vs-assertj). We prefer Truth for its simpler
-API: Truth provides fewer assertions (compare for `Iterable` objects:
-[Truth][`IterableSubject`] vs. [AssertJ][`AbstractIterableAssert`]) on fewer
-types (compare: [Truth][truth-api] vs. [AssertJ][assertj-api]). (We have
-evidence from [Google’s repository][monorepo] that Truth covers the most common
-use cases.) Truth also aims to provide a single way to perform most tasks. This
-makes tests easier to understand, and it lets us spend more time improving core
-features.
+API:
+
+-   Truth provides fewer assertions, while still covering the most common needs
+    of [Google’s codebase][monorepo]. Compare:
+    -   number of types: [Truth][truth-api] vs. [AssertJ][assertj-api]
+    -   number of assertions per type: for example, for `Iterable`:
+        [Truth][`IterableSubject`] vs. [AssertJ][`AbstractIterableAssert`]
+-   Truth aims to provide a single way to perform most tasks. This makes tests
+    easier to understand, and it lets us spend more time improving core
+    features.
 
 Also, Truth works on Android devices by default, without requiring users to use
 an older version or import a different class than usual.
@@ -88,9 +102,9 @@ an older version or import a different class than usual.
 
 Truth and [Hamcrest] differ significantly. We prefer Truth because:
 
-*   Truth assertions are made with chained method calls, so IDEs can suggest the
+-   Truth assertions are made with chained method calls, so IDEs can suggest the
     assertions appropriate for a given object.
-*   Hamcrest is a more general "matching" library, used not only for making
+-   Hamcrest is a more general "matching" library, used not only for making
     assertions but also for setting expections on mocking frameworks, with
     matchers composed together in arbitrary ways. But this flexibility requires
     complex generics and makes it hard for Hamcrest to produce readable failure
@@ -156,9 +170,6 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 [`MapSubject`].
 
 # More information {#more-information}
-
-Truth is owned and maintained by the [Guava] team. It is used from the majority
-of the tests in Google’s own codebase.
 
 *   Questions: Ask on [Stack Overflow] with the `google-truth` tag.
 *   Bugs: [GitHub issues]
