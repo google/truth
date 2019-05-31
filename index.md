@@ -8,7 +8,7 @@ title: Truth - Fluent assertions for Java and Android
 Truth is a library for performing assertions in tests:
 
 ```java
-assertThat(confirmationMessage).contains("testuser@google.com");
+assertThat(notificationText).contains("testuser@google.com");
 ```
 
 Truth is owned and maintained by the [Guava] team. It is used from the majority
