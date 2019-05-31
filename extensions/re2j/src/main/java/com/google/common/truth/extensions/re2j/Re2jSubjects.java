@@ -15,9 +15,6 @@
  */
 package com.google.common.truth.extensions.re2j;
 
-import static com.google.common.base.Strings.lenientFormat;
-import static com.google.common.truth.Fact.simpleFact;
-
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
@@ -105,20 +102,14 @@ public final class Re2jSubjects {
     @GwtIncompatible("com.google.re2j.Pattern")
     public void containsMatch(Pattern pattern) {
       if (!pattern.matcher(actual).find()) {
-        failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "%s should have contained a match for <%s>", actualAsString(), pattern)));
+        failWithActual("expected to contain a match for", pattern);
       }
     }
 
     /** Fails if the string does not contain a match on the given regex. */
     public void containsMatch(String regex) {
       if (!doContainsMatch(actual, regex)) {
-        failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "%s should have contained a match for <%s>", actualAsString(), regex)));
+        failWithActual("expected to contain a match for", regex);
       }
     }
 
@@ -126,20 +117,14 @@ public final class Re2jSubjects {
     @GwtIncompatible("com.google.re2j.Pattern")
     public void doesNotContainMatch(Pattern pattern) {
       if (pattern.matcher(actual).find()) {
-        failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "%s should not have contained a match for <%s>", actualAsString(), pattern)));
+        failWithActual("expected not to contain a match for", pattern);
       }
     }
 
     /** Fails if the string contains a match on the given regex. */
     public void doesNotContainMatch(String regex) {
       if (doContainsMatch(actual, regex)) {
-        failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "%s should not have contained a match for <%s>", actualAsString(), regex)));
+        failWithActual("expected not to contain a match for", regex);
       }
     }
 

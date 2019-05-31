@@ -112,10 +112,6 @@ public class MapWithProtoValuesSubject<
   MapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
     MapWithMessageValuesSubject<K, M> newSubject =
         new MapWithMessageValuesSubject<>(metadata, newConfig, actual);
-    if (internalCustomName() != null) {
-      newSubject.named(internalCustomName());
-    }
-
     return new MapWithProtoValuesFluentAssertionImpl<>(newSubject);
   }
 

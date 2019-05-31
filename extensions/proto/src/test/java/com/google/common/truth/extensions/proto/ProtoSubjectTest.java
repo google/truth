@@ -744,16 +744,26 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectFailureWhenTesting()
         .that(parsePartial("o_required_string_message: {}"))
         .hasAllRequiredFields();
-    expectFailureMatches(
-        "Not true that <.*> has all required fields set\\.\\s*Missing: \\[.*\\].*");
-    expectThatFailure().hasMessageThat().contains("[o_required_string_message.required_string]");
+    expectThatFailure()
+        .factKeys()
+        .containsExactly(
+            "expected to have all required fields set", "but was missing", "proto was");
+    expectThatFailure()
+        .factValue("but was missing")
+        .isEqualTo("[o_required_string_message.required_string]");
 
     expectFailureWhenTesting()
         .that(parsePartial("r_required_string_message: {} r_required_string_message: {}"))
         .hasAllRequiredFields();
-    expectFailureMatches(
-        "Not true that <.*> has all required fields set\\.\\s*Missing: \\[.*\\].*");
-    expectThatFailure().hasMessageThat().contains("r_required_string_message[0].required_string");
-    expectThatFailure().hasMessageThat().contains("r_required_string_message[1].required_string");
+    expectThatFailure()
+        .factKeys()
+        .containsExactly(
+            "expected to have all required fields set", "but was missing", "proto was");
+    expectThatFailure()
+        .factValue("but was missing")
+        .contains("r_required_string_message[0].required_string");
+    expectThatFailure()
+        .factValue("but was missing")
+        .contains("r_required_string_message[1].required_string");
   }
 }

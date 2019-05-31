@@ -32,7 +32,8 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * that are set by other subjects that the main subject delegates to. This keeps tests shorter and
  * less fragile.
  *
- * <p>To create an instance, call {@link ExpectFailure#assertThat}.
+ * <p>To create an instance, call {@link ExpectFailure#assertThat}. Or, if you're using a custom
+ * message or failure strategy, pass {@link #truthFailures} to your {@code about(...)} call.
  *
  * <p>This class accepts any {@code AssertionError} value, but it will throw an exception if a
  * caller tries to access the facts of an error that wasn't produced by Truth.
@@ -43,37 +44,30 @@ public final class TruthFailureSubject extends ThrowableSubject {
           "To test that a key is present without a value, "
               + "use factKeys().contains(...) or a similar method.");
 
-  /*
-   * TODO(cpovirk): Expose this publicly once it can have the right type. That can't happen until we
-   * add type parameters to ThrowableSubject, make TruthFailureSubject not extend ThrowableSubject,
-   * remove the type parameters from Subject altogether, or *maybe* just loosen the type parameters
-   * on Factory. At that point, also mention it in the class-level docs.
-   */
-
   /**
-   * Package-private factory for creating {@link TruthFailureSubject} instances. At the moment, the
-   * only public way to create an instance is {@link ExpectFailure#assertThat}.
+   * Factory for creating {@link TruthFailureSubject} instances. Most users will just use {@link
+   * ExpectFailure#assertThat}.
    */
-  static Factory<ThrowableSubject, Throwable> truthFailures() {
+  public static Factory<TruthFailureSubject, AssertionError> truthFailures() {
     return FACTORY;
   }
 
-  private static final Factory<ThrowableSubject, Throwable> FACTORY =
-      new Factory<ThrowableSubject, Throwable>() {
+  private static final Factory<TruthFailureSubject, AssertionError> FACTORY =
+      new Factory<TruthFailureSubject, AssertionError>() {
         @Override
-        public ThrowableSubject createSubject(FailureMetadata metadata, Throwable actual) {
+        public TruthFailureSubject createSubject(FailureMetadata metadata, AssertionError actual) {
           return new TruthFailureSubject(metadata, actual, "failure");
         }
       };
 
-  private final Throwable actual;
+  private final AssertionError actual;
 
   TruthFailureSubject(
       FailureMetadata metadata,
-      @NullableDecl Throwable throwable,
+      @NullableDecl AssertionError actual,
       @NullableDecl String typeDescription) {
-    super(metadata, throwable, typeDescription);
-    this.actual = throwable;
+    super(metadata, actual, typeDescription);
+    this.actual = actual;
   }
 
   /** Returns a subject for the list of fact keys. */
@@ -138,8 +132,8 @@ public final class TruthFailureSubject extends ThrowableSubject {
     ErrorWithFacts error = (ErrorWithFacts) actual;
 
     /*
-     * We don't care as much about including the actual Throwable and its facts in these because
-     * the Throwable will be attached as a cause in nearly all cases.
+     * We don't care as much about including the actual AssertionError and its facts in these
+     * because the AssertionError will be attached as a cause in nearly all cases.
      */
     ImmutableList<Fact> factsWithName = factsWithName(error, key);
     if (factsWithName.isEmpty()) {

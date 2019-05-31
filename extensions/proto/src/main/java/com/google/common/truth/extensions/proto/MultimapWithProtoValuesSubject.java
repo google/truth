@@ -137,10 +137,6 @@ public class MultimapWithProtoValuesSubject<
   MultimapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
     MultimapWithMessageValuesSubject<K, M> newSubject =
         new MultimapWithMessageValuesSubject<>(metadata, newConfig, actual);
-    if (internalCustomName() != null) {
-      newSubject.named(internalCustomName());
-    }
-
     return new MultimapWithProtoValuesFluentAssertionImpl<>(newSubject);
   }
 

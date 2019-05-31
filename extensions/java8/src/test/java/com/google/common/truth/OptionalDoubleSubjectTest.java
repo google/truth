@@ -52,14 +52,6 @@ public class OptionalDoubleSubjectTest {
   }
 
   @Test
-  public void isPresentFailingWithNamed() {
-    AssertionError expected =
-        expectFailure(
-            whenTesting -> whenTesting.that(OptionalDouble.empty()).named("name").isPresent());
-    assertThat(expected).factKeys().contains("name");
-  }
-
-  @Test
   public void isEmpty() {
     assertThat(OptionalDouble.empty()).isEmpty();
   }

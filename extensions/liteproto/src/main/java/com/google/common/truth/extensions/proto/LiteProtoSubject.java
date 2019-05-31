@@ -17,6 +17,7 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Strings.lenientFormat;
+import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.base.Objects;
@@ -114,6 +115,10 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
 
   @Override
   protected String actualCustomStringRepresentation() {
+    return actualCustomStringRepresentationForProtoPackageMembersToCall();
+  }
+
+  final String actualCustomStringRepresentationForProtoPackageMembersToCall() {
     return getTrimmedToString(actual);
   }
 
@@ -134,11 +139,9 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
       failWithoutActual(
           simpleFact(
               lenientFormat(
-                  "Not true that (%s) %s is equal to the expected (%s) object. "
+                  "Not true that (%s) proto is equal to the expected (%s) object. "
                       + "They are not of the same class.",
-                  actual.getClass().getName(),
-                  internalCustomName() != null ? internalCustomName() + " (proto)" : "proto",
-                  expected.getClass().getName())));
+                  actual.getClass().getName(), expected.getClass().getName())));
     } else {
       /*
        * TODO(cpovirk): If we someday let subjects override formatActualOrExpected(), change this
@@ -200,13 +203,14 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
       failWithoutActual(
           simpleFact(
               lenientFormat(
-                  "Not true that %s is a default proto instance. It is null.", actualAsString())));
+                  "Not true that <%s> is a default proto instance. It is null.",
+                  actualCustomStringRepresentationForProtoPackageMembersToCall())));
     } else if (!actual.equals(actual.getDefaultInstanceForType())) {
       failWithoutActual(
           simpleFact(
               lenientFormat(
-                  "Not true that %s is a default proto instance. It has set values.",
-                  actualAsString())));
+                  "Not true that <%s> is a default proto instance. It has set values.",
+                  actualCustomStringRepresentationForProtoPackageMembersToCall())));
     }
   }
 
@@ -216,8 +220,9 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
       failWithoutActual(
           simpleFact(
               lenientFormat(
-                  "Not true that (%s) %s is not a default proto instance. It has no set values.",
-                  actual.getClass().getName(), actualAsString())));
+                  "Not true that (%s) <%s> is not a default proto instance. It has no set values.",
+                  actual.getClass().getName(),
+                  actualCustomStringRepresentationForProtoPackageMembersToCall())));
     }
   }
 
@@ -229,11 +234,9 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     if (!actual.isInitialized()) {
       // MessageLite doesn't support reflection so this is the best we can do.
       failWithoutActual(
-          simpleFact(
-              lenientFormat(
-                  "Not true that %s has all required fields set. "
-                      + "(Lite runtime could not determine which fields were missing.)",
-                  actualAsString())));
+          simpleFact("expected to have all required fields set"),
+          fact("but was", actualCustomStringRepresentationForProtoPackageMembersToCall()),
+          simpleFact("(Lite runtime could not determine which fields were missing.)"));
     }
   }
 

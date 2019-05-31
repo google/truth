@@ -43,7 +43,6 @@ import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.common.primitives.Shorts;
 import com.google.common.truth.FailureMetadata.OldAndNewValuesAreSimilar;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CompatibleWith;
 import com.google.errorprone.annotations.ForOverride;
 import java.lang.reflect.Array;
@@ -134,43 +133,6 @@ public class Subject<S extends Subject<S, T>, T> {
     this.typeDescriptionOverride = typeDescriptionOverride;
   }
 
-  /**
-   * An internal method used to obtain the value set by {@link #named(String, Object...)}.
-   *
-   * @deprecated This method will be removed when {@link #named} is.
-   */
-  @Deprecated
-  protected String internalCustomName() {
-    return customName;
-  }
-
-  /**
-   * Adds a prefix to the subject, when it is displayed in error messages. This is especially useful
-   * in the context of types that have no helpful {@code toString()} representation, e.g. boolean.
-   * Writing {@code assertThat(foo).named("foo").isTrue();} then results in a more reasonable error
-   * message.
-   *
-   * <p>{@code named()} takes a format template and argument objects which will be substituted into
-   * the template using {@link com.google.common.base.Strings#lenientFormat Strings.lenientFormat}.
-   * Note this only supports the {@code %s} specifier.
-   *
-   * @param format a template with {@code %s} placeholders
-   * @param args the object parameters which will be applied to the message template.
-   * @deprecated Instead of {@code assertThat(foo).named("foo")}, use {@code
-   *     assertWithMessage("foo").that(foo)}. For custom subjects, use {@code
-   *     assertWithMessage("foo").about(foos()).that(foo)}. For other scenarios, see <a
-   *     href="https://google.github.io/truth/faq#full-chain">this FAQ entry about adding
-   *     messages</a>. We will be releasing a tool to automate most migrations.
-   */
-  @SuppressWarnings("unchecked")
-  @CanIgnoreReturnValue
-  @Deprecated
-  public S named(String format, Object... args) {
-    checkNotNull(format, "Name passed to named() cannot be null.");
-    this.customName = lenientFormat(format, checkNotNull(args));
-    return (S) this;
-  }
-
   /** Fails if the subject is not null. */
   public void isNull() {
     standardIsEqualTo(null);
@@ -247,11 +209,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * <p>The equality check follows the rules described on {@link #isEqualTo}.
    */
   private ComparisonResult compareForEquality(@NullableDecl Object expected) {
-    if (actual() == null && expected == null) {
+    if (actual == null && expected == null) {
       return ComparisonResult.equal();
-    } else if (actual() == null || expected == null) {
+    } else if (actual == null || expected == null) {
       return ComparisonResult.differentNoDescription();
-    } else if (actual() instanceof byte[] && expected instanceof byte[]) {
+    } else if (actual instanceof byte[] && expected instanceof byte[]) {
       /*
        * For a special error message and to use faster Arrays.equals to avoid at least one timeout.
        *
@@ -262,19 +224,19 @@ public class Subject<S extends Subject<S, T>, T> {
        * still fall back to the slower checkArrayEqualsRecursive to produce a nicer failure message
        * -- but naturally only for tests that are about to fail, when performance matters less.
        */
-      return checkByteArrayEquals((byte[]) expected, (byte[]) actual());
-    } else if (actual().getClass().isArray() && expected.getClass().isArray()) {
+      return checkByteArrayEquals((byte[]) expected, (byte[]) actual);
+    } else if (actual.getClass().isArray() && expected.getClass().isArray()) {
       return checkArrayEqualsRecursive(expected, actual, "");
-    } else if (isIntegralBoxedPrimitive(actual()) && isIntegralBoxedPrimitive(expected)) {
-      return ComparisonResult.fromEqualsResult(integralValue(actual()) == integralValue(expected));
-    } else if (actual() instanceof Double && expected instanceof Double) {
+    } else if (isIntegralBoxedPrimitive(actual) && isIntegralBoxedPrimitive(expected)) {
+      return ComparisonResult.fromEqualsResult(integralValue(actual) == integralValue(expected));
+    } else if (actual instanceof Double && expected instanceof Double) {
       return ComparisonResult.fromEqualsResult(
-          Double.compare((Double) actual(), (Double) expected) == 0);
-    } else if (actual() instanceof Float && expected instanceof Float) {
+          Double.compare((Double) actual, (Double) expected) == 0);
+    } else if (actual instanceof Float && expected instanceof Float) {
       return ComparisonResult.fromEqualsResult(
-          Float.compare((Float) actual(), (Float) expected) == 0);
+          Float.compare((Float) actual, (Float) expected) == 0);
     } else {
-      return ComparisonResult.fromEqualsResult(actual() == expected || actual().equals(expected));
+      return ComparisonResult.fromEqualsResult(actual == expected || actual.equals(expected));
     }
   }
 
@@ -298,7 +260,7 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails if the subject is not the same instance as the given object. */
   public final void isSameInstanceAs(@NullableDecl @CompatibleWith("T") Object expected) {
-    if (actual() != expected) {
+    if (actual != expected) {
       failEqualityCheck(
           SAME_INSTANCE,
           expected,
@@ -314,7 +276,7 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails if the subject is the same instance as the given object. */
   public final void isNotSameInstanceAs(@NullableDecl @CompatibleWith("T") Object unexpected) {
-    if (actual() == unexpected) {
+    if (actual == unexpected) {
       /*
        * We use actualCustomStringRepresentation() because it might be overridden to be better than
        * actual.toString()/unexpected.toString().
@@ -329,23 +291,23 @@ public class Subject<S extends Subject<S, T>, T> {
     if (clazz == null) {
       throw new NullPointerException("clazz");
     }
-    if (actual() == null) {
+    if (actual == null) {
       failWithActual("expected instance of", clazz.getName());
       return;
     }
-    if (!Platform.isInstanceOfType(actual(), clazz)) {
+    if (!Platform.isInstanceOfType(actual, clazz)) {
       if (classMetadataUnsupported()) {
         throw new UnsupportedOperationException(
             actualCustomStringRepresentation()
                 + ", an instance of "
-                + actual().getClass().getName()
+                + actual.getClass().getName()
                 + ", may or may not be an instance of "
                 + clazz.getName()
                 + ". Under -XdisableClassMetadata, we do not have enough information to tell.");
       }
       failWithoutActual(
           fact("expected instance of", clazz.getName()),
-          fact("but was instance of", actual().getClass().getName()),
+          fact("but was instance of", actual.getClass().getName()),
           fact("with value", actualCustomStringRepresentation()));
     }
   }
@@ -359,13 +321,13 @@ public class Subject<S extends Subject<S, T>, T> {
       throw new UnsupportedOperationException(
           "isNotInstanceOf is not supported under -XdisableClassMetadata");
     }
-    if (actual() == null) {
+    if (actual == null) {
       return; // null is not an instance of clazz.
     }
-    if (Platform.isInstanceOfType(actual(), clazz)) {
+    if (Platform.isInstanceOfType(actual, clazz)) {
       failWithActual("expected not to be an instance of", clazz.getName());
       /*
-       * TODO(cpovirk): Consider including actual().getClass() if it's not clazz itself but only a
+       * TODO(cpovirk): Consider including actual.getClass() if it's not clazz itself but only a
        * subtype.
        */
     }
@@ -373,7 +335,7 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails unless the subject is equal to any element in the given iterable. */
   public void isIn(Iterable<?> iterable) {
-    if (!Iterables.contains(iterable, actual())) {
+    if (!Iterables.contains(iterable, actual)) {
       failWithActual("expected any of", iterable);
     }
   }
@@ -388,7 +350,7 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails if the subject is equal to any element in the given iterable. */
   public void isNotIn(Iterable<?> iterable) {
-    if (Iterables.contains(iterable, actual())) {
+    if (Iterables.contains(iterable, actual)) {
       failWithActual("expected not to be any of", iterable);
     }
   }
@@ -401,67 +363,9 @@ public class Subject<S extends Subject<S, T>, T> {
     isNotIn(accumulate(first, second, rest));
   }
 
-  /**
-   * Returns the unedited, unformatted raw actual value.
-   *
-   * @deprecated Instead, declare a private field to store the actual value inside your {@link
-   *     Subject} subclass. We will be releasing a tool to automate most migrations.
-   */
-  @Deprecated
-  protected T getSubject() {
+  /** Returns the actual value under test. */
+  final T actual() {
     return actual;
-  }
-
-  /**
-   * Returns the unedited, unformatted raw actual value.
-   *
-   * @deprecated Instead, declare a private field to store the actual value inside your {@link
-   *     Subject} subclass. We will be releasing a tool to automate most migrations.
-   */
-  @Deprecated
-  protected final T actual() {
-    return getSubject();
-  }
-
-  /**
-   * Returns a string representation of the actual value. This will either be the toString() of the
-   * value or a prefixed "name" along with the string representation.
-   *
-   * @deprecated Now that {@link #named} is being removed, this method simply returns {@link
-   *     #actualCustomStringRepresentation}, surrounded by angle brackets (and we discourage angle
-   *     brackets in the new key-value style of failure messages). Most callers can use the actual
-   *     value directly instead. If they format it in {@code actualCustomStringRepresentation()},
-   *     they may wish to apply similar formatting here.
-   */
-  /*
-   * TODO(cpovirk): If we delete actualCustomStringRepresentation() in favor of a "format actual or
-   * expected" method, as described in a comment on that method, then it becomes useful again
-   * (though there's still a question of what to do with the angle brackets).
-   */
-  @Deprecated
-  protected final String actualAsString() {
-    String formatted = actualCustomStringRepresentation();
-    if (customName != null) {
-      // Covers some rare cases where a type might return "" from their custom formatter.
-      // This is actually pretty terrible, as it comes from subjects overriding (formerly)
-      // getDisplaySubject() in cases of .named() to make it not prefixing but replacing.
-      // That goes against the stated contract of .named().  Once displayedAs() is in place,
-      // we can rip this out and callers can use that instead.
-      // TODO(cgruber)
-      return customName + (formatted.isEmpty() ? "" : " (<" + formatted + ">)");
-    } else {
-      return "<" + formatted + ">";
-    }
-  }
-
-  /** Like {@link #actualAsString()} but without angle brackets around the value. */
-  final String actualAsStringNoBrackets() {
-    String formatted = actualCustomStringRepresentation();
-    if (customName != null) {
-      return customName + (formatted.isEmpty() ? "" : " (" + formatted + ")");
-    } else {
-      return formatted;
-    }
   }
 
   /**
@@ -486,7 +390,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   @ForOverride
   protected String actualCustomStringRepresentation() {
-    return formatActualOrExpected(actual());
+    return formatActualOrExpected(actual);
   }
 
   final String actualCustomStringRepresentationForPackageMembersToCall() {
@@ -629,7 +533,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * Arrays.equals() and our float/double arrayEquals methods. (We'd use deepEquals, but it doesn't
    * have our special double/float handling for GWT.)
    */
-  private ComparisonResult checkArrayEqualsRecursive(
+  private static ComparisonResult checkArrayEqualsRecursive(
       Object expectedArray, Object actualArray, String lastIndex) {
     String expectedType = arrayType(expectedArray);
     String actualType = arrayType(actualArray);
@@ -737,7 +641,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * automatically supplement their failure message with information about the original subject.
    *
    * <p>For example, {@link ThrowableSubject#hasMessageThat}, which returns a {@link StringSubject},
-   * is implemented with {@code check("getMessage()").that(actual().getMessage())}.
+   * is implemented with {@code check("getMessage()").that(actual.getMessage())}.
    *
    * <p>The arguments to {@code check} describe how the new subject was derived from the old,
    * formatted like a chained method call. This allows Truth to include that information in its
@@ -752,7 +656,7 @@ public class Subject<S extends Subject<S, T>, T> {
    * <p>If you aren't really delegating to an instance method on the actual value -- maybe you're
    * calling a static method, or you're calling a chain of several methods -- you can supply
    * whatever string will be most useful to users. For example, if you're delegating to {@code
-   * getOnlyElement(actual().colors())}, you might call {@code check("onlyColor()")}.
+   * getOnlyElement(actual.colors())}, you might call {@code check("onlyColor()")}.
    *
    * @param format a template with {@code %s} placeholders
    * @param args the arguments to be inserted into those placeholders
@@ -881,8 +785,8 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   @Deprecated
   final void fail(String verb, Object... messageParts) {
-    StringBuilder message = new StringBuilder("Not true that ");
-    message.append(actualAsString()).append(" ").append(verb);
+    StringBuilder message = new StringBuilder("Not true that <");
+    message.append(actualCustomStringRepresentation()).append("> ").append(verb);
     for (Object part : messageParts) {
       message.append(" <").append(part).append(">");
     }
@@ -912,7 +816,7 @@ public class Subject<S extends Subject<S, T>, T> {
       EqualityCheck equalityCheck, Object expected, ComparisonResult difference) {
     String actualString = actualCustomStringRepresentation();
     String expectedString = formatActualOrExpected(expected);
-    String actualClass = actual() == null ? "(null reference)" : actual().getClass().getName();
+    String actualClass = actual == null ? "(null reference)" : actual.getClass().getName();
     String expectedClass = expected == null ? "(null reference)" : expected.getClass().getName();
 
     /*
@@ -950,7 +854,7 @@ public class Subject<S extends Subject<S, T>, T> {
             fact("an instance of", actualClass));
       }
     } else {
-      if (equalityCheck == EqualityCheck.EQUAL && actual() != null && expected != null) {
+      if (equalityCheck == EqualityCheck.EQUAL && actual != null && expected != null) {
         metadata.failEqualityCheck(
             nameAsFacts(), difference.factsOrEmpty(), expectedString, actualString);
       } else {
@@ -982,8 +886,8 @@ public class Subject<S extends Subject<S, T>, T> {
   final void failWithBadResults(String verb, Object expected, String failVerb, Object actual) {
     String message =
         lenientFormat(
-            "Not true that %s %s <%s>. It %s <%s>",
-            actualAsString(),
+            "Not true that <%s> %s <%s>. It %s <%s>",
+            actualCustomStringRepresentation(),
             verb,
             expected,
             failVerb,
@@ -1108,7 +1012,7 @@ public class Subject<S extends Subject<S, T>, T> {
   /*
    * TODO(cpovirk): Consider giving this protected access.
    *
-   * It is likely better than what users would otherwise do -- `fact("but was", actual())`, which
+   * It is likely better than what users would otherwise do -- `fact("but was", actual)`, which
    * ignores actualCustomStringRepresentation() (which is inaccessible outside the package).
    *
    * But I want to think more about this. In particular, if people use this to reimplement

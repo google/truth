@@ -57,13 +57,6 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void hasMessageThat_Named_failure() {
-    NullPointerException npe = new NullPointerException("message");
-    expectFailureWhenTestingThat(npe).named("NPE").hasMessageThat().isEqualTo("foobar");
-    assertFailureValue("value of", "NPE.getMessage()");
-  }
-
-  @Test
   public void hasMessageThat_NullMessageHasMessage_failure() {
     NullPointerException npe = new NullPointerException(null);
     expectFailureWhenTestingThat(npe).hasMessageThat().isEqualTo("message");

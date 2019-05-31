@@ -16,6 +16,7 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -24,7 +25,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.truth.Expect;
 import com.google.common.truth.ExpectFailure;
-import com.google.common.truth.ThrowableSubject;
+import com.google.common.truth.TruthFailureSubject;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
@@ -151,8 +152,8 @@ public class ProtoSubjectTestBase {
     return multiExpectFailure.whenTesting().about(ProtoTruth.protos());
   }
 
-  protected final ThrowableSubject expectThatFailure() {
-    return expect.that(multiExpectFailure.getFailure());
+  protected final TruthFailureSubject expectThatFailure() {
+    return expect.about(truthFailures()).that(multiExpectFailure.getFailure());
   }
 
   protected final ProtoSubject<?, Message> expectThat(@NullableDecl Message message) {

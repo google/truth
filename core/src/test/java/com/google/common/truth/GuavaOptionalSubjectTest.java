@@ -43,12 +43,6 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isPresentFailing_named() {
-    expectFailureWhenTestingThat(Optional.absent()).named("name").isPresent();
-    assertFailureValue("name", "name");
-  }
-
-  @Test
   public void isPresentFailingNull() {
     expectFailureWhenTestingThat(null).isPresent();
     assertFailureKeys("expected present optional", "but was");
@@ -98,12 +92,6 @@ public class GuavaOptionalSubjectTest extends BaseSubjectTestCase {
   public void hasValue_failingWithWrongValue() {
     expectFailureWhenTestingThat(Optional.of("foo")).hasValue("boo");
     assertFailureValue("value of", "optional.get()");
-  }
-
-  @Test
-  public void hasValue_failingWithWrongValue_named() {
-    expectFailureWhenTestingThat(Optional.of("foo")).named("bar").hasValue("boo");
-    assertFailureValue("value of", "bar.get()");
   }
 
   private GuavaOptionalSubject expectFailureWhenTestingThat(Optional<?> actual) {

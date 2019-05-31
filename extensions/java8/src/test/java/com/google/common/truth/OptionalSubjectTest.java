@@ -47,13 +47,6 @@ public class OptionalSubjectTest {
   }
 
   @Test
-  public void isPresentFailing_named() {
-    AssertionError expected =
-        expectFailure(whenTesting -> whenTesting.that(Optional.empty()).named("name").isPresent());
-    assertThat(expected).factKeys().contains("name");
-  }
-
-  @Test
   public void isPresentFailingNull() {
     AssertionError expected = expectFailure(whenTesting -> whenTesting.that(null).isPresent());
     assertThat(expected)
@@ -112,14 +105,6 @@ public class OptionalSubjectTest {
     AssertionError expected =
         expectFailure(whenTesting -> whenTesting.that(Optional.of("foo")).hasValue("boo"));
     assertThat(expected).factValue("value of").isEqualTo("optional.get()");
-  }
-
-  @Test
-  public void hasValue_failingWithWrongValue_named() {
-    AssertionError expected =
-        expectFailure(
-            whenTesting -> whenTesting.that(Optional.of("foo")).named("bar").hasValue("boo"));
-    assertThat(expected).factValue("value of").isEqualTo("bar.get()");
   }
 
   private static AssertionError expectFailure(

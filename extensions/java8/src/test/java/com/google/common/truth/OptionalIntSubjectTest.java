@@ -52,14 +52,6 @@ public class OptionalIntSubjectTest {
   }
 
   @Test
-  public void isPresentFailingWithNamed() {
-    AssertionError expected =
-        expectFailure(
-            whenTesting -> whenTesting.that(OptionalInt.empty()).named("name").isPresent());
-    assertThat(expected).factKeys().contains("name");
-  }
-
-  @Test
   public void isEmpty() {
     assertThat(OptionalInt.empty()).isEmpty();
   }

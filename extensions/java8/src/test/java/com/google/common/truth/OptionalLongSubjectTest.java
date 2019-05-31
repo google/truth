@@ -52,14 +52,6 @@ public class OptionalLongSubjectTest {
   }
 
   @Test
-  public void isPresentFailingWithNamed() {
-    AssertionError expected =
-        expectFailure(
-            whenTesting -> whenTesting.that(OptionalLong.empty()).named("name").isPresent());
-    assertThat(expected).factKeys().contains("name");
-  }
-
-  @Test
   public void isEmpty() {
     assertThat(OptionalLong.empty()).isEmpty();
   }
