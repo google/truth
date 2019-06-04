@@ -310,7 +310,7 @@ public final class FailureMetadata {
     return seenDerivation
         ? ImmutableList.of(
             fact(
-                // TODO(cpovirk): Use inferDescription() here when appropriate?
+                // TODO(cpovirk): Use inferDescription() here when appropriate? But it can be long.
                 rootSubject.subject.typeDescription() + " was",
                 rootSubject.subject.actualCustomStringRepresentationForPackageMembersToCall()))
         : ImmutableList.<Fact>of();
