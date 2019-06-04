@@ -265,13 +265,7 @@ public final class FailureMetadata {
    * are some edge cases that we're not sure how to handle yet, for which we might introduce
    * additional {@code check}-like methods someday.)
    */
-  /*
-   * TODO(cpovirk): Consider returning multiple facts in some cases. For example, for
-   * assertThat(multimap).valuesForKey(key).hasSize(size), it might be useful for us to display the
-   * valuesForKey collection as well as the multimap it's part of. Probably displaying only 2
-   * objects -- first and last (well, last besides the one we're already displaying in the main
-   * message) would be enough.
-   */
+  // TODO(b/134505914): Consider returning multiple facts in some cases.
   private ImmutableList<Fact> rootUnlessThrowable() {
     Step rootSubject = null;
     boolean seenDerivation = false;
