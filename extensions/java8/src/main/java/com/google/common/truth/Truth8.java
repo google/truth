@@ -29,12 +29,18 @@ import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
- * A set of static methods to begin a Truth assertion chain for types that require java8.
+ * The primary entry point for assertions about Java 8 types.
  *
- * <p>Note: Usage of different failure strategies such as <em>assume</em> and <em>expect</em> should
- * rely on {@link
- * com.google.common.truth.StandardSubjectBuilder#about(com.google.common.truth.Subject.Factory)} to
- * begin a chain with those alternative behaviors.
+ * <p>To use {@link Truth#assertWithMessage} with a Java 8 type, use {@code
+ * assertWithMessage(...).about(}{@link OptionalSubject#optionals optionals()}{@code ).that(...)}
+ * (or similarly for the other types).
+ *
+ * <p>Likewise, to use different failure strategies like {@link Expect}, use {@code
+ * expect.about(}{@link OptionalSubject#optionals optionals()}{@code ).that(...)}.
+ *
+ * <p>For more information about combining different messages, failure strategies, and subjects, see
+ * <a href="https://truth.dev/faq#full-chain">How do I specify a custom message/failure
+ * behavior/{@code Subject} type?</a> in the Truth FAQ.
  */
 public final class Truth8 {
   public static OptionalSubject assertThat(@NullableDecl Optional<?> target) {
