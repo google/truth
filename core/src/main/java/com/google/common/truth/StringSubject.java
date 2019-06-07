@@ -32,7 +32,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 // TODO(kak): Make this final
-public class StringSubject extends ComparableSubject<StringSubject, String> {
+public class StringSubject extends ComparableSubject<String> {
   // TODO(kak): Make this package-private?
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call

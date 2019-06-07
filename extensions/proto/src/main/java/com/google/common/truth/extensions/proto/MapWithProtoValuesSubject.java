@@ -50,55 +50,25 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
  *
- * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
- *     needing subclassing. <i>This type parameter will be removed, as the method that needs it is
- *     being removed. You can prepare for this change by editing your class to refer to raw {@code
- *     MapWithProtoValuesSubject} today and then, after the removal, editing it to refer to {@code
- *     MapWithProtoValuesSubject<M>} (with a single type parameter).</i>
- * @param <K> <b>deprecated -</b> the type of the keys in the map. <i>This type parameter will be
- *     removed, as it has never been used. You can prepare for this change by editing your class to
- *     refer to raw {@code MapWithProtoValuesSubject} today and then, after the removal, editing it
- *     to refer to {@code MapWithProtoValuesSubject<M>} (with a single type parameter).</i>
  * @param <M> the type of the message values in the map
- * @param <C> <b>deprecated -</b> the type of the {@code Map} being tested by this {@code Subject}.
- *     <i>This type parameter will be removed, as the method that needs it is being removed. You can
- *     prepare for this change by editing your class to refer to raw {@code
- *     MapWithProtoValuesSubject} today and then, after the removal, editing it to refer to {@code
- *     MapWithProtoValuesSubject<M>} (with a single type parameter).</i>
  */
-public class MapWithProtoValuesSubject<
-        S extends MapWithProtoValuesSubject<S, K, M, C>, K, M extends Message, C extends Map<K, M>>
-    extends MapSubject {
+public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
 
   /*
    * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice. For an
    * explanation of why it works out OK here, see LiteProtoSubject.
    */
   private final FailureMetadata metadata;
-  private final C actual;
+  private final Map<?, M> actual;
   private final FluentEqualityConfig config;
 
-  /** Default implementation of {@link MapWithProtoValuesSubject}. */
-  public static final class MapWithMessageValuesSubject<K, M extends Message>
-      extends MapWithProtoValuesSubject<MapWithMessageValuesSubject<K, M>, K, M, Map<K, M>> {
-    // See IterableOfProtosSubject.IterableOfMessagesSubject for why this class is exposed.
-
-    MapWithMessageValuesSubject(FailureMetadata failureMetadata, @NullableDecl Map<K, M> map) {
-      super(failureMetadata, map);
-    }
-
-    private MapWithMessageValuesSubject(
-        FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl Map<K, M> map) {
-      super(failureMetadata, config, map);
-    }
-  }
-
-  protected MapWithProtoValuesSubject(FailureMetadata failureMetadata, @NullableDecl C map) {
+  protected MapWithProtoValuesSubject(
+      FailureMetadata failureMetadata, @NullableDecl Map<?, M> map) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), map);
   }
 
   MapWithProtoValuesSubject(
-      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C map) {
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl Map<?, M> map) {
     super(failureMetadata, map);
     this.metadata = failureMetadata;
     this.actual = map;
@@ -110,9 +80,8 @@ public class MapWithProtoValuesSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   MapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
-    MapWithMessageValuesSubject<K, M> newSubject =
-        new MapWithMessageValuesSubject<>(metadata, newConfig, actual);
-    return new MapWithProtoValuesFluentAssertionImpl<>(newSubject);
+    return new MapWithProtoValuesFluentAssertionImpl<>(
+        new MapWithProtoValuesSubject<>(metadata, newConfig, actual));
   }
 
   /**
@@ -647,9 +616,9 @@ public class MapWithProtoValuesSubject<
   // specified. So, we implement a dumb, private delegator to return instead.
   private static final class MapWithProtoValuesFluentAssertionImpl<M extends Message>
       implements MapWithProtoValuesFluentAssertion<M> {
-    private final MapWithProtoValuesSubject<?, ?, M, ?> subject;
+    private final MapWithProtoValuesSubject<M> subject;
 
-    MapWithProtoValuesFluentAssertionImpl(MapWithProtoValuesSubject<?, ?, M, ?> subject) {
+    MapWithProtoValuesFluentAssertionImpl(MapWithProtoValuesSubject<M> subject) {
       this.subject = subject;
     }
 

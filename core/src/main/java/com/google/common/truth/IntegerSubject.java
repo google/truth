@@ -24,7 +24,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Christian Gruber (cgruber@israfil.net)
  * @author Kurt Alfred Kluever
  */
-public class IntegerSubject extends ComparableSubject<IntegerSubject, Integer> {
+public class IntegerSubject extends ComparableSubject<Integer> {
   // TODO(kak): Make this package-protected?
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call

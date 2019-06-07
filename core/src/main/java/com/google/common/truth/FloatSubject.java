@@ -33,7 +33,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Kurt Alfred Kluever
  */
-public final class FloatSubject extends ComparableSubject<FloatSubject, Float> {
+public final class FloatSubject extends ComparableSubject<Float> {
   private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
 
   private final Float actual;

@@ -160,17 +160,15 @@ public class ProtoSubjectTestBase {
     return expect.about(ProtoTruth.protos()).that(message);
   }
 
-  protected final <M extends Message> IterableOfProtosSubject<?, M, ?> expectThat(
-      Iterable<M> messages) {
+  protected final <M extends Message> IterableOfProtosSubject<M> expectThat(Iterable<M> messages) {
     return expect.about(ProtoTruth.protos()).that(messages);
   }
 
-  protected final <M extends Message> MapWithProtoValuesSubject<?, ?, M, ?> expectThat(
-      Map<?, M> map) {
+  protected final <M extends Message> MapWithProtoValuesSubject<M> expectThat(Map<?, M> map) {
     return expect.about(ProtoTruth.protos()).that(map);
   }
 
-  protected final <M extends Message> MultimapWithProtoValuesSubject<?, ?, M, ?> expectThat(
+  protected final <M extends Message> MultimapWithProtoValuesSubject<M> expectThat(
       Multimap<?, M> multimap) {
     return expect.about(ProtoTruth.protos()).that(multimap);
   }
