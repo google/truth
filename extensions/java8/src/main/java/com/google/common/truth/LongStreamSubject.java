@@ -40,7 +40,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Kurt Alfred Kluever
  */
-public final class LongStreamSubject extends Subject<LongStreamSubject, LongStream> {
+public final class LongStreamSubject extends Subject {
 
   private final List<?> actualList;
 

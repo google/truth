@@ -88,7 +88,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Pete Gillin
  */
 // Can't be final since MultisetSubject and SortedSetSubject extend it
-public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
+public class IterableSubject extends Subject {
 
   private final Iterable<?> actual;
 
@@ -944,7 +944,8 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
   /** @deprecated You probably meant to call {@link #containsNoneIn} instead. */
   @Override
   @Deprecated
-  public void isNotIn(Iterable<?> iterable) {
+  // TODO(b/133145187): Restore to Iterable<?> after removing the type parameters from Subject.
+  public void isNotIn(Iterable iterable) {
     if (Iterables.contains(iterable, actual)) {
       failWithActual("expected not to be any of", iterable);
     }

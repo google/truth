@@ -61,7 +61,7 @@ public final class FailureMetadata {
    * The data from a call to either (a) a {@link Subject} constructor or (b) {@link Subject#check}.
    */
   private static final class Step {
-    static Step subjectCreation(Subject<?, ?> subject) {
+    static Step subjectCreation(Subject subject) {
       return new Step(checkNotNull(subject), null, null);
     }
 
@@ -78,7 +78,7 @@ public final class FailureMetadata {
      * time we receive it. We *might* be able to make it safe to call if it looks only at actual(),
      * but it might try to look at facts initialized by a subclass, which aren't ready yet.
      */
-    @NullableDecl final Subject<?, ?> subject;
+    @NullableDecl final Subject subject;
 
     @NullableDecl final Function<String, String> descriptionUpdate;
 
@@ -86,7 +86,7 @@ public final class FailureMetadata {
     @NullableDecl final OldAndNewValuesAreSimilar valuesAreSimilar;
 
     private Step(
-        @NullableDecl Subject<?, ?> subject,
+        @NullableDecl Subject subject,
         @NullableDecl Function<String, String> descriptionUpdate,
         @NullableDecl OldAndNewValuesAreSimilar valuesAreSimilar) {
       this.subject = subject;
@@ -124,7 +124,7 @@ public final class FailureMetadata {
    * the initial that(...) call and continuing into any chained calls, like {@link
    * ThrowableSubject#hasMessageThat}.
    */
-  FailureMetadata updateForSubject(Subject<?, ?> subject) {
+  FailureMetadata updateForSubject(Subject subject) {
     ImmutableList<Step> steps = append(this.steps, Step.subjectCreation(subject));
     return derive(messages, steps);
   }

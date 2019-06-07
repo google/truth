@@ -26,7 +26,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Ben Douglass
  */
-public final class OptionalLongSubject extends Subject<OptionalLongSubject, OptionalLong> {
+public final class OptionalLongSubject extends Subject {
   private final OptionalLong actual;
 
   OptionalLongSubject(

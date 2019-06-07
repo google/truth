@@ -131,11 +131,11 @@ public class LiteProtoSubjectTest {
     this.config = config;
   }
 
-  private LiteProtoSubject<?, MessageLite> expectThat(@NullableDecl MessageLite m) {
+  private LiteProtoSubject expectThat(@NullableDecl MessageLite m) {
     return expect.about(LiteProtoTruth.liteProtos()).that(m);
   }
 
-  private Subject<?, ?> expectThat(@NullableDecl Object o) {
+  private Subject expectThat(@NullableDecl Object o) {
     return expect.that(o);
   }
 
@@ -276,16 +276,16 @@ public class LiteProtoSubjectTest {
       assertThat(config.nonEmptyMessage()).serializedSize().isGreaterThan(size);
       fail("Should have failed.");
     } catch (AssertionError e) {
-      assertThat(e).factValue("value of").isEqualTo("messageLite.getSerializedSize()");
-      assertThat(e).factValue("messageLite was").containsMatch("optional_int:\\s*3");
+      assertThat(e).factValue("value of").isEqualTo("liteProto.getSerializedSize()");
+      assertThat(e).factValue("liteProto was").containsMatch("optional_int:\\s*3");
     }
 
     try {
       assertThat(config.defaultInstance()).serializedSize().isGreaterThan(0);
       fail("Should have failed.");
     } catch (AssertionError e) {
-      assertThat(e).factValue("value of").isEqualTo("messageLite.getSerializedSize()");
-      assertThat(e).factValue("messageLite was").contains("[empty proto]");
+      assertThat(e).factValue("value of").isEqualTo("liteProto.getSerializedSize()");
+      assertThat(e).factValue("liteProto was").contains("[empty proto]");
     }
   }
 

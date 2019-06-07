@@ -18,8 +18,9 @@ package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.Truth.assertAbout;
 
-import com.google.protobuf.MessageLite;
+import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CheckReturnValue;
+import com.google.protobuf.MessageLite;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -36,11 +37,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 @CheckReturnValue
 public final class LiteProtoTruth {
-  public static LiteProtoSubject<?, MessageLite> assertThat(@NullableDecl MessageLite messageLite) {
+  public static LiteProtoSubject assertThat(@NullableDecl MessageLite messageLite) {
     return assertAbout(liteProtos()).that(messageLite);
   }
 
-  public static LiteProtoSubject.Factory<?, MessageLite> liteProtos() {
+  public static Subject.Factory<LiteProtoSubject, MessageLite> liteProtos() {
     return LiteProtoSubject.liteProtos();
   }
 

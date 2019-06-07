@@ -29,7 +29,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Christian Gruber
  */
-public final class GuavaOptionalSubject extends Subject<GuavaOptionalSubject, Optional<?>> {
+public final class GuavaOptionalSubject extends Subject {
   private final Optional<?> actual;
 
   GuavaOptionalSubject(

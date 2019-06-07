@@ -140,7 +140,7 @@ public class ExpectFailureTest {
     };
   }
 
-  private static class BadSubject extends Subject<BadSubject, Integer> {
+  private static class BadSubject extends Subject {
     private final Integer actual;
 
     BadSubject(FailureMetadata failureMetadat, Integer actual) {

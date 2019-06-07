@@ -30,8 +30,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public final class PrimitiveDoubleArraySubject
-    extends AbstractArraySubject<PrimitiveDoubleArraySubject, double[]> {
+public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   private final double[] actual;
 
   PrimitiveDoubleArraySubject(

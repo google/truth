@@ -23,8 +23,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Kurt Alfred Kluever
  */
-public final class PrimitiveByteArraySubject
-    extends AbstractArraySubject<PrimitiveByteArraySubject, byte[]> {
+public final class PrimitiveByteArraySubject extends AbstractArraySubject {
   private final byte[] actual;
 
   PrimitiveByteArraySubject(

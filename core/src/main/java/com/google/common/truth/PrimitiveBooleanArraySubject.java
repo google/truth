@@ -23,8 +23,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public final class PrimitiveBooleanArraySubject
-    extends AbstractArraySubject<PrimitiveBooleanArraySubject, boolean[]> {
+public final class PrimitiveBooleanArraySubject extends AbstractArraySubject {
   private final boolean[] actual;
 
   PrimitiveBooleanArraySubject(
