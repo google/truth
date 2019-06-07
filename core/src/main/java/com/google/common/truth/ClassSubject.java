@@ -24,7 +24,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Kurt Alfred Kluever
  */
 @GwtIncompatible("reflection")
-public final class ClassSubject extends Subject<ClassSubject, Class<?>> {
+public final class ClassSubject extends Subject {
   private final Class<?> actual;
 
   ClassSubject(FailureMetadata metadata, @NullableDecl Class<?> o) {

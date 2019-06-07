@@ -46,43 +46,31 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>Equality tests, and other methods, may yield slightly different behavior for versions 2 and 3
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
- *
- * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
- *     needing subclassing. <i>Both type parameters will be removed, as the methods that need them
- *     are being removed. You can prepare for this change by editing your class to refer to raw
- *     {@code ProtoSubject} today.</i>
- * @param <M> <b>deprecated -</b> the type of the message being tested by this {@code Subject}.
- *     <i>Both type parameters will be removed, as the methods that need them are being removed. You
- *     can prepare for this change by editing your class to refer to raw {@code ProtoSubject}
- *     today.</i>
  */
-public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
-    extends LiteProtoSubject<S, M> implements ProtoFluentAssertion {
+public class ProtoSubject extends LiteProtoSubject implements ProtoFluentAssertion {
 
   /*
    * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice. For an
    * explanation of why it works out OK here, see LiteProtoSubject.
    */
   private final FailureMetadata metadata;
-  private final M actual;
-  // TODO(user): Type this if we solve the typing assertAbout() problem for
-  // IterableOfProtosSubject and there is use for such typing.
+  private final Message actual;
   private final FluentEqualityConfig config;
 
-  protected ProtoSubject(FailureMetadata failureMetadata, @NullableDecl M message) {
+  protected ProtoSubject(FailureMetadata failureMetadata, @NullableDecl Message message) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), message);
   }
 
   ProtoSubject(
-      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl M message) {
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl Message message) {
     super(failureMetadata, message);
     this.metadata = failureMetadata;
     this.actual = message;
     this.config = config;
   }
 
-  ProtoSubject<?, Message> usingConfig(FluentEqualityConfig newConfig) {
-    return new MessageSubject(metadata, newConfig, actual);
+  ProtoSubject usingConfig(FluentEqualityConfig newConfig) {
+    return new ProtoSubject(metadata, newConfig, actual);
   }
 
   @Override
@@ -367,18 +355,5 @@ public class ProtoSubject<S extends ProtoSubject<S, M>, M extends Message>
     return config
         .withExpectedMessages(Arrays.asList(expected))
         .toMessageDifferencer(actual.getDescriptorForType());
-  }
-
-  static final class MessageSubject extends ProtoSubject<MessageSubject, Message> {
-    MessageSubject(FailureMetadata failureMetadata, @NullableDecl Message message) {
-      super(failureMetadata, message);
-    }
-
-    private MessageSubject(
-        FailureMetadata failureMetadata,
-        FluentEqualityConfig config,
-        @NullableDecl Message message) {
-      super(failureMetadata, config, message);
-    }
   }
 }

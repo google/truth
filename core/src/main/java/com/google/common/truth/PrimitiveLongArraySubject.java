@@ -23,8 +23,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public final class PrimitiveLongArraySubject
-    extends AbstractArraySubject<PrimitiveLongArraySubject, long[]> {
+public final class PrimitiveLongArraySubject extends AbstractArraySubject {
   private final long[] actual;
 
   PrimitiveLongArraySubject(

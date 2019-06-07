@@ -58,12 +58,12 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * <p>To create a {@code Subject} instance, most users will call an {@link Truth#assertThat
  * assertThat} method. For information about other ways to create an instance, see <a
- * href="https://google.github.io/truth/faq#full-chain">this FAQ entry</a>.
+ * href="https://truth.dev/faq#full-chain">this FAQ entry</a>.
  *
  * <h3>For people extending Truth</h3>
  *
  * <p>For information about writing a custom {@link Subject}, see <a
- * href="https://google.github.io/truth/extension">our doc on extensions</a>.
+ * href="https://truth.dev/extension">our doc on extensions</a>.
  *
  * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
  *     needing subclassing. <i>Both type parameters will be removed, as the methods that need them
@@ -82,11 +82,11 @@ public class Subject<S extends Subject<S, T>, T> {
    * {@link Subject} to create.
    *
    * <p>For more information about the fluent chain, see <a
-   * href="https://google.github.io/truth/faq#full-chain">this FAQ entry</a>.
+   * href="https://truth.dev/faq#full-chain">this FAQ entry</a>.
    *
    * <h3>For people extending Truth</h3>
    *
-   * <p>When you write a custom subject, see <a href="https://google.github.io/truth/extension">our doc on
+   * <p>When you write a custom subject, see <a href="https://truth.dev/extension">our doc on
    * extensions</a>. It explains where {@code Subject.Factory} fits into the process.
    */
   public interface Factory<SubjectT extends Subject, ActualT> {

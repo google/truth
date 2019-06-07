@@ -50,7 +50,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Christian Gruber
  * @author Kurt Alfred Kluever
  */
-public class MapSubject extends Subject<MapSubject, Map<?, ?>> {
+public class MapSubject extends Subject {
   private final Map<?, ?> actual;
 
   /**

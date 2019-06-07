@@ -28,7 +28,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Kurt Alfred Kluever
  */
-public final class AtomicLongMapSubject extends Subject<AtomicLongMapSubject, AtomicLongMap<?>> {
+public final class AtomicLongMapSubject extends Subject {
   private final AtomicLongMap<?> actual;
 
   AtomicLongMapSubject(FailureMetadata metadata, @NullableDecl AtomicLongMap<?> map) {

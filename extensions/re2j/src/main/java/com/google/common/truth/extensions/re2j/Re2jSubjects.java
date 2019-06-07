@@ -47,7 +47,7 @@ public final class Re2jSubjects {
    *
    * @see #re2jString
    */
-  public static final class Re2jStringSubject extends Subject<Re2jStringSubject, String> {
+  public static final class Re2jStringSubject extends Subject {
     private static final Subject.Factory<Re2jStringSubject, String> FACTORY =
         new Subject.Factory<Re2jStringSubject, String>() {
           @Override

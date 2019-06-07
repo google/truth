@@ -43,12 +43,12 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * </ul>
  *
  * <p>For more information about the methods in this class, see <a
- * href="https://google.github.io/truth/faq#full-chain">this FAQ entry</a>.
+ * href="https://truth.dev/faq#full-chain">this FAQ entry</a>.
  *
  * <h3>For people extending Truth</h3>
  *
  * <p>You won't extend this type. When you write a custom subject, see <a
- * href="https://google.github.io/truth/extension">our doc on extensions</a>.
+ * href="https://truth.dev/extension">our doc on extensions</a>.
  */
 public class StandardSubjectBuilder {
   /**

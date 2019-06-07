@@ -56,7 +56,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Daniel Ploch
  * @author Kurt Alfred Kluever
  */
-public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
+public class MultimapSubject extends Subject {
 
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */
   private static final Ordered ALREADY_FAILED =

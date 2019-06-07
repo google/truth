@@ -30,7 +30,7 @@ package com.google.common.truth;
  *   <li>(and some useful only to people who implement custom subjects, described below)
  * </ul>
  *
- * <p>For more information about the fluent chain, see <a href="https://google.github.io/truth/faq#full-chain">this
+ * <p>For more information about the fluent chain, see <a href="https://truth.dev/faq#full-chain">this
  * FAQ entry</a>.
  *
  * <h3>For people extending Truth</h3>

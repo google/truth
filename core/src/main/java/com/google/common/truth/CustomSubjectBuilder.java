@@ -26,11 +26,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * itself, only on its subtypes, which are the types users actually interact with.)
  *
  * <p>For more information about the methods in this class, see <a
- * href="https://google.github.io/truth/faq#full-chain">this FAQ entry</a>.
+ * href="https://truth.dev/faq#full-chain">this FAQ entry</a>.
  *
  * <h3>For people extending Truth</h3>
  *
- * <p>When you write a custom subject, see <a href="https://google.github.io/truth/extension">our doc on
+ * <p>When you write a custom subject, see <a href="https://truth.dev/extension">our doc on
  * extensions</a>. It explains the cases in which {@code CustomSubjectBuilder} is necessary.
  */
 public abstract class CustomSubjectBuilder {
@@ -40,11 +40,11 @@ public abstract class CustomSubjectBuilder {
    * what kind of {@link Subject} to create.
    *
    * <p>For more information about the fluent chain, see <a
-   * href="https://google.github.io/truth/faq#full-chain">this FAQ entry</a>.
+   * href="https://truth.dev/faq#full-chain">this FAQ entry</a>.
    *
    * <h3>For people extending Truth</h3>
    *
-   * <p>When you write a custom subject, see <a href="https://google.github.io/truth/extension">our doc on
+   * <p>When you write a custom subject, see <a href="https://truth.dev/extension">our doc on
    * extensions</a>. It explains the cases in which {@code CustomSubjectBuilder.Factory} is
    * necessary.
    */

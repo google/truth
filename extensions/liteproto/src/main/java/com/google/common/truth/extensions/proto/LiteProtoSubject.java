@@ -24,7 +24,6 @@ import com.google.common.base.Objects;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.Subject;
-import com.google.common.truth.Truth;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.MessageLite;
 import java.util.regex.Pattern;
@@ -36,36 +35,16 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>LiteProtoSubject supports versions 2 and 3 of Protocol Buffers. Due to the lack of runtime
  * descriptors, its functionality is limited compared to ProtoSubject, in particular in performing
  * detailed comparisons between messages.
- *
- * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
- *     needing subclassing. <i>Both type parameters will be removed, as the methods that need them
- *     are being removed. You can prepare for this change by editing your class to refer to raw
- *     {@code LiteProtoSubject} today.</i>
- * @param <M> <b>deprecated -</b> the type of the message being tested by this {@code Subject}.
- *     <i>Both type parameters will be removed, as the methods that need them are being removed. You
- *     can prepare for this change by editing your class to refer to raw {@code LiteProtoSubject}
- *     today.</i>
  */
 @CheckReturnValue
-public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends MessageLite>
-    extends Subject<S, M> {
+public class LiteProtoSubject extends Subject {
 
   /**
-   * Typed extension of {@link Subject.Factory}.
-   *
-   * <p>The existence of this class is necessary in order to satisfy the generic constraints of
-   * {@link Truth#assertAbout(Subject.Factory)}, whilst also hiding the Untyped classes which are
-   * not meant to be exposed.
+   * Returns a {@code Subject.Factory} for {@link MessageLite} subjects which you can use to assert
+   * things about Lite Protobuf properties.
    */
-  public abstract static class Factory<S extends LiteProtoSubject<S, M>, M extends MessageLite>
-      implements Subject.Factory<S, M> {}
-
-  /**
-   * Returns a SubjectFactory for {@link MessageLite} subjects which you can use to assert things
-   * about Lite Protobuf properties.
-   */
-  static Factory<?, MessageLite> liteProtos() {
-    return MessageLiteSubjectFactory.INSTANCE;
+  static Factory<LiteProtoSubject, MessageLite> liteProtos() {
+    return LiteProtoSubjectFactory.INSTANCE;
   }
 
   /*
@@ -83,9 +62,10 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
    * TODO(b/127819891): Use a better API for this if one is addded.
    */
   private final FailureMetadata metadata;
-  private final M actual;
+  private final MessageLite actual;
 
-  protected LiteProtoSubject(FailureMetadata failureMetadata, @NullableDecl M messageLite) {
+  protected LiteProtoSubject(
+      FailureMetadata failureMetadata, @NullableDecl MessageLite messageLite) {
     super(failureMetadata, messageLite);
     this.metadata = failureMetadata;
     this.actual = messageLite;
@@ -250,21 +230,14 @@ public class LiteProtoSubject<S extends LiteProtoSubject<S, M>, M extends Messag
     return check("getSerializedSize()").that(actual.getSerializedSize());
   }
 
-  static final class MessageLiteSubject extends LiteProtoSubject<MessageLiteSubject, MessageLite> {
-
-    MessageLiteSubject(FailureMetadata failureMetadata, @NullableDecl MessageLite messageLite) {
-      super(failureMetadata, messageLite);
-    }
-  }
-
-  private static final class MessageLiteSubjectFactory
-      extends Factory<MessageLiteSubject, MessageLite> {
-    private static final MessageLiteSubjectFactory INSTANCE = new MessageLiteSubjectFactory();
+  private static final class LiteProtoSubjectFactory
+      implements Factory<LiteProtoSubject, MessageLite> {
+    private static final LiteProtoSubjectFactory INSTANCE = new LiteProtoSubjectFactory();
 
     @Override
-    public MessageLiteSubject createSubject(
+    public LiteProtoSubject createSubject(
         FailureMetadata failureMetadata, @NullableDecl MessageLite messageLite) {
-      return new MessageLiteSubject(failureMetadata, messageLite);
+      return new LiteProtoSubject(failureMetadata, messageLite);
     }
   }
 }
