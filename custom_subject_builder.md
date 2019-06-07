@@ -18,7 +18,7 @@ type parameters. For example, [`IterableOfProtosSubject`] has a type parameter
 `<M extends Message>`. Callers need a way to specify the type of `M` in
 expressions like `assertWithMessage(...).about(...).that(...)`. The way to do
 that is for the `that` method to have a type parameter: `<M>
-IterableOfProtosSubject<M …> that(M message)`. But [`SimpleSubjectBuilder`]'s
+IterableOfProtosSubject<M> that(M message)`. But [`SimpleSubjectBuilder`]'s
 `that` method doesn't have a type parameter, so it won't work.
 
 ## Problem: Multiple `Subject` classes
@@ -97,9 +97,9 @@ pattern](extension), do the following:
 1.  Declare one or more `that` methods:
 
     ```java
-      public <M extends Message> IterableOfProtosSubject<..., M, ...> that(
+      public <M extends Message> IterableOfProtosSubject<M> that(
           @Nullable Iterable<M> actual) {
-        return new IterableOfProtosSubject<M>(metadata(), actual);
+        return new IterableOfProtosSubject<>(metadata(), actual);
       }
     ```
 
