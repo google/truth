@@ -22,7 +22,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Kurt Alfred Kluever
  */
-public class ThrowableSubject extends Subject<ThrowableSubject, Throwable> {
+public class ThrowableSubject extends Subject {
   private final Throwable actual;
 
   /**

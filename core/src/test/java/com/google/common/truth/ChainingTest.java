@@ -223,7 +223,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
    * tests like MultimapSubjectTest.
    */
 
-  private static final class MyObjectSubject extends Subject<MyObjectSubject, Object> {
+  private static final class MyObjectSubject extends Subject {
     static final Factory<MyObjectSubject, Object> FACTORY =
         new Factory<MyObjectSubject, Object>() {
           @Override

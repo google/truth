@@ -24,7 +24,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-public final class BooleanSubject extends Subject<BooleanSubject, Boolean> {
+public final class BooleanSubject extends Subject {
   private final Boolean actual;
 
   BooleanSubject(FailureMetadata metadata, @NullableDecl Boolean actual) {

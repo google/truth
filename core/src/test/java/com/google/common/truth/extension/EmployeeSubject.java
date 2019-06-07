@@ -27,7 +27,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Kurt Alfred Kluever (kak@google.com)
  */
-public final class EmployeeSubject extends Subject<EmployeeSubject, Employee> {
+public final class EmployeeSubject extends Subject {
 
   // User-defined entry point
   public static EmployeeSubject assertThat(@NullableDecl Employee employee) {

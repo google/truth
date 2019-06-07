@@ -29,7 +29,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Kurt Alfred Kluever
  */
-public final class TableSubject extends Subject<TableSubject, Table<?, ?, ?>> {
+public final class TableSubject extends Subject {
   private final Table<?, ?, ?> actual;
 
   TableSubject(FailureMetadata metadata, @NullableDecl Table<?, ?, ?> table) {

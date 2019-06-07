@@ -20,7 +20,7 @@ import java.nio.file.Path;
 
 /** Assertions for {@link Path} instances. */
 @GwtIncompatible
-public final class PathSubject extends Subject<PathSubject, Path> {
+public final class PathSubject extends Subject {
   private PathSubject(FailureMetadata failureMetadata, Path actual) {
     super(failureMetadata, actual);
   }

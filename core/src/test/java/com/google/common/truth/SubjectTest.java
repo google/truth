@@ -97,7 +97,7 @@ public class SubjectTest extends BaseSubjectTestCase {
           && method.getName().equals("assertThat")
           && method.getParameterTypes().length == 1) {
         Object actual = null;
-        Subject<?, ?> subject = (Subject<?, ?>) method.invoke(Truth.class, actual);
+        Subject subject = (Subject) method.invoke(Truth.class, actual);
 
         subject.isNull();
         try {
@@ -783,8 +783,7 @@ public class SubjectTest extends BaseSubjectTestCase {
     }
   }
 
-  private static final class ForbidsEqualityChecksSubject
-      extends Subject<ForbidsEqualityChecksSubject, Object> {
+  private static final class ForbidsEqualityChecksSubject extends Subject {
     ForbidsEqualityChecksSubject(FailureMetadata metadata, @NullableDecl Object actual) {
       super(metadata, actual);
     }

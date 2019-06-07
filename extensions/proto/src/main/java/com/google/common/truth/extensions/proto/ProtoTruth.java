@@ -48,12 +48,12 @@ public final class ProtoTruth {
   }
 
   /** Assert on a single {@link MessageLite} instance. */
-  public static LiteProtoSubject<?, MessageLite> assertThat(@NullableDecl MessageLite messageLite) {
+  public static LiteProtoSubject assertThat(@NullableDecl MessageLite messageLite) {
     return assertAbout(protos()).that(messageLite);
   }
 
   /** Assert on a single {@link Message} instance. */
-  public static ProtoSubject<?, Message> assertThat(@NullableDecl Message message) {
+  public static ProtoSubject assertThat(@NullableDecl Message message) {
     return assertAbout(protos()).that(message);
   }
 

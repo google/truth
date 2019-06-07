@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Utility methods used in {@code Subject<T>} implementors.
+ * Utility methods used in {@code Subject} implementors.
  *
  * @author Christian Gruber
  * @author Jens Nyman

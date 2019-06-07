@@ -26,11 +26,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Christian Gruber (cgruber@israfil.net)
  */
-abstract class AbstractArraySubject<S extends AbstractArraySubject<S, T>, T> extends Subject<S, T> {
-  private final T actual;
+abstract class AbstractArraySubject extends Subject {
+  private final Object actual;
 
   AbstractArraySubject(
-      FailureMetadata metadata, @NullableDecl T actual, @NullableDecl String typeDescription) {
+      FailureMetadata metadata, @NullableDecl Object actual, @NullableDecl String typeDescription) {
     super(metadata, actual, typeDescription);
     this.actual = actual;
   }

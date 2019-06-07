@@ -156,7 +156,7 @@ public class ProtoSubjectTestBase {
     return expect.about(truthFailures()).that(multiExpectFailure.getFailure());
   }
 
-  protected final ProtoSubject<?, Message> expectThat(@NullableDecl Message message) {
+  protected final ProtoSubject expectThat(@NullableDecl Message message) {
     return expect.about(ProtoTruth.protos()).that(message);
   }
 
@@ -175,8 +175,7 @@ public class ProtoSubjectTestBase {
     return expect.about(ProtoTruth.protos()).that(multimap);
   }
 
-  protected final ProtoSubject<?, Message> expectThatWithMessage(
-      String msg, @NullableDecl Message message) {
+  protected final ProtoSubject expectThatWithMessage(String msg, @NullableDecl Message message) {
     return expect.withMessage(msg).about(ProtoTruth.protos()).that(message);
   }
 

@@ -50,12 +50,12 @@ public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
     super(failureMetadata);
   }
 
-  public LiteProtoSubject<?, MessageLite> that(@NullableDecl MessageLite messageLite) {
-    return new LiteProtoSubject.MessageLiteSubject(metadata(), messageLite);
+  public LiteProtoSubject that(@NullableDecl MessageLite messageLite) {
+    return new LiteProtoSubject(metadata(), messageLite);
   }
 
-  public ProtoSubject<?, Message> that(@NullableDecl Message message) {
-    return new ProtoSubject.MessageSubject(metadata(), message);
+  public ProtoSubject that(@NullableDecl Message message) {
+    return new ProtoSubject(metadata(), message);
   }
 
   public <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> that(

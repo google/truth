@@ -23,7 +23,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Christian Gruber
  */
-public final class ObjectArraySubject<T> extends AbstractArraySubject<ObjectArraySubject<T>, T[]> {
+public final class ObjectArraySubject<T> extends AbstractArraySubject {
   private final T[] actual;
 
   ObjectArraySubject(
