@@ -53,64 +53,27 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
  *
- * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
- *     needing subclassing. <i>This type parameter will be removed, as the method that needs it is
- *     being removed. You can prepare for this change by editing your class to refer to raw {@code
- *     MultimapWithProtoValuesSubject} today and then, after the removal, editing it to refer to
- *     {@code MultimapWithProtoValuesSubject<M>} (with a single type parameter).</i>
- * @param <K> <b>deprecated -</b> the type of the keys in the map. <i>This type parameter will be
- *     removed, as it has never been used. You can prepare for this change by editing your class to
- *     refer to raw {@code MultimapWithProtoValuesSubject} today and then, after the removal,
- *     editing it to refer to {@code MultimapWithProtoValuesSubject<M>} (with a single type
- *     parameter).</i>
- * @param <M> the type of the message values in the map
- * @param <C> <b>deprecated -</b> the type of the {@code Multimap} being tested by this {@code
- *     Subject}. <i>This type parameter will be removed, as the method that needs it is being
- *     removed. You can prepare for this change by editing your class to refer to raw {@code
- *     MultimapWithProtoValuesSubject} today and then, after the removal, editing it to refer to
- *     {@code MultimapWithProtoValuesSubject<M>} (with a single type parameter).</i>
+ * @param <M> the type of the message values in the multimap
  */
-public class MultimapWithProtoValuesSubject<
-        S extends MultimapWithProtoValuesSubject<S, K, M, C>,
-        K,
-        M extends Message,
-        C extends Multimap<K, M>>
-    extends MultimapSubject {
+public class MultimapWithProtoValuesSubject<M extends Message> extends MultimapSubject {
 
   /*
    * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice. For an
    * explanation of why it works out OK here, see LiteProtoSubject.
    */
   private final FailureMetadata metadata;
-  private final C actual;
+  private final Multimap<?, M> actual;
   private final FluentEqualityConfig config;
 
-  /** Default implementation of {@link MultimapWithProtoValuesSubject}. */
-  public static class MultimapWithMessageValuesSubject<K, M extends Message>
-      extends MultimapWithProtoValuesSubject<
-          MultimapWithMessageValuesSubject<K, M>, K, M, Multimap<K, M>> {
-    // See IterableOfProtosSubject.IterableOfMessagesSubject for why this class is exposed.
-
-    MultimapWithMessageValuesSubject(
-        FailureMetadata failureMetadata, @NullableDecl Multimap<K, M> multimap) {
-      super(failureMetadata, multimap);
-    }
-
-    private MultimapWithMessageValuesSubject(
-        FailureMetadata failureMetadata,
-        FluentEqualityConfig config,
-        @NullableDecl Multimap<K, M> multimap) {
-      super(failureMetadata, config, multimap);
-    }
-  }
-
   protected MultimapWithProtoValuesSubject(
-      FailureMetadata failureMetadata, @NullableDecl C multimap) {
+      FailureMetadata failureMetadata, @NullableDecl Multimap<?, M> multimap) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), multimap);
   }
 
   MultimapWithProtoValuesSubject(
-      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C multimap) {
+      FailureMetadata failureMetadata,
+      FluentEqualityConfig config,
+      @NullableDecl Multimap<?, M> multimap) {
     super(failureMetadata, multimap);
     this.metadata = failureMetadata;
     this.actual = multimap;
@@ -124,7 +87,7 @@ public class MultimapWithProtoValuesSubject<
    * <p>This method performs no checks on its own and cannot cause test failures. Subsequent
    * assertions must be chained onto this method call to test properties of the {@link Multimap}.
    */
-  public IterableOfProtosSubject<?, M, Iterable<M>> valuesForKey(@NullableDecl Object key) {
+  public IterableOfProtosSubject<M> valuesForKey(@NullableDecl Object key) {
     return check("valuesForKey(%s)", key)
         .about(protos())
         .that(((Multimap<Object, M>) actual).get(key));
@@ -135,9 +98,8 @@ public class MultimapWithProtoValuesSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   MultimapWithProtoValuesFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
-    MultimapWithMessageValuesSubject<K, M> newSubject =
-        new MultimapWithMessageValuesSubject<>(metadata, newConfig, actual);
-    return new MultimapWithProtoValuesFluentAssertionImpl<>(newSubject);
+    return new MultimapWithProtoValuesFluentAssertionImpl<>(
+        new MultimapWithProtoValuesSubject<>(metadata, newConfig, actual));
   }
 
   /**
@@ -676,9 +638,9 @@ public class MultimapWithProtoValuesSubject<
   // specified. So, we implement a dumb, private delegator to return instead.
   private static final class MultimapWithProtoValuesFluentAssertionImpl<M extends Message>
       implements MultimapWithProtoValuesFluentAssertion<M> {
-    private final MultimapWithProtoValuesSubject<?, ?, M, ?> subject;
+    private final MultimapWithProtoValuesSubject<M> subject;
 
-    MultimapWithProtoValuesFluentAssertionImpl(MultimapWithProtoValuesSubject<?, ?, M, ?> subject) {
+    MultimapWithProtoValuesFluentAssertionImpl(MultimapWithProtoValuesSubject<M> subject) {
       this.subject = subject;
     }
 

@@ -26,7 +26,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Kurt Alfred Kluever
  */
-public final class BigDecimalSubject extends ComparableSubject<BigDecimalSubject, BigDecimal> {
+public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
   private final BigDecimal actual;
 
   BigDecimalSubject(FailureMetadata metadata, @NullableDecl BigDecimal actual) {
