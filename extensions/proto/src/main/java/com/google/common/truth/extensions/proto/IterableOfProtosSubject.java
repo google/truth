@@ -50,76 +50,27 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
  *
- * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
- *     needing subclassing. <i>This type parameter will be removed, as the method that needs it is
- *     being removed. You can prepare for this change by editing your class to refer to raw {@code
- *     IterableOfProtosSubject} today and then, after the removal, editing it to refer to {@code
- *     IterableOfProtosSubject<M>} (with a single type parameter).</i>
  * @param <M> the type of the messages in the {@code Iterable}
- * @param <C> <b>deprecated -</b> the type of the {@code Iterable} being tested by this {@code
- *     Subject}. <i>This type parameter will be removed, as the method that needs it is being
- *     removed. You can prepare for this change by editing your class to refer to raw {@code
- *     IterableOfProtosSubject} today and then, after the removal, editing it to refer to {@code
- *     IterableOfProtosSubject<M>} (with a single type parameter).</i>
  */
-public class IterableOfProtosSubject<
-        S extends IterableOfProtosSubject<S, M, C>, M extends Message, C extends Iterable<M>>
-    extends IterableSubject {
+public class IterableOfProtosSubject<M extends Message> extends IterableSubject {
 
   /*
    * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice. For an
    * explanation of why it works out OK here, see LiteProtoSubject.
    */
   private final FailureMetadata metadata;
-  private final C actual;
+  private final Iterable<M> actual;
   private final FluentEqualityConfig config;
 
-  /** Default implementation of {@link IterableOfProtosSubject}. */
-  public static final class IterableOfMessagesSubject<M extends Message>
-      extends IterableOfProtosSubject<IterableOfMessagesSubject<M>, M, Iterable<M>> {
-    // Fun generics note! Theoretically we shouldn't have to expose the IterableOfMessagesSubject
-    // type at all, but it seems that Java generics handling is either insufficiently intelligent,
-    // or beyond my understanding. If we type the iterablesOfProtos() method with the return
-    // signature:
-    //   <M extends Message> IterableOfProtosSubject.Factory<?, M, Iterable<M>>
-    //
-    // Then this does not compile, due to type bound conflicts:
-    //   Truth.assertAbout(IterableOfProtosSubject.<M>iterablesOfProtos())
-    //       .that(listOfProtos)
-    //       .contains(foo);
-    //
-    // But *this* compiles fine!:
-    //   IterableOfProtosSubject.Factory<?, M, Iterable<M>> factory =
-    //       IterableOfProtosSubject.<M>iterablesOfProtos()
-    //   Truth.assertAbout(factory).that(listOfProtos).contains(foo);
-    //
-    // It seems that when the wild card is captured through inlining, as opposed to being lost and
-    // generalized through reference assignment, javac stops being able to intuit that the '?' in
-    // 'Factory<?, M, Iterable<M>>' does in fact satisfy the type bound of 'S' in
-    // 'S extends Subject<S, T>', even though this is evident from the definition of Factory and
-    // from IterableOfProtosSubject.
-    //
-    // The work around would be annoyingly verbose for users, so we expose IterableOfMessagesSubject
-    // explicitly so that there are no wildcards to have conflicting bounds.
-
-    IterableOfMessagesSubject(FailureMetadata failureMetadata, @NullableDecl Iterable<M> messages) {
-      super(failureMetadata, messages);
-    }
-
-    private IterableOfMessagesSubject(
-        FailureMetadata failureMetadata,
-        FluentEqualityConfig config,
-        @NullableDecl Iterable<M> messages) {
-      super(failureMetadata, config, messages);
-    }
-  }
-
-  protected IterableOfProtosSubject(FailureMetadata failureMetadata, @NullableDecl C messages) {
+  protected IterableOfProtosSubject(
+      FailureMetadata failureMetadata, @NullableDecl Iterable<M> messages) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), messages);
   }
 
   IterableOfProtosSubject(
-      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl C messages) {
+      FailureMetadata failureMetadata,
+      FluentEqualityConfig config,
+      @NullableDecl Iterable<M> messages) {
     super(failureMetadata, messages);
     this.metadata = failureMetadata;
     this.actual = messages;
@@ -167,9 +118,8 @@ public class IterableOfProtosSubject<
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   IterableOfProtosFluentAssertion<M> usingConfig(FluentEqualityConfig newConfig) {
-    IterableOfMessagesSubject<M> newSubject =
-        new IterableOfMessagesSubject<>(metadata, newConfig, actual);
-    return new IterableOfProtosFluentAssertionImpl<>(newSubject);
+    return new IterableOfProtosFluentAssertionImpl<>(
+        new IterableOfProtosSubject<>(metadata, newConfig, actual));
   }
 
   /**
@@ -716,11 +666,11 @@ public class IterableOfProtosSubject<
   // IterableSubject.UsingCorrespondence until we know what the expected messages are.
   private static class UsingCorrespondence<M extends Message>
       implements IterableOfProtosUsingCorrespondence<M> {
-    private final IterableOfProtosSubject<?, M, ?> subject;
+    private final IterableOfProtosSubject<M> subject;
     @NullableDecl private final Function<? super M, ? extends Object> keyFunction;
 
     UsingCorrespondence(
-        IterableOfProtosSubject<?, M, ?> subject,
+        IterableOfProtosSubject<M> subject,
         @NullableDecl Function<? super M, ? extends Object> keyFunction) {
       this.subject = checkNotNull(subject);
       this.keyFunction = keyFunction;
@@ -857,9 +807,9 @@ public class IterableOfProtosSubject<
   // specified. So, we implement a dumb, private delegator to return instead.
   private static final class IterableOfProtosFluentAssertionImpl<M extends Message>
       implements IterableOfProtosFluentAssertion<M> {
-    private final IterableOfProtosSubject<?, M, ?> subject;
+    private final IterableOfProtosSubject<M> subject;
 
-    IterableOfProtosFluentAssertionImpl(IterableOfProtosSubject<?, M, ?> subject) {
+    IterableOfProtosFluentAssertionImpl(IterableOfProtosSubject<M> subject) {
       this.subject = subject;
     }
 

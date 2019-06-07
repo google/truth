@@ -58,18 +58,16 @@ public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
     return new ProtoSubject(metadata(), message);
   }
 
-  public <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> that(
-      @NullableDecl Iterable<M> messages) {
-    return new IterableOfProtosSubject.IterableOfMessagesSubject<M>(metadata(), messages);
+  public <M extends Message> IterableOfProtosSubject<M> that(@NullableDecl Iterable<M> messages) {
+    return new IterableOfProtosSubject<M>(metadata(), messages);
   }
 
-  public <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> that(
-      @NullableDecl Map<K, M> map) {
-    return new MapWithProtoValuesSubject.MapWithMessageValuesSubject<>(metadata(), map);
+  public <M extends Message> MapWithProtoValuesSubject<M> that(@NullableDecl Map<?, M> map) {
+    return new MapWithProtoValuesSubject<>(metadata(), map);
   }
 
-  public <K, M extends Message> MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> that(
-      @NullableDecl Multimap<K, M> map) {
-    return new MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject<>(metadata(), map);
+  public <M extends Message> MultimapWithProtoValuesSubject<M> that(
+      @NullableDecl Multimap<?, M> map) {
+    return new MultimapWithProtoValuesSubject<>(metadata(), map);
   }
 }

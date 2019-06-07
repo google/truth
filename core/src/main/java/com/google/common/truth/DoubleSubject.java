@@ -33,7 +33,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Kurt Alfred Kluever
  */
-public final class DoubleSubject extends ComparableSubject<DoubleSubject, Double> {
+public final class DoubleSubject extends ComparableSubject<Double> {
   private static final long NEG_ZERO_BITS = doubleToLongBits(-0.0);
 
   private final Double actual;

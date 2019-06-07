@@ -136,8 +136,7 @@ public final class Truth {
     return assert_().about(factory);
   }
 
-  public static <T extends Comparable<?>> ComparableSubject<?, T> assertThat(
-      @NullableDecl T actual) {
+  public static <T extends Comparable<?>> ComparableSubject<T> assertThat(@NullableDecl T actual) {
     return assert_().that(actual);
   }
 

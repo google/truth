@@ -67,7 +67,7 @@ public class StandardSubjectBuilder {
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
-  public final <ComparableT extends Comparable<?>> ComparableSubject<?, ComparableT> that(
+  public final <ComparableT extends Comparable<?>> ComparableSubject<ComparableT> that(
       @NullableDecl ComparableT actual) {
     return new ComparableSubject(metadata(), actual) {};
   }

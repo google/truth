@@ -240,7 +240,7 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     }
   }
 
-  private <T extends Comparable<? super T>> ComparableSubject<?, T> expectFailureWhenTestingThat(
+  private <T extends Comparable<? super T>> ComparableSubject<T> expectFailureWhenTestingThat(
       T actual) {
     return expectFailure.whenTesting().that(actual);
   }

@@ -68,7 +68,7 @@ public final class ProtoTruth {
   // methods without conflict. If this method instead accepted Iterable<? extends Message>, this
   // would result in method ambiguity errors.
   // See http://stackoverflow.com/a/8467804 for a more thorough explanation.
-  public static <M extends Message> IterableOfProtosSubject<?, M, Iterable<M>> assertThat(
+  public static <M extends Message> IterableOfProtosSubject<M> assertThat(
       @NullableDecl Iterable<M> messages) {
     return assertAbout(protos()).that(messages);
   }
@@ -79,8 +79,8 @@ public final class ProtoTruth {
    * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
    * comparison tests available on {@link MapSubject.UsingCorrespondence}.
    */
-  public static <K, M extends Message> MapWithProtoValuesSubject<?, K, M, Map<K, M>> assertThat(
-      @NullableDecl Map<K, M> map) {
+  public static <M extends Message> MapWithProtoValuesSubject<M> assertThat(
+      @NullableDecl Map<?, M> map) {
     return assertAbout(protos()).that(map);
   }
 
@@ -90,9 +90,8 @@ public final class ProtoTruth {
    * <p>This allows for the equality configurations on {@link ProtoSubject} to be applied to all
    * comparison tests available on {@link MultimapSubject.UsingCorrespondence}.
    */
-  public static <K, M extends Message>
-      MultimapWithProtoValuesSubject<?, K, M, Multimap<K, M>> assertThat(
-          @NullableDecl Multimap<K, M> multimap) {
+  public static <M extends Message> MultimapWithProtoValuesSubject<M> assertThat(
+      @NullableDecl Multimap<?, M> multimap) {
     return assertAbout(protos()).that(multimap);
   }
 

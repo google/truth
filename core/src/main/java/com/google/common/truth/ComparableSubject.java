@@ -22,15 +22,9 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * Propositions for {@link Comparable} typed subjects.
  *
  * @author Kurt Alfred Kluever
- * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
- *     needing subclassing. <i>This type parameter will be removed, as the method that needs it is
- *     being removed. You can prepare for this change by editing your class to refer to raw {@code
- *     ComparableSubject} today and then, after the removal, editing it to refer to {@code
- *     ComparableSubject<T>} (with a single type parameter).</i>
  * @param <T> the type of the object being tested by this {@code ComparableSubject}
  */
-public abstract class ComparableSubject<S extends ComparableSubject<S, T>, T extends Comparable>
-    extends Subject<S, T> {
+public abstract class ComparableSubject<T extends Comparable> extends Subject {
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
