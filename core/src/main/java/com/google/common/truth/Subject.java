@@ -554,7 +554,7 @@ public class Subject<S extends Subject<S, T>, T> {
           indexFact, fact("expected", expectedLength), fact("but was", actualLength));
     }
     for (int i = 0; i < actualLength; i++) {
-      String index = lastIndex + "[" + i + "]";
+      String index = lastIndex + '[' + i + ']';
       Object expected = Array.get(expectedArray, i);
       Object actual = Array.get(actualArray, i);
       if (actual != null
@@ -679,7 +679,7 @@ public class Subject<S extends Subject<S, T>, T> {
         new Function<String, String>() {
           @Override
           public String apply(String input) {
-            return input + "." + message;
+            return input + '.' + message;
           }
         };
     return new StandardSubjectBuilder(
@@ -788,7 +788,7 @@ public class Subject<S extends Subject<S, T>, T> {
     StringBuilder message = new StringBuilder("Not true that <");
     message.append(actualCustomStringRepresentation()).append("> ").append(verb);
     for (Object part : messageParts) {
-      message.append(" <").append(part).append(">");
+      message.append(" <").append(part).append('>');
     }
     failWithoutActual(simpleFact(message.toString()));
   }
@@ -923,7 +923,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   @Deprecated
   final void failWithoutSubject(String check) {
-    String strSubject = this.customName == null ? "the subject" : "\"" + customName + "\"";
+    String strSubject = this.customName == null ? "the subject" : '"' + customName + '"';
     failWithoutActual(simpleFact(lenientFormat("Not true that %s %s", strSubject, check)));
   }
 
@@ -1000,7 +1000,7 @@ public class Subject<S extends Subject<S, T>, T> {
 
   @Override
   public String toString() {
-    return getClass().getName() + "(" + actualCustomStringRepresentation() + ")";
+    return getClass().getName() + '(' + actualCustomStringRepresentation() + ')';
   }
 
   /**

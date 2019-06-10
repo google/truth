@@ -41,7 +41,7 @@ abstract class FieldDescriptorOrUnknown {
   final String shortName() {
     if (fieldDescriptor().isPresent()) {
       return fieldDescriptor().get().isExtension()
-          ? "[" + fieldDescriptor().get() + "]"
+          ? "[" + fieldDescriptor().get() + ']'
           : fieldDescriptor().get().getName();
     } else {
       return String.valueOf(unknownFieldDescriptor().get().fieldNumber());

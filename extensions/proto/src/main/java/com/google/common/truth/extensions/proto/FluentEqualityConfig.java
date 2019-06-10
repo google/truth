@@ -194,7 +194,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
     return toBuilder()
         .setDoubleCorrespondenceMap(
             FieldScopeLogicMap.defaultValue(Correspondence.tolerance(tolerance)))
-        .addUsingCorrespondenceString(".usingDoubleTolerance(" + tolerance + ")")
+        .addUsingCorrespondenceString(".usingDoubleTolerance(" + tolerance + ')')
         .build();
   }
 
@@ -228,7 +228,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
     return toBuilder()
         .setFloatCorrespondenceMap(
             FieldScopeLogicMap.defaultValue(Correspondence.tolerance(tolerance)))
-        .addUsingCorrespondenceString(".usingFloatTolerance(" + tolerance + ")")
+        .addUsingCorrespondenceString(".usingFloatTolerance(" + tolerance + ')')
         .build();
   }
 

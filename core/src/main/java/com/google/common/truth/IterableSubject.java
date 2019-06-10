@@ -651,7 +651,7 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     String key = keyToGoWithElementsString(label, elements);
     if (elements.homogeneousTypeToDisplay.isPresent()) {
-      key += " (" + elements.homogeneousTypeToDisplay.get() + ")";
+      key += " (" + elements.homogeneousTypeToDisplay.get() + ')';
     }
     return key;
   }
@@ -1498,9 +1498,9 @@ public class IterableSubject extends Subject<IterableSubject, Iterable<?>> {
      */
     private String formatMissing(List<?> missing) {
       if (missing.size() == 1) {
-        return "<" + missing.get(0) + ">";
+        return "<" + missing.get(0) + '>';
       } else {
-        return "each of <" + missing + ">";
+        return "each of <" + missing + '>';
       }
     }
 

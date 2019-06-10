@@ -129,7 +129,7 @@ public final class Re2jSubjects {
     }
 
     private static String quote(CharSequence toBeWrapped) {
-      return "\"" + toBeWrapped + "\"";
+      return "\"" + toBeWrapped + '"';
     }
 
     private static boolean doContainsMatch(String subject, String regex) {

@@ -234,8 +234,8 @@ abstract class FieldScopeImpl extends FieldScope {
   private static String formatList(Iterable<? extends Message> messages) {
     List<String> strings = Lists.newArrayList();
     for (Message message : messages) {
-      strings.add(message == null ? "null" : "{" + message + "}");
+      strings.add(message == null ? "null" : "{" + message + '}');
     }
-    return "[" + join(strings) + "]";
+    return '[' + join(strings) + ']';
   }
 }

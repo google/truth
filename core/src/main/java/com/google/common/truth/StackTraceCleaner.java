@@ -398,7 +398,7 @@ final class StackTraceCleaner {
       for (String prefix : prefixes) {
         // TODO(cpovirk): Should we also check prefix + "$"?
         if (fullyQualifiedClassName.equals(prefix)
-            || fullyQualifiedClassName.startsWith(prefix + ".")) {
+            || fullyQualifiedClassName.startsWith(prefix + '.')) {
           return true;
         }
       }

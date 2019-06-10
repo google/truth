@@ -701,7 +701,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                     .ignoringFieldDescriptors(middle, bottom));
 
     for (String scopeName : fieldScopes.keySet()) {
-      String msg = "FieldScope(" + scopeName + ")";
+      String msg = "FieldScope(" + scopeName + ')';
       FieldScope scope = fieldScopes.get(scopeName);
 
       expectThatWithMessage(msg, diffMessage1).withPartialScope(scope).isNotEqualTo(message);

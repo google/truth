@@ -123,13 +123,13 @@ public final class FailWithFacts extends BugChecker implements MethodInvocationT
       return "expected to be " + skip(old, 1);
     } else if (first.endsWith("ies")) {
       // "Not true that foo applies to bar" -> "expected apply to bar"
-      return "expected to " + first.replaceFirst("ies$", "y") + " " + skip(old, 1);
+      return "expected to " + first.replaceFirst("ies$", "y") + ' ' + skip(old, 1);
     } else if (first.endsWith("ches")) {
       // "Not true that foo matches bar" -> "expected to match bar"
-      return "expected to " + first.replaceFirst("ches$", "ch") + " " + skip(old, 1);
+      return "expected to " + first.replaceFirst("ches$", "ch") + ' ' + skip(old, 1);
     } else if (first.matches(".*[^aeiouy]s$")) {
       // "Not true that foo contains bar" -> "expected to contain bar"
-      return "expected to " + first.replaceFirst("s$", "") + " " + skip(old, 1);
+      return "expected to " + first.replaceFirst("s$", "") + ' ' + skip(old, 1);
     } else {
       return null;
     }

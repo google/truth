@@ -467,7 +467,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to <"
             + expected
-            + ">",
+            + '>',
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -490,7 +490,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to <"
             + expected
-            + ">",
+            + '>',
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -512,7 +512,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to <"
             + expected
-            + ">",
+            + '>',
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -552,7 +552,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
                 + "contains at least one element that is "
                 + "exactly equal to <"
                 + 0.0
-                + ">");
+                + '>');
   }
 
   @Test

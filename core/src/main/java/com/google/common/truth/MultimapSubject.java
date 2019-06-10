@@ -502,9 +502,9 @@ public class MultimapSubject extends Subject<MultimapSubject, Multimap<?, ?>> {
     }
 
     StringBuilder sb = new StringBuilder();
-    sb.append("{");
+    sb.append('{');
     Joiner.on(", ").appendTo(sb, entries);
-    sb.append("}");
+    sb.append('}');
     return sb.toString();
   }
 

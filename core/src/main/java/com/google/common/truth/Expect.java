@@ -137,7 +137,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
               message,
               printSubsequentFailure(failures.get(0).getStackTrace(), failure));
         }
-        message.append("\n");
+        message.append('\n');
       }
 
       return message.toString();

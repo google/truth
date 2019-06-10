@@ -232,7 +232,7 @@ final class SubjectUtils {
     @Override
     public String toString() {
       return homogeneousTypeToDisplay.isPresent()
-          ? valuesAndMaybeTypes + " (" + homogeneousTypeToDisplay.get() + ")"
+          ? valuesAndMaybeTypes + " (" + homogeneousTypeToDisplay.get() + ')'
           : valuesAndMaybeTypes.toString();
     }
   }

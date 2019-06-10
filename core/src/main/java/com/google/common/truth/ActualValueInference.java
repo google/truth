@@ -271,7 +271,7 @@ final class ActualValueInference {
       previousFrame =
           FrameInfo.create(
               ImmutableList.copyOf(localVariableSlots), ImmutableList.<StackEntry>of());
-      this.methodSignature = owner + "." + name + methodDescriptor;
+      this.methodSignature = owner + '.' + name + methodDescriptor;
       this.actualValueAtLine = actualValueAtLine;
     }
 
@@ -1120,7 +1120,7 @@ final class ActualValueInference {
                     + argumentType
                     + " in "
                     + ownerClass
-                    + "."
+                    + '.'
                     + methodName
                     + methodDescriptor);
         }

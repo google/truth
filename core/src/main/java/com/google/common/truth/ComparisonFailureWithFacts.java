@@ -125,8 +125,8 @@ final class ComparisonFailureWithFacts extends PlatformComparisonFailure impleme
     }
     // No need to hide the prefix unless it's long.
     if (prefix > 3) {
-      expected = "…" + expected.substring(prefix);
-      actual = "…" + actual.substring(prefix);
+      expected = '…' + expected.substring(prefix);
+      actual = '…' + actual.substring(prefix);
     }
 
     int suffix = commonSuffix(expected, actual).length();
@@ -136,8 +136,8 @@ final class ComparisonFailureWithFacts extends PlatformComparisonFailure impleme
     }
     // No need to hide the suffix unless it's long.
     if (suffix > 3) {
-      expected = expected.substring(0, expected.length() - suffix) + "…";
-      actual = actual.substring(0, actual.length() - suffix) + "…";
+      expected = expected.substring(0, expected.length() - suffix) + '…';
+      actual = actual.substring(0, actual.length() - suffix) + '…';
     }
 
     if (originalExpectedLength - expected.length() < WORTH_HIDING) {

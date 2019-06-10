@@ -61,8 +61,8 @@ public class ComparisonFailureWithFactsTest {
     runFormatTest(
         "ba" + repeat("r", 100),
         "fu" + repeat("r", 100),
-        "ba" + repeat("r", 20) + "…",
-        "fu" + repeat("r", 20) + "…");
+        "ba" + repeat("r", 20) + '…',
+        "fu" + repeat("r", 20) + '…');
   }
 
   @Test
@@ -79,8 +79,8 @@ public class ComparisonFailureWithFactsTest {
     runFormatTest(
         repeat("a", 7) + "ba" + repeat("r", 100),
         repeat("a", 7) + "fu" + repeat("r", 100),
-        "aaaaaaaba" + repeat("r", 20) + "…",
-        "aaaaaaafu" + repeat("r", 20) + "…");
+        "aaaaaaaba" + repeat("r", 20) + '…',
+        "aaaaaaafu" + repeat("r", 20) + '…');
   }
 
   @Test
@@ -88,8 +88,8 @@ public class ComparisonFailureWithFactsTest {
     runFormatTest(
         repeat("r", 60) + "a" + repeat("g", 60),
         repeat("r", 60) + "u" + repeat("g", 60),
-        "…" + repeat("r", 20) + "a" + repeat("g", 20) + "…",
-        "…" + repeat("r", 20) + "u" + repeat("g", 20) + "…");
+        "…" + repeat("r", 20) + 'a' + repeat("g", 20) + '…',
+        "…" + repeat("r", 20) + 'u' + repeat("g", 20) + '…');
   }
 
   @Test
@@ -97,8 +97,8 @@ public class ComparisonFailureWithFactsTest {
     runFormatTest(
         repeat("r", 60) + "aaaaa" + repeat("g", 60),
         repeat("r", 60) + "u" + repeat("g", 60),
-        "…" + repeat("r", 20) + "aaaaa" + repeat("g", 20) + "…",
-        "…" + repeat("r", 20) + "u" + repeat("g", 20) + "…");
+        "…" + repeat("r", 20) + "aaaaa" + repeat("g", 20) + '…',
+        "…" + repeat("r", 20) + 'u' + repeat("g", 20) + '…');
   }
 
   @Test

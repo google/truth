@@ -881,7 +881,7 @@ final class ProtoTruthMessageDifferencer {
   }
 
   private static String name(FieldDescriptor fieldDescriptor) {
-    return fieldDescriptor.isExtension() ? "[" + fieldDescriptor + "]" : fieldDescriptor.getName();
+    return fieldDescriptor.isExtension() ? "[" + fieldDescriptor + ']' : fieldDescriptor.getName();
   }
 
   private static String name(UnknownFieldDescriptor unknownFieldDescriptor) {
@@ -896,14 +896,14 @@ final class ProtoTruthMessageDifferencer {
     } catch (IOException impossible) {
       throw new AssertionError(impossible);
     }
-    return name(fieldDescriptor) + "[" + sb + "]";
+    return name(fieldDescriptor) + '[' + sb + ']';
   }
 
   private static String indexedName(FieldDescriptor fieldDescriptor, int index) {
-    return name(fieldDescriptor) + "[" + index + "]";
+    return name(fieldDescriptor) + '[' + index + ']';
   }
 
   private static String indexedName(UnknownFieldDescriptor unknownFieldDescriptor, int index) {
-    return name(unknownFieldDescriptor) + "[" + index + "]";
+    return name(unknownFieldDescriptor) + '[' + index + ']';
   }
 }

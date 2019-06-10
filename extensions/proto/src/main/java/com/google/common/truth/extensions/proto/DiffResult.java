@@ -108,44 +108,44 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
         case ADDED:
           sb.append("added: ").append(fieldPrefix).append(": ");
           if (actual().get() instanceof Message) {
-            sb.append("\n").append(actual().get());
+            sb.append('\n').append(actual().get());
           } else {
-            sb.append(valueString(fieldDescriptorOrUnknown().get(), actual().get())).append("\n");
+            sb.append(valueString(fieldDescriptorOrUnknown().get(), actual().get())).append('\n');
           }
           return;
         case IGNORED:
-          sb.append("ignored: ").append(fieldPrefix).append("\n");
+          sb.append("ignored: ").append(fieldPrefix).append('\n');
           return;
         case MATCHED:
           sb.append("matched: ").append(fieldPrefix);
           if (actualOrExpected() instanceof Message) {
-            sb.append("\n");
+            sb.append('\n');
             printChildContents(includeMatches, fieldPrefix, sb);
           } else {
             sb.append(": ")
                 .append(valueString(fieldDescriptorOrUnknown().get(), actualOrExpected()))
-                .append("\n");
+                .append('\n');
           }
           return;
         case MODIFIED:
           sb.append("modified: ").append(fieldPrefix);
           if (actualOrExpected() instanceof Message) {
-            sb.append("\n");
+            sb.append('\n');
             printChildContents(includeMatches, fieldPrefix, sb);
           } else {
             sb.append(": ")
                 .append(valueString(fieldDescriptorOrUnknown().get(), expected().get()))
                 .append(" -> ")
                 .append(valueString(fieldDescriptorOrUnknown().get(), actual().get()))
-                .append("\n");
+                .append('\n');
           }
           return;
         case REMOVED:
           sb.append("deleted: ").append(fieldPrefix).append(": ");
           if (expected().get() instanceof Message) {
-            sb.append("\n").append(expected().get());
+            sb.append('\n').append(expected().get());
           } else {
-            sb.append(valueString(fieldDescriptorOrUnknown().get(), expected().get())).append("\n");
+            sb.append(valueString(fieldDescriptorOrUnknown().get(), expected().get())).append('\n');
           }
           return;
         default:
@@ -243,7 +243,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
 
       private static String indexed(String fieldPrefix, Optional<Integer> fieldIndex) {
         String index = fieldIndex.isPresent() ? fieldIndex.get().toString() : "?";
-        return fieldPrefix + "[" + index + "]";
+        return fieldPrefix + '[' + index + ']';
       }
 
       @Override
@@ -265,9 +265,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
           case ADDED:
             sb.append("added: ").append(indexed(fieldPrefix, actualFieldIndex())).append(": ");
             if (isMessage()) {
-              sb.append("\n").append(actual().get());
+              sb.append('\n').append(actual().get());
             } else {
-              sb.append(valueString(fieldDescriptor(), actual().get())).append("\n");
+              sb.append(valueString(fieldDescriptor(), actual().get())).append('\n');
             }
             return;
           case IGNORED:
@@ -282,12 +282,12 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
 
             // We output the message contents for ignored pair results, since it's likely not clear
             // from the index alone why they were ignored.
-            sb.append(":");
+            sb.append(':');
             if (isMessage()) {
-              sb.append("\n");
+              sb.append('\n');
               printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
             } else {
-              sb.append(" ").append(valueString(fieldDescriptor(), actual().get())).append("\n");
+              sb.append(' ').append(valueString(fieldDescriptor(), actual().get())).append('\n');
             }
             return;
           case MATCHED:
@@ -299,12 +299,12 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
                   .append(" -> ")
                   .append(indexed(fieldPrefix, actualFieldIndex()));
             }
-            sb.append(":");
+            sb.append(':');
             if (isMessage()) {
-              sb.append("\n");
+              sb.append('\n');
               printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
             } else {
-              sb.append(" ").append(valueString(fieldDescriptor(), actual().get())).append("\n");
+              sb.append(' ').append(valueString(fieldDescriptor(), actual().get())).append('\n');
             }
             return;
           case MOVED_OUT_OF_ORDER:
@@ -312,12 +312,12 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
                 .append(indexed(fieldPrefix, expectedFieldIndex()))
                 .append(" -> ")
                 .append(indexed(fieldPrefix, actualFieldIndex()));
-            sb.append(":");
+            sb.append(':');
             if (isMessage()) {
-              sb.append("\n");
+              sb.append('\n');
               printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
             } else {
-              sb.append(" ").append(valueString(fieldDescriptor(), actual().get())).append("\n");
+              sb.append(' ').append(valueString(fieldDescriptor(), actual().get())).append('\n');
             }
             return;
           case MODIFIED:
@@ -329,12 +329,12 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
                   .append(" -> ")
                   .append(indexed(fieldPrefix, actualFieldIndex()));
             }
-            sb.append(":");
+            sb.append(':');
             if (isMessage()) {
-              sb.append("\n");
+              sb.append('\n');
               printChildContents(includeMatches, indexed(fieldPrefix, actualFieldIndex()), sb);
             } else {
-              sb.append(" ")
+              sb.append(' ')
                   .append(valueString(fieldDescriptor(), expected().get()))
                   .append(" -> ")
                   .append(valueString(fieldDescriptor(), actual().get()));
@@ -343,9 +343,9 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
           case REMOVED:
             sb.append("deleted: ").append(indexed(fieldPrefix, expectedFieldIndex())).append(": ");
             if (isMessage()) {
-              sb.append("\n").append(expected().get());
+              sb.append('\n').append(expected().get());
             } else {
-              sb.append(valueString(fieldDescriptor(), expected().get())).append("\n");
+              sb.append(valueString(fieldDescriptor(), expected().get())).append('\n');
             }
             return;
         }
@@ -597,7 +597,7 @@ abstract class DiffResult extends RecursableDiffEntity.WithoutResultCode {
   }
 
   private static String newFieldPrefix(String rootFieldPrefix, String toAdd) {
-    return rootFieldPrefix.isEmpty() ? toAdd : (rootFieldPrefix + "." + toAdd);
+    return rootFieldPrefix.isEmpty() ? toAdd : (rootFieldPrefix + '.' + toAdd);
   }
 
   private static String valueString(FieldDescriptorOrUnknown fieldDescriptorOrUnknown, Object o) {

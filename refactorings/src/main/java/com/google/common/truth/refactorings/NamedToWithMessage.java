@@ -119,7 +119,7 @@ public final class NamedToWithMessage extends BugChecker implements MethodInvoca
         factory = FactoryMethodName.create(factoryMethodEnclosingClass, factoryMethodName);
       }
       fix.addStaticImport("com.google.common.truth.Truth.assertWithMessage");
-      fix.addStaticImport(factory.clazz() + "." + factory.method());
+      fix.addStaticImport(factory.clazz() + '.' + factory.method());
       fix.replace(
           thatCall.getMethodSelect(),
           format("assertWithMessage%s.about(%s()).that", parensAndNamedArgs, factory.method()));
