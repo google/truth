@@ -662,13 +662,15 @@ public class IterableSubject extends Subject {
 
   private static ElementFactGrouping pickGrouping(
       Iterable<Entry<?>> first, Iterable<Entry<?>> second) {
-    if (anyHasMultiple(first, second) && anyContainsCommaOrNewline(first, second)) {
+    boolean firstHasMultiple = hasMultiple(first);
+    boolean secondHasMultiple = hasMultiple(second);
+    if ((firstHasMultiple || secondHasMultiple) && anyContainsCommaOrNewline(first, second)) {
       return FACT_PER_ELEMENT;
     }
-    if (hasMultiple(first) && containsEmptyOrLong(first)) {
+    if (firstHasMultiple && containsEmptyOrLong(first)) {
       return FACT_PER_ELEMENT;
     }
-    if (hasMultiple(second) && containsEmptyOrLong(second)) {
+    if (secondHasMultiple && containsEmptyOrLong(second)) {
       return FACT_PER_ELEMENT;
     }
     return ALL_IN_ONE_FACT;
@@ -678,15 +680,6 @@ public class IterableSubject extends Subject {
     for (Entry<?> entry : concat(lists)) {
       String s = String.valueOf(entry.getElement());
       if (s.contains("\n") || s.contains(",")) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private static boolean anyHasMultiple(Iterable<Entry<?>>... lists) {
-    for (Iterable<Entry<?>> list : lists) {
-      if (hasMultiple(list)) {
         return true;
       }
     }
