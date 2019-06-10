@@ -693,8 +693,15 @@ public class IterableSubject extends Subject {
     return false;
   }
 
-  private static boolean hasMultiple(Iterable<Entry<?>> list) {
-    return totalCount(list) > 1;
+  private static boolean hasMultiple(Iterable<Entry<?>> entries) {
+    int totalCount = 0;
+    for (Multiset.Entry<?> entry : entries) {
+      totalCount += entry.getCount();
+      if (totalCount > 1) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private static boolean containsEmptyOrLong(Iterable<Entry<?>> entries) {
@@ -707,14 +714,6 @@ public class IterableSubject extends Subject {
       totalLength += s.length();
     }
     return totalLength > 200;
-  }
-
-  private static int totalCount(Iterable<Entry<?>> entries) {
-    int totalCount = 0;
-    for (Multiset.Entry<?> entry : entries) {
-      totalCount += entry.getCount();
-    }
-    return totalCount;
   }
 
   /**
