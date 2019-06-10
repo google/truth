@@ -65,17 +65,23 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>For information about writing a custom {@link Subject}, see <a
  * href="https://google.github.io/truth/extension">our doc on extensions</a>.
  *
- * @param <S> <b>deprecated -</b> the self-type, allowing {@code this}-returning methods to avoid
- *     needing subclassing. <i>Both type parameters will be removed, as the methods that need them
- *     are being removed. You can prepare for this change by editing your class to refer to raw
- *     {@code Subject} today.</i>
- * @param <T> <b>deprecated -</b> the type of the object being tested by this {@code Subject}.
- *     <i>Both type parameters will be removed, as the methods that need them are being removed. You
- *     can prepare for this change by editing your class to refer to raw {@code Subject} today.</i>
+ * @param <DeprecatedSelfTypeUseRawTypesInsteadOfParameterizedSubjectT> <b>deprecated -</b> the
+ *     self-type, allowing {@code this}-returning methods to avoid needing subclassing. <i>Both type
+ *     parameters will be removed, as the methods that need them are being removed. You can prepare
+ *     for this change by editing your class to refer to raw {@code Subject} today.</i>
+ * @param <DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT> <b>deprecated -</b> the
+ *     type of the object being tested by this {@code Subject}. <i>Both type parameters will be
+ *     removed, as the methods that need them are being removed. You can prepare for this change by
+ *     editing your class to refer to raw {@code Subject} today.</i>
  * @author David Saff
  * @author Christian Gruber
  */
-public class Subject<S extends Subject<S, T>, T> {
+public class Subject<
+    DeprecatedSelfTypeUseRawTypesInsteadOfParameterizedSubjectT extends
+        Subject<
+                DeprecatedSelfTypeUseRawTypesInsteadOfParameterizedSubjectT,
+                DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT>,
+    DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT> {
   /**
    * In a fluent assertion chain, the argument to the common overload of {@link
    * StandardSubjectBuilder#about(Subject.Factory) about}, the method that specifies what kind of
@@ -101,7 +107,7 @@ public class Subject<S extends Subject<S, T>, T> {
       };
 
   private final FailureMetadata metadata;
-  private final T actual;
+  private final DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT actual;
   private String customName = null;
   @NullableDecl private final String typeDescriptionOverride;
 
@@ -109,7 +115,9 @@ public class Subject<S extends Subject<S, T>, T> {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
-  protected Subject(FailureMetadata metadata, @NullableDecl T actual) {
+  protected Subject(
+      FailureMetadata metadata,
+      @NullableDecl DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT actual) {
     this(metadata, actual, /*typeDescriptionOverride=*/ null);
   }
 
@@ -126,7 +134,7 @@ public class Subject<S extends Subject<S, T>, T> {
    */
   Subject(
       FailureMetadata metadata,
-      @NullableDecl T actual,
+      @NullableDecl DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT actual,
       @NullableDecl String typeDescriptionOverride) {
     this.metadata = metadata.updateForSubject(this);
     this.actual = actual;
@@ -259,7 +267,9 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /** Fails if the subject is not the same instance as the given object. */
-  public final void isSameInstanceAs(@NullableDecl @CompatibleWith("T") Object expected) {
+  public final void isSameInstanceAs(
+      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
+          Object expected) {
     if (actual != expected) {
       failEqualityCheck(
           SAME_INSTANCE,
@@ -275,7 +285,9 @@ public class Subject<S extends Subject<S, T>, T> {
   }
 
   /** Fails if the subject is the same instance as the given object. */
-  public final void isNotSameInstanceAs(@NullableDecl @CompatibleWith("T") Object unexpected) {
+  public final void isNotSameInstanceAs(
+      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
+          Object unexpected) {
     if (actual == unexpected) {
       /*
        * We use actualCustomStringRepresentation() because it might be overridden to be better than
@@ -342,8 +354,10 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails unless the subject is equal to any of the given elements. */
   public void isAnyOf(
-      @NullableDecl @CompatibleWith("T") Object first,
-      @NullableDecl @CompatibleWith("T") Object second,
+      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
+          Object first,
+      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
+          Object second,
       @NullableDecl Object... rest) {
     isIn(accumulate(first, second, rest));
   }
@@ -357,14 +371,16 @@ public class Subject<S extends Subject<S, T>, T> {
 
   /** Fails if the subject is equal to any of the given elements. */
   public void isNoneOf(
-      @NullableDecl @CompatibleWith("T") Object first,
-      @NullableDecl @CompatibleWith("T") Object second,
+      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
+          Object first,
+      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
+          Object second,
       @NullableDecl Object... rest) {
     isNotIn(accumulate(first, second, rest));
   }
 
   /** Returns the actual value under test. */
-  final T actual() {
+  final DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT actual() {
     return actual;
   }
 
