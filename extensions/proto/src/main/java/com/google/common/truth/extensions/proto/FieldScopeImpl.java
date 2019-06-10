@@ -180,7 +180,7 @@ abstract class FieldScopeImpl extends FieldScope {
     return create(
         logic().ignoringFieldDescriptors(fieldDescriptors),
         addUsingCorrespondenceFieldDescriptorsString(
-            ".ignoringFieldDesciptors(%s)", fieldDescriptors));
+            ".ignoringFieldDescriptors(%s)", fieldDescriptors));
   }
 
   @Override
