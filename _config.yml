@@ -22,26 +22,23 @@ nav:
       name: Home
       url: /
   - item:
-      name: Compare
-      url: /comparison
-  - item:
-      name: Javadoc
-      url: /api/0.45/
-  - item:
       name: FAQ
       url: /faq
   - item:
-      name: Benefits
-      url: /benefits
-  - item:
-      name: Known Types
-      url: /known_types
+      name: Javadoc
+      url: /api/0.45/
   - item:
       name: Floating Point
       url: /floating_point
   - item:
       name: Fuzzy Truth
       url: /fuzzy
+  - item:
+      name: Compare
+      url: /comparison
+  - item:
+      name: Known Types
+      url: /known_types
   - item:
       name: Extensions
       url: /extension
