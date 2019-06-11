@@ -29,18 +29,18 @@ Truth has built in support for the following types:
 *   [Java 8 types]
 
     *   [`Optional`] - and `OptionalInt`, `OptionalLong`, and `OptionalDouble`
-    *   [`Stream`] - and `IntStream`, `LongStream` (and maybe someday,
+    *   [`Stream`] - and `IntStream`, `LongStream` (and maybe someday
         `DoubleStream`)
 
 *   Other JDK types
 
-    *   [`Object`] - since all types extend `Object` you can make simple
+    *   [`Object`] - since all types extend `Object`, you can make simple
         assertions such as `.isEqualTo()` on any type
     *   [`String`]
-    *   [`Comparable`] - this can be used for any Comparable type (Integers,
-        Ranges, etc.)
-    *   [`Iterable`] - this can be used for any Iterable type (Lists, Sets,
-        Collections, etc.)
+    *   [`Comparable`] - this can be used for any `Comparable` type (`Instant`,
+        `BigInteger`, etc.)
+    *   [`Iterable`] - this can be used for any `Iterable` type (`List`, `Set`,
+        etc.)
     *   [`Map`]
     *   [`Throwable`]
     *   [`Class`]
@@ -54,8 +54,8 @@ Truth has built in support for the following types:
     *   [`Table`]
     *   [`AtomicLongMap`]
 
-Truth is [extensible](extension.md), so if you don't see a type you need to
-make assertions on in this list you can
+Truth is [extensible](extension.md), so if you don't see a type you need to make
+assertions on in this list, you can
 [write your own](extension.md#writing-your-own-custom-subject).
 
 <!-- References -->
@@ -85,10 +85,10 @@ make assertions on in this list you can
 [`Multimap`]: http://google.github.io/truth/api/latest/com/google/common/truth/MultimapSubject
 [`Multiset`]: http://google.github.io/truth/api/latest/com/google/common/truth/MultisetSubject
 [`Object`]: http://google.github.io/truth/api/latest/com/google/common/truth/Subject
-[`Optional`]: https://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/OptionalSubject.java
+[`Optional`]: https://truth.dev/api/latest/com/google/common/truth/OptionalSubject.html
 [`SortedMap`]: http://google.github.io/truth/api/latest/com/google/common/truth/SortedMapSubject
 [`SortedSet`]: http://google.github.io/truth/api/latest/com/google/common/truth/SortedSetSubject
-[`Stream`]: https://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/StreamSubject.java
+[`Stream`]: https://truth.dev/api/latest/com/google/common/truth/StreamSubject.html
 [`String`]: http://google.github.io/truth/api/latest/com/google/common/truth/StringSubject
 [`Table`]: http://google.github.io/truth/api/latest/com/google/common/truth/TableSubject
 [`Throwable`]: http://google.github.io/truth/api/latest/com/google/common/truth/ThrowableSubject
