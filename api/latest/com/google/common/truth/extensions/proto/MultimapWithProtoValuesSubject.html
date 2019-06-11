@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -50,7 +50,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../../index.html?com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" target="_top">Frames</a></li>
@@ -74,7 +74,7 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.com.google.common.truth.MultimapSubject">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
@@ -93,17 +93,22 @@ var activeTableTab = "activeTableTab";
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="subTitle">com.google.common.truth.extensions.proto</div>
-<h2 title="Class MultimapWithProtoValuesSubject" class="title">Class MultimapWithProtoValuesSubject&lt;S extends MultimapWithProtoValuesSubject&lt;S,K,M,C&gt;,K,M extends com.google.protobuf.Message,C extends <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;K,M&gt;&gt;</h2>
+<h2 title="Class MultimapWithProtoValuesSubject" class="title">Class MultimapWithProtoValuesSubject&lt;M extends com.google.protobuf.Message&gt;</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
 <li><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">com.google.common.truth.Subject</a>&lt;S,C&gt;</li>
+<li><a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">com.google.common.truth.Subject</a></li>
 <li>
 <ul class="inheritance">
-<li>com.google.common.truth.extensions.proto.MultimapWithProtoValuesSubject&lt;S,K,M,C&gt;</li>
+<li><a href="../../../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">com.google.common.truth.MultimapSubject</a></li>
+<li>
+<ul class="inheritance">
+<li>com.google.common.truth.extensions.proto.MultimapWithProtoValuesSubject&lt;M&gt;</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -114,28 +119,12 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <dl>
 <dt><span class="paramLabel">Type Parameters:</span></dt>
-<dd><code>S</code> - <b>deprecated -</b> the self-type, allowing <code>this</code>-returning methods to avoid
-     needing subclassing. <i>This type parameter will be removed, as the method that needs it is
-     being removed. You can prepare for this change by editing your class to refer to raw <code>MultimapWithProtoValuesSubject</code> today and then, after the removal, editing it to refer to
-     <code>MultimapWithProtoValuesSubject&lt;M&gt;</code> (with a single type parameter).</i></dd>
-<dd><code>K</code> - <b>deprecated -</b> the type of the keys in the map. <i>This type parameter will be
-     removed, as it has never been used. You can prepare for this change by editing your class to
-     refer to raw <code>MultimapWithProtoValuesSubject</code> today and then, after the removal,
-     editing it to refer to <code>MultimapWithProtoValuesSubject&lt;M&gt;</code> (with a single type
-     parameter).</i></dd>
-<dd><code>M</code> - the type of the message values in the map</dd>
-<dd><code>C</code> - <b>deprecated -</b> the type of the <code>Multimap</code> being tested by this <code>Subject</code>. <i>This type parameter will be removed, as the method that needs it is being
-     removed. You can prepare for this change by editing your class to refer to raw <code>MultimapWithProtoValuesSubject</code> today and then, after the removal, editing it to refer to
-     <code>MultimapWithProtoValuesSubject&lt;M&gt;</code> (with a single type parameter).</i></dd>
-</dl>
-<dl>
-<dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../../../../com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">ListMultimapWithProtoValuesSubject</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject</a>, <a href="../../../../../../com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">SetMultimapWithProtoValuesSubject</a></dd>
+<dd><code>M</code> - the type of the message values in the multimap</dd>
 </dl>
 <hr>
 <br>
-<pre>public class <span class="typeNameLabel">MultimapWithProtoValuesSubject&lt;S extends MultimapWithProtoValuesSubject&lt;S,K,M,C&gt;,K,M extends com.google.protobuf.Message,C extends <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;K,M&gt;&gt;</span>
-extends <a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;S,C&gt;</pre>
+<pre>public class <span class="typeNameLabel">MultimapWithProtoValuesSubject&lt;M extends com.google.protobuf.Message&gt;</span>
+extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></pre>
 <div class="block">Truth subject for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>s with protocol buffers for values.
 
  <p><code>ProtoTruth.assertThat(actual).containsExactlyEntriesIn(expected)</code> performs the same
@@ -163,19 +152,13 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 <!--   -->
 </a>
 <h3>Nested Class Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Nested Class Summary table, listing nested classes, and an explanation">
-<caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Class and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>static class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject">K</a>,<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject">M</a> extends com.google.protobuf.Message&gt;</span></code>
-<div class="block">Default implementation of <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MultimapWithProtoValuesSubject</code></a>.</div>
-</td>
-</tr>
-</table>
+<ul class="blockList">
+<li class="blockList"><a name="nested.classes.inherited.from.class.com.google.common.truth.MultimapSubject">
+<!--   -->
+</a>
+<h3>Nested classes/interfaces inherited from class&nbsp;com.google.common.truth.<a href="../../../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></h3>
+<code><a href="../../../../../../com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;<a href="../../../../../../com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">A</a>,<a href="../../../../../../com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">E</a>&gt;</code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a name="nested.classes.inherited.from.class.com.google.common.truth.Subject">
 <!--   -->
@@ -199,8 +182,8 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#MultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">MultimapWithProtoValuesSubject</a></span>(<a href="../../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                              <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">C</a>&nbsp;multimap)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#MultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-com.google.common.collect.Multimap-">MultimapWithProtoValuesSubject</a></span>(<a href="../../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
+                              <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;multimap)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -224,65 +207,6 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>&lt;A,E&gt;&nbsp;<a href="../../../../../../com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;A,E&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#comparingValuesUsing-com.google.common.truth.Correspondence-">comparingValuesUsing</a></span>(<a href="../../../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;A,E&gt;&nbsp;correspondence)</code>
-<div class="block">Starts a method chain for a check in which the actual values (i.e.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsEntry-java.lang.Object-java.lang.Object-">containsEntry</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key,
-             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</code>
-<div class="block">Fails if the multimap does not contain the given entry.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsExactly--">containsExactly</a></span>()</code>
-<div class="block">Fails if the multimap is not empty.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsExactly-java.lang.Object-java.lang.Object-java.lang.Object...-">containsExactly</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;k0,
-               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;v0,
-               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</code>
-<div class="block">Fails if the multimap does not contain exactly the given set of key/value pairs.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-">containsExactlyEntriesIn</a></span>(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,?&gt;&nbsp;expectedMultimap)</code>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> does not contain precisely the same entries as the argument
- <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsKey-java.lang.Object-">containsKey</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</code>
-<div class="block">Fails if the multimap does not contain the given key.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#doesNotContainEntry-java.lang.Object-java.lang.Object-">doesNotContainEntry</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key,
-                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</code>
-<div class="block">Fails if the multimap contains the given entry.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#doesNotContainKey-java.lang.Object-">doesNotContainKey</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</code>
-<div class="block">Fails if the multimap contains the given key.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#hasSize-int-">hasSize</a></span>(int&nbsp;expectedSize)</code>
-<div class="block">Fails if the multimap does not have the given size.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsForValues--">ignoringExtraRepeatedFieldElementsForValues</a></span>()</code>
 <div class="block">Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
@@ -290,7 +214,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  proto which are empty.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
                                                              com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
@@ -298,14 +222,14 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  should be ignored.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
  should be ignored.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsOfFieldsForValues-int-int...-">ignoringExtraRepeatedFieldElementsOfFieldsForValues</a></span>(int&nbsp;firstFieldNumber,
                                                    int...&nbsp;rest)</code>
@@ -313,21 +237,21 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  numbers should be ignored.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsOfFieldsForValues-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFieldsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
  numbers should be ignored.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceForValues--">ignoringFieldAbsenceForValues</a></span>()</code>
 <div class="block">Specifies that the 'has' bit of individual fields should be ignored when comparing for
  equality.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldAbsenceOfFieldDescriptorsForValues</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
                                                com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
@@ -335,14 +259,14 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceOfFieldDescriptorsForValues-java.lang.Iterable-">ignoringFieldAbsenceOfFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
  when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceOfFieldsForValues-int-int...-">ignoringFieldAbsenceOfFieldsForValues</a></span>(int&nbsp;firstFieldNumber,
                                      int...&nbsp;rest)</code>
@@ -350,53 +274,53 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceOfFieldsForValues-java.lang.Iterable-">ignoringFieldAbsenceOfFieldsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
 <div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
  ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldDescriptorsForValues</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
                                  com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
 <div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldDescriptorsForValues-java.lang.Iterable-">ignoringFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldScopeForValues-com.google.common.truth.extensions.proto.FieldScope-">ignoringFieldScopeForValues</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>
 <div class="block">Excludes all specific field paths under the argument <a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> from the comparison.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldsForValues-int-int...-">ignoringFieldsForValues</a></span>(int&nbsp;firstFieldNumber,
                        int...&nbsp;rest)</code>
 <div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldsForValues-java.lang.Iterable-">ignoringFieldsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
 <div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderForValues--">ignoringRepeatedFieldOrderForValues</a></span>()</code>
 <div class="block">Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
  for equality.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
                                                      com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
@@ -404,14 +328,14 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  should be ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptorsForValues-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
  should be ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderOfFieldsForValues-int-int...-">ignoringRepeatedFieldOrderOfFieldsForValues</a></span>(int&nbsp;firstFieldNumber,
                                            int...&nbsp;rest)</code>
@@ -419,33 +343,21 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  numbers should be ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderOfFieldsForValues-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFieldsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
  numbers should be ignored when comparing for equality.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#isEmpty--">isEmpty</a></span>()</code>
-<div class="block">Fails if the multimap is not empty.</div>
-</td>
-</tr>
-<tr id="i31" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#isNotEmpty--">isNotEmpty</a></span>()</code>
-<div class="block">Fails if the multimap is empty.</div>
-</td>
-</tr>
-<tr id="i32" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#reportingMismatchesOnlyForValues--">reportingMismatchesOnlyForValues</a></span>()</code>
 <div class="block">If set, in the event of a comparison failure, the error message printed will list only those
  specific fields that did not match between the actual and expected values.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingDoubleToleranceForFieldDescriptorsForValues-double-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingDoubleToleranceForFieldDescriptorsForValues</a></span>(double&nbsp;tolerance,
                                                 com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
@@ -454,7 +366,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  tolerance.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingDoubleToleranceForFieldDescriptorsForValues-double-java.lang.Iterable-">usingDoubleToleranceForFieldDescriptorsForValues</a></span>(double&nbsp;tolerance,
                                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
@@ -462,7 +374,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  tolerance.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingDoubleToleranceForFieldsForValues-double-int-int...-">usingDoubleToleranceForFieldsForValues</a></span>(double&nbsp;tolerance,
                                       int&nbsp;firstFieldNumber,
@@ -471,7 +383,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingDoubleToleranceForFieldsForValues-double-java.lang.Iterable-">usingDoubleToleranceForFieldsForValues</a></span>(double&nbsp;tolerance,
                                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
@@ -479,14 +391,14 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingDoubleToleranceForValues-double-">usingDoubleToleranceForValues</a></span>(double&nbsp;tolerance)</code>
 <div class="block">Compares double fields as equal if they are both finite and their absolute difference is less
  than or equal to <code>tolerance</code>.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingFloatToleranceForFieldDescriptorsForValues-float-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingFloatToleranceForFieldDescriptorsForValues</a></span>(float&nbsp;tolerance,
                                                com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
@@ -495,7 +407,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  tolerance.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingFloatToleranceForFieldDescriptorsForValues-float-java.lang.Iterable-">usingFloatToleranceForFieldDescriptorsForValues</a></span>(float&nbsp;tolerance,
                                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
@@ -503,7 +415,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingFloatToleranceForFieldsForValues-float-int-int...-">usingFloatToleranceForFieldsForValues</a></span>(float&nbsp;tolerance,
                                      int&nbsp;firstFieldNumber,
@@ -512,7 +424,7 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingFloatToleranceForFieldsForValues-float-java.lang.Iterable-">usingFloatToleranceForFieldsForValues</a></span>(float&nbsp;tolerance,
                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
@@ -520,21 +432,21 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
  provided absolute tolerance.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingFloatToleranceForValues-float-">usingFloatToleranceForValues</a></span>(float&nbsp;tolerance)</code>
 <div class="block">Compares float fields as equal if they are both finite and their absolute difference is less
  than or equal to <code>tolerance</code>.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
-<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;?,<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>,<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&gt;</code></td>
+<tr id="i32" class="altColor">
+<td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#valuesForKey-java.lang.Object-">valuesForKey</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</code>
 <div class="block">Returns a context-aware <a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> for making assertions about the values for the given
  key within the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#withPartialScopeForValues-com.google.common.truth.extensions.proto.FieldScope-">withPartialScopeForValues</a></span>(<a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>
 <div class="block">Limits the comparison of Protocol buffers to the defined <a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a>.</div>
@@ -542,11 +454,18 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 </tr>
 </table>
 <ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.com.google.common.truth.MultimapSubject">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;com.google.common.truth.<a href="../../../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></h3>
+<code><a href="../../../../../../com/google/common/truth/MultimapSubject.html#comparingValuesUsing-com.google.common.truth.Correspondence-">comparingValuesUsing</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAtLeast</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#containsAtLeastEntriesIn-com.google.common.collect.Multimap-">containsAtLeastEntriesIn</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#containsEntry-java.lang.Object-java.lang.Object-">containsEntry</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#containsExactly--">containsExactly</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#containsExactly-java.lang.Object-java.lang.Object-java.lang.Object...-">containsExactly</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-">containsExactlyEntriesIn</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#containsKey-java.lang.Object-">containsKey</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#doesNotContainEntry-java.lang.Object-java.lang.Object-">doesNotContainEntry</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#doesNotContainKey-java.lang.Object-">doesNotContainKey</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#hasSize-int-">hasSize</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#isEmpty--">isEmpty</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#isEqualTo-java.lang.Object-">isEqualTo</a>, <a href="../../../../../../com/google/common/truth/MultimapSubject.html#isNotEmpty--">isNotEmpty</a></code></li>
+</ul>
+<ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.com.google.common.truth.Subject">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;com.google.common.truth.<a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></h3>
-<code><a href="../../../../../../com/google/common/truth/Subject.html#actual--">actual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#actualAsString--">actualAsString</a>, <a href="../../../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a>, <a href="../../../../../../com/google/common/truth/Subject.html#check--">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#getSubject--">getSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../../../com/google/common/truth/Subject.html#internalCustomName--">internalCustomName</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-">isNotSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNull--">isNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-">isSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a>, <a href="../../../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
+<code><a href="../../../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a>, <a href="../../../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-">isNotSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNull--">isNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-">isSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -571,15 +490,13 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 <h3>Constructor Detail</h3>
 <a name="MultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-com.google.common.collect.Multimap-">
 <!--   -->
-</a><a name="MultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">
-<!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>MultimapWithProtoValuesSubject</h4>
 <pre>protected&nbsp;MultimapWithProtoValuesSubject(<a href="../../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
                                          @NullableDecl
-                                         <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">C</a>&nbsp;multimap)</pre>
+                                         <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;multimap)</pre>
 </li>
 </ul>
 </li>
@@ -590,168 +507,23 @@ extends <a href="../../../../../../com/google/common/truth/Subject.html" title="
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="isEmpty--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isEmpty</h4>
-<pre>public&nbsp;void&nbsp;isEmpty()</pre>
-<div class="block">Fails if the multimap is not empty.</div>
-</li>
-</ul>
-<a name="isNotEmpty--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isNotEmpty</h4>
-<pre>public&nbsp;void&nbsp;isNotEmpty()</pre>
-<div class="block">Fails if the multimap is empty.</div>
-</li>
-</ul>
-<a name="hasSize-int-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>hasSize</h4>
-<pre>public&nbsp;void&nbsp;hasSize(int&nbsp;expectedSize)</pre>
-<div class="block">Fails if the multimap does not have the given size.</div>
-</li>
-</ul>
-<a name="containsKey-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsKey</h4>
-<pre>public&nbsp;void&nbsp;containsKey(@NullableDecl
-                        <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</pre>
-<div class="block">Fails if the multimap does not contain the given key.</div>
-</li>
-</ul>
-<a name="doesNotContainKey-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>doesNotContainKey</h4>
-<pre>public&nbsp;void&nbsp;doesNotContainKey(@NullableDecl
-                              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</pre>
-<div class="block">Fails if the multimap contains the given key.</div>
-</li>
-</ul>
-<a name="containsEntry-java.lang.Object-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsEntry</h4>
-<pre>public&nbsp;void&nbsp;containsEntry(@NullableDecl
-                          <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key,
-                          @NullableDecl
-                          <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</pre>
-<div class="block">Fails if the multimap does not contain the given entry.</div>
-</li>
-</ul>
-<a name="doesNotContainEntry-java.lang.Object-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>doesNotContainEntry</h4>
-<pre>public&nbsp;void&nbsp;doesNotContainEntry(@NullableDecl
-                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key,
-                                @NullableDecl
-                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</pre>
-<div class="block">Fails if the multimap contains the given entry.</div>
-</li>
-</ul>
 <a name="valuesForKey-java.lang.Object-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>valuesForKey</h4>
-<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;?,<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>,<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&gt;&nbsp;valuesForKey(@NullableDecl
-                                                             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</pre>
+<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;valuesForKey(@NullableDecl
+                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;key)</pre>
 <div class="block">Returns a context-aware <a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> for making assertions about the values for the given
  key within the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>.
 
  <p>This method performs no checks on its own and cannot cause test failures. Subsequent
  assertions must be chained onto this method call to test properties of the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>.</div>
-</li>
-</ul>
-<a name="containsExactlyEntriesIn-com.google.common.collect.Multimap-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsExactlyEntriesIn</h4>
-<pre>@CanIgnoreReturnValue
-public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactlyEntriesIn(<a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,?&gt;&nbsp;expectedMultimap)</pre>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> does not contain precisely the same entries as the argument
- <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>.
-
- <p>A subsequent call to <a href="../../../../../../com/google/common/truth/Ordered.html#inOrder--"><code>Ordered.inOrder()</code></a> may be made if the caller wishes to verify that
- the two multimaps iterate fully in the same order. That is, their key sets iterate in the same
- order, and the value collections for each key iterate in the same order.</div>
-</li>
-</ul>
-<a name="containsExactly-java.lang.Object-java.lang.Object-java.lang.Object...-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsExactly</h4>
-<pre>@CanIgnoreReturnValue
-public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly(@NullableDecl
-                                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;k0,
-                                                     @NullableDecl
-                                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;v0,
-                                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
-<div class="block">Fails if the multimap does not contain exactly the given set of key/value pairs.
-
- <p><b>Warning:</b> the use of varargs means that we cannot guarantee an equal number of
- key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!</div>
-</li>
-</ul>
-<a name="containsExactly--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>containsExactly</h4>
-<pre>@CanIgnoreReturnValue
-public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly()</pre>
-<div class="block">Fails if the multimap is not empty.</div>
-</li>
-</ul>
-<a name="comparingValuesUsing-com.google.common.truth.Correspondence-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>comparingValuesUsing</h4>
-<pre>public&nbsp;&lt;A,E&gt;&nbsp;<a href="../../../../../../com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;A,E&gt;&nbsp;comparingValuesUsing(<a href="../../../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;A,E&gt;&nbsp;correspondence)</pre>
-<div class="block">Starts a method chain for a check in which the actual values (i.e. the values of the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> under test) are compared to expected values using the given <a href="../../../../../../com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>.
- The actual values must be of type <code>A</code> and the expected values must be of type <code>E</code>.
- The check is actually executed by continuing the method chain. For example:
-
- <pre><code>
- assertThat(actualMultimap)
-   .comparingValuesUsing(correspondence)
-   .containsEntry(expectedKey, expectedValue);
- </code></pre>
-
- where <code>actualMultimap</code> is a <code>Multimap&lt;?, A&gt;</code> (or, more generally, a <code>Multimap&lt;?, ? extends A&gt;</code>), <code>correspondence</code> is a <code>Correspondence&lt;A, E&gt;</code>, and
- <code>expectedValue</code> is an <code>E</code>.
-
- <p>Note that keys will always be compared with regular object equality (<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Object.equals(java.lang.Object)</code></a>).
-
- <p>Any of the methods on the returned object may throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang"><code>ClassCastException</code></a> if they
- encounter an actual value that is not of type <code>A</code>.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code><a href="../../../../../../com/google/common/truth/MultimapSubject.html#valuesForKey-java.lang.Object-">valuesForKey</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></code></dd>
+</dl>
 </li>
 </ul>
 <a name="ignoringFieldAbsenceForValues--">
@@ -1258,7 +1030,7 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
  expected protos.
 
  <p>The "expected proto(s)" are those passed to the method at the end of the call chain, such as
- <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsEntry-java.lang.Object-java.lang.Object-"><code>containsEntry(java.lang.Object, java.lang.Object)</code></a> or <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>containsExactlyEntriesIn(com.google.common.collect.Multimap&lt;?, ?&gt;)</code></a>.
+ <a href="../../../../../../com/google/common/truth/MultimapSubject.html#containsEntry-java.lang.Object-java.lang.Object-"><code>MultimapSubject.containsEntry(java.lang.Object, java.lang.Object)</code></a> or <a href="../../../../../../com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap&lt;?, ?&gt;)</code></a>.
 
  <p>Fields not set in the expected proto(s) are ignored. In particular, proto3 fields which have
  their default values are ignored, as these are indistinguishable from unset fields. If you want
@@ -1414,7 +1186,7 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../../index.html?com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" target="_top">Frames</a></li>
@@ -1438,7 +1210,7 @@ public&nbsp;<a href="../../../../../../com/google/common/truth/Ordered.html" tit
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.com.google.common.truth.MultimapSubject">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>

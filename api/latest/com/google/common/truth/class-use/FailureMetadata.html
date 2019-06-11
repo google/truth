@@ -172,7 +172,9 @@
 </tr>
 <tr class="altColor">
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/IterableSubject.html#IterableSubject-com.google.common.truth.FailureMetadata-java.lang.Iterable-">IterableSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;iterable)</code>&nbsp;</td>
+               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;iterable)</code>
+<div class="block">Constructor for use by subclasses.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/LongSubject.html#LongSubject-com.google.common.truth.FailureMetadata-java.lang.Long-">LongSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
@@ -181,12 +183,24 @@
 </td>
 </tr>
 <tr class="altColor">
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/MapSubject.html#MapSubject-com.google.common.truth.FailureMetadata-java.util.Map-">MapSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
+          <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;?,?&gt;&nbsp;map)</code>
+<div class="block">Constructor for use by subclasses.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/MultimapSubject.html#MultimapSubject-com.google.common.truth.FailureMetadata-com.google.common.collect.Multimap-">MultimapSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
+               <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,?&gt;&nbsp;multimap)</code>
+<div class="block">Constructor for use by subclasses.</div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/StringSubject.html#StringSubject-com.google.common.truth.FailureMetadata-java.lang.String-">StringSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;string)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/Subject.html#Subject-com.google.common.truth.FailureMetadata-T-">Subject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-       <a href="../../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&nbsp;actual)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/Subject.html#Subject-com.google.common.truth.FailureMetadata-java.lang.Object-">Subject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
+       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual)</code>
 <div class="block">Constructor for use by subclasses.</div>
 </td>
 </tr>
@@ -210,36 +224,24 @@
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#IterableOfProtosSubject-com.google.common.truth.FailureMetadata-C-">IterableOfProtosSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                       <a href="../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">C</a>&nbsp;messages)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#IterableOfProtosSubject-com.google.common.truth.FailureMetadata-java.lang.Iterable-">IterableOfProtosSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
+                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;&nbsp;messages)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html#ListMultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">ListMultimapWithProtoValuesSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                                  <a href="../../../../../com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">C</a>&nbsp;multimap)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
-&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html#LiteProtoSubject-com.google.common.truth.FailureMetadata-com.google.protobuf.MessageLite-">LiteProtoSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
+                com.google.protobuf.MessageLite&nbsp;messageLite)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html#LiteProtoSubject-com.google.common.truth.FailureMetadata-M-">LiteProtoSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                <a href="../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="type parameter in LiteProtoSubject">M</a>&nbsp;messageLite)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#MapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-java.util.Map-">MapWithProtoValuesSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
+                         <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;?,<a href="../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">M</a>&gt;&nbsp;map)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#MapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">MapWithProtoValuesSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                         <a href="../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">C</a>&nbsp;map)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#MultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-com.google.common.collect.Multimap-">MultimapWithProtoValuesSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
+                              <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;?,<a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;multimap)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#MultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">MultimapWithProtoValuesSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                              <a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">C</a>&nbsp;multimap)</code>&nbsp;</td>
-</tr>
-<tr class="rowColor">
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ProtoSubject-com.google.common.truth.FailureMetadata-M-">ProtoSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-            <a href="../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a>&nbsp;message)</code>&nbsp;</td>
-</tr>
-<tr class="altColor">
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html#SetMultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">SetMultimapWithProtoValuesSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                                 <a href="../../../../../com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">C</a>&nbsp;multimap)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
-&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ProtoSubject-com.google.common.truth.FailureMetadata-com.google.protobuf.Message-">ProtoSubject</a></span>(<a href="../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
+            com.google.protobuf.Message&nbsp;message)</code>&nbsp;</td>
 </tr>
 </tbody>
 </table>

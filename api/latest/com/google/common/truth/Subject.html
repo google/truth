@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":42,"i1":42,"i2":10,"i3":42,"i4":10,"i5":42,"i6":42,"i7":42,"i8":42,"i9":10,"i10":10,"i11":42,"i12":42,"i13":10,"i14":42,"i15":42,"i16":42,"i17":42,"i18":10,"i19":42,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":42,"i30":10,"i31":10,"i32":42,"i33":10,"i34":42,"i35":10};
+var methods = {"i0":10,"i1":10,"i2":42,"i3":10,"i4":10,"i5":10,"i6":42,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -93,14 +93,14 @@ var activeTableTab = "activeTableTab";
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="subTitle">com.google.common.truth</div>
-<h2 title="Class Subject" class="title">Class Subject&lt;S extends Subject&lt;S,T&gt;,T&gt;</h2>
+<h2 title="Class Subject" class="title">Class Subject</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
 <li><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
-<li>com.google.common.truth.Subject&lt;S,T&gt;</li>
+<li>com.google.common.truth.Subject</li>
 </ul>
 </li>
 </ul>
@@ -108,22 +108,12 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <dl>
-<dt><span class="paramLabel">Type Parameters:</span></dt>
-<dd><code>S</code> - <b>deprecated -</b> the self-type, allowing <code>this</code>-returning methods to avoid
-     needing subclassing. <i>Both type parameters will be removed, as the methods that need them
-     are being removed. You can prepare for this change by editing your class to refer to raw
-     <code>Subject</code> today.</i></dd>
-<dd><code>T</code> - <b>deprecated -</b> the type of the object being tested by this <code>Subject</code>.
-     <i>Both type parameters will be removed, as the methods that need them are being removed. You
-     can prepare for this change by editing your class to refer to raw <code>Subject</code> today.</i></dd>
-</dl>
-<dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../../com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a>, <a href="../../../../com/google/common/truth/BooleanSubject.html" title="class in com.google.common.truth">BooleanSubject</a>, <a href="../../../../com/google/common/truth/ClassSubject.html" title="class in com.google.common.truth">ClassSubject</a>, <a href="../../../../com/google/common/truth/ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>, <a href="../../../../com/google/common/truth/DefaultSubject.html" title="class in com.google.common.truth">DefaultSubject</a>, <a href="../../../../com/google/common/truth/GuavaOptionalSubject.html" title="class in com.google.common.truth">GuavaOptionalSubject</a>, <a href="../../../../com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a>, <a href="../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>, <a href="../../../../com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a>, <a href="../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>, <a href="../../../../com/google/common/truth/LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a>, <a href="../../../../com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a>, <a href="../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a>, <a href="../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a>, <a href="../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a>, <a href="../../../../com/google/common/truth/ObjectArraySubject.html" title="class in com.google.common.truth">ObjectArraySubject</a>, <a href="../../../../com/google/common/truth/OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a>, <a href="../../../../com/google/common/truth/OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a>, <a href="../../../../com/google/common/truth/OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a>, <a href="../../../../com/google/common/truth/OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a>, <a href="../../../../com/google/common/truth/PathSubject.html" title="class in com.google.common.truth">PathSubject</a>, <a href="../../../../com/google/common/truth/PrimitiveBooleanArraySubject.html" title="class in com.google.common.truth">PrimitiveBooleanArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveByteArraySubject.html" title="class in com.google.common.truth">PrimitiveByteArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveCharArraySubject.html" title="class in com.google.common.truth">PrimitiveCharArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveDoubleArraySubject.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.html" title="class in com.google.common.truth">PrimitiveFloatArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveIntArraySubject.html" title="class in com.google.common.truth">PrimitiveIntArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveLongArraySubject.html" title="class in com.google.common.truth">PrimitiveLongArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html" title="class in com.google.common.truth">PrimitiveShortArraySubject</a>, <a href="../../../../com/google/common/truth/extensions/re2j/Re2jSubjects.Re2jStringSubject.html" title="class in com.google.common.truth.extensions.re2j">Re2jSubjects.Re2jStringSubject</a>, <a href="../../../../com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a>, <a href="../../../../com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a>, <a href="../../../../com/google/common/truth/ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></dd>
+<dd><a href="../../../../com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a>, <a href="../../../../com/google/common/truth/BooleanSubject.html" title="class in com.google.common.truth">BooleanSubject</a>, <a href="../../../../com/google/common/truth/ClassSubject.html" title="class in com.google.common.truth">ClassSubject</a>, <a href="../../../../com/google/common/truth/ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>, <a href="../../../../com/google/common/truth/DefaultSubject.html" title="class in com.google.common.truth">DefaultSubject</a>, <a href="../../../../com/google/common/truth/GuavaOptionalSubject.html" title="class in com.google.common.truth">GuavaOptionalSubject</a>, <a href="../../../../com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a>, <a href="../../../../com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a>, <a href="../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>, <a href="../../../../com/google/common/truth/LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a>, <a href="../../../../com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a>, <a href="../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a>, <a href="../../../../com/google/common/truth/ObjectArraySubject.html" title="class in com.google.common.truth">ObjectArraySubject</a>, <a href="../../../../com/google/common/truth/OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a>, <a href="../../../../com/google/common/truth/OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a>, <a href="../../../../com/google/common/truth/OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a>, <a href="../../../../com/google/common/truth/OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a>, <a href="../../../../com/google/common/truth/PathSubject.html" title="class in com.google.common.truth">PathSubject</a>, <a href="../../../../com/google/common/truth/PrimitiveBooleanArraySubject.html" title="class in com.google.common.truth">PrimitiveBooleanArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveByteArraySubject.html" title="class in com.google.common.truth">PrimitiveByteArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveCharArraySubject.html" title="class in com.google.common.truth">PrimitiveCharArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveDoubleArraySubject.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveFloatArraySubject.html" title="class in com.google.common.truth">PrimitiveFloatArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveIntArraySubject.html" title="class in com.google.common.truth">PrimitiveIntArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveLongArraySubject.html" title="class in com.google.common.truth">PrimitiveLongArraySubject</a>, <a href="../../../../com/google/common/truth/PrimitiveShortArraySubject.html" title="class in com.google.common.truth">PrimitiveShortArraySubject</a>, <a href="../../../../com/google/common/truth/extensions/re2j/Re2jSubjects.Re2jStringSubject.html" title="class in com.google.common.truth.extensions.re2j">Re2jSubjects.Re2jStringSubject</a>, <a href="../../../../com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a>, <a href="../../../../com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a>, <a href="../../../../com/google/common/truth/ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></dd>
 </dl>
 <hr>
 <br>
-<pre>public class <span class="typeNameLabel">Subject&lt;S extends Subject&lt;S,T&gt;,T&gt;</span>
+<pre>public class <span class="typeNameLabel">Subject</span>
 extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
 <div class="block">An object that lets you perform checks on the value under test. For example, <code>Subject</code>
  contains <a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>isEqualTo(Object)</code></a> and <a href="../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-"><code>isInstanceOf(Class)</code></a>, and <a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a>
@@ -182,8 +172,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#Subject-com.google.common.truth.FailureMetadata-T-">Subject</a></span>(<a href="../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-       <a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&nbsp;actual)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#Subject-com.google.common.truth.FailureMetadata-java.lang.Object-">Subject</a></span>(<a href="../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
+       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual)</code>
 <div class="block">Constructor for use by subclasses.</div>
 </td>
 </tr>
@@ -203,48 +193,20 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>protected <a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">T</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#actual--">actual</a></span>()</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Instead, declare a private field to store the actual value inside your <a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> subclass. We will be releasing a tool to automate most migrations.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>protected <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#actualAsString--">actualAsString</a></span>()</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Now that <a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-"><code>named(java.lang.String, java.lang.Object...)</code></a> is being removed, this method simply returns <a href="../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--"><code>actualCustomStringRepresentation()</code></a>, surrounded by angle brackets (and we discourage angle
-     brackets in the new key-value style of failure messages). Most callers can use the actual
-     value directly instead. If they format it in <code>actualCustomStringRepresentation()</code>,
-     they may wish to apply similar formatting here.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
 <td class="colFirst"><code>protected <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation</a></span>()</code>
 <div class="block">Supplies the direct string representation of the actual value to other methods which may prefix
  or otherwise position it in an error message.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>protected <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#check--">check</a></span>()</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">the other overload</a>, which requires you
-     to supply more information to include in any failure messages.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>protected <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;format,
      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;args)</code>
 <div class="block">Returns a builder for creating a derived subject.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;o)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -253,38 +215,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-">fail</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;check)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithActual</code></a><code>(</code><a href="../../../../com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
-     migration aid, you can inline this method (and then inline the resulting method call, as
-     well).</span></div>
-</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;messageParts)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-"><code>failWithActual(String, Object)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method (and then inline the resulting
-     method call, as well).</span></div>
-</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithActual</a></span>(<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>&nbsp;first,
               <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>...&nbsp;rest)</code>
@@ -295,7 +226,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
    but was: <i>actual value</i>.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-">failWithActual</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;key,
               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;value)</code>
@@ -306,30 +237,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
    but was: <i>actual value</i>.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-                  <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected,
-                  <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;failVerb,
-                  <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected,
-                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i13" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual</a></span>(<a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>&nbsp;first,
                  <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a>...&nbsp;rest)</code>
@@ -337,34 +245,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
  value.</i></div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;check)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual</code></a><code>(</code><a href="../../../../com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
-     migration aid, you can inline this method (and then inline the resulting method call, as
-     well).</span></div>
-</div>
-</td>
-</tr>
-<tr id="i15" class="rowColor">
-<td class="colFirst"><code>protected void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;check)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual</code></a><code>(</code><a href="../../../../com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
-     migration aid, you can inline this method.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i16" class="altColor">
-<td class="colFirst"><code>protected <a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">T</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#getSubject--">getSubject</a></span>()</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Instead, declare a private field to store the actual value inside your <a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> subclass. We will be releasing a tool to automate most migrations.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i17" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a></span>()</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -372,21 +253,13 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>protected <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a></span>()</code>
 <div class="block">Begins a new call chain that ignores any failures.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
-<td class="colFirst"><code>protected <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#internalCustomName--">internalCustomName</a></span>()</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">This method will be removed when <a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-"><code>named(java.lang.String, java.lang.Object...)</code></a> is.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i20" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;first,
        <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;second,
@@ -394,25 +267,25 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <div class="block">Fails unless the subject is equal to any of the given elements.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-">isEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
 <div class="block">Fails if the subject is not equal to the given object.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;iterable)</code>
 <div class="block">Fails unless the subject is equal to any element in the given iterable.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;clazz)</code>
 <div class="block">Fails if the subject is not an instance of the given class.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;first,
         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;second,
@@ -420,76 +293,49 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <div class="block">Fails if the subject is equal to any of the given elements.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</code>
 <div class="block">Fails if the subject is equal to the given object.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;?&gt;&nbsp;iterable)</code>
 <div class="block">Fails if the subject is equal to any element in the given iterable.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;clazz)</code>
 <div class="block">Fails if the subject is an instance of the given class.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a></span>()</code>
 <div class="block">Fails if the subject is null.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-"><code>isNotSameInstanceAs(java.lang.Object)</code></a>, which is equivalent.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i30" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-">isNotSameInstanceAs</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</code>
 <div class="block">Fails if the subject is the same instance as the given object.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isNull--">isNull</a></span>()</code>
 <div class="block">Fails if the subject is not null.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use <a href="../../../../com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-"><code>isSameInstanceAs(java.lang.Object)</code></a>, which is equivalent.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i33" class="rowColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-">isSameInstanceAs</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
 <div class="block">Fails if the subject is not the same instance as the given object.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
-<td class="colFirst"><code><a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">S</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;format,
-     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;args)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Instead of <code>assertThat(foo).named("foo")</code>, use <code>assertWithMessage("foo").that(foo)</code>. For custom subjects, use <code>assertWithMessage("foo").about(foos()).that(foo)</code>. For other scenarios, see <a
-     href="https://google.github.io/truth/faq#full-chain">this FAQ entry about adding
-     messages</a>. We will be releasing a tool to automate most migrations.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i35" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/google/common/truth/Subject.html#toString--">toString</a></span>()</code>&nbsp;</td>
 </tr>
@@ -517,15 +363,13 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <h3>Constructor Detail</h3>
 <a name="Subject-com.google.common.truth.FailureMetadata-java.lang.Object-">
 <!--   -->
-</a><a name="Subject-com.google.common.truth.FailureMetadata-T-">
-<!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>Subject</h4>
 <pre>protected&nbsp;Subject(<a href="../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
                   @NullableDecl
-                  <a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&nbsp;actual)</pre>
+                  <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual)</pre>
 <div class="block">Constructor for use by subclasses. If you want to create an instance of this class itself, call
  <a href="../../../../com/google/common/truth/Subject.html#check--"><code>check()</code></a><code>.that(actual)</code>.</div>
 </li>
@@ -538,46 +382,6 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="internalCustomName--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>internalCustomName</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;internalCustomName()</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">This method will be removed when <a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-"><code>named(java.lang.String, java.lang.Object...)</code></a> is.</span></div>
-<div class="block">An internal method used to obtain the value set by <a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-"><code>named(String, Object...)</code></a>.</div>
-</li>
-</ul>
-<a name="named-java.lang.String-java.lang.Object...-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>named</h4>
-<pre>@CanIgnoreReturnValue
- <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">S</a>&nbsp;named(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;format,
-                                                  <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;args)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Instead of <code>assertThat(foo).named("foo")</code>, use <code>assertWithMessage("foo").that(foo)</code>. For custom subjects, use <code>assertWithMessage("foo").about(foos()).that(foo)</code>. For other scenarios, see <a
-     href="https://google.github.io/truth/faq#full-chain">this FAQ entry about adding
-     messages</a>. We will be releasing a tool to automate most migrations.</span></div>
-<div class="block">Adds a prefix to the subject, when it is displayed in error messages. This is especially useful
- in the context of types that have no helpful <code>toString()</code> representation, e.g. boolean.
- Writing <code>assertThat(foo).named("foo").isTrue();</code> then results in a more reasonable error
- message.
-
- <p><code>named()</code> takes a format template and argument objects which will be substituted into
- the template using <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Strings.html?is-external=true#lenientFormat-java.lang.String-java.lang.Object...-" title="class or interface in com.google.common.base"><code>Strings.lenientFormat</code></a>.
- Note this only supports the <code>%s</code> specifier.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>format</code> - a template with <code>%s</code> placeholders</dd>
-<dd><code>args</code> - the object parameters which will be applied to the message template.</dd>
-</dl>
-</li>
-</ul>
 <a name="isNull--">
 <!--   -->
 </a>
@@ -635,41 +439,15 @@ public&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="ty
  the <a href="../../../../com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>isEqualTo(java.lang.Object)</code></a> method.</div>
 </li>
 </ul>
-<a name="isSameAs-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isSameAs</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-public&nbsp;void&nbsp;isSameAs(@NullableDecl @CompatibleWith(value="T")
-                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-"><code>isSameInstanceAs(java.lang.Object)</code></a>, which is equivalent.</span></div>
-<div class="block">Fails if the subject is not the same instance as the given object.</div>
-</li>
-</ul>
 <a name="isSameInstanceAs-java.lang.Object-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>isSameInstanceAs</h4>
-<pre>public final&nbsp;void&nbsp;isSameInstanceAs(@NullableDecl @CompatibleWith(value="T")
+<pre>public final&nbsp;void&nbsp;isSameInstanceAs(@NullableDecl
                                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not the same instance as the given object.</div>
-</li>
-</ul>
-<a name="isNotSameAs-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isNotSameAs</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-public&nbsp;void&nbsp;isNotSameAs(@NullableDecl @CompatibleWith(value="T")
-                                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-"><code>isNotSameInstanceAs(java.lang.Object)</code></a>, which is equivalent.</span></div>
-<div class="block">Fails if the subject is the same instance as the given object.</div>
 </li>
 </ul>
 <a name="isNotSameInstanceAs-java.lang.Object-">
@@ -678,7 +456,7 @@ public&nbsp;void&nbsp;isNotSameAs(@NullableDecl @CompatibleWith(value="T")
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotSameInstanceAs</h4>
-<pre>public final&nbsp;void&nbsp;isNotSameInstanceAs(@NullableDecl @CompatibleWith(value="T")
+<pre>public final&nbsp;void&nbsp;isNotSameInstanceAs(@NullableDecl
                                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;unexpected)</pre>
 <div class="block">Fails if the subject is the same instance as the given object.</div>
 </li>
@@ -719,9 +497,9 @@ public&nbsp;void&nbsp;isNotSameAs(@NullableDecl @CompatibleWith(value="T")
 <ul class="blockList">
 <li class="blockList">
 <h4>isAnyOf</h4>
-<pre>public&nbsp;void&nbsp;isAnyOf(@NullableDecl @CompatibleWith(value="T")
+<pre>public&nbsp;void&nbsp;isAnyOf(@NullableDecl
                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;first,
-                    @NullableDecl @CompatibleWith(value="T")
+                    @NullableDecl
                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;second,
                     @NullableDecl
                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
@@ -744,53 +522,13 @@ public&nbsp;void&nbsp;isNotSameAs(@NullableDecl @CompatibleWith(value="T")
 <ul class="blockList">
 <li class="blockList">
 <h4>isNoneOf</h4>
-<pre>public&nbsp;void&nbsp;isNoneOf(@NullableDecl @CompatibleWith(value="T")
+<pre>public&nbsp;void&nbsp;isNoneOf(@NullableDecl
                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;first,
-                     @NullableDecl @CompatibleWith(value="T")
+                     @NullableDecl
                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;second,
                      @NullableDecl
                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails if the subject is equal to any of the given elements.</div>
-</li>
-</ul>
-<a name="getSubject--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getSubject</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&nbsp;getSubject()</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Instead, declare a private field to store the actual value inside your <a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> subclass. We will be releasing a tool to automate most migrations.</span></div>
-<div class="block">Returns the unedited, unformatted raw actual value.</div>
-</li>
-</ul>
-<a name="actual--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>actual</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;<a href="../../../../com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&nbsp;actual()</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Instead, declare a private field to store the actual value inside your <a href="../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> subclass. We will be releasing a tool to automate most migrations.</span></div>
-<div class="block">Returns the unedited, unformatted raw actual value.</div>
-</li>
-</ul>
-<a name="actualAsString--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>actualAsString</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;actualAsString()</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Now that <a href="../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-"><code>named(java.lang.String, java.lang.Object...)</code></a> is being removed, this method simply returns <a href="../../../../com/google/common/truth/Subject.html#actualCustomStringRepresentation--"><code>actualCustomStringRepresentation()</code></a>, surrounded by angle brackets (and we discourage angle
-     brackets in the new key-value style of failure messages). Most callers can use the actual
-     value directly instead. If they format it in <code>actualCustomStringRepresentation()</code>,
-     they may wish to apply similar formatting here.</span></div>
-<div class="block">Returns a string representation of the actual value. This will either be the toString() of the
- value or a prefixed "name" along with the string representation.</div>
 </li>
 </ul>
 <a name="actualCustomStringRepresentation--">
@@ -811,21 +549,6 @@ protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Stri
  <p>By default, this returns <code>String.ValueOf(getActualValue())</code>.</div>
 </li>
 </ul>
-<a name="check--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>check</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;<a href="../../../../com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a>&nbsp;check()</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">the other overload</a>, which requires you
-     to supply more information to include in any failure messages.</span></div>
-<div class="block">Returns a builder for creating a derived subject but without providing information about how
- the derived subject will relate to the current subject. In most cases, you should provide such
- information by using <a href="../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">the other overload</a>.</div>
-</li>
-</ul>
 <a name="check-java.lang.String-java.lang.Object...-">
 <!--   -->
 </a>
@@ -840,7 +563,7 @@ protected final&nbsp;<a href="../../../../com/google/common/truth/StandardSubjec
  automatically supplement their failure message with information about the original subject.
 
  <p>For example, <a href="../../../../com/google/common/truth/ThrowableSubject.html#hasMessageThat--"><code>ThrowableSubject.hasMessageThat()</code></a>, which returns a <a href="../../../../com/google/common/truth/StringSubject.html" title="class in com.google.common.truth"><code>StringSubject</code></a>,
- is implemented with <code>check("getMessage()").that(actual().getMessage())</code>.
+ is implemented with <code>check("getMessage()").that(actual.getMessage())</code>.
 
  <p>The arguments to <code>check</code> describe how the new subject was derived from the old,
  formatted like a chained method call. This allows Truth to include that information in its
@@ -853,7 +576,7 @@ protected final&nbsp;<a href="../../../../com/google/common/truth/StandardSubjec
 
  <p>If you aren't really delegating to an instance method on the actual value -- maybe you're
  calling a static method, or you're calling a chain of several methods -- you can supply
- whatever string will be most useful to users. For example, if you're delegating to <code>getOnlyElement(actual().colors())</code>, you might call <code>check("onlyColor()")</code>.</div>
+ whatever string will be most useful to users. For example, if you're delegating to <code>getOnlyElement(actual.colors())</code>, you might call <code>check("onlyColor()")</code>.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>format</code> - a template with <code>%s</code> placeholders</dd>
@@ -919,120 +642,6 @@ protected final&nbsp;<a href="../../../../com/google/common/truth/StandardSubjec
  to be empty"))</code>.</div>
 </li>
 </ul>
-<a name="fail-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>fail</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;void&nbsp;fail(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;check)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithActual</code></a><code>(</code><a href="../../../../com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
-     migration aid, you can inline this method (and then inline the resulting method call, as
-     well).</span></div>
-<div class="block">Reports a failure constructing a message from a simple verb.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>check</code> - the check being asserted</dd>
-</dl>
-</li>
-</ul>
-<a name="fail-java.lang.String-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>fail</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;void&nbsp;fail(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;other)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-"><code>failWithActual(String, Object)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method (and then inline the resulting
-     method call, as well).</span></div>
-<div class="block">Assembles a failure message and passes such to the FailureStrategy</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>verb</code> - the check being asserted</dd>
-<dd><code>other</code> - the value against which the subject is compared</dd>
-</dl>
-</li>
-</ul>
-<a name="fail-java.lang.String-java.lang.Object...-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>fail</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;void&nbsp;fail(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>...&nbsp;messageParts)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method.</span></div>
-<div class="block">Assembles a failure message and passes such to the FailureStrategy</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>verb</code> - the check being asserted</dd>
-<dd><code>messageParts</code> - the expectations against which the subject is compared</dd>
-</dl>
-</li>
-</ul>
-<a name="failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>failWithBadResults</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;void&nbsp;failWithBadResults(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-                                                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected,
-                                                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;failVerb,
-                                                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method.</span></div>
-<div class="block">Assembles a failure message and passes it to the FailureStrategy</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>verb</code> - the check being asserted</dd>
-<dd><code>expected</code> - the expectations against which the subject is compared</dd>
-<dd><code>failVerb</code> - the failure of the check being asserted</dd>
-<dd><code>actual</code> - the actual value the subject was compared against</dd>
-</dl>
-</li>
-</ul>
-<a name="failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>failWithCustomSubject</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;void&nbsp;failWithCustomSubject(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;verb,
-                                                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected,
-                                                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method.</span></div>
-<div class="block">Assembles a failure message with an alternative representation of the wrapped subject and
- passes it to the FailureStrategy</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>verb</code> - the check being asserted</dd>
-<dd><code>expected</code> - the expected value of the check</dd>
-<dd><code>actual</code> - the custom representation of the subject to be reported in the failure.</dd>
-</dl>
-</li>
-</ul>
-<a name="failWithoutSubject-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>failWithoutSubject</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;void&nbsp;failWithoutSubject(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;check)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual</code></a><code>(</code><a href="../../../../com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
-     migration aid, you can inline this method.</span></div>
-</li>
-</ul>
 <a name="failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">
 <!--   -->
 </a>
@@ -1056,24 +665,6 @@ protected final&nbsp;void&nbsp;failWithoutSubject(<a href="https://docs.oracle.c
 
  <p>Example usage: The check <code>isEmpty()</code> calls <code>failWithActual(simpleFact("expected
  to be empty"))</code>.</div>
-</li>
-</ul>
-<a name="failWithoutActual-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>failWithoutActual</h4>
-<pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-protected final&nbsp;void&nbsp;failWithoutActual(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;check)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Prefer to construct <a href="../../../../com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual</code></a><code>(</code><a href="../../../../com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
-     migration aid, you can inline this method (and then inline the resulting method call, as
-     well).</span></div>
-<div class="block">Assembles a failure message without a given subject and passes it to the FailureStrategy</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>check</code> - the check being asserted</dd>
-</dl>
 </li>
 </ul>
 <a name="equals-java.lang.Object-">

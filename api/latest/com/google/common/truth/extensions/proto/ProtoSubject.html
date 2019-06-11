@@ -74,7 +74,7 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested.classes.inherited.from.class.com.google.common.truth.extensions.proto.LiteProtoSubject">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.com.google.common.truth.Subject">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
@@ -93,20 +93,20 @@ var activeTableTab = "activeTableTab";
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="subTitle">com.google.common.truth.extensions.proto</div>
-<h2 title="Class ProtoSubject" class="title">Class ProtoSubject&lt;S extends ProtoSubject&lt;S,M&gt;,M extends com.google.protobuf.Message&gt;</h2>
+<h2 title="Class ProtoSubject" class="title">Class ProtoSubject</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
 <li><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">com.google.common.truth.Subject</a>&lt;S,M&gt;</li>
+<li><a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">com.google.common.truth.Subject</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">com.google.common.truth.extensions.proto.LiteProtoSubject</a>&lt;S,M&gt;</li>
+<li><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">com.google.common.truth.extensions.proto.LiteProtoSubject</a></li>
 <li>
 <ul class="inheritance">
-<li>com.google.common.truth.extensions.proto.ProtoSubject&lt;S,M&gt;</li>
+<li>com.google.common.truth.extensions.proto.ProtoSubject</li>
 </ul>
 </li>
 </ul>
@@ -118,24 +118,13 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <dl>
-<dt><span class="paramLabel">Type Parameters:</span></dt>
-<dd><code>S</code> - <b>deprecated -</b> the self-type, allowing <code>this</code>-returning methods to avoid
-     needing subclassing. <i>Both type parameters will be removed, as the methods that need them
-     are being removed. You can prepare for this change by editing your class to refer to raw
-     <code>ProtoSubject</code> today.</i></dd>
-<dd><code>M</code> - <b>deprecated -</b> the type of the message being tested by this <code>Subject</code>.
-     <i>Both type parameters will be removed, as the methods that need them are being removed. You
-     can prepare for this change by editing your class to refer to raw <code>ProtoSubject</code>
-     today.</i></dd>
-</dl>
-<dl>
 <dt>All Implemented Interfaces:</dt>
 <dd><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dd>
 </dl>
 <hr>
 <br>
-<pre>public class <span class="typeNameLabel">ProtoSubject&lt;S extends ProtoSubject&lt;S,M&gt;,M extends com.google.protobuf.Message&gt;</span>
-extends <a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>&lt;S,M&gt;
+<pre>public class <span class="typeNameLabel">ProtoSubject</span>
+extends <a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>
 implements <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></pre>
 <div class="block">Truth subject for the full version of Protocol Buffers.
 
@@ -165,11 +154,11 @@ implements <a href="../../../../../../com/google/common/truth/extensions/proto/P
 </a>
 <h3>Nested Class Summary</h3>
 <ul class="blockList">
-<li class="blockList"><a name="nested.classes.inherited.from.class.com.google.common.truth.extensions.proto.LiteProtoSubject">
+<li class="blockList"><a name="nested.classes.inherited.from.class.com.google.common.truth.Subject">
 <!--   -->
 </a>
-<h3>Nested classes/interfaces inherited from class&nbsp;com.google.common.truth.extensions.proto.<a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></h3>
-<code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject.Factory</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="type parameter in LiteProtoSubject.Factory">S</a> extends <a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="type parameter in LiteProtoSubject.Factory">S</a>,<a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="type parameter in LiteProtoSubject.Factory">M</a>&gt;,<a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="type parameter in LiteProtoSubject.Factory">M</a> extends com.google.protobuf.MessageLite&gt;</code></li>
+<h3>Nested classes/interfaces inherited from class&nbsp;com.google.common.truth.<a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></h3>
+<code><a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">SubjectT</a> extends <a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>,<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">ActualT</a>&gt;</code></li>
 </ul>
 </li>
 </ul>
@@ -187,8 +176,8 @@ implements <a href="../../../../../../com/google/common/truth/extensions/proto/P
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ProtoSubject-com.google.common.truth.FailureMetadata-M-">ProtoSubject</a></span>(<a href="../../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-            <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a>&nbsp;message)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ProtoSubject-com.google.common.truth.FailureMetadata-com.google.protobuf.Message-">ProtoSubject</a></span>(<a href="../../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
+            com.google.protobuf.Message&nbsp;message)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -482,14 +471,14 @@ implements <a href="../../../../../../com/google/common/truth/extensions/proto/P
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;com.google.common.truth.<a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></h3>
-<code><a href="../../../../../../com/google/common/truth/Subject.html#actual--">actual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#actualAsString--">actualAsString</a>, <a href="../../../../../../com/google/common/truth/Subject.html#check--">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#getSubject--">getSubject</a>, <a href="../../../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../../../com/google/common/truth/Subject.html#internalCustomName--">internalCustomName</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-">isNotSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNull--">isNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-">isSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named</a>, <a href="../../../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
+<code><a href="../../../../../../com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check</a>, <a href="../../../../../../com/google/common/truth/Subject.html#equals-java.lang.Object-">equals</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-">failWithActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual</a>, <a href="../../../../../../com/google/common/truth/Subject.html#hashCode--">hashCode</a>, <a href="../../../../../../com/google/common/truth/Subject.html#ignoreCheck--">ignoreCheck</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isAnyOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isIn-java.lang.Iterable-">isIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isInstanceOf-java.lang.Class-">isInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">isNoneOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotIn-java.lang.Iterable-">isNotIn</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotInstanceOf-java.lang.Class-">isNotInstanceOf</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotNull--">isNotNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-">isNotSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isNull--">isNull</a>, <a href="../../../../../../com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-">isSameInstanceAs</a>, <a href="../../../../../../com/google/common/truth/Subject.html#toString--">toString</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
-<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone--" title="class or interface in java.lang">clone</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize--" title="class or interface in java.lang">finalize</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass--" title="class or interface in java.lang">getClass</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify--" title="class or interface in java.lang">notify</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll--" title="class or interface in java.lang">notifyAll</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait--" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait-long-" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait-long-int-" title="class or interface in java.lang">wait</a></code></li>
+<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone--" title="class or interface in java.lang">clone</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize--" title="class or interface in java.lang">finalize</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass--" title="class or interface in java.lang">getClass</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang">hashCode</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify--" title="class or interface in java.lang">notify</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll--" title="class or interface in java.lang">notifyAll</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait--" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait-long-" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait-long-int-" title="class or interface in java.lang">wait</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.com.google.common.truth.extensions.proto.ProtoFluentAssertion">
@@ -514,15 +503,13 @@ implements <a href="../../../../../../com/google/common/truth/extensions/proto/P
 <h3>Constructor Detail</h3>
 <a name="ProtoSubject-com.google.common.truth.FailureMetadata-com.google.protobuf.Message-">
 <!--   -->
-</a><a name="ProtoSubject-com.google.common.truth.FailureMetadata-M-">
-<!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>ProtoSubject</h4>
 <pre>protected&nbsp;ProtoSubject(<a href="../../../../../../com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
                        @NullableDecl
-                       <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a>&nbsp;message)</pre>
+                       com.google.protobuf.Message&nbsp;message)</pre>
 </li>
 </ul>
 </li>
@@ -1295,7 +1282,7 @@ implements <a href="../../../../../../com/google/common/truth/extensions/proto/P
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-">isEqualTo</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></dd>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html#isEqualTo-java.lang.Object-">isEqualTo</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">S</a> extends <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">S</a>,<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a>&gt;,<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a> extends com.google.protobuf.Message&gt;</code></dd>
+<dd><code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html#isEqualTo-java.lang.Object-">isEqualTo</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -1314,7 +1301,7 @@ implements <a href="../../../../../../com/google/common/truth/extensions/proto/P
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></dd>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">S</a> extends <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">S</a>,<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a>&gt;,<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a> extends com.google.protobuf.Message&gt;</code></dd>
+<dd><code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -1330,7 +1317,7 @@ implements <a href="../../../../../../com/google/common/truth/extensions/proto/P
  <code>build()</code>, which itself fails if required fields aren't set.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html#hasAllRequiredFields--">hasAllRequiredFields</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">S</a> extends <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">S</a>,<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a>&gt;,<a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a> extends com.google.protobuf.Message&gt;</code></dd>
+<dd><code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html#hasAllRequiredFields--">hasAllRequiredFields</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -1387,7 +1374,7 @@ implements <a href="../../../../../../com/google/common/truth/extensions/proto/P
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li><a href="#nested.classes.inherited.from.class.com.google.common.truth.extensions.proto.LiteProtoSubject">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.com.google.common.truth.Subject">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>

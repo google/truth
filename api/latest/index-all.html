@@ -81,21 +81,6 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#about-com.google.common.truth.CustomSubjectBuilder.Factory-">about(CustomSubjectBuilder.Factory&lt;CustomSubjectBuilderT&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#actual--">actual()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Instead, declare a private field to store the actual value inside your <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> subclass. We will be releasing a tool to automate most migrations.</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#actualAsString--">actualAsString()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Now that <a href="com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-"><code>Subject.named(java.lang.String, java.lang.Object...)</code></a> is being removed, this method simply returns <a href="com/google/common/truth/Subject.html#actualCustomStringRepresentation--"><code>Subject.actualCustomStringRepresentation()</code></a>, surrounded by angle brackets (and we discourage angle
-     brackets in the new key-value style of failure messages). Most callers can use the actual
-     value directly instead. If they format it in <code>actualCustomStringRepresentation()</code>,
-     they may wish to apply similar formatting here.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/re2j/Re2jSubjects.Re2jStringSubject.html#actualCustomStringRepresentation--">actualCustomStringRepresentation()</a></span> - Method in class com.google.common.truth.extensions.re2j.<a href="com/google/common/truth/extensions/re2j/Re2jSubjects.Re2jStringSubject.html" title="class in com.google.common.truth.extensions.re2j">Re2jSubjects.Re2jStringSubject</a></dt>
@@ -210,19 +195,11 @@
 <dd>
 <div class="block">Assert on a sequence of <code>Message</code>s.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoTruth.html#assertThat-java.util.Map-">assertThat(Map&lt;K, M&gt;)</a></span> - Static method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoTruth.html" title="class in com.google.common.truth.extensions.proto">ProtoTruth</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoTruth.html#assertThat-java.util.Map-">assertThat(Map&lt;?, M&gt;)</a></span> - Static method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoTruth.html" title="class in com.google.common.truth.extensions.proto">ProtoTruth</a></dt>
 <dd>
 <div class="block">Assert on a map with <code>Message</code> values.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoTruth.html#assertThat-com.google.common.collect.Multimap-">assertThat(Multimap&lt;K, M&gt;)</a></span> - Static method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoTruth.html" title="class in com.google.common.truth.extensions.proto">ProtoTruth</a></dt>
-<dd>
-<div class="block">Assert on a <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> with <code>Message</code> values.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoTruth.html#assertThat-com.google.common.collect.ListMultimap-">assertThat(ListMultimap&lt;K, M&gt;)</a></span> - Static method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoTruth.html" title="class in com.google.common.truth.extensions.proto">ProtoTruth</a></dt>
-<dd>
-<div class="block">Assert on a <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/ListMultimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>ListMultimap</code></a> with <code>Message</code> values.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoTruth.html#assertThat-com.google.common.collect.SetMultimap-">assertThat(SetMultimap&lt;K, M&gt;)</a></span> - Static method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoTruth.html" title="class in com.google.common.truth.extensions.proto">ProtoTruth</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoTruth.html#assertThat-com.google.common.collect.Multimap-">assertThat(Multimap&lt;?, M&gt;)</a></span> - Static method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoTruth.html" title="class in com.google.common.truth.extensions.proto">ProtoTruth</a></dt>
 <dd>
 <div class="block">Assert on a <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> with <code>Message</code> values.</div>
 </dd>
@@ -250,8 +227,6 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-java.lang.Iterable-">assertThat(Iterable&lt;?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-java.util.SortedSet-">assertThat(SortedSet&lt;?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-T:A-">assertThat(T[])</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-boolean:A-">assertThat(boolean[])</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
@@ -274,13 +249,7 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-java.util.Map-">assertThat(Map&lt;?, ?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-java.util.SortedMap-">assertThat(SortedMap&lt;?, ?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-com.google.common.collect.Multimap-">assertThat(Multimap&lt;?, ?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-com.google.common.collect.ListMultimap-">assertThat(ListMultimap&lt;?, ?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-com.google.common.collect.SetMultimap-">assertThat(SetMultimap&lt;?, ?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-com.google.common.collect.Multiset-">assertThat(Multiset&lt;?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>&nbsp;</dd>
@@ -340,13 +309,6 @@
 </a>
 <h2 class="title">C</h2>
 <dl>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#check--">check()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">the other overload</a>, which requires you
-     to supply more information to include in any failure messages.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#check-java.lang.String-java.lang.Object...-">check(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Returns a builder for creating a derived subject.</div>
@@ -367,7 +329,7 @@
 </dd>
 <dt><a href="com/google/common/truth/extensions/re2j/package-summary.html">com.google.common.truth.extensions.re2j</a> - package com.google.common.truth.extensions.re2j</dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/google/common/truth/ComparableSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">ComparableSubject</span></a>&lt;<a href="com/google/common/truth/ComparableSubject.html" title="type parameter in ComparableSubject">S</a> extends <a href="com/google/common/truth/ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>&lt;<a href="com/google/common/truth/ComparableSubject.html" title="type parameter in ComparableSubject">S</a>,<a href="com/google/common/truth/ComparableSubject.html" title="type parameter in ComparableSubject">T</a>&gt;,<a href="com/google/common/truth/ComparableSubject.html" title="type parameter in ComparableSubject">T</a> extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&gt; - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
+<dt><a href="com/google/common/truth/ComparableSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">ComparableSubject</span></a>&lt;<a href="com/google/common/truth/ComparableSubject.html" title="type parameter in ComparableSubject">T</a> extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&gt; - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">Propositions for <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang"><code>Comparable</code></a> typed subjects.</div>
 </dd>
@@ -377,10 +339,6 @@
 <dd>
 <div class="block">Returns whether or not the <code>actual</code> value is said to correspond to the <code>expected</code>
  value for the purposes of this test.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#comparingElementsUsing-com.google.common.truth.Correspondence-">comparingElementsUsing(Correspondence&lt;A, E&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Starts a method chain for a check in which the actual elements (i.e.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#comparingElementsUsing-com.google.common.truth.Correspondence-">comparingElementsUsing(Correspondence&lt;? super A, ? super E&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
@@ -416,14 +374,6 @@
 <dd>
 <div class="block">Limits the comparison of Protocol buffers to the fields set in the expected proto(s).</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#comparingValuesUsing-com.google.common.truth.Correspondence-">comparingValuesUsing(Correspondence&lt;A, E&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Starts a method chain for a check in which the actual values (i.e.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#comparingValuesUsing-com.google.common.truth.Correspondence-">comparingValuesUsing(Correspondence&lt;A, E&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Starts a method chain for a check in which the actual values (i.e.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#comparingValuesUsing-com.google.common.truth.Correspondence-">comparingValuesUsing(Correspondence&lt;? super A, ? super E&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
 <div class="block">Starts a method chain for a check in which the actual values (i.e.</div>
@@ -431,10 +381,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MultimapSubject.html#comparingValuesUsing-com.google.common.truth.Correspondence-">comparingValuesUsing(Correspondence&lt;? super A, ? super E&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
 <dd>
 <div class="block">Starts a method chain for a check in which the actual values (i.e.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#contains-java.lang.Object-">contains(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks (with a side-effect failure) that the subject contains the supplied item.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#contains-M-">contains(M)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
@@ -473,18 +419,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/TableSubject.html#contains-java.lang.Object-java.lang.Object-">contains(Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a></dt>
 <dd>
 <div class="block">Fails if the table does not contain a mapping for the given row key and column key.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllIn-java.lang.Iterable-">containsAllIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>IterableOfProtosSubject.containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllIn-java.lang.Object:A-">containsAllIn(Object[])</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Object:A-"><code>IterableOfProtosSubject.containsAtLeastElementsIn(Object[])</code></a>, which is equivalent.</span></div>
-</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAllIn-java.lang.Iterable-">containsAllIn(Iterable&lt;? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
@@ -540,12 +474,6 @@
 <div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/StreamSubject.html#containsAtLeastElementsIn-java.lang.Iterable-"><code>StreamSubject.containsAtLeastElementsIn(Iterable)</code></a>, which is equivalent.</span></div>
 </div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAllOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAllOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-"><code>IterableOfProtosSubject.containsAtLeast(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a>, which is equivalent.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAllOf-M-M-M...-">containsAllOf(M, M, M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
@@ -594,16 +522,6 @@
 <div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/StreamSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-"><code>StreamSubject.containsAtLeast(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a>, which is equivalent.</span></div>
 </div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAnyIn-java.lang.Iterable-">containsAnyIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that the subject contains at least one of the objects contained in the provided
- collection or fails.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAnyIn-java.lang.Object:A-">containsAnyIn(Object[])</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that the subject contains at least one of the objects contained in the provided array or
- fails.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAnyIn-java.lang.Iterable-">containsAnyIn(Iterable&lt;? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
 <div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
@@ -646,10 +564,6 @@
 <dd>
 <div class="block">Fails if the subject does not contain at least one of the given elements.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAnyOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that the subject contains at least one of the provided objects or fails.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAnyOf-M-M-M...-">containsAnyOf(M, M, M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
 <div class="block">Checks that the subject contains at least one element that corresponds to at least one of the
@@ -683,10 +597,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StreamSubject.html#containsAnyOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAnyOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
 <dd>
 <div class="block">Fails if the subject does not contain at least one of the given elements.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAtLeast(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAtLeast-M-M-M...-">containsAtLeast(M, M, M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
@@ -736,14 +646,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StreamSubject.html#containsAtLeast-java.lang.Object-java.lang.Object-java.lang.Object...-">containsAtLeast(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
 <dd>
 <div class="block">Fails if the subject does not contain all of the given elements.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Iterable-">containsAtLeastElementsIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsAtLeastElementsIn-java.lang.Object:A-">containsAtLeastElementsIn(Object[])</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAtLeastElementsIn-java.lang.Iterable-">containsAtLeastElementsIn(Iterable&lt;? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
@@ -824,18 +726,10 @@
 <div class="block">Fails if the map does not contain an entry with the given key and a value that corresponds to
  the given value.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#containsEntry-java.lang.Object-java.lang.Object-">containsEntry(Object, Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map does not contain the given entry.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#containsEntry-java.lang.Object-M-">containsEntry(Object, M)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Fails if the multimap does not contain an entry with the given key and a value that corresponds
  to the given value.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsEntry-java.lang.Object-java.lang.Object-">containsEntry(Object, Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the multimap does not contain the given entry.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#containsEntry-java.lang.Object-java.lang.Object-">containsEntry(Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
@@ -855,10 +749,6 @@
 <div class="block">Fails if the multimap does not contain an entry with the given key and a value that
  corresponds to the given value.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsExactly-java.lang.Object...-">containsExactly(Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsExactly-M...-">containsExactly(M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
@@ -868,14 +758,6 @@
 <div class="block">Fails if the map does not contain exactly the given set of keys mapping to values that
  correspond to the given values.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#containsExactly--">containsExactly()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map is not empty.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#containsExactly-java.lang.Object-java.lang.Object-java.lang.Object...-">containsExactly(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map does not contain exactly the given set of key/value pairs.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#containsExactly--">containsExactly()</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Fails if the multimap is not empty.</div>
@@ -883,14 +765,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#containsExactly-java.lang.Object-M-java.lang.Object...-">containsExactly(Object, M, Object...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Fails if the multimap does not contain exactly the given set of key/value pairs.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsExactly-java.lang.Object-java.lang.Object-java.lang.Object...-">containsExactly(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the multimap does not contain exactly the given set of key/value pairs.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsExactly--">containsExactly()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the multimap is not empty.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#containsExactly-int...-">containsExactly(int...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
@@ -949,14 +823,6 @@
 <dd>
 <div class="block">Fails if the subject does not contain exactly the given elements.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsExactlyElementsIn-java.lang.Object:A-">containsExactlyElementsIn(Object[])</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that a subject contains exactly the provided objects or fails.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsExactlyElementsIn-java.lang.Iterable-">containsExactlyElementsIn(Iterable&lt;? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
 <div class="block">Checks that subject contains exactly elements that correspond to the expected elements, i.e.</div>
@@ -998,19 +864,10 @@
 <div class="block">Fails if the map does not contain exactly the keys in the given map, mapping to values that
  correspond to the values of the given map.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#containsExactlyEntriesIn-java.util.Map-">containsExactlyEntriesIn(Map&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map does not contain exactly the given set of entries in the given map.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-">containsExactlyEntriesIn(Multimap&lt;?, ? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Fails if the map does not contain exactly the keys in the given multimap, mapping to values
  that correspond to the values of the given multimap.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-">containsExactlyEntriesIn(Multimap&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> does not contain precisely the same entries as the argument
- <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#containsExactlyEntriesIn-java.util.Map-">containsExactlyEntriesIn(Map&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
@@ -1034,14 +891,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#containsKey-java.lang.Object-">containsKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
 <dd>
 <div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not contain the given key.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#containsKey-java.lang.Object-">containsKey(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map does not contain the given key.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsKey-java.lang.Object-">containsKey(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the multimap does not contain the given key.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#containsKey-java.lang.Object-">containsKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
@@ -1067,10 +916,6 @@
 <dd>
 <div class="block">Fails if the string does not contain a match on the given regex.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoDuplicates--">containsNoDuplicates()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that the subject does not contain duplicate elements.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#containsNoDuplicates--">containsNoDuplicates()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
 <div class="block">Fails if the subject contains duplicate elements.</div>
@@ -1086,16 +931,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StreamSubject.html#containsNoDuplicates--">containsNoDuplicates()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
 <dd>
 <div class="block">Fails if the subject contains duplicate elements.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoneIn-java.lang.Iterable-">containsNoneIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that a actual iterable contains none of the elements contained in the excluded iterable
- or fails.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoneIn-java.lang.Object:A-">containsNoneIn(Object[])</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that a actual iterable contains none of the elements contained in the excluded iterable
- or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsNoneIn-java.lang.Iterable-">containsNoneIn(Iterable&lt;? extends M&gt;)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
@@ -1134,10 +969,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StreamSubject.html#containsNoneIn-java.lang.Iterable-">containsNoneIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
 <dd>
 <div class="block">Fails if the subject contains any of the given elements.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#containsNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">containsNoneOf(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks that a actual iterable contains none of the excluded objects or fails.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsNoneOf-M-M-M...-">containsNoneOf(M, M, M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
@@ -1183,10 +1014,6 @@
 <dd>
 <div class="block">Determines whether an instance of type <code>A</code> corresponds in some way to an instance of type
  <code>E</code> for the purposes of a test assertion.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Correspondence.html#Correspondence--">Correspondence()</a></span> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a></dt>
-<dd>
-<div class="block">Constructor.</div>
 </dd>
 <dt><a href="com/google/common/truth/Correspondence.BinaryPredicate.html" title="interface in com.google.common.truth"><span class="typeNameLink">Correspondence.BinaryPredicate</span></a>&lt;<a href="com/google/common/truth/Correspondence.BinaryPredicate.html" title="type parameter in Correspondence.BinaryPredicate">A</a>,<a href="com/google/common/truth/Correspondence.BinaryPredicate.html" title="type parameter in Correspondence.BinaryPredicate">E</a>&gt; - Interface in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
@@ -1263,10 +1090,6 @@
 <div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
  fails.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#doesNotContain-java.lang.Object-">doesNotContain(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Checks (with a side-effect failure) that the subject does not contain the supplied item.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#doesNotContain-M-">doesNotContain(M)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
 <div class="block">Checks that none of the actual elements correspond to the given element.</div>
@@ -1318,18 +1141,10 @@
 <div class="block">Fails if the map contains an entry with the given key and a value that corresponds to the given
  value.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#doesNotContainEntry-java.lang.Object-java.lang.Object-">doesNotContainEntry(Object, Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map contains the given entry.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html#doesNotContainEntry-java.lang.Object-M-">doesNotContainEntry(Object, M)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Fails if the multimap contains an entry with the given key and a value that corresponds to the
  given value.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#doesNotContainEntry-java.lang.Object-java.lang.Object-">doesNotContainEntry(Object, Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the multimap contains the given entry.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#doesNotContainEntry-java.lang.Object-java.lang.Object-">doesNotContainEntry(Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
@@ -1352,14 +1167,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#doesNotContainKey-java.lang.Object-">doesNotContainKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
 <dd>
 <div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> contains the given key.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#doesNotContainKey-java.lang.Object-">doesNotContainKey(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map contains the given key.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#doesNotContainKey-java.lang.Object-">doesNotContainKey(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the multimap contains the given key.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#doesNotContainKey-java.lang.Object-">doesNotContainKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
@@ -1537,8 +1344,6 @@
 <dd>
 <div class="block">Returns a subject for the list of fact keys.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html#Factory--">Factory()</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject.Factory</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/TruthFailureSubject.html#factValue-java.lang.String-">factValue(String)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TruthFailureSubject.html" title="class in com.google.common.truth">TruthFailureSubject</a></dt>
 <dd>
 <div class="block">Returns a subject for the value with the given name.</div>
@@ -1559,29 +1364,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#fail-java.lang.String-java.lang.Object...-">fail(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>
 <div class="block">Triggers the failure strategy with the given failure message</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#fail-java.lang.String-">fail(String)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithActual</code></a><code>(</code><a href="com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
-     migration aid, you can inline this method (and then inline the resulting method call, as
-     well).</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object-">fail(String, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-"><code>Subject.failWithActual(String, Object)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method (and then inline the resulting
-     method call, as well).</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#fail-java.lang.String-java.lang.Object...-">fail(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>Subject.failWithActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method.</span></div>
-</div>
 </dd>
 <dt><a href="com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth"><span class="typeNameLink">FailureMetadata</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
@@ -1608,39 +1390,10 @@
  
    but was: <i>actual value</i>.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithBadResults-java.lang.String-java.lang.Object-java.lang.String-java.lang.Object-">failWithBadResults(String, Object, String, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>Subject.failWithActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method.</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithCustomSubject-java.lang.String-java.lang.Object-java.lang.Object-">failWithCustomSubject(String, Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>Subject.failWithoutActual(Fact, Fact...)</code></a>. However, if you want to preserve your exact failure
-     message as a migration aid, you can inline this method.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-">failWithoutActual(Fact, Fact...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Fails, reporting a message with the given facts, <i>without automatically adding the actual
  value.</i></div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithoutActual-java.lang.String-">failWithoutActual(String)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual</code></a><code>(</code><a href="com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
-     migration aid, you can inline this method (and then inline the resulting method call, as
-     well).</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#failWithoutSubject-java.lang.String-">failWithoutSubject(String)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Prefer to construct <a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth"><code>Fact</code></a>-style methods, typically by using <a href="com/google/common/truth/Subject.html#failWithoutActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-"><code>failWithoutActual</code></a><code>(</code><a href="com/google/common/truth/Fact.html#simpleFact-java.lang.String-"><code>simpleFact(...)</code></a><code>)</code>. However, if you want to preserve your exact failure message as a
-     migration aid, you can inline this method.</span></div>
-</div>
 </dd>
 <dt><a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">FieldScope</span></a> - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
@@ -1706,12 +1459,6 @@
 <dd>
 <div class="block">Returns the captured failure, if one occurred.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#getSubject--">getSubject()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Instead, declare a private field to store the actual value inside your <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> subclass. We will be releasing a tool to automate most migrations.</span></div>
-</div>
-</dd>
 <dt><a href="com/google/common/truth/GuavaOptionalSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">GuavaOptionalSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">Propositions for Guava <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Optional.html?is-external=true" title="class or interface in com.google.common.base"><code>Optional</code></a> subjects.</div>
@@ -1739,18 +1486,6 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Expect.html#hasFailures--">hasFailures()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Expect.html" title="class in com.google.common.truth">Expect</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SortedSetSubject.html#hasFirstElement-java.lang.Object-">hasFirstElement(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SortedSetSubject.html" title="class in com.google.common.truth">SortedSetSubject</a></dt>
-<dd>
-<div class="block">Fails if the subject does not have the given first element.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SortedMapSubject.html#hasFirstEntry-java.lang.Object-java.lang.Object-">hasFirstEntry(Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SortedMapSubject.html" title="class in com.google.common.truth">SortedMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the map's first key/value pair is not equal to the given entry.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SortedMapSubject.html#hasFirstKey-java.lang.Object-">hasFirstKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SortedMapSubject.html" title="class in com.google.common.truth">SortedMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the map's first key is not equal to the given key.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Correspondence.html#hashCode--">hashCode()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Correspondence.html" title="class in com.google.common.truth">Correspondence</a></dt>
 <dd>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
@@ -1813,18 +1548,6 @@
 <div class="block"><span class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang"><code>Object.hashCode()</code></a> is not supported on Truth subjects.</span></div>
 </div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SortedSetSubject.html#hasLastElement-java.lang.Object-">hasLastElement(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SortedSetSubject.html" title="class in com.google.common.truth">SortedSetSubject</a></dt>
-<dd>
-<div class="block">Fails if the subject does not have the given last element.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SortedMapSubject.html#hasLastEntry-java.lang.Object-java.lang.Object-">hasLastEntry(Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SortedMapSubject.html" title="class in com.google.common.truth">SortedMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the map's last key/value pair is not equal to the given entry.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SortedMapSubject.html#hasLastKey-java.lang.Object-">hasLastKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SortedMapSubject.html" title="class in com.google.common.truth">SortedMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the map's last key is not equal to the given key.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#hasLength-int-">hasLength(int)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
 <dd>
 <div class="block">Fails if the string does not have the given length.</div>
@@ -1836,18 +1559,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#hasSize-int-">hasSize(int)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
 <dd>
 <div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not have the given size.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#hasSize-int-">hasSize(int)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Fails if the subject does not have the given size.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#hasSize-int-">hasSize(int)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map does not have the given size.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#hasSize-int-">hasSize(int)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the multimap does not have the given size.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#hasSize-int-">hasSize(int)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
@@ -2691,12 +2402,6 @@
 <dd>
 <div class="block">Constructor for use by subclasses.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#internalCustomName--">internalCustomName()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">This method will be removed when <a href="com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-"><code>Subject.named(java.lang.String, java.lang.Object...)</code></a> is.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#intStreams--">intStreams()</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">IntStreamSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
@@ -2731,18 +2436,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#isEmpty--">isEmpty()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
 <dd>
 <div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> is not empty.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isEmpty--">isEmpty()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Fails if the subject is not empty.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#isEmpty--">isEmpty()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map is not empty.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#isEmpty--">isEmpty()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the multimap is not empty.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#isEmpty--">isEmpty()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
@@ -2809,15 +2502,6 @@
 <div class="block">Asserts that the subject is exactly equal to the given value, with equality defined as by
  <code>Double#equals</code>.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html#isEqualTo-com.google.common.collect.SetMultimap-">isEqualTo(SetMultimap&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">ListMultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment"><code>#isEqualTo</code> A SetMultimap can never compare equal with a ListMultimap if
-     either Multimap is non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> can never compare equal.
-     Prefer <a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapWithProtoValuesSubject.containsExactlyEntriesIn(
-     com.google.common.collect.Multimap)</code></a> instead. Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
 <dd>
 <div class="block">Checks whether the MessageLite is equivalent to the argument, using the standard equals()
@@ -2830,10 +2514,6 @@
      or <code>buildPartial()</code> on the argument to get a MessageLite for comparison instead.</span></div>
 </div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the subject is not equal to the given object.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dt>
 <dd>
 <div class="block">Compares the subject of the assertion to <code>expected</code>, using all of the rules specified by
@@ -2841,28 +2521,10 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html#isEqualTo-com.google.common.collect.ListMultimap-">isEqualTo(ListMultimap&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">SetMultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment"><code>#isEqualTo</code> A ListMultimap can never compare equal with a SetMultimap if
-     either Multimap is non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> can
-     never compare equal. Prefer <a href="com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap)</code></a> instead.
-     Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/FloatSubject.html#isEqualTo-java.lang.Float-">isEqualTo(Float)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.html" title="class in com.google.common.truth">FloatSubject</a></dt>
 <dd>
 <div class="block">Asserts that the subject is exactly equal to the given value, with equality defined as by
  <code>Float#equals</code>.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/ListMultimapSubject.html#isEqualTo-com.google.common.collect.SetMultimap-">isEqualTo(SetMultimap&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/ListMultimapSubject.html" title="class in com.google.common.truth">ListMultimapSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">A SetMultimap can never compare equal with a ListMultimap if either Multimap is
-     non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> can never compare equal. Prefer
-     <a href="com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap)</code></a>
-     instead. Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
-</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
@@ -2883,15 +2545,6 @@
  containing elements such that each element in <code>expected</code> is equal to each element in the
  actual array, and in the same position, with element equality defined the same way that <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals-float:A-float:A-" title="class or interface in java.util"><code>Arrays.equals(float[], float[])</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang"><code>Float.equals(Object)</code></a> define it (which is different
  to the way that the <code>==</code> operator on primitive <code>float</code> defines it).</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SetMultimapSubject.html#isEqualTo-com.google.common.collect.ListMultimap-">isEqualTo(ListMultimap&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SetMultimapSubject.html" title="class in com.google.common.truth">SetMultimapSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">A ListMultimap can never compare equal with a SetMultimap if either Multimap is
-     non-empty, because <a href="https://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util"><code>List</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util"><code>Set</code></a> can never compare
-     equal. Prefer <a href="com/google/common/truth/MultimapSubject.html#containsExactlyEntriesIn-com.google.common.collect.Multimap-"><code>MultimapSubject.containsExactlyEntriesIn(com.google.common.collect.Multimap)</code></a> instead.
-     Consult <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true#equals-java.lang.Object-" title="class or interface in com.google.common.collect"><code>Multimap.equals(java.lang.Object)</code></a> for more information.</span></div>
-</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#isEqualTo-java.lang.String-">isEqualTo(String)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></dt>
 <dd>
@@ -2982,9 +2635,11 @@
 <dd>
 <div class="block">Fails unless the subject is equal to any element in the given iterable.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInOrder-java.util.Comparator-">isInOrder(Comparator&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInOrder--">isInOrder()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Fails if the iterable is not ordered, according to the given comparator.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="block"><span class="deprecationComment">Protos do not implement <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang"><code>Comparable</code></a>, so you must <a href="com/google/common/truth/IterableSubject.html#isInOrder-java.util.Comparator-">supply a comparator</a>.</span></div>
+</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#isInOrder--">isInOrder()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
@@ -3022,9 +2677,11 @@
 <dd>
 <div class="block">Fails if the subject is not an instance of the given class.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInStrictOrder-java.util.Comparator-">isInStrictOrder(Comparator&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInStrictOrder--">isInStrictOrder()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
-<div class="block">Fails if the iterable is not strictly ordered, according to the given comparator.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="block"><span class="deprecationComment">Protos do not implement <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang"><code>Comparable</code></a>, so you must <a href="com/google/common/truth/IterableSubject.html#isInStrictOrder-java.util.Comparator-">supply a comparator</a>.</span></div>
+</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#isInStrictOrder--">isInStrictOrder()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
@@ -3103,18 +2760,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#isNotEmpty--">isNotEmpty()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
 <dd>
 <div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> is empty.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isNotEmpty--">isNotEmpty()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block">Fails if the subject is empty.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#isNotEmpty--">isNotEmpty()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the map is empty.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#isNotEmpty--">isNotEmpty()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block">Fails if the multimap is empty.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#isNotEmpty--">isNotEmpty()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
@@ -3212,7 +2857,7 @@
 <dd>
 <div class="block">Checks that the subject is <i>not</i> in <code>range</code>.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#isNotIn-java.lang.Iterable-">isNotIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#isNotIn-java.lang.Iterable-">isNotIn(Iterable)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="block"><span class="deprecationComment">You probably meant to call <a href="com/google/common/truth/IterableSubject.html#containsNoneIn-java.lang.Iterable-"><code>IterableSubject.containsNoneIn(java.lang.Iterable&lt;?&gt;)</code></a> instead.</span></div>
@@ -3239,12 +2884,6 @@
 <dd>
 <div class="block">Fails if the subject is null.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isNotSameAs-java.lang.Object-">isNotSameAs(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-"><code>Subject.isNotSameInstanceAs(java.lang.Object)</code></a>, which is equivalent.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isNotSameInstanceAs-java.lang.Object-">isNotSameInstanceAs(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Fails if the subject is the same instance as the given object.</div>
@@ -3262,12 +2901,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isNull--">isNull()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Fails if the subject is not null.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isOrdered-java.util.Comparator-">isOrdered(Comparator&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInOrder-java.util.Comparator-"><code>IterableOfProtosSubject.isInOrder(Comparator)</code></a>.</span></div>
-</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#isOrdered--">isOrdered()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
@@ -3309,21 +2942,9 @@
 <dd>
 <div class="block">Fails if the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>Optional</code></a><code>&lt;T&gt;</code> is empty or the subject is null.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isSameAs-java.lang.Object-">isSameAs(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-"><code>Subject.isSameInstanceAs(java.lang.Object)</code></a>, which is equivalent.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isSameInstanceAs-java.lang.Object-">isSameInstanceAs(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Fails if the subject is not the same instance as the given object.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isStrictlyOrdered-java.util.Comparator-">isStrictlyOrdered(Comparator&lt;?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInStrictOrder-java.util.Comparator-"><code>IterableOfProtosSubject.isInStrictOrder(Comparator)</code></a>.</span></div>
-</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#isStrictlyOrdered--">isStrictlyOrdered()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
@@ -3363,16 +2984,12 @@
 <dd>
 <div class="block">Fluent API to perform detailed, customizable comparison of iterables of protocol buffers.</div>
 </dd>
-<dt><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">IterableOfProtosSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">S</a> extends <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">S</a>,<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>,<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">C</a>&gt;,<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a> extends com.google.protobuf.Message,<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">C</a> extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a>&gt;&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
+<dt><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">IterableOfProtosSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="type parameter in IterableOfProtosSubject">M</a> extends com.google.protobuf.Message&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
 <div class="block">Truth subject for the iterables of protocol buffers.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#IterableOfProtosSubject-com.google.common.truth.FailureMetadata-C-">IterableOfProtosSubject(FailureMetadata, C)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#IterableOfProtosSubject-com.google.common.truth.FailureMetadata-java.lang.Iterable-">IterableOfProtosSubject(FailureMetadata, Iterable&lt;M&gt;)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.IterableOfMessagesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">IterableOfProtosSubject.IterableOfMessagesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.IterableOfMessagesSubject.html" title="type parameter in IterableOfProtosSubject.IterableOfMessagesSubject">M</a> extends com.google.protobuf.Message&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
-<dd>
-<div class="block">Default implementation of <a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto"><code>IterableOfProtosSubject</code></a>.</div>
-</dd>
 <dt><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto"><span class="typeNameLink">IterableOfProtosUsingCorrespondence</span></a>&lt;<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="type parameter in IterableOfProtosUsingCorrespondence">M</a> extends com.google.protobuf.Message&gt; - Interface in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
 <div class="block">Comparison methods, which enforce the rules set in prior calls to <a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto"><code>IterableOfProtosFluentAssertion</code></a>.</div>
@@ -3382,7 +2999,9 @@
 <div class="block">Propositions for <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang"><code>Iterable</code></a> subjects.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#IterableSubject-com.google.common.truth.FailureMetadata-java.lang.Iterable-">IterableSubject(FailureMetadata, Iterable&lt;?&gt;)</a></span> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Constructor for use by subclasses.</div>
+</dd>
 <dt><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth"><span class="typeNameLink">IterableSubject.UsingCorrespondence</span></a>&lt;<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">A</a>,<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="type parameter in IterableSubject.UsingCorrespondence">E</a>&gt; - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">A partially specified check in which the actual elements (normally the elements of the <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang"><code>Iterable</code></a> under test) are compared to expected elements using a <a href="com/google/common/truth/Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>.</div>
@@ -3393,39 +3012,14 @@
 </a>
 <h2 class="title">L</h2>
 <dl>
-<dt><a href="com/google/common/truth/ListMultimapSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">ListMultimapSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth"><code>MultimapSubject</code></a>.</span></div>
-</div>
-</dd>
-<dt><a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">ListMultimapWithProtoValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">S</a> extends <a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">ListMultimapWithProtoValuesSubject</a>&lt;<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">S</a>,<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">M</a>,<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">C</a>&gt;,<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">M</a> extends com.google.protobuf.Message,<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">C</a> extends <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/ListMultimap.html?is-external=true" title="class or interface in com.google.common.collect">ListMultimap</a>&lt;<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject">M</a>&gt;&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MultimapWithProtoValuesSubject</code></a>.</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html#ListMultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">ListMultimapWithProtoValuesSubject(FailureMetadata, C)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">ListMultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-&nbsp;</dd>
-<dt><a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject.html" title="type parameter in ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject">M</a> extends com.google.protobuf.Message&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-<div class="block">Default implementation of <a href="com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>ListMultimapWithProtoValuesSubject</code></a>.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoTruth.html#liteProtos--">liteProtos()</a></span> - Static method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoTruth.html" title="class in com.google.common.truth.extensions.proto">LiteProtoTruth</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">LiteProtoSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="type parameter in LiteProtoSubject">S</a> extends <a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>&lt;<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="type parameter in LiteProtoSubject">S</a>,<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="type parameter in LiteProtoSubject">M</a>&gt;,<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="type parameter in LiteProtoSubject">M</a> extends com.google.protobuf.MessageLite&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
+<dt><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">LiteProtoSubject</span></a> - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
 <div class="block">Truth subjects for the Lite version of Protocol Buffers.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#LiteProtoSubject-com.google.common.truth.FailureMetadata-M-">LiteProtoSubject(FailureMetadata, M)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#LiteProtoSubject-com.google.common.truth.FailureMetadata-com.google.protobuf.MessageLite-">LiteProtoSubject(FailureMetadata, MessageLite)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">LiteProtoSubject.Factory</span></a>&lt;<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="type parameter in LiteProtoSubject.Factory">S</a> extends <a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>&lt;<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="type parameter in LiteProtoSubject.Factory">S</a>,<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="type parameter in LiteProtoSubject.Factory">M</a>&gt;,<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.Factory.html" title="type parameter in LiteProtoSubject.Factory">M</a> extends com.google.protobuf.MessageLite&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
-<dd>
-<div class="block">Typed extension of <code>Subject.Factory</code>.</div>
-</dd>
 <dt><a href="com/google/common/truth/extensions/proto/LiteProtoTruth.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">LiteProtoTruth</span></a> - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
 <div class="block">A set of static methods to begin a Truth assertion chain for the lite version of protocol
@@ -3455,6 +3049,10 @@
 <dd>
 <div class="block">Propositions for <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util"><code>Map</code></a> subjects.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#MapSubject-com.google.common.truth.FailureMetadata-java.util.Map-">MapSubject(FailureMetadata, Map&lt;?, ?&gt;)</a></span> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
+<dd>
+<div class="block">Constructor for use by subclasses.</div>
+</dd>
 <dt><a href="com/google/common/truth/MapSubject.UsingCorrespondence.html" title="class in com.google.common.truth"><span class="typeNameLink">MapSubject.UsingCorrespondence</span></a>&lt;<a href="com/google/common/truth/MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">A</a>,<a href="com/google/common/truth/MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&gt; - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">A partially specified check in which the actual values (i.e.</div>
@@ -3464,16 +3062,12 @@
 <div class="block">Fluent API to perform detailed, customizable comparison of maps containing protocol buffers as
  values.</div>
 </dd>
-<dt><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">MapWithProtoValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">S</a> extends <a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a>&lt;<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">S</a>,<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">M</a>,<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">C</a>&gt;,<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">M</a> extends com.google.protobuf.Message,<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">C</a> extends <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">M</a>&gt;&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
+<dt><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">MapWithProtoValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="type parameter in MapWithProtoValuesSubject">M</a> extends com.google.protobuf.Message&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
 <div class="block">Truth subject for maps with protocol buffers for values.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#MapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">MapWithProtoValuesSubject(FailureMetadata, C)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html#MapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-java.util.Map-">MapWithProtoValuesSubject(FailureMetadata, Map&lt;?, M&gt;)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.MapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">MapWithProtoValuesSubject.MapWithMessageValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.MapWithMessageValuesSubject.html" title="type parameter in MapWithProtoValuesSubject.MapWithMessageValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.MapWithMessageValuesSubject.html" title="type parameter in MapWithProtoValuesSubject.MapWithMessageValuesSubject">M</a> extends com.google.protobuf.Message&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
-<dd>
-<div class="block">Default implementation of <a href="com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MapWithProtoValuesSubject</code></a>.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/re2j/Re2jSubjects.Re2jStringSubject.html#matches-java.lang.String-">matches(String)</a></span> - Method in class com.google.common.truth.extensions.re2j.<a href="com/google/common/truth/extensions/re2j/Re2jSubjects.Re2jStringSubject.html" title="class in com.google.common.truth.extensions.re2j">Re2jSubjects.Re2jStringSubject</a></dt>
 <dd>
 <div class="block">Fails if the string does not match the given regex.</div>
@@ -3498,6 +3092,10 @@
 <dd>
 <div class="block">Propositions for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> subjects.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/MultimapSubject.html#MultimapSubject-com.google.common.truth.FailureMetadata-com.google.common.collect.Multimap-">MultimapSubject(FailureMetadata, Multimap&lt;?, ?&gt;)</a></span> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
+<dd>
+<div class="block">Constructor for use by subclasses.</div>
+</dd>
 <dt><a href="com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth"><span class="typeNameLink">MultimapSubject.UsingCorrespondence</span></a>&lt;<a href="com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">A</a>,<a href="com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">E</a>&gt; - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">A partially specified check in which the actual values (i.e.</div>
@@ -3507,16 +3105,12 @@
 <div class="block">Fluent API to perform detailed, customizable comparison of <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>s containing protocol
  buffers as values.</div>
 </dd>
-<dt><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">MultimapWithProtoValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">S</a> extends <a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a>&lt;<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">S</a>,<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>,<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">C</a>&gt;,<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a> extends com.google.protobuf.Message,<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">C</a> extends <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
+<dt><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">MultimapWithProtoValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a> extends com.google.protobuf.Message&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
 <div class="block">Truth subject for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>s with protocol buffers for values.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#MultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">MultimapWithProtoValuesSubject(FailureMetadata, C)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#MultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-com.google.common.collect.Multimap-">MultimapWithProtoValuesSubject(FailureMetadata, Multimap&lt;?, M&gt;)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject">M</a> extends com.google.protobuf.Message&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
-<dd>
-<div class="block">Default implementation of <a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MultimapWithProtoValuesSubject</code></a>.</div>
-</dd>
 <dt><a href="com/google/common/truth/MultisetSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">MultisetSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">Propositions for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multiset</code></a> subjects.</div>
@@ -3527,34 +3121,6 @@
 </a>
 <h2 class="title">N</h2>
 <dl>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/ListMultimapSubject.html#named-java.lang.String-java.lang.Object...-">named(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/ListMultimapSubject.html" title="class in com.google.common.truth">ListMultimapSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/MultisetSubject.html#named-java.lang.String-java.lang.Object...-">named(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultisetSubject.html" title="class in com.google.common.truth">MultisetSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SetMultimapSubject.html#named-java.lang.String-java.lang.Object...-">named(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SetMultimapSubject.html" title="class in com.google.common.truth">SetMultimapSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SortedMapSubject.html#named-java.lang.String-java.lang.Object...-">named(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SortedMapSubject.html" title="class in com.google.common.truth">SortedMapSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/SortedSetSubject.html#named-java.lang.String-java.lang.Object...-">named(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SortedSetSubject.html" title="class in com.google.common.truth">SortedSetSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#named-java.lang.String-java.lang.Object...-">named(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Instead of <code>assertThat(foo).named("foo")</code>, use <code>assertWithMessage("foo").that(foo)</code>. For custom subjects, use <code>assertWithMessage("foo").about(foos()).that(foo)</code>. For other scenarios, see <a
-     href="https://google.github.io/truth/faq#full-chain">this FAQ entry about adding
-     messages</a>. We will be releasing a tool to automate most migrations.</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/FieldScopes.html#none--">none()</a></span> - Static method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/FieldScopes.html" title="class in com.google.common.truth.extensions.proto">FieldScopes</a></dt>
 <dd>
 <div class="block">Returns a <a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> which matches no fields.</div>
@@ -3708,11 +3274,11 @@
 <div class="block">Returns a <code>CustomSubjectBuilder.Factory</code>, akin to a <a href="com/google/common/truth/Subject.Factory.html" title="interface in com.google.common.truth"><code>Subject.Factory</code></a>, which can be used to assert on multiple types of
  Protos and collections containing them.</div>
 </dd>
-<dt><a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">ProtoSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">S</a> extends <a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a>&lt;<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">S</a>,<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a>&gt;,<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="type parameter in ProtoSubject">M</a> extends com.google.protobuf.Message&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
+<dt><a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">ProtoSubject</span></a> - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
 <div class="block">Truth subject for the full version of Protocol Buffers.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ProtoSubject-com.google.common.truth.FailureMetadata-M-">ProtoSubject(FailureMetadata, M)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ProtoSubject-com.google.common.truth.FailureMetadata-com.google.protobuf.Message-">ProtoSubject(FailureMetadata, Message)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">ProtoSubjectBuilder</span></a> - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
 <dd>
@@ -3788,27 +3354,6 @@
 <dd>
 <div class="block">Returns an <a href="com/google/common/truth/IntegerSubject.html" title="class in com.google.common.truth"><code>IntegerSubject</code></a> on the serialized size of the MessageLite.</div>
 </dd>
-<dt><a href="com/google/common/truth/SetMultimapSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">SetMultimapSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth"><code>MultimapSubject</code></a>.</span></div>
-</div>
-</dd>
-<dt><a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">SetMultimapWithProtoValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">S</a> extends <a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">SetMultimapWithProtoValuesSubject</a>&lt;<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">S</a>,<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">M</a>,<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">C</a>&gt;,<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">M</a> extends com.google.protobuf.Message,<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">C</a> extends <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/SetMultimap.html?is-external=true" title="class or interface in com.google.common.collect">SetMultimap</a>&lt;<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject">M</a>&gt;&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MultimapWithProtoValuesSubject</code></a>.</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html#SetMultimapWithProtoValuesSubject-com.google.common.truth.FailureMetadata-C-">SetMultimapWithProtoValuesSubject(FailureMetadata, C)</a></span> - Constructor for class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">SetMultimapWithProtoValuesSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-&nbsp;</dd>
-<dt><a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><span class="typeNameLink">SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject</span></a>&lt;<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject">K</a>,<a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject.html" title="type parameter in SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject">M</a> extends com.google.protobuf.Message&gt; - Class in <a href="com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-<div class="block">Default implementation of <a href="com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>SetMultimapWithProtoValuesSubject</code></a>.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Fact.html#simpleFact-java.lang.String-">simpleFact(String)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Fact.html" title="class in com.google.common.truth">Fact</a></dt>
 <dd>
 <div class="block">Creates a fact with no value, which will be printed in the format "key" (with no colon or
@@ -3818,14 +3363,6 @@
 <dd>
 <div class="block">In a fluent assertion chain, exposes the most common <code>that</code> method, which accepts a value
  under test and returns a <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a>.</div>
-</dd>
-<dt><a href="com/google/common/truth/SortedMapSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">SortedMapSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
-<dd>
-<div class="block">Tests for <a href="https://docs.oracle.com/javase/7/docs/api/java/util/SortedMap.html?is-external=true" title="class or interface in java.util"><code>SortedMap</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/NavigableMap.html?is-external=true" title="class or interface in java.util"><code>NavigableMap</code></a> objects.</div>
-</dd>
-<dt><a href="com/google/common/truth/SortedSetSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">SortedSetSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
-<dd>
-<div class="block">Tests for <a href="https://docs.oracle.com/javase/7/docs/api/java/util/SortedSet.html?is-external=true" title="class or interface in java.util"><code>SortedSet</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/NavigableSet.html?is-external=true" title="class or interface in java.util"><code>NavigableSet</code></a> objects.</div>
 </dd>
 <dt><a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth"><span class="typeNameLink">StandardSubjectBuilder</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
@@ -3854,11 +3391,11 @@
 <dd>
 <div class="block">Case insensitive propositions for string subjects.</div>
 </dd>
-<dt><a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><span class="typeNameLink">Subject</span></a>&lt;<a href="com/google/common/truth/Subject.html" title="type parameter in Subject">S</a> extends <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="com/google/common/truth/Subject.html" title="type parameter in Subject">S</a>,<a href="com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&gt;,<a href="com/google/common/truth/Subject.html" title="type parameter in Subject">T</a>&gt; - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
+<dt><a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><span class="typeNameLink">Subject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">An object that lets you perform checks on the value under test.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#Subject-com.google.common.truth.FailureMetadata-T-">Subject(FailureMetadata, T)</a></span> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#Subject-com.google.common.truth.FailureMetadata-java.lang.Object-">Subject(FailureMetadata, Object)</a></span> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
 <dd>
 <div class="block">Constructor for use by subclasses.</div>
 </dd>
@@ -3883,13 +3420,9 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html#that-java.lang.Iterable-">that(Iterable&lt;M&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html" title="class in com.google.common.truth.extensions.proto">ProtoSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html#that-java.util.Map-">that(Map&lt;K, M&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html" title="class in com.google.common.truth.extensions.proto">ProtoSubjectBuilder</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html#that-java.util.Map-">that(Map&lt;?, M&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html" title="class in com.google.common.truth.extensions.proto">ProtoSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html#that-com.google.common.collect.Multimap-">that(Multimap&lt;K, M&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html" title="class in com.google.common.truth.extensions.proto">ProtoSubjectBuilder</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html#that-com.google.common.collect.ListMultimap-">that(ListMultimap&lt;K, M&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html" title="class in com.google.common.truth.extensions.proto">ProtoSubjectBuilder</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html#that-com.google.common.collect.SetMultimap-">that(SetMultimap&lt;K, M&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html" title="class in com.google.common.truth.extensions.proto">ProtoSubjectBuilder</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html#that-com.google.common.collect.Multimap-">that(Multimap&lt;?, M&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubjectBuilder.html" title="class in com.google.common.truth.extensions.proto">ProtoSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/SimpleSubjectBuilder.html#that-ActualT-">that(ActualT)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/SimpleSubjectBuilder.html" title="class in com.google.common.truth">SimpleSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
@@ -3917,8 +3450,6 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-java.lang.Iterable-">that(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-java.util.SortedSet-">that(SortedSet&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-T:A-">that(T[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-boolean:A-">that(boolean[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
@@ -3941,13 +3472,7 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-java.util.Map-">that(Map&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-java.util.SortedMap-">that(SortedMap&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-com.google.common.collect.Multimap-">that(Multimap&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-com.google.common.collect.ListMultimap-">that(ListMultimap&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-com.google.common.collect.SetMultimap-">that(SetMultimap&lt;?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-com.google.common.collect.Multiset-">that(Multiset&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
@@ -3995,7 +3520,11 @@
 </dd>
 <dt><a href="com/google/common/truth/Truth8.html" title="class in com.google.common.truth"><span class="typeNameLink">Truth8</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
-<div class="block">A set of static methods to begin a Truth assertion chain for types that require java8.</div>
+<div class="block">The primary entry point for assertions about Java 8 types.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/TruthFailureSubject.html#truthFailures--">truthFailures()</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/TruthFailureSubject.html" title="class in com.google.common.truth">TruthFailureSubject</a></dt>
+<dd>
+<div class="block">Factory for creating <a href="com/google/common/truth/TruthFailureSubject.html" title="class in com.google.common.truth"><code>TruthFailureSubject</code></a> instances.</div>
 </dd>
 <dt><a href="com/google/common/truth/TruthFailureSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">TruthFailureSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>

@@ -111,11 +111,16 @@ var activeTableTab = "activeTableTab";
 <br>
 <pre>public final class <span class="typeNameLabel">Truth8</span>
 extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
-<div class="block">A set of static methods to begin a Truth assertion chain for types that require java8.
+<div class="block">The primary entry point for assertions about Java 8 types.
 
- <p>Note: Usage of different failure strategies such as <em>assume</em> and <em>expect</em> should
- rely on <a href="../../../../com/google/common/truth/StandardSubjectBuilder.html#about-com.google.common.truth.Subject.Factory-"><code>StandardSubjectBuilder.about(com.google.common.truth.Subject.Factory)</code></a> to
- begin a chain with those alternative behaviors.</div>
+ <p>To use <a href="../../../../com/google/common/truth/Truth.html#assertWithMessage-java.lang.String-"><code>Truth.assertWithMessage(java.lang.String)</code></a> with a Java 8 type, use <code>assertWithMessage(...).about(</code><a href="../../../../com/google/common/truth/OptionalSubject.html#optionals--"><code>optionals()</code></a><code>).that(...)</code>
+ (or similarly for the other types).
+
+ <p>Likewise, to use different failure strategies like <a href="../../../../com/google/common/truth/Expect.html" title="class in com.google.common.truth"><code>Expect</code></a>, use <code>expect.about(</code><a href="../../../../com/google/common/truth/OptionalSubject.html#optionals--"><code>optionals()</code></a><code>).that(...)</code>.
+
+ <p>For more information about combining different messages, failure strategies, and subjects, see
+ <a href="https://truth.dev/faq#full-chain">How do I specify a custom message/failure
+ behavior/<code>Subject</code> type?</a> in the Truth FAQ.</div>
 </li>
 </ul>
 </div>

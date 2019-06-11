@@ -131,12 +131,6 @@
 </td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;S extends <a href="../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;S,T&gt;,T&gt;</span></code>
-<div class="block">An object that lets you perform checks on the value under test.</div>
-</td>
-</tr>
-<tr class="rowColor">
 <td class="colFirst"><code>static interface&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;SubjectT extends <a href="../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>,ActualT&gt;</span></code>
 <div class="block">In a fluent assertion chain, the argument to the common overload of <a href="../../../../../com/google/common/truth/StandardSubjectBuilder.html#about-com.google.common.truth.Subject.Factory-"><code>about</code></a>, the method that specifies what kind of
@@ -178,7 +172,7 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>&lt;S extends <a href="../../../../../com/google/common/truth/ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>&lt;S,T&gt;,T extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&gt;</span></code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/ComparableSubject.html" title="class in com.google.common.truth">ComparableSubject</a>&lt;T extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&gt;</span></code>
 <div class="block">Propositions for <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang"><code>Comparable</code></a> typed subjects.</div>
 </td>
 </tr>
@@ -230,144 +224,116 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/ListMultimapSubject.html" title="class in com.google.common.truth">ListMultimapSubject</a></span></code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use plain <a href="../../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth"><code>MultimapSubject</code></a>.</span></div>
-</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/LongStreamSubject.html" title="class in com.google.common.truth">LongStreamSubject</a></span></code>
 <div class="block">Propositions for <a href="https://docs.oracle.com/javase/7/docs/api/java/util/stream.LongStream.html?is-external=true" title="class or interface in java.util"><code>LongStream</code></a> subjects.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/LongSubject.html" title="class in com.google.common.truth">LongSubject</a></span></code>
 <div class="block">Propositions for <code>long</code> subjects.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></span></code>
 <div class="block">Propositions for <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util"><code>Map</code></a> subjects.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></span></code>
 <div class="block">Propositions for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a> subjects.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/MultisetSubject.html" title="class in com.google.common.truth">MultisetSubject</a></span></code>
 <div class="block">Propositions for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multiset</code></a> subjects.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/ObjectArraySubject.html" title="class in com.google.common.truth">ObjectArraySubject</a>&lt;T&gt;</span></code>
 <div class="block">A Subject for <code>Object[]</code> and more generically <code>T[]</code>.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a></span></code>
 <div class="block">Propositions for Java 8 <a href="https://docs.oracle.com/javase/7/docs/api/java/util/OptionalDouble.html?is-external=true" title="class or interface in java.util"><code>OptionalDouble</code></a> subjects.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a></span></code>
 <div class="block">Propositions for Java 8 <a href="https://docs.oracle.com/javase/7/docs/api/java/util/OptionalInt.html?is-external=true" title="class or interface in java.util"><code>OptionalInt</code></a> subjects.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a></span></code>
 <div class="block">Propositions for Java 8 <a href="https://docs.oracle.com/javase/7/docs/api/java/util/OptionalLong.html?is-external=true" title="class or interface in java.util"><code>OptionalLong</code></a> subjects.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a></span></code>
 <div class="block">Propositions for Java 8 <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>Optional</code></a> subjects.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/PathSubject.html" title="class in com.google.common.truth">PathSubject</a></span></code>
 <div class="block">Assertions for <a href="https://docs.oracle.com/javase/7/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file"><code>Path</code></a> instances.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/PrimitiveBooleanArraySubject.html" title="class in com.google.common.truth">PrimitiveBooleanArraySubject</a></span></code>
 <div class="block">A Subject for <code>boolean[]</code>.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/PrimitiveByteArraySubject.html" title="class in com.google.common.truth">PrimitiveByteArraySubject</a></span></code>
 <div class="block">A Subject for <code>byte[]</code>.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/PrimitiveCharArraySubject.html" title="class in com.google.common.truth">PrimitiveCharArraySubject</a></span></code>
 <div class="block">A Subject for <code>char[]</code>.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/PrimitiveDoubleArraySubject.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject</a></span></code>
 <div class="block">A Subject for <code>double[]</code>.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/PrimitiveFloatArraySubject.html" title="class in com.google.common.truth">PrimitiveFloatArraySubject</a></span></code>
 <div class="block">A Subject for <code>float[]</code>.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/PrimitiveIntArraySubject.html" title="class in com.google.common.truth">PrimitiveIntArraySubject</a></span></code>
 <div class="block">A Subject for <code>int[]</code>.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/PrimitiveLongArraySubject.html" title="class in com.google.common.truth">PrimitiveLongArraySubject</a></span></code>
 <div class="block">A Subject for <code>long[]</code>.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/PrimitiveShortArraySubject.html" title="class in com.google.common.truth">PrimitiveShortArraySubject</a></span></code>
 <div class="block">A Subject for <code>short[]</code>.</div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/SetMultimapSubject.html" title="class in com.google.common.truth">SetMultimapSubject</a></span></code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use plain <a href="../../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth"><code>MultimapSubject</code></a>.</span></div>
-</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/SortedMapSubject.html" title="class in com.google.common.truth">SortedMapSubject</a></span></code>
-<div class="block">Tests for <a href="https://docs.oracle.com/javase/7/docs/api/java/util/SortedMap.html?is-external=true" title="class or interface in java.util"><code>SortedMap</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/NavigableMap.html?is-external=true" title="class or interface in java.util"><code>NavigableMap</code></a> objects.</div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/SortedSetSubject.html" title="class in com.google.common.truth">SortedSetSubject</a></span></code>
-<div class="block">Tests for <a href="https://docs.oracle.com/javase/7/docs/api/java/util/SortedSet.html?is-external=true" title="class or interface in java.util"><code>SortedSet</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/util/NavigableSet.html?is-external=true" title="class or interface in java.util"><code>NavigableSet</code></a> objects.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -440,11 +406,11 @@
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colFirst"><code>static <a href="../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../../com/google/common/truth/DefaultSubject.html" title="class in com.google.common.truth">DefaultSubject</a>,<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;</code></td>
+<td class="colFirst"><code>static <a href="../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></code></td>
 <td class="colLast"><span class="typeNameLabel">Truth.</span><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/Truth.html#assertThat-java.lang.Object-">assertThat</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>&lt;<a href="../../../../../com/google/common/truth/DefaultSubject.html" title="class in com.google.common.truth">DefaultSubject</a>,<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></code></td>
 <td class="colLast"><span class="typeNameLabel">StandardSubjectBuilder.</span><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/StandardSubjectBuilder.html#that-java.lang.Object-">that</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;actual)</code>&nbsp;</td>
 </tr>
 </tbody>
@@ -463,80 +429,32 @@
 <tbody>
 <tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;S extends <a href="../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;S,M,C&gt;,M extends com.google.protobuf.Message,C extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;M&gt;&gt;</span></code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;M extends com.google.protobuf.Message&gt;</span></code>
 <div class="block">Truth subject for the iterables of protocol buffers.</div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>static class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.IterableOfMessagesSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject.IterableOfMessagesSubject</a>&lt;M extends com.google.protobuf.Message&gt;</span></code>
-<div class="block">Default implementation of <a href="../../../../../com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto"><code>IterableOfProtosSubject</code></a>.</div>
-</td>
-</tr>
-<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">ListMultimapWithProtoValuesSubject</a>&lt;S extends <a href="../../../../../com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">ListMultimapWithProtoValuesSubject</a>&lt;S,K,M,C&gt;,K,M extends com.google.protobuf.Message,C extends <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/ListMultimap.html?is-external=true" title="class or interface in com.google.common.collect">ListMultimap</a>&lt;K,M&gt;&gt;</span></code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use plain <a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MultimapWithProtoValuesSubject</code></a>.</span></div>
-</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>static class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto">ListMultimapWithProtoValuesSubject.ListMultimapWithMessageValuesSubject</a>&lt;K,M extends com.google.protobuf.Message&gt;</span></code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
-<div class="block">Default implementation of <a href="../../../../../com/google/common/truth/extensions/proto/ListMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>ListMultimapWithProtoValuesSubject</code></a>.</div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>&lt;S extends <a href="../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a>&lt;S,M&gt;,M extends com.google.protobuf.MessageLite&gt;</span></code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></span></code>
 <div class="block">Truth subjects for the Lite version of Protocol Buffers.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a>&lt;S extends <a href="../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a>&lt;S,K,M,C&gt;,K,M extends com.google.protobuf.Message,C extends <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;K,M&gt;&gt;</span></code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject</a>&lt;M extends com.google.protobuf.Message&gt;</span></code>
 <div class="block">Truth subject for maps with protocol buffers for values.</div>
 </td>
 </tr>
-<tr class="altColor">
-<td class="colFirst"><code>static class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.MapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MapWithProtoValuesSubject.MapWithMessageValuesSubject</a>&lt;K,M extends com.google.protobuf.Message&gt;</span></code>
-<div class="block">Default implementation of <a href="../../../../../com/google/common/truth/extensions/proto/MapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MapWithProtoValuesSubject</code></a>.</div>
-</td>
-</tr>
 <tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a>&lt;S extends <a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a>&lt;S,K,M,C&gt;,K,M extends com.google.protobuf.Message,C extends <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect">Multimap</a>&lt;K,M&gt;&gt;</span></code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject</a>&lt;M extends com.google.protobuf.Message&gt;</span></code>
 <div class="block">Truth subject for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>s with protocol buffers for values.</div>
 </td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>static class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto">MultimapWithProtoValuesSubject.MultimapWithMessageValuesSubject</a>&lt;K,M extends com.google.protobuf.Message&gt;</span></code>
-<div class="block">Default implementation of <a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MultimapWithProtoValuesSubject</code></a>.</div>
-</td>
-</tr>
-<tr class="rowColor">
 <td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a>&lt;S extends <a href="../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a>&lt;S,M&gt;,M extends com.google.protobuf.Message&gt;</span></code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></span></code>
 <div class="block">Truth subject for the full version of Protocol Buffers.</div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">SetMultimapWithProtoValuesSubject</a>&lt;S extends <a href="../../../../../com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto">SetMultimapWithProtoValuesSubject</a>&lt;S,K,M,C&gt;,K,M extends com.google.protobuf.Message,C extends <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/SetMultimap.html?is-external=true" title="class or interface in com.google.common.collect">SetMultimap</a>&lt;K,M&gt;&gt;</span></code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use plain <a href="../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>MultimapWithProtoValuesSubject</code></a>.</span></div>
-</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>static class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject.html" title="class in com.google.common.truth.extensions.proto">SetMultimapWithProtoValuesSubject.SetMultimapWithMessageValuesSubject</a>&lt;K,M extends com.google.protobuf.Message&gt;</span></code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
-<div class="block">Default implementation of <a href="../../../../../com/google/common/truth/extensions/proto/SetMultimapWithProtoValuesSubject.html" title="class in com.google.common.truth.extensions.proto"><code>SetMultimapWithProtoValuesSubject</code></a>.</div>
 </td>
 </tr>
 </tbody>
