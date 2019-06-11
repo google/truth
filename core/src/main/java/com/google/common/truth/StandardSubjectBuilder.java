@@ -76,8 +76,8 @@ public class StandardSubjectBuilder {
     return new BigDecimalSubject(metadata(), actual);
   }
 
-  public final Subject<DefaultSubject, Object> that(@NullableDecl Object actual) {
-    return new DefaultSubject(metadata(), actual);
+  public final Subject that(@NullableDecl Object actual) {
+    return new Subject(metadata(), actual);
   }
 
   @GwtIncompatible("ClassSubject.java")

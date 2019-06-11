@@ -144,7 +144,7 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  public static Subject<DefaultSubject, Object> assertThat(@NullableDecl Object actual) {
+  public static Subject assertThat(@NullableDecl Object actual) {
     return assert_().that(actual);
   }
 

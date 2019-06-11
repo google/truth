@@ -23,7 +23,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *     soon go away, so you may wish to start using raw {@code Subject} now to prepare.
  */
 @Deprecated
-public class DefaultSubject extends Subject<DefaultSubject, Object> {
+public class DefaultSubject extends Subject {
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
