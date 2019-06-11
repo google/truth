@@ -19,7 +19,6 @@ import com.google.common.truth.BigDecimalSubject;
 import com.google.common.truth.BooleanSubject;
 import com.google.common.truth.ClassSubject;
 import com.google.common.truth.ComparableSubject;
-import com.google.common.truth.DefaultSubject;
 import com.google.common.truth.DoubleSubject;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.FloatSubject;
@@ -55,7 +54,6 @@ public class Inventory {
   BooleanSubject booleanSubject;
   ClassSubject classSubject;
   ComparableSubject comparableSubject;
-  DefaultSubject defaultSubject;
   DoubleSubject doubleSubject;
   FailureStrategy failureStrategy;
   FloatSubject floatSubject;

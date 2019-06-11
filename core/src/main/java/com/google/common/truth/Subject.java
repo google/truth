@@ -43,7 +43,6 @@ import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.common.primitives.Shorts;
 import com.google.common.truth.FailureMetadata.OldAndNewValuesAreSimilar;
-import com.google.errorprone.annotations.CompatibleWith;
 import com.google.errorprone.annotations.ForOverride;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -65,23 +64,10 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>For information about writing a custom {@link Subject}, see <a
  * href="https://truth.dev/extension">our doc on extensions</a>.
  *
- * @param <DeprecatedSelfTypeUseRawTypesInsteadOfParameterizedSubjectT> <b>deprecated -</b> the
- *     self-type, allowing {@code this}-returning methods to avoid needing subclassing. <i>Both type
- *     parameters will be removed, as the methods that need them are being removed. You can prepare
- *     for this change by editing your class to refer to raw {@code Subject} today.</i>
- * @param <DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT> <b>deprecated -</b> the
- *     type of the object being tested by this {@code Subject}. <i>Both type parameters will be
- *     removed, as the methods that need them are being removed. You can prepare for this change by
- *     editing your class to refer to raw {@code Subject} today.</i>
  * @author David Saff
  * @author Christian Gruber
  */
-public class Subject<
-    DeprecatedSelfTypeUseRawTypesInsteadOfParameterizedSubjectT extends
-        Subject<
-                DeprecatedSelfTypeUseRawTypesInsteadOfParameterizedSubjectT,
-                DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT>,
-    DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT> {
+public class Subject {
   /**
    * In a fluent assertion chain, the argument to the common overload of {@link
    * StandardSubjectBuilder#about(Subject.Factory) about}, the method that specifies what kind of
@@ -107,7 +93,7 @@ public class Subject<
       };
 
   private final FailureMetadata metadata;
-  private final DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT actual;
+  private final Object actual;
   private String customName = null;
   @NullableDecl private final String typeDescriptionOverride;
 
@@ -115,9 +101,7 @@ public class Subject<
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check}{@code .that(actual)}.
    */
-  protected Subject(
-      FailureMetadata metadata,
-      @NullableDecl DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT actual) {
+  protected Subject(FailureMetadata metadata, @NullableDecl Object actual) {
     this(metadata, actual, /*typeDescriptionOverride=*/ null);
   }
 
@@ -134,7 +118,7 @@ public class Subject<
    */
   Subject(
       FailureMetadata metadata,
-      @NullableDecl DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT actual,
+      @NullableDecl Object actual,
       @NullableDecl String typeDescriptionOverride) {
     this.metadata = metadata.updateForSubject(this);
     this.actual = actual;
@@ -267,9 +251,7 @@ public class Subject<
   }
 
   /** Fails if the subject is not the same instance as the given object. */
-  public final void isSameInstanceAs(
-      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
-          Object expected) {
+  public final void isSameInstanceAs(@NullableDecl Object expected) {
     if (actual != expected) {
       failEqualityCheck(
           SAME_INSTANCE,
@@ -285,9 +267,7 @@ public class Subject<
   }
 
   /** Fails if the subject is the same instance as the given object. */
-  public final void isNotSameInstanceAs(
-      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
-          Object unexpected) {
+  public final void isNotSameInstanceAs(@NullableDecl Object unexpected) {
     if (actual == unexpected) {
       /*
        * We use actualCustomStringRepresentation() because it might be overridden to be better than
@@ -354,11 +334,7 @@ public class Subject<
 
   /** Fails unless the subject is equal to any of the given elements. */
   public void isAnyOf(
-      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
-          Object first,
-      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
-          Object second,
-      @NullableDecl Object... rest) {
+      @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
     isIn(accumulate(first, second, rest));
   }
 
@@ -371,16 +347,12 @@ public class Subject<
 
   /** Fails if the subject is equal to any of the given elements. */
   public void isNoneOf(
-      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
-          Object first,
-      @NullableDecl @CompatibleWith("DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT")
-          Object second,
-      @NullableDecl Object... rest) {
+      @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
     isNotIn(accumulate(first, second, rest));
   }
 
   /** Returns the actual value under test. */
-  final DeprecatedActualTypeUseRawTypesInsteadOfParameterizedSubjectT actual() {
+  final Object actual() {
     return actual;
   }
 
