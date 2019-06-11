@@ -217,20 +217,6 @@
     <system>Jenkins</system>
     <url>https://travis-ci.org/google/truth</url>
   </ciManagement>
-  <mailingLists>
-    <mailingList>
-      <name>Announcements List</name>
-      <post>truth-announce@googlecode.com</post>
-    </mailingList>
-    <mailingList>
-      <name>User List</name>
-      <post>truth-users@googlecode.com</post>
-    </mailingList>
-    <mailingList>
-      <name>Developer List</name>
-      <post>truth-dev@googlecode.com</post>
-    </mailingList>
-  </mailingLists>
   <scm>
     <connection>scm:git:git@github.com:google/truth.git</connection>
     <url>scm:git:git@github.com:google/truth.git</url>
