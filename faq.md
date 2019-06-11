@@ -6,7 +6,7 @@ title: Questions and Answers
 1. auto-gen TOC:
 {:toc}
 
-## How do I use Truth with the new Java 8 types? {#java8}
+## How do I use Truth with the Java 8 types? {#java8}
 
 First, make sure you're depending on
 `com.google.truth.extensions:truth-java8-extension:<your truth version>`
@@ -29,34 +29,23 @@ assertThat(guavaOptional).hasValue("alfred");
 See [below](#full-chain) for more examples of asserting on external subjects,
 including how to use alternate assertion entry points such as `expect`.
 
-## Why do I get a "`cannot find symbol .someMethod("foo");`" error for a type that should have `someMethod`? {#missing-import}
+## Why do I get a "`cannot find symbol .hasValue("foo");`" error for a type that should have `hasValue`? {#missing-import}
 
-This is a symptom that you are passing the object being tested to the main
-`Truth.assertThat(...)` overloads, which don't include the type you are testing,
-and so you are matching `assertThat(Object)`.
+You need to static import the `assertThat` method for that type. (For example,
+you might need to [import the method for Java 8 types](#java8).)
 
-To resolve this, either find the appropriate `assertThat(YourType)` overload and
-statically import it ([such as you would have to do for Java8 types](#java8)),
-or use the `assertAbout(someType())` mechanism, i.e.
-
-```java
-assertAbout(gwtHasVisibility()).that(view).isVisible();
-```
+The error you're seeing is telling you that `hasValue` doesn't exist on the base
+`Subject` class, the one returned when you pass a type that Truth doesn't
+recognize to `Truth.assertThat`. Once you import the `assertThat` method that
+you want, your call will resolve to that method, and you'll have an instance of
+the type with the method you're looking for.
 
 ## What if I have an import conflict with another `assertThat()` method? {#imports}
 
-We recommend static importing Truth's `assertThat()` shortcut method. However,
-if that causes an ambiguous method conflict, you can use the longhand form:
-`assert_().that()`. The following statements are identical:
+In most cases, you can static import both methods, and the compiler will select
+the right one for each call.
 
-```java
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
-...
-String string = "google";
-assertThat(string).endsWith("gle");
-assert_().that(string).endsWith("gle");
-```
+If not, you can use one of the methods without static import.
 
 ## Referencing a Truth subject directly is _generally_ an anti-pattern {#subject-references}
 
@@ -85,7 +74,7 @@ assertThatBooleanWpcs(primaryProperty, PUBLISHER_CATEGORY_FILTERING).isFalse();
 
 **In general, please avoid helper methods that return Truth subjects.**
 
-Instead, return the *object-under-test* from your helper method:
+Instead, return the *object under test* from your helper method:
 
 ```java
 private static boolean getBooleanWpcs(
@@ -294,10 +283,10 @@ For a list of built-in behaviors, see the docs on [`FailureStrategy`].
 
 ## Any other questions?
 
-Please [contact us](index#more-information) or [ask a question]
+[Ask your question here], or see more [contact info](index#more-information).
 
 <!-- References -->
 
-[ask a question]: http://stackoverflow.com/questions/ask?tags=google-truth
+[Ask your question here]: http://stackoverflow.com/questions/ask?tags=google-truth
 [`FailureStrategy`]: https://google.github.io/truth/api/latest/com/google/common/truth/FailureStrategy.html
 
