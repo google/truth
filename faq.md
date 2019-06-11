@@ -288,5 +288,5 @@ For a list of built-in behaviors, see the docs on [`FailureStrategy`].
 <!-- References -->
 
 [Ask your question here]: http://stackoverflow.com/questions/ask?tags=google-truth
-[`FailureStrategy`]: https://google.github.io/truth/api/latest/com/google/common/truth/FailureStrategy.html
+[`FailureStrategy`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html
 

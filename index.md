@@ -181,14 +181,14 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 [Github issues]: https://github.com/google/truth/issues
 [Stack Overflow]: http://stackoverflow.com/questions/tagged/google-truth
 [Guava]: http://github.com/google/guava
-[API docs]: http://google.github.io/truth/api/latest/
-[`MapSubject`]: https://google.github.io/truth/api/latest/com/google/common/truth/MapSubject
+[API docs]: https://truth.dev/api/latest/
+[`MapSubject`]: https://truth.dev/api/latest/com/google/common/truth/MapSubject
 [Java Core Libraries Team]: https://www.reddit.com/r/java/comments/1y9e6t/ama_were_the_google_team_behind_guava_dagger/
 [AssertJ]: http://joel-costigliola.github.io/assertj/
 [monorepo]: https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext
-[truth-api]: https://google.github.io/truth/api/latest/index.html
+[truth-api]: https://truth.dev/api/latest/index.html
 [assertj-api]: http://joel-costigliola.github.io/assertj/core-8/api/index.html
-[`IterableSubject`]: https://google.github.io/truth/api/latest/com/google/common/truth/IterableSubject.html
+[`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
 [`AbstractIterableAssert`]: http://joel-costigliola.github.io/assertj/core-8/api/org/assertj/core/api/AbstractIterableAssert.html
 [Hamcrest]: http://hamcrest.org/JavaHamcrest/
 

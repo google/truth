@@ -368,12 +368,12 @@ There are four parts to the example:
 [`Employee.java`]:        http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/Employee.java
 [`EmployeeSubject.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubject.java
 [`EmployeeSubjectTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubjectTest.java
-[`ExpectFailure`]:        https://google.github.io/truth/api/latest/com/google/common/truth/ExpectFailure.html
-[`expect`]:               https://google.github.io/truth/api/latest/com/google/common/truth/Expect.html
+[`ExpectFailure`]:        https://truth.dev/api/latest/com/google/common/truth/ExpectFailure.html
+[`expect`]:               https://truth.dev/api/latest/com/google/common/truth/Expect.html
 [`FailureMetadata`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureMetadata.java
-[`FailureStrategy.fail`]: https://google.github.io/truth/api/latest/com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-
+[`FailureStrategy.fail`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-
 [`FakeHrDatabaseTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/FakeHrDatabaseTest.java
-[`ProtoTruth`]:           https://google.github.io/truth/protobufs
+[`ProtoTruth`]:           https://truth.dev/protobufs
 [`Re2jSubjects`]:         http://github.com/google/truth/blob/master/extensions/re2j/src/main/java/com/google/common/truth/extensions/re2j/Re2jSubjects.java
 [`Subject.Factory`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
 [`Subject`]:              https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java

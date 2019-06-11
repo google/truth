@@ -48,7 +48,7 @@ Truth has built in support for the following types:
 
 *   Guava types
 
-    *   [`Optional`](http://google.github.io/truth/api/latest/com/google/common/truth/GuavaOptionalSubject)
+    *   [`Optional`](https://truth.dev/api/latest/com/google/common/truth/GuavaOptionalSubject)
     *   [`Multimap`]
     *   [`Multiset`]
     *   [`Table`]
@@ -62,35 +62,35 @@ assertions on in this list, you can
 
 <!-- TODO(kak): Update the 2 Java 8 links once they have public javadocs -->
 
-[BooleanArray]: http://google.github.io/truth/api/latest/com/google/common/truth/PrimitiveBooleanArraySubject
-[ByteArray]: http://google.github.io/truth/api/latest/com/google/common/truth/PrimitiveByteArraySubject
-[CharacterArray]: http://google.github.io/truth/api/latest/com/google/common/truth/PrimitiveCharArraySubject
-[DoubleArray]: http://google.github.io/truth/api/latest/com/google/common/truth/PrimitiveDoubleArraySubject
-[FloatArray]: http://google.github.io/truth/api/latest/com/google/common/truth/PrimitiveFloatArraySubject
-[IntegerArray]: http://google.github.io/truth/api/latest/com/google/common/truth/PrimitiveIntArraySubject
-[LongArray]: http://google.github.io/truth/api/latest/com/google/common/truth/PrimitiveLongArraySubject
-[ObjectArray]: http://google.github.io/truth/api/latest/com/google/common/truth/ObjectArraySubject
-[ShortArray]: http://google.github.io/truth/api/latest/com/google/common/truth/PrimitiveShortArraySubject
-[`AtomicLongMap`]: http://google.github.io/truth/api/latest/com/google/common/truth/AtomicLongMapSubject
-[`BigDecimal`]: http://google.github.io/truth/api/latest/com/google/common/truth/BigDecimalSubject
-[`Boolean`]: http://google.github.io/truth/api/latest/com/google/common/truth/BooleanSubject
-[`Class`]: http://google.github.io/truth/api/latest/com/google/common/truth/ClassSubject
-[`Comparable`]: http://google.github.io/truth/api/latest/com/google/common/truth/ComparableSubject
-[`Double`]: http://google.github.io/truth/api/latest/com/google/common/truth/DoubleSubject
-[`Float`]: http://google.github.io/truth/api/latest/com/google/common/truth/FloatSubject
-[`Integer`]: http://google.github.io/truth/api/latest/com/google/common/truth/IntegerSubject
-[`Iterable`]: http://google.github.io/truth/api/latest/com/google/common/truth/IterableSubject
-[`Long`]: http://google.github.io/truth/api/latest/com/google/common/truth/LongSubject
-[`Map`]: http://google.github.io/truth/api/latest/com/google/common/truth/MapSubject
-[`Multimap`]: http://google.github.io/truth/api/latest/com/google/common/truth/MultimapSubject
-[`Multiset`]: http://google.github.io/truth/api/latest/com/google/common/truth/MultisetSubject
-[`Object`]: http://google.github.io/truth/api/latest/com/google/common/truth/Subject
+[BooleanArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveBooleanArraySubject
+[ByteArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveByteArraySubject
+[CharacterArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveCharArraySubject
+[DoubleArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveDoubleArraySubject
+[FloatArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveFloatArraySubject
+[IntegerArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveIntArraySubject
+[LongArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveLongArraySubject
+[ObjectArray]: https://truth.dev/api/latest/com/google/common/truth/ObjectArraySubject
+[ShortArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveShortArraySubject
+[`AtomicLongMap`]: https://truth.dev/api/latest/com/google/common/truth/AtomicLongMapSubject
+[`BigDecimal`]: https://truth.dev/api/latest/com/google/common/truth/BigDecimalSubject
+[`Boolean`]: https://truth.dev/api/latest/com/google/common/truth/BooleanSubject
+[`Class`]: https://truth.dev/api/latest/com/google/common/truth/ClassSubject
+[`Comparable`]: https://truth.dev/api/latest/com/google/common/truth/ComparableSubject
+[`Double`]: https://truth.dev/api/latest/com/google/common/truth/DoubleSubject
+[`Float`]: https://truth.dev/api/latest/com/google/common/truth/FloatSubject
+[`Integer`]: https://truth.dev/api/latest/com/google/common/truth/IntegerSubject
+[`Iterable`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject
+[`Long`]: https://truth.dev/api/latest/com/google/common/truth/LongSubject
+[`Map`]: https://truth.dev/api/latest/com/google/common/truth/MapSubject
+[`Multimap`]: https://truth.dev/api/latest/com/google/common/truth/MultimapSubject
+[`Multiset`]: https://truth.dev/api/latest/com/google/common/truth/MultisetSubject
+[`Object`]: https://truth.dev/api/latest/com/google/common/truth/Subject
 [`Optional`]: https://truth.dev/api/latest/com/google/common/truth/OptionalSubject.html
-[`SortedMap`]: http://google.github.io/truth/api/latest/com/google/common/truth/SortedMapSubject
-[`SortedSet`]: http://google.github.io/truth/api/latest/com/google/common/truth/SortedSetSubject
+[`SortedMap`]: https://truth.dev/api/latest/com/google/common/truth/SortedMapSubject
+[`SortedSet`]: https://truth.dev/api/latest/com/google/common/truth/SortedSetSubject
 [`Stream`]: https://truth.dev/api/latest/com/google/common/truth/StreamSubject.html
-[`String`]: http://google.github.io/truth/api/latest/com/google/common/truth/StringSubject
-[`Table`]: http://google.github.io/truth/api/latest/com/google/common/truth/TableSubject
-[`Throwable`]: http://google.github.io/truth/api/latest/com/google/common/truth/ThrowableSubject
-[Java 8 types]: https://google.github.io/truth/faq#java8
+[`String`]: https://truth.dev/api/latest/com/google/common/truth/StringSubject
+[`Table`]: https://truth.dev/api/latest/com/google/common/truth/TableSubject
+[`Throwable`]: https://truth.dev/api/latest/com/google/common/truth/ThrowableSubject
+[Java 8 types]: https://truth.dev/faq#java8
 

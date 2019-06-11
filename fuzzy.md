@@ -188,10 +188,10 @@ It is built on top of Fuzzy Truth and allows you to express most assertions more
 concisely.
 
 
-[correspondence-class]: http://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html
-[correspondence-from]: http://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html#from-com.google.common.truth.Correspondence.BinaryPredicate-java.lang.String-
-[correspondence-transforming]: http://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html#transforming-com.google.common.base.Function-java-lang-String-
-[correspondence-formatting-diffs]: http://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html#formattingDiffsUsing-com.google.common.truth.Correspondence.DiffFormatter-
-[iterable-displaying-diffs]: http://google.github.io/truth/api/latest/com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-
+[correspondence-class]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html
+[correspondence-from]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html#from-com.google.common.truth.Correspondence.BinaryPredicate-java.lang.String-
+[correspondence-transforming]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html#transforming-com.google.common.base.Function-java-lang-String-
+[correspondence-formatting-diffs]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html#formattingDiffsUsing-com.google.common.truth.Correspondence.DiffFormatter-
+[iterable-displaying-diffs]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy-com.google.common.base.Function-
 [value types]: https://github.com/google/auto/blob/master/value/userguide/index.md
 

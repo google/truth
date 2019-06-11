@@ -389,10 +389,10 @@ significant.
 [conditions]: https://joel-costigliola.github.io/assertj/assertj-core-conditions.html
 [reflective field comparisons]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#field-by-field-comparison
 [bug]: https://github.com/google/truth/issues/new
-[`Correspondence`]: https://google.github.io/truth/api/latest/com/google/common/truth/Correspondence.html
-[truth-api]: https://google.github.io/truth/api/latest/index.html
+[`Correspondence`]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html
+[truth-api]: https://truth.dev/api/latest/index.html
 [assertj-api]: http://joel-costigliola.github.io/assertj/core-8/api/index.html
-[`IterableSubject`]: https://google.github.io/truth/api/latest/com/google/common/truth/IterableSubject.html
+[`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
 [`AbstractIterableAssert`]: http://joel-costigliola.github.io/assertj/core-8/api/org/assertj/core/api/AbstractIterableAssert.html
 [`apply`]: https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/apply.html
 [`failWithActual`]: https://truth.dev/api/latest/com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-
