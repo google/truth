@@ -154,9 +154,9 @@ pattern](extension), do the following:
 
 <!-- References -->
 
-[`IterableOfProtosSubject`]:         https://google.github.io/truth/api/latest/com/google/common/truth/extensions/proto/IterableOfProtosSubject.html
-[`ProtoTruth`]:         https://google.github.io/truth/api/latest/com/google/common/truth/extensions/proto/ProtoTruth.html
-[`CustomSubjectBuilder`]:    https://google.github.io/truth/api/latest/com/google/common/truth/CustomSubjectBuilder.html
-[`CustomSubjectBuilder.Factory`]:    https://google.github.io/truth/api/latest/com/google/common/truth/CustomSubjectBuilder.Factory.html
-[`SimpleSubjectBuilder`]:    https://google.github.io/truth/api/latest/com/google/common/truth/SimpleSubjectBuilder.html
+[`IterableOfProtosSubject`]:         https://truth.dev/api/latest/com/google/common/truth/extensions/proto/IterableOfProtosSubject.html
+[`ProtoTruth`]:         https://truth.dev/api/latest/com/google/common/truth/extensions/proto/ProtoTruth.html
+[`CustomSubjectBuilder`]:    https://truth.dev/api/latest/com/google/common/truth/CustomSubjectBuilder.html
+[`CustomSubjectBuilder.Factory`]:    https://truth.dev/api/latest/com/google/common/truth/CustomSubjectBuilder.Factory.html
+[`SimpleSubjectBuilder`]:    https://truth.dev/api/latest/com/google/common/truth/SimpleSubjectBuilder.html
 

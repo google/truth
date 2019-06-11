@@ -272,5 +272,5 @@ assertThat(actualReports)
 
 <!-- References -->
 
-[`ProtoTruth`]: https://google.github.io/truth/protobufs
+[`ProtoTruth`]: https://truth.dev/protobufs
 
