@@ -204,16 +204,16 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
     assertFailureValue("but was; string representation of actual value", "*");
   }
 
-  private static final Subject.Factory<DefaultSubject, Object> DEFAULT_SUBJECT_FACTORY =
-      new Subject.Factory<DefaultSubject, Object>() {
+  private static final Subject.Factory<Subject, Object> DEFAULT_SUBJECT_FACTORY =
+      new Subject.Factory<Subject, Object>() {
         @Override
-        public DefaultSubject createSubject(FailureMetadata metadata, Object that) {
-          return new DefaultSubject(metadata, that);
+        public Subject createSubject(FailureMetadata metadata, Object that) {
+          return new Subject(metadata, that);
         }
       };
 
   private static void expectFailure(
-      ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object> callback) {
+      ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> callback) {
     AssertionError unused = ExpectFailure.expectFailureAbout(DEFAULT_SUBJECT_FACTORY, callback);
   }
 
@@ -236,17 +236,17 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
     ImmutableSet<Object> fortyTwosNoChar = ImmutableSet.<Object>of(byte42, short42, int42, long42);
     for (final Object actual : fortyTwosNoChar) {
       for (final Object expected : fortyTwosNoChar) {
-        ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object> actualFirst =
-            new ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object>() {
+        ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> actualFirst =
+            new ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object>() {
               @Override
-              public void invokeAssertion(SimpleSubjectBuilder<DefaultSubject, Object> expect) {
+              public void invokeAssertion(SimpleSubjectBuilder<Subject, Object> expect) {
                 expect.that(actual).isNotEqualTo(expected);
               }
             };
-        ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object> expectedFirst =
-            new ExpectFailure.SimpleSubjectBuilderCallback<DefaultSubject, Object>() {
+        ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object> expectedFirst =
+            new ExpectFailure.SimpleSubjectBuilderCallback<Subject, Object>() {
               @Override
-              public void invokeAssertion(SimpleSubjectBuilder<DefaultSubject, Object> expect) {
+              public void invokeAssertion(SimpleSubjectBuilder<Subject, Object> expect) {
                 expect.that(expected).isNotEqualTo(actual);
               }
             };
