@@ -12,19 +12,19 @@ and [Guava] types, and it is [extensible][extension] to others.
 Truth is owned and maintained by the [Guava] team. It is used in the majority
 of the tests in Google’s own codebase.
 
-Read more at [the main website](https://google.github.io/truth).
+Read more at [the main website](https://truth.dev).
 
 <!-- references -->
 
-[test assertions]: https://google.github.io/truth/benefits#readable-assertions
-[failure messages]: https://google.github.io/truth/benefits#readable-messages
-[comparison]: https://google.github.io/truth/comparison
+[test assertions]: https://truth.dev/benefits#readable-assertions
+[failure messages]: https://truth.dev/benefits#readable-messages
+[comparison]: https://truth.dev/comparison
 [AssertJ]: http://joel-costigliola.github.io/assertj/
-[known_types]: https://google.github.io/truth/known_types
-[extension]: https://google.github.io/truth/extension
+[known_types]: https://truth.dev/known_types
+[extension]: https://truth.dev/extension
 [Guava]: https://github.com/google/guava
 [gh-pages-shield]: https://img.shields.io/badge/main%20site-google.github.io/truth-ff55ff.png?style=flat
-[gh-pages-link]: https://google.github.io/truth/
+[gh-pages-link]: https://truth.dev/
 [travis-shield]: https://img.shields.io/travis/google/truth.png
 [travis-link]: https://travis-ci.org/google/truth
 [maven-shield]: https://img.shields.io/maven-central/v/com.google.truth/truth.png

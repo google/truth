@@ -25,7 +25,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * Propositions for Guava {@link Optional} subjects.
  *
  * <p>If you are looking for a {@code java.util.Optional} subject, please read
- * <a href="http://google.github.io/truth/faq#java8">faq#java8</a>
+ * <a href="https://truth.dev/faq#java8">faq#java8</a>
  *
  * @author Christian Gruber
  */
