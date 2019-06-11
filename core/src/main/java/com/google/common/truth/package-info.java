@@ -15,11 +15,14 @@
  */
 
 /**
- * Truth is an open source, fluent testing framework for Java that is designed to make your test
- * assertions and failure messages more readable.
+ * <a href="https://truth.dev">Truth</a> is a library for performing assertions in tests:
  *
- * <p>This package is a part of the open-source <a href="http://github.com/google/truth">Truth</a>
- * library.
+ * <pre>{@code
+ * assertThat(notificationText).contains("testuser@google.com");
+ * }</pre>
+ *
+ * <p>Truth is owned and maintained by the <a href="http://github.com/google/guava">Guava</a> team.
+ * It is used in the majority of the tests in Google’s own codebase.
  */
 @CheckReturnValue
 package com.google.common.truth;
