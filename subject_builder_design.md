@@ -200,17 +200,17 @@ and other `assertThat` methods. For this reason, we provide various [shortcuts]:
 
 <!-- References -->
 
-[`Subject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
-[`IterableSubject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/IterableSubject.java
-[`IterableOfProtosSubject`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/IterableOfProtosSubject.java
-[`ProtoTruth`]:         http://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoTruth.java
-[`CustomSubjectBuilder`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/CustomSubjectBuilder.java
-[`CustomSubjectBuilder.Factory`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/CustomSubjectBuilder.java
-[`StandardSubjectBuilder`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/StandardSubjectBuilder.java
-[`SimpleSubjectBuilder`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/SimpleSubjectBuilder.java
+[`Subject`]:    https://truth.dev/api/latest/com/google/common/truth/Subject.html
+[`IterableSubject`]:    https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
+[`IterableOfProtosSubject`]:         https://truth.dev/api/latest/com/google/common/truth/extensions/proto/IterableOfProtosSubject.html
+[`ProtoTruth`]:         https://truth.dev/api/latest/com/google/common/truth/extensions/proto/ProtoTruth.html
+[`CustomSubjectBuilder`]:    https://truth.dev/api/latest/com/google/common/truth/CustomSubjectBuilder.html
+[`CustomSubjectBuilder.Factory`]:    https://truth.dev/api/latest/com/google/common/truth/CustomSubjectBuilder.Factory.html
+[`StandardSubjectBuilder`]:    https://truth.dev/api/latest/com/google/common/truth/StandardSubjectBuilder.html
+[`SimpleSubjectBuilder`]:    https://truth.dev/api/latest/com/google/common/truth/SimpleSubjectBuilder.html
 [`assertThat`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Truth.java
-[`FailureStrategy`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
-[`assert_`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Truth.java
-[`expect`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Expect.java
-[`assume`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/TruthJUnit.java
+[`FailureStrategy`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html
+[`assert_`]: https://truth.dev/api/latest/com/google/common/truth/Truth.html#assert_--
+[`expect`]: https://truth.dev/api/latest/com/google/common/truth/Expect.html
+[`assume`]: https://truth.dev/api/latest/com/google/common/truth/TruthJUnit.html#assume--
 [shortcuts]: faq#full-chain

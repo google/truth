@@ -30,7 +30,7 @@ project. They include:
 
 *   [`Truth8`] for java8 types such as `java.util.Optional`
 *   [`ProtoTruth`] for `Message` style protocol buffers and lite versions
-*   [`RE2JSubjects`] for use with the RE2J library
+*   [`Re2jSubjects`] for use with the RE2J library
 
 Other extensions that are not part of the Truth project itself include:
 
@@ -71,11 +71,11 @@ assertThat(protoBuilder).hasAllRequiredFields();
 ```
 
 If you need to set a failure message or use a different [`FailureStrategy`],
-you'll instead need to find the extension's `Subject.Factory`. For an extension
-named `FooSubject`, the factory is usually `FooSubject.foos()`. In the case of
-the Protocol Buffers extension, it's `ProtoTruth.protos()`. So, to use the
-[`expect`] `FailureStrategy` and provide an additional message in a check about
-Protocol Buffers, you would write:
+you'll instead need to find the extension's [`Subject.Factory`]. For an
+extension named `FooSubject`, the factory is usually `FooSubject.foos()`. In the
+case of the Protocol Buffers extension, it's `ProtoTruth.protos()`. So, to use
+the [`expect`] `FailureStrategy` and provide an additional message in a check
+about Protocol Buffers, you would write:
 
 ```java
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
@@ -362,7 +362,7 @@ There are four parts to the example:
 <!-- External URLs -->
 
 [`@AutoValue`]:           http://github.com/google/auto/tree/master/value
-[`ComparableSubject`]:    https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/ComparableSubject.java
+[`ComparableSubject`]:    https://truth.dev/api/latest/com/google/common/truth/ComparableSubject.html
 [Compile Testing]:        http://github.com/google/compile-testing
 [employee example]:       http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/
 [`Employee.java`]:        http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/Employee.java
@@ -370,12 +370,12 @@ There are four parts to the example:
 [`EmployeeSubjectTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/EmployeeSubjectTest.java
 [`ExpectFailure`]:        https://truth.dev/api/latest/com/google/common/truth/ExpectFailure.html
 [`expect`]:               https://truth.dev/api/latest/com/google/common/truth/Expect.html
-[`FailureMetadata`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureMetadata.java
+[`FailureMetadata`]:      https://truth.dev/api/latest/com/google/common/truth/FailureMetadata.html
 [`FailureStrategy.fail`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html#fail-java.lang.AssertionError-
 [`FakeHrDatabaseTest.java`]: http://github.com/google/truth/blob/master/core/src/test/java/com/google/common/truth/extension/FakeHrDatabaseTest.java
 [`ProtoTruth`]:           https://truth.dev/protobufs
-[`Re2jSubjects`]:         http://github.com/google/truth/blob/master/extensions/re2j/src/main/java/com/google/common/truth/extensions/re2j/Re2jSubjects.java
-[`Subject.Factory`]:      https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
-[`Subject`]:              https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Subject.java
-[`Truth8`]:               http://github.com/google/truth/blob/master/extensions/java8/src/main/java/com/google/common/truth/Truth8.java
+[`Re2jSubjects`]:         https://truth.dev/api/latest/com/google/common/truth/extensions/re2j/Re2jSubjects.html
+[`Subject.Factory`]:      https://truth.dev/api/latest/com/google/common/truth/Subject.Factory.html
+[`Subject`]:              https://truth.dev/api/latest/com/google/common/truth/Subject.html
+[`Truth8`]:               https://truth.dev/api/latest/com/google/common/truth/Truth8.html
 

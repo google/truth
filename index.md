@@ -83,7 +83,7 @@ Truth. By the time it was created, we’d begun using Truth widely at Google, an
 we’d made some decisions that would be difficult to retrofit onto AssertJ.
 
 Both Truth and AssertJ have their
-[advantages](comparison#comparison-vs-assertj). We prefer Truth for its simpler
+[advantages](comparison#assertj-detail). We prefer Truth for its simpler
 API:
 
 -   Truth provides fewer assertions, while still covering the most common needs
@@ -95,7 +95,7 @@ API:
     easier to understand, and it lets us spend more time improving core
     features.
 
-Also, Truth works on Android devices by default, without requiring users to use
+Also, Truth works on Android devices [by default](comparison#platforms), without requiring users to use
 an older version or import a different class than usual.
 
 ## Truth vs. Hamcrest
@@ -171,9 +171,11 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 
 # More information {#more-information}
 
-*   Questions: Ask on [Stack Overflow] with the `google-truth` tag.
+*   Questions: Have a look at the [FAQ](faq). Ask more questions on
+    [Stack Overflow] with the `google-truth` tag.
 *   Bugs: [GitHub issues]
 *   Source: [GitHub][source]
+
 
 <!-- References -->
 

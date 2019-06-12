@@ -283,7 +283,7 @@ Both have third-party extensions, such as for Android types
 ([AssertJ][AssertJ-Android], [Truth][Truth-Android]). I don't have a feel for
 the overall size of each ecosystem.
 
-### Platform support (Android, GWT)
+### Platform support (Android, GWT) {#platforms}
 
 AssertJ supports Android -- though I had to use 2.x because the dexer rejected
 3.x, even when I used only `Java6Assertions`. Possibly this was an issue with my
@@ -341,7 +341,7 @@ Google.
 
 ### Bug-proneness
 
-Both libraries have some sharp edges:
+Both libraries have some sharp edges. For example:
 
 Under AssertJ,
 `assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next())` can
@@ -374,11 +374,11 @@ significant.
 [FEST]: https://github.com/alexruiz/fest-assert-2.x
 [Hamcrest]: http://hamcrest.org/JavaHamcrest/
 [Polish prefix notation]: https://en.wikipedia.org/wiki/Polish_notation
-[`Expect`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/Expect.java
+[`Expect`]: https://truth.dev/api/latest/com/google/common/truth/Expect.html
 ["soft" assertions]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#soft-assertions
-[assumptions]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/TruthJUnit.java
-[`FailureStrategy`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/FailureStrategy.java
-[`ExpectFailure`]: https://github.com/google/truth/blob/master/core/src/main/java/com/google/common/truth/ExpectFailure.java
+[assumptions]: https://truth.dev/api/latest/com/google/common/truth/TruthJUnit.html#assume--
+[`FailureStrategy`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html
+[`ExpectFailure`]: https://truth.dev/api/latest/com/google/common/truth/ExpectFailure.html
 [Guava]: https://github.com/google/guava
 [Protocol Buffers]: https://developers.google.com/protocol-buffers/
 [GWT]: http://www.gwtproject.org/
@@ -395,7 +395,7 @@ significant.
 [`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
 [`AbstractIterableAssert`]: http://joel-costigliola.github.io/assertj/core-8/api/org/assertj/core/api/AbstractIterableAssert.html
 [`apply`]: https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/apply.html
-[`failWithActual`]: https://truth.dev/api/latest/com/google/common/truth/Subject.html#failWithActual-com.google.common.truth.Fact-com.google.common.truth.Fact...-
+[`failWithActual`]: https://truth.dev/api/latest/com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-
 [`AbstractOptionalAssert`]: https://github.com/joel-costigliola/assertj-core/blob/ced2937f8e1647ab7893adb9fc766e64b1ab20a9/src/main/java/org/assertj/core/api/AbstractOptionalAssert.java#L45
 [`OptionalSubject`]: https://github.com/google/truth/blob/3740ee650867927a6d685dbf8d792e7cc0fcb328/extensions/java8/src/main/java/com/google/common/truth/OptionalSubject.java#L29
 [monorepo]: https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext

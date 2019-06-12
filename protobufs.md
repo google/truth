@@ -142,6 +142,6 @@ fails.)
 [`UnknownFieldSet`]: https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/UnknownFieldSet
 [`FieldMasks`]:      https://github.com/google/protobuf/blob/master/src/google/protobuf/field_mask.proto
 [`Any`]:             https://github.com/google/protobuf/blob/master/src/google/protobuf/any.proto
-[`ProtoSubject`]:    https://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/extensions/proto/ProtoSubject.java
-[`Subject`]:         https://github.com/google/truth/blob/master/extensions/proto/src/main/java/com/google/common/truth/Subject.java
+[`ProtoSubject`]:    https://truth.dev/api/latest/com/google/common/truth/extensions/proto/ProtoSubject.html
+[`Subject`]:         https://truth.dev/api/latest/com/google/common/truth/Subject.html
 
