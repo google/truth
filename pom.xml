@@ -241,6 +241,7 @@
             <links>
               <!-- TODO(cpovirk): Link to the version that we depend on? -->
               <link>https://google.github.io/guava/releases/snapshot-jre/api/docs</link>
+              <link>https://developers.google.com/protocol-buffers/docs/reference/java</link>
             </links>
             <source>8</source>
           </configuration>
