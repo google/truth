@@ -135,41 +135,6 @@ public final class IntStreamSubject extends Subject {
   }
 
   /**
-   * Fails if the subject does not contain all of the given elements. If an element appears more
-   * than once in the given elements, then it must appear at least that number of times in the
-   * actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   *
-   * @deprecated Use {@link #containsAtLeast}, which is equivalent.
-   */
-  @Deprecated
-  @SuppressWarnings("GoodTime") // false positive; b/122617528
-  @CanIgnoreReturnValue
-  public Ordered containsAllOf(int first, int second, int... rest) {
-    return containsAtLeast(first, second, rest);
-  }
-
-  /**
-   * Fails if the subject does not contain all of the given elements. If an element appears more
-   * than once in the given elements, then it must appear at least that number of times in the
-   * actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   *
-   * @deprecated Use {@link #containsAtLeastElementsIn(Iterable)}, which is equivalent.
-   */
-  @CanIgnoreReturnValue
-  @Deprecated
-  public Ordered containsAllIn(Iterable<?> expected) {
-    return containsAtLeastElementsIn(expected);
-  }
-
-  /**
    * Fails if the subject does not contain exactly the given elements.
    *
    * <p>Multiplicity is respected. For example, an object duplicated exactly 3 times in the

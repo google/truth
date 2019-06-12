@@ -186,13 +186,13 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isSameAsWithNulls() {
+  public void isSameInstanceAsWithNulls() {
     Object o = null;
     assertThat(o).isSameInstanceAs(null);
   }
 
   @Test
-  public void isSameAsFailureWithNulls() {
+  public void isSameInstanceAsFailureWithNulls() {
     Object o = null;
     expectFailure.whenTesting().that(o).isSameInstanceAs("a");
     assertFailureKeys("expected specific instance", "but was");
@@ -200,14 +200,14 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isSameAsWithSameObject() {
+  public void isSameInstanceAsWithSameObject() {
     Object a = new Object();
     Object b = a;
     assertThat(a).isSameInstanceAs(b);
   }
 
   @Test
-  public void isSameAsFailureWithObjects() {
+  public void isSameInstanceAsFailureWithObjects() {
     Object a = OBJECT_1;
     Object b = OBJECT_2;
     expectFailure.whenTesting().that(a).isSameInstanceAs(b);
@@ -215,7 +215,7 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isSameAsFailureWithComparableObjects_nonString() {
+  public void isSameInstanceAsFailureWithComparableObjects_nonString() {
     Object a = UnsignedInteger.valueOf(42);
     Object b = UnsignedInteger.fromIntBits(42);
     expectFailure.whenTesting().that(a).isSameInstanceAs(b);
@@ -227,14 +227,14 @@ public class SubjectTest extends BaseSubjectTestCase {
 
   @Test
   @GwtIncompatible("String equality under JS")
-  public void isSameAsFailureWithComparableObjects() {
+  public void isSameInstanceAsFailureWithComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder("ab").toString();
     expectFailure.whenTesting().that(a).isSameInstanceAs(b);
   }
 
   @Test
-  public void isSameAsFailureWithDifferentTypesAndSameToString() {
+  public void isSameInstanceAsFailureWithDifferentTypesAndSameToString() {
     Object a = "true";
     Object b = true;
     expectFailure.whenTesting().that(a).isSameInstanceAs(b);
@@ -246,13 +246,13 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isNotSameAsWithNulls() {
+  public void isNotSameInstanceAsWithNulls() {
     Object o = null;
     assertThat(o).isNotSameInstanceAs("a");
   }
 
   @Test
-  public void isNotSameAsFailureWithNulls() {
+  public void isNotSameInstanceAsFailureWithNulls() {
     Object o = null;
     expectFailure.whenTesting().that(o).isNotSameInstanceAs(null);
     assertFailureKeys("expected not to be specific instance");
@@ -260,14 +260,14 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isNotSameAsWithObjects() {
+  public void isNotSameInstanceAsWithObjects() {
     Object a = new Object();
     Object b = new Object();
     assertThat(a).isNotSameInstanceAs(b);
   }
 
   @Test
-  public void isNotSameAsFailureWithSameObject() {
+  public void isNotSameInstanceAsFailureWithSameObject() {
     Object a = OBJECT_1;
     Object b = a;
     expectFailure.whenTesting().that(a).isNotSameInstanceAs(b);
@@ -276,7 +276,7 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isNotSameAsWithComparableObjects_nonString() {
+  public void isNotSameInstanceAsWithComparableObjects_nonString() {
     Object a = UnsignedInteger.valueOf(42);
     Object b = UnsignedInteger.fromIntBits(42);
     assertThat(a).isNotSameInstanceAs(b);
@@ -284,14 +284,14 @@ public class SubjectTest extends BaseSubjectTestCase {
 
   @Test
   @GwtIncompatible("String equality under JS")
-  public void isNotSameAsWithComparableObjects() {
+  public void isNotSameInstanceAsWithComparableObjects() {
     Object a = "ab";
     Object b = new StringBuilder("ab").toString();
     assertThat(a).isNotSameInstanceAs(b);
   }
 
   @Test
-  public void isNotSameAsWithDifferentTypesAndSameToString() {
+  public void isNotSameInstanceAsWithDifferentTypesAndSameToString() {
     Object a = "true";
     Object b = true;
     assertThat(a).isNotSameInstanceAs(b);

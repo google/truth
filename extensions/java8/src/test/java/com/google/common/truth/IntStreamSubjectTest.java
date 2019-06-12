@@ -66,7 +66,7 @@ public final class IntStreamSubjectTest {
   }
 
   @Test
-  public void testIsSameAs() throws Exception {
+  public void testIsSameInstanceAs() throws Exception {
     IntStream stream = IntStream.of(1);
     assertThat(stream).isSameInstanceAs(stream);
   }
@@ -196,26 +196,14 @@ public final class IntStreamSubjectTest {
   }
 
   @Test
-  public void testContainsAllOf() throws Exception {
-    assertThat(IntStream.of(42, 43)).containsAllOf(42, 43);
+  public void testContainsAtLeast_inOrder() throws Exception {
+    assertThat(IntStream.of(42, 43)).containsAtLeast(42, 43).inOrder();
   }
 
   @Test
-  public void testContainsAllOf_fails() throws Exception {
-    AssertionError unused =
-        expectFailure(
-            whenTesting -> whenTesting.that(IntStream.of(42, 43)).containsAllOf(42, 43, 44));
-  }
-
-  @Test
-  public void testContainsAllOf_inOrder() throws Exception {
-    assertThat(IntStream.of(42, 43)).containsAllOf(42, 43).inOrder();
-  }
-
-  @Test
-  public void testContainsAllOf_inOrder_fails() throws Exception {
+  public void testContainsAtLeast_inOrder_fails() throws Exception {
     try {
-      assertThat(IntStream.of(42, 43)).containsAllOf(43, 42).inOrder();
+      assertThat(IntStream.of(42, 43)).containsAtLeast(43, 42).inOrder();
       fail();
     } catch (AssertionError expected) {
       assertFailureKeys(
@@ -243,27 +231,14 @@ public final class IntStreamSubjectTest {
   }
 
   @Test
-  public void testContainsAllIn() throws Exception {
-    assertThat(IntStream.of(42, 43)).containsAllIn(asList(42, 43));
+  public void testContainsAtLeastElementsIn_inOrder() throws Exception {
+    assertThat(IntStream.of(42, 43)).containsAtLeastElementsIn(asList(42, 43)).inOrder();
   }
 
   @Test
-  public void testContainsAllIn_fails() throws Exception {
-    AssertionError unused =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(IntStream.of(42, 43)).containsAllIn(asList(42, 43, 44)));
-  }
-
-  @Test
-  public void testContainsAllIn_inOrder() throws Exception {
-    assertThat(IntStream.of(42, 43)).containsAllIn(asList(42, 43)).inOrder();
-  }
-
-  @Test
-  public void testContainsAllIn_inOrder_fails() throws Exception {
+  public void testContainsAtLeastElementsIn_inOrder_fails() throws Exception {
     try {
-      assertThat(IntStream.of(42, 43)).containsAllIn(asList(43, 42)).inOrder();
+      assertThat(IntStream.of(42, 43)).containsAtLeastElementsIn(asList(43, 42)).inOrder();
       fail();
     } catch (AssertionError expected) {
       assertFailureKeys(

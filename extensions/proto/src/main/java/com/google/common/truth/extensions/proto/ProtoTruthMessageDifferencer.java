@@ -355,7 +355,7 @@ final class ProtoTruthMessageDifferencer {
 
     // Search for expectedList as a subsequence of actualList.
     //
-    // This mostly replicates the algorithm used by IterableSubject.containsAll().inOrder(), but
+    // This mostly replicates the algorithm used by IterableSubject.containsAtLeast().inOrder(), but
     // with some tweaks for fuzzy equality and structured output.
     Deque<Integer> actualIndices = new ArrayDeque<>();
     for (int i = 0; i < actualList.size(); i++) {

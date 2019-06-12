@@ -358,7 +358,7 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     ImmutableListMultimap<Integer, String> multimap =
         ImmutableListMultimap.of(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
 
-    assertThat(multimap).valuesForKey(4).isStrictlyOrdered();
+    assertThat(multimap).valuesForKey(4).isInStrictOrder();
   }
 
   @Test
