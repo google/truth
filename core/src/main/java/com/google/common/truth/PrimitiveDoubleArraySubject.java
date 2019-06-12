@@ -263,17 +263,6 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
       return containsAtLeastElementsIn(Doubles.asList(expected));
     }
 
-    /**
-     * As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive double array.
-     *
-     * @deprecated Use {@link #containsAtLeast(double[])}, which is equivalent.
-     */
-    @CanIgnoreReturnValue
-    @Deprecated
-    public Ordered containsAllOf(double[] expected) {
-      return containsAtLeast(expected);
-    }
-
     /** As {@link #containsAnyOf(Object, Object, Object...)} but taking a primitive double array. */
     public void containsAnyOf(double[] expected) {
       containsAnyIn(Doubles.asList(expected));

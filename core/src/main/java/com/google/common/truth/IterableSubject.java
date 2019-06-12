@@ -227,60 +227,6 @@ public class IterableSubject extends Subject {
    * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
    * on the object returned by this method. The expected elements must appear in the given order
    * within the actual elements, but they are not required to be consecutive.
-   *
-   * @deprecated Use {@link #containsAtLeast}, which is equivalent.
-   */
-  @CanIgnoreReturnValue
-  @Deprecated
-  public final Ordered containsAllOf(
-      @NullableDecl Object firstExpected,
-      @NullableDecl Object secondExpected,
-      @NullableDecl Object... restOfExpected) {
-    return containsAtLeast(firstExpected, secondExpected, restOfExpected);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements then it must appear at least that
-   * number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   *
-   * @deprecated Use {@link #containsAtLeastElementsIn(Iterable)}, which is equivalent.
-   */
-  @CanIgnoreReturnValue
-  @Deprecated
-  public final Ordered containsAllIn(Iterable<?> expectedIterable) {
-    return containsAtLeastElementsIn(expectedIterable);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements then it must appear at least that
-   * number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
-   *
-   * @deprecated Use {@link #containsAtLeastElementsIn(Object[])}, which is equivalent.
-   */
-  @CanIgnoreReturnValue
-  @Deprecated
-  public final Ordered containsAllIn(Object[] expected) {
-    return containsAtLeastElementsIn(expected);
-  }
-
-  /**
-   * Checks that the actual iterable contains at least all of the expected elements or fails. If an
-   * element appears more than once in the expected elements to this call then it must appear at
-   * least that number of times in the actual elements.
-   *
-   * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-   * on the object returned by this method. The expected elements must appear in the given order
-   * within the actual elements, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
   public final Ordered containsAtLeast(
@@ -845,61 +791,6 @@ public class IterableSubject extends Subject {
             return ((Comparator<Object>) comparator).compare(prev, next) <= 0;
           }
         });
-  }
-
-  /**
-   * Fails if the iterable is not strictly ordered, according to the natural ordering of its
-   * elements. Strictly ordered means that each element in the iterable is <i>strictly</i> greater
-   * than the element that preceded it.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @throws NullPointerException if any element is null
-   * @deprecated Use {@link #isInStrictOrder()}.
-   */
-  @Deprecated
-  public final void isStrictlyOrdered() {
-    isInStrictOrder();
-  }
-
-  /**
-   * Fails if the iterable is not strictly ordered, according to the given comparator. Strictly
-   * ordered means that each element in the iterable is <i>strictly</i> greater than the element
-   * that preceded it.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @deprecated Use {@link #isInStrictOrder(Comparator)}.
-   */
-  @Deprecated
-  @SuppressWarnings({"unchecked"})
-  public final void isStrictlyOrdered(final Comparator<?> comparator) {
-    isInStrictOrder(comparator);
-  }
-
-  /**
-   * Fails if the iterable is not ordered, according to the natural ordering of its elements.
-   * Ordered means that each element in the iterable is greater than or equal to the element that
-   * preceded it.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @throws NullPointerException if any element is null
-   * @deprecated Use {@link #isInOrder()}
-   */
-  @Deprecated
-  public final void isOrdered() {
-    isInOrder();
-  }
-
-  /**
-   * Fails if the iterable is not ordered, according to the given comparator. Ordered means that
-   * each element in the iterable is greater than or equal to the element that preceded it.
-   *
-   * @throws ClassCastException if any pair of elements is not mutually Comparable
-   * @deprecated Use {@link #isInOrder(Comparator)}.
-   */
-  @Deprecated
-  @SuppressWarnings({"unchecked"})
-  public final void isOrdered(final Comparator<?> comparator) {
-    isInOrder(comparator);
   }
 
   private interface PairwiseChecker {
@@ -1557,59 +1448,6 @@ public class IterableSubject extends Subject {
         return true;
       }
       return false;
-    }
-
-    /**
-     * Checks that the subject contains elements that corresponds to all of the expected elements,
-     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
-     * elements where each pair of elements correspond.
-     *
-     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-     * on the object returned by this method. The elements must appear in the given order within the
-     * subject, but they are not required to be consecutive.
-     *
-     * @deprecated Use {@link #containsAtLeast}, which is equivalent.
-     */
-    @SafeVarargs
-    @CanIgnoreReturnValue
-    @Deprecated
-    public final Ordered containsAllOf(
-        @NullableDecl E first, @NullableDecl E second, @NullableDecl E... rest) {
-      return containsAtLeast(first, second, rest);
-    }
-
-    /**
-     * Checks that the subject contains elements that corresponds to all of the expected elements,
-     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
-     * elements where each pair of elements correspond.
-     *
-     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-     * on the object returned by this method. The elements must appear in the given order within the
-     * subject, but they are not required to be consecutive.
-     *
-     * @deprecated Use {@link #containsAtLeastElementsIn(Iterable)}, which is equivalent.
-     */
-    @CanIgnoreReturnValue
-    @Deprecated
-    public Ordered containsAllIn(final Iterable<? extends E> expected) {
-      return containsAtLeastElementsIn(expected);
-    }
-
-    /**
-     * Checks that the subject contains elements that corresponds to all of the expected elements,
-     * i.e. that there is a 1:1 mapping between any subset of the actual elements and the expected
-     * elements where each pair of elements correspond.
-     *
-     * <p>To also test that the contents appear in the given order, make a call to {@code inOrder()}
-     * on the object returned by this method. The elements must appear in the given order within the
-     * subject, but they are not required to be consecutive.
-     *
-     * @deprecated Use {@link #containsAtLeastElementsIn(Object[])}, which is equivalent.
-     */
-    @CanIgnoreReturnValue
-    @Deprecated
-    public Ordered containsAllIn(E[] expected) {
-      return containsAtLeastElementsIn(expected);
     }
 
     /**

@@ -748,7 +748,7 @@ public class MultimapSubject extends Subject {
           .about(iterableEntries())
           .that(actual.entries())
           .comparingElementsUsing(new EntryCorrespondence<K, A, V>(correspondence))
-          .containsAllIn(expectedMultimap.entries());
+          .containsAtLeastElementsIn(expectedMultimap.entries());
     }
 
     /**

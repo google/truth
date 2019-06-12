@@ -282,17 +282,17 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingTolerance_containsAllOf_primitiveFloatArray_success() {
+  public void usingTolerance_containsAtLeast_primitiveFloatArray_success() {
     assertThat(array(1.0f, TOLERABLE_TWO, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(2.0f, 1.0f));
+        .containsAtLeast(array(2.0f, 1.0f));
   }
 
   @Test
-  public void usingTolerance_containsAllOf_primitiveFloatArray_failure() {
+  public void usingTolerance_containsAtLeast_primitiveFloatArray_failure() {
     expectFailureWhenTestingThat(array(1.0f, TOLERABLE_TWO, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(2.0f, 99.99f));
+        .containsAtLeast(array(2.0f, 99.99f));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -312,18 +312,18 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingTolerance_containsAllOf_primitiveFloatArray_inOrder_success() {
+  public void usingTolerance_containsAtLeast_primitiveFloatArray_inOrder_success() {
     assertThat(array(1.0f, TOLERABLE_TWO, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(1.0f, 2.0f))
+        .containsAtLeast(array(1.0f, 2.0f))
         .inOrder();
   }
 
   @Test
-  public void usingTolerance_containsAllOf_primitiveFloatArray_inOrder_failure() {
+  public void usingTolerance_containsAtLeast_primitiveFloatArray_inOrder_failure() {
     expectFailureWhenTestingThat(array(1.0f, TOLERABLE_TWO, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(2.0f, 1.0f))
+        .containsAtLeast(array(2.0f, 1.0f))
         .inOrder();
     assertFailureKeys(
         "value of",
@@ -660,15 +660,15 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingExactEquality_containsAllOf_primitiveFloatArray_success() {
-    assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().containsAllOf(array(2.0f, 1.0f));
+  public void usingExactEquality_containsAtLeast_primitiveFloatArray_success() {
+    assertThat(array(1.0f, 2.0f, 3.0f)).usingExactEquality().containsAtLeast(array(2.0f, 1.0f));
   }
 
   @Test
-  public void usingExactEquality_containsAllOf_primitiveFloatArray_failure() {
+  public void usingExactEquality_containsAtLeast_primitiveFloatArray_failure() {
     expectFailureWhenTestingThat(array(1.0f, 2.0f, 3.0f))
         .usingExactEquality()
-        .containsAllOf(array(2.0f, 99.99f));
+        .containsAtLeast(array(2.0f, 99.99f));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -681,18 +681,18 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingExactEquality_containsAllOf_primitiveFloatArray_inOrder_success() {
+  public void usingExactEquality_containsAtLeast_primitiveFloatArray_inOrder_success() {
     assertThat(array(1.0f, 2.0f, 3.0f))
         .usingExactEquality()
-        .containsAllOf(array(1.0f, 2.0f))
+        .containsAtLeast(array(1.0f, 2.0f))
         .inOrder();
   }
 
   @Test
-  public void usingExactEquality_containsAllOf_primitiveFloatArray_inOrder_failure() {
+  public void usingExactEquality_containsAtLeast_primitiveFloatArray_inOrder_failure() {
     expectFailureWhenTestingThat(array(1.0f, 2.0f, 3.0f))
         .usingExactEquality()
-        .containsAllOf(array(2.0f, 1.0f))
+        .containsAtLeast(array(2.0f, 1.0f))
         .inOrder();
     assertFailureKeys(
         "value of",

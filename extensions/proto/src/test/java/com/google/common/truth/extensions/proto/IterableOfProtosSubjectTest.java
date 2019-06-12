@@ -120,26 +120,6 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_containsAll() {
-    expectThat(listOf(message1, message2, eqIgnoredMessage1)).containsAllOf(eqMessage1, eqMessage2);
-    expectThat(listOf(message1, message2, eqIgnoredMessage1))
-        .containsAllIn(listOf(eqMessage1, eqMessage2));
-    expectThat(listOf(message1, message2, eqIgnoredMessage1))
-        .containsAllIn(arrayOf(eqMessage1, eqMessage2));
-
-    expectFailureWhenTesting().that(listOf(message1)).containsAllOf(eqMessage1, eqMessage2);
-    expectThatFailure().isNotNull();
-
-    expectFailureWhenTesting().that(listOf(message1)).containsAllIn(listOf(eqMessage1, eqMessage2));
-    expectThatFailure().isNotNull();
-
-    expectFailureWhenTesting()
-        .that(listOf(message1))
-        .containsAllIn(arrayOf(eqMessage1, eqMessage2));
-    expectThatFailure().isNotNull();
-  }
-
-  @Test
   public void testPlain_containsAtLeast() {
     expectThat(listOf(message1, message2, eqIgnoredMessage1))
         .containsAtLeast(eqMessage1, eqMessage2);
@@ -246,20 +226,6 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testPlain_isOrdered() {
-    expectThat(listOf(message1, eqMessage1, message2)).isOrdered(compareByOIntAscending());
-    expectThat(listOf(message1, message2)).isStrictlyOrdered(compareByOIntAscending());
-
-    expectFailureWhenTesting().that(listOf(message2, message1)).isOrdered(compareByOIntAscending());
-    expectThatFailure().isNotNull();
-
-    expectFailureWhenTesting()
-        .that(listOf(message1, eqMessage1, message2))
-        .isStrictlyOrdered(compareByOIntAscending());
-    expectThatFailure().isNotNull();
-  }
-
-  @Test
   public void testFluent_contains() {
     expectThat(listOf(message1, message2))
         .ignoringFields(ignoreFieldNumber)
@@ -325,31 +291,6 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .contains(
             "is equivalent according to "
                 + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
-  }
-
-  @Test
-  public void testFluent_containsAll() {
-    // TODO(peteg): containsAll and containsExactly don't surface Correspondence.toString().
-    // We should add a string test here once they do.
-
-    expectThat(listOf(message1, message2, eqRepeatedMessage2))
-        .ignoringFields(ignoreFieldNumber)
-        .containsAllOf(eqIgnoredMessage1, eqIgnoredMessage2);
-    expectThat(listOf(message1, message2, eqIgnoredMessage1))
-        .ignoringRepeatedFieldOrder()
-        .containsAllIn(listOf(eqRepeatedMessage1, eqRepeatedMessage2));
-
-    expectFailureWhenTesting()
-        .that(listOf(message1))
-        .ignoringRepeatedFieldOrder()
-        .containsAllOf(eqMessage1, eqMessage2);
-    expectThatFailure().isNotNull();
-
-    expectFailureWhenTesting()
-        .that(listOf(message1))
-        .ignoringRepeatedFieldOrder()
-        .containsAllIn(listOf(eqMessage1, eqMessage2));
-    expectThatFailure().isNotNull();
   }
 
   @Test

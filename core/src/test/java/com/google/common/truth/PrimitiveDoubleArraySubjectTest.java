@@ -288,17 +288,17 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingTolerance_containsAllOf_primitiveDoubleArray_success() {
+  public void usingTolerance_containsAtLeast_primitiveDoubleArray_success() {
     assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(2.2, 1.1));
+        .containsAtLeast(array(2.2, 1.1));
   }
 
   @Test
-  public void usingTolerance_containsAllOf_primitiveDoubleArray_failure() {
+  public void usingTolerance_containsAtLeast_primitiveDoubleArray_failure() {
     expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(2.2, 99.99));
+        .containsAtLeast(array(2.2, 99.99));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -314,18 +314,18 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingTolerance_containsAllOf_primitiveDoubleArray_inOrder_success() {
+  public void usingTolerance_containsAtLeast_primitiveDoubleArray_inOrder_success() {
     assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(1.1, 2.2))
+        .containsAtLeast(array(1.1, 2.2))
         .inOrder();
   }
 
   @Test
-  public void usingTolerance_containsAllOf_primitiveDoubleArray_inOrder_failure() {
+  public void usingTolerance_containsAtLeast_primitiveDoubleArray_inOrder_failure() {
     expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAllOf(array(2.2, 1.1))
+        .containsAtLeast(array(2.2, 1.1))
         .inOrder();
     assertFailureKeys(
         "value of",
@@ -570,15 +570,15 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingExactEquality_containsAllOf_primitiveDoubleArray_success() {
-    assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().containsAllOf(array(2.2, 1.1));
+  public void usingExactEquality_containsAtLeast_primitiveDoubleArray_success() {
+    assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().containsAtLeast(array(2.2, 1.1));
   }
 
   @Test
-  public void usingExactEquality_containsAllOf_primitiveDoubleArray_failure() {
+  public void usingExactEquality_containsAtLeast_primitiveDoubleArray_failure() {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
-        .containsAllOf(array(2.2, 99.99));
+        .containsAtLeast(array(2.2, 99.99));
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -589,15 +589,18 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingExactEquality_containsAllOf_primitiveDoubleArray_inOrder_success() {
-    assertThat(array(1.1, 2.2, 3.3)).usingExactEquality().containsAllOf(array(1.1, 2.2)).inOrder();
+  public void usingExactEquality_containsAtLeast_primitiveDoubleArray_inOrder_success() {
+    assertThat(array(1.1, 2.2, 3.3))
+        .usingExactEquality()
+        .containsAtLeast(array(1.1, 2.2))
+        .inOrder();
   }
 
   @Test
-  public void usingExactEquality_containsAllOf_primitiveDoubleArray_inOrder_failure() {
+  public void usingExactEquality_containsAtLeast_primitiveDoubleArray_inOrder_failure() {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
-        .containsAllOf(array(2.2, 1.1))
+        .containsAtLeast(array(2.2, 1.1))
         .inOrder();
     assertFailureKeys(
         "value of",

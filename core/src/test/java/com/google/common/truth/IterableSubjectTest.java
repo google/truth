@@ -238,22 +238,22 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllOfWithMany() {
+  public void iterableContainsAtLeastWithMany() {
     assertThat(asList(1, 2, 3)).containsAtLeast(1, 2);
   }
 
   @Test
-  public void iterableContainsAllOfWithDuplicates() {
+  public void iterableContainsAtLeastWithDuplicates() {
     assertThat(asList(1, 2, 2, 2, 3)).containsAtLeast(2, 2);
   }
 
   @Test
-  public void iterableContainsAllOfWithNull() {
+  public void iterableContainsAtLeastWithNull() {
     assertThat(asList(1, null, 3)).containsAtLeast(3, (Integer) null);
   }
 
   @Test
-  public void iterableContainsAllOfWithNullAtThirdAndFinalPosition() {
+  public void iterableContainsAtLeastWithNullAtThirdAndFinalPosition() {
     assertThat(asList(1, null, 3)).containsAtLeast(1, 3, (Object) null);
   }
 
@@ -269,7 +269,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
    * to bite that off now. (Maybe Fact should catch exceptions from toString()?)
    */
   @Test
-  public void iterableContainsAllOutOfOrderDoesNotStringify() {
+  public void iterableContainsAtLeastElementsInOutOfOrderDoesNotStringify() {
     CountsToStringCalls o = new CountsToStringCalls();
     List<Object> actual = asList(o, 1);
     List<Object> expected = asList(1, o);
@@ -280,7 +280,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllOfFailure() {
+  public void iterableContainsAtLeastFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAtLeast(1, 2, 4);
     assertFailureKeys("missing (1)", "---", "expected to contain at least", "but was");
     assertFailureValue("missing (1)", "4");
@@ -288,19 +288,19 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllOfWithExtras() {
+  public void iterableContainsAtLeastWithExtras() {
     expectFailureWhenTestingThat(asList("y", "x")).containsAtLeast("x", "y", "z");
     assertFailureValue("missing (1)", "z");
   }
 
   @Test
-  public void iterableContainsAllOfWithExtraCopiesOfOutOfOrder() {
+  public void iterableContainsAtLeastWithExtraCopiesOfOutOfOrder() {
     expectFailureWhenTestingThat(asList("y", "x")).containsAtLeast("x", "y", "y");
     assertFailureValue("missing (1)", "y");
   }
 
   @Test
-  public void iterableContainsAllOfWithDuplicatesFailure() {
+  public void iterableContainsAtLeastWithDuplicatesFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAtLeast(1, 2, 2, 2, 3, 4);
     assertFailureValue("missing (3)", "2 [2 copies], 4");
   }
@@ -310,40 +310,40 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
    * to be missing we only reference it once in the output message.
    */
   @Test
-  public void iterableContainsAllOfWithDuplicateMissingElements() {
+  public void iterableContainsAtLeastWithDuplicateMissingElements() {
     expectFailureWhenTestingThat(asList(1, 2)).containsAtLeast(4, 4, 4);
     assertFailureValue("missing (3)", "4 [3 copies]");
   }
 
   @Test
-  public void iterableContainsAllOfWithNullFailure() {
+  public void iterableContainsAtLeastWithNullFailure() {
     expectFailureWhenTestingThat(asList(1, null, 3)).containsAtLeast(1, null, null, 3);
     assertFailureValue("missing (1)", "null");
   }
 
   @Test
-  public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousList() {
+  public void iterableContainsAtLeastFailsWithSameToStringAndHomogeneousList() {
     expectFailureWhenTestingThat(asList(1L, 2L)).containsAtLeast(1, 2);
     assertFailureValue("missing (2)", "1, 2 (java.lang.Integer)");
     assertFailureValue("though it did contain (2)", "1, 2 (java.lang.Long)");
   }
 
   @Test
-  public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithDuplicates() {
+  public void iterableContainsAtLeastFailsWithSameToStringAndHomogeneousListWithDuplicates() {
     expectFailureWhenTestingThat(asList(1L, 2L, 2L)).containsAtLeast(1, 1, 2);
     assertFailureValue("missing (3)", "1 [2 copies], 2 (java.lang.Integer)");
     assertFailureValue("though it did contain (3)", "1, 2 [2 copies] (java.lang.Long)");
   }
 
   @Test
-  public void iterableContainsAllOfFailsWithSameToStringAndHomogeneousListWithNull() {
+  public void iterableContainsAtLeastFailsWithSameToStringAndHomogeneousListWithNull() {
     expectFailureWhenTestingThat(asList("null", "abc")).containsAtLeast("abc", null);
     assertFailureValue("missing (1)", "null (null type)");
     assertFailureValue("though it did contain (1)", "null (java.lang.String)");
   }
 
   @Test
-  public void iterableContainsAllOfFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
+  public void iterableContainsAtLeastFailsWithSameToStringAndHeterogeneousListWithDuplicates() {
     expectFailureWhenTestingThat(asList(1, 2, 2L, 3L, 3L)).containsAtLeast(2L, 2L, 3, 3);
     assertFailureValue("missing (3)", "2 (java.lang.Long), 3 (java.lang.Integer) [2 copies]");
     assertFailureValue(
@@ -351,7 +351,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllOfFailsWithEmptyString() {
+  public void iterableContainsAtLeastFailsWithEmptyString() {
     expectFailureWhenTestingThat(asList("a", null)).containsAtLeast("", null);
 
     assertFailureKeys("missing (1)", "---", "expected to contain at least", "but was");
@@ -359,12 +359,12 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllOfInOrder() {
+  public void iterableContainsAtLeastInOrder() {
     assertThat(asList(3, 2, 5)).containsAtLeast(3, 2, 5).inOrder();
   }
 
   @Test
-  public void iterableContainsAllOfInOrderWithGaps() {
+  public void iterableContainsAtLeastInOrderWithGaps() {
     assertThat(asList(3, 2, 5)).containsAtLeast(3, 5).inOrder();
     assertThat(asList(3, 2, 2, 4, 5)).containsAtLeast(3, 2, 2, 5).inOrder();
     assertThat(asList(3, 1, 4, 1, 5)).containsAtLeast(3, 1, 5).inOrder();
@@ -375,13 +375,13 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllOfInOrderWithNull() {
+  public void iterableContainsAtLeastInOrderWithNull() {
     assertThat(asList(3, null, 5)).containsAtLeast(3, null, 5).inOrder();
     assertThat(asList(3, null, 7, 5)).containsAtLeast(3, null, 5).inOrder();
   }
 
   @Test
-  public void iterableContainsAllOfInOrderWithFailure() {
+  public void iterableContainsAtLeastInOrderWithFailure() {
     expectFailureWhenTestingThat(asList(1, null, 3)).containsAtLeast(null, 1, 3).inOrder();
     assertFailureKeys(
         "required elements were all found, but order was wrong",
@@ -391,7 +391,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllOfInOrderWithOneShotIterable() {
+  public void iterableContainsAtLeastInOrderWithOneShotIterable() {
     final Iterable<Object> iterable = Arrays.<Object>asList(2, 1, null, 4, "a", 3, "b");
     final Iterator<Object> iterator = iterable.iterator();
     Iterable<Object> oneShot =
@@ -411,7 +411,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllOfInOrderWithOneShotIterableWrongOrder() {
+  public void iterableContainsAtLeastInOrderWithOneShotIterableWrongOrder() {
     final Iterator<Object> iterator = asList((Object) 2, 1, null, 4, "a", 3, "b").iterator();
     Iterable<Object> iterable =
         new Iterable<Object>() {
@@ -435,17 +435,12 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllOfInOrderWrongOrderAndMissing() {
+  public void iterableContainsAtLeastInOrderWrongOrderAndMissing() {
     expectFailureWhenTestingThat(asList(1, 2)).containsAtLeast(2, 1, 3).inOrder();
   }
 
   @Test
   public void iterableContainsAtLeastElementsInIterable() {
-    assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(asList(1, 2));
-  }
-
-  @Test
-  public void iterableContainsAllInIterable() {
     assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(asList(1, 2));
 
     expectFailureWhenTestingThat(asList(1, 2, 3)).containsAtLeastElementsIn(asList(1, 2, 4));
@@ -455,7 +450,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsAllInCanUseFactPerElement() {
+  public void iterableContainsAtLeastElementsInCanUseFactPerElement() {
     expectFailureWhenTestingThat(asList("abc"))
         .containsAtLeastElementsIn(asList("123\n456", "789"));
     assertFailureKeys("missing (2)", "#1", "#2", "---", "expected to contain at least", "but was");
@@ -465,11 +460,6 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void iterableContainsAtLeastElementsInArray() {
-    assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(new Integer[] {1, 2});
-  }
-
-  @Test
-  public void iterableContainsAllInArray() {
     assertThat(asList(1, 2, 3)).containsAtLeastElementsIn(new Integer[] {1, 2});
 
     expectFailureWhenTestingThat(asList(1, 2, 3))
@@ -701,7 +691,7 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void iterableContainsExactlyElementsInErrorMessageIsOrdered() {
+  public void iterableContainsExactlyElementsInErrorMessageIsInOrder() {
     expectFailureWhenTestingThat(asList("foo OR bar"))
         .containsExactlyElementsIn(asList("foo", "bar"));
     assertFailureValue("missing (2)", "foo, bar");
@@ -982,19 +972,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList()).isInStrictOrder();
     assertThat(asList(1)).isInStrictOrder();
     assertThat(asList(1, 2, 3, 4)).isInStrictOrder();
+  }
+
+  @Test
+  public void isInStrictOrderFailure() {
     expectFailureWhenTestingThat(asList(1, 2, 2, 4)).isInStrictOrder();
-  }
-
-  @Test
-  public void iterableIsStrictlyOrdered() {
-    assertThat(asList()).isStrictlyOrdered();
-    assertThat(asList(1)).isStrictlyOrdered();
-    assertThat(asList(1, 2, 3, 4)).isStrictlyOrdered();
-  }
-
-  @Test
-  public void isStrictlyOrderedFailure() {
-    expectFailureWhenTestingThat(asList(1, 2, 2, 4)).isStrictlyOrdered();
     assertFailureKeys(
         "expected to be in strict order", "but contained", "followed by", "full contents");
     assertFailureValue("but contained", "2");
@@ -1003,9 +985,9 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isStrictlyOrderedWithNonComparableElementsFailure() {
+  public void isInStrictOrderWithNonComparableElementsFailure() {
     try {
-      assertThat(asList((Object) 1, "2", 3, "4")).isStrictlyOrdered();
+      assertThat(asList((Object) 1, "2", 3, "4")).isInStrictOrder();
       fail("Should have thrown.");
     } catch (ClassCastException expected) {
     }
@@ -1016,19 +998,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList()).isInOrder();
     assertThat(asList(1)).isInOrder();
     assertThat(asList(1, 1, 2, 3, 3, 3, 4)).isInOrder();
+  }
+
+  @Test
+  public void isInOrderFailure() {
     expectFailureWhenTestingThat(asList(1, 3, 2, 4)).isInOrder();
-  }
-
-  @Test
-  public void iterableIsOrdered() {
-    assertThat(asList()).isOrdered();
-    assertThat(asList(1)).isOrdered();
-    assertThat(asList(1, 1, 2, 3, 3, 3, 4)).isOrdered();
-  }
-
-  @Test
-  public void isOrderedFailure() {
-    expectFailureWhenTestingThat(asList(1, 3, 2, 4)).isOrdered();
     assertFailureKeys("expected to be in order", "but contained", "followed by", "full contents");
     assertFailureValue("but contained", "3");
     assertFailureValue("followed by", "2");
@@ -1036,14 +1010,14 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void isOrderedMultipleFailures() {
-    expectFailureWhenTestingThat(asList(1, 3, 2, 4, 0)).isOrdered();
+  public void isInOrderMultipleFailures() {
+    expectFailureWhenTestingThat(asList(1, 3, 2, 4, 0)).isInOrder();
   }
 
   @Test
-  public void isOrderedWithNonComparableElementsFailure() {
+  public void isInOrderWithNonComparableElementsFailure() {
     try {
-      assertThat(asList((Object) 1, "2", 2, "3")).isOrdered();
+      assertThat(asList((Object) 1, "2", 2, "3")).isInOrder();
       fail("Should have thrown.");
     } catch (ClassCastException expected) {
     }
@@ -1056,21 +1030,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(asList("1")).isInStrictOrder(COMPARE_AS_DECIMAL);
     // Note: Use "10" and "20" to distinguish numerical and lexicographical ordering.
     assertThat(asList("1", "2", "10", "20")).isInStrictOrder(COMPARE_AS_DECIMAL);
+  }
+
+  @Test
+  public void iterableIsInStrictOrderWithComparatorFailure() {
     expectFailureWhenTestingThat(asList("1", "2", "2", "10")).isInStrictOrder(COMPARE_AS_DECIMAL);
-  }
-
-  @Test
-  public void iterableIsStrictlyOrderedWithComparator() {
-    Iterable<String> emptyStrings = asList();
-    assertThat(emptyStrings).isStrictlyOrdered(COMPARE_AS_DECIMAL);
-    assertThat(asList("1")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
-    // Note: Use "10" and "20" to distinguish numerical and lexicographical ordering.
-    assertThat(asList("1", "2", "10", "20")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
-  }
-
-  @Test
-  public void iterableIsStrictlyOrderedWithComparatorFailure() {
-    expectFailureWhenTestingThat(asList("1", "2", "2", "10")).isStrictlyOrdered(COMPARE_AS_DECIMAL);
     assertFailureKeys(
         "expected to be in strict order", "but contained", "followed by", "full contents");
     assertFailureValue("but contained", "2");
@@ -1084,20 +1048,11 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     assertThat(emptyStrings).isInOrder(COMPARE_AS_DECIMAL);
     assertThat(asList("1")).isInOrder(COMPARE_AS_DECIMAL);
     assertThat(asList("1", "1", "2", "10", "10", "10", "20")).isInOrder(COMPARE_AS_DECIMAL);
+  }
+
+  @Test
+  public void iterableIsInOrderWithComparatorFailure() {
     expectFailureWhenTestingThat(asList("1", "10", "2", "20")).isInOrder(COMPARE_AS_DECIMAL);
-  }
-
-  @Test
-  public void iterableIsOrderedWithComparator() {
-    Iterable<String> emptyStrings = asList();
-    assertThat(emptyStrings).isOrdered(COMPARE_AS_DECIMAL);
-    assertThat(asList("1")).isOrdered(COMPARE_AS_DECIMAL);
-    assertThat(asList("1", "1", "2", "10", "10", "10", "20")).isOrdered(COMPARE_AS_DECIMAL);
-  }
-
-  @Test
-  public void iterableIsOrderedWithComparatorFailure() {
-    expectFailureWhenTestingThat(asList("1", "10", "2", "20")).isOrdered(COMPARE_AS_DECIMAL);
     assertFailureKeys("expected to be in order", "but contained", "followed by", "full contents");
     assertFailureValue("but contained", "10");
     assertFailureValue("followed by", "2");
@@ -1137,8 +1092,8 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   @Test
   public void iterableOrderedByBaseClassComparator() {
     Iterable<Bar> targetList = asList(new Bar(1), new Bar(2), new Bar(3));
-    assertThat(targetList).isOrdered(FOO_COMPARATOR);
-    assertThat(targetList).isStrictlyOrdered(FOO_COMPARATOR);
+    assertThat(targetList).isInOrder(FOO_COMPARATOR);
+    assertThat(targetList).isInStrictOrder(FOO_COMPARATOR);
   }
 
   @Test

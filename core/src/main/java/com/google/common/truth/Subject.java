@@ -259,8 +259,8 @@ public class Subject {
           /*
            * Pass through *whether* the values are equal so that failEqualityCheck() can print that
            * information. But remove the description of the difference, which is always about
-           * content, since people calling isSameAs() are explicitly not interested in content, only
-           * object identity.
+           * content, since people calling isSameInstanceAs() are explicitly not interested in
+           * content, only object identity.
            */
           compareForEquality(expected).withoutDescription());
     }
@@ -820,7 +820,8 @@ public class Subject {
     boolean sameToStrings = actualString.equals(expectedString);
     boolean sameClassNames = actualClass.equals(expectedClass);
     // TODO(cpovirk): Handle "same class name, different class loader."
-    boolean equal = difference.valuesAreEqual(); // always false for isEqualTo; varies for isSameAs
+    // `equal` is always false for isEqualTo, but it varies for isSameInstanceAs:
+    boolean equal = difference.valuesAreEqual();
     // TODO(cpovirk): Call attention to differing trailing whitespace.
 
     if (sameToStrings) {

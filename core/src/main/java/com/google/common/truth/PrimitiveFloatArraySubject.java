@@ -270,17 +270,6 @@ public final class PrimitiveFloatArraySubject extends AbstractArraySubject {
       return containsAtLeastElementsIn(Floats.asList(expected));
     }
 
-    /**
-     * As {@link #containsAllOf(Object, Object, Object...)} but taking a primitive float array.
-     *
-     * @deprecated Use {@link #containsAtLeast(float[])}, which is equivalent.
-     */
-    @CanIgnoreReturnValue
-    @Deprecated
-    public Ordered containsAllOf(float[] expected) {
-      return containsAtLeast(expected);
-    }
-
     /** As {@link #containsAnyOf(Object, Object, Object...)} but taking a primitive float array. */
     public void containsAnyOf(float[] expected) {
       containsAnyIn(Floats.asList(expected));

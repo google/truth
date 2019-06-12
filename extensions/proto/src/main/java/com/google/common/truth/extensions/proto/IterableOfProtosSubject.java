@@ -742,25 +742,6 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
     }
 
     @Override
-    @CanIgnoreReturnValue
-    public Ordered containsAllOf(
-        @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
-      return containsAtLeast(first, second, rest);
-    }
-
-    @Override
-    @CanIgnoreReturnValue
-    public Ordered containsAllIn(Iterable<? extends M> expected) {
-      return containsAtLeastElementsIn(expected);
-    }
-
-    @Override
-    @CanIgnoreReturnValue
-    public Ordered containsAllIn(M[] expected) {
-      return containsAtLeastElementsIn(expected);
-    }
-
-    @Override
     public void containsAnyOf(
         @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
       delegate(Lists.asList(first, second, rest)).containsAnyOf(first, second, rest);
@@ -1045,22 +1026,6 @@ public class IterableOfProtosSubject<M extends Message> extends IterableSubject 
     @Override
     public Ordered containsAtLeastElementsIn(M[] expected) {
       return usingCorrespondence().containsAtLeastElementsIn(expected);
-    }
-
-    @Override
-    public Ordered containsAllOf(
-        @NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest) {
-      return containsAtLeast(first, second, rest);
-    }
-
-    @Override
-    public Ordered containsAllIn(Iterable<? extends M> expected) {
-      return containsAtLeastElementsIn(expected);
-    }
-
-    @Override
-    public Ordered containsAllIn(M[] expected) {
-      return containsAtLeastElementsIn(expected);
     }
 
     @Override

@@ -1058,44 +1058,44 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllIn_inOrder_success() {
+  public void containsAtLeastElementsIn_inOrder_success() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+64", "+128", "fi", "fo", "+256", "0x80", "fum");
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected)
+        .containsAtLeastElementsIn(expected)
         .inOrder();
   }
 
   @Test
-  public void containsAllIn_successOutOfOrder() {
+  public void containsAtLeastElementsIn_successOutOfOrder() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+128", "+64", "fi", "fo", "0x80", "+256", "fum");
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
   }
 
   @Test
-  public void containsAllIn_outOfOrderDoesNotStringify() {
+  public void containsAtLeastElementsIn_outOfOrderDoesNotStringify() {
     CountsToStringCalls o = new CountsToStringCalls();
     List<Object> actual = asList(o, 1);
     List<Object> expected = asList(1, o);
-    assertThat(actual).comparingElementsUsing(EQUALITY).containsAllIn(expected);
+    assertThat(actual).comparingElementsUsing(EQUALITY).containsAtLeastElementsIn(expected);
     assertThat(o.calls).isEqualTo(0);
     expectFailure
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(EQUALITY)
-        .containsAllIn(expected)
+        .containsAtLeastElementsIn(expected)
         .inOrder();
     assertThat(o.calls).isGreaterThan(0);
   }
 
   @Test
-  public void containsAllIn_successNonGreedy() {
+  public void containsAtLeastElementsIn_successNonGreedy() {
     // (We use doubles with approximate equality for this test, because we can't illustrate this
     // case with the string parsing correspondence used in the other tests, because one string
     // won't parse to more than one integer.)
@@ -1106,12 +1106,14 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     // it would pair 1.0 with 1.05 and 1.1 with 1.15, and fail to pair 1.2 with 0.95. Check that the
     // implementation is truly non-greedy by testing all permutations.
     for (List<Double> permutedActual : permutations(actual)) {
-      assertThat(permutedActual).comparingElementsUsing(tolerance(0.1)).containsAllIn(expected);
+      assertThat(permutedActual)
+          .comparingElementsUsing(tolerance(0.1))
+          .containsAtLeastElementsIn(expected);
     }
   }
 
   @Test
-  public void containsAllIn_failsMissingOneCandidate() {
+  public void containsAtLeastElementsIn_failsMissingOneCandidate() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+64", "+128", "fi", "fo", "0x40", "0x80", "fum");
@@ -1120,7 +1122,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -1130,7 +1132,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllIn_handlesExceptions() {
+  public void containsAtLeastElementsIn_handlesExceptions() {
     ImmutableList<String> expected = ImmutableList.of("ABC", "DEF", "GHI");
     // CASE_INSENSITIVE_EQUALITY.compare throws on the null actual element.
     List<String> actual = asList(null, "xyz", "abc", "ghi");
@@ -1138,7 +1140,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     // We fail with the more helpful failure message about the mis-matched values, not the NPE.
     assertFailureKeys(
         "Not true that <[null, xyz, abc, ghi]> contains at least one element that "
@@ -1152,14 +1154,14 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllIn_handlesExceptions_alwaysFails() {
+  public void containsAtLeastElementsIn_handlesExceptions_alwaysFails() {
     List<String> expected = asList("ABC", "DEF", null);
     List<String> actual = asList(null, "def", "ghi", "abc");
     expectFailure
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     // CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE.compare(null, null) returns true, so there is a
     // mapping between actual and expected elements which includes all the expected. However, no
     // reasonable implementation would find that mapping without hitting the (null, "ABC") case
@@ -1177,7 +1179,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void displayingElementsPairedBy_containsAllIn() {
+  public void displayingElementsPairedBy_containsAtLeastElementsIn() {
     ImmutableList<Record> expected =
         ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.createWithoutId(999));
     ImmutableList<Record> actual =
@@ -1192,7 +1194,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -1205,7 +1207,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void displayingElementsPairedBy_containsAllIn_notUnique() {
+  public void displayingElementsPairedBy_containsAtLeastElementsIn_notUnique() {
     ImmutableList<Record> expected =
         ImmutableList.of(
             Record.create(1, 100),
@@ -1219,7 +1221,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -1232,7 +1234,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void displayingElementsPairedBy_containsAllIn_handlesFormatDiffExceptions() {
+  public void displayingElementsPairedBy_containsAtLeastElementsIn_handlesFormatDiffExceptions() {
     ImmutableList<Record> expected =
         ImmutableList.of(Record.create(1, 100), Record.create(2, 200), Record.create(0, 999));
     List<Record> actual =
@@ -1242,7 +1244,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(NULL_SAFE_RECORD_ID)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     assertFailureKeys(
         "Not true that <[1/101, 2/211, 3/303, null]> contains at least one element that has the "
             + "same id as and a score is within 10 of each element of <[1/100, 2/200, 0/999]>. "
@@ -1257,7 +1259,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllIn_failsMultipleMissingCandidates() {
+  public void containsAtLeastElementsIn_failsMultipleMissingCandidates() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+64", "+64", "fi", "fo", "0x40", "0x40", "fum");
@@ -1266,7 +1268,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -1276,7 +1278,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllIn_failsOrderedMissingOneCandidate() {
+  public void containsAtLeastElementsIn_failsOrderedMissingOneCandidate() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 512);
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+64", "fi", "fo", "+128", "+256", "fum");
@@ -1285,7 +1287,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -1295,7 +1297,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllIn_failsMissingElementInOneToOne() {
+  public void containsAtLeastElementsIn_failsMissingElementInOneToOne() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+128", "fi", "fo", "+64", "+256", "fum");
@@ -1303,7 +1305,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -1316,7 +1318,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllIn_inOrder_failsOutOfOrder() {
+  public void containsAtLeastElementsIn_inOrder_failsOutOfOrder() {
     ImmutableList<Integer> expected = ImmutableList.of(64, 128, 256, 128);
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+128", "+64", "fi", "fo", "0x80", "+256", "fum");
@@ -1324,7 +1326,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected)
+        .containsAtLeastElementsIn(expected)
         .inOrder();
     assertFailureKeys(
         "required elements were all found, but order was wrong",
@@ -1335,12 +1337,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllIn_null() {
+  public void containsAtLeastElementsIn_null() {
     List<Integer> expected = Arrays.asList(128, null);
     List<String> actual = Arrays.asList(null, "fee", "0x80");
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
   }
 
   @Test
@@ -1351,23 +1353,13 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastElementsIn(expected);
-  }
-
-  @Test
-  public void containsAllIn_array() {
-    Integer[] expected = new Integer[] {64, 128, 256, 128};
-    ImmutableList<String> actual =
-        ImmutableList.of("fee", "+128", "+64", "fi", "fo", "0x80", "+256", "fum");
-    assertThat(actual)
-        .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected);
 
     actual = ImmutableList.of("fee", "+64", "+128", "fi", "fo", "0x40", "0x80", "fum");
     expectFailure
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllIn(expected);
+        .containsAtLeastElementsIn(expected);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -1387,33 +1379,33 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllOf_inOrder_success() {
+  public void containsAtLeast_inOrder_success() {
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+64", "+128", "fi", "fo", "+256", "0x80", "fum");
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllOf(64, 128, 256, 128)
+        .containsAtLeast(64, 128, 256, 128)
         .inOrder();
   }
 
   @Test
-  public void containsAllOf_successOutOfOrder() {
+  public void containsAtLeast_successOutOfOrder() {
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+128", "+64", "fi", "fo", "0x80", "+256", "fum");
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllOf(64, 128, 256, 128);
+        .containsAtLeast(64, 128, 256, 128);
   }
 
   @Test
-  public void containsAllOf_failsMissingElementInOneToOne() {
+  public void containsAtLeast_failsMissingElementInOneToOne() {
     ImmutableList<String> actual =
         ImmutableList.of("fee", "+128", "fi", "fo", "+64", "+256", "fum");
     expectFailure
         .whenTesting()
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllOf(64, 128, 256, 128);
+        .containsAtLeast(64, 128, 256, 128);
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .isEqualTo(
@@ -1426,11 +1418,11 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void containsAllOf_nullValueInArray() {
+  public void containsAtLeast_nullValueInArray() {
     List<String> actual = Arrays.asList(null, "fee", "0x80");
     assertThat(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
-        .containsAllOf(128, null);
+        .containsAtLeast(128, null);
   }
 
   @Test

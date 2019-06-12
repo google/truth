@@ -46,7 +46,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * assertThat(a).isEqualTo(b);
  * assertThat(c).isTrue();
  * assertThat(d).contains(a);
- * assertThat(d).containsAllOf(a, b);
+ * assertThat(d).containsAtLeast(a, b);
  * assertThat(d).containsAnyOf(a, b, c);
  * }</pre>
  *

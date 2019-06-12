@@ -42,8 +42,8 @@ public class ThrowableSubject extends Subject {
   }
 
   /*
-   * TODO(cpovirk): consider a special case for isEqualTo and isSameAs that adds |expected| as a
-   * suppressed exception
+   * TODO(cpovirk): consider a special case for isEqualTo and isSameInstanceAs that adds |expected|
+   * as a suppressed exception
    */
 
   /** Returns a {@code StringSubject} to make assertions about the throwable's message. */

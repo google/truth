@@ -66,7 +66,7 @@ public final class StreamSubjectTest {
   }
 
   @Test
-  public void testIsSameAs() throws Exception {
+  public void testIsSameInstanceAs() throws Exception {
     Stream<String> stream = Stream.of("hello");
     assertThat(stream).isSameInstanceAs(stream);
   }
@@ -204,29 +204,14 @@ public final class StreamSubjectTest {
   }
 
   @Test
-  public void testContainsAllOf() throws Exception {
-    assertThat(Stream.of("hell", "hello")).containsAllOf("hell", "hello");
+  public void testContainsAtLeast_inOrder() throws Exception {
+    assertThat(Stream.of("hell", "hello")).containsAtLeast("hell", "hello").inOrder();
   }
 
   @Test
-  public void testContainsAllOf_fails() throws Exception {
-    AssertionError unused =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(Stream.of("hell", "hello"))
-                    .containsAllOf("hell", "hello", "goodbye"));
-  }
-
-  @Test
-  public void testContainsAllOf_inOrder() throws Exception {
-    assertThat(Stream.of("hell", "hello")).containsAllOf("hell", "hello").inOrder();
-  }
-
-  @Test
-  public void testContainsAllOf_inOrder_fails() throws Exception {
+  public void testContainsAtLeast_inOrder_fails() throws Exception {
     try {
-      assertThat(Stream.of("hell", "hello")).containsAllOf("hello", "hell").inOrder();
+      assertThat(Stream.of("hell", "hello")).containsAtLeast("hello", "hell").inOrder();
       fail();
     } catch (AssertionError expected) {
       assertFailureKeys(
@@ -254,29 +239,18 @@ public final class StreamSubjectTest {
   }
 
   @Test
-  public void testContainsAllIn() throws Exception {
-    assertThat(Stream.of("hell", "hello")).containsAllIn(asList("hell", "hello"));
+  public void testContainsAtLeastElementsIn_inOrder() throws Exception {
+    assertThat(Stream.of("hell", "hello"))
+        .containsAtLeastElementsIn(asList("hell", "hello"))
+        .inOrder();
   }
 
   @Test
-  public void testContainsAllIn_fails() throws Exception {
-    AssertionError unused =
-        expectFailure(
-            whenTesting ->
-                whenTesting
-                    .that(Stream.of("hell", "hello"))
-                    .containsAllIn(asList("hell", "hello", "goodbye")));
-  }
-
-  @Test
-  public void testContainsAllIn_inOrder() throws Exception {
-    assertThat(Stream.of("hell", "hello")).containsAllIn(asList("hell", "hello")).inOrder();
-  }
-
-  @Test
-  public void testContainsAllIn_inOrder_fails() throws Exception {
+  public void testContainsAtLeastElementsIn_inOrder_fails() throws Exception {
     try {
-      assertThat(Stream.of("hell", "hello")).containsAllIn(asList("hello", "hell")).inOrder();
+      assertThat(Stream.of("hell", "hello"))
+          .containsAtLeastElementsIn(asList("hello", "hell"))
+          .inOrder();
       fail();
     } catch (AssertionError expected) {
       assertFailureKeys(
