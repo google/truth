@@ -93,7 +93,7 @@ var activeTableTab = "activeTableTab";
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="subTitle">com.google.common.truth.extensions.proto</div>
-<h2 title="Class MultimapWithProtoValuesSubject" class="title">Class MultimapWithProtoValuesSubject&lt;M extends com.google.protobuf.Message&gt;</h2>
+<h2 title="Class MultimapWithProtoValuesSubject" class="title">Class MultimapWithProtoValuesSubject&lt;M extends <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf">Message</a>&gt;</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
@@ -123,7 +123,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <hr>
 <br>
-<pre>public class <span class="typeNameLabel">MultimapWithProtoValuesSubject&lt;M extends com.google.protobuf.Message&gt;</span>
+<pre>public class <span class="typeNameLabel">MultimapWithProtoValuesSubject&lt;M extends <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf">Message</a>&gt;</span>
 extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></pre>
 <div class="block">Truth subject for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect"><code>Multimap</code></a>s with protocol buffers for values.
 
@@ -132,9 +132,10 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
  assertions are strict with respect to repeated field order, missing fields, etc. This behavior
  can be changed with the configuration methods on this subject, e.g. <code>ProtoTruth.assertThat(actual).ignoringRepeatedFieldOrder().containsExactlyEntriesIn(expected)</code>.
 
- <p>Floating-point fields are compared using exact equality, which is <a
+ <p>By default, floating-point fields are compared using exact equality, which is <a
  href="https://truth.dev/floating_point">probably not what you want</a> if the values are the
- results of some arithmetic. Support for approximate equality may be added in a later version.
+ results of some arithmetic. To check for approximate equality, use <code>#usingDoubleTolerance</code>,
+ <code>#usingFloatTolerance</code>, and their per-field equivalents.
 
  <p>Equality tests, and other methods, may yield slightly different behavior for versions 2 and 3
  of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
@@ -159,11 +160,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <code><a href="../../../../../../com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MultimapSubject.UsingCorrespondence</a>&lt;<a href="../../../../../../com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">A</a>,<a href="../../../../../../com/google/common/truth/MultimapSubject.UsingCorrespondence.html" title="type parameter in MultimapSubject.UsingCorrespondence">E</a>&gt;</code></li>
 </ul>
 <ul class="blockList">
-<li class="blockList"><a name="nested.classes.inherited.from.class.com.google.common.truth.Subject">
-<!--   -->
-</a>
-<h3>Nested classes/interfaces inherited from class&nbsp;com.google.common.truth.<a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></h3>
-<code><a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="interface in com.google.common.truth">Subject.Factory</a>&lt;<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">SubjectT</a> extends <a href="../../../../../../com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a>,<a href="../../../../../../com/google/common/truth/Subject.Factory.html" title="type parameter in Subject.Factory">ActualT</a>&gt;</code></li>
+
 </ul>
 </li>
 </ul>
@@ -215,15 +212,15 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                                             com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                                             <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
  should be ignored.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
  should be ignored.</div>
 </td>
@@ -252,15 +249,15 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldAbsenceOfFieldDescriptorsForValues</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                               com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldAbsenceOfFieldDescriptorsForValues</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                               <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
 <div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
  when comparing for equality.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceOfFieldDescriptorsForValues-java.lang.Iterable-">ignoringFieldAbsenceOfFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceOfFieldDescriptorsForValues-java.lang.Iterable-">ignoringFieldAbsenceOfFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
  when comparing for equality.</div>
 </td>
@@ -282,15 +279,15 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldDescriptorsForValues</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                 com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
-<div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.</div>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldDescriptorsForValues</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                 <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
+<div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldDescriptorsForValues-java.lang.Iterable-">ignoringFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
-<div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.</div>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldDescriptorsForValues-java.lang.Iterable-">ignoringFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
+<div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
@@ -321,15 +318,15 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</a></span>(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                                     com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                                     <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
  should be ignored when comparing for equality.</div>
 </td>
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptorsForValues-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptorsForValues-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
  should be ignored when comparing for equality.</div>
 </td>
@@ -359,8 +356,8 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingDoubleToleranceForFieldDescriptorsForValues-double-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingDoubleToleranceForFieldDescriptorsForValues</a></span>(double&nbsp;tolerance,
-                                                com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                                com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
+                                                <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                                <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
 <div class="block">Compares double fields with these explicitly specified fields using the provided absolute
  tolerance.</div>
 </td>
@@ -368,7 +365,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingDoubleToleranceForFieldDescriptorsForValues-double-java.lang.Iterable-">usingDoubleToleranceForFieldDescriptorsForValues</a></span>(double&nbsp;tolerance,
-                                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
+                                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Compares double fields with these explicitly specified fields using the provided absolute
  tolerance.</div>
 </td>
@@ -400,8 +397,8 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingFloatToleranceForFieldDescriptorsForValues-float-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingFloatToleranceForFieldDescriptorsForValues</a></span>(float&nbsp;tolerance,
-                                               com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                               com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</code>
+                                               <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                               <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
 <div class="block">Compares float fields with these explicitly specified fields using the provided absolute
  tolerance.</div>
 </td>
@@ -409,7 +406,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <tr id="i28" class="altColor">
 <td class="colFirst"><code><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#usingFloatToleranceForFieldDescriptorsForValues-float-java.lang.Iterable-">usingFloatToleranceForFieldDescriptorsForValues</a></span>(float&nbsp;tolerance,
-                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</code>
+                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
 <div class="block">Compares float fields with these explicitly specified top-level field numbers using the
  provided absolute tolerance.</div>
 </td>
@@ -554,7 +551,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldsForValues(int&nbsp;firstFieldNumber,
                                                                                        int...&nbsp;rest)</pre>
 <div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
- ignored when comparing for equality. Sub-fields must be specified explicitly (via <code>Descriptors.FieldDescriptor</code>) if they are to be ignored as well.
+ ignored when comparing for equality. Sub-fields must be specified explicitly (via <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>) if they are to be ignored as well.
 
  <p>Use <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceForValues--"><code>ignoringFieldAbsenceForValues()</code></a> instead to ignore the 'has' bit for all fields.</div>
 <dl>
@@ -571,7 +568,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <h4>ignoringFieldAbsenceOfFieldsForValues</h4>
 <pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
- ignored when comparing for equality. Sub-fields must be specified explicitly (via <code>Descriptors.FieldDescriptor</code>) if they are to be ignored as well.
+ ignored when comparing for equality. Sub-fields must be specified explicitly (via <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>) if they are to be ignored as well.
 
  <p>Use <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringFieldAbsenceForValues--"><code>ignoringFieldAbsenceForValues()</code></a> instead to ignore the 'has' bit for all fields.</div>
 <dl>
@@ -586,8 +583,8 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFieldAbsenceOfFieldDescriptorsForValues</h4>
-<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldDescriptorsForValues(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                                                                                 com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</pre>
+<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldDescriptorsForValues(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                                                                                 <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</pre>
 <div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
  when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
  as well.
@@ -605,7 +602,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFieldAbsenceOfFieldDescriptorsForValues</h4>
-<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldDescriptorsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</pre>
+<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldAbsenceOfFieldDescriptorsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
  when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
  as well.
@@ -696,7 +693,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
                                                                                              int...&nbsp;rest)</pre>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
  numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
- (via <code>Descriptors.FieldDescriptor</code>) if their orders are to be ignored as well.
+ (via <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>) if their orders are to be ignored as well.
 
  <p>Use <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderForValues--"><code>ignoringRepeatedFieldOrderForValues()</code></a> instead to ignore order for all fields.</div>
 <dl>
@@ -714,7 +711,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringRepeatedFieldOrderOfFieldsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
  numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
- (via <code>Descriptors.FieldDescriptor</code>) if their orders are to be ignored as well.
+ (via <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>) if their orders are to be ignored as well.
 
  <p>Use <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringRepeatedFieldOrderForValues--"><code>ignoringRepeatedFieldOrderForValues()</code></a> instead to ignore order for all fields.</div>
 <dl>
@@ -729,8 +726,8 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</h4>
-<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                                                                                       com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</pre>
+<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                                                                                       <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</pre>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
  should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
  orders are to be ignored as well.
@@ -748,7 +745,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringRepeatedFieldOrderOfFieldDescriptorsForValues</h4>
-<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</pre>
+<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
  should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
  orders are to be ignored as well.
@@ -788,7 +785,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldsForValues(int&nbsp;firstFieldNumber,
                                                                                                      int...&nbsp;rest)</pre>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
- numbers should be ignored. Sub-fields must be specified explicitly (via <code>Descriptors.FieldDescriptor</code>) if their extra elements are to be ignored as well.
+ numbers should be ignored. Sub-fields must be specified explicitly (via <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>) if their extra elements are to be ignored as well.
 
  <p>Use <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsForValues--"><code>ignoringExtraRepeatedFieldElementsForValues()</code></a> instead to ignore these for all
  fields.</div>
@@ -806,7 +803,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <h4>ignoringExtraRepeatedFieldElementsOfFieldsForValues</h4>
 <pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</pre>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
- numbers should be ignored. Sub-fields must be specified explicitly (via <code>Descriptors.FieldDescriptor</code>) if their extra elements are to be ignored as well.
+ numbers should be ignored. Sub-fields must be specified explicitly (via <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>) if their extra elements are to be ignored as well.
 
  <p>Use <a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html#ignoringExtraRepeatedFieldElementsForValues--"><code>ignoringExtraRepeatedFieldElementsForValues()</code></a> instead to ignore these for all
  fields.</div>
@@ -822,8 +819,8 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</h4>
-<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                                                                                               com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</pre>
+<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                                                                                               <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</pre>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
  should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
  ignored as well.
@@ -842,7 +839,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues</h4>
-<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</pre>
+<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
  should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
  ignored as well.
@@ -910,8 +907,8 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <li class="blockList">
 <h4>usingDoubleToleranceForFieldDescriptorsForValues</h4>
 <pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;usingDoubleToleranceForFieldDescriptorsForValues(double&nbsp;tolerance,
-                                                                                                  com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                                                                                  com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</pre>
+                                                                                                  <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                                                                                  <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</pre>
 <div class="block">Compares double fields with these explicitly specified fields using the provided absolute
  tolerance.</div>
 <dl>
@@ -927,7 +924,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <li class="blockList">
 <h4>usingDoubleToleranceForFieldDescriptorsForValues</h4>
 <pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;usingDoubleToleranceForFieldDescriptorsForValues(double&nbsp;tolerance,
-                                                                                                  <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</pre>
+                                                                                                  <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Compares double fields with these explicitly specified fields using the provided absolute
  tolerance.</div>
 <dl>
@@ -991,8 +988,8 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <li class="blockList">
 <h4>usingFloatToleranceForFieldDescriptorsForValues</h4>
 <pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;usingFloatToleranceForFieldDescriptorsForValues(float&nbsp;tolerance,
-                                                                                                 com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                                                                                 com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</pre>
+                                                                                                 <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                                                                                 <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</pre>
 <div class="block">Compares float fields with these explicitly specified fields using the provided absolute
  tolerance.</div>
 <dl>
@@ -1008,7 +1005,7 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <li class="blockList">
 <h4>usingFloatToleranceForFieldDescriptorsForValues</h4>
 <pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;usingFloatToleranceForFieldDescriptorsForValues(float&nbsp;tolerance,
-                                                                                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</pre>
+                                                                                                 <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
 <div class="block">Compares float fields with these explicitly specified top-level field numbers using the
  provided absolute tolerance.</div>
 <dl>
@@ -1096,9 +1093,9 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFieldDescriptorsForValues</h4>
-<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldDescriptorsForValues(com.google.protobuf.Descriptors.FieldDescriptor&nbsp;firstFieldDescriptor,
-                                                                                   com.google.protobuf.Descriptors.FieldDescriptor...&nbsp;rest)</pre>
-<div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.
+<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldDescriptorsForValues(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
+                                                                                   <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</pre>
+<div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.
 
  <p>This method adds on any previous <a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> related settings, overriding previous
  changes to ensure the specified fields are ignored recursively. All sub-fields of these field
@@ -1114,8 +1111,8 @@ extends <a href="../../../../../../com/google/common/truth/MultimapSubject.html"
 <ul class="blockList">
 <li class="blockList">
 <h4>ignoringFieldDescriptorsForValues</h4>
-<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldDescriptorsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;com.google.protobuf.Descriptors.FieldDescriptor&gt;&nbsp;fieldDescriptors)</pre>
-<div class="block">Excludes all message fields matching the given <code>Descriptors.FieldDescriptor</code>s from the comparison.
+<pre>public&nbsp;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MultimapWithProtoValuesFluentAssertion</a>&lt;<a href="../../../../../../com/google/common/truth/extensions/proto/MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;ignoringFieldDescriptorsForValues(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</pre>
+<div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.
 
  <p>This method adds on any previous <a href="../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> related settings, overriding previous
  changes to ensure the specified fields are ignored recursively. All sub-fields of these field
