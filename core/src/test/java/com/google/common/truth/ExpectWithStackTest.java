@@ -105,19 +105,19 @@ public class ExpectWithStackTest {
     throw new AssertionError("Always fail", throwable);
   }
 
-  private static Exception getFirstException(String messsage, Throwable cause) {
+  private static Exception getFirstException(String message, Throwable cause) {
     if (cause != null) {
-      return new RuntimeException(messsage, cause);
+      return new RuntimeException(message, cause);
     } else {
-      return new RuntimeException(messsage);
+      return new RuntimeException(message);
     }
   }
 
-  private static Exception getSecondException(String messsage, Throwable cause) {
+  private static Exception getSecondException(String message, Throwable cause) {
     if (cause != null) {
-      return new RuntimeException(messsage, cause);
+      return new RuntimeException(message, cause);
     } else {
-      return new RuntimeException(messsage);
+      return new RuntimeException(message);
     }
   }
 
