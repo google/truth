@@ -89,57 +89,6 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   }
 
   /**
-   * A partially specified check about an approximate relationship to a {@code double[]} subject
-   * using a tolerance.
-   */
-  public abstract static class TolerantPrimitiveDoubleArrayComparison {
-
-    // Prevent subclassing outside of this class
-    private TolerantPrimitiveDoubleArrayComparison() {}
-
-    /**
-     * Fails if the values in the subject were expected to be within the tolerance of the given
-     * values but were not <i>or</i> if they were expected <i>not</i> to be within the tolerance but
-     * were. The subject and tolerance are specified earlier in the fluent call chain.
-     */
-    public void of(double... expected) {
-      ofElementsIn(Doubles.asList(expected));
-    }
-
-    /**
-     * Fails if the values in the subject were expected to be within the tolerance of the given
-     * values but were not <i>or</i> if they were expected <i>not</i> to be within the tolerance but
-     * were. The subject and tolerance are specified earlier in the fluent call chain. The values
-     * will be cast to doubles if necessary, which might lose precision.
-     */
-    public abstract void ofElementsIn(Iterable<? extends Number> expected);
-
-    /**
-     * @throws UnsupportedOperationException always
-     * @deprecated {@link Object#equals(Object)} is not supported on
-     *     TolerantPrimitiveDoubleArrayComparison. If you meant to compare double arrays, use {@link
-     *     #of} or {@link #ofElementsIn} instead.
-     */
-    @Deprecated
-    @Override
-    public boolean equals(@NullableDecl Object o) {
-      throw new UnsupportedOperationException(
-          "If you meant to compare double arrays, use .of() or .ofElementsIn() instead.");
-    }
-
-    /**
-     * @throws UnsupportedOperationException always
-     * @deprecated {@link Object#hashCode()} is not supported on
-     *     TolerantPrimitiveDoubleArrayComparison
-     */
-    @Deprecated
-    @Override
-    public int hashCode() {
-      throw new UnsupportedOperationException("Subject.hashCode() is not supported.");
-    }
-  }
-
-  /**
    * Starts a method chain for a check in which the actual values (i.e. the elements of the array
    * under test) are compared to expected elements using a {@link Correspondence} which considers
    * values to correspond if they are finite values within {@code tolerance} of each other. The
