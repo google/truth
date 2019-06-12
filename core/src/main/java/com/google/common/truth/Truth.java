@@ -28,7 +28,8 @@ import java.util.Map;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
- * The primary entry point for Truth, a fluent framework for test assertions.
+ * The primary entry point for <a href="https://truth.dev">Truth</a>, a library for fluent test
+ * assertions.
  *
  * <p>Compare these example JUnit assertions...
  *
