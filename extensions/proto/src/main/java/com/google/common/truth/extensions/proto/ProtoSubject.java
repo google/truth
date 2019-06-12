@@ -38,9 +38,11 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * This behavior can be changed with the configuration methods on this subject, e.g. {@code
  * ProtoTruth.assertThat(actual).ignoringRepeatedFieldOrder().isEqualTo(expected)}.
  *
- * <p>Floating-point fields are compared using exact equality, which is <a
+ * <p>By default, floating-point fields are compared using exact equality, which is <a
  * href="https://truth.dev/floating_point">probably not what you want</a> if the values are the
- * results of some arithmetic. Support for approximate equality may be added in a later version.
+ * results of some arithmetic. To check for approximate equality, use {@link #usingDoubleTolerance},
+ * {@link #usingFloatTolerance}, and {@linkplain #usingDoubleToleranceForFields(double, int, int...)
+ * their per-field equivalents}.
  *
  * <p>Equality tests, and other methods, may yield slightly different behavior for versions 2 and 3
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
