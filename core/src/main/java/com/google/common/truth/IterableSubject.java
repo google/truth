@@ -827,8 +827,7 @@ public class IterableSubject extends Subject {
   /** @deprecated You probably meant to call {@link #containsNoneIn} instead. */
   @Override
   @Deprecated
-  // TODO(b/133145187): Restore to Iterable<?> after removing the type parameters from Subject.
-  public void isNotIn(Iterable iterable) {
+  public void isNotIn(Iterable<?> iterable) {
     if (Iterables.contains(iterable, actual)) {
       failWithActual("expected not to be any of", iterable);
     }
