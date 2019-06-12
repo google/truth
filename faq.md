@@ -11,23 +11,27 @@ title: Questions and Answers
 First, make sure you're depending on
 `com.google.truth.extensions:truth-java8-extension:<your truth version>`
 
-Next, you will need to add *both* of the following static imports to your class:
+Next, you will usually need *both* of the following static imports:
 
 ```java
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth8.assertThat;
 ...
-// This assertion uses the Truth8.assertThat(java.util.Optional) overload.
+// This assertion uses Truth8.assertThat(Optional).
 Optional<String> javaUtilOptional = someStream.map(...).filter(...).findFirst();
 assertThat(javaUtilOptional).hasValue("duke");
 
-// This assertion uses the Truth.assertThat(com.google.common.base.Optional) overload.
-Optional<String> guavaOptional = user.getMiddleName();
-assertThat(guavaOptional).hasValue("alfred");
+// Other assertions will use the various Truth.assertThat(...) overloads.
 ```
 
-See [below](#full-chain) for more examples of asserting on external subjects,
-including how to use alternate assertion entry points such as `expect`.
+To use the Java 8 types with `assertWithMessage`, `expect`, or other entry
+points, use `about`:
+
+```java
+assertWithMessage(...).about(optionals()).that(javaUtilOptional).hasValue("duke");
+```
+
+For more information, read about [the full fluent chain](#full-chain).
 
 ## Why do I get a "`cannot find symbol .hasValue("foo");`" error for a type that should have `hasValue`? {#missing-import}
 
