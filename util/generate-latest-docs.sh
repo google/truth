@@ -39,6 +39,7 @@ if [[ -n "${RELEASE_VERSION:-}" ||
 
   mvn javadoc:aggregate
   perl -ni -e 'print unless /Tolerant.*Comparison/ || /SubjectBuilderCallback/ || /UsingCorrespondence/ || /AsIterable/ || /Correspondence[.][A-Z]/ || /FluentAssertion/ || /PathSubject/ || /Re2jSubjects/ || /Ordered/' target/site/apidocs/allclasses-frame.html
+  find target/site/apidocs -name '*.html' | xargs perl -077pi -e 's#<li class="blockList"><a name="nested.classes.inherited.from.class.com.google.common.truth.\w*Subject">.*?</li>##msg; if (m#<!-- ======== NESTED CLASS SUMMARY ======== -->(.*?)(?=<!-- =)#ms) { if ($1 !~ m#nested.classes.inherited.from|memberSummary#) { s#<!-- ======== NESTED CLASS SUMMARY ======== -->.*?(?=<!-- =)##msg; } }'
   target_dir="$(pwd)/target"
   cd ${target_dir}
   rm -rf gh-pages
