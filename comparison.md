@@ -351,9 +351,9 @@ away from using it unless they mean to test reference equality.
 
 Under Truth, `assertThat(listOfStrings).doesNotContain(integer)` passes, even
 though your test is probably buggy. Under AssertJ, it doesn't compile. (Truth's
-looser types are [occasionally useful][`CollectionIncompatibleType`], but they
-may be more trouble than they're worth.) We plan to add static analysis to
-[Error Prone] to catch such bugs.
+looser types are [occasionally useful][pull-575-thread], but they may be more
+[trouble][`CollectionIncompatibleType`] than they're worth.) We plan to add
+static analysis to [Error Prone] to catch such bugs.
 
 ### Conditions
 
@@ -403,5 +403,6 @@ significant.
 [monorepo]: https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext
 [intellij-diff]: https://stackoverflow.com/q/48565168/28465
 [Error Prone]: https://errorprone.info
+[pull-575-thread]: https://github.com/google/truth/pull/575#discussion_r293444380
 [`CollectionIncompatibleType`]: https://errorprone.info/bugpattern/CollectionIncompatibleType
 
