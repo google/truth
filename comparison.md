@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Comparison
+title: Truth vs. AssertJ and Hamcrest
 ---
 
 
