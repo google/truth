@@ -140,6 +140,12 @@ dependencies {
 To use the Java 8 extensions, also include
 `com.google.truth.extensions:truth-java8-extension:{{ site.version }}`.
 
+One warning: Truth depends on the "Android" version of [Guava], a subset of the
+"JRE" version. If your project uses the JRE version, be aware that your build
+system might select the Android version instead. If so, you may see "missing
+symbol" errors. The easiest fix is usually to add a direct dependency on the
+newest JRE version of Guava.
+
 
 ## 2. Add static imports for Truth’s entry points:
 
