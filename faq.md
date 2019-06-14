@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Questions and Answers
+title: Truth FAQ
 ---
 
 1. auto-gen TOC:

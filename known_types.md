@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Known Types
+title: Truth: Known Types
 ---
 
 
