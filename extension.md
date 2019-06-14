@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Extension
+title: Extensions to Truth
 ---
 
 
