@@ -1,18 +1,14 @@
 ---
 layout: default
-title: Failure Messages
+title: Writing failure messages for a Truth Subject
 ---
-
-**Note: As of this writing, Truth does not yet use the new style of failure
-messages described below. This page describes changes we plan to make in the
-future.**
 
 This page contains guidelines for writing Truth failure messages.
 
-## Fields
+## Facts
 
-Truth failure messages are composed of key-value pairs, which we call "fields."
-For example, here's a message with 2 fields:
+Truth failure messages are composed of key-value pairs, which we call "facts."
+For example, here's a message with 2 facts:
 
 ```none
 expected:  0.0
@@ -41,7 +37,7 @@ The general pattern is: Keys are fixed strings, and values are runtime values.
 When a `Subject` implementation reports a failure, it generally passes a fixed
 set of keys.
 
-In the normal case, there will be one field describing the expected value. Its
+In the normal case, there will be one fact describing the expected value. Its
 name is often similar to the name of the assertion method:
 
 ```none
@@ -50,8 +46,8 @@ expected to contain:          // for contains(...)
 expected:                     // for isEqualTo(...)
 ```
 
-That field is usually followed by a "but was" field, as in the examples at the
-top of the page. (Occasionally, there's no need for "but was." For example, take
+That fact is usually followed by a "but was" fact, as in the examples at the top
+of the page. (Occasionally, there's no need for "but was." For example, take
 "expected not to be null." Adding "but was null" would add no information.)
 
 ### Values are runtime values
@@ -61,7 +57,7 @@ Typically, they're the parameters the test passed in. For example:
 -   The value of "expected" is the parameter passed to `isEqualTo(...)`.
 -   The value of "but was" is the parameter passed to `assertThat(...)`.
 
-Sometimes the fields contain more than just the `toString()` representation of a
+Sometimes the facts contain more than just the `toString()` representation of a
 parameter. For example:
 
 ```none
@@ -79,7 +75,7 @@ but was instance of : java.lang.Double
 with value          : 4.5
 ```
 
-But even in unusual cases, the first field usually describes the expected value.
+But even in unusual cases, the first fact usually describes the expected value.
 Its key usually includes "expected," and its value is usually a parameter to the
 assertion method.
 

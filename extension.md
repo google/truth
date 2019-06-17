@@ -263,6 +263,9 @@ There are four parts to the example:
         `isCeo()` is testing a boolean property. Boolean properties are good
         candidates for the manual check-and-fail approach.
 
+        For tips on writing failure messages, see
+        [this guide](failure_messages).
+
         One advanced point: Custom `Subject` types sometimes declare "chaining"
         methods that return an instance of another `Subject`. For example,
         instead of providing `hasName(…)`, `EmployeeSubject` might declare a
