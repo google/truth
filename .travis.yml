@@ -3,7 +3,7 @@ sudo: false
 language: java
 
 jdk:
-  - &jdk_for_publishing oraclejdk8
+  - &jdk_for_publishing oraclejdk11
 
 install:
   - mvn -B -U -P!standard-with-extra-repos dependency:go-offline test clean --quiet --fail-never -DskipTests=true
@@ -32,7 +32,7 @@ branches:
 addons:
   apt:
     packages:
-      - oracle-java8-installer
+      - oracle-java11-installer
 
 cache:
   directories:
