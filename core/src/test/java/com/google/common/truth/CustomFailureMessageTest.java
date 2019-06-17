@@ -42,7 +42,6 @@ public class CustomFailureMessageTest extends BaseSubjectTestCase {
 
   @Test
   public void countPlaceholders() {
-    assertThat(LazyMessage.countPlaceholders(null)).isEqualTo(0);
     assertThat(LazyMessage.countPlaceholders("")).isEqualTo(0);
     assertThat(LazyMessage.countPlaceholders("%s")).isEqualTo(1);
     assertThat(LazyMessage.countPlaceholders("%s%s")).isEqualTo(2);

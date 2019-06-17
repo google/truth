@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
@@ -661,7 +660,6 @@ public class Subject {
 
   private StandardSubjectBuilder doCheck(
       OldAndNewValuesAreSimilar valuesAreSimilar, String format, Object[] args) {
-    checkNotNull(format); // Probably LazyMessage itself should be this strict, but it isn't yet.
     final LazyMessage message = new LazyMessage(format, args);
     Function<String, String> descriptionUpdate =
         new Function<String, String>() {
