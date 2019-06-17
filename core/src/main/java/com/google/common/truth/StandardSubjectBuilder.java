@@ -199,7 +199,7 @@ public class StandardSubjectBuilder {
    *     equal the number of given arguments
    */
   public final StandardSubjectBuilder withMessage(
-      @NullableDecl String format, Object /* @NullableDeclType */... args) {
+      String format, Object /* @NullableDeclType */... args) {
     return new StandardSubjectBuilder(metadata().withMessage(format, args));
   }
 

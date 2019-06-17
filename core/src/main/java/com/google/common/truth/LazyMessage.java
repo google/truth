@@ -29,7 +29,7 @@ final class LazyMessage {
   private final String format;
   private final Object[] args;
 
-  LazyMessage(@NullableDecl String format, @NullableDecl Object... args) {
+  LazyMessage(String format, @NullableDecl Object... args) {
     this.format = format;
     this.args = args;
     int placeholders = countPlaceholders(format);
@@ -42,10 +42,7 @@ final class LazyMessage {
   }
 
   @VisibleForTesting
-  static int countPlaceholders(@NullableDecl String template) {
-    if (template == null) {
-      return 0;
-    }
+  static int countPlaceholders(String template) {
     int index = 0;
     int count = 0;
     while (true) {
