@@ -30,6 +30,9 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>Most Truth users will never interact with this type. It appears in the Truth API only as a
  * parameter to methods like {@link Subject#failWithActual(Fact, Fact...)}, which are used only by
  * custom {@code Subject} implementations.
+ *
+ * <p>If you are writing a custom {@code Subject}, see <a
+ * href="https://truth.dev/failure_messages">our tips on writing failure messages</a>.
  */
 public final class Fact implements Serializable {
   /**
