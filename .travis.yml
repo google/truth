@@ -3,7 +3,7 @@ sudo: false
 language: java
 
 jdk:
-  - &jdk_for_publishing oraclejdk8
+  - &jdk_for_publishing openjdk11
 
 install:
   - mvn -B -U -P!standard-with-extra-repos dependency:go-offline test clean --quiet --fail-never -DskipTests=true
@@ -28,11 +28,10 @@ branches:
     - master
     - /^release.*$/
 
-# https://github.com/travis-ci/travis-ci/issues/3259#issuecomment-130860338
 addons:
   apt:
     packages:
-      - oracle-java8-installer
+      - openjdk-11-jdk
 
 cache:
   directories:
