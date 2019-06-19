@@ -151,6 +151,10 @@ public class Subject {
    * {@code equals} implementation requires a utility such as <a
    * href="https://mvnrepository.com/artifact/com.google.guava/guava-testlib">guava-testlib</a>'s <a
    * href="https://static.javadoc.io/com.google.guava/guava-testlib/23.0/com/google/common/testing/EqualsTester.html">EqualsTester</a>.
+   *
+   * <p>In some cases, this method might not even call {@code equals}. It may instead perform other
+   * tests that will return the same result as long as {@code equals} is implemented according to
+   * the contract for its type.
    */
   /*
    * TODO(cpovirk): Possibly ban overriding isEqualTo+isNotEqualTo in favor of a

@@ -62,7 +62,6 @@ public class MapSubject extends Subject {
     this.actual = map;
   }
 
-  /** Fails if the subject is not equal to the given object. */
   @Override
   public final void isEqualTo(@NullableDecl Object other) {
     if (Objects.equal(actual, other)) {
@@ -71,20 +70,12 @@ public class MapSubject extends Subject {
 
     // Fail but with a more descriptive message:
 
-    if (!(other instanceof Map)) {
+    if (actual == null || !(other instanceof Map)) {
       super.isEqualTo(other);
       return;
     }
 
-    boolean mapEquals = containsEntriesInAnyOrder((Map<?, ?>) other, "is equal to", false);
-    if (mapEquals) {
-      failWithoutActual(
-          simpleFact(
-              lenientFormat(
-                  "Not true that <%s> is equal to <%s>. It is equal according to the contract of "
-                      + "Map.equals(Object), but this implementation returned false",
-                  actualCustomStringRepresentationForPackageMembersToCall(), other)));
-    }
+    containsEntriesInAnyOrder((Map<?, ?>) other, "is equal to", false);
   }
 
   /** Fails if the map is not empty. */
