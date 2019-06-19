@@ -115,6 +115,28 @@ public class IterableSubject extends Subject {
     return super.actualCustomStringRepresentation();
   }
 
+  @Override
+  public void isEqualTo(@NullableDecl Object expected) {
+    if (Objects.equal(actual, expected)) {
+      return;
+    }
+
+    // Fail but with a more descriptive message:
+
+    if (actual instanceof List && expected instanceof List) {
+      containsExactlyElementsIn((List<?>) expected).inOrder();
+    } else if ((actual instanceof Set && expected instanceof Set)
+        || (actual instanceof Multiset && expected instanceof Multiset)) {
+      containsExactlyElementsIn((Collection<?>) expected);
+    } else {
+      /*
+       * TODO(b/18430105): Consider a special message if comparing incompatible collection types
+       * (similar to what MultimapSubject has).
+       */
+      super.isEqualTo(expected);
+    }
+  }
+
   /** Fails if the subject is not empty. */
   public final void isEmpty() {
     if (!Iterables.isEmpty(actual)) {
@@ -927,7 +949,7 @@ public class IterableSubject extends Subject {
      * failure message will show paired elements together, and a diff will be shown if the {@link
      * Correspondence#formatDiff} method returns non-null.
      *
-     * <p>The expected elements given in the assertion should be uniquely keyed by {@link
+     * <p>The expected elements given in the assertion should be uniquely keyed by {@code
      * keyFunction}. If multiple missing elements have the same key then the pairing will be
      * skipped.
      *
@@ -969,7 +991,7 @@ public class IterableSubject extends Subject {
      * failure message will show paired elements together, and a diff will be shown if the {@link
      * Correspondence#formatDiff} method returns non-null.
      *
-     * <p>The expected elements given in the assertion should be uniquely keyed by {@link
+     * <p>The expected elements given in the assertion should be uniquely keyed by {@code
      * expectedKeyFunction}. If multiple missing elements have the same key then the pairing will be
      * skipped.
      *

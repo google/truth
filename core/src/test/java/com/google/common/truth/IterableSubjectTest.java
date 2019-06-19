@@ -946,6 +946,28 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void nullEqualToNull() {
+    assertThat((Iterable<?>) null).isEqualTo(null);
+  }
+
+  @Test
+  public void nullEqualToSomething() {
+    expectFailureWhenTestingThat(null).isEqualTo(ImmutableList.of());
+  }
+
+  @Test
+  public void somethingEqualToNull() {
+    expectFailureWhenTestingThat(ImmutableList.of()).isEqualTo(null);
+  }
+
+  @Test
+  public void somethingEqualToSomething() {
+    expectFailureWhenTestingThat(ImmutableList.of()).isEqualTo(ImmutableList.of("a"));
+    // isEqualTo uses the containsExactly style of message:
+    assertFailureValue("missing (1)", "a");
+  }
+
+  @Test
   public void iterableIsEmpty() {
     assertThat(asList()).isEmpty();
   }

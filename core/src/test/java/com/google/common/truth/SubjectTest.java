@@ -30,7 +30,6 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultiset;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterators;
@@ -753,12 +752,9 @@ public class SubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void disambiguationWithSameToString() {
-    ImmutableSet<Integer> ints = ImmutableSet.of(1, 2, 3);
-    ImmutableSet<Long> longs = ImmutableSet.of(1L, 2L, 3L);
-
-    expectFailure.whenTesting().that(ints).isEqualTo(longs);
+    expectFailure.whenTesting().that(new StringBuilder("foo")).isEqualTo(new StringBuilder("foo"));
     assertFailureKeys("expected", "but was");
-    assertFailureValue("expected", "[1, 2, 3]");
+    assertFailureValue("expected", "foo");
     assertFailureValue(
         "but was", "(non-equal instance of same class with same string representation)");
   }
