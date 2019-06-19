@@ -74,7 +74,11 @@ public final class OptionalIntSubject extends Subject {
   /**
    * Prepares for a check regarding the value contained within the {@link OptionalInt}. Fails
    * immediately if the subject is empty.
-   */
+   *
+   * @deprecated Instead of {@code assertThat(optional).hasValueThat()....}, use {@code
+   *     assertThat(optional.getAsInt())....}.
+  */
+  @Deprecated
   public IntegerSubject hasValueThat() {
     if (actual == null || !actual.isPresent()) {
       isPresent(); // fails

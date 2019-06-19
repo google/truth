@@ -220,12 +220,19 @@ public class StandardSubjectBuilder {
     return factory.createSubjectBuilder(metadata());
   }
 
-  /** Triggers the failure strategy with an empty failure message */
+  /** Triggers the failure strategy with an empty failure message. */
   public final void fail() {
     doFail("");
   }
 
-  /** Triggers the failure strategy with the given failure message */
+  /**
+   * Triggers the failure strategy with the given failure message.
+   *
+   * @deprecated Instead of {@code assert_().fail(...)}, use {@code assertWithMessage(...).fail()}.
+   *     Similarly, instead of {@code expect.fail(...)}, use {@code expect.withMessage(...).fail()},
+   *     and so forth.
+  */
+  @Deprecated
   public final void fail(@NullableDecl String format, Object /*@NullableDeclType*/... args) {
     doFail(lenientFormat(format, args));
   }

@@ -74,7 +74,11 @@ public final class OptionalLongSubject extends Subject {
   /**
    * Prepares for a check regarding the value contained within the {@link OptionalLong}. Fails
    * immediately if the subject is empty.
-   */
+   *
+   * @deprecated Instead of {@code assertThat(optional).hasValueThat()....}, use {@code
+   *     assertThat(optional.getAsLong())....}.
+  */
+  @Deprecated
   public LongSubject hasValueThat() {
     if (actual == null || !actual.isPresent()) {
       isPresent(); // fails
