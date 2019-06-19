@@ -1,9 +1,8 @@
 sudo: false
 
-language: java
+dist: xenial
 
-jdk:
-  - &jdk_for_publishing oraclejdk11
+language: java
 
 install:
   - mvn -B -U -P!standard-with-extra-repos dependency:go-offline test clean --quiet --fail-never -DskipTests=true
@@ -17,7 +16,6 @@ env:
   - secure: Q8O565LFFwytrjS+vRHlzw0sYGjFA4npvaMbyG5w3uoodnHKTh0tMOwiToGzGS0CHRf83LffTlbodVVIWkiyzxcbNwMslkOxLpFtI0Hif2apb/mSQ6vdO/SXTb1MVwQBqBGCF47KBw5XDjvRbXmIh8+4z9yIBO8oWqEbHvBYQl0=
   - secure: EMRsJLQfGoSrArcemMmjmlI4Ut2eGoLgIW/lxHEa/zSzOqSGMUdxo7+Hd23VxQqWWYAa2fV4NPSUqBZrJkS6RFxQOE4CYLpmVenSRdVTNXa0Cw+48k6aw4/kOfOafn7s5EJ/pA0dYjFgj1V2F+vRIywrNs0tpziFanWvMVUBAOY=
   - secure: XpixMe6WG/U2lUgbkZohDDiDJnrXdra+K+AUvg8ze35Wd6ffPdHh9oLMR6DbMq82VV21G9WcJyRQM7g/mCBHOXDt6/0fj/IPUaev15QsJITF1TAJRISxL4DClsJX6U7i2y+KaZ1pOSnsEFvDHE7QM9+DYqG4cPX++bt7Lr33v+4=
-  - JDK_FOR_PUBLISHING: *jdk_for_publishing
 
 after_success:
   - bash util/generate-latest-docs.sh
@@ -27,12 +25,6 @@ branches:
   only:
     - master
     - /^release.*$/
-
-# https://github.com/travis-ci/travis-ci/issues/3259#issuecomment-130860338
-addons:
-  apt:
-    packages:
-      - oracle-java11-installer
 
 cache:
   directories:
