@@ -27,7 +27,9 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * Propositions for {@link AtomicLongMap} subjects.
  *
  * @author Kurt Alfred Kluever
+ * @deprecated Perform assertions on the {@link AtomicLongMap#asMap()} view.
  */
+@Deprecated
 public final class AtomicLongMapSubject extends Subject {
   private final AtomicLongMap<?> actual;
 

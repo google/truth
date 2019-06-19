@@ -242,7 +242,10 @@ public final class Truth {
     return assert_().that(actual);
   }
 
-  public static AtomicLongMapSubject assertThat(@NullableDecl AtomicLongMap<?> actual) {
+  /** @deprecated Perform assertions on the {@link AtomicLongMap#asMap()} view. */
+  @Deprecated
+  public static AtomicLongMapSubject assertThat(
+      @NullableDecl AtomicLongMap<?> actual) {
     return assert_().that(actual);
   }
 

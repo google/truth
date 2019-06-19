@@ -173,6 +173,8 @@ public class StandardSubjectBuilder {
     return new TableSubject(metadata(), actual);
   }
 
+  /** @deprecated Perform assertions on the {@link AtomicLongMap#asMap()} view. */
+  @Deprecated
   public final AtomicLongMapSubject that(@NullableDecl AtomicLongMap<?> actual) {
     return new AtomicLongMapSubject(metadata(), actual);
   }
