@@ -20,13 +20,14 @@ import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEG
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static org.junit.Assert.fail;
 
-import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -622,61 +623,38 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertFailureKeys("expected", "but was");
   }
 
-  /**
-   * A broken implementation of {@link Map} whose {@link #equals} method does not implement the
-   * contract. Users sometimes write tests using broken implementations, and we should test that
-   * {@code isEqualTo} is consistent with their implementation.
-   */
-  private static class BrokenMap<K, V> extends ForwardingMap<K, V> {
-
-    static <K, V> Map<K, V> wrapWithAlwaysTrueEquals(Map<K, V> delegate) {
-      return new BrokenMap<>(delegate, true);
-    }
-
-    static <K, V> Map<K, V> wrapWithAlwaysFalseEquals(Map<K, V> delegate) {
-      return new BrokenMap<>(delegate, false);
-    }
-
-    private final Map<K, V> delegate;
-    private final boolean equalsStub;
-
-    private BrokenMap(Map<K, V> delegate, boolean equalsStub) {
-      this.delegate = delegate;
-      this.equalsStub = equalsStub;
-    }
-
-    @Override
-    public Map<K, V> delegate() {
-      return delegate;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-      return equalsStub;
-    }
+  @Test
+  public void isEqualToNotConsistentWithEquals() {
+    TreeMap<String, Integer> actual = new TreeMap<>(CASE_INSENSITIVE_ORDER);
+    TreeMap<String, Integer> expected = new TreeMap<>(CASE_INSENSITIVE_ORDER);
+    actual.put("one", 1);
+    expected.put("ONE", 1);
+    /*
+     * Our contract doesn't guarantee that the following test will pass. It *currently* does,
+     * though, and if we change that behavior, we want this test to let us know.
+     */
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test
-  public void isEqualTo_brokenMapEqualsImplementation_trueWhenItShouldBeFalse() {
-    // These maps are not equal according to the contract of Map.equals, but have a broken equals()
-    // implementation that always returns true. So the isEqualTo assertion should pass.
-    Map<String, Integer> map1 = BrokenMap.wrapWithAlwaysTrueEquals(ImmutableMap.of("jan", 1));
-    Map<String, Integer> map2 = BrokenMap.wrapWithAlwaysTrueEquals(ImmutableMap.of("feb", 2));
-    assertThat(map1).isEqualTo(map2);
+  public void isEqualToNotConsistentWithEquals_failure() {
+    TreeMap<String, Integer> actual = new TreeMap<>(CASE_INSENSITIVE_ORDER);
+    TreeMap<String, Integer> expected = new TreeMap<>(CASE_INSENSITIVE_ORDER);
+    actual.put("one", 1);
+    expected.put("ONE", 1);
+    actual.put("two", 2);
+    expectFailureWhenTestingThat(actual).isEqualTo(expected);
+    // The exact message generated is unspecified.
   }
 
   @Test
-  public void isEqualTo_brokenMapEqualsImplementation_falseWhenItShouldBeTrue() {
-    // These maps are equal according to the contract of Map.equals, but have a broken equals()
-    // implementation that always returns false. So the isEqualTo assertion should fail.
-    Map<String, Integer> map1 = BrokenMap.wrapWithAlwaysFalseEquals(ImmutableMap.of("jan", 1));
-    Map<String, Integer> map1clone = BrokenMap.wrapWithAlwaysFalseEquals(ImmutableMap.of("jan", 1));
-    expectFailureWhenTestingThat(map1).isEqualTo(map1clone);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1}> is equal to <{jan=1}>. It is equal according to the contract "
-                + "of Map.equals(Object), but this implementation returned false");
+  public void isEqualToActualNullOtherMap() {
+    expectFailureWhenTestingThat(null).isEqualTo(ImmutableMap.of());
+  }
+
+  @Test
+  public void isEqualToActualMapOtherNull() {
+    expectFailureWhenTestingThat(ImmutableMap.of()).isEqualTo(null);
   }
 
   @Test

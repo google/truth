@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.Truth.assertThat;
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
 
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -965,6 +967,30 @@ public class IterableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(ImmutableList.of()).isEqualTo(ImmutableList.of("a"));
     // isEqualTo uses the containsExactly style of message:
     assertFailureValue("missing (1)", "a");
+  }
+
+  @Test
+  public void isEqualToNotConsistentWithEquals() {
+    TreeSet<String> actual = new TreeSet<>(CASE_INSENSITIVE_ORDER);
+    TreeSet<String> expected = new TreeSet<>(CASE_INSENSITIVE_ORDER);
+    actual.add("one");
+    expected.add("ONE");
+    /*
+     * Our contract doesn't guarantee that the following test will pass. It *currently* does,
+     * though, and if we change that behavior, we want this test to let us know.
+     */
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  public void isEqualToNotConsistentWithEquals_failure() {
+    TreeSet<String> actual = new TreeSet<>(CASE_INSENSITIVE_ORDER);
+    TreeSet<String> expected = new TreeSet<>(CASE_INSENSITIVE_ORDER);
+    actual.add("one");
+    expected.add("ONE");
+    actual.add("two");
+    expectFailureWhenTestingThat(actual).isEqualTo(expected);
+    // The exact message generated is unspecified.
   }
 
   @Test
