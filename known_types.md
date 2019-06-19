@@ -52,7 +52,6 @@ Truth has built in support for the following types:
     *   [`Multimap`]
     *   [`Multiset`]
     *   [`Table`]
-    *   [`AtomicLongMap`]
 
 Truth is [extensible](extension.md), so if you don't see a type you need to make
 assertions on in this list, you can
@@ -71,7 +70,6 @@ assertions on in this list, you can
 [LongArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveLongArraySubject
 [ObjectArray]: https://truth.dev/api/latest/com/google/common/truth/ObjectArraySubject
 [ShortArray]: https://truth.dev/api/latest/com/google/common/truth/PrimitiveShortArraySubject
-[`AtomicLongMap`]: https://truth.dev/api/latest/com/google/common/truth/AtomicLongMapSubject
 [`BigDecimal`]: https://truth.dev/api/latest/com/google/common/truth/BigDecimalSubject
 [`Boolean`]: https://truth.dev/api/latest/com/google/common/truth/BooleanSubject
 [`Class`]: https://truth.dev/api/latest/com/google/common/truth/ClassSubject
