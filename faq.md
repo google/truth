@@ -11,7 +11,7 @@ title: Truth FAQ
 First, make sure you're depending on
 `com.google.truth.extensions:truth-java8-extension:<your truth version>`
 
-Next, you will usually need *both* of the following static imports:
+You will usually need *both* of the following static imports:
 
 ```java
 import static com.google.common.truth.Truth.assertThat;
@@ -32,6 +32,7 @@ assertWithMessage(...).about(optionals()).that(javaUtilOptional).hasValue("duke"
 ```
 
 For more information, read about [the full fluent chain](#full-chain).
+
 
 ## Why do I get a "`cannot find symbol .hasValue("foo");`" error for a type that should have `hasValue`? {#missing-import}
 
