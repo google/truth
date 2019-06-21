@@ -280,8 +280,9 @@ AssertJ provides assertions for several libraries' types. As of this writing,
 Truth includes assertions for [Guava] and [Protocol Buffers].
 
 Both have third-party extensions, such as for Android types
-([AssertJ][AssertJ-Android], [Truth][Truth-Android]). I don't have a feel for
-the overall size of each ecosystem.
+([AssertJ][AssertJ-Android] ([deprecated][AssertJ-Android-deprecated]),
+[Truth][Truth-Android]). I don't have a feel for the overall size of each
+ecosystem.
 
 ### Platform support (Android, GWT) {#platforms}
 
@@ -385,6 +386,7 @@ significant.
 [Protocol Buffers]: https://developers.google.com/protocol-buffers/
 [GWT]: http://www.gwtproject.org/
 [AssertJ-Android]: https://square.github.io/assertj-android/
+[AssertJ-Android-deprecated]: https://github.com/square/assertj-android#deprecated
 [Truth-Android]: https://developer.android.com/training/testing/fundamentals#assertions
 [AssertJ-migrator]: https://joel-costigliola.github.io/assertj/assertj-core-converting-junit-assertions-to-assertj.html
 [AssertJ-generator]: https://joel-costigliola.github.io/assertj/assertj-assertions-generator.html
