@@ -205,7 +205,7 @@ public final class ChainingTest extends BaseSubjectTestCase {
   @Test
   public void checkFailWithName() {
     expectFailureWhenTestingThat("root").doCheckFail("child");
-    assertNoCause("value of    : myObject.child\nmessage\nmyObject was: root");
+    assertNoCause("message\nvalue of    : myObject.child\nmyObject was: root");
   }
 
   @Test

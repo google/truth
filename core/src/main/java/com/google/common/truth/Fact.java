@@ -125,7 +125,9 @@ public final class Fact implements Serializable {
       }
       builder.append('\n');
     }
-    builder.setLength(builder.length() - 1); // remove trailing \n
+    if (builder.length() > 0) {
+      builder.setLength(builder.length() - 1); // remove trailing \n
+    }
     return builder.toString();
   }
 

@@ -16,8 +16,6 @@
 package com.google.common.truth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.lenientFormat;
-import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Optional;
@@ -220,25 +218,26 @@ public class StandardSubjectBuilder {
     return factory.createSubjectBuilder(metadata());
   }
 
-  /** Triggers the failure strategy with an empty failure message. */
+  /**
+   * Reports a failure.
+   *
+   * <p>To set a message, first call {@link #withMessage} (or, more commonly, use the shortcut
+   * {@link Truth#assertWithMessage}).
+   */
   public final void fail() {
-    doFail("");
+    metadata().fail(ImmutableList.<Fact>of());
   }
 
   /**
-   * Triggers the failure strategy with the given failure message.
+   * Reports a failure with the given message.
    *
    * @deprecated Instead of {@code assert_().fail(...)}, use {@code assertWithMessage(...).fail()}.
    *     Similarly, instead of {@code expect.fail(...)}, use {@code expect.withMessage(...).fail()},
    *     and so forth.
   */
   @Deprecated
-  public final void fail(@NullableDecl String format, Object /*@NullableDeclType*/... args) {
-    doFail(lenientFormat(format, args));
-  }
-
-  private void doFail(String message) {
-    metadata().fail(ImmutableList.of(simpleFact(message)));
+  public final void fail(String format, Object /*@NullableDeclType*/... args) {
+    withMessage(format, args).fail();
   }
 
   private FailureMetadata metadata() {
