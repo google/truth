@@ -104,8 +104,8 @@ public class ThrowableSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).hasCauseThat().hasCauseThat().isNull();
     assertThat(expectFailure.getFailure().getMessage())
         .isEqualTo(
-            "value of: throwable.getCause().getCause()\n"
-                + "Causal chain is not deep enough - add a .isNotNull() check?");
+            "Causal chain is not deep enough - add a .isNotNull() check?\n"
+                + "value of: throwable.getCause().getCause()");
     assertErrorHasActualAsCause(actual, expectFailure.getFailure());
   }
 
