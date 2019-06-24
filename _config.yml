@@ -17,6 +17,9 @@ sass:
 
 googleAnalyticsId: UA-43772875-10
 
+plugins:
+  - jekyll-redirect-from
+
 nav:
   - item:
       name: Home
