@@ -1,5 +1,5 @@
 ---
 title: Javadoc
-redirect_to: /api/latest/
+redirect_to: https://truth.dev/api/latest/index.html
 ---
 
