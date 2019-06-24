@@ -1,7 +1,5 @@
 ---
-subtitle: API Documentation
-layout: api
-url: /api/
-scripts: /api/javadoc_load.js
+title: Javadoc
+redirect_to: https://truth.dev/api/latest/index.html
 ---
 
