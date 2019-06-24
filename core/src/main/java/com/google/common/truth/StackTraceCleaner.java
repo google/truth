@@ -62,7 +62,7 @@ final class StackTraceCleaner {
     this.throwable = throwable;
   }
 
-  // TODO(user): Add this to the test runners so that we clean all stack traces, not just
+  // TODO(b/135924708): Add this to the test runners so that we clean all stack traces, not just
   // those of exceptions originating in Truth.
   /** Cleans the stack trace on {@code throwable}, replacing the trace that was originally on it. */
   private void clean(Set<Throwable> seenThrowables) {
