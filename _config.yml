@@ -40,7 +40,7 @@ nav:
       name: Compare
       url: /comparison
   - item:
-      name: Known Types
+      name: Supported Types
       url: /known_types
   - item:
       name: Extensions

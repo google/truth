@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Truth: Known Types
+title: "Truth: Supported Types"
 ---
 
 
