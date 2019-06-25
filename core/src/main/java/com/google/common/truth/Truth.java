@@ -22,7 +22,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Table;
-import com.google.common.util.concurrent.AtomicLongMap;
 import java.math.BigDecimal;
 import java.util.Map;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -239,13 +238,6 @@ public final class Truth {
   }
 
   public static TableSubject assertThat(@NullableDecl Table<?, ?, ?> actual) {
-    return assert_().that(actual);
-  }
-
-  /** @deprecated Perform assertions on the {@link AtomicLongMap#asMap()} view. */
-  @Deprecated
-  public static AtomicLongMapSubject assertThat(
-      @NullableDecl AtomicLongMap<?> actual) {
     return assert_().that(actual);
   }
 

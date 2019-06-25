@@ -19,7 +19,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assert_;
 import static java.util.Arrays.asList;
 
-import com.google.gwt.junit.client.GWTTestCase;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,7 +32,7 @@ import java.util.Set;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 
-public class TruthGwtTest extends GWTTestCase {
+public class TruthGwtTest extends com.google.gwt.junit.client.GWTTestCase {
    @Override public String getModuleName() {
      return "com.google.common.truth.gwt.TruthTest";
    }
@@ -60,7 +59,7 @@ public class TruthGwtTest extends GWTTestCase {
     } catch (AssertionError expected) {
       return;
     }
-    assert_().fail("Should have thrown an assertion error");
+    assert_().withMessage("Should have thrown an assertion error").fail();
   }
 
   public void testString() {
@@ -73,7 +72,7 @@ public class TruthGwtTest extends GWTTestCase {
     } catch (AssertionError expected) {
       return;
     }
-    assert_().fail("Should have thrown an assertion error");
+    assert_().withMessage("Should have thrown an assertion error").fail();
   }
 
   public void testString_match() {
@@ -91,7 +90,7 @@ public class TruthGwtTest extends GWTTestCase {
     } catch (AssertionError expected) {
       return;
     }
-    assert_().fail("Should have thrown an assertion error");
+    assert_().withMessage("Should have thrown an assertion error").fail();
   }
 
   public void testString_containsMatchFail() {
@@ -100,7 +99,7 @@ public class TruthGwtTest extends GWTTestCase {
     } catch (AssertionError expected) {
       return;
     }
-    assert_().fail("Should have thrown an assertion error");
+    assert_().withMessage("Should have thrown an assertion error").fail();
   }
 
   public void testString_doesNotMatchFail() {
@@ -109,7 +108,7 @@ public class TruthGwtTest extends GWTTestCase {
     } catch (AssertionError expected) {
       return;
     }
-    assert_().fail("Should have thrown an assertion error");
+    assert_().withMessage("Should have thrown an assertion error").fail();
   }
 
   public void testString_doesNotContainMatchFail() {
@@ -118,7 +117,7 @@ public class TruthGwtTest extends GWTTestCase {
     } catch (AssertionError expected) {
       return;
     }
-    assert_().fail("Should have thrown an assertion error");
+    assert_().withMessage("Should have thrown an assertion error").fail();
   }
 
   public void testIterable() {

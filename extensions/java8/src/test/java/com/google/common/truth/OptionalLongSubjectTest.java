@@ -93,30 +93,6 @@ public class OptionalLongSubjectTest {
     assertThat(expected).factValue("value of").isEqualTo("optionalLong.getAsLong()");
   }
 
-  @Test
-  public void hasValueThat_FailingWithEmpty() {
-    AssertionError expected =
-        expectFailure(
-            whenTesting -> {
-              LongSubject unused = whenTesting.that(OptionalLong.empty()).hasValueThat();
-            });
-    assertThat(expected).factKeys().containsExactly("expected to be present");
-  }
-
-  @Test
-  public void hasValueThat_FailingWithComparison() {
-    AssertionError expected =
-        expectFailure(
-            whenTesting -> whenTesting.that(OptionalLong.of(1337L)).hasValueThat().isLessThan(42L));
-    // TODO(cpovirk): Assert that "value of" is present once we set it:
-    // assertThat(expected).fieldValue("value of").isEqualTo("optionalLong.getAsLong()");
-  }
-
-  @Test
-  public void hasValueThat_SuccessWithComparison() {
-    assertThat(OptionalLong.of(1337L)).hasValueThat().isGreaterThan(42L);
-  }
-
   private static AssertionError expectFailure(
       ExpectFailure.SimpleSubjectBuilderCallback<OptionalLongSubject, OptionalLong>
           assertionCallback) {

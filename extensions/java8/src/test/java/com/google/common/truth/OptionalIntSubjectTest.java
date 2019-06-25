@@ -93,30 +93,6 @@ public class OptionalIntSubjectTest {
     assertThat(expected).factValue("value of").isEqualTo("optionalInt.getAsInt()");
   }
 
-  @Test
-  public void hasValueThat_FailingWithEmpty() {
-    AssertionError expected =
-        expectFailure(
-            whenTesting -> {
-              IntegerSubject unused = whenTesting.that(OptionalInt.empty()).hasValueThat();
-            });
-    assertThat(expected).factKeys().containsExactly("expected to be present");
-  }
-
-  @Test
-  public void hasValueThat_FailingWithComparison() {
-    AssertionError unused =
-        expectFailure(
-            whenTesting -> whenTesting.that(OptionalInt.of(1337)).hasValueThat().isLessThan(42));
-    // TODO(cpovirk): Assert that "value of" is present once we set it:
-    // assertThat(expected).fieldValue("value of").isEqualTo("optionalInt.getAsInt()");
-  }
-
-  @Test
-  public void hasValueThat_SuccessWithComparison() {
-    assertThat(OptionalInt.of(1337)).hasValueThat().isGreaterThan(42);
-  }
-
   private static AssertionError expectFailure(
       ExpectFailure.SimpleSubjectBuilderCallback<OptionalIntSubject, OptionalInt>
           assertionCallback) {

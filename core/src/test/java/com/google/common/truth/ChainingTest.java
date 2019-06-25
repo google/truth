@@ -242,11 +242,11 @@ public final class ChainingTest extends BaseSubjectTestCase {
     }
 
     void doCheckFail() {
-      check().fail("message");
+      check().withMessage("message").fail();
     }
 
     void doCheckFail(String name) {
-      check(name).fail("message");
+      check(name).withMessage("message").fail();
     }
 
     /**

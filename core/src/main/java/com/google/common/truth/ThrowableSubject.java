@@ -69,7 +69,9 @@ public class ThrowableSubject extends Subject {
     // TODO(diamondm) in keeping with other subjects' behavior this should still NPE if the subject
     // *itself* is null, since there's no context to lose. See also b/37645583
     if (actual == null) {
-      check("getCause()").fail("Causal chain is not deep enough - add a .isNotNull() check?");
+      check("getCause()")
+          .withMessage("Causal chain is not deep enough - add a .isNotNull() check?")
+          .fail();
       return ignoreCheck()
           .that(
               new Throwable() {

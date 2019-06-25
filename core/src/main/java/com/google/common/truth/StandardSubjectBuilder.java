@@ -23,7 +23,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Table;
-import com.google.common.util.concurrent.AtomicLongMap;
 import java.math.BigDecimal;
 import java.util.Map;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -171,12 +170,6 @@ public class StandardSubjectBuilder {
     return new TableSubject(metadata(), actual);
   }
 
-  /** @deprecated Perform assertions on the {@link AtomicLongMap#asMap()} view. */
-  @Deprecated
-  public final AtomicLongMapSubject that(@NullableDecl AtomicLongMap<?> actual) {
-    return new AtomicLongMapSubject(metadata(), actual);
-  }
-
   /**
    * Returns a new instance that will output the given message before the main failure message. If
    * this method is called multiple times, the messages will appear in the order that they were
@@ -226,18 +219,6 @@ public class StandardSubjectBuilder {
    */
   public final void fail() {
     metadata().fail(ImmutableList.<Fact>of());
-  }
-
-  /**
-   * Reports a failure with the given message.
-   *
-   * @deprecated Instead of {@code assert_().fail(...)}, use {@code assertWithMessage(...).fail()}.
-   *     Similarly, instead of {@code expect.fail(...)}, use {@code expect.withMessage(...).fail()},
-   *     and so forth.
-  */
-  @Deprecated
-  public final void fail(String format, Object /*@NullableDeclType*/... args) {
-    withMessage(format, args).fail();
   }
 
   private FailureMetadata metadata() {

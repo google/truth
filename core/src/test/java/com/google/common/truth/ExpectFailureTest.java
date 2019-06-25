@@ -36,7 +36,7 @@ public class ExpectFailureTest {
 
   @Test
   public void expectFail() {
-    expectFailure.whenTesting().fail("abc");
+    expectFailure.whenTesting().withMessage("abc").fail();
     assertThat(expectFailure.getFailure()).hasMessageThat().isEqualTo("abc");
   }
 

@@ -93,7 +93,7 @@ public class ExpectTest {
   public void singleExpectationFails() {
     thrown.expectMessage("1 expectation failed:");
     thrown.expectMessage("1. x");
-    expect.fail("x");
+    expect.withMessage("x").fail();
   }
 
   @Test
@@ -102,9 +102,9 @@ public class ExpectTest {
     thrown.expectMessage("1. x");
     thrown.expectMessage("2. y");
     thrown.expectMessage("3. z");
-    expect.fail("x");
-    expect.fail("y");
-    expect.fail("z");
+    expect.withMessage("x").fail();
+    expect.withMessage("y").fail();
+    expect.withMessage("z").fail();
   }
 
   @Test
@@ -113,7 +113,7 @@ public class ExpectTest {
     thrown.expectMessage(" 1. x");
     thrown.expectMessage("10. x");
     for (int i = 0; i < 10; i++) {
-      expect.fail("x");
+      expect.withMessage("x").fail();
     }
   }
 
@@ -123,7 +123,7 @@ public class ExpectTest {
     thrown.expectMessage(" 1. abc\n      xyz");
     thrown.expectMessage("10. abc\n      xyz");
     for (int i = 0; i < 10; i++) {
-      expect.fail("abc\nxyz");
+      expect.withMessage("abc\nxyz").fail();
     }
   }
 
@@ -133,8 +133,8 @@ public class ExpectTest {
     thrown.expectMessage("1. x");
     thrown.expectMessage("2. y");
     thrown.expectMessage("3. Also, after those failures, an exception was thrown:");
-    expect.fail("x");
-    expect.fail("y");
+    expect.withMessage("x").fail();
+    expect.withMessage("y").fail();
     throw new IllegalStateException();
   }
 
@@ -144,8 +144,8 @@ public class ExpectTest {
     thrown.expectMessage("1. x");
     thrown.expectMessage("2. y");
     thrown.expectMessage("3. Also, after those failures, an exception was thrown:");
-    expect.fail("x");
-    expect.fail("y");
+    expect.withMessage("x").fail();
+    expect.withMessage("y").fail();
     throw new IllegalStateException("testing");
   }
 
@@ -154,8 +154,8 @@ public class ExpectTest {
     thrown.expect(IllegalStateException.class);
     thrown.expectMessage("testing");
     throwException();
-    expect.fail("x");
-    expect.fail("y");
+    expect.withMessage("x").fail();
+    expect.withMessage("y").fail();
   }
 
   private void throwException() {
@@ -168,16 +168,16 @@ public class ExpectTest {
     thrown.expectMessage("1. x");
     thrown.expectMessage("2. y");
     thrown.expectMessage("3. Also, after those failures, an assumption was violated:");
-    expect.fail("x");
-    expect.fail("y");
-    assume().fail("testing");
+    expect.withMessage("x").fail();
+    expect.withMessage("y").fail();
+    assume().withMessage("testing").fail();
   }
 
   @Test
   public void expectSuccessWithFailuresAfterAssume() {
-    assume().fail("testing");
-    expect.fail("x");
-    expect.fail("y");
+    assume().withMessage("testing").fail();
+    expect.withMessage("x").fail();
+    expect.withMessage("y").fail();
   }
 
   @Test
