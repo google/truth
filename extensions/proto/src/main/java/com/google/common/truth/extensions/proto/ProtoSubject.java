@@ -48,7 +48,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * of Protocol Buffers. If testing protos of multiple versions, make sure you understand the
  * behaviors of default and unknown fields so you don't under or over test.
  */
-public class ProtoSubject extends LiteProtoSubject implements ProtoFluentAssertion {
+public class ProtoSubject extends LiteProtoSubject {
 
   /*
    * Storing a FailureMetadata instance in a Subject subclass is generally a bad practice. For an
@@ -70,118 +70,319 @@ public class ProtoSubject extends LiteProtoSubject implements ProtoFluentAsserti
     this.config = config;
   }
 
-  ProtoSubject usingConfig(FluentEqualityConfig newConfig) {
-    return new ProtoSubject(metadata, newConfig, actual);
+  ProtoFluentAssertionImpl usingConfig(FluentEqualityConfig newConfig) {
+    return new ProtoFluentAssertionImpl(new ProtoSubject(metadata, newConfig, actual));
   }
 
-  @Override
+  /**
+   * Specifies that the 'has' bit of individual fields should be ignored when comparing for
+   * equality.
+   *
+   * <p>For version 2 Protocol Buffers, this setting determines whether two protos with the same
+   * value for a field compare equal if one explicitly sets the value, and the other merely
+   * implicitly uses the schema-defined default. This setting also determines whether unknown fields
+   * should be considered in the comparison. By {@code ignoringFieldAbsence()}, unknown fields are
+   * ignored, and value-equal fields as specified above are considered equal.
+   *
+   * <p>For version 3 Protocol Buffers, this setting does not affect primitive fields, because their
+   * default value is indistinguishable from unset.
+   */
   public ProtoFluentAssertion ignoringFieldAbsence() {
     return usingConfig(config.ignoringFieldAbsence());
   }
 
-  @Override
+  /**
+   * Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+   * ignored when comparing for equality. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if they are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
   public ProtoFluentAssertion ignoringFieldAbsenceOfFields(int firstFieldNumber, int... rest) {
     return usingConfig(config.ignoringFieldAbsenceOfFields(asList(firstFieldNumber, rest)));
   }
 
-  @Override
+  /**
+   * Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+   * ignored when comparing for equality. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if they are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
   public ProtoFluentAssertion ignoringFieldAbsenceOfFields(Iterable<Integer> fieldNumbers) {
     return usingConfig(config.ignoringFieldAbsenceOfFields(fieldNumbers));
   }
 
-  @Override
+  /**
+   * Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+   * when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
+   * as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
   public ProtoFluentAssertion ignoringFieldAbsenceOfFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
     return usingConfig(
         config.ignoringFieldAbsenceOfFieldDescriptors(asList(firstFieldDescriptor, rest)));
   }
 
-  @Override
+  /**
+   * Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+   * when comparing for equality. Sub-fields must be specified explicitly if they are to be ignored
+   * as well.
+   *
+   * <p>Use {@link #ignoringFieldAbsence()} instead to ignore the 'has' bit for all fields.
+   *
+   * @see #ignoringFieldAbsence() for details
+   */
   public ProtoFluentAssertion ignoringFieldAbsenceOfFieldDescriptors(
       Iterable<FieldDescriptor> fieldDescriptors) {
     return usingConfig(config.ignoringFieldAbsenceOfFieldDescriptors(fieldDescriptors));
   }
 
-  @Override
+  /**
+   * Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
+   * for equality.
+   *
+   * <p>This setting applies to all repeated fields recursively, but it does not ignore structure.
+   * For example, with {@link #ignoringRepeatedFieldOrder()}, a repeated {@code int32} field {@code
+   * bar}, set inside a repeated message field {@code foo}, the following protos will all compare
+   * equal:
+   *
+   * <pre>{@code
+   * message1: {
+   *   foo: {
+   *     bar: 1
+   *     bar: 2
+   *   }
+   *   foo: {
+   *     bar: 3
+   *     bar: 4
+   *   }
+   * }
+   *
+   * message2: {
+   *   foo: {
+   *     bar: 2
+   *     bar: 1
+   *   }
+   *   foo: {
+   *     bar: 4
+   *     bar: 3
+   *   }
+   * }
+   *
+   * message3: {
+   *   foo: {
+   *     bar: 4
+   *     bar: 3
+   *   }
+   *   foo: {
+   *     bar: 2
+   *     bar: 1
+   *   }
+   * }
+   * }</pre>
+   *
+   * <p>However, the following message will compare equal to none of these:
+   *
+   * <pre>{@code
+   * message4: {
+   *   foo: {
+   *     bar: 1
+   *     bar: 3
+   *   }
+   *   foo: {
+   *     bar: 2
+   *     bar: 4
+   *   }
+   * }
+   * }</pre>
+   *
+   * <p>This setting does not apply to map fields, for which field order is always ignored. The
+   * serialization order of map fields is undefined, and it may change from runtime to runtime.
+   */
   public ProtoFluentAssertion ignoringRepeatedFieldOrder() {
     return usingConfig(config.ignoringRepeatedFieldOrder());
   }
 
-  @Override
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified top-level field
+   * numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
+   * (via {@link FieldDescriptor}) if their orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
   public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFields(
       int firstFieldNumber, int... rest) {
     return usingConfig(config.ignoringRepeatedFieldOrderOfFields(asList(firstFieldNumber, rest)));
   }
 
-  @Override
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified top-level field
+   * numbers should be ignored when comparing for equality. Sub-fields must be specified explicitly
+   * (via {@link FieldDescriptor}) if their orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
   public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFields(Iterable<Integer> fieldNumbers) {
     return usingConfig(config.ignoringRepeatedFieldOrderOfFields(fieldNumbers));
   }
 
-  @Override
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+   * should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
+   * orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
   public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
     return usingConfig(
         config.ignoringRepeatedFieldOrderOfFieldDescriptors(asList(firstFieldDescriptor, rest)));
   }
 
-  @Override
+  /**
+   * Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+   * should be ignored when comparing for equality. Sub-fields must be specified explicitly if their
+   * orders are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringRepeatedFieldOrder()} instead to ignore order for all fields.
+   *
+   * @see #ignoringRepeatedFieldOrder() for details.
+   */
   public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFieldDescriptors(
       Iterable<FieldDescriptor> fieldDescriptors) {
     return usingConfig(config.ignoringRepeatedFieldOrderOfFieldDescriptors(fieldDescriptors));
   }
 
-  @Override
+  /**
+   * Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
+   * not found in the 'expected' proto are ignored, with the exception of fields in the expected
+   * proto which are empty. To ignore empty repeated fields as well, use {@link
+   * #comparingExpectedFieldsOnly}.
+   *
+   * <p>This rule is applied independently from {@link #ignoringRepeatedFieldOrder}. If ignoring
+   * repeated field order AND extra repeated field elements, all that is tested is that the expected
+   * elements comprise a subset of the actual elements. If not ignoring repeated field order, but
+   * still ignoring extra repeated field elements, the actual elements must contain a subsequence
+   * that matches the expected elements for the test to pass. (The subsequence rule does not apply
+   * to Map fields, which are always compared by key.)
+   */
   public ProtoFluentAssertion ignoringExtraRepeatedFieldElements() {
     return usingConfig(config.ignoringExtraRepeatedFieldElements());
   }
 
-  @Override
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified top-level field
+   * numbers should be ignored. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if their extra elements are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
   public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFields(
       int firstFieldNumber, int... rest) {
     return usingConfig(
         config.ignoringExtraRepeatedFieldElementsOfFields(asList(firstFieldNumber, rest)));
   }
 
-  @Override
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified top-level field
+   * numbers should be ignored. Sub-fields must be specified explicitly (via {@link
+   * FieldDescriptor}) if their extra elements are to be ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
   public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFields(
       Iterable<Integer> fieldNumbers) {
     return usingConfig(config.ignoringExtraRepeatedFieldElementsOfFields(fieldNumbers));
   }
 
-  @Override
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified field descriptors
+   * should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
+   * ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
   public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
       FieldDescriptor first, FieldDescriptor... rest) {
     return usingConfig(
         config.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(asList(first, rest)));
   }
 
-  @Override
+  /**
+   * Specifies that extra repeated field elements for these explicitly specified field descriptors
+   * should be ignored. Sub-fields must be specified explicitly if their extra elements are to be
+   * ignored as well.
+   *
+   * <p>Use {@link #ignoringExtraRepeatedFieldElements()} instead to ignore these for all fields.
+   *
+   * @see #ignoringExtraRepeatedFieldElements() for details.
+   */
   public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
       Iterable<FieldDescriptor> fieldDescriptors) {
     return usingConfig(
         config.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(fieldDescriptors));
   }
 
-  @Override
+  /**
+   * Compares double fields as equal if they are both finite and their absolute difference is less
+   * than or equal to {@code tolerance}.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingDoubleTolerance(double tolerance) {
     return usingConfig(config.usingDoubleTolerance(tolerance));
   }
 
-  @Override
+  /**
+   * Compares double fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingDoubleToleranceForFields(
       double tolerance, int firstFieldNumber, int... rest) {
     return usingConfig(
         config.usingDoubleToleranceForFields(tolerance, asList(firstFieldNumber, rest)));
   }
 
-  @Override
+  /**
+   * Compares double fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingDoubleToleranceForFields(
       double tolerance, Iterable<Integer> fieldNumbers) {
     return usingConfig(config.usingDoubleToleranceForFields(tolerance, fieldNumbers));
   }
 
-  @Override
+  /**
+   * Compares double fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingDoubleToleranceForFieldDescriptors(
       double tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
     return usingConfig(
@@ -189,31 +390,56 @@ public class ProtoSubject extends LiteProtoSubject implements ProtoFluentAsserti
             tolerance, asList(firstFieldDescriptor, rest)));
   }
 
-  @Override
+  /**
+   * Compares double fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingDoubleToleranceForFieldDescriptors(
       double tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
     return usingConfig(config.usingDoubleToleranceForFieldDescriptors(tolerance, fieldDescriptors));
   }
 
-  @Override
+  /**
+   * Compares float fields as equal if they are both finite and their absolute difference is less
+   * than or equal to {@code tolerance}.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingFloatTolerance(float tolerance) {
     return usingConfig(config.usingFloatTolerance(tolerance));
   }
 
-  @Override
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingFloatToleranceForFields(
       float tolerance, int firstFieldNumber, int... rest) {
     return usingConfig(
         config.usingFloatToleranceForFields(tolerance, asList(firstFieldNumber, rest)));
   }
 
-  @Override
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingFloatToleranceForFields(
       float tolerance, Iterable<Integer> fieldNumbers) {
     return usingConfig(config.usingFloatToleranceForFields(tolerance, fieldNumbers));
   }
 
-  @Override
+  /**
+   * Compares float fields with these explicitly specified fields using the provided absolute
+   * tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingFloatToleranceForFieldDescriptors(
       float tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
     return usingConfig(
@@ -221,49 +447,131 @@ public class ProtoSubject extends LiteProtoSubject implements ProtoFluentAsserti
             tolerance, asList(firstFieldDescriptor, rest)));
   }
 
-  @Override
+  /**
+   * Compares float fields with these explicitly specified top-level field numbers using the
+   * provided absolute tolerance.
+   *
+   * @param tolerance A finite, non-negative tolerance.
+   */
   public ProtoFluentAssertion usingFloatToleranceForFieldDescriptors(
       float tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
     return usingConfig(config.usingFloatToleranceForFieldDescriptors(tolerance, fieldDescriptors));
   }
 
-  @Override
+  /**
+   * Limits the comparison of Protocol buffers to the fields set in the expected proto(s). When
+   * multiple protos are specified, the comparison is limited to the union of set fields in all the
+   * expected protos.
+   *
+   * <p>The "expected proto(s)" are those passed to the void method at the end of the {@code
+   * ProtoFluentAssertion} call-chain: For example, {@link #isEqualTo(Message)}, or {@link
+   * #isNotEqualTo(Message)}.
+   *
+   * <p>Fields not set in the expected proto(s) are ignored. In particular, proto3 fields which have
+   * their default values are ignored, as these are indistinguishable from unset fields. If you want
+   * to assert that a proto3 message has certain fields with default values, you cannot use this
+   * method.
+   */
   public ProtoFluentAssertion comparingExpectedFieldsOnly() {
     return usingConfig(config.comparingExpectedFieldsOnly());
   }
 
-  @Override
+  /**
+   * Limits the comparison of Protocol buffers to the defined {@link FieldScope}.
+   *
+   * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
+   * ProtoFluentAssertion} is already scoped to a {@link FieldScope} {@code X}, and this method is
+   * invoked with {@link FieldScope} {@code Y}, the resultant {@link ProtoFluentAssertion} is
+   * constrained to the intersection of {@link FieldScope}s {@code X} and {@code Y}.
+   *
+   * <p>By default, {@link ProtoFluentAssertion} is constrained to {@link FieldScopes#all()}, that
+   * is, no fields are excluded from comparison.
+   */
   public ProtoFluentAssertion withPartialScope(FieldScope fieldScope) {
     return usingConfig(config.withPartialScope(checkNotNull(fieldScope, "fieldScope")));
   }
 
-  @Override
+  /**
+   * Excludes the top-level message fields with the given tag numbers from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * numbers are ignored, and all sub-messages of type {@code M} will also have these field numbers
+   * ignored.
+   *
+   * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
+   * runtime exception.
+   */
   public ProtoFluentAssertion ignoringFields(int firstFieldNumber, int... rest) {
     return ignoringFields(asList(firstFieldNumber, rest));
   }
 
-  @Override
+  /**
+   * Excludes the top-level message fields with the given tag numbers from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * numbers are ignored, and all sub-messages of type {@code M} will also have these field numbers
+   * ignored.
+   *
+   * <p>If an invalid field number is supplied, the terminal comparison operation will throw a
+   * runtime exception.
+   */
   public ProtoFluentAssertion ignoringFields(Iterable<Integer> fieldNumbers) {
     return usingConfig(config.ignoringFields(fieldNumbers));
   }
 
-  @Override
+  /**
+   * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * descriptors are ignored, no matter where they occur in the tree.
+   *
+   * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
+   * is silently ignored.
+   */
   public ProtoFluentAssertion ignoringFieldDescriptors(
       FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
     return ignoringFieldDescriptors(asList(firstFieldDescriptor, rest));
   }
 
-  @Override
+  /**
+   * Excludes all message fields matching the given {@link FieldDescriptor}s from the comparison.
+   *
+   * <p>This method adds on any previous {@link FieldScope} related settings, overriding previous
+   * changes to ensure the specified fields are ignored recursively. All sub-fields of these field
+   * descriptors are ignored, no matter where they occur in the tree.
+   *
+   * <p>If a field descriptor which does not, or cannot occur in the proto structure is supplied, it
+   * is silently ignored.
+   */
   public ProtoFluentAssertion ignoringFieldDescriptors(Iterable<FieldDescriptor> fieldDescriptors) {
     return usingConfig(config.ignoringFieldDescriptors(fieldDescriptors));
   }
 
-  @Override
+  /**
+   * Excludes all specific field paths under the argument {@link FieldScope} from the comparison.
+   *
+   * <p>This method is additive and has well-defined ordering semantics. If the invoking {@link
+   * ProtoFluentAssertion} is already scoped to a {@link FieldScope} {@code X}, and this method is
+   * invoked with {@link FieldScope} {@code Y}, the resultant {@link ProtoFluentAssertion} is
+   * constrained to the subtraction of {@code X - Y}.
+   *
+   * <p>By default, {@link ProtoFluentAssertion} is constrained to {@link FieldScopes#all()}, that
+   * is, no fields are excluded from comparison.
+   */
   public ProtoFluentAssertion ignoringFieldScope(FieldScope fieldScope) {
     return usingConfig(config.ignoringFieldScope(checkNotNull(fieldScope, "fieldScope")));
   }
 
-  @Override
+  /**
+   * If set, in the event of a comparison failure, the error message printed will list only those
+   * specific fields that did not match between the actual and expected values. Useful for very
+   * large protocol buffers.
+   *
+   * <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.
+   */
   public ProtoFluentAssertion reportingMismatchesOnly() {
     return usingConfig(config.reportingMismatchesOnly());
   }
@@ -312,20 +620,6 @@ public class ProtoSubject extends LiteProtoSubject implements ProtoFluentAsserti
     }
   }
 
-  /**
-   * Same as {@link #isEqualTo(Object)}, except it returns true on success and false on failure
-   * without throwing any exceptions.
-   */
-  boolean testIsEqualTo(@NullableDecl Object expected) {
-    if (notMessagesWithSameDescriptor(actual, expected)) {
-      return Objects.equal(actual, expected);
-    } else {
-      return makeDifferencer((Message) expected)
-          .diffMessages(actual, (Message) expected)
-          .isMatched();
-    }
-  }
-
   @Override
   public void isNotEqualTo(@NullableDecl Object expected) {
     if (notMessagesWithSameDescriptor(actual, expected)) {
@@ -356,5 +650,225 @@ public class ProtoSubject extends LiteProtoSubject implements ProtoFluentAsserti
     return config
         .withExpectedMessages(Arrays.asList(expected))
         .toMessageDifferencer(actual.getDescriptorForType());
+  }
+
+  static final class ProtoFluentAssertionImpl implements ProtoFluentAssertion {
+    private final ProtoSubject protoSubject;
+
+    ProtoFluentAssertionImpl(ProtoSubject protoSubject) {
+      this.protoSubject = protoSubject;
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFieldAbsence() {
+      return protoSubject.ignoringFieldAbsence();
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFieldAbsenceOfFields(int firstFieldNumber, int... rest) {
+      return protoSubject.ignoringFieldAbsenceOfFields(firstFieldNumber, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFieldAbsenceOfFields(Iterable<Integer> fieldNumbers) {
+      return protoSubject.ignoringFieldAbsenceOfFields(fieldNumbers);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFieldAbsenceOfFieldDescriptors(
+        FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return protoSubject.ignoringFieldAbsenceOfFieldDescriptors(firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFieldAbsenceOfFieldDescriptors(
+        Iterable<FieldDescriptor> fieldDescriptors) {
+      return protoSubject.ignoringFieldAbsenceOfFieldDescriptors(fieldDescriptors);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringRepeatedFieldOrder() {
+      return protoSubject.ignoringRepeatedFieldOrder();
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFields(
+        int firstFieldNumber, int... rest) {
+      return protoSubject.ignoringRepeatedFieldOrderOfFields(firstFieldNumber, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFields(Iterable<Integer> fieldNumbers) {
+      return protoSubject.ignoringRepeatedFieldOrderOfFields(fieldNumbers);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFieldDescriptors(
+        FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return protoSubject.ignoringRepeatedFieldOrderOfFieldDescriptors(firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringRepeatedFieldOrderOfFieldDescriptors(
+        Iterable<FieldDescriptor> fieldDescriptors) {
+      return protoSubject.ignoringRepeatedFieldOrderOfFieldDescriptors(fieldDescriptors);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringExtraRepeatedFieldElements() {
+      return protoSubject.ignoringExtraRepeatedFieldElements();
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFields(
+        int firstFieldNumber, int... rest) {
+      return protoSubject.ignoringExtraRepeatedFieldElementsOfFields(firstFieldNumber, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFields(
+        Iterable<Integer> fieldNumbers) {
+      return protoSubject.ignoringExtraRepeatedFieldElementsOfFields(fieldNumbers);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+        FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return protoSubject.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+          firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringExtraRepeatedFieldElementsOfFieldDescriptors(
+        Iterable<FieldDescriptor> fieldDescriptors) {
+      return protoSubject.ignoringExtraRepeatedFieldElementsOfFieldDescriptors(fieldDescriptors);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingDoubleTolerance(double tolerance) {
+      return protoSubject.usingDoubleTolerance(tolerance);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingDoubleToleranceForFields(
+        double tolerance, int firstFieldNumber, int... rest) {
+      return protoSubject.usingDoubleToleranceForFields(tolerance, firstFieldNumber, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingDoubleToleranceForFields(
+        double tolerance, Iterable<Integer> fieldNumbers) {
+      return protoSubject.usingDoubleToleranceForFields(tolerance, fieldNumbers);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingDoubleToleranceForFieldDescriptors(
+        double tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return protoSubject.usingDoubleToleranceForFieldDescriptors(
+          tolerance, firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingDoubleToleranceForFieldDescriptors(
+        double tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+      return protoSubject.usingDoubleToleranceForFieldDescriptors(tolerance, fieldDescriptors);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingFloatTolerance(float tolerance) {
+      return protoSubject.usingFloatTolerance(tolerance);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingFloatToleranceForFields(
+        float tolerance, int firstFieldNumber, int... rest) {
+      return protoSubject.usingFloatToleranceForFields(tolerance, firstFieldNumber, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingFloatToleranceForFields(
+        float tolerance, Iterable<Integer> fieldNumbers) {
+      return protoSubject.usingFloatToleranceForFields(tolerance, fieldNumbers);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingFloatToleranceForFieldDescriptors(
+        float tolerance, FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return protoSubject.usingFloatToleranceForFieldDescriptors(
+          tolerance, firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion usingFloatToleranceForFieldDescriptors(
+        float tolerance, Iterable<FieldDescriptor> fieldDescriptors) {
+      return protoSubject.usingFloatToleranceForFieldDescriptors(tolerance, fieldDescriptors);
+    }
+
+    @Override
+    public ProtoFluentAssertion comparingExpectedFieldsOnly() {
+      return protoSubject.comparingExpectedFieldsOnly();
+    }
+
+    @Override
+    public ProtoFluentAssertion withPartialScope(FieldScope fieldScope) {
+      return protoSubject.withPartialScope(fieldScope);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFields(int firstFieldNumber, int... rest) {
+      return protoSubject.ignoringFields(firstFieldNumber, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFields(Iterable<Integer> fieldNumbers) {
+      return protoSubject.ignoringFields(fieldNumbers);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFieldDescriptors(
+        FieldDescriptor firstFieldDescriptor, FieldDescriptor... rest) {
+      return protoSubject.ignoringFieldDescriptors(firstFieldDescriptor, rest);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFieldDescriptors(
+        Iterable<FieldDescriptor> fieldDescriptors) {
+      return protoSubject.ignoringFieldDescriptors(fieldDescriptors);
+    }
+
+    @Override
+    public ProtoFluentAssertion ignoringFieldScope(FieldScope fieldScope) {
+      return protoSubject.ignoringFieldScope(fieldScope);
+    }
+
+    @Override
+    public ProtoFluentAssertion reportingMismatchesOnly() {
+      return protoSubject.reportingMismatchesOnly();
+    }
+
+    @Override
+    public void isEqualTo(@NullableDecl Message expected) {
+      protoSubject.isEqualTo(expected);
+    }
+
+    @Override
+    public void isNotEqualTo(@NullableDecl Message expected) {
+      protoSubject.isNotEqualTo(expected);
+    }
+
+    /**
+     * Same as {@link #isEqualTo(Message)}, except it returns true on success and false on failure
+     * without throwing any exceptions.
+     */
+    boolean testIsEqualTo(@NullableDecl Message expected) {
+      if (notMessagesWithSameDescriptor(protoSubject.actual, expected)) {
+        return Objects.equal(protoSubject.actual, expected);
+      } else {
+        return protoSubject
+            .makeDifferencer(expected)
+            .diffMessages(protoSubject.actual, expected)
+            .isMatched();
+      }
+    }
   }
 }
