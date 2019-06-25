@@ -78,23 +78,6 @@ public final class OptionalDoubleSubject extends Subject {
     }
   }
 
-  /**
-   * Prepares for a check regarding the value contained within the {@link OptionalDouble}. Fails
-   * immediately if the subject is empty.
-   *
-   * @deprecated Instead of {@code assertThat(optional).hasValueThat()....}, use {@code
-   *     assertThat(optional.getAsDouble())....}.
-  */
-  @Deprecated
-  public DoubleSubject hasValueThat() {
-    if (actual == null || !actual.isPresent()) {
-      isPresent(); // fails
-      return ignoreCheck().that(0.0);
-    } else {
-      return check("getAsDouble()").that(actual.getAsDouble());
-    }
-  }
-
   public static Subject.Factory<OptionalDoubleSubject, OptionalDouble> optionalDoubles() {
     return (metadata, subject) -> new OptionalDoubleSubject(metadata, subject, "optionalDouble");
   }

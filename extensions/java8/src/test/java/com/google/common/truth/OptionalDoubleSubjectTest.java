@@ -93,31 +93,6 @@ public class OptionalDoubleSubjectTest {
     assertThat(expected).factValue("value of").isEqualTo("optionalDouble.getAsDouble()");
   }
 
-  @Test
-  public void hasValueThat_FailingWithEmpty() {
-    AssertionError expected =
-        expectFailure(
-            whenTesting -> {
-              DoubleSubject unused = whenTesting.that(OptionalDouble.empty()).hasValueThat();
-            });
-    assertThat(expected).factKeys().containsExactly("expected to be present");
-  }
-
-  @Test
-  public void hasValueThat_FailingWithComparison() {
-    AssertionError expected =
-        expectFailure(
-            whenTesting ->
-                whenTesting.that(OptionalDouble.of(1337.0)).hasValueThat().isLessThan(42.0));
-    // TODO(cpovirk): Assert that "value of" is present once we set it:
-    // assertThat(expected).fieldValue("value of").isEqualTo("optionalDouble.getAsDouble()");
-  }
-
-  @Test
-  public void hasValueThat_SuccessWithComparison() {
-    assertThat(OptionalDouble.of(1337.0)).hasValueThat().isGreaterThan(42.0);
-  }
-
   private static AssertionError expectFailure(
       ExpectFailure.SimpleSubjectBuilderCallback<OptionalDoubleSubject, OptionalDouble>
           assertionCallback) {

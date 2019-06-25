@@ -33,7 +33,7 @@ public class ExpectFailureRuleTest {
 
   @Test
   public void expectFail_captureFailureAsExpected() {
-    expectFailure.whenTesting().fail("abc");
+    expectFailure.whenTesting().withMessage("abc").fail();
     assertThat(expectFailure.getFailure()).hasMessageThat().isEqualTo("abc");
   }
 
