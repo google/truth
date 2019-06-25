@@ -23,7 +23,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * Fluent API to perform detailed, customizable comparison of Protocol buffers.
  *
  * <p>Methods may be chained in any order, but the chain should terminate with {@link
- * #isEqualTo(Object)} or {@link #isNotEqualTo(Object)}.
+ * #isEqualTo(Message)} or {@link #isNotEqualTo(Message)}.
  *
  * <p>The state of a {@code ProtoFluentAssertion} object after each method is called is left
  * undefined. Users should not retain references to {@code ProtoFluentAssertion} instances.
@@ -357,8 +357,8 @@ public interface ProtoFluentAssertion {
    * expected protos.
    *
    * <p>The "expected proto(s)" are those passed to the void method at the end of the {@code
-   * ProtoFluentAssertion} call-chain: For example, {@link #isEqualTo(Object)}, or {@link
-   * #isNotEqualTo(Object)}.
+   * ProtoFluentAssertion} call-chain: For example, {@link #isEqualTo(Message)}, or {@link
+   * #isNotEqualTo(Message)}.
    *
    * <p>Fields not set in the expected proto(s) are ignored. In particular, proto3 fields which have
    * their default values are ignored, as these are indistinguishable from unset fields. If you want
@@ -458,18 +458,18 @@ public interface ProtoFluentAssertion {
    * earlier operations. If no settings are changed, this invokes the default {@code equals}
    * implementation of the subject {@link Message}.
    */
-  void isEqualTo(@NullableDecl Object expected);
+  void isEqualTo(@NullableDecl Message expected);
 
   /**
    * Compares the subject of the assertion to {@code expected}, expecting a difference, using all of
    * the rules specified by earlier operations. If no settings are changed, this invokes the default
    * {@code equals} implementation of the subject {@link Message}.
    */
-  void isNotEqualTo(@NullableDecl Object expected);
+  void isNotEqualTo(@NullableDecl Message expected);
 
   /**
    * @deprecated Do not call {@code equals()} on a {@code ProtoFluentAssertion}. Use {@link
-   *     #isEqualTo(Object)} instead.
+   *     #isEqualTo(Message)} instead.
    * @see com.google.common.truth.Subject#equals(Object)
    */
   @Override
@@ -478,7 +478,7 @@ public interface ProtoFluentAssertion {
 
   /**
    * @deprecated {@code ProtoFluentAssertion} does not support {@code hashCode()}. Use {@link
-   *     #isEqualTo(Object)} for testing.
+   *     #isEqualTo(Message)} for testing.
    * @see com.google.common.truth.Subject#hashCode()
    */
   @Override
