@@ -255,8 +255,6 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-com.google.common.collect.Table-">assertThat(Table&lt;?, ?, ?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat-com.google.common.util.concurrent.AtomicLongMap-">assertThat(AtomicLongMap&lt;?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth8.html#assertThat-java.util.Optional-">assertThat(Optional&lt;?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth8.html" title="class in com.google.common.truth">Truth8</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth8.html#assertThat-java.util.OptionalInt-">assertThat(OptionalInt)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth8.html" title="class in com.google.common.truth">Truth8</a></dt>
@@ -284,10 +282,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/TruthJUnit.html#assume--">assume()</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/TruthJUnit.html" title="class in com.google.common.truth">TruthJUnit</a></dt>
 <dd>
 <div class="block">Begins a call chain with the fluent Truth API.</div>
-</dd>
-<dt><a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">AtomicLongMapSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
-<dd>
-<div class="block">Propositions for <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> subjects.</div>
 </dd>
 </dl>
 <a name="I:B">
@@ -356,7 +350,9 @@
 <div class="block">Limits the comparison of Protocol buffers to the fields set in the expected proto(s).</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#comparingExpectedFieldsOnly--">comparingExpectedFieldsOnly()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Limits the comparison of Protocol buffers to the fields set in the expected proto(s).</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#comparingExpectedFieldsOnlyForValues--">comparingExpectedFieldsOnlyForValues()</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Limits the comparison of Protocol buffers to the fields set in the expected proto(s).</div>
@@ -614,10 +610,6 @@
 <dd>
 <div class="block">Fails if the table does not contain the given column key.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#containsEntry-java.lang.Object-long-">containsEntry(Object, long)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not contain the given entry.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#containsEntry-java.lang.Object-M-">containsEntry(Object, M)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Fails if the map does not contain an entry with the given key and a value that corresponds to
@@ -785,10 +777,6 @@
 <div class="block">Fails if the map does not contain exactly the keys in the given multimap, mapping to values
  that correspond to the values of the given multimap.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#containsKey-java.lang.Object-">containsKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not contain the given key.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#containsKey-java.lang.Object-">containsKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
 <div class="block">Fails if the map does not contain the given key.</div>
@@ -954,19 +942,6 @@
 </a>
 <h2 class="title">D</h2>
 <dl>
-<dt><a href="com/google/common/truth/DefaultSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">DefaultSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> instead. At the moment, <code>Subject</code> has type
-     parameters, so you may wish to use <code>Subject&lt;?, ?&gt;</code>. However, those type parameters will
-     soon go away, so you may wish to start using raw <code>Subject</code> now to prepare.</span></div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/DefaultSubject.html#DefaultSubject-com.google.common.truth.FailureMetadata-java.lang.Object-">DefaultSubject(FailureMetadata, Object)</a></span> - Constructor for class com.google.common.truth.<a href="com/google/common/truth/DefaultSubject.html" title="class in com.google.common.truth">DefaultSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-<div class="block">Constructor for use by subclasses.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#displayingDiffsPairedBy-com.google.common.base.Function-">displayingDiffsPairedBy(Function&lt;? super M, ?&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a></dt>
 <dd>
 <div class="block">Specifies a way to pair up unexpected and missing elements in the message when an assertion
@@ -1031,8 +1006,6 @@
 <dd>
 <div class="block">Fails if the table contains the given cell.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#doesNotContainEntry-java.lang.Object-long-">doesNotContainEntry(Object, long)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#doesNotContainEntry-java.lang.Object-M-">doesNotContainEntry(Object, M)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Fails if the map contains an entry with the given key and a value that corresponds to the given
@@ -1060,10 +1033,6 @@
 <dd>
 <div class="block">Fails if the multimap contains an entry with the given key and a value that corresponds to
  the given value.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#doesNotContainKey-java.lang.Object-">doesNotContainKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> contains the given key.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#doesNotContainKey-java.lang.Object-">doesNotContainKey(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>
@@ -1159,7 +1128,7 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#equals-java.lang.Object-">equals(Object)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dt>
 <dd>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>ProtoFluentAssertion.isEqualTo(Object)</code></a> instead.</span></div>
+<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>ProtoFluentAssertion.isEqualTo(Message)</code></a> instead.</span></div>
 </div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#equals-java.lang.Object-">equals(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html" title="class in com.google.common.truth">FloatSubject.TolerantFloatComparison</a></dt>
@@ -1242,11 +1211,7 @@
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#fail--">fail()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>
-<div class="block">Triggers the failure strategy with an empty failure message</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#fail-java.lang.String-java.lang.Object...-">fail(String, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
-<dd>
-<div class="block">Triggers the failure strategy with the given failure message</div>
+<div class="block">Reports a failure.</div>
 </dd>
 <dt><a href="com/google/common/truth/FailureMetadata.html" title="class in com.google.common.truth"><span class="typeNameLink">FailureMetadata</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
@@ -1402,7 +1367,7 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#hashCode--">hashCode()</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dt>
 <dd>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment"><code>ProtoFluentAssertion</code> does not support <code>hashCode()</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>ProtoFluentAssertion.isEqualTo(Object)</code></a> for testing.</span></div>
+<div class="block"><span class="deprecationComment"><code>ProtoFluentAssertion</code> does not support <code>hashCode()</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>ProtoFluentAssertion.isEqualTo(Message)</code></a> for testing.</span></div>
 </div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#hashCode--">hashCode()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html" title="class in com.google.common.truth">FloatSubject.TolerantFloatComparison</a></dt>
@@ -1424,10 +1389,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/ThrowableSubject.html#hasMessageThat--">hasMessageThat()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/ThrowableSubject.html" title="class in com.google.common.truth">ThrowableSubject</a></dt>
 <dd>
 <div class="block">Returns a <code>StringSubject</code> to make assertions about the throwable's message.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#hasSize-int-">hasSize(int)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not have the given size.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#hasSize-int-">hasSize(int)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
@@ -1457,10 +1418,6 @@
 <dd>
 <div class="block">Fails if the table does not have the given size.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#hasSum-long-">hasSum(long)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not have the given sum.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/GuavaOptionalSubject.html#hasValue-java.lang.Object-">hasValue(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/GuavaOptionalSubject.html" title="class in com.google.common.truth">GuavaOptionalSubject</a></dt>
 <dd>
 <div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/base/Optional.html?is-external=true" title="class or interface in com.google.common.base"><code>Optional</code></a><code>&lt;T&gt;</code> does not have the given value or the subject is null.</div>
@@ -1480,18 +1437,6 @@
 <dt><span class="memberNameLink"><a href="com/google/common/truth/OptionalSubject.html#hasValue-java.lang.Object-">hasValue(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalSubject.html" title="class in com.google.common.truth">OptionalSubject</a></dt>
 <dd>
 <div class="block">Fails if the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util"><code>Optional</code></a><code>&lt;T&gt;</code> does not have the given value or the subject is null.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/OptionalDoubleSubject.html#hasValueThat--">hasValueThat()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalDoubleSubject.html" title="class in com.google.common.truth">OptionalDoubleSubject</a></dt>
-<dd>
-<div class="block">Prepares for a check regarding the value contained within the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/OptionalDouble.html?is-external=true" title="class or interface in java.util"><code>OptionalDouble</code></a>.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/OptionalIntSubject.html#hasValueThat--">hasValueThat()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalIntSubject.html" title="class in com.google.common.truth">OptionalIntSubject</a></dt>
-<dd>
-<div class="block">Prepares for a check regarding the value contained within the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/OptionalInt.html?is-external=true" title="class or interface in java.util"><code>OptionalInt</code></a>.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/OptionalLongSubject.html#hasValueThat--">hasValueThat()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/OptionalLongSubject.html" title="class in com.google.common.truth">OptionalLongSubject</a></dt>
-<dd>
-<div class="block">Prepares for a check regarding the value contained within the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/OptionalLong.html?is-external=true" title="class or interface in java.util"><code>OptionalLong</code></a>.</div>
 </dd>
 </dl>
 <a name="I:I">
@@ -1526,7 +1471,11 @@
  proto which are empty.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElements--">ignoringExtraRepeatedFieldElements()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
+ not found in the 'expected' proto are ignored, with the exception of fields in the expected
+ proto which are empty.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringExtraRepeatedFieldElementsForValues--">ignoringExtraRepeatedFieldElementsForValues()</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
@@ -1582,9 +1531,15 @@
  should be ignored.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringExtraRepeatedFieldElementsOfFieldDescriptors(Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
+ should be ignored.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptors-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFieldDescriptors(Iterable&lt;Descriptors.FieldDescriptor&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
+ should be ignored.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringExtraRepeatedFieldElementsOfFieldDescriptorsForValues(Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
@@ -1656,9 +1611,15 @@
  numbers should be ignored.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFields-int-int...-">ignoringExtraRepeatedFieldElementsOfFields(int, int...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
+ numbers should be ignored.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFields-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFields(Iterable&lt;Integer&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
+ numbers should be ignored.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringExtraRepeatedFieldElementsOfFieldsForValues-int-int...-">ignoringExtraRepeatedFieldElementsOfFieldsForValues(int, int...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
@@ -1715,7 +1676,10 @@
  equality.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsence--">ignoringFieldAbsence()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the 'has' bit of individual fields should be ignored when comparing for
+ equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringFieldAbsenceForValues--">ignoringFieldAbsenceForValues()</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that the 'has' bit of individual fields should be ignored when comparing for
@@ -1767,9 +1731,15 @@
  when comparing for equality.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldAbsenceOfFieldDescriptors(Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+ when comparing for equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFieldDescriptors-java.lang.Iterable-">ignoringFieldAbsenceOfFieldDescriptors(Iterable&lt;Descriptors.FieldDescriptor&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+ when comparing for equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringFieldAbsenceOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldAbsenceOfFieldDescriptorsForValues(Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
@@ -1841,9 +1811,15 @@
  ignored when comparing for equality.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFields-int-int...-">ignoringFieldAbsenceOfFields(int, int...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+ ignored when comparing for equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFields-java.lang.Iterable-">ignoringFieldAbsenceOfFields(Iterable&lt;Integer&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+ ignored when comparing for equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringFieldAbsenceOfFieldsForValues-int-int...-">ignoringFieldAbsenceOfFieldsForValues(int, int...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
@@ -1928,9 +1904,13 @@
 <div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldDescriptors(Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldDescriptors-java.lang.Iterable-">ignoringFieldDescriptors(Iterable&lt;Descriptors.FieldDescriptor&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldDescriptorsForValues(Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.</div>
@@ -2008,9 +1988,13 @@
 <div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFields-int-int...-">ignoringFields(int, int...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFields-java.lang.Iterable-">ignoringFields(Iterable&lt;Integer&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#ignoringFieldScope-com.google.common.truth.extensions.proto.FieldScope-">ignoringFieldScope(FieldScope)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
 <div class="block">Excludes all specific field paths under the argument <a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> from the comparison.</div>
@@ -2024,7 +2008,9 @@
 <div class="block">Excludes all specific field paths under the argument <a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> from the comparison.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldScope-com.google.common.truth.extensions.proto.FieldScope-">ignoringFieldScope(FieldScope)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Excludes all specific field paths under the argument <a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> from the comparison.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringFieldScopeForValues-com.google.common.truth.extensions.proto.FieldScope-">ignoringFieldScopeForValues(FieldScope)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Excludes all specific field paths under the argument <a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> from the comparison.</div>
@@ -2089,7 +2075,10 @@
  for equality.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrder--">ignoringRepeatedFieldOrder()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
+ for equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringRepeatedFieldOrderForValues--">ignoringRepeatedFieldOrderForValues()</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
@@ -2141,9 +2130,15 @@
  should be ignored when comparing for equality.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringRepeatedFieldOrderOfFieldDescriptors(Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+ should be ignored when comparing for equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptors-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFieldDescriptors(Iterable&lt;Descriptors.FieldDescriptor&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+ should be ignored when comparing for equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringRepeatedFieldOrderOfFieldDescriptorsForValues-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringRepeatedFieldOrderOfFieldDescriptorsForValues(Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
@@ -2215,9 +2210,15 @@
  numbers should be ignored when comparing for equality.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFields-int-int...-">ignoringRepeatedFieldOrderOfFields(int, int...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
+ numbers should be ignored when comparing for equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFields-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFields(Iterable&lt;Integer&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
+ numbers should be ignored when comparing for equality.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#ignoringRepeatedFieldOrderOfFieldsForValues-int-int...-">ignoringRepeatedFieldOrderOfFieldsForValues(int, int...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
@@ -2302,10 +2303,6 @@
 <dd>
 <div class="block">Checks that the subject is less than or equal to <code>other</code>.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#isEmpty--">isEmpty()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> is not empty.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#isEmpty--">isEmpty()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
 <div class="block">Fails if the subject is not empty.</div>
@@ -2354,14 +2351,6 @@
 <dd>
 <div class="block">Fails if the table is not empty.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment"><a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not define equality (i.e., it does not implement
-     equals()), so you probably don't want to call this method. Instead, perform your assertion
-     on the map view (e.g., assertThat(atomicLongMap.asMap()).isEqualTo(EXPECTED_MAP)).</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/BigDecimalSubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/BigDecimalSubject.html" title="class in com.google.common.truth">BigDecimalSubject</a></dt>
 <dd>
 <div class="block">Fails if the subject's value and scale is not equal to the given <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math"><code>BigDecimal</code></a>.</div>
@@ -2383,7 +2372,7 @@
      or <code>buildPartial()</code> on the argument to get a MessageLite for comparison instead.</span></div>
 </div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-">isEqualTo(Message)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dt>
 <dd>
 <div class="block">Compares the subject of the assertion to <code>expected</code>, using all of the rules specified by
  earlier operations.</div>
@@ -2395,10 +2384,10 @@
 <div class="block">Asserts that the subject is exactly equal to the given value, with equality defined as by
  <code>Float#equals</code>.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
-<dd>
-<div class="block">Fails if the subject is not equal to the given object.</div>
-</dd>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MultimapSubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/PrimitiveDoubleArraySubject.html#isEqualTo-java.lang.Object-">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/PrimitiveDoubleArraySubject.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject</a></dt>
@@ -2626,10 +2615,6 @@
 <dd>
 <div class="block">Asserts that the subject is a non-null value other than zero (i.e.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#isNotEmpty--">isNotEmpty()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>
-<div class="block">Fails if the <a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> is empty.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IntStreamSubject.html#isNotEmpty--">isNotEmpty()</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IntStreamSubject.html" title="class in com.google.common.truth">IntStreamSubject</a></dt>
 <dd>
 <div class="block">Fails if the subject is empty.</div>
@@ -2662,14 +2647,6 @@
 <dd>
 <div class="block">Fails if the table is empty.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/AtomicLongMapSubject.html#isNotEqualTo-java.lang.Object-">isNotEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/AtomicLongMapSubject.html" title="class in com.google.common.truth">AtomicLongMapSubject</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment"><a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not define equality (i.e., it does not implement
-     equals()), so you probably don't want to call this method. Instead, perform your assertion
-     on the map view (e.g., assertThat(atomicLongMap.asMap()).isNotEqualTo(UNEXPECTED_MAP)).</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/DoubleSubject.html#isNotEqualTo-java.lang.Double-">isNotEqualTo(Double)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/DoubleSubject.html" title="class in com.google.common.truth">DoubleSubject</a></dt>
 <dd>
 <div class="block">Asserts that the subject is not exactly equal to the given value, with equality defined as by
@@ -2684,7 +2661,7 @@
      or <code>buildPartial()</code> on the argument to get a MessageLite for comparison instead.</span></div>
 </div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isNotEqualTo-java.lang.Object-">isNotEqualTo(Object)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isNotEqualTo-com.google.protobuf.Message-">isNotEqualTo(Message)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></dt>
 <dd>
 <div class="block">Compares the subject of the assertion to <code>expected</code>, expecting a difference, using all of
  the rules specified by earlier operations.</div>
@@ -2726,7 +2703,7 @@
 <dd>
 <div class="block">Checks that the subject is <i>not</i> in <code>range</code>.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#isNotIn-java.lang.Iterable-">isNotIn(Iterable)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#isNotIn-java.lang.Iterable-">isNotIn(Iterable&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="block"><span class="deprecationComment">You probably meant to call <a href="com/google/common/truth/IterableSubject.html#containsNoneIn-java.lang.Iterable-"><code>IterableSubject.containsNoneIn(java.lang.Iterable&lt;?&gt;)</code></a> instead.</span></div>
@@ -3134,7 +3111,10 @@
  specific fields that did not match between the actual and expected values.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#reportingMismatchesOnly--">reportingMismatchesOnly()</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">If set, in the event of a comparison failure, the error message printed will list only those
+ specific fields that did not match between the actual and expected values.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#reportingMismatchesOnlyForValues--">reportingMismatchesOnlyForValues()</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">If set, in the event of a comparison failure, the error message printed will list only those
@@ -3289,8 +3269,6 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-com.google.common.collect.Table-">that(Table&lt;?, ?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StandardSubjectBuilder.html#that-com.google.common.util.concurrent.AtomicLongMap-">that(AtomicLongMap&lt;?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StandardSubjectBuilder.html" title="class in com.google.common.truth">StandardSubjectBuilder</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/google/common/truth/ThrowableSubject.html" title="class in com.google.common.truth"><span class="typeNameLink">ThrowableSubject</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
 <dd>
 <div class="block">Propositions for <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang"><code>Throwable</code></a> subjects.</div>
@@ -3369,7 +3347,10 @@
  than or equal to <code>tolerance</code>.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleTolerance-double-">usingDoubleTolerance(double)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares double fields as equal if they are both finite and their absolute difference is less
+ than or equal to <code>tolerance</code>.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#usingDoubleToleranceForFieldDescriptors-double-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingDoubleToleranceForFieldDescriptors(double, Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
 <div class="block">Compares double fields with these explicitly specified fields using the provided absolute
@@ -3401,9 +3382,15 @@
  tolerance.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleToleranceForFieldDescriptors-double-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingDoubleToleranceForFieldDescriptors(double, Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares double fields with these explicitly specified fields using the provided absolute
+ tolerance.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleToleranceForFieldDescriptors-double-java.lang.Iterable-">usingDoubleToleranceForFieldDescriptors(double, Iterable&lt;Descriptors.FieldDescriptor&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares double fields with these explicitly specified fields using the provided absolute
+ tolerance.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#usingDoubleToleranceForFieldDescriptorsForValues-double-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingDoubleToleranceForFieldDescriptorsForValues(double, Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Compares double fields with these explicitly specified fields using the provided absolute
@@ -3475,9 +3462,15 @@
  provided absolute tolerance.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleToleranceForFields-double-int-int...-">usingDoubleToleranceForFields(double, int, int...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares double fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleToleranceForFields-double-java.lang.Iterable-">usingDoubleToleranceForFields(double, Iterable&lt;Integer&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares double fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#usingDoubleToleranceForFieldsForValues-double-int-int...-">usingDoubleToleranceForFieldsForValues(double, int, int...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Compares double fields with these explicitly specified top-level field numbers using the
@@ -3562,7 +3555,10 @@
  than or equal to <code>tolerance</code>.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatTolerance-float-">usingFloatTolerance(float)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares float fields as equal if they are both finite and their absolute difference is less
+ than or equal to <code>tolerance</code>.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#usingFloatToleranceForFieldDescriptors-float-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingFloatToleranceForFieldDescriptors(float, Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
 <div class="block">Compares float fields with these explicitly specified fields using the provided absolute
@@ -3594,9 +3590,15 @@
  provided absolute tolerance.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatToleranceForFieldDescriptors-float-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingFloatToleranceForFieldDescriptors(float, Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares float fields with these explicitly specified fields using the provided absolute
+ tolerance.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatToleranceForFieldDescriptors-float-java.lang.Iterable-">usingFloatToleranceForFieldDescriptors(float, Iterable&lt;Descriptors.FieldDescriptor&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares float fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#usingFloatToleranceForFieldDescriptorsForValues-float-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingFloatToleranceForFieldDescriptorsForValues(float, Descriptors.FieldDescriptor, Descriptors.FieldDescriptor...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Compares float fields with these explicitly specified fields using the provided absolute
@@ -3668,9 +3670,15 @@
  provided absolute tolerance.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatToleranceForFields-float-int-int...-">usingFloatToleranceForFields(float, int, int...)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares float fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatToleranceForFields-float-java.lang.Iterable-">usingFloatToleranceForFields(float, Iterable&lt;Integer&gt;)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Compares float fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#usingFloatToleranceForFieldsForValues-float-int-int...-">usingFloatToleranceForFieldsForValues(float, int, int...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Compares float fields with these explicitly specified top-level field numbers using the
@@ -3787,7 +3795,9 @@
 <div class="block">Limits the comparison of Protocol buffers to the defined <a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a>.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/ProtoSubject.html#withPartialScope-com.google.common.truth.extensions.proto.FieldScope-">withPartialScope(FieldScope)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Limits the comparison of Protocol buffers to the defined <a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a>.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html#withPartialScopeForValues-com.google.common.truth.extensions.proto.FieldScope-">withPartialScopeForValues(FieldScope)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/MapWithProtoValuesFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">MapWithProtoValuesFluentAssertion</a></dt>
 <dd>
 <div class="block">Limits the comparison of Protocol buffers to the defined <a href="com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a>.</div>

@@ -98,21 +98,6 @@
 <!--   -->
 </a>
 <h3>Uses of <a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a> in <a href="../../../../../../../com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a></h3>
-<table class="useSummary" border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
-<caption><span>Classes in <a href="../../../../../../../com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a> that implement <a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Class and Description</th>
-</tr>
-<tbody>
-<tr class="altColor">
-<td class="colFirst"><code>class&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></span></code>
-<div class="block">Truth subject for the full version of Protocol Buffers.</div>
-</td>
-</tr>
-</tbody>
-</table>
 <table class="useSummary" border="0" cellpadding="3" cellspacing="0" summary="Use table, listing methods, and an explanation">
 <caption><span>Methods in <a href="../../../../../../../com/google/common/truth/extensions/proto/package-summary.html">com.google.common.truth.extensions.proto</a> that return <a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></span><span class="tabEnd">&nbsp;</span></caption>
 <tr>
@@ -122,7 +107,9 @@
 <tbody>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#comparingExpectedFieldsOnly--">comparingExpectedFieldsOnly</a></span>()</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#comparingExpectedFieldsOnly--">comparingExpectedFieldsOnly</a></span>()</code>
+<div class="block">Limits the comparison of Protocol buffers to the fields set in the expected proto(s).</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -132,7 +119,11 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElements--">ignoringExtraRepeatedFieldElements</a></span>()</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElements--">ignoringExtraRepeatedFieldElements</a></span>()</code>
+<div class="block">Specifies that, for all repeated and map fields, any elements in the 'actual' proto which are
+ not found in the 'expected' proto are ignored, with the exception of fields in the expected
+ proto which are empty.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -145,7 +136,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringExtraRepeatedFieldElementsOfFieldDescriptors</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;first,
-                                                    <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>&nbsp;</td>
+                                                    <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
+<div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
+ should be ignored.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -157,7 +151,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptors-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFieldDescriptors-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
+<div class="block">Specifies that extra repeated field elements for these explicitly specified field descriptors
+ should be ignored.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -169,7 +166,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFields-int-int...-">ignoringExtraRepeatedFieldElementsOfFields</a></span>(int&nbsp;firstFieldNumber,
-                                          int...&nbsp;rest)</code>&nbsp;</td>
+                                          int...&nbsp;rest)</code>
+<div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
+ numbers should be ignored.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -181,7 +181,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFields-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringExtraRepeatedFieldElementsOfFields-java.lang.Iterable-">ignoringExtraRepeatedFieldElementsOfFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
+<div class="block">Specifies that extra repeated field elements for these explicitly specified top-level field
+ numbers should be ignored.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -192,7 +195,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsence--">ignoringFieldAbsence</a></span>()</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsence--">ignoringFieldAbsence</a></span>()</code>
+<div class="block">Specifies that the 'has' bit of individual fields should be ignored when comparing for
+ equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -204,7 +210,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldAbsenceOfFieldDescriptors</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
-                                      <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>&nbsp;</td>
+                                      <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
+<div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+ when comparing for equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -216,7 +225,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFieldDescriptors-java.lang.Iterable-">ignoringFieldAbsenceOfFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFieldDescriptors-java.lang.Iterable-">ignoringFieldAbsenceOfFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
+<div class="block">Specifies that the 'has' bit of these explicitly specified field descriptors should be ignored
+ when comparing for equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -228,7 +240,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFields-int-int...-">ignoringFieldAbsenceOfFields</a></span>(int&nbsp;firstFieldNumber,
-                            int...&nbsp;rest)</code>&nbsp;</td>
+                            int...&nbsp;rest)</code>
+<div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+ ignored when comparing for equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -240,7 +255,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFields-java.lang.Iterable-">ignoringFieldAbsenceOfFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldAbsenceOfFields-java.lang.Iterable-">ignoringFieldAbsenceOfFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
+<div class="block">Specifies that the 'has' bit of these explicitly specified top-level field numbers should be
+ ignored when comparing for equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -252,7 +270,9 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringFieldDescriptors</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
-                        <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>&nbsp;</td>
+                        <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
+<div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -263,7 +283,9 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldDescriptors-java.lang.Iterable-">ignoringFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldDescriptors-java.lang.Iterable-">ignoringFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
+<div class="block">Excludes all message fields matching the given <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf"><code>Descriptors.FieldDescriptor</code></a>s from the comparison.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -274,7 +296,9 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFields-int-int...-">ignoringFields</a></span>(int&nbsp;firstFieldNumber,
-              int...&nbsp;rest)</code>&nbsp;</td>
+              int...&nbsp;rest)</code>
+<div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -285,7 +309,9 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFields-java.lang.Iterable-">ignoringFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFields-java.lang.Iterable-">ignoringFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
+<div class="block">Excludes the top-level message fields with the given tag numbers from the comparison.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -295,7 +321,9 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldScope-com.google.common.truth.extensions.proto.FieldScope-">ignoringFieldScope</a></span>(<a href="../../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringFieldScope-com.google.common.truth.extensions.proto.FieldScope-">ignoringFieldScope</a></span>(<a href="../../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>
+<div class="block">Excludes all specific field paths under the argument <a href="../../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a> from the comparison.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -305,7 +333,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrder--">ignoringRepeatedFieldOrder</a></span>()</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrder--">ignoringRepeatedFieldOrder</a></span>()</code>
+<div class="block">Specifies that the ordering of repeated fields, at all levels, should be ignored when comparing
+ for equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -317,7 +348,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptors-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">ignoringRepeatedFieldOrderOfFieldDescriptors</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
-                                            <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>&nbsp;</td>
+                                            <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
+<div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+ should be ignored when comparing for equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -329,7 +363,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptors-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFieldDescriptors-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFieldDescriptors</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
+<div class="block">Specifies that the ordering of repeated fields for these explicitly specified field descriptors
+ should be ignored when comparing for equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -341,7 +378,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFields-int-int...-">ignoringRepeatedFieldOrderOfFields</a></span>(int&nbsp;firstFieldNumber,
-                                  int...&nbsp;rest)</code>&nbsp;</td>
+                                  int...&nbsp;rest)</code>
+<div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
+ numbers should be ignored when comparing for equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -353,7 +393,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFields-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#ignoringRepeatedFieldOrderOfFields-java.lang.Iterable-">ignoringRepeatedFieldOrderOfFields</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
+<div class="block">Specifies that the ordering of repeated fields for these explicitly specified top-level field
+ numbers should be ignored when comparing for equality.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -364,7 +407,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#reportingMismatchesOnly--">reportingMismatchesOnly</a></span>()</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#reportingMismatchesOnly--">reportingMismatchesOnly</a></span>()</code>
+<div class="block">If set, in the event of a comparison failure, the error message printed will list only those
+ specific fields that did not match between the actual and expected values.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -375,7 +421,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleTolerance-double-">usingDoubleTolerance</a></span>(double&nbsp;tolerance)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleTolerance-double-">usingDoubleTolerance</a></span>(double&nbsp;tolerance)</code>
+<div class="block">Compares double fields as equal if they are both finite and their absolute difference is less
+ than or equal to <code>tolerance</code>.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -388,7 +437,10 @@
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleToleranceForFieldDescriptors-double-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingDoubleToleranceForFieldDescriptors</a></span>(double&nbsp;tolerance,
                                        <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
-                                       <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>&nbsp;</td>
+                                       <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
+<div class="block">Compares double fields with these explicitly specified fields using the provided absolute
+ tolerance.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -402,7 +454,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleToleranceForFieldDescriptors-double-java.lang.Iterable-">usingDoubleToleranceForFieldDescriptors</a></span>(double&nbsp;tolerance,
-                                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>&nbsp;</td>
+                                       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
+<div class="block">Compares double fields with these explicitly specified fields using the provided absolute
+ tolerance.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -416,7 +471,10 @@
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleToleranceForFields-double-int-int...-">usingDoubleToleranceForFields</a></span>(double&nbsp;tolerance,
                              int&nbsp;firstFieldNumber,
-                             int...&nbsp;rest)</code>&nbsp;</td>
+                             int...&nbsp;rest)</code>
+<div class="block">Compares double fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -430,7 +488,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingDoubleToleranceForFields-double-java.lang.Iterable-">usingDoubleToleranceForFields</a></span>(double&nbsp;tolerance,
-                             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>&nbsp;</td>
+                             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
+<div class="block">Compares double fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -442,7 +503,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatTolerance-float-">usingFloatTolerance</a></span>(float&nbsp;tolerance)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatTolerance-float-">usingFloatTolerance</a></span>(float&nbsp;tolerance)</code>
+<div class="block">Compares float fields as equal if they are both finite and their absolute difference is less
+ than or equal to <code>tolerance</code>.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -455,7 +519,10 @@
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatToleranceForFieldDescriptors-float-com.google.protobuf.Descriptors.FieldDescriptor-com.google.protobuf.Descriptors.FieldDescriptor...-">usingFloatToleranceForFieldDescriptors</a></span>(float&nbsp;tolerance,
                                       <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&nbsp;firstFieldDescriptor,
-                                      <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>&nbsp;</td>
+                                      <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>...&nbsp;rest)</code>
+<div class="block">Compares float fields with these explicitly specified fields using the provided absolute
+ tolerance.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -469,7 +536,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatToleranceForFieldDescriptors-float-java.lang.Iterable-">usingFloatToleranceForFieldDescriptors</a></span>(float&nbsp;tolerance,
-                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>&nbsp;</td>
+                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FieldDescriptor.html?is-external=true" title="class or interface in com.google.protobuf">Descriptors.FieldDescriptor</a>&gt;&nbsp;fieldDescriptors)</code>
+<div class="block">Compares float fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -483,7 +553,10 @@
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatToleranceForFields-float-int-int...-">usingFloatToleranceForFields</a></span>(float&nbsp;tolerance,
                             int&nbsp;firstFieldNumber,
-                            int...&nbsp;rest)</code>&nbsp;</td>
+                            int...&nbsp;rest)</code>
+<div class="block">Compares float fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -497,7 +570,10 @@
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
 <td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#usingFloatToleranceForFields-float-java.lang.Iterable-">usingFloatToleranceForFields</a></span>(float&nbsp;tolerance,
-                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>&nbsp;</td>
+                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&gt;&nbsp;fieldNumbers)</code>
+<div class="block">Compares float fields with these explicitly specified top-level field numbers using the
+ provided absolute tolerance.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
@@ -509,7 +585,9 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>
-<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#withPartialScope-com.google.common.truth.extensions.proto.FieldScope-">withPartialScope</a></span>(<a href="../../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ProtoSubject.</span><code><span class="memberNameLink"><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html#withPartialScope-com.google.common.truth.extensions.proto.FieldScope-">withPartialScope</a></span>(<a href="../../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto">FieldScope</a>&nbsp;fieldScope)</code>
+<div class="block">Limits the comparison of Protocol buffers to the defined <a href="../../../../../../../com/google/common/truth/extensions/proto/FieldScope.html" title="class in com.google.common.truth.extensions.proto"><code>FieldScope</code></a>.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">ProtoFluentAssertion</a></code></td>

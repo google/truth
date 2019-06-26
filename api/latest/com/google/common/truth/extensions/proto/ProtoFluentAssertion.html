@@ -99,16 +99,12 @@ var activeTableTab = "activeTableTab";
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
-<dl>
-<dt>All Known Implementing Classes:</dt>
-<dd><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoSubject.html" title="class in com.google.common.truth.extensions.proto">ProtoSubject</a></dd>
-</dl>
 <hr>
 <br>
 <pre>public interface <span class="typeNameLabel">ProtoFluentAssertion</span></pre>
 <div class="block">Fluent API to perform detailed, customizable comparison of Protocol buffers.
 
- <p>Methods may be chained in any order, but the chain should terminate with <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>isEqualTo(Object)</code></a> or <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isNotEqualTo-java.lang.Object-"><code>isNotEqualTo(Object)</code></a>.
+ <p>Methods may be chained in any order, but the chain should terminate with <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>isEqualTo(Message)</code></a> or <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isNotEqualTo-com.google.protobuf.Message-"><code>isNotEqualTo(Message)</code></a>.
 
  <p>The state of a <code>ProtoFluentAssertion</code> object after each method is called is left
  undefined. Users should not retain references to <code>ProtoFluentAssertion</code> instances.</div>
@@ -140,7 +136,7 @@ var activeTableTab = "activeTableTab";
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#equals-java.lang.Object-">equals</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;o)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>isEqualTo(Object)</code></a> instead.</span></div>
+<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>isEqualTo(Message)</code></a> instead.</span></div>
 </div>
 </td>
 </tr>
@@ -148,7 +144,7 @@ var activeTableTab = "activeTableTab";
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#hashCode--">hashCode</a></span>()</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment"><code>ProtoFluentAssertion</code> does not support <code>hashCode()</code>. Use <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>isEqualTo(Object)</code></a> for testing.</span></div>
+<div class="block"><span class="deprecationComment"><code>ProtoFluentAssertion</code> does not support <code>hashCode()</code>. Use <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>isEqualTo(Message)</code></a> for testing.</span></div>
 </div>
 </td>
 </tr>
@@ -298,14 +294,14 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-">isEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-">isEqualTo</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf">Message</a>&nbsp;expected)</code>
 <div class="block">Compares the subject of the assertion to <code>expected</code>, using all of the rules specified by
  earlier operations.</div>
 </td>
 </tr>
 <tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isNotEqualTo-java.lang.Object-">isNotEqualTo</a></span>(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isNotEqualTo-com.google.protobuf.Message-">isNotEqualTo</a></span>(<a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf">Message</a>&nbsp;expected)</code>
 <div class="block">Compares the subject of the assertion to <code>expected</code>, expecting a difference, using all of
  the rules specified by earlier operations.</div>
 </td>
@@ -918,7 +914,7 @@ var activeTableTab = "activeTableTab";
  multiple protos are specified, the comparison is limited to the union of set fields in all the
  expected protos.
 
- <p>The "expected proto(s)" are those passed to the void method at the end of the <code>ProtoFluentAssertion</code> call-chain: For example, <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>isEqualTo(Object)</code></a>, or <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isNotEqualTo-java.lang.Object-"><code>isNotEqualTo(Object)</code></a>.
+ <p>The "expected proto(s)" are those passed to the void method at the end of the <code>ProtoFluentAssertion</code> call-chain: For example, <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>isEqualTo(Message)</code></a>, or <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isNotEqualTo-com.google.protobuf.Message-"><code>isNotEqualTo(Message)</code></a>.
 
  <p>Fields not set in the expected proto(s) are ignored. In particular, proto3 fields which have
  their default values are ignored, as these are indistinguishable from unset fields. If you want
@@ -1046,27 +1042,27 @@ var activeTableTab = "activeTableTab";
  <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.</div>
 </li>
 </ul>
-<a name="isEqualTo-java.lang.Object-">
+<a name="isEqualTo-com.google.protobuf.Message-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
 <pre>void&nbsp;isEqualTo(@NullableDecl
-               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
+               <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf">Message</a>&nbsp;expected)</pre>
 <div class="block">Compares the subject of the assertion to <code>expected</code>, using all of the rules specified by
  earlier operations. If no settings are changed, this invokes the default <code>equals</code>
  implementation of the subject <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf"><code>Message</code></a>.</div>
 </li>
 </ul>
-<a name="isNotEqualTo-java.lang.Object-">
+<a name="isNotEqualTo-com.google.protobuf.Message-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotEqualTo</h4>
 <pre>void&nbsp;isNotEqualTo(@NullableDecl
-                  <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;expected)</pre>
+                  <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf">Message</a>&nbsp;expected)</pre>
 <div class="block">Compares the subject of the assertion to <code>expected</code>, expecting a difference, using all of
  the rules specified by earlier operations. If no settings are changed, this invokes the default
  <code>equals</code> implementation of the subject <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf"><code>Message</code></a>.</div>
@@ -1080,7 +1076,7 @@ var activeTableTab = "activeTableTab";
 <h4>equals</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 boolean&nbsp;equals(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;o)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>isEqualTo(Object)</code></a> instead.</span></div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>isEqualTo(Message)</code></a> instead.</span></div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></code></dd>
@@ -1097,7 +1093,7 @@ boolean&nbsp;equals(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang
 <h4>hashCode</h4>
 <pre><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
 int&nbsp;hashCode()</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment"><code>ProtoFluentAssertion</code> does not support <code>hashCode()</code>. Use <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>isEqualTo(Object)</code></a> for testing.</span></div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment"><code>ProtoFluentAssertion</code> does not support <code>hashCode()</code>. Use <a href="../../../../../../com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>isEqualTo(Message)</code></a> for testing.</span></div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></code></dd>

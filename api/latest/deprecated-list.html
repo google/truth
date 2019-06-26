@@ -73,33 +73,10 @@
 <h1 title="Deprecated API" class="title">Deprecated API</h1>
 <h2 title="Contents">Contents</h2>
 <ul>
-<li><a href="#class">Deprecated Classes</a></li>
 <li><a href="#method">Deprecated Methods</a></li>
 </ul>
 </div>
-<div class="contentContainer"><a name="class">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<table class="deprecatedSummary" border="0" cellpadding="3" cellspacing="0" summary="Deprecated Classes table, listing deprecated classes, and an explanation">
-<caption><span>Deprecated Classes</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colOne" scope="col">Class and Description</th>
-</tr>
-<tbody>
-<tr class="altColor">
-<td class="colOne"><a href="com/google/common/truth/DefaultSubject.html" title="class in com.google.common.truth">com.google.common.truth.DefaultSubject</a>
-<div class="block"><span class="deprecationComment">Use plain <a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> instead. At the moment, <code>Subject</code> has type
-     parameters, so you may wish to use <code>Subject&lt;?, ?&gt;</code>. However, those type parameters will
-     soon go away, so you may wish to start using raw <code>Subject</code> now to prepare.</span></div>
-</td>
-</tr>
-</tbody>
-</table>
-</li>
-</ul>
-<a name="method">
+<div class="contentContainer"><a name="method">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -136,7 +113,7 @@
 </tr>
 <tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#equals-java.lang.Object-">com.google.common.truth.extensions.proto.ProtoFluentAssertion.equals(Object)</a>
-<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>ProtoFluentAssertion.isEqualTo(Object)</code></a> instead.</span></div>
+<div class="block"><span class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>ProtoFluentAssertion.isEqualTo(Message)</code></a> instead.</span></div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -176,7 +153,7 @@
 </tr>
 <tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#hashCode--">com.google.common.truth.extensions.proto.ProtoFluentAssertion.hashCode()</a>
-<div class="block"><span class="deprecationComment"><code>ProtoFluentAssertion</code> does not support <code>hashCode()</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-java.lang.Object-"><code>ProtoFluentAssertion.isEqualTo(Object)</code></a> for testing.</span></div>
+<div class="block"><span class="deprecationComment"><code>ProtoFluentAssertion</code> does not support <code>hashCode()</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo-com.google.protobuf.Message-"><code>ProtoFluentAssertion.isEqualTo(Message)</code></a> for testing.</span></div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -201,67 +178,53 @@
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/AtomicLongMapSubject.html#isEqualTo-java.lang.Object-">com.google.common.truth.AtomicLongMapSubject.isEqualTo(Object)</a>
-<div class="block"><span class="deprecationComment"><a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not define equality (i.e., it does not implement
-     equals()), so you probably don't want to call this method. Instead, perform your assertion
-     on the map view (e.g., assertThat(atomicLongMap.asMap()).isEqualTo(EXPECTED_MAP)).</span></div>
-</td>
-</tr>
-<tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/DoubleSubject.html#isEquivalentAccordingToCompareTo-java.lang.Double-">com.google.common.truth.DoubleSubject.isEquivalentAccordingToCompareTo(Double)</a>
 <div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/DoubleSubject.html#isWithin-double-"><code>DoubleSubject.isWithin(double)</code></a> or <a href="com/google/common/truth/DoubleSubject.html#isEqualTo-java.lang.Double-"><code>DoubleSubject.isEqualTo(java.lang.Double)</code></a> instead (see documentation for advice).</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/FloatSubject.html#isEquivalentAccordingToCompareTo-java.lang.Float-">com.google.common.truth.FloatSubject.isEquivalentAccordingToCompareTo(Float)</a>
 <div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/FloatSubject.html#isWithin-float-"><code>FloatSubject.isWithin(float)</code></a> or <a href="com/google/common/truth/FloatSubject.html#isEqualTo-java.lang.Float-"><code>FloatSubject.isEqualTo(java.lang.Float)</code></a> instead (see documentation for advice).</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/IntegerSubject.html#isEquivalentAccordingToCompareTo-java.lang.Integer-">com.google.common.truth.IntegerSubject.isEquivalentAccordingToCompareTo(Integer)</a>
 <div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>Subject.isEqualTo(java.lang.Object)</code></a> instead. Integer comparison is consistent with equality.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/LongSubject.html#isEquivalentAccordingToCompareTo-java.lang.Long-">com.google.common.truth.LongSubject.isEquivalentAccordingToCompareTo(Long)</a>
 <div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>Subject.isEqualTo(java.lang.Object)</code></a> instead. Long comparison is consistent with equality.</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/StringSubject.html#isEquivalentAccordingToCompareTo-java.lang.String-">com.google.common.truth.StringSubject.isEquivalentAccordingToCompareTo(String)</a>
 <div class="block"><span class="deprecationComment">Use <a href="com/google/common/truth/Subject.html#isEqualTo-java.lang.Object-"><code>Subject.isEqualTo(java.lang.Object)</code></a> instead. String comparison is consistent with equality.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInOrder--">com.google.common.truth.extensions.proto.IterableOfProtosSubject.isInOrder()</a>
 <div class="block"><span class="deprecationComment">Protos do not implement <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang"><code>Comparable</code></a>, so you must <a href="com/google/common/truth/IterableSubject.html#isInOrder-java.util.Comparator-">supply a comparator</a>.</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/extensions/proto/IterableOfProtosSubject.html#isInStrictOrder--">com.google.common.truth.extensions.proto.IterableOfProtosSubject.isInStrictOrder()</a>
 <div class="block"><span class="deprecationComment">Protos do not implement <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang"><code>Comparable</code></a>, so you must <a href="com/google/common/truth/IterableSubject.html#isInStrictOrder-java.util.Comparator-">supply a comparator</a>.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="com/google/common/truth/IterableSubject.html#isNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-">com.google.common.truth.IterableSubject.isNoneOf(Object, Object, Object...)</a>
 <div class="block"><span class="deprecationComment">You probably meant to call <a href="com/google/common/truth/IterableSubject.html#containsNoneOf-java.lang.Object-java.lang.Object-java.lang.Object...-"><code>IterableSubject.containsNoneOf(java.lang.Object, java.lang.Object, java.lang.Object...)</code></a> instead.</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#isNotEqualTo-com.google.protobuf.MessageLite.Builder-">com.google.common.truth.extensions.proto.LiteProtoSubject.isNotEqualTo(MessageLite.Builder)</a>
 <div class="block"><span class="deprecationComment">A Builder will never compare equal to a MessageLite instance. Use <code>build()</code>,
      or <code>buildPartial()</code> on the argument to get a MessageLite for comparison instead.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
-<td class="colOne"><a href="com/google/common/truth/AtomicLongMapSubject.html#isNotEqualTo-java.lang.Object-">com.google.common.truth.AtomicLongMapSubject.isNotEqualTo(Object)</a>
-<div class="block"><span class="deprecationComment"><a href="https://google.github.io/guava/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/AtomicLongMap.html?is-external=true" title="class or interface in com.google.common.util.concurrent"><code>AtomicLongMap</code></a> does not define equality (i.e., it does not implement
-     equals()), so you probably don't want to call this method. Instead, perform your assertion
-     on the map view (e.g., assertThat(atomicLongMap.asMap()).isNotEqualTo(UNEXPECTED_MAP)).</span></div>
-</td>
-</tr>
 <tr class="altColor">
-<td class="colOne"><a href="com/google/common/truth/IterableSubject.html#isNotIn-java.lang.Iterable-">com.google.common.truth.IterableSubject.isNotIn(Iterable)</a>
+<td class="colOne"><a href="com/google/common/truth/IterableSubject.html#isNotIn-java.lang.Iterable-">com.google.common.truth.IterableSubject.isNotIn(Iterable&lt;?&gt;)</a>
 <div class="block"><span class="deprecationComment">You probably meant to call <a href="com/google/common/truth/IterableSubject.html#containsNoneIn-java.lang.Iterable-"><code>IterableSubject.containsNoneIn(java.lang.Iterable&lt;?&gt;)</code></a> instead.</span></div>
 </td>
 </tr>
