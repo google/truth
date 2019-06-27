@@ -37,10 +37,18 @@ public final class FloatSubject extends ComparableSubject<Float> {
   private static final int NEG_ZERO_BITS = floatToIntBits(-0.0f);
 
   private final Float actual;
+  private final DoubleSubject asDouble;
 
   FloatSubject(FailureMetadata metadata, @NullableDecl Float actual) {
     super(metadata, actual);
     this.actual = actual;
+    /*
+     * Doing anything with the FailureMetadata besides passing it to super(...) is generally bad
+     * practice. For an explanation of why it works out OK here, see LiteProtoSubject.
+     *
+     * An alternative approach would be to reimplement isLessThan, etc. here.
+     */
+    this.asDouble = new DoubleSubject(metadata, actual == null ? null : Double.valueOf(actual));
   }
 
   /**
@@ -269,5 +277,45 @@ public final class FloatSubject extends ComparableSubject<Float> {
     } else {
       isNotEqualTo(NaN);
     }
+  }
+
+  /**
+   * Checks that the subject is greater than {@code other}.
+   *
+   * <p>To check that the subject is greater than <i>or equal to</i> {@code other}, use {@link
+   * #isAtLeast}.
+   */
+  public final void isGreaterThan(int other) {
+    asDouble.isGreaterThan(other);
+  }
+
+  /**
+   * Checks that the subject is less than {@code other}.
+   *
+   * <p>To check that the subject is less than <i>or equal to</i> {@code other}, use {@link
+   * #isAtMost} .
+   */
+  public final void isLessThan(int other) {
+    asDouble.isLessThan(other);
+  }
+
+  /**
+   * Checks that the subject is less than or equal to {@code other}.
+   *
+   * <p>To check that the subject is <i>strictly</i> less than {@code other}, use {@link
+   * #isLessThan}.
+   */
+  public final void isAtMost(int other) {
+    asDouble.isAtMost(other);
+  }
+
+  /**
+   * Checks that the subject is greater than or equal to {@code other}.
+   *
+   * <p>To check that the subject is <i>strictly</i> greater than {@code other}, use {@link
+   * #isGreaterThan}.
+   */
+  public final void isAtLeast(int other) {
+    asDouble.isAtLeast(other);
   }
 }
