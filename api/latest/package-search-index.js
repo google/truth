@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.google.common.truth"},{"l":"com.google.common.truth.extensions.proto"},{"l":"com.google.common.truth.extensions.re2j"}]
