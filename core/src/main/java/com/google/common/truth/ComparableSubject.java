@@ -66,8 +66,8 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
   /**
    * Checks that the subject is greater than {@code other}.
    *
-   * <p>Use {@link #isAtLeast} to check that the subject is greater than <i>or equal to</i> {@code
-   * other}.
+   * <p>To check that the subject is greater than <i>or equal to</i> {@code other}, use {@link
+   * #isAtLeast}.
    */
   public final void isGreaterThan(T other) {
     if (actual.compareTo(other) <= 0) {
@@ -78,8 +78,8 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
   /**
    * Checks that the subject is less than {@code other}.
    *
-   * <p>Use {@link #isAtMost} to check that the subject is less than <i>or equal to</i> {@code
-   * other}.
+   * <p>To check that the subject is less than <i>or equal to</i> {@code other}, use {@link
+   * #isAtMost}.
    */
   public final void isLessThan(T other) {
     if (actual.compareTo(other) >= 0) {
@@ -90,7 +90,8 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
   /**
    * Checks that the subject is less than or equal to {@code other}.
    *
-   * <p>Use {@link #isLessThan} to check that the subject is less than {@code other}.
+   * <p>To check that the subject is <i>strictly</i> less than {@code other}, use {@link
+   * #isLessThan}.
    */
   public final void isAtMost(T other) {
     if (actual.compareTo(other) > 0) {
@@ -101,7 +102,8 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
   /**
    * Checks that the subject is greater than or equal to {@code other}.
    *
-   * <p>Use {@link #isGreaterThan} to check that the subject is greater than {@code other}.
+   * <p>To check that the subject is <i>strictly</i> greater than {@code other}, use {@link
+   * #isGreaterThan}.
    */
   public final void isAtLeast(T other) {
     if (actual.compareTo(other) < 0) {

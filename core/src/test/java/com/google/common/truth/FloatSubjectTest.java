@@ -553,6 +553,54 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertFailureKeys("expected a float other than NaN", "but was");
   }
 
+  @Test
+  public void isGreaterThan_int_strictly() {
+    expectFailureWhenTestingThat(2.0f).isGreaterThan(3);
+  }
+
+  @Test
+  public void isGreaterThan_int() {
+    expectFailureWhenTestingThat(2.0f).isGreaterThan(2);
+    assertThat(2.0f).isGreaterThan(1);
+    assertThat(0x1.0p30f).isGreaterThan((1 << 30) - 1);
+  }
+
+  @Test
+  public void isLessThan_int_strictly() {
+    expectFailureWhenTestingThat(2.0f).isLessThan(1);
+  }
+
+  @Test
+  public void isLessThan_int() {
+    expectFailureWhenTestingThat(2.0f).isLessThan(2);
+    assertThat(2.0f).isLessThan(3);
+    assertThat(0x1.0p30f).isLessThan((1 << 30) + 1);
+  }
+
+  @Test
+  public void isAtLeast_int() {
+    expectFailureWhenTestingThat(2.0f).isAtLeast(3);
+    assertThat(2.0f).isAtLeast(2);
+    assertThat(2.0f).isAtLeast(1);
+  }
+
+  @Test
+  public void isAtLeast_int_withNoExactFloatRepresentation() {
+    expectFailureWhenTestingThat(0x1.0p30f).isAtLeast((1 << 30) + 1);
+  }
+
+  @Test
+  public void isAtMost_int() {
+    expectFailureWhenTestingThat(2.0f).isAtMost(1);
+    assertThat(2.0f).isAtMost(2);
+    assertThat(2.0f).isAtMost(3);
+  }
+
+  @Test
+  public void isAtMost_int_withNoExactFloatRepresentation() {
+    expectFailureWhenTestingThat(0x1.0p30f).isAtMost((1 << 30) - 1);
+  }
+
   private FloatSubject expectFailureWhenTestingThat(Float actual) {
     return expectFailure.whenTesting().that(actual);
   }

@@ -93,6 +93,42 @@ public class LongSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(42L).isNotEqualTo(42);
   }
 
+  @Test
+  public void isGreaterThan_int_strictly() {
+    expectFailureWhenTestingThat(2L).isGreaterThan(3);
+  }
+
+  @Test
+  public void isGreaterThan_int() {
+    expectFailureWhenTestingThat(2L).isGreaterThan(2);
+    assertThat(2L).isGreaterThan(1);
+  }
+
+  @Test
+  public void isLessThan_int_strictly() {
+    expectFailureWhenTestingThat(2L).isLessThan(1);
+  }
+
+  @Test
+  public void isLessThan_int() {
+    expectFailureWhenTestingThat(2L).isLessThan(2);
+    assertThat(2L).isLessThan(3);
+  }
+
+  @Test
+  public void isAtLeast_int() {
+    expectFailureWhenTestingThat(2L).isAtLeast(3);
+    assertThat(2L).isAtLeast(2);
+    assertThat(2L).isAtLeast(1);
+  }
+
+  @Test
+  public void isAtMost_int() {
+    expectFailureWhenTestingThat(2L).isAtMost(1);
+    assertThat(2L).isAtMost(2);
+    assertThat(2L).isAtMost(3);
+  }
+
   private LongSubject expectFailureWhenTestingThat(Long actual) {
     return expectFailure.whenTesting().that(actual);
   }

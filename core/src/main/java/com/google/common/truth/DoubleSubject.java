@@ -272,4 +272,44 @@ public final class DoubleSubject extends ComparableSubject<Double> {
       isNotEqualTo(NaN);
     }
   }
+
+  /**
+   * Checks that the subject is greater than {@code other}.
+   *
+   * <p>To check that the subject is greater than <i>or equal to</i> {@code other}, use {@link
+   * #isAtLeast}.
+   */
+  public final void isGreaterThan(int other) {
+    isGreaterThan((double) other);
+  }
+
+  /**
+   * Checks that the subject is less than {@code other}.
+   *
+   * <p>To check that the subject is less than <i>or equal to</i> {@code other}, use {@link
+   * #isAtMost} .
+   */
+  public final void isLessThan(int other) {
+    isLessThan((double) other);
+  }
+
+  /**
+   * Checks that the subject is less than or equal to {@code other}.
+   *
+   * <p>To check that the subject is <i>strictly</i> less than {@code other}, use {@link
+   * #isLessThan}.
+   */
+  public final void isAtMost(int other) {
+    isAtMost((double) other);
+  }
+
+  /**
+   * Checks that the subject is greater than or equal to {@code other}.
+   *
+   * <p>To check that the subject is <i>strictly</i> greater than {@code other}, use {@link
+   * #isGreaterThan}.
+   */
+  public final void isAtLeast(int other) {
+    isAtLeast((double) other);
+  }
 }
