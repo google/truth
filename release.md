@@ -220,7 +220,6 @@ the release will now be nicely documented.
 
 Create a commit that updates the `_config.yml` file with the new version number. e.g. cl/156885831
 
-
 ### Delete your branch
 
 Once the release is done, and the tag is pushed, the release branch can be
