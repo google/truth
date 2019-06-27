@@ -367,6 +367,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThat(Double.POSITIVE_INFINITY).isEqualTo(Double.POSITIVE_INFINITY);
     assertThat(Double.NaN).isEqualTo(Double.NaN);
     assertThat((Double) null).isEqualTo(null);
+    assertThat(1.0).isEqualTo(1);
   }
 
   private static void assertThatIsEqualToFails(final double actual, final double expected) {
@@ -389,6 +390,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThat(-0.0).isNotEqualTo(0.0);
     assertThatIsNotEqualToFails(null);
     assertThat(1.23).isNotEqualTo(1.23f);
+    assertThat(1.0).isNotEqualTo(2);
   }
 
   private static void assertThatIsNotEqualToFails(@NullableDecl final Double value) {
