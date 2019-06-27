@@ -144,6 +144,9 @@ public class Subject {
    *       overload
    *   <li>they are boxed integer types ({@code Byte}, {@code Short}, {@code Character}, {@code
    *       Integer}, or {@code Long}) and they are numerically equal when converted to {@code Long}.
+   *   <li>the actual value is a boxed floating-point type ({@code Double} or {@code Float}), the
+   *       expected value is an {@code Integer}, and the two are numerically equal when converted to
+   *       {@code Double}. (This allows {@code assertThat(someDouble).isEqualTo(0)} to pass.)
    * </ul>
    *
    * <p><b>Note:</b> This method does not test the {@link Object#equals} implementation itself; it
@@ -230,6 +233,12 @@ public class Subject {
     } else if (actual instanceof Float && expected instanceof Float) {
       return ComparisonResult.fromEqualsResult(
           Float.compare((Float) actual, (Float) expected) == 0);
+    } else if (actual instanceof Double && expected instanceof Integer) {
+      return ComparisonResult.fromEqualsResult(
+          Double.compare((Double) actual, (Integer) expected) == 0);
+    } else if (actual instanceof Float && expected instanceof Integer) {
+      return ComparisonResult.fromEqualsResult(
+          Double.compare((Float) actual, (Integer) expected) == 0);
     } else {
       return ComparisonResult.fromEqualsResult(actual == expected || actual.equals(expected));
     }

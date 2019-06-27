@@ -367,6 +367,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThat(Float.POSITIVE_INFINITY).isEqualTo(Float.POSITIVE_INFINITY);
     assertThat(Float.NaN).isEqualTo(Float.NaN);
     assertThat((Float) null).isEqualTo(null);
+    assertThat(1.0f).isEqualTo(1);
   }
 
   private static void assertThatIsEqualToFails(final float actual, final float expected) {
@@ -389,6 +390,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThat(-0.0f).isNotEqualTo(0.0f);
     assertThatIsNotEqualToFails(null);
     assertThat(1.23f).isNotEqualTo(1.23);
+    assertThat(1.0f).isNotEqualTo(2);
   }
 
   private static void assertThatIsNotEqualToFails(@NullableDecl final Float value) {
