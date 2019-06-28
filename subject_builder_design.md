@@ -110,8 +110,8 @@ Additionally, we'd like to permit chaining subjects to add messages but not to
 change the `FailureStrategy` (except in limited ways). To permit this, we need
 to expose an object to subject implemeters that permits setting a message but
 has a `FailureStrategy` already set. This chaining model,
-`check().withMessage(...)`, fits perfectly with the `assert_().withMessage(...)`
-model.
+`check(...).withMessage(...)`, fits perfectly with the
+`assert_().withMessage(...)` model.
 
 There's one more reason that it's useful to have an object that supports
 `withMessage` calls: We may someday add other methods that let callers to add to

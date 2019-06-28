@@ -220,8 +220,8 @@ There are four parts to the example:
 
         As for the implementation: Most assertion implementations employ one of
         the two basic approaches. The simpler approach is to delegate to an
-        existing assertion. To do so, use `Subject.check()`, which preserves the
-        caller-specified `FailureStrategy` and other context. For example:
+        existing assertion. To do so, use `Subject.check(...)`, which preserves
+        the caller-specified `FailureStrategy` and other context. For example:
 
         ```java
         public void hasName(String name) {
@@ -271,7 +271,7 @@ There are four parts to the example:
         instead of providing `hasName(…)`, `EmployeeSubject` might declare a
         `EmployeeSubject.name()` method that returns a `StringSubject` for the
         value of `employee.name()`. To create such "chained" subjects, use
-        `Subject.check()`, as above, and return the `Subject` you create:
+        `Subject.check(...)`, as above, and return the `Subject` you create:
 
         ```java
         public StringSubject name() {
