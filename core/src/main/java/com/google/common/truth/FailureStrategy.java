@@ -41,8 +41,8 @@ package com.google.common.truth;
  * <ul>
  *   <li>To test a custom subject, use {@link ExpectFailure}.
  *   <li>To create subjects for other objects related to your actual value (for chained assertions),
- *       use {@link Subject#check}, which preserves the existing {@code FailureStrategy} and other
- *       context.
+ *       use {@link Subject#check(String, Object...)}, which preserves the existing {@code
+ *       FailureStrategy} and other context.
  *   <li>To return a no-op subject after a previous assertion has failed (for chained assertions),
  *       use {@link Subject#ignoreCheck}
  * </ul>

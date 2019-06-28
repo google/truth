@@ -98,7 +98,7 @@ public class Subject {
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
-   * {@link Subject#check}{@code .that(actual)}.
+   * {@link Subject#check(String, Object..) check(...)}{@code .that(actual)}.
    */
   protected Subject(FailureMetadata metadata, @NullableDecl Object actual) {
     this(metadata, actual, /*typeDescriptionOverride=*/ null);
@@ -665,7 +665,7 @@ public class Subject {
     return doCheck(OldAndNewValuesAreSimilar.DIFFERENT, format, args);
   }
 
-  // TODO(cpovirk): Figure out a public API for this.
+  // TODO(b/134064106): Figure out a public API for this.
 
   final StandardSubjectBuilder checkNoNeedToDisplayBothValues(String format, Object... args) {
     return doCheck(OldAndNewValuesAreSimilar.SIMILAR, format, args);

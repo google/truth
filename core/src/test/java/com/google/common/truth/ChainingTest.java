@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Tests for chained subjects (produced with {@link Subject#check()}, etc.). */
+/** Tests for chained subjects (produced with {@link Subject#check(...)}, etc.). */
 @RunWith(JUnit4.class)
 public final class ChainingTest extends BaseSubjectTestCase {
   private static final Throwable throwable = new Throwable("root");

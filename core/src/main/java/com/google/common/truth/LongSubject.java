@@ -25,10 +25,9 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Kurt Alfred Kluever
  */
 public class LongSubject extends ComparableSubject<Long> {
-  // TODO(kak): Make this package-protected?
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
-   * {@link Subject#check}{@code .that(actual)}.
+   * {@link Subject#check(String, Object..) check(...)}{@code .that(actual)}.
    */
   protected LongSubject(FailureMetadata metadata, @NullableDecl Long actual) {
     super(metadata, actual);

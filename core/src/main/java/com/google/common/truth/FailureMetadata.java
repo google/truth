@@ -40,7 +40,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <ul>
  *   <li>If you're writing a test: {@link Truth#assertAbout(Subject.Factory)}{@code .that(...)}
  *   <li>If you're creating a derived subject from within another subject: {@code
- *       check().about(...).that(...)}
+ *       check(...).about(...).that(...)}
  *   <li>If you're testing your subject to verify that assertions fail when they should: {@link
  *       ExpectFailure}
  * </ul>
@@ -156,8 +156,8 @@ public final class FailureMetadata {
 
   /**
    * Returns a new instance whose failures will contain the given message. The way for Truth users
-   * to set a message is {@code check().withMessage(...).that(...)} (for calls from within a {@code
-   * Subject}) or {@link Truth#assertWithMessage} (for most other calls).
+   * to set a message is {@code check(...).withMessage(...).that(...)} (for calls from within a
+   * {@code Subject}) or {@link Truth#assertWithMessage} (for most other calls).
    */
   FailureMetadata withMessage(String format, Object[] args) {
     ImmutableList<LazyMessage> messages = append(this.messages, new LazyMessage(format, args));
