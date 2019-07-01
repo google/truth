@@ -71,9 +71,9 @@ public final class Fact implements Serializable {
   }
 
   /**
-   * Returns a simple string representation for the fact. While this is used by the old-style
-   * messages and {@code TruthFailureSubject} output, we're moving away from the old-style messages
-   * and onto {@link #makeMessage}, which aligns facts horizontally and indents multiline values.
+   * Returns a simple string representation for the fact. While this is used in the output of {@code
+   * TruthFailureSubject}, it's not used in normal failure messages, which automatically align facts
+   * horizontally and indent multiline values.
    */
   @Override
   public String toString() {

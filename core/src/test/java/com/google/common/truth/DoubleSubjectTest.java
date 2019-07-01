@@ -360,6 +360,7 @@ public class DoubleSubjectTest extends BaseSubjectTestCase {
     assertThatIsNotWithinFails(+1.0, 0.00001, Double.NEGATIVE_INFINITY);
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo() {
     assertThat(1.23).isEqualTo(1.23);

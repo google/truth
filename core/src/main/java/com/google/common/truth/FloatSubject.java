@@ -185,7 +185,8 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * vice versa. For an assertion that passes for either {@code 0.0f} or {@code -0.0f}, use {@link
    * #isZero}.
    */
-  public final void isEqualTo(@NullableDecl Float other) {
+  @Override
+  public final void isEqualTo(@NullableDecl Object other) {
     super.isEqualTo(other);
   }
 
@@ -198,7 +199,8 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * versa. For an assertion that fails for either {@code 0.0f} or {@code -0.0f}, use {@link
    * #isNonZero}.
    */
-  public final void isNotEqualTo(@NullableDecl Float other) {
+  @Override
+  public final void isNotEqualTo(@NullableDecl Object other) {
     super.isNotEqualTo(other);
   }
 

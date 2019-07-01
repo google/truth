@@ -465,7 +465,7 @@ public class MultimapSubject extends Subject {
     return false;
   }
 
-  private static <K, V> Collection<V> get(Multimap<K, V> multimap, @NullableDecl Object key) {
+  private static <V> Collection<V> get(Multimap<?, V> multimap, @NullableDecl Object key) {
     if (multimap.containsKey(key)) {
       return multimap.asMap().get(key);
     } else {
@@ -495,10 +495,10 @@ public class MultimapSubject extends Subject {
     return difference;
   }
 
-  private static <K, V> String countDuplicatesMultimap(Multimap<K, V> multimap) {
+  private static String countDuplicatesMultimap(Multimap<?, ?> multimap) {
     List<String> entries = new ArrayList<>();
-    for (K key : multimap.keySet()) {
-      entries.add(key + "=" + SubjectUtils.countDuplicates(multimap.get(key)));
+    for (Object key : multimap.keySet()) {
+      entries.add(key + "=" + SubjectUtils.countDuplicates(get(multimap, key)));
     }
 
     StringBuilder sb = new StringBuilder();
@@ -713,7 +713,17 @@ public class MultimapSubject extends Subject {
      * order.
      */
     @CanIgnoreReturnValue
-    public <K, V extends E> Ordered containsExactlyEntriesIn(Multimap<K, V> expectedMultimap) {
+    public Ordered containsExactlyEntriesIn(Multimap<?, ? extends E> expectedMultimap) {
+      return internalContainsExactlyEntriesIn(expectedMultimap);
+    }
+
+    /*
+     * This helper exists so that we can declare the simpler, type-parameter-free signature for the
+     * public containsExactlyEntriesIn method. This is recommended by Effective Java item 31 (3rd
+     * edition).
+     */
+    private <K, V extends E> Ordered internalContainsExactlyEntriesIn(
+        Multimap<K, V> expectedMultimap) {
       // Note: The non-fuzzy MultimapSubject.containsExactlyEntriesIn has a custom implementation
       // and produces somewhat better failure messages simply asserting about the iterables of
       // entries would: it formats the expected values as  k=[v1, v2] rather than k=v1, k=v2; and in
@@ -737,7 +747,17 @@ public class MultimapSubject extends Subject {
      * order.
      */
     @CanIgnoreReturnValue
-    public <K, V extends E> Ordered containsAtLeastEntriesIn(Multimap<K, V> expectedMultimap) {
+    public Ordered containsAtLeastEntriesIn(Multimap<?, ? extends E> expectedMultimap) {
+      return internalContainsAtLeastEntriesIn(expectedMultimap);
+    }
+
+    /*
+     * This helper exists so that we can declare the simpler, type-parameter-free signature for the
+     * public containsAtLeastEntriesIn method. This is recommended by Effective Java item 31 (3rd
+     * edition).
+     */
+    private <K, V extends E> Ordered internalContainsAtLeastEntriesIn(
+        Multimap<K, V> expectedMultimap) {
       // Note: The non-fuzzy MultimapSubject.containsAtLeastEntriesIn has a custom implementation
       // and produces somewhat better failure messages simply asserting about the iterables of
       // entries would: it formats the expected values as  k=[v1, v2] rather than k=v1, k=v2; and in
@@ -758,11 +778,16 @@ public class MultimapSubject extends Subject {
      * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
      */
     @CanIgnoreReturnValue
-    public <K, V extends E> Ordered containsExactly(
-        @NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
+    public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl E v0, Object... rest) {
       @SuppressWarnings("unchecked")
-      Multimap<K, V> expectedMultimap = (Multimap<K, V>) accumulateMultimap(k0, v0, rest);
+      Multimap<?, E> expectedMultimap = (Multimap<?, E>) accumulateMultimap(k0, v0, rest);
       return containsExactlyEntriesIn(expectedMultimap);
+    }
+
+    /** Fails if the multimap is not empty. */
+    @CanIgnoreReturnValue
+    public Ordered containsExactly() {
+      return MultimapSubject.this.containsExactly();
     }
 
     /**
@@ -772,17 +797,10 @@ public class MultimapSubject extends Subject {
      * key/value pairs at compile time. Please make sure you provide varargs in key/value pairs!
      */
     @CanIgnoreReturnValue
-    public <K, V extends E> Ordered containsAtLeast(
-        @NullableDecl Object k0, @NullableDecl Object v0, Object... rest) {
+    public Ordered containsAtLeast(@NullableDecl Object k0, @NullableDecl E v0, Object... rest) {
       @SuppressWarnings("unchecked")
-      Multimap<K, V> expectedMultimap = (Multimap<K, V>) accumulateMultimap(k0, v0, rest);
+      Multimap<?, E> expectedMultimap = (Multimap<?, E>) accumulateMultimap(k0, v0, rest);
       return containsAtLeastEntriesIn(expectedMultimap);
-    }
-
-    /** Fails if the multimap is not empty. */
-    @CanIgnoreReturnValue
-    public <K, V extends E> Ordered containsExactly() {
-      return MultimapSubject.this.containsExactly();
     }
 
     @SuppressWarnings("unchecked") // throwing ClassCastException is the correct behaviour

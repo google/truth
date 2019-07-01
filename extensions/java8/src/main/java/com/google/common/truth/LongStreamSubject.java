@@ -198,7 +198,7 @@ public final class LongStreamSubject extends Subject {
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public void isInStrictOrder(Comparator<?> comparator) {
+  public void isInStrictOrder(Comparator<? super Long> comparator) {
     check().that(actualList).isInStrictOrder(comparator);
   }
 
@@ -219,7 +219,7 @@ public final class LongStreamSubject extends Subject {
    *
    * @throws ClassCastException if any pair of elements is not mutually Comparable
    */
-  public void isInOrder(Comparator<?> comparator) {
+  public void isInOrder(Comparator<? super Long> comparator) {
     check().that(actualList).isInOrder(comparator);
   }
 
