@@ -703,7 +703,7 @@ public class MapSubject extends Subject {
      * correspond to the values of the given map.
      */
     @CanIgnoreReturnValue
-    public <K, V extends E> Ordered containsExactlyEntriesIn(Map<K, V> expectedMap) {
+    public Ordered containsExactlyEntriesIn(Map<?, ? extends E> expectedMap) {
       if (expectedMap.isEmpty()) {
         if (actual.isEmpty()) {
           return IN_ORDER;
@@ -720,7 +720,7 @@ public class MapSubject extends Subject {
      * correspond to the values of the given map.
      */
     @CanIgnoreReturnValue
-    public <K, V extends E> Ordered containsAtLeastEntriesIn(Map<K, V> expectedMap) {
+    public Ordered containsAtLeastEntriesIn(Map<?, ? extends E> expectedMap) {
       if (expectedMap.isEmpty()) {
         return IN_ORDER;
       }

@@ -360,6 +360,7 @@ public class FloatSubjectTest extends BaseSubjectTestCase {
     assertThatIsNotWithinFails(+1.0f, 0.00001f, Float.NEGATIVE_INFINITY);
   }
 
+  @SuppressWarnings("TruthSelfEquals")
   @Test
   public void isEqualTo() {
     assertThat(GOLDEN).isEqualTo(GOLDEN);

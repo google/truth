@@ -177,7 +177,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * vice versa. For an assertion that passes for either {@code 0.0} or {@code -0.0}, use {@link
    * #isZero}.
    */
-  public final void isEqualTo(@NullableDecl Double other) {
+  @Override
+  public final void isEqualTo(@NullableDecl Object other) {
     super.isEqualTo(other);
   }
 
@@ -190,7 +191,8 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * versa. For an assertion that fails for either {@code 0.0} or {@code -0.0}, use {@link
    * #isNonZero}.
    */
-  public final void isNotEqualTo(@NullableDecl Double other) {
+  @Override
+  public final void isNotEqualTo(@NullableDecl Object other) {
     super.isNotEqualTo(other);
   }
 
