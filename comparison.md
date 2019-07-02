@@ -81,8 +81,8 @@ found, though, that more is not always better:
     and composable matchers) can be harder to understand that assertions that
     stick to a single approach.
 -   As a practical matter, when there are more features, it's hard to spend as
-    much time on [designing](subject_named_actual_type_parameters) each API and
-    failure message. In the worst case, this can lead to [puzzlers](#puzzlers).
+    much time on designing each API and failure message. In the worst case, this
+    can lead to [puzzlers](#puzzlers).
 
 <!-- TODO(cpovirk): Link to a doc about the "act vs. verify" distinction once we've written it, using PredicateAssert as an example. -->
 
@@ -242,7 +242,15 @@ Truth has [AndroidX Test][Truth-Android].
 
 ### Puzzlers {#puzzlers}
 
-Here are some AssertJ puzzlers:
+In our years developing Truth, we have found that even the most "obvious" APIs
+can turn out to be misused, especially when they're used by many tests across
+many projects by many developers. We're fortunate to have enough users that we
+can justify digging deeply into the design of those APIs. (Here's
+[an example](subject_named_actual_type_parameters).) As we do so, we're also
+fortunate to have the tools to search our codebase and run other teams' tests.
+
+Based on our experiences, we present some AssertJ puzzlers, which we have
+designed Truth to avoid:
 
 ```java
 assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next());
