@@ -82,7 +82,7 @@ found, though, that more is not always better:
     stick to a single approach.
 -   As a practical matter, when there are more features, it's hard to spend as
     much time on [designing](subject_named_actual_type_parameters) each API and
-    failure message.
+    failure message. In the worst case, this can lead to [puzzlers](#puzzlers).
 
 <!-- TODO(cpovirk): Link to a doc about the "act vs. verify" distinction once we've written it, using PredicateAssert as an example. -->
 
