@@ -712,12 +712,14 @@ pressing issues).
 [^1]: "Avoid needing subclassing" might not be the best way to put this. The
     point is that we can declare a method that returns <code>S</code>, and we
     need to implement it only a single time in <code>Subject</code> itself.
+
 [^2]: self-nitpicking: OK, it's also the type of the constructor parameter that
     subclasses call to pass that actual value to `Subject`. However, `Subject`
     uses the actual value only for assertions like `isNotNull()`, where it
     doesn't need to know that it's specifically a `T`. The `T` type
     specifically is in service of `actual()`, which is in service of
     subclasses.
+
 [^3]: It turns out that a full (OK, _almost_ full) solution does exist. It
     hadn't occurred to me, but some users found it. The solution is to use
     <code>CustomSubjectBuilder</code>. This lets you force the input to be of
@@ -751,6 +753,7 @@ pressing issues).
     I am simultaneously horrified that this is necessary, impressed that some
     people found it, and tickled that `CustomSubjectBuilder` ended up
     satisfying this unforeseen use case.
+
 [^4]: You could also make <code>ViewSubject</code> the abstract type. Then you'd
     create a private <code>ConcreteViewSubject</code> subtype and a factory
     for the subtype. I <em>think</em> this will work, but you'll have to
