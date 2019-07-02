@@ -6,8 +6,8 @@ title: Truth vs. AssertJ and Hamcrest
 
 ## Overview
 
-As a [fluent] assertion library, Truth is similar to [AssertJ], which was forked
-from [FEST]. An assertion written with those libraries looks like this:
+Truth is similar to [AssertJ]. An assertion written with either library looks
+like this:
 
 ```java
 assertThat(notificationText).contains("testuser@google.com");
@@ -27,9 +27,9 @@ The reason is historical: AssertJ didn’t exist when we started Truth. By the
 time it was created, we’d begun using Truth widely at Google, and we’d made some
 decisions that would be difficult to retrofit onto AssertJ.
 
-## Truth vs. Hamcrest
+## Truth vs. Hamcrest {#vs-hamcrest}
 
-Because Truth and Hamcrest differ so significantly, I'll cover only the main
+Because Truth and Hamcrest differ so significantly, we'll cover only the main
 points:
 
 -   Truth assertions are made with chained method calls, so IDEs can suggest the
@@ -40,10 +40,10 @@ points:
     complex generics and makes it hard for Hamcrest to produce readable failure
     messages.
 
-## Truth vs. AssertJ
+## Truth vs. AssertJ {#vs-assertj}
 
-Again, the two are very similar. For anyone trying to decide between them, our
-pitch is: We prefer Truth for its simpler API:
+Again, the two are very similar. We prefer Truth for its
+[simpler API](#assertion-count):
 
 -   Truth provides fewer assertions, while still covering the most common needs
     of [Google’s codebase][monorepo]. Compare:
@@ -54,45 +54,41 @@ pitch is: We prefer Truth for its simpler API:
     easier to understand, and it lets us spend more time improving core
     features.
 
+We also usually prefer Truth's [failure messages](#failure-messages) (though we
+find AssertJ's to often be similar and, in some cases we're still working on, to
+even be better).
+
+Additionally, Truth works on Android devices [by default](#platforms), without
+requiring users to use an older version or import a different class than usual.
+
 ## Truth vs. AssertJ, more details {#assertj-detail}
 
-The two libraries differ in other, smaller ways, which I'll try to cover below.
-
-I'll try to be objective, but I acknolwedge that I'm in a better position to
-explain our own decisions than AssertJ's. If you identify something wrong,
-missing, or misleading, please [let us know][bug].
-
-### Stability
-
-AssertJ, while it continues to add APIs, rarely removes them anymore.
-
-Truth will stop removing APIs when we release 1.0, targeted for July 1, 2019.
-
-### Number of assertion methods
+### Number of assertion methods {#assertion-count}
 
 AssertJ has more: more classes of assertions ([AssertJ][assertj-api],
 [Truth][truth-api]) and more methods per class
-([AssertJ][`AbstractIterableAssert`], [Truth][`IterableSubject`]). That includes
-advanced features like [reflective field comparisons].
+([AssertJ][`AbstractIterableAssert`], [Truth][`IterableSubject`]).
 
-More is not *necessarily* better: It can make it harder to find what you're
-looking for, and it can mean you need to learn to read multiple styles of tests
-or understand the interaction of more features. But naturally, more features can
-also mean more convenience and power.
+It's easy to understand how every extra feature can be a good thing. We have
+found, though, that more is not always better:
+
+-   When a library has more APIs, it's harder to find what you're looking for.
+-   Users need to understand the behavior of many different methods.
+-   Users have to choose between multiple ways of doing the same thing.
+-   Different projects develop their own "dialects," so an assertion in one
+    project may look different than an equivalent assertion in another.
+-   Assertions that use a mixture of approaches (e.g., both chained method calls
+    and composable matchers) can be harder to understand that assertions that
+    stick to a single approach.
+-   As a practical matter, when there are more features, it's hard to spend as
+    much time on [designing](subject_named_actual_type_parameters) each API and
+    failure message.
 
 <!-- TODO(cpovirk): Link to a doc about the "act vs. verify" distinction once we've written it, using PredicateAssert as an example. -->
 
-### Failure messages
+### Failure messages {#failure-messages}
 
-I argue that Truth overall has a better approach here. But I also acknowledge
-that we haven't fully adopted that approach, so some of our assertion methods
-still produce a wall of prose:
-
-```
-Not true that <{jan=1, feb=2, march=3}> contains exactly <{jan=1, march=33}>. It has the following entries with unexpected keys: {feb=2} and has the following entries with matching keys but different values: {march=(expected 33 but got 3)}
-```
-
-Most of our messages, though, have migrated to a key-value style:
+We prefer Truth's (in most cases, at least). Here's an example:
 
 ```
 value of    : projectsByTeam().valuesForKey(corelibs)
@@ -117,7 +113,7 @@ but could not find the following elements:
   at com.google.common.truth.example.DemoTest.testTruth(DemoTest.java:71) <19 internal calls>
 ```
 
-But I'll point to a few differences:
+But note a few differences:
 
 -   The Truth message has fewer quotes and brackets, plus no
     `java.lang.AssertionEror:` or `internal calls`.
@@ -231,144 +227,183 @@ Also note that the exception thrown by Truth is a `ComparisonFailure`
 ([useful for IDEs][intellij-diff]) in both of the last two cases, not just one
 of the two as with AssertJ.
 
-### Chaining
-
-AssertJ supports multiple assertion calls on the same object in the same
-statement:
-
-```java
-assertThat(list)
-    .contains(x, y)
-    .doesNotContain(z);
-```
-
-Truth does not.
-
-Both libraries support "chaining" in the sense of a method that returns a new
-asserter for a sub-object:
-
-For example, AssertJ supports:
-
-```java
-assertThat(list).last().isEqualTo(x);
-```
-
-And Truth supports:
-
-```java
-assertThat(multimap).valuesForKey(x).containsExactly(y, z);
-```
-
-Our philosophy has been that it's clearer to support only one kind of chaining,
-but I suspect that the AssertJ style is generally clear, too, and it can be
-convenient.
-
-Kotlin users of Truth can emulate AssertJ-style chaining by using [`apply`]:
-
-```java
-assertThat(list).apply {
-  contains(x, y)
-  doesNotContain(z);
-}
-```
-
-### Assertion methods for other libraries' types
-
-AssertJ provides assertions for several libraries' types. As of this writing,
-[its home page][AssertJ] lists Guava, Joda-Time, DB, Neo4j, and Swing.
-
-Truth includes assertions for [Guava] and [Protocol Buffers].
-
-Both have third-party extensions, such as for Android types
-([AssertJ][AssertJ-Android] ([deprecated][AssertJ-Android-deprecated]),
-[Truth][Truth-Android]). I don't have a feel for the overall size of each
-ecosystem.
-
 ### Platform support (Android, GWT) {#platforms}
 
-AssertJ supports Android -- though I had to use 2.x because the dexer rejected
-3.x, even when I used only `Java6Assertions`. Possibly this was an issue with my
-build setup.
+Both libraries support Android. However, to use AssertJ on Android, you must
+[fall back to AssertJ 2.x](https://github.com/joel-costigliola/assertj-core/issues/1474#issuecomment-477762965),
+and you [can't use "soft assertions."][soft-assertions-android]
 
-Truth supports Android in all its versions. The downside is that it requires you
-to [look in a separate class](faq#java8) for Java 8 assertions.
+Truth supports Android in its main `Truth` class, and its equivalent to soft
+assertions ([`Expect`]) works under Android. Truth also supports [GWT].
 
-Truth also supports [GWT].
+Both libraries have third-party extensions for Android types: AssertJ has
+[AssertJ-Android] \(which is [deprecated][AssertJ-Android-deprecated]), and
+Truth has [AndroidX Test][Truth-Android].
+
+### Puzzlers {#puzzlers}
+
+Here are some AssertJ puzzlers:
+
+```java
+assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next());
+assertThat(primaryColors).containsAll(RED, YELLOW, BLUE);
+assertThat(Longs.tryParse(s)).isEqualTo(parsedValues.get(s));
+assertThat(event.getText())
+    .usingComparator(comparing(Object::toString))
+    .contains("2 suggestions");
+assertThat(defaults).has(new Condition<>(x -> x instanceof String, "a string"));
+```
+
+Each of these behaves differently than the reader might expect. See if you can
+figure them out, and then have a look at
+[the puzzler answers](#puzzler-answers).
 
 ### Writing your own assertion methods
 
-Both support this. A few notes on differences:
+Both support this.
 
--   The two are verbose in different places: AssertJ
-    [requires][`AbstractOptionalAssert`] (at least by convention) an `abstract`
-    superclass, verbose generics, and `return this;` at the end of each method;
-    Truth [requires][`OptionalSubject`] a method that returns a
-    `Subject.Factory` (generally implemented as a method reference) and an
-    `actual` field.
--   Truth's `Subject` class provides some
-    [convenience methods that build a failure message][`failWithActual`].
--   AssertJ offers [a tool][AssertJ-generator] to generate the methods for you.
+AssertJ is more verbose overall, [including][`AbstractOptionalAssert`] (at least
+by convention) an `abstract` superclass, verbose generics, and `return this;` at
+the end of each method. AssertJ also requires you to format failure messages
+yourself.
 
-### Failure strategies
+While Truth has some boilerplate of its own, [including][`OptionalSubject`] a
+method that returns a `Subject.Factory` (generally implemented as a method
+reference) and an `actual` field, it is usually less. Also, Truth supplies
+[convenience methods to format failure messages][`failWithActual`].
 
-AssertJ supports standard, fast-fail assertions. It also supports ["soft"
-assertions], with which you can perform multiple checks and see all their
-failures, not just the first.
+### Failure reporting
 
-Truth supports both of these, though its "soft assertions" API ([`Expect`]) does
-not let you [divide a single test
-method](https://github.com/google/truth/issues/266) into multiple "groups" as
-AssertJ does. It additionally supports [assumptions] and custom
-[`FailureStrategy`] implementations. This support also underlies its [utility
-for testing user-defined assertion methods][`ExpectFailure`].
+AssertJ supports standard, fast-fail assertions. It also supports
+["soft assertions"], with which you can perform multiple checks and see all
+their failures, not just the first.
 
-I had some problems with AssertJ's soft assertions:
+Truth supports both of these. It additionally supports [assumptions] and custom
+[`FailureStrategy`] implementations. This support also underlies its
+[utility for testing user-defined assertion methods][`ExpectFailure`].
+
+Note that AssertJ's soft assertions have some problems:
 
 -   They don't work with chained assertions like `last()`. Specifically, they
     fall back to behaving as fail-fast assertions.
--   They don't work on Android. The implementation of soft assertions uses
-    bytecode generation, which doesn't work there.
+-   They [don't work on Android][soft-assertions-android].
 
 These seem fixable in principle, but they demonstrate some of the reasons that
 we chose to make `FailureStrategy` a fundamental part of Truth.
 
-### Migration
+### Puzzler answers {#puzzler-answers}
 
-AssertJ provides [a tool][AssertJ-migrator] to automatically migrate from JUnit
-and other libraries to AssertJ.
+(If you want to try to figure these out on your own, head back up to view
+[the puzzlers without the answers](#puzzlers).)
 
-Truth has one, but it's only for JUnit, and it's currently only available inside
-Google.
+```java
+assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next());
+```
 
-### Bug-proneness
+This looks like it tests that each call to `next()` returns a different `long`.
+However, it actually tests that each call returns a `long` _that autoboxes to a
+distinct instance of `Long`_. Under a typical implementation of Java, this test
+would pass even if `next()` were implemented as `return 12345;` because Java
+will create a new `Long` instance after each invocation.
 
-Both libraries have some sharp edges. For example:
+Truth reduces the chance of this bug by naming its method "isNotSameInstanceAs."
 
-Under AssertJ,
-`assertThat(uniqueIdGenerator.next()).isNotSameAs(uniqueIdGenerator.next())` can
-pass even if both `next()` calls return the same value. Under Truth, we've
-chosen a different name for the method (`isNotSameInstanceAs`) to steer people
-away from using it unless they mean to test reference equality.
+```java
+assertThat(primaryColors).containsAll(RED, YELLOW, BLUE);
+```
 
-Under Truth, `assertThat(listOfStrings).doesNotContain(integer)` passes, even
-though your test is probably buggy. Under AssertJ, it doesn't compile. (Truth's
-looser types are [occasionally useful][pull-575-thread], but they may be more
-[trouble][`CollectionIncompatibleType`] than they're worth.) We plan to add
-static analysis to [Error Prone] to catch such bugs.
+This looks like it tests that the primary colors are defined to be red, yellow,
+and blue. However, it actually tests that the primary colors _include_ red,
+yellow, and blue, along with possibly other colors.
 
-### Conditions
+Truth reduces the chance of this bug by naming its method "containsAtLeast."
 
-AssertJ supports Hamcrest-style "[conditions]".
+```java
+assertThat(Longs.tryParse(s)).isEqualTo(parsedValues.get(s));
+```
 
-Truth mostly does not. We encourage people to instead write
-[custom `Subject` implementations](extension), which IDEs can better surface
-during autocompletion. However, we do offer similar functionality for
-collections through our [`Correspondence`] class.
+This looks like it tests that the given string parses to the expected value.
+However, if `parsedValues` is a `Map<String, Integer>` (perhaps because it's
+shared with the tests of `Ints.tryParse`), then the test will always fail
+because a `Long` is not equal to an `Integer`.
 
-### And more
+Truth reduces the chance of type-mismatch bugs by treating a `Long` as equal to
+its equivalent `Integer`.
 
-This list is not exhaustive. Let us know if you think we're missing something
-significant.
+```java
+assertThat(event.getText())
+    .usingComparator(comparing(Object::toString))
+    .contains("2 suggestions");
+```
+
+This looks like it tests that the `List<CharSequence>` returned by `getText()`
+contains an element with content "2 suggestions." However, the `Comparator`
+passed to `usingComparator` does not affect the `contains` call. (It affects
+only calls like `isEqualTo`.) To apply a `Comparator` to `contains` and other
+methods that operate on individual elements, AssertJ has a separate method,
+`usingElementComparator`.
+
+Truth avoids this problem by not permitting arbitrary assertions with a
+`Comparator`.
+
+```java
+assertThat(defaults).has(new Condition<>(x -> x instanceof String, "a string"));
+```
+
+This looks like it tests that the `defaults` array contains a string. However,
+it actually tests that `defaults` is _itself_ a string.
+
+Truth avoids this problem by omitting support for `Condition`-style assertions
+(except by using `Correspondence`, which is exposed only for assertions on
+collection elements).
+
+## A case for AssertJ {#for-assertj}
+
+While we prefer Truth, we acknowledge that others may prefer AssertJ. Here are
+some cases in which AssertJ offers advantages:
+
+-   AssertJ offers a larger API.
+    -   It offers more assertions. While we believe that Truth offers most of
+        the most commonly needed assertions, some projects might make a lot of
+        assertions about, say, `URI` objects, which Truth doesn't include
+        built-in support for.
+    -   It offers features like [reflective field comparisons]. We find that
+        some of these can make code harder to maintain, but we grant that they
+        can be convenient and safe in certain cases.
+    -   It offers support for Hamcrest-style "[conditions]." We prefer to avoid
+        this model for the same
+        [reasons that we prefer Truth to Hamcrest](#vs-hamcrest).
+-   While we prefer Truth's failure messages overall, there are cases in which
+    AssertJ is still better. Consider this Truth message: `Not true that
+    <{jan=1, feb=2, march=3}> contains exactly <{jan=1, march=33}>. It has the
+    following entries with unexpected keys: {feb=2} and has the following
+    entries with matching keys but different values: {march=(expected 33 but got
+    3)}`
+-   In order to support Android by default, Truth
+    [makes it a little harder](faq#java8) to use assertions specific to Java 8
+    types, like `Optional`.
+-   Truth has a few puzzlers of its own. For example,
+    `assertThat(listOfStrings).doesNotContain(integer)` passes, even though your
+    test is probably buggy. Under AssertJ, it doesn't compile. (Truth's looser
+    types are [occasionally useful][pull-575-thread], but they may be more
+    [trouble][`CollectionIncompatibleType`] than they're worth.) We plan to add
+    static analysis to [Error Prone] to catch such bugs.
+-   If you're writing an extension, AssertJ offers [a tool][AssertJ-generator]
+    to generate it for you.
+-   AssertJ supports multiple assertion calls on the same object in the same
+    statement: `assertThat(list).contains(x, y).doesNotContain(z);`. Truth does
+    not. Both libraries support "chaining" in the sense of a method that returns
+    a new asserter for a sub-object: For example, AssertJ supports
+    `assertThat(list).last().isEqualTo(x);`. And Truth supports
+    `assertThat(multimap).valuesForKey(x).containsExactly(y, z);`. Our
+    philosophy has been that it's clearer to support only one kind of chaining,
+    but we suspect that the AssertJ style is generally clear, too, and it can be
+    convenient. Kotlin users of Truth can emulate AssertJ-style chaining by
+    using [`apply`]: `assertThat(list).apply { contains(x, y) doesNotContain(z);
+    }`
+-   AssertJ provides [a tool][AssertJ-migrator] to automatically migrate from
+    JUnit and other libraries to AssertJ. Truth has one, but it's only for
+    JUnit, and it's currently only available inside Google.
 
 <!-- References -->
 
@@ -378,7 +413,7 @@ significant.
 [Hamcrest]: http://hamcrest.org/JavaHamcrest/
 [Polish prefix notation]: https://en.wikipedia.org/wiki/Polish_notation
 [`Expect`]: https://truth.dev/api/latest/com/google/common/truth/Expect.html
-["soft" assertions]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#soft-assertions
+["soft assertions"]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#soft-assertions
 [assumptions]: https://truth.dev/api/latest/com/google/common/truth/TruthJUnit.html#assume--
 [`FailureStrategy`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html
 [`ExpectFailure`]: https://truth.dev/api/latest/com/google/common/truth/ExpectFailure.html
@@ -407,4 +442,5 @@ significant.
 [Error Prone]: https://errorprone.info
 [pull-575-thread]: https://github.com/google/truth/pull/575#discussion_r293444380
 [`CollectionIncompatibleType`]: https://errorprone.info/bugpattern/CollectionIncompatibleType
+[soft-assertions-android]: https://github.com/joel-costigliola/assertj-core/issues/1493
 

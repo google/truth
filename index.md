@@ -82,9 +82,8 @@ create Truth? The reason is historical: AssertJ didn’t exist when we started
 Truth. By the time it was created, we’d begun using Truth widely at Google, and
 we’d made some decisions that would be difficult to retrofit onto AssertJ.
 
-Both Truth and AssertJ have their
-[advantages](comparison#assertj-detail). We prefer Truth for its simpler
-API:
+Both Truth and AssertJ have their [advantages](comparison#assertj-detail). We
+prefer Truth for its [simpler API](comparison#assertion-count):
 
 -   Truth provides fewer assertions, while still covering the most common needs
     of [Google’s codebase][monorepo]. Compare:
@@ -95,8 +94,13 @@ API:
     easier to understand, and it lets us spend more time improving core
     features.
 
-Also, Truth works on Android devices [by default](comparison#platforms), without requiring users to use
-an older version or import a different class than usual.
+We also usually prefer Truth's [failure messages](comparison#failure-messages) (though we
+find AssertJ's to often be similar and, in some cases we're still working on, to
+even be better).
+
+Additionally, Truth works on Android devices
+[by default](comparison#platforms), without requiring users to use an older
+version or import a different class than usual.
 
 ## Truth vs. Hamcrest
 
