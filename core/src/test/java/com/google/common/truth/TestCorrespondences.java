@@ -229,7 +229,7 @@ final class TestCorrespondences {
               return recordsAreCloseEnough(actual, expected);
             }
           },
-          "has the same id as and a score is within 10 of");
+          "has the same id as and a score within 10 of");
 
   /**
    * A correspondence between {@link Record} instances which tests whether their {@code id} values
