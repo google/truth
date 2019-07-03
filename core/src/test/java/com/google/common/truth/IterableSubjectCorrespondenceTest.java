@@ -141,7 +141,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1/100, 2/211, 4/400, 2/189, none/999]> contains at least one element "
-                + "that has the same id as and a score is within 10 of <2/200>. It did contain the "
+                + "that has the same id as and a score within 10 of <2/200>. It did contain the "
                 + "following elements with the correct key: "
                 + "<[2/211 (diff: score:11), 2/189 (diff: score:-11)]>");
   }
@@ -158,7 +158,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .contains(expected);
     assertFailureKeys(
         "Not true that <[1/100, null, 4/400]> contains at least one element that has the same id "
-            + "as and a score is within 10 of <0/999>",
+            + "as and a score within 10 of <0/999>",
         "additionally, one or more exceptions were thrown while keying elements for pairing",
         "first exception");
     assertThatFailure()
@@ -178,7 +178,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .contains(null);
     assertFailureKeys(
         "Not true that <[1/100, 2/200, 4/400]> contains at least one element that has the same id "
-            + "as and a score is within 10 of <null>",
+            + "as and a score within 10 of <null>",
         "additionally, one or more exceptions were thrown while keying elements for pairing",
         "first exception");
     assertThatFailure()
@@ -198,7 +198,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .contains(expected);
     assertFailureKeys(
         "Not true that <[1/100, null, 4/400]> contains at least one element that has the same id "
-            + "as and a score is within 10 of <0/999>. It did contain the following elements with "
+            + "as and a score within 10 of <0/999>. It did contain the following elements with "
             + "the correct key: <[null]>",
         "additionally, one or more exceptions were thrown while formatting diffs",
         "first exception");
@@ -612,7 +612,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that has "
-                + "the same id as and a score is within 10 of each element of "
+                + "the same id as and a score within 10 of each element of "
                 + "<[1/100, 2/200, 3/300, none/900]>. It is missing an element that corresponds to "
                 + "<2/200> and has unexpected elements <[2/211 (diff: score:11)]> with key 2, and "
                 + "is missing an element that corresponds to each of <[3/300, none/900]> and has "
@@ -638,7 +638,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that "
-                + "parses to a record that has the same id as and a score is within 10 of each "
+                + "parses to a record that has the same id as and a score within 10 of each "
                 + "element of <[1/100, 2/200, 3/300, none/900]>. It is missing an element that "
                 + "corresponds to <2/200> and has unexpected elements <[2/211 (diff: score:11)]> "
                 + "with key 2, and is missing an element that corresponds to each of "
@@ -670,7 +670,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1/100, 2/211, 3/303, none/999]> contains exactly one element that has "
-                + "the same id as and a score is within 10 of each element of "
+                + "the same id as and a score within 10 of each element of "
                 + "<[1/100, 2/200, 3/300, none/999]>. It is missing an element that corresponds to "
                 + "<2/200> and has unexpected elements <[2/211 (diff: score:11)]> with key 2");
   }
@@ -699,7 +699,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1/100, 2/201, 4/400, none/999]> contains exactly one element that has "
-                + "the same id as and a score is within 10 of each element of "
+                + "the same id as and a score within 10 of each element of "
                 + "<[1/100, 2/200, 3/300, none/900]>. It is missing an element that corresponds "
                 + "to each of <[3/300, none/900]> and has unexpected elements "
                 + "<[4/400, none/999]> without matching keys");
@@ -729,7 +729,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1/100, 2/211, 3/303, none/999]> contains exactly one element that has "
-                + "the same id as and a score is within 10 of each element of "
+                + "the same id as and a score within 10 of each element of "
                 + "<[1/100, 2/200, 3/300, none/999]>. It is missing an element that corresponds to "
                 + "<2/200> and has unexpected elements <[2/211]> with key 2");
   }
@@ -776,9 +776,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that has "
-                + "the same id as and a score is within 10 of each element of "
+                + "the same id as and a score within 10 of each element of "
                 + "<[1/100, 2/200, 3/300, 3/301, none/900]>. It is missing an element that has the "
-                + "same id as and a score is within 10 of each of <[2/200, 3/300, 3/301, none/900]>"
+                + "same id as and a score within 10 of each of <[2/200, 3/300, 3/301, none/900]>"
                 + " and has unexpected elements <[2/211, 4/400, none/999]>. (N.B. A key function "
                 + "which does not uniquely key the expected elements was provided and has "
                 + "consequently been ignored.)");
@@ -797,7 +797,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsExactlyElementsIn(expected);
     assertFailureKeys(
         "Not true that <[1/101, 2/211, null]> contains exactly one element that has the same id "
-            + "as and a score is within 10 of each element of <[1/100, 2/200, 4/400]>. It is "
+            + "as and a score within 10 of each element of <[1/100, 2/200, 4/400]>. It is "
             + "missing an element that corresponds to <2/200> and has unexpected elements "
             + "<[2/211 (diff: score:11)]> with key 2, and is missing an element that corresponds "
             + "to <4/400> and has unexpected elements <[null]> without matching keys",
@@ -821,7 +821,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsExactlyElementsIn(expected);
     assertFailureKeys(
         "Not true that <[1/101, 2/211, 4/400]> contains exactly one element that has the same id "
-            + "as and a score is within 10 of each element of <[1/100, 2/200, null]>. It is "
+            + "as and a score within 10 of each element of <[1/100, 2/200, null]>. It is "
             + "missing an element that corresponds to <2/200> and has unexpected elements "
             + "<[2/211 (diff: score:11)]> with key 2, and is missing an element that corresponds "
             + "to <null> and has unexpected elements <[4/400]> without matching keys",
@@ -845,7 +845,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsExactlyElementsIn(expected);
     assertFailureKeys(
         "Not true that <[1/101, 2/211, null]> contains exactly one element that has the same id as "
-            + "and a score is within 10 of each element of <[1/100, 2/200, 0/999]>. It is missing "
+            + "and a score within 10 of each element of <[1/100, 2/200, 0/999]>. It is missing "
             + "an element that corresponds to <2/200> and has unexpected elements "
             + "<[2/211 (diff: score:11)]> with key 2, and is missing an element that corresponds "
             + "to <0/999> and has unexpected elements <[null]> with key 0",
@@ -1199,7 +1199,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1/101, 2/211, 2/222, 3/303, none/888]> contains at least one element "
-                + "that has the same id as and a score is within 10 of each element of "
+                + "that has the same id as and a score within 10 of each element of "
                 + "<[1/100, 2/200, none/999]>. It is missing an element that corresponds to "
                 + "<2/200> (but did have elements <[2/211 (diff: score:11), "
                 + "2/222 (diff: score:22)]> with matching key 2), and is missing an element that "
@@ -1226,9 +1226,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[1/101, 3/303, none/999]> contains at least one element that has the "
-                + "same id as and a score is within 10 of each element of "
+                + "same id as and a score within 10 of each element of "
                 + "<[1/100, 2/200, 2/201, none/999]>. It is missing an element that has the same "
-                + "id as and a score is within 10 of each of <[2/200, 2/201]>. (N.B. A key "
+                + "id as and a score within 10 of each of <[2/200, 2/201]>. (N.B. A key "
                 + "function which does not uniquely key the expected elements was provided and has "
                 + "consequently been ignored.)");
   }
@@ -1247,7 +1247,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsAtLeastElementsIn(expected);
     assertFailureKeys(
         "Not true that <[1/101, 2/211, 3/303, null]> contains at least one element that has the "
-            + "same id as and a score is within 10 of each element of <[1/100, 2/200, 0/999]>. "
+            + "same id as and a score within 10 of each element of <[1/100, 2/200, 0/999]>. "
             + "It is missing an element that corresponds to <2/200> (but did have elements "
             + "<[2/211 (diff: score:11)]> with matching key 2), and is missing an element that "
             + "corresponds to <0/999> (but did have elements <[null]> with matching key 0)",
@@ -1553,7 +1553,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[3/311, 2/211, 2/222, 4/404, none/888]> contains at least one element "
-                + "that has the same id as and a score is within 10 of any element in "
+                + "that has the same id as and a score within 10 of any element in "
                 + "<[1/100, 2/200, 3/300, none/999]>. It contains the following values that match "
                 + "by key: with key 2, would have accepted 2/200, but got "
                 + "[2/211 (diff: score:11), 2/222 (diff: score:22)]; with key 3, would have "
@@ -1576,7 +1576,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[3/300, 4/411, none/888]> contains at least one element that has the "
-                + "same id as and a score is within 10 of any element in "
+                + "same id as and a score within 10 of any element in "
                 + "<[1/100, 2/200, none/999]>. It does not contain any matches by key, either");
   }
 
@@ -1600,7 +1600,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .hasMessageThat()
         .isEqualTo(
             "Not true that <[3/300, 2/211, none/888]> contains at least one element that has the "
-                + "same id as and a score is within 10 of any element in "
+                + "same id as and a score within 10 of any element in "
                 + "<[1/100, 2/200, 2/250, none/999]>. (N.B. A key function which does not uniquely "
                 + "key the expected elements was provided and has consequently been ignored.)");
   }
@@ -1618,7 +1618,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsAnyIn(expected);
     assertFailureKeys(
         "Not true that <[3/311, 4/404, null]> contains at least one element that has the same id "
-            + "as and a score is within 10 of any element in <[1/100, 2/200, 0/999]>. It contains "
+            + "as and a score within 10 of any element in <[1/100, 2/200, 0/999]>. It contains "
             + "the following values that match by key: with key 0, would have accepted 0/999, but "
             + "got [null]",
         "additionally, one or more exceptions were thrown while formatting diffs",
