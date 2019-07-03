@@ -280,25 +280,6 @@ method that returns a `Subject.Factory` (generally implemented as a method
 reference) and an `actual` field, it is usually less. Also, Truth supplies
 [convenience methods to format failure messages][`failWithActual`].
 
-### Failure reporting
-
-AssertJ supports standard, fast-fail assertions. It also supports
-["soft assertions"], with which you can perform multiple checks and see all
-their failures, not just the first.
-
-Truth supports both of these. It additionally supports [assumptions] and custom
-[`FailureStrategy`] implementations. This support also underlies its
-[utility for testing user-defined assertion methods][`ExpectFailure`].
-
-Note that AssertJ's soft assertions have some problems:
-
--   They don't work with chained assertions like `last()`. Specifically, they
-    fall back to behaving as fail-fast assertions.
--   They [don't work on Android][soft-assertions-android].
-
-These seem fixable in principle, but they demonstrate some of the reasons that
-we chose to make `FailureStrategy` a fundamental part of Truth.
-
 ### Puzzler answers {#puzzler-answers}
 
 (If you want to try to figure these out on your own, head back up to view
@@ -375,9 +356,11 @@ some cases in which AssertJ offers advantages:
         the most commonly needed assertions, some projects might make a lot of
         assertions about, say, `URI` objects, which Truth doesn't include
         built-in support for.
-    -   It offers features like [reflective field comparisons]. We find that
-        some of these can make code harder to maintain, but we grant that they
-        can be convenient and safe in certain cases.
+    -   It offers features like [reflective field comparisons] -- include
+        configurable [recursive field comparison]. We find that some of these
+        can make code harder to maintain, but we grant that they can be
+        convenient and safe in certain cases, like for [Wire] protocol buffers
+        (a use case similar to the one served by [ProtoTruth]).
     -   It offers support for Hamcrest-style "[conditions]." We prefer to avoid
         this model for the same
         [reasons that we prefer Truth to Hamcrest](#vs-hamcrest).
@@ -413,6 +396,40 @@ some cases in which AssertJ offers advantages:
     JUnit and other libraries to AssertJ. Truth has one, but it's only for
     JUnit, and it's currently only available inside Google.
 
+## Some more similarities
+
+### Failure reporting
+
+In addition to standard, fast-fail assertions, Truth and AssertJ both support:
+
+-   ["soft assertions"] / [`Expect`]: These let you perform multiple checks and
+    see all their failures, not just the first.
+-   assumptions ([Truth][truth-assume], [AssertJ][assertj-assume]): These let
+    you abort a test if a prerequisite is not met (such as running under a
+    particular version of Java).
+
+Truth also supports custom [`FailureStrategy`] implementations. This support
+also underlies its
+[utility for testing user-defined assertion methods][`ExpectFailure`].
+
+Note that AssertJ's soft assertions have some limitations:
+
+-   They [don't work on Android][soft-assertions-android].
+-   In combination with other features, they sometimes
+    [fall back to fail-fast assertions][assertj-1353].
+
+These seem fixable in principle, but they demonstrate some of the reasons that
+we chose to make `FailureStrategy` a fundamental part of Truth.
+
+On the other hand, AssertJ's soft assertions let you divide a test into multiple
+groups of soft assertions. Truth does not support this.
+
+## Library support
+
+Truth and AssertJ both support Guava types. Truth includes them in its main
+artifact and main `Truth` class; AssertJ is more modularized, offering
+[a separate artifact][assertj-guava].
+
 <!-- References -->
 
 [fluent]: https://en.wikipedia.org/wiki/Fluent_interface
@@ -422,7 +439,8 @@ some cases in which AssertJ offers advantages:
 [Polish prefix notation]: https://en.wikipedia.org/wiki/Polish_notation
 [`Expect`]: https://truth.dev/api/latest/com/google/common/truth/Expect.html
 ["soft assertions"]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#soft-assertions
-[assumptions]: https://truth.dev/api/latest/com/google/common/truth/TruthJUnit.html#assume--
+[truth-assume]: https://truth.dev/api/latest/com/google/common/truth/TruthJUnit.html#assume--
+[assertj-assume]: https://static.javadoc.io/org.assertj/assertj-core/3.12.2/org/assertj/core/api/Assumptions.html
 [`FailureStrategy`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html
 [`ExpectFailure`]: https://truth.dev/api/latest/com/google/common/truth/ExpectFailure.html
 [Guava]: https://github.com/google/guava
@@ -435,12 +453,13 @@ some cases in which AssertJ offers advantages:
 [AssertJ-generator]: https://joel-costigliola.github.io/assertj/assertj-assertions-generator.html
 [conditions]: https://joel-costigliola.github.io/assertj/assertj-core-conditions.html
 [reflective field comparisons]: https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#field-by-field-comparison
+[recursive field comparison]: https://assertj.github.io/doc/#assertj-core-recursive-comparison
 [bug]: https://github.com/google/truth/issues/new
 [`Correspondence`]: https://truth.dev/api/latest/com/google/common/truth/Correspondence.html
 [truth-api]: https://truth.dev/api/latest/index.html
-[assertj-api]: http://joel-costigliola.github.io/assertj/core-8/api/index.html
+[assertj-api]: https://www.javadoc.io/doc/org.assertj/assertj-core
 [`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
-[`AbstractIterableAssert`]: http://joel-costigliola.github.io/assertj/core-8/api/org/assertj/core/api/AbstractIterableAssert.html
+[`AbstractIterableAssert`]: https://static.javadoc.io/org.assertj/assertj-core/3.12.2/org/assertj/core/api/AbstractIterableAssert.html
 [`apply`]: https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/apply.html
 [`failWithActual`]: https://truth.dev/api/latest/com/google/common/truth/Subject.html#failWithActual-java.lang.String-java.lang.Object-
 [`AbstractOptionalAssert`]: https://github.com/joel-costigliola/assertj-core/blob/ced2937f8e1647ab7893adb9fc766e64b1ab20a9/src/main/java/org/assertj/core/api/AbstractOptionalAssert.java#L45
@@ -451,4 +470,8 @@ some cases in which AssertJ offers advantages:
 [pull-575-thread]: https://github.com/google/truth/pull/575#discussion_r293444380
 [`CollectionIncompatibleType`]: https://errorprone.info/bugpattern/CollectionIncompatibleType
 [soft-assertions-android]: https://github.com/joel-costigliola/assertj-core/issues/1493
+[assertj-1353]: https://github.com/joel-costigliola/assertj-core/issues/1353
+[assertj-guava]: http://joel-costigliola.github.io/assertj/assertj-guava.html
+[Wire]: https://github.com/square/wire
+[ProtoTruth]: https://truth.dev/protobufs
 

@@ -199,8 +199,8 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 [AssertJ]: http://joel-costigliola.github.io/assertj/
 [monorepo]: https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext
 [truth-api]: https://truth.dev/api/latest/index.html
-[assertj-api]: http://joel-costigliola.github.io/assertj/core-8/api/index.html
+[assertj-api]: https://www.javadoc.io/doc/org.assertj/assertj-core
 [`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
-[`AbstractIterableAssert`]: http://joel-costigliola.github.io/assertj/core-8/api/org/assertj/core/api/AbstractIterableAssert.html
+[`AbstractIterableAssert`]: https://static.javadoc.io/org.assertj/assertj-core/3.12.2/org/assertj/core/api/AbstractIterableAssert.html
 [Hamcrest]: http://hamcrest.org/JavaHamcrest/
 
