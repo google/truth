@@ -117,7 +117,9 @@ public class IterableSubject extends Subject {
 
   @Override
   public void isEqualTo(@NullableDecl Object expected) {
-    if (Objects.equal(actual, expected)) {
+    @SuppressWarnings("UndefinedEquals") // method contract requires testing iterables for equality
+    boolean equal = Objects.equal(actual, expected);
+    if (equal) {
       return;
     }
 
@@ -1385,7 +1387,7 @@ public class IterableSubject extends Subject {
       if (indexes.size() == list.size()) {
         // If there are as many distinct valid indexes are there are elements in the list then every
         // index must be in there once.
-        return ImmutableList.of();
+        return asList();
       }
       List<T> notIndexed = newArrayList();
       for (int index = 0; index < list.size(); index++) {
