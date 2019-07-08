@@ -24,7 +24,7 @@ actually returned by the code under test), checking that it contains (or,
 occasionally, does not contain) certain expected elements of type `E`.
 
 Here's an example correspondence between strings, which tests whether the actual
-strings start with the expected substrings:
+strings contain the expected substrings:
 
 ```java
 private static final Correspondence<String, String> CONTAINS_SUBSTRING =
