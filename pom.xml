@@ -238,6 +238,7 @@
             <encoding>UTF-8</encoding>
             <docencoding>UTF-8</docencoding>
             <charset>UTF-8</charset>
+            <overview>overview.html</overview>
             <links>
               <!-- TODO(cpovirk): Link to the version that we depend on? -->
               <link>https://google.github.io/guava/releases/snapshot-jre/api/docs</link>
