@@ -41,7 +41,9 @@ import org.junit.runners.model.Statement;
  * A {@link TestRule} that batches up all failures encountered during a test, and reports them all
  * together at the end (similar to {@link ErrorCollector}). It is also useful for making assertions
  * from other threads or from within callbacks whose exceptions would be swallowed or logged, rather
- * than propagated out to fail the test.
+ * than propagated out to fail the test. (<a href="https://joel-costigliola.github.io/assertj/"
+ * target="_top">AssertJ</a> has a similar feature called "soft assertions"; however, soft
+ * assertions are not safe for concurrent use.)
  *
  * <p>Usage:
  *
