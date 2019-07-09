@@ -27,12 +27,12 @@ public class Subject<S extends Subject<S, T>, T> {
 Each type parameter has one purpose:
 
 *   `S` is the return type of <code>named(...)</code>, our only
-    <code>this</code>-returning method. Test writers use it like this: \
-    <code>assertThat(username).named("username").isNotEmpty();</code>
+    <code>this</code>-returning method. Test writers use it like this:
+    <br><code>assertThat(username).named("username").isNotEmpty();</code>
 *   <code>T</code> is the return type of <code>actual()</code>, a
     <code>protected</code> method used by <code>Subject</code> implementations
-    to retrieve the value under test. Subclasses use it in operations like: \
-    `if (!actual().containsEntry(key, value)) { fail(...); }`
+    to retrieve the value under test. Subclasses use it in operations like this:
+    <br>`if (!actual().containsEntry(key, value)) { fail(...); }`
 
 This proposal (eventually, a few pages from now...) is to remove those type
 parameters and so, necessarily, to remove the 2 methods that use them. (OK, it's
