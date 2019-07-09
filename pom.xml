@@ -28,6 +28,7 @@
     <guava.version>27.0.1</guava.version>
     <gwt.version>2.8.2</gwt.version>
     <protobuf.version>3.6.1</protobuf.version>
+    <kotlin.version>1.3.41</kotlin.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
     <protobuf-lite.protoc.version>3.1.0</protobuf-lite.protoc.version>
     <!-- Property for protobuf-java protocArtifact, which ought to be the same as protobuf.version but can't be internally at the moment. -->
@@ -125,6 +126,21 @@
             <artifactId>truth-java8-extension</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>${kotlin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk8</artifactId>
+        <version>${kotlin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-test</artifactId>
+        <version>${kotlin.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.errorprone</groupId>
