@@ -133,11 +133,11 @@ Truth and [Hamcrest] differ significantly. We prefer Truth because:
 ### Gradle:
 
 ```groovy
-buildscript {
-  repositories.mavenLocal()
+repositories {
+  mavenCentral()
 }
 dependencies {
-  testCompile "com.google.truth:truth:{{ site.version }}"
+  testImplementation "com.google.truth:truth:{{ site.version }}"
 }
 ```
 
