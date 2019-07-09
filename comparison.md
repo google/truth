@@ -280,6 +280,9 @@ method that returns a `Subject.Factory` (generally implemented as a method
 reference) and an `actual` field, it is usually less. Also, Truth supplies
 [convenience methods to format failure messages][`failWithActual`].
 
+(To be fair, AssertJ reduces the up-front cost of verbosity by offering
+[an assertions generator].)
+
 ### Puzzler answers {#puzzler-answers}
 
 (If you want to try to figure these out on your own, head back up to view
@@ -474,4 +477,5 @@ artifact and main `Truth` class; AssertJ is more modularized, offering
 [assertj-guava]: http://joel-costigliola.github.io/assertj/assertj-guava.html
 [Wire]: https://github.com/square/wire
 [ProtoTruth]: https://truth.dev/protobufs
+[an assertions generator]: https://joel-costigliola.github.io/assertj/assertj-assertions-generator.html
 
