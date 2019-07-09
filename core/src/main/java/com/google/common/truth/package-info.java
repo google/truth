@@ -15,14 +15,18 @@
  */
 
 /**
- * <a href="https://truth.dev">Truth</a> is a library for performing assertions in tests:
+ * <a href="https://truth.dev" target="_top">Truth</a> is a library for performing assertions in
+ * tests:
  *
  * <pre>{@code
  * assertThat(notificationText).contains("testuser@google.com");
  * }</pre>
  *
- * <p>Truth is owned and maintained by the <a href="http://github.com/google/guava">Guava</a> team.
- * It is used in the majority of the tests in Google’s own codebase.
+ * <p>Truth is owned and maintained by the <a href="http://github.com/google/guava"
+ * target="_top">Guava</a> team. It is used in the majority of the tests in Google’s own codebase.
+ *
+ * <p>For more information, see <a href="https://truth.dev" target="_top">our introduction</a> and
+ * other docs.
  */
 @CheckReturnValue
 package com.google.common.truth;
