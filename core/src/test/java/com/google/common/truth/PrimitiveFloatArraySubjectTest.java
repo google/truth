@@ -27,7 +27,6 @@ import static org.junit.Assert.fail;
 import com.google.common.annotations.GwtIncompatible;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -159,14 +158,15 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.0f, INTOLERABLE_TWO, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(2.0f);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains at least one element that is a finite "
-                    + "number within %s of <%s>",
-                1.0f, INTOLERABLE_TWO, 3.0f, (double) DEFAULT_TOLERANCE, 2.0f));
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", Float.toString(2.0f));
+    assertFailureValue(
+        "testing whether",
+        "actual element is a finite number within "
+            + (double) DEFAULT_TOLERANCE
+            + " of expected element");
+    assertFailureValue("full contents", "[" + 1.0f + ", " + INTOLERABLE_TWO + ", " + 3.0f + "]");
   }
 
   @Test
@@ -174,14 +174,10 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.0f, POSITIVE_INFINITY, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(POSITIVE_INFINITY);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, Infinity, %s]> "
-                    + "contains at least one element that is "
-                    + "a finite number within %s of <Infinity>",
-                1.0f, 3.0f, (double) DEFAULT_TOLERANCE));
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", "Infinity");
+    assertFailureValue("full contents", "[" + 1.0f + ", Infinity, " + 3.0f + "]");
   }
 
   @Test
@@ -189,14 +185,10 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.0f, NaN, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(NaN);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, NaN, %s]> "
-                    + "contains at least one element that is "
-                    + "a finite number within %s of <NaN>",
-                1.0f, 3.0f, (double) DEFAULT_TOLERANCE));
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", "NaN");
+    assertFailureValue("full contents", "[" + 1.0f + ", NaN, " + 3.0f + "]");
   }
 
   @Test
@@ -246,12 +238,10 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).usingTolerance(DEFAULT_TOLERANCE).contains(null);
     assertFailureKeys(
         "value of",
-        "Not true that <"
-            + Arrays.toString(actual)
-            + "> contains at least one element that is a finite number "
-            + "within "
-            + (double) DEFAULT_TOLERANCE
-            + " of <null>",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -446,14 +436,11 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.0f, JUST_OVER_2POINT2, 3.0f))
         .usingExactEquality()
         .contains(2.2f);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains at least one element "
-                    + "that is exactly equal to <%s>",
-                1.0f, JUST_OVER_2POINT2, 3.0f, 2.2f));
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", Float.toString(2.2f));
+    assertFailureValue("testing whether", "actual element is exactly equal to expected element");
+    assertFailureValue("full contents", "[" + 1.0f + ", " + JUST_OVER_2POINT2 + ", " + 3.0f + "]");
   }
 
   @Test
@@ -473,11 +460,10 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
     assertFailureKeys(
         "value of",
-        "Not true that <"
-            + Arrays.toString(actual)
-            + "> contains at least one element that is exactly equal to <"
-            + expected
-            + ">",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -504,13 +490,13 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
     assertFailureKeys(
         "value of",
-        "Not true that <"
-            + Arrays.toString(actual)
-            + "> contains at least one element that is exactly equal to <"
-            + expected
-            + ">",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("expected to contain", Long.toString(expected));
     assertThatFailure()
         .factValue("first exception")
         .startsWith(
@@ -535,11 +521,10 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
     assertFailureKeys(
         "value of",
-        "Not true that <"
-            + Arrays.toString(actual)
-            + "> contains at least one element that is exactly equal to <"
-            + expected
-            + ">",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -564,13 +549,13 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
     assertFailureKeys(
         "value of",
-        "Not true that <"
-            + Arrays.toString(actual)
-            + "> contains at least one element that is exactly equal to <"
-            + expected
-            + ">",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("expected to contain", "2");
     assertThatFailure()
         .factValue("first exception")
         .startsWith(
@@ -594,13 +579,13 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).usingExactEquality().contains(expected);
     assertFailureKeys(
         "value of",
-        "Not true that <"
-            + Arrays.toString(actual)
-            + "> contains at least one element that is exactly equal to <"
-            + expected
-            + ">",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("expected to contain", expected.toString());
     assertThatFailure()
         .factValue("first exception")
         .startsWith(
@@ -632,14 +617,9 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void usingExactEquality_contains_failureWithNegativeZero() {
     expectFailureWhenTestingThat(array(1.0f, -0.0f, 3.0f)).usingExactEquality().contains(0.0f);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, -0.0, %s]> "
-                    + "contains at least one element that is "
-                    + "exactly equal to <%s>",
-                1.0f, 3.0f, 0.0f));
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", Float.toString(0.0f));
   }
 
   @Test
@@ -648,12 +628,13 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual).usingExactEquality().contains(null);
     assertFailureKeys(
         "value of",
-        "Not true that <"
-            + Arrays.toString(actual)
-            + "> contains at least one element that is exactly equal to "
-            + "<null>",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("expected to contain", "null");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(" + actual[0] + ", null) threw java.lang.NullPointerException");

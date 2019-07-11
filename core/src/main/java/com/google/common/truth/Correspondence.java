@@ -749,6 +749,19 @@ public abstract class Correspondence<A, E> {
   @Override
   public abstract String toString();
 
+  /** Returns a {@link Fact} describing how this correspondence compares elements of an iterable. */
+  final Fact describeForIterable() {
+    return fact("testing whether", "actual element " + this + " expected element");
+  }
+
+  /**
+   * Returns a {@link Fact} describing how this correspondence compares values in a map (or
+   * multimap).
+   */
+  final Fact describeForMapValues() {
+    return fact("testing whether", "expected element " + this + " actual element");
+  }
+
   /**
    * @throws UnsupportedOperationException always
    * @deprecated {@link Object#equals(Object)} is not supported. If you meant to compare objects

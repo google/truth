@@ -239,7 +239,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringFields(ignoreFieldNumber)
         .contains(eqRepeatedMessage1);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto)"
@@ -411,7 +411,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .contains(message2);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "assertThat(proto).withPartialScope(FieldScopes.fromSetFields({o_int: 3\n"
                 + "r_string: \"baz\"\n"
@@ -426,7 +426,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringFieldAbsence()
         .contains(message2);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "assertThat(proto)"
                 + ".ignoringRepeatedFieldOrder()"
@@ -445,7 +445,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .reportingMismatchesOnly()
         .contains(message2);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "assertThat(proto)"
                 + ".ignoringFields("
