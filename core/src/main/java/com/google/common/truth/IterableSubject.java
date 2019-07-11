@@ -1027,15 +1027,14 @@ public class IterableSubject extends Subject {
         if (correspondence.safeCompare(actual, expected, exceptions)) {
           // Found a match, but we still need to fail if we hit an exception along the way.
           if (exceptions.hasCompareException()) {
-            subject.failWithActual(
+            subject.failWithoutActual(
                 exceptions
                     .describeAsMainCause()
                     .and(
-                        simpleFact(
-                            "comparing contents by testing that at least one element "
-                                + correspondence
-                                + " the expected value"),
-                        fact("expected to contain", expected)));
+                        fact("expected to contain", expected),
+                        correspondence.describeForIterable(),
+                        fact("found match (but failing because of exception)", actual),
+                        subject.fullContents()));
           }
           return;
         }
@@ -1046,27 +1045,26 @@ public class IterableSubject extends Subject {
         if (!keyMatches.isEmpty()) {
           subject.failWithoutActual(
               facts(
-                      simpleFact(
-                          lenientFormat(
-                              "Not true that <%s> contains at least one element that %s <%s>. It"
-                                  + " did contain the following elements with the correct key:"
-                                  + " <%s>",
-                              subject.actualCustomStringRepresentationForPackageMembersToCall(),
-                              correspondence,
-                              expected,
-                              formatExtras(expected, keyMatches, exceptions))))
+                      fact("expected to contain", expected),
+                      correspondence.describeForIterable(),
+                      simpleFact("but did not"))
+                  .and(
+                      formatExtras(
+                          "though it did contain elements with correct key",
+                          expected,
+                          keyMatches,
+                          exceptions))
+                  .and(subject.fullContents())
                   .and(exceptions.describeAsAdditionalInfo()));
           return;
         }
       }
       subject.failWithoutActual(
           facts(
-                  simpleFact(
-                      lenientFormat(
-                          "Not true that <%s> contains at least one element that %s <%s>",
-                          subject.actualCustomStringRepresentationForPackageMembersToCall(),
-                          correspondence,
-                          expected)))
+                  fact("expected to contain", expected),
+                  correspondence.describeForIterable(),
+                  simpleFact("but did not"),
+                  subject.fullContents())
               .and(exceptions.describeAsAdditionalInfo()));
     }
 
@@ -1322,7 +1320,7 @@ public class IterableSubject extends Subject {
       } else if (missing.size() == 1 && extra.size() >= 1) {
         return lenientFormat(
             "is missing an element that %s <%s> and has unexpected elements <%s>",
-            correspondence, missing.get(0), formatExtras(missing.get(0), extra, exceptions));
+            correspondence, missing.get(0), formatExtrasInline(missing.get(0), extra, exceptions));
       } else {
         return describeMissingOrExtraWithoutPairing(correspondence.toString(), missing, extra);
       }
@@ -1351,7 +1349,7 @@ public class IterableSubject extends Subject {
             lenientFormat(
                 "is missing an element that corresponds to <%s> and has unexpected elements <%s> "
                     + "with key %s",
-                missing, formatExtras(missing, extras, exceptions), key));
+                missing, formatExtrasInline(missing, extras, exceptions), key));
       }
       if (!pairing.unpairedActualValues.isEmpty() || !pairing.unpairedExpectedValues.isEmpty()) {
         messages.add(
@@ -1365,7 +1363,41 @@ public class IterableSubject extends Subject {
       return Joiner.on(", ").join(messages);
     }
 
-    private List<Object> formatExtras(
+    private Facts formatExtras(
+        String label,
+        E missing,
+        List<? extends A> extras,
+        Correspondence.ExceptionStore exceptions) {
+      List<String> diffs = new ArrayList<>(extras.size());
+      boolean hasDiffs = false;
+      for (int i = 0; i < extras.size(); i++) {
+        A extra = extras.get(i);
+        @NullableDecl String diff = correspondence.safeFormatDiff(extra, missing, exceptions);
+        diffs.add(diff);
+        if (diff != null) {
+          hasDiffs = true;
+        }
+      }
+      if (hasDiffs) {
+        List<Fact> extraFacts = new ArrayList<>();
+        extraFacts.add(simpleFact(lenientFormat("%s (%s)", label, extras.size())));
+        for (int i = 0; i < extras.size(); i++) {
+          A extra = extras.get(i);
+          extraFacts.add(fact(lenientFormat("#%s", i + 1), extra));
+          if (diffs.get(i) != null) {
+            extraFacts.add(fact("diff", diffs.get(i)));
+          }
+        }
+        extraFacts.add(simpleFact("---"));
+        return facts(extraFacts);
+      } else {
+        return facts(fact(lenientFormat("%s (%s)", label, extras.size()), extras));
+      }
+    }
+
+    // TODO(b/130808597): Remove this once all Fuzzy Truth assertions have been converted to Fact
+    // format, since those should all use the multi-line formatExtras method instead.
+    private List<Object> formatExtrasInline(
         E missing, List<? extends A> extras, Correspondence.ExceptionStore exceptions) {
       List<Object> extrasFormatted = new ArrayList<>();
       for (A extra : extras) {
@@ -1684,7 +1716,7 @@ public class IterableSubject extends Subject {
             lenientFormat(
                 "is missing an element that corresponds to <%s> (but did have elements <%s> with "
                     + "matching key %s)",
-                missing, formatExtras(missing, extras, exceptions), key));
+                missing, formatExtrasInline(missing, extras, exceptions), key));
       }
       if (!pairing.unpairedExpectedValues.isEmpty()) {
         messages.add(
@@ -1848,7 +1880,7 @@ public class IterableSubject extends Subject {
         messages.add(
             lenientFormat(
                 "with key %s, would have accepted %s, but got %s",
-                key, expected, formatExtras(expected, got, exceptions)));
+                key, expected, formatExtrasInline(expected, got, exceptions)));
       }
       return Joiner.on("; ").join(messages);
     }

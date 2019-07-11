@@ -169,14 +169,13 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, INTOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(2.2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, "
-                + INTOLERABLE_2POINT2
-                + ", 3.3]> contains at least one element that is a finite number within "
-                + DEFAULT_TOLERANCE
-                + " of <2.2>");
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", "2.2");
+    assertFailureValue(
+        "testing whether",
+        "actual element is a finite number within " + DEFAULT_TOLERANCE + " of expected element");
+    assertFailureValue("full contents", "[1.1, " + INTOLERABLE_2POINT2 + ", 3.3]");
   }
 
   @Test
@@ -184,14 +183,10 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, POSITIVE_INFINITY, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(POSITIVE_INFINITY);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, Infinity, 3.3]> "
-                + "contains at least one element that is "
-                + "a finite number within "
-                + DEFAULT_TOLERANCE
-                + " of <Infinity>");
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", "Infinity");
+    assertFailureValue("full contents", "[1.1, Infinity, 3.3]");
   }
 
   @Test
@@ -199,14 +194,10 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, NaN, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(NaN);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, NaN, 3.3]> "
-                + "contains at least one element that is "
-                + "a finite number within "
-                + DEFAULT_TOLERANCE
-                + " of <NaN>");
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", "NaN");
+    assertFailureValue("full contents", "[1.1, NaN, 3.3]");
   }
 
   @Test
@@ -254,10 +245,10 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .contains(null);
     assertFailureKeys(
         "value of",
-        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is a finite number "
-            + "within "
-            + DEFAULT_TOLERANCE
-            + " of <null>",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -439,12 +430,11 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void usingExactEquality_contains_failure() {
     expectFailureWhenTestingThat(array(1.1, OVER_2POINT2, 3.3)).usingExactEquality().contains(2.2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, "
-                + OVER_2POINT2
-                + ", 3.3]> contains at least one element that is exactly equal to <2.2>");
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", "2.2");
+    assertFailureValue("testing whether", "actual element is exactly equal to expected element");
+    assertFailureValue("full contents", "[1.1, " + OVER_2POINT2 + ", 3.3]");
   }
 
   @Test
@@ -465,11 +455,13 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected);
     assertFailureKeys(
         "value of",
-        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to <"
-            + expected
-            + ">",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("expected to contain", Long.toString(expected));
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(1.1, " + expected + ") threw java.lang.IllegalArgumentException");
@@ -488,11 +480,13 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected);
     assertFailureKeys(
         "value of",
-        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to <"
-            + expected
-            + ">",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("expected to contain", "2");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(1.1, " + expected + ") threw java.lang.IllegalArgumentException");
@@ -510,11 +504,13 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(expected);
     assertFailureKeys(
         "value of",
-        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to <"
-            + expected
-            + ">",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("expected to contain", expected.toString());
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(1.1, " + expected + ") threw java.lang.IllegalArgumentException");
@@ -539,20 +535,15 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void usingExactEquality_contains_failureWithNegativeZero() {
     expectFailureWhenTestingThat(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0);
+    assertFailureKeys(
+        "value of", "expected to contain", "testing whether", "but did not", "full contents");
     /*
      * TODO(cpovirk): Find a way to print "0.0" rather than 0 in the error, even under GWT. One
      * easy(?) hack would be to make UsingCorrespondence use Platform.doubleToString() when
      * applicable. Or maybe Correspondence implementations should be able to provide custom string
      * conversions, similar to how we plan to let them render their own diffs.
      */
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, -0.0, 3.3]> "
-                + "contains at least one element that is "
-                + "exactly equal to <"
-                + 0.0
-                + ">");
+    assertFailureValue("expected to contain", Double.toString(0.0));
   }
 
   @Test
@@ -560,10 +551,13 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3)).usingExactEquality().contains(null);
     assertFailureKeys(
         "value of",
-        "Not true that <[1.1, 2.2, 3.3]> contains at least one element that is exactly equal to "
-            + "<null>",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("expected to contain", "null");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(1.1, null) threw java.lang.NullPointerException");

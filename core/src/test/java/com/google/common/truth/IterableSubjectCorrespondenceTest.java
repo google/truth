@@ -70,11 +70,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .contains(2345);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[not a number, +123, +456, +789]> contains at least one element that"
-                + " parses to <2345>");
+    assertFailureKeys("expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureValue("expected to contain", "2345");
+    assertFailureValue("testing whether", "actual element parses to expected element");
+    assertFailureValue("full contents", "[not a number, +123, +456, +789]");
   }
 
   @Test
@@ -88,8 +87,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .contains("DEF");
     // We fail with the more helpful failure message about the missing value, not the NPE.
     assertFailureKeys(
-        "Not true that <[abc, null, ghi]> contains at least one element that "
-            + "equals (ignoring case) <DEF>",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -111,11 +112,11 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "one or more exceptions were thrown while comparing elements",
         "first exception",
-        "comparing contents by testing that at least one element equals (ignoring case) "
-            + "the expected value",
         "expected to contain",
-        "but was");
-    assertFailureValue("expected to contain", "GHI");
+        "testing whether",
+        "found match (but failing because of exception)",
+        "full contents");
+    assertFailureValue("found match (but failing because of exception)", "ghi");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, GHI) threw java.lang.NullPointerException");
@@ -137,13 +138,46 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .contains(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1/100, 2/211, 4/400, 2/189, none/999]> contains at least one element "
-                + "that has the same id as and a score within 10 of <2/200>. It did contain the "
-                + "following elements with the correct key: "
-                + "<[2/211 (diff: score:11), 2/189 (diff: score:-11)]>");
+    assertFailureKeys(
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "though it did contain elements with correct key (2)",
+        "#1",
+        "diff",
+        "#2",
+        "diff",
+        "---",
+        "full contents");
+    assertFailureValue("#1", "2/211");
+    assertFailureValueIndexed("diff", 0, "score:11");
+    assertFailureValue("#2", "2/189");
+    assertFailureValueIndexed("diff", 1, "score:-11");
+  }
+
+  @Test
+  public void displayingDiffsPairedBy_1arg_contains_noDiff() {
+    Record expected = Record.create(2, 200);
+    ImmutableList<Record> actual =
+        ImmutableList.of(
+            Record.create(1, 100),
+            Record.create(2, 211),
+            Record.create(4, 400),
+            Record.create(2, 189),
+            Record.createWithoutId(999));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .contains(expected);
+    assertFailureKeys(
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "though it did contain elements with correct key (2)",
+        "full contents");
+    assertFailureValue("though it did contain elements with correct key (2)", "[2/211, 2/189]");
   }
 
   @Test
@@ -157,8 +191,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .displayingDiffsPairedBy(RECORD_ID)
         .contains(expected);
     assertFailureKeys(
-        "Not true that <[1/100, null, 4/400]> contains at least one element that has the same id "
-            + "as and a score within 10 of <0/999>",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while keying elements for pairing",
         "first exception");
     assertThatFailure()
@@ -177,8 +213,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .displayingDiffsPairedBy(RECORD_ID)
         .contains(null);
     assertFailureKeys(
-        "Not true that <[1/100, 2/200, 4/400]> contains at least one element that has the same id "
-            + "as and a score within 10 of <null>",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while keying elements for pairing",
         "first exception");
     assertThatFailure()
@@ -197,9 +235,11 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .displayingDiffsPairedBy(NULL_SAFE_RECORD_ID)
         .contains(expected);
     assertFailureKeys(
-        "Not true that <[1/100, null, 4/400]> contains at least one element that has the same id "
-            + "as and a score within 10 of <0/999>. It did contain the following elements with "
-            + "the correct key: <[null]>",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "though it did contain elements with correct key (1)",
+        "full contents",
         "additionally, one or more exceptions were thrown while formatting diffs",
         "first exception");
     assertThatFailure()
@@ -224,7 +264,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .contains(456);
     assertFailureKeys(
-        "Not true that <[valid, 123]> contains at least one element that parses to <456>",
+        "expected to contain",
+        "testing whether",
+        "but did not",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
