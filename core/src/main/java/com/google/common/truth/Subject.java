@@ -98,7 +98,7 @@ public class Subject {
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
-   * {@link Subject#check(String, Object..) check(...)}{@code .that(actual)}.
+   * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected Subject(FailureMetadata metadata, @NullableDecl Object actual) {
     this(metadata, actual, /*typeDescriptionOverride=*/ null);
