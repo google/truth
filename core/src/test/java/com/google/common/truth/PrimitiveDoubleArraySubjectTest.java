@@ -169,13 +169,12 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, INTOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(2.2);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", "2.2");
     assertFailureValue(
         "testing whether",
         "actual element is a finite number within " + DEFAULT_TOLERANCE + " of expected element");
-    assertFailureValue("full contents", "[1.1, " + INTOLERABLE_2POINT2 + ", 3.3]");
+    assertFailureValue("but was", "[1.1, " + INTOLERABLE_2POINT2 + ", 3.3]");
   }
 
   @Test
@@ -183,10 +182,9 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, POSITIVE_INFINITY, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(POSITIVE_INFINITY);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", "Infinity");
-    assertFailureValue("full contents", "[1.1, Infinity, 3.3]");
+    assertFailureValue("but was", "[1.1, Infinity, 3.3]");
   }
 
   @Test
@@ -194,10 +192,9 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, NaN, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(NaN);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", "NaN");
-    assertFailureValue("full contents", "[1.1, NaN, 3.3]");
+    assertFailureValue("but was", "[1.1, NaN, 3.3]");
   }
 
   @Test
@@ -247,8 +244,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -430,11 +426,10 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void usingExactEquality_contains_failure() {
     expectFailureWhenTestingThat(array(1.1, OVER_2POINT2, 3.3)).usingExactEquality().contains(2.2);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", "2.2");
     assertFailureValue("testing whether", "actual element is exactly equal to expected element");
-    assertFailureValue("full contents", "[1.1, " + OVER_2POINT2 + ", 3.3]");
+    assertFailureValue("but was", "[1.1, " + OVER_2POINT2 + ", 3.3]");
   }
 
   @Test
@@ -457,8 +452,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertFailureValue("expected to contain", Long.toString(expected));
@@ -482,8 +476,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertFailureValue("expected to contain", "2");
@@ -506,8 +499,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertFailureValue("expected to contain", expected.toString());
@@ -535,8 +527,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void usingExactEquality_contains_failureWithNegativeZero() {
     expectFailureWhenTestingThat(array(1.1, -0.0, 3.3)).usingExactEquality().contains(0.0);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     /*
      * TODO(cpovirk): Find a way to print "0.0" rather than 0 in the error, even under GWT. One
      * easy(?) hack would be to make UsingCorrespondence use Platform.doubleToString() when
@@ -553,8 +544,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertFailureValue("expected to contain", "null");
