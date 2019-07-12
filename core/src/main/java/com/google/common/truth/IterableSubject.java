@@ -1063,8 +1063,7 @@ public class IterableSubject extends Subject {
           facts(
                   fact("expected to contain", expected),
                   correspondence.describeForIterable(),
-                  simpleFact("but did not"),
-                  subject.fullContents())
+                  subject.butWas())
               .and(exceptions.describeAsAdditionalInfo()));
     }
 

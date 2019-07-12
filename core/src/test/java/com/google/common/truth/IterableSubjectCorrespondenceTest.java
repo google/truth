@@ -70,10 +70,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .contains(2345);
-    assertFailureKeys("expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", "2345");
     assertFailureValue("testing whether", "actual element parses to expected element");
-    assertFailureValue("full contents", "[not a number, +123, +456, +789]");
+    assertFailureValue("but was", "[not a number, +123, +456, +789]");
   }
 
   @Test
@@ -89,8 +89,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -193,8 +192,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while keying elements for pairing",
         "first exception");
     assertThatFailure()
@@ -215,8 +213,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while keying elements for pairing",
         "first exception");
     assertThatFailure()
@@ -266,8 +263,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()

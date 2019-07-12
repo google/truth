@@ -158,15 +158,14 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.0f, INTOLERABLE_TWO, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(2.0f);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", Float.toString(2.0f));
     assertFailureValue(
         "testing whether",
         "actual element is a finite number within "
             + (double) DEFAULT_TOLERANCE
             + " of expected element");
-    assertFailureValue("full contents", "[" + 1.0f + ", " + INTOLERABLE_TWO + ", " + 3.0f + "]");
+    assertFailureValue("but was", "[" + 1.0f + ", " + INTOLERABLE_TWO + ", " + 3.0f + "]");
   }
 
   @Test
@@ -174,10 +173,9 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.0f, POSITIVE_INFINITY, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(POSITIVE_INFINITY);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", "Infinity");
-    assertFailureValue("full contents", "[" + 1.0f + ", Infinity, " + 3.0f + "]");
+    assertFailureValue("but was", "[" + 1.0f + ", Infinity, " + 3.0f + "]");
   }
 
   @Test
@@ -185,10 +183,9 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.0f, NaN, 3.0f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(NaN);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", "NaN");
-    assertFailureValue("full contents", "[" + 1.0f + ", NaN, " + 3.0f + "]");
+    assertFailureValue("but was", "[" + 1.0f + ", NaN, " + 3.0f + "]");
   }
 
   @Test
@@ -240,8 +237,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -436,11 +432,10 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.0f, JUST_OVER_2POINT2, 3.0f))
         .usingExactEquality()
         .contains(2.2f);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", Float.toString(2.2f));
     assertFailureValue("testing whether", "actual element is exactly equal to expected element");
-    assertFailureValue("full contents", "[" + 1.0f + ", " + JUST_OVER_2POINT2 + ", " + 3.0f + "]");
+    assertFailureValue("but was", "[" + 1.0f + ", " + JUST_OVER_2POINT2 + ", " + 3.0f + "]");
   }
 
   @Test
@@ -462,8 +457,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -492,8 +486,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertFailureValue("expected to contain", Long.toString(expected));
@@ -523,8 +516,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -551,8 +543,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertFailureValue("expected to contain", "2");
@@ -581,8 +572,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertFailureValue("expected to contain", expected.toString());
@@ -617,8 +607,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   @Test
   public void usingExactEquality_contains_failureWithNegativeZero() {
     expectFailureWhenTestingThat(array(1.0f, -0.0f, 3.0f)).usingExactEquality().contains(0.0f);
-    assertFailureKeys(
-        "value of", "expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", Float.toString(0.0f));
   }
 
@@ -630,8 +619,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
         "value of",
         "expected to contain",
         "testing whether",
-        "but did not",
-        "full contents",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertFailureValue("expected to contain", "null");

@@ -475,11 +475,11 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .that(ImmutableList.of(1.02, 2.04, 3.08))
         .comparingElementsUsing(tolerance(0.05))
         .contains(3.01);
-    assertFailureKeys("expected to contain", "testing whether", "but did not", "full contents");
+    assertFailureKeys("expected to contain", "testing whether", "but was");
     assertFailureValue("expected to contain", "3.01");
     assertFailureValue(
         "testing whether", "actual element is a finite number within 0.05 of expected element");
-    assertFailureValue("full contents", "[1.02, 2.04, 3.08]");
+    assertFailureValue("but was", "[1.02, 2.04, 3.08]");
   }
 
   // Tests of formattingDiffsUsing.
