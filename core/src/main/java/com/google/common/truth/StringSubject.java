@@ -34,7 +34,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public class StringSubject extends ComparableSubject<String> {
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
-   * {@link Subject#check(String, Object..) check(...)}{@code .that(actual)}.
+   * {@link Subject#check(String, Object...)}{@code .that(actual)}.
    */
   private final String actual;
 
