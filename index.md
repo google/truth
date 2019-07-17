@@ -144,6 +144,11 @@ dependencies {
 To use the Java 8 extensions, also include
 `com.google.truth.extensions:truth-java8-extension:{{ site.version }}`.
 
+To further enhance failure messages in some cases, also include
+`org.ow2.asm:asm:someversion`. (ASM is what lets Truth output
+`projectsByTeam().valuesForKey(corelibs)` above instead of just
+`multimap.valuesForKey(corelibs)`.)
+
 One warning: Truth depends on the "Android" version of [Guava], a subset of the
 "JRE" version. If your project uses the JRE version, be aware that your build
 system might select the Android version instead. If so, you may see "missing
