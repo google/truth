@@ -155,6 +155,9 @@ system might select the Android version instead. If so, you may see "missing
 symbol" errors. The easiest fix is usually to add a direct dependency on the
 newest JRE version of Guava.
 
+Finally, consider [configuring your build to use Error Prone]. [Error Prone]
+checks for many kinds of bugs, including some we've seen in usages of Truth.
+
 
 ## 2. Add static imports for Truth’s entry points:
 
@@ -208,4 +211,6 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 [`IterableSubject`]: https://truth.dev/api/latest/com/google/common/truth/IterableSubject.html
 [`AbstractIterableAssert`]: https://static.javadoc.io/org.assertj/assertj-core/3.12.2/org/assertj/core/api/AbstractIterableAssert.html
 [Hamcrest]: http://hamcrest.org/JavaHamcrest/
+[Error Prone]: https://errorprone.info
+[configuring your build to use Error Prone]: https://errorprone.info/docs/installation
 
