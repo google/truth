@@ -96,6 +96,16 @@ public class ComparableSubjectTest extends BaseSubjectTestCase {
     assertFailureValue("expected value that sorts equal to", "abcd");
   }
 
+  @Test
+  public void isNotEquivalentAccordingToCompareTo() {
+    assertThat(new StringComparedByLength("abc"))
+        .isNotEquivalentAccordingToCompareTo(new StringComparedByLength("abcd"));
+
+    expectFailureWhenTestingThat(new StringComparedByLength("abc"))
+        .isNotEquivalentAccordingToCompareTo(new StringComparedByLength("xyz"));
+    assertFailureValue("expected value that does not sort equal to", "xyz");
+  }
+
   private static final class StringComparedByLength implements Comparable<StringComparedByLength> {
     private final String value;
 

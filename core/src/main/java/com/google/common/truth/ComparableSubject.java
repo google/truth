@@ -51,15 +51,28 @@ public abstract class ComparableSubject<T extends Comparable> extends Subject {
   }
 
   /**
-   * Checks that the subject is equivalent to {@code other} according to {@link
+   * Checks that the subject is equivalent to {@code expected} according to {@link
    * Comparable#compareTo}, (i.e., checks that {@code a.comparesTo(b) == 0}).
    *
    * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
-   * #isEqualTo(Object)}.
+   * Subject#isEqualTo(Object)}.
    */
   public void isEquivalentAccordingToCompareTo(T expected) {
     if (actual.compareTo(expected) != 0) {
       failWithActual("expected value that sorts equal to", expected);
+    }
+  }
+
+  /**
+   * Checks that the subject is not equivalent to {@code expected} according to {@link
+   * Comparable#compareTo}, (i.e., checks that {@code a.comparesTo(b) != 0}).
+   *
+   * <p><b>Note:</b> Do not use this method for checking object equality. Instead, use {@link
+   * Subject#isNotEqualTo(Object)}.
+   */
+  public void isNotEquivalentAccordingToCompareTo(T expected) {
+    if (actual.compareTo(expected) == 0) {
+      failWithActual("expected value that does not sort equal to", expected);
     }
   }
 
