@@ -88,7 +88,7 @@ public final class FailWithFacts extends BugChecker implements MethodInvocationT
     if (newVerb == null) {
       return NO_MATCH;
     }
-    String newVerbQuoted = state.getTreeMaker().Literal(newVerb).toString();
+    String newVerbQuoted = state.getElements().getConstantExpression(newVerb);
     if (ONE_ARG_FAIL.matches(tree, state)) {
       fix.addStaticImport("com.google.common.truth.Fact.simpleFact");
       fix.replace(oldVerbArg, format("simpleFact(%s)", newVerbQuoted));
