@@ -399,6 +399,28 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure()).factKeys().contains("(case is ignored)");
   }
 
+  @Test
+  public void trailingWhitespaceInActual() {
+    expectFailureWhenTestingThat("foo\n").isEqualTo("foo");
+    assertFailureKeys("expected", "but contained extra trailing whitespace");
+    assertFailureValue("but contained extra trailing whitespace", "\\n");
+  }
+
+  @Test
+  public void trailingWhitespaceInExpected() {
+    expectFailureWhenTestingThat("foo").isEqualTo("foo ");
+    assertFailureKeys("expected", "but was missing trailing whitespace");
+    assertFailureValue("but was missing trailing whitespace", "␣");
+  }
+
+  @Test
+  public void trailingWhitespaceInBoth() {
+    expectFailureWhenTestingThat("foo \n").isEqualTo("foo\u00a0");
+    assertFailureKeys("expected", "with trailing whitespace", "but trailing whitespace was");
+    assertFailureValue("with trailing whitespace", "\\u00a0");
+    assertFailureValue("but trailing whitespace was", "␣\\n");
+  }
+
   private StringSubject expectFailureWhenTestingThat(String actual) {
     return expectFailure.whenTesting().that(actual);
   }
