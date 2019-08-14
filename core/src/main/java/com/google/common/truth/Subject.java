@@ -17,6 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
+import static com.google.common.base.CharMatcher.whitespace;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.Fact.fact;
@@ -835,6 +836,11 @@ public class Subject {
     boolean equal = difference.valuesAreEqual();
     // TODO(cpovirk): Call attention to differing trailing whitespace.
 
+    if (equalityCheck == EqualityCheck.EQUAL && tryFailForTrailingWhitespaceOnly(expected)) {
+      // tryFailForTrailingWhitespaceOnly reported a failure, so we're done.
+      return;
+    }
+
     if (sameToStrings) {
       if (sameClassNames) {
         String doppelgangerDescription =
@@ -864,6 +870,94 @@ public class Subject {
             fact("but was", actualString));
       }
     }
+  }
+
+  /**
+   * Checks whether the actual and expected values are strings that match except for trailing
+   * whitespace. If so, reports a failure and returns true.
+   */
+  private boolean tryFailForTrailingWhitespaceOnly(Object expected) {
+    if (!(actual instanceof String) || !(expected instanceof String)) {
+      return false;
+    }
+
+    /*
+     * TODO(cpovirk): Consider applying this for non-String types. The danger there is that we don't
+     * know whether toString() (or actualCustomStringRepresentation/formatActualOrExpected) and
+     * equals() are consistent for those types.
+     */
+    String actualString = (String) actual;
+    String expectedString = (String) expected;
+    String actualNoTrailing = whitespace().trimTrailingFrom(actualString);
+    String expectedNoTrailing = whitespace().trimTrailingFrom(expectedString);
+    String expectedTrailing =
+        escapeWhitespace(expectedString.substring(expectedNoTrailing.length()));
+    String actualTrailing = escapeWhitespace(actualString.substring(actualNoTrailing.length()));
+
+    if (!actualNoTrailing.equals(expectedNoTrailing)) {
+      return false;
+    }
+
+    if (actualString.startsWith(expectedString)) {
+      failWithoutActual(
+          fact("expected", expectedString),
+          fact("but contained extra trailing whitespace", actualTrailing));
+    } else if (expectedString.startsWith(actualString)) {
+      failWithoutActual(
+          fact("expected", expectedString),
+          fact("but was missing trailing whitespace", expectedTrailing));
+    } else {
+      failWithoutActual(
+          fact("expected", expectedString),
+          fact("with trailing whitespace", expectedTrailing),
+          fact("but trailing whitespace was", actualTrailing));
+    }
+
+    return true;
+  }
+
+  private static String escapeWhitespace(String in) {
+    StringBuilder out = new StringBuilder();
+    for (char c : in.toCharArray()) {
+      out.append(escapeWhitespace(c));
+    }
+    return out.toString();
+  }
+
+  private static String escapeWhitespace(char c) {
+    switch (c) {
+      case '\t':
+        return "\\t";
+      case '\n':
+        return "\\n";
+      case '\f':
+        return "\\f";
+      case '\r':
+        return "\\r";
+      case ' ':
+        return "␣";
+      default:
+        return new String(asUnicodeHexEscape(c));
+    }
+  }
+
+  // From SourceCodeEscapers:
+
+  private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
+
+  private static char[] asUnicodeHexEscape(char c) {
+    // Equivalent to String.format("\\u%04x", (int) c);
+    char[] r = new char[6];
+    r[0] = '\\';
+    r[1] = 'u';
+    r[5] = HEX_DIGITS[c & 0xF];
+    c >>>= 4;
+    r[4] = HEX_DIGITS[c & 0xF];
+    c >>>= 4;
+    r[3] = HEX_DIGITS[c & 0xF];
+    c >>>= 4;
+    r[2] = HEX_DIGITS[c & 0xF];
+    return r;
   }
 
   private void failEqualityCheckNoComparisonFailure(ComparisonResult difference, Fact... facts) {
