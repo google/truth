@@ -117,12 +117,12 @@ public abstract class TransformedValueSubject<O extends OriginalValueSubject>
 
 b. It's not possible to define a `Subject.Factory` for the type itself. If you
 want users to be able to create a plain instance of your type, say,
-<code>ViewSubject</code>, then you need to declare an
-<code>AbstractViewSubject</code> with the type parameters <em>plus</em> a
-<code>ViewSubject</code> that extends
-<code>AbstractViewSubject<ViewSubject, View></code>. If you do, the users see
-two types, with the assertions defined on a different type than the one they
-have an instance of[^3].
+<code>FooSubject</code>, then you need to declare an
+<code>AbstractFooSubject</code> with the type parameters <em>plus</em> a
+<code>FooSubject</code> that extends
+<code>AbstractFooSubject<FooSubject, Foo></code>. If you do, the users see two
+types, with the assertions defined on a different type than the one they have an
+instance of[^3].
 
 #### 3. A hybrid option, where you specify a concrete actual-value type but declare a self-type parameter
 
