@@ -836,8 +836,9 @@ public class Subject {
     boolean equal = difference.valuesAreEqual();
     // TODO(cpovirk): Call attention to differing trailing whitespace.
 
-    if (equalityCheck == EqualityCheck.EQUAL && tryFailForTrailingWhitespaceOnly(expected)) {
-      // tryFailForTrailingWhitespaceOnly reported a failure, so we're done.
+    if (equalityCheck == EqualityCheck.EQUAL
+        && (tryFailForTrailingWhitespaceOnly(expected) || tryFailForEmptyString(expected))) {
+      // tryFailForTrailingWhitespaceOnly or tryFailForEmptyString reported a failure, so we're done
       return;
     }
 
@@ -939,6 +940,29 @@ public class Subject {
       default:
         return new String(asUnicodeHexEscape(c));
     }
+  }
+
+  /**
+   * Checks whether the actual and expected values are empty strings. If so, reports a failure and
+   * returns true.
+   */
+  private boolean tryFailForEmptyString(Object expected) {
+    if (!(actual instanceof String) || !(expected instanceof String)) {
+      return false;
+    }
+
+    String actualString = (String) actual;
+    String expectedString = (String) expected;
+    if (actualString.equals("")) {
+      failWithoutActual(fact("expected", expectedString), simpleFact("but was an empty string"));
+      return true;
+    } else if (expectedString.equals("")) {
+      failWithoutActual(simpleFact("expected an empty string"), fact("but was", actualString));
+      return true;
+    }
+
+    // Neither string was empty
+    return false;
   }
 
   // From SourceCodeEscapers:

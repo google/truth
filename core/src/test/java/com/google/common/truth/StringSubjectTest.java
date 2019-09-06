@@ -139,6 +139,18 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void stringEqualityToEmpty() {
+    expectFailureWhenTestingThat("abc").isEqualTo("");
+    assertFailureKeys("expected an empty string", "but was");
+  }
+
+  @Test
+  public void stringEqualityEmptyToNonEmpty() {
+    expectFailureWhenTestingThat("").isEqualTo("abc");
+    assertFailureKeys("expected", "but was an empty string");
+  }
+
+  @Test
   public void stringEqualityFail() {
     expectFailureWhenTestingThat("abc").isEqualTo("ABC");
     assertThat(expectFailure.getFailure()).isInstanceOf(ComparisonFailureWithFacts.class);
