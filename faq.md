@@ -33,7 +33,6 @@ assertWithMessage(...).about(optionals()).that(javaUtilOptional).hasValue("duke"
 
 For more information, read about [the full fluent chain](#full-chain).
 
-
 ## Why do I get a "`cannot find symbol .hasValue("foo");`" error for a type that should have `hasValue`? {#missing-import}
 
 You need to static import the `assertThat` method for that type. (For example,
