@@ -80,9 +80,9 @@ about Protocol Buffers, you would write:
 ```java
 import static com.google.common.truth.extensions.proto.ProtoTruth.protos;
 import com.google.common.truth.Expect;
-…
+...
 @Rule public final Expect expect = Expect.create();
-…
+...
 expect
     .withMessage("fields not copied from input %s", input)
     .about(protos())
@@ -118,7 +118,7 @@ There are four parts to the example:
         Your class definition will usually look like this:
 
         ```java
-        public final class EmployeeSubject extends Subject {…}
+        public final class EmployeeSubject extends Subject {...}
         ```
 
         The class must be accessible to the tests that will use it. Typically
@@ -154,7 +154,7 @@ There are four parts to the example:
 
         ```java
         import static com.google.common.truth.extension.EmployeeSubject.employees;
-        …
+        ...
         assertWithMessage("findClosestMatch should have found user with given username")
             .about(employees())
             .that(db.findClosestMatch("kak"))
@@ -259,7 +259,7 @@ There are four parts to the example:
         ```
 
         This message contains all the relevant information, yet it's much
-        shorter than the `hasName(…)` example above. This is possible because
+        shorter than the `hasName(...)` example above. This is possible because
         `isCeo()` is testing a boolean property. Boolean properties are good
         candidates for the manual check-and-fail approach.
 
@@ -268,7 +268,7 @@ There are four parts to the example:
 
         One advanced point: Custom `Subject` types sometimes declare "chaining"
         methods that return an instance of another `Subject`. For example,
-        instead of providing `hasName(…)`, `EmployeeSubject` might declare a
+        instead of providing `hasName(...)`, `EmployeeSubject` might declare a
         `EmployeeSubject.name()` method that returns a `StringSubject` for the
         value of `employee.name()`. To create such "chained" subjects, use
         `Subject.check(...)`, as above, and return the `Subject` you create:
@@ -307,7 +307,7 @@ There are four parts to the example:
         assertThat(KURT).hasId(37802);
         expectFailure(whenTesting -> whenTesting.that(KURT).hasId(12345));
       }
-      …
+      ...
       private static AssertionError expectFailure(
           SimpleSubjectBuilderCallback<EmployeeSubject, Employee> callback) {
         return expectFailureAbout(employees(), callback);
