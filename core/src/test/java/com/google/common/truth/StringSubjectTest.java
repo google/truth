@@ -139,6 +139,18 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void stringEqualityToEmpty() {
+    expectFailureWhenTestingThat("abc").isEqualTo("");
+    assertFailureKeys("expected an empty string", "but was");
+  }
+
+  @Test
+  public void stringEqualityEmptyToNonEmpty() {
+    expectFailureWhenTestingThat("").isEqualTo("abc");
+    assertFailureKeys("expected", "but was an empty string");
+  }
+
+  @Test
   public void stringEqualityFail() {
     expectFailureWhenTestingThat("abc").isEqualTo("ABC");
     assertThat(expectFailure.getFailure()).isInstanceOf(ComparisonFailureWithFacts.class);
@@ -419,6 +431,18 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     assertFailureKeys("expected", "with trailing whitespace", "but trailing whitespace was");
     assertFailureValue("with trailing whitespace", "\\u00a0");
     assertFailureValue("but trailing whitespace was", "␣\\n");
+  }
+
+  @Test
+  public void trailingWhitespaceVsEmptyString() {
+    /*
+     * The code has special cases for both trailing whitespace and an empty string. Make sure that
+     * it specifically reports the trailing whitespace. (It might be nice to *also* report the empty
+     * string specially, but that's less important.)
+     */
+    expectFailureWhenTestingThat("\t").isEqualTo("");
+    assertFailureKeys("expected", "but contained extra trailing whitespace");
+    assertFailureValue("but contained extra trailing whitespace", "\\t");
   }
 
   private StringSubject expectFailureWhenTestingThat(String actual) {
