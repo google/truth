@@ -109,7 +109,7 @@ final class Platform {
     } else {
       // TODO(cpovirk): Would it make more sense to pass `undefined` for the locale? But how?
       // Then again, we're already hardcoding "Infinity," an English word, above....
-      String result = ((Number) (Object) value).toLocaleString("en-US", JavaLikeOptions.INSTANCE);
+      String result = toLocaleString(value);
       return (parseDouble(result) == value) ? result : Double.toString(value);
     }
   }
@@ -127,9 +127,14 @@ final class Platform {
     } else {
       // TODO(cpovirk): Would it make more sense to pass `undefined` for the locale? But how?
       // Then again, we're already hardcoding "Infinity," an English word, above....
-      String result = ((Number) (Object) value).toLocaleString("en-US", JavaLikeOptions.INSTANCE);
+      String result = toLocaleString(value);
       return (parseFloat(result) == value) ? result : Float.toString(value);
     }
+  }
+
+  private static String toLocaleString(double value) {
+    // Recieve a double as a parameter so that "(Object) value" does not box it.
+    return ((NativeNumber) (Object) value).toLocaleString("en-US", JavaLikeOptions.INSTANCE);
   }
 
   /** Tests if current platform is Android which is always false. */
@@ -172,7 +177,7 @@ final class Platform {
   }
 
   @JsType(isNative = true, name = "Number", namespace = GLOBAL)
-  private interface Number {
+  private interface NativeNumber {
     String toLocaleString(Object locales, ToLocaleStringOptions options);
   }
 
