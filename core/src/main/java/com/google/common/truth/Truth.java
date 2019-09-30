@@ -96,6 +96,10 @@ public final class Truth {
    * Begins an assertion that, if it fails, will prepend the given message to the failure message.
    *
    * <p>This method is a shortcut for {@code assert_().withMessage(...)}.
+   *
+   * <p>To set a message when using a custom subject, use {@code assertWithMessage(...).}{@link
+   * StandardSubjectBuilder#about about(...)}, as discussed in <a
+   * href="https://truth.dev/faq#java8">this FAQ entry</a>.
    */
   public static StandardSubjectBuilder assertWithMessage(String messageToPrepend) {
     return assert_().withMessage(messageToPrepend);
@@ -109,6 +113,10 @@ public final class Truth {
    * the {@code %s} specifier.
    *
    * <p>This method is a shortcut for {@code assert_().withMessage(...)}.
+   *
+   * <p>To set a message when using a custom subject, use {@code assertWithMessage(...).}{@link
+   * StandardSubjectBuilder#about about(...)}, as discussed in <a
+   * href="https://truth.dev/faq#java8">this FAQ entry</a>.
    *
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
