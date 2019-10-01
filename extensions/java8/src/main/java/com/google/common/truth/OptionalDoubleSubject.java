@@ -62,7 +62,7 @@ public final class OptionalDoubleSubject extends Subject {
    * Fails if the {@link OptionalDouble} does not have the given value or the subject is null. This
    * method is <i>not</i> recommended when the code under test is doing any kind of arithmetic,
    * since the exact result of floating point arithmetic is sensitive to apparently trivial changes.
-   * More sophisticated comparisons can be done using {@link #hasValueThat()}. This method is
+   * More sophisticated comparisons can be done using {@code assertThat(optional.getAsDouble())…}. This method is
    * recommended when the code under test is specified as either copying a value without
    * modification from its input or returning a well-defined literal or constant value.
    */

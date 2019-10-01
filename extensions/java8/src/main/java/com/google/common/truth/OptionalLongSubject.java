@@ -59,7 +59,7 @@ public final class OptionalLongSubject extends Subject {
 
   /**
    * Fails if the {@link OptionalLong} does not have the given value or the subject is null. More
-   * sophisticated comparisons can be done using {@link #hasValueThat()}.
+   * sophisticated comparisons can be done using {@code assertThat(optional.getAsLong())…}.
    */
   public void hasValue(long expected) {
     if (actual == null) {

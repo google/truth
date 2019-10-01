@@ -59,7 +59,7 @@ public final class OptionalIntSubject extends Subject {
 
   /**
    * Fails if the {@link OptionalInt} does not have the given value or the subject is null. More
-   * sophisticated comparisons can be done using {@link #hasValueThat()}.
+   * sophisticated comparisons can be done using {@code assertThat(optional.getAsInt())…}.
    */
   public void hasValue(int expected) {
     if (actual == null) {
