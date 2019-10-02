@@ -81,7 +81,7 @@ public final class CorrespondenceExceptionStoreTest extends BaseSubjectTestCase 
         "additionally, one or more exceptions were thrown while comparing elements");
   }
 
-  /** Adds a somewhat realistic exception from {@link compare} to the given store. */
+  /** Adds a somewhat realistic exception from {@link Correspondence#compare} to the given store. */
   private static void addCompareException(Correspondence.ExceptionStore exceptions) {
     try {
       boolean unused = TestCorrespondences.WITHIN_10_OF.compare(null, 123);

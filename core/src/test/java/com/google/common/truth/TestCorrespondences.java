@@ -105,8 +105,9 @@ final class TestCorrespondences {
 
   /**
    * A correspondence between strings which tests for case-insensitive equality, with a broken
-   * attempt at null-safety. The {@link #compare} implementation returns true for (null, null) and
-   * false for (non-null, null), but throws {@link NullPointerException} for (null, non-null).
+   * attempt at null-safety. The {@link Correspondence#compare} implementation returns true for
+   * (null, null) and false for (non-null, null), but throws {@link NullPointerException} for (null,
+   * non-null).
    */
   static final Correspondence<String, String> CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE =
       Correspondence.from(
@@ -216,8 +217,8 @@ final class TestCorrespondences {
    * are equal and their {@code score} values are within 10 of each other. Smart diffing is not
    * supported.
    *
-   * <p>The {@link #compare} implementation support nulls, such that null corresponds to null only.
-   * The {@link #formatDiff} implementation does not support nulls.
+   * <p>The {@link Correspondence#compare} implementation support nulls, such that null corresponds
+   * to null only. The {@link Correspondence#formatDiff} implementation does not support nulls.
    */
   static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF =
       Correspondence.from(
@@ -237,8 +238,8 @@ final class TestCorrespondences {
    * for records with equal {@code id} values, with a formatted diff showing the actual {@code
    * score} value less the expected {@code score} value preceded by the literal {@code score:}.
    *
-   * <p>The {@link #compare} implementation support nulls, such that null corresponds to null only.
-   * The {@link #formatDiff} implementation does not support nulls.
+   * <p>The {@link Correspondence#compare} implementation support nulls, such that null corresponds
+   * to null only. The {@link Correspondence#formatDiff} implementation does not support nulls.
    */
   static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
       RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF.formattingDiffsUsing(

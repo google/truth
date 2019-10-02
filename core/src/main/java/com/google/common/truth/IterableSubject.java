@@ -94,7 +94,7 @@ public class IterableSubject extends Subject {
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
-   * {@link Subject#check(String, Object..) check(...)}{@code .that(actual)}.
+   * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected IterableSubject(FailureMetadata metadata, @NullableDecl Iterable<?> iterable) {
     super(metadata, iterable);

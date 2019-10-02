@@ -46,7 +46,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * </ul>
  *
  * <p>(One exception: Implementations of {@link CustomSubjectBuilder} do directly call constructors,
- * using their {@link CustomSubjectBuilder#metadata} method to get an instance to pass to the
+ * using their {@link CustomSubjectBuilder#metadata()} method to get an instance to pass to the
  * constructor.)
  */
 public final class FailureMetadata {
