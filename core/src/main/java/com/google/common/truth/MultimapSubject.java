@@ -69,7 +69,7 @@ public class MultimapSubject extends Subject {
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
-   * {@link Subject#check(String, Object..) check(...)}{@code .that(actual)}.
+   * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
   protected MultimapSubject(FailureMetadata metadata, @NullableDecl Multimap<?, ?> multimap) {
     this(metadata, multimap, null);
@@ -453,8 +453,9 @@ public class MultimapSubject extends Subject {
    *
    * <p>Returns true if the value was found, false if the end was reached before finding it.
    *
-   * <p>This is basically the same as {@link Iterables#contains}, but where the contract explicitly
-   * states that the iterator isn't advanced beyond the value if the value is found.
+   * <p>This is basically the same as {@link com.google.common.collect.Iterables#contains}, but
+   * where the contract explicitly states that the iterator isn't advanced beyond the value if the
+   * value is found.
    */
   private static boolean advanceToFind(Iterator<?> iterator, Object value) {
     while (iterator.hasNext()) {
