@@ -25,9 +25,11 @@ assertThat(javaUtilOptional).hasValue("duke");
 ```
 
 To use the Java 8 types with `assertWithMessage`, `expect`, or other entry
-points, use `about`:
+points, use `about`. For example, for `Optional`:
 
 ```java
+import static com.google.common.truth.OptionalSubject.optionals;
+
 assertWithMessage(...).about(optionals()).that(javaUtilOptional).hasValue("duke");
 ```
 
