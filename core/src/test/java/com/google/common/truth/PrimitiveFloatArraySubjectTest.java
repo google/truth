@@ -47,7 +47,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   private static final float UNDER_LONG_MIN = -9.223373E18f;
   private static final float TOLERABLE_TWO = 2.0000048f;
   private static final float TOLERABLE_2POINT2 = 2.2000048f;
-  private static final float INTOLERABLE_2POINT2 = 2.2000052f;
+  private static final float INTOLERABLE_2POINT2 = 2.2000053f;
 
   @Test
   @GwtIncompatible("Math.nextAfter")
