@@ -264,10 +264,10 @@ public class IntegerSubjectTest extends BaseSubjectTestCase {
     ImmutableSet<Object> fortyOnes =
         ImmutableSet.<Object>of(byte41, short41, char41, int41, long41);
 
-    for (Object actual : fortyTwos) {
-      for (Object expected : fortyOnes) {
-        assertThat(actual).isNotEqualTo(expected);
-        assertThat(expected).isNotEqualTo(actual);
+    for (Object first : fortyTwos) {
+      for (Object second : fortyOnes) {
+        assertThat(first).isNotEqualTo(second);
+        assertThat(second).isNotEqualTo(first);
       }
     }
   }
