@@ -37,11 +37,11 @@
       <groupId>com.googlecode.java-diff-utils</groupId>
       <artifactId>diffutils</artifactId>
     </dependency>
-    <!-- Required only to build the -gwt sub-artifact. -->
+    <!-- Required only to test the -gwt sub-artifact. -->
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <scope>provided</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.auto.value</groupId>
