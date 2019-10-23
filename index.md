@@ -165,7 +165,7 @@ checks for many kinds of bugs, including some we've seen in usages of Truth.
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-// for assertions on Java 8 types
+// for assertions on Java 8 types (Streams and java.util.Optional)
 import static com.google.common.truth.Truth8.assertThat;
 ```
 
