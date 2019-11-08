@@ -138,12 +138,6 @@ public class LiteProtoSubject extends Subject {
     }
   }
 
-  private static final class LiteProtoAsStringSubject extends Subject {
-    LiteProtoAsStringSubject(FailureMetadata metadata, @NullableDecl String actual) {
-      super(metadata, actual);
-    }
-  }
-
   /**
    * @deprecated A Builder can never compare equal to a MessageLite instance. Use {@code build()},
    *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead.
@@ -151,6 +145,12 @@ public class LiteProtoSubject extends Subject {
   @Deprecated
   public void isEqualTo(@NullableDecl MessageLite.Builder builder) {
     isEqualTo((Object) builder);
+  }
+
+  private static final class LiteProtoAsStringSubject extends Subject {
+    LiteProtoAsStringSubject(FailureMetadata metadata, @NullableDecl String actual) {
+      super(metadata, actual);
+    }
   }
 
   @Override
