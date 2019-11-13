@@ -27,11 +27,11 @@
     <checker-framework.version>2.5.5</checker-framework.version>
     <guava.version>27.0.1</guava.version>
     <gwt.version>2.8.2</gwt.version>
-    <protobuf.version>3.6.1</protobuf.version>
+    <protobuf.version>3.10.0</protobuf.version>
     <!-- Property for protobuf-lite protocArtifact, which isn't a "normal" Maven dep. -->
     <protobuf-lite.protoc.version>3.1.0</protobuf-lite.protoc.version>
     <!-- Property for protobuf-java protocArtifact, which ought to be the same as protobuf.version but can't be internally at the moment. -->
-    <protobuf.protoc.version>3.5.1</protobuf.protoc.version>
+    <protobuf.protoc.version>3.7.1</protobuf.protoc.version>
 
     <!-- Property for an extension, since Maven doesn't have extensionManagement. -->
     <os-maven-plugin.version>1.5.0.Final</os-maven-plugin.version>
