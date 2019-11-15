@@ -17,6 +17,7 @@
 package com.google.common.truth.extensions.proto;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.truth.MapSubject;
 import com.google.protobuf.Message;
 import java.util.Collection;
 import org.junit.Test;
@@ -245,5 +246,11 @@ public class MapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
         .containsExactly(
             3, TestMessage3.newBuilder().addRString("qux").addRString("baz").build(),
             2, TestMessage2.newBuilder().addRString("bar").addRString("foo").build());
+  }
+
+  @Test
+  public void testMethodNamesEndWithForValues() {
+    checkMethodNamesEndWithForValues(MapWithProtoValuesSubject.class, MapSubject.class);
+    checkMethodNamesEndWithForValues(MapWithProtoValuesFluentAssertion.class, MapSubject.class);
   }
 }

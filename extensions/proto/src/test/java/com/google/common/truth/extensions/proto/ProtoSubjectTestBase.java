@@ -16,15 +16,20 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.google.common.truth.Expect;
 import com.google.common.truth.ExpectFailure;
+import com.google.common.truth.Subject;
 import com.google.common.truth.TruthFailureSubject;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -33,8 +38,10 @@ import com.google.protobuf.TextFormat;
 import com.google.protobuf.TextFormat.ParseException;
 import com.google.protobuf.TypeRegistry;
 import com.google.protobuf.UnknownFieldSet;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.Rule;
@@ -249,5 +256,27 @@ public class ProtoSubjectTestBase {
       builder.put((K) rest[i], (V) rest[i + 1]);
     }
     return builder.build();
+  }
+
+  final void checkMethodNamesEndWithForValues(
+      Class<?> clazz, Class<? extends Subject> pseudoSuperclass) {
+    // Don't run this test twice.
+    if (!testIsRunOnce()) {
+      return;
+    }
+
+    Set<String> diff = Sets.difference(getMethodNames(clazz), getMethodNames(pseudoSuperclass));
+    assertWithMessage("Found no methods to test. Bug in test?").that(diff).isNotEmpty();
+    for (String methodName : diff) {
+      assertThat(methodName).endsWith("ForValues");
+    }
+  }
+
+  private static ImmutableSet<String> getMethodNames(Class<?> clazz) {
+    ImmutableSet.Builder<String> names = ImmutableSet.builder();
+    for (Method method : clazz.getMethods()) {
+      names.add(method.getName());
+    }
+    return names.build();
   }
 }
