@@ -271,6 +271,58 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
+  public void testIgnoringFieldOfAnyMessage() throws Exception {
+
+    String typeUrl =
+        isProto3()
+            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
+            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
+
+    Message message =
+        parse("o_int: 1 o_any_message { [" + typeUrl + "]: { o_int: 2 r_string: \"foo\" } }");
+    Message diffMessage1 =
+        parse("o_int: 2 o_any_message { [" + typeUrl + "]: { o_int: 2 r_string: \"foo\" } }");
+    Message diffMessage2 =
+        parse("o_int: 1 o_any_message { [" + typeUrl + "]: { o_int: 2 r_string: \"bar\" } }");
+    Message eqMessage =
+        parse("o_int: 1 o_any_message { [" + typeUrl + "]: { o_int: 3 r_string: \"foo\" } }");
+
+    FieldDescriptor fieldDescriptor =
+        getTypeRegistry().getDescriptorForTypeUrl(typeUrl).findFieldByName("o_int");
+    FieldScope partialScope = FieldScopes.ignoringFieldDescriptors(fieldDescriptor);
+    expectThat(diffMessage1)
+        .usingTypeRegistry(getTypeRegistry())
+        .withPartialScope(partialScope)
+        .isNotEqualTo(message);
+    expectThat(diffMessage2)
+        .usingTypeRegistry(getTypeRegistry())
+        .withPartialScope(partialScope)
+        .isNotEqualTo(message);
+    expectThat(eqMessage)
+        .usingTypeRegistry(getTypeRegistry())
+        .withPartialScope(partialScope)
+        .isEqualTo(message);
+
+    expectFailureWhenTesting()
+        .that(diffMessage1)
+        .usingTypeRegistry(getTypeRegistry())
+        .withPartialScope(partialScope)
+        .isEqualTo(message);
+    expectIsEqualToFailed();
+    expectThatFailure().hasMessageThat().contains("modified: o_int: 1 -> 2");
+
+    expectFailureWhenTesting()
+        .that(diffMessage2)
+        .usingTypeRegistry(getTypeRegistry())
+        .withPartialScope(partialScope)
+        .isEqualTo(message);
+    expectIsEqualToFailed();
+    expectThatFailure()
+        .hasMessageThat()
+        .contains("modified: o_any_message.value.r_string[0]: \"foo\" -> \"bar\"");
+  }
+
+  @Test
   public void testIgnoringAllButOneFieldOfSubMessage() {
     // Consider all of TestMessage, but none of o_sub_test_message, except
     // o_sub_test_message.o_int.
