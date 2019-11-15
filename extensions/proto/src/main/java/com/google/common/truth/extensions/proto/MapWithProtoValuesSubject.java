@@ -26,6 +26,7 @@ import com.google.common.truth.Ordered;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import com.google.protobuf.TypeRegistry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -599,6 +600,26 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
     return usingConfig(config.reportingMismatchesOnly());
   }
 
+  /**
+   * Specifies the {@link TypeRegistry} to use for {@link com.google.protobuf.Any Any} messages.
+   *
+   * <p>To compare the value of an {@code Any} message, ProtoTruth looks in the given registry for a
+   * descriptor for the message's type URL.
+   *
+   * <ul>
+   *   <li>If ProtoTruth finds a descriptor, it unpacks the value and compares it against the
+   *       expected value, respecting any configuration methods used for the assertion.
+   *   <li>If ProtoTruth does not find a descriptor (or if the value can't be deserialized with the
+   *       descriptor), it compares the raw, serialized bytes of the expected and actual values.
+   * </ul>
+   *
+   * @since 1.1
+   */
+  public MapWithProtoValuesFluentAssertion<M> usingTypeRegistryForValues(
+      TypeRegistry typeRegistry) {
+    return usingConfig(config.usingTypeRegistry(typeRegistry));
+  }
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // UsingCorrespondence Methods
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -819,6 +840,12 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
     @Override
     public MapWithProtoValuesFluentAssertion<M> reportingMismatchesOnlyForValues() {
       return subject.reportingMismatchesOnlyForValues();
+    }
+
+    @Override
+    public MapWithProtoValuesFluentAssertion<M> usingTypeRegistryForValues(
+        TypeRegistry typeRegistry) {
+      return subject.usingTypeRegistryForValues(typeRegistry);
     }
 
     @Override

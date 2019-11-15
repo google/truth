@@ -31,6 +31,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.TextFormat;
 import com.google.protobuf.TextFormat.ParseException;
+import com.google.protobuf.TypeRegistry;
 import com.google.protobuf.UnknownFieldSet;
 import java.util.Collection;
 import java.util.Map;
@@ -59,12 +60,20 @@ public class ProtoSubjectTestBase {
     public boolean isProto3() {
       return this == PROTO3;
     }
+
   }
+
+  private static final TypeRegistry typeRegistry =
+      TypeRegistry.newBuilder()
+          .add(TestMessage3.getDescriptor())
+          .add(TestMessage2.getDescriptor())
+          .build();
 
   private static final TextFormat.Parser PARSER =
       TextFormat.Parser.newBuilder()
           .setSingularOverwritePolicy(
               TextFormat.Parser.SingularOverwritePolicy.FORBID_SINGULAR_OVERWRITES)
+          .setTypeRegistry(typeRegistry)
           .build();
 
   // For Parameterized testing.
@@ -112,6 +121,10 @@ public class ProtoSubjectTestBase {
 
   protected final int getFieldNumber(String fieldName) {
     return getFieldDescriptor(fieldName).getNumber();
+  }
+
+  protected final TypeRegistry getTypeRegistry() {
+    return typeRegistry;
   }
 
   protected Message parse(String textProto) {
