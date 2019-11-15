@@ -18,6 +18,7 @@ package com.google.common.truth.extensions.proto;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.truth.MultimapSubject;
 import com.google.protobuf.Message;
 import java.util.Collection;
 import org.junit.Test;
@@ -317,5 +318,12 @@ public class MultimapWithProtoValuesSubjectTest extends ProtoSubjectTestBase {
                 TestMessage3.newBuilder().addRString("qux").addRString("baz").build(),
                 2,
                 TestMessage2.newBuilder().addRString("bar").addRString("foo").build()));
+  }
+
+  @Test
+  public void testMethodNamesEndWithForValues() {
+    checkMethodNamesEndWithForValues(MultimapWithProtoValuesSubject.class, MultimapSubject.class);
+    checkMethodNamesEndWithForValues(
+        MultimapWithProtoValuesFluentAssertion.class, MultimapSubject.class);
   }
 }
