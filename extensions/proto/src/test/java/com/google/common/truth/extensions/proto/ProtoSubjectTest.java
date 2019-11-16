@@ -20,10 +20,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.protobuf.Any;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.DynamicMessage;
-import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
@@ -767,81 +765,5 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThatFailure()
         .factValue("but was missing")
         .contains("r_required_string_message[1].required_string");
-  }
-
-  @Test
-  public void testAnyMessagesWithDifferentTypes() {
-    String typeUrl =
-        isProto3()
-            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
-            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
-    String diffTypeUrl =
-        isProto3()
-            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubSubTestMessage3"
-            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubSubTestMessage2";
-
-    Message message = parse("o_any_message: { [" + typeUrl + "]: {r_string: \"foo\"} }");
-    Message diffMessage = parse("o_any_message: { [" + diffTypeUrl + "]: {r_string: \"bar\"} }");
-
-    expectThat(message).usingTypeRegistry(getTypeRegistry()).isNotEqualTo(diffMessage);
-
-    expectFailureWhenTesting()
-        .that(message)
-        .usingTypeRegistry(getTypeRegistry())
-        .isEqualTo(diffMessage);
-    expectThatFailure().hasMessageThat().contains("modified: o_any_message.type_url");
-    expectThatFailure()
-        .hasMessageThat()
-        .containsMatch("modified: o_any_message.value:.*bar.*->.*foo.*");
-  }
-
-  @Test
-  public void testAnyMessageCompareWithEmptyAnyMessage() {
-    String typeUrl =
-        isProto3()
-            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
-            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
-
-    Message messageWithAny = parse("o_any_message: { [" + typeUrl + "]: {o_int: 1} }");
-    Message messageWithEmptyAny = parse("o_any_message: { }");
-
-    expectThat(messageWithAny)
-        .usingTypeRegistry(getTypeRegistry())
-        .isNotEqualTo(messageWithEmptyAny);
-    expectThat(messageWithEmptyAny)
-        .usingTypeRegistry(getTypeRegistry())
-        .isNotEqualTo(messageWithAny);
-
-    expectFailureWhenTesting()
-        .that(messageWithAny)
-        .usingTypeRegistry(getTypeRegistry())
-        .isEqualTo(messageWithEmptyAny);
-    expectThatFailure().hasMessageThat().contains("modified: o_any_message.type_url");
-    expectThatFailure().hasMessageThat().contains("modified: o_any_message.value");
-
-    expectFailureWhenTesting()
-        .that(messageWithEmptyAny)
-        .usingTypeRegistry(getTypeRegistry())
-        .isEqualTo(messageWithAny);
-    expectThatFailure().hasMessageThat().contains("modified: o_any_message.type_url");
-    expectThatFailure().hasMessageThat().contains("modified: o_any_message.value");
-  }
-
-  @Test
-  public void testAnyMessageComparedWithDynamicMessage() throws InvalidProtocolBufferException {
-    String typeUrl =
-        isProto3()
-            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
-            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
-
-    Message messageWithAny = parse("o_any_message: { [" + typeUrl + "]: {o_int: 1} }");
-    FieldDescriptor fieldDescriptor = getFieldDescriptor("o_any_message");
-    Any message = (Any) messageWithAny.getField(fieldDescriptor);
-    DynamicMessage dynamicMessage =
-        DynamicMessage.parseFrom(
-            Any.getDescriptor(), message.toByteString(), ExtensionRegistry.getEmptyRegistry());
-
-    expectThat(dynamicMessage).usingTypeRegistry(getTypeRegistry()).isEqualTo(message);
-    expectThat(message).usingTypeRegistry(getTypeRegistry()).isEqualTo(dynamicMessage);
   }
 }

@@ -2,8 +2,6 @@ syntax = "proto2";
 
 package com.google.common.truth.extensions.proto;
 
-import "google/protobuf/any.proto";
-
 option java_package = "com.google.common.truth.extensions.proto";
 option java_multiple_files = true;
 
@@ -38,8 +36,6 @@ message TestMessage2 {
   optional SubTestMessage2 o_sub_test_message = 15;
   repeated SubTestMessage2 r_sub_test_message = 16;
   map<string, TestMessage2> test_message_map = 17;
-  optional .google.protobuf.Any o_any_message = 18;
-  repeated .google.protobuf.Any r_any_message = 19;
 }
 
 message RequiredStringMessage2 {
