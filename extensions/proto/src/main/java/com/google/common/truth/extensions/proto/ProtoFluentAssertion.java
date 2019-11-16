@@ -17,7 +17,6 @@ package com.google.common.truth.extensions.proto;
 
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import com.google.protobuf.TypeRegistry;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -453,23 +452,6 @@ public interface ProtoFluentAssertion {
    * <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.
    */
   ProtoFluentAssertion reportingMismatchesOnly();
-
-  /**
-   * Specifies the {@link TypeRegistry} to use for {@link com.google.protobuf.Any Any} messages.
-   *
-   * <p>To compare the value of an {@code Any} message, ProtoTruth looks in the given registry for a
-   * descriptor for the message's type URL.
-   *
-   * <ul>
-   *   <li>If ProtoTruth finds a descriptor, it unpacks the value and compares it against the
-   *       expected value, respecting any configuration methods used for the assertion.
-   *   <li>If ProtoTruth does not find a descriptor (or if the value can't be deserialized with the
-   *       descriptor), it compares the raw, serialized bytes of the expected and actual values.
-   * </ul>
-   *
-   * @since 1.1
-   */
-  ProtoFluentAssertion usingTypeRegistry(TypeRegistry typeRegistry);
 
   /**
    * Compares the subject of the assertion to {@code expected}, using all of the rules specified by
