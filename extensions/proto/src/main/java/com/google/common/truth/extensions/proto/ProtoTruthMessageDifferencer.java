@@ -116,14 +116,14 @@ final class ProtoTruthMessageDifferencer {
           Map<Object, Object> actualMap = toProtoMap(actualFields.get(fieldDescriptor));
           Map<Object, Object> expectedMap = toProtoMap(expectedFields.get(fieldDescriptor));
 
-          ImmutableSet<Object> keyOrder =
+          ImmutableSet<Object> actualAndExpectedKeys =
               Sets.union(actualMap.keySet(), expectedMap.keySet()).immutableCopy();
           builder.addAllSingularFields(
               fieldDescriptor.getNumber(),
               compareMapFieldsByKey(
                   actualMap,
                   expectedMap,
-                  keyOrder,
+                  actualAndExpectedKeys,
                   fieldDescriptor,
                   config.subScope(rootDescriptor, fieldDescriptorOrUnknown)));
         } else {
@@ -206,18 +206,15 @@ final class ProtoTruthMessageDifferencer {
     Map<Object, Object> retVal = Maps.newHashMap();
     for (Object entry : entryMessages) {
       Message message = (Message) entry;
-      Object key = message.getAllFields().get(message.getDescriptorForType().findFieldByNumber(1));
-      if (key == null) {
-        key = message.getDescriptorForType().findFieldByNumber(1).getDefaultValue();
-      }
-      Object value =
-          message.getAllFields().get(message.getDescriptorForType().findFieldByNumber(2));
-      if (value == null) {
-        value = message.getDescriptorForType().findFieldByNumber(2).getDefaultValue();
-      }
-      retVal.put(key, value);
+      retVal.put(valueAtFieldNumber(message, 1), valueAtFieldNumber(message, 2));
     }
     return ImmutableMap.copyOf(retVal);
+  }
+
+  private static Object valueAtFieldNumber(Message message, int fieldNumber) {
+    FieldDescriptor field = message.getDescriptorForType().findFieldByNumber(fieldNumber);
+    Object value = message.getAllFields().get(field);
+    return value != null ? value : field.getDefaultValue();
   }
 
   // Takes a List<Object> or null, and returns the casted list in the first case, an empty list in
@@ -232,7 +229,7 @@ final class ProtoTruthMessageDifferencer {
   private List<SingularField> compareMapFieldsByKey(
       Map<Object, Object> actualMap,
       Map<Object, Object> expectedMap,
-      Set<Object> keyOrder,
+      Set<Object> actualAndExpectedKeys,
       FieldDescriptor mapFieldDescriptor,
       FluentEqualityConfig mapConfig) {
     FieldDescriptor keyFieldDescriptor = mapFieldDescriptor.getMessageType().findFieldByNumber(1);
@@ -257,8 +254,8 @@ final class ProtoTruthMessageDifferencer {
         mapConfig.subScope(rootDescriptor, valueFieldDescriptorOrUnknown);
 
     ImmutableList.Builder<SingularField> builder =
-        ImmutableList.builderWithExpectedSize(keyOrder.size());
-    for (Object key : keyOrder) {
+        ImmutableList.builderWithExpectedSize(actualAndExpectedKeys.size());
+    for (Object key : actualAndExpectedKeys) {
       @NullableDecl Object actualValue = actualMap.get(key);
       @NullableDecl Object expectedValue = expectedMap.get(key);
       if (ignoreExtraRepeatedFieldElements && !expectedMap.isEmpty() && expectedValue == null) {
