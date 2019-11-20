@@ -20,8 +20,10 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.DynamicMessage;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
@@ -765,5 +767,17 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThatFailure()
         .factValue("but was missing")
         .contains("r_required_string_message[1].required_string");
+  }
+
+  @Test
+  public void testMapWithDefaultKeysAndValues() throws InvalidProtocolBufferException {
+    Descriptor descriptor = getFieldDescriptor("o_int").getContainingType();
+    final String defaultString = "";
+    final int defaultInt32 = 0;
+    Message message = makeProtoMap(ImmutableMap.of(defaultString, 1, "foo", defaultInt32));
+    Message dynamicMessage =
+        DynamicMessage.parseFrom(
+            descriptor, message.toByteString(), ExtensionRegistry.getEmptyRegistry());
+    expectThat(message).isEqualTo(dynamicMessage);
   }
 }

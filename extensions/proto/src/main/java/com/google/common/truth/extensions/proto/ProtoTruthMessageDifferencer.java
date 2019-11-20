@@ -24,6 +24,7 @@ import static com.google.common.base.Preconditions.checkState;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -194,21 +195,29 @@ final class ProtoTruthMessageDifferencer {
   // Helper which takes a proto map in List<Message> form, and converts it to a Map<Object, Object>
   // by extracting the keys and values from the generated map-entry submessages.  Returns an empty
   // map if null is passed in.
-  private static Map<Object, Object> toProtoMap(@NullableDecl Object container) {
+  private static ImmutableMap<Object, Object> toProtoMap(@NullableDecl Object container) {
     if (container == null) {
-      return Collections.emptyMap();
+      return ImmutableMap.of();
     }
     List<?> entryMessages = (List<?>) container;
 
+    // Can't use an ImmutableMap.Builder because proto wire format could have multiple entries with
+    // the same key. Documented behaviour is to use the last seen entry.
     Map<Object, Object> retVal = Maps.newHashMap();
     for (Object entry : entryMessages) {
       Message message = (Message) entry;
       Object key = message.getAllFields().get(message.getDescriptorForType().findFieldByNumber(1));
+      if (key == null) {
+        key = message.getDescriptorForType().findFieldByNumber(1).getDefaultValue();
+      }
       Object value =
           message.getAllFields().get(message.getDescriptorForType().findFieldByNumber(2));
+      if (value == null) {
+        value = message.getDescriptorForType().findFieldByNumber(2).getDefaultValue();
+      }
       retVal.put(key, value);
     }
-    return retVal;
+    return ImmutableMap.copyOf(retVal);
   }
 
   // Takes a List<Object> or null, and returns the casted list in the first case, an empty list in
