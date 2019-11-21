@@ -68,14 +68,14 @@ Support exists for:
 *   Assertions on singular, generic Proto 2 messages.
 *   Assertions on singular, generic Proto 3 messages.
 *   Assertions on Iterables, Maps, and Multimaps of such messages.
+*   Tailored assertions for the [`Any`] type, for Proto 3.
 *   [Lite protos](#lite), though support is nominal
 
 Support does not currently exist (yet) for:
 
 *   Tailored assertions for extension fields for Proto 2.
 *   Tailored assertions for the [`UnknownFieldSet`].
-*   Tailored assertions for utility protos, including [`FieldMasks`], and the
-    [`Any`] type, for Proto 3.
+*   Tailored assertions for utility protos, including [`FieldMasks`].
 
 Support will not exist for:
 
