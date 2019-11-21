@@ -19,6 +19,7 @@ import com.google.common.truth.Ordered;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import com.google.protobuf.TypeRegistry;
 import java.util.Map;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -475,6 +476,23 @@ public interface MapWithProtoValuesFluentAssertion<M extends Message> {
    * <p>This a purely cosmetic setting, and it has no effect on the behavior of the test.
    */
   MapWithProtoValuesFluentAssertion<M> reportingMismatchesOnlyForValues();
+
+  /**
+   * Specifies the {@link TypeRegistry} to use for {@link com.google.protobuf.Any Any} messages.
+   *
+   * <p>To compare the value of an {@code Any} message, ProtoTruth looks in the given registry for a
+   * descriptor for the message's type URL.
+   *
+   * <ul>
+   *   <li>If ProtoTruth finds a descriptor, it unpacks the value and compares it against the
+   *       expected value, respecting any configuration methods used for the assertion.
+   *   <li>If ProtoTruth does not find a descriptor (or if the value can't be deserialized with the
+   *       descriptor), it compares the raw, serialized bytes of the expected and actual values.
+   * </ul>
+   *
+   * @since 1.1
+   */
+  MapWithProtoValuesFluentAssertion<M> usingTypeRegistryForValues(TypeRegistry typeRegistry);
 
   /**
    * Fails if the map does not contain an entry with the given key and a value that corresponds to
