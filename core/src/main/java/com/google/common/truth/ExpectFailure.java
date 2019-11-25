@@ -76,7 +76,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
 
   private boolean inRuleContext = false;
   private boolean failureExpected = false;
-  private @NullableDecl AssertionError failure = null;
+  @NullableDecl private AssertionError failure = null;
 
   /**
    * Creates a new instance for use as a {@code @Rule}. See the class documentation for details, and
