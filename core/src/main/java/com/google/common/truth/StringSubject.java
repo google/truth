@@ -32,12 +32,12 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Christian Gruber (cgruber@israfil.net)
  */
 public class StringSubject extends ComparableSubject<String> {
+  private final String actual;
+
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
-  private final String actual;
-
   protected StringSubject(FailureMetadata metadata, @NullableDecl String string) {
     super(metadata, string);
     this.actual = string;
