@@ -245,6 +245,10 @@ final class StackTraceCleaner {
          */
         return false;
       }
+      if (e instanceof IncompatibleClassChangeError) {
+        // Samsung class-loading bug? https://issuetracker.google.com/issues/37045084
+        return false;
+      }
       throw e;
     }
     return false;
