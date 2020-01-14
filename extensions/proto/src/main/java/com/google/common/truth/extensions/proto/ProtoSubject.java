@@ -26,7 +26,6 @@ import com.google.common.base.Objects;
 import com.google.common.truth.FailureMetadata;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import com.google.protobuf.TypeRegistry;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -577,25 +576,6 @@ public class ProtoSubject extends LiteProtoSubject {
     return usingConfig(config.reportingMismatchesOnly());
   }
 
-  /**
-   * Specifies the {@link TypeRegistry} to use for {@link com.google.protobuf.Any Any} messages.
-   *
-   * <p>To compare the value of an {@code Any} message, ProtoTruth looks in the given registry for a
-   * descriptor for the message's type URL.
-   *
-   * <ul>
-   *   <li>If ProtoTruth finds a descriptor, it unpacks the value and compares it against the
-   *       expected value, respecting any configuration methods used for the assertion.
-   *   <li>If ProtoTruth does not find a descriptor (or if the value can't be deserialized with the
-   *       descriptor), it compares the raw, serialized bytes of the expected and actual values.
-   * </ul>
-   *
-   * @since 1.1
-   */
-  public ProtoFluentAssertion usingTypeRegistry(TypeRegistry typeRegistry) {
-    return usingConfig(config.usingTypeRegistry(typeRegistry));
-  }
-
   private static boolean sameClassMessagesWithDifferentDescriptors(
       @NullableDecl Message actual, @NullableDecl Object expected) {
     if (actual == null
@@ -864,11 +844,6 @@ public class ProtoSubject extends LiteProtoSubject {
     @Override
     public ProtoFluentAssertion reportingMismatchesOnly() {
       return protoSubject.reportingMismatchesOnly();
-    }
-
-    @Override
-    public ProtoFluentAssertion usingTypeRegistry(TypeRegistry typeRegistry) {
-      return protoSubject.usingTypeRegistry(typeRegistry);
     }
 
     @Override

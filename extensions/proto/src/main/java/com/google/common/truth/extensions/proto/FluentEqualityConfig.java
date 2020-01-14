@@ -34,7 +34,6 @@ import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
-import com.google.protobuf.TypeRegistry;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -57,7 +56,6 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
           .setCompareExpectedFieldsOnly(false)
           .setCompareFieldsScope(FieldScopeLogic.all())
           .setReportMismatchesOnly(false)
-          .setUseTypeRegistry(TypeRegistry.getEmptyTypeRegistry())
           .setUsingCorrespondenceStringFunction(Functions.constant(""))
           .build();
 
@@ -102,8 +100,6 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
   abstract FieldScopeLogic compareFieldsScope();
 
   abstract boolean reportMismatchesOnly();
-
-  abstract TypeRegistry useTypeRegistry();
 
   // For pretty-printing, does not affect behavior.
   abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();
@@ -321,13 +317,6 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
         .build();
   }
 
-  final FluentEqualityConfig usingTypeRegistry(TypeRegistry typeRegistry) {
-    return toBuilder()
-        .setUseTypeRegistry(typeRegistry)
-        .addUsingCorrespondenceString(".usingTypeRegistry(" + typeRegistry + ")")
-        .build();
-  }
-
   @Override
   public final FluentEqualityConfig subScope(
       Descriptor rootDescriptor, FieldDescriptorOrUnknown fieldDescriptorOrUnknown) {
@@ -440,8 +429,6 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
     abstract Builder setCompareFieldsScope(FieldScopeLogic fieldScopeLogic);
 
     abstract Builder setReportMismatchesOnly(boolean reportMismatchesOnly);
-
-    abstract Builder setUseTypeRegistry(TypeRegistry typeRegistry);
 
     @CheckReturnValue
     abstract Function<? super Optional<Descriptor>, String> usingCorrespondenceStringFunction();

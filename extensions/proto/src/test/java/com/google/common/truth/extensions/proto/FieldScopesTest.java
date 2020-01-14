@@ -112,28 +112,6 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  public void testFieldScopes_none_withAnyField() {
-    String typeUrl =
-        isProto3()
-            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
-            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
-    Message message = parse("o_int: 3 o_any_message { [" + typeUrl + "]: { r_string: \"foo\" } }");
-    Message diffMessage =
-        parse("o_int: 5 o_any_message { [" + typeUrl + "]: { r_string: \"bar\" } }");
-
-    expectThat(diffMessage).ignoringFieldScope(FieldScopes.none()).isNotEqualTo(message);
-    expectThat(diffMessage).withPartialScope(FieldScopes.none()).isEqualTo(message);
-
-    expectFailureWhenTesting()
-        .that(diffMessage)
-        .withPartialScope(FieldScopes.none())
-        .isNotEqualTo(message);
-    expectIsNotEqualToFailed();
-    expectThatFailure().hasMessageThat().contains("ignored: o_int");
-    expectThatFailure().hasMessageThat().contains("ignored: o_any_message");
-  }
-
-  @Test
   public void testIgnoringTopLevelField_ignoringField() {
     expectThat(ignoringFieldDiffMessage)
         .ignoringFields(goodFieldNumber)
@@ -155,32 +133,6 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .isNotEqualTo(ignoringFieldMessage);
     expectIsNotEqualToFailed();
     expectThatFailure().hasMessageThat().contains("ignored: r_string");
-  }
-
-  @Test
-  public void testIgnoringTopLevelAnyField_ignoringField() {
-    String typeUrl =
-        isProto3()
-            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
-            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
-    Message message = parse("o_int: 1 o_any_message { [" + typeUrl + "]: { r_string: \"foo\" } }");
-    Message diffMessage = parse("o_int: 1");
-    int goodFieldNumber = getFieldNumber("o_int");
-    int badFieldNumber = getFieldNumber("o_any_message");
-
-    expectThat(diffMessage).ignoringFields(goodFieldNumber).isNotEqualTo(message);
-    expectThat(diffMessage).ignoringFields(badFieldNumber).isEqualTo(diffMessage);
-
-    expectFailureWhenTesting().that(diffMessage).ignoringFields(goodFieldNumber).isEqualTo(message);
-    expectIsEqualToFailed();
-    expectThatFailure().hasMessageThat().contains("deleted: o_any_message");
-
-    expectFailureWhenTesting()
-        .that(diffMessage)
-        .ignoringFields(badFieldNumber)
-        .isNotEqualTo(message);
-    expectIsNotEqualToFailed();
-    expectThatFailure().hasMessageThat().contains("ignored: o_any_message");
   }
 
   @Test
@@ -213,22 +165,6 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThat(ignoringFieldDiffMessage)
         .ignoringFieldScope(FieldScopes.allowingFields(badFieldNumber))
         .isEqualTo(ignoringFieldMessage);
-  }
-
-  @Test
-  public void testIgnoringTopLevelAnyField_fieldScopes_allowingFields() {
-    String typeUrl =
-        isProto3()
-            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
-            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
-    Message message =
-        parse("o_int: 1 o_any_message { [" + typeUrl + "]: { o_int: 2 r_string: \"foo\" } }");
-    Message diffMessage = parse("o_int: 1");
-    int goodFieldNumber = getFieldNumber("o_int");
-
-    expectThat(message)
-        .withPartialScope(FieldScopes.allowingFields(goodFieldNumber))
-        .isEqualTo(diffMessage);
   }
 
   @Test
@@ -332,57 +268,6 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     expectThatFailure()
         .hasMessageThat()
         .contains("modified: o_sub_test_message.r_string[0]: \"foo\" -> \"bar\"");
-  }
-
-  @Test
-  public void testIgnoringFieldOfAnyMessage() throws Exception {
-    String typeUrl =
-        isProto3()
-            ? "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage3"
-            : "type.googleapis.com/com.google.common.truth.extensions.proto.SubTestMessage2";
-
-    Message message =
-        parse("o_int: 1 o_any_message { [" + typeUrl + "]: { o_int: 2 r_string: \"foo\" } }");
-    Message diffMessage1 =
-        parse("o_int: 2 o_any_message { [" + typeUrl + "]: { o_int: 2 r_string: \"foo\" } }");
-    Message diffMessage2 =
-        parse("o_int: 1 o_any_message { [" + typeUrl + "]: { o_int: 2 r_string: \"bar\" } }");
-    Message eqMessage =
-        parse("o_int: 1 o_any_message { [" + typeUrl + "]: { o_int: 3 r_string: \"foo\" } }");
-
-    FieldDescriptor fieldDescriptor =
-        getTypeRegistry().getDescriptorForTypeUrl(typeUrl).findFieldByName("o_int");
-    FieldScope partialScope = FieldScopes.ignoringFieldDescriptors(fieldDescriptor);
-    expectThat(diffMessage1)
-        .usingTypeRegistry(getTypeRegistry())
-        .withPartialScope(partialScope)
-        .isNotEqualTo(message);
-    expectThat(diffMessage2)
-        .usingTypeRegistry(getTypeRegistry())
-        .withPartialScope(partialScope)
-        .isNotEqualTo(message);
-    expectThat(eqMessage)
-        .usingTypeRegistry(getTypeRegistry())
-        .withPartialScope(partialScope)
-        .isEqualTo(message);
-
-    expectFailureWhenTesting()
-        .that(diffMessage1)
-        .usingTypeRegistry(getTypeRegistry())
-        .withPartialScope(partialScope)
-        .isEqualTo(message);
-    expectIsEqualToFailed();
-    expectThatFailure().hasMessageThat().contains("modified: o_int: 1 -> 2");
-
-    expectFailureWhenTesting()
-        .that(diffMessage2)
-        .usingTypeRegistry(getTypeRegistry())
-        .withPartialScope(partialScope)
-        .isEqualTo(message);
-    expectIsEqualToFailed();
-    expectThatFailure()
-        .hasMessageThat()
-        .contains("modified: o_any_message.value.r_string[0]: \"foo\" -> \"bar\"");
   }
 
   @Test
