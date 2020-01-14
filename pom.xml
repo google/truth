@@ -275,6 +275,9 @@
               <link>https://junit.org/junit4/javadoc/latest/</link>
             </links>
             <source>8</source>
+            <sourceFileExcludes>
+              <sourceFileExclude>**/super/**/*.java</sourceFileExclude>
+            </sourceFileExcludes>
           </configuration>
         </plugin>
         <plugin>
