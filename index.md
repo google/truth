@@ -185,7 +185,7 @@ assertThat(googleColors)
 If you’re using an IDE with autocompletion, it will suggest a list of assertions
 you can make about the given type. If not, consult the [API docs]. For example,
 if you’re looking for assertions about a `Map`, look at the documentation for
-[`MapSubject`].
+[`MapSubject`], available at [truth.dev/MapSubject].
 
 # More information {#more-information}
 
@@ -201,8 +201,9 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 [Github issues]: https://github.com/google/truth/issues
 [Stack Overflow]: http://stackoverflow.com/questions/tagged/google-truth
 [Guava]: http://github.com/google/guava
-[API docs]: https://truth.dev/api/latest/
+[API docs]: https://truth.dev/api/
 [`MapSubject`]: https://truth.dev/api/latest/com/google/common/truth/MapSubject
+[truth.dev/MapSubject]: https://truth.dev/MapSubject
 [Java Core Libraries Team]: https://www.reddit.com/r/java/comments/1y9e6t/ama_were_the_google_team_behind_guava_dagger/
 [AssertJ]: http://joel-costigliola.github.io/assertj/
 [monorepo]: https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext
