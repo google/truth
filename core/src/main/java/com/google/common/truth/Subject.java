@@ -536,6 +536,9 @@ public class Subject {
    */
   private static ComparisonResult checkArrayEqualsRecursive(
       Object expectedArray, Object actualArray, String lastIndex) {
+    if (expectedArray == actualArray) {
+      return ComparisonResult.equal();
+    }
     String expectedType = arrayType(expectedArray);
     String actualType = arrayType(actualArray);
     if (!expectedType.equals(actualType)) {
