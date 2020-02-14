@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -508,6 +509,8 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .contains("ignored: o_sub_test_message.o_test_message.r_string");
   }
 
+  @Test
+  @Ignore
   public void testFromSetFields_unknownFields() throws InvalidProtocolBufferException {
     if (isProto3()) {
       // No unknown fields in Proto 3.
