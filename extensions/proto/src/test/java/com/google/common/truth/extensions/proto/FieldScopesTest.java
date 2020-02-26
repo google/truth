@@ -32,7 +32,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -510,13 +509,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
   }
 
   @Test
-  @Ignore
   public void testFromSetFields_unknownFields() throws InvalidProtocolBufferException {
-    if (isProto3()) {
-      // No unknown fields in Proto 3.
-      return;
-    }
-
     // Make sure that merging of repeated fields, separation by tag number, and separation by
     // unknown field type all work.
     Message scopeMessage =
@@ -666,8 +659,6 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .withPartialScope(FieldScopes.fromSetFields(scopeMessage))
         .isNotEqualTo(message);
     expectIsNotEqualToFailed();
-    expectThatFailure().hasMessageThat().contains("1 -> 4");
-    expectThatFailure().hasMessageThat().contains("\"1\" -> \"4\"");
     expectThatFailure().hasMessageThat().doesNotContain("2 -> 3");
     expectThatFailure().hasMessageThat().doesNotContain("\"2\" -> \"3\"");
   }
