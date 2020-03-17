@@ -236,7 +236,7 @@ DEPENDENCIES
   nokogiri (~> 1.10.8)
 
 RUBY VERSION
-   ruby 2.5.7p206
+   ruby 2.3.3p222
 
 BUNDLED WITH
-   1.17.3
+   1.16.1
