@@ -108,7 +108,7 @@ assertThat(cuboid.getWidth()).isEqualTo(3.4);
 ```
 
 Note: All the exact assertions define equality like `Double.equals` does: each
-of the values `POSITIVE_INFINITY`, `NEGATIVE_INFNITY`, and `NaN` is equal to
+of the values `POSITIVE_INFINITY`, `NEGATIVE_INFINITY`, and `NaN` is equal to
 itself, and `-0.0` is *not* equal to `0.0`. This is appropriate for the case
 where the code under test is meant to pass values through without touching them.
 
@@ -121,7 +121,7 @@ assertThat(cuboid.getVolume()).isWithin(1.0e-10).of(1.2 * 3.4 * 5.6);
 
 Note: All the approximate assertions consider `-0.0` to be within any tolerance
 of `0.0` and do *not* consider each of the values `POSITIVE_INFINITY`,
-`NEGATIVE_INFNITY`, and `NaN` to be within any tolerance of
+`NEGATIVE_INFINITY`, and `NaN` to be within any tolerance of
 itself.[^infinity-philosophy] You should treat these as special cases and use
 the dedicated methods (where applicable) or exact equality for such values.
 
