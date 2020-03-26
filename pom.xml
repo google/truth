@@ -261,6 +261,9 @@
               <additionalOption>--frames</additionalOption>
               <additionalOption>-Xdoclint:-html</additionalOption>
             </additionalOptions>
+            <additionalJOptions>
+              <additionalJOption>--no-module-directories</additionalJOption>
+            </additionalJOptions>
             <doctitle>Truth ${project.version}</doctitle>
             <windowtitle>Truth ${project.version}</windowtitle>
             <quiet>true</quiet>
@@ -269,11 +272,13 @@
             <docencoding>UTF-8</docencoding>
             <charset>UTF-8</charset>
             <overview>overview.html</overview>
+            <detectJavaApiLink>false</detectJavaApiLink>
             <links>
               <!-- TODO(cpovirk): Link to the version that we depend on? -->
               <link>https://google.github.io/guava/releases/snapshot-jre/api/docs</link>
               <link>https://developers.google.com/protocol-buffers/docs/reference/java</link>
               <link>https://junit.org/junit4/javadoc/latest/</link>
+              <link>https://docs.oracle.com/javase/7/docs/api/</link>
             </links>
             <source>8</source>
             <sourceFileExcludes>
