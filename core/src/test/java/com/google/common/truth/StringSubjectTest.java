@@ -200,16 +200,66 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void stringMatchesStringFailNull() {
+    expectFailureWhenTestingThat(null).matches(".*aaa.*");
+    assertFailureValue("expected a string that matches", ".*aaa.*");
+  }
+
+  @Test
   @GwtIncompatible("Pattern")
   public void stringMatchesPattern() {
-    assertThat("abcaqadev").doesNotMatch(Pattern.compile(".*aaa.*"));
+    assertThat("abcaaadev").matches(Pattern.compile(".*aaa.*"));
   }
 
   @Test
   @GwtIncompatible("Pattern")
   public void stringMatchesPatternWithFail() {
+    expectFailureWhenTestingThat("abcaqadev").matches(Pattern.compile(".*aaa.*"));
+    assertFailureValue("expected to match", ".*aaa.*");
+  }
+
+  @Test
+  @GwtIncompatible("Pattern")
+  public void stringMatchesPatternFailNull() {
+    expectFailureWhenTestingThat(null).matches(Pattern.compile(".*aaa.*"));
+    assertFailureValue("expected a string that matches", ".*aaa.*");
+  }
+
+  @Test
+  public void stringDoesNotMatchString() {
+    assertThat("abcaqadev").doesNotMatch(".*aaa.*");
+  }
+
+  @Test
+  public void stringDoesNotMatchStringWithFail() {
+    expectFailureWhenTestingThat("abcaaadev").doesNotMatch(".*aaa.*");
+    assertFailureValue("expected not to match", ".*aaa.*");
+  }
+
+  @Test
+  public void stringDoesNotMatchStringFailNull() {
+    expectFailureWhenTestingThat(null).doesNotMatch(".*aaa.*");
+    assertFailureValue("expected a string that does not match", ".*aaa.*");
+  }
+
+  @Test
+  @GwtIncompatible("Pattern")
+  public void stringDoesNotMatchPattern() {
+    assertThat("abcaqadev").doesNotMatch(Pattern.compile(".*aaa.*"));
+  }
+
+  @Test
+  @GwtIncompatible("Pattern")
+  public void stringDoesNotMatchPatternWithFail() {
     expectFailureWhenTestingThat("abcaaadev").doesNotMatch(Pattern.compile(".*aaa.*"));
     assertFailureValue("expected not to match", ".*aaa.*");
+  }
+
+  @Test
+  @GwtIncompatible("Pattern")
+  public void stringDoesNotMatchPatternFailNull() {
+    expectFailureWhenTestingThat(null).doesNotMatch(Pattern.compile(".*aaa.*"));
+    assertFailureValue("expected a string that does not match", ".*aaa.*");
   }
 
   @Test
@@ -228,12 +278,25 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void stringContainsMatchStringFailNull() {
+    expectFailureWhenTestingThat(null).containsMatch(".*b.*");
+    assertFailureValue("expected a string that contains a match for", ".*b.*");
+  }
+
+  @Test
   @GwtIncompatible("Pattern")
   public void stringContainsMatchPattern() {
     assertThat("aba").containsMatch(Pattern.compile(".*b.*"));
 
     expectFailureWhenTestingThat("aaa").containsMatch(Pattern.compile(".*b.*"));
     assertFailureValue("expected to contain a match for", ".*b.*");
+  }
+
+  @Test
+  @GwtIncompatible("Pattern")
+  public void stringContainsMatchPatternFailNull() {
+    expectFailureWhenTestingThat(null).containsMatch(Pattern.compile(".*b.*"));
+    assertFailureValue("expected a string that contains a match for", ".*b.*");
   }
 
   @Test
@@ -251,6 +314,12 @@ public class StringSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void stringDoesNotContainMatchStringUsesFindFailNull() {
+    expectFailureWhenTestingThat(null).doesNotContainMatch("[b]");
+    assertFailureValue("expected a string that does not contain a match for", "[b]");
+  }
+
+  @Test
   @GwtIncompatible("Pattern")
   public void stringDoesNotContainMatchPattern() {
     assertThat("zzaaazz").doesNotContainMatch(Pattern.compile(".b."));
@@ -259,6 +328,13 @@ public class StringSubjectTest extends BaseSubjectTestCase {
     assertFailureValue("expected not to contain a match for", ".b.");
     assertFailureValue("but contained", "aba");
     assertFailureValue("full string", "zzabazz");
+  }
+
+  @Test
+  @GwtIncompatible("Pattern")
+  public void stringDoesNotContainMatchPatternFailNull() {
+    expectFailureWhenTestingThat(null).doesNotContainMatch(Pattern.compile(".b."));
+    assertFailureValue("expected a string that does not contain a match for", ".b.");
   }
 
   @Test

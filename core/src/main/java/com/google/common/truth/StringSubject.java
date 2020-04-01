@@ -114,11 +114,12 @@ public class StringSubject extends ComparableSubject<String> {
     }
   }
 
-  // TODO(cpovirk): Probably these should check for null first like the earlier methods do.
-
   /** Fails if the string does not match the given regex. */
   public void matches(String regex) {
-    if (!actual.matches(regex)) {
+    checkNotNull(regex);
+    if (actual == null) {
+      failWithActual("expected a string that matches", regex);
+    } else if (!actual.matches(regex)) {
       failWithActual("expected to match", regex);
     }
   }
@@ -126,14 +127,20 @@ public class StringSubject extends ComparableSubject<String> {
   /** Fails if the string does not match the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void matches(Pattern regex) {
-    if (!regex.matcher(actual).matches()) {
+    checkNotNull(regex);
+    if (actual == null) {
+      failWithActual("expected a string that matches", regex);
+    } else if (!regex.matcher(actual).matches()) {
       failWithActual("expected to match", regex);
     }
   }
 
   /** Fails if the string matches the given regex. */
   public void doesNotMatch(String regex) {
-    if (actual.matches(regex)) {
+    checkNotNull(regex);
+    if (actual == null) {
+      failWithActual("expected a string that does not match", regex);
+    } else if (actual.matches(regex)) {
       failWithActual("expected not to match", regex);
     }
   }
@@ -141,7 +148,10 @@ public class StringSubject extends ComparableSubject<String> {
   /** Fails if the string matches the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotMatch(Pattern regex) {
-    if (regex.matcher(actual).matches()) {
+    checkNotNull(regex);
+    if (actual == null) {
+      failWithActual("expected a string that does not match", regex);
+    } else if (regex.matcher(actual).matches()) {
       failWithActual("expected not to match", regex);
     }
   }
@@ -149,14 +159,20 @@ public class StringSubject extends ComparableSubject<String> {
   /** Fails if the string does not contain a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void containsMatch(Pattern regex) {
-    if (!regex.matcher(actual).find()) {
+    checkNotNull(regex);
+    if (actual == null) {
+      failWithActual("expected a string that contains a match for", regex);
+    } else if (!regex.matcher(actual).find()) {
       failWithActual("expected to contain a match for", regex);
     }
   }
 
   /** Fails if the string does not contain a match on the given regex. */
   public void containsMatch(String regex) {
-    if (!Platform.containsMatch(actual, regex)) {
+    checkNotNull(regex);
+    if (actual == null) {
+      failWithActual("expected a string that contains a match for", regex);
+    } else if (!Platform.containsMatch(actual, regex)) {
       failWithActual("expected to contain a match for", regex);
     }
   }
@@ -164,6 +180,11 @@ public class StringSubject extends ComparableSubject<String> {
   /** Fails if the string contains a match on the given regex. */
   @GwtIncompatible("java.util.regex.Pattern")
   public void doesNotContainMatch(Pattern regex) {
+    checkNotNull(regex);
+    if (actual == null) {
+      failWithActual("expected a string that does not contain a match for", regex);
+      return;
+    }
     Matcher matcher = regex.matcher(actual);
     if (matcher.find()) {
       failWithoutActual(
@@ -175,7 +196,10 @@ public class StringSubject extends ComparableSubject<String> {
 
   /** Fails if the string contains a match on the given regex. */
   public void doesNotContainMatch(String regex) {
-    if (Platform.containsMatch(actual, regex)) {
+    checkNotNull(regex);
+    if (actual == null) {
+      failWithActual("expected a string that does not contain a match for", regex);
+    } else if (Platform.containsMatch(actual, regex)) {
       failWithActual("expected not to contain a match for", regex);
     }
   }
