@@ -177,7 +177,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
    *       {@link Double#NaN} to be equal to themselves (contrast with {@code usingTolerance(0.0)}
    *       which does not).
    *   <li>It does <i>not</i> consider {@code -0.0} to be equal to {@code 0.0} (contrast with {@code
-   *       usingTolerance(0.0)} which does not).
+   *       usingTolerance(0.0)} which does).
    *   <li>The subsequent methods in the chain may throw a {@link NullPointerException} if any
    *       expected {@link Double} instance is null.
    * </ul>
