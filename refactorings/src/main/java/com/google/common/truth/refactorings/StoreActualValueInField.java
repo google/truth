@@ -18,7 +18,6 @@ package com.google.common.truth.refactorings;
 
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.errorprone.BugPattern.ProvidesFix.REQUIRES_HUMAN_ATTENTION;
 import static com.google.errorprone.BugPattern.SeverityLevel.SUGGESTION;
 import static com.google.errorprone.fixes.SuggestedFix.replace;
 import static com.google.errorprone.matchers.Description.NO_MATCH;
@@ -73,8 +72,7 @@ import javax.lang.model.element.Name;
     name = "StoreActualValueInField",
     summary =
         "Store the actual value locally instead of using the deprecated actual() and getSubject().",
-    severity = SUGGESTION,
-    providesFix = REQUIRES_HUMAN_ATTENTION)
+    severity = SUGGESTION)
 public final class StoreActualValueInField extends BugChecker
     implements MethodInvocationTreeMatcher {
   @Override

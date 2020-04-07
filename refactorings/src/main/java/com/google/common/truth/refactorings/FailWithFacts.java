@@ -18,7 +18,6 @@ package com.google.common.truth.refactorings;
 
 import static com.google.common.base.CharMatcher.inRange;
 import static com.google.common.base.CharMatcher.whitespace;
-import static com.google.errorprone.BugPattern.ProvidesFix.REQUIRES_HUMAN_ATTENTION;
 import static com.google.errorprone.BugPattern.SeverityLevel.SUGGESTION;
 import static com.google.errorprone.matchers.Description.NO_MATCH;
 import static com.google.errorprone.matchers.Matchers.instanceMethod;
@@ -57,8 +56,7 @@ import java.util.List;
 @BugPattern(
     name = "FailWithFacts",
     summary = "Use the new key-value-style failure API instead of the deprecated one.",
-    severity = SUGGESTION,
-    providesFix = REQUIRES_HUMAN_ATTENTION)
+    severity = SUGGESTION)
 public final class FailWithFacts extends BugChecker implements MethodInvocationTreeMatcher {
   @Override
   public Description matchMethodInvocation(MethodInvocationTree tree, VisitorState state) {
