@@ -18,7 +18,6 @@ package com.google.common.truth.refactorings;
 
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.errorprone.BugPattern.ProvidesFix.REQUIRES_HUMAN_ATTENTION;
 import static com.google.errorprone.BugPattern.SeverityLevel.SUGGESTION;
 import static com.google.errorprone.matchers.Description.NO_MATCH;
 import static com.google.errorprone.matchers.Matchers.anyOf;
@@ -62,8 +61,7 @@ import javax.annotation.Nullable;
 @BugPattern(
     name = "NamedToWithMessage",
     summary = "Use assertWithMessage(...)/withMessage(...) instead of the deprecated named(...).",
-    severity = SUGGESTION,
-    providesFix = REQUIRES_HUMAN_ATTENTION)
+    severity = SUGGESTION)
 public final class NamedToWithMessage extends BugChecker implements MethodInvocationTreeMatcher {
   @Override
   public Description matchMethodInvocation(MethodInvocationTree namedCall, VisitorState state) {

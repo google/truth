@@ -27,7 +27,6 @@ import static com.google.common.collect.Streams.stream;
 import static com.google.common.truth.refactorings.CorrespondenceSubclassToFactoryCall.MemberType.COMPARE_METHOD;
 import static com.google.common.truth.refactorings.CorrespondenceSubclassToFactoryCall.MemberType.CONSTRUCTOR;
 import static com.google.common.truth.refactorings.CorrespondenceSubclassToFactoryCall.MemberType.TO_STRING_METHOD;
-import static com.google.errorprone.BugPattern.ProvidesFix.REQUIRES_HUMAN_ATTENTION;
 import static com.google.errorprone.BugPattern.SeverityLevel.SUGGESTION;
 import static com.google.errorprone.fixes.SuggestedFixes.compilesWithFix;
 import static com.google.errorprone.matchers.Description.NO_MATCH;
@@ -92,8 +91,7 @@ import javax.lang.model.element.Modifier;
 @BugPattern(
     name = "CorrespondenceSubclassToFactoryCall",
     summary = "Use the factory methods on Correspondence instead of defining a subclass.",
-    severity = SUGGESTION,
-    providesFix = REQUIRES_HUMAN_ATTENTION)
+    severity = SUGGESTION)
 public final class CorrespondenceSubclassToFactoryCall extends BugChecker
     implements ClassTreeMatcher {
   @Override
