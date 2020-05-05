@@ -266,7 +266,7 @@ final class ActualValueInference {
         String name,
         String methodDescriptor,
         ImmutableSetMultimap.Builder<Integer, StackEntry> actualValueAtLine) {
-      super(Opcodes.ASM7);
+      super(Opcodes.ASM8);
       localVariableSlots = createInitialLocalVariableSlots(access, owner, name, methodDescriptor);
       previousFrame =
           FrameInfo.create(
