@@ -229,7 +229,7 @@ And, for release 1.1:
 
 ### Update version numbers in docs
 
-Create a commit that updates the `_config.yml` file with the new version number. e.g. cl/156885831
+Create a commit that updates the `_config.yml` file with the new version number.
 
 ### Delete your branch
 
