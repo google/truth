@@ -295,9 +295,6 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
 
   @Test
   public void testFluent_containsAtLeast() {
-    // TODO(peteg): containsAtLeast and containsExactly don't surface Correspondence.toString().
-    // We should add a string test here once they do.
-
     expectThat(listOf(message1, message2, eqRepeatedMessage2))
         .ignoringFields(ignoreFieldNumber)
         .containsAtLeast(eqIgnoredMessage1, eqIgnoredMessage2);
@@ -309,13 +306,21 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .that(listOf(message1))
         .ignoringRepeatedFieldOrder()
         .containsAtLeast(eqMessage1, eqMessage2);
-    expectThatFailure().isNotNull();
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "is equivalent according to "
+                + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
 
     expectFailureWhenTesting()
         .that(listOf(message1))
         .ignoringRepeatedFieldOrder()
         .containsAtLeastElementsIn(listOf(eqMessage1, eqMessage2));
-    expectThatFailure().isNotNull();
+    expectThatFailure()
+        .hasMessageThat()
+        .contains(
+            "is equivalent according to "
+                + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
   }
 
   @Test
