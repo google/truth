@@ -1151,8 +1151,6 @@ public class Subject {
     return typeDescriptionOrGuess(getClass(), typeDescriptionOverride);
   }
 
-  // unavoidable for Class<? extends Foo> (see https://bugs.openjdk.java.net/browse/JDK-8134009)
-  @SuppressWarnings({"unchecked", "rawtypes"})
   private static String typeDescriptionOrGuess(
       Class<? extends Subject> clazz, @NullableDecl String typeDescriptionOverride) {
     if (typeDescriptionOverride != null) {
