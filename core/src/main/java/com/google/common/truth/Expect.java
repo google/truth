@@ -59,10 +59,22 @@ import org.junit.runners.model.Statement;
  * If both of the assertions above fail, the test will fail with an exception that contains
  * information about both.
  *
- * <p>{@code Expect} may be used concurrently from multiple threads. Note, however, that {@code
- * Expect} has no way of knowing when all your other test threads are done. It simply checks for
- * failures when the main thread finishes executing the test method. Thus, you must ensure that any
- * background threads complete their assertions before then, or your test may ignore their results.
+ * <p>{@code Expect} may be used concurrently from multiple threads. However, multithreaded tests
+ * still require care:
+ *
+ * <ul>
+ *   <li>{@code Expect} has no way of knowing when all your other test threads are done. It simply
+ *       checks for failures when the main thread finishes executing the test method. Thus, you must
+ *       ensure that any background threads complete their assertions before then, or your test may
+ *       ignore their results.
+ *   <li>Assertion failures are not the only exceptions that may occur in other threads. For maximum
+ *       safety, multithreaded tests should check for such exceptions regardless of whether they use
+ *       {@code Expect}. (Typically, this means calling {@code get()} on any {@code Future} returned
+ *       by a method like {@code executor.submit(...)}. It might also include checking for
+ *       unexpected log messages
+ *       or reading metrics that count failures.) If your tests already check for exceptions from a
+ *       thread, then that will any cover exception from plain {@code assertThat}.
+ * </ul>
  *
  * <p>To record failures for the purpose of testing that an assertion fails when it should, see
  * {@link ExpectFailure}.
