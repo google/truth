@@ -62,14 +62,14 @@ public final class CorrespondenceExceptionStoreTest extends BaseSubjectTestCase 
     Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
     addCompareException(exceptions);
     assertExpectedFacts(
-        exceptions.describeAsMainCause().asIterable(),
+        exceptions.describeAsMainCause(),
         "one or more exceptions were thrown while comparing elements");
   }
 
   @Test
   public void describeAsAdditionalInfo_empty() {
     Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
-    assertThat(exceptions.describeAsAdditionalInfo().asIterable()).isEmpty();
+    assertThat(exceptions.describeAsAdditionalInfo()).isEmpty();
   }
 
   @Test
@@ -77,7 +77,7 @@ public final class CorrespondenceExceptionStoreTest extends BaseSubjectTestCase 
     Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forIterable();
     addCompareException(exceptions);
     assertExpectedFacts(
-        exceptions.describeAsAdditionalInfo().asIterable(),
+        exceptions.describeAsAdditionalInfo(),
         "additionally, one or more exceptions were thrown while comparing elements");
   }
 

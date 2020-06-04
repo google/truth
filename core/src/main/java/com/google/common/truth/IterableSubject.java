@@ -23,7 +23,6 @@ import static com.google.common.collect.Iterables.size;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
-import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.ALL_IN_ONE_FACT;
 import static com.google.common.truth.IterableSubject.ElementFactGrouping.FACT_PER_ELEMENT;
 import static com.google.common.truth.SubjectUtils.accumulate;
@@ -54,7 +53,6 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import com.google.common.truth.SubjectUtils.DuplicateGroupedAndTyped;
@@ -189,7 +187,7 @@ public class IterableSubject extends Subject {
 
   /** Checks that the subject does not contain duplicate elements. */
   public final void containsNoDuplicates() {
-    List<Entry<?>> duplicates = newArrayList();
+    List<Multiset.Entry<?>> duplicates = newArrayList();
     for (Multiset.Entry<?> entry : LinkedHashMultiset.create(actual).entrySet()) {
       if (entry.getCount() > 1) {
         duplicates.add(entry);
@@ -631,7 +629,7 @@ public class IterableSubject extends Subject {
   }
 
   private static ElementFactGrouping pickGrouping(
-      Iterable<Entry<?>> first, Iterable<Entry<?>> second) {
+      Iterable<Multiset.Entry<?>> first, Iterable<Multiset.Entry<?>> second) {
     boolean firstHasMultiple = hasMultiple(first);
     boolean secondHasMultiple = hasMultiple(second);
     if ((firstHasMultiple || secondHasMultiple) && anyContainsCommaOrNewline(first, second)) {
@@ -646,8 +644,8 @@ public class IterableSubject extends Subject {
     return ALL_IN_ONE_FACT;
   }
 
-  private static boolean anyContainsCommaOrNewline(Iterable<Entry<?>>... lists) {
-    for (Entry<?> entry : concat(lists)) {
+  private static boolean anyContainsCommaOrNewline(Iterable<Multiset.Entry<?>>... lists) {
+    for (Multiset.Entry<?> entry : concat(lists)) {
       String s = String.valueOf(entry.getElement());
       if (s.contains("\n") || s.contains(",")) {
         return true;
@@ -656,7 +654,7 @@ public class IterableSubject extends Subject {
     return false;
   }
 
-  private static boolean hasMultiple(Iterable<Entry<?>> entries) {
+  private static boolean hasMultiple(Iterable<Multiset.Entry<?>> entries) {
     int totalCount = 0;
     for (Multiset.Entry<?> entry : entries) {
       totalCount += entry.getCount();
@@ -667,7 +665,7 @@ public class IterableSubject extends Subject {
     return false;
   }
 
-  private static boolean containsEmptyOrLong(Iterable<Entry<?>> entries) {
+  private static boolean containsEmptyOrLong(Iterable<Multiset.Entry<?>> entries) {
     int totalLength = 0;
     for (Multiset.Entry<?> entry : entries) {
       String s = entryString(entry);
@@ -730,6 +728,7 @@ public class IterableSubject extends Subject {
   }
 
   /** Ordered implementation that does nothing because it's already known to be true. */
+  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
   private static final Ordered IN_ORDER =
       new Ordered() {
         @Override
@@ -737,6 +736,7 @@ public class IterableSubject extends Subject {
       };
 
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */
+  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
   private static final Ordered ALREADY_FAILED =
       new Ordered() {
         @Override
@@ -1028,13 +1028,13 @@ public class IterableSubject extends Subject {
           // Found a match, but we still need to fail if we hit an exception along the way.
           if (exceptions.hasCompareException()) {
             subject.failWithoutActual(
-                exceptions
-                    .describeAsMainCause()
-                    .and(
-                        fact("expected to contain", expected),
-                        correspondence.describeForIterable(),
-                        fact("found match (but failing because of exception)", actual),
-                        subject.fullContents()));
+                ImmutableList.<Fact>builder()
+                    .addAll(exceptions.describeAsMainCause())
+                    .add(fact("expected to contain", expected))
+                    .add(correspondence.describeForIterable())
+                    .add(fact("found match (but failing because of exception)", actual))
+                    .add(subject.fullContents())
+                    .build());
           }
           return;
         }
@@ -1044,27 +1044,29 @@ public class IterableSubject extends Subject {
         List<A> keyMatches = pairer.get().pairOne(expected, getCastActual(), exceptions);
         if (!keyMatches.isEmpty()) {
           subject.failWithoutActual(
-              facts(
-                      fact("expected to contain", expected),
-                      correspondence.describeForIterable(),
-                      simpleFact("but did not"))
-                  .and(
+              ImmutableList.<Fact>builder()
+                  .add(fact("expected to contain", expected))
+                  .add(correspondence.describeForIterable())
+                  .add(simpleFact("but did not"))
+                  .addAll(
                       formatExtras(
                           "though it did contain elements with correct key",
                           expected,
                           keyMatches,
                           exceptions))
-                  .and(subject.fullContents())
-                  .and(exceptions.describeAsAdditionalInfo()));
+                  .add(subject.fullContents())
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
           return;
         }
       }
       subject.failWithoutActual(
-          facts(
-                  fact("expected to contain", expected),
-                  correspondence.describeForIterable(),
-                  subject.butWas())
-              .and(exceptions.describeAsAdditionalInfo()));
+          ImmutableList.<Fact>builder()
+              .add(fact("expected to contain", expected))
+              .add(correspondence.describeForIterable())
+              .add(subject.butWas())
+              .addAll(exceptions.describeAsAdditionalInfo())
+              .build());
     }
 
     /** Checks that none of the actual elements correspond to the given element. */
@@ -1079,7 +1081,8 @@ public class IterableSubject extends Subject {
       // Fail if we found any matches.
       if (!matchingElements.isEmpty()) {
         subject.failWithoutActual(
-            facts(
+            ImmutableList.<Fact>builder()
+                .add(
                     simpleFact(
                         lenientFormat(
                             "<%s> should not have contained an element that %s <%s>. "
@@ -1088,20 +1091,22 @@ public class IterableSubject extends Subject {
                             correspondence,
                             excluded,
                             matchingElements)))
-                .and(exceptions.describeAsAdditionalInfo()));
+                .addAll(exceptions.describeAsAdditionalInfo())
+                .build());
         return;
       }
       // Found no match, but we still need to fail if we hit an exception along the way.
       if (exceptions.hasCompareException()) {
         subject.failWithActual(
-            exceptions
-                .describeAsMainCause()
-                .and(
+            ImmutableList.<Fact>builder()
+                .addAll(exceptions.describeAsMainCause())
+                .add(
                     simpleFact(
                         "comparing contents by testing that no element "
                             + correspondence
-                            + " the forbidden value"),
-                    fact("expected not to contain", excluded)));
+                            + " the forbidden value"))
+                .add(fact("expected not to contain", excluded))
+                .build());
       }
     }
 
@@ -1177,14 +1182,15 @@ public class IterableSubject extends Subject {
       // unexpected null) but we are contractually obliged to throw here if the assertions passed.
       if (exceptions.hasCompareException()) {
         subject.failWithActual(
-            exceptions
-                .describeAsMainCause()
-                .and(
+            ImmutableList.<Fact>builder()
+                .addAll(exceptions.describeAsMainCause())
+                .add(
                     simpleFact(
                         "comparing contents by testing that each element "
                             + correspondence
-                            + " an expected value"),
-                    fact("expected", expected)));
+                            + " an expected value"))
+                .add(fact("expected", expected))
+                .build());
         return ALREADY_FAILED;
       }
       // The 1:1 mapping is complete, so the test succeeds (but we know from above that the mapping
@@ -1282,7 +1288,8 @@ public class IterableSubject extends Subject {
       List<? extends E> missing = findNotIndexed(expected, mapping.inverse().keySet());
       if (!missing.isEmpty() || !extra.isEmpty()) {
         subject.failWithoutActual(
-            facts(
+            ImmutableList.<Fact>builder()
+                .add(
                     simpleFact(
                         lenientFormat(
                             "Not true that <%s> contains exactly one element that %s each element "
@@ -1291,7 +1298,8 @@ public class IterableSubject extends Subject {
                             correspondence,
                             expected,
                             describeMissingOrExtra(missing, extra, exceptions))))
-                .and(exceptions.describeAsAdditionalInfo()));
+                .addAll(exceptions.describeAsAdditionalInfo())
+                .build());
         return true;
       }
       return false;
@@ -1357,12 +1365,12 @@ public class IterableSubject extends Subject {
                 + " without matching keys");
       }
       if (messages.size() > 1) {
-        messages.set(messages.size() - 1, "and " + messages.get(messages.size() - 1));
+        messages.set(messages.size() - 1, "and " + Iterables.getLast(messages));
       }
       return Joiner.on(", ").join(messages);
     }
 
-    private Facts formatExtras(
+    private ImmutableList<Fact> formatExtras(
         String label,
         E missing,
         List<? extends A> extras,
@@ -1378,7 +1386,7 @@ public class IterableSubject extends Subject {
         }
       }
       if (hasDiffs) {
-        List<Fact> extraFacts = new ArrayList<>();
+        ImmutableList.Builder<Fact> extraFacts = ImmutableList.builder();
         extraFacts.add(simpleFact(lenientFormat("%s (%s)", label, extras.size())));
         for (int i = 0; i < extras.size(); i++) {
           A extra = extras.get(i);
@@ -1388,9 +1396,9 @@ public class IterableSubject extends Subject {
           }
         }
         extraFacts.add(simpleFact("---"));
-        return facts(extraFacts);
+        return extraFacts.build();
       } else {
-        return facts(fact(lenientFormat("%s (%s)", label, extras.size()), extras));
+        return ImmutableList.of(fact(lenientFormat("%s (%s)", label, extras.size()), extras));
       }
     }
 
@@ -1484,7 +1492,8 @@ public class IterableSubject extends Subject {
       List<? extends E> missing = findNotIndexed(expected, mapping.values());
       if (!missing.isEmpty() || !extra.isEmpty()) {
         subject.failWithoutActual(
-            facts(
+            ImmutableList.<Fact>builder()
+                .add(
                     simpleFact(
                         lenientFormat(
                             "Not true that <%s> contains exactly one element that %s each element "
@@ -1498,7 +1507,8 @@ public class IterableSubject extends Subject {
                             correspondence,
                             expected,
                             describeMissingOrExtra(missing, extra, exceptions))))
-                .and(exceptions.describeAsAdditionalInfo()));
+                .addAll(exceptions.describeAsAdditionalInfo())
+                .build());
         return true;
       }
       return false;
@@ -1562,14 +1572,15 @@ public class IterableSubject extends Subject {
       // passed.
       if (exceptions.hasCompareException()) {
         subject.failWithActual(
-            exceptions
-                .describeAsMainCause()
-                .and(
+            ImmutableList.<Fact>builder()
+                .addAll(exceptions.describeAsMainCause())
+                .add(
                     simpleFact(
                         "comparing contents by testing that each element "
                             + correspondence
-                            + " an expected value"),
-                    fact("expected", expected)));
+                            + " an expected value"))
+                .add(fact("expected", expected))
+                .build());
         return ALREADY_FAILED;
       }
       // The 1:1 mapping maps all the expected elements, so the test succeeds (but we know from
@@ -1659,7 +1670,8 @@ public class IterableSubject extends Subject {
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
         subject.failWithoutActual(
-            facts(
+            ImmutableList.<Fact>builder()
+                .add(
                     simpleFact(
                         lenientFormat(
                             "Not true that <%s> contains at least one element that %s each element "
@@ -1668,7 +1680,8 @@ public class IterableSubject extends Subject {
                             correspondence,
                             expected,
                             describeMissing(missing, extra, exceptions))))
-                .and(exceptions.describeAsAdditionalInfo()));
+                .addAll(exceptions.describeAsAdditionalInfo())
+                .build());
         return true;
       }
       return false;
@@ -1723,7 +1736,7 @@ public class IterableSubject extends Subject {
                 + " (without matching keys)");
       }
       if (messages.size() > 1) {
-        messages.set(messages.size() - 1, "and " + messages.get(messages.size() - 1));
+        messages.set(messages.size() - 1, "and " + Iterables.getLast(messages));
       }
       return Joiner.on(", ").join(messages);
     }
@@ -1743,7 +1756,8 @@ public class IterableSubject extends Subject {
       if (!missing.isEmpty()) {
         List<? extends A> extra = findNotIndexed(actual, mapping.keySet());
         subject.failWithoutActual(
-            facts(
+            ImmutableList.<Fact>builder()
+                .add(
                     simpleFact(
                         lenientFormat(
                             "Not true that <%s> contains at least one element that %s each element "
@@ -1756,7 +1770,8 @@ public class IterableSubject extends Subject {
                             correspondence,
                             expected,
                             describeMissing(missing, extra, exceptions))))
-                .and(exceptions.describeAsAdditionalInfo()));
+                .addAll(exceptions.describeAsAdditionalInfo())
+                .build());
         return true;
       }
       return false;
@@ -1801,14 +1816,15 @@ public class IterableSubject extends Subject {
             // Found a match, but we still need to fail if we hit an exception along the way.
             if (exceptions.hasCompareException()) {
               subject.failWithActual(
-                  exceptions
-                      .describeAsMainCause()
-                      .and(
+                  ImmutableList.<Fact>builder()
+                      .addAll(exceptions.describeAsMainCause())
+                      .add(
                           simpleFact(
                               "comparing contents by testing that at least one element "
                                   + correspondence
-                                  + " any expected value"),
-                          fact("expected to contain any of", expected)));
+                                  + " any expected value"))
+                      .add(fact("expected to contain any of", expected))
+                      .build());
             }
             return;
           }
@@ -1822,7 +1838,8 @@ public class IterableSubject extends Subject {
         if (pairing != null) {
           if (!pairing.pairedKeysToExpectedValues.isEmpty()) {
             subject.failWithoutActual(
-                facts(
+                ImmutableList.<Fact>builder()
+                    .add(
                         simpleFact(
                             lenientFormat(
                                 "Not true that <%s> %s <%s>. It contains the following values that "
@@ -1831,10 +1848,12 @@ public class IterableSubject extends Subject {
                                 failVerb,
                                 expected,
                                 describeAnyMatchesByKey(pairing, exceptions))))
-                    .and(exceptions.describeAsAdditionalInfo()));
+                    .addAll(exceptions.describeAsAdditionalInfo())
+                    .build());
           } else {
             subject.failWithoutActual(
-                facts(
+                ImmutableList.<Fact>builder()
+                    .add(
                         simpleFact(
                             lenientFormat(
                                 "Not true that <%s> %s <%s>. It does not contain any matches by"
@@ -1842,11 +1861,13 @@ public class IterableSubject extends Subject {
                                 subject.actualCustomStringRepresentationForPackageMembersToCall(),
                                 failVerb,
                                 expected)))
-                    .and(exceptions.describeAsAdditionalInfo()));
+                    .addAll(exceptions.describeAsAdditionalInfo())
+                    .build());
           }
         } else {
           subject.failWithoutActual(
-              facts(
+              ImmutableList.<Fact>builder()
+                  .add(
                       simpleFact(
                           lenientFormat(
                               "Not true that <%s> %s <%s>. (N.B. A key function which does not "
@@ -1855,18 +1876,21 @@ public class IterableSubject extends Subject {
                               subject.actualCustomStringRepresentationForPackageMembersToCall(),
                               failVerb,
                               expected)))
-                  .and(exceptions.describeAsAdditionalInfo()));
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
         }
       } else {
         subject.failWithoutActual(
-            facts(
+            ImmutableList.<Fact>builder()
+                .add(
                     simpleFact(
                         lenientFormat(
                             "Not true that <%s> %s <%s>",
                             subject.actualCustomStringRepresentationForPackageMembersToCall(),
                             failVerb,
                             expected)))
-                .and(exceptions.describeAsAdditionalInfo()));
+                .addAll(exceptions.describeAsAdditionalInfo())
+                .build());
       }
     }
 
@@ -1947,7 +1971,8 @@ public class IterableSubject extends Subject {
           }
         }
         subject.failWithoutActual(
-            facts(
+            ImmutableList.<Fact>builder()
+                .add(
                     simpleFact(
                         lenientFormat(
                             "Not true that <%s> contains no element that %s %s <%s>. "
@@ -1957,20 +1982,22 @@ public class IterableSubject extends Subject {
                             excludedPrefix,
                             excluded,
                             presentDescription)))
-                .and(exceptions.describeAsAdditionalInfo()));
+                .addAll(exceptions.describeAsAdditionalInfo())
+                .build());
         return;
       }
       // Found no match, but we still need to fail if we hit an exception along the way.
       if (exceptions.hasCompareException()) {
         subject.failWithActual(
-            exceptions
-                .describeAsMainCause()
-                .and(
+            ImmutableList.<Fact>builder()
+                .addAll(exceptions.describeAsMainCause())
+                .add(
                     simpleFact(
                         "comparing contents by testing that no element "
                             + correspondence
-                            + " any forbidden value"),
-                    fact("expected not to contain any of", excluded)));
+                            + " any forbidden value"))
+                .add(fact("expected not to contain any of", excluded))
+                .build());
       }
     }
 
@@ -2101,7 +2128,7 @@ public class IterableSubject extends Subject {
        * Map from keys used in the pairing to the expected value with that key. Iterates in the
        * order the expected values appear in the input. Will never contain null keys.
        */
-      private final Map<Object, E> pairedKeysToExpectedValues = new LinkedHashMap<Object, E>();
+      private final Map<Object, E> pairedKeysToExpectedValues = new LinkedHashMap<>();
 
       /**
        * Multimap from keys used in the pairing to the actual values with that key. Keys iterate in

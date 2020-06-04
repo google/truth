@@ -21,7 +21,6 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.truth.DoubleSubject.checkTolerance;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
-import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.Platform.getStackTraceAsString;
 import static java.util.Arrays.asList;
 
@@ -622,13 +621,13 @@ public abstract class Correspondence<A, E> {
      * was discovered by assuming a false return and continuing (see the javadoc for {@link
      * Correspondence#compare}). C.f. {@link #describeAsAdditionalInfo}.
      */
-    Facts describeAsMainCause() {
+    ImmutableList<Fact> describeAsMainCause() {
       checkState(firstCompareException != null);
       // We won't do pairing or diff formatting unless a more meaningful failure was found, and if a
       // more meaningful failure was found then we shouldn't be using this method:
       checkState(firstPairingException == null);
       checkState(firstFormatDiffException == null);
-      return facts(
+      return ImmutableList.of(
           simpleFact("one or more exceptions were thrown while comparing " + argumentLabel),
           fact("first exception", firstCompareException.describe()));
     }
@@ -641,7 +640,7 @@ public abstract class Correspondence<A, E> {
      * Correspondence#compare}), or when exceptions were thrown by other methods while generating
      * the failure message. C.f. {@link #describeAsMainCause}.
      */
-    Facts describeAsAdditionalInfo() {
+    ImmutableList<Fact> describeAsAdditionalInfo() {
       ImmutableList.Builder<Fact> builder = ImmutableList.builder();
       if (firstCompareException != null) {
         builder.add(
@@ -663,7 +662,7 @@ public abstract class Correspondence<A, E> {
             simpleFact("additionally, one or more exceptions were thrown while formatting diffs"));
         builder.add(fact("first exception", firstFormatDiffException.describe()));
       }
-      return facts(builder.build());
+      return builder.build();
     }
 
     private static void truncateStackTrace(Exception exception, Class<?> callingClass) {
