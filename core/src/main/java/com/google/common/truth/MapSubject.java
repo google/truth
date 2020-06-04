@@ -21,7 +21,6 @@ import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
-import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
@@ -29,6 +28,7 @@ import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Lists;
@@ -40,7 +40,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -110,7 +109,7 @@ public class MapSubject extends Subject {
 
   /** Fails if the map does not contain the given entry. */
   public final void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
-    Entry<Object, Object> entry = Maps.immutableEntry(key, value);
+    Map.Entry<Object, Object> entry = Maps.immutableEntry(key, value);
     if (!actual.entrySet().contains(entry)) {
       List<Object> keyList = Lists.newArrayList(key);
       List<Object> valueList = Lists.newArrayList(value);
@@ -151,7 +150,7 @@ public class MapSubject extends Subject {
         check.that(actualValue).failEqualityCheckForEqualsWithoutDescription(value);
       } else if (actual.containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<>();
-        for (Entry<?, ?> actualEntry : actual.entrySet()) {
+        for (Map.Entry<?, ?> actualEntry : actual.entrySet()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
           }
@@ -287,6 +286,7 @@ public class MapSubject extends Subject {
     boolean test(@NullableDecl A actualValue, @NullableDecl E expectedValue);
   }
 
+  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
   private static final ValueTester<Object, Object> EQUALITY =
       new ValueTester<Object, Object>() {
         @Override
@@ -312,7 +312,7 @@ public class MapSubject extends Subject {
       Map<K, A> unexpected = new LinkedHashMap<>(actual);
       Map<K, E> missing = new LinkedHashMap<>();
       Map<K, ValueDifference<A, E>> wrongValues = new LinkedHashMap<>();
-      for (Entry<? extends K, ? extends E> expectedEntry : expected.entrySet()) {
+      for (Map.Entry<? extends K, ? extends E> expectedEntry : expected.entrySet()) {
         K expectedKey = expectedEntry.getKey();
         E expectedValue = expectedEntry.getValue();
         if (actual.containsKey(expectedKey)) {
@@ -396,6 +396,7 @@ public class MapSubject extends Subject {
   }
 
   /** A formatting function for value differences when compared for equality. */
+  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
   private static final Function<ValueDifference<Object, Object>, String> VALUE_DIFFERENCE_FORMAT =
       new Function<ValueDifference<Object, Object>, String>() {
         @Override
@@ -477,6 +478,7 @@ public class MapSubject extends Subject {
   }
 
   /** Ordered implementation that does nothing because it's already known to be true. */
+  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
   private static final Ordered IN_ORDER =
       new Ordered() {
         @Override
@@ -484,6 +486,7 @@ public class MapSubject extends Subject {
       };
 
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */
+  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
   private static final Ordered ALREADY_FAILED =
       new Ordered() {
         @Override
@@ -551,7 +554,8 @@ public class MapSubject extends Subject {
         String diff = correspondence.safeFormatDiff(actualValue, expectedValue, exceptions);
         if (diff != null) {
           failWithoutActual(
-              facts(
+              ImmutableList.<Fact>builder()
+                  .add(
                       simpleFact(
                           lenientFormat(
                               "Not true that <%s> contains an entry with key <%s> and a value that "
@@ -563,10 +567,12 @@ public class MapSubject extends Subject {
                               expectedValue,
                               actualValue,
                               diff)))
-                  .and(exceptions.describeAsAdditionalInfo()));
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
         } else {
           failWithoutActual(
-              facts(
+              ImmutableList.<Fact>builder()
+                  .add(
                       simpleFact(
                           lenientFormat(
                               "Not true that <%s> contains an entry with key <%s> and a value that "
@@ -576,13 +582,14 @@ public class MapSubject extends Subject {
                               correspondence,
                               expectedValue,
                               actualValue)))
-                  .and(exceptions.describeAsAdditionalInfo()));
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
         }
       } else {
         // Did not find matching key. Look for the matching value with a different key.
         Set<Object> keys = new LinkedHashSet<>();
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
-        for (Entry<?, A> actualEntry : getCastSubject().entrySet()) {
+        for (Map.Entry<?, A> actualEntry : getCastSubject().entrySet()) {
           if (correspondence.safeCompare(actualEntry.getValue(), expectedValue, exceptions)) {
             keys.add(actualEntry.getKey());
           }
@@ -590,7 +597,8 @@ public class MapSubject extends Subject {
         if (!keys.isEmpty()) {
           // Found matching values with non-matching keys.
           failWithoutActual(
-              facts(
+              ImmutableList.<Fact>builder()
+                  .add(
                       simpleFact(
                           lenientFormat(
                               "Not true that <%s> contains an entry with key <%s> and a value that "
@@ -601,11 +609,13 @@ public class MapSubject extends Subject {
                               correspondence,
                               expectedValue,
                               keys)))
-                  .and(exceptions.describeAsAdditionalInfo()));
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
         } else {
           // Did not find matching key or value.
           failWithoutActual(
-              facts(
+              ImmutableList.<Fact>builder()
+                  .add(
                       simpleFact(
                           lenientFormat(
                               "Not true that <%s> contains an entry with key <%s> and a value that "
@@ -614,7 +624,8 @@ public class MapSubject extends Subject {
                               expectedKey,
                               correspondence,
                               expectedValue)))
-                  .and(exceptions.describeAsAdditionalInfo()));
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
         }
       }
     }
@@ -646,16 +657,17 @@ public class MapSubject extends Subject {
         // The value didn't match, but we still need to fail if we hit an exception along the way.
         if (exceptions.hasCompareException()) {
           failWithActual(
-              exceptions
-                  .describeAsMainCause()
-                  .and(
+              ImmutableList.<Fact>builder()
+                  .addAll(exceptions.describeAsMainCause())
+                  .add(
                       simpleFact(
                           "comparing contents by testing that no entry had the forbidden key and "
                               + "a value that "
                               + correspondence
-                              + " the forbidden value"),
-                      fact("forbidden key", excludedKey),
-                      fact("forbidden value", excludedValue)));
+                              + " the forbidden value"))
+                  .add(fact("forbidden key", excludedKey))
+                  .add(fact("forbidden value", excludedValue))
+                  .build());
         }
       }
     }
@@ -753,7 +765,8 @@ public class MapSubject extends Subject {
                 modifier, correspondence));
       }
       failWithoutActual(
-          facts(
+          ImmutableList.<Fact>builder()
+              .add(
                   simpleFact(
                       lenientFormat(
                           "Not true that <%s> contains %s one entry that has a key that is "
@@ -764,7 +777,8 @@ public class MapSubject extends Subject {
                           correspondence,
                           expectedMap,
                           diff.describe(this.<V>valueDiffFormat(exceptions)))))
-              .and(exceptions.describeAsAdditionalInfo()));
+              .addAll(exceptions.describeAsAdditionalInfo())
+              .build());
       return ALREADY_FAILED;
     }
 

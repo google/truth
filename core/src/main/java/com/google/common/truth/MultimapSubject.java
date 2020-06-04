@@ -21,7 +21,6 @@ import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
-import static com.google.common.truth.Facts.facts;
 import static com.google.common.truth.SubjectUtils.HUMAN_UNDERSTANDABLE_EMPTY_STRING;
 import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo;
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
@@ -42,11 +41,10 @@ import com.google.common.collect.Sets;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -59,6 +57,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public class MultimapSubject extends Subject {
 
   /** Ordered implementation that does nothing because an earlier check already caused a failure. */
+  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
   private static final Ordered ALREADY_FAILED =
       new Ordered() {
         @Override
@@ -117,8 +116,8 @@ public class MultimapSubject extends Subject {
   public final void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
     // TODO(kak): Can we share any of this logic w/ MapSubject.containsEntry()?
     if (!actual.containsEntry(key, value)) {
-      Entry<Object, Object> entry = Maps.immutableEntry(key, value);
-      List<Entry<Object, Object>> entryList = ImmutableList.of(entry);
+      Map.Entry<Object, Object> entry = Maps.immutableEntry(key, value);
+      List<Map.Entry<Object, Object>> entryList = ImmutableList.of(entry);
       if (hasMatchingToStringPair(actual.entries(), entryList)) {
         failWithoutActual(
             simpleFact(
@@ -142,7 +141,7 @@ public class MultimapSubject extends Subject {
                     actual.asMap().get(key))));
       } else if (actual.containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<>();
-        for (Entry<?, ?> actualEntry : actual.entries()) {
+        for (Map.Entry<?, ?> actualEntry : actual.entries()) {
           if (Objects.equal(actualEntry.getValue(), value)) {
             keys.add(actualEntry.getKey());
           }
@@ -470,7 +469,7 @@ public class MultimapSubject extends Subject {
     if (multimap.containsKey(key)) {
       return multimap.asMap().get(key);
     } else {
-      return Collections.emptyList();
+      return ImmutableList.of();
     }
   }
 
@@ -518,7 +517,7 @@ public class MultimapSubject extends Subject {
   private static Multimap<?, ?> annotateEmptyStringsMultimap(Multimap<?, ?> multimap) {
     if (multimap.containsKey("") || multimap.containsValue("")) {
       ListMultimap<Object, Object> annotatedMultimap = LinkedListMultimap.create();
-      for (Entry<?, ?> entry : multimap.entries()) {
+      for (Map.Entry<?, ?> entry : multimap.entries()) {
         Object key = "".equals(entry.getKey()) ? HUMAN_UNDERSTANDABLE_EMPTY_STRING : entry.getKey();
         Object value =
             "".equals(entry.getValue()) ? HUMAN_UNDERSTANDABLE_EMPTY_STRING : entry.getValue();
@@ -586,23 +585,25 @@ public class MultimapSubject extends Subject {
             // the way.
             if (exceptions.hasCompareException()) {
               failWithActual(
-                  exceptions
-                      .describeAsMainCause()
-                      .and(
+                  ImmutableList.<Fact>builder()
+                      .addAll(exceptions.describeAsMainCause())
+                      .add(
                           simpleFact(
                               "comparing contents by testing that at least one entry had a key "
                                   + "equal to the expected key and a value that "
                                   + correspondence
-                                  + " the expected value"),
-                          fact("expected key", expectedKey),
-                          fact("expected value", expectedValue)));
+                                  + " the expected value"))
+                      .add(fact("expected key", expectedKey))
+                      .add(fact("expected value", expectedValue))
+                      .build());
             }
             return;
           }
         }
         // Found matching key with non-matching values.
         failWithoutActual(
-            facts(
+            ImmutableList.<Fact>builder()
+                .add(
                     simpleFact(
                         lenientFormat(
                             "Not true that <%s> contains at least one entry with key <%s> and a "
@@ -613,12 +614,13 @@ public class MultimapSubject extends Subject {
                             correspondence,
                             expectedValue,
                             actualValues)))
-                .and(exceptions.describeAsAdditionalInfo()));
+                .addAll(exceptions.describeAsAdditionalInfo())
+                .build());
       } else {
         // Did not find matching key.
         Set<Object> keys = new LinkedHashSet<>();
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
-        for (Entry<?, A> actualEntry : getCastActual().entries()) {
+        for (Map.Entry<?, A> actualEntry : getCastActual().entries()) {
           if (correspondence.safeCompare(actualEntry.getValue(), expectedValue, exceptions)) {
             keys.add(actualEntry.getKey());
           }
@@ -626,7 +628,8 @@ public class MultimapSubject extends Subject {
         if (!keys.isEmpty()) {
           // Found matching values with non-matching keys.
           failWithoutActual(
-              facts(
+              ImmutableList.<Fact>builder()
+                  .add(
                       simpleFact(
                           lenientFormat(
                               "Not true that <%s> contains at least one entry with key <%s> and a "
@@ -637,11 +640,13 @@ public class MultimapSubject extends Subject {
                               correspondence,
                               expectedValue,
                               keys)))
-                  .and(exceptions.describeAsAdditionalInfo()));
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
         } else {
           // Did not find matching key or value.
           failWithoutActual(
-              facts(
+              ImmutableList.<Fact>builder()
+                  .add(
                       simpleFact(
                           lenientFormat(
                               "Not true that <%s> contains at least one entry with key <%s> and a "
@@ -650,7 +655,8 @@ public class MultimapSubject extends Subject {
                               expectedKey,
                               correspondence,
                               expectedValue)))
-                  .and(exceptions.describeAsAdditionalInfo()));
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
         }
       }
     }
@@ -673,7 +679,8 @@ public class MultimapSubject extends Subject {
         // Fail if we found a matching value for the key.
         if (!matchingValues.isEmpty()) {
           failWithoutActual(
-              facts(
+              ImmutableList.<Fact>builder()
+                  .add(
                       simpleFact(
                           lenientFormat(
                               "Not true that <%s> did not contain an entry with key <%s> and a"
@@ -684,21 +691,23 @@ public class MultimapSubject extends Subject {
                               correspondence,
                               excludedValue,
                               matchingValues)))
-                  .and(exceptions.describeAsAdditionalInfo()));
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
         } else {
           // No value matched, but we still need to fail if we hit an exception along the way.
           if (exceptions.hasCompareException()) {
             failWithActual(
-                exceptions
-                    .describeAsMainCause()
-                    .and(
+                ImmutableList.<Fact>builder()
+                    .addAll(exceptions.describeAsMainCause())
+                    .add(
                         simpleFact(
                             "comparing contents by testing that no entry had the forbidden key and "
                                 + "a value that "
                                 + correspondence
-                                + " the forbidden value"),
-                        fact("forbidden key", excludedKey),
-                        fact("forbidden value", excludedValue)));
+                                + " the forbidden value"))
+                    .add(fact("forbidden key", excludedKey))
+                    .add(fact("forbidden value", excludedValue))
+                    .build());
           }
         }
       }
@@ -811,7 +820,7 @@ public class MultimapSubject extends Subject {
   }
 
   private static final class EntryCorrespondence<K, A, E>
-      extends Correspondence<Entry<K, A>, Entry<K, E>> {
+      extends Correspondence<Map.Entry<K, A>, Map.Entry<K, E>> {
 
     private final Correspondence<? super A, ? super E> valueCorrespondence;
 
@@ -820,7 +829,7 @@ public class MultimapSubject extends Subject {
     }
 
     @Override
-    public boolean compare(Entry<K, A> actual, Entry<K, E> expected) {
+    public boolean compare(Map.Entry<K, A> actual, Map.Entry<K, E> expected) {
       return actual.getKey().equals(expected.getKey())
           && valueCorrespondence.compare(actual.getValue(), expected.getValue());
     }

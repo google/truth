@@ -743,10 +743,6 @@ public class Subject {
     doFail(append(ImmutableList.copyOf(facts), butWas()));
   }
 
-  final void failWithActual(Facts facts) {
-    failWithActual(facts.asIterable());
-  }
-
   /**
    * Reports a failure constructing a message from a simple verb.
    *
@@ -977,11 +973,11 @@ public class Subject {
     r[0] = '\\';
     r[1] = 'u';
     r[5] = HEX_DIGITS[c & 0xF];
-    c >>>= 4;
+    c = (char) (c >>> 4);
     r[4] = HEX_DIGITS[c & 0xF];
-    c >>>= 4;
+    c = (char) (c >>> 4);
     r[3] = HEX_DIGITS[c & 0xF];
-    c >>>= 4;
+    c = (char) (c >>> 4);
     r[2] = HEX_DIGITS[c & 0xF];
     return r;
   }
@@ -1074,10 +1070,6 @@ public class Subject {
   // TODO(cpovirk): Consider making this protected if there's a need for it.
   final void failWithoutActual(Iterable<Fact> facts) {
     doFail(ImmutableList.copyOf(facts));
-  }
-
-  final void failWithoutActual(Facts facts) {
-    failWithoutActual(facts.asIterable());
   }
 
   /**
