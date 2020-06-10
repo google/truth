@@ -119,7 +119,7 @@ failing tests easier.
 
 ### Enabling pairing of `Iterable` elements {#displayingDiffsPairedBy}
 
-If you are making an assertion about an `Iterable`, and you know of key some
+If you are making an assertion about an `Iterable`, and you know of some key
 function which uniquely indexes the expected elements, then you can use the
 [`displayingDiffsPairedBy`][iterable-displaying-diffs] method to tell Fuzzy
 Truth about it. For example, if you have a type called `Record`, and you're
