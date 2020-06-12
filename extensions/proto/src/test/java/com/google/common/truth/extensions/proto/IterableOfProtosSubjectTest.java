@@ -17,9 +17,9 @@
 package com.google.common.truth.extensions.proto;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Message;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,13 +59,13 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
 
   @Test
   public void testPlain_isEmpty() {
-    expectThat(Collections.<Message>emptyList()).isEmpty();
+    expectThat(ImmutableList.<Message>of()).isEmpty();
     expectThat(listOf(message1)).isNotEmpty();
 
     expectFailureWhenTesting().that(listOf(message1)).isEmpty();
     expectThatFailure().isNotNull();
 
-    expectFailureWhenTesting().that(Collections.<Message>emptyList()).isNotEmpty();
+    expectFailureWhenTesting().that(ImmutableList.<Message>of()).isNotEmpty();
     expectThatFailure().isNotNull();
   }
 
@@ -253,7 +253,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .doesNotContain(eqRepeatedMessage1);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
@@ -273,7 +273,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringFields(ignoreFieldNumber)
         .containsAnyOf(eqRepeatedMessage1, eqRepeatedMessage2);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto)"
@@ -287,7 +287,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .containsAnyIn(listOf(eqIgnoredMessage1, eqIgnoredMessage2));
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
@@ -307,7 +307,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .containsAtLeast(eqMessage1, eqMessage2);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
@@ -317,7 +317,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .containsAtLeastElementsIn(listOf(eqMessage1, eqMessage2));
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
@@ -381,7 +381,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringFields(ignoreFieldNumber)
         .containsNoneOf(eqRepeatedMessage1, eqIgnoredMessage2);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto)"
@@ -395,7 +395,7 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .containsNoneIn(listOf(eqIgnoredMessage1, eqRepeatedMessage2));
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto).ignoringRepeatedFieldOrder().isEqualTo(target)");
@@ -469,9 +469,9 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .ignoringRepeatedFieldOrder()
         .containsExactly(message2);
     expectThatFailure()
-        .hasMessageThat()
-        .contains(
-            "(diff: Differences were found:\n"
+        .factValue("diff")
+        .isEqualTo(
+            "Differences were found:\n"
                 + "modified: o_int: 3 -> 1\n"
                 + "added: r_string[0]: \"foo\"\n"
                 + "added: r_string[1]: \"bar\"\n"
@@ -498,8 +498,8 @@ public class IterableOfProtosSubjectTest extends ProtoSubjectTestBase {
         .that(listOf(actualInt3, actualInt4))
         .displayingDiffsPairedBy(getInt)
         .containsExactly(expectedInt3, expectedInt4);
-    expectThatFailure().hasMessageThat().contains("modified: r_string[0]: \"baz\" -> \"foo\"");
-    expectThatFailure().hasMessageThat().contains("modified: r_string[0]: \"qux\" -> \"bar\"");
+    expectThatFailure().factValue("diff", 0).contains("modified: r_string[0]: \"baz\" -> \"foo\"");
+    expectThatFailure().factValue("diff", 1).contains("modified: r_string[0]: \"qux\" -> \"bar\"");
   }
 
   @Test

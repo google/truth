@@ -170,6 +170,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
         .usingTolerance(DEFAULT_TOLERANCE)
         .contains(2.2);
     assertFailureKeys("value of", "expected to contain", "testing whether", "but was");
+    assertFailureValue("value of", "array.asList()");
     assertFailureValue("expected to contain", "2.2");
     assertFailureValue(
         "testing whether",
@@ -265,16 +266,6 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingTolerance_containsAtLeast_primitiveDoubleArray() {
-    assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAtLeast(array(2.2, 1.1));
-    expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAtLeast(array(2.2, 99.99));
-  }
-
-  @Test
   public void usingTolerance_containsAtLeast_primitiveDoubleArray_success() {
     assertThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
@@ -286,18 +277,14 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAtLeast(array(2.2, 99.99));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, "
-                + TOLERABLE_2POINT2
-                + ", 3.3]> contains at least one element that is a finite number "
-                + "within "
-                + DEFAULT_TOLERANCE
-                + " of each element of <[2.2, 99.99]>. It is missing an element that is a finite "
-                + "number within "
-                + DEFAULT_TOLERANCE
-                + " of <99.99>");
+    assertFailureKeys(
+        "value of",
+        "missing (1)",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "99.99");
   }
 
   @Test
@@ -317,10 +304,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "value of",
         "required elements were all found, but order was wrong",
-        "comparing contents by testing that each element is a finite number within "
-            + DEFAULT_TOLERANCE
-            + " of an expected value",
         "expected order for required elements",
+        "testing whether",
         "but was");
     assertFailureValue("expected order for required elements", "[2.2, 1.1]");
   }
@@ -337,14 +322,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAnyOf(array(99.99, 999.999));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, "
-                + TOLERABLE_2POINT2
-                + ", 3.3]> contains at least one element that is a finite number within "
-                + DEFAULT_TOLERANCE
-                + " of any element in <[99.99, 999.999]>");
+    assertFailureKeys("value of", "expected to contain any of", "testing whether", "but was");
+    assertFailureValue("expected to contain any of", "[99.99, 999.999]");
   }
 
   @Test
@@ -359,14 +338,9 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsExactly(array(2.2, 1.1));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, "
-                + TOLERABLE_2POINT2
-                + ", 3.3]> contains exactly one element that is a finite number within "
-                + DEFAULT_TOLERANCE
-                + " of each element of <[2.2, 1.1]>. It has unexpected elements <[3.3]>");
+    assertFailureKeys(
+        "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("unexpected (1)", "3.3");
   }
 
   @Test
@@ -386,10 +360,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "value of",
         "contents match, but order was wrong",
-        "comparing contents by testing that each element is a finite number within "
-            + DEFAULT_TOLERANCE
-            + " of an expected value",
         "expected",
+        "testing whether",
         "but was");
     assertFailureValue("expected", "[2.2, 1.1, 3.3]");
   }
@@ -406,16 +378,17 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, TOLERABLE_2POINT2, 3.3))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsNoneOf(array(99.99, 2.2));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, "
-                + TOLERABLE_2POINT2
-                + ", 3.3]> contains no element that is a finite number within "
-                + DEFAULT_TOLERANCE
-                + " of any element in <[99.99, 2.2]>. It contains <["
-                + TOLERABLE_2POINT2
-                + " which corresponds to 2.2]>");
+    assertFailureKeys(
+        "value of",
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValue("expected not to contain any of", "[99.99, 2.2]");
+    assertFailureValue("but contained", "[" + TOLERABLE_2POINT2 + "]");
+    assertFailureValue("corresponding to", "2.2");
   }
 
   @Test
@@ -563,13 +536,14 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsAtLeast(array(2.2, 99.99));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
-                + "contains at least one element that is exactly equal "
-                + "to each element of <[2.2, 99.99]>. It is missing an element that is exactly "
-                + "equal to <99.99>");
+    assertFailureKeys(
+        "value of",
+        "missing (1)",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "99.99");
   }
 
   @Test
@@ -589,8 +563,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "value of",
         "required elements were all found, but order was wrong",
-        "comparing contents by testing that each element is exactly equal to an expected value",
         "expected order for required elements",
+        "testing whether",
         "but was");
     assertFailureValue("expected order for required elements", "[2.2, 1.1]");
   }
@@ -605,12 +579,7 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsAnyOf(array(99.99, 999.999));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
-                + "contains at least one element that is exactly equal "
-                + "to any element in <[99.99, 999.999]>");
+    assertFailureKeys("value of", "expected to contain any of", "testing whether", "but was");
   }
 
   @Test
@@ -623,12 +592,9 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsExactly(array(2.2, 1.1));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
-                + "contains exactly one element that is exactly equal "
-                + "to each element of <[2.2, 1.1]>. It has unexpected elements <[3.3]>");
+    assertFailureKeys(
+        "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("unexpected (1)", "3.3");
   }
 
   @Test
@@ -648,8 +614,8 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "value of",
         "contents match, but order was wrong",
-        "comparing contents by testing that each element is exactly equal to an expected value",
         "expected",
+        "testing whether",
         "but was");
     assertFailureValue("expected", "[2.2, 1.1, 3.3]");
   }
@@ -664,12 +630,17 @@ public class PrimitiveDoubleArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1, 2.2, 3.3))
         .usingExactEquality()
         .containsNoneOf(array(99.99, 2.2));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "value of: array.asList()\nNot true that <[1.1, 2.2, 3.3]> "
-                + "contains no element that is exactly equal to any "
-                + "element in <[99.99, 2.2]>. It contains <[2.2 which corresponds to 2.2]>");
+    assertFailureKeys(
+        "value of",
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValue("expected not to contain any of", "[99.99, 2.2]");
+    assertFailureValue("but contained", "[2.2]");
+    assertFailureValue("corresponding to", "2.2");
   }
 
   @Test

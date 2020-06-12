@@ -16,6 +16,7 @@
 package com.google.common.truth.extensions.proto;
 
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.fail;
 
 import com.google.common.collect.ImmutableList;
@@ -28,9 +29,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.UnknownFieldSet;
 import com.google.protobuf.UnknownFieldSet.Field;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -520,7 +519,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                     21,
                     Field.newBuilder()
                         .addVarint(1)
-                        .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
+                        .addLengthDelimited(ByteString.copyFrom("1", UTF_8))
                         .addGroup(
                             UnknownFieldSet.newBuilder()
                                 .addField(1, Field.newBuilder().addFixed32(1).build())
@@ -543,7 +542,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                         .addFixed32(1)
                         .addFixed64(1)
                         .addVarint(2)
-                        .addLengthDelimited(ByteString.copyFrom("2", StandardCharsets.UTF_8))
+                        .addLengthDelimited(ByteString.copyFrom("2", UTF_8))
                         .addGroup(
                             UnknownFieldSet.newBuilder()
                                 .addField(1, Field.newBuilder().addFixed32(2).build())
@@ -555,7 +554,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                         .addFixed32(2)
                         .addFixed64(2)
                         .addVarint(1)
-                        .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
+                        .addLengthDelimited(ByteString.copyFrom("1", UTF_8))
                         .addGroup(
                             UnknownFieldSet.newBuilder()
                                 .addField(1, Field.newBuilder().addFixed32(1).addFixed64(2).build())
@@ -574,7 +573,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                         .addFixed32(4)
                         .addFixed64(4)
                         .addVarint(3)
-                        .addLengthDelimited(ByteString.copyFrom("3", StandardCharsets.UTF_8))
+                        .addLengthDelimited(ByteString.copyFrom("3", UTF_8))
                         .addGroup(
                             UnknownFieldSet.newBuilder()
                                 .addField(1, Field.newBuilder().addFixed32(3).build())
@@ -586,7 +585,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                         .addFixed32(3)
                         .addFixed64(3)
                         .addVarint(4)
-                        .addLengthDelimited(ByteString.copyFrom("4", StandardCharsets.UTF_8))
+                        .addLengthDelimited(ByteString.copyFrom("4", UTF_8))
                         .addGroup(
                             UnknownFieldSet.newBuilder()
                                 .addField(1, Field.newBuilder().addFixed32(4).addFixed64(3).build())
@@ -605,7 +604,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                         .addFixed32(1)
                         .addFixed64(1)
                         .addVarint(3)
-                        .addLengthDelimited(ByteString.copyFrom("3", StandardCharsets.UTF_8))
+                        .addLengthDelimited(ByteString.copyFrom("3", UTF_8))
                         .addGroup(
                             UnknownFieldSet.newBuilder()
                                 .addField(1, Field.newBuilder().addFixed32(3).build())
@@ -617,7 +616,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
                         .addFixed32(3)
                         .addFixed64(3)
                         .addVarint(1)
-                        .addLengthDelimited(ByteString.copyFrom("1", StandardCharsets.UTF_8))
+                        .addLengthDelimited(ByteString.copyFrom("1", UTF_8))
                         .addGroup(
                             UnknownFieldSet.newBuilder()
                                 .addField(1, Field.newBuilder().addFixed32(1).addFixed64(3).build())
@@ -853,7 +852,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
         .withPartialScope(FieldScopes.fromSetFields(messages))
         .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto)"
@@ -868,7 +867,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
             FieldScopes.fromSetFields(parse("o_int: -1"), nullMessage, parse("r_string: \"NaN\"")))
         .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
     expectThatFailure()
-        .hasMessageThat()
+        .factValue("testing whether")
         .contains(
             "is equivalent according to "
                 + "assertThat(proto)"
@@ -890,7 +889,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
     messages.add(null);
 
     expectThat(listOf(message1, message2))
-        .withPartialScope(FieldScopes.fromSetFields(Collections.<Message>emptyList()))
+        .withPartialScope(FieldScopes.fromSetFields(ImmutableList.<Message>of()))
         .containsExactly(eqIgnoredMessage1, eqIgnoredMessage2);
     expectThat(listOf(message1, message2))
         .withPartialScope(FieldScopes.fromSetFields(messages))
@@ -898,7 +897,7 @@ public class FieldScopesTest extends ProtoSubjectTestBase {
 
     expectFailureWhenTesting()
         .that(listOf(message1, message2))
-        .withPartialScope(FieldScopes.fromSetFields(Collections.<Message>emptyList()))
+        .withPartialScope(FieldScopes.fromSetFields(ImmutableList.<Message>of()))
         .containsNoneOf(eqIgnoredMessage1, eqIgnoredMessage2);
 
     expectFailureWhenTesting()
