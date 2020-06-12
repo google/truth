@@ -262,16 +262,6 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
-  public void usingTolerance_containsAtLeast_primitiveFloatArray() {
-    assertThat(array(1.1f, TOLERABLE_2POINT2, 3.3f))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAtLeast(array(2.2f, 1.1f));
-    expectFailureWhenTestingThat(array(1.1f, TOLERABLE_2POINT2, 3.3f))
-        .usingTolerance(DEFAULT_TOLERANCE)
-        .containsAtLeast(array(2.2f, 99.99f));
-  }
-
-  @Test
   public void usingTolerance_containsAtLeast_primitiveFloatArray_success() {
     assertThat(array(1.1f, TOLERABLE_2POINT2, 3.3f))
         .usingTolerance(DEFAULT_TOLERANCE)
@@ -283,22 +273,14 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1f, TOLERABLE_2POINT2, 3.3f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAtLeast(array(2.2f, 99.99f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains at least one element that is a "
-                    + "finite number within %s of each element of <[%s, %s]>. "
-                    + "It is missing an element that is a finite number within %s of <%s>",
-                1.1f,
-                TOLERABLE_2POINT2,
-                3.3f,
-                (double) DEFAULT_TOLERANCE,
-                2.2f,
-                99.99f,
-                (double) DEFAULT_TOLERANCE,
-                99.99f));
+    assertFailureKeys(
+        "value of",
+        "missing (1)",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", Float.toString(99.99f));
   }
 
   @Test
@@ -318,10 +300,8 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "value of",
         "required elements were all found, but order was wrong",
-        "comparing contents by testing that each element is a finite number within "
-            + (double) DEFAULT_TOLERANCE
-            + " of an expected value",
         "expected order for required elements",
+        "testing whether",
         "but was");
     assertFailureValue(
         "expected order for required elements", lenientFormat("[%s, %s]", 2.2f, 1.1f));
@@ -339,14 +319,8 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1f, TOLERABLE_2POINT2, 3.3f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsAnyOf(array(99.99f, 999.999f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains at least one element that is "
-                    + "a finite number within %s of any element in <[%s, %s]>",
-                1.1f, TOLERABLE_2POINT2, 3.3f, (double) DEFAULT_TOLERANCE, 99.99f, 999.999f));
+    assertFailureKeys("value of", "expected to contain any of", "testing whether", "but was");
+    assertFailureValue("expected to contain any of", "[" + 99.99f + ", " + 999.999f + "]");
   }
 
   @Test
@@ -361,15 +335,9 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1f, TOLERABLE_2POINT2, 3.3f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsExactly(array(2.2f, 1.1f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains exactly one element that is a finite "
-                    + "number within %s of each element of <[%s, %s]>. "
-                    + "It has unexpected elements <[%s]>",
-                1.1f, TOLERABLE_2POINT2, 3.3f, (double) DEFAULT_TOLERANCE, 2.2f, 1.1f, 3.3f));
+    assertFailureKeys(
+        "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("unexpected (1)", Float.toString(3.3f));
   }
 
   @Test
@@ -389,10 +357,8 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "value of",
         "contents match, but order was wrong",
-        "comparing contents by testing that each element is a finite number within "
-            + (double) DEFAULT_TOLERANCE
-            + " of an expected value",
         "expected",
+        "testing whether",
         "but was");
     assertFailureValue("expected", lenientFormat("[%s, %s, %s]", 2.2f, 1.1f, 3.3f));
   }
@@ -409,21 +375,17 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1f, TOLERABLE_2POINT2, 3.3f))
         .usingTolerance(DEFAULT_TOLERANCE)
         .containsNoneOf(array(99.99f, 2.2f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains no element that is a finite number within %s"
-                    + " of any element in <[%s, %s]>. It contains <[%s which corresponds to %s]>",
-                1.1f,
-                TOLERABLE_2POINT2,
-                3.3f,
-                (double) DEFAULT_TOLERANCE,
-                99.99f,
-                2.2f,
-                TOLERABLE_2POINT2,
-                2.2f));
+    assertFailureKeys(
+        "value of",
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValue("expected not to contain any of", "[" + 99.99f + ", " + 2.2f + "]");
+    assertFailureValue("but contained", "[" + TOLERABLE_2POINT2 + "]");
+    assertFailureValue("corresponding to", Float.toString(2.2f));
   }
 
   @Test
@@ -642,15 +604,14 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1f, 2.2f, 3.3f))
         .usingExactEquality()
         .containsAtLeast(array(2.2f, 99.99f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains at least one element that is exactly equal "
-                    + "to each element of <[%s, %s]>. It is missing an element that is exactly "
-                    + "equal to <%s>",
-                1.1f, 2.2f, 3.3f, 2.2f, 99.99f, 99.99f));
+    assertFailureKeys(
+        "value of",
+        "missing (1)",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", Float.toString(99.99f));
   }
 
   @Test
@@ -670,8 +631,8 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "value of",
         "required elements were all found, but order was wrong",
-        "comparing contents by testing that each element is exactly equal to an expected value",
         "expected order for required elements",
+        "testing whether",
         "but was");
     assertFailureValue(
         "expected order for required elements", lenientFormat("[%s, %s]", 2.2f, 1.1f));
@@ -687,14 +648,7 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1f, 2.2f, 3.3f))
         .usingExactEquality()
         .containsAnyOf(array(99.99f, 999.999f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains at least one element that is exactly equal "
-                    + "to any element in <[%s, %s]>",
-                1.1f, 2.2f, 3.3f, 99.99f, 999.999f));
+    assertFailureKeys("value of", "expected to contain any of", "testing whether", "but was");
   }
 
   @Test
@@ -709,14 +663,9 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1f, 2.2f, 3.3f))
         .usingExactEquality()
         .containsExactly(array(2.2f, 1.1f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains exactly one element that is exactly equal "
-                    + "to each element of <[%s, %s]>. It has unexpected elements <[%s]>",
-                1.1f, 2.2f, 3.3f, 2.2f, 1.1f, 3.3f));
+    assertFailureKeys(
+        "value of", "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("unexpected (1)", Float.toString(3.3f));
   }
 
   @Test
@@ -736,8 +685,8 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "value of",
         "contents match, but order was wrong",
-        "comparing contents by testing that each element is exactly equal to an expected value",
         "expected",
+        "testing whether",
         "but was");
     assertFailureValue("expected", lenientFormat("[%s, %s, %s]", 2.2f, 1.1f, 3.3f));
   }
@@ -754,14 +703,17 @@ public class PrimitiveFloatArraySubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(array(1.1f, 2.2f, 3.3f))
         .usingExactEquality()
         .containsNoneOf(array(99.99f, 2.2f));
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "value of: array.asList()\nNot true that <[%s, %s, %s]> "
-                    + "contains no element that is exactly equal to any "
-                    + "element in <[%s, %s]>. It contains <[%s which corresponds to %s]>",
-                1.1f, 2.2f, 3.3f, 99.99f, 2.2f, 2.2f, 2.2f));
+    assertFailureKeys(
+        "value of",
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValue("expected not to contain any of", "[" + 99.99f + ", " + 2.2f + "]");
+    assertFailureValue("but contained", "[" + 2.2f + "]");
+    assertFailureValue("corresponding to", Float.toString(2.2f));
   }
 
   private static float[] array(float... primitives) {

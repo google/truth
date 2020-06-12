@@ -18,7 +18,6 @@ package com.google.common.truth;
 import static com.google.common.base.Functions.identity;
 import static com.google.common.collect.Collections2.permutations;
 import static com.google.common.truth.Correspondence.tolerance;
-import static com.google.common.truth.ExpectFailure.assertThat;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE;
 import static com.google.common.truth.TestCorrespondences.EQUALITY;
@@ -175,6 +174,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         "testing whether",
         "but did not",
         "though it did contain elements with correct key (2)",
+        "---",
         "full contents");
     assertFailureValue("though it did contain elements with correct key (2)", "[2/211, 2/189]");
   }
@@ -236,6 +236,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         "testing whether",
         "but did not",
         "though it did contain elements with correct key (1)",
+        "---",
         "full contents",
         "additionally, one or more exceptions were thrown while formatting diffs",
         "first exception");
@@ -287,11 +288,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .doesNotContain(456);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "<[not a number, +123, +456, +789]> should not have contained an element that "
-                + "parses to <456>. It contained the following such elements: <[+456]>");
+    assertFailureKeys(
+        "expected not to contain", "testing whether", "but contained", "full contents");
+    assertFailureValue("expected not to contain", "456");
+    assertFailureValue("but contained", "[+456]");
   }
 
   @Test
@@ -305,8 +305,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .doesNotContain("GHI");
     // We fail with the more helpful failure message about the unexpected value, not the NPE.
     assertFailureKeys(
-        "<[abc, null, ghi]> should not have contained an element that "
-            + "equals (ignoring case) <GHI>. It contained the following such elements: <[ghi]>",
+        "expected not to contain",
+        "testing whether",
+        "but contained",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -328,13 +330,15 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "one or more exceptions were thrown while comparing elements",
         "first exception",
-        "comparing contents by testing that no element equals (ignoring case) the forbidden value",
         "expected not to contain",
-        "but was");
+        "testing whether",
+        "found no match (but failing because of exception)",
+        "full contents");
     assertFailureValue("expected not to contain", "DEF");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, DEF) threw java.lang.NullPointerException");
+    assertFailureValue("expected not to contain", "DEF");
   }
 
   @Test
@@ -400,12 +404,11 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+64, +128, 0x40, 0x80]> contains exactly one element that "
-                + "parses to each element of <[64, 128, 256, 128]>. "
-                + "It is missing an element that parses to <256>");
+    assertFailureKeys("missing (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("missing (1)", "256");
+    assertFailureValue("expected", "[64, 128, 256, 128]");
+    assertFailureValue("testing whether", "actual element parses to expected element");
+    assertFailureValue("but was", "[+64, +128, 0x40, 0x80]");
   }
 
   @Test
@@ -440,12 +443,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+64, +64, 0x40, 0x40]> contains exactly one element that "
-                + "parses to each element of <[64, 128, 256, 128]>. "
-                + "It is missing an element that parses to each of <[128, 256, 128]>");
+    assertFailureKeys("missing (3)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("missing (3)", "128 [2 copies], 256");
   }
 
   @Test
@@ -458,12 +457,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+64, +128, +256]> contains exactly one element that "
-                + "parses to each element of <[64, 128, 256, 512]>. "
-                + "It is missing an element that parses to <512>");
+    assertFailureKeys("missing (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("missing (1)", "512");
   }
 
   @Test
@@ -476,12 +471,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+64, +128, +256, cheese]> contains exactly one element that "
-                + "parses to each element of <[64, 128, 256, 128]>. "
-                + "It has unexpected elements <[cheese]>");
+    assertFailureKeys("unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("unexpected (1)", "cheese");
   }
 
   @Test
@@ -494,12 +485,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+64, +128, +256, 0x80, cheese]> contains exactly one element that "
-                + "parses to each element of <[64, 128, 256, 128]>. "
-                + "It has unexpected elements <[cheese]>");
+    assertFailureKeys("unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("unexpected (1)", "cheese");
   }
 
   @Test
@@ -513,13 +500,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+64, +128, jalapenos, cheese]> contains exactly one element that "
-                + "parses to each element of <[64, 128, 256, 128]>. "
-                + "It is missing an element that parses to <256> "
-                + "and has unexpected elements <[jalapenos, cheese]>");
+    assertFailureKeys(
+        "missing (1)", "unexpected (2)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("missing (1)", "256");
+    assertFailureValue("unexpected (2)", "[jalapenos, cheese]");
   }
 
   @Test
@@ -533,13 +517,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+64, +128, 0x80, null]> contains exactly one element that "
-                + "parses to each element of <[64, 128, 256, 128]>. "
-                + "It is missing an element that parses to <256> "
-                + "and has unexpected elements <[null]>");
+    assertFailureKeys(
+        "missing (1)", "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("missing (1)", "256");
+    assertFailureValue("unexpected (1)", "[null]");
   }
 
   @Test
@@ -553,13 +534,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+64, +128, 0x80, cheese]> contains exactly one element that "
-                + "parses to each element of <[64, 128, null, 128]>. "
-                + "It is missing an element that parses to <null> "
-                + "and has unexpected elements <[cheese]>");
+    assertFailureKeys(
+        "missing (1)", "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("missing (1)", "null");
+    assertFailureValue("unexpected (1)", "[cheese]");
   }
 
   @Test
@@ -574,12 +552,16 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsExactlyElementsIn(expected);
     // We fail with the more helpful failure message about the mis-matched values, not the NPE.
     assertFailureKeys(
-        "Not true that <[null, xyz, abc, def]> contains exactly one element that "
-            + "equals (ignoring case) each element of <[ABC, DEF, GHI, JKL]>. "
-            + "It is missing an element that equals (ignoring case) each of <[GHI, JKL]>"
-            + " and has unexpected elements <[null, xyz]>",
+        "missing (2)",
+        "unexpected (2)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("missing (2)", "GHI, JKL");
+    assertFailureValue("unexpected (2)", "null, xyz");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, ABC) threw java.lang.NullPointerException");
@@ -601,10 +583,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "one or more exceptions were thrown while comparing elements",
         "first exception",
-        "comparing contents by testing that each element equals (ignoring case) an expected value",
         "expected",
-        "but was");
-    assertFailureValue("expected", "[ABC, DEF, GHI, null]");
+        "testing whether",
+        "found all expected elements (but failing because of exception)",
+        "full contents");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, ABC) threw java.lang.NullPointerException");
@@ -619,12 +601,22 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(WITHIN_10_OF)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[101, 65, 35, 190]> contains exactly one element that is within 10 of "
-                + "each element of <[30, 60, 90]>. It is missing an element that is within 10 of "
-                + "<90> and has unexpected elements <[101 (diff: 11), 190 (diff: 100)]>");
+    assertFailureKeys(
+        "missing (1)",
+        "unexpected (2)",
+        "#1",
+        "diff",
+        "#2",
+        "diff",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "90");
+    assertFailureValue("#1", "101");
+    assertFailureValueIndexed("diff", 0, "11");
+    assertFailureValue("#2", "190");
+    assertFailureValueIndexed("diff", 1, "100");
   }
 
   @Test
@@ -647,15 +639,28 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that has "
-                + "the same id as and a score within 10 of each element of "
-                + "<[1/100, 2/200, 3/300, none/900]>. It is missing an element that corresponds to "
-                + "<2/200> and has unexpected elements <[2/211 (diff: score:11)]> with key 2, and "
-                + "is missing an element that corresponds to each of <[3/300, none/900]> and has "
-                + "unexpected elements <[4/400, none/999]> without matching keys");
+    assertFailureKeys(
+        "for key",
+        "missing",
+        "unexpected (1)",
+        "#1",
+        "diff",
+        "---",
+        "elements without matching keys:",
+        "missing (2)",
+        "unexpected (2)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    // the key=2 values:
+    assertFailureValue("for key", "2");
+    assertFailureValue("missing", "2/200");
+    assertFailureValue("#1", "2/211");
+    assertFailureValue("diff", "score:11");
+    // the values without matching keys:
+    assertFailureValue("missing (2)", "3/300, none/900");
+    assertFailureValue("unexpected (2)", "4/400, none/999");
   }
 
   @Test
@@ -673,16 +678,28 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(PARSED_RECORD_ID, RECORD_ID)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that "
-                + "parses to a record that has the same id as and a score within 10 of each "
-                + "element of <[1/100, 2/200, 3/300, none/900]>. It is missing an element that "
-                + "corresponds to <2/200> and has unexpected elements <[2/211 (diff: score:11)]> "
-                + "with key 2, and is missing an element that corresponds to each of "
-                + "<[3/300, none/900]> and has unexpected elements <[4/400, none/999]> without "
-                + "matching keys");
+    assertFailureKeys(
+        "for key",
+        "missing",
+        "unexpected (1)",
+        "#1",
+        "diff",
+        "---",
+        "elements without matching keys:",
+        "missing (2)",
+        "unexpected (2)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    // the key=2 values:
+    assertFailureValue("for key", "2");
+    assertFailureValue("missing", "2/200");
+    assertFailureValue("#1", "2/211");
+    assertFailureValue("diff", "score:11");
+    // the values without matching keys:
+    assertFailureValue("missing (2)", "3/300, none/900");
+    assertFailureValue("unexpected (2)", "4/400, none/999");
   }
 
   @Test
@@ -705,13 +722,20 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1/100, 2/211, 3/303, none/999]> contains exactly one element that has "
-                + "the same id as and a score within 10 of each element of "
-                + "<[1/100, 2/200, 3/300, none/999]>. It is missing an element that corresponds to "
-                + "<2/200> and has unexpected elements <[2/211 (diff: score:11)]> with key 2");
+    assertFailureKeys(
+        "for key",
+        "missing",
+        "unexpected (1)",
+        "#1",
+        "diff",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "2");
+    assertFailureValue("missing", "2/200");
+    assertFailureValue("#1", "2/211");
+    assertFailureValue("diff", "score:11");
   }
 
   @Test
@@ -734,14 +758,16 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1/100, 2/201, 4/400, none/999]> contains exactly one element that has "
-                + "the same id as and a score within 10 of each element of "
-                + "<[1/100, 2/200, 3/300, none/900]>. It is missing an element that corresponds "
-                + "to each of <[3/300, none/900]> and has unexpected elements "
-                + "<[4/400, none/999]> without matching keys");
+    assertFailureKeys(
+        "elements without matching keys:",
+        "missing (2)",
+        "unexpected (2)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (2)", "3/300, none/900");
+    assertFailureValue("unexpected (2)", "4/400, none/999");
   }
 
   @Test
@@ -764,13 +790,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1/100, 2/211, 3/303, none/999]> contains exactly one element that has "
-                + "the same id as and a score within 10 of each element of "
-                + "<[1/100, 2/200, 3/300, none/999]>. It is missing an element that corresponds to "
-                + "<2/200> and has unexpected elements <[2/211]> with key 2");
+    assertFailureKeys(
+        "for key", "missing", "unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("missing", "2/200");
+    assertFailureValue("unexpected (1)", "[2/211]");
   }
 
   @Test
@@ -811,16 +834,17 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1/100, 2/211, 4/400, none/999]> contains exactly one element that has "
-                + "the same id as and a score within 10 of each element of "
-                + "<[1/100, 2/200, 3/300, 3/301, none/900]>. It is missing an element that has the "
-                + "same id as and a score within 10 of each of <[2/200, 3/300, 3/301, none/900]>"
-                + " and has unexpected elements <[2/211, 4/400, none/999]>. (N.B. A key function "
-                + "which does not uniquely key the expected elements was provided and has "
-                + "consequently been ignored.)");
+    assertFailureKeys(
+        "missing (4)",
+        "unexpected (3)",
+        "---",
+        "a key function which does not uniquely key the expected elements was provided and has"
+            + " consequently been ignored",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (4)", "2/200, 3/300, 3/301, none/900");
+    assertFailureValue("unexpected (3)", "2/211, 4/400, none/999");
   }
 
   @Test
@@ -835,11 +859,19 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .displayingDiffsPairedBy(RECORD_ID)
         .containsExactlyElementsIn(expected);
     assertFailureKeys(
-        "Not true that <[1/101, 2/211, null]> contains exactly one element that has the same id "
-            + "as and a score within 10 of each element of <[1/100, 2/200, 4/400]>. It is "
-            + "missing an element that corresponds to <2/200> and has unexpected elements "
-            + "<[2/211 (diff: score:11)]> with key 2, and is missing an element that corresponds "
-            + "to <4/400> and has unexpected elements <[null]> without matching keys",
+        "for key",
+        "missing",
+        "unexpected (1)",
+        "#1",
+        "diff",
+        "---",
+        "elements without matching keys:",
+        "missing (1)",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while keying elements for pairing",
         "first exception");
     assertThatFailure()
@@ -859,11 +891,19 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .displayingDiffsPairedBy(RECORD_ID)
         .containsExactlyElementsIn(expected);
     assertFailureKeys(
-        "Not true that <[1/101, 2/211, 4/400]> contains exactly one element that has the same id "
-            + "as and a score within 10 of each element of <[1/100, 2/200, null]>. It is "
-            + "missing an element that corresponds to <2/200> and has unexpected elements "
-            + "<[2/211 (diff: score:11)]> with key 2, and is missing an element that corresponds "
-            + "to <null> and has unexpected elements <[4/400]> without matching keys",
+        "for key",
+        "missing",
+        "unexpected (1)",
+        "#1",
+        "diff",
+        "---",
+        "elements without matching keys:",
+        "missing (1)",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while keying elements for pairing",
         "first exception");
     assertThatFailure()
@@ -883,11 +923,19 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .displayingDiffsPairedBy(NULL_SAFE_RECORD_ID)
         .containsExactlyElementsIn(expected);
     assertFailureKeys(
-        "Not true that <[1/101, 2/211, null]> contains exactly one element that has the same id as "
-            + "and a score within 10 of each element of <[1/100, 2/200, 0/999]>. It is missing "
-            + "an element that corresponds to <2/200> and has unexpected elements "
-            + "<[2/211 (diff: score:11)]> with key 2, and is missing an element that corresponds "
-            + "to <0/999> and has unexpected elements <[null]> with key 0",
+        "for key",
+        "missing",
+        "unexpected (1)",
+        "#1",
+        "diff",
+        "---",
+        "for key",
+        "missing",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while formatting diffs",
         "first exception");
     assertThatFailure()
@@ -904,16 +952,17 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, +256]> contains exactly one element that parses "
-                + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
-                + "that matches each expected element, and every element it contains matches at "
-                + "least one expected element, but there was no 1:1 mapping between all the "
-                + "actual and expected elements. Using the most complete 1:1 mapping (or one "
-                + "such mapping, if there is a tie), it is missing an element that parses to "
-                + "<128>");
+    assertFailureKeys(
+        "in an assertion requiring a 1:1 mapping between the expected and the actual elements,"
+            + " each actual element matches as least one expected element, and vice versa, but"
+            + " there was no 1:1 mapping",
+        "using the most complete 1:1 mapping (or one such mapping, if there is a tie)",
+        "missing (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "128");
   }
 
   @Test
@@ -925,16 +974,17 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    String expectedPreamble =
-        "Not true that <[+128, +64, +256, 0x80, 0x40]> contains exactly one element that parses "
-            + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
-            + "that matches each expected element, and every element it contains matches at "
-            + "least one expected element, but there was no 1:1 mapping between all the "
-            + "actual and expected elements. Using the most complete 1:1 mapping (or one "
-            + "such mapping, if there is a tie), it has unexpected elements ";
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
+    assertFailureKeys(
+        "in an assertion requiring a 1:1 mapping between the expected and the actual elements,"
+            + " each actual element matches as least one expected element, and vice versa, but"
+            + " there was no 1:1 mapping",
+        "using the most complete 1:1 mapping (or one such mapping, if there is a tie)",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertThatFailure().factValue("unexpected (1)").isAnyOf("+64", "0x40");
   }
 
   @Test
@@ -946,17 +996,19 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    String expectedPreamble =
-        "Not true that <[+128, +64, +256, 0x40]> contains exactly one element that parses "
-            + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
-            + "that matches each expected element, and every element it contains matches at "
-            + "least one expected element, but there was no 1:1 mapping between all the "
-            + "actual and expected elements. Using the most complete 1:1 mapping (or one "
-            + "such mapping, if there is a tie), it is missing an element that parses to "
-            + "<128> and has unexpected elements ";
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
+    assertFailureKeys(
+        "in an assertion requiring a 1:1 mapping between the expected and the actual elements,"
+            + " each actual element matches as least one expected element, and vice versa, but"
+            + " there was no 1:1 mapping",
+        "using the most complete 1:1 mapping (or one such mapping, if there is a tie)",
+        "missing (1)",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "128");
+    assertThatFailure().factValue("unexpected (1)").isAnyOf("[+64]", "[0x40]");
   }
 
   @Test
@@ -968,16 +1020,22 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(WITHIN_10_OF)
         .containsExactlyElementsIn(expected);
-    String expectedPreamble =
-        "Not true that <[25, 55, 65]> contains exactly one element that is within 10 of "
-            + "each element of <[30, 30, 60]>. It contains at least one element that matches each "
-            + "expected element, and every element it contains matches at least one expected "
-            + "element, but there was no 1:1 mapping between all the actual and expected elements. "
-            + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), it is "
-            + "missing an element that is within 10 of <30> and has unexpected elements ";
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isAnyOf(expectedPreamble + "<[55 (diff: 25)]>", expectedPreamble + "<[65 (diff: 35)]>");
+    assertFailureKeys(
+        "in an assertion requiring a 1:1 mapping between the expected and the actual elements,"
+            + " each actual element matches as least one expected element, and vice versa, but"
+            + " there was no 1:1 mapping",
+        "using the most complete 1:1 mapping (or one such mapping, if there is a tie)",
+        "missing (1)",
+        "unexpected (1)",
+        "#1",
+        "diff",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "30");
+    assertThatFailure().factValue("#1").isAnyOf("55", "65");
+    assertThatFailure().factValue("diff").isAnyOf("25", "35");
   }
 
   @Test
@@ -991,10 +1049,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsExactlyElementsIn(expected)
         .inOrder();
     assertFailureKeys(
-        "contents match, but order was wrong",
-        "comparing contents by testing that each element parses to an expected value",
-        "expected",
-        "but was");
+        "contents match, but order was wrong", "expected", "testing whether", "but was");
     assertFailureValue("expected", "[64, 128, 256, 128]");
   }
 
@@ -1021,12 +1076,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+64, +128, 0x40, 0x80]> contains exactly one element that "
-                + "parses to each element of <[64, 128, 256, 128]>. "
-                + "It is missing an element that parses to <256>");
+    assertFailureKeys("missing (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("missing (1)", "256");
   }
 
   @Test
@@ -1054,17 +1105,19 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly(64, 128, 256, 128);
-    String expectedPreamble =
-        "Not true that <[+128, +64, +256, 0x40]> contains exactly one element that parses "
-            + "to each element of <[64, 128, 256, 128]>. It contains at least one element "
-            + "that matches each expected element, and every element it contains matches at "
-            + "least one expected element, but there was no 1:1 mapping between all the "
-            + "actual and expected elements. Using the most complete 1:1 mapping (or one "
-            + "such mapping, if there is a tie), it is missing an element that parses to "
-            + "<128> and has unexpected elements ";
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isAnyOf(expectedPreamble + "<[0x40]>", expectedPreamble + "<[+64]>");
+    assertFailureKeys(
+        "in an assertion requiring a 1:1 mapping between the expected and the actual elements,"
+            + " each actual element matches as least one expected element, and vice versa, but"
+            + " there was no 1:1 mapping",
+        "using the most complete 1:1 mapping (or one such mapping, if there is a tie)",
+        "missing (1)",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "128");
+    assertThatFailure().factValue("unexpected (1)").isAnyOf("[+64]", "[0x40]");
   }
 
   @Test
@@ -1162,12 +1215,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[fee, +64, +128, fi, fo, 0x40, 0x80, fum]> contains at least one "
-                + "element that parses to each element of <[64, 128, 256, 128]>. "
-                + "It is missing an element that parses to <256>");
+    assertFailureKeys(
+        "missing (1)", "---", "expected to contain at least", "testing whether", "but was");
+    assertFailureValue("missing (1)", "256");
+    assertFailureValue("expected to contain at least", "[64, 128, 256, 128]");
+    assertFailureValue("testing whether", "actual element parses to expected element");
+    assertFailureValue("but was", "[fee, +64, +128, fi, fo, 0x40, 0x80, fum]");
   }
 
   @Test
@@ -1182,9 +1235,11 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsAtLeastElementsIn(expected);
     // We fail with the more helpful failure message about the mis-matched values, not the NPE.
     assertFailureKeys(
-        "Not true that <[null, xyz, abc, ghi]> contains at least one element that "
-            + "equals (ignoring case) each element of <[ABC, DEF, GHI]>. "
-            + "It is missing an element that equals (ignoring case) <DEF>",
+        "missing (1)",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -1208,10 +1263,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "one or more exceptions were thrown while comparing elements",
         "first exception",
-        "comparing contents by testing that each element equals (ignoring case) an expected value",
-        "expected",
-        "but was");
-    assertFailureValue("expected", "[ABC, DEF, null]");
+        "expected to contain at least",
+        "testing whether",
+        "found all expected elements (but failing because of exception)",
+        "full contents");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, ABC) threw java.lang.NullPointerException");
@@ -1234,15 +1289,30 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsAtLeastElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1/101, 2/211, 2/222, 3/303, none/888]> contains at least one element "
-                + "that has the same id as and a score within 10 of each element of "
-                + "<[1/100, 2/200, none/999]>. It is missing an element that corresponds to "
-                + "<2/200> (but did have elements <[2/211 (diff: score:11), "
-                + "2/222 (diff: score:22)]> with matching key 2), and is missing an element that "
-                + "corresponds to <none/999> (without matching keys)");
+    assertFailureKeys(
+        "for key",
+        "missing",
+        "did contain elements with that key (2)",
+        "#1",
+        "diff",
+        "#2",
+        "diff",
+        "---",
+        "elements without matching keys:",
+        "missing (1)",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    // values at key 2:
+    assertFailureValue("for key", "2");
+    assertFailureValue("missing", "2/200");
+    assertFailureValue("#1", "2/211");
+    assertFailureValueIndexed("diff", 0, "score:11");
+    assertFailureValue("#2", "2/222");
+    assertFailureValueIndexed("diff", 1, "score:22");
+    // values without matching keys:
+    assertFailureValue("missing (1)", "none/999");
   }
 
   @Test
@@ -1261,15 +1331,15 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsAtLeastElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[1/101, 3/303, none/999]> contains at least one element that has the "
-                + "same id as and a score within 10 of each element of "
-                + "<[1/100, 2/200, 2/201, none/999]>. It is missing an element that has the same "
-                + "id as and a score within 10 of each of <[2/200, 2/201]>. (N.B. A key "
-                + "function which does not uniquely key the expected elements was provided and has "
-                + "consequently been ignored.)");
+    assertFailureKeys(
+        "missing (2)",
+        "---",
+        "a key function which does not uniquely key the expected elements was provided and has"
+            + " consequently been ignored",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (2)", "2/200, 2/201");
   }
 
   @Test
@@ -1285,13 +1355,28 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .displayingDiffsPairedBy(NULL_SAFE_RECORD_ID)
         .containsAtLeastElementsIn(expected);
     assertFailureKeys(
-        "Not true that <[1/101, 2/211, 3/303, null]> contains at least one element that has the "
-            + "same id as and a score within 10 of each element of <[1/100, 2/200, 0/999]>. "
-            + "It is missing an element that corresponds to <2/200> (but did have elements "
-            + "<[2/211 (diff: score:11)]> with matching key 2), and is missing an element that "
-            + "corresponds to <0/999> (but did have elements <[null]> with matching key 0)",
+        "for key",
+        "missing",
+        "did contain elements with that key (1)",
+        "#1",
+        "diff",
+        "---",
+        "for key",
+        "missing",
+        "did contain elements with that key (1)",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while formatting diffs",
         "first exception");
+    assertFailureValueIndexed("for key", 0, "2");
+    assertFailureValueIndexed("missing", 0, "2/200");
+    assertFailureValue("#1", "2/211");
+    assertFailureValue("diff", "score:11");
+    assertFailureValueIndexed("for key", 1, "0");
+    assertFailureValueIndexed("missing", 1, "0/999");
+    assertFailureValueIndexed("did contain elements with that key (1)", 1, "[null]");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("formatDiff(null, 0/999) threw java.lang.NullPointerException");
@@ -1308,12 +1393,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[fee, +64, +64, fi, fo, 0x40, 0x40, fum]> contains at least one "
-                + "element that parses to each element of <[64, 128, 256, 128]>. "
-                + "It is missing an element that parses to each of <[128, 256, 128]>");
+    assertFailureKeys(
+        "missing (3)", "---", "expected to contain at least", "testing whether", "but was");
+    assertFailureValue("missing (3)", "128 [2 copies], 256");
   }
 
   @Test
@@ -1327,12 +1409,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[fee, +64, fi, fo, +128, +256, fum]> contains at least one "
-                + "element that parses to each element of <[64, 128, 256, 512]>. "
-                + "It is missing an element that parses to <512>");
+    assertFailureKeys(
+        "missing (1)", "---", "expected to contain at least", "testing whether", "but was");
+    assertFailureValue("missing (1)", "512");
   }
 
   @Test
@@ -1345,15 +1424,17 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
-                + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
-                + "one element that matches each expected element, but there was no 1:1 mapping "
-                + "between all the expected elements and any subset of the actual elements. "
-                + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
-                + "it is missing an element that parses to <128>");
+    assertFailureKeys(
+        "in an assertion requiring a 1:1 mapping between the expected and a subset of the actual"
+            + " elements, each actual element matches as least one expected element, and vice"
+            + " versa, but there was no 1:1 mapping",
+        "using the most complete 1:1 mapping (or one such mapping, if there is a tie)",
+        "missing (1)",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "128");
   }
 
   @Test
@@ -1369,8 +1450,8 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .inOrder();
     assertFailureKeys(
         "required elements were all found, but order was wrong",
-        "comparing contents by testing that each element parses to an expected value",
         "expected order for required elements",
+        "testing whether",
         "but was");
     assertFailureValue("expected order for required elements", "[64, 128, 256, 128]");
   }
@@ -1399,12 +1480,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastElementsIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[fee, +64, +128, fi, fo, 0x40, 0x80, fum]> contains at least one "
-                + "element that parses to each element of <[64, 128, 256, 128]>. "
-                + "It is missing an element that parses to <256>");
+    assertFailureKeys(
+        "missing (1)", "---", "expected to contain at least", "testing whether", "but was");
+    assertFailureValue("missing (1)", "256");
   }
 
   @Test
@@ -1445,15 +1523,17 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeast(64, 128, 256, 128);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[fee, +128, fi, fo, +64, +256, fum]> contains at least one element "
-                + "that parses to each element of <[64, 128, 256, 128]>. It contains at least "
-                + "one element that matches each expected element, but there was no 1:1 mapping "
-                + "between all the expected elements and any subset of the actual elements. "
-                + "Using the most complete 1:1 mapping (or one such mapping, if there is a tie), "
-                + "it is missing an element that parses to <128>");
+    assertFailureKeys(
+        "in an assertion requiring a 1:1 mapping between the expected and a subset of the actual"
+            + " elements, each actual element matches as least one expected element, and vice"
+            + " versa, but there was no 1:1 mapping",
+        "using the most complete 1:1 mapping (or one such mapping, if there is a tie)",
+        "missing (1)",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "128");
   }
 
   @Test
@@ -1481,11 +1561,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAnyOf(255, 256, 257);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
-                + "contains at least one element that parses to any of <[255, 256, 257]>");
+    assertFailureKeys("expected to contain any of", "testing whether", "but was");
+    assertFailureValue("expected to contain any of", "[255, 256, 257]");
+    assertFailureValue("testing whether", "actual element parses to expected element");
+    assertFailureValue("but was", "[+128, +64, This is not the string you're looking for, 0x40]");
   }
 
   @Test
@@ -1507,8 +1586,9 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsAnyOf("DEF", "FED");
     // We fail with the more helpful failure message about missing the expected values, not the NPE.
     assertFailureKeys(
-        "Not true that <[abc, null, ghi]> contains at least one element that "
-            + "equals (ignoring case) any of <[DEF, FED]>",
+        "expected to contain any of",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -1530,11 +1610,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "one or more exceptions were thrown while comparing elements",
         "first exception",
-        "comparing contents by testing that at least one element equals (ignoring case) "
-            + "any expected value",
         "expected to contain any of",
-        "but was");
-    assertFailureValue("expected to contain any of", "[GHI, XYZ]");
+        "testing whether",
+        "found match (but failing because of exception)",
+        "full contents");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, GHI) threw java.lang.NullPointerException");
@@ -1559,12 +1638,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAnyIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
-                + "contains at least one element that parses to any element in "
-                + "<[255, 256, 257]>");
+    assertFailureKeys("expected to contain any of", "testing whether", "but was");
+    assertFailureValue("expected to contain any of", "[255, 256, 257]");
+    assertFailureValue("testing whether", "actual element parses to expected element");
+    assertFailureValue("but was", "[+128, +64, This is not the string you're looking for, 0x40]");
   }
 
   @Test
@@ -1588,15 +1665,36 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsAnyIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[3/311, 2/211, 2/222, 4/404, none/888]> contains at least one element "
-                + "that has the same id as and a score within 10 of any element in "
-                + "<[1/100, 2/200, 3/300, none/999]>. It contains the following values that match "
-                + "by key: with key 2, would have accepted 2/200, but got "
-                + "[2/211 (diff: score:11), 2/222 (diff: score:22)]; with key 3, would have "
-                + "accepted 3/300, but got [3/311 (diff: score:11)]");
+    assertFailureKeys(
+        "expected to contain any of",
+        "testing whether",
+        "but was",
+        "for key",
+        "expected any of",
+        "but got (2)",
+        "#1",
+        "diff",
+        "#2",
+        "diff",
+        "---",
+        "for key",
+        "expected any of",
+        "but got (1)",
+        "#1",
+        "diff",
+        "---");
+    // at key 2:
+    assertFailureValueIndexed("for key", 0, "2");
+    assertFailureValueIndexed("expected any of", 0, "2/200");
+    assertFailureValueIndexed("#1", 0, "2/211");
+    assertFailureValueIndexed("diff", 0, "score:11");
+    assertFailureValue("#2", "2/222");
+    assertFailureValueIndexed("diff", 1, "score:22");
+    // at key 3:
+    assertFailureValueIndexed("for key", 1, "3");
+    assertFailureValueIndexed("expected any of", 1, "3/300");
+    assertFailureValueIndexed("#1", 1, "3/311");
+    assertFailureValueIndexed("diff", 2, "score:11");
   }
 
   @Test
@@ -1611,12 +1709,11 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsAnyIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[3/300, 4/411, none/888]> contains at least one element that has the "
-                + "same id as and a score within 10 of any element in "
-                + "<[1/100, 2/200, none/999]>. It does not contain any matches by key, either");
+    assertFailureKeys(
+        "expected to contain any of",
+        "testing whether",
+        "but was",
+        "it does not contain any matches by key, either");
   }
 
   @Test
@@ -1635,13 +1732,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10)
         .displayingDiffsPairedBy(RECORD_ID)
         .containsAnyIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[3/300, 2/211, none/888]> contains at least one element that has the "
-                + "same id as and a score within 10 of any element in "
-                + "<[1/100, 2/200, 2/250, none/999]>. (N.B. A key function which does not uniquely "
-                + "key the expected elements was provided and has consequently been ignored.)");
+    assertFailureKeys(
+        "expected to contain any of",
+        "testing whether",
+        "but was",
+        "a key function which does not uniquely key the expected elements was provided and has"
+            + " consequently been ignored");
   }
 
   @Test
@@ -1656,10 +1752,13 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .displayingDiffsPairedBy(NULL_SAFE_RECORD_ID)
         .containsAnyIn(expected);
     assertFailureKeys(
-        "Not true that <[3/311, 4/404, null]> contains at least one element that has the same id "
-            + "as and a score within 10 of any element in <[1/100, 2/200, 0/999]>. It contains "
-            + "the following values that match by key: with key 0, would have accepted 0/999, but "
-            + "got [null]",
+        "expected to contain any of",
+        "testing whether",
+        "but was",
+        "for key",
+        "expected any of",
+        "but got (1)",
+        "---",
         "additionally, one or more exceptions were thrown while formatting diffs",
         "first exception");
     assertThatFailure()
@@ -1690,12 +1789,7 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAnyIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, +256, 0x40]> "
-                + "contains at least one element that parses to any element in "
-                + "<[511, 512, 513]>");
+    assertFailureKeys("expected to contain any of", "testing whether", "but was");
   }
 
   @Test
@@ -1715,11 +1809,18 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsNoneOf(255, 256, 257);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to any of "
-                + "<[255, 256, 257]>. It contains <[+256 which corresponds to 256]>");
+    assertFailureKeys(
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValue("expected not to contain any of", "[255, 256, 257]");
+    assertFailureValue("testing whether", "actual element parses to expected element");
+    assertFailureValue("but contained", "[+256]");
+    assertFailureValue("corresponding to", "256");
+    assertFailureValue("full contents", "[+128, +64, +256, 0x40]");
   }
 
   @Test
@@ -1730,12 +1831,20 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsNoneOf(64, 128);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to any of "
-                + "<[64, 128]>. It contains <[[+64, 0x40] which all correspond to 64, "
-                + "+128 which corresponds to 128]>");
+    assertFailureKeys(
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValueIndexed("but contained", 0, "[+64, 0x40]");
+    assertFailureValueIndexed("corresponding to", 0, "64");
+    assertFailureValueIndexed("but contained", 1, "[+128]");
+    assertFailureValueIndexed("corresponding to", 1, "128");
   }
 
   @Test
@@ -1746,11 +1855,15 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsNoneOf(255, null, 257);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, null, 0x40]> contains no element that parses to any of "
-                + "<[255, null, 257]>. It contains <[null which corresponds to null]>");
+    assertFailureKeys(
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValue("but contained", "[null]");
+    assertFailureValue("corresponding to", "null");
   }
 
   @Test
@@ -1764,9 +1877,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .containsNoneOf("GHI", "XYZ");
     // We fail with the more helpful failure message about the unexpected value, not the NPE.
     assertFailureKeys(
-        "Not true that <[abc, null, ghi]> contains no element that "
-            + "equals (ignoring case) any of <[GHI, XYZ]>. "
-            + "It contains <[ghi which corresponds to GHI]>",
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
     assertThatFailure()
@@ -1788,9 +1904,10 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "one or more exceptions were thrown while comparing elements",
         "first exception",
-        "comparing contents by testing that no element equals (ignoring case) any forbidden value",
         "expected not to contain any of",
-        "but was");
+        "testing whether",
+        "found no matches (but failing because of exception)",
+        "full contents");
     assertFailureValue("expected not to contain any of", "[DEF, XYZ]");
     assertThatFailure()
         .factValue("first exception")
@@ -1816,12 +1933,15 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsNoneIn(excluded);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, +256, 0x40]> contains no element that parses to "
-                + "any element in <[255, 256, 257]>. It contains "
-                + "<[+256 which corresponds to 256]>");
+    assertFailureKeys(
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValue("but contained", "[+256]");
+    assertFailureValue("corresponding to", "256");
   }
 
   @Test
@@ -1833,12 +1953,15 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsNoneIn(excluded);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, null, 0x40]> contains no element that parses to "
-                + "any element in <[255, null, 257]>. It contains "
-                + "<[null which corresponds to null]>");
+    assertFailureKeys(
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValue("but contained", "[null]");
+    assertFailureValue("corresponding to", "null");
   }
 
   @Test
@@ -1856,12 +1979,15 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         .that(actual)
         .comparingElementsUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsNoneIn(excluded);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[+128, +64, This is not the string you're looking for, 0x40]> "
-                + "contains no element that parses to any element in <[127, 128, 129]>. "
-                + "It contains <[+128 which corresponds to 128]>");
+    assertFailureKeys(
+        "expected not to contain any of",
+        "testing whether",
+        "but contained",
+        "corresponding to",
+        "---",
+        "full contents");
+    assertFailureValue("but contained", "[+128]");
+    assertFailureValue("corresponding to", "128");
   }
 
   private static final class CountsToStringCalls {

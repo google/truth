@@ -112,12 +112,10 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(ImmutableList.of("foot", "barn", "gallon"))
         .comparingElementsUsing(STRING_PREFIX_EQUALITY)
-        .containsExactly("foot", "barn");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[foot, barn, gallon]> contains exactly one element that starts with "
-                + "each element of <[foot, barn]>. It has unexpected elements <[gallon]>");
+        .containsExactly("foo", "bar");
+    assertFailureKeys("unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("unexpected (1)", "gallon");
+    assertFailureValue("testing whether", "actual element starts with expected element");
   }
 
   @Test
@@ -126,15 +124,19 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .whenTesting()
         .that(asList("foot", "barn", null))
         .comparingElementsUsing(STRING_PREFIX_EQUALITY)
-        .containsExactly("foot", "barn");
+        .containsExactly("foo", "bar");
     assertFailureKeys(
-        "Not true that <[foot, barn, null]> contains exactly one element that starts with each "
-            + "element of <[foot, barn]>. It has unexpected elements <[null]>",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("unexpected (1)", "null");
     assertThatFailure()
         .factValue("first exception")
-        .startsWith("compare(null, foot) threw java.lang.NullPointerException");
+        .startsWith("compare(null, foo) threw java.lang.NullPointerException");
   }
 
   // Tests of the 'transform' factory methods.
@@ -220,11 +222,9 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .that(ImmutableList.of("feet", "barns", "gallons"))
         .comparingElementsUsing(LENGTHS)
         .containsExactly(4, 5);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[feet, barns, gallons]> contains exactly one element that has a length "
-                + "of each element of <[4, 5]>. It has unexpected elements <[gallons]>");
+    assertFailureKeys("unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("unexpected (1)", "gallons");
+    assertFailureValue("testing whether", "actual element has a length of expected element");
   }
 
   @Test
@@ -235,10 +235,14 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(LENGTHS)
         .containsExactly(4, 5);
     assertFailureKeys(
-        "Not true that <[feet, barns, null]> contains exactly one element that has a length of "
-            + "each element of <[4, 5]>. It has unexpected elements <[null]>",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("unexpected (1)", "null");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, 4) threw java.lang.NullPointerException");
@@ -340,12 +344,11 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .that(ImmutableList.of("mailing-list", "chat-room", "web-app"))
         .comparingElementsUsing(HYPHENS_MATCH_COLONS)
         .containsExactly("abcdefg:hij", "abcd:efghij");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[mailing-list, chat-room, web-app]> contains exactly one element that "
-                + "has a hyphen at the same index as the colon in each element of "
-                + "<[abcdefg:hij, abcd:efghij]>. It has unexpected elements <[web-app]>");
+    assertFailureKeys("unexpected (1)", "---", "expected", "testing whether", "but was");
+    assertFailureValue("unexpected (1)", "web-app");
+    assertFailureValue(
+        "testing whether",
+        "actual element has a hyphen at the same index as the colon in expected element");
   }
 
   @Test
@@ -356,11 +359,14 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(HYPHENS_MATCH_COLONS)
         .containsExactly("abcdefg:hij", "abcd:efghij");
     assertFailureKeys(
-        "Not true that <[mailing-list, chat-room, null]> contains exactly one element that has a "
-            + "hyphen at the same index as the colon in each element of "
-            + "<[abcdefg:hij, abcd:efghij]>. It has unexpected elements <[null]>",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("unexpected (1)", "null");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, abcdefg:hij) threw java.lang.NullPointerException");
@@ -374,12 +380,14 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(HYPHENS_MATCH_COLONS)
         .containsExactly("abcdefg:hij", "abcd:efghij", null);
     assertFailureKeys(
-        "Not true that <[mailing-list, chat-room]> contains exactly one element that has a hyphen "
-            + "at the same index as the colon in each element of "
-            + "<[abcdefg:hij, abcd:efghij, null]>. It is missing an element that has a hyphen at "
-            + "the same index as the colon in <null>",
+        "missing (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception");
+    assertFailureValue("missing (1)", "null");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(mailing-list, null) threw java.lang.NullPointerException");
@@ -532,12 +540,18 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .that(ImmutableList.of("feet", "gallons"))
         .comparingElementsUsing(LENGTHS_WITH_DIFF)
         .containsExactly(4, 5);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <[feet, gallons]> contains exactly one element that has a length of "
-                + "each element of <[4, 5]>. It is missing an element that has a length of <5> "
-                + "and has unexpected elements <[gallons (diff: 2)]>");
+    assertFailureKeys(
+        "missing (1)",
+        "unexpected (1)",
+        "#1",
+        "diff",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("missing (1)", "5");
+    assertFailureValue("#1", "gallons");
+    assertFailureValue("diff", "2");
   }
 
   @Test
@@ -548,13 +562,18 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
         .comparingElementsUsing(LENGTHS_WITH_DIFF)
         .containsExactly(4, 5);
     assertFailureKeys(
-        "Not true that <[feet, null]> contains exactly one element that has a length of each "
-            + "element of <[4, 5]>. It is missing an element that has a length of <5> "
-            + "and has unexpected elements <[null]>",
+        "missing (1)",
+        "unexpected (1)",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing elements",
         "first exception",
         "additionally, one or more exceptions were thrown while formatting diffs",
         "first exception");
+    assertFailureValue("missing (1)", "5");
+    assertFailureValue("unexpected (1)", "[null]");
     assertThatFailure()
         .factValue("first exception", 0)
         .startsWith("compare(null, 4) threw java.lang.NullPointerException");
