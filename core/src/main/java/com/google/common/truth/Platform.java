@@ -15,15 +15,13 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.DiffUtils.generateUnifiedDiff;
 import static com.google.common.truth.Fact.fact;
-import static difflib.DiffUtils.diff;
-import static difflib.DiffUtils.generateUnifiedDiff;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
-import difflib.Patch;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -128,15 +126,13 @@ final class Platform {
   static ImmutableList<Fact> makeDiff(String expected, String actual) {
     ImmutableList<String> expectedLines = splitLines(expected);
     ImmutableList<String> actualLines = splitLines(actual);
-    Patch<String> diff = diff(expectedLines, actualLines);
     List<String> unifiedDiff =
-        generateUnifiedDiff("expected", "actual", expectedLines, diff, /* contextSize= */ 3);
+        generateUnifiedDiff(expectedLines, actualLines, /* contextSize= */ 3);
     if (unifiedDiff.isEmpty()) {
       return ImmutableList.of(
           fact("diff", "(line contents match, but line-break characters differ)"));
       // TODO(cpovirk): Possibly include the expected/actual value, too?
     }
-    unifiedDiff = unifiedDiff.subList(2, unifiedDiff.size()); // remove "--- expected," "+++ actual"
     String result = Joiner.on("\n").join(unifiedDiff);
     if (result.length() > expected.length() && result.length() > actual.length()) {
       return null;
