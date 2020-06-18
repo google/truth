@@ -33,10 +33,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.googlecode.java-diff-utils</groupId>
-      <artifactId>diffutils</artifactId>
-    </dependency>
     <!-- Required only to test the -gwt sub-artifact. -->
     <dependency>
       <groupId>com.google.gwt</groupId>

@@ -80,11 +80,6 @@
         <version>4.12</version>
       </dependency>
       <dependency>
-        <groupId>com.googlecode.java-diff-utils</groupId>
-        <artifactId>diffutils</artifactId>
-        <version>1.3.0</version>
-      </dependency>
-      <dependency>
         <groupId>com.google.gwt</groupId>
         <artifactId>gwt-user</artifactId>
         <version>${gwt.version}</version>
