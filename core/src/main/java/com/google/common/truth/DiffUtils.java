@@ -19,8 +19,9 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
 
 /**
  * A custom implementation of the diff algorithm based on the solution described at
@@ -33,12 +34,13 @@ final class DiffUtils {
   // The index of each string is its incremental Id.
   private final List<String> stringList = new ArrayList<>();
   // A map to record each unique string and its incremental id.
-  private final TreeMap<String, Integer> stringToId = new TreeMap<>();
+  private final Map<String, Integer> stringToId = new HashMap<>();
   private int[] original;
   private int[] revised;
   // lcs[i][j] is the length of the longest common sequence of original[1..i] and revised[1..j].
   private int[][] lcs;
-  private final List<String> unifiedDiff = new ArrayList<>();
+  private final List<Character> unifiedDiffType = new ArrayList<>();
+  private final List<Integer> unifiedDiffContentId = new ArrayList<>();
   private final List<String> reducedUnifiedDiff = new ArrayList<>();
   private int offsetHead = 0;
   private int offsetTail = 0;
@@ -79,15 +81,15 @@ final class DiffUtils {
 
   /** Calculate an incremental Id for a given string. */
   private Integer getIdByLine(String line) {
-    int id;
-    if (stringToId.containsKey(line)) {
-      id = stringToId.get(line);
-    } else {
-      id = stringList.size();
-      stringToId.put(line, id);
+    int newId = stringList.size();
+    Integer existingId = stringToId.put(line, newId);
+    if (existingId == null) {
       stringList.add(line);
+      return newId;
+    } else {
+      stringToId.put(line, existingId);
+      return existingId;
     }
-    return id;
   }
 
   /** An optimization to reduce the problem size by removing equal lines from head and tail. */
@@ -122,13 +124,16 @@ final class DiffUtils {
         && lcs[i - 1][j - 1] + 1 > lcs[i - 1][j]
         && lcs[i - 1][j - 1] + 1 > lcs[i][j - 1]) {
       calcUnifiedDiff(i - 1, j - 1);
-      unifiedDiff.add(" " + stringList.get(original[i]));
+      unifiedDiffType.add(' ');
+      unifiedDiffContentId.add(original[i]);
     } else if (j > 0 && (i == 0 || lcs[i][j - 1] >= lcs[i - 1][j])) {
       calcUnifiedDiff(i, j - 1);
-      unifiedDiff.add("+" + stringList.get(revised[j]));
+      unifiedDiffType.add('+');
+      unifiedDiffContentId.add(revised[j]);
     } else if (i > 0 && (j == 0 || lcs[i][j - 1] < lcs[i - 1][j])) {
       calcUnifiedDiff(i - 1, j);
-      unifiedDiff.add("-" + stringList.get(original[i]));
+      unifiedDiffType.add('-');
+      unifiedDiffContentId.add(original[i]);
     }
   }
 
@@ -143,7 +148,7 @@ final class DiffUtils {
     // The number of lines in original/revised file after the diff lines we've processed.
     int lineNumOrigin = offsetHead;
     int lineNumRevised = offsetHead;
-    while (next < unifiedDiff.size()) {
+    while (next < unifiedDiffType.size()) {
       // The start and end index of the current block in fullDiff
       int start;
       int end;
@@ -151,12 +156,12 @@ final class DiffUtils {
       int startLineOrigin;
       int startLineRevised;
       // Find the next diff line that is not an equal line.
-      while (next < unifiedDiff.size() && unifiedDiff.get(next).startsWith(" ")) {
+      while (next < unifiedDiffType.size() && unifiedDiffType.get(next).equals(' ')) {
         next++;
         lineNumOrigin++;
         lineNumRevised++;
       }
-      if (next == unifiedDiff.size()) {
+      if (next == unifiedDiffType.size()) {
         break;
       }
       // Calculate the start line index of the current block in fullDiff
@@ -171,8 +176,8 @@ final class DiffUtils {
       int equalLines = 0;
       // Let `end` points to the last non-equal diff line
       end = next;
-      while (next < unifiedDiff.size() && equalLines < contextSize * 2 + 1) {
-        if (unifiedDiff.get(next).startsWith(" ")) {
+      while (next < unifiedDiffType.size() && equalLines < contextSize * 2 + 1) {
+        if (unifiedDiffType.get(next).equals(' ')) {
           equalLines++;
           lineNumOrigin++;
           lineNumRevised++;
@@ -180,7 +185,7 @@ final class DiffUtils {
           equalLines = 0;
           // Record the latest non-equal diff line
           end = next;
-          if (unifiedDiff.get(next).startsWith("-")) {
+          if (unifiedDiffType.get(next).equals('-')) {
             lineNumOrigin++;
           } else {
             // line starts with "+"
@@ -190,7 +195,7 @@ final class DiffUtils {
         next++;
       }
       // Calculate the end line index of the current block in fullDiff
-      end = min(end + contextSize + 1, unifiedDiff.size());
+      end = min(end + contextSize + 1, unifiedDiffType.size());
 
       // Calculate the size of the block content in original/revised file
       int blockSizeOrigin = lineNumOrigin - startLineOrigin - (next - end - 1);
@@ -209,7 +214,10 @@ final class DiffUtils {
           .append(" @@");
 
       reducedUnifiedDiff.add(header.toString());
-      reducedUnifiedDiff.addAll(unifiedDiff.subList(start, end));
+      for (int i = start; i < end; i++) {
+        reducedUnifiedDiff.add(
+            unifiedDiffType.get(i) + stringList.get(unifiedDiffContentId.get(i)));
+      }
     }
   }
 
