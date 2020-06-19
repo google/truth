@@ -12,7 +12,7 @@ Truth is configurable in multiple ways, including:
 *   custom correspondences
 *   custom assertion methods
 
-Custom failure behaviors can be useful, as can the the alternative built-in
+Custom failure behaviors can be useful, as can the alternative built-in
 behaviors. For information about both, see [`FailureStrategy`].
 
 Custom correspondences are useful for testing whether a collection contains a
