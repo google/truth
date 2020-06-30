@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.annotations.GwtIncompatible;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for {@link Class} subjects.
@@ -27,7 +27,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public final class ClassSubject extends Subject {
   private final Class<?> actual;
 
-  ClassSubject(FailureMetadata metadata, @NullableDecl Class<?> o) {
+  ClassSubject(FailureMetadata metadata, @Nullable Class<?> o) {
     super(metadata, o);
     this.actual = o;
   }

@@ -35,7 +35,7 @@ import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A specification for a {@link ProtoTruthMessageDifferencer} for comparing two individual
@@ -383,7 +383,7 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
             //     ProtoTruth.assertThat(a).usingConfig(FluentEqualityConfig.this).testIsEqualTo(e),
             new Correspondence.BinaryPredicate<M, M>() {
               @Override
-              public boolean apply(@NullableDecl M actual, @NullableDecl M expected) {
+              public boolean apply(@Nullable M actual, @Nullable M expected) {
                 return ProtoTruth.assertThat(actual)
                     .usingConfig(FluentEqualityConfig.this)
                     .testIsEqualTo(expected);
@@ -396,13 +396,13 @@ abstract class FluentEqualityConfig implements FieldScopeLogicContainer<FluentEq
             // If we were allowed method references, this would be this::formatDiff.
             new Correspondence.DiffFormatter<M, M>() {
               @Override
-              public String formatDiff(@NullableDecl M actual, @NullableDecl M expected) {
+              public String formatDiff(@Nullable M actual, @Nullable M expected) {
                 return FluentEqualityConfig.this.formatDiff(actual, expected);
               }
             });
   }
 
-  private <M extends Message> String formatDiff(@NullableDecl M actual, @NullableDecl M expected) {
+  private <M extends Message> String formatDiff(@Nullable M actual, @Nullable M expected) {
     if (actual == null || expected == null) {
       return "";
     }

@@ -41,7 +41,7 @@ import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Iterator;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -780,19 +780,19 @@ public class SubjectTest extends BaseSubjectTestCase {
   }
 
   private static final class ForbidsEqualityChecksSubject extends Subject {
-    ForbidsEqualityChecksSubject(FailureMetadata metadata, @NullableDecl Object actual) {
+    ForbidsEqualityChecksSubject(FailureMetadata metadata, @Nullable Object actual) {
       super(metadata, actual);
     }
 
     // Not sure how to feel about this, but people do it:
 
     @Override
-    public void isEqualTo(@NullableDecl Object expected) {
+    public void isEqualTo(@Nullable Object expected) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public void isNotEqualTo(@NullableDecl Object unexpected) {
+    public void isNotEqualTo(@Nullable Object unexpected) {
       throw new UnsupportedOperationException();
     }
   }

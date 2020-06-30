@@ -16,18 +16,7 @@
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
-      <artifactId>checker-compat-qual</artifactId>
-    </dependency>
-    <!--
-      Manually add a dependency that guava-gwt needs but doesn't declare as of May 2018.
-      But only in the test scope, since that's the only place that _we_ need it.
-      _Downstream users_ might need to add it manually, as we've done here, but only until we fix guava-gwt and update Truth to use the new version.
-      And anyway, the current setup is causing users problems, since checker-qual is built for Java 8: https://github.com/google/truth/issues/479
-      -->
-    <dependency>
-      <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

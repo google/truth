@@ -43,7 +43,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.Rule;
 
 /** Base class for testing {@link ProtoSubject} methods. */
@@ -176,7 +176,7 @@ public class ProtoSubjectTestBase {
     return expect.about(truthFailures()).that(multiExpectFailure.getFailure());
   }
 
-  protected final ProtoSubject expectThat(@NullableDecl Message message) {
+  protected final ProtoSubject expectThat(@Nullable Message message) {
     return expect.about(ProtoTruth.protos()).that(message);
   }
 
@@ -193,7 +193,7 @@ public class ProtoSubjectTestBase {
     return expect.about(ProtoTruth.protos()).that(multimap);
   }
 
-  protected final ProtoSubject expectThatWithMessage(String msg, @NullableDecl Message message) {
+  protected final ProtoSubject expectThatWithMessage(String msg, @Nullable Message message) {
     return expect.withMessage(msg).about(ProtoTruth.protos()).that(message);
   }
 

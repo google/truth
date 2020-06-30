@@ -23,7 +23,7 @@ import static com.google.common.truth.TruthFailureSubject.truthFailures;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.truth.Truth.SimpleAssertionError;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
@@ -76,7 +76,7 @@ public final class ExpectFailure implements Platform.JUnitTestRule {
 
   private boolean inRuleContext = false;
   private boolean failureExpected = false;
-  @NullableDecl private AssertionError failure = null;
+  @Nullable private AssertionError failure = null;
 
   /**
    * Creates a new instance for use as a {@code @Rule}. See the class documentation for details, and

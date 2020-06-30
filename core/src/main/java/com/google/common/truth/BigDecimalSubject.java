@@ -19,7 +19,7 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import java.math.BigDecimal;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for {@link BigDecimal} typed subjects.
@@ -29,7 +29,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
   private final BigDecimal actual;
 
-  BigDecimalSubject(FailureMetadata metadata, @NullableDecl BigDecimal actual) {
+  BigDecimalSubject(FailureMetadata metadata, @Nullable BigDecimal actual) {
     super(metadata, actual);
     this.actual = actual;
   }
@@ -75,7 +75,7 @@ public final class BigDecimalSubject extends ComparableSubject<BigDecimal> {
    * use {@link #isEqualToIgnoringScale(BigDecimal)} instead.
    */
   @Override // To express more specific javadoc
-  public void isEqualTo(@NullableDecl Object expected) {
+  public void isEqualTo(@Nullable Object expected) {
     super.isEqualTo(expected);
   }
 

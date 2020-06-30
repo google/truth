@@ -23,7 +23,7 @@ import static com.google.common.truth.Fact.simpleFact;
 import com.google.common.annotations.GwtIncompatible;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for string subjects.
@@ -38,7 +38,7 @@ public class StringSubject extends ComparableSubject<String> {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
-  protected StringSubject(FailureMetadata metadata, @NullableDecl String string) {
+  protected StringSubject(FailureMetadata metadata, @Nullable String string) {
     super(metadata, string);
     this.actual = string;
   }

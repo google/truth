@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.truth.Fact.simpleFact;
 
 import java.lang.reflect.Array;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A common supertype for Array subjects, abstracting some common display and error infrastructure.
@@ -30,7 +30,7 @@ abstract class AbstractArraySubject extends Subject {
   private final Object actual;
 
   AbstractArraySubject(
-      FailureMetadata metadata, @NullableDecl Object actual, @NullableDecl String typeDescription) {
+      FailureMetadata metadata, @Nullable Object actual, @Nullable String typeDescription) {
     super(metadata, actual, typeDescription);
     this.actual = actual;
   }

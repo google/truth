@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.truth.Fact.makeMessage;
 
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * An {@link AssertionError} composed of structured {@link Fact} instances and other string
@@ -27,17 +27,17 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 final class AssertionErrorWithFacts extends AssertionError implements ErrorWithFacts {
   static AssertionErrorWithFacts create(
-      ImmutableList<String> messages, ImmutableList<Fact> facts, @NullableDecl Throwable cause) {
+      ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
     return new AssertionErrorWithFacts(messages, facts, cause);
   }
 
   final ImmutableList<Fact> facts;
 
   /** Separate cause field, in case initCause() fails. */
-  @NullableDecl private final Throwable cause;
+  @Nullable private final Throwable cause;
 
   private AssertionErrorWithFacts(
-      ImmutableList<String> messages, ImmutableList<Fact> facts, @NullableDecl Throwable cause) {
+      ImmutableList<String> messages, ImmutableList<Fact> facts, @Nullable Throwable cause) {
     super(makeMessage(messages, facts));
     this.facts = checkNotNull(facts);
 

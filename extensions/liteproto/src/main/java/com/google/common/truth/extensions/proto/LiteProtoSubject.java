@@ -27,7 +27,7 @@ import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.MessageLite;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Truth subjects for the Lite version of Protocol Buffers.
@@ -65,7 +65,7 @@ public class LiteProtoSubject extends Subject {
   private final MessageLite actual;
 
   protected LiteProtoSubject(
-      FailureMetadata failureMetadata, @NullableDecl MessageLite messageLite) {
+      FailureMetadata failureMetadata, @Nullable MessageLite messageLite) {
     super(failureMetadata, messageLite);
     this.metadata = failureMetadata;
     this.actual = messageLite;
@@ -77,7 +77,7 @@ public class LiteProtoSubject extends Subject {
   // from the strings alone. So, we manually strip this prefix.
   // In case the class names are actually relevant, Subject.isEqualTo() will add them back for us.
   // TODO(user): Maybe get a way to do this upstream.
-  static String getTrimmedToString(@NullableDecl MessageLite messageLite) {
+  static String getTrimmedToString(@Nullable MessageLite messageLite) {
     String subjectString = String.valueOf(messageLite);
     String trimmedSubjectString = subjectString.trim();
     if (trimmedSubjectString.startsWith("# ")) {
@@ -107,7 +107,7 @@ public class LiteProtoSubject extends Subject {
    * implementation.
    */
   @Override
-  public void isEqualTo(@NullableDecl Object expected) {
+  public void isEqualTo(@Nullable Object expected) {
     // TODO(user): Do better here when MessageLite descriptors are available.
     if (Objects.equal(actual, expected)) {
       return;
@@ -143,18 +143,18 @@ public class LiteProtoSubject extends Subject {
    *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead.
    */
   @Deprecated
-  public void isEqualTo(@NullableDecl MessageLite.Builder builder) {
+  public void isEqualTo(@Nullable MessageLite.Builder builder) {
     isEqualTo((Object) builder);
   }
 
   private static final class LiteProtoAsStringSubject extends Subject {
-    LiteProtoAsStringSubject(FailureMetadata metadata, @NullableDecl String actual) {
+    LiteProtoAsStringSubject(FailureMetadata metadata, @Nullable String actual) {
       super(metadata, actual);
     }
   }
 
   @Override
-  public void isNotEqualTo(@NullableDecl Object expected) {
+  public void isNotEqualTo(@Nullable Object expected) {
     if (Objects.equal(actual, expected)) {
       if (actual == null) {
         super.isNotEqualTo(expected);
@@ -173,7 +173,7 @@ public class LiteProtoSubject extends Subject {
    *     or {@code buildPartial()} on the argument to get a MessageLite for comparison instead.
    */
   @Deprecated
-  public void isNotEqualTo(@NullableDecl MessageLite.Builder builder) {
+  public void isNotEqualTo(@Nullable MessageLite.Builder builder) {
     isNotEqualTo((Object) builder);
   }
 
@@ -236,7 +236,7 @@ public class LiteProtoSubject extends Subject {
 
     @Override
     public LiteProtoSubject createSubject(
-        FailureMetadata failureMetadata, @NullableDecl MessageLite messageLite) {
+        FailureMetadata failureMetadata, @Nullable MessageLite messageLite) {
       return new LiteProtoSubject(failureMetadata, messageLite);
     }
   }

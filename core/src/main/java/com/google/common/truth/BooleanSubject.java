@@ -17,7 +17,7 @@ package com.google.common.truth;
 
 import static com.google.common.truth.Fact.simpleFact;
 
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for boolean subjects.
@@ -27,7 +27,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public final class BooleanSubject extends Subject {
   private final Boolean actual;
 
-  BooleanSubject(FailureMetadata metadata, @NullableDecl Boolean actual) {
+  BooleanSubject(FailureMetadata metadata, @Nullable Boolean actual) {
     super(metadata, actual);
     this.actual = actual;
   }

@@ -23,7 +23,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Ints;
 import java.util.List;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /** {@link Correspondence} implementations for testing purposes. */
 final class TestCorrespondences {
@@ -38,14 +38,14 @@ final class TestCorrespondences {
           // TestCorrespondences::stringParsesToInteger,
           new Correspondence.BinaryPredicate<String, Integer>() {
             @Override
-            public boolean apply(@NullableDecl String actual, @NullableDecl Integer expected) {
+            public boolean apply(@Nullable String actual, @Nullable Integer expected) {
               return stringParsesToInteger(actual, expected);
             }
           },
           "parses to");
 
   private static boolean stringParsesToInteger(
-      @NullableDecl String actual, @NullableDecl Integer expected) {
+      @Nullable String actual, @Nullable Integer expected) {
     if (actual == null) {
       return expected == null;
     }
@@ -171,7 +171,7 @@ final class TestCorrespondences {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object o) {
+    public boolean equals(@Nullable Object o) {
       if (o instanceof Record) {
         Record that = (Record) o;
         return this.id == that.id && this.score == that.score;
@@ -197,14 +197,14 @@ final class TestCorrespondences {
      * If the argument is the string form of a record, returns that record; otherwise returns {@code
      * null}.
      */
-    @NullableDecl
+    @Nullable
     static Record parse(String str) {
       List<String> parts = Splitter.on('/').splitToList(str);
       if (parts.size() != 2) {
         return null;
       }
-      @NullableDecl Integer id = parts.get(0).equals("none") ? -1 : Ints.tryParse(parts.get(0));
-      @NullableDecl Integer score = Ints.tryParse(parts.get(1));
+      @Nullable Integer id = parts.get(0).equals("none") ? -1 : Ints.tryParse(parts.get(0));
+      @Nullable Integer score = Ints.tryParse(parts.get(1));
       if (id == null || score == null) {
         return null;
       }
@@ -261,13 +261,13 @@ final class TestCorrespondences {
       Correspondence.from(
               // If we were allowed to use lambdas, this would be:
               // (String a, Record e) -> {
-              //   @NullableDecl Record actualRecord = Record.parse(a);
+              //   @Nullable Record actualRecord = Record.parse(a);
               //   return actualRecord != null && recordsAreCloseEnough(actualRecord, e);
               // },
               new Correspondence.BinaryPredicate<String, Record>() {
                 @Override
                 public boolean apply(String actual, Record expected) {
-                  @NullableDecl Record actualRecord = Record.parse(actual);
+                  @Nullable Record actualRecord = Record.parse(actual);
                   return actualRecord != null && recordsAreCloseEnough(actualRecord, expected);
                 }
               },
@@ -275,19 +275,19 @@ final class TestCorrespondences {
           .formattingDiffsUsing(
               // If we were allowe to use lambdas, this would be:
               // (a, e) -> {
-              //   @NullableDecl Record actualRecord = Record.parse(a);
+              //   @Nullable Record actualRecord = Record.parse(a);
               //   return actualRecord != null ? formatRecordDiff(actualRecord, e) : null;
               // });
               new Correspondence.DiffFormatter<String, Record>() {
                 @Override
                 public String formatDiff(String actual, Record expected) {
-                  @NullableDecl Record actualRecord = Record.parse(actual);
+                  @Nullable Record actualRecord = Record.parse(actual);
                   return actualRecord != null ? formatRecordDiff(actualRecord, expected) : null;
                 }
               });
 
   private static boolean recordsAreCloseEnough(
-      @NullableDecl Record actual, @NullableDecl Record expected) {
+      @Nullable Record actual, @Nullable Record expected) {
     if (actual == null) {
       return expected == null;
     }
@@ -313,7 +313,7 @@ final class TestCorrespondences {
       new Function<Record, Integer>() {
 
         @Override
-        @NullableDecl
+        @Nullable
         public Integer apply(Record record) {
           return record.hasId() ? record.getId() : null;
         }
@@ -327,7 +327,7 @@ final class TestCorrespondences {
       new Function<Record, Integer>() {
 
         @Override
-        @NullableDecl
+        @Nullable
         public Integer apply(Record record) {
           if (record == null) {
             return 0;
@@ -345,9 +345,9 @@ final class TestCorrespondences {
       new Function<String, Integer>() {
 
         @Override
-        @NullableDecl
+        @Nullable
         public Integer apply(String str) {
-          @NullableDecl Record record = Record.parse(str);
+          @Nullable Record record = Record.parse(str);
           return record != null ? RECORD_ID.apply(record) : null;
         }
       };
@@ -357,7 +357,7 @@ final class TestCorrespondences {
           // If we were allowed to use method references, this would be Objects::equal.
           new Correspondence.BinaryPredicate<Object, Object>() {
             @Override
-            public boolean apply(@NullableDecl Object actual, @NullableDecl Object expected) {
+            public boolean apply(@Nullable Object actual, @Nullable Object expected) {
               return Objects.equal(actual, expected);
             }
           },

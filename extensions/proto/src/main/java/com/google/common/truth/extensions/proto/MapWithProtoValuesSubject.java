@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Truth subject for maps with protocol buffers for values.
@@ -65,12 +65,12 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
   private final FluentEqualityConfig config;
 
   protected MapWithProtoValuesSubject(
-      FailureMetadata failureMetadata, @NullableDecl Map<?, M> map) {
+      FailureMetadata failureMetadata, @Nullable Map<?, M> map) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), map);
   }
 
   MapWithProtoValuesSubject(
-      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl Map<?, M> map) {
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable Map<?, M> map) {
     super(failureMetadata, map);
     this.metadata = failureMetadata;
     this.actual = map;
@@ -849,7 +849,7 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
     }
 
     @Override
-    public void containsEntry(@NullableDecl Object expectedKey, @NullableDecl M expectedValue) {
+    public void containsEntry(@Nullable Object expectedKey, @Nullable M expectedValue) {
       subject
           .usingCorrespondence(Arrays.asList(expectedValue))
           .containsEntry(expectedKey, expectedValue);
@@ -857,7 +857,7 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
 
     @Override
     public void doesNotContainEntry(
-        @NullableDecl Object excludedKey, @NullableDecl M excludedValue) {
+        @Nullable Object excludedKey, @Nullable M excludedValue) {
       subject
           .usingCorrespondence(Arrays.asList(excludedValue))
           .doesNotContainEntry(excludedKey, excludedValue);
@@ -866,7 +866,7 @@ public class MapWithProtoValuesSubject<M extends Message> extends MapSubject {
     @Override
     @CanIgnoreReturnValue
     @SuppressWarnings("unchecked") // ClassCastException is fine
-    public Ordered containsExactly(@NullableDecl Object k0, @NullableDecl M v0, Object... rest) {
+    public Ordered containsExactly(@Nullable Object k0, @Nullable M v0, Object... rest) {
       List<M> expectedValues = new ArrayList<>();
       expectedValues.add(v0);
       for (int i = 1; i < rest.length; i += 2) {

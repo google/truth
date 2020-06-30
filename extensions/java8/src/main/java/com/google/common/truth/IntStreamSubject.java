@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for {@link IntStream} subjects.
@@ -44,7 +44,7 @@ public final class IntStreamSubject extends Subject {
 
   private final List<?> actualList;
 
-  private IntStreamSubject(FailureMetadata failureMetadata, @NullableDecl IntStream stream) {
+  private IntStreamSubject(FailureMetadata failureMetadata, @Nullable IntStream stream) {
     super(failureMetadata, stream);
     this.actualList =
         (stream == null) ? null : stream.boxed().collect(toCollection(ArrayList::new));

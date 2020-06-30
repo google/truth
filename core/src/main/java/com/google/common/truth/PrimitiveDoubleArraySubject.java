@@ -23,7 +23,7 @@ import static com.google.common.truth.Correspondence.tolerance;
 import com.google.common.primitives.Doubles;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Arrays;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A Subject for {@code double[]}.
@@ -34,7 +34,7 @@ public final class PrimitiveDoubleArraySubject extends AbstractArraySubject {
   private final double[] actual;
 
   PrimitiveDoubleArraySubject(
-      FailureMetadata metadata, @NullableDecl double[] o, @NullableDecl String typeDescription) {
+      FailureMetadata metadata, @Nullable double[] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Booleans;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A Subject for {@code boolean[]}.
@@ -27,7 +27,7 @@ public final class PrimitiveBooleanArraySubject extends AbstractArraySubject {
   private final boolean[] actual;
 
   PrimitiveBooleanArraySubject(
-      FailureMetadata metadata, @NullableDecl boolean[] o, @NullableDecl String typeDescription) {
+      FailureMetadata metadata, @Nullable boolean[] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

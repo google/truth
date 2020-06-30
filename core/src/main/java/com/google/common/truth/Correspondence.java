@@ -31,7 +31,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Determines whether an instance of type {@code A} corresponds in some way to an instance of type
@@ -132,7 +132,7 @@ public abstract class Correspondence<A, E> {
      * Returns whether or not the actual and expected values satisfy the condition defined by this
      * predicate.
      */
-    boolean apply(@NullableDecl A actual, @NullableDecl E expected);
+    boolean apply(@Nullable A actual, @Nullable E expected);
   }
 
   private static final class FromBinaryPredicate<A, E> extends Correspondence<A, E> {
@@ -145,7 +145,7 @@ public abstract class Correspondence<A, E> {
     }
 
     @Override
-    public boolean compare(@NullableDecl A actual, @NullableDecl E expected) {
+    public boolean compare(@Nullable A actual, @Nullable E expected) {
       return predicate.apply(actual, expected);
     }
 
@@ -259,7 +259,7 @@ public abstract class Correspondence<A, E> {
     }
 
     @Override
-    public boolean compare(@NullableDecl A actual, @NullableDecl E expected) {
+    public boolean compare(@Nullable A actual, @Nullable E expected) {
       return Objects.equal(actualTransform.apply(actual), expectedTransform.apply(expected));
     }
 
@@ -369,8 +369,8 @@ public abstract class Correspondence<A, E> {
      * Returns a {@link String} describing the difference between the {@code actual} and {@code
      * expected} values, if possible, or {@code null} if not.
      */
-    @NullableDecl
-    String formatDiff(@NullableDecl A actual, @NullableDecl E expected);
+    @Nullable
+    String formatDiff(@Nullable A actual, @Nullable E expected);
   }
 
   private static class FormattingDiffs<A, E> extends Correspondence<A, E> {
@@ -384,13 +384,13 @@ public abstract class Correspondence<A, E> {
     }
 
     @Override
-    public boolean compare(@NullableDecl A actual, @NullableDecl E expected) {
+    public boolean compare(@Nullable A actual, @Nullable E expected) {
       return delegate.compare(actual, expected);
     }
 
     @Override
-    @NullableDecl
-    public String formatDiff(@NullableDecl A actual, @NullableDecl E expected) {
+    @Nullable
+    public String formatDiff(@Nullable A actual, @Nullable E expected) {
       return formatter.formatDiff(actual, expected);
     }
 
@@ -481,7 +481,7 @@ public abstract class Correspondence<A, E> {
    * returned false. (Note that, in the latter case at least, it is likely that the test author's
    * intention was <i>not</i> for the test to pass with these values.)
    */
-  public abstract boolean compare(@NullableDecl A actual, @NullableDecl E expected);
+  public abstract boolean compare(@Nullable A actual, @Nullable E expected);
 
   private static class StoredException {
 
@@ -683,7 +683,7 @@ public abstract class Correspondence<A, E> {
    * above, but note that assertions using it <i>must</i> fail later if an exception was stored.
    */
   final boolean safeCompare(
-      @NullableDecl A actual, @NullableDecl E expected, ExceptionStore exceptions) {
+      @Nullable A actual, @Nullable E expected, ExceptionStore exceptions) {
     try {
       return compare(actual, expected);
     } catch (RuntimeException e) {
@@ -709,8 +709,8 @@ public abstract class Correspondence<A, E> {
    * exception and continue to describe the original failure as if this method had returned null,
    * mentioning the failure from this method as additional information.
    */
-  @NullableDecl
-  public String formatDiff(@NullableDecl A actual, @NullableDecl E expected) {
+  @Nullable
+  public String formatDiff(@Nullable A actual, @Nullable E expected) {
     return null;
   }
 
@@ -719,9 +719,9 @@ public abstract class Correspondence<A, E> {
    * the result. If it does throw, adds the exception to the given {@link ExceptionStore} and
    * returns null.
    */
-  @NullableDecl
+  @Nullable
   final String safeFormatDiff(
-      @NullableDecl A actual, @NullableDecl E expected, ExceptionStore exceptions) {
+      @Nullable A actual, @Nullable E expected, ExceptionStore exceptions) {
     try {
       return formatDiff(actual, expected);
     } catch (RuntimeException e) {
@@ -768,7 +768,7 @@ public abstract class Correspondence<A, E> {
    */
   @Deprecated
   @Override
-  public final boolean equals(@NullableDecl Object o) {
+  public final boolean equals(@Nullable Object o) {
     throw new UnsupportedOperationException(
         "Correspondence.equals(object) is not supported. If you meant to compare objects, use"
             + " .compare(actual, expected) instead.");

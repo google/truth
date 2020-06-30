@@ -21,7 +21,7 @@ import static com.google.common.truth.Truth.assertAbout;
 import com.google.common.truth.Subject;
 import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.protobuf.MessageLite;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A set of static methods to begin a Truth assertion chain for the lite version of protocol
@@ -37,7 +37,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 @CheckReturnValue
 public final class LiteProtoTruth {
-  public static LiteProtoSubject assertThat(@NullableDecl MessageLite messageLite) {
+  public static LiteProtoSubject assertThat(@Nullable MessageLite messageLite) {
     return assertAbout(liteProtos()).that(messageLite);
   }
 

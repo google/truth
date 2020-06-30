@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Longs;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A Subject for {@code long[]}.
@@ -27,7 +27,7 @@ public final class PrimitiveLongArraySubject extends AbstractArraySubject {
   private final long[] actual;
 
   PrimitiveLongArraySubject(
-      FailureMetadata metadata, @NullableDecl long[] o, @NullableDecl String typeDescription) {
+      FailureMetadata metadata, @Nullable long[] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

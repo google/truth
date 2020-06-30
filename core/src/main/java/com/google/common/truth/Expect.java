@@ -30,7 +30,7 @@ import com.google.common.truth.Truth.SimpleAssertionError;
 import com.google.errorprone.annotations.concurrent.GuardedBy;
 import java.util.ArrayList;
 import java.util.List;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.TestRule;
@@ -101,7 +101,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
       inRuleContext = DURING;
     }
 
-    synchronized void leaveRuleContext(@NullableDecl Throwable caught) throws Throwable {
+    synchronized void leaveRuleContext(@Nullable Throwable caught) throws Throwable {
       try {
         if (caught == null) {
           doLeaveRuleContext();
@@ -172,7 +172,7 @@ public final class Expect extends StandardSubjectBuilder implements TestRule {
     }
 
     @GuardedBy("this")
-    private void doCheckInRuleContext(@NullableDecl AssertionError failure) {
+    private void doCheckInRuleContext(@Nullable AssertionError failure) {
       switch (inRuleContext) {
         case BEFORE:
           throw new IllegalStateException(

@@ -1508,7 +1508,7 @@ final class ActualValueInference {
   }
 
   /*
-   * For @AutoValue, which doesn't support @NullableDecl. (We're avoiding both JSR305 and the
+   * For @AutoValue, which doesn't support @Nullable. (We're avoiding both JSR305 and the
    * Checker Framework type annotations.)
    */
   @interface Nullable {}
