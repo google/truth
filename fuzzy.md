@@ -141,7 +141,7 @@ with ID 3, or that the element with ID 4 wasn't equivalent to the one it
 expected.
 
 (If an assertion about a `Map` fails, the failure message will automatically
-miss up any missing and unexpected entries using their keys. You can think of
+match up any missing and unexpected entries using their keys. You can think of
 the `displayingDiffsPairedBy` method as providing an equivalent for an assertion
 about an `Iterable`. Note that this won't affect whether the test passes or
 fails.)
