@@ -26,7 +26,6 @@ import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
 
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -74,7 +73,7 @@ public class MapSubject extends Subject {
       return;
     }
 
-    containsEntriesInAnyOrder((Map<?, ?>) other, "is equal to", false);
+    containsEntriesInAnyOrder((Map<?, ?>) other, /* allowUnexpected= */ false);
   }
 
   /** Fails if the map is not empty. */
@@ -109,32 +108,32 @@ public class MapSubject extends Subject {
 
   /** Fails if the map does not contain the given entry. */
   public final void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
-    Map.Entry<Object, Object> entry = Maps.immutableEntry(key, value);
+    Map.Entry<Object, Object> entry = immutableEntry(key, value);
     if (!actual.entrySet().contains(entry)) {
       List<Object> keyList = Lists.newArrayList(key);
       List<Object> valueList = Lists.newArrayList(value);
+      // TODO(cpovirk): Move the check for the correct key (actual.containsKey) ahead of the check
+      // for a different key with the same toString. And the same for values.
       if (hasMatchingToStringPair(actual.keySet(), keyList)) {
         failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that <%s> contains entry <%s (%s)>. However, it does contain keys "
-                        + "<%s>.",
-                    actualCustomStringRepresentationForPackageMembersToCall(),
-                    entry,
-                    objectToTypeName(entry),
-                    countDuplicatesAndAddTypeInfo(
-                        retainMatchingToString(actual.keySet(), keyList /* itemsToCheck */)))));
+            fact("expected to contain entry", entry),
+            fact("an instance of", objectToTypeName(entry)),
+            simpleFact("but did not"),
+            fact(
+                "though it did contain keys",
+                countDuplicatesAndAddTypeInfo(
+                    retainMatchingToString(actual.keySet(), /* itemsToCheck= */ keyList))),
+            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else if (hasMatchingToStringPair(actual.values(), valueList)) {
         failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that <%s> contains entry <%s (%s)>. However, it does contain values "
-                        + "<%s>.",
-                    actualCustomStringRepresentationForPackageMembersToCall(),
-                    entry,
-                    objectToTypeName(entry),
-                    countDuplicatesAndAddTypeInfo(
-                        retainMatchingToString(actual.values(), valueList /* itemsToCheck */)))));
+            fact("expected to contain entry", entry),
+            fact("an instance of", objectToTypeName(entry)),
+            simpleFact("but did not"),
+            fact(
+                "though it did contain values",
+                countDuplicatesAndAddTypeInfo(
+                    retainMatchingToString(actual.values(), /* itemsToCheck= */ valueList))),
+            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else if (actual.containsKey(key)) {
         Object actualValue = actual.get(key);
         /*
@@ -156,14 +155,10 @@ public class MapSubject extends Subject {
           }
         }
         failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that <%s> contains entry <%s>. "
-                        + "However, the following keys are mapped to <%s>: %s",
-                    actualCustomStringRepresentationForPackageMembersToCall(),
-                    entry,
-                    value,
-                    keys)));
+            fact("expected to contain entry", entry),
+            simpleFact("but did not"),
+            fact("though it did contain keys with that value", keys),
+            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else {
         failWithActual("expected to contain entry", entry);
       }
@@ -239,10 +234,10 @@ public class MapSubject extends Subject {
         return ALREADY_FAILED;
       }
     }
-    boolean containsAnyOrder =
-        containsEntriesInAnyOrder(expectedMap, "contains exactly", /* allowUnexpected= */ false);
+    boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ false);
     if (containsAnyOrder) {
-      return new MapInOrder(expectedMap, "contains exactly these entries in order");
+      return new MapInOrder(
+          expectedMap, /* allowUnexpected = */ false, /* correspondence = */ null);
     } else {
       return ALREADY_FAILED;
     }
@@ -254,31 +249,38 @@ public class MapSubject extends Subject {
     if (expectedMap.isEmpty()) {
       return IN_ORDER;
     }
-    boolean containsAnyOrder =
-        containsEntriesInAnyOrder(expectedMap, "contains at least", /* allowUnexpected= */ true);
+    boolean containsAnyOrder = containsEntriesInAnyOrder(expectedMap, /* allowUnexpected= */ true);
     if (containsAnyOrder) {
-      return new MapInOrder(expectedMap, "contains at least these entries in order");
+      return new MapInOrder(expectedMap, /* allowUnexpected = */ true, /* correspondence = */ null);
     } else {
       return ALREADY_FAILED;
     }
   }
 
   @CanIgnoreReturnValue
-  private boolean containsEntriesInAnyOrder(
-      Map<?, ?> expectedMap, String failVerb, boolean allowUnexpected) {
+  private boolean containsEntriesInAnyOrder(Map<?, ?> expectedMap, boolean allowUnexpected) {
     MapDifference<Object, Object, Object> diff =
         MapDifference.create(actual, expectedMap, allowUnexpected, EQUALITY);
     if (diff.isEmpty()) {
       return true;
     }
+    // TODO(cpovirk): Consider adding a special-case where the diff contains exactly one key which
+    // is present with the wrong value, doing an isEqualTo assertion on the values. Pro: This gives
+    // us all the extra power of isEqualTo, including maybe throwing a ComparisonFailure. Con: It
+    // might be misleading to report a single mismatched value when the assertion was on the whole
+    // map - this could be mitigated by adding extra info explaining that. (Would need to ensure
+    // that it still fails in cases where e.g. the value is 1 and it should be 1L, where isEqualTo
+    // succeeds. Could do that by having a stricter isEqualTo-like method, or more simply by making
+    // standardIsEqualTo be package-private and return a boolean indicating whether it passed or
+    // failed and falling through to the existing logic if it passed.)
+    // First, we need to decide whether this kind of cleverness is a line we want to cross.
     failWithoutActual(
-        simpleFact(
-            lenientFormat(
-                "Not true that <%s> %s <%s>. It %s",
-                actualCustomStringRepresentationForPackageMembersToCall(),
-                failVerb,
-                expectedMap,
-                diff.describe(VALUE_DIFFERENCE_FORMAT))));
+        ImmutableList.<Fact>builder()
+            .addAll(diff.describe(/* differ = */ null))
+            .add(simpleFact("---"))
+            .add(fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMap))
+            .add(butWas())
+            .build());
     return false;
   }
 
@@ -294,6 +296,10 @@ public class MapSubject extends Subject {
           return Objects.equal(actualValue, expectedValue);
         }
       };
+
+  private interface Differ<A, E> {
+    String diff(A actual, E expected);
+  }
 
   // This is mostly like the MapDifference code in com.google.common.collect, generalized to remove
   // the requirement that the values of the two maps are of the same type and are compared with a
@@ -346,32 +352,31 @@ public class MapSubject extends Subject {
       return missing.isEmpty() && unexpected.isEmpty() && wrongValues.isEmpty();
     }
 
-    String describe(Function<ValueDifference<A, E>, String> valueDiffFormat) {
+    ImmutableList<Fact> describe(@NullableDecl Differ<? super A, ? super E> differ) {
       boolean includeKeyTypes = includeKeyTypes();
-      StringBuilder description = new StringBuilder();
+      ImmutableList.Builder<Fact> facts = ImmutableList.builder();
+      if (!wrongValues.isEmpty()) {
+        facts.add(simpleFact("keys with wrong values"));
+      }
+      for (Map.Entry<K, ValueDifference<A, E>> entry : wrongValues.entrySet()) {
+        facts.add(fact("for key", maybeAddType(entry.getKey(), includeKeyTypes)));
+        facts.addAll(entry.getValue().describe(differ));
+      }
       if (!missing.isEmpty()) {
-        description
-            .append("is missing keys for the following entries: ")
-            .append(includeKeyTypes ? addKeyTypes(missing) : missing);
+        facts.add(simpleFact("missing keys"));
+      }
+      for (Map.Entry<K, E> entry : missing.entrySet()) {
+        facts.add(fact("for key", maybeAddType(entry.getKey(), includeKeyTypes)));
+        facts.add(fact("expected value", entry.getValue()));
       }
       if (!unexpected.isEmpty()) {
-        if (description.length() > 0) {
-          description.append(" and ");
-        }
-        description
-            .append("has the following entries with unexpected keys: ")
-            .append(includeKeyTypes ? addKeyTypes(unexpected) : unexpected);
+        facts.add(simpleFact("unexpected keys"));
       }
-      if (!wrongValues.isEmpty()) {
-        if (description.length() > 0) {
-          description.append(" and ");
-        }
-        Map<K, String> wrongValuesFormatted = Maps.transformValues(wrongValues, valueDiffFormat);
-        description
-            .append("has the following entries with matching keys but different values: ")
-            .append(includeKeyTypes ? addKeyTypes(wrongValuesFormatted) : wrongValuesFormatted);
+      for (Map.Entry<K, A> entry : unexpected.entrySet()) {
+        facts.add(fact("for key", maybeAddType(entry.getKey(), includeKeyTypes)));
+        facts.add(fact("unexpected value", entry.getValue()));
       }
-      return description.toString();
+      return facts.build();
     }
 
     private boolean includeKeyTypes() {
@@ -393,63 +398,44 @@ public class MapSubject extends Subject {
       this.actual = actual;
       this.expected = expected;
     }
-  }
 
-  /** A formatting function for value differences when compared for equality. */
-  @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
-  private static final Function<ValueDifference<Object, Object>, String> VALUE_DIFFERENCE_FORMAT =
-      new Function<ValueDifference<Object, Object>, String>() {
-        @Override
-        public String apply(ValueDifference<Object, Object> values) {
-          boolean includeTypes =
-              String.valueOf(values.actual).equals(String.valueOf(values.expected));
-          return lenientFormat(
-              "(expected %s but got %s)",
-              includeTypes ? new TypedToStringWrapper(values.expected) : values.expected,
-              includeTypes ? new TypedToStringWrapper(values.actual) : values.actual);
+    ImmutableList<Fact> describe(@NullableDecl Differ<? super A, ? super E> differ) {
+      boolean includeTypes =
+          differ == null && String.valueOf(actual).equals(String.valueOf(expected));
+      ImmutableList.Builder<Fact> facts =
+          ImmutableList.<Fact>builder()
+              .add(fact("expected value", maybeAddType(expected, includeTypes)))
+              .add(fact("but got value", maybeAddType(actual, includeTypes)));
+
+      if (differ != null) {
+        String diffString = differ.diff(actual, expected);
+        if (diffString != null) {
+          facts.add(fact("diff", diffString));
         }
-      };
-
-  private static final Map<Object, Object> addKeyTypes(Map<?, ?> in) {
-    Map<Object, Object> out = Maps.newLinkedHashMap();
-    for (Map.Entry<?, ?> entry : in.entrySet()) {
-      out.put(new TypedToStringWrapper(entry.getKey()), entry.getValue());
+      }
+      return facts.build();
     }
-    return out;
   }
 
-  private static class TypedToStringWrapper {
-
-    private final Object delegate;
-
-    TypedToStringWrapper(Object delegate) {
-      this.delegate = delegate;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-      return Objects.equal(delegate, other);
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(delegate);
-    }
-
-    @Override
-    public String toString() {
-      return lenientFormat("%s (%s)", delegate, objectToTypeName(delegate));
-    }
+  private static String maybeAddType(Object object, boolean includeTypes) {
+    return includeTypes
+        ? lenientFormat("%s (%s)", object, objectToTypeName(object))
+        : String.valueOf(object);
   }
 
   private class MapInOrder implements Ordered {
 
     private final Map<?, ?> expectedMap;
-    private final String failVerb;
+    private final boolean allowUnexpected;
+    @NullableDecl private final Correspondence<?, ?> correspondence;
 
-    MapInOrder(Map<?, ?> expectedMap, String failVerb) {
+    MapInOrder(
+        Map<?, ?> expectedMap,
+        boolean allowUnexpected,
+        @NullableDecl Correspondence<?, ?> correspondence) {
       this.expectedMap = expectedMap;
-      this.failVerb = failVerb;
+      this.allowUnexpected = allowUnexpected;
+      this.correspondence = correspondence;
     }
 
     /**
@@ -466,13 +452,21 @@ public class MapSubject extends Subject {
       List<?> actualKeyOrder =
           Lists.newArrayList(Sets.intersection(actual.keySet(), expectedMap.keySet()));
       if (!actualKeyOrder.equals(expectedKeyOrder)) {
-        failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that <%s> %s <%s>",
-                    actualCustomStringRepresentationForPackageMembersToCall(),
-                    failVerb,
-                    expectedMap)));
+        ImmutableList.Builder<Fact> facts =
+            ImmutableList.<Fact>builder()
+                .add(
+                    simpleFact(
+                        allowUnexpected
+                            ? "required entries were all found, but order was wrong"
+                            : "entries match, but order was wrong"))
+                .add(
+                    fact(
+                        allowUnexpected ? "expected to contain at least" : "expected",
+                        expectedMap));
+        if (correspondence != null) {
+          facts.add(correspondence.describeForMapValues());
+        }
+        failWithActual(facts.build());
       }
     }
   }
@@ -555,33 +549,22 @@ public class MapSubject extends Subject {
         if (diff != null) {
           failWithoutActual(
               ImmutableList.<Fact>builder()
-                  .add(
-                      simpleFact(
-                          lenientFormat(
-                              "Not true that <%s> contains an entry with key <%s> and a value that "
-                                  + "%s <%s>. However, it has a mapping from that key to <%s> "
-                                  + "(diff: %s)",
-                              actualCustomStringRepresentationForPackageMembersToCall(),
-                              expectedKey,
-                              correspondence,
-                              expectedValue,
-                              actualValue,
-                              diff)))
+                  .add(fact("for key", expectedKey))
+                  .add(fact("expected value", expectedValue))
+                  .add(correspondence.describeForMapValues())
+                  .add(fact("but got value", actualValue))
+                  .add(fact("diff", diff))
+                  .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
                   .build());
         } else {
           failWithoutActual(
               ImmutableList.<Fact>builder()
-                  .add(
-                      simpleFact(
-                          lenientFormat(
-                              "Not true that <%s> contains an entry with key <%s> and a value that "
-                                  + "%s <%s>. However, it has a mapping from that key to <%s>",
-                              actualCustomStringRepresentationForPackageMembersToCall(),
-                              expectedKey,
-                              correspondence,
-                              expectedValue,
-                              actualValue)))
+                  .add(fact("for key", expectedKey))
+                  .add(fact("expected value", expectedValue))
+                  .add(correspondence.describeForMapValues())
+                  .add(fact("but got value", actualValue))
+                  .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
                   .build());
         }
@@ -598,32 +581,23 @@ public class MapSubject extends Subject {
           // Found matching values with non-matching keys.
           failWithoutActual(
               ImmutableList.<Fact>builder()
-                  .add(
-                      simpleFact(
-                          lenientFormat(
-                              "Not true that <%s> contains an entry with key <%s> and a value that "
-                                  + "%s <%s>. However, the following keys are mapped to such "
-                                  + "values: <%s>",
-                              actualCustomStringRepresentationForPackageMembersToCall(),
-                              expectedKey,
-                              correspondence,
-                              expectedValue,
-                              keys)))
+                  .add(fact("for key", expectedKey))
+                  .add(fact("expected value", expectedValue))
+                  .add(correspondence.describeForMapValues())
+                  .add(simpleFact("but was missing"))
+                  .add(fact("other keys with matching values", keys))
+                  .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
                   .build());
         } else {
           // Did not find matching key or value.
           failWithoutActual(
               ImmutableList.<Fact>builder()
-                  .add(
-                      simpleFact(
-                          lenientFormat(
-                              "Not true that <%s> contains an entry with key <%s> and a value that "
-                                  + "%s <%s>",
-                              actualCustomStringRepresentationForPackageMembersToCall(),
-                              expectedKey,
-                              correspondence,
-                              expectedValue)))
+                  .add(fact("for key", expectedKey))
+                  .add(fact("expected value", expectedValue))
+                  .add(correspondence.describeForMapValues())
+                  .add(simpleFact("but was missing"))
+                  .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
                   .build());
         }
@@ -644,29 +618,23 @@ public class MapSubject extends Subject {
           // The matching key had a matching value. There's no need to check exceptions here,
           // because if Correspondence.compare() threw then safeCompare() would return false.
           failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that <%s> does not contain an entry with key <%s> and a value that "
-                          + "%s <%s>. It maps that key to <%s>",
-                      actualCustomStringRepresentationForPackageMembersToCall(),
-                      excludedKey,
-                      correspondence,
-                      excludedValue,
-                      actualValue)));
+              ImmutableList.<Fact>builder()
+                  .add(fact("expected not to contain", immutableEntry(excludedKey, excludedValue)))
+                  .add(correspondence.describeForMapValues())
+                  .add(fact("but contained", immutableEntry(excludedKey, actualValue)))
+                  .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
+                  .addAll(exceptions.describeAsAdditionalInfo())
+                  .build());
         }
         // The value didn't match, but we still need to fail if we hit an exception along the way.
         if (exceptions.hasCompareException()) {
-          failWithActual(
+          failWithoutActual(
               ImmutableList.<Fact>builder()
                   .addAll(exceptions.describeAsMainCause())
-                  .add(
-                      simpleFact(
-                          "comparing contents by testing that no entry had the forbidden key and "
-                              + "a value that "
-                              + correspondence
-                              + " the forbidden value"))
-                  .add(fact("forbidden key", excludedKey))
-                  .add(fact("forbidden value", excludedValue))
+                  .add(fact("expected not to contain", immutableEntry(excludedKey, excludedValue)))
+                  .add(correspondence.describeForMapValues())
+                  .add(simpleFact("found no match (but failing because of exception)"))
+                  .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .build());
         }
       }
@@ -724,7 +692,7 @@ public class MapSubject extends Subject {
           return ALREADY_FAILED;
         }
       }
-      return internalContainsEntriesIn("exactly", expectedMap, false);
+      return internalContainsEntriesIn(expectedMap, /* allowUnexpected = */ false);
     }
 
     /**
@@ -736,11 +704,11 @@ public class MapSubject extends Subject {
       if (expectedMap.isEmpty()) {
         return IN_ORDER;
       }
-      return internalContainsEntriesIn("at least", expectedMap, true);
+      return internalContainsEntriesIn(expectedMap, /* allowUnexpected = */ true);
     }
 
     private <K, V extends E> Ordered internalContainsEntriesIn(
-        String modifier, Map<K, V> expectedMap, boolean allowUnexpected) {
+        Map<K, V> expectedMap, boolean allowUnexpected) {
       final Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
       MapDifference<Object, A, V> diff =
           MapDifference.create(
@@ -757,49 +725,26 @@ public class MapSubject extends Subject {
         // The maps correspond exactly. There's no need to check exceptions here, because if
         // Correspondence.compare() threw then safeCompare() would return false and the diff would
         // record that we had the wrong value for that key.
-        return new MapInOrder(
-            expectedMap,
-            lenientFormat(
-                "contains, in order, %s one entry that has a key that is equal to and a "
-                    + "value that %s the key and value of each entry of",
-                modifier, correspondence));
+        return new MapInOrder(expectedMap, allowUnexpected, correspondence);
       }
       failWithoutActual(
           ImmutableList.<Fact>builder()
-              .add(
-                  simpleFact(
-                      lenientFormat(
-                          "Not true that <%s> contains %s one entry that has a key that is "
-                              + "equal to and a value that %s the key and value of each entry of "
-                              + "<%s>. It %s",
-                          actualCustomStringRepresentationForPackageMembersToCall(),
-                          modifier,
-                          correspondence,
-                          expectedMap,
-                          diff.describe(this.<V>valueDiffFormat(exceptions)))))
+              .addAll(diff.describe(differ(exceptions)))
+              .add(simpleFact("---"))
+              .add(fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMap))
+              .add(correspondence.describeForMapValues())
+              .add(butWas())
               .addAll(exceptions.describeAsAdditionalInfo())
               .build());
       return ALREADY_FAILED;
     }
 
-    /**
-     * Returns a formatting function for value differences when compared using the current
-     * correspondence.
-     */
-    private final <V extends E> Function<ValueDifference<A, V>, String> valueDiffFormat(
-        final Correspondence.ExceptionStore exceptions) {
-      return new Function<ValueDifference<A, V>, String>() {
+    @SuppressWarnings("UnnecessaryAnonymousClass") // for Java 7 compatibility
+    private <V extends E> Differ<A, V> differ(final Correspondence.ExceptionStore exceptions) {
+      return new Differ<A, V>() {
         @Override
-        public String apply(ValueDifference<A, V> values) {
-          @NullableDecl
-          String diffString =
-              correspondence.safeFormatDiff(values.actual, values.expected, exceptions);
-          if (diffString != null) {
-            return lenientFormat(
-                "(expected %s but got %s, diff: %s)", values.expected, values.actual, diffString);
-          } else {
-            return lenientFormat("(expected %s but got %s)", values.expected, values.actual);
-          }
+        public String diff(A actual, V expected) {
+          return correspondence.safeFormatDiff(actual, expected, exceptions);
         }
       };
     }

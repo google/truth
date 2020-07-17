@@ -19,7 +19,6 @@ import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUAL
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 import static org.junit.Assert.fail;
 
@@ -141,45 +140,48 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void containsExactlyExtraKey() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     expectFailureWhenTestingThat(actual).containsExactly("feb", 2, "jan", 1);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> contains exactly <{feb=2, jan=1}>. "
-                + "It has the following entries with unexpected keys: {march=3}");
+    assertFailureKeys(
+        "unexpected keys", "for key", "unexpected value", "---", "expected", "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("unexpected value", "3");
+    assertFailureValue("expected", "{feb=2, jan=1}");
+    assertFailureValue("but was", "{jan=1, feb=2, march=3}");
   }
 
   @Test
   public void containsExactlyExtraKeyInOrder() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     expectFailureWhenTestingThat(actual).containsExactly("feb", 2, "jan", 1).inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> contains exactly <{feb=2, jan=1}>. "
-                + "It has the following entries with unexpected keys: {march=3}");
+    assertFailureKeys(
+        "unexpected keys", "for key", "unexpected value", "---", "expected", "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("unexpected value", "3");
   }
 
   @Test
   public void containsExactlyMissingKey() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
     expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "march", 3, "feb", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2}> contains exactly <{jan=1, march=3, feb=2}>. "
-                + "It is missing keys for the following entries: {march=3}");
+    assertFailureKeys("missing keys", "for key", "expected value", "---", "expected", "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("expected value", "3");
   }
 
   @Test
   public void containsExactlyWrongValue() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "march", 33, "feb", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> contains exactly <{jan=1, march=33, feb=2}>. "
-                + "It has the following entries with matching keys but different values: "
-                + "{march=(expected 33 but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("expected value", "33");
+    assertFailureValue("but got value", "3");
   }
 
   @Test
@@ -187,64 +189,108 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     // Test for https://github.com/google/truth/issues/468
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "march", null, "feb", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> contains exactly "
-                + "<{jan=1, march=null, feb=2}>. It has the following entries with matching keys "
-                + "but different values: {march=(expected null but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("expected value", "null");
+    assertFailureValue("but got value", "3");
   }
 
   @Test
   public void containsExactlyExtraKeyAndMissingKey() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "march", 3);
     expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "feb", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, march=3}> contains exactly <{jan=1, feb=2}>. "
-                + "It is missing keys for the following entries: {feb=2} "
-                + "and has the following entries with unexpected keys: {march=3}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "feb");
+    assertFailureValue("expected value", "2");
+    assertFailureValueIndexed("for key", 1, "march");
+    assertFailureValue("unexpected value", "3");
   }
 
   @Test
   public void containsExactlyExtraKeyAndWrongValue() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "march", 33);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> contains exactly <{jan=1, march=33}>. "
-                + "It has the following entries with unexpected keys: {feb=2} "
-                + "and has the following entries with matching keys but different values: "
-                + "{march=(expected 33 but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "march");
+    assertFailureValue("expected value", "33");
+    assertFailureValue("but got value", "3");
+    assertFailureValueIndexed("for key", 1, "feb");
+    assertFailureValue("unexpected value", "2");
   }
 
   @Test
   public void containsExactlyMissingKeyAndWrongValue() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "march", 3);
     expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "march", 33, "feb", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, march=3}> contains exactly <{jan=1, march=33, feb=2}>. "
-                + "It is missing keys for the following entries: {feb=2} "
-                + "and has the following entries with matching keys but different values: "
-                + "{march=(expected 33 but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "march");
+    assertFailureValueIndexed("expected value", 0, "33");
+    assertFailureValue("but got value", "3");
+    assertFailureValueIndexed("for key", 1, "feb");
+    assertFailureValueIndexed("expected value", 1, "2");
   }
 
   @Test
   public void containsExactlyExtraKeyAndMissingKeyAndWrongValue() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "march", 3);
     expectFailureWhenTestingThat(actual).containsExactly("march", 33, "feb", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, march=3}> contains exactly <{march=33, feb=2}>. "
-                + "It is missing keys for the following entries: {feb=2} "
-                + "and has the following entries with unexpected keys: {jan=1} "
-                + "and has the following entries with matching keys but different values: "
-                + "{march=(expected 33 but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "missing keys",
+        "for key",
+        "expected value",
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "march");
+    assertFailureValueIndexed("expected value", 0, "33");
+    assertFailureValue("but got value", "3");
+    assertFailureValueIndexed("for key", 1, "feb");
+    assertFailureValueIndexed("expected value", 1, "2");
+    assertFailureValueIndexed("for key", 2, "jan");
+    assertFailureValue("unexpected value", "1");
   }
 
   @Test
@@ -255,11 +301,9 @@ public class MapSubjectTest extends BaseSubjectTestCase {
 
     assertThat(actual).containsExactly("jan", 1, "march", 3, "feb", 2);
     expectFailureWhenTestingThat(actual).containsExactly("jan", 1, "march", 3, "feb", 2).inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> contains exactly these entries in order "
-                + "<{jan=1, march=3, feb=2}>");
+    assertFailureKeys("entries match, but order was wrong", "expected", "but was");
+    assertFailureValue("expected", "{jan=1, march=3, feb=2}");
+    assertFailureValue("but was", "{jan=1, feb=2, march=3}");
   }
 
   @Test
@@ -287,38 +331,66 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void containsExactlyWrongValue_sameToStringForValues() {
     expectFailureWhenTestingThat(ImmutableMap.of("jan", 1L, "feb", 2L))
         .containsExactly("jan", 1, "feb", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2}> contains exactly <{jan=1, feb=2}>. "
-                + "It has the following entries with matching keys but different values: "
-                + "{jan=(expected 1 (java.lang.Integer) but got 1 (java.lang.Long)), "
-                + "feb=(expected 2 (java.lang.Integer) but got 2 (java.lang.Long))}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "jan");
+    assertFailureValueIndexed("expected value", 0, "1 (java.lang.Integer)");
+    assertFailureValueIndexed("but got value", 0, "1 (java.lang.Long)");
+    assertFailureValueIndexed("for key", 1, "feb");
+    assertFailureValueIndexed("expected value", 1, "2 (java.lang.Integer)");
+    assertFailureValueIndexed("but got value", 1, "2 (java.lang.Long)");
   }
 
   @Test
   public void containsExactlyWrongValue_sameToStringForKeys() {
     expectFailureWhenTestingThat(ImmutableMap.of(1L, "jan", 1, "feb"))
         .containsExactly(1, "jan", 1L, "feb");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{1=jan, 1=feb}> contains exactly <{1=jan, 1=feb}>. "
-                + "It has the following entries with matching keys but different values: "
-                + "{1 (java.lang.Integer)=(expected jan but got feb), "
-                + "1 (java.lang.Long)=(expected feb but got jan)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "1 (java.lang.Integer)");
+    assertFailureValueIndexed("expected value", 0, "jan");
+    assertFailureValueIndexed("but got value", 0, "feb");
+    assertFailureValueIndexed("for key", 1, "1 (java.lang.Long)");
+    assertFailureValueIndexed("expected value", 1, "feb");
+    assertFailureValueIndexed("but got value", 1, "jan");
   }
 
   @Test
   public void containsExactlyExtraKeyAndMissingKey_failsWithSameToStringForKeys() {
     expectFailureWhenTestingThat(ImmutableMap.of(1L, "jan", 2, "feb"))
         .containsExactly(1, "jan", 2, "feb");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{1=jan, 2=feb}> contains exactly <{1=jan, 2=feb}>. "
-                + "It is missing keys for the following entries: {1 (java.lang.Integer)=jan} "
-                + "and has the following entries with unexpected keys: {1 (java.lang.Long)=jan}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "1 (java.lang.Integer)");
+    assertFailureValue("expected value", "jan");
+    assertFailureValueIndexed("for key", 1, "1 (java.lang.Long)");
+    assertFailureValue("unexpected value", "jan");
   }
 
   @Test
@@ -409,23 +481,33 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void containsAtLeastMissingKey() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2);
     expectFailureWhenTestingThat(actual).containsAtLeast("jan", 1, "march", 3);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2}> contains at least <{jan=1, march=3}>. "
-                + "It is missing keys for the following entries: {march=3}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected to contain at least",
+        "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("expected value", "3");
+    assertFailureValue("expected to contain at least", "{jan=1, march=3}");
   }
 
   @Test
   public void containsAtLeastWrongValue() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     expectFailureWhenTestingThat(actual).containsAtLeast("jan", 1, "march", 33);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> contains at least <{jan=1, march=33}>. "
-                + "It has the following entries with matching keys but different values: "
-                + "{march=(expected 33 but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("expected value", "33");
+    assertFailureValue("but got value", "3");
   }
 
   @Test
@@ -433,25 +515,39 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     // Test for https://github.com/google/truth/issues/468
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
     expectFailureWhenTestingThat(actual).containsAtLeast("jan", 1, "march", null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> contains at least "
-                + "<{jan=1, march=null}>. It has the following entries with matching keys "
-                + "but different values: {march=(expected null but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("expected value", "null");
+    assertFailureValue("but got value", "3");
   }
 
   @Test
   public void containsAtLeastExtraKeyAndMissingKeyAndWrongValue() {
     ImmutableMap<String, Integer> actual = ImmutableMap.of("jan", 1, "march", 3);
     expectFailureWhenTestingThat(actual).containsAtLeast("march", 33, "feb", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, march=3}> contains at least <{march=33, feb=2}>. "
-                + "It is missing keys for the following entries: {feb=2} "
-                + "and has the following entries with matching keys but different values: "
-                + "{march=(expected 33 but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected to contain at least",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "march");
+    assertFailureValueIndexed("expected value", 0, "33");
+    assertFailureValue("but got value", "3");
+    assertFailureValueIndexed("for key", 1, "feb");
+    assertFailureValueIndexed("expected value", 1, "2");
   }
 
   @Test
@@ -460,11 +556,12 @@ public class MapSubjectTest extends BaseSubjectTestCase {
 
     assertThat(actual).containsAtLeast("march", 3, "feb", 2);
     expectFailureWhenTestingThat(actual).containsAtLeast("march", 3, "feb", 2).inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> contains at least these entries in order "
-                + "<{march=3, feb=2}>");
+    assertFailureKeys(
+        "required entries were all found, but order was wrong",
+        "expected to contain at least",
+        "but was");
+    assertFailureValue("expected to contain at least", "{march=3, feb=2}");
+    assertFailureValue("but was", "{jan=1, feb=2, march=3}");
   }
 
   @Test
@@ -490,37 +587,61 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void containsAtLeastWrongValue_sameToStringForValues() {
     expectFailureWhenTestingThat(ImmutableMap.of("jan", 1L, "feb", 2L, "mar", 3L))
         .containsAtLeast("jan", 1, "feb", 2);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, mar=3}> contains at least <{jan=1, feb=2}>. "
-                + "It has the following entries with matching keys but different values: "
-                + "{jan=(expected 1 (java.lang.Integer) but got 1 (java.lang.Long)), "
-                + "feb=(expected 2 (java.lang.Integer) but got 2 (java.lang.Long))}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "jan");
+    assertFailureValueIndexed("expected value", 0, "1 (java.lang.Integer)");
+    assertFailureValueIndexed("but got value", 0, "1 (java.lang.Long)");
+    assertFailureValueIndexed("for key", 1, "feb");
+    assertFailureValueIndexed("expected value", 1, "2 (java.lang.Integer)");
+    assertFailureValueIndexed("but got value", 1, "2 (java.lang.Long)");
   }
 
   @Test
   public void containsAtLeastWrongValue_sameToStringForKeys() {
     expectFailureWhenTestingThat(ImmutableMap.of(1L, "jan", 1, "feb"))
         .containsAtLeast(1, "jan", 1L, "feb");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{1=jan, 1=feb}> contains at least <{1=jan, 1=feb}>. "
-                + "It has the following entries with matching keys but different values: "
-                + "{1 (java.lang.Integer)=(expected jan but got feb), "
-                + "1 (java.lang.Long)=(expected feb but got jan)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "1 (java.lang.Integer)");
+    assertFailureValueIndexed("expected value", 0, "jan");
+    assertFailureValueIndexed("but got value", 0, "feb");
+    assertFailureValueIndexed("for key", 1, "1 (java.lang.Long)");
+    assertFailureValueIndexed("expected value", 1, "feb");
+    assertFailureValueIndexed("but got value", 1, "jan");
   }
 
   @Test
   public void containsAtLeastExtraKeyAndMissingKey_failsWithSameToStringForKeys() {
     expectFailureWhenTestingThat(ImmutableMap.of(1L, "jan", 2, "feb"))
         .containsAtLeast(1, "jan", 2, "feb");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{1=jan, 2=feb}> contains at least <{1=jan, 2=feb}>. "
-                + "It is missing keys for the following entries: {1 (java.lang.Integer)=jan}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected to contain at least",
+        "but was");
+    assertFailureValue("for key", "1 (java.lang.Integer)");
+    assertFailureValue("expected value", "jan");
   }
 
   @Test
@@ -537,14 +658,29 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "april", 4, "march", 5);
 
     expectFailureWhenTestingThat(actual).isEqualTo(expectedMap);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, april=4, march=5}>. "
-                + "It is missing keys for the following entries: {april=4} and "
-                + "has the following entries with unexpected keys: {feb=2} and "
-                + "has the following entries with matching keys but different values: "
-                + "{march=(expected 5 but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "missing keys",
+        "for key",
+        "expected value",
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "march");
+    assertFailureValueIndexed("expected value", 0, "5");
+    assertFailureValue("but got value", "3");
+    assertFailureValueIndexed("for key", 1, "april");
+    assertFailureValueIndexed("expected value", 1, "4");
+    assertFailureValueIndexed("for key", 2, "feb");
+    assertFailureValue("unexpected value", "2");
+    assertFailureValue("expected", "{jan=1, april=4, march=5}");
+    assertFailureValue("but was", "{jan=1, feb=2, march=3}");
   }
 
   @Test
@@ -553,12 +689,17 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 4);
 
     expectFailureWhenTestingThat(actual).isEqualTo(expectedMap);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=4}>. "
-                + "It has the following entries with matching keys but different values: "
-                + "{march=(expected 4 but got 3)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "march");
+    assertFailureValue("expected value", "4");
+    assertFailureValue("but got value", "3");
   }
 
   @Test
@@ -567,11 +708,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2);
 
     expectFailureWhenTestingThat(actual).isEqualTo(expectedMap);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2}>. "
-                + "It has the following entries with unexpected keys: {march=3}");
+    assertFailureKeys(
+        "unexpected keys", "for key", "unexpected value", "---", "expected", "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("unexpected value", "3");
   }
 
   @Test
@@ -580,11 +720,9 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
     expectFailureWhenTestingThat(actual).isEqualTo(expectedMap);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2}> is equal to <{jan=1, feb=2, march=3}>. "
-                + "It is missing keys for the following entries: {march=3}");
+    assertFailureKeys("missing keys", "for key", "expected value", "---", "expected", "but was");
+    assertFailureValue("for key", "march");
+    assertFailureValue("expected value", "3");
   }
 
   @Test
@@ -593,12 +731,20 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "mar", 3);
 
     expectFailureWhenTestingThat(actual).isEqualTo(expectedMap);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, mar=3}>. "
-                + "It is missing keys for the following entries: {mar=3} "
-                + "and has the following entries with unexpected keys: {march=3}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "mar");
+    assertFailureValue("expected value", "3");
+    assertFailureValueIndexed("for key", 1, "march");
+    assertFailureValue("unexpected value", "3");
   }
 
   @Test
@@ -608,12 +754,17 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     ImmutableMap<String, Integer> expectedMap = ImmutableMap.of("jan", 1, "feb", 2, "march", 3);
 
     expectFailureWhenTestingThat(actual).isEqualTo(expectedMap);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{jan=1, feb=2, march=3}> is equal to <{jan=1, feb=2, march=3}>. "
-                + "It has the following entries with matching keys but different values: "
-                + "{march=(expected 3 (java.lang.Integer) but got 3 (java.lang.Long))}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "march");
+    assertFailureValue("expected value", "3 (java.lang.Integer)");
+    assertFailureValue("but got value", "3 (java.lang.Long)");
   }
 
   @Test
@@ -824,25 +975,27 @@ public class MapSubjectTest extends BaseSubjectTestCase {
   public void containsEntry_failsWithSameToStringOfKey() {
     expectFailureWhenTestingThat(ImmutableMap.of(1L, "value1", 2L, "value2"))
         .containsEntry(1, "value1");
-    assertWithMessage("Full message: %s", expectFailure.getFailure().getMessage())
-        .that(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{1=value1, 2=value2}> contains entry "
-                + "<1=value1 (Map.Entry<java.lang.Integer, java.lang.String>)>. "
-                + "However, it does contain keys <[1] (java.lang.Long)>.");
+    assertFailureKeys(
+        "expected to contain entry",
+        "an instance of",
+        "but did not",
+        "though it did contain keys",
+        "full contents");
+    assertFailureValue("an instance of", "Map.Entry<java.lang.Integer, java.lang.String>");
+    assertFailureValue("though it did contain keys", "[1] (java.lang.Long)");
   }
 
   @Test
   public void containsEntry_failsWithSameToStringOfValue() {
     expectFailureWhenTestingThat(ImmutableMap.of(1, "null")).containsEntry(1, null);
-    assertWithMessage("Full message: %s", expectFailure.getFailure().getMessage())
-        .that(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{1=null}> contains entry <1=null "
-                + "(Map.Entry<java.lang.Integer, null type>)>. However, it does contain values "
-                + "<[null] (java.lang.String)>.");
+    assertFailureKeys(
+        "expected to contain entry",
+        "an instance of",
+        "but did not",
+        "though it did contain values",
+        "full contents");
+    assertFailureValue("an instance of", "Map.Entry<java.lang.Integer, null type>");
+    assertFailureValue("though it did contain values", "[null] (java.lang.String)");
   }
 
   @Test
@@ -866,11 +1019,13 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     Map<String, String> actual = Maps.newHashMap();
     actual.put(null, null);
     expectFailureWhenTestingThat(actual).containsEntry("kurt", null);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{null=null}> contains entry <kurt=null>. "
-                + "However, the following keys are mapped to <null>: [null]");
+    assertFailureKeys(
+        "expected to contain entry",
+        "but did not",
+        "though it did contain keys with that value",
+        "full contents");
+    assertFailureValue("expected to contain entry", "kurt=null");
+    assertFailureValue("though it did contain keys with that value", "[null]");
   }
 
   private static final String KEY_IS_PRESENT_WITH_DIFFERENT_VALUE =
@@ -1025,12 +1180,12 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsEntry("def", 123);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=+123, def=+456}> contains an entry with "
-                + "key <def> and a value that parses to <123>. "
-                + "However, it has a mapping from that key to <+456>");
+    assertFailureKeys("for key", "expected value", "testing whether", "but got value", "full map");
+    assertFailureValue("for key", "def");
+    assertFailureValue("expected value", "123");
+    assertFailureValue("testing whether", "actual value parses to expected value");
+    assertFailureValue("but got value", "+456");
+    assertFailureValue("full map", "{abc=+123, def=+456}");
   }
 
   @Test
@@ -1039,12 +1194,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsEntry("xyz", 456);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=+123, def=+456}> contains an entry with "
-                + "key <xyz> and a value that parses to <456>. "
-                + "However, the following keys are mapped to such values: <[def]>");
+    assertFailureKeys(
+        "for key",
+        "expected value",
+        "testing whether",
+        "but was missing",
+        "other keys with matching values",
+        "full map");
+    assertFailureValue("other keys with matching values", "[def]");
   }
 
   @Test
@@ -1053,11 +1210,8 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsEntry("xyz", 321);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=+123, def=+456}> contains an entry with "
-                + "key <xyz> and a value that parses to <321>");
+    assertFailureKeys(
+        "for key", "expected value", "testing whether", "but was missing", "full map");
   }
 
   @Test
@@ -1066,11 +1220,12 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(WITHIN_10_OF)
         .containsEntry("def", 60);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=35, def=71}> contains an entry with key <def> and a value that is "
-                + "within 10 of <60>. However, it has a mapping from that key to <71> (diff: 11)");
+    assertFailureKeys(
+        "for key", "expected value", "testing whether", "but got value", "diff", "full map");
+    assertFailureValue("for key", "def");
+    assertFailureValue("expected value", "60");
+    assertFailureValue("but got value", "71");
+    assertFailureValue("diff", "11");
   }
 
   @Test
@@ -1082,8 +1237,11 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(WITHIN_10_OF)
         .containsEntry("def", 60);
     assertFailureKeys(
-        "Not true that <{abc=35, def=null}> contains an entry with key <def> and a value that is "
-            + "within 10 of <60>. However, it has a mapping from that key to <null>",
+        "for key",
+        "expected value",
+        "testing whether",
+        "but got value",
+        "full map",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception",
         "additionally, one or more exceptions were thrown while formatting diffs",
@@ -1107,8 +1265,11 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     // The test fails because the expected key has a null value which causes compare() to throw.
     // We should report that the key has the wrong value, and also that we saw an exception.
     assertFailureKeys(
-        "Not true that <{1=one, 2=null}> contains an entry with key <2> and a value that equals "
-            + "(ignoring case) <TWO>. However, it has a mapping from that key to <null>",
+        "for key",
+        "expected value",
+        "testing whether",
+        "but got value",
+        "full map",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()
@@ -1129,9 +1290,12 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     // without hitting the exception from trying the first entry (which has a null value), so we
     // should report the exception as well.
     assertFailureKeys(
-        "Not true that <{1=null, 2=three}> contains an entry with key <3> and a value that equals "
-            + "(ignoring case) <THREE>. However, the following keys are mapped to such values: "
-            + "<[2]>",
+        "for key",
+        "expected value",
+        "testing whether",
+        "but was missing",
+        "other keys with matching values",
+        "full map",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()
@@ -1169,11 +1333,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .doesNotContainEntry("def", 456);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=+123, def=+456}> does not contain an entry with "
-                + "key <def> and a value that parses to <456>. It maps that key to <+456>");
+    assertFailureKeys("expected not to contain", "testing whether", "but contained", "full map");
+    assertFailureValue("expected not to contain", "def=456");
+    assertFailureValue("but contained", "def=+456");
+    assertFailureValue("full map", "{abc=+123, def=+456}");
   }
 
   @Test
@@ -1189,16 +1352,13 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertFailureKeys(
         "one or more exceptions were thrown while comparing values",
         "first exception",
-        "comparing contents by testing that no entry had the forbidden key and a value that "
-            + "equals (ignoring case) the forbidden value",
-        "forbidden key",
-        "forbidden value",
-        "but was");
+        "expected not to contain",
+        "testing whether",
+        "found no match (but failing because of exception)",
+        "full map");
     assertThatFailure()
         .factValue("first exception")
         .startsWith("compare(null, TWO) threw java.lang.NullPointerException");
-    assertFailureValue("forbidden key", "2");
-    assertFailureValue("forbidden value", "TWO");
   }
 
   @Test
@@ -1224,12 +1384,19 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly("def", 456);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456}>. It has the following entries with unexpected keys: {abc=123}");
+    assertFailureKeys(
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "abc");
+    assertFailureValue("unexpected value", "123");
+    assertFailureValue("expected", "{def=456}");
+    assertFailureValue("testing whether", "actual value parses to expected value");
+    assertFailureValue("but was", "{abc=123, def=456}");
   }
 
   @Test
@@ -1238,13 +1405,16 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly("def", 456, "xyz", 999, "abc", 123);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456, xyz=999, abc=123}>. It is missing keys for the following entries: "
-                + "{xyz=999}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "xyz");
+    assertFailureValue("expected value", "999");
   }
 
   @Test
@@ -1253,13 +1423,21 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly("def", 456, "cab", 123);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456, cab=123}>. It is missing keys for the following entries: {cab=123} "
-                + "and has the following entries with unexpected keys: {abc=123}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "cab");
+    assertFailureValue("expected value", "123");
+    assertFailureValueIndexed("for key", 1, "abc");
+    assertFailureValue("unexpected value", "123");
   }
 
   @Test
@@ -1268,13 +1446,18 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly("def", 456, "abc", 321);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456, abc=321}>. It has the following entries with matching keys but "
-                + "different values: {abc=(expected 321 but got 123)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "abc");
+    assertFailureValue("expected value", "321");
+    assertFailureValue("but got value", "123");
   }
 
   @Test
@@ -1286,10 +1469,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
         .containsExactly(1, "ONE", 2, "TWO");
     assertFailureKeys(
-        "Not true that <{1=one, 2=null}> contains exactly one entry that has a key that is "
-            + "equal to and a value that equals (ignoring case) the key and value of each entry of "
-            + "<{1=ONE, 2=TWO}>. It has the following entries with matching keys but different "
-            + "values: {2=(expected TWO but got null)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()
@@ -1304,12 +1491,10 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly("def", 456, "abc", 123)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains, in order, exactly one entry that has"
-                + " a key that is equal to and a value that parses to the key and value of each"
-                + " entry of <{def=456, abc=123}>");
+    assertFailureKeys(
+        "entries match, but order was wrong", "expected", "testing whether", "but was");
+    assertFailureValue("expected", "{def=456, abc=123}");
+    assertFailureValue("but was", "{abc=123, def=456}");
   }
 
   @Test
@@ -1319,10 +1504,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly("def", 456, "abc", 123);
     assertFailureKeys(
-        "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-            + "equal to and a value that parses to the key and value of each entry of "
-            + "<{def=456, abc=123}>. It has the following entries with matching keys but "
-            + "different values: {def=(expected 456 but got 456)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()
@@ -1337,10 +1526,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactly("def", 456, "abc", 123L);
     assertFailureKeys(
-        "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-            + "equal to and a value that parses to the key and value of each entry of "
-            + "<{def=456, abc=123}>. It has the following entries with matching keys but "
-            + "different values: {abc=(expected 123 but got 123)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()
@@ -1374,12 +1567,16 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456}>. It has the following entries with unexpected keys: {abc=123}");
+    assertFailureKeys(
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "abc");
+    assertFailureValue("unexpected value", "123");
   }
 
   @Test
@@ -1389,13 +1586,16 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456, xyz=999, abc=123}>. It is missing keys for the following entries: "
-                + "{xyz=999}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "xyz");
+    assertFailureValue("expected value", "999");
   }
 
   @Test
@@ -1405,13 +1605,21 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456, cab=123}>. It is missing keys for the following entries: {cab=123} "
-                + "and has the following entries with unexpected keys: {abc=123}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "cab");
+    assertFailureValue("expected value", "123");
+    assertFailureValueIndexed("for key", 1, "abc");
+    assertFailureValue("unexpected value", "123");
   }
 
   @Test
@@ -1421,13 +1629,18 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456, abc=321}>. It has the following entries with matching keys but "
-                + "different values: {abc=(expected 321 but got 123)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "abc");
+    assertFailureValue("expected value", "321");
+    assertFailureValue("but got value", "123");
   }
 
   @Test
@@ -1437,15 +1650,26 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(WITHIN_10_OF)
         .containsExactlyEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=35, fed=60, ghi=101}> contains exactly one entry that has a key "
-                + "that is equal to and a value that is within 10 of the key and value of each "
-                + "entry of <{abc=30, def=60, ghi=90}>. It is missing keys for the following "
-                + "entries: {def=60} and has the following entries with unexpected keys: {fed=60} "
-                + "and has the following entries with matching keys but different values: "
-                + "{ghi=(expected 90 but got 101, diff: 11)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "diff",
+        "missing keys",
+        "for key",
+        "expected value",
+        "unexpected keys",
+        "for key",
+        "unexpected value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "ghi");
+    assertFailureValueIndexed("expected value", 0, "90");
+    assertFailureValue("but got value", "101");
+    assertFailureValue("diff", "11");
   }
 
   @Test
@@ -1459,10 +1683,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(WITHIN_10_OF)
         .containsExactlyEntriesIn(expected);
     assertFailureKeys(
-        "Not true that <{abc=35, def=null, ghi=95}> contains exactly one entry that has a key that "
-            + "is equal to and a value that is within 10 of the key and value of each entry of "
-            + "<{abc=30, def=60, ghi=90}>. It has the following entries with matching keys but "
-            + "different values: {def=(expected 60 but got null)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception",
         "additionally, one or more exceptions were thrown while formatting diffs",
@@ -1483,12 +1711,8 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyEntriesIn(expected)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains, in order, exactly one entry that has"
-                + " a key that is equal to and a value that parses to the key and value of each"
-                + " entry of <{def=456, abc=123}>");
+    assertFailureKeys(
+        "entries match, but order was wrong", "expected", "testing whether", "but was");
   }
 
   @Test
@@ -1518,10 +1742,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsExactlyEntriesIn(expected);
     assertFailureKeys(
-        "Not true that <{abc=123, def=456}> contains exactly one entry that has a key that is "
-            + "equal to and a value that parses to the key and value of each entry of "
-            + "<{def=456, abc=123}>. It has the following entries with matching keys but "
-            + "different values: {def=(expected 456 but got 456)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()
@@ -1552,13 +1780,17 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeast("def", 456, "xyz", 999, "abc", 123);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456, ghi=789}> contains at least one entry that has a "
-                + "key that is equal to and a value that parses to the key and value of each entry "
-                + "of <{def=456, xyz=999, abc=123}>. It is missing keys for the following entries: "
-                + "{xyz=999}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "xyz");
+    assertFailureValue("expected value", "999");
+    assertFailureValue("expected to contain at least", "{def=456, xyz=999, abc=123}");
   }
 
   @Test
@@ -1567,12 +1799,16 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeast("def", 456, "cab", 123);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456, cab=123}>. It is missing keys for the following entries: {cab=123}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "cab");
+    assertFailureValue("expected value", "123");
   }
 
   @Test
@@ -1581,13 +1817,18 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeast("abc", 321);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{abc=321}>. It has the following entries with matching keys but "
-                + "different values: {abc=(expected 321 but got 123)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "abc");
+    assertFailureValue("expected value", "321");
+    assertFailureValue("but got value", "123");
   }
 
   @Test
@@ -1600,10 +1841,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(CASE_INSENSITIVE_EQUALITY)
         .containsAtLeast(1, "ONE", 2, "TWO");
     assertFailureKeys(
-        "Not true that <{1=one, 2=null, 3=three}> contains at least one entry that has a key that "
-            + "is equal to and a value that equals (ignoring case) the key and value of each "
-            + "entry of <{1=ONE, 2=TWO}>. It has the following entries with matching keys but "
-            + "different values: {2=(expected TWO but got null)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()
@@ -1618,12 +1863,13 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeast("def", 456, "abc", 123)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456, ghi=789}> contains, in order, at least one entry "
-                + "that has a key that is equal to and a value that parses to the key and value of "
-                + "each entry of <{def=456, abc=123}>");
+    assertFailureKeys(
+        "required entries were all found, but order was wrong",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("expected to contain at least", "{def=456, abc=123}");
+    assertFailureValue("but was", "{abc=123, def=456, ghi=789}");
   }
 
   @Test
@@ -1633,10 +1879,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeast("def", 456);
     assertFailureKeys(
-        "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
-            + "equal to and a value that parses to the key and value of each entry of "
-            + "<{def=456}>. It has the following entries with matching keys but "
-            + "different values: {def=(expected 456 but got 456)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()
@@ -1659,10 +1909,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeast("def", 456, "abc", 123L);
     assertFailureKeys(
-        "Not true that <{abc=123, def=456, ghi=789}> contains at least one entry that has a key "
-            + "that is equal to and a value that parses to the key and value of each entry of "
-            + "<{def=456, abc=123}>. It has the following entries with matching keys but "
-            + "different values: {abc=(expected 123 but got 123)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()
@@ -1696,13 +1950,16 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456, ghi=789}> contains at least one entry that has a "
-                + "key that is equal to and a value that parses to the key and value of each entry "
-                + "of <{def=456, xyz=999, abc=123}>. It is missing keys for the following entries: "
-                + "{xyz=999}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "xyz");
+    assertFailureValue("expected value", "999");
   }
 
   @Test
@@ -1712,12 +1969,16 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
-                + "equal to and a value that parses to the key and value of each entry of "
-                + "<{def=456, cab=123}>. It is missing keys for the following entries: {cab=123}");
+    assertFailureKeys(
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "cab");
+    assertFailureValue("expected value", "123");
   }
 
   @Test
@@ -1727,31 +1988,46 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456, ghi=789}> contains at least one entry that has a "
-                + "key that is equal to and a value that parses to the key and value of each entry "
-                + "of <{def=456, abc=321}>. It has the following entries with matching keys but "
-                + "different values: {abc=(expected 321 but got 123)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValue("for key", "abc");
+    assertFailureValue("expected value", "321");
+    assertFailureValue("but got value", "123");
   }
 
   @Test
-  public void comparingValuesUsing_containsAtLeastEntriesIn_diffMissingAndExtraAndWrongValue() {
+  public void comparingValuesUsing_containsAtLeastEntriesIn_diffMissingAndWrongValue() {
     ImmutableMap<String, Integer> expected = ImmutableMap.of("abc", 30, "def", 60, "ghi", 90);
     ImmutableMap<String, Integer> actual = ImmutableMap.of("abc", 35, "fed", 60, "ghi", 101);
     expectFailureWhenTestingThat(actual)
         .comparingValuesUsing(WITHIN_10_OF)
         .containsAtLeastEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=35, fed=60, ghi=101}> contains at least one entry that has a key "
-                + "that is equal to and a value that is within 10 of the key and value of each "
-                + "entry of <{abc=30, def=60, ghi=90}>. It is missing keys for the following "
-                + "entries: {def=60} "
-                + "and has the following entries with matching keys but different values: "
-                + "{ghi=(expected 90 but got 101, diff: 11)}");
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "diff",
+        "missing keys",
+        "for key",
+        "expected value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
+    assertFailureValueIndexed("for key", 0, "ghi");
+    assertFailureValueIndexed("expected value", 0, "90");
+    assertFailureValue("but got value", "101");
+    assertFailureValue("diff", "11");
+    assertFailureValueIndexed("for key", 1, "def");
+    assertFailureValueIndexed("expected value", 1, "60");
   }
 
   @Test
@@ -1765,10 +2041,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(WITHIN_10_OF)
         .containsAtLeastEntriesIn(expected);
     assertFailureKeys(
-        "Not true that <{abc=35, def=null, ghi=95}> contains at least one entry that has a key"
-            + " that is equal to and a value that is within 10 of the key and value of each entry"
-            + " of <{abc=30, def=60, ghi=90}>. It has the following entries with matching keys but"
-            + " different values: {def=(expected 60 but got null)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception",
         "additionally, one or more exceptions were thrown while formatting diffs",
@@ -1789,12 +2069,11 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastEntriesIn(expected)
         .inOrder();
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{abc=123, def=456, ghi=789}> contains, in order, at least one entry "
-                + "that has a key that is equal to and a value that parses to the key and value of "
-                + "each entry of <{ghi=789, abc=123}>");
+    assertFailureKeys(
+        "required entries were all found, but order was wrong",
+        "expected to contain at least",
+        "testing whether",
+        "but was");
   }
 
   @Test
@@ -1814,10 +2093,14 @@ public class MapSubjectTest extends BaseSubjectTestCase {
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastEntriesIn(expected);
     assertFailureKeys(
-        "Not true that <{abc=123, def=456}> contains at least one entry that has a key that is "
-            + "equal to and a value that parses to the key and value of each entry of "
-            + "<{def=456}>. It has the following entries with matching keys but "
-            + "different values: {def=(expected 456 but got 456)}",
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "---",
+        "expected to contain at least",
+        "testing whether",
+        "but was",
         "additionally, one or more exceptions were thrown while comparing values",
         "first exception");
     assertThatFailure()

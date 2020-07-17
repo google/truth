@@ -758,7 +758,7 @@ public abstract class Correspondence<A, E> {
    * multimap).
    */
   final Fact describeForMapValues() {
-    return fact("testing whether", "expected element " + this + " actual element");
+    return fact("testing whether", "actual value " + this + " expected value");
   }
 
   /**
