@@ -19,6 +19,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,25 +117,30 @@ final class DiffUtils {
   }
 
   private void calcUnifiedDiff(int i, int j) {
-    if (i > 0
-        && j > 0
-        && original[i] == revised[j]
-        // Make sure the diff output is identical to the diff command line tool when there are
-        // multiple solutions.
-        && lcs[i - 1][j - 1] + 1 > lcs[i - 1][j]
-        && lcs[i - 1][j - 1] + 1 > lcs[i][j - 1]) {
-      calcUnifiedDiff(i - 1, j - 1);
-      unifiedDiffType.add(' ');
-      unifiedDiffContentId.add(original[i]);
-    } else if (j > 0 && (i == 0 || lcs[i][j - 1] >= lcs[i - 1][j])) {
-      calcUnifiedDiff(i, j - 1);
-      unifiedDiffType.add('+');
-      unifiedDiffContentId.add(revised[j]);
-    } else if (i > 0 && (j == 0 || lcs[i][j - 1] < lcs[i - 1][j])) {
-      calcUnifiedDiff(i - 1, j);
-      unifiedDiffType.add('-');
-      unifiedDiffContentId.add(original[i]);
+    while (i > 0 || j > 0) {
+      if (i > 0
+          && j > 0
+          && original[i] == revised[j]
+          // Make sure the diff output is identical to the diff command line tool when there are
+          // multiple solutions.
+          && lcs[i - 1][j - 1] + 1 > lcs[i - 1][j]
+          && lcs[i - 1][j - 1] + 1 > lcs[i][j - 1]) {
+        unifiedDiffType.add(' ');
+        unifiedDiffContentId.add(original[i]);
+        i--;
+        j--;
+      } else if (j > 0 && (i == 0 || lcs[i][j - 1] >= lcs[i - 1][j])) {
+        unifiedDiffType.add('+');
+        unifiedDiffContentId.add(revised[j]);
+        j--;
+      } else if (i > 0 && (j == 0 || lcs[i][j - 1] < lcs[i - 1][j])) {
+        unifiedDiffType.add('-');
+        unifiedDiffContentId.add(original[i]);
+        i--;
+      }
     }
+    Collections.reverse(unifiedDiffType);
+    Collections.reverse(unifiedDiffContentId);
   }
 
   /**
