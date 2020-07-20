@@ -112,29 +112,7 @@ public class MapSubject extends Subject {
     if (!actual.entrySet().contains(entry)) {
       List<Object> keyList = Lists.newArrayList(key);
       List<Object> valueList = Lists.newArrayList(value);
-      // TODO(cpovirk): Move the check for the correct key (actual.containsKey) ahead of the check
-      // for a different key with the same toString. And the same for values.
-      if (hasMatchingToStringPair(actual.keySet(), keyList)) {
-        failWithoutActual(
-            fact("expected to contain entry", entry),
-            fact("an instance of", objectToTypeName(entry)),
-            simpleFact("but did not"),
-            fact(
-                "though it did contain keys",
-                countDuplicatesAndAddTypeInfo(
-                    retainMatchingToString(actual.keySet(), /* itemsToCheck= */ keyList))),
-            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
-      } else if (hasMatchingToStringPair(actual.values(), valueList)) {
-        failWithoutActual(
-            fact("expected to contain entry", entry),
-            fact("an instance of", objectToTypeName(entry)),
-            simpleFact("but did not"),
-            fact(
-                "though it did contain values",
-                countDuplicatesAndAddTypeInfo(
-                    retainMatchingToString(actual.values(), /* itemsToCheck= */ valueList))),
-            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
-      } else if (actual.containsKey(key)) {
+      if (actual.containsKey(key)) {
         Object actualValue = actual.get(key);
         /*
          * In the case of a null expected or actual value, clarify that the key *is* present and
@@ -147,6 +125,16 @@ public class MapSubject extends Subject {
         }
         // See the comment on IterableSubject's use of failEqualityCheckForEqualsWithoutDescription.
         check.that(actualValue).failEqualityCheckForEqualsWithoutDescription(value);
+      } else if (hasMatchingToStringPair(actual.keySet(), keyList)) {
+        failWithoutActual(
+            fact("expected to contain entry", entry),
+            fact("an instance of", objectToTypeName(entry)),
+            simpleFact("but did not"),
+            fact(
+                "though it did contain keys",
+                countDuplicatesAndAddTypeInfo(
+                    retainMatchingToString(actual.keySet(), /* itemsToCheck= */ keyList))),
+            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else if (actual.containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<>();
         for (Map.Entry<?, ?> actualEntry : actual.entrySet()) {
@@ -158,6 +146,16 @@ public class MapSubject extends Subject {
             fact("expected to contain entry", entry),
             simpleFact("but did not"),
             fact("though it did contain keys with that value", keys),
+            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
+      } else if (hasMatchingToStringPair(actual.values(), valueList)) {
+        failWithoutActual(
+            fact("expected to contain entry", entry),
+            fact("an instance of", objectToTypeName(entry)),
+            simpleFact("but did not"),
+            fact(
+                "though it did contain values",
+                countDuplicatesAndAddTypeInfo(
+                    retainMatchingToString(actual.values(), /* itemsToCheck= */ valueList))),
             fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else {
         failWithActual("expected to contain entry", entry);
@@ -270,10 +268,10 @@ public class MapSubject extends Subject {
     // might be misleading to report a single mismatched value when the assertion was on the whole
     // map - this could be mitigated by adding extra info explaining that. (Would need to ensure
     // that it still fails in cases where e.g. the value is 1 and it should be 1L, where isEqualTo
-    // succeeds. Could do that by having a stricter isEqualTo-like method, or more simply by making
-    // standardIsEqualTo be package-private and return a boolean indicating whether it passed or
-    // failed and falling through to the existing logic if it passed.)
+    // succeeds: perhaps failEqualityCheckForEqualsWithoutDescription will do the right thing.)
     // First, we need to decide whether this kind of cleverness is a line we want to cross.
+    // (See also containsEntry, which does do an isEqualTo-like assertion when the expected key is
+    // present with the wrong value, which may be the closest we currently get to this.)
     failWithoutActual(
         ImmutableList.<Fact>builder()
             .addAll(diff.describe(/* differ = */ null))
