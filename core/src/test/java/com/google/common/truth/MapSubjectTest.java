@@ -987,7 +987,8 @@ public class MapSubjectTest extends BaseSubjectTestCase {
 
   @Test
   public void containsEntry_failsWithSameToStringOfValue() {
-    expectFailureWhenTestingThat(ImmutableMap.of(1, "null")).containsEntry(1, null);
+    // Does not contain the correct key, but does contain a value which matches by toString.
+    expectFailureWhenTestingThat(ImmutableMap.of(1, "null")).containsEntry(2, null);
     assertFailureKeys(
         "expected to contain entry",
         "an instance of",
@@ -1043,6 +1044,17 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(expectFailure.getFailure())
         .hasMessageThat()
         .contains(KEY_IS_PRESENT_WITH_DIFFERENT_VALUE);
+  }
+
+  @Test
+  public void containsExactly_bothExactAndToStringKeyMatches_showsExactKeyMatch() {
+    ImmutableMap<Number, String> actual = ImmutableMap.of(1, "actual int", 1L, "actual long");
+    expectFailureWhenTestingThat(actual).containsEntry(1L, "expected long");
+    // should show the exact key match, 1="actual int", not the toString key match, 1L="actual long"
+    assertFailureKeys("value of", "expected", "but was", "map was");
+    assertFailureValue("value of", "map.get(1)");
+    assertFailureValue("expected", "expected long");
+    assertFailureValue("but was", "actual long");
   }
 
   @Test
