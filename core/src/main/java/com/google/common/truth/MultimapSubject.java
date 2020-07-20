@@ -34,7 +34,6 @@ import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
@@ -116,29 +115,26 @@ public class MultimapSubject extends Subject {
   public final void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
     // TODO(kak): Can we share any of this logic w/ MapSubject.containsEntry()?
     if (!actual.containsEntry(key, value)) {
-      Map.Entry<Object, Object> entry = Maps.immutableEntry(key, value);
+      Map.Entry<Object, Object> entry = immutableEntry(key, value);
       List<Map.Entry<Object, Object>> entryList = ImmutableList.of(entry);
+      // TODO(cpovirk): If the key is present but not with the right value, we could fail using
+      // something like valuesForKey(key).contains(value). Consider whether this is worthwhile.
       if (hasMatchingToStringPair(actual.entries(), entryList)) {
         failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that <%s> contains entry <%s (%s)>. However, it does contain entries "
-                        + "<%s>",
-                    actualCustomStringRepresentationForPackageMembersToCall(),
-                    entry,
-                    objectToTypeName(entry),
-                    countDuplicatesAndAddTypeInfo(
-                        retainMatchingToString(actual.entries(), entryList /* itemsToCheck */)))));
+            fact("expected to contain entry", entry),
+            fact("an instance of", objectToTypeName(entry)),
+            simpleFact("but did not"),
+            fact(
+                "though it did contain",
+                countDuplicatesAndAddTypeInfo(
+                    retainMatchingToString(actual.entries(), /* itemsToCheck = */ entryList))),
+            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else if (actual.containsKey(key)) {
         failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that <%s> contains entry <%s>. However, it has a mapping from <%s>"
-                        + " to <%s>",
-                    actualCustomStringRepresentationForPackageMembersToCall(),
-                    entry,
-                    key,
-                    actual.asMap().get(key))));
+            fact("expected to contain entry", entry),
+            simpleFact("but did not"),
+            fact("though it did contain values with that key", actual.asMap().get(key)),
+            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else if (actual.containsValue(value)) {
         Set<Object> keys = new LinkedHashSet<>();
         for (Map.Entry<?, ?> actualEntry : actual.entries()) {
@@ -147,16 +143,12 @@ public class MultimapSubject extends Subject {
           }
         }
         failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that <%s> contains entry <%s>. "
-                        + "However, the following keys are mapped to <%s>: %s",
-                    actualCustomStringRepresentationForPackageMembersToCall(),
-                    entry,
-                    value,
-                    keys)));
+            fact("expected to contain entry", entry),
+            simpleFact("but did not"),
+            fact("though it did contain keys with that value", keys),
+            fact("full contents", actualCustomStringRepresentationForPackageMembersToCall()));
       } else {
-        failWithActual("expected to contain entry", Maps.immutableEntry(key, value));
+        failWithActual("expected to contain entry", immutableEntry(key, value));
       }
     }
   }
@@ -199,19 +191,16 @@ public class MultimapSubject extends Subject {
     // Fail but with a more descriptive message:
     if ((actual instanceof ListMultimap && other instanceof SetMultimap)
         || (actual instanceof SetMultimap && other instanceof ListMultimap)) {
-      String mapType1 = (actual instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
-      String mapType2 = (other instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
+      String actualType = (actual instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
+      String otherType = (other instanceof ListMultimap) ? "ListMultimap" : "SetMultimap";
       failWithoutActual(
+          fact("expected", other),
+          fact("an instance of", otherType),
+          fact("but was", actualCustomStringRepresentationForPackageMembersToCall()),
+          fact("an instance of", actualType),
           simpleFact(
               lenientFormat(
-                  "Not true that %s <%s> is equal to %s <%s>. "
-                      + "A %s cannot equal a %s if either is non-empty.",
-                  mapType1,
-                  actualCustomStringRepresentationForPackageMembersToCall(),
-                  mapType2,
-                  other,
-                  mapType1,
-                  mapType2)));
+                  "a %s cannot equal a %s if either is non-empty", actualType, otherType)));
     } else if (actual instanceof ListMultimap) {
       containsExactlyEntriesIn((Multimap<?, ?>) other).inOrder();
     } else if (actual instanceof SetMultimap) {
@@ -240,44 +229,39 @@ public class MultimapSubject extends Subject {
     if (!missing.isEmpty()) {
       if (!extra.isEmpty()) {
         boolean addTypeInfo = hasMatchingToStringPair(missing.entries(), extra.entries());
-        failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that <%s> contains exactly <%s>. "
-                        + "It is missing <%s> and has unexpected items <%s>",
-                    actualCustomStringRepresentationForPackageMembersToCall(),
-                    annotateEmptyStringsMultimap(expectedMultimap),
-                    // Note: The usage of countDuplicatesAndAddTypeInfo() below causes entries no
-                    // longer to be grouped by key in the 'missing' and 'unexpected items' parts of
-                    // the message (we still show the actual and expected multimaps in the standard
-                    // format).
-                    addTypeInfo
-                        ? countDuplicatesAndAddTypeInfo(
-                            annotateEmptyStringsMultimap(missing).entries())
-                        : countDuplicatesMultimap(annotateEmptyStringsMultimap(missing)),
-                    addTypeInfo
-                        ? countDuplicatesAndAddTypeInfo(
-                            annotateEmptyStringsMultimap(extra).entries())
-                        : countDuplicatesMultimap(annotateEmptyStringsMultimap(extra)))));
+        // Note: The usage of countDuplicatesAndAddTypeInfo() below causes entries no longer to be
+        // grouped by key in the 'missing' and 'unexpected items' parts of the message (we still
+        // show the actual and expected multimaps in the standard format).
+        String missingDisplay =
+            addTypeInfo
+                ? countDuplicatesAndAddTypeInfo(annotateEmptyStringsMultimap(missing).entries())
+                : countDuplicatesMultimap(annotateEmptyStringsMultimap(missing));
+        String extraDisplay =
+            addTypeInfo
+                ? countDuplicatesAndAddTypeInfo(annotateEmptyStringsMultimap(extra).entries())
+                : countDuplicatesMultimap(annotateEmptyStringsMultimap(extra));
+        failWithActual(
+            fact("missing", missingDisplay),
+            fact("unexpected", extraDisplay),
+            simpleFact("---"),
+            fact("expected", annotateEmptyStringsMultimap(expectedMultimap)));
         return ALREADY_FAILED;
       } else {
-        failWithBadResults(
-            "contains exactly",
-            annotateEmptyStringsMultimap(expectedMultimap),
-            "is missing",
-            countDuplicatesMultimap(annotateEmptyStringsMultimap(missing)));
+        failWithActual(
+            fact("missing", countDuplicatesMultimap(annotateEmptyStringsMultimap(missing))),
+            simpleFact("---"),
+            fact("expected", annotateEmptyStringsMultimap(expectedMultimap)));
         return ALREADY_FAILED;
       }
     } else if (!extra.isEmpty()) {
-      failWithBadResults(
-          "contains exactly",
-          annotateEmptyStringsMultimap(expectedMultimap),
-          "has unexpected items",
-          countDuplicatesMultimap(annotateEmptyStringsMultimap(extra)));
+      failWithActual(
+          fact("unexpected", countDuplicatesMultimap(annotateEmptyStringsMultimap(extra))),
+          simpleFact("---"),
+          fact("expected", annotateEmptyStringsMultimap(expectedMultimap)));
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder("contains exactly", expectedMultimap);
+    return new MultimapInOrder(/* allowUnexpected = */ false, expectedMultimap);
   }
 
   /**
@@ -305,7 +289,7 @@ public class MultimapSubject extends Subject {
       return ALREADY_FAILED;
     }
 
-    return new MultimapInOrder("contains at least", expectedMultimap);
+    return new MultimapInOrder(/* allowUnexpected = */ true, expectedMultimap);
   }
 
   /** Fails if the multimap is not empty. */
@@ -380,11 +364,11 @@ public class MultimapSubject extends Subject {
 
   private class MultimapInOrder implements Ordered {
     private final Multimap<?, ?> expectedMultimap;
-    private final String verb;
+    private final boolean allowUnexpected;
 
-    MultimapInOrder(String verb, Multimap<?, ?> expectedMultimap) {
+    MultimapInOrder(boolean allowUnexpected, Multimap<?, ?> expectedMultimap) {
       this.expectedMultimap = expectedMultimap;
-      this.verb = verb;
+      this.allowUnexpected = allowUnexpected;
     }
 
     /**
@@ -415,34 +399,27 @@ public class MultimapSubject extends Subject {
 
       if (!keysInOrder) {
         if (!keysWithValuesOutOfOrder.isEmpty()) {
-          failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that <%s> %s <%s> in order. The keys are not in order, "
-                          + "and the values for keys <%s> are not in order either",
-                      actualCustomStringRepresentationForPackageMembersToCall(),
-                      verb,
-                      expectedMultimap,
-                      keysWithValuesOutOfOrder)));
+          failWithActual(
+              simpleFact("contents match, but order was wrong"),
+              simpleFact("keys are not in order"),
+              fact("keys with out-of-order values", keysWithValuesOutOfOrder),
+              simpleFact("---"),
+              fact(
+                  allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
         } else {
-          failWithoutActual(
-              simpleFact(
-                  lenientFormat(
-                      "Not true that <%s> %s <%s> in order. The keys are not in order",
-                      actualCustomStringRepresentationForPackageMembersToCall(),
-                      verb,
-                      expectedMultimap)));
+          failWithActual(
+              simpleFact("contents match, but order was wrong"),
+              simpleFact("keys are not in order"),
+              simpleFact("---"),
+              fact(
+                  allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
         }
       } else if (!keysWithValuesOutOfOrder.isEmpty()) {
-        failWithoutActual(
-            simpleFact(
-                lenientFormat(
-                    "Not true that <%s> %s <%s> in order. "
-                        + "The values for keys <%s> are not in order",
-                    actualCustomStringRepresentationForPackageMembersToCall(),
-                    verb,
-                    expectedMultimap,
-                    keysWithValuesOutOfOrder)));
+        failWithActual(
+            simpleFact("contents match, but order was wrong"),
+            fact("keys with out-of-order values", keysWithValuesOutOfOrder),
+            simpleFact("---"),
+            fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMultimap));
       }
     }
   }
@@ -584,17 +561,22 @@ public class MultimapSubject extends Subject {
             // Found matching key and value, but we still need to fail if we hit an exception along
             // the way.
             if (exceptions.hasCompareException()) {
-              failWithActual(
+              failWithoutActual(
                   ImmutableList.<Fact>builder()
                       .addAll(exceptions.describeAsMainCause())
                       .add(
-                          simpleFact(
-                              "comparing contents by testing that at least one entry had a key "
-                                  + "equal to the expected key and a value that "
-                                  + correspondence
-                                  + " the expected value"))
-                      .add(fact("expected key", expectedKey))
-                      .add(fact("expected value", expectedValue))
+                          fact(
+                              "expected to contain entry",
+                              immutableEntry(expectedKey, expectedValue)))
+                      .add(correspondence.describeForMapValues())
+                      .add(
+                          fact(
+                              "found match (but failing because of exception)",
+                              immutableEntry(expectedKey, actualValue)))
+                      .add(
+                          fact(
+                              "full contents",
+                              actualCustomStringRepresentationForPackageMembersToCall()))
                       .build());
             }
             return;
@@ -603,43 +585,41 @@ public class MultimapSubject extends Subject {
         // Found matching key with non-matching values.
         failWithoutActual(
             ImmutableList.<Fact>builder()
+                .add(fact("expected to contain entry", immutableEntry(expectedKey, expectedValue)))
+                .add(correspondence.describeForMapValues())
+                .add(simpleFact("but did not"))
+                .add(fact("though it did contain values for that key", actualValues))
                 .add(
-                    simpleFact(
-                        lenientFormat(
-                            "Not true that <%s> contains at least one entry with key <%s> and a "
-                                + "value that %s <%s>. However, it has a mapping from that key to "
-                                + "<%s>",
-                            actualCustomStringRepresentationForPackageMembersToCall(),
-                            expectedKey,
-                            correspondence,
-                            expectedValue,
-                            actualValues)))
+                    fact(
+                        "full contents", actualCustomStringRepresentationForPackageMembersToCall()))
                 .addAll(exceptions.describeAsAdditionalInfo())
                 .build());
       } else {
         // Did not find matching key.
-        Set<Object> keys = new LinkedHashSet<>();
+        Set<Map.Entry<?, ?>> entries = new LinkedHashSet<>();
         Correspondence.ExceptionStore exceptions = Correspondence.ExceptionStore.forMapValues();
         for (Map.Entry<?, A> actualEntry : getCastActual().entries()) {
           if (correspondence.safeCompare(actualEntry.getValue(), expectedValue, exceptions)) {
-            keys.add(actualEntry.getKey());
+            entries.add(actualEntry);
           }
         }
-        if (!keys.isEmpty()) {
+        if (!entries.isEmpty()) {
           // Found matching values with non-matching keys.
           failWithoutActual(
               ImmutableList.<Fact>builder()
                   .add(
-                      simpleFact(
-                          lenientFormat(
-                              "Not true that <%s> contains at least one entry with key <%s> and a "
-                                  + "value that %s <%s>. However, the following keys are mapped to "
-                                  + "such values: <%s>",
-                              actualCustomStringRepresentationForPackageMembersToCall(),
-                              expectedKey,
-                              correspondence,
-                              expectedValue,
-                              keys)))
+                      fact("expected to contain entry", immutableEntry(expectedKey, expectedValue)))
+                  .add(correspondence.describeForMapValues())
+                  .add(simpleFact("but did not"))
+                  // The corresponding failure in the non-Correspondence case reports the keys
+                  // mapping to the expected value. Here, we show the full entries, because for some
+                  // Correspondences it may not be obvious which of the actual values it was that
+                  // corresponded to the expected value.
+                  .add(fact("though it did contain entries with matching values", entries))
+                  .add(
+                      fact(
+                          "full contents",
+                          actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
                   .build());
         } else {
@@ -647,14 +627,13 @@ public class MultimapSubject extends Subject {
           failWithoutActual(
               ImmutableList.<Fact>builder()
                   .add(
-                      simpleFact(
-                          lenientFormat(
-                              "Not true that <%s> contains at least one entry with key <%s> and a "
-                                  + "value that %s <%s>",
-                              actualCustomStringRepresentationForPackageMembersToCall(),
-                              expectedKey,
-                              correspondence,
-                              expectedValue)))
+                      fact("expected to contain entry", immutableEntry(expectedKey, expectedValue)))
+                  .add(correspondence.describeForMapValues())
+                  .add(simpleFact("but did not"))
+                  .add(
+                      fact(
+                          "full contents",
+                          actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
                   .build());
         }
@@ -681,32 +660,33 @@ public class MultimapSubject extends Subject {
           failWithoutActual(
               ImmutableList.<Fact>builder()
                   .add(
-                      simpleFact(
-                          lenientFormat(
-                              "Not true that <%s> did not contain an entry with key <%s> and a"
-                                  + " value that %s <%s>. It maps that key to the following such"
-                                  + " values: <%s>",
-                              actualCustomStringRepresentationForPackageMembersToCall(),
-                              excludedKey,
-                              correspondence,
-                              excludedValue,
-                              matchingValues)))
+                      fact(
+                          "expected not to contain entry",
+                          immutableEntry(excludedKey, excludedValue)))
+                  .add(correspondence.describeForMapValues())
+                  .add(fact("but contained that key with matching values", matchingValues))
+                  .add(
+                      fact(
+                          "full contents",
+                          actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
                   .build());
         } else {
           // No value matched, but we still need to fail if we hit an exception along the way.
           if (exceptions.hasCompareException()) {
-            failWithActual(
+            failWithoutActual(
                 ImmutableList.<Fact>builder()
                     .addAll(exceptions.describeAsMainCause())
                     .add(
-                        simpleFact(
-                            "comparing contents by testing that no entry had the forbidden key and "
-                                + "a value that "
-                                + correspondence
-                                + " the forbidden value"))
-                    .add(fact("forbidden key", excludedKey))
-                    .add(fact("forbidden value", excludedValue))
+                        fact(
+                            "expected not to contain entry",
+                            immutableEntry(excludedKey, excludedValue)))
+                    .add(correspondence.describeForMapValues())
+                    .add(simpleFact("found no match (but failing because of exception)"))
+                    .add(
+                        fact(
+                            "full contents",
+                            actualCustomStringRepresentationForPackageMembersToCall()))
                     .build());
           }
         }
