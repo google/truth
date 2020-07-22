@@ -15,7 +15,6 @@
  */
 package com.google.common.truth;
 
-import static com.google.common.base.Strings.lenientFormat;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
@@ -801,13 +800,10 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     ImmutableSetMultimap<Integer, String> actual = ImmutableSetMultimap.copyOf(expected);
 
     expectFailureWhenTestingThat(actual).containsAtLeastEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "Not true that <%s> contains at least <%s>. "
-                    + "It is missing <{3=[one], 4=[five]}>",
-                actual, expected));
+    assertFailureKeys("missing", "---", "expected to contain at least", "but was");
+    assertFailureValue("missing", "{3=[one], 4=[five]}");
+    assertFailureValue("expected to contain at least", "{3=[one, two, one], 4=[five, five]}");
+    assertFailureValue("but was", "{3=[one, two], 4=[five]}");
   }
 
   @Test
@@ -820,24 +816,15 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
     actual.put(50, "hawaii");
 
     expectFailureWhenTestingThat(actual).containsAtLeastEntriesIn(expected);
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "Not true that <%s> contains at least <%s>. "
-                    + "It is missing <{3=[six], 4=[five]}>",
-                actual, expected));
+    assertFailureKeys("missing", "---", "expected to contain at least", "but was");
+    assertFailureValue("missing", "{3=[six], 4=[five]}");
   }
 
   @Test
   public void containsAtLeastFailureWithEmptyStringMissing() {
     expectFailureWhenTestingThat(ImmutableMultimap.of("key", "value")).containsAtLeast("", "a");
-
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            "Not true that <{key=[value]}> contains at least <{\"\" (empty String)=[a]}>. "
-                + "It is missing <{\"\" (empty String)=[a]}>");
+    assertFailureKeys("missing", "---", "expected to contain at least", "but was");
+    assertFailureValue("missing", "{\"\" (empty String)=[a]}");
   }
 
   @Test
@@ -927,13 +914,8 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
 
     expectFailureWhenTestingThat(actual)
         .containsAtLeast(3, "one", 3, "six", 3, "two", 4, "five", 4, "four");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "Not true that <%s> contains at least <%s>. "
-                    + "It is missing <{3=[six], 4=[five]}>",
-                actual, expected));
+    assertFailureKeys("missing", "---", "expected to contain at least", "but was");
+    assertFailureValue("missing", "{3=[six], 4=[five]}");
   }
 
   @Test
@@ -948,17 +930,10 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   public void containsAtLeastVarargRespectsDuplicatesFailure() {
     ImmutableListMultimap<Integer, String> actual =
         ImmutableListMultimap.of(3, "one", 3, "two", 4, "five", 4, "five");
-    ImmutableListMultimap<Integer, String> expected =
-        ImmutableListMultimap.of(3, "one", 3, "one", 3, "one", 4, "five");
 
     expectFailureWhenTestingThat(actual).containsAtLeast(3, "one", 3, "one", 3, "one", 4, "five");
-    assertThat(expectFailure.getFailure())
-        .hasMessageThat()
-        .isEqualTo(
-            lenientFormat(
-                "Not true that <%s> contains at least <%s>. "
-                    + "It is missing <{3=[one [2 copies]]}>",
-                actual, expected));
+    assertFailureKeys("missing", "---", "expected to contain at least", "but was");
+    assertFailureValue("missing", "{3=[one [2 copies]]}");
   }
 
   @Test

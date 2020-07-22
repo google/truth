@@ -281,11 +281,10 @@ public class MultimapSubject extends Subject {
     // TODO(kak): Possible enhancement: Include "[1 copy]" if the element does appear in
     // the subject but not enough times. Similarly for unexpected extra items.
     if (!missing.isEmpty()) {
-      failWithBadResults(
-          "contains at least",
-          annotateEmptyStringsMultimap(expectedMultimap),
-          "is missing",
-          countDuplicatesMultimap(annotateEmptyStringsMultimap(missing)));
+      failWithActual(
+          fact("missing", countDuplicatesMultimap(annotateEmptyStringsMultimap(missing))),
+          simpleFact("---"),
+          fact("expected to contain at least", annotateEmptyStringsMultimap(expectedMultimap)));
       return ALREADY_FAILED;
     }
 
