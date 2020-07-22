@@ -25,6 +25,7 @@ import static com.google.common.truth.SubjectUtils.countDuplicatesAndAddTypeInfo
 import static com.google.common.truth.SubjectUtils.hasMatchingToStringPair;
 import static com.google.common.truth.SubjectUtils.objectToTypeName;
 import static com.google.common.truth.SubjectUtils.retainMatchingToString;
+import static java.util.Collections.singletonList;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
@@ -110,8 +111,8 @@ public class MapSubject extends Subject {
   public final void containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
     Map.Entry<Object, Object> entry = immutableEntry(key, value);
     if (!actual.entrySet().contains(entry)) {
-      List<Object> keyList = Lists.newArrayList(key);
-      List<Object> valueList = Lists.newArrayList(value);
+      List<Object> keyList = singletonList(key);
+      List<Object> valueList = singletonList(value);
       if (actual.containsKey(key)) {
         Object actualValue = actual.get(key);
         /*
