@@ -809,7 +809,7 @@ public class MultimapSubject extends Subject {
 
     @Override
     public boolean compare(Map.Entry<K, A> actual, Map.Entry<K, E> expected) {
-      return actual.getKey().equals(expected.getKey())
+      return Objects.equal(actual.getKey(), expected.getKey())
           && valueCorrespondence.compare(actual.getValue(), expected.getValue());
     }
 

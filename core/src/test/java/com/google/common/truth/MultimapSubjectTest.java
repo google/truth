@@ -1538,6 +1538,15 @@ public class MultimapSubjectTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void comparingValuesUsing_containsExactly_nullKey() {
+    ListMultimap<String, String> actual = ArrayListMultimap.create();
+    actual.put(null, "+123");
+    assertThat(actual)
+        .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
+        .containsExactly(null, 123);
+  }
+
+  @Test
   public void comparingValuesUsing_containsExactly_inOrder_success() {
     ImmutableListMultimap<String, String> actual =
         ImmutableListMultimap.of("abc", "+123", "def", "+64", "def", "0x40", "def", "+128");
