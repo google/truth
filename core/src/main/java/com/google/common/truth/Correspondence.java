@@ -313,6 +313,39 @@ public abstract class Correspondence<A, E> {
   }
 
   /**
+   * Returns a correspondence which compares elements using object equality, i.e. giving the same
+   * assertions as you would get without a correspondence. This exists so that we can add a
+   * diff-formatting functionality to it. TODO(b/69154394): Explain why this is here when the
+   * feature is added.
+   */
+  @SuppressWarnings("unchecked") // safe covariant cast
+  static <T> Correspondence<T, T> equality() {
+    return (Equality<T>) Equality.INSTANCE;
+  }
+
+  private static final class Equality<T> extends Correspondence<T, T> {
+
+    private static final Equality<Object> INSTANCE = new Equality<>();
+
+    @Override
+    public boolean compare(T actual, T expected) {
+      return Objects.equal(actual, expected);
+    }
+
+    @Override
+    public String toString() {
+      // This should normally not be used, since isEquality() returns true, but it should do
+      // something sensible anyway:
+      return "is equal to";
+    }
+
+    @Override
+    boolean isEquality() {
+      return true;
+    }
+  }
+
+  /**
    * Constructor. Creating subclasses (anonymous or otherwise) of this class is <i>not
    * recommended</i>, but is possible via this constructor. The recommended approach is to use the
    * factory methods instead (see {@linkplain Correspondence class-level documentation}).
@@ -397,6 +430,11 @@ public abstract class Correspondence<A, E> {
     @Override
     public String toString() {
       return delegate.toString();
+    }
+
+    @Override
+    boolean isEquality() {
+      return delegate.isEquality();
     }
   }
 
@@ -748,17 +786,39 @@ public abstract class Correspondence<A, E> {
   @Override
   public abstract String toString();
 
-  /** Returns a {@link Fact} describing how this correspondence compares elements of an iterable. */
-  final Fact describeForIterable() {
-    return fact("testing whether", "actual element " + this + " expected element");
+  /**
+   * Returns whether this is an equality correspondence, i.e. one returned by {@link #equality} or
+   * one whose {@link #compare} delegates to one returned by {@link #equality}.
+   */
+  boolean isEquality() {
+    return false;
   }
 
   /**
-   * Returns a {@link Fact} describing how this correspondence compares values in a map (or
-   * multimap).
+   * Returns a list of {@link Fact} instance describing how this correspondence compares elements of
+   * an iterable. There will be one "testing whether" fact, unless this {@link #isEquality is an
+   * equality correspondence}, in which case the list will be empty.
    */
-  final Fact describeForMapValues() {
-    return fact("testing whether", "actual value " + this + " expected value");
+  final ImmutableList<Fact> describeForIterable() {
+    if (!isEquality()) {
+      return ImmutableList.of(
+          fact("testing whether", "actual element " + this + " expected element"));
+    } else {
+      return ImmutableList.of();
+    }
+  }
+
+  /**
+   * Returns a list of {@link Fact} instance describing how this correspondence compares values in a
+   * map (or multimap). There will be one "testing whether" fact, unless this {@link #isEquality is
+   * an equality correspondence}, in which case the list will be empty.
+   */
+  final ImmutableList<Fact> describeForMapValues() {
+    if (!isEquality()) {
+      return ImmutableList.of(fact("testing whether", "actual value " + this + " expected value"));
+    } else {
+      return ImmutableList.of();
+    }
   }
 
   /**
