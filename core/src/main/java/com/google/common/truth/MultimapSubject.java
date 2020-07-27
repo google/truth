@@ -567,7 +567,7 @@ public class MultimapSubject extends Subject {
                           fact(
                               "expected to contain entry",
                               immutableEntry(expectedKey, expectedValue)))
-                      .add(correspondence.describeForMapValues())
+                      .addAll(correspondence.describeForMapValues())
                       .add(
                           fact(
                               "found match (but failing because of exception)",
@@ -585,7 +585,7 @@ public class MultimapSubject extends Subject {
         failWithoutActual(
             ImmutableList.<Fact>builder()
                 .add(fact("expected to contain entry", immutableEntry(expectedKey, expectedValue)))
-                .add(correspondence.describeForMapValues())
+                .addAll(correspondence.describeForMapValues())
                 .add(simpleFact("but did not"))
                 .add(fact("though it did contain values for that key", actualValues))
                 .add(
@@ -608,7 +608,7 @@ public class MultimapSubject extends Subject {
               ImmutableList.<Fact>builder()
                   .add(
                       fact("expected to contain entry", immutableEntry(expectedKey, expectedValue)))
-                  .add(correspondence.describeForMapValues())
+                  .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("but did not"))
                   // The corresponding failure in the non-Correspondence case reports the keys
                   // mapping to the expected value. Here, we show the full entries, because for some
@@ -627,7 +627,7 @@ public class MultimapSubject extends Subject {
               ImmutableList.<Fact>builder()
                   .add(
                       fact("expected to contain entry", immutableEntry(expectedKey, expectedValue)))
-                  .add(correspondence.describeForMapValues())
+                  .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("but did not"))
                   .add(
                       fact(
@@ -662,7 +662,7 @@ public class MultimapSubject extends Subject {
                       fact(
                           "expected not to contain entry",
                           immutableEntry(excludedKey, excludedValue)))
-                  .add(correspondence.describeForMapValues())
+                  .addAll(correspondence.describeForMapValues())
                   .add(fact("but contained that key with matching values", matchingValues))
                   .add(
                       fact(
@@ -680,7 +680,7 @@ public class MultimapSubject extends Subject {
                         fact(
                             "expected not to contain entry",
                             immutableEntry(excludedKey, excludedValue)))
-                    .add(correspondence.describeForMapValues())
+                    .addAll(correspondence.describeForMapValues())
                     .add(simpleFact("found no match (but failing because of exception)"))
                     .add(
                         fact(

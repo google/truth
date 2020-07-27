@@ -17,10 +17,10 @@ package com.google.common.truth;
 
 import static com.google.common.base.Functions.identity;
 import static com.google.common.collect.Collections2.permutations;
+import static com.google.common.truth.Correspondence.equality;
 import static com.google.common.truth.Correspondence.tolerance;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY_HALF_NULL_SAFE;
-import static com.google.common.truth.TestCorrespondences.EQUALITY;
 import static com.google.common.truth.TestCorrespondences.NULL_SAFE_RECORD_ID;
 import static com.google.common.truth.TestCorrespondences.PARSED_RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
 import static com.google.common.truth.TestCorrespondences.PARSED_RECORD_ID;
@@ -365,12 +365,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     CountsToStringCalls o = new CountsToStringCalls();
     List<Object> actual = asList(o, 1);
     List<Object> expected = asList(1, o);
-    assertThat(actual).comparingElementsUsing(EQUALITY).containsExactlyElementsIn(expected);
+    assertThat(actual).comparingElementsUsing(equality()).containsExactlyElementsIn(expected);
     assertThat(o.calls).isEqualTo(0);
     expectFailure
         .whenTesting()
         .that(actual)
-        .comparingElementsUsing(EQUALITY)
+        .comparingElementsUsing(equality())
         .containsExactlyElementsIn(expected)
         .inOrder();
     assertThat(o.calls).isGreaterThan(0);
@@ -1175,12 +1175,12 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
     CountsToStringCalls o = new CountsToStringCalls();
     List<Object> actual = asList(o, 1);
     List<Object> expected = asList(1, o);
-    assertThat(actual).comparingElementsUsing(EQUALITY).containsAtLeastElementsIn(expected);
+    assertThat(actual).comparingElementsUsing(equality()).containsAtLeastElementsIn(expected);
     assertThat(o.calls).isEqualTo(0);
     expectFailure
         .whenTesting()
         .that(actual)
-        .comparingElementsUsing(EQUALITY)
+        .comparingElementsUsing(equality())
         .containsAtLeastElementsIn(expected)
         .inOrder();
     assertThat(o.calls).isGreaterThan(0);

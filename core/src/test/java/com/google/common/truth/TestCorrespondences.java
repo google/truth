@@ -62,6 +62,17 @@ final class TestCorrespondences {
     }
   }
 
+  /** A formatter for the diffs between integers. */
+  static final Correspondence.DiffFormatter<Integer, Integer> INT_DIFF_FORMATTER =
+      // If we were allowed to use lambdas, this would be:
+      // (a, e) -> Integer.toString(a - e));
+      new Correspondence.DiffFormatter<Integer, Integer>() {
+        @Override
+        public String formatDiff(Integer actual, Integer expected) {
+          return Integer.toString(actual - expected);
+        }
+      };
+
   /**
    * A correspondence between integers which tests whether they are within 10 of each other. Smart
    * diffing is enabled, with a formatted diff showing the actual value less the expected value.
@@ -78,15 +89,7 @@ final class TestCorrespondences {
                 }
               },
               "is within 10 of")
-          .formattingDiffsUsing(
-              // If we were allowed to use lambdas, this would be:
-              // (a, e) -> Integer.toString(a - e));
-              new Correspondence.DiffFormatter<Integer, Integer>() {
-                @Override
-                public String formatDiff(Integer actual, Integer expected) {
-                  return Integer.toString(actual - expected);
-                }
-              });
+          .formattingDiffsUsing(INT_DIFF_FORMATTER);
 
   /**
    * A correspondence between strings which tests for case-insensitive equality. Supports null
@@ -351,17 +354,6 @@ final class TestCorrespondences {
           return record != null ? RECORD_ID.apply(record) : null;
         }
       };
-
-  static final Correspondence<Object, Object> EQUALITY =
-      Correspondence.from(
-          // If we were allowed to use method references, this would be Objects::equal.
-          new Correspondence.BinaryPredicate<Object, Object>() {
-            @Override
-            public boolean apply(@NullableDecl Object actual, @NullableDecl Object expected) {
-              return Objects.equal(actual, expected);
-            }
-          },
-          "is equal to");
 
   private TestCorrespondences() {}
 }

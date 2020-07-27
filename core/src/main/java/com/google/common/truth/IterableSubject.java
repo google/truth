@@ -1031,7 +1031,7 @@ public class IterableSubject extends Subject {
                 ImmutableList.<Fact>builder()
                     .addAll(exceptions.describeAsMainCause())
                     .add(fact("expected to contain", expected))
-                    .add(correspondence.describeForIterable())
+                    .addAll(correspondence.describeForIterable())
                     .add(fact("found match (but failing because of exception)", actual))
                     .add(subject.fullContents())
                     .build());
@@ -1046,7 +1046,7 @@ public class IterableSubject extends Subject {
           subject.failWithoutActual(
               ImmutableList.<Fact>builder()
                   .add(fact("expected to contain", expected))
-                  .add(correspondence.describeForIterable())
+                  .addAll(correspondence.describeForIterable())
                   .add(simpleFact("but did not"))
                   .addAll(
                       formatExtras(
@@ -1064,7 +1064,7 @@ public class IterableSubject extends Subject {
       subject.failWithoutActual(
           ImmutableList.<Fact>builder()
               .add(fact("expected to contain", expected))
-              .add(correspondence.describeForIterable())
+              .addAll(correspondence.describeForIterable())
               .add(subject.butWas())
               .addAll(exceptions.describeAsAdditionalInfo())
               .build());
@@ -1084,7 +1084,7 @@ public class IterableSubject extends Subject {
         subject.failWithoutActual(
             ImmutableList.<Fact>builder()
                 .add(fact("expected not to contain", excluded))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(fact("but contained", countDuplicates(matchingElements)))
                 .add(subject.fullContents())
                 .addAll(exceptions.describeAsAdditionalInfo())
@@ -1097,7 +1097,7 @@ public class IterableSubject extends Subject {
             ImmutableList.<Fact>builder()
                 .addAll(exceptions.describeAsMainCause())
                 .add(fact("expected not to contain", excluded))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(simpleFact("found no match (but failing because of exception)"))
                 .add(subject.fullContents())
                 .build());
@@ -1179,7 +1179,7 @@ public class IterableSubject extends Subject {
             ImmutableList.<Fact>builder()
                 .addAll(exceptions.describeAsMainCause())
                 .add(fact("expected", expected))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(simpleFact("found all expected elements (but failing because of exception)"))
                 .add(subject.fullContents())
                 .build());
@@ -1191,9 +1191,11 @@ public class IterableSubject extends Subject {
         @Override
         public void inOrder() {
           subject.failWithActual(
-              simpleFact("contents match, but order was wrong"),
-              fact("expected", expected),
-              correspondence.describeForIterable());
+              ImmutableList.<Fact>builder()
+                  .add(simpleFact("contents match, but order was wrong"))
+                  .add(fact("expected", expected))
+                  .addAll(correspondence.describeForIterable())
+                  .build());
         }
       };
     }
@@ -1274,7 +1276,7 @@ public class IterableSubject extends Subject {
             ImmutableList.<Fact>builder()
                 .addAll(describeMissingOrExtra(missing, extra, exceptions))
                 .add(fact("expected", expected))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(subject.butWas())
                 .addAll(exceptions.describeAsAdditionalInfo())
                 .build());
@@ -1446,7 +1448,7 @@ public class IterableSubject extends Subject {
                             + " tie)"))
                 .addAll(describeMissingOrExtra(missing, extra, exceptions))
                 .add(fact("expected", expected))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(subject.butWas())
                 .addAll(exceptions.describeAsAdditionalInfo())
                 .build());
@@ -1516,7 +1518,7 @@ public class IterableSubject extends Subject {
             ImmutableList.<Fact>builder()
                 .addAll(exceptions.describeAsMainCause())
                 .add(fact("expected to contain at least", expected))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(simpleFact("found all expected elements (but failing because of exception)"))
                 .add(subject.fullContents())
                 .build());
@@ -1528,9 +1530,11 @@ public class IterableSubject extends Subject {
         @Override
         public void inOrder() {
           subject.failWithActual(
-              simpleFact("required elements were all found, but order was wrong"),
-              fact("expected order for required elements", expected),
-              correspondence.describeForIterable());
+              ImmutableList.<Fact>builder()
+                  .add(simpleFact("required elements were all found, but order was wrong"))
+                  .add(fact("expected order for required elements", expected))
+                  .addAll(correspondence.describeForIterable())
+                  .build());
         }
       };
     }
@@ -1609,7 +1613,7 @@ public class IterableSubject extends Subject {
             ImmutableList.<Fact>builder()
                 .addAll(describeMissing(missing, extra, exceptions))
                 .add(fact("expected to contain at least", expected))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(subject.butWas())
                 .addAll(exceptions.describeAsAdditionalInfo())
                 .build());
@@ -1699,7 +1703,7 @@ public class IterableSubject extends Subject {
                             + " tie)"))
                 .addAll(describeMissing(missing, extra, exceptions))
                 .add(fact("expected to contain at least", expected))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(subject.butWas())
                 .addAll(exceptions.describeAsAdditionalInfo())
                 .build());
@@ -1734,7 +1738,7 @@ public class IterableSubject extends Subject {
                   ImmutableList.<Fact>builder()
                       .addAll(exceptions.describeAsMainCause())
                       .add(fact("expected to contain any of", expected))
-                      .add(correspondence.describeForIterable())
+                      .addAll(correspondence.describeForIterable())
                       .add(simpleFact("found match (but failing because of exception)"))
                       .add(subject.fullContents())
                       .build());
@@ -1753,7 +1757,7 @@ public class IterableSubject extends Subject {
             subject.failWithoutActual(
                 ImmutableList.<Fact>builder()
                     .add(fact("expected to contain any of", expected))
-                    .add(correspondence.describeForIterable())
+                    .addAll(correspondence.describeForIterable())
                     .add(subject.butWas())
                     .addAll(describeAnyMatchesByKey(pairing, exceptions))
                     .addAll(exceptions.describeAsAdditionalInfo())
@@ -1762,7 +1766,7 @@ public class IterableSubject extends Subject {
             subject.failWithoutActual(
                 ImmutableList.<Fact>builder()
                     .add(fact("expected to contain any of", expected))
-                    .add(correspondence.describeForIterable())
+                    .addAll(correspondence.describeForIterable())
                     .add(subject.butWas())
                     .add(simpleFact("it does not contain any matches by key, either"))
                     .addAll(exceptions.describeAsAdditionalInfo())
@@ -1772,7 +1776,7 @@ public class IterableSubject extends Subject {
           subject.failWithoutActual(
               ImmutableList.<Fact>builder()
                   .add(fact("expected to contain any of", expected))
-                  .add(correspondence.describeForIterable())
+                  .addAll(correspondence.describeForIterable())
                   .add(subject.butWas())
                   .add(
                       simpleFact(
@@ -1785,7 +1789,7 @@ public class IterableSubject extends Subject {
         subject.failWithoutActual(
             ImmutableList.<Fact>builder()
                 .add(fact("expected to contain any of", expected))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(subject.butWas())
                 .addAll(exceptions.describeAsAdditionalInfo())
                 .build());
@@ -1847,7 +1851,7 @@ public class IterableSubject extends Subject {
       if (!present.isEmpty()) {
         ImmutableList.Builder<Fact> facts = ImmutableList.builder();
         facts.add(fact("expected not to contain any of", annotateEmptyStrings(excluded)));
-        facts.add(correspondence.describeForIterable());
+        facts.addAll(correspondence.describeForIterable());
         for (E excludedItem : present.keySet()) {
           List<A> actualItems = present.get(excludedItem);
           facts.add(fact("but contained", annotateEmptyStrings(actualItems)));
@@ -1866,7 +1870,7 @@ public class IterableSubject extends Subject {
             ImmutableList.<Fact>builder()
                 .addAll(exceptions.describeAsMainCause())
                 .add(fact("expected not to contain any of", annotateEmptyStrings(excluded)))
-                .add(correspondence.describeForIterable())
+                .addAll(correspondence.describeForIterable())
                 .add(simpleFact("found no matches (but failing because of exception)"))
                 .add(subject.fullContents())
                 .build());

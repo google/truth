@@ -463,7 +463,7 @@ public class MapSubject extends Subject {
                         allowUnexpected ? "expected to contain at least" : "expected",
                         expectedMap));
         if (correspondence != null) {
-          facts.add(correspondence.describeForMapValues());
+          facts.addAll(correspondence.describeForMapValues());
         }
         failWithActual(facts.build());
       }
@@ -550,7 +550,7 @@ public class MapSubject extends Subject {
               ImmutableList.<Fact>builder()
                   .add(fact("for key", expectedKey))
                   .add(fact("expected value", expectedValue))
-                  .add(correspondence.describeForMapValues())
+                  .addAll(correspondence.describeForMapValues())
                   .add(fact("but got value", actualValue))
                   .add(fact("diff", diff))
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
@@ -561,7 +561,7 @@ public class MapSubject extends Subject {
               ImmutableList.<Fact>builder()
                   .add(fact("for key", expectedKey))
                   .add(fact("expected value", expectedValue))
-                  .add(correspondence.describeForMapValues())
+                  .addAll(correspondence.describeForMapValues())
                   .add(fact("but got value", actualValue))
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
@@ -582,7 +582,7 @@ public class MapSubject extends Subject {
               ImmutableList.<Fact>builder()
                   .add(fact("for key", expectedKey))
                   .add(fact("expected value", expectedValue))
-                  .add(correspondence.describeForMapValues())
+                  .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("but was missing"))
                   .add(fact("other keys with matching values", keys))
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
@@ -594,7 +594,7 @@ public class MapSubject extends Subject {
               ImmutableList.<Fact>builder()
                   .add(fact("for key", expectedKey))
                   .add(fact("expected value", expectedValue))
-                  .add(correspondence.describeForMapValues())
+                  .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("but was missing"))
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
@@ -619,7 +619,7 @@ public class MapSubject extends Subject {
           failWithoutActual(
               ImmutableList.<Fact>builder()
                   .add(fact("expected not to contain", immutableEntry(excludedKey, excludedValue)))
-                  .add(correspondence.describeForMapValues())
+                  .addAll(correspondence.describeForMapValues())
                   .add(fact("but contained", immutableEntry(excludedKey, actualValue)))
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .addAll(exceptions.describeAsAdditionalInfo())
@@ -631,7 +631,7 @@ public class MapSubject extends Subject {
               ImmutableList.<Fact>builder()
                   .addAll(exceptions.describeAsMainCause())
                   .add(fact("expected not to contain", immutableEntry(excludedKey, excludedValue)))
-                  .add(correspondence.describeForMapValues())
+                  .addAll(correspondence.describeForMapValues())
                   .add(simpleFact("found no match (but failing because of exception)"))
                   .add(fact("full map", actualCustomStringRepresentationForPackageMembersToCall()))
                   .build());
@@ -731,7 +731,7 @@ public class MapSubject extends Subject {
               .addAll(diff.describe(differ(exceptions)))
               .add(simpleFact("---"))
               .add(fact(allowUnexpected ? "expected to contain at least" : "expected", expectedMap))
-              .add(correspondence.describeForMapValues())
+              .addAll(correspondence.describeForMapValues())
               .add(butWas())
               .addAll(exceptions.describeAsAdditionalInfo())
               .build());

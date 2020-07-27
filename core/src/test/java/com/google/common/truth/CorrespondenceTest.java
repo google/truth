@@ -15,7 +15,9 @@
  */
 package com.google.common.truth;
 
+import static com.google.common.truth.Correspondence.equality;
 import static com.google.common.truth.Correspondence.tolerance;
+import static com.google.common.truth.TestCorrespondences.INT_DIFF_FORMATTER;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
@@ -97,6 +99,11 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   @Test
   public void testFrom_toString() {
     assertThat(STRING_PREFIX_EQUALITY.toString()).isEqualTo("starts with");
+  }
+
+  @Test
+  public void testFrom_isEquality() {
+    assertThat(STRING_PREFIX_EQUALITY.isEquality()).isFalse();
   }
 
   @Test
@@ -205,6 +212,11 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   @Test
   public void testTransforming_actual_toString() {
     assertThat(LENGTHS.toString()).isEqualTo("has a length of");
+  }
+
+  @Test
+  public void testTransforming_actual_isEquality() {
+    assertThat(LENGTHS.isEquality()).isFalse();
   }
 
   @Test
@@ -327,6 +339,11 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   public void testTransforming_both_toString() {
     assertThat(HYPHENS_MATCH_COLONS.toString())
         .isEqualTo("has a hyphen at the same index as the colon in");
+  }
+
+  @Test
+  public void testTransforming_both_isEquality() {
+    assertThat(HYPHENS_MATCH_COLONS.isEquality()).isFalse();
   }
 
   @Test
@@ -470,6 +487,23 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   }
 
   @Test
+  public void testTolerance_formatDiff() {
+    assertThat(tolerance(0.01).formatDiff(1.0, 2.0)).isNull();
+  }
+
+  @Test
+  public void testTolerance_toString() {
+    assertThat(tolerance(0.01).toString()).isEqualTo("is a finite number within 0.01 of");
+  }
+
+  @Test
+  public void testTolerance_isEquality() {
+    assertThat(tolerance(0.01).isEquality()).isFalse();
+    // This is close to equality, but not close enough (it calls numbers of different types equal):
+    assertThat(tolerance(0.0).isEquality()).isFalse();
+  }
+
+  @Test
   public void testTolerance_viaIterableSubjectContains_success() {
     assertThat(ImmutableList.of(1.02, 2.04, 3.08))
         .comparingElementsUsing(tolerance(0.05))
@@ -488,6 +522,50 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
     assertFailureValue(
         "testing whether", "actual element is a finite number within 0.05 of expected element");
     assertFailureValue("but was", "[1.02, 2.04, 3.08]");
+  }
+
+  // Tests of the 'equality' factory method. Includes both direct tests of the compare method and
+  // indirect tests using it in a basic call chain.
+
+  @Test
+  public void testEquality_compare() {
+    assertThat(equality().compare("foo", "foo")).isTrue();
+    assertThat(equality().compare("foo", "bar")).isFalse();
+    assertThat(equality().compare(123, 123)).isTrue();
+    assertThat(equality().compare(123, 123L)).isFalse();
+    assertThat(equality().compare(null, null)).isTrue();
+    assertThat(equality().compare(null, "bar")).isFalse();
+  }
+
+  @Test
+  public void testEquality_formatDiff() {
+    assertThat(equality().formatDiff("foo", "bar")).isNull();
+  }
+
+  @Test
+  public void testEquality_toString() {
+    assertThat(equality().toString()).isEqualTo("is equal to"); // meta!
+  }
+
+  @Test
+  public void testEquality_isEquality() {
+    assertThat(equality().isEquality()).isTrue();
+  }
+
+  @Test
+  public void testEquality_viaIterableSubjectContains_success() {
+    assertThat(ImmutableList.of(1.0, 2.0, 3.0)).comparingElementsUsing(equality()).contains(2.0);
+  }
+
+  @Test
+  public void testEquality_viaIterableSubjectContains_failure() {
+    expectFailure
+        .whenTesting()
+        .that(ImmutableList.of(1.01, 2.02, 3.03))
+        .comparingElementsUsing(equality())
+        .contains(2.0);
+    // N.B. No "testing whether" fact:
+    assertFailureKeys("expected to contain", "but was");
   }
 
   // Tests of formattingDiffsUsing.
@@ -531,6 +609,15 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
   public void testFormattingDiffsUsing_toString() {
     // The toString behaviour should be the same as the wrapped correspondence.
     assertThat(LENGTHS_WITH_DIFF.toString()).isEqualTo("has a length of");
+  }
+
+  @Test
+  public void testFormattingDiffsUsing_isEquality() {
+    // The isEquality behaviour should be the same as the wrapped correspondence.
+    assertThat(LENGTHS_WITH_DIFF.isEquality()).isFalse();
+    Correspondence<Integer, Integer> equalityWithDiffFormatter =
+        Correspondence.<Integer>equality().formattingDiffsUsing(INT_DIFF_FORMATTER);
+    assertThat(equalityWithDiffFormatter.isEquality()).isTrue();
   }
 
   @Test
