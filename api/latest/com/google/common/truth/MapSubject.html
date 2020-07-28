@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -305,27 +305,34 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </td>
 </tr>
 <tr id="i10" class="altColor">
+<td class="colFirst"><code>&lt;V&gt;&nbsp;<a href="MapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MapSubject.UsingCorrespondence</a>&lt;V,&#8203;V&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formattingDiffsUsing(com.google.common.truth.Correspondence.DiffFormatter)">formattingDiffsUsing</a></span>&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super V,&#8203;? super V&gt;&nbsp;formatter)</code></th>
+<td class="colLast">
+<div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual value (i.e.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasSize(int)">hasSize</a></span>&#8203;(int&nbsp;expectedSize)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not have the given size.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEmpty()">isEmpty</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Fails if the map is not empty.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not equal to the given object.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEmpty()">isNotEmpty</a></span>()</code></th>
 <td class="colLast">
@@ -570,7 +577,7 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <a id="comparingValuesUsing(com.google.common.truth.Correspondence)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>comparingValuesUsing</h4>
 <pre class="methodSignature">public final&nbsp;&lt;A,&#8203;E&gt;&nbsp;<a href="MapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MapSubject.UsingCorrespondence</a>&lt;A,&#8203;E&gt;&nbsp;comparingValuesUsing&#8203;(<a href="Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;? super A,&#8203;? super E&gt;&nbsp;correspondence)</pre>
@@ -593,6 +600,39 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
  <p>Any of the methods on the returned object may throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>ClassCastException</code></a> if they
  encounter an actual value that is not of type <code>A</code> or an expected value that is not of
  type <code>E</code>.</div>
+</li>
+</ul>
+<a id="formattingDiffsUsing(com.google.common.truth.Correspondence.DiffFormatter)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>formattingDiffsUsing</h4>
+<pre class="methodSignature">public final&nbsp;&lt;V&gt;&nbsp;<a href="MapSubject.UsingCorrespondence.html" title="class in com.google.common.truth">MapSubject.UsingCorrespondence</a>&lt;V,&#8203;V&gt;&nbsp;formattingDiffsUsing&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super V,&#8203;? super V&gt;&nbsp;formatter)</pre>
+<div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual value (i.e. a value in the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink"><code>Map</code></a> under test) and the value it is expected to be equal to, but isn't. The actual and
+ expected values must be of type <code>V</code>. The check is actually executed by continuing the
+ method chain. For example:
+
+ <pre><code>
+ assertThat(actualMap)
+   .formattingDiffsUsing(FooTestHelper::formatDiff)
+   .containsExactly(key1, foo1, key2, foo2, key3, foo3);
+ </code></pre>
+
+ where <code>actualMap</code> is a <code>Map&lt;?, Foo&gt;</code> (or, more generally, a <code>Map&lt;?, ? extends
+ Foo&gt;</code>), <code>FooTestHelper.formatDiff</code> is a static method taking two <code>Foo</code> arguments
+ and returning a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>String</code></a>, and <code>foo1</code>, <code>foo2</code>, and <code>foo3</code> are <code>
+ Foo</code> instances.
+
+ <p>Unlike when using <a href="#comparingValuesUsing(com.google.common.truth.Correspondence)"><code>comparingValuesUsing(com.google.common.truth.Correspondence&lt;? super A, ? super E&gt;)</code></a>, the values are still compared using object
+ equality, so this method does not affect whether a test passes or fails.
+
+ <p>Any of the methods on the returned object may throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>ClassCastException</code></a> if they
+ encounter a value that is not of type <code>V</code>.</div>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.1</dd>
+</dl>
 </li>
 </ul>
 </li>

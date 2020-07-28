@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":42,"i25":10,"i26":42};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":42,"i26":10,"i27":42};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -373,41 +373,48 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </td>
 </tr>
 <tr id="i17" class="rowColor">
+<td class="colFirst"><code>&lt;T&gt;&nbsp;<a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;T,&#8203;T&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formattingDiffsUsing(com.google.common.truth.Correspondence.DiffFormatter)">formattingDiffsUsing</a></span>&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super T,&#8203;? super T&gt;&nbsp;formatter)</code></th>
+<td class="colLast">
+<div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual elements (i.e.</div>
+</td>
+</tr>
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasSize(int)">hasSize</a></span>&#8203;(int&nbsp;expectedSize)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject does not have the given size.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEmpty()">isEmpty</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not empty.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not equal to the given object.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInOrder()">isInOrder</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Fails if the iterable is not ordered, according to the natural ordering of its elements.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInOrder(java.util.Comparator)">isInOrder</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util" class="externalLink">Comparator</a>&lt;?&gt;&nbsp;comparator)</code></th>
 <td class="colLast">
 <div class="block">Fails if the iterable is not ordered, according to the given comparator.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInStrictOrder()">isInStrictOrder</a></span>()</code></th>
 <td class="colLast">
@@ -415,14 +422,14 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
  elements.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isInStrictOrder(java.util.Comparator)">isInStrictOrder</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html?is-external=true" title="class or interface in java.util" class="externalLink">Comparator</a>&lt;?&gt;&nbsp;comparator)</code></th>
 <td class="colLast">
 <div class="block">Fails if the iterable is not strictly ordered, according to the given comparator.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">isNoneOf</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
@@ -433,14 +440,14 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEmpty()">isNotEmpty</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is empty.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotIn(java.lang.Iterable)">isNotIn</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;?&gt;&nbsp;iterable)</code></th>
 <td class="colLast">
@@ -923,7 +930,7 @@ public&nbsp;void&nbsp;isNotIn&#8203;(<a href="https://docs.oracle.com/javase/7/d
 <a id="comparingElementsUsing(com.google.common.truth.Correspondence)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>comparingElementsUsing</h4>
 <pre class="methodSignature">public&nbsp;&lt;A,&#8203;E&gt;&nbsp;<a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;A,&#8203;E&gt;&nbsp;comparingElementsUsing&#8203;(<a href="Correspondence.html" title="class in com.google.common.truth">Correspondence</a>&lt;? super A,&#8203;? super E&gt;&nbsp;correspondence)</pre>
@@ -941,6 +948,42 @@ public&nbsp;void&nbsp;isNotIn&#8203;(<a href="https://docs.oracle.com/javase/7/d
 
  <p>Any of the methods on the returned object may throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>ClassCastException</code></a> if they
  encounter an actual element that is not of type <code>A</code>.</div>
+</li>
+</ul>
+<a id="formattingDiffsUsing(com.google.common.truth.Correspondence.DiffFormatter)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>formattingDiffsUsing</h4>
+<pre class="methodSignature">public&nbsp;&lt;T&gt;&nbsp;<a href="IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a>&lt;T,&#8203;T&gt;&nbsp;formattingDiffsUsing&#8203;(<a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth">Correspondence.DiffFormatter</a>&lt;? super T,&#8203;? super T&gt;&nbsp;formatter)</pre>
+<div class="block">Starts a method chain for a check in which failure messages may use the given <a href="Correspondence.DiffFormatter.html" title="interface in com.google.common.truth"><code>Correspondence.DiffFormatter</code></a> to describe the difference between an actual elements (i.e. an element of the
+ <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>Iterable</code></a> under test) and the element it is expected to be equal to, but isn't. The
+ actual and expected elements must be of type <code>T</code>. The check is actually executed by
+ continuing the method chain. You may well want to use <a href="IterableSubject.UsingCorrespondence.html#displayingDiffsPairedBy(com.google.common.base.Function)"><code>IterableSubject.UsingCorrespondence.displayingDiffsPairedBy(com.google.common.base.Function&lt;? super E, ?&gt;)</code></a> to specify how the elements should be paired up
+ for diffing. For example:
+
+ <pre><code>
+ assertThat(actualFoos)
+     .formattingDiffsUsing(FooTestHelper::formatDiff)
+     .displayingDiffsPairedBy(Foo::getId)
+     .containsExactly(foo1, foo2, foo3);
+ </code></pre>
+
+ where <code>actualFoos</code> is an <code>Iterable&lt;Foo&gt;</code>, <code>FooTestHelper.formatDiff</code> is a
+ static method taking two <code>Foo</code> arguments and returning a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>String</code></a>, <code>
+ Foo.getId</code> is a no-arg instance method returning some kind of ID, and <code>foo1</code>, {code
+ foo2}, and <code>foo3</code> are <code>Foo</code> instances.
+
+ <p>Unlike when using <a href="#comparingElementsUsing(com.google.common.truth.Correspondence)"><code>comparingElementsUsing(com.google.common.truth.Correspondence&lt;? super A, ? super E&gt;)</code></a>, the elements are still compared using
+ object equality, so this method does not affect whether a test passes or fails.
+
+ <p>Any of the methods on the returned object may throw <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>ClassCastException</code></a> if they
+ encounter an actual element that is not of type <code>T</code>.</div>
+<dl>
+<dt><span class="simpleTagLabel">Since:</span></dt>
+<dd>1.1</dd>
+</dl>
 </li>
 </ul>
 </li>
