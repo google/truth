@@ -55,6 +55,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
+import com.google.common.truth.Correspondence.DiffFormatter;
 import com.google.common.truth.SubjectUtils.DuplicateGroupedAndTyped;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
@@ -898,6 +899,40 @@ public class IterableSubject extends Subject {
   public <A, E> UsingCorrespondence<A, E> comparingElementsUsing(
       Correspondence<? super A, ? super E> correspondence) {
     return new UsingCorrespondence<>(this, correspondence);
+  }
+
+  /**
+   * Starts a method chain for a check in which failure messages may use the given {@link
+   * DiffFormatter} to describe the difference between an actual elements (i.e. an element of the
+   * {@link Iterable} under test) and the element it is expected to be equal to, but isn't. The
+   * actual and expected elements must be of type {@code T}. The check is actually executed by
+   * continuing the method chain. You may well want to use {@link
+   * UsingCorrespondence#displayingDiffsPairedBy} to specify how the elements should be paired up
+   * for diffing. For example:
+   *
+   * <pre>{@code
+   * assertThat(actualFoos)
+   *     .formattingDiffsUsing(FooTestHelper::formatDiff)
+   *     .displayingDiffsPairedBy(Foo::getId)
+   *     .containsExactly(foo1, foo2, foo3);
+   * }</pre>
+   *
+   * where {@code actualFoos} is an {@code Iterable<Foo>}, {@code FooTestHelper.formatDiff} is a
+   * static method taking two {@code Foo} arguments and returning a {@link String}, {@code
+   * Foo.getId} is a no-arg instance method returning some kind of ID, and {@code foo1}, {code
+   * foo2}, and {@code foo3} are {@code Foo} instances.
+   *
+   * <p>Unlike when using {@link #comparingElementsUsing}, the elements are still compared using
+   * object equality, so this method does not affect whether a test passes or fails.
+   *
+   * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
+   * encounter an actual element that is not of type {@code T}.
+   *
+   * @since 1.1
+   */
+  public <T> UsingCorrespondence<T, T> formattingDiffsUsing(
+      DiffFormatter<? super T, ? super T> formatter) {
+    return comparingElementsUsing(Correspondence.<T>equality().formattingDiffsUsing(formatter));
   }
 
   /**

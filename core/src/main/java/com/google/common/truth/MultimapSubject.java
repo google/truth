@@ -531,6 +531,10 @@ public class MultimapSubject extends Subject {
     return new UsingCorrespondence<>(correspondence);
   }
 
+  // TODO(b/69154276): Add formattingDiffsUsing, like we have on MapSubject, once we have
+  // implemented Smart Diffs for multimaps. We could add it now, but there is no way it could have
+  // any effect, and it would not be testable.
+
   /**
    * A partially specified check in which the actual values (i.e. the values of the {@link Multimap}
    * under test) are compared to expected values using a {@link Correspondence}. The expected values

@@ -26,6 +26,7 @@ import static com.google.common.truth.TestCorrespondences.PARSED_RECORDS_EQUAL_W
 import static com.google.common.truth.TestCorrespondences.PARSED_RECORD_ID;
 import static com.google.common.truth.TestCorrespondences.RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10;
 import static com.google.common.truth.TestCorrespondences.RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF;
+import static com.google.common.truth.TestCorrespondences.RECORD_DIFF_FORMATTER;
 import static com.google.common.truth.TestCorrespondences.RECORD_ID;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
@@ -1988,6 +1989,48 @@ public class IterableSubjectCorrespondenceTest extends BaseSubjectTestCase {
         "full contents");
     assertFailureValue("but contained", "[+128]");
     assertFailureValue("corresponding to", "128");
+  }
+
+  @Test
+  public void formattingDiffsUsing_success() {
+    ImmutableList<Record> actual =
+        ImmutableList.of(Record.create(3, 300), Record.create(2, 200), Record.create(1, 100));
+    assertThat(actual)
+        .formattingDiffsUsing(RECORD_DIFF_FORMATTER)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsExactly(Record.create(1, 100), Record.create(2, 200), Record.create(3, 300));
+  }
+
+  @Test
+  public void formattingDiffsUsing_failure() {
+    ImmutableList<Record> actual =
+        ImmutableList.of(
+            Record.create(3, 300),
+            Record.create(2, 201),
+            Record.create(1, 100),
+            Record.create(2, 199));
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .formattingDiffsUsing(RECORD_DIFF_FORMATTER)
+        .displayingDiffsPairedBy(RECORD_ID)
+        .containsExactly(Record.create(1, 100), Record.create(2, 200), Record.create(3, 300));
+    assertFailureKeys(
+        "for key",
+        "missing",
+        "unexpected (2)",
+        "#1",
+        "diff",
+        "#2",
+        "diff",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValue("missing", "2/200");
+    assertFailureValue("#1", "2/201");
+    assertFailureValueIndexed("diff", 0, "score:1");
+    assertFailureValue("#2", "2/199");
+    assertFailureValueIndexed("diff", 1, "score:-1");
   }
 
   private static final class CountsToStringCalls {

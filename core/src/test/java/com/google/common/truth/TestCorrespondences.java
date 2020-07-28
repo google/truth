@@ -236,6 +236,20 @@ final class TestCorrespondences {
           "has the same id as and a score within 10 of");
 
   /**
+   * A formatter for diffs between records. If the records have the same key, it gives a string of
+   * the form {@code "score:<score_diff>"}. If they have different keys, it gives null.
+   */
+  static final Correspondence.DiffFormatter<Record, Record> RECORD_DIFF_FORMATTER =
+      // If we were allowed to use method references, this would be:
+      // TestCorrespondences::formatRecordDiff);
+      new Correspondence.DiffFormatter<Record, Record>() {
+        @Override
+        public String formatDiff(Record actual, Record expected) {
+          return formatRecordDiff(actual, expected);
+        }
+      };
+
+  /**
    * A correspondence between {@link Record} instances which tests whether their {@code id} values
    * are equal and their {@code score} values are within 10 of each other. Smart diffing is enabled
    * for records with equal {@code id} values, with a formatted diff showing the actual {@code
@@ -245,15 +259,7 @@ final class TestCorrespondences {
    * to null only. The {@link Correspondence#formatDiff} implementation does not support nulls.
    */
   static final Correspondence<Record, Record> RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10 =
-      RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF.formattingDiffsUsing(
-          // If we were allowed to use method references, this would be:
-          // TestCorrespondences::formatRecordDiff);
-          new Correspondence.DiffFormatter<Record, Record>() {
-            @Override
-            public String formatDiff(Record actual, Record expected) {
-              return formatRecordDiff(actual, expected);
-            }
-          });
+      RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10_NO_DIFF.formattingDiffsUsing(RECORD_DIFF_FORMATTER);
 
   /**
    * A correspondence like {@link #RECORDS_EQUAL_WITH_SCORE_TOLERANCE_10} except that the actual

@@ -35,6 +35,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
+import com.google.common.truth.Correspondence.DiffFormatter;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -511,6 +512,37 @@ public class MapSubject extends Subject {
   public final <A, E> UsingCorrespondence<A, E> comparingValuesUsing(
       Correspondence<? super A, ? super E> correspondence) {
     return new UsingCorrespondence<>(correspondence);
+  }
+
+  /**
+   * Starts a method chain for a check in which failure messages may use the given {@link
+   * DiffFormatter} to describe the difference between an actual value (i.e. a value in the {@link
+   * Map} under test) and the value it is expected to be equal to, but isn't. The actual and
+   * expected values must be of type {@code V}. The check is actually executed by continuing the
+   * method chain. For example:
+   *
+   * <pre>{@code
+   * assertThat(actualMap)
+   *   .formattingDiffsUsing(FooTestHelper::formatDiff)
+   *   .containsExactly(key1, foo1, key2, foo2, key3, foo3);
+   * }</pre>
+   *
+   * where {@code actualMap} is a {@code Map<?, Foo>} (or, more generally, a {@code Map<?, ? extends
+   * Foo>}), {@code FooTestHelper.formatDiff} is a static method taking two {@code Foo} arguments
+   * and returning a {@link String}, and {@code foo1}, {@code foo2}, and {@code foo3} are {@code
+   * Foo} instances.
+   *
+   * <p>Unlike when using {@link #comparingValuesUsing}, the values are still compared using object
+   * equality, so this method does not affect whether a test passes or fails.
+   *
+   * <p>Any of the methods on the returned object may throw {@link ClassCastException} if they
+   * encounter a value that is not of type {@code V}.
+   *
+   * @since 1.1
+   */
+  public final <V> UsingCorrespondence<V, V> formattingDiffsUsing(
+      DiffFormatter<? super V, ? super V> formatter) {
+    return comparingValuesUsing(Correspondence.<V>equality().formattingDiffsUsing(formatter));
   }
 
   /**

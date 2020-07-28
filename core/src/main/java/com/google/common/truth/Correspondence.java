@@ -315,8 +315,7 @@ public abstract class Correspondence<A, E> {
   /**
    * Returns a correspondence which compares elements using object equality, i.e. giving the same
    * assertions as you would get without a correspondence. This exists so that we can add a
-   * diff-formatting functionality to it. TODO(b/69154394): Explain why this is here when the
-   * feature is added.
+   * diff-formatting functionality to it. See e.g. {@link IterableSubject#formattingDiffsUsing}.
    */
   @SuppressWarnings("unchecked") // safe covariant cast
   static <T> Correspondence<T, T> equality() {
