@@ -12,6 +12,9 @@ other than object equality. This mechanism is integral to the APIs for comparing
 collections of doubles and floats using [approximate equality](floating_point)
 and of [protocol buffers](protobufs), but the framework is quite general.
 
+You can also use it to
+[improve failure messages while still using object equality](#formatDiffWithEquality).
+
 ## Correspondence {#correspondence}
 
 The primary concept of Fuzzy Truth is a
@@ -22,6 +25,10 @@ instances that do not correspond. A `Correspondence<A, E>` is used in an
 assertion about a collection of elements of type `A` (typically the collection
 actually returned by the code under test), checking that it contains (or,
 occasionally, does not contain) certain expected elements of type `E`.
+
+You use a `Correspondence` by passing it into a method such as
+[`comparingElementsUsing`][iterablesubject-comparingelementsusing],
+as shown in the [examples below](#iterable).
 
 Here's an example correspondence between strings, which tests whether the actual
 strings contain the expected substrings:
@@ -179,6 +186,20 @@ messages whenever it can usefully do so. For example, when an assertion about a
 it will show a diff between the value it got and the one it expected. For this
 to work for an assertion about an `Iterable` (with more than one missing value)
 you need to [enable pairing, as shown above](#displayingDiffsPairedBy).
+
+### Enabling formatted diffs while still using object equality for comparisons {#formatDiffWithEquality}
+
+You can get the same diff-formatting functionality while using object equality
+for comparisons (i.e. making the same assertion as you would get with non-Fuzzy
+Truth) by using a method such as
+[`formattingDiffsUsing`][iterablesubject-formattingdiffsusing]. For example:
+
+```java
+assertThat(actualRecords)
+    .formattingDiffsUsing(MyRecordTestHelper::formatRecordDiff)
+    .displayingDiffsPairedBy(Record::getId)
+    .containsExactlyElementsIn(expectedRecords);
+```
 
 ## Protocol buffers
 
