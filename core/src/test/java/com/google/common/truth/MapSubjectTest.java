@@ -16,6 +16,7 @@
 package com.google.common.truth;
 
 import static com.google.common.truth.TestCorrespondences.CASE_INSENSITIVE_EQUALITY;
+import static com.google.common.truth.TestCorrespondences.INT_DIFF_FORMATTER;
 import static com.google.common.truth.TestCorrespondences.STRING_PARSES_TO_INTEGER_CORRESPONDENCE;
 import static com.google.common.truth.TestCorrespondences.WITHIN_10_OF;
 import static com.google.common.truth.Truth.assertThat;
@@ -2128,6 +2129,36 @@ public class MapSubjectTest extends BaseSubjectTestCase {
     assertThat(actual)
         .comparingValuesUsing(STRING_PARSES_TO_INTEGER_CORRESPONDENCE)
         .containsAtLeastEntriesIn(expected);
+  }
+
+  @Test
+  public void formattingDiffsUsing_success() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("ghi", 300, "def", 200, "abc", 100);
+    assertThat(actual)
+        .formattingDiffsUsing(INT_DIFF_FORMATTER)
+        .containsExactly("abc", 100, "def", 200, "ghi", 300);
+  }
+
+  @Test
+  public void formattingDiffsUsing_failure() {
+    ImmutableMap<String, Integer> actual = ImmutableMap.of("ghi", 300, "def", 201, "abc", 100);
+    expectFailure
+        .whenTesting()
+        .that(actual)
+        .formattingDiffsUsing(INT_DIFF_FORMATTER)
+        .containsExactly("abc", 100, "def", 200, "ghi", 300);
+    assertFailureKeys(
+        "keys with wrong values",
+        "for key",
+        "expected value",
+        "but got value",
+        "diff",
+        "---",
+        "expected",
+        "but was");
+    assertFailureValue("expected value", "200");
+    assertFailureValue("but got value", "201");
+    assertFailureValue("diff", "1");
   }
 
   private MapSubject expectFailureWhenTestingThat(Map<?, ?> actual) {
