@@ -78,7 +78,10 @@ multimap was: {corelibs=[guava, auto, dagger, caliper]}
 ## Truth vs. AssertJ
 
 Truth and [AssertJ] are very similar. This raises the question: Why did we
-create Truth? The reason is historical: AssertJ didn’t exist when we started
+create Truth? The reason is historical: AssertJ didn’t
+[exist](https://github.com/joel-costigliola/assertj-core/commit/cc324ba53c55a30717ec3648ee7d563611231a96)
+when we
+[started](https://github.com/google/truth/commit/813afacc95b5f7ae2d38f10a10ca095b8c69b2b3)
 Truth. By the time it was created, we’d begun using Truth widely at Google, and
 we’d made some decisions that would be difficult to retrofit onto AssertJ.
 
