@@ -23,9 +23,13 @@ assertThat(notificationText, containsString("testuser@google.com"));
 
 ## Why create Truth when AssertJ already exists?
 
-The reason is historical: AssertJ didn’t exist when we started Truth. By the
-time it was created, we’d begun using Truth widely at Google, and we’d made some
-decisions that would be difficult to retrofit onto AssertJ.
+The reason is historical: AssertJ didn’t 
+[exist](https://github.com/joel-costigliola/assertj-core/commit/cc324ba53c55a30717ec3648ee7d563611231a96)
+when we
+[started](https://github.com/google/truth/commit/813afacc95b5f7ae2d38f10a10ca095b8c69b2b3)
+Truth. By the time it was created, we’d begun migrating Google code to Truth,
+and we’d made some design decisions that would be difficult to retrofit onto
+AssertJ.
 
 ## Truth vs. Hamcrest {#vs-hamcrest}
 
