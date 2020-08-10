@@ -5,7 +5,8 @@ title: Protobuf Extension
 
 
 ProtoTruth is an extension of the Truth library which lets you make assertions
-about [Protobufs], a rich data interchange format. To get started:
+about [Protobufs], a rich data interchange format. To get started, follow the
+steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
 
 1.  Add the appropriate dependency to your build:
 
