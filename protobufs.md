@@ -137,6 +137,44 @@ the `displayingDiffsPairedBy` method as providing an equivalent for an assertion
 about an `Iterable`. Note that this won't affect whether the test passes or
 fails.)
 
+## Lite Proto Support {#lite}
+
+Nominal support exists for Lite protos, commonly used in Android code due to the
+size of the full-proto runtime. However, most features available for full protos
+are not available for lite protos because runtime descriptors are essential for
+doing dynamic comparisons. To use lite protos with proto truth:
+
+1.  Add a dependency:
+
+    **Maven:**
+
+    ```xml
+    <dependency>
+      <groupId>com.google.truth.extensions</groupId>
+      <artifactId>truth-liteproto-extension</artifactId>
+      <version>{{ site.version }}</version>
+    </dependency>
+    ```
+
+    **Gradle:**
+
+    ```groovy
+    buildscript {
+      repositories.mavenLocal()
+    }
+    dependencies {
+      testCompile "com.google.truth.extensions:truth-liteproto-extension:{{ site.version }}"
+    }
+    ```
+
+1.  Add a static import:
+
+    ```java
+    import static com.google.common.truth.extensions.proto.LiteProtoTruth.assertThat;
+    ```
+
+1.  And assert away!
+
 <!-- References -->
 
 [Protobufs]:         https://developers.google.com/protocol-buffers/docs/overview
