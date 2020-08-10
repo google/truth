@@ -16,7 +16,7 @@ steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
     <dependency>
       <groupId>com.google.truth.extensions</groupId>
       <artifactId>truth-proto-extension</artifactId>
-      <version>0.31</version>
+      <version>{{ site.version }}</version>
     </dependency>
     ```
 
@@ -27,7 +27,7 @@ steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
       repositories.mavenLocal()
     }
     dependencies {
-      testCompile "com.google.truth.extensions:truth-proto-extension:0.31"
+      testCompile "com.google.truth.extensions:truth-proto-extension:{{ site.version }}"
     }
     ```
 
