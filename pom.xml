@@ -33,7 +33,7 @@
     <protobuf.protoc.version>3.7.1</protobuf.protoc.version>
 
     <!-- Property for an extension, since Maven doesn't have extensionManagement. -->
-    <os-maven-plugin.version>1.5.0.Final</os-maven-plugin.version>
+    <os-maven-plugin.version>1.6.2</os-maven-plugin.version>
   </properties>
   <dependencyManagement>
     <dependencies>
