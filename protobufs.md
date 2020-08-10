@@ -50,8 +50,8 @@ steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
 1.  Assert away!
 
     ```java
-    MyProto expected = MyProto.newBuilder().addBar(3).addBar(5).setFoo(“qux”).build();
-    MyProto actual =   MyProto.newBuilder().addBar(5).addBar(3).setFoo(“quizzux”).build();
+    MyProto expected = MyProto.newBuilder().addBar(3).addBar(5).setFoo("qux").build();
+    MyProto actual =   MyProto.newBuilder().addBar(5).addBar(3).setFoo("quizzux").build();
     assertThat(actual).ignoringRepeatedFieldOrder().isEqualTo(expected);
     ```
 
@@ -59,7 +59,7 @@ steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
 
     ```shell
     Not true that messages compare equal.  Differences were found:
-    modified: foo: ”qux” -> “quizzux”
+    modified: foo: "qux" -> "quizzux"
     ```
 
 ## Supported Use Cases {#support}
