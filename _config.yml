@@ -46,6 +46,9 @@ nav:
       name: Fuzzy Truth
       url: /fuzzy
   - item:
+      name: Proto Truth
+      url: /protobufs
+  - item:
       name: Compare
       url: /comparison
   - item:
