@@ -400,7 +400,7 @@
         <plugin>
           <groupId>org.xolstice.maven.plugins</groupId>
           <artifactId>protobuf-maven-plugin</artifactId>
-          <version>0.5.1</version>
+          <version>0.6.1</version>
         </plugin>
       </plugins>
     </pluginManagement>
