@@ -6,7 +6,6 @@ title: Releasing Truth
 * auto-gen TOC:
 {:toc}
 
-
 ## Overview
 
 At a high level, the steps involved are as listed in the above table of
@@ -216,7 +215,6 @@ the release will now be nicely documented.
 > since this release"* will take you to a handy filtered list of commits which
 > can be used as a basis for figuring out the release notes.
 
-
 And, for release 1.1:
 
 ```
@@ -235,7 +233,6 @@ Create a commit that updates the `_config.yml` file with the new version number.
 
 Once the release is done, and the tag is pushed, the release branch can be
 safely deleted.
-
 
 [GPG]: http://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven
 [OSSRH Guide]: http://central.sonatype.org/pages/ossrh-guide.html

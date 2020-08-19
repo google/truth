@@ -31,7 +31,6 @@ Stack trace cleaning is enabled by default. To disable the cleaning and have
 Truth report the original stack traces, set the system property
 `com.google.common.truth.disable_stack_trace_cleaning` to `true`.
 
-
 To disable the feature for the current process:
 
 ```java

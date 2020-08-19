@@ -168,7 +168,6 @@ assertThat(abc).containsAtLeast("c", "a", "b").inOrder(); // fails
 assertThat(abc).containsExactly("c", "a", "b").inOrder(); // fails
 ```
 
-
 ## Does it matter if I write `assertThat(a).isEqualTo(b)` or `assertThat(b).isEqualTo(a)`? {#order}
 
 Yes! Truth's error messages will make more sense if you always use this pattern:
@@ -286,7 +285,6 @@ For a list of built-in behaviors, see the docs on [`FailureStrategy`].
 
 **Custom `Subject` that doesn't expose an `assertThat` shortcut:** `assertAbout(...).that(...)`
 
-
 ## Any other questions?
 
 [Ask your question here], or see more [contact info](index#more-information).
@@ -295,4 +293,3 @@ For a list of built-in behaviors, see the docs on [`FailureStrategy`].
 
 [Ask your question here]: http://stackoverflow.com/questions/ask?tags=google-truth
 [`FailureStrategy`]: https://truth.dev/api/latest/com/google/common/truth/FailureStrategy.html
-

@@ -3,7 +3,6 @@ layout: default
 title: Extensions to Truth
 ---
 
-
 ## Extension points
 
 Truth is configurable in multiple ways, including:
@@ -38,7 +37,6 @@ Other extensions that are not part of the Truth project itself include:
     for testing Android types, like `Intent`
 *   [Compile Testing] for testing annotation processors and compilation jobs
 
-
 ## Using subjects from extensions
 
 The steps are nearly the same as [for using the core Truth assertions](index):
@@ -51,7 +49,6 @@ Each extension is packaged separately so you can include only what you need.
 * Protocol Buffers: `com.google.truth.extensions:truth-proto-extension:{{ site.version }}`
   * LiteProto: `com.google.truth.extensions:truth-liteproto-extension:{{ site.version }}`
 * RE2J: `com.google.truth.extensions:truth-re2j-extension:{{ site.version }}`
-
 
 ### 2. Add a static import
 
@@ -381,4 +378,3 @@ There are four parts to the example:
 [`Subject.Factory`]:      https://truth.dev/api/latest/com/google/common/truth/Subject.Factory.html
 [`Subject`]:              https://truth.dev/api/latest/com/google/common/truth/Subject.html
 [`Truth8`]:               https://truth.dev/api/latest/com/google/common/truth/Truth8.html
-

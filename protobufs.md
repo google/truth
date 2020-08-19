@@ -3,7 +3,6 @@ layout: default
 title: Protobuf Extension
 ---
 
-
 ProtoTruth is an extension of the Truth library which lets you make assertions
 about [Protobufs], a rich data interchange format. To get started, follow the
 steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
@@ -35,7 +34,6 @@ steps below, or for Lite proto follow [our Lite Proto instructions](#lite):
     Protobufs. Note that this extension lacks many of the features in the full
     extension due to the lack of runtime descriptors.  You'll also need to
     import LiteProtoTruth instead of ProtoTruth.
-
 
 1.  Add a static import:
 
@@ -83,7 +81,6 @@ Support will not exist for:
 *   [gRPC](http://www.grpc.io/), for which Truth is not an appropriate home.
     Mocking libraries are better suited to testing RPC interactions.
 
-
 ## Strict default behavior {#defaults}
 
 By default, the extension is fairly strict and requires you to explicitly state
@@ -107,7 +104,6 @@ your test assumptions. It will:
 In summary, the default `isEqualTo()` behavior of [`ProtoSubject`] is
 behaviorally identical to [`Subject`] behavior. However, you will get much
 better error messaging in the event of a failure.
-
 
 ## Getting better failure messages by enabling pairing of `Iterable` elements {#displayingDiffsPairedBy}
 
@@ -183,4 +179,3 @@ doing dynamic comparisons. To use lite protos with proto truth:
 [`Any`]:             https://github.com/google/protobuf/blob/master/src/google/protobuf/any.proto
 [`ProtoSubject`]:    https://truth.dev/api/latest/com/google/common/truth/extensions/proto/ProtoSubject.html
 [`Subject`]:         https://truth.dev/api/latest/com/google/common/truth/Subject.html
-

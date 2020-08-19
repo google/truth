@@ -3,7 +3,6 @@ layout: default
 title: "Truth: Supported Types"
 ---
 
-
 Truth has built in support for the following types:
 
 *   Primitives
@@ -91,4 +90,3 @@ assertions on in this list, you can
 [`Table`]: https://truth.dev/api/latest/com/google/common/truth/TableSubject
 [`Throwable`]: https://truth.dev/api/latest/com/google/common/truth/ThrowableSubject
 [Java 8 types]: https://truth.dev/faq#java8
-

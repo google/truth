@@ -273,4 +273,3 @@ assertThat(actualReports)
 <!-- References -->
 
 [`ProtoTruth`]: https://truth.dev/protobufs
-

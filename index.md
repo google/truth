@@ -118,7 +118,6 @@ Truth and [Hamcrest] differ significantly. We prefer Truth because:
     complex generics and makes it hard for Hamcrest to produce readable failure
     messages.
 
-
 # How to use Truth
 
 ## 1. Add the appropriate dependency to your build file:
@@ -162,7 +161,6 @@ newest JRE version of Guava.
 Finally, consider [configuring your build to use Error Prone]. [Error Prone]
 checks for many kinds of bugs, including some we've seen in usages of Truth.
 
-
 ## 2. Add static imports for Truth’s entry points:
 
 ```java
@@ -198,7 +196,6 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 *   Bugs: [GitHub issues]
 *   Source: [GitHub][source]
 
-
 <!-- References -->
 
 [source]: https://github.com/google/truth/tree/master/core/src/main/java/com/google/common/truth
@@ -218,4 +215,3 @@ if you’re looking for assertions about a `Map`, look at the documentation for
 [Hamcrest]: http://hamcrest.org/JavaHamcrest/
 [Error Prone]: https://errorprone.info
 [configuring your build to use Error Prone]: https://errorprone.info/docs/installation
-

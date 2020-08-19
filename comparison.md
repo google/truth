@@ -3,7 +3,6 @@ layout: default
 title: Truth vs. AssertJ and Hamcrest
 ---
 
-
 ## Overview
 
 Truth is similar to [AssertJ]. An assertion written with either library looks
@@ -19,7 +18,6 @@ looks like this:
 ```java
 assertThat(notificationText, containsString("testuser@google.com"));
 ```
-
 
 ## Why create Truth when AssertJ already exists?
 
@@ -482,4 +480,3 @@ artifact and main `Truth` class; AssertJ is more modularized, offering
 [Wire]: https://github.com/square/wire
 [ProtoTruth]: https://truth.dev/protobufs
 [an assertions generator]: https://joel-costigliola.github.io/assertj/assertj-assertions-generator.html
-

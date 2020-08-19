@@ -4,7 +4,6 @@
 implemented. We are publishing the document for any users who are interested in
 our thought process.
 
-
 ## Background
 
 ### `Subject` has 2 type parameters

@@ -3,7 +3,6 @@ layout: default
 title: "Extensions: CustomSubjectBuilder"
 ---
 
-
 Most custom `Subject` classes follow [a simple pattern](extension). However, in
 rare cases, you can provide a better API by defining your own `that` methods in
 a subclass of [`CustomSubjectBuilder`]. We're aware of two cases in which this
@@ -159,4 +158,3 @@ pattern](extension), do the following:
 [`CustomSubjectBuilder`]:    https://truth.dev/api/latest/com/google/common/truth/CustomSubjectBuilder.html
 [`CustomSubjectBuilder.Factory`]:    https://truth.dev/api/latest/com/google/common/truth/CustomSubjectBuilder.Factory.html
 [`SimpleSubjectBuilder`]:    https://truth.dev/api/latest/com/google/common/truth/SimpleSubjectBuilder.html
-

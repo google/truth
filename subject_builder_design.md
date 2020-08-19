@@ -3,7 +3,6 @@ layout: default
 title: SubjectBuilder design doc
 ---
 
-
 This doc is intended for Truth developers (or curious users) who have experience
 with the API and are interested in the internals that back it. New users should
 refer to [the main usage docs](index), [the FAQ](faq) (including [this question
