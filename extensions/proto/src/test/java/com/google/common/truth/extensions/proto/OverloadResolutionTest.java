@@ -360,5 +360,4 @@ public class OverloadResolutionTest extends ProtoSubjectTestBase {
     assertThat(altActualObjects).doesNotContainEntry("a", message1);
     assertThat(altActualObjects).doesNotContainEntry("b", message2);
   }
-
 }

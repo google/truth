@@ -360,7 +360,6 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).usingDoubleTolerance(0.2).isEqualTo(message);
     expectThat(diffMessage).usingDoubleTolerance(0.05).isNotEqualTo(message);
     expectThat(diffMessage).usingFloatTolerance(0.2f).isNotEqualTo(message);
-
   }
 
   @Test
@@ -457,7 +456,6 @@ public class ProtoSubjectTest extends ProtoSubjectTestBase {
     expectThat(diffMessage).usingFloatTolerance(0.2f).isEqualTo(message);
     expectThat(diffMessage).usingFloatTolerance(0.05f).isNotEqualTo(message);
     expectThat(diffMessage).usingDoubleTolerance(0.2).isNotEqualTo(message);
-
   }
 
   @Test

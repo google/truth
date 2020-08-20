@@ -67,7 +67,6 @@ public class ProtoSubjectTestBase {
     public boolean isProto3() {
       return this == PROTO3;
     }
-
   }
 
   private static final TypeRegistry typeRegistry =
