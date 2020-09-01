@@ -19,8 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-/*>>>import org.checkerframework.checker.nullness.compatcompatqual.NullableDeclType;*/
-
 /**
  * In a fluent assertion chain, exposes the most common {@code that} method, which accepts a value
  * under test and returns a {@link Subject}.

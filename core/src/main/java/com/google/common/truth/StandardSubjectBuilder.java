@@ -27,8 +27,6 @@ import java.math.BigDecimal;
 import java.util.Map;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-/*>>>import org.checkerframework.checker.nullness.compatcompatqual.NullableDeclType;*/
-
 /**
  * In a fluent assertion chain, an object with which you can do any of the following:
  *
@@ -191,8 +189,7 @@ public class StandardSubjectBuilder {
    * @throws IllegalArgumentException if the number of placeholders in the format string does not
    *     equal the number of given arguments
    */
-  public final StandardSubjectBuilder withMessage(
-      String format, Object /* @NullableDeclType */... args) {
+  public final StandardSubjectBuilder withMessage(String format, Object... args) {
     return new StandardSubjectBuilder(metadata().withMessage(format, args));
   }
 
