@@ -207,7 +207,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(com.google.common.truth.FailureMetadata,java.util.Map)">MapSubject</a></span>&#8203;(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-          <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink">Map</a>&lt;?,&#8203;?&gt;&nbsp;map)</code></th>
+          @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink">Map</a>&lt;?,&#8203;?&gt;&nbsp;map)</code></th>
 <td class="colLast">
 <div class="block">Constructor for use by subclasses.</div>
 </td>
@@ -239,8 +239,8 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeast(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAtLeast</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
-               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;v0,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeast(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAtLeast</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+               @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;v0,
                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -253,8 +253,8 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsEntry(java.lang.Object,java.lang.Object)">containsEntry</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key,
-             <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsEntry(java.lang.Object,java.lang.Object)">containsEntry</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key,
+             @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not contain the given entry.</div>
 </td>
@@ -268,8 +268,8 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(java.lang.Object,java.lang.Object,java.lang.Object...)">containsExactly</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
-               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;v0,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(java.lang.Object,java.lang.Object,java.lang.Object...)">containsExactly</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+               @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;v0,
                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not contain exactly the given set of key/value pairs.</div>
@@ -284,22 +284,22 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsKey(java.lang.Object)">containsKey</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsKey(java.lang.Object)">containsKey</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not contain the given key.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContainEntry(java.lang.Object,java.lang.Object)">doesNotContainEntry</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key,
-                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContainEntry(java.lang.Object,java.lang.Object)">doesNotContainEntry</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key,
+                   @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map contains the given entry.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContainKey(java.lang.Object)">doesNotContainKey</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContainKey(java.lang.Object)">doesNotContainKey</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map contains the given key.</div>
 </td>
@@ -327,7 +327,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not equal to the given object.</div>
 </td>
@@ -377,8 +377,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <li class="blockList">
 <h4>MapSubject</h4>
 <pre>protected&nbsp;MapSubject&#8203;(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-                     @NullableDecl
-                     <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink">Map</a>&lt;?,&#8203;?&gt;&nbsp;map)</pre>
+                     @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util" class="externalLink">Map</a>&lt;?,&#8203;?&gt;&nbsp;map)</pre>
 <div class="block">Constructor for use by subclasses. If you want to create an instance of this class itself, call
  <a href="Subject.html#check(java.lang.String,java.lang.Object...)"><code>check(...)</code></a><code>.that(actual)</code>.</div>
 </li>
@@ -399,8 +398,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;isEqualTo&#8203;(@NullableDecl
-                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;other)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="Subject.html#isEqualTo(java.lang.Object)">Subject</a></code></span></div>
 <div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
  objects are equal if any of the following is true:
@@ -465,8 +463,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>containsKey</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsKey&#8203;(@NullableDecl
-                              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsKey&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</pre>
 <div class="block">Fails if the map does not contain the given key.</div>
 </li>
 </ul>
@@ -476,8 +473,7 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContainKey</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;doesNotContainKey&#8203;(@NullableDecl
-                                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;doesNotContainKey&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</pre>
 <div class="block">Fails if the map contains the given key.</div>
 </li>
 </ul>
@@ -487,10 +483,8 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>containsEntry</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;containsEntry&#8203;(@NullableDecl
-                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key,
-                                @NullableDecl
-                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;containsEntry&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key,
+                                @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</pre>
 <div class="block">Fails if the map does not contain the given entry.</div>
 </li>
 </ul>
@@ -500,10 +494,8 @@ extends <a href="Subject.html" title="class in com.google.common.truth">Subject<
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContainEntry</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;doesNotContainEntry&#8203;(@NullableDecl
-                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key,
-                                      @NullableDecl
-                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;doesNotContainEntry&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key,
+                                      @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</pre>
 <div class="block">Fails if the map contains the given entry.</div>
 </li>
 </ul>
@@ -525,10 +517,8 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsExactly</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(@NullableDecl
-                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
-                                     @NullableDecl
-                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;v0,
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+                                     @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;v0,
                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails if the map does not contain exactly the given set of key/value pairs.
 
@@ -545,10 +535,8 @@ public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.t
 <li class="blockList">
 <h4>containsAtLeast</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(@NullableDecl
-                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
-                                     @NullableDecl
-                                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;v0,
+public final&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+                                     @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;v0,
                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</pre>
 </li>
 </ul>

@@ -242,11 +242,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Assert on a single <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/MessageLite.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink"><code>MessageLite</code></a> instance.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/ExpectFailure.html#assertThat(java.lang.AssertionError)">assertThat(AssertionError)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/ExpectFailure.html" title="class in com.google.common.truth">ExpectFailure</a></dt>
-<dd>
-<div class="block">Creates a subject for asserting about the given <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>AssertionError</code></a>, usually one produced by
- Truth.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat(java.lang.Boolean)">assertThat(Boolean)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat(java.lang.Class)">assertThat(Class&lt;?&gt;)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
@@ -299,6 +294,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertThat(T%5B%5D)">assertThat(T[])</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/ExpectFailure.html#assertThat(java.lang.AssertionError)">assertThat(AssertionError)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/ExpectFailure.html" title="class in com.google.common.truth">ExpectFailure</a></dt>
+<dd>
+<div class="block">Creates a subject for asserting about the given <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/AssertionError.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>AssertionError</code></a>, usually one produced by
+ Truth.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/Truth.html#assertWithMessage(java.lang.String)">assertWithMessage(String)</a></span> - Static method in class com.google.common.truth.<a href="com/google/common/truth/Truth.html" title="class in com.google.common.truth">Truth</a></dt>
 <dd>
 <div class="block">Begins an assertion that, if it fails, will prepend the given message to the failure message.</div>
@@ -419,14 +419,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Checks that the subject contains at least one element that corresponds to the given expected
  element.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#contains(java.lang.CharSequence)">contains(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></dt>
-<dd>
-<div class="block">Fails if the string does not contain the given sequence (while ignoring case).</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#contains(java.lang.CharSequence)">contains(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
-<dd>
-<div class="block">Fails if the string does not contain the given sequence.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#contains(java.lang.Object)">contains(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
 <div class="block">Checks (with a side-effect failure) that the subject contains the supplied item.</div>
@@ -443,6 +435,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Checks that the subject contains at least one element that corresponds to the given expected
  element.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#contains(java.lang.CharSequence)">contains(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></dt>
+<dd>
+<div class="block">Fails if the string does not contain the given sequence (while ignoring case).</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#contains(java.lang.CharSequence)">contains(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
+<dd>
+<div class="block">Fails if the string does not contain the given sequence.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html#containsAnyIn(E%5B%5D)">containsAnyIn(E[])</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.UsingCorrespondence.html" title="class in com.google.common.truth">IterableSubject.UsingCorrespondence</a></dt>
 <dd>
@@ -554,15 +554,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Checks that the actual iterable contains at least all of the expected elements or fails.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StreamSubject.html#containsAtLeast(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAtLeast(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
+<dd>
+<div class="block">Fails if the subject does not contain all of the given elements.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MapSubject.html#containsAtLeast(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAtLeast(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MapSubject.html" title="class in com.google.common.truth">MapSubject</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MultimapSubject.html#containsAtLeast(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAtLeast(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
 <dd>
 <div class="block">Fails if the multimap does not contain at least the given key/value pairs.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StreamSubject.html#containsAtLeast(java.lang.Object,java.lang.Object,java.lang.Object...)">containsAtLeast(Object, Object, Object...)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StreamSubject.html" title="class in com.google.common.truth">StreamSubject</a></dt>
-<dd>
-<div class="block">Fails if the subject does not contain all of the given elements.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html#containsAtLeast(M,M,M...)">containsAtLeast(M, M, M...)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosUsingCorrespondence.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosUsingCorrespondence</a></dt>
 <dd>
@@ -627,11 +627,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Fails if the map does not contain at least the keys in the given map, mapping to values that
  correspond to the values of the given map.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/TableSubject.html#containsCell(com.google.common.collect.Table.Cell)">containsCell(Table.Cell&lt;?, ?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/TableSubject.html#containsCell(java.lang.Object,java.lang.Object,java.lang.Object)">containsCell(Object, Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a></dt>
 <dd>
 <div class="block">Fails if the table does not contain the given cell.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/TableSubject.html#containsCell(java.lang.Object,java.lang.Object,java.lang.Object)">containsCell(Object, Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/TableSubject.html#containsCell(com.google.common.collect.Table.Cell)">containsCell(Table.Cell&lt;?, ?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a></dt>
 <dd>
 <div class="block">Fails if the table does not contain the given cell.</div>
 </dd>
@@ -1003,14 +1003,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Checks that none of the actual elements correspond to the given element.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#doesNotContain(java.lang.CharSequence)">doesNotContain(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></dt>
-<dd>
-<div class="block">Fails if the string contains the given sequence (while ignoring case).</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#doesNotContain(java.lang.CharSequence)">doesNotContain(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
-<dd>
-<div class="block">Fails if the string contains the given sequence.</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/IterableSubject.html#doesNotContain(java.lang.Object)">doesNotContain(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/IterableSubject.html" title="class in com.google.common.truth">IterableSubject</a></dt>
 <dd>
 <div class="block">Checks (with a side-effect failure) that the subject does not contain the supplied item.</div>
@@ -1027,11 +1019,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="block">Checks that none of the actual elements correspond to the given element.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/TableSubject.html#doesNotContainCell(com.google.common.collect.Table.Cell)">doesNotContainCell(Table.Cell&lt;?, ?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#doesNotContain(java.lang.CharSequence)">doesNotContain(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></dt>
+<dd>
+<div class="block">Fails if the string contains the given sequence (while ignoring case).</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.html#doesNotContain(java.lang.CharSequence)">doesNotContain(CharSequence)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.html" title="class in com.google.common.truth">StringSubject</a></dt>
+<dd>
+<div class="block">Fails if the string contains the given sequence.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/TableSubject.html#doesNotContainCell(java.lang.Object,java.lang.Object,java.lang.Object)">doesNotContainCell(Object, Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a></dt>
 <dd>
 <div class="block">Fails if the table contains the given cell.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/TableSubject.html#doesNotContainCell(java.lang.Object,java.lang.Object,java.lang.Object)">doesNotContainCell(Object, Object, Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a></dt>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/TableSubject.html#doesNotContainCell(com.google.common.collect.Table.Cell)">doesNotContainCell(Table.Cell&lt;?, ?, ?&gt;)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/TableSubject.html" title="class in com.google.common.truth">TableSubject</a></dt>
 <dd>
 <div class="block">Fails if the table contains the given cell.</div>
 </dd>
@@ -1136,6 +1136,20 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
      you meant to compare doubles, use <a href="com/google/common/truth/DoubleSubject.TolerantDoubleComparison.html#of(double)"><code>DoubleSubject.TolerantDoubleComparison.of(double)</code></a> instead.</div>
 </div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html" title="class in com.google.common.truth">FloatSubject.TolerantFloatComparison</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(Object)</code></a> is not supported on TolerantFloatComparison. If you
+     meant to compare floats, use <a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#of(float)"><code>FloatSubject.TolerantFloatComparison.of(float)</code></a> instead.</div>
+</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(Object)</code></a> is not supported on Truth subjects. If you meant to
+     test object equality between an expected and the actual value, use <a href="com/google/common/truth/Subject.html#isEqualTo(java.lang.Object)"><code>Subject.isEqualTo(Object)</code></a> instead.</div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in interface com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/IterableOfProtosFluentAssertion.html" title="interface in com.google.common.truth.extensions.proto">IterableOfProtosFluentAssertion</a></dt>
 <dd>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
@@ -1158,20 +1172,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Do not call <code>equals()</code> on a <code>ProtoFluentAssertion</code>. Use <a href="com/google/common/truth/extensions/proto/ProtoFluentAssertion.html#isEqualTo(com.google.protobuf.Message)"><code>isEqualTo(Message)</code></a> instead.</div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html" title="class in com.google.common.truth">FloatSubject.TolerantFloatComparison</a></dt>
-<dd>
-<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
-<div class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(Object)</code></a> is not supported on TolerantFloatComparison. If you
-     meant to compare floats, use <a href="com/google/common/truth/FloatSubject.TolerantFloatComparison.html#of(float)"><code>FloatSubject.TolerantFloatComparison.of(float)</code></a> instead.</div>
-</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#equals(java.lang.Object)">equals(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
-<div class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(Object)</code></a> is not supported on Truth subjects. If you meant to
-     test object equality between an expected and the actual value, use <a href="com/google/common/truth/Subject.html#isEqualTo(java.lang.Object)"><code>Subject.isEqualTo(Object)</code></a> instead.</div>
 </div>
 </dd>
 <dt><a href="com/google/common/truth/Expect.html" title="class in com.google.common.truth"><span class="typeNameLink">Expect</span></a> - Class in <a href="com/google/common/truth/package-summary.html">com.google.common.truth</a></dt>
@@ -2419,13 +2419,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Compares the subject of the assertion to <code>expected</code>, using all of the rules specified by
  earlier operations.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#isEqualTo(com.google.protobuf.MessageLite.Builder)">isEqualTo(MessageLite.Builder)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
-<dd>
-<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
-<div class="deprecationComment">A Builder can never compare equal to a MessageLite instance. Use <code>build()</code>,
-     or <code>buildPartial()</code> on the argument to get a MessageLite for comparison instead.</div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/BigDecimalSubject.html#isEqualTo(java.lang.Object)">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/BigDecimalSubject.html" title="class in com.google.common.truth">BigDecimalSubject</a></dt>
 <dd>
 <div class="block">Fails if the subject's value and scale is not equal to the given <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html?is-external=true" title="class or interface in java.math" class="externalLink"><code>BigDecimal</code></a>.</div>
@@ -2453,6 +2446,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/MultimapSubject.html#isEqualTo(java.lang.Object)">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/MultimapSubject.html" title="class in com.google.common.truth">MultimapSubject</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isEqualTo(java.lang.Object)">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
+<dd>
+<div class="block">Fails if the subject is not equal to the given object.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#isEqualTo(com.google.protobuf.MessageLite.Builder)">isEqualTo(MessageLite.Builder)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">A Builder can never compare equal to a MessageLite instance. Use <code>build()</code>,
+     or <code>buildPartial()</code> on the argument to get a MessageLite for comparison instead.</div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/PrimitiveDoubleArraySubject.html#isEqualTo(java.lang.Object)">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/PrimitiveDoubleArraySubject.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject</a></dt>
 <dd>
 <div class="block">A check that the actual array and <code>expected</code> are arrays of the same length and type,
@@ -2466,10 +2470,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  containing elements such that each element in <code>expected</code> is equal to each element in the
  actual array, and in the same position, with element equality defined the same way that <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals(float%5B%5D,float%5B%5D)" title="class or interface in java.util" class="externalLink"><code>Arrays.equals(float[], float[])</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Float.equals(Object)</code></a> define it (which is different
  to the way that the <code>==</code> operator on primitive <code>float</code> defines it).</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isEqualTo(java.lang.Object)">isEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block">Fails if the subject is not equal to the given object.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#isEqualTo(java.lang.String)">isEqualTo(String)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></dt>
 <dd>
@@ -2739,13 +2739,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Compares the subject of the assertion to <code>expected</code>, expecting a difference, using all of
  the rules specified by earlier operations.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#isNotEqualTo(com.google.protobuf.MessageLite.Builder)">isNotEqualTo(MessageLite.Builder)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
-<dd>
-<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
-<div class="deprecationComment">A Builder will never compare equal to a MessageLite instance. Use <code>build()</code>,
-     or <code>buildPartial()</code> on the argument to get a MessageLite for comparison instead.</div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/DoubleSubject.html#isNotEqualTo(java.lang.Object)">isNotEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/DoubleSubject.html" title="class in com.google.common.truth">DoubleSubject</a></dt>
 <dd>
 <div class="block">Asserts that the subject is not exactly equal to the given value, with equality defined as by
@@ -2760,6 +2753,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Asserts that the subject is not exactly equal to the given value, with equality defined as by
  <code>Float#equals</code>.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isNotEqualTo(java.lang.Object)">isNotEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
+<dd>
+<div class="block">Fails if the subject is equal to the given object.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html#isNotEqualTo(com.google.protobuf.MessageLite.Builder)">isNotEqualTo(MessageLite.Builder)</a></span> - Method in class com.google.common.truth.extensions.proto.<a href="com/google/common/truth/extensions/proto/LiteProtoSubject.html" title="class in com.google.common.truth.extensions.proto">LiteProtoSubject</a></dt>
+<dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">A Builder will never compare equal to a MessageLite instance. Use <code>build()</code>,
+     or <code>buildPartial()</code> on the argument to get a MessageLite for comparison instead.</div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/PrimitiveDoubleArraySubject.html#isNotEqualTo(java.lang.Object)">isNotEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/PrimitiveDoubleArraySubject.html" title="class in com.google.common.truth">PrimitiveDoubleArraySubject</a></dt>
 <dd>
 <div class="block">A check that the actual array and <code>expected</code> are not arrays of the same length and type,
@@ -2773,10 +2777,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  containing elements such that each element in <code>expected</code> is equal to each element in the
  actual array, and in the same position, with element equality defined the same way that <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html?is-external=true#equals(float%5B%5D,float%5B%5D)" title="class or interface in java.util" class="externalLink"><code>Arrays.equals(float[], float[])</code></a> and <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Float.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Float.equals(Object)</code></a> define it (which is different
  to the way that the <code>==</code> operator on primitive <code>float</code> defines it).</div>
-</dd>
-<dt><span class="memberNameLink"><a href="com/google/common/truth/Subject.html#isNotEqualTo(java.lang.Object)">isNotEqualTo(Object)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/Subject.html" title="class in com.google.common.truth">Subject</a></dt>
-<dd>
-<div class="block">Fails if the subject is equal to the given object.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html#isNotEqualTo(java.lang.String)">isNotEqualTo(String)</a></span> - Method in class com.google.common.truth.<a href="com/google/common/truth/StringSubject.CaseInsensitiveStringComparison.html" title="class in com.google.common.truth">StringSubject.CaseInsensitiveStringComparison</a></dt>
 <dd>

@@ -169,8 +169,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeast(java.lang.Object,E,java.lang.Object...)">containsAtLeast</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
-               <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsAtLeast(java.lang.Object,E,java.lang.Object...)">containsAtLeast</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+               @Nullable <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not contain at least the given set of keys mapping to values that
@@ -187,8 +187,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsEntry(java.lang.Object,E)">containsEntry</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expectedKey,
-             <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;expectedValue)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsEntry(java.lang.Object,E)">containsEntry</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expectedKey,
+             @Nullable <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;expectedValue)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not contain an entry with the given key and a value that corresponds to
  the given value.</div>
@@ -196,8 +196,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(java.lang.Object,E,java.lang.Object...)">containsExactly</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
-               <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#containsExactly(java.lang.Object,E,java.lang.Object...)">containsExactly</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+               @Nullable <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map does not contain exactly the given set of keys mapping to values that
@@ -214,8 +214,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContainEntry(java.lang.Object,E)">doesNotContainEntry</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;excludedKey,
-                   <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;excludedValue)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#doesNotContainEntry(java.lang.Object,E)">doesNotContainEntry</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;excludedKey,
+                   @Nullable <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;excludedValue)</code></th>
 <td class="colLast">
 <div class="block">Fails if the map contains an entry with the given key and a value that corresponds to the
  given value.</div>
@@ -253,10 +253,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>containsEntry</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;containsEntry&#8203;(@NullableDecl
-                          <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expectedKey,
-                          @NullableDecl
-                          <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;expectedValue)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;containsEntry&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expectedKey,
+                          @Nullable <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;expectedValue)</pre>
 <div class="block">Fails if the map does not contain an entry with the given key and a value that corresponds to
  the given value.</div>
 </li>
@@ -269,10 +267,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>doesNotContainEntry</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;doesNotContainEntry&#8203;(@NullableDecl
-                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;excludedKey,
-                                @NullableDecl
-                                <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;excludedValue)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;doesNotContainEntry&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;excludedKey,
+                                @Nullable <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;excludedValue)</pre>
 <div class="block">Fails if the map contains an entry with the given key and a value that corresponds to the
  given value.</div>
 </li>
@@ -286,10 +282,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <li class="blockList">
 <h4>containsExactly</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(@NullableDecl
-                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
-                               @NullableDecl
-                               <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
+public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsExactly&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+                               @Nullable <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails if the map does not contain exactly the given set of keys mapping to values that
  correspond to the given values.
@@ -310,10 +304,8 @@ public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">
 <li class="blockList">
 <h4>containsAtLeast</h4>
 <pre class="methodSignature">@CanIgnoreReturnValue
-public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(@NullableDecl
-                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
-                               @NullableDecl
-                               <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
+public&nbsp;<a href="Ordered.html" title="interface in com.google.common.truth">Ordered</a>&nbsp;containsAtLeast&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;k0,
+                               @Nullable <a href="MapSubject.UsingCorrespondence.html" title="type parameter in MapSubject.UsingCorrespondence">E</a>&nbsp;v0,
                                <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails if the map does not contain at least the given set of keys mapping to values that
  correspond to the given values.

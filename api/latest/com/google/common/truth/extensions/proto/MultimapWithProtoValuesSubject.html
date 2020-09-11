@@ -213,7 +213,7 @@ extends <a href="../../MultimapSubject.html" title="class in com.google.common.t
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(com.google.common.truth.FailureMetadata,com.google.common.collect.Multimap)">MultimapWithProtoValuesSubject</a></span>&#8203;(<a href="../../FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                              <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect" class="externalLink">Multimap</a>&lt;?,&#8203;<a href="MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;multimap)</code></th>
+                              @Nullable <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect" class="externalLink">Multimap</a>&lt;?,&#8203;<a href="MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;multimap)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -514,7 +514,7 @@ extends <a href="../../MultimapSubject.html" title="class in com.google.common.t
 </tr>
 <tr id="i33" class="rowColor">
 <td class="colFirst"><code><a href="IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;<a href="MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#valuesForKey(java.lang.Object)">valuesForKey</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#valuesForKey(java.lang.Object)">valuesForKey</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</code></th>
 <td class="colLast">
 <div class="block">Returns a context-aware <a href="../../Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> for making assertions about the values for the given
  key within the <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect" class="externalLink"><code>Multimap</code></a>.</div>
@@ -572,8 +572,7 @@ extends <a href="../../MultimapSubject.html" title="class in com.google.common.t
 <li class="blockList">
 <h4>MultimapWithProtoValuesSubject</h4>
 <pre>protected&nbsp;MultimapWithProtoValuesSubject&#8203;(<a href="../../FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                                         @NullableDecl
-                                         <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect" class="externalLink">Multimap</a>&lt;?,&#8203;<a href="MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;multimap)</pre>
+                                         @Nullable <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect" class="externalLink">Multimap</a>&lt;?,&#8203;<a href="MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;multimap)</pre>
 </li>
 </ul>
 </li>
@@ -592,8 +591,7 @@ extends <a href="../../MultimapSubject.html" title="class in com.google.common.t
 <ul class="blockList">
 <li class="blockList">
 <h4>valuesForKey</h4>
-<pre class="methodSignature">public&nbsp;<a href="IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;<a href="MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;valuesForKey&#8203;(@NullableDecl
-                                               <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</pre>
+<pre class="methodSignature">public&nbsp;<a href="IterableOfProtosSubject.html" title="class in com.google.common.truth.extensions.proto">IterableOfProtosSubject</a>&lt;<a href="MultimapWithProtoValuesSubject.html" title="type parameter in MultimapWithProtoValuesSubject">M</a>&gt;&nbsp;valuesForKey&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;key)</pre>
 <div class="block">Returns a context-aware <a href="../../Subject.html" title="class in com.google.common.truth"><code>Subject</code></a> for making assertions about the values for the given
  key within the <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html?is-external=true" title="class or interface in com.google.common.collect" class="externalLink"><code>Multimap</code></a>.
 

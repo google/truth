@@ -177,7 +177,7 @@ implements <a href="https://docs.oracle.com/javase/7/docs/api/java/io/Serializab
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>static <a href="Fact.html" title="class in com.google.common.truth">Fact</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fact(java.lang.String,java.lang.Object)">fact</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;key,
-    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</code></th>
+    @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</code></th>
 <td class="colLast">
 <div class="block">Creates a fact with the given key and value, which will be printed in a format like "key:
  value." The value is converted to a string by calling <code>String.valueOf</code> on it.</div>
@@ -229,8 +229,7 @@ implements <a href="https://docs.oracle.com/javase/7/docs/api/java/io/Serializab
 <li class="blockList">
 <h4>fact</h4>
 <pre class="methodSignature">public static&nbsp;<a href="Fact.html" title="class in com.google.common.truth">Fact</a>&nbsp;fact&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;key,
-                        @NullableDecl
-                        <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</pre>
+                        @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</pre>
 <div class="block">Creates a fact with the given key and value, which will be printed in a format like "key:
  value." The value is converted to a string by calling <code>String.valueOf</code> on it.</div>
 </li>

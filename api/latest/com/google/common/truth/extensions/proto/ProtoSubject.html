@@ -203,7 +203,7 @@ extends <a href="LiteProtoSubject.html" title="class in com.google.common.truth.
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(com.google.common.truth.FailureMetadata,com.google.protobuf.Message)">ProtoSubject</a></span>&#8203;(<a href="../../FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-            <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&nbsp;message)</code></th>
+            @Nullable <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&nbsp;message)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -404,7 +404,7 @@ extends <a href="LiteProtoSubject.html" title="class in com.google.common.truth.
 </tr>
 <tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Checks whether the MessageLite is equivalent to the argument, using the standard equals()
  implementation.</div>
@@ -412,7 +412,7 @@ extends <a href="LiteProtoSubject.html" title="class in com.google.common.truth.
 </tr>
 <tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is equal to the given object.</div>
 </td>
@@ -576,8 +576,7 @@ extends <a href="LiteProtoSubject.html" title="class in com.google.common.truth.
 <li class="blockList">
 <h4>ProtoSubject</h4>
 <pre>protected&nbsp;ProtoSubject&#8203;(<a href="../../FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;failureMetadata,
-                       @NullableDecl
-                       <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&nbsp;message)</pre>
+                       @Nullable <a href="https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Message.html?is-external=true" title="class or interface in com.google.protobuf" class="externalLink">Message</a>&nbsp;message)</pre>
 </li>
 </ul>
 </li>
@@ -1248,8 +1247,7 @@ extends <a href="LiteProtoSubject.html" title="class in com.google.common.truth.
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@NullableDecl
-                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="LiteProtoSubject.html#isEqualTo(java.lang.Object)">LiteProtoSubject</a></code></span></div>
 <div class="block">Checks whether the MessageLite is equivalent to the argument, using the standard equals()
  implementation.</div>
@@ -1265,8 +1263,7 @@ extends <a href="LiteProtoSubject.html" title="class in com.google.common.truth.
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isNotEqualTo&#8203;(@NullableDecl
-                         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isNotEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../Subject.html#isNotEqualTo(java.lang.Object)">Subject</a></code></span></div>
 <div class="block">Fails if the subject is equal to the given object. The meaning of equality is the same as for
  the <a href="../../Subject.html#isEqualTo(java.lang.Object)"><code>Subject.isEqualTo(java.lang.Object)</code></a> method.</div>

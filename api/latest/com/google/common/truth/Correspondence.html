@@ -226,8 +226,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>abstract boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#compare(A,E)">compare</a></span>&#8203;(<a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
-       <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#compare(A,E)">compare</a></span>&#8203;(@Nullable <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
+       @Nullable <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Returns whether or not the <code>actual</code> value is said to correspond to the <code>expected</code>
  value for the purposes of this test.</div>
@@ -235,7 +235,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(Object)</code></a> is not supported.</div>
@@ -243,9 +243,9 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formatDiff(A,E)">formatDiff</a></span>&#8203;(<a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
-          <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</code></th>
+<td class="colFirst"><code>@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#formatDiff(A,E)">formatDiff</a></span>&#8203;(@Nullable <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
+          @Nullable <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Returns a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>String</code></a> describing the difference between the <code>actual</code> and <code>
  expected</code> values, if possible, or <code>null</code> if not.</div>
@@ -554,10 +554,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>compare</h4>
-<pre class="methodSignature">public abstract&nbsp;boolean&nbsp;compare&#8203;(@NullableDecl
-                                <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
-                                @NullableDecl
-                                <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public abstract&nbsp;boolean&nbsp;compare&#8203;(@Nullable <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
+                                @Nullable <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</pre>
 <div class="block">Returns whether or not the <code>actual</code> value is said to correspond to the <code>expected</code>
  value for the purposes of this test.
 
@@ -646,11 +644,8 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>formatDiff</h4>
-<pre class="methodSignature">@NullableDecl
-public&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;formatDiff&#8203;(@NullableDecl
-                         <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
-                         @NullableDecl
-                         <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;formatDiff&#8203;(@Nullable <a href="Correspondence.html" title="type parameter in Correspondence">A</a>&nbsp;actual,
+                                   @Nullable <a href="Correspondence.html" title="type parameter in Correspondence">E</a>&nbsp;expected)</pre>
 <div class="block">Returns a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink"><code>String</code></a> describing the difference between the <code>actual</code> and <code>
  expected</code> values, if possible, or <code>null</code> if not.
 
@@ -701,8 +696,7 @@ public&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.
 <li class="blockList">
 <h4>equals</h4>
 <pre class="methodSignature"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang" class="externalLink">@Deprecated</a>
-public final&nbsp;boolean&nbsp;equals&#8203;(@NullableDecl
-                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</pre>
+public final&nbsp;boolean&nbsp;equals&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(Object)</code></a> is not supported. If you meant to compare objects
      using this <a href="Correspondence.html" title="class in com.google.common.truth"><code>Correspondence</code></a>, use <a href="#compare(A,E)"><code>compare(A, E)</code></a>.</div>

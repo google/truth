@@ -204,7 +204,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(com.google.common.truth.FailureMetadata,java.lang.Object)">Subject</a></span>&#8203;(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;actual)</code></th>
+       @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;actual)</code></th>
 <td class="colLast">
 <div class="block">Constructor for use by subclasses.</div>
 </td>
@@ -245,7 +245,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(Object)</code></a> is not supported on Truth subjects.</div>
@@ -267,7 +267,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#failWithActual(java.lang.String,java.lang.Object)">failWithActual</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;key,
-              <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</code></th>
+              @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</code></th>
 <td class="colLast">
 <div class="block">Fails, reporting a message with two "<a href="Fact.html" title="class in com.google.common.truth">facts</a>":
 
@@ -303,16 +303,16 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isAnyOf(java.lang.Object,java.lang.Object,java.lang.Object...)">isAnyOf</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
-       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
-       <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isAnyOf(java.lang.Object,java.lang.Object,java.lang.Object...)">isAnyOf</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
+       @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
+       @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Fails unless the subject is equal to any of the given elements.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEqualTo(java.lang.Object)">isEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not equal to the given object.</div>
 </td>
@@ -333,16 +333,16 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">isNoneOf</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
-        <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
-        <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNoneOf(java.lang.Object,java.lang.Object,java.lang.Object...)">isNoneOf</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
+        @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
+        @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is equal to any of the given elements.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;unexpected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotEqualTo(java.lang.Object)">isNotEqualTo</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;unexpected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is equal to the given object.</div>
 </td>
@@ -370,7 +370,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotSameInstanceAs(java.lang.Object)">isNotSameInstanceAs</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;unexpected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNotSameInstanceAs(java.lang.Object)">isNotSameInstanceAs</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;unexpected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is the same instance as the given object.</div>
 </td>
@@ -384,7 +384,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isSameInstanceAs(java.lang.Object)">isSameInstanceAs</a></span>&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isSameInstanceAs(java.lang.Object)">isSameInstanceAs</a></span>&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</code></th>
 <td class="colLast">
 <div class="block">Fails if the subject is not the same instance as the given object.</div>
 </td>
@@ -425,8 +425,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <li class="blockList">
 <h4>Subject</h4>
 <pre>protected&nbsp;Subject&#8203;(<a href="FailureMetadata.html" title="class in com.google.common.truth">FailureMetadata</a>&nbsp;metadata,
-                  @NullableDecl
-                  <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;actual)</pre>
+                  @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;actual)</pre>
 <div class="block">Constructor for use by subclasses. If you want to create an instance of this class itself, call
  <a href="#check(java.lang.String,java.lang.Object...)"><code>check(...)</code></a><code>.that(actual)</code>.</div>
 </li>
@@ -467,8 +466,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>isEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@NullableDecl
-                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not equal to the given object. For the purposes of this comparison, two
  objects are equal if any of the following is true:
 
@@ -498,8 +496,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotEqualTo</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isNotEqualTo&#8203;(@NullableDecl
-                         <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;unexpected)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isNotEqualTo&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;unexpected)</pre>
 <div class="block">Fails if the subject is equal to the given object. The meaning of equality is the same as for
  the <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(java.lang.Object)</code></a> method.</div>
 </li>
@@ -510,8 +507,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>isSameInstanceAs</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;isSameInstanceAs&#8203;(@NullableDecl
-                                   <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;isSameInstanceAs&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;expected)</pre>
 <div class="block">Fails if the subject is not the same instance as the given object.</div>
 </li>
 </ul>
@@ -521,8 +517,7 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotSameInstanceAs</h4>
-<pre class="methodSignature">public final&nbsp;void&nbsp;isNotSameInstanceAs&#8203;(@NullableDecl
-                                      <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;unexpected)</pre>
+<pre class="methodSignature">public final&nbsp;void&nbsp;isNotSameInstanceAs&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;unexpected)</pre>
 <div class="block">Fails if the subject is the same instance as the given object.</div>
 </li>
 </ul>
@@ -562,12 +557,9 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>isAnyOf</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isAnyOf&#8203;(@NullableDecl
-                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
-                    @NullableDecl
-                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
-                    @NullableDecl
-                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isAnyOf&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
+                    @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
+                    @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails unless the subject is equal to any of the given elements.</div>
 </li>
 </ul>
@@ -587,12 +579,9 @@ extends <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>isNoneOf</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;isNoneOf&#8203;(@NullableDecl
-                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
-                     @NullableDecl
-                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
-                     @NullableDecl
-                     <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;isNoneOf&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;first,
+                     @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;second,
+                     @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>...&nbsp;rest)</pre>
 <div class="block">Fails if the subject is equal to any of the given elements.</div>
 </li>
 </ul>
@@ -672,8 +661,7 @@ protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Stri
 <li class="blockList">
 <h4>failWithActual</h4>
 <pre class="methodSignature">protected final&nbsp;void&nbsp;failWithActual&#8203;(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;key,
-                                    @NullableDecl
-                                    <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</pre>
+                                    @Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;value)</pre>
 <div class="block">Fails, reporting a message with two "<a href="Fact.html" title="class in com.google.common.truth">facts</a>":
 
  <ul>
@@ -743,8 +731,7 @@ protected&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Stri
 <li class="blockList">
 <h4>equals</h4>
 <pre class="methodSignature"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang" class="externalLink">@Deprecated</a>
-public final&nbsp;boolean&nbsp;equals&#8203;(@NullableDecl
-                            <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</pre>
+public final&nbsp;boolean&nbsp;equals&#8203;(@Nullable <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;o)</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment"><a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang" class="externalLink"><code>Object.equals(Object)</code></a> is not supported on Truth subjects. If you meant to
      test object equality between an expected and the actual value, use <a href="#isEqualTo(java.lang.Object)"><code>isEqualTo(Object)</code></a> instead.</div>
