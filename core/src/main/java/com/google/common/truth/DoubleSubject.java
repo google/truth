@@ -26,7 +26,7 @@ import static com.google.common.truth.Platform.doubleToString;
 import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for {@link Double} subjects.
@@ -38,7 +38,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
 
   private final Double actual;
 
-  DoubleSubject(FailureMetadata metadata, @NullableDecl Double actual) {
+  DoubleSubject(FailureMetadata metadata, @Nullable Double actual) {
     super(metadata, actual);
     this.actual = actual;
   }
@@ -66,7 +66,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
      */
     @Deprecated
     @Override
-    public boolean equals(@NullableDecl Object o) {
+    public boolean equals(@Nullable Object o) {
       throw new UnsupportedOperationException(
           "If you meant to compare doubles, use .of(double) instead.");
     }
@@ -178,7 +178,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * #isZero}.
    */
   @Override
-  public final void isEqualTo(@NullableDecl Object other) {
+  public final void isEqualTo(@Nullable Object other) {
     super.isEqualTo(other);
   }
 
@@ -192,7 +192,7 @@ public final class DoubleSubject extends ComparableSubject<Double> {
    * #isNonZero}.
    */
   @Override
-  public final void isNotEqualTo(@NullableDecl Object other) {
+  public final void isNotEqualTo(@Nullable Object other) {
     super.isNotEqualTo(other);
   }
 

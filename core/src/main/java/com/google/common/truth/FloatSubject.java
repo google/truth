@@ -26,7 +26,7 @@ import static com.google.common.truth.Platform.floatToString;
 import static java.lang.Float.NaN;
 import static java.lang.Float.floatToIntBits;
 
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for {@link Float} subjects.
@@ -39,7 +39,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
   private final Float actual;
   private final DoubleSubject asDouble;
 
-  FloatSubject(FailureMetadata metadata, @NullableDecl Float actual) {
+  FloatSubject(FailureMetadata metadata, @Nullable Float actual) {
     super(metadata, actual);
     this.actual = actual;
     /*
@@ -74,7 +74,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
      */
     @Deprecated
     @Override
-    public boolean equals(@NullableDecl Object o) {
+    public boolean equals(@Nullable Object o) {
       throw new UnsupportedOperationException(
           "If you meant to compare floats, use .of(float) instead.");
     }
@@ -186,7 +186,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isZero}.
    */
   @Override
-  public final void isEqualTo(@NullableDecl Object other) {
+  public final void isEqualTo(@Nullable Object other) {
     super.isEqualTo(other);
   }
 
@@ -200,7 +200,7 @@ public final class FloatSubject extends ComparableSubject<Float> {
    * #isNonZero}.
    */
   @Override
-  public final void isNotEqualTo(@NullableDecl Object other) {
+  public final void isNotEqualTo(@Nullable Object other) {
     super.isNotEqualTo(other);
   }
 

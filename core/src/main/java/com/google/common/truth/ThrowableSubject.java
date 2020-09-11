@@ -15,7 +15,7 @@
  */
 package com.google.common.truth;
 
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for {@link Throwable} subjects.
@@ -29,14 +29,12 @@ public class ThrowableSubject extends Subject {
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
-  protected ThrowableSubject(FailureMetadata metadata, @NullableDecl Throwable throwable) {
+  protected ThrowableSubject(FailureMetadata metadata, @Nullable Throwable throwable) {
     this(metadata, throwable, null);
   }
 
   ThrowableSubject(
-      FailureMetadata metadata,
-      @NullableDecl Throwable throwable,
-      @NullableDecl String typeDescription) {
+      FailureMetadata metadata, @Nullable Throwable throwable, @Nullable String typeDescription) {
     super(metadata, throwable, typeDescription);
     this.actual = throwable;
   }

@@ -19,7 +19,7 @@ import static com.google.common.truth.Fact.fact;
 import static com.google.common.truth.Fact.simpleFact;
 
 import com.google.common.base.Optional;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for Guava {@link Optional} subjects.
@@ -33,9 +33,7 @@ public final class GuavaOptionalSubject extends Subject {
   private final Optional<?> actual;
 
   GuavaOptionalSubject(
-      FailureMetadata metadata,
-      @NullableDecl Optional<?> actual,
-      @NullableDecl String typeDescription) {
+      FailureMetadata metadata, @Nullable Optional<?> actual, @Nullable String typeDescription) {
     super(metadata, actual, typeDescription);
     this.actual = actual;
   }

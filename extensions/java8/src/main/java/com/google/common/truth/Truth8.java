@@ -27,7 +27,7 @@ import java.util.OptionalLong;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * The primary entry point for assertions about Java 8 types.
@@ -44,31 +44,31 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * behavior/{@code Subject} type?</a> in the Truth FAQ.
  */
 public final class Truth8 {
-  public static OptionalSubject assertThat(@NullableDecl Optional<?> target) {
+  public static OptionalSubject assertThat(@Nullable Optional<?> target) {
     return assertAbout(OptionalSubject.optionals()).that(target);
   }
 
-  public static OptionalIntSubject assertThat(@NullableDecl OptionalInt target) {
+  public static OptionalIntSubject assertThat(@Nullable OptionalInt target) {
     return assertAbout(OptionalIntSubject.optionalInts()).that(target);
   }
 
-  public static OptionalLongSubject assertThat(@NullableDecl OptionalLong target) {
+  public static OptionalLongSubject assertThat(@Nullable OptionalLong target) {
     return assertAbout(OptionalLongSubject.optionalLongs()).that(target);
   }
 
-  public static OptionalDoubleSubject assertThat(@NullableDecl OptionalDouble target) {
+  public static OptionalDoubleSubject assertThat(@Nullable OptionalDouble target) {
     return assertAbout(OptionalDoubleSubject.optionalDoubles()).that(target);
   }
 
-  public static StreamSubject assertThat(@NullableDecl Stream<?> target) {
+  public static StreamSubject assertThat(@Nullable Stream<?> target) {
     return assertAbout(StreamSubject.streams()).that(target);
   }
 
-  public static IntStreamSubject assertThat(@NullableDecl IntStream target) {
+  public static IntStreamSubject assertThat(@Nullable IntStream target) {
     return assertAbout(IntStreamSubject.intStreams()).that(target);
   }
 
-  public static LongStreamSubject assertThat(@NullableDecl LongStream target) {
+  public static LongStreamSubject assertThat(@Nullable LongStream target) {
     return assertAbout(LongStreamSubject.longStreams()).that(target);
   }
 
@@ -78,7 +78,7 @@ public final class Truth8 {
   // to support Java environments without java.nio.file such as Android and J2CL.
   @GwtIncompatible
   @J2ObjCIncompatible
-  public static PathSubject assertThat(@NullableDecl Path target) {
+  public static PathSubject assertThat(@Nullable Path target) {
     return assertAbout(PathSubject.paths()).that(target);
   }
 

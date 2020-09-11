@@ -22,7 +22,7 @@ import com.google.common.truth.FailureMetadata;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * {@link CustomSubjectBuilder} which aggregates all Proto-related {@link
@@ -50,24 +50,23 @@ public final class ProtoSubjectBuilder extends CustomSubjectBuilder {
     super(failureMetadata);
   }
 
-  public LiteProtoSubject that(@NullableDecl MessageLite messageLite) {
+  public LiteProtoSubject that(@Nullable MessageLite messageLite) {
     return new LiteProtoSubject(metadata(), messageLite);
   }
 
-  public ProtoSubject that(@NullableDecl Message message) {
+  public ProtoSubject that(@Nullable Message message) {
     return new ProtoSubject(metadata(), message);
   }
 
-  public <M extends Message> IterableOfProtosSubject<M> that(@NullableDecl Iterable<M> messages) {
+  public <M extends Message> IterableOfProtosSubject<M> that(@Nullable Iterable<M> messages) {
     return new IterableOfProtosSubject<M>(metadata(), messages);
   }
 
-  public <M extends Message> MapWithProtoValuesSubject<M> that(@NullableDecl Map<?, M> map) {
+  public <M extends Message> MapWithProtoValuesSubject<M> that(@Nullable Map<?, M> map) {
     return new MapWithProtoValuesSubject<>(metadata(), map);
   }
 
-  public <M extends Message> MultimapWithProtoValuesSubject<M> that(
-      @NullableDecl Multimap<?, M> map) {
+  public <M extends Message> MultimapWithProtoValuesSubject<M> that(@Nullable Multimap<?, M> map) {
     return new MultimapWithProtoValuesSubject<>(metadata(), map);
   }
 }

@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Bytes;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A Subject for {@code byte[]}.
@@ -27,7 +27,7 @@ public final class PrimitiveByteArraySubject extends AbstractArraySubject {
   private final byte[] actual;
 
   PrimitiveByteArraySubject(
-      FailureMetadata metadata, @NullableDecl byte[] o, @NullableDecl String typeDescription) {
+      FailureMetadata metadata, byte /*@Nullable*/[] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

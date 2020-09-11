@@ -20,7 +20,7 @@ import static com.google.common.truth.Truth.assertAbout;
 
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A <a href="https://github.com/google/truth">Truth</a> subject for {@link Employee}.
@@ -30,7 +30,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 public final class EmployeeSubject extends Subject {
 
   // User-defined entry point
-  public static EmployeeSubject assertThat(@NullableDecl Employee employee) {
+  public static EmployeeSubject assertThat(@Nullable Employee employee) {
     return assertAbout(EMPLOYEE_SUBJECT_FACTORY).that(employee);
   }
 
@@ -45,7 +45,7 @@ public final class EmployeeSubject extends Subject {
 
   private final Employee actual;
 
-  private EmployeeSubject(FailureMetadata failureMetadata, @NullableDecl Employee subject) {
+  private EmployeeSubject(FailureMetadata failureMetadata, @Nullable Employee subject) {
     super(failureMetadata, subject);
     this.actual = subject;
   }

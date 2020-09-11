@@ -27,7 +27,7 @@ import static com.google.common.truth.SubjectUtils.concat;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * An opaque, immutable object containing state from the previous calls in the fluent assertion
@@ -67,7 +67,7 @@ public final class FailureMetadata {
 
     static Step checkCall(
         OldAndNewValuesAreSimilar valuesAreSimilar,
-        @NullableDecl Function<String, String> descriptionUpdate) {
+        @Nullable Function<String, String> descriptionUpdate) {
       return new Step(null, descriptionUpdate, valuesAreSimilar);
     }
 
@@ -78,17 +78,17 @@ public final class FailureMetadata {
      * time we receive it. We *might* be able to make it safe to call if it looks only at actual(),
      * but it might try to look at facts initialized by a subclass, which aren't ready yet.
      */
-    @NullableDecl final Subject subject;
+    final @Nullable Subject subject;
 
-    @NullableDecl final Function<String, String> descriptionUpdate;
+    final @Nullable Function<String, String> descriptionUpdate;
 
     // Present only when descriptionUpdate is.
-    @NullableDecl final OldAndNewValuesAreSimilar valuesAreSimilar;
+    final @Nullable OldAndNewValuesAreSimilar valuesAreSimilar;
 
     private Step(
-        @NullableDecl Subject subject,
-        @NullableDecl Function<String, String> descriptionUpdate,
-        @NullableDecl OldAndNewValuesAreSimilar valuesAreSimilar) {
+        @Nullable Subject subject,
+        @Nullable Function<String, String> descriptionUpdate,
+        @Nullable OldAndNewValuesAreSimilar valuesAreSimilar) {
       this.subject = subject;
       this.descriptionUpdate = descriptionUpdate;
       this.valuesAreSimilar = valuesAreSimilar;
@@ -159,7 +159,7 @@ public final class FailureMetadata {
    * to set a message is {@code check(...).withMessage(...).that(...)} (for calls from within a
    * {@code Subject}) or {@link Truth#assertWithMessage} (for most other calls).
    */
-  FailureMetadata withMessage(String format, Object[] args) {
+  FailureMetadata withMessage(String format, /*@Nullable*/ Object[] args) {
     ImmutableList<LazyMessage> messages = append(this.messages, new LazyMessage(format, args));
     return derive(messages, steps);
   }
@@ -314,8 +314,7 @@ public final class FailureMetadata {
    * Returns the first {@link Throwable} in the chain of actual values. Typically, we'll have a root
    * cause only if the assertion chain contains a {@link ThrowableSubject}.
    */
-  @NullableDecl
-  private Throwable rootCause() {
+  private @Nullable Throwable rootCause() {
     for (Step step : steps) {
       if (!step.isCheckCall() && step.subject.actual() instanceof Throwable) {
         return (Throwable) step.subject.actual();

@@ -16,7 +16,7 @@
 package com.google.common.truth;
 
 import com.google.common.primitives.Ints;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A Subject for {@code int[]}.
@@ -27,7 +27,7 @@ public final class PrimitiveIntArraySubject extends AbstractArraySubject {
   private final int[] actual;
 
   PrimitiveIntArraySubject(
-      FailureMetadata metadata, @NullableDecl int[] o, @NullableDecl String typeDescription) {
+      FailureMetadata metadata, int /*@Nullable*/[] o, @Nullable String typeDescription) {
     super(metadata, o, typeDescription);
     this.actual = o;
   }

@@ -27,7 +27,7 @@ import com.google.common.truth.StandardSubjectBuilder;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageLite;
 import java.util.Map;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A set of static methods to begin a Truth assertion chain for protocol buffers.
@@ -48,12 +48,12 @@ public final class ProtoTruth {
   }
 
   /** Assert on a single {@link MessageLite} instance. */
-  public static LiteProtoSubject assertThat(@NullableDecl MessageLite messageLite) {
+  public static LiteProtoSubject assertThat(@Nullable MessageLite messageLite) {
     return assertAbout(protos()).that(messageLite);
   }
 
   /** Assert on a single {@link Message} instance. */
-  public static ProtoSubject assertThat(@NullableDecl Message message) {
+  public static ProtoSubject assertThat(@Nullable Message message) {
     return assertAbout(protos()).that(message);
   }
 
@@ -69,7 +69,7 @@ public final class ProtoTruth {
   // would result in method ambiguity errors.
   // See http://stackoverflow.com/a/8467804 for a more thorough explanation.
   public static <M extends Message> IterableOfProtosSubject<M> assertThat(
-      @NullableDecl Iterable<M> messages) {
+      @Nullable Iterable<M> messages) {
     return assertAbout(protos()).that(messages);
   }
 
@@ -80,7 +80,7 @@ public final class ProtoTruth {
    * comparison tests available on {@link MapSubject.UsingCorrespondence}.
    */
   public static <M extends Message> MapWithProtoValuesSubject<M> assertThat(
-      @NullableDecl Map<?, M> map) {
+      @Nullable Map<?, M> map) {
     return assertAbout(protos()).that(map);
   }
 
@@ -91,7 +91,7 @@ public final class ProtoTruth {
    * comparison tests available on {@link MultimapSubject.UsingCorrespondence}.
    */
   public static <M extends Message> MultimapWithProtoValuesSubject<M> assertThat(
-      @NullableDecl Multimap<?, M> multimap) {
+      @Nullable Multimap<?, M> multimap) {
     return assertAbout(protos()).that(multimap);
   }
 

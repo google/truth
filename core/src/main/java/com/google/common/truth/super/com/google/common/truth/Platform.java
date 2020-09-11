@@ -22,7 +22,7 @@ import static jsinterop.annotations.JsPackage.GLOBAL;
 import com.google.common.collect.ImmutableList;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Extracted routines that need to be swapped in for GWT, to allow for minimal deltas between the
@@ -86,8 +86,7 @@ final class Platform {
     return null;
   }
 
-  @NullableDecl
-  static ImmutableList<Fact> makeDiff(String expected, String actual) {
+  static @Nullable ImmutableList<Fact> makeDiff(String expected, String actual) {
     /*
      * IIUC, GWT messages lose their newlines by the time users see them. Given that, users are
      * likely better served by showing the expected and actual values with mangled newlines than by

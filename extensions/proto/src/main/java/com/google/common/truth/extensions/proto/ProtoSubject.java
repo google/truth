@@ -28,7 +28,7 @@ import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
 import java.util.Arrays;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Truth subject for the full version of Protocol Buffers.
@@ -59,12 +59,12 @@ public class ProtoSubject extends LiteProtoSubject {
   private final Message actual;
   private final FluentEqualityConfig config;
 
-  protected ProtoSubject(FailureMetadata failureMetadata, @NullableDecl Message message) {
+  protected ProtoSubject(FailureMetadata failureMetadata, @Nullable Message message) {
     this(failureMetadata, FluentEqualityConfig.defaultInstance(), message);
   }
 
   ProtoSubject(
-      FailureMetadata failureMetadata, FluentEqualityConfig config, @NullableDecl Message message) {
+      FailureMetadata failureMetadata, FluentEqualityConfig config, @Nullable Message message) {
     super(failureMetadata, message);
     this.metadata = failureMetadata;
     this.actual = message;
@@ -597,7 +597,7 @@ public class ProtoSubject extends LiteProtoSubject {
   }
 
   private static boolean sameClassMessagesWithDifferentDescriptors(
-      @NullableDecl Message actual, @NullableDecl Object expected) {
+      @Nullable Message actual, @Nullable Object expected) {
     if (actual == null
         || !(expected instanceof Message)
         || actual.getClass() != expected.getClass()) {
@@ -608,7 +608,7 @@ public class ProtoSubject extends LiteProtoSubject {
   }
 
   private static boolean notMessagesWithSameDescriptor(
-      @NullableDecl Message actual, @NullableDecl Object expected) {
+      @Nullable Message actual, @Nullable Object expected) {
     if (actual != null && expected instanceof Message) {
       return actual.getDescriptorForType() != ((Message) expected).getDescriptorForType();
     }
@@ -616,7 +616,7 @@ public class ProtoSubject extends LiteProtoSubject {
   }
 
   @Override
-  public void isEqualTo(@NullableDecl Object expected) {
+  public void isEqualTo(@Nullable Object expected) {
     if (sameClassMessagesWithDifferentDescriptors(actual, expected)) {
       // This can happen with DynamicMessages, and it's very confusing if they both have the
       // same string.
@@ -641,7 +641,7 @@ public class ProtoSubject extends LiteProtoSubject {
   }
 
   @Override
-  public void isNotEqualTo(@NullableDecl Object expected) {
+  public void isNotEqualTo(@Nullable Object expected) {
     if (notMessagesWithSameDescriptor(actual, expected)) {
       super.isNotEqualTo(expected);
     } else {
@@ -872,12 +872,12 @@ public class ProtoSubject extends LiteProtoSubject {
     }
 
     @Override
-    public void isEqualTo(@NullableDecl Message expected) {
+    public void isEqualTo(@Nullable Message expected) {
       protoSubject.isEqualTo(expected);
     }
 
     @Override
-    public void isNotEqualTo(@NullableDecl Message expected) {
+    public void isNotEqualTo(@Nullable Message expected) {
       protoSubject.isNotEqualTo(expected);
     }
 
@@ -885,7 +885,7 @@ public class ProtoSubject extends LiteProtoSubject {
      * Same as {@link #isEqualTo(Message)}, except it returns true on success and false on failure
      * without throwing any exceptions.
      */
-    boolean testIsEqualTo(@NullableDecl Message expected) {
+    boolean testIsEqualTo(@Nullable Message expected) {
       if (notMessagesWithSameDescriptor(protoSubject.actual, expected)) {
         return Objects.equal(protoSubject.actual, expected);
       } else {

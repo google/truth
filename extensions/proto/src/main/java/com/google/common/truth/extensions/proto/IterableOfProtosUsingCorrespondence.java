@@ -19,7 +19,7 @@ import com.google.common.base.Function;
 import com.google.common.truth.Ordered;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.Message;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Comparison methods, which enforce the rules set in prior calls to {@link
@@ -65,10 +65,10 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * Checks that the subject contains at least one element that corresponds to the given expected
    * element.
    */
-  void contains(@NullableDecl M expected);
+  void contains(@Nullable M expected);
 
   /** Checks that none of the actual elements correspond to the given element. */
-  void doesNotContain(@NullableDecl M excluded);
+  void doesNotContain(@Nullable M excluded);
 
   /**
    * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
@@ -83,7 +83,7 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * elements, not an element itself.
    */
   @CanIgnoreReturnValue
-  Ordered containsExactly(@NullableDecl M... expected);
+  Ordered containsExactly(/*@Nullable*/ M... expected);
 
   /**
    * Checks that subject contains exactly elements that correspond to the expected elements, i.e.
@@ -117,7 +117,7 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * subject, but they are not required to be consecutive.
    */
   @CanIgnoreReturnValue
-  Ordered containsAtLeast(@NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest);
+  Ordered containsAtLeast(@Nullable M first, @Nullable M second, /*@Nullable*/ M... rest);
 
   /**
    * Checks that the subject contains elements that corresponds to all of the expected elements,
@@ -147,7 +147,7 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * Checks that the subject contains at least one element that corresponds to at least one of the
    * expected elements.
    */
-  void containsAnyOf(@NullableDecl M first, @NullableDecl M second, @NullableDecl M... rest);
+  void containsAnyOf(@Nullable M first, @Nullable M second, /*@Nullable*/ M... rest);
 
   /**
    * Checks that the subject contains at least one element that corresponds to at least one of the
@@ -167,9 +167,7 @@ public interface IterableOfProtosUsingCorrespondence<M extends Message> {
    * to any of the given elements.)
    */
   void containsNoneOf(
-      @NullableDecl M firstExcluded,
-      @NullableDecl M secondExcluded,
-      @NullableDecl M... restOfExcluded);
+      @Nullable M firstExcluded, @Nullable M secondExcluded, /*@Nullable*/ M... restOfExcluded);
 
   /**
    * Checks that the subject contains no elements that correspond to any of the given elements.

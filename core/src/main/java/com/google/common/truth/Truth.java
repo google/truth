@@ -24,7 +24,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Table;
 import java.math.BigDecimal;
 import java.util.Map;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * The primary entry point for <a href="https://truth.dev">Truth</a>, a library for fluent test
@@ -144,108 +144,108 @@ public final class Truth {
     return assert_().about(factory);
   }
 
-  public static <T extends Comparable<?>> ComparableSubject<T> assertThat(@NullableDecl T actual) {
+  public static <T extends Comparable<?>> ComparableSubject<T> assertThat(@Nullable T actual) {
     return assert_().that(actual);
   }
 
-  public static BigDecimalSubject assertThat(@NullableDecl BigDecimal actual) {
+  public static BigDecimalSubject assertThat(@Nullable BigDecimal actual) {
     return assert_().that(actual);
   }
 
-  public static Subject assertThat(@NullableDecl Object actual) {
+  public static Subject assertThat(@Nullable Object actual) {
     return assert_().that(actual);
   }
 
   @GwtIncompatible("ClassSubject.java")
-  public static ClassSubject assertThat(@NullableDecl Class<?> actual) {
+  public static ClassSubject assertThat(@Nullable Class<?> actual) {
     return assert_().that(actual);
   }
 
-  public static ThrowableSubject assertThat(@NullableDecl Throwable actual) {
+  public static ThrowableSubject assertThat(@Nullable Throwable actual) {
     return assert_().that(actual);
   }
 
-  public static LongSubject assertThat(@NullableDecl Long actual) {
+  public static LongSubject assertThat(@Nullable Long actual) {
     return assert_().that(actual);
   }
 
-  public static DoubleSubject assertThat(@NullableDecl Double actual) {
+  public static DoubleSubject assertThat(@Nullable Double actual) {
     return assert_().that(actual);
   }
 
-  public static FloatSubject assertThat(@NullableDecl Float actual) {
+  public static FloatSubject assertThat(@Nullable Float actual) {
     return assert_().that(actual);
   }
 
-  public static IntegerSubject assertThat(@NullableDecl Integer actual) {
+  public static IntegerSubject assertThat(@Nullable Integer actual) {
     return assert_().that(actual);
   }
 
-  public static BooleanSubject assertThat(@NullableDecl Boolean actual) {
+  public static BooleanSubject assertThat(@Nullable Boolean actual) {
     return assert_().that(actual);
   }
 
-  public static StringSubject assertThat(@NullableDecl String actual) {
+  public static StringSubject assertThat(@Nullable String actual) {
     return assert_().that(actual);
   }
 
-  public static IterableSubject assertThat(@NullableDecl Iterable<?> actual) {
+  public static IterableSubject assertThat(@Nullable Iterable<?> actual) {
     return assert_().that(actual);
   }
 
-  public static <T> ObjectArraySubject<T> assertThat(@NullableDecl T[] actual) {
+  public static <T> ObjectArraySubject<T> assertThat(@Nullable T /*@Nullable*/[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveBooleanArraySubject assertThat(@NullableDecl boolean[] actual) {
+  public static PrimitiveBooleanArraySubject assertThat(boolean /*@Nullable*/[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveShortArraySubject assertThat(@NullableDecl short[] actual) {
+  public static PrimitiveShortArraySubject assertThat(short /*@Nullable*/[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveIntArraySubject assertThat(@NullableDecl int[] actual) {
+  public static PrimitiveIntArraySubject assertThat(int /*@Nullable*/[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveLongArraySubject assertThat(@NullableDecl long[] actual) {
+  public static PrimitiveLongArraySubject assertThat(long /*@Nullable*/[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveByteArraySubject assertThat(@NullableDecl byte[] actual) {
+  public static PrimitiveByteArraySubject assertThat(byte /*@Nullable*/[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveCharArraySubject assertThat(@NullableDecl char[] actual) {
+  public static PrimitiveCharArraySubject assertThat(char /*@Nullable*/[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveFloatArraySubject assertThat(@NullableDecl float[] actual) {
+  public static PrimitiveFloatArraySubject assertThat(float /*@Nullable*/[] actual) {
     return assert_().that(actual);
   }
 
-  public static PrimitiveDoubleArraySubject assertThat(@NullableDecl double[] actual) {
+  public static PrimitiveDoubleArraySubject assertThat(double /*@Nullable*/[] actual) {
     return assert_().that(actual);
   }
 
-  public static GuavaOptionalSubject assertThat(@NullableDecl Optional<?> actual) {
+  public static GuavaOptionalSubject assertThat(@Nullable Optional<?> actual) {
     return assert_().that(actual);
   }
 
-  public static MapSubject assertThat(@NullableDecl Map<?, ?> actual) {
+  public static MapSubject assertThat(@Nullable Map<?, ?> actual) {
     return assert_().that(actual);
   }
 
-  public static MultimapSubject assertThat(@NullableDecl Multimap<?, ?> actual) {
+  public static MultimapSubject assertThat(@Nullable Multimap<?, ?> actual) {
     return assert_().that(actual);
   }
 
-  public static MultisetSubject assertThat(@NullableDecl Multiset<?> actual) {
+  public static MultisetSubject assertThat(@Nullable Multiset<?> actual) {
     return assert_().that(actual);
   }
 
-  public static TableSubject assertThat(@NullableDecl Table<?, ?, ?> actual) {
+  public static TableSubject assertThat(@Nullable Table<?, ?, ?> actual) {
     return assert_().that(actual);
   }
 
@@ -256,9 +256,9 @@ public final class Truth {
   // TODO(cpovirk): Consider eliminating this, adding its functionality to AssertionErrorWithFacts?
   static final class SimpleAssertionError extends AssertionError {
     /** Separate cause field, in case initCause() fails. */
-    @NullableDecl private final Throwable cause;
+    private final @Nullable Throwable cause;
 
-    private SimpleAssertionError(String message, @NullableDecl Throwable cause) {
+    private SimpleAssertionError(String message, @Nullable Throwable cause) {
       super(checkNotNull(message));
       this.cause = cause;
 
@@ -272,11 +272,11 @@ public final class Truth {
       }
     }
 
-    static SimpleAssertionError create(String message, @NullableDecl Throwable cause) {
+    static SimpleAssertionError create(String message, @Nullable Throwable cause) {
       return new SimpleAssertionError(message, cause);
     }
 
-    static SimpleAssertionError createWithNoStack(String message, @NullableDecl Throwable cause) {
+    static SimpleAssertionError createWithNoStack(String message, @Nullable Throwable cause) {
       SimpleAssertionError error = create(message, cause);
       error.setStackTrace(new StackTraceElement[0]);
       return error;

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for {@link Stream} subjects.
@@ -43,7 +43,7 @@ public final class StreamSubject extends Subject {
 
   private final List<?> actualList;
 
-  private StreamSubject(FailureMetadata failureMetadata, @NullableDecl Stream<?> stream) {
+  private StreamSubject(FailureMetadata failureMetadata, @Nullable Stream<?> stream) {
     super(failureMetadata, stream);
     this.actualList = (stream == null) ? null : stream.collect(toCollection(ArrayList::new));
   }
@@ -78,12 +78,12 @@ public final class StreamSubject extends Subject {
   }
 
   /** Fails if the subject does not contain the given element. */
-  public void contains(@NullableDecl Object element) {
+  public void contains(@Nullable Object element) {
     check().that(actualList).contains(element);
   }
 
   /** Fails if the subject contains the given element. */
-  public void doesNotContain(@NullableDecl Object element) {
+  public void doesNotContain(@Nullable Object element) {
     check().that(actualList).doesNotContain(element);
   }
 
@@ -94,7 +94,7 @@ public final class StreamSubject extends Subject {
 
   /** Fails if the subject does not contain at least one of the given elements. */
   public void containsAnyOf(
-      @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     check().that(actualList).containsAnyOf(first, second, rest);
   }
 
@@ -114,7 +114,7 @@ public final class StreamSubject extends Subject {
    */
   @CanIgnoreReturnValue
   public Ordered containsAtLeast(
-      @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     return check().that(actualList).containsAtLeast(first, second, rest);
   }
 
@@ -144,7 +144,7 @@ public final class StreamSubject extends Subject {
    * on the object returned by this method.
    */
   @CanIgnoreReturnValue
-  public Ordered containsExactly(@NullableDecl Object... varargs) {
+  public Ordered containsExactly(@Nullable Object @Nullable ... varargs) {
     return check().that(actualList).containsExactly(varargs);
   }
 
@@ -167,7 +167,7 @@ public final class StreamSubject extends Subject {
    * test, which fails if any of the actual elements equal any of the excluded.)
    */
   public void containsNoneOf(
-      @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object @Nullable ... rest) {
     check().that(actualList).containsNoneOf(first, second, rest);
   }
 
@@ -223,7 +223,7 @@ public final class StreamSubject extends Subject {
     check().that(actualList).isInOrder(comparator);
   }
 
-  // TODO(kak/cpovirk): Do we want to override + deprecate isEqualTo/isNotEqualTo?
+  // TODO(user): Do we want to override + deprecate isEqualTo/isNotEqualTo?
 
-  // TODO(kak/peteg): Do we want to support comparingElementsUsing() on StreamSubject?
+  // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
 }

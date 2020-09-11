@@ -1355,7 +1355,7 @@ final class ActualValueInference {
     abstract String descriptor();
 
     @Override
-    public String toString() {
+    public final String toString() {
       return descriptor();
     }
 
@@ -1508,8 +1508,11 @@ final class ActualValueInference {
   }
 
   /*
-   * For @AutoValue, which doesn't support @NullableDecl. (We're avoiding both JSR305 and the
-   * Checker Framework type annotations.)
+   * TODO(cpovirk): Switch to using Checker Framework @Nullable. The problem I see if I try to
+   * switch now is that the AutoValue-generated code is `@Nullable ActualValueInference.StackEntry`
+   * rather than `ActualValueInference.@Nullable StackEntry`. AutoValue normally gets this right
+   * (b/29530042), so I think the failure here is because we use `-source 7`. That might still be
+   * fine, except that j2objc compilation appears to then use `-source 8`.
    */
   @interface Nullable {}
 

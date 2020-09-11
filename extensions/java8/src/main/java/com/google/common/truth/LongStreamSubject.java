@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Propositions for {@link LongStream} subjects.
@@ -44,7 +44,7 @@ public final class LongStreamSubject extends Subject {
 
   private final List<?> actualList;
 
-  private LongStreamSubject(FailureMetadata failureMetadata, @NullableDecl LongStream stream) {
+  private LongStreamSubject(FailureMetadata failureMetadata, @Nullable LongStream stream) {
     super(failureMetadata, stream);
     this.actualList =
         (stream == null) ? null : stream.boxed().collect(toCollection(ArrayList::new));
@@ -227,7 +227,7 @@ public final class LongStreamSubject extends Subject {
     return LongStream.of(rest).boxed().toArray(Long[]::new);
   }
 
-  // TODO(kak/cpovirk): Do we want to override + deprecate isEqualTo/isNotEqualTo?
+  // TODO(user): Do we want to override + deprecate isEqualTo/isNotEqualTo?
 
-  // TODO(kak/peteg): Do we want to support comparingElementsUsing() on StreamSubject?
+  // TODO(user): Do we want to support comparingElementsUsing() on StreamSubject?
 }

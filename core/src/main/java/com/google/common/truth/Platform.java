@@ -26,7 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.ComparisonFailure;
 import org.junit.rules.TestRule;
 
@@ -122,8 +122,7 @@ final class Platform {
     }
   }
 
-  @NullableDecl
-  static ImmutableList<Fact> makeDiff(String expected, String actual) {
+  static @Nullable ImmutableList<Fact> makeDiff(String expected, String actual) {
     ImmutableList<String> expectedLines = splitLines(expected);
     ImmutableList<String> actualLines = splitLines(actual);
     List<String> unifiedDiff =
@@ -149,10 +148,10 @@ final class Platform {
     private final String message;
 
     /** Separate cause field, in case initCause() fails. */
-    @NullableDecl private final Throwable cause;
+    private final @Nullable Throwable cause;
 
     PlatformComparisonFailure(
-        String message, String expected, String actual, @NullableDecl Throwable cause) {
+        String message, String expected, String actual, @Nullable Throwable cause) {
       super(message, expected, actual);
       this.message = message;
       this.cause = cause;

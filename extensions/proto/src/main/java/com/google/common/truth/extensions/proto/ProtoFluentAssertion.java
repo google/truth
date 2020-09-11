@@ -18,7 +18,7 @@ package com.google.common.truth.extensions.proto;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.TypeRegistry;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Fluent API to perform detailed, customizable comparison of Protocol buffers.
@@ -476,14 +476,14 @@ public interface ProtoFluentAssertion {
    * earlier operations. If no settings are changed, this invokes the default {@code equals}
    * implementation of the subject {@link Message}.
    */
-  void isEqualTo(@NullableDecl Message expected);
+  void isEqualTo(@Nullable Message expected);
 
   /**
    * Compares the subject of the assertion to {@code expected}, expecting a difference, using all of
    * the rules specified by earlier operations. If no settings are changed, this invokes the default
    * {@code equals} implementation of the subject {@link Message}.
    */
-  void isNotEqualTo(@NullableDecl Message expected);
+  void isNotEqualTo(@Nullable Message expected);
 
   /**
    * @deprecated Do not call {@code equals()} on a {@code ProtoFluentAssertion}. Use {@link

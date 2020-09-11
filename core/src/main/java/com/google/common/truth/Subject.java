@@ -48,7 +48,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * An object that lets you perform checks on the value under test. For example, {@code Subject}
@@ -95,13 +95,13 @@ public class Subject {
   private final FailureMetadata metadata;
   private final Object actual;
   private String customName = null;
-  @NullableDecl private final String typeDescriptionOverride;
+  private final @Nullable String typeDescriptionOverride;
 
   /**
    * Constructor for use by subclasses. If you want to create an instance of this class itself, call
    * {@link Subject#check(String, Object...) check(...)}{@code .that(actual)}.
    */
-  protected Subject(FailureMetadata metadata, @NullableDecl Object actual) {
+  protected Subject(FailureMetadata metadata, @Nullable Object actual) {
     this(metadata, actual, /*typeDescriptionOverride=*/ null);
   }
 
@@ -117,9 +117,7 @@ public class Subject {
    * obfuscated names.
    */
   Subject(
-      FailureMetadata metadata,
-      @NullableDecl Object actual,
-      @NullableDecl String typeDescriptionOverride) {
+      FailureMetadata metadata, @Nullable Object actual, @Nullable String typeDescriptionOverride) {
     this.metadata = metadata.updateForSubject(this);
     this.actual = actual;
     this.typeDescriptionOverride = typeDescriptionOverride;
@@ -166,11 +164,11 @@ public class Subject {
    * method, they would get a ComparisonFailure and other message niceties, and they'd have less to
    * test.
    */
-  public void isEqualTo(@NullableDecl Object expected) {
+  public void isEqualTo(@Nullable Object expected) {
     standardIsEqualTo(expected);
   }
 
-  private void standardIsEqualTo(@NullableDecl Object expected) {
+  private void standardIsEqualTo(@Nullable Object expected) {
     ComparisonResult difference = compareForEquality(expected);
     if (!difference.valuesAreEqual()) {
       failEqualityCheck(EqualityCheck.EQUAL, expected, difference);
@@ -181,11 +179,11 @@ public class Subject {
    * Fails if the subject is equal to the given object. The meaning of equality is the same as for
    * the {@link #isEqualTo} method.
    */
-  public void isNotEqualTo(@NullableDecl Object unexpected) {
+  public void isNotEqualTo(@Nullable Object unexpected) {
     standardIsNotEqualTo(unexpected);
   }
 
-  private void standardIsNotEqualTo(@NullableDecl Object unexpected) {
+  private void standardIsNotEqualTo(@Nullable Object unexpected) {
     ComparisonResult difference = compareForEquality(unexpected);
     if (difference.valuesAreEqual()) {
       String unexpectedAsString = formatActualOrExpected(unexpected);
@@ -207,7 +205,7 @@ public class Subject {
    *
    * <p>The equality check follows the rules described on {@link #isEqualTo}.
    */
-  private ComparisonResult compareForEquality(@NullableDecl Object expected) {
+  private ComparisonResult compareForEquality(@Nullable Object expected) {
     if (actual == null && expected == null) {
       return ComparisonResult.equal();
     } else if (actual == null || expected == null) {
@@ -245,7 +243,7 @@ public class Subject {
     }
   }
 
-  private static boolean isIntegralBoxedPrimitive(@NullableDecl Object o) {
+  private static boolean isIntegralBoxedPrimitive(@Nullable Object o) {
     return o instanceof Byte
         || o instanceof Short
         || o instanceof Character
@@ -264,7 +262,7 @@ public class Subject {
   }
 
   /** Fails if the subject is not the same instance as the given object. */
-  public final void isSameInstanceAs(@NullableDecl Object expected) {
+  public final void isSameInstanceAs(@Nullable Object expected) {
     if (actual != expected) {
       failEqualityCheck(
           SAME_INSTANCE,
@@ -280,7 +278,7 @@ public class Subject {
   }
 
   /** Fails if the subject is the same instance as the given object. */
-  public final void isNotSameInstanceAs(@NullableDecl Object unexpected) {
+  public final void isNotSameInstanceAs(@Nullable Object unexpected) {
     if (actual == unexpected) {
       /*
        * We use actualCustomStringRepresentation() because it might be overridden to be better than
@@ -347,7 +345,7 @@ public class Subject {
 
   /** Fails unless the subject is equal to any of the given elements. */
   public void isAnyOf(
-      @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object /*@Nullable*/... rest) {
     isIn(accumulate(first, second, rest));
   }
 
@@ -360,7 +358,7 @@ public class Subject {
 
   /** Fails if the subject is equal to any of the given elements. */
   public void isNoneOf(
-      @NullableDecl Object first, @NullableDecl Object second, @NullableDecl Object... rest) {
+      @Nullable Object first, @Nullable Object second, @Nullable Object /*@Nullable*/... rest) {
     isNotIn(accumulate(first, second, rest));
   }
 
@@ -398,7 +396,7 @@ public class Subject {
     return actualCustomStringRepresentation();
   }
 
-  private String formatActualOrExpected(@NullableDecl Object o) {
+  private String formatActualOrExpected(@Nullable Object o) {
     if (o instanceof byte[]) {
       return base16((byte[]) o);
     } else if (o != null && o.getClass().isArray()) {
@@ -431,7 +429,7 @@ public class Subject {
   private static final Function<Object, Object> STRINGIFY =
       new Function<Object, Object>() {
         @Override
-        public Object apply(@NullableDecl Object input) {
+        public Object apply(@Nullable Object input) {
           if (input != null && input.getClass().isArray()) {
             Iterable<?> iterable;
             if (input.getClass() == boolean[].class) {
@@ -491,7 +489,7 @@ public class Subject {
     private static final ComparisonResult DIFFERENT_NO_DESCRIPTION =
         new ComparisonResult(ImmutableList.<Fact>of());
 
-    @NullableDecl private final ImmutableList<Fact> facts;
+    private final @Nullable ImmutableList<Fact> facts;
 
     private ComparisonResult(ImmutableList<Fact> facts) {
       this.facts = facts;
@@ -716,7 +714,7 @@ public class Subject {
    * <p>Example usage: The check {@code contains(String)} calls {@code failWithActual("expected to
    * contain", string)}.
    */
-  protected final void failWithActual(String key, @NullableDecl Object value) {
+  protected final void failWithActual(String key, @Nullable Object value) {
     failWithActual(fact(key, value));
   }
 
@@ -1095,7 +1093,7 @@ public class Subject {
    */
   @Deprecated
   @Override
-  public final boolean equals(@NullableDecl Object o) {
+  public final boolean equals(@Nullable Object o) {
     throw new UnsupportedOperationException(
         "If you meant to test object equality, use .isEqualTo(other) instead.");
   }
@@ -1144,7 +1142,7 @@ public class Subject {
   }
 
   private static String typeDescriptionOrGuess(
-      Class<? extends Subject> clazz, @NullableDecl String typeDescriptionOverride) {
+      Class<? extends Subject> clazz, @Nullable String typeDescriptionOverride) {
     if (typeDescriptionOverride != null) {
       return typeDescriptionOverride;
     }

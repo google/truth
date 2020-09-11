@@ -22,7 +22,7 @@ import static java.lang.Math.max;
 
 import com.google.common.collect.ImmutableList;
 import java.io.Serializable;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A string key-value pair in a failure message, such as "expected: abc" or "but was: xyz."
@@ -39,7 +39,7 @@ public final class Fact implements Serializable {
    * Creates a fact with the given key and value, which will be printed in a format like "key:
    * value." The value is converted to a string by calling {@code String.valueOf} on it.
    */
-  public static Fact fact(String key, @NullableDecl Object value) {
+  public static Fact fact(String key, @Nullable Object value) {
     return new Fact(key, String.valueOf(value));
   }
 
@@ -63,9 +63,9 @@ public final class Fact implements Serializable {
   }
 
   final String key;
-  @NullableDecl final String value;
+  final @Nullable String value;
 
-  private Fact(String key, @NullableDecl String value) {
+  private Fact(String key, @Nullable String value) {
     this.key = checkNotNull(key);
     this.value = value;
   }

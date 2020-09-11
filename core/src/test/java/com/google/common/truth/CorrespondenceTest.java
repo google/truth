@@ -24,7 +24,7 @@ import static org.junit.Assert.fail;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -44,7 +44,7 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
           // (a, e) -> false,
           new Correspondence.BinaryPredicate<Object, Object>() {
             @Override
-            public boolean apply(@NullableDecl Object actual, @NullableDecl Object expected) {
+            public boolean apply(@Nullable Object actual, @Nullable Object expected) {
               return false;
             }
           },
@@ -154,7 +154,6 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
       Correspondence.transforming(
           new Function<String, Integer>() {
             @Override
-            @NullableDecl
             public Integer apply(String str) {
               return str.length();
             }
@@ -173,8 +172,7 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
       Correspondence.transforming(
           new Function<String, Integer>() {
             @Override
-            @NullableDecl
-            public Integer apply(String str) {
+            public @Nullable Integer apply(String str) {
               int index = str.indexOf('-');
               return (index >= 0) ? index : null;
             }
@@ -286,16 +284,14 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
       Correspondence.transforming(
           new Function<String, Integer>() {
             @Override
-            @NullableDecl
-            public Integer apply(String str) {
+            public @Nullable Integer apply(String str) {
               int index = str.indexOf('-');
               return (index >= 0) ? index : null;
             }
           },
           new Function<String, Integer>() {
             @Override
-            @NullableDecl
-            public Integer apply(String str) {
+            public @Nullable Integer apply(String str) {
               int index = str.indexOf(':');
               return (index >= 0) ? index : null;
             }
@@ -577,7 +573,6 @@ public final class CorrespondenceTest extends BaseSubjectTestCase {
       Correspondence.transforming(
               new Function<String, Integer>() {
                 @Override
-                @NullableDecl
                 public Integer apply(String str) {
                   return str.length();
                 }
