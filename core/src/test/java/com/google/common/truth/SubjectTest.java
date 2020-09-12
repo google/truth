@@ -162,6 +162,7 @@ public class SubjectTest extends BaseSubjectTestCase {
         }
       };
 
+  @SuppressWarnings("TruthIncompatibleType") // Intentional for testing purposes.
   @Test
   public void toStringsAreIdentical() {
     IntWrapper wrapper = new IntWrapper();
