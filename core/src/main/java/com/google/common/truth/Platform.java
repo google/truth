@@ -122,6 +122,8 @@ final class Platform {
     }
   }
 
+  private static final String DIFF_KEY = "diff (-expected +actual)";
+
   static @Nullable ImmutableList<Fact> makeDiff(String expected, String actual) {
     ImmutableList<String> expectedLines = splitLines(expected);
     ImmutableList<String> actualLines = splitLines(actual);
@@ -129,14 +131,14 @@ final class Platform {
         generateUnifiedDiff(expectedLines, actualLines, /* contextSize= */ 3);
     if (unifiedDiff.isEmpty()) {
       return ImmutableList.of(
-          fact("diff", "(line contents match, but line-break characters differ)"));
+          fact(DIFF_KEY, "(line contents match, but line-break characters differ)"));
       // TODO(cpovirk): Possibly include the expected/actual value, too?
     }
     String result = Joiner.on("\n").join(unifiedDiff);
     if (result.length() > expected.length() && result.length() > actual.length()) {
       return null;
     }
-    return ImmutableList.of(fact("diff", result));
+    return ImmutableList.of(fact(DIFF_KEY, result));
   }
 
   private static ImmutableList<String> splitLines(String s) {

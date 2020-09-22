@@ -331,7 +331,7 @@ public class ComparisonFailureWithFactsTest {
   private static void runFormatTest(String expected, String actual, String expectedDiff) {
     ImmutableList<Fact> facts = formatExpectedAndActual(expected, actual);
     assertThat(facts).hasSize(1);
-    assertThat(facts.get(0).key).isEqualTo("diff");
+    assertThat(facts.get(0).key).isEqualTo("diff (-expected +actual)");
     assertThat(facts.get(0).value).isEqualTo(expectedDiff);
   }
 }
